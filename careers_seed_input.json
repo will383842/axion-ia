@@ -1087,6 +1087,62 @@
       "workMode": "on_site",
       "multiCity": false,
       "city": "Grenoble"
+    },
+    {
+      "slug": "monteur-video-freelance-distance",
+      "num": 55,
+      "titre": "Monteur vidéo freelance — 100 % à distance (derush + montage)",
+      "categorie": "design",
+      "emploi": "CONTRACTOR",
+      "type_loc": "remote",
+      "sal_min": 0,
+      "sal_max": 0,
+      "sal_note": "rémunération à la vidéo, définie lors d'un échange téléphonique — jamais affichée",
+      "missions": [
+        "récupérer les rushes et les pistes son qu'on t'envoie",
+        "dérusher, sélectionner les meilleures prises, nettoyer le son",
+        "monter le format demandé (court ou long) et le livrer prêt à publier",
+        "assurer un flux régulier de plusieurs vidéos par semaine"
+      ],
+      "profil": [],
+      "tech": false,
+      "skills": [
+        "derush",
+        "montage (Premiere / DaVinci / Final Cut)",
+        "sous-titrage",
+        "nettoyage et mixage son simple",
+        "formats courts (Reels, Shorts, TikTok)",
+        "autonomie et respect des délais"
+      ],
+      "media": true,
+      "group": "media",
+      "workMode": "remote",
+      "multiCity": false,
+      "city": null,
+      "applicantCountries": [
+        "FR",
+        "BE",
+        "CH",
+        "LU",
+        "MC",
+        "CA",
+        "MA",
+        "DZ",
+        "TN",
+        "SN",
+        "CI",
+        "CM",
+        "BJ",
+        "BF",
+        "ML",
+        "TG",
+        "GA",
+        "CD",
+        "MG",
+        "MU",
+        "LB",
+        "HT"
+      ]
     }
   ],
   "cities": [

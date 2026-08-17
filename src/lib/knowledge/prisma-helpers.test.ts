@@ -196,9 +196,11 @@ describe("KB SSOT — relation kinds", () => {
 });
 
 describe("KB SSOT — routes", () => {
-  it("KB_PUBLIC_ROUTES has 6 public-typed entries", () => {
+  it("KB_PUBLIC_ROUTES has 18 public-typed entries (6 legacy + 12 factory)", () => {
+    // Audit KB 2026-08-11 (« public assumé ») : les 12 types factory pointent
+    // vers /connaissances/[slug] en plus des 6 routes legacy dédiées.
     const publicTypes = Object.entries(KB_PUBLIC_ROUTES).filter(([, v]) => v !== null);
-    expect(publicTypes).toHaveLength(6);
+    expect(publicTypes).toHaveLength(18);
   });
 
   it("hub route is /ressources FR + /resources EN", () => {
@@ -222,7 +224,15 @@ describe("KB SSOT — routes", () => {
     // ne génèrent plus d'URL /ressources/<type>/<slug> (soft-404) → renvoient null.
     expect(buildKbPublicUrl("methodology", "fr", "agile")).toBeNull();
     expect(buildKbPublicUrl("sop", "en", "deploy")).toBeNull();
-    expect(buildKbPublicUrl("industry_use_case", "fr", "kb-fact-ua-017-fr")).toBeNull();
+  });
+
+  it("buildKbPublicUrl maps factory types to /connaissances (public assumé 2026-08-11)", () => {
+    // Les pages /connaissances/[slug] servent réellement ces entrées (slug de
+    // TRADUCTION) — le mapping les rend visibles du sitemap/RSS/hub.
+    expect(buildKbPublicUrl("industry_use_case", "fr", "kb-fact-ua-017-fr")).toBe(
+      "/connaissances/kb-fact-ua-017-fr",
+    );
+    expect(buildKbPublicUrl("comparison", "fr", "x-vs-y")).toBe("/connaissances/x-vs-y");
   });
 });
 

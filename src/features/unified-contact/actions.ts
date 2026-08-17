@@ -25,6 +25,8 @@
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncFormSubmissionToCrm } from "@/server/crm-sync";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { SubmissionType } from "../../../prisma/generated/client";
 import {
   unifiedContactSchema,
@@ -41,6 +43,7 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 export type UnifiedContactState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -112,12 +115,13 @@ function emailTemplateFor(type: UnifiedContactType): EmailJobName {
       return "audit-confirmed";
     case "implementation":
       return "implementation-confirmed";
-    // Form v2 — fallback sur `contact-confirmed` pour les 5 nouveaux types.
-    // Des templates dédiés (press-confirmed / recruitment-confirmed / etc.)
-    // peuvent être ajoutés ultérieurement ; pour l'instant la confirmation
-    // générique « nous revenons vers vous » suffit. Le routage interne fin
-    // se fait côté Telegram (catégories distinctes).
+    // `quote-request-received` était écrit et déclaré depuis le sprint Booking,
+    // mais appelé NULLE PART : les demandes de devis retombaient sur l'accusé
+    // générique. Branché le 2026-08-13.
     case "devis":
+      return "quote-request-received";
+    // Les autres types gardent l'accusé générique. Le routage interne fin se
+    // fait côté Telegram (catégories distinctes).
     case "formation":
     case "un_a_un":
     case "partenariat":
@@ -215,6 +219,7 @@ export async function submitUnifiedContactAction(
         companyName: data.companyName ?? "—",
         contactName: encryptPii(data.nom),
         contactEmail: encryptPii(data.email),
+        contactEmailHash: hashEmailForLookup(data.email),
         contactPhone: encryptPii(data.telephone) ?? null,
         sector: data.companySector ?? null,
         employeesCount: data.companySize ?? null,
@@ -239,6 +244,50 @@ export async function submitUnifiedContactAction(
       },
     });
 
+    // 6bis. Synchro CRM (lot L2) — outbox locale, best-effort, JAMAIS bloquante.
+    // Aucun try/catch ici : `syncFormSubmissionToCrm` ne lève pas, et ne fait
+    // rien du tout tant que `CRM_SYNC_ENABLED` n'est pas à "true".
+    await syncFormSubmissionToCrm({
+      subjectRef: `site:submission:${submission.id}`,
+      formType: data.type,
+      occurredAt: submission.submittedAt,
+      person: {
+        email: data.email,
+        fullName: data.nom,
+        phone: data.telephone ?? null,
+      },
+      company: {
+        name: data.companyName ?? null,
+        city: data.ville ?? null,
+        sizeCategory: data.companySize ?? null,
+        sector: data.companySector ?? null,
+      },
+      consent: {
+        version: CONSENT_VERSION,
+        at: submission.submittedAt,
+        textRef: "unified-contact-form",
+      },
+      payload: {
+        ...(data.subType ? { subType: data.subType } : {}),
+        ...(data.source ? { source: data.source } : {}),
+        ...(Object.keys(funnel).length > 0 ? { funnel } : {}),
+      },
+    });
+
+    // 6 bis. REGISTRE DE PREUVE (lot L4) — best-effort, jamais bloquant. La
+    // version vivait jusqu'ici dans `details.consentVersion`, un JSON : lisible
+    // à l'unité, inexploitable pour répondre « prouvez le consentement de cette
+    // personne ». Elle est désormais AUSSI dans un registre indexé par personne.
+    await recordConsentEvent({
+      email: data.email,
+      formRef: CONSENT_FORM_REFS.unifiedContact,
+      consentVersion: CONSENT_VERSION,
+      action: "optin",
+      occurredAt: submission.submittedAt,
+      ip,
+      userAgent,
+    });
+
     // 7. Telegram notification — via hub typé (cf. ADR 0027).
     // dedupKey = submission.id pour neutraliser un éventuel double-submit
     // qui passerait au niveau DB (improbable car idempotencyKey, mais
@@ -249,6 +298,10 @@ export async function submitUnifiedContactAction(
       contactName: data.nom,
       contactEmail: data.email,
       ...(data.telephone ? { contactPhone: data.telephone } : {}),
+      // Le contenu du message part dans la notif (demande Will 2026-08-12) —
+      // tronqué : Telegram plafonne à 4096 c. et l'écran verrouillé n'en montre
+      // que quelques lignes de toute façon.
+      ...(data.message ? { message: data.message.slice(0, 500) } : {}),
       ...(data.ville ? { ville: data.ville } : {}),
       ...(data.companyName ? { companyName: data.companyName } : {}),
       ...(data.companySize ? { companySize: data.companySize } : {}),
@@ -283,6 +336,9 @@ export async function submitUnifiedContactAction(
       await enqueueEmail(emailTemplateFor(data.type), data.email, locale, {
         contactName: data.nom,
         submissionId: submission.id,
+        // `quote-request-received` s'en sert dans sa phrase d'accroche. Sans
+        // lui, le gabarit affichait « votre demande de devis pour undefined ».
+        ...(data.companyName ? { companyName: data.companyName } : {}),
         type: data.type,
         subType: data.subType,
         // Champs hérités utilisés par les templates existants (audit-confirmed,

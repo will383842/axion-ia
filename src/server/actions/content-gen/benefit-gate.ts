@@ -37,6 +37,9 @@ const UpdateSchema = z.object({
 });
 
 export async function getBenefitGateConfig(): Promise<BenefitGateConfig> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  // Les workers lisent cette clé via `readContentGenConfig` en direct.
+  await requireAdmin();
   return readContentGenConfig<BenefitGateConfig>(KEY, DEFAULTS);
 }
 

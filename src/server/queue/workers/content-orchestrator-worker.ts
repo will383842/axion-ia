@@ -23,8 +23,20 @@ import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { resolveIntentDistribution } from "@/server/content-gen/intent-distribution-schema";
 import {
   computeAntiBurstSchedule,
+  computeCampaignTickBudget,
   msSinceStartOfDay,
 } from "@/server/content-gen/scheduler/anti-burst";
+// Fix 2026-08-15 — reprise du retard (drain des échecs transitoires + déblocage
+// des jobs figés) et lecture fail-safe du kill switch.
+import {
+  DEFAULT_RECOVERY_SETTINGS,
+  drainFailedJobs,
+  sweepStrandedQualityJobs,
+  sweepStuckJobs,
+  type BacklogRecoverySettings,
+} from "@/server/content-gen/recovery/backlog-recovery";
+import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 import { buildWeightedSequence } from "@/server/content-gen/scheduler/type-sequence";
 // Fix 2026-07-18 — resync des compteurs de campagne (failedCount/publishedCount).
 import { syncCampaignCounters } from "@/server/content-gen/campaigns/sync-counters";
@@ -58,17 +70,52 @@ interface BatchSettings {
   readonly antiBurstEnabled?: boolean;
 }
 
-interface KillSwitchState {
-  readonly active: boolean;
+/**
+ * Plafond quotidien GLOBAL de génération, tous canaux confondus (décision Will
+ * 2026-08-15, clé `ContentGenConfig.daily_generation_cap`).
+ *
+ * Avant, la reprise du retard et la production neuve avaient chacune leur
+ * budget : ils s'additionnaient. Le plafond voulu porte sur le TOTAL — c'est le
+ * nombre de contenus qu'on accepte de payer dans une journée, peu importe qu'ils
+ * soient neufs ou rejoués.
+ */
+interface DailyGenerationCap {
+  readonly maxPerDay: number;
 }
+
+const DEFAULT_DAILY_GENERATION_CAP: DailyGenerationCap = { maxPerDay: 20 };
+
+// L'interface locale `KillSwitchState` a été retirée le 2026-08-15 : l'état du
+// kill switch est désormais lu par `readKillSwitchFailSafe`, qui porte son
+// propre type (et traite une erreur DB comme un arrêt, au lieu de retomber sur
+// un défaut permissif).
 
 let contentGenQueue: Queue | null = null;
 function getContentGenQueue(): Queue {
   if (contentGenQueue) return contentGenQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) throw new Error("REDIS_URL not set");
-  contentGenQueue = new Queue("content-gen", { connection: { url: redisUrl } });
+  contentGenQueue = new Queue("content-gen", {
+    connection: { url: redisUrl },
+    // Fix 2026-08-15 — sans `defaultJobOptions`, une queue créée à la volée
+    // hérite du défaut BullMQ (`attempts: 1`) au lieu de la politique de
+    // `queues.ts`. Un job qui rencontrait une pause kill switch mourait donc
+    // définitivement dès la première tentative.
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return contentGenQueue;
+}
+
+let qualityImproverQueue: Queue | null = null;
+function getQualityImproverQueue(): Queue | null {
+  if (qualityImproverQueue) return qualityImproverQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return null;
+  qualityImproverQueue = new Queue("content-quality-improver", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
+  return qualityImproverQueue;
 }
 
 /**
@@ -76,7 +123,39 @@ function getContentGenQueue(): Queue {
  * sur N slots sans dérive aléatoire (remplace Math.random()).
  * seed = offset pour décorreler type / intent / audience sur le même slotIndex.
  * Ex : dist={A:40,B:30,C:30}, slotIndex=0→A, slotIndex=40→B, slotIndex=70→C.
+ *
+ * 🔴 CORRIGÉ 2026-08-16 (audit GEO/AEO E2E) — LES POIDS EN FRACTIONS RENDAIENT
+ * TOUJOURS LA PREMIÈRE CLÉ.
+ *
+ * L'implémentation d'origine calculait `position = (slotIndex + seed) % total`
+ * en prenant la SOMME BRUTE des poids comme modulo. Ça ne marche que si cette
+ * somme est un entier supérieur à 1. Or la production stocke ses répartitions
+ * en FRACTIONS de somme 1 — ce n'est pas une hypothèse, c'est écrit dans
+ * `intent-distribution-schema.ts` (« la production les stocke en fractions de
+ * somme 1, tandis que l'écran de réglage les présente en pourcentages ») et
+ * répété dans le bloc de fallback global de ce fichier même.
+ *
+ * Avec `total = 1`, `(slotIndex + seed) % 1` vaut `0` pour tout entier :
+ * `position` ne bouge JAMAIS, la première clé de l'objet gagne à chaque slot.
+ * Effet mesurable : toute campagne dépourvue de `searchIntentMix` propre reçoit
+ * le `globalIntentMix`, dont `informational` est la première clé → **100 %
+ * d'informational dès le premier tick**, en silence, sans qu'aucune erreur ne
+ * soit levée. Les axes audience / activité / secteur client sont exposés au
+ * même défaut dès que leurs poids sont écrits en fractions.
+ *
+ * Le correctif ramène les poids sur une ÉCHELLE FIXE de 100 avant le tirage.
+ * L'échelle d'entrée cesse alors d'avoir un effet — ce que la docstring
+ * ci-dessus promettait déjà, et qui était faux.
+ *
+ * ⚠️ Compatibilité : pour des poids en POURCENTAGES (somme 100, cas des seeds
+ * `DEFAULT_INTENT_MIX` et de tout ce que valide `PercentRecordSchema`), le
+ * calcul est INCHANGÉ au bit près — `(w / 100) * 100 === w` et le modulo porte
+ * déjà sur 100. Aucune séquence existante ne bouge.
+ *
+ * Garde : `src/server/queue/workers/__tests__/sample-weighted-echelle.spec.ts`.
  */
+const ECHELLE_TIRAGE = 100;
+
 function sampleWeighted<K extends string>(
   dist: Record<K, number>,
   slotIndex: number,
@@ -85,11 +164,13 @@ function sampleWeighted<K extends string>(
   const entries = Object.entries(dist) as Array<[K, number]>;
   if (entries.length === 0) return null;
   const total = entries.reduce((a, [, w]) => a + w, 0);
-  if (total <= 0) return null;
-  const position = (slotIndex + seed) % total;
+  // `!(total > 0)` plutôt que `total <= 0` : attrape aussi `NaN`, qu'une
+  // configuration abîmée peut produire et qui passerait la comparaison inverse.
+  if (!(total > 0)) return null;
+  const position = (slotIndex + seed) % ECHELLE_TIRAGE;
   let cumulative = 0;
   for (const [key, w] of entries) {
-    cumulative += w;
+    cumulative += (w / total) * ECHELLE_TIRAGE;
     if (position < cumulative) return key;
   }
   return entries[entries.length - 1]![0];
@@ -177,15 +258,18 @@ export async function expandVilleAnchors(
   radiusKm: number | null,
 ): Promise<string[]> {
   if (mode === "none" || baseSlugs.length === 0) return baseSlugs;
-  const [{ getNearbyVilles }, { getVille }] = await Promise.all([
+  // `core` et non le barrel `@/content/villes` : on ne lit ici que geo et
+  // departement. Le barrel tire 29 Mo de contenu éditorial (2 118 imports
+  // statiques) dont rien n'est utilisé — ~578 ms contre ~41 s à froid.
+  const [{ getNearbyVilles }, { getVilleCore }] = await Promise.all([
     import("@/lib/geo"),
-    import("@/content/villes"),
+    import("@/content/villes/core"),
   ]);
   const out = new Set<string>(baseSlugs);
   const radius = radiusKm && radiusKm > 0 ? radiusKm : 50;
   for (const slug of baseSlugs) {
     if (out.size >= MAX_EXPANDED_VILLES) break;
-    const origin = getVille(slug);
+    const origin = getVilleCore(slug);
     if (!origin) continue;
     if (mode === "radius") {
       const nearby = getNearbyVilles(origin.geo, NEARBY_PER_ANCHOR, {
@@ -315,8 +399,61 @@ async function createJobForSlot(opts: {
     const msg = err instanceof Error ? err.message : String(err);
     if (!msg.includes("Unique constraint")) {
       console.error("[orchestrator] insert ContentGenJob failed:", msg);
+      return false;
     }
-    return false;
+
+    // Fix 2026-08-15 — livelock d'idempotence.
+    //
+    // La création du job, son enfilement et l'incrément de `generatedCount` ne
+    // sont pas atomiques. Si le processus s'arrête entre les deux premiers et le
+    // troisième (redéploiement, coupure Redis), la ligne existe mais le compteur
+    // n'a pas bougé : au tick suivant, le même `slotIndex` reproduit la même
+    // `idempotencyKey`, la contrainte unique rejette l'insert, `enqueued` reste à
+    // zéro — donc le compteur ne bouge toujours pas. La campagne était alors gelée
+    // POUR TOUJOURS, en silence (la collision n'était même pas journalisée).
+    //
+    // On traite désormais la collision pour ce qu'elle est : ce slot A ÉTÉ servi.
+    // On le compte comme consommé pour que la campagne avance, et on répare au
+    // passage le job orphelin s'il n'a jamais rejoint la file.
+    try {
+      const existing = await prisma.contentGenJob.findUnique({
+        where: { idempotencyKey },
+        select: {
+          id: true,
+          status: true,
+          contentType: true,
+          targetSearchIntent: true,
+          inputPayload: true,
+        },
+      });
+      if (existing && existing.status === "queued") {
+        const jobId = `gen-${existing.id}`;
+        const bullJob = await getContentGenQueue().getJob(jobId);
+        if (!bullJob) {
+          await getContentGenQueue().add(
+            "generate",
+            {
+              contentGenJobId: existing.id,
+              contentType: existing.contentType,
+              targetSearchIntent: existing.targetSearchIntent,
+              inputPayload: existing.inputPayload,
+            },
+            { jobId },
+          );
+          console.warn(
+            `[orchestrator] slot ${slotIndex} — job orphelin ré-enfilé (${existing.id})`,
+          );
+        }
+      }
+    } catch (repairErr) {
+      console.warn(
+        "[orchestrator] réparation du slot en collision impossible:",
+        repairErr instanceof Error ? repairErr.message : repairErr,
+      );
+    }
+    // `true` = slot consommé : la campagne progresse au lieu de rejouer ce slot
+    // indéfiniment.
+    return true;
   }
 }
 
@@ -411,22 +548,78 @@ async function processSequentialCampaign(
 
   const currentCitySlug = villeAnchors[currentCityIdx]!;
 
-  // Compter les jobs en cours pour cette ville
-  const pendingCount = await prisma.contentGenJob.count({
+  // Fix 2026-08-15 — le mode séquentiel n'attendait jamais rien.
+  //
+  // L'index de ville était avancé JUSTE APRÈS l'enfilement (en fin de fonction),
+  // si bien qu'au tick suivant le comptage « jobs en cours » portait sur la ville
+  // SUIVANTE, qui n'avait évidemment aucun job : la condition d'attente ne
+  // pouvait structurellement jamais se déclencher. Deux conséquences :
+  // chaque ville ne recevait que le budget d'UN tick (souvent 1 seul article au
+  // lieu de sa couverture), et après autant de ticks que de villes la campagne
+  // n'enfilait plus rien tout en restant `running` — un tick à vide éternel,
+  // sans alerte.
+  //
+  // La couverture visée par ville est déduite de la cible globale répartie sur
+  // les villes du périmètre. L'index n'avance QUE lorsque la ville a reçu sa
+  // couverture ET que tous ses jobs sont retombés dans un état terminal.
+  const perCityTarget =
+    campaign.totalTargetCount > 0
+      ? Math.max(1, Math.ceil(campaign.totalTargetCount / villeAnchors.length))
+      : 1;
+
+  const cityCreated = await prisma.contentGenJob.count({
     where: {
       campaignId: campaign.id,
       anchorVilleSlug: currentCitySlug,
-      status: { in: ["queued", "running", "needs_review", "quality_improving"] },
+      status: { not: "cancelled" },
     },
   });
 
-  if (pendingCount > 0) {
-    // Ville en cours — attendre la prochaine tick
+  if (cityCreated >= perCityTarget) {
+    // `needs_review` est volontairement EXCLU des états « en cours » : c'est une
+    // issue terminale du pipeline (rejet automatique ou attente de relecture),
+    // pas une étape. L'y inclure aurait bloqué la campagne entière sur un seul
+    // article recalé.
+    const cityPending = await prisma.contentGenJob.count({
+      where: {
+        campaignId: campaign.id,
+        anchorVilleSlug: currentCitySlug,
+        status: {
+          in: [
+            "queued",
+            "running",
+            "generating_text",
+            "generating_image",
+            "running_qa",
+            "quality_improving",
+            "approved",
+            "publishing",
+          ],
+        },
+      },
+    });
+
+    if (cityPending > 0) {
+      console.log(
+        `[orchestrator] sequential campaign=${campaign.id} ville=${currentCitySlug} — couverture atteinte, ${cityPending} job(s) en cours, on attend`,
+      );
+      return 0;
+    }
+
+    await prisma.coverageCampaign.update({
+      where: { id: campaign.id },
+      data: { currentCityIndex: currentCityIdx + 1 },
+    });
     console.log(
-      `[orchestrator] sequential campaign=${campaign.id} city=${currentCitySlug} pending=${pendingCount}, waiting`,
+      `[orchestrator] sequential campaign=${campaign.id} ville=${currentCitySlug} terminée (${currentCityIdx + 1}/${villeAnchors.length}) → ville suivante au prochain tick`,
     );
     return 0;
   }
+
+  // Ville courante encore à couvrir → on complète son quota, sans dépasser le
+  // budget du tick (qui porte, lui, le rythme quotidien de la campagne).
+  const cityRoom = perCityTarget - cityCreated;
+  const cityToEnqueue = Math.min(toEnqueue, cityRoom);
 
   // Ville courante terminée (ou jamais démarrée) → créer les jobs pour cette ville
   const typeDist = registeredTypeDist(
@@ -442,11 +635,11 @@ async function processSequentialCampaign(
   // Séquence de types entrelacée pour toute la campagne, indexée par slot global.
   const typeSeq = buildWeightedSequence(
     typeDist,
-    Math.max(campaign.totalTargetCount, campaign.generatedCount + toEnqueue),
+    Math.max(campaign.totalTargetCount, campaign.generatedCount + cityToEnqueue),
   );
 
   let enqueued = 0;
-  for (let i = 0; i < toEnqueue; i++) {
+  for (let i = 0; i < cityToEnqueue; i++) {
     const slotIndex = campaign.generatedCount + i;
     let contentType: ContentType | null;
     if (hasPerTypeMode) {
@@ -482,14 +675,12 @@ async function processSequentialCampaign(
     if (ok) enqueued++;
   }
 
-  // Avancer l'index de ville
-  await prisma.coverageCampaign.update({
-    where: { id: campaign.id },
-    data: { currentCityIndex: currentCityIdx + 1 },
-  });
-
+  // L'index de ville n'est PLUS avancé ici : c'est précisément ce qui rendait
+  // l'attente inopérante (cf. le commentaire en tête de cette fonction). Il
+  // avance en début de tick, une fois la ville réellement couverte et ses jobs
+  // terminés.
   console.log(
-    `[orchestrator] sequential campaign=${campaign.id} city=${currentCitySlug} (${currentCityIdx + 1}/${villeAnchors.length}) enqueued=${enqueued}`,
+    `[orchestrator] sequential campaign=${campaign.id} ville=${currentCitySlug} (${currentCityIdx + 1}/${villeAnchors.length}) — ${cityCreated + enqueued}/${perCityTarget} enfilés`,
   );
   return enqueued;
 }
@@ -600,10 +791,14 @@ async function processParallelCampaign(
 }
 
 async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
-  // Kill switch check
-  const killSwitch = await readContentGenConfig<KillSwitchState>("kill_switch", { active: false });
+  // Kill switch — lecture fail-SAFE (2026-08-15) : une erreur DB ne doit pas
+  // « dé-geler » silencieusement un arrêt d'urgence en retombant sur le défaut
+  // `{active:false}`. État illisible = production considérée arrêtée.
+  const killSwitch = await readKillSwitchFailSafe();
   if (killSwitch.active) {
-    console.log("[orchestrator] kill switch active, skip tick");
+    console.log(
+      `[orchestrator] kill switch actif (${killSwitch.reason ?? "sans motif"}), tick ignoré`,
+    );
     return;
   }
 
@@ -619,6 +814,93 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   } catch (err) {
     console.warn(
       "[orchestrator] sync compteurs échoué (non bloquant):",
+      err instanceof Error ? err.message : err,
+    );
+  }
+
+  // ── Plafond quotidien GLOBAL (décision Will 2026-08-15) ────────────────────
+  //
+  // La reprise du retard et la production neuve avaient chacune leur budget :
+  // ils s'ADDITIONNAIENT (20 + 40 = 60/jour). Le plafond demandé est un plafond
+  // de bout en bout — 20 contenus par jour, tous canaux confondus. C'est donc un
+  // budget UNIQUE, calculé ici une fois par tick et consommé d'abord par la
+  // reprise, puis par les campagnes.
+  //
+  // Il est lissé sur la journée par la même courbe que le rythme des campagnes :
+  // sans ce lissage, la reprise épuiserait le quota du jour dès la première
+  // heure et affamerait la production neuve.
+  const dailyCap = await readContentGenConfig<DailyGenerationCap>(
+    "daily_generation_cap",
+    DEFAULT_DAILY_GENERATION_CAP,
+  );
+  const startOfDayUtcGlobal = new Date();
+  startOfDayUtcGlobal.setUTCHours(0, 0, 0, 0);
+  // Deux natures de consommation à compter : les jobs CRÉÉS aujourd'hui
+  // (production neuve) et les jobs RELANCÉS aujourd'hui (reprise). La clause
+  // `createdAt` exclut du second comptage les jobs déjà comptés au premier.
+  const [createdTodayAll, requeuedTodayAll] = await Promise.all([
+    prisma.contentGenJob.count({
+      where: { createdAt: { gte: startOfDayUtcGlobal }, status: { not: "cancelled" } },
+    }),
+    prisma.contentGenJob.count({
+      where: {
+        retryCount: { gt: 0 },
+        updatedAt: { gte: startOfDayUtcGlobal },
+        createdAt: { lt: startOfDayUtcGlobal },
+      },
+    }),
+  ]);
+  const consumedToday = createdTodayAll + requeuedTodayAll;
+  // Défensif : une valeur de configuration absente ou aberrante ne doit pas
+  // produire un budget NaN, qui gèlerait silencieusement toute la production.
+  const capPerDay =
+    Number.isFinite(dailyCap?.maxPerDay) && (dailyCap?.maxPerDay ?? 0) > 0
+      ? dailyCap.maxPerDay
+      : DEFAULT_DAILY_GENERATION_CAP.maxPerDay;
+  const allowedNow = computeCampaignTickBudget({
+    dailyTarget: capPerDay,
+    createdToday: consumedToday,
+    msSinceStartOfDay: msSinceStartOfDay(),
+    antiBurstEnabled: true,
+  });
+  let globalRoom = allowedNow;
+
+  // Reprise du retard (2026-08-15) — AVANT l'early-return « aucune campagne en
+  // cours », pour deux raisons : une partie des jobs en échec n'appartient à
+  // aucune campagne (enqueues directs, RSS), et le retard doit continuer à se
+  // résorber même quand toutes les campagnes sont en pause.
+  //
+  // Sans ce bloc, les échecs restent perdus DÉFINITIVEMENT : le compteur de slots
+  // d'une campagne ne redescend jamais, donc l'orchestrateur ne repasse jamais
+  // sur un slot déjà servi. Une remise de crédit ne régénérerait que du neuf.
+  try {
+    const recovery = await readContentGenConfig<BacklogRecoverySettings>(
+      "backlog_recovery",
+      DEFAULT_RECOVERY_SETTINGS,
+    );
+    const genQueue = getContentGenQueue();
+    const stuck = await sweepStuckJobs(genQueue, recovery, globalRoom);
+    globalRoom = Math.max(0, globalRoom - stuck.requeued);
+    const drained = await drainFailedJobs(genQueue, recovery, globalRoom);
+    globalRoom = Math.max(0, globalRoom - drained.requeued);
+    // La réinjection en boucle qualité ne consomme PAS le budget : elle ne
+    // génère aucun contenu neuf, elle reprend l'évaluation d'un contenu déjà
+    // produit et déjà payé.
+    const improver = getQualityImproverQueue();
+    const stranded = improver
+      ? await sweepStrandedQualityJobs(improver, recovery)
+      : { requeued: 0, skipped: 0 };
+    const total = stuck.requeued + drained.requeued + stranded.requeued;
+    if (total > 0) {
+      console.log(
+        `[orchestrator] reprise du retard — ${drained.requeued} échec(s) relancé(s), ` +
+          `${stuck.requeued} job(s) figé(s) débloqué(s), ${stranded.requeued} en boucle qualité`,
+      );
+    }
+  } catch (err) {
+    // Fail-open : la reprise du retard ne doit jamais empêcher la production neuve.
+    console.warn(
+      "[orchestrator] reprise du retard échouée (non bloquant):",
       err instanceof Error ? err.message : err,
     );
   }
@@ -737,6 +1019,34 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       ? Number.MAX_SAFE_INTEGER
       : campaign.totalTargetCount - campaign.generatedCount;
     if (!isUnlimited && remaining <= 0) {
+      // Fix 2026-08-15 — ne clore la campagne que lorsque plus aucun job n'est en
+      // vol. `generatedCount` compte les ENQUEUES : une campagne pouvait donc être
+      // marquée « terminée » alors que ses derniers jobs tournaient encore, ou
+      // pire, alors qu'une panne provider venait de tous les faire échouer. Une
+      // campagne close ne reprend jamais — la clore trop tôt perdait le reliquat.
+      const stillActive = await prisma.contentGenJob.count({
+        where: {
+          campaignId: campaign.id,
+          status: {
+            in: [
+              "queued",
+              "running",
+              "generating_text",
+              "generating_image",
+              "running_qa",
+              "quality_improving",
+              "approved",
+              "publishing",
+            ],
+          },
+        },
+      });
+      if (stillActive > 0) {
+        console.log(
+          `[orchestrator] campaign=${campaign.id} cible atteinte mais ${stillActive} job(s) en cours — clôture différée`,
+        );
+        continue;
+      }
       await prisma.coverageCampaign.update({
         where: { id: campaign.id },
         data: { status: "completed", completedAt: new Date() },
@@ -769,11 +1079,50 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       continue;
     }
 
-    // V2 : budget par campagne — per-type ou per-campaign dailyArticles
-    const perCampaignTick = hasPerTypeMode
-      ? Math.max(1, Math.floor(tickBudget / runningCampaigns.length))
-      : Math.max(1, Math.ceil(((campaign.dailyArticles ?? 30) as number) / 96));
-    const toEnqueue = Math.min(perCampaignTick, remaining);
+    // V2 : budget par campagne — per-type ou per-campaign dailyArticles.
+    //
+    // Fix 2026-08-15 — le mode per-campaign (le défaut) appliquait
+    // `max(1, ceil(dailyArticles / 96))`, sans jamais compter ce qui avait déjà
+    // été créé dans la journée. Le plancher à 1 faisait donc enqueue un job à
+    // CHACUN des 96 ticks quotidiens : ~96 jobs/jour quelle que soit la cible.
+    // Mesuré en prod les 23-24/07 : ~88 jobs/jour pour une campagne réglée à 20,
+    // soit un crédit provider consommé près de 5× trop vite.
+    let perCampaignTick: number;
+    if (hasPerTypeMode) {
+      perCampaignTick = Math.max(1, Math.floor(tickBudget / runningCampaigns.length));
+    } else {
+      const startOfDayUtc = new Date();
+      startOfDayUtc.setUTCHours(0, 0, 0, 0);
+      const createdToday = await prisma.contentGenJob.count({
+        where: {
+          campaignId: campaign.id,
+          createdAt: { gte: startOfDayUtc },
+          status: { not: "cancelled" },
+        },
+      });
+      perCampaignTick = computeCampaignTickBudget({
+        dailyTarget: (campaign.dailyArticles ?? 30) as number,
+        createdToday,
+        msSinceStartOfDay: msSinceStartOfDay(),
+        antiBurstEnabled: batchSettings.antiBurstEnabled ?? true,
+      });
+      if (perCampaignTick === 0) {
+        console.log(
+          `[orchestrator] campaign=${campaign.id} cible du jour tenue (${createdToday}/${campaign.dailyArticles ?? 30}), rien à enfiler`,
+        );
+        continue;
+      }
+    }
+    // Le plafond quotidien global (partagé avec la reprise du retard) prime sur
+    // le rythme propre de la campagne : ce que la reprise a déjà consommé n'est
+    // plus disponible pour la production neuve.
+    if (globalRoom <= 0) {
+      console.log(
+        `[orchestrator] plafond quotidien global atteint (${consumedToday}/${capPerDay}) — campaign=${campaign.id} attend le prochain tick`,
+      );
+      break;
+    }
+    const toEnqueue = Math.min(perCampaignTick, remaining, globalRoom);
     const villeAnchors = await resolveVilleAnchors(campaign);
 
     // Sprint Campaign Controls — dispatch selon cityProcessingMode
@@ -797,6 +1146,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       );
     }
     totalEnqueued += enqueued;
+    globalRoom = Math.max(0, globalRoom - enqueued);
 
     // P1 2026-06-13 — Fix dérive : incrémenter du nombre RÉELLEMENT enqueué
     // (`enqueued`), pas du nombre visé (`toEnqueue`). En mode séquentiel, une

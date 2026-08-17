@@ -16,6 +16,7 @@
 import { searchKnowledge } from "@/lib/knowledge/search-fts";
 import { searchKnowledgeVector } from "@/lib/knowledge/search-vector";
 import { generateEmbedding } from "@/lib/knowledge/embeddings";
+import { resolvePriceTokens } from "@/content/pricing-tokens";
 import type { KbAudience, KbType, Locale } from "../../../prisma/generated/client";
 
 export interface KbRetrieveOptions {
@@ -178,5 +179,12 @@ export async function retrieve(opts: KbRetrieveOptions): Promise<KbRetrievedChun
     );
   }
 
-  return chunks;
+  // Audit KB 2026-08-11 — résout les tokens `{{price:…}}` avant injection dans
+  // le prompt : le LLM ne doit jamais voir un token brut (il le recopierait tel
+  // quel dans le contenu généré). Idempotent sur du texte déjà résolu.
+  return chunks.map((c) => ({
+    ...c,
+    title: resolvePriceTokens(c.title, opts.locale),
+    excerpt: c.excerpt === null ? null : resolvePriceTokens(c.excerpt, opts.locale),
+  }));
 }

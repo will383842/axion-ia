@@ -22,11 +22,14 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { MethodologyHeroSchema } from "@/components/sections/MethodologyHeroSchema";
 import { FaqBlock } from "@/components/sections/FaqBlock";
-// `Illustration` RETIRÉ (Will 2026-08-10) : ses deux usages sur cette page
-// étaient des `Illustration` SANS `src`, donc des cadres pointillés
-// « emplacement d'image » servis tels quels en production (slots METHO-02 et
-// METHO-04). Remplacés par du contenu réel — ne pas les réintroduire sans
-// déposer d'abord les .avif dans public/illustrations/.
+// `Illustration` avait été RETIRÉ le 2026-08-10 : ses deux usages étaient des
+// `Illustration` SANS `src`, donc des cadres pointillés « emplacement d'image »
+// servis tels quels en production. Il est réintroduit ici avec de VRAIES photos
+// (Unsplash curées en AVIF local par scripts/curate-pages-editoriales-unsplash.mjs).
+// ⚠️ Ne jamais reposer un `<Illustration>` sans `src` — c'est ce qui produit le
+// cadre pointillé en prod.
+import { Illustration } from "@/components/visual/Illustration";
+import { EditorialPhotoCredit } from "@/components/media/EditorialPhotoCredit";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { FeatureMediaCard } from "@/components/marketing/FeatureMediaCard";
 import { DarkTriadPanel } from "@/components/marketing/DarkTriadPanel";
@@ -571,6 +574,28 @@ export default async function MethodologyPage({ params }: Props) {
         }
       >
         <Container>
+          {/* Bande éditoriale d'ouverture — la page restait 100 % texte après le
+              retrait des deux cadres pointillés du 2026-08-10. Photo réelle
+              (Unsplash curée en AVIF local), pas un placeholder. */}
+          <div className="mx-auto mb-10 max-w-3xl">
+            <Illustration
+              slot="METHO-02-demarche"
+              aspectRatio="16:9"
+              filenameTarget="public/illustrations/methodologie-demarche.avif"
+              src="/illustrations/methodologie-demarche.avif"
+              caption={
+                isFr
+                  ? "Quatre temps séparés, un livrable à chaque étape"
+                  : "Four separate phases, one deliverable at each step"
+              }
+              alt={
+                isFr
+                  ? "Une équipe travaille devant un tableau blanc couvert de notes de cadrage."
+                  : "A team working at a whiteboard covered with scoping notes."
+              }
+            />
+            <EditorialPhotoCredit slot="methodologie-demarche" />
+          </div>
           {/* Refonte Will 2026-08-10 — c'était quatre colonnes de texte nu
               (numéro mono + titre + paragraphe), le principal reproche de
               « page beaucoup trop textuelle ».
@@ -645,6 +670,29 @@ export default async function MethodologyPage({ params }: Props) {
           désormais porté par la carte de l'étape elle-même (prop `footnote`) :
           l'information est au même endroit que son contexte, et la page perd une
           section redondante au lieu d'en gagner une faible. */}
+
+      {/* Bande éditoriale de clôture — équilibre image/texte avant la FAQ. */}
+      <Section tone="canvas">
+        <Container className="max-w-3xl">
+          <Illustration
+            slot="METHO-04-terrain"
+            aspectRatio="16:9"
+            filenameTarget="public/illustrations/methodologie-terrain.avif"
+            src="/illustrations/methodologie-terrain.avif"
+            caption={
+              isFr
+                ? "La méthode se joue chez vous, sur vos dossiers réels"
+                : "The method plays out on your site, on your real files"
+            }
+            alt={
+              isFr
+                ? "Un intervenant échange avec deux salariés autour d'un poste de travail."
+                : "A consultant talking with two employees around a workstation."
+            }
+          />
+          <EditorialPhotoCredit slot="methodologie-terrain" />
+        </Container>
+      </Section>
 
       {/* FAQ AEO — visible + FAQPage JSON-LD auto via FaqAccordion */}
       <FaqBlock

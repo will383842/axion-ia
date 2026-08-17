@@ -211,7 +211,7 @@ export const CAEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your Caen business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Caen micro-businesses to large industrial mid-caps across the Caen la Mer area — NXP Semiconductors, Robert Bosch, Renault Trucks — and research leadership on Plateau Nord.",
@@ -853,7 +853,7 @@ export const CAEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Programme calibré sur vos objectifs dès le diagnostic initial. Si après la première séance le format ne vous convient pas, session remboursée intégralement. Confidentialité stricte, confidentialité absolue. Livrables concrets à chaque séance : vous ne repartez jamais les mains vides. Aucun lock-in Axion-IA — les outils et workflows livrés vous appartiennent.",
+          "Programme calibré sur vos objectifs dès le diagnostic initial. Confidentialité stricte, confidentialité absolue. Livrables concrets à chaque séance : vous ne repartez jamais les mains vides. Aucun lock-in Axion-IA — les outils et workflows livrés vous appartiennent.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Caen supports executives, managers and experts who want to build AI skills at their own pace. Sessions on site at your Caen offices or remote, use cases built around your sector reality — electronics, automotive, health, research, equine industry.",

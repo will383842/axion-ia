@@ -30,6 +30,10 @@ import {
 } from "@/server/content-gen/fact-check/claims-extractor";
 import { perplexityProvider } from "@/server/content-gen/providers/perplexity";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+// Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
+// erreur DB transitoire ne doit pas « dé-geler » silencieusement un arrêt
+// d'urgence (l'ancien read retombait sur {active:false} en cas d'erreur).
+import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
@@ -41,13 +45,39 @@ const CORRECTION_SYSTEM_PROMPT = `Tu es un correcteur factuel. On te donne le co
 - Ne change RIEN d'autre : conserve la structure HTML, les titres, les liens, le ton, le reste du texte à l'identique.
 - Réponds UNIQUEMENT avec le corps HTML complet corrigé, sans commentaire ni balise de code.`;
 
+/** Budget tokens de la réécriture corrective (≈ 16 K caractères de HTML). */
+const CORRECTION_MAX_TOKENS = 4096;
+
+/**
+ * Fix 2026-08-15 (audit e2e, C6) — marge de détection de troncature. Les
+ * providers ne remontent pas `finish_reason` dans `GenerationResponse`, mais
+ * `tokensOutput` y est obligatoire : une sortie qui consomme (quasi) tout le
+ * budget `maxTokens` est considérée coupée (`finish_reason=length` côté
+ * provider). La marge absorbe le jitter de comptage des tokens streamés —
+ * mieux vaut écarter une correction légitime de 4090 tokens que publier un
+ * article amputé.
+ */
+const CORRECTION_TRUNCATION_MARGIN_TOKENS = 64;
+
+/**
+ * Fix 2026-08-15 (audit e2e, C6) — plancher de longueur relevé de 50 % à 85 %.
+ * La correction ne fait que remplacer/reformuler QUELQUES phrases chiffrées :
+ * le HTML corrigé doit rester quasi aussi long que l'original. À 50 %, un
+ * article coupé net à la moitié par le budget tokens passait la garde et était
+ * PUBLIÉ TRONQUÉ. À 85 %, toute perte > 15 % est traitée comme une réécriture
+ * ratée → on conserve l'article original (dans le doute, jamais d'amputation).
+ */
+const CORRECTION_MIN_LENGTH_RATIO = 0.85;
+
 /**
  * Correction EN PLACE des chiffres réfutés (décision Will « corriger plutôt que
  * désindexer »). 1 appel LLM ciblé qui renvoie le HTML corrigé. Fail-safe :
- * retourne null si l'appel échoue ou renvoie un résultat vide/incohérent → le
- * caller garde alors l'article inchangé (jamais cassé, jamais désindexé).
+ * retourne null si l'appel échoue ou renvoie un résultat vide/incohérent/tronqué
+ * → le caller garde alors l'article inchangé (jamais cassé, jamais désindexé).
+ *
+ * Exportée pour tests (garde de troncature C6) — pas d'usage hors de ce worker.
  */
-async function correctRefutedClaimsInPlace(args: {
+export async function correctRefutedClaimsInPlace(args: {
   readonly jobId: string;
   readonly bodyHtml: string;
   readonly refutedSentences: ReadonlyArray<string>;
@@ -64,12 +94,29 @@ async function correctRefutedClaimsInPlace(args: {
       role: "text",
       systemPrompt: CORRECTION_SYSTEM_PROMPT,
       userPrompt,
-      maxTokens: 4096,
+      maxTokens: CORRECTION_MAX_TOKENS,
       temperature: 0.2,
     });
+    // Fix 2026-08-15 (C6) — détection de troncature : la réécriture demande le
+    // HTML COMPLET ; s'il sature le budget de sortie, la fin de l'article a été
+    // coupée (`finish_reason=length`) et la seule garde d'avant (< 50 % de
+    // l'original) laissait passer des articles amputés d'un bon tiers. Dans le
+    // doute, on garde l'original.
+    if (res.tokensOutput >= CORRECTION_MAX_TOKENS - CORRECTION_TRUNCATION_MARGIN_TOKENS) {
+      console.warn(
+        `[fact-check] correction TRONQUÉE (tokensOutput=${res.tokensOutput} ≈ budget ${CORRECTION_MAX_TOKENS}) — article original conservé`,
+      );
+      return null;
+    }
     const cleaned = sanitizeContentGenHtml(res.output.trim());
-    // Garde-fou cohérence : un résultat trop court = correction ratée → on garde l'original.
-    if (cleaned.length < Math.floor(args.bodyHtml.length * 0.5)) return null;
+    // Garde-fou cohérence (Fix 2026-08-15 C6 : seuil 0.5 → 0.85, cf. constante) :
+    // un résultat sensiblement plus court = correction ratée → on garde l'original.
+    if (cleaned.length < Math.floor(args.bodyHtml.length * CORRECTION_MIN_LENGTH_RATIO)) {
+      console.warn(
+        `[fact-check] correction trop courte (${cleaned.length}/${args.bodyHtml.length} chars < ${CORRECTION_MIN_LENGTH_RATIO * 100} %) — article original conservé`,
+      );
+      return null;
+    }
     return cleaned;
   } catch {
     return null;
@@ -126,9 +173,8 @@ async function processJob(job: Job<FactCheckJobPayload>): Promise<void> {
 
   // Audit 2026-05-15 P1-8 — kill-switch check (Perplexity coût ~$0.005/article,
   // critique de pouvoir stopper la cascade post-publish quand Will pause).
-  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
-    active: false,
-  });
+  // Fix 2026-08-15 (C8) — lecture fail-SAFE : état illisible = switch ACTIF.
+  const killSwitch = await readKillSwitchFailSafe();
   if (killSwitch.active) {
     console.log(`[fact-check] kill switch active, skip article ${articleId}`);
     return;

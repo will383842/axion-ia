@@ -27,13 +27,23 @@ export async function revalidateAdminKbRoutes(entryId?: string): Promise<void> {
  * En KB-3 V1, on revalide systématiquement les routes connues — KB-6 affinera.
  * `async` requis par Next 16 strict pour tout export d'un fichier `"use server"`.
  */
-export async function revalidatePublicKbRoutes(type: KbType): Promise<void> {
+export async function revalidatePublicKbRoutes(
+  type: KbType,
+  translationSlug?: string,
+): Promise<void> {
   const route = KB_PUBLIC_ROUTES[type];
   if (route) {
     revalidatePath(`/fr${route.fr}`);
     revalidatePath(`/en${route.en}`);
+    // Audit KB 2026-08-11 — page de DÉTAIL : publier/dépublier depuis l'admin
+    // purgeait le hub mais laissait la page `/…/[slug]` en cache ISR jusqu'à 1 h.
+    if (translationSlug) {
+      revalidatePath(`/fr${route.fr}/${translationSlug}`);
+    }
   }
-  // Hub agrégateur (créé Sprint KB-8 — revalidatePath sans erreur si la page n'existe pas)
+  // Hub connaissances (pages réelles servant les types factory — décision
+  // « public assumé » 2026-08-11) + hub agrégateur /ressources (KB-8).
+  revalidatePath("/fr/connaissances");
   revalidatePath("/fr/ressources");
   revalidatePath("/en/resources");
 }

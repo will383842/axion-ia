@@ -22,6 +22,8 @@ import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signatu
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/estimation-certification";
 import { getClient } from "@/server/qualiopi/crm/clients";
 import { prisma } from "@/lib/prisma";
 
@@ -124,6 +126,14 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   if (!devis) notFound();
 
   const client = await getClient(devis.clientId);
+
+  // Sous-lot 8G — même règle que celle appliquée au PDF, lue au même endroit :
+  // deux calculs du même régime finiraient par diverger, et l'écran affirmerait
+  // le contraire de la pièce.
+  const avertissementEstimation = avertissementEstimationAdmin(
+    devis.financementSuggere,
+    isQualiopiCertificationObtenue(),
+  );
 
   // Factures déjà émises sur ce devis (hors avoirs/annulées) — alimente le
   // bloc « Facturer ce devis » (acompte / solde avec déduction).
@@ -266,6 +276,18 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
               <p className={infoValueCls}>
                 <span className="tabular-nums">{formatEur(devis.montantOpcoEstimeCents)}</span>
               </p>
+              {/* 🔴 Sous-lot 8G — le chiffre reste VISIBLE ici : c'est un
+                  écran interne, et l'effacer ferait croire que le chiffrage
+                  n'a pas été fait. Ce qui doit être dit, c'est qu'il ne
+                  s'imprime PAS sur la pièce remise au client, et pourquoi.
+                  Un bouton absent sans explication produit un appel
+                  téléphonique ; un chiffre affiché sans son régime produit
+                  une promesse orale, ce qui est pire. */}
+              {avertissementEstimation !== null && (
+                <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                  {avertissementEstimation}
+                </p>
+              )}
             </div>
           )}
 

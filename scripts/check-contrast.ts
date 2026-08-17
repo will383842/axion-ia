@@ -68,6 +68,8 @@ const palette = {
   paper: "#ffffff",
   sand: "#f0e9da",
   mocha: "#2a2520",
+  // Encre — surface des pages d'atterrissage publicitaires (`.bg-vsl`).
+  ink: "#14100e",
   // Foreground
   fg: "#1a1815",
   fgSoft: "#524b41",
@@ -116,6 +118,12 @@ const pairs: Pair[] = [
   { fg: palette.terracottaDeep, bg: palette.sand, label: "terracotta-deep on sand" },
   // Text on mocha (deep brown — alternative au noir)
   { fg: palette.mochaFg, bg: palette.mocha, label: "mocha-fg on mocha" },
+
+  // Encre — page d'atterrissage publicitaire (`.bg-vsl`). Surface la plus
+  // sombre de la charte : ces trois paires sont TOUT ce qui s'y affiche.
+  { fg: palette.mochaFg, bg: palette.ink, label: "mocha-fg on ink (VSL)" },
+  { fg: palette.mochaFgMuted, bg: palette.ink, label: "mocha-fg-muted on ink (VSL)" },
+  { fg: palette.terracottaOnMocha, bg: palette.ink, label: "terracotta-on-mocha on ink (VSL)" },
   {
     fg: blend(palette.mochaFg, palette.mocha, 0.85),
     bg: palette.mocha,
@@ -220,6 +228,7 @@ const MIRROR_TO_CSS: Record<keyof typeof palette, string> = {
   paper: "paper",
   sand: "sand",
   mocha: "mocha",
+  ink: "ink",
   fg: "fg",
   fgSoft: "fg-soft",
   fgMuted: "fg-muted",

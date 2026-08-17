@@ -18,8 +18,8 @@ export function CommercialProcess({ isFr }: CommercialProcessProps): ReactNode {
       titleFr: "Remplissez le formulaire",
       titleEn: "Fill in the form",
       textFr:
-        "Quelques informations sur votre profil, votre secteur et votre motivation. 2 minutes.",
-      textEn: "A few details about your profile, sector and motivation. 2 minutes.",
+        "Quelques informations sur votre profil, votre secteur et votre motivation. 3 minutes.",
+      textEn: "A few details about your profile, sector and motivation. 3 minutes.",
     },
     {
       icon: Mail,

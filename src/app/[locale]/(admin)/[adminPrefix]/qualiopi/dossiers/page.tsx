@@ -109,9 +109,10 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
 
   // Le mode archives est le SEUL cas où l'on demande les soldés hors fenêtre —
   // la lecture par défaut reste strictement celle de la phase 2.
-  const pipeline = modeArchives
+  const lecture = modeArchives
     ? await lireDossiersPipeline(new Date(), { avecArchives: true })
     : await lireDossiersPipeline();
+  const pipeline = lecture.colonnes;
 
   /** La ligne passe-t-elle les filtres actifs (et le bon mode de vue) ? */
   const correspondFiltres = (l: LigneDossier): boolean =>
@@ -202,6 +203,44 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
         title="Dossiers"
         description="Où en est chaque affaire ? Une ligne par dossier client, groupée par étape du pipeline — du devis envoyé au solde encaissé. Le statut est dérivé des données existantes : rien à tenir à jour."
       />
+
+      {/*
+        🔴 L'AVEU DE TRONCATURE.
+        Cette vue lit au plus 200 lignes PAR SOURCE, triées par activité récente.
+        Le module promet pourtant qu'« une prestation réalisée mais impayée ne
+        sort JAMAIS de la vue, quel que soit son âge » : au-delà du plafond,
+        c'est faux, et rien ne le disait. Un écran qui montre 200 lignes sur
+        1 187 sans le dire ne se lit pas comme incomplet — il se lit comme
+        exhaustif.
+        On DIT ce qu'on n'a pas lu, et on distingue « rien de plus » de
+        « je n'ai pas pu savoir ».
+      */}
+      {lecture.tronquee || lecture.sources.some((s) => !s.fiable) ? (
+        <div
+          role="status"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
+        >
+          {lecture.sources
+            .filter((s) => s.tronquee)
+            .map((s) => (
+              <p key={s.source}>
+                <strong>
+                  {s.lues} {s.label} lus sur {s.total}
+                </strong>{" "}
+                — affinez les filtres pour voir le reste. Les plus récemment actifs sont affichés en
+                premier&nbsp;: une affaire dormante peut donc manquer ici.
+              </p>
+            ))}
+          {lecture.sources
+            .filter((s) => !s.fiable)
+            .map((s) => (
+              <p key={s.source}>
+                Lecture des {s.label} indisponible&nbsp;: cette vue est incomplète, et on ne sait
+                pas de combien.
+              </p>
+            ))}
+        </div>
+      ) : null}
 
       {modeArchives && (
         <div className={carte}>

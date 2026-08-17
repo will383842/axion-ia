@@ -27,6 +27,9 @@
 //   RETENTION_GENERATION_LOGS_MONTHS=12   (audit B5)
 //   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — obligation comptable française)
 //   RETENTION_WEB_VITALS_MONTHS=6         (audit B5)
+//   RETENTION_EMAIL_LOGS_MONTHS=36        (audit e-mail 2026-08-16 — cycle Qualiopi)
+//   RETENTION_EMAIL_LOGS_MARKETING_MONTHS=13 (audit e-mail — norme CNIL prospection)
+//   RETENTION_EMAIL_OUTBOX_MONTHS=36      (audit e-mail — etats terminaux seuls)
 //   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
 //
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
@@ -35,6 +38,7 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { deleteCv } from "@/server/careers/cv-storage";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -47,6 +51,14 @@ const DEFAULTS = {
   webVitals: 6,
   imageLogs: 12,
   chat: 12,
+  funnelEvents: 12,
+  candidatures: 24,
+  // Chaine d'envoi (audit 2026-08-16). 36 mois = cycle de certification
+  // Qualiopi ; 13 mois = norme CNIL de prospection. Voir le bloc commente
+  // dans le handler pour le raisonnement.
+  emailLogsTransac: 36,
+  emailLogsMarketing: 13,
+  emailOutbox: 36,
 } as const;
 
 function monthsAgo(months: number): Date {
@@ -89,6 +101,11 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
         chatEscalations: 0,
         chatSemanticCache: 0,
         chatIdempotency: 0,
+        funnelEvents: 0,
+        candidatures: 0,
+        candidaturesFichiers: 0,
+        emailLogs: 0,
+        emailOutbox: 0,
       };
 
       // 1) activity_logs ancients
@@ -195,6 +212,49 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       });
       counts.webVitals = webVitalsResult.count;
 
+      // 7 bis) funnel_events (tunnels d'acquisition, 2026-08-12).
+      // 🔴 Cette purge n'est PAS optionnelle. La table est collectée sans
+      // bannière de consentement, sous l'exemption CNIL « mesure d'audience »,
+      // et cette exemption exige une rétention bornée. La désactiver ne
+      // produirait aucune erreur visible — seulement une collecte devenue
+      // illégale. 12 mois : sous le plafond de 13 mois de la CNIL, et assez
+      // long pour comparer une saison publicitaire à la précédente.
+      const funnelMonths = readMonths("RETENTION_FUNNEL_EVENTS_MONTHS", DEFAULTS.funnelEvents);
+      const funnelResult = await prisma.funnelEvent.deleteMany({
+        where: { createdAt: { lt: monthsAgo(funnelMonths) } },
+      });
+      counts.funnelEvents = funnelResult.count;
+
+      // 7 ter) job_applications (candidatures, 2026-08-13).
+      // 🔴 SEULE table à données personnelles qui n'avait AUCUNE purge, alors
+      // qu'elle en porte le plus : nom, e-mail, téléphone, ville, CV et photo.
+      // Les fichiers vivent hors base (volume disque) : supprimer la ligne sans
+      // eux laisserait les CV et les photos sur le disque indéfiniment — le
+      // pire des deux mondes, une base propre et un disque qui ne l'est pas.
+      // 24 mois : recommandation CNIL pour un candidat non retenu.
+      const candidaturesMois = readMonths("RETENTION_CANDIDATURES_MONTHS", DEFAULTS.candidatures);
+      const candidaturesPerimees = await prisma.jobApplication.findMany({
+        where: { submittedAt: { lt: monthsAgo(candidaturesMois) } },
+        select: { id: true, cvStoragePath: true, photoStoragePath: true },
+      });
+
+      for (const c of candidaturesPerimees) {
+        // Fichiers d'abord : si la suppression disque échoue, la ligne reste et
+        // la purge repassera demain. L'inverse perdrait le chemin du fichier et
+        // le rendrait introuvable — donc ineffaçable.
+        try {
+          await deleteCv(c.cvStoragePath);
+          await deleteCv(c.photoStoragePath);
+          if (c.cvStoragePath) counts.candidaturesFichiers += 1;
+          if (c.photoStoragePath) counts.candidaturesFichiers += 1;
+        } catch (err) {
+          console.error(`[retention-purge] fichiers de la candidature ${c.id} :`, err);
+          continue;
+        }
+        await prisma.jobApplication.delete({ where: { id: c.id } });
+        counts.candidatures += 1;
+      }
+
       // 8) image_usage_logs + image_download_logs (image-bank Sprint 7 V1).
       // ip_hash SHA-256 + IP_HASH_SALT — non réversible mais quasi-identifiant
       // longue durée. Purge 12 mois par défaut (RGPD art. 5.1.e minimisation).
@@ -266,6 +326,74 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
           `accessLogs=${prospAccess.count}`,
       );
 
+      // ── Chaîne d'envoi d'e-mails (audit du 2026-08-16) ────────────────────
+      //
+      // `email_logs` et `email_outbox` n'étaient dans AUCUNE purge, alors que
+      // ce worker en couvre vingt et une. Deux conséquences : une croissance
+      // non bornée de la table la plus écrite de la chaîne, et un `recipient`
+      // conservé en clair indéfiniment — alors que `SubmissionReply.toEmail`,
+      // qui porte la même donnée, est chiffré au repos. `email_outbox` est
+      // pire encore : son `payload` fige la charge utile complète, PII incluse.
+      //
+      // 🔴 DEUX DURÉES, ET L'ÉCART EST LE POINT ENTIER.
+      //
+      // Purger ce journal, c'est effacer la preuve qu'une convocation est
+      // partie — les indicateurs Qualiopi 4, 9, 11, 30 et 32 en dépendent. Une
+      // durée unique et courte détruirait la conformité ; une durée unique et
+      // longue laisserait des adresses de prospects en clair bien au-delà de
+      // ce que la CNIL admet. On sépare donc sur le seul axe qui compte :
+      //
+      //   - TRANSACTIONNEL (36 mois) — convocations, attestations, devis,
+      //     factures. Aligné sur le cycle de certification Qualiopi de 3 ans :
+      //     un audit de surveillance doit pouvoir remonter à l'origine du
+      //     cycle en cours.
+      //   - MARKETING (13 mois) — double opt-in newsletter. Aligné sur la
+      //     norme CNIL de conservation des données de prospection.
+      //
+      // ⚠️ `readMonths` refuse toute valeur < 1 : une variable d'environnement
+      // vidée par accident retombe sur la valeur par défaut au lieu de purger
+      // tout le journal. C'est la garde anti-misconfig déjà en place au-dessus.
+      const emailTransacMonths = readMonths(
+        "RETENTION_EMAIL_LOGS_MONTHS",
+        DEFAULTS.emailLogsTransac,
+      );
+      const emailMarketingMonths = readMonths(
+        "RETENTION_EMAIL_LOGS_MARKETING_MONTHS",
+        DEFAULTS.emailLogsMarketing,
+      );
+      const emailLogsTransac = await prisma.emailLog.deleteMany({
+        where: { marketing: false, createdAt: { lt: monthsAgo(emailTransacMonths) } },
+      });
+      const emailLogsMarketing = await prisma.emailLog.deleteMany({
+        where: { marketing: true, createdAt: { lt: monthsAgo(emailMarketingMonths) } },
+      });
+      counts.emailLogs = emailLogsTransac.count + emailLogsMarketing.count;
+
+      // Corbeille de validation : on ne purge QUE les états terminaux.
+      //
+      // 🔴 `a_valider` et `approuve` sont volontairement exclus, et ce n'est
+      // pas une précaution de confort : ce sont des e-mails qui attendent
+      // encore un geste humain. Les purger sur l'âge ferait disparaître en
+      // silence un message que quelqu'un doit approuver — le destinataire ne
+      // recevrait jamais rien, et personne ne saurait pourquoi. Une entrée qui
+      // moisit en `a_valider` est un problème d'exploitation à voir, pas un
+      // déchet à ramasser.
+      const outboxMonths = readMonths("RETENTION_EMAIL_OUTBOX_MONTHS", DEFAULTS.emailOutbox);
+      const outboxPurge = await prisma.emailOutbox.deleteMany({
+        where: {
+          statut: { in: ["envoye", "refuse"] },
+          createdAt: { lt: monthsAgo(outboxMonths) },
+        },
+      });
+      counts.emailOutbox = outboxPurge.count;
+
+      console.log(
+        `[retention-purge][email] logs=${counts.emailLogs} ` +
+          `(transac ${emailLogsTransac.count}/${emailTransacMonths}m + ` +
+          `marketing ${emailLogsMarketing.count}/${emailMarketingMonths}m) ` +
+          `outbox=${counts.emailOutbox}/${outboxMonths}m`,
+      );
+
       console.log(
         `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
           `newsletter=${counts.newsletter} bookings=${counts.bookings} ` +
@@ -273,7 +401,9 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
           `webVitals=${counts.webVitals} ` +
           `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs} ` +
           `chatConversations=${counts.chatConversations} chatEscalations=${counts.chatEscalations} ` +
-          `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency}`,
+          `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency} ` +
+          `funnelEvents=${counts.funnelEvents} ` +
+          `candidatures=${counts.candidatures} (${counts.candidaturesFichiers} fichiers)`,
       );
     },
     {

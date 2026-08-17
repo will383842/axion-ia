@@ -11,7 +11,6 @@ import { SubmissionFilters } from "../SubmissionFilters";
 import {
   AdminPageShell,
   AdminPageHeader,
-  AdminStatusBadge,
   AdminBadge,
   AdminFilterTabs,
 } from "@/components/admin/ui";
@@ -19,13 +18,8 @@ import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { SubmissionRowActions } from "./SubmissionRowActions";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
-import { formatDateFrShort } from "@/lib/format-date-fr";
-const STATUS_LABELS: Record<string, string> = {
-  new: "Nouveau",
-  in_progress: "En cours",
-  processed: "Traité",
-  archived: "Archivé",
-};
+import { formatDateFrShort, formatTimeFr } from "@/lib/format-date-fr";
+import { splitNomPrenom } from "@/lib/nom-prenom";
 
 /**
  * Computed reply badge — derives 4 visual states from SubmissionListItem :
@@ -77,10 +71,13 @@ interface Props {
     | "contacts/presse"
     | "contacts/clients"
     | "contacts/partenariats"
-    | "contacts/investisseurs";
+    | "contacts/investisseurs"
+    | "contacts/conferences"
+    | "contacts/autres";
   /**
-   * Force le filtre par catégorie (onglets Clients/Presse/Partenariats/…).
-   * Prioritaire sur le filtre `unifiedType` de l'URL.
+   * Force le filtre par catégorie (une route = une catégorie, cf. la sidebar
+   * où elles sont indentées sous « Messages »). Prioritaire sur le filtre
+   * `unifiedType` de l'URL.
    */
   forcedTypes?: ReadonlyArray<string>;
 }
@@ -127,10 +124,15 @@ export async function SubmissionsV2({
   const csvUrl = `/api/admin/submissions/export?${csvParams.toString()}`;
 
   const base = `/fr/${adminPrefix}/${basePath}`;
-  // Le détail existe UNIQUEMENT à /contacts/messages/[id] (canonique). Les vues
-  // filtrées (commercial, presse) pointent donc là — sinon /contacts/commercial/[id]
-  // ou /contacts/presse/[id] (inexistants) → 404 au clic sur une ligne.
-  const detailBase = `/fr/${adminPrefix}/contacts/messages`;
+  // Le détail existe à /contacts/messages/[id] (canonique) — SAUF pour l'onglet
+  // Commercial, qui a sa propre route détail depuis le tunnel candidature
+  // (2026-08-12) : le retour ramène au listing Commercial, pas aux Messages.
+  // Les autres vues filtrées (presse, clients…) pointent toujours vers Messages,
+  // sinon /contacts/presse/[id] (inexistant) → 404 au clic sur une ligne.
+  const detailBase =
+    basePath === "contacts/commercial"
+      ? `/fr/${adminPrefix}/contacts/commercial`
+      : `/fr/${adminPrefix}/contacts/messages`;
 
   // Onglets Actifs / Archivés / Corbeille (fix P0-2 : les archivés et les
   // soft-deleted sont masqués par défaut ; chaque onglet force ses params).
@@ -139,6 +141,9 @@ export async function SubmissionsV2({
     : includeArchived && searchParams["status"] === "archived"
       ? "archived"
       : "active";
+  // `base` porte déjà la catégorie : chaque catégorie est une ROUTE (cf. la
+  // sidebar, où elles sont indentées sous « Messages »). Changer de vue ne
+  // peut donc plus ramener à « Tous », sans paramètre à recopier.
   const tabOptions = [
     { value: "active", label: "Actifs", href: base },
     {
@@ -146,35 +151,45 @@ export async function SubmissionsV2({
       label: "Archivés",
       href: `${base}?includeArchived=true&status=archived`,
     },
-    { value: "trash", label: "Corbeille", href: `${base}?deleted=true` },
+    {
+      value: "trash",
+      label: "Corbeille",
+      href: `${base}?deleted=true`,
+    },
   ];
 
+  // Colonnes 2026-08-13 (demande Will) : l'état de réponse d'abord, puis
+  // date / heure / CONTENU du message directement dans la liste, puis
+  // nom / prénom / email / téléphone. Société, statut pipeline et langue
+  // restent visibles dans le détail — ils encombraient la liste.
   const rows = result.items.map((s) => {
     const r = replyBadge(s);
+    const { prenom, nom } = splitNomPrenom(s.contactName);
     return {
       id: s.id,
       detailHref: `${detailBase}/${s.id}`,
       cells: [
-        formatDateFrShort(s.submittedAt),
-        resolveSubmissionLabel(s.type, s.unifiedType),
         <AdminBadge key="reply" tone={r.tone} className="gap-1">
           <r.Icone size={12} aria-hidden="true" className="shrink-0" />
           {r.label}
         </AdminBadge>,
-        <AdminStatusBadge
-          key="status"
-          type="image-asset"
-          status={s.status}
-          label={STATUS_LABELS[s.status] ?? s.status}
-        />,
-        s.companyName,
-        <span key="contact" className="block">
-          <div>{s.contactName}</div>
-          <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            {s.contactEmail}
-          </div>
-        </span>,
-        s.locale.toUpperCase(),
+        formatDateFrShort(s.submittedAt),
+        formatTimeFr(s.submittedAt),
+        s.messageExtrait ? (
+          <span
+            key="message"
+            className="line-clamp-2 block max-w-[44ch] min-w-[24ch] text-[length:var(--text-admin-sm)] whitespace-normal"
+          >
+            {s.messageExtrait}
+          </span>
+        ) : (
+          "—"
+        ),
+        nom ?? "—",
+        prenom ?? "—",
+        s.contactEmail || "—",
+        s.contactPhone ?? "—",
+        resolveSubmissionLabel(s.type, s.unifiedType),
         <SubmissionRowActions
           key="actions"
           id={s.id}
@@ -214,13 +229,15 @@ export async function SubmissionsV2({
         page={result.page}
         totalPages={result.totalPages}
         columnHeaders={[
-          "Date",
-          "Type",
           "Réponse",
-          "Statut",
-          "Société",
-          "Contact",
-          "Langue",
+          "Date",
+          "Heure",
+          "Message",
+          "Nom",
+          "Prénom",
+          "Email",
+          "Téléphone",
+          "Type",
           "Actions",
         ]}
         rows={rows}

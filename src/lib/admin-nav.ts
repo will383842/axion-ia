@@ -33,6 +33,7 @@
 export type AdminNavGroup =
   | "main"
   | "contacts"
+  | "tunnels"
   | "content"
   | "content_gen"
   | "qualiopi"
@@ -137,11 +138,23 @@ export interface AdminNavItem {
    * réservé aux N3 à venir.)
    */
   parent?: string;
+  /**
+   * Indentation forcée dans la sidebar, quand la profondeur d'URL ne reflète
+   * pas la hiérarchie voulue. Par défaut `<AdminSidebarNav>` déduit le niveau
+   * du nombre de segments (`itemLevel`) : `/contacts/messages` → 1,
+   * `/contacts/messages/x` → 2. Les catégories de Messages vivent sur des
+   * routes SŒURS (`/contacts/presse`, `/podcast`…) qui donneraient donc 1,
+   * c'est-à-dire le même cran que « Messages » — visuellement des voisines,
+   * pas des filles. Ce champ les repousse d'un cran sans déplacer les URLs
+   * (⌘K, favoris et liens externes restent valides).
+   */
+  navLevel?: number;
 }
 
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
   contacts: "Boîte de réception",
+  tunnels: "Tunnels",
   content: "Contenu",
   content_gen: "Génération de contenu",
   // Renommé le 2026-08-01 (question Will : « pourquoi l'activité audit IA est
@@ -287,6 +300,7 @@ export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<st
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "contacts",
+  "tunnels",
   "content",
   "content_gen",
   "qualiopi",
@@ -421,11 +435,79 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "PhoneCall",
       group: "contacts",
     },
+    // « Messages » = TOUTES les soumissions. Ses 8 catégories sont rendues
+    // juste en dessous, indentées d'un cran (`navLevel: 2`) — demande Will
+    // 2026-08-14 : « les sous-onglets dans la sidebar, pas dans la page ».
+    // Elles remplacent la rangée d'onglets qui vivait dans l'écran.
     {
       href: `${base}/contacts/messages`,
       label: "Messages",
       icon: "Mail",
       group: "contacts",
+    },
+    // ▸ Catégories de « Messages » (niveau 3 visuel). Ces routes existaient
+    //   déjà, masquées de la sidebar depuis le 2026-07-29 ; elles y reviennent
+    //   sous leur parent au lieu d'être un filtre interne à la page. Libellés
+    //   sans le préfixe « Messages · » : l'indentation le dit déjà.
+    {
+      href: `${base}/contacts/clients`,
+      label: "Clients",
+      icon: "Briefcase",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/presse`,
+      label: "Presse",
+      icon: "Newspaper",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/partenariats`,
+      label: "Partenariats",
+      icon: "Handshake",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/investisseurs`,
+      label: "Investisseurs",
+      icon: "TrendingUp",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/conferences`,
+      label: "Conférences",
+      icon: "Presentation",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Recrutement",
+      icon: "UserSearch",
+      group: "contacts",
+      navLevel: 2,
+    },
+    // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
+    // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
+    // layout Contacts impose son propre AdminPageShell), d'où le `navLevel`
+    // explicite : l'URL ne dit pas qu'elle est une catégorie de Messages.
+    {
+      href: `${base}/podcast`,
+      label: "Podcast",
+      icon: "Mic",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/autres`,
+      label: "Autres",
+      icon: "MessagesSquare",
+      group: "contacts",
+      navLevel: 2,
     },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
@@ -434,52 +516,27 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "UserPlus",
       group: "contacts",
     },
-    // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
-    // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
-    // layout Contacts impose son propre AdminPageShell), mais rangée ici dans
-    // la sidebar : c'est un formulaire entrant comme les autres.
+    // ── Tunnels d'acquisition (2026-08-12) ────────────────────────────
+    // Groupe distinct de « Boîte de réception » à dessein : celle-ci montre
+    // les gens qui ONT écrit, celui-ci montre ceux qu'on a PERDUS en route.
+    // C'est la seule lecture qui dise quoi corriger sur les pages.
     {
-      href: `${base}/podcast`,
-      label: "Demandes de podcast",
-      icon: "Mic",
-      group: "contacts",
-    },
-    // ▸ Vues filtrées de « Messages » — hors sidebar (cf. bloc ci-dessus),
-    //   conservées pour ⌘K, les favoris et les breadcrumbs.
-    {
-      href: `${base}/contacts/clients`,
-      label: "Messages · Clients",
-      icon: "Briefcase",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
+      href: `${base}/tunnels`,
+      label: "Vue d'ensemble",
+      icon: "Funnel",
+      group: "tunnels",
     },
     {
-      href: `${base}/contacts/presse`,
-      label: "Messages · Presse",
-      icon: "Newspaper",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
-    },
-    {
-      href: `${base}/contacts/partenariats`,
-      label: "Messages · Partenariats",
-      icon: "Handshake",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
-    },
-    {
-      href: `${base}/contacts/investisseurs`,
-      label: "Messages · Investisseurs",
-      icon: "TrendingUp",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
-    },
-    {
-      href: `${base}/contacts/commercial`,
-      label: "Messages · Recrutement",
+      href: `${base}/tunnels/prospects`,
+      label: "Tunnel de prospects",
       icon: "UserSearch",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
+      group: "tunnels",
+    },
+    {
+      href: `${base}/tunnels/vente`,
+      label: "Tunnel de vente",
+      icon: "Coins",
+      group: "tunnels",
     },
     // ── contenu ──────────────────────────────────────────────────────────
     {
@@ -1336,6 +1393,26 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── ops & monitoring ─────────────────────────────────────────────────
     { href: `${base}/analytics`, label: "Statistiques & SEO", icon: "BarChart3", group: "ops" },
     { href: `${base}/web-vitals`, label: "Web Vitals", icon: "Activity", group: "ops" },
+    // Journal des e-mails reellement partis (2026-08-13). La table existait
+    // depuis le debut, indexee pour etre lue — et n'etait affichee nulle part.
+    // A ne pas confondre avec « E-mails a valider » (Qualiopi), qui est une
+    // corbeille d'approbation et ne montre que 5 gabarits sur 66.
+    {
+      href: `${base}/emails-envoyes`,
+      label: "E-mails envoyés",
+      icon: "MailCheck",
+      group: "ops",
+    },
+    // ⚠️ Le lien vers le tableau de bord ZeptoMail (demande Will, 2026-08-16)
+    // n'est VOLONTAIREMENT pas ici : `admin-nav.test.ts` verrouille l'invariant
+    // « tout href de la navigation est une route interne préfixée
+    // /<locale>/<adminPrefix> ». Un lien sortant le casse — et cet invariant
+    // n'est pas décoratif : le rendu de la nav construit des `<Link>` Next et
+    // la mise en surbrillance de l'entrée active compare des chemins.
+    // Le lien vit donc SUR la page « E-mails envoyés », à côté du journal
+    // qu'il complète. C'est aussi sa place logique : notre journal dit ce que
+    // l'application a TENTÉ, ZeptoMail ce que le relais a réellement REMIS —
+    // l'écart entre les deux est l'information, et elle se lit côte à côte.
     { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "Map", group: "ops" },
     { href: `${base}/infra`, label: "Infra & outils", icon: "Wrench", group: "ops" },
     {
@@ -1345,7 +1422,56 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "ops",
     },
     { href: `${base}/alerts`, label: "Alertes ops", icon: "AlertTriangle", group: "ops" },
+    // Santé de la synchronisation vers Axion CRM Pro (lot L5, 2026-08-14) :
+    // dernier succès, file d'attente, abandons définitifs, écart de
+    // réconciliation, lignes en erreur avec rejeu. Rangée en « ops » et non en
+    // « contacts » : c'est un tableau d'exploitation, pas un écran métier.
+    {
+      href: `${base}/synchro-crm`,
+      label: "Synchro CRM",
+      icon: "RefreshCw",
+      group: "ops",
+    },
     { href: `${base}/qr-codes`, label: "QR codes & liens", icon: "QrCode", group: "ops" },
+    // ▸ Sous-onglets du catalogue imprimé (niveau 2). Demande Will 2026-08-15 :
+    //   « il faut que ce soit dans le sidebar et pas dans le header de la page ».
+    //   Chacun pointe une VRAIE route enfant plutôt qu'un `?category=` : le
+    //   surlignage compare `usePathname()`, qui ne porte jamais la query string
+    //   — trois entrées en query n'auraient jamais été surlignées.
+    {
+      href: `${base}/qr-codes/catalogue`,
+      label: "QR du catalogue",
+      icon: "BookOpen",
+      group: "ops",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/qr-codes/avis`,
+      label: "QR avis du catalogue",
+      icon: "Quote",
+      group: "ops",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/qr-codes/pages`,
+      label: "QR dans le catalogue",
+      // pas "QrCode" : le parent « QR codes & liens » la porte déjà, et deux
+      // entrées du même groupe avec la même icône sont indistinguables dans la
+      // sidebar (garde-fou admin-nav-icons.test.ts).
+      icon: "Tags",
+      group: "ops",
+      navLevel: 2,
+    },
+    // Relecture du catalogue papier avant tirage KDP (2026-08-16). Niveau 1 :
+    // ce n'est pas un sous-onglet des QR, c'est le livre lui-même — les QR n'en
+    // sont qu'un composant imprimé. Icône "BookOpenText" et non "BookOpen", que
+    // « QR du catalogue » porte déjà dans ce même groupe.
+    {
+      href: `${base}/catalogue-imprime`,
+      label: "Catalogue imprimé",
+      icon: "BookOpenText",
+      group: "ops",
+    },
     // ── système ──────────────────────────────────────────────────────────
     { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "system" },
     {

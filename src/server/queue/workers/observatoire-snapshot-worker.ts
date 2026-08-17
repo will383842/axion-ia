@@ -18,6 +18,7 @@ import { Worker, type Job } from "bullmq";
 import { recomputeAndPersistSnapshot } from "@/server/observatoire/snapshot";
 import { generateAndPersistAnalysis } from "@/server/observatoire/analysis";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import { purgerEdge } from "@/server/cache/revalidate-and-purge";
 
 export const QUEUE_NAME = "observatoire-snapshot";
 
@@ -25,26 +26,18 @@ interface ObservatoireSnapshotJobPayload {
   tick: string;
 }
 
-/** Purge le cache CF des URLs observatoire (best-effort, no-op si secrets absents). */
+/**
+ * Purge le cache CF des URLs observatoire (best-effort, no-op si secrets absents).
+ *
+ * Ce worker était le SEUL endroit du dépôt sachant purger l'edge — une purge de
+ * deux URLs codées en dur, pendant qu'aucune publication de contenu n'en
+ * déclenchait (GEO-120). Le code a été généralisé dans `@/server/cache` ; on
+ * l'appelle ici plutôt que d'entretenir une seconde implémentation qui
+ * divergerait au premier correctif.
+ */
 async function purgeObservatoireCache(): Promise<void> {
-  const token = process.env.CLOUDFLARE_API_TOKEN;
-  const zone = process.env.CLOUDFLARE_ZONE_ID;
-  if (!token || !zone) return;
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-  const files = [`${site}/fr/observatoire-ia`, `${site}/fr/presse`];
-  try {
-    await fetch(`https://api.cloudflare.com/client/v4/zones/${zone}/purge_cache`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ files }),
-      signal: AbortSignal.timeout(15_000),
-    });
-  } catch (e) {
-    console.warn("[observatoire-snapshot] CF purge failed (non-blocking):", e);
-  }
+  const site = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com").replace(/\/$/, "");
+  await purgerEdge([`${site}/fr/observatoire-ia`, `${site}/fr/presse`], "observatoire-snapshot");
 }
 
 async function processJob(job: Job<ObservatoireSnapshotJobPayload>): Promise<void> {

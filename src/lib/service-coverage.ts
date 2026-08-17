@@ -11,7 +11,7 @@
 // couvertes quand un utilisateur demande « où Axion-IA opère-t-il ? ».
 
 import { getIndexableRegions } from "@/content/regions";
-import { getIndexableVilles } from "@/content/villes";
+import { getIndexableVillesCore } from "@/content/villes/core";
 import { SITE_URL } from "@/lib/site-url";
 import type { Locale } from "@/i18n/routing";
 
@@ -37,7 +37,7 @@ export function buildServiceAreasServed(
     });
   }
 
-  for (const ville of getIndexableVilles()) {
+  for (const ville of getIndexableVillesCore()) {
     out.push({
       type: "City",
       name: ville.nameFr,

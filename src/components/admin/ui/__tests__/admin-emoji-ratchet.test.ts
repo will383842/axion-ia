@@ -30,6 +30,15 @@
 //
 // Les lignes de COMMENTAIRE sont exclues du décompte : elles ne sont pas rendues,
 // et un commentaire qui cite l'emoji qu'il vient de remplacer est légitime.
+// Les fichiers de TEST le sont aussi depuis le 2026-08-16, pour la même raison —
+// voir `estFichierDeTest`.
+//
+// CE QUE CE CLIQUET N'INTERDIT PAS
+// --------------------------------
+// Les emojis du SITE PUBLIC, des E-MAILS et des PDF. Il ne scanne que les deux
+// dossiers de la console admin (plus deux fichiers de libellés nommément
+// listés). Un pictogramme dans un gabarit d'e-mail relève d'une autre décision
+// que celle-ci, et cette décision n'est pas prise ici.
 
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
@@ -145,11 +154,46 @@ function codeSeul(source: string): string {
   return gardees.join("\n");
 }
 
+/**
+ * Les fichiers de TEST sont hors périmètre — troisième correction de périmètre
+ * de ce cliquet, et la première dans le sens du RÉTRÉCISSEMENT.
+ *
+ * 🔴 Le motif est le même que pour les commentaires : ce test mesure les emojis
+ * **rendus dans la console**, et un fichier de test ne rend rien à personne. Un
+ * `describe("🔴 le cas qui doit rougir")` n'a jamais atteint un écran.
+ *
+ * Il comptait pourtant : le 16/08, une PR de correctif d'accessibilité a été
+ * refusée parce que ses DESCRIPTIONS DE TEST portaient trois marqueurs de
+ * gravité. Le cliquet a donc bloqué un travail qui allait dans son sens, pour
+ * des caractères invisibles de l'utilisateur.
+ *
+ * ⚠️ C'est un faux positif, et un faux positif use une garde plus sûrement
+ * qu'un trou : celui qui se fait refuser pour une raison qu'il juge absurde
+ * apprend à contourner, et contournera aussi le jour où la garde a raison. On
+ * rétrécit donc la mesure à ce qu'elle prétend mesurer.
+ *
+ * 🔴 CE QUI N'EST **PAS** ASSOUPLI, et ne doit pas l'être : la règle sur les
+ * vues elles-mêmes. Deux emojis peuvent ne différer que par la couleur
+ * (rond rouge / rond orange) — c'était le cas du NIVEAU D'ALERTE, l'information
+ * la plus urgente de la console, et elle devenait invisible en vision des
+ * couleurs déficiente. Le plafond reste à 1 : le compte des vues n'a pas bougé
+ * d'une unité.
+ */
+function estFichierDeTest(nom: string): boolean {
+  return /\.(test|spec)\.tsx?$/.test(nom);
+}
+
 function fichiersTsx(dir: string, acc: string[] = []): string[] {
   for (const entree of readdirSync(dir, { withFileTypes: true })) {
     const chemin = join(dir, entree.name);
-    if (entree.isDirectory()) fichiersTsx(chemin, acc);
-    else if (/\.tsx?$/.test(entree.name)) acc.push(chemin);
+    if (entree.isDirectory()) {
+      // `__tests__`, `__mocks__` : des dossiers entiers qui ne rendent rien.
+      if (/^__.*__$/.test(entree.name)) continue;
+      fichiersTsx(chemin, acc);
+    } else if (/\.tsx?$/.test(entree.name) && !estFichierDeTest(entree.name)) {
+      // Un test peut aussi vivre à côté de son sujet, hors `__tests__`.
+      acc.push(chemin);
+    }
   }
   return acc;
 }

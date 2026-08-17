@@ -94,13 +94,13 @@ export const AVIGNON_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures",
             detail:
-              "La Formation 4 heures à {{price:intervention-4h|flat}}, pour 2 à 30 personnes, convient aux indépendants, hôtels, restaurants, commerces et compagnies du Off d'Avignon qui veulent une première mise en main concrète sur leurs propres dossiers.",
+              "La Formation 4 heures à {{price:intervention-4h|flat}}, pour 2 à 15 personnes, convient aux indépendants, hôtels, restaurants, commerces et compagnies du Off d'Avignon qui veulent une première mise en main concrète sur leurs propres dossiers.",
           },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps",
             detail:
-              "La journée Essentielle (2 à 30 personnes) pour former un groupe entier, ou Gagner du temps (1 jour) pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
+              "La journée Essentielle (2 à 15 personnes) pour former un groupe entier, ou Gagner du temps (1 jour) pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
           },
           {
             sizeLabel: "ETI",
@@ -122,7 +122,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
+            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la formation ?",
@@ -186,13 +186,13 @@ export const AVIGNON_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures",
             detail:
-              "La Formation 4 heures à {{price:intervention-4h|flat}}, pour 2 à 30 personnes, convient aux indépendants, hôtels, restaurants, commerces et compagnies du Off d'Avignon qui veulent une première mise en main concrète sur leurs propres dossiers.",
+              "La Formation 4 heures à {{price:intervention-4h|flat}}, pour 2 à 15 personnes, convient aux indépendants, hôtels, restaurants, commerces et compagnies du Off d'Avignon qui veulent une première mise en main concrète sur leurs propres dossiers.",
           },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps",
             detail:
-              "La journée Essentielle (2 à 30 personnes) pour former un groupe entier, ou Gagner du temps (1 jour) pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
+              "La journée Essentielle (2 à 15 personnes) pour former un groupe entier, ou Gagner du temps (1 jour) pour focaliser sur un département — accueil, réservation, qualité, administratif — d'une PME avignonnaise du tourisme ou de l'agroalimentaire.",
           },
           {
             sizeLabel: "ETI",
@@ -214,7 +214,7 @@ export const AVIGNON_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
+            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière suivi d'ateliers en sous-groupes est plus adapté, par exemple pour un événement d'entreprise à Avignon.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la formation ?",

@@ -7,6 +7,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
+import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqHeroImage } from "@/components/sections/FaqHeroImage";
 import { JsonLd } from "@/components/marketing/JsonLd";
@@ -183,13 +184,16 @@ export default async function FaqTopicsPage({ params }: Props) {
             })}
           </ul>
           <div className="flex flex-wrap items-center gap-4">
-            <Cta href={`/${locale}/faq`} size="lg">
+            {/* Chemin NU : <Cta> passe par le Link next-intl, qui préfixe déjà
+                le locale (GEO-013). */}
+            <Cta href="/faq" size="lg">
               {isFr ? "Toutes les questions" : "All questions"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href={`/${locale}/faq/feed.xml`} variant="outline" size="lg">
-              {isFr ? "S'abonner RSS" : "Subscribe RSS"}
-            </Cta>
+            {/* feed.xml n'est pas une route next-intl : ancre brute. */}
+            <Button asChild variant="outline" size="lg" shape="pill">
+              <a href={`/${locale}/faq/feed.xml`}>{isFr ? "S'abonner RSS" : "Subscribe RSS"}</a>
+            </Button>
           </div>
         </div>
       </Section>

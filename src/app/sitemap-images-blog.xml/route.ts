@@ -56,9 +56,39 @@ async function fetchArticles(): Promise<Row[]> {
   }
 }
 
-/** URL absolue de l'image : externe (Unsplash) telle quelle, sinon SITE_URL + path. */
+/**
+ * URL absolue de l'image, TOUJOURS servie par notre domaine.
+ *
+ * 🔴 GEO-101 (audit GEO/AEO 2026-08-14) — mesuré en production le 2026-08-16 :
+ * **133 `<image:loc>` sur 133** pointaient `images.unsplash.com`. Le corpus
+ * éditorial cédait donc l'intégralité de sa valeur d'indexation image à un hôte
+ * tiers : c'est unsplash.com qui capitalisait les impressions Google Images de
+ * nos articles, pas axion-ia.com.
+ *
+ * Les images distantes passent désormais par l'optimiseur du domaine, qui est
+ * exactement ce que le DOM affiche déjà. Trois conditions vérifiées avant de
+ * poser ce correctif :
+ *   1. `images.unsplash.com` est autorisé dans `images.remotePatterns` — sans
+ *      quoi l'optimiseur répondrait 400 ;
+ *   2. `Allow: /_next/image` est présent dans les douze blocs de `robots.txt` —
+ *      sans quoi on déclarerait une URL interdite au crawl ;
+ *   3. essai réel en production sur une des 133 URLs :
+ *      `GET /_next/image?url=…&w=1200&q=75` → **200, image/jpeg, 44 Ko**.
+ *
+ * `w=1200` et non 1080 : c'est le plancher de Google Discover, que les sources
+ * Unsplash (`w=1080`) ne franchissaient pas.
+ *
+ * ⚠️ Aucune `<image:license>` n'est émise par ce sitemap, et il ne faut PAS en
+ * ajouter : ces photos sont des tierces (GEO-037). Les servir depuis notre
+ * domaine ne nous en donne pas les droits.
+ */
+const LARGEUR_DECLAREE = 1200;
+
 function absoluteImage(src: string): string {
-  return src.startsWith("http") ? src : `${SITE_URL}${src.startsWith("/") ? "" : "/"}${src}`;
+  if (!src.startsWith("http")) {
+    return `${SITE_URL}${src.startsWith("/") ? "" : "/"}${src}`;
+  }
+  return `${SITE_URL}/_next/image?url=${encodeURIComponent(src)}&w=${LARGEUR_DECLAREE}&q=75`;
 }
 
 export async function GET(): Promise<Response> {

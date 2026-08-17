@@ -11,7 +11,12 @@
  */
 
 import { Worker, type Job } from "bullmq";
-import { revalidatePath } from "next/cache";
+// Fix 2026-08-15 (D7 audit e2e) — `revalidatePath` de next/cache est un no-op
+// SILENCIEUX dans un worker BullMQ (aucun request context) : les pages
+// archivées et sitemap-news restaient servis en cache jusqu'à expiration ISR,
+// alors que le code « croyait » revalider. Même bug que P1-16 déjà corrigé
+// dans content-publish-worker → on passe par le même helper HTTP interne.
+import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
@@ -67,6 +72,10 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     take: 200,
   });
 
+  // Fix 2026-08-15 (D7) — chemins effectivement archivés, revalidés EN LOT via
+  // l'API interne après la boucle (un seul POST au lieu de 200 no-ops).
+  const archivedPaths: string[] = [];
+
   for (const j of toArchive) {
     if (!j.outputBlogPostId) continue;
     try {
@@ -80,11 +89,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       });
       const t = article.translations[0];
       if (t) {
-        try {
-          revalidatePath(`/fr/actualites/${t.slug}`);
-        } catch {
-          // worker bg — no-op si pas de request context
-        }
+        archivedPaths.push(`/fr/actualites/${t.slug}`);
         // Audit indexation 2026-05-15 P0-8 — signal Google `URL_DELETED` + ping
         // IndexNow Bing/Yandex pour chaque URL archivée. Avant ce patch, 200
         // articles archivés/jour disparaissaient silencieusement du sitemap,
@@ -97,23 +102,39 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
             origin: "cron",
             lifecycleEvent: "delete",
           });
-        } catch {
-          // best-effort — n'échoue jamais le batch d'archive
+        } catch (err) {
+          // best-effort — n'échoue jamais le batch d'archive. Fix 2026-08-15
+          // (D7) : le catch était VIDE — un ping raté (Redis down) était
+          // totalement invisible ; on journalise au minimum.
+          console.warn(
+            `[news-lifecycle] enqueueIndexing delete failed for article ${article.id} (best-effort):`,
+            err instanceof Error ? err.message : String(err),
+          );
         }
       }
-    } catch {
-      // article may have been deleted manually — ignore
+    } catch (err) {
+      // article may have been deleted manually — ignore. Fix 2026-08-15 (D7) :
+      // journalisé au minimum (un P2025 en masse = symptôme d'autre chose).
+      console.warn(
+        `[news-lifecycle] archive update skipped for article ${j.outputBlogPostId}:`,
+        err instanceof Error ? err.message : String(err),
+      );
     }
   }
 
-  // Revalidate sitemap-news + index globaux après archives batch
-  if (toArchive.length > 0) {
-    try {
-      revalidatePath("/sitemap.xml");
-      revalidatePath("/sitemap-news.xml");
-      revalidatePath("/fr/actualites");
-    } catch {
-      // worker bg — no-op
+  // Revalidate pages archivées + sitemap-news + index globaux après archives
+  // batch. Fix 2026-08-15 (D7) : via revalidateContent (API interne, le
+  // revalidatePath direct ne revalidait RIEN en worker bg) ; l'échec est
+  // journalisé (D1) au lieu d'être avalé — non bloquant, rattrapage ISR ≤ 1h.
+  if (archivedPaths.length > 0) {
+    const result = await revalidateContent({
+      paths: [...archivedPaths, "/sitemap.xml", "/sitemap-news.xml", "/fr/actualites"],
+    });
+    if (!result.ok) {
+      console.error(
+        `[news-lifecycle] revalidation ISR échouée (${result.reason ?? "unknown"}) — ` +
+          `${archivedPaths.length} page(s) archivée(s) resteront servies en cache jusqu'à expiration ISR`,
+      );
     }
   }
 

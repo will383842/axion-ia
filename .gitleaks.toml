@@ -11,6 +11,25 @@ paths = [
   '''README\.md''',
   '''docs/.*\.md''',
   '''_AUDIT/.*\.md''',
+  # Portrait JPEG de la vCard, en base64 — PAS un secret.
+  #
+  # Ajouté 2026-08-16 : `src/lib/vcard/photo.ts` est GÉNÉRÉ par
+  # `scripts/build-vcard-photo.cjs` et ne contient rien d'autre que le portrait
+  # embarqué dans la fiche contact, découpé en lignes de 76 caractères. La règle
+  # `generic-api-key` relève la ligne 180 sur son entropie (5,42) : c'est de la
+  # donnée d'image, que rien ne distingue d'une clé aux yeux d'un détecteur
+  # d'entropie.
+  #
+  # Pourquoi une exception de CHEMIN et non de regex, contrairement aux deux
+  # entrées ci-dessous : le motif fautif est la FORME du base64, pas une valeur.
+  # Une regex du type `"[A-Za-z0-9+/]{76}",` ignorerait toute ligne base64 du
+  # dépôt ENTIER — un vrai secret encodé en base64 y deviendrait invisible.
+  # L'exception de chemin, elle, ne couvre qu'un fichier généré dont l'en-tête
+  # interdit l'édition manuelle. Le trou est donc borné à ce fichier.
+  #
+  # ⚠️ Si un jour on embarque un second binaire par ce procédé, AJOUTER son
+  # chemin — ne pas élargir celui-ci en `src/lib/.*`.
+  '''src/lib/vcard/photo\.ts''',
 ]
 regexes = [
   '''(?i)your[_-]?(api[_-]?key|secret|token)''',
@@ -34,4 +53,22 @@ regexes = [
   # suffirait pas, le commit d'origine porte toujours la chaîne. L'allowlist est
   # le seul moyen sans réécrire l'historique.
   '''(?i)test[_-]secret[_-]''',
+  # Clé localStorage du wizard de candidature commerciale (PAS un secret).
+  #
+  # Ajouté 2026-08-12 : `src/lib/commercial-application/model.ts` déclare
+  # `COMMERCIAL_APPLICATION_STORAGE_KEY = "axionia-candidature-commercial-v1"`
+  # — le nom de la clé de sauvegarde auto du brouillon dans le localStorage du
+  # navigateur. La règle `generic-api-key` la relève sur son entropie (3.80)
+  # parce que la constante s'appelle « …_KEY », sans voir que la valeur est un
+  # simple identifiant public visible par n'importe quel visiteur dans les
+  # DevTools.
+  #
+  # Volontairement ÉTROIT : seule cette valeur précise (version incluse) est
+  # ignorée — un vrai secret ne ressemblerait jamais à ce slug préfixé
+  # `axionia-`.
+  #
+  # ⚠️ gitleaks scanne l'HISTORIQUE (`git log -p`) : renommer la constante ne
+  # suffirait pas, le commit d'origine (b97e7ffe) porte toujours la chaîne.
+  # L'allowlist est le seul moyen sans réécrire l'historique.
+  '''axionia-candidature-commercial-v\d+''',
 ]

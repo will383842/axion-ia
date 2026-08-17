@@ -66,6 +66,10 @@ import { renderRegistrePdfBuffer } from "@/server/qualiopi/registres/registres-p
 import { genererManifesteAudit, genererDossierAuditZip } from "./audit-dossier";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
 import JSZip from "jszip";
+// Type réel de l'énumération Prisma : un type de document mal orthographié dans
+// une fixture ci-dessous devient une erreur de compilation, et non une
+// assertion `not.toContain` qui passe parce qu'elle ne trouve jamais rien.
+import type { DocumentType } from "../../../../prisma/generated/client";
 
 const mockPrisma = prisma as unknown as {
   trainerDocument: { findMany: ReturnType<typeof vi.fn> };
@@ -80,17 +84,25 @@ const mockGetObjectBufferR2 = getObjectBufferR2 as ReturnType<typeof vi.fn>;
 const mockIsR2Configured = isR2Configured as ReturnType<typeof vi.fn>;
 const mockRenderRegistrePdfBuffer = renderRegistrePdfBuffer as ReturnType<typeof vi.fn>;
 
+type StatutIndicateur = "couvert" | "a_completer" | "non_applicable";
+
 // Résultat de conformité simulé avec 32 indicateurs
 function makeConformiteResult(
-  overrides: { nbCouverts?: number; nbApplicables?: number; scorePct?: number } = {},
+  overrides: {
+    nbCouverts?: number;
+    nbApplicables?: number;
+    scorePct?: number;
+    /** Statuts forcés, par numéro d'indicateur (défaut : "a_completer"). */
+    statuts?: Readonly<Record<number, StatutIndicateur>>;
+  } = {},
 ) {
   const indicateurs = INDICATEURS_RNQ.map((ind) => ({
     numero: ind.numero,
     libelle: ind.libelleOfficiel,
     critere: ind.critere,
     super: ind.super,
-    statut: "a_completer" as const,
-    preuves: [],
+    statut: overrides.statuts?.[ind.numero] ?? ("a_completer" as StatutIndicateur),
+    preuves: [] as string[],
   }));
   return {
     indicateurs,
@@ -98,6 +110,41 @@ function makeConformiteResult(
     nbApplicables: overrides.nbApplicables ?? 25,
     scorePct: overrides.scorePct ?? 0,
   };
+}
+
+/**
+ * Double de `prisma.documentGenere.groupBy` qui HONORE le filtre
+ * `where.annuleeAt`, comme le fait Postgres.
+ *
+ * Sans cela, aucun test ne pourrait distinguer un comptage qui EXCLUT les
+ * pièces annulées d'un comptage qui les additionne : le double retournerait la
+ * même chose dans les deux cas, et la garde ne garderait rien. Ici, retirer le
+ * `where` du code de production fait revenir les pièces annulées dans le
+ * comptage — et les assertions rougissent.
+ */
+function groupByHonorantAnnulation(
+  pieces: ReadonlyArray<{ type: DocumentType; annulee: boolean }>,
+) {
+  return (args?: { where?: { annuleeAt?: Date | null } }): Promise<unknown[]> => {
+    const retenues = args?.where?.annuleeAt === null ? pieces.filter((p) => !p.annulee) : pieces;
+    const comptes = new Map<string, number>();
+    for (const piece of retenues) {
+      comptes.set(piece.type, (comptes.get(piece.type) ?? 0) + 1);
+    }
+    return Promise.resolve(
+      [...comptes.entries()].map(([type, n]) => ({ type, _count: { _all: n } })),
+    );
+  };
+}
+
+/** Types de documents annoncés par le manifeste pour un indicateur donné. */
+function typesAnnonces(
+  manifeste: Awaited<ReturnType<typeof genererManifesteAudit>>,
+  numero: number,
+): string[] {
+  return (manifeste.json.indicateurs.find((i) => i.numero === numero)?.documents ?? []).map(
+    (d) => d.type as string,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -611,5 +658,243 @@ describe("Manifeste — ne présente plus un manque comme une preuve", () => {
     const r = await genererManifesteAudit();
     expect(r.markdown).toContain("**Éléments constatés :**");
     expect(r.markdown).not.toContain("**Preuves :**");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Audit blanc 2026-08-15 — le manifeste annonçait des preuves que le ZIP ne
+// contenait pas.
+//
+// La constitution du ZIP exclut les pièces annulées (`where: { annuleeAt: null }`),
+// pas le comptage du manifeste. L'auditrice lisait « lettre_mission — 1 document »
+// à l'indicateur 17, ouvrait `preuves/lettre_mission/` et n'y trouvait rien.
+// Une pièce annulée ne se compte NULLE PART.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Manifeste — une pièce annulée ne se compte nulle part", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
+    mockPrisma.documentGenere.groupBy.mockResolvedValue([]);
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+    mockPrisma.veille.count.mockResolvedValue(0);
+    mockPrisma.appreciation.count.mockResolvedValue(0);
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValue("");
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    mockIsR2Configured.mockReturnValue(true);
+    mockRenderRegistrePdfBuffer.mockImplementation((type: string) =>
+      Promise.resolve({
+        buffer: Buffer.from(`%PDF-1.4 registre ${type}`),
+        filename: `${type}.pdf`,
+      }),
+    );
+  });
+
+  it("le comptage passe le MÊME filtre que la constitution du ZIP", async () => {
+    await genererManifesteAudit();
+    expect(mockPrisma.documentGenere.groupBy).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { annuleeAt: null } }),
+    );
+  });
+
+  it("off.17 n'annonce pas la seule lettre de mission du registre si elle est annulée", async () => {
+    mockPrisma.documentGenere.groupBy.mockImplementation(
+      groupByHonorantAnnulation([{ type: "lettre_mission", annulee: true }]),
+    );
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 17)).not.toContain("lettre_mission");
+    expect(manifeste.markdown).not.toContain("`lettre_mission`");
+  });
+
+  it("off.17 annonce les lettres de mission EN VIGUEUR, sans compter l'annulée", async () => {
+    // Contrôle de sensibilité : le double n'est pas muet, il sait compter.
+    mockPrisma.documentGenere.groupBy.mockImplementation(
+      groupByHonorantAnnulation([
+        { type: "lettre_mission", annulee: false },
+        { type: "lettre_mission", annulee: true },
+      ]),
+    );
+    const manifeste = await genererManifesteAudit();
+    const ind17 = manifeste.json.indicateurs.find((i) => i.numero === 17);
+    expect(ind17?.documents).toContainEqual({ type: "lettre_mission", count: 1 });
+  });
+
+  it("le manifeste du ZIP n'annonce aucune pièce que le ZIP ne contient pas", async () => {
+    // Registre : une seule pièce, annulée. Le ZIP (qui filtre déjà) n'en porte
+    // aucune ; le manifeste ne doit donc en annoncer aucune non plus.
+    mockPrisma.documentGenere.groupBy.mockImplementation(
+      groupByHonorantAnnulation([{ type: "lettre_mission", annulee: true }]),
+    );
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const parsed = JSON.parse(await zip.files["manifeste.json"]!.async("string")) as {
+      indicateurs: { numero: number; documents: { type: string; count: number }[] }[];
+    };
+
+    const totalAnnonce = parsed.indicateurs.reduce(
+      (n, ind) => n + ind.documents.reduce((m, d) => m + d.count, 0),
+      0,
+    );
+    expect(totalAnnonce).toBe(0);
+    expect(Object.keys(zip.files).some((f) => f.startsWith("preuves/"))).toBe(false);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Audit blanc 2026-08-15 — les pièces étaient rattachées aux mauvais
+// indicateurs. Une pièce présentée en face d'une exigence qu'elle ne prouve pas
+// n'est pas neutre : elle ouvre un écart.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Manifeste — chaque pièce en face de l'exigence qu'elle prouve", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+    mockPrisma.veille.count.mockResolvedValue(0);
+    mockPrisma.appreciation.count.mockResolvedValue(0);
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValue("");
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    // Le registre contient une pièce de chaque type utile aux assertions.
+    mockPrisma.documentGenere.groupBy.mockImplementation(
+      groupByHonorantAnnulation([
+        { type: "programme", annulee: false },
+        { type: "convocation", annulee: false },
+        { type: "convention", annulee: false },
+        { type: "convention_tripartite", annulee: false },
+        { type: "contrat_sous_traitance", annulee: false },
+        { type: "procedure_sous_traitance", annulee: false },
+        { type: "grille_evaluation", annulee: false },
+        { type: "positionnement", annulee: false },
+        { type: "reglement_interieur", annulee: false },
+        { type: "certificat_realisation", annulee: false },
+        { type: "attestation", annulee: false },
+        { type: "lettre_mission", annulee: false },
+        { type: "liste_formateurs", annulee: false },
+        { type: "cv_formateur", annulee: false },
+        { type: "inventaire_moyens", annulee: false },
+        { type: "kit_opco", annulee: false },
+        { type: "kit_cpf", annulee: false },
+        { type: "kit_france_travail", annulee: false },
+      ]),
+    );
+  });
+
+  it("off.5 et off.6 s'appuient sur le PROGRAMME (objectifs et contenus)", async () => {
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 5)).toContain("programme");
+    expect(typesAnnonces(manifeste, 6)).toContain("programme");
+    // La convention tripartite EST présente au registre simulé : les assertions
+    // `not.toContain` des indicateurs 18 et 27 ne passent donc pas à vide.
+    expect(typesAnnonces(manifeste, 6)).toContain("convention_tripartite");
+  });
+
+  it("off.5 ne présente plus la convocation ; elle reste à off.9", async () => {
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 5)).not.toContain("convocation");
+    expect(typesAnnonces(manifeste, 9)).toContain("convocation");
+  });
+
+  it("off.8 présente la grille d'évaluation avec le positionnement", async () => {
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 8)).toEqual(
+      expect.arrayContaining(["positionnement", "grille_evaluation"]),
+    );
+  });
+
+  it("off.9 présente le règlement intérieur ; off.1 ne le présente plus", async () => {
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 9)).toContain("reglement_interieur");
+    expect(typesAnnonces(manifeste, 1)).not.toContain("reglement_interieur");
+  });
+
+  it("off.27 s'appuie sur les pièces de SOUS-TRAITANCE, pas sur une convention de financement", async () => {
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 27)).toEqual(
+      expect.arrayContaining(["procedure_sous_traitance", "contrat_sous_traitance"]),
+    );
+    expect(typesAnnonces(manifeste, 27)).not.toContain("convention_tripartite");
+  });
+
+  it("off.19 ne présente pas les kits de financement comme des ressources pédagogiques", async () => {
+    const manifeste = await genererManifesteAudit();
+    const types19 = typesAnnonces(manifeste, 19);
+    expect(types19).not.toContain("kit_opco");
+    expect(types19).not.toContain("kit_cpf");
+    expect(types19).not.toContain("kit_france_travail");
+    expect(types19).toContain("inventaire_moyens");
+  });
+
+  it("off.18 mobilise les intervenants (lettre de mission, sous-traitance), pas un financeur", async () => {
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 18)).toEqual(
+      expect.arrayContaining(["lettre_mission", "contrat_sous_traitance"]),
+    );
+    expect(typesAnnonces(manifeste, 18)).not.toContain("convention_tripartite");
+  });
+
+  it("off.21 présente la LISTE des formateurs, pas seulement des fiches", async () => {
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 21)).toEqual(
+      expect.arrayContaining(["cv_formateur", "liste_formateurs"]),
+    );
+  });
+
+  it("off.3, off.7 et off.16 (certifiants) ne présentent aucune pièce qui ne les prouve pas", async () => {
+    // Statut volontairement « à compléter » : c'est bien le RATTACHEMENT qui est
+    // testé ici, pas le filtrage des indicateurs non applicables.
+    const manifeste = await genererManifesteAudit();
+    for (const numero of [3, 7, 16]) {
+      expect(typesAnnonces(manifeste, numero), `off.${numero}`).toEqual([]);
+    }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Audit blanc 2026-08-15 — l'indicateur 7 s'affichait « Non applicable » et
+// listait malgré tout deux rubriques de documents dans la vue manifeste de la
+// console (le Markdown, lui, les masquait déjà). Hors périmètre = rien à
+// montrer, dans les DEUX sorties.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Manifeste — un indicateur non applicable ne présente aucune pièce", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+    mockPrisma.veille.count.mockResolvedValue(0);
+    mockPrisma.appreciation.count.mockResolvedValue(0);
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValue("");
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    mockPrisma.documentGenere.groupBy.mockImplementation(
+      groupByHonorantAnnulation([
+        { type: "emargement", annulee: false },
+        { type: "releve_connexion", annulee: false },
+      ]),
+    );
+  });
+
+  it("off.12 hors périmètre : aucune rubrique de documents dans le JSON", async () => {
+    mockEvaluerConformite.mockResolvedValue(
+      makeConformiteResult({ statuts: { 12: "non_applicable" } }),
+    );
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 12)).toEqual([]);
+    expect(manifeste.markdown).toContain("*Non applicable au périmètre de l'OF.*");
+  });
+
+  it("off.12 applicable : les mêmes pièces sont bien annoncées (le filtre ne masque pas tout)", async () => {
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
+    const manifeste = await genererManifesteAudit();
+    expect(typesAnnonces(manifeste, 12)).toEqual(
+      expect.arrayContaining(["emargement", "releve_connexion"]),
+    );
   });
 });

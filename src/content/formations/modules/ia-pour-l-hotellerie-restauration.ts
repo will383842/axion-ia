@@ -62,12 +62,13 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous dites, pour chaque pièce de l'établissement, si elle se soumet à l'IA et sous quel compte — et vous tenez la liste rouge de ce qui ne sort jamais.",
-      objectifGlobalId: "obj-5",
-      // Couverture PARTIELLE de l'appui à la planification : le module pose la
-      // seule forme sous laquelle un planning peut approcher un outil — la
-      // trame dépersonnalisée (postes, créneaux, contraintes), jamais les noms.
-      // Aucune séquence publiée ne produit un planning : écart signalé.
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-1",
+      // La pratique fait écrire la liste rouge de l'établissement — coordonnées
+      // et séjours des clients, fiches techniques et allergènes, mentions
+      // réglementées, plannings nominatifs, identifiants — et la synthèse pose
+      // le dernier terme de ce même objectif : « je dis au client quand une
+      // machine lui répond ».
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:
@@ -235,7 +236,12 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous publiez une réponse d'avis prête à l'emploi, dans le ton de la maison, qui ne révèle rien du séjour — et vous traitez un message de réservation en quelques minutes.",
-      objectifGlobalId: "obj-1",
+      objectifGlobalId: "obj-3",
+      // La seconde moitié de la pratique traite deux messages de réservation —
+      // demande particulière et relance après réservation non honorée — sur les
+      // trames du kit, les champs [NOM] et [DATES] restant entre crochets dans
+      // l'outil pour se remplir ensuite dans la messagerie.
+      objectifsSecondairesIds: ["obj-4"],
       dureeMin: 5,
       notes: {
         script:
@@ -383,11 +389,14 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous envoyez une carte traduite ou une proposition de groupe complète, dont chaque mention réglementée a été revalidée sur la fiche technique — jamais générée.",
-      objectifGlobalId: "obj-2",
-      // L'atelier « proposition de groupe » produit les pièces du suivi
-      // administratif courant : devis mis en forme, message d'envoi, relance,
-      // réponses types aux dix questions récurrentes.
-      objectifsSecondairesIds: ["obj-4"],
+      objectifGlobalId: "obj-5",
+      // La vérification du module est la revalidation croisée fiche technique
+      // en main, ligne à ligne, avec tolérance zéro sur les allergènes — un
+      // seul écart et la pièce repart en correction. Le parcours « groupes »,
+      // au choix du stagiaire, monte la proposition complète : devis mis en
+      // forme à partir de SES prix, message d'envoi, relance à J+7, réponses
+      // aux dix questions récurrentes.
+      objectifsSecondairesIds: ["obj-6", "obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -523,11 +532,12 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repérez vous-même ce que l'IA vient d'inventer sur votre établissement, et vous repartez avec la fiche d'identité et la feuille de route utilisables dès demain.",
-      objectifGlobalId: "obj-4",
-      // La fiche d'identité (faits exacts : capacité, horaires, prix, labels)
-      // est le socle du suivi administratif courant ; la présentation
-      // d'établissement corrigée est un support de communication (obj-2).
-      objectifsSecondairesIds: ["obj-2"],
+      objectifGlobalId: "obj-8",
+      // L'évaluation des acquis qui referme la journée porte explicitement sur
+      // les régimes d'usage et la liste rouge, sur les quatre interdits de la
+      // réponse publique et sur l'interdit allergènes : ces objectifs y sont
+      // servis une dernière fois, à la correction commentée.
+      objectifsSecondairesIds: ["obj-1", "obj-2", "obj-3", "obj-5"],
       dureeMin: 5,
       notes: {
         script:

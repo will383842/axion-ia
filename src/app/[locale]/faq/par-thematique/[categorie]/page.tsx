@@ -198,11 +198,13 @@ export default async function FaqCategoryPage({ params }: Props) {
             </ul>
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <Cta href={`/${locale}/faq`} size="lg">
+            {/* Chemins NUS : <Cta> passe par le Link next-intl, qui préfixe
+                déjà le locale (GEO-013). */}
+            <Cta href="/faq" size="lg">
               {isFr ? "Toutes les questions" : "All questions"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href={`/${locale}/faq/par-thematique`} variant="outline" size="lg">
+            <Cta href="/faq/par-thematique" variant="outline" size="lg">
               {isFr ? "Toutes les thématiques" : "All topics"}
             </Cta>
           </div>
@@ -279,7 +281,7 @@ export default async function FaqCategoryPage({ params }: Props) {
             ))}
           </ul>
           <div className="mt-8">
-            <Cta href={`/${locale}/faq`} variant="outline" size="md">
+            <Cta href="/faq" variant="outline" size="md">
               <LayoutGrid className="h-4 w-4" aria-hidden="true" />
               {isFr ? "Voir toutes les questions" : "See all questions"}
             </Cta>

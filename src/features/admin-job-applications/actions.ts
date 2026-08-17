@@ -12,6 +12,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
 import type { JobApplicationStatus, Locale } from "../../../prisma/generated/client";
 
 const STATUSES = ["new", "reviewing", "shortlisted", "rejected", "hired", "archived"] as const;
@@ -53,6 +54,13 @@ const listSchema = z.object({
     z.string().uuid().optional(),
   ),
   status: z.enum([...STATUSES, "all"]).default("all"),
+  // Vues séparées (demande Will 2026-08-12) : la vue standard EXCLUT l'offre
+  // monteur vidéo freelance, qui a son propre onglet. L'onglet « Toutes »
+  // (demande Will 2026-08-13) passe `all` : aucune contrainte d'offre.
+  // Le défaut reste `standard` — la boîte de réception unifiée appelle cette
+  // action sans `view` et son canal Candidatures ne doit pas changer de
+  // périmètre en silence.
+  view: z.enum(["standard", "monteur", "all"]).default("standard"),
   onlyAttention: z.coerce.boolean().optional(),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(10).max(100).default(50),
@@ -78,6 +86,14 @@ export async function listApplicationsAction(input: Partial<ListApplicationsInpu
   if (parsed.offerId) where.offerId = parsed.offerId;
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.onlyAttention) where.needsAttention = true;
+  if (parsed.view === "monteur") {
+    where.offer = { slug: VIDEO_EDITOR_OFFER_SLUG };
+  } else if (parsed.view === "standard" && !parsed.offerId) {
+    // Vue standard sans filtre d'offre explicite : les candidatures monteur
+    // vidéo restent dans leur onglet. Un `offerId` explicite (lien depuis la
+    // fiche offre) garde la priorité et n'est pas amputé.
+    where.offer = { slug: { not: VIDEO_EDITOR_OFFER_SLUG } };
+  }
 
   const [total, rows] = await Promise.all([
     prisma.jobApplication.count({ where }),
@@ -122,6 +138,176 @@ export async function listApplicationsAction(input: Partial<ListApplicationsInpu
   };
 }
 
+// ============================================================ vues fusionnées
+// Onglets « Toutes » et « Mémo Isère » (demande Will 2026-08-13). Les
+// candidatures commerciales du tunnel /devenir-commercial-ia/candidature
+// (annonce Mémorial de l'Isère, cf. groupe Telegram commercial-memo) sont des
+// `Submission` avec `details.subType = "candidature-commerciale"`, PAS des
+// `JobApplication`. « Toutes » fusionne les deux tables triées par date ;
+// « Mémo Isère » ne liste que le flux commercial.
+
+const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
+
+const unifiedListSchema = z.object({
+  scope: z.enum(["toutes", "memo"]),
+  onlyAttention: z.coerce.boolean().optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(10).max(100).default(50),
+});
+
+export interface CandidatureUnifieeItem {
+  id: string;
+  /** "emploi" = JobApplication (détail /contacts/candidatures/[id]) ;
+   *  "commerciale" = Submission du tunnel commercial (détail /contacts/commercial/[id]). */
+  source: "emploi" | "commerciale";
+  offerLabel: string;
+  contactName: string;
+  contactEmail: string;
+  /** JobApplicationStatus (emploi) ou SubmissionStatus (commerciale). */
+  status: string;
+  /** null = sans objet (le tunnel commercial ne collecte pas de CV). */
+  hasCv: boolean | null;
+  needsAttention: boolean;
+  submittedAt: Date;
+}
+
+export async function listCandidaturesUnifieesAction(input: {
+  scope: "toutes" | "memo";
+  onlyAttention?: boolean;
+  page?: number;
+  pageSize?: number;
+}) {
+  await requireAdminRead();
+  const parsed = unifiedListSchema.parse(input);
+  const skip = (parsed.page - 1) * parsed.pageSize;
+
+  const whereCommerciale = {
+    details: { path: ["subType"], equals: CANDIDATURE_COMMERCIALE_SUBTYPE },
+    deletedAt: null,
+    ...(parsed.onlyAttention ? { needsAttention: true } : {}),
+  };
+  const selectCommerciale = {
+    id: true,
+    contactName: true,
+    contactEmail: true,
+    status: true,
+    needsAttention: true,
+    submittedAt: true,
+    details: true,
+  };
+  const mapCommerciale = (s: {
+    id: string;
+    contactName: string;
+    contactEmail: string;
+    status: string;
+    needsAttention: boolean;
+    submittedAt: Date;
+    details: unknown;
+  }): CandidatureUnifieeItem => {
+    const details =
+      s.details && typeof s.details === "object" && !Array.isArray(s.details)
+        ? (s.details as Record<string, unknown>)
+        : null;
+    const ville = details && typeof details.ville === "string" ? details.ville : null;
+    return {
+      id: s.id,
+      source: "commerciale",
+      offerLabel: ville ? `Commercial Mémo Isère · ${ville}` : "Commercial Mémo Isère",
+      contactName: safeDecrypt(s.contactName),
+      contactEmail: safeDecrypt(s.contactEmail),
+      status: s.status,
+      hasCv: null,
+      needsAttention: s.needsAttention,
+      submittedAt: s.submittedAt,
+    };
+  };
+
+  if (parsed.scope === "memo") {
+    const [total, rows] = await Promise.all([
+      prisma.submission.count({ where: whereCommerciale }),
+      prisma.submission.findMany({
+        where: whereCommerciale,
+        orderBy: { submittedAt: "desc" },
+        skip,
+        take: parsed.pageSize,
+        select: selectCommerciale,
+      }),
+    ]);
+    return {
+      items: rows.map(mapCommerciale),
+      total,
+      page: parsed.page,
+      pageSize: parsed.pageSize,
+      totalPages: Math.max(1, Math.ceil(total / parsed.pageSize)),
+    };
+  }
+
+  // Fusion des deux tables : pagination par fenêtre (take = skip + pageSize
+  // de chaque côté, tri mémoire, découpe). Le déchiffrement PII n'est fait
+  // QUE sur la page finale, pas sur toute la fenêtre.
+  const whereEmploi: Record<string, unknown> = {};
+  if (parsed.onlyAttention) whereEmploi.needsAttention = true;
+  const windowTake = skip + parsed.pageSize;
+
+  const [totalEmploi, totalCommerciale, emploiRows, commercialeRows] = await Promise.all([
+    prisma.jobApplication.count({ where: whereEmploi }),
+    prisma.submission.count({ where: whereCommerciale }),
+    prisma.jobApplication.findMany({
+      where: whereEmploi,
+      orderBy: { submittedAt: "desc" },
+      take: windowTake,
+      select: {
+        id: true,
+        offerTitleSnap: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        status: true,
+        cvStoragePath: true,
+        needsAttention: true,
+        submittedAt: true,
+      },
+    }),
+    prisma.submission.findMany({
+      where: whereCommerciale,
+      orderBy: { submittedAt: "desc" },
+      take: windowTake,
+      select: selectCommerciale,
+    }),
+  ]);
+
+  const merged: Array<{ at: number; make: () => CandidatureUnifieeItem }> = [
+    ...emploiRows.map((r) => ({
+      at: r.submittedAt.getTime(),
+      make: (): CandidatureUnifieeItem => ({
+        id: r.id,
+        source: "emploi",
+        offerLabel: r.offerTitleSnap,
+        contactName: `${safeDecrypt(r.firstName)} ${safeDecrypt(r.lastName)}`.trim(),
+        contactEmail: safeDecrypt(r.email),
+        status: r.status,
+        hasCv: Boolean(r.cvStoragePath),
+        needsAttention: r.needsAttention,
+        submittedAt: r.submittedAt,
+      }),
+    })),
+    ...commercialeRows.map((r) => ({
+      at: r.submittedAt.getTime(),
+      make: () => mapCommerciale(r),
+    })),
+  ];
+  merged.sort((a, b) => b.at - a.at);
+  const total = totalEmploi + totalCommerciale;
+
+  return {
+    items: merged.slice(skip, windowTake).map((m) => m.make()),
+    total,
+    page: parsed.page,
+    pageSize: parsed.pageSize,
+    totalPages: Math.max(1, Math.ceil(total / parsed.pageSize)),
+  };
+}
+
 // ============================================================ detail
 export interface JobApplicationDetail {
   id: string;
@@ -147,6 +333,13 @@ export interface JobApplicationDetail {
   salaryExpectation: string | null;
   hasPhoto: boolean;
   photoOriginalName: string | null;
+  /**
+   * Type de la photo. Sert à savoir si un navigateur sait l'AFFICHER : le
+   * téléversement accepte le HEIC (format par défaut des iPhone), qu'aucun
+   * navigateur hors Safari ne sait rendre. Sans cette information, la console
+   * afficherait une image cassée au lieu de proposer le téléchargement.
+   */
+  photoMimeType: string | null;
   internalNotes: string | null;
   assignedTo: string | null;
   needsAttention: boolean;
@@ -186,6 +379,7 @@ export async function getApplicationDetailAction(id: string): Promise<JobApplica
     salaryExpectation: a.salaryExpectation,
     hasPhoto: Boolean(a.photoStoragePath),
     photoOriginalName: a.photoOriginalName,
+    photoMimeType: a.photoMimeType,
     internalNotes: a.internalNotes,
     assignedTo: a.assignedTo,
     needsAttention: a.needsAttention,

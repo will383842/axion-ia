@@ -24,12 +24,14 @@ export interface JobOfferFormInitial {
   bodyFrHtml: string;
   bodyEnHtml: string;
   employmentType: string;
+  secondaryEmploymentType: string;
   contractLabel: string;
   workMode: string;
   remoteDaysPerWeek: string;
   city: string;
   region: string;
   country: string;
+  applicantCountries: string;
   salaryMin: string;
   salaryMax: string;
   salaryPeriod: string;
@@ -260,6 +262,28 @@ export function JobOfferForm({ initial }: Props) {
           </select>
         </div>
         <div className="admin-field">
+          <label htmlFor="secondaryEmploymentType" className="admin-label">
+            Second type (optionnel)
+          </label>
+          {/* Poste ouvert sous DEUX statuts (« CDI ou freelance ») : Google
+              accepte un tableau employmentType — sans lui, l'offre est cachée
+              aux profils qui filtrent sur l'autre type de contrat. */}
+          <select
+            id="secondaryEmploymentType"
+            name="secondaryEmploymentType"
+            defaultValue={initial?.secondaryEmploymentType ?? ""}
+            className="admin-input"
+            disabled={pending}
+          >
+            <option value="">Aucun — un seul type</option>
+            <option value="FULL_TIME">Temps plein</option>
+            <option value="PART_TIME">Temps partiel</option>
+            <option value="CONTRACTOR">Prestataire / freelance</option>
+            <option value="INTERN">Stage / alternance</option>
+            <option value="TEMPORARY">CDD / intérim</option>
+          </select>
+        </div>
+        <div className="admin-field">
           <label htmlFor="workMode" className="admin-label">
             Mode de travail
           </label>
@@ -335,6 +359,27 @@ export function JobOfferForm({ initial }: Props) {
             disabled={pending}
           />
         </div>
+      </div>
+
+      <div className="admin-field">
+        <label htmlFor="applicantCountries" className="admin-label">
+          Candidatures acceptées depuis (codes ISO2, séparés par des virgules)
+        </label>
+        <input
+          id="applicantCountries"
+          name="applicantCountries"
+          type="text"
+          maxLength={300}
+          placeholder="FR, BE, CH, CA, MA, TN, SN, CI"
+          defaultValue={initial?.applicantCountries ?? ""}
+          className="admin-input"
+          disabled={pending}
+        />
+        <p className="admin-meta-small">
+          Vide = France uniquement. Au-delà d&apos;un pays, Google for Jobs remonte l&apos;offre aux
+          candidats de chacun de ces pays — indispensable pour une mission à distance ouverte à la
+          francophonie.
+        </p>
       </div>
 
       <div className="admin-form-row">

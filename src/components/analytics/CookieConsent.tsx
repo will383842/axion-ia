@@ -33,6 +33,8 @@
 
 import * as React from "react";
 import { useLocale } from "next-intl";
+import { usePathname } from "next/navigation";
+import { isAdLandingRoute } from "@/lib/analytics/ad-landing-routes";
 import { Link } from "@/i18n/navigation";
 
 export const ANALYTICS_CONSENT_KEY = "axion-cookie-consent-v1";
@@ -231,6 +233,17 @@ export function CookieConsent() {
   const isFr = locale === "fr";
   const consent = useAnalyticsConsent();
   const isHydrated = useIsHydrated();
+  const pathname = usePathname();
+
+  // Pages d'atterrissage publicitaire : aucun script tiers n'y est chargé
+  // (`Clarity` s'y abstient), donc aucun consentement n'est requis et la
+  // bannière n'a pas lieu d'être. Elle occupait 48 % du premier écran au
+  // mobile, sur des visiteurs payés au clic.
+  // ⚠️ Ce retrait n'est légitime QUE parce que Clarity ne se charge pas sur ces
+  // routes. Masquer la bannière sans supprimer le dépôt de cookies serait un
+  // manquement. Les deux conditions vivent dans le même module, pour qu'on ne
+  // puisse pas en modifier une sans voir l'autre.
+  if (isAdLandingRoute(pathname)) return null;
 
   // Tant que l'hydratation n'a pas eu lieu, les `onClick` ne sont pas
   // attachés : afficher le banner reviendrait à montrer des boutons morts.

@@ -14,6 +14,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import {
+  accordFinanceurAttendu,
   deriverStatutDossier,
   estDossierArchive,
   lireDossiersPipeline,
@@ -22,13 +23,16 @@ import {
   FENETRE_SOLDES_JOURS,
   type DossierSource,
 } from "./dossiers-pipeline";
+import { validateOpcoAccord } from "@/server/qualiopi/financements/validation-service";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    devis: { findMany: vi.fn() },
-    trainingSession: { findMany: vi.fn() },
-    coachingSession: { findMany: vi.fn() },
-    auditMission: { findMany: vi.fn() },
+    // `count` : chaque source rend desormais son TOTAL en base a cote de ses
+    // lignes, pour que la vue puisse DIRE ce qu'elle n'a pas lu (T1, 16/08).
+    devis: { findMany: vi.fn(), count: vi.fn() },
+    trainingSession: { findMany: vi.fn(), count: vi.fn() },
+    coachingSession: { findMany: vi.fn(), count: vi.fn() },
+    auditMission: { findMany: vi.fn(), count: vi.fn() },
   },
 }));
 
@@ -47,6 +51,10 @@ const sessionBase = {
   signatureEnAttente: false,
   factureImpayee: false,
   financementNonSolde: false,
+  // Sous-lot 8D — le cas ORDINAIRE est « pas d'accord à attendre » : la
+  // majorité des affaires sont en financement direct. Mettre `true` par défaut
+  // aurait peint tous les tests existants en « attente financeur ».
+  accordFinanceurAttendu: false,
   updatedAt: RECENT,
 } satisfies DossierSource;
 
@@ -276,10 +284,15 @@ describe("lireDossiersPipeline", () => {
     vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([]);
     vi.mocked(prisma.coachingSession.findMany).mockResolvedValue([]);
     vi.mocked(prisma.auditMission.findMany).mockResolvedValue([]);
+    // Par defaut : le total egale ce qui est lu — aucune troncature.
+    vi.mocked(prisma.devis.count).mockResolvedValue(0);
+    vi.mocked(prisma.trainingSession.count).mockResolvedValue(0);
+    vi.mocked(prisma.coachingSession.count).mockResolvedValue(0);
+    vi.mocked(prisma.auditMission.count).mockResolvedValue(0);
   });
 
   it("retourne les 6 colonnes vides quand il n'y a aucune affaire", async () => {
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(Object.keys(pipeline).sort()).toEqual(COLONNES_PIPELINE.map((c) => c.id).sort());
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
@@ -290,7 +303,7 @@ describe("lireDossiersPipeline", () => {
     vi.mocked(prisma.coachingSession.findMany).mockRejectedValue(new Error("stub.invalid"));
     vi.mocked(prisma.auditMission.findMany).mockRejectedValue(new Error("stub.invalid"));
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
 
@@ -309,7 +322,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.devis_attente).toHaveLength(1);
     expect(pipeline.devis_attente[0]?.client).toBe("INVEST SUN");
     expect(pipeline.devis_attente[0]?.cheminFiche).toBe("/qualiopi/devis/d1");
@@ -347,7 +360,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.signature_attente).toHaveLength(1);
     expect(pipeline.signature_attente[0]?.cheminFiche).toBe("/qualiopi/sessions/s1");
     expect(pipeline.signature_attente[0]?.activite).toBe("formation");
@@ -375,7 +388,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.a_solder).toHaveLength(1);
     expect(pipeline.a_solder[0]?.client).toBe("INVEST SUN");
     expect(pipeline.a_solder[0]?.activite).toBe("coaching");
@@ -397,7 +410,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.soldes).toHaveLength(1);
     expect(pipeline.soldes[0]?.client).toBe("INVEST SUN");
   });
@@ -417,7 +430,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.en_cours).toHaveLength(1);
     expect(pipeline.en_cours[0]?.activite).toBe("audit");
     expect(pipeline.en_cours[0]?.cheminFiche).toBe("/qualiopi/audits/a1");
@@ -531,7 +544,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     const parCle = new Map(pipeline.devis_attente.map((l) => [l.cle, l.qualiopi]));
     expect(parCle.get("devis:d-form")).toBe(true);
     expect(parCle.get("devis:d-audit")).toBe(false);
@@ -551,7 +564,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.devis_attente[0]?.activite).toBe("formation");
     expect(pipeline.devis_attente[0]?.qualiopi).toBe(false);
   });
@@ -603,7 +616,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     const parCle = new Map(pipeline.a_preparer.map((l) => [l.cle, l.qualiopi]));
     expect(parCle.get("session:s1")).toBe(true);
     expect(parCle.get("coaching:c1")).toBe(false);
@@ -627,7 +640,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.soldes).toHaveLength(1);
     expect(pipeline.soldes[0]?.archive).toBe(false);
   });
@@ -657,12 +670,12 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
   });
 
   it("un soldé de 45 j est ABSENT de la lecture normale (comportement phase 2 intact)", async () => {
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
 
   it("le même soldé de 45 j apparaît en mode avecArchives — colonne « Soldés », archive: true", async () => {
-    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(pipeline.soldes).toHaveLength(1);
     expect(pipeline.soldes[0]?.cle).toBe("session:s-arch");
     expect(pipeline.soldes[0]?.archive).toBe(true);
@@ -687,7 +700,7 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(pipeline.a_solder).toHaveLength(1);
     expect(pipeline.a_solder[0]?.archive).toBe(false);
     expect(pipeline.soldes).toHaveLength(0);
@@ -710,7 +723,7 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
 
@@ -720,7 +733,108 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
     vi.mocked(prisma.coachingSession.findMany).mockRejectedValue(new Error("stub.invalid"));
     vi.mocked(prisma.auditMission.findMany).mockRejectedValue(new Error("stub.invalid"));
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sous-lot 8D — la colonne « Attente financeur »
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 Le défaut : une session `planifiee` dont l'OPCO n'avait pas répondu
+// tombait dans « À préparer », au MÊME endroit qu'une affaire dont l'argent est
+// sécurisé. Le système EMPÊCHE de démarrer sans accord (`validateOpcoAccord`)
+// mais ne PRÉVENAIT pas qu'il allait l'empêcher : on le découvrait le matin de
+// la formation, quand le bouton « démarrer » refuse.
+
+describe("deriverStatutDossier — attente de l'accord financeur (8D)", () => {
+  it("🔴 planifiée + accord attendu → « Attente financeur », PAS « À préparer »", () => {
+    expect(deriverStatutDossier({ ...sessionBase, accordFinanceurAttendu: true }, MAINTENANT)).toBe(
+      "attente_financeur",
+    );
+  });
+
+  it("🔴 l'attente d'accord PRIME sur l'attente de signature", () => {
+    // Faire signer une convention avant d'avoir l'accord du financeur, c'est
+    // engager le client sur une prestation qui ne pourra pas démarrer. Ce qui
+    // bloque en premier doit se voir en premier.
+    expect(
+      deriverStatutDossier(
+        { ...sessionBase, accordFinanceurAttendu: true, signatureEnAttente: true },
+        MAINTENANT,
+      ),
+    ).toBe("attente_financeur");
+  });
+
+  it("accord acquis → le dossier retrouve son cours normal", () => {
+    expect(deriverStatutDossier({ ...sessionBase }, MAINTENANT)).toBe("a_preparer");
+    expect(deriverStatutDossier({ ...sessionBase, signatureEnAttente: true }, MAINTENANT)).toBe(
+      "signature_attente",
+    );
+  });
+
+  it("une session DÉJÀ démarrée ou réalisée ne retourne pas en attente d'accord", () => {
+    // Le jour J prime, et une session réalisée relève de la règle de solde.
+    expect(
+      deriverStatutDossier(
+        { ...sessionBase, statut: "en_cours", accordFinanceurAttendu: true },
+        MAINTENANT,
+      ),
+    ).toBe("en_cours");
+  });
+
+  it("la colonne est déclarée, ordonnée avant la signature, et porte une action", () => {
+    const ids = COLONNES_PIPELINE.map((c) => c.id);
+    expect(ids).toContain("attente_financeur");
+    expect(ids.indexOf("attente_financeur")).toBeLessThan(ids.indexOf("signature_attente"));
+    expect(libellerProchaineAction("attente_financeur", "formation")).toContain("financeur");
+  });
+});
+
+describe("🔴 8D — la vue doit annoncer ce que la GARDE va refuser", () => {
+  // 🔴 Ce test a RÉELLEMENT rougi, le 16/08 : `accordFinanceurAttendu`
+  // recopiait la règle de `validateOpcoAccord` et n'a pas suivi son
+  // élargissement à `mixte`. Un dossier que le démarrage allait refuser
+  // n'apparaissait alors dans aucune colonne d'attente.
+  //
+  // La recopie a été remplacée par un import du prédicat partagé. Le test
+  // reste : il vérifie maintenant, cas par cas, que les deux couches disent
+  // la même chose — y compris si quelqu'un réintroduit une règle locale.
+  const base = {
+    opcoSubrogation: false,
+    numeroDossierOpco: null,
+    conventionTripartiteSigneeAt: null,
+    edofVerifieAt: null,
+    ftDispositif: null,
+    ftAifPrescriptionDate: null,
+    ftPoeiAccordFinancementAt: null,
+    ftPoeiEngagementSigneAt: null,
+    ftPoeiOffreEmploiNumero: null,
+    statut: "planifiee" as const,
+  };
+
+  it.each([
+    ["opco", "non_demande"],
+    ["opco", "demande_en_cours"],
+    ["opco", "refuse"],
+    ["opco", "accord_recu"],
+    ["opco", "paiement_recu"],
+    ["direct", "non_demande"],
+    ["cpf", "non_demande"],
+    ["france_travail", "non_demande"],
+    ["mixte", "non_demande"],
+    ["mixte", "demande_en_cours"],
+    ["mixte", "accord_recu"],
+    ["cpf", "demande_en_cours"],
+    ["france_travail", "demande_en_cours"],
+  ])("%s / %s — la colonne dit exactement ce que la garde bloque", (financement, statutOpco) => {
+    const session = {
+      ...base,
+      financementType: financement,
+      opcoStatut: statutOpco,
+    } as never;
+    const bloque = !validateOpcoAccord(session).ok;
+    expect(accordFinanceurAttendu(financement, statutOpco)).toBe(bloque);
   });
 });

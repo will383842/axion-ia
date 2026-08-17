@@ -80,6 +80,8 @@ export interface DistributionRow {
 export async function listDistributionProfiles(filters?: {
   readonly serviceSector?: ServiceSector;
 }): Promise<ReadonlyArray<DistributionRow>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   if (filters?.serviceSector !== undefined) ServiceSectorSchema.parse(filters.serviceSector);
   const rows = await prisma.coverageDistributionProfile.findMany({
@@ -178,6 +180,8 @@ export interface AudienceMixRow {
 }
 
 export async function listAudienceMixProfiles(): Promise<ReadonlyArray<AudienceMixRow>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   const rows = await prisma.audienceMixProfile.findMany({
     orderBy: [{ isDefault: "desc" }, { slug: "asc" }],
   });

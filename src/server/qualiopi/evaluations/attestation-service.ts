@@ -161,6 +161,48 @@ export async function genererAttestationPourEnrollment(
     return { resultat: "aucune", documentId: null };
   }
 
+  // 2c. 🔴 CLAIM ATOMIQUE — la vraie garde d'unicité.
+  //
+  // La vérification du 2. est une LECTURE, faite sur un instantané pris en tête
+  // de fonction. Entre elle et l'écriture de `attestationGenereeAt` (étape 7),
+  // le service lit la configuration, résout l'identité de l'organisme, calcule
+  // un QR code et REND UN PDF : plusieurs centaines de millisecondes, plusieurs
+  // allers-retours. Deux exécutions concurrentes — le cron de 09:00 et un clic
+  // « Générer » — lisent donc toutes deux `null` et produisent chacune une
+  // attestation, avec deux numéros `AXI-ATT` et deux `qrToken` publiquement
+  // vérifiables. `attestationDocumentId` ne pointe que vers la dernière :
+  // l'autre reste orpheline ET authentifiée.
+  //
+  // `updateMany` conditionné sur `attestationGenereeAt: null` fait de la garde
+  // une opération ATOMIQUE de la base : le perdant voit `count === 0` et sort.
+  // C'est exactement le patron déjà écrit pour les notifications internes
+  // (`notifications-service.ts`, claim de `notifiedAt` AVANT l'enqueue), y
+  // compris sa contrepartie indispensable : LIBÉRER le verrou si la suite
+  // échoue (cf. étape 6bis) — sans quoi un échec de rendu marquerait
+  // l'inscription « attestée » pour toujours, et le cron ne la reprendrait
+  // jamais (il filtre sur `attestationGenereeAt: null`).
+  //
+  // ⚠️ Non appliqué quand `force` : régénérer est un acte délibéré, motivé, et
+  // la pièce précédente est alors rectifiée explicitement.
+  if (!opts?.force) {
+    const claim = await prisma.enrollment.updateMany({
+      where: { id: enrollmentId, attestationGenereeAt: null },
+      data: { attestationGenereeAt: new Date() },
+    });
+    if (claim.count === 0) {
+      // Perdu la course : on relit l'état RÉEL plutôt que de rendre
+      // l'instantané périmé du début de fonction.
+      const deja = await prisma.enrollment.findUnique({
+        where: { id: enrollmentId },
+        select: { attestationResultat: true, attestationDocumentId: true },
+      });
+      return {
+        resultat: (deja?.attestationResultat ?? "aucune") as "complete" | "partielle" | "aucune",
+        documentId: deja?.attestationDocumentId ?? null,
+      };
+    }
+  }
+
   // 3. Classifie la présence
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
   const tauxPct = enrollment.tauxPresencePct ?? 0;
@@ -354,63 +396,95 @@ export async function genererAttestationPourEnrollment(
         )?.numero
       : undefined;
 
-  const generated = await generateDocument({
-    type: docType,
-    buildElement: (numero) => {
-      if (resultat === "complete") {
-        return React.createElement(AttestationPdf, {
-          data: {
-            numero,
-            dateEmission,
-            identite,
-            beneficiaire,
-            formation: formationData,
-            resultats: {
-              heuresSuivies,
-              heuresTotales: dureeHeures,
-              ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-              competencesAcquises: competencesAcquisesStr,
-              ...(competencesReserves !== "" ? { competencesReserves } : {}),
-            },
-            qrToken: token,
-            qrDataUrl: qrUrl,
-          },
-        });
-      } else {
-        return React.createElement(AttestationPartiellePdf, {
-          data: {
-            numero,
-            dateEmission,
-            identite,
-            beneficiaire,
-            formation: formationData,
-            resultats: {
-              heuresSuivies,
-              heuresTotales: dureeHeures,
-              ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-              competencesPartiellesValidees: competencesAcquisesStr,
-              ...(competencesReserves !== "" ? { competencesReserves } : {}),
-            },
-            qrToken: token,
-            qrDataUrl: qrUrl,
-          },
-        });
+  // 6bis. 🔴 CONTREPARTIE DU CLAIM — libérer si le rendu échoue.
+  //
+  // Le claim de l'étape 2c a posé `attestationGenereeAt` AVANT de produire quoi
+  // que ce soit. Si la génération échoue ici (R2 indisponible, police absente,
+  // identité incomplète), l'inscription resterait marquée « attestée » sans
+  // aucune pièce — et le cron, qui filtre sur `attestationGenereeAt: null`, ne
+  // la reprendrait JAMAIS. Un verrou qu'on ne relâche pas ne protège plus, il
+  // condamne.
+  //
+  // Même geste que `notifierAlerteInterne` : on rend la colonne à `null`, puis
+  // on propage l'erreur (l'appelant — cron ou action — la journalise déjà).
+  const genererOuLiberer = async <T>(op: () => Promise<T>): Promise<T> => {
+    try {
+      return await op();
+    } catch (err) {
+      if (!opts?.force) {
+        await prisma.enrollment
+          .updateMany({
+            where: { id: enrollmentId },
+            data: { attestationGenereeAt: null, attestationResultat: null },
+          })
+          .catch(() => {
+            // Best-effort : si même la libération échoue, on ne masque pas
+            // l'erreur d'origine, qui est la vraie information.
+          });
       }
-    },
-    refs: { sessionId: session.id, traineeId: trainee.id },
-    qrToken: token,
-    ...(numeroPrecedent !== undefined && numeroPrecedent !== null
-      ? {
-          rectifie: {
-            numero: numeroPrecedent,
-            motif:
-              opts?.rectificationMotif !== undefined && opts.rectificationMotif.trim() !== ""
-                ? opts.rectificationMotif.trim()
-                : "Attestation régénérée après mise à jour de l'évaluation des acquis : cette version remplace la précédente.",
-          },
+      throw err;
+    }
+  };
+
+  const generated = await genererOuLiberer(() =>
+    generateDocument({
+      type: docType,
+      buildElement: (numero) => {
+        if (resultat === "complete") {
+          return React.createElement(AttestationPdf, {
+            data: {
+              numero,
+              dateEmission,
+              identite,
+              beneficiaire,
+              formation: formationData,
+              resultats: {
+                heuresSuivies,
+                heuresTotales: dureeHeures,
+                ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
+                competencesAcquises: competencesAcquisesStr,
+                ...(competencesReserves !== "" ? { competencesReserves } : {}),
+              },
+              qrToken: token,
+              qrDataUrl: qrUrl,
+            },
+          });
+        } else {
+          return React.createElement(AttestationPartiellePdf, {
+            data: {
+              numero,
+              dateEmission,
+              identite,
+              beneficiaire,
+              formation: formationData,
+              resultats: {
+                heuresSuivies,
+                heuresTotales: dureeHeures,
+                ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
+                competencesPartiellesValidees: competencesAcquisesStr,
+                ...(competencesReserves !== "" ? { competencesReserves } : {}),
+              },
+              qrToken: token,
+              qrDataUrl: qrUrl,
+            },
+          });
         }
-      : {}),
-  });
+      },
+      refs: { sessionId: session.id, traineeId: trainee.id },
+      qrToken: token,
+      ...(numeroPrecedent !== undefined && numeroPrecedent !== null
+        ? {
+            rectifie: {
+              numero: numeroPrecedent,
+              motif:
+                opts?.rectificationMotif !== undefined && opts.rectificationMotif.trim() !== ""
+                  ? opts.rectificationMotif.trim()
+                  : "Attestation régénérée après mise à jour de l'évaluation des acquis : cette version remplace la précédente.",
+            },
+          }
+        : {}),
+    }),
+  );
 
   // 7. Update Enrollment
   await prisma.enrollment.update({

@@ -117,6 +117,65 @@ describe("resoudreModeEnvoi — précédence", () => {
       resoudreModeEnvoi("qualiopi-convocation", [client("qualiopi-convocation", "validation")]),
     ).toBe("validation");
   });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 🔴 Audit du 2026-08-16 — la garde qui manquait.
+  //
+  // Avant ce correctif, UNE seule règle attrape-tout enregistrée depuis la page
+  // de réglages garait toute la chaîne réglementaire. Ces tests rougissent si
+  // la garde saute : ils sont la seule chose qui empêche un stagiaire de ne
+  // jamais recevoir sa convocation.
+  // ─────────────────────────────────────────────────────────────────────────
+  describe("garde — une règle attrape-tout ne peut pas garer la chaîne Qualiopi", () => {
+    it("une règle GLOBALE « toutes natures → validation » n'emporte pas la chaîne", () => {
+      for (const t of EMAILS_AUTOMATIQUES_PAR_DEFAUT) {
+        expect(
+          resoudreModeEnvoi(t, [global(null, "validation")]),
+          `${t} doit rester automatique malgré la règle attrape-tout`,
+        ).toBe("auto");
+      }
+    });
+
+    it("une règle CLIENT « toutes natures → validation » n'emporte pas la chaîne", () => {
+      for (const t of EMAILS_AUTOMATIQUES_PAR_DEFAUT) {
+        expect(resoudreModeEnvoi(t, [client(null, "validation")]), t).toBe("auto");
+      }
+    });
+
+    it("la garde ne s'applique QU'À la chaîne réglementaire", () => {
+      // Le commercial reste gouvernable par une règle générale : c'est
+      // exactement l'usage pour lequel la page de réglages existe.
+      expect(resoudreModeEnvoi("booking-confirmed", [global(null, "validation")])).toBe(
+        "validation",
+      );
+      expect(resoudreModeEnvoi("qualiopi-relance-impayee", [global(null, "validation")])).toBe(
+        "validation",
+      );
+    });
+
+    it("une règle qui NOMME le template reste souveraine — la garde n'ôte aucune liberté", () => {
+      expect(
+        resoudreModeEnvoi("qualiopi-convocation", [global("qualiopi-convocation", "validation")]),
+      ).toBe("validation");
+      expect(
+        resoudreModeEnvoi("qualiopi-attestation-disponible", [
+          client("qualiopi-attestation-disponible", "validation"),
+        ]),
+      ).toBe("validation");
+    });
+
+    it("une règle attrape-tout « auto » reste sans effet notable sur la chaîne", () => {
+      expect(resoudreModeEnvoi("qualiopi-convocation", [global(null, "auto")])).toBe("auto");
+    });
+  });
+
+  // La précédence documentée en tête de `outbox-policy.ts` ne doit PAS bouger :
+  // une règle client générale prime sur une règle globale nominative. La garde
+  // ci-dessus a été écrite en boucle précisément pour préserver cet ordre.
+  it("une règle client « toutes natures » prime sur une règle globale nominative", () => {
+    const regles = [global("devis-envoi", "validation"), client(null, "auto")];
+    expect(resoudreModeEnvoi("devis-envoi", regles)).toBe("auto");
+  });
 });
 
 describe("estEmailQualiopiAutomatique", () => {
@@ -143,8 +202,18 @@ describe("Cohérence avec les noms de jobs réels", () => {
     "qualiopi-suivi-j30",
     "qualiopi-attestation-disponible",
     "qualiopi-portail-acces",
+    // Lien PERSONNEL de signature de présence (2026-08-16) — envoyé par
+    // `envoyerLiensPourSession`, depuis la console ou le cron J-0. Il
+    // n'existait pas : les jetons étaient fabriqués et affichés, jamais
+    // transmis, et la chaîne probante des indicateurs 9 et 11 reposait sur un
+    // envoi que personne n'avait écrit.
+    "qualiopi-emargement-lien",
     "qualiopi-alerte-interne",
     "qualiopi-relance-impayee",
+    // Positionnement (2026-08-15) — envoyé par `envoyerPositionnement`, depuis
+    // l'action « Envoyer au stagiaire ». Remplace le repli sur
+    // `qualiopi-portail-acces`, qui invitait le stagiaire à ignorer le message.
+    "qualiopi-positionnement",
     // Relances questionnaires + enquête entreprise (2026-08-04) — envoyés par
     // les crons relance-questionnaires / enquete-entreprise-j30.
     "qualiopi-questionnaire-relance",

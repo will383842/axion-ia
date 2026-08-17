@@ -9,12 +9,12 @@
 import { Queue } from "bullmq";
 import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
+import { journaliserEnAttente } from "@/server/email/email-log";
 import type {
   EmailJobData,
   EmailJobName,
   OptionExpirationJobData,
   OptionReminderJobData,
-  NewsletterCampaignJobData,
   SearchIndexerJobData,
   RetentionPurgeJobData,
   BookingCronJobData,
@@ -23,6 +23,8 @@ import type {
   SiteRouteAnomalyDetectorJobData,
   SiteRouteDiscoveryJobData,
   SiteRouteGscJobData,
+  VivierCronJobData,
+  VivierCronJobType,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -31,6 +33,7 @@ import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
 import type { KitImportJobData } from "./workers/kit-import-worker";
 import type { CalendlyPollJobData, CalendlyPollJobType } from "./workers/calendly-poll-worker";
+import type { CrmSyncJobData, CrmSyncJobType } from "./workers/crm-sync-worker";
 import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
 import type { FormationEngineJobData } from "./workers/qualiopi-formation-engine-worker";
 import type {
@@ -65,9 +68,21 @@ export const optionReminderQueue: Queue<OptionReminderJobData> | null = connecti
     })
   : null;
 
-export const newsletterQueue: Queue<NewsletterCampaignJobData> | null = connection
-  ? new Queue<NewsletterCampaignJobData>("newsletter", { connection, defaultJobOptions })
-  : null;
+// `newsletterQueue` retirée le 2026-08-16 (audit de la chaîne d'envoi).
+//
+// Elle était déclarée, connectée à Redis, et n'avait NI producteur NI worker :
+// aucun appelant dans tout le dépôt, aucun consommateur. Une file ouverte que
+// personne ne remplit et que personne ne vide n'est pas une réserve pour plus
+// tard — c'est une clé Redis qui laisse croire qu'un envoi de campagne existe.
+// L'écrire le jour venu coûtera trois lignes ; la garder coûtait une ambiguïté
+// permanente sur ce que le système sait faire.
+//
+// ⚠️ Conséquence à connaître avant la bascule ZeptoMail : ce dépôt n'envoie
+// AUCUNE campagne de masse, et c'est ce qui rend la bascule légitime —
+// ZeptoMail est un service transactionnel, y router du marketing en nombre est
+// contraire à ses conditions et se solde par une suspension. Si une campagne
+// doit exister un jour, elle passe par un autre canal, pas par ici.
+// Le type `NewsletterCampaignJobData` reste dans `types.ts` pour cet usage.
 
 export const searchIndexerQueue: Queue<SearchIndexerJobData> | null = connection
   ? new Queue<SearchIndexerJobData>("search-indexer", { connection, defaultJobOptions })
@@ -108,6 +123,58 @@ export const calendlyPollQueue: Queue<CalendlyPollJobData, void, CalendlyPollJob
         },
       })
     : null;
+
+/**
+ * Lot L2 (2026-08-14) — synchronisation sortante vers Axion CRM Pro.
+ *
+ * Deux types de jobs sur la même file :
+ *   · `emit`  : émettre UNE ligne d'outbox, poussé juste après l'écriture
+ *               métier — c'est la fraîcheur (« temps réel ») ;
+ *   · `sweep` : balayer les lignes en attente ou en échec dont l'heure de
+ *               nouvelle tentative est venue — c'est la GARANTIE. Si Redis, le
+ *               worker ou le CRM sont tombés, c'est ce passage qui rattrape.
+ *
+ * `attempts: 1` : le rejeu n'est PAS confié à BullMQ mais à l'outbox
+ * elle-même (colonnes `attempts` / `next_attempt_at`), qui survit à une purge
+ * de Redis et reste inspectable en base. Deux mécanismes de retry superposés
+ * produiraient des tentatives en rafale impossibles à raisonner.
+ */
+export const crmSyncQueue: Queue<CrmSyncJobData, void, CrmSyncJobType> | null = connection
+  ? new Queue<CrmSyncJobData, void, CrmSyncJobType>("crm-sync", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 1,
+        removeOnComplete: { age: 24 * 3600, count: 500 },
+        removeOnFail: { age: 7 * 24 * 3600, count: 500 },
+      },
+    })
+  : null;
+
+/**
+ * Lot L4 (2026-08-14) — passage quotidien du VIVIER candidats.
+ *
+ * Intègre au vivier CRM les candidatures dont la fenêtre d'opposition de
+ * 30 jours est échue, sans opposition. File SÉPARÉE de `crm-sync` : celle-ci
+ * transporte des événements, celle-là applique une règle de temps. Les mêler
+ * ferait dépendre une horloge RGPD de la santé de la file de synchro.
+ *
+ * `attempts: 1` : rater un passage n'a aucune conséquence — le lendemain
+ * reprendra exactement les mêmes lignes (l'état est en base, pas dans la file),
+ * et une candidature dont la fenêtre est échue le reste. Rejouer n'apporterait
+ * donc rien, sinon des doublons de trafic.
+ */
+export const vivierCronsQueue: Queue<VivierCronJobData, void, VivierCronJobType> | null = connection
+  ? new Queue<VivierCronJobData, void, VivierCronJobType>("vivier-crons", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 1,
+        removeOnComplete: { age: 7 * 24 * 3600, count: 50 },
+        removeOnFail: { age: 30 * 24 * 3600, count: 100 },
+      },
+    })
+  : null;
 
 // Sprint X.12 — Booking V1 crons (relances paiement, J-7/J-1 reminders, etc.).
 // 1 seule queue qui dispatche par `type`. `attempts: 3` — fail-soft sur DB
@@ -279,7 +346,9 @@ export const contentPsiMonitorQueue: Queue | null = connection
 /**
  * Sprint A 2026-05-21 D-P5-3 — Rapport qualité hebdomadaire content-gen.
  * Cron lundi 7h00 UTC (≈ 8h CET). KPIs publiés/rejetés/coût/villes/anomalies.
- * Destinataire : WEEKLY_REPORT_EMAIL env var (défaut williamsjullin@gmail.com).
+ * Destinataire : WEEKLY_REPORT_EMAIL, sinon l'adresse de l'organisme
+ * (`lib/destinataires-internes.ts`). Ce commentaire annonçait encore un repli
+ * sur une boîte Gmail personnelle, qui n'existe plus.
  */
 export const contentWeeklyReportQueue: Queue | null = connection
   ? new Queue("content-weekly-report", {
@@ -717,11 +786,56 @@ export async function enqueueEmail(
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
   if (options?.jobId) addOptions["jobId"] = options.jobId;
-  await emailsQueue.add(
+  const job = await emailsQueue.add(
     template,
     data,
     Object.keys(addOptions).length > 0 ? addOptions : undefined,
   );
+
+  // 🔴 Audit du 2026-08-16 — la ligne « en attente » qui manquait.
+  //
+  // `EmailLogStatus.pending` existait au schéma et n'était JAMAIS écrit : le
+  // worker ne créait la ligne qu'à l'issue de la tentative. Un job enfilé mais
+  // jamais consommé — worker mort, Redis coupé — ne laissait donc aucune trace,
+  // et la console affichait « 0 échec », rigoureusement indistinguable de
+  // « aucun e-mail à envoyer ».
+  //
+  // On pose la ligne ICI, le worker la clôt. Une ligne restée `pending` est
+  // désormais le signal d'une chaîne rompue, et `verifierSanteEmails()` la lit.
+  //
+  // `await` volontaire plutôt qu'un `void` : la fonction ne lève jamais (elle
+  // avale ses propres erreurs), et l'attendre garantit que la ligne existe
+  // avant que le worker ne cherche à la clôturer — sinon on créerait deux
+  // lignes pour un seul envoi sur les files rapides.
+  //
+  // ⚠️ `submission-reply` est le SEUL gabarit exclu, et l'exclusion est
+  // nécessaire, pas cosmétique. Ce chemin n'a jamais écrit dans `email_logs` :
+  // il porte son propre suivi, plus riche, sur `SubmissionReply`
+  // (`deliveryStatus` / `sentAt` / `failedAt` / `errorMsg` / `retryCount`), et
+  // le worker sort par un `return` anticipé sans passer par `cloturerJournal`.
+  // Deux conséquences si on l'enfilait ici :
+  //   - la ligne resterait `pending` À VIE, et `verifierSanteEmails()` lèverait
+  //     une alerte CRITIQUE « e-mails bloqués en file » dès la première réponse
+  //     admin — une surveillance neuve qui crie sur son propre bruit se fait
+  //     désarmer en trois jours ;
+  //   - elle porterait `recipient: ""`, l'appelant passant une adresse vide
+  //     exprès (aucune PII dans le payload de file, le worker la déchiffre
+  //     depuis la base).
+  // Le fait que la page « E-mails envoyés » omette les réponses admin reste un
+  // constat OUVERT de l'audit — il se corrige côté lecture, pas en fabriquant
+  // ici des lignes qui ne seront jamais closes.
+  if (template !== "submission-reply") {
+    await journaliserEnAttente({
+      template,
+      recipient: to,
+      locale,
+      marketing: options?.marketing === true,
+      jobId: job.id,
+      ...(options?.entityType ? { entityType: options.entityType } : {}),
+      ...(options?.entityId ? { entityId: options.entityId } : {}),
+    });
+  }
+
   return { enqueued: true };
 }
 
@@ -910,6 +1024,65 @@ export async function bootRepeatableJobs(): Promise<void> {
         { repeat: { pattern }, jobId },
       );
     }
+  }
+
+  // ── Lot L2 — balayage de l'outbox CRM ────────────────────────────────────
+  // Toutes les 10 minutes. C'est le RATTRAPAGE : l'émission immédiate est un
+  // confort, ce passage est la garantie de livraison. Il tourne même quand le
+  // drapeau `CRM_SYNC_ENABLED` est à OFF — et ne trouve alors rien, puisque
+  // dans cet état aucune ligne n'est jamais écrite.
+  if (crmSyncQueue) {
+    await crmSyncQueue.removeRepeatable(
+      "sweep",
+      { pattern: "*/10 * * * *" },
+      "crm-sync-sweep-cron",
+    );
+    await crmSyncQueue.add(
+      "sweep",
+      { type: "sweep" },
+      { repeat: { pattern: "*/10 * * * *" }, jobId: "crm-sync-sweep-cron" },
+    );
+
+    // ── Lot L5 — réconciliation QUOTIDIENNE ────────────────────────────────
+    // 04 h 30 UTC : creux de trafic, et surtout APRÈS que la nuit a laissé au
+    // balayage toutes ses chances de rattraper. Comparer avant les rattrapages
+    // ferait remonter comme « manquant » ce qui n'était que « pas encore parti ».
+    //
+    // Le balayage donne la FRAÎCHEUR, ce passage donne la GARANTIE : il compare
+    // les enregistrements source aux `subject_ref` réellement émis et journalise
+    // ses compteurs même quand tout va bien (l'absence de nouvelles doit être
+    // visible, leçon IndexNow). Drapeau à OFF ⇒ sortie immédiate.
+    await crmSyncQueue.removeRepeatable(
+      "reconcile",
+      { pattern: "30 4 * * *" },
+      "crm-sync-reconcile-cron",
+    );
+    await crmSyncQueue.add(
+      "reconcile",
+      { type: "reconcile" },
+      { repeat: { pattern: "30 4 * * *" }, jobId: "crm-sync-reconcile-cron" },
+    );
+  }
+
+  // ── Lot L4 — intégration au vivier à J+30 ────────────────────────────────
+  // Une fois par jour à 05:00 UTC (créneau libre : 03:00 et 04:00 sont déjà
+  // chargés — purge RGPD, embeddings, brand-voice). La cadence quotidienne
+  // suffit : la règle porte sur des JOURS, pas sur des minutes, et un passage
+  // manqué est rattrapé par le suivant sans perte (l'état vit en base).
+  //
+  // Il tourne même quand les drapeaux sont à OFF — et ne trouve alors rien,
+  // puisque dans cet état aucune candidature n'a jamais été informée.
+  if (vivierCronsQueue) {
+    await vivierCronsQueue.removeRepeatable(
+      "integrate-stock",
+      { pattern: "0 5 * * *" },
+      "vivier-integrate-stock-cron",
+    );
+    await vivierCronsQueue.add(
+      "integrate-stock",
+      { type: "integrate-stock", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 5 * * *" }, jobId: "vivier-integrate-stock-cron" },
+    );
   }
 
   // Sprint X.12 — Booking V1 crons (legacy, cf. bloc ci-dessus).
@@ -1383,11 +1556,45 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "0 7 * * *",
         jobId: "formation-crons-alertes-cron",
       },
-      // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9 Qualiopi), daily 08:00 UTC
+      // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9 Qualiopi).
+      //
+      // 🔴 HORAIRE, et non plus quotidien (2026-08-16). #612 avait retiré la
+      // fenêtre basse : la sélection se fait par ÉTAT (`convocationEnvoyeeAt:
+      // null`), donc une exécution manquée n'est plus définitive. Il restait
+      // pourtant un trou que l'état ne pouvait pas combler — un trou de
+      // CALENDRIER : une session créée le 15/08 à 14h51, après le passage de
+      // 08:00 UTC, pour un début le 16/08 à 07h00, ne rencontre AUCUN passage
+      // avant son propre démarrage. Vérifié sur AXI-SESS-2026-005 : #612 était
+      // bien déployé, le cron a bien tourné, et rien n'est parti — parce qu'au
+      // moment où il est passé la session n'existait pas encore.
+      //
+      // Passer à l'heure ramène ce trou de 24 h à moins d'une heure, et le fait
+      // POUR TOUS LES CHEMINS de création — session créée par l'écran, par une
+      // reprise, inscription ajoutée après coup, date avancée. Un déclencheur
+      // posé à la création aurait dû être recopié à chacun de ces endroits, et
+      // c'est précisément le genre de recopie qui diverge au premier oubli.
+      //
+      // Coût : 24 passages/jour d'une requête indexée qui ne ramène presque
+      // jamais rien. Ce qu'il ne couvre toujours pas — une session créée moins
+      // d'une heure avant son début — reste compté et journalisé comme écart
+      // ind. 9 par `handleConvocationJ5`, parce qu'aucun envoi ne le répare.
       {
         type: "formation-crons.convocation-j5",
-        pattern: "0 8 * * *",
+        pattern: "0 * * * *",
         jobId: "formation-crons-convocation-j5-cron",
+      },
+      // 2026-08-16 — liens de signature J-0, à 06:00 UTC (08:00 Paris l'été).
+      //
+      // AVANT le passage des alertes (07:00) : ainsi une session servie le matin
+      // ne déclenche pas, une heure plus tard, l'alerte qui dit que personne ne
+      // peut signer. L'ordre des crons est ici une règle, pas un détail — deux
+      // passages inversés produiraient une alerte critique quotidienne sur des
+      // sessions parfaitement en ordre, et une alerte qui crie à tort cesse
+      // d'être lue.
+      {
+        type: "formation-crons.liens-emargement-j0",
+        pattern: "0 6 * * *",
+        jobId: "formation-crons-liens-emargement-j0-cron",
       },
       // Hub facturation Phase 3 — marquage retards (statut seul, AUCUN email),
       // daily 06:30 UTC (avant les alertes 07:00 pour qu'elles voient l'état à jour)
@@ -1410,6 +1617,23 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.devis-expiration",
         pattern: "45 6 * * *",
         jobId: "formation-crons-devis-expiration-cron",
+      },
+      // Fraîcheur des offres d'emploi (Google for Jobs) — rappel Telegram des
+      // offres à republier, hebdo lundi 08:15 UTC (après les crons du matin).
+      {
+        type: "formation-crons.offres-fraicheur",
+        pattern: "15 8 * * 1",
+        jobId: "formation-crons-offres-fraicheur-cron",
+      },
+      // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE, et non
+      // quotidienne comme ses voisines. Une panne d'e-mails découverte le
+      // lendemain matin, c'est une journée de convocations et d'attestations
+      // perdue ; à l'heure, c'est un incident. `:20` pour ne pas tomber sur la
+      // minute ronde où se pressent les autres files.
+      {
+        type: "formation-crons.email-sante",
+        pattern: "20 * * * *",
+        jobId: "formation-crons-email-sante-cron",
       },
     ];
 

@@ -7,9 +7,104 @@
 //   - Compatible Edge runtime ET Node runtime (uses fetch natif uniquement)
 //
 // Spec : https://www.indexnow.org/documentation
-// Notifie en cascade Bing + Yandex + Seznam + Naver via api.indexnow.org.
+// Notifie Bing + Yandex + Seznam + Naver — via l'agrégateur quand il veut bien,
+// via les endpoints de repli sinon (voir ci-dessous).
+//
+// 🔴 2026-08-11 — `api.indexnow.org` (= Microsoft) renvoie **403
+// `UserForbiddedToAccessSite`** pour axion-ia.com, et ce depuis un moment : le
+// step CI « IndexNow ping » loguait l'échec mais se terminait en succès
+// (`|| true`), donc personne ne l'a vu. Résultat réel : **aucun moteur n'était
+// notifié**, l'agrégateur ne relayant rien quand il refuse la soumission.
+//
+// Le refus ne vient PAS de chez nous — vérifié le 2026-08-11 :
+//   - `/{key}.txt` répond 200, 32 octets exacts, `text/plain`, sans BOM
+//   - joignable en http (301→https), avec UA bingbot, UA vide, et depuis
+//     trois réseaux tiers indépendants
+//   - **Yandex accepte la MÊME clé et le MÊME keyLocation (202)**, Naver aussi
+// Microsoft qualifie ce code d'erreur de problème back-end de leur côté, à
+// traiter par un ticket Webmaster Support.
+//
+// D'où la cascade ci-dessous : on tente l'agrégateur d'abord (s'il se remet à
+// marcher, tout le monde est servi), et on bascule sur les endpoints qui
+// acceptent réellement. La spec IndexNow garantit qu'une soumission à
+// N'IMPORTE quel participant est partagée avec les autres.
+import { submitUrlsToBing } from "@/lib/seo/bing-wmt-submit";
 
-const ENDPOINT = "https://api.indexnow.org/indexnow";
+const ENDPOINTS = [
+  "https://api.indexnow.org/indexnow",
+  "https://yandex.com/indexnow",
+  "https://searchadvisor.naver.com/indexnow",
+] as const;
+
+// Nommé `…Body` et gardé privé : un `buildIndexNowPayload` existe déjà dans les
+// factories SEO, avec une autre signature — deux symboles homonymes aux formes
+// différentes, c'est un piège à import.
+// ⚠️ Ne PAS citer ici le chemin de ce fichier de factories : son nom contient un
+// marqueur que l'isolation-check (§ 4.1bis) interdit hors de ses zones dédiées.
+// Le mentionner suffit à faire rougir la CI, sur un simple commentaire.
+function buildIndexNowBody(host: string, key: string, urlList: ReadonlyArray<string>): string {
+  return JSON.stringify({
+    host,
+    key,
+    // P1-11 (audit re-run 2026-05-15 AGENT 4) — keyLocation canonique
+    // `/{key}.txt`. Avant : `/api/indexnow/key` faisait IndexNow.org renvoyer
+    // 422 (la spec exige une URL terminant par `.txt`).
+    keyLocation: `https://${host}/${key}.txt`,
+    urlList,
+  });
+}
+
+export interface IndexNowResult {
+  /** Endpoint ayant accepté, ou `null` si tous ont échoué. */
+  accepted: string | null;
+  /** Un message par endpoint essayé, dans l'ordre — pour le log. */
+  attempts: string[];
+}
+
+/**
+ * Soumet à IndexNow en essayant les endpoints dans l'ordre, jusqu'au premier
+ * qui accepte. S'arrête au premier 2xx ; ne throw jamais.
+ *
+ * ⚠️ Ne PAS réduire cette fonction à un seul endpoint : c'est exactement la
+ * situation qui a rendu le pipeline muet pendant des semaines.
+ */
+export async function submitToIndexNow(
+  host: string,
+  key: string,
+  urlList: ReadonlyArray<string>,
+  options: { timeoutMs?: number } = {},
+): Promise<IndexNowResult> {
+  const body = buildIndexNowBody(host, key, urlList);
+  const attempts: string[] = [];
+  for (const endpoint of ENDPOINTS) {
+    // Délai d'expiration PAR endpoint : sans lui, un endpoint qui pend bloque
+    // la bascule vers le suivant — donc la cascade ne sert à rien.
+    const controller = options.timeoutMs != null ? new AbortController() : null;
+    const timer =
+      controller && options.timeoutMs != null
+        ? setTimeout(() => controller.abort(), options.timeoutMs)
+        : null;
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body,
+        ...(controller ? { signal: controller.signal } : {}),
+      });
+      if (res.ok) {
+        attempts.push(`${endpoint} → ${res.status} OK`);
+        return { accepted: endpoint, attempts };
+      }
+      const detail = await res.text().catch(() => "");
+      attempts.push(`${endpoint} → ${res.status} ${res.statusText} ${detail.slice(0, 160)}`.trim());
+    } catch (err: unknown) {
+      attempts.push(`${endpoint} → ${err instanceof Error ? err.message : String(err)}`);
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+  return { accepted: null, attempts };
+}
 
 function siteHost(): string {
   return (process.env["NEXT_PUBLIC_SITE_URL"] ?? "https://axion-ia.com").replace(
@@ -36,15 +131,13 @@ export function pingIndexNow(urls: ReadonlyArray<string>, context?: string): voi
   const host = siteHost();
   const label = context ?? "indexnow";
 
-  if (!key) {
-    if (process.env["NODE_ENV"] !== "production") {
-      console.warn(`[${label}] INDEXNOW_KEY missing — would notify ${urls.length} url(s)`);
-    }
-    return;
-  }
-
-  // Validation : toutes les URLs doivent matcher l'host configuré
-  // (IndexNow refuse le batch entier sinon, code 422).
+  // Validation REMONTEE avant le controle de cle (GEO-105) : elle ne depend
+  // d'aucune cle, et Bing doit pouvoir etre notifie meme si `INDEXNOW_KEY` est
+  // absente. Les deux mecanismes sont independants — les enchainer ferait
+  // dependre l'un de la configuration de l'autre.
+  //
+  // Toutes les URLs doivent matcher l'host configure (IndexNow refuse le batch
+  // entier sinon, code 422).
   const valid = urls.filter((u) => {
     try {
       return new URL(u).host === host;
@@ -57,28 +150,56 @@ export function pingIndexNow(urls: ReadonlyArray<string>, context?: string): voi
     return;
   }
 
-  // P1-11 (audit re-run 2026-05-15 AGENT 4) — keyLocation canonique `/{key}.txt`.
-  // Avant : `/api/indexnow/key` faisait IndexNow.org renvoyer 422 (la spec
-  // exige une URL terminant par `.txt`). Aligné avec `app/api/indexnow/route.ts:51`
-  // qui pointe déjà vers `/{key}.txt` (exposé via /public depuis 2026-05-13,
-  // matcher proxy.ts exclut `.*\\.txt$` du i18n redirect).
+  // 🔴 GEO-105 / GEO-106 — BING, EN PARALLELE ET INDEPENDAMMENT.
   //
-  // Fire-and-forget : on n'await pas. Mais on attache un catch pour logger
-  // les erreurs réseau dans Sentry/console (sans bloquer l'admin).
-  void fetch(ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json; charset=utf-8" },
-    body: JSON.stringify({
-      host,
-      key,
-      keyLocation: `https://${host}/${key}.txt`,
-      urlList: valid,
-    }),
-  })
-    .then((res) => {
-      if (!res.ok) {
+  // Mesure de l'audit : quand le site publie, SEUL YANDEX est reellement
+  // prevenu. L'endpoint Microsoft de la cascade ci-dessous repond 403 depuis le
+  // 2026-08-11 (cause racine cote Microsoft, ticket ouvert, decision actee : on
+  // ne re-diagnostique pas). Or Bing alimente Copilot et le grounding de
+  // ChatGPT Search : l'ignorer revient a laisser hors du circuit le moteur qui
+  // nourrit deux des moteurs de reponse qu'on cherche a atteindre.
+  //
+  // La voie directe (`SubmitUrlBatch`) ne passe pas par l'agregateur et n'est
+  // donc pas concernee par ce 403.
+  //
+  // Fire-and-forget comme le reste : une soumission ratee ne doit jamais faire
+  // echouer une publication. Le silence est distingue de l'absence de cle — un
+  // « non configure » qui ressemble a une panne fait perdre du temps.
+  void submitUrlsToBing([...valid], label)
+    .then((r) => {
+      if (!r.configured) {
+        if (process.env["NODE_ENV"] !== "production") {
+          console.warn(
+            `[${label}] BING_WMT_API_KEY absente — ${valid.length} url(s) non soumises a Bing`,
+          );
+        }
+        return;
+      }
+      if (r.failed > 0) {
         console.error(
-          `[${label}] indexnow HTTP ${res.status} for ${valid.length} url(s): ${valid.join(", ")}`,
+          `[${label}] bing : ${r.failed} url(s) refusee(s), ${r.submitted} acceptee(s)`,
+        );
+      }
+    })
+    .catch((err: unknown) => {
+      console.error(`[${label}] bing : echec inattendu —`, err);
+    });
+
+  if (!key) {
+    if (process.env["NODE_ENV"] !== "production") {
+      console.warn(`[${label}] INDEXNOW_KEY missing — would notify ${urls.length} url(s)`);
+    }
+    return;
+  }
+
+  // Fire-and-forget : on n'await pas, pour ne pas bloquer l'admin. On logge en
+  // revanche CHAQUE endpoint essayé quand aucun n'accepte — un échec silencieux
+  // est ce qui a masqué le 403 Microsoft pendant des semaines.
+  void submitToIndexNow(host, key, valid)
+    .then((result) => {
+      if (!result.accepted) {
+        console.error(
+          `[${label}] indexnow REFUSÉ par tous les endpoints pour ${valid.length} url(s) — ${result.attempts.join(" | ")}`,
         );
       }
     })

@@ -10,6 +10,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 export interface ChatExportMessage {
   readonly role: string;
@@ -44,8 +45,13 @@ export interface ChatExport {
 export async function exportChatDataForEmail(email: string): Promise<ChatExport> {
   // Ancres : leads (Submission → conversation via submissionId) + escalades
   // (conversation référencée). Symétrique de eraseChatDataForEmail.
+  // Empreinte : `contactEmail` est chiffré avec un IV aléatoire, l'égalité SQL
+  // ne peut jamais correspondre (cf. `lib/security/email-hash.ts`).
+  const lookupHash = hashEmailForLookup(email);
   const subs = await prisma.submission.findMany({
-    where: { contactEmail: email },
+    where: {
+      OR: [...(lookupHash ? [{ contactEmailHash: lookupHash }] : []), { contactEmail: email }],
+    },
     select: { id: true },
   });
   const subIds = subs.map((s) => s.id);

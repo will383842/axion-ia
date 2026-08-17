@@ -77,8 +77,8 @@ export const COMMERCIAL_HERO = {
   titleEnPrefix: "Become an AI sales rep in",
   titleEm: { fr: "revenus déplafonnés", en: "uncapped income" },
   description: {
-    fr: "L'IA, le marché le plus porteur des prochaines décennies. Des produits simples, souvent finançables, que les entreprises s'arrachent. Statut indépendant, revenus sans plafond — démarrer ne vous coûte rien.",
-    en: "AI — the biggest market of the coming decades. Simple, often-fundable products that companies are eager to buy. Self-employed, uncapped income — getting started costs you nothing.",
+    fr: "L'IA, le marché le plus porteur des prochaines décennies. Des produits simples, souvent finançables, que les entreprises s'arrachent. Commercial indépendant, agent commercial, VRP ou apporteur d'affaires : revenus sans plafond — démarrer ne vous coûte rien.",
+    en: "AI — the biggest market of the coming decades. Simple, often-fundable products that companies are eager to buy. Independent rep, sales agent or business introducer: uncapped income — getting started costs you nothing.",
   },
   ariaLabel: {
     fr: "Le métier de commercial IA chez Axion-IA en 8 volets : prospection tous secteurs, vente de formations, audits, accompagnements 1-to-1, intégrations, produits financés à coût quasi nul pour le client, statut indépendant et dashboard de suivi des commissions.",

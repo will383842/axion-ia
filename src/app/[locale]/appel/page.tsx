@@ -132,7 +132,13 @@ export default async function AppelPage({ params, searchParams }: Props) {
         ]}
         emitJsonLd={false}
       />
-      <main id="main-content">
+      {/* GEO-123 (audit GEO/AEO 2026-08-14) — `<div>` et NON `<main>` : le
+          layout `[locale]` porte deja `<main id="main">`, cible du lien
+          d'evitement. Un second `<main>` imbrique rend le contenu principal
+          non identifiable pour les technologies d'assistance ET pour les
+          extracteurs de contenu principal des moteurs. L'`id` est retire :
+          `main-content` n'etait cible par aucun lien d'evitement. */}
+      <div>
         {/* Hero ultra-compact — l'utilisateur est ici pour réserver, pas lire.
             Texte condensé pour que le calendrier soit visible above-the-fold
             (sans scroll initial sur desktop 1366x768+ et mobile iPhone 12+). */}
@@ -311,7 +317,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
             </div>
           </Container>
         </section>
-      </main>
+      </div>
       <StickyMobileCta label={isFr ? "Premier contact" : "Premier contact"} href="/appel" />
     </>
   );

@@ -62,17 +62,40 @@ export function resolveEnrollmentFinancement(
 
 /**
  * Destinataire de la facture selon le financement effectif :
- *  - opco            → OPCO
+ *  - opco AVEC subrogation → OPCO
+ *  - opco SANS subrogation → **entreprise** (voir ci-dessous)
  *  - cpf             → stagiaire (reste à charge ; la part CPF passe par la CDC)
  *  - france_travail  → France Travail
  *  - direct / mixte / null → entreprise (l'employeur/payeur)
+ *
+ * ## 🔴 Pourquoi la subrogation entre ici — le défaut corrigé le 16/08
+ *
+ * Cette fonction rendait `"opco"` dès que le financement était OPCO, **sans
+ * jamais regarder la subrogation**. Or les deux circuits existent en droit, et
+ * le plan les exige tous les deux (Lot 8, étape 6) :
+ *
+ * | Circuit | Qui paie l'organisme | Facture libellée à |
+ * |---|---|---|
+ * | **Avec** subrogation | l'OPCO, directement | l'OPCO |
+ * | **Sans** subrogation | l'entreprise, qui se fait rembourser ensuite | **l'entreprise** |
+ *
+ * Sans subrogation, l'OPCO ne doit **rien** à l'organisme : il rembourse son
+ * adhérent. Lui adresser la facture produisait une créance que personne ne
+ * paierait jamais — **et l'entreprise, qui doit réellement, n'était facturée
+ * nulle part**. L'argent n'était donc pas seulement en retard : il n'était pas
+ * réclamé.
+ *
+ * ⚠️ `opcoSubrogation` est un champ de la SESSION, pas de l'inscription : le
+ * régime de paiement est négocié avec le financeur pour l'action, pas par
+ * participant. Il est donc passé à part et non lu depuis `ResolvedFinancement`.
  */
 export function destinataireFacture(
   financementType: FinancementType | null,
+  opts: { opcoSubrogation: boolean },
 ): FactureFormationDestinataire {
   switch (financementType) {
     case "opco":
-      return "opco";
+      return opts.opcoSubrogation ? "opco" : "entreprise";
     case "cpf":
       return "stagiaire";
     case "france_travail":

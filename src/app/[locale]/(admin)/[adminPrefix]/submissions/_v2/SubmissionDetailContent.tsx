@@ -18,6 +18,7 @@ import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { CandidatureCommercialeDetail } from "./CandidatureCommercialeDetail";
 
 interface Props {
   adminPrefix: string;
@@ -58,6 +59,14 @@ export async function SubmissionDetailContent({
   const messageText = details && typeof details.message === "string" ? details.message.trim() : "";
   const ville = details && typeof details.ville === "string" ? details.ville : null;
   const sourceUrl = details && typeof details.source === "string" ? details.source : null;
+  // Candidature commerciale (tunnel sans CV 2026-08-12) : bloc structuré rendu
+  // par un composant dédié (expériences en accordéon, chips IA/zone). Le pitch
+  // vit déjà dans `details.message` → la carte Message générique est masquée
+  // pour ne pas l'afficher deux fois.
+  const candidature =
+    details && details.candidature && typeof details.candidature === "object"
+      ? (details.candidature as Record<string, unknown>)
+      : null;
   const titreSociete =
     submission.companyName && submission.companyName !== "—"
       ? submission.companyName
@@ -95,7 +104,8 @@ export async function SubmissionDetailContent({
         }
       />
       <div className="admin-detail-grid">
-        {messageText ? (
+        {candidature ? <CandidatureCommercialeDetail candidature={candidature} /> : null}
+        {messageText && !candidature ? (
           <div className="admin-card admin-card-wide">
             <h2 className="admin-h2">Message</h2>
             <p

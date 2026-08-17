@@ -60,10 +60,13 @@ export const IA_POUR_LA_PRODUCTION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous avez écrit la liste rouge de votre atelier — ce qui ne sort jamais, ce qui se neutralise, ce qui est libre — et vous produisez une consigne de poste qui la respecte.",
-      objectifGlobalId: "obj-5",
-      // La consigne de poste produite en fin de matinée est déjà un écrit de
-      // procédure : le module sert donc aussi la documentation et les procédures.
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-1",
+      // La matinée sert deux objectifs de plus : la consigne de poste rédigée
+      // aux cinq leviers AXION puis reprise après contrôle du binôme sur la
+      // grille fournie, et la règle de recopie — la vérification demande « que
+      // fait-on d'un paramètre de réglage cité dans une dictée ? » et contrôle
+      // que la contrainte de sécurité a été recopiée et non rédigée.
+      objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 10,
       notes: {
         script:
@@ -251,10 +254,12 @@ export const IA_POUR_LA_PRODUCTION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez à partir d'une dictée le compte rendu de votre point de production, et le mode opératoire d'une opération réelle de votre atelier.",
-      objectifGlobalId: "obj-1",
-      // Le mode opératoire et la consigne mise en langage clair sont de la
-      // documentation de procédure, pas du reporting.
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-4",
+      // Le quatrième temps de la pratique marque l'emplacement du visa HSE et
+      // recopie les valeurs de réglage depuis la fiche visée ; le deuxième met
+      // en forme le mode opératoire d'une opération réelle, le fait relire en
+      // binôme et fait barrer par son auteur l'étape que personne n'exécute.
+      objectifsSecondairesIds: ["obj-3", "obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -420,11 +425,14 @@ export const IA_POUR_LA_PRODUCTION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous avez compté les erreurs de la machine sur votre propre process, et vous préparez un document de sécurité prêt au visa du responsable HSE.",
-      objectifGlobalId: "obj-3",
-      // Le commentaire d'indicateurs sert le reporting (obj-1) ; le commentaire
-      // de plan de charge est le seul point de ces deux jours où l'IA intervient
-      // en appui a la planification (obj-2), et elle n'y calcule jamais rien.
-      objectifsSecondairesIds: ["obj-1", "obj-2"],
+      objectifGlobalId: "obj-6",
+      // Le document de sécurité préparé au deuxième temps repart au visa HSE
+      // avant affichage, points de sécurité recopiés et non rédigés ; le
+      // quatrième temps produit le commentaire du mois à partir de chiffres
+      // déjà calculés par le système, chaque chiffre pointé contre sa source,
+      // et c'est le seul endroit des deux jours où l'IA commente un plan de
+      // charge — sans jamais l'ordonnancer.
+      objectifsSecondairesIds: ["obj-3", "obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -575,10 +583,12 @@ export const IA_POUR_LA_PRODUCTION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous savez ce qui ne s'automatise jamais sur une personne, et vous faites tourner un suivi hebdomadaire sur votre propre relevé d'atelier.",
-      objectifGlobalId: "obj-4",
-      // Le suivi hebdomadaire produit ici est le reporting de production que la
-      // formation vend : il prolonge directement le compte rendu de poste de J1.
-      objectifsSecondairesIds: ["obj-1"],
+      objectifGlobalId: "obj-8",
+      // La grille d'auto-évaluation de fin de journée rejuge toutes les
+      // productions des deux jours sur une ligne éliminatoire — « points de
+      // sécurité recopiés et emplacement de visa marqué » : une production dont
+      // un point de sécurité a été rédigé par l'outil est refusée.
+      objectifsSecondairesIds: ["obj-3"],
       dureeMin: 5,
       notes: {
         script:

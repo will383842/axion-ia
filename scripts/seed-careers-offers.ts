@@ -18,6 +18,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PrismaClient } from "../prisma/generated/client";
+import { normalizeApplicantCountries } from "../src/lib/careers/format";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -36,6 +37,8 @@ interface Poste {
   workMode: string;
   multiCity: boolean;
   city: string | null;
+  /** Pays d'où l'on accepte les candidatures (ISO2). Absent = France seule. */
+  applicantCountries?: string[];
 }
 interface GenContent {
   titleFr: string;
@@ -96,6 +99,8 @@ async function main() {
       city: p.city,
       region: p.city === "Grenoble" ? "Isère" : null,
       country: "FR",
+      // Sans ça, un re-seed écraserait le ciblage international saisi en console.
+      applicantCountries: normalizeApplicantCountries(p.applicantCountries),
       salaryMin: p.sal_min || null,
       salaryMax: p.sal_max || null,
       salaryVisible,

@@ -328,12 +328,22 @@ export default async function GuidePiliersPage({ params }: Props) {
       <ArticleSources
         items={guide.citations}
         locale="fr"
-        lastVerified={guide.updatedAt.toISOString().slice(0, 10)}
+        // GEO-071 (audit GEO/AEO 2026-08-14) — la date de l'article ne peut PAS
+        // servir d'etiquette « derniere verification » : elle affirmerait que les
+        // sources ont ete controlees ce jour-la, ce que personne n'a fait.
+        // Le bloc disparait tant qu'aucune vraie date n'existe — comportement
+        // documente par le composant lui-meme (« pas de date = pas de bloc »).
+        // Le branchement de la vraie donnee (`ExternalReference.lastVerifiedAt`)
+        // est fait sur `/blog` ; ces deux familles ont un autre chargeur, elles
+        // suivront dans un lot dedie plutot que d'etre bricolees ici.
+        lastVerified={null}
       />
 
       {/* Refonte templates 2026-06-22 — transparence E-E-A-T (fraîcheur). */}
       {/* Cadence de revue par type (audit perfection 2026-06-22) — guides = 60 j. */}
-      <ArticleTransparencyBlock lastVerified={guide.updatedAt} updateCycleDays={60} locale="fr" />
+      {/* GEO-071 — la date de l'article n'est PAS une date de verification des
+          sources. Meme raison qu'au bloc de sources ci-dessus. */}
+      <ArticleTransparencyBlock lastVerified={null} updateCycleDays={60} locale="fr" />
 
       {/* Refonte 2026-06-22 — People Also Ask (parité /blog). */}
       <ArticlePeopleAlsoAsk items={peopleAlsoAsk} locale="fr" />

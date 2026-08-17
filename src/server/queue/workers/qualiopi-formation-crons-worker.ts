@@ -36,6 +36,7 @@ import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-
 import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
 import { palierPourJours, libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
+import { verifierSanteEmails } from "@/server/email/health";
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
@@ -47,9 +48,9 @@ import {
   envoyerSuiviJ30,
   envoyerRelanceQuestionnaire,
   envoyerEnqueteEntreprise,
-  notifierAlerteInterne,
 } from "@/server/qualiopi/notifications/notifications-service";
 import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types job
@@ -71,6 +72,9 @@ export type FormationCronJobType =
   | "formation-crons.alertes"
   // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9)
   | "formation-crons.convocation-j5"
+  // 2026-08-16 — liens de signature des sessions qui COMMENCENT aujourd'hui.
+  // Envoyer un lien n'engage pas l'organisme (signer, si) : automatisable.
+  | "formation-crons.liens-emargement-j0"
   // Hub facturation Phase 3 — marquage des factures en retard (STATUT SEUL,
   // AUCUN email : les relances sont 100 % manuelles, règle produit).
   | "formation-crons.factures-retard"
@@ -78,7 +82,18 @@ export type FormationCronJobType =
   // (émission + envoi = clics admin, jamais automatiques).
   | "formation-crons.plans-recurrents"
   // Parcours vente — expiration des devis à dateValidite (SPEC_PART5 §D.10).
-  | "formation-crons.devis-expiration";
+  | "formation-crons.devis-expiration"
+  // Fraîcheur des offres d'emploi (Google for Jobs) — rappel Telegram hebdo
+  // des offres à republier. AUCUN bump de date automatique (règle Google).
+  | "formation-crons.offres-fraicheur"
+  // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE.
+  //
+  // ⚠️ Ce passage n'est pas « formation », et il vit pourtant ici. C'est un
+  // choix : `formation-crons` est le seul répartiteur de crons déjà branché sur
+  // le moteur d'alertes, et la chaîne d'e-mails est précisément ce qui porte la
+  // conformité de la formation. Créer une file dédiée pour un `count()` horaire
+  // aurait ajouté une septième file à surveiller pour surveiller.
+  | "formation-crons.email-sante";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -623,38 +638,26 @@ async function handleAlertes(): Promise<void> {
   try {
     const { crees, resolues } = await synchroniserAlertes();
 
-    // Notifie l'équipe interne des alertes CRITIQUES non encore notifiées —
-    // plus les DÉBLOCAGES du parcours vente (plan « Nouvelle vente » §1a) :
-    // un devis signé ou un cycle moteur terminé attendent une action admin,
-    // l'email évite de camper l'écran d'alertes. Seuil critique sinon
-    // (anti-spam) ; l'idempotence réelle vit dans notifierAlerteInterne
-    // (claim notifiedAt) — un doublon reste impossible même si findMany voit
-    // une alerte déjà en cours de notification.
-    const CODES_DEBLOCAGE = ["devis_signe_convention", "moteur_assemble_a_publier"];
-    const aNotifier = await prisma.alerteSysteme.findMany({
-      where: {
-        resolue: false,
-        notifiedAt: null,
-        OR: [{ niveau: "critique" }, { code: { in: CODES_DEBLOCAGE } }],
-      },
-      select: { id: true },
-    });
-    let notifiees = 0;
-    for (const a of aNotifier) {
-      try {
-        await notifierAlerteInterne(a.id);
-        notifiees++;
-      } catch (err) {
-        console.error(
-          `[formation-crons] alertes: erreur notif ${a.id}:`,
-          err instanceof Error ? err.message : String(err),
-        );
-      }
-    }
+    // Lot 14 (T3b) — notification GROUPÉE, par guichet.
+    //
+    // 🔴 Avant : une boucle qui appelait `notifierAlerteInterne` par alerte,
+    // vers une adresse unique. À 400 alertes ouvertes c'était 400 e-mails dans
+    // la même boîte — et une boîte qu'on n'ouvre plus ne garde rien. Désormais
+    // un message par (guichet, code), au destinataire dérivé de l'acte.
+    // Le périmètre notifié est INCHANGÉ (critiques + déblocages du parcours
+    // vente) : ce lot change le routage et le groupage, pas le seuil.
+    const envoi = await notifierAlertesGroupees();
 
     console.log(
-      `[formation-crons] alertes: ${crees} créées, ${resolues} résolues, ${notifiees} notifiée(s)`,
+      `[formation-crons] alertes: ${crees} créées, ${resolues} résolues, ` +
+        `${envoi.messages} message(s) pour ${envoi.alertes} alerte(s)` +
+        (envoi.sansGuichet > 0 ? `, ${envoi.sansGuichet} SANS GUICHET` : ""),
     );
+    // Un repli n'est jamais tu : le guichet nominal n'a pas été servi, et
+    // quelqu'un doit pouvoir l'apprendre autrement qu'en comparant des boîtes.
+    for (const repli of envoi.replis) {
+      console.warn(`[formation-crons] alertes: repli — ${repli}`);
+    }
   } catch (err) {
     console.error(
       "[formation-crons] alertes: erreur synchronisation:",
@@ -688,44 +691,74 @@ async function handleConvocationJ5(): Promise<void> {
   }
 
   const now = new Date();
-  const windowStart = new Date(now.getTime() + 4.5 * 24 * 60 * 60 * 1000);
-  const windowEnd = new Date(now.getTime() + 5.5 * 24 * 60 * 60 * 1000);
+  // 🔴 PLUS DE FENÊTRE BASSE (2026-08-15). L'ancienne sélection ne retenait que
+  // les sessions dont `dateDebut` tombait dans [J-5,5 ; J-4,5] au passage de
+  // 08:00 UTC. Vérifié en base de production : sur tout l'historique, AUCUNE
+  // convocation n'était jamais partie — et la cause n'était pas le cron, qui
+  // tourne bien, mais cette fenêtre. Aucune session réelle n'a jamais existé
+  // cinq jours avant son début : celle du 31/07 a été créée le 31/07 à 14h51
+  // pour un début à 07h00, celle du 16/08 la veille. Une session créée À
+  // L'INTÉRIEUR de sa propre fenêtre n'y entre jamais, et rien ne la rattrapait.
+  //
+  // Le plafond haut demeure : on ne convoque pas trois mois à l'avance, la
+  // convocation porte les informations logistiques finales. Ce qui disparaît,
+  // c'est le plancher — donc le cron RATTRAPE, chaque jour, tant que la session
+  // n'a pas commencé.
+  const plafond = new Date(now.getTime() + 5.5 * 24 * 60 * 60 * 1000);
 
-  const sessions = await prisma.trainingSession.findMany({
+  const enrollments = await prisma.enrollment.findMany({
     where: {
-      statut: "planifiee",
-      dateDebut: { gte: windowStart, lte: windowEnd },
-    },
-    select: {
-      id: true,
-      enrollments: {
-        where: { statut: { in: ["planifiee", "presente"] } },
-        select: { id: true },
+      statut: { in: ["planifiee", "presente"] },
+      // L'ÉTAT, pas la date : tant que la colonne est nulle, l'inscription
+      // reste candidate. Une exécution manquée (déploiement, coupure Redis)
+      // cesse d'être définitive.
+      convocationEnvoyeeAt: null,
+      session: {
+        statut: "planifiee",
+        // Pas encore commencée : convoquer après coup fabriquerait une pièce
+        // fausse. Ce cas relève d'un écart à consigner, pas d'un envoi.
+        dateDebut: { gt: now, lte: plafond },
       },
     },
+    select: { id: true },
   });
 
   let ok = 0;
   let ko = 0;
 
-  for (const session of sessions) {
-    for (const enrollment of session.enrollments) {
-      try {
-        await envoyerConvocation(enrollment.id);
-        ok++;
-      } catch (err) {
-        ko++;
-        console.error(
-          `[formation-crons] convocation-j5: erreur enrollment ${enrollment.id}:`,
-          err instanceof Error ? err.message : String(err),
-        );
-      }
+  for (const enrollment of enrollments) {
+    try {
+      await envoyerConvocation(enrollment.id);
+      ok++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] convocation-j5: erreur enrollment ${enrollment.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
     }
   }
 
-  const totalEnrollments = sessions.reduce((acc, s) => acc + s.enrollments.length, 0);
+  // ⚠️ Ce que le cron ne peut PAS rattraper, il le DIT. Une session déjà
+  // commencée sans convocation est un écart d'indicateur 9 : il se consigne, il
+  // ne se répare pas par un envoi antidaté.
+  const manquees = await prisma.enrollment.count({
+    where: {
+      statut: { in: ["planifiee", "presente"] },
+      convocationEnvoyeeAt: null,
+      session: { dateDebut: { lte: now }, statut: { in: ["planifiee", "en_cours", "realisee"] } },
+    },
+  });
+  if (manquees > 0) {
+    console.error(
+      `[formation-crons] convocation-j5: ${manquees} inscription(s) dont la session a DÉMARRÉ sans convocation — ` +
+        `écart ind. 9 à consigner, aucun envoi rétroactif ne le répare`,
+    );
+  }
+
   console.log(
-    `[formation-crons] convocation-j5: ${ok} convocations envoyées, ${ko} erreurs (${sessions.length} sessions scannées, ${totalEnrollments} enrollments)`,
+    `[formation-crons] convocation-j5: ${ok} convocation(s) envoyée(s), ${ko} erreur(s) ` +
+      `(${enrollments.length} inscription(s) candidate(s), ${manquees} déjà démarrée(s) sans convocation)`,
   );
 }
 
@@ -1135,6 +1168,146 @@ async function handleDevisExpiration(): Promise<void> {
   );
 }
 
+/**
+ * Fraîcheur des offres d'emploi (hebdo lundi 08:15). Détecte les offres dont le
+ * datePosted effectif (celui du JSON-LD Google for Jobs) dépasse le seuil et le
+ * rappelle sur Telegram (groupe 💼 Candidatures). La republication reste un clic
+ * HUMAIN en console (« Republier ») — jamais de rafraîchissement automatique de
+ * date sans retouche réelle de l'offre (fausse fraîcheur = pénalité Google).
+ */
+async function handleOffresFraicheur(): Promise<void> {
+  const { listStaleJobPostings, JOB_OFFER_FRESHNESS_MAX_DAYS } =
+    await import("@/server/careers/freshness");
+  const stale = await listStaleJobPostings(new Date());
+  if (stale.length === 0) {
+    console.log("[formation-crons] offres-fraicheur: 0 offre à republier");
+    return;
+  }
+  const { notify } = await import("@/server/notifications");
+  await notify({
+    category: "JOB_OFFERS_STALE",
+    payload: {
+      thresholdDays: JOB_OFFER_FRESHNESS_MAX_DAYS,
+      offers: stale.map((o) => ({ title: o.title, daysOld: o.daysOld, kind: o.kind })),
+    },
+    // Un rappel par jour maximum, même si le job est rejoué (retry BullMQ).
+    dedupKey: `job-offers-stale-${new Date().toISOString().slice(0, 10)}`,
+  });
+  console.log(
+    `[formation-crons] offres-fraicheur: ${stale.length} offre(s) > ${JOB_OFFER_FRESHNESS_MAX_DAYS} j signalée(s) sur Telegram`,
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// J-0 — les liens de signature partent le matin même
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Émet et envoie les liens de signature des sessions qui COMMENCENT aujourd'hui.
+ *
+ * 🔴 Pourquoi ce cron existe. Sur le premier dossier réel, AXI-SESS-2026-005,
+ * la stagiaire n'a jamais pu émarger : l'émission des liens était un geste
+ * manuel, sur un écran qu'il fallait penser à ouvrir le bon jour. Rien ne le
+ * rappelait, et la seule alerte possible se levait trois jours plus tard, soit
+ * un jour après l'expiration des jetons.
+ *
+ * La frontière du plan est respectée : **envoyer un lien de signature n'engage
+ * pas l'organisme** — c'est SIGNER qui engage, et signer reste le geste du
+ * stagiaire. L'automatiser est donc légitime, au même titre que la convocation.
+ *
+ * ⚠️ LA GARDE QUI COMPTE : on ne traite QUE les sessions dont AUCUN inscrit
+ * actif n'a de jeton vivant. Sans elle, une session de trois jours verrait ses
+ * liens réémis chaque matin — et comme toute émission révoque la précédente,
+ * les stagiaires arriveraient le jour 2 avec un lien mort dans leur boîte,
+ * pendant que la console afficherait « liens émis ». Le remède aurait fabriqué
+ * une panne plus subtile que la maladie.
+ *
+ * ⚠️ Une session sans journée déclarée n'est PAS forcée : `creerTokenInscription`
+ * refuse, et il a raison — une feuille sans horaires réels est insuffisamment
+ * probante. Le cron le journalise ; l'alerte `session_sans_dispositif_emargement`
+ * le rend visible dans la console le jour même.
+ */
+async function handleLiensEmargementJ0(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] liens-emargement-j0: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const debutJour = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0),
+  );
+  const finJour = new Date(debutJour.getTime() + 24 * 60 * 60 * 1000);
+
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      dateDebut: { gte: debutJour, lt: finJour },
+      AND: [
+        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        // La garde anti-réémission : personne n'a de lien vivant.
+        {
+          enrollments: {
+            none: { emargementTokens: { some: { revokedAt: null, expiresAt: { gt: now } } } },
+          },
+        },
+      ],
+    },
+    select: { id: true, numero: true, _count: { select: { jours: true } } },
+    take: 50,
+  });
+
+  let traitees = 0;
+  let sansJournees = 0;
+  let enEchec = 0;
+
+  for (const session of sessions) {
+    if (session._count.jours === 0) {
+      sansJournees++;
+      console.error(
+        `[formation-crons] liens-emargement-j0: ${session.numero} commence aujourd'hui SANS journée déclarée — ` +
+          `aucun lien ne peut être émis, personne ne pourra signer. Déclarez les journées puis envoyez les liens.`,
+      );
+      continue;
+    }
+    try {
+      // ⚠️ Import DYNAMIQUE, et pas en tête de fichier. `envoi-liens.ts` tire
+      // `queues.ts`, qui instancie une file BullMQ au chargement du module. En
+      // tête, il entrerait dans le graphe de CE fichier — que plusieurs specs
+      // chargent en simulant `notifications-service` pour couper précisément
+      // cette chaîne. Elles se sont mises à échouer au collect, sur un module
+      // qu'elles ne testent pas. Même raisonnement que le commentaire de
+      // `types.ts` sur le cycle worker ↔ queues.
+      const { envoyerLiensPourSession } = await import("@/server/qualiopi/emargement/envoi-liens");
+      const r = await envoyerLiensPourSession({ sessionId: session.id, origine: "cron-j0" });
+      if (r.ok) {
+        traitees++;
+        if (r.echecs.length > 0) {
+          console.error(
+            `[formation-crons] liens-emargement-j0: ${session.numero} — ${r.echecs.length} stagiaire(s) sans lien : ` +
+              r.echecs.map((e) => `${e.stagiaireNom} (${e.motif})`).join(" · "),
+          );
+        }
+      } else {
+        enEchec++;
+        console.error(`[formation-crons] liens-emargement-j0: ${session.numero} — ${r.motif}`);
+      }
+    } catch (err) {
+      enEchec++;
+      console.error(
+        `[formation-crons] liens-emargement-j0: erreur session ${session.numero}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  console.log(
+    `[formation-crons] liens-emargement-j0: ${traitees} session(s) servie(s), ` +
+      `${sansJournees} sans journée déclarée, ${enEchec} en échec ` +
+      `(${sessions.length} session(s) démarrant aujourd'hui sans lien vivant)`,
+  );
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
@@ -1146,10 +1319,43 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.enquete-entreprise-j30": handleEnqueteEntrepriseJ30,
   "formation-crons.alertes": handleAlertes,
   "formation-crons.convocation-j5": handleConvocationJ5,
+  "formation-crons.liens-emargement-j0": handleLiensEmargementJ0,
   "formation-crons.factures-retard": handleFacturesRetard,
   "formation-crons.plans-recurrents": handlePlansRecurrents,
   "formation-crons.devis-expiration": handleDevisExpiration,
+  "formation-crons.offres-fraicheur": handleOffresFraicheur,
+  "formation-crons.email-sante": handleEmailSante,
 };
+
+/**
+ * Surveillance horaire de la chaîne d'envoi (audit 2026-08-16).
+ *
+ * Le corps vit dans `server/email/health.ts` — ici on ne fait que déclencher et
+ * tracer. Fail-soft par construction : `verifierSanteEmails` ne lève pas, mais
+ * le `catch` reste, parce qu'une surveillance qui casse son propre cron ferait
+ * taire au passage tout ce que ce cron surveille par ailleurs.
+ */
+async function handleEmailSante(): Promise<void> {
+  try {
+    const sante = await verifierSanteEmails();
+    if (sante.alertesLevees.length === 0) {
+      console.log(
+        `[formation-crons] email-sante: RAS (${sante.echecsRecents} échec(s) récent(s), ` +
+          `${sante.bloquesEnFile} en attente)`,
+      );
+      return;
+    }
+    console.error(
+      `[formation-crons] email-sante: ${sante.alertesLevees.join(", ")} — ` +
+        `${sante.echecsRecents} échec(s), ${sante.bloquesEnFile} bloqué(s)`,
+    );
+  } catch (e) {
+    console.error(
+      "[formation-crons] email-sante: surveillance en échec :",
+      e instanceof Error ? e.message : String(e),
+    );
+  }
+}
 
 /** Logique de dispatch pure (exportée pour les tests). */
 export async function formationCronsHandler(data: FormationCronJobData): Promise<void> {

@@ -30,6 +30,7 @@ vi.mock("@/lib/security/ip-hash", () => ({
 vi.mock("@/server/actions/knowledge/_guards", () => ({
   requireAdminRead: vi.fn(),
   requireAdminWrite: vi.fn(),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   requireAdminPublish: vi.fn(),
   requireAdminDelete: vi.fn(),
 }));

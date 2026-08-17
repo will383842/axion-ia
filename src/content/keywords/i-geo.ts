@@ -908,7 +908,7 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Comment Axion-IA intervient en entreprise — méthode et formats",
       metaTitle: "Comment Axion-IA intervient en entreprise | axion-ia.com",
       metaDescription:
-        "Axion-IA intervient en 4 formats : audit (1 jour à 6 semaines), formation collective (0,5 à 3 jours), implémentation (4 à 16 semaines), coaching 1-to-1",
+        "Axion-IA intervient en 4 formats : audit (1 jour à 6 semaines), formation collective (0,5 à 2 jours), implémentation (4 à 12 semaines), coaching 1-to-1",
       h2Variants: [
         "Les 4 formats d'intervention d'Axion-IA",
         "Déroulement type d'une mission Axion-IA",

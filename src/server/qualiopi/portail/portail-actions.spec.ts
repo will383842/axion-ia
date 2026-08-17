@@ -18,13 +18,21 @@ import { describe, it, expect, vi, beforeEach, assert } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    trainee: { update: vi.fn() },
+    trainee: { update: vi.fn(), findUnique: vi.fn() },
     questionnaire: { findUnique: vi.fn() },
   },
 }));
 
+// 🔴 Mocké EXPRÈS, et pas laissé à l'écart. L'ouverture d'un accès envoie
+// désormais le lien ; sans ce mock, l'appel réel échouait, le `catch` fail-soft
+// l'absorbait, et les tests passaient au vert sur un envoi qui n'avait pas lieu
+// — c'est-à-dire exactement le défaut qu'on vient de corriger, reproduit dans
+// la suite de tests.
+vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn() }));
+
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid-1" }),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));
 
@@ -69,6 +77,7 @@ import {
   clearPortailCookie,
 } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
+import { enqueueEmail } from "@/server/queue/queues";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { encryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
@@ -462,6 +471,70 @@ describe("genererPortailAccesAction", () => {
       token: VALID_TOKEN,
       expiresAt: EXPIRES_FUTURE,
     });
+  });
+
+  // ─── 🔴 L'ENVOI — il n'existait pas ───────────────────────────────────────
+  //
+  // `creerAcces` créait le jeton, journalisait, rendait l'URL. Rien ne partait.
+  // Et la fiche session affichait « Accès actif — expire le … » : vrai en base,
+  // faux pour la personne, qui n'avait jamais rien reçu.
+
+  it("🔴 envoie le lien au stagiaire — c'est tout le défaut", async () => {
+    (prisma.trainee.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue({
+      email: "simone@example.invalid",
+      nom: "Blanc",
+      prenom: "Simone",
+    });
+
+    const r = await genererPortailAccesAction({ traineeId: TRAINEE_UUID });
+
+    expect(enqueueEmail, "aucun e-mail n'a été enfilé").toHaveBeenCalledTimes(1);
+    const appel = (enqueueEmail as ReturnType<typeof vi.fn>).mock.calls[0] as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+    ];
+    expect(appel[0]).toBe("qualiopi-portail-acces");
+    expect(appel[1]).toBe("simone@example.invalid");
+    expect("data" in r && r.data.envoyeAuStagiaire).toBe(true);
+  });
+
+  it("🔴 le message dit que l'ORGANISME a ouvert l'accès, pas le stagiaire", async () => {
+    // Sans ce drapeau, le gabarit dit « vous avez demandé un nouveau lien […]
+    // vous pouvez ignorer cet email » à quelqu'un qui n'a rien demandé —
+    // exactement le défaut corrigé le 15/08 sur le positionnement.
+    (prisma.trainee.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue({
+      email: "simone@example.invalid",
+      nom: "Blanc",
+      prenom: "Simone",
+    });
+
+    await genererPortailAccesAction({ traineeId: TRAINEE_UUID });
+
+    const payload = (enqueueEmail as ReturnType<typeof vi.fn>).mock.calls[0]?.[3] as Record<
+      string,
+      unknown
+    >;
+    expect(payload["ouvertParOrganisme"]).toBe(true);
+  });
+
+  it("l'envoi est FAIL-SOFT : l'accès survit à un e-mail qui ne part pas", async () => {
+    // Perdre l'accès parce que la file d'e-mails est indisponible serait pire
+    // que devoir transmettre le lien à la main. Mais l'appelant doit SAVOIR.
+    (prisma.trainee.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue({
+      email: "simone@example.invalid",
+      nom: "Blanc",
+      prenom: "Simone",
+    });
+    (enqueueEmail as ReturnType<typeof vi.fn>).mockRejectedValueOnce(new Error("redis down"));
+
+    const r = await genererPortailAccesAction({ traineeId: TRAINEE_UUID });
+
+    expect("data" in r, "l'accès a été perdu à cause de l'e-mail").toBe(true);
+    if (!("data" in r)) return;
+    expect(r.data.token).toBe(VALID_TOKEN);
+    expect(r.data.envoyeAuStagiaire, "l'écran croirait le lien transmis").toBe(false);
   });
 
   it("retourne { data: { id, token, url, expiresAt } } pour un traineeId valide", async () => {

@@ -153,16 +153,23 @@ export function FeatureMediaCard({
             {stat ? (
               /* Chiffre-clé — c'est LUI qui remplit la bande. Grand chiffre
                  serif à pleine opacité + libellé court : le bloc se lit comme
-                 fini, pas comme un emplacement d'image en attente. */
-              <div className="absolute inset-x-6 bottom-5">
+                 fini, pas comme un emplacement d'image en attente.
+
+                 Ancré en bas à DROITE (diagonale avec la puce d'icône, en haut
+                 à gauche) : sur les cartes en 4 colonnes la bande est trop
+                 basse pour empiler puce + grand chiffre à gauche — « 1er » se
+                 lisait « Ter » sous la puce (constaté /memo-isere 2026-08-12,
+                 latent sur toutes les cartes à chiffre court). La diagonale
+                 supprime la collision sans rétrécir la bande. */
+              <div className="absolute inset-x-6 bottom-5 text-right">
                 <p
                   className={cn(
                     "leading-[0.85] font-semibold tracking-tight whitespace-nowrap",
-                    // Les chiffres courts (« 0 », « 18 ») tiennent en très grand.
-                    // Les libellés plus longs (« 6–8 sem. ») déborderaient d'une
-                    // carte en 4 colonnes : on descend d'un cran au-delà de
-                    // 4 caractères plutôt que de laisser la bande se faire rogner.
-                    stat.figure.length > 4 ? "text-[2.5rem]" : "text-[3.75rem]",
+                    // Chiffres courts (« 474 », « ROI ») en très grand — étroits,
+                    // ils restent loin de la puce. Libellés longs (« 6–8 sem. »,
+                    // « 10 000 € ») un cran plus bas : moins hauts, ils passent
+                    // SOUS la puce même en occupant toute la largeur.
+                    stat.figure.length > 4 ? "text-[2rem]" : "text-[3.25rem]",
                     BAND_NUMERAL[accent],
                   )}
                   style={{ fontFamily: "var(--font-serif)" }}

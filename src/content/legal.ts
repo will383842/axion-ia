@@ -157,7 +157,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Objet et champ d'application",
-          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent principalement à des clients professionnels agissant dans le cadre de leur activité. Lorsqu'une formation est souscrite par une personne physique pour son propre compte, les dispositions de la section « Dispositions applicables au particulier (consommateur) » s'appliquent et prévalent sur toute clause contraire.",
+          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, conception de sites web et plateformes SaaS augmentés par l'IA, ainsi que la vente de produits numériques (contenus téléchargeables ou accessibles en ligne, tels que documents, guides, modèles, gabarits, enregistrements vidéo ou audio). Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent principalement à des clients professionnels agissant dans le cadre de leur activité. Lorsqu'une formation est souscrite par une personne physique pour son propre compte, les dispositions de la section « Dispositions applicables au particulier (consommateur) » s'appliquent et prévalent sur toute clause contraire. Les produits numériques relèvent d'un régime distinct, énoncé aux sections « Produits numériques » ; le régime du contrat de formation professionnelle ne leur est pas applicable.",
         },
         {
           title: "Dispositions propres à la formation professionnelle",
@@ -165,7 +165,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Définitions",
-          body: "« Axion-IA » désigne le prestataire ; « Client » le professionnel qui signe le devis ou passe commande ; « Prestations » les services commandés ; « Livrables » les éléments remis au Client (rapports, supports, code, configurations, documents) ; « Devis » la proposition chiffrée détaillant le périmètre, le prix et les délais.",
+          body: "« Axion-IA » désigne le prestataire ; « Client » le professionnel qui signe le devis ou passe commande, et, lorsque la stipulation le prévoit, la personne physique qui contracte en dehors de toute activité professionnelle ; « Prestations » les services commandés ; « Livrables » les éléments remis au Client (rapports, supports, code, configurations, documents) ; « Devis » la proposition chiffrée détaillant le périmètre, le prix et les délais ; « Produit numérique » tout contenu numérique non fourni sur un support matériel, vendu à l'unité et livré par téléchargement ou par accès à un espace en ligne, sans intervention ni accompagnement d'Axion-IA.",
         },
         {
           title: "Acceptation et opposabilité des CGV",
@@ -188,16 +188,55 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Le délai de paiement convenu ne peut excéder les plafonds de l'article L441-10 du Code de commerce (60 jours à compter de l'émission de la facture, ou 45 jours fin de mois). Tout retard entraîne de plein droit, sans rappel préalable et dès le jour suivant la date d'échéance : (i) des pénalités de retard calculées au taux d'intérêt appliqué par la Banque centrale européenne à son opération de refinancement la plus récente, majoré de 10 points de pourcentage ; (ii) une indemnité forfaitaire pour frais de recouvrement de 40 € par facture (art. L441-10 II et D441-5 du Code de commerce), sans préjudice d'une indemnisation complémentaire sur justificatifs si les frais réellement exposés sont supérieurs. En cas de retard, Axion-IA peut suspendre les prestations en cours jusqu'au complet paiement.",
         },
         {
+          // 2026-08-14 — la rédaction précédente qualifiait les délais
+          // d'« engagement de moyens » et exonérait du retard imputable au
+          // Client, mais n'écartait NI la pénalité, NI l'indemnité, NI la
+          // résolution. Un retard de trois semaines sur une implémentation
+          // restait donc indemnisable au droit commun (art. 1231-1 C. civ.).
+          // Le seuil de 60 jours + mise en demeure de 30 jours borne le risque
+          // sans le supprimer : au-delà, le Client garde ses recours — c'est
+          // ce qui rend la clause tenable entre professionnels (L442-1 C. com.).
           title: "Exécution des prestations et délais",
-          body: "Les délais figurent au devis ; ils constituent un engagement de moyens et courent à compter de la réunion des conditions de démarrage (acompte, accès, informations et disponibilités nécessaires). Axion-IA ne saurait être tenue responsable d'un retard imputable au Client (défaut d'accès aux données, indisponibilité des équipes, validations tardives) ou à un cas de force majeure.",
+          body: "Les délais figurant au devis ou au planning sont donnés à titre indicatif et constituent un engagement de moyens. Ils courent à compter de la réunion des conditions de démarrage (acompte, accès, informations, contenus, validations et disponibilités nécessaires) et sont prolongés de plein droit de la durée du retard du Client dans la fourniture de ces éléments. Un retard d'exécution ne peut donner lieu ni à pénalité, ni à indemnité, ni à résolution du contrat, sauf retard excédant soixante (60) jours imputable exclusivement à Axion-IA et après mise en demeure écrite restée sans effet pendant trente (30) jours. Axion-IA ne saurait être tenue responsable d'un retard imputable au Client (défaut d'accès aux données, indisponibilité des équipes, validations tardives), à un tiers ou à un cas de force majeure.",
         },
         {
           title: "Obligations et collaboration du Client",
-          body: "Le Client s'engage à collaborer activement et de bonne foi : fournir en temps utile les informations, accès, environnements et moyens nécessaires, désigner un interlocuteur décisionnaire, et garantir qu'il dispose des droits sur les données et systèmes confiés à Axion-IA. Le Client demeure responsable de l'usage qu'il fait des Livrables et des décisions qu'il prend sur leur fondement.",
+          body: "Le Client s'engage à collaborer activement et de bonne foi : fournir en temps utile les informations, accès, environnements et moyens nécessaires, désigner un interlocuteur décisionnaire, et garantir qu'il dispose de l'ensemble des droits et autorisations sur les données, contenus et systèmes qu'il confie ou rend accessibles à Axion-IA, ainsi que du caractère licite de leur traitement dans le cadre des prestations, notamment au regard de la réglementation applicable aux données personnelles. Le Client demeure responsable de l'usage qu'il fait des Livrables et des décisions qu'il prend sur leur fondement.",
+        },
+        {
+          // 2026-08-14 — aucune clause ne traitait la sauvegarde préalable ni
+          // la sécurité des systèmes du Client, alors que l'offre comprend des
+          // implémentations et automatisations exécutées DANS ses systèmes.
+          // Sans cette clause, une perte de données survenue pendant une
+          // intervention est arbitrée au seul détriment d'Axion-IA, qui n'a ni
+          // la maîtrise ni la connaissance de l'état antérieur des systèmes.
+          title: "Sauvegarde préalable et sécurité des systèmes du Client",
+          body: "Préalablement à toute intervention d'Axion-IA sur ses systèmes, le Client procède à une sauvegarde complète et vérifiée de ses données, configurations et environnements. Axion-IA ne saurait être tenue responsable de la perte, de l'altération ou de l'indisponibilité de données dont la sauvegarde préalable incombait au Client. Le Client demeure responsable de la sécurité de ses propres systèmes d'information (protection contre les codes malveillants, pare-feu, mises à jour, gestion des accès et des habilitations), y compris des systèmes sur lesquels sont déployées les solutions livrées, et de la conservation de ses identifiants et secrets d'accès.",
+        },
+        {
+          // 2026-08-14 — les prestations reposent intégralement sur des briques
+          // tierces (modèles d'IA, API, hébergeurs). Rien ne les couvrait : la
+          // force majeure ne suffit pas, car l'art. 1218 C. civ. exige
+          // l'imprévisibilité ET l'irrésistibilité — une hausse tarifaire d'API,
+          // une dépréciation de modèle ou un changement de conditions d'usage
+          // n'y entrent pas, alors que ce sont les événements les plus probables.
+          title: "Services, technologies et fournisseurs tiers",
+          body: "Les prestations d'Axion-IA s'appuient sur des services, logiciels, modèles d'intelligence artificielle, interfaces de programmation (API) et infrastructures d'hébergement fournis par des tiers. Axion-IA ne saurait être tenue responsable des conséquences directes ou indirectes d'une interruption, d'une dégradation, d'une modification, d'une hausse tarifaire, d'un changement de conditions d'utilisation ou d'une suppression de ces services tiers, d'une évolution des modèles d'intelligence artificielle affectant la qualité, le format, le coût ou la disponibilité des résultats, d'une défaillance des réseaux de télécommunications ou d'alimentation électrique, ou d'une cyberattaque affectant le Client ou un tiers. Sauf stipulation contraire au devis, le Client fait son affaire de la souscription, du paiement et du maintien des abonnements aux services tiers nécessaires au fonctionnement des solutions livrées, ainsi que du respect des conditions d'utilisation de ces services. Lorsqu'un service tiers devient indisponible ou inadapté, Axion-IA propose au Client, dans la mesure du possible, une solution de remplacement, dont la mise en œuvre fait l'objet d'un avenant chiffré.",
         },
         {
           title: "Propriété intellectuelle des livrables",
           body: "Les méthodes, savoir-faire, outils, modèles et éléments préexistants mobilisés par Axion-IA demeurent sa propriété exclusive. Sauf stipulation contraire au devis, les droits d'exploitation sur les Livrables spécifiquement réalisés pour le Client lui sont cédés, dans les limites précisées au devis, après paiement intégral du prix, conformément à l'article L131-3 du Code de la propriété intellectuelle. Axion-IA conserve le droit de réutiliser les compétences, connaissances et savoir-faire génériques acquis à l'occasion de la prestation.",
+        },
+        {
+          // 2026-08-14 — la section précédente ne traitait la propriété
+          // intellectuelle que dans le sens Axion-IA → Client (cession des
+          // livrables). Rien ne couvrait le sens inverse : un tiers reprochant
+          // au Client d'exploiter un contenu qu'il avait lui-même fourni, ou un
+          // contenu produit par un système d'IA dont la disponibilité des droits
+          // n'a pas été vérifiée. C'est pourtant le contentieux le plus probable
+          // sur une prestation de génération de contenu.
+          title: "Propriété intellectuelle — garanties du Client",
+          body: "Le Client garantit Axion-IA contre toute réclamation, action ou revendication de tiers fondée sur les contenus, données, marques, logiciels ou éléments qu'il fournit à Axion-IA ou qu'il fait traiter par les solutions livrées, et prend à sa charge les conséquences pécuniaires d'une telle réclamation, y compris les frais de défense justifiés. Le Client fait son affaire de la vérification de la disponibilité des droits sur les contenus générés ou assistés par des systèmes d'intelligence artificielle avant toute exploitation, publication ou diffusion commerciale.",
         },
         {
           title: "Confidentialité",
@@ -208,20 +247,50 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Chaque partie respecte la réglementation applicable aux données personnelles (RGPD, UE 2016/679). Lorsque, dans le cadre d'une prestation, Axion-IA traite des données personnelles pour le compte du Client, les parties concluent un accord de sous-traitance conforme à l'article 28 du RGPD précisant l'objet, la durée, la nature et les finalités du traitement, les mesures de sécurité et de confidentialité, ainsi que le sort des données en fin de prestation. Le traitement des données collectées via le site est décrit dans la Politique de confidentialité.",
         },
         {
+          // 2026-08-14 — la section « transparence » ci-dessous transférait bien
+          // au Client la responsabilité de la validation, mais NULLE PART le
+          // Client ne reconnaissait le caractère probabiliste des systèmes d'IA,
+          // et NULLE PART Axion-IA n'écartait la garantie d'exactitude. Or c'est
+          // exactement la brèche par laquelle passe un litige sur un contenu
+          // généré : « le résultat était faux » n'a pas la même portée selon que
+          // le contrat annonce, ou non, qu'il PEUT l'être.
+          title: "Nature probabiliste des systèmes d'intelligence artificielle",
+          body: "Le Client reconnaît que les systèmes d'intelligence artificielle sont par nature probabilistes et peuvent produire des résultats inexacts, incomplets, obsolètes ou inappropriés, y compris des affirmations erronées présentées de manière plausible. En conséquence, les contenus, analyses, réponses, recommandations ou décisions produits par les solutions d'intelligence artificielle livrées, paramétrées ou exploitées par Axion-IA sont fournis à titre d'aide et doivent faire l'objet d'une validation humaine par le Client avant toute utilisation, publication, diffusion ou décision. Le Client demeure seul responsable de l'usage qu'il fait des résultats produits et des décisions prises sur leur fondement. Axion-IA ne garantit ni l'exactitude, ni l'exhaustivité, ni la reproductibilité, ni l'adéquation à un usage particulier des contenus générés. Les dispositifs de contrôle éventuellement mis en place (ancrage documentaire, filtres, garde-fous) réduisent ce risque sans le supprimer et ne valent pas garantie de résultat.",
+        },
+        {
           title: "Recours à l'intelligence artificielle et transparence",
           body: "Certaines prestations recourent à des systèmes d'intelligence artificielle, y compris générative. Axion-IA en informe le Client et, le cas échéant, signale les contenus générés ou assistés par IA, conformément à l'article 50 du Règlement européen sur l'intelligence artificielle (UE 2024/1689). Le Client reste responsable de la validation et de l'usage final des résultats produits avec l'assistance de l'IA.",
         },
         {
           title: "Garanties et responsabilité",
-          body: "Axion-IA exécute ses prestations selon les règles de l'art, dans le cadre d'une obligation de moyens. Aucune garantie de résultat n'est donnée ; les gains, ROI ou performances évoqués sont indicatifs et dépendent de facteurs propres au Client. La responsabilité d'Axion-IA, toutes causes confondues, est limitée aux dommages directs et plafonnée au montant HT effectivement perçu au titre de la prestation à l'origine du dommage. Sont exclus les dommages indirects (perte d'exploitation, de données, de chiffre d'affaires ou d'image). Ces limitations ne s'appliquent ni en cas de faute lourde ou dolosive, ni dans les cas où la loi les prohibe.",
+          body: "Axion-IA exécute ses prestations selon les règles de l'art, dans le cadre d'une obligation de moyens. Axion-IA ne souscrit aucune obligation de résultat. Les gains de productivité, économies de temps, taux d'automatisation, indicateurs de performance ou retours sur investissement évoqués dans les propositions commerciales, supports de présentation, contenus du site ou échanges précontractuels constituent des estimations indicatives, dépendantes de facteurs propres au Client, et ne constituent en aucun cas un engagement contractuel d'Axion-IA.",
+        },
+        {
+          // 2026-08-14 — le plafond existait mais sans BORNE TEMPORELLE : « le
+          // montant perçu au titre de la prestation à l'origine du dommage »
+          // grossit indéfiniment sur une relation pluriannuelle. La fenêtre de
+          // douze mois le stabilise. La liste d'exclusions a par ailleurs été
+          // complétée (perte de chance, perte de clientèle, coûts d'interruption
+          // d'activité, recours d'un tiers contre le Client) : une exclusion non
+          // énumérée n'est pas une exclusion.
+          //
+          // 🔴 La réciprocité de la renonciation n'est pas cosmétique : entre
+          // professionnels, une limitation UNILATÉRALE est le premier angle
+          // d'attaque au titre du déséquilibre significatif (L442-1 C. com.).
+          title: "Limitation de responsabilité — plafond et exclusions",
+          body: "En toute hypothèse, la responsabilité totale et cumulée d'Axion-IA, toutes causes et tous préjudices confondus, est limitée aux dommages directs et expressément plafonnée au montant hors taxes effectivement payé par le Client au titre de la prestation en cause au cours des douze (12) mois précédant le fait générateur. Sont expressément exclus de la réparation, chacune des parties y renonçant réciproquement : les dommages indirects et immatériels, notamment perte de chiffre d'affaires, perte de bénéfice, perte d'exploitation, perte de clientèle, perte de chance, perte ou altération de données, préjudice d'image, coûts d'interruption d'activité, ainsi que tout préjudice résultant du recours d'un tiers contre le Client. Ces limitations et exclusions ne s'appliquent ni en cas de dol ou de faute lourde d'Axion-IA, ni aux dommages corporels, ni dans les cas où la loi les prohibe, ni au Client consommateur dans les conditions énoncées à la section qui lui est consacrée.",
         },
         {
           title: "Assurance",
-          body: "Axion-IA déclare être titulaire d'une assurance de responsabilité civile professionnelle couvrant les conséquences pécuniaires de sa responsabilité dans le cadre de ses prestations. Les coordonnées de l'assureur sont communiquées sur demande.",
+          body: "Axion-IA déclare avoir souscrit auprès d'une compagnie notoirement solvable une assurance de responsabilité civile professionnelle couvrant les conséquences pécuniaires de sa responsabilité au titre de ses prestations, et s'engage à en justifier sur demande du Client. Les coordonnées de l'assureur et une attestation en cours de validité sont communiquées sur demande.",
         },
         {
+          // 2026-08-14 — « le contrat peut être résolu si l'empêchement devient
+          // définitif » laissait sans issue l'empêchement LONG mais non
+          // définitif : chacun restait tenu, sans terme. Le seuil de 60 jours
+          // ouvre une sortie symétrique et sans indemnité.
           title: "Force majeure",
-          body: "Aucune partie ne peut être tenue responsable d'un manquement résultant d'un cas de force majeure au sens de l'article 1218 du Code civil et de la jurisprudence française (notamment grève, panne majeure, catastrophe, épidémie, défaillance d'un fournisseur essentiel). La partie empêchée en informe l'autre sans délai ; les obligations sont suspendues pendant la durée de l'empêchement, et le contrat peut être résolu si l'empêchement devient définitif.",
+          body: "Aucune partie ne peut être tenue responsable d'un manquement résultant d'un cas de force majeure au sens de l'article 1218 du Code civil et de la jurisprudence française (notamment grève, panne majeure, catastrophe, épidémie, défaillance d'un fournisseur essentiel). La partie empêchée en informe l'autre sans délai ; les obligations sont suspendues pendant la durée de l'empêchement. Si l'empêchement excède soixante (60) jours, chaque partie peut résilier le contrat par écrit sans indemnité de part ni d'autre, les prestations effectivement réalisées à cette date restant dues au prorata.",
         },
         {
           // 🔴 Audit certification 2026-07-26 (F51). Le barème des CGV (7 j / 2 j
@@ -264,6 +333,62 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Sauf opposition écrite du Client, Axion-IA peut mentionner le nom et le logo du Client ainsi qu'une description générale de la prestation à titre de référence commerciale, dans le respect de la confidentialité des informations sensibles.",
         },
         {
+          // 2026-08-14 — les CGV ignoraient totalement le produit numérique :
+          // ni « téléchargement », ni « support », ni durée d'accès nulle part.
+          // Or « Devis et commande » suppose un devis signé, et « Annulation,
+          // report et remboursement » calcule un barème « en jours ouvrés avant
+          // la date de début de la prestation » — deux notions vides pour un
+          // fichier livré à la seconde du paiement. Sans régime propre, une
+          // vente en ligne se retrouvait sans stipulation applicable.
+          //
+          // 🔴 Le prix s'affiche TTC dès qu'un consommateur peut acheter
+          // (art. L.112-1 C. conso.), alors que la section « Prix » raisonne en
+          // HT pour le B2B. C'est dit ici, faute de quoi l'affichage boutique
+          // contredirait les CGV.
+          title: "Produits numériques — nature, livraison et accès",
+          body: "Les produits numériques sont des contenus fournis sans support matériel : aucun exemplaire physique n'est expédié, et aucune version imprimée n'est due. La fiche de chaque produit précise, avant l'achat, son contenu, son format de fichier, son volume approximatif, la configuration nécessaire pour l'utiliser et, le cas échéant, ses limites d'interopérabilité (art. L.111-1 du Code de la consommation). L'achat d'un produit numérique s'effectue en ligne et ne donne pas lieu à l'établissement d'un devis : la validation de la commande et son paiement tiennent lieu d'acceptation. Le prix est affiché toutes taxes comprises lorsque l'acheteur est un consommateur. La livraison intervient immédiatement après encaissement du prix, par mise à disposition d'un lien de téléchargement ou d'un accès à un espace en ligne, transmis à l'adresse électronique indiquée lors de la commande ; il appartient au Client de fournir une adresse valide et de vérifier ses filtres anti-spam. Le lien de téléchargement reste actif pendant la durée indiquée sur la fiche produit et, à défaut d'indication, pendant douze (12) mois à compter de la livraison ; le Client est invité à télécharger et à conserver son propre exemplaire du fichier, Axion-IA n'assurant pas la conservation illimitée d'un accès.",
+        },
+        {
+          // 🔴 2026-08-14 — LE point qui expose. L'art. L.221-28 13° C. conso.
+          // n'exonère du droit de rétractation de 14 jours QUE si l'exécution a
+          // commencé après accord préalable exprès ET renoncement exprès du
+          // consommateur. Sans ce recueil, un particulier peut télécharger le
+          // fichier puis exiger le remboursement pendant 14 jours, et il a
+          // raison.
+          //
+          // Trois exigences qui font tomber la renonciation si on les rate, et
+          // que la case seule ne suffit pas à satisfaire :
+          //   1. la case doit être DISTINCTE de l'acceptation des CGV — une
+          //      case globale « j'accepte tout » n'est pas un consentement
+          //      exprès à la renonciation ;
+          //   2. elle ne doit pas être pré-cochée, et le consentement doit être
+          //      horodaté et CONSERVÉ : la preuve incombe au professionnel ;
+          //   3. la confirmation sur support durable doit RAPPELER la
+          //      renonciation (art. L.221-13), sinon le délai court malgré la
+          //      case.
+          //
+          // ⚠️ Aucun composant d'interface ne met encore ceci en œuvre : il
+          // n'existe à ce jour aucune route publique de paiement. Cette section
+          // définit le régime ; la case naîtra avec le tunnel de vente. Une
+          // case reliée à aucun paiement ne prouverait rien.
+          title: "Produits numériques — droit de rétractation et renonciation expresse",
+          body: "Le consommateur qui achète un produit numérique dispose en principe d'un délai de quatorze (14) jours pour se rétracter (art. L.221-18 du Code de la consommation). Par exception, ce droit ne peut plus être exercé lorsque l'exécution du contrat a commencé après que le consommateur a expressément donné son accord préalable à cette exécution immédiate et a expressément reconnu qu'il perdrait son droit de rétractation (art. L.221-28 13° du même code). En conséquence, l'accès au produit numérique n'est ouvert qu'après recueil, au moment du paiement, d'un consentement exprès recueilli par une case à cocher distincte de l'acceptation des présentes conditions, non cochée par défaut, formulée en substance ainsi : « Je demande l'exécution immédiate de ma commande et je reconnais perdre mon droit de rétractation de quatorze jours dès la mise à disposition du fichier. » La date et l'heure de ce consentement sont enregistrées et conservées par Axion-IA, à qui la preuve en incombe, et la confirmation de commande adressée sur support durable en rappelle la portée. À défaut de recueil de ce consentement dans ces conditions, le délai de rétractation de quatorze jours demeure applicable et le remboursement intervient dans les quatorze jours suivant la demande. Le Client professionnel ne bénéficie pas du droit de rétractation, sous réserve de l'exception énoncée à la section « Rétractation du Client professionnel ».",
+        },
+        {
+          // 2026-08-14 — le barème d'annulation des CGV se calcule « en jours
+          // ouvrés avant la date de début de la prestation » : inapplicable à
+          // un fichier. Sans régime propre, la seule règle lisible aurait été
+          // celle d'une prestation à date, donc « aucune somme n'est due » à
+          // plus de 15 jours — pour un fichier déjà téléchargé.
+          //
+          // 🔴 La renonciation à la rétractation n'efface PAS la garantie
+          // légale de conformité (art. L.224-25-12 et s. C. conso.), qui est
+          // d'ordre public. Le dire ici évite la lecture « j'ai coché, je n'ai
+          // plus aucun recours », qui serait fausse et abusive.
+          title: "Produits numériques — garantie de conformité et remboursement",
+          body: "Le barème d'annulation applicable aux prestations à date convenue ne s'applique pas aux produits numériques, qui ne comportent pas de date de début. Lorsque la renonciation au droit de rétractation a été valablement recueillie, la seule insatisfaction ou le changement d'avis du Client n'ouvre droit à aucun remboursement. En revanche, Axion-IA reste tenue de la conformité du contenu numérique fourni : en cas de fichier inaccessible, corrompu, incomplet ou non conforme à sa description, le Client le signale à contact@axion-ia.com et Axion-IA procède à la mise à disposition d'un exemplaire conforme ; si cette mise en conformité s'avère impossible ou n'intervient pas dans un délai raisonnable, le prix est remboursé. Le consommateur conserve en toute hypothèse le bénéfice de la garantie légale de conformité des contenus et services numériques (art. L.224-25-12 et suivants du Code de la consommation) et de la garantie des vices cachés (art. 1641 et suivants du Code civil), qu'aucune stipulation des présentes ne restreint. Les remboursements sont effectués par le même moyen de paiement que celui utilisé lors de la commande, sauf accord contraire du Client.",
+        },
+        {
           title: "Rétractation du Client professionnel",
           body: "Les prestations conclues entre professionnels ne relèvent pas du droit de rétractation prévu par le Code de la consommation. Par exception, le Client professionnel employant cinq salariés au plus bénéficie d'un délai de rétractation de 14 jours pour les contrats conclus hors établissement dont l'objet n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
         },
@@ -282,8 +407,21 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Lorsqu'une formation est souscrite par une personne physique pour son propre compte, en dehors de toute activité professionnelle, les dispositions suivantes s'appliquent et prévalent sur toute clause contraire des présentes. La relation est régie par un contrat de formation professionnelle conforme aux articles L.6353-3 à L.6353-7 du Code du travail. Ce contrat mentionne l'objet, la nature, la durée, les effectifs, le prix et les modalités de règlement, ainsi que les sanctions applicables et les titres des intervenants.",
         },
         {
+          // 🔴 2026-08-14 — DÉLIMITATION. Ce régime est propre au contrat de
+          // formation professionnelle. L'interdiction de percevoir une somme
+          // avant dix jours (L.6353-6) est d'ordre public et NE SE RENONCE PAS :
+          // aucune case à cocher ne rend conforme un paiement immédiat pour une
+          // FORMATION vendue à un particulier. C'est une limite structurelle,
+          // pas un défaut de rédaction — un tunnel à paiement immédiat est
+          // viable pour un produit numérique, il ne l'est pas pour une formation
+          // vendue à un consommateur.
+          //
+          // La délimitation existait déjà, mais implicitement : elle tenait à la
+          // subordonnée « Lorsqu'une formation est souscrite » de la section
+          // chapeau, pendant que les cinq sous-titres annoncent « Particulier —
+          // … » et se lisent comme une règle générale. Elle est désormais dite.
           title: "Particulier — délai de rétractation et interdiction de paiement",
-          body: "Le particulier dispose d'un délai de dix jours à compter de la signature du contrat pour se rétracter, par lettre recommandée avec accusé de réception (art. L.6353-5 du Code du travail). Aucune somme ne peut être exigée ni versée avant l'expiration de ce délai de dix jours (art. L.6353-6). À l'issue de ce délai, il ne peut être exigé plus de 30 % du prix convenu ; le solde est échelonné au fur et à mesure du déroulement de l'action. Lorsque le contrat est en outre conclu à distance ou hors établissement, le particulier bénéficie du délai de quatorze jours prévu à l'article L.221-18 du Code de la consommation ; en cas de concours des deux régimes, le délai le plus favorable au particulier s'applique.",
+          body: "Le particulier dispose d'un délai de dix jours à compter de la signature du contrat pour se rétracter, par lettre recommandée avec accusé de réception (art. L.6353-5 du Code du travail). Aucune somme ne peut être exigée ni versée avant l'expiration de ce délai de dix jours (art. L.6353-6). À l'issue de ce délai, il ne peut être exigé plus de 30 % du prix convenu ; le solde est échelonné au fur et à mesure du déroulement de l'action. Lorsque le contrat est en outre conclu à distance ou hors établissement, le particulier bénéficie du délai de quatorze jours prévu à l'article L.221-18 du Code de la consommation ; en cas de concours des deux régimes, le délai le plus favorable au particulier s'applique. Les présentes dispositions sont propres au contrat de formation professionnelle : elles ne régissent pas la vente de produits numériques, soumise aux sections « Produits numériques » qui leur sont consacrées. Réciproquement, la renonciation au droit de rétractation prévue pour les produits numériques ne peut être opposée au particulier au titre d'une action de formation, le délai de dix jours et l'interdiction de percevoir une somme avant son expiration étant d'ordre public.",
         },
         {
           title: "Particulier — abandon et force majeure",
@@ -305,17 +443,78 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           // lecteur. Le texte énonce désormais le droit (qui existe de toute
           // façon), constate l'état réel, et prend l'engagement pour la suite.
           //
-          // Le code tient déjà la même ligne : `documents.ts` refuse d'émettre
-          // un contrat individuel tant que `mediateur_consommation_nom` et
-          // `mediateur_consommation_url` sont vides. Le jour de l'adhésion,
-          // renseigner ces deux clés en configuration Qualiopi ET remplacer le
-          // paragraphe ci-dessous par le nom et l'adresse du médiateur.
+          // ⚠️ 2026-08-14 — CE COMMENTAIRE AFFIRMAIT UNE CHOSE FAUSSE : il
+          // disait que « `documents.ts` refuse d'émettre un contrat individuel »
+          // tant que `mediateur_consommation_nom` et `mediateur_consommation_url`
+          // sont vides. Vérification faite dans le code : il n'y a AUCUN refus.
+          // `documents.ts` ÉMET le contrat, et se contente de rendre l'absence
+          // de médiateur visible à l'admin + tracée au journal d'audit — choix
+          // délibéré et mieux raisonné que le blocage, expliqué sur place : le
+          // jour d'un contrôle, la question n'est pas « le logiciel bloquait-il ? »
+          // mais « quels contrats ont été émis sans la mention ? ».
+          //
+          // Le jour de l'adhésion : renseigner ces deux clés en configuration
+          // Qualiopi, remplacer le paragraphe ci-dessous par le nom et l'adresse
+          // du médiateur, ET modifier `contrat-formation.tsx` qui n'imprime
+          // aucune clause de médiation même une fois les clés renseignées.
+          // 🔴 2026-08-14, DÉCISION WILL — l'engagement ajouté le matin même
+          // (« et aucun produit numérique ne lui sera vendu, avant cette
+          // adhésion ») est RETIRÉ. Motif : il transformait une contrainte
+          // légale en engagement contractuel opposable, que la partie adverse
+          // pourrait invoquer sans même se référer au Code de la consommation.
+          //
+          // ⚠️ CE RETRAIT NE CHANGE RIEN À L'OBLIGATION. L'art. L.612-1 impose
+          // au professionnel de garantir au consommateur le recours effectif et
+          // gratuit à un médiateur agréé CECMC, que les CGV en parlent ou non.
+          // Le déclencheur est la QUALITÉ DE L'ACHETEUR (un consommateur), pas
+          // la nature du produit : un fichier vendu à un particulier y est
+          // soumis exactement comme une formation. Amende administrative
+          // jusqu'à 15 000 € pour une personne morale (art. L.641-1).
+          //
+          // 🔴 RISQUE RÉSIDUEL ASSUMÉ : la phrase « À ce jour, Axion-IA ne
+          // commercialise aucune prestation auprès de consommateurs » est vraie
+          // aujourd'hui et deviendrait FAUSSE le jour où une vente B2C s'ouvre
+          // sans adhésion — sur un support contractuel. Avant d'ouvrir un
+          // tunnel de vente à des particuliers : soit adhérer à un médiateur et
+          // publier ses coordonnées ici, soit réécrire ce constat.
           title: "Particulier — médiation de la consommation",
           body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, tout consommateur a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à un professionnel, après avoir tenté de le résoudre directement par une réclamation écrite. À ce jour, Axion-IA ne commercialise aucune prestation auprès de consommateurs et n'a donc pas adhéré à un dispositif de médiation. Aucun contrat de formation ne sera conclu avec un particulier avant cette adhésion : le nom et les coordonnées du médiateur agréé seront alors publiés dans la présente section et reportés au contrat de formation. Le particulier conserve en toute hypothèse la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
         },
         {
           title: "Particulier — juridiction compétente",
           body: "La clause attributive de compétence prévue aux présentes n'est pas opposable au particulier. Celui-ci peut saisir, à son choix, la juridiction du lieu où il demeurait au moment de la conclusion du contrat, celle du lieu de survenance du fait dommageable, ou l'une des juridictions territorialement compétentes en application du Code de procédure civile (art. R.631-3 du Code de la consommation).",
+        },
+        {
+          // 🔴 2026-08-14 — VERROU. Les présentes CGV portent désormais des
+          // clauses limitatives calibrées pour une relation entre
+          // professionnels. Opposées à un consommateur, plusieurs d'entre elles
+          // sont abusives de plein droit (art. R.212-1 et R.212-2 C. conso.) —
+          // et une clause abusive n'est pas seulement écartée : sa présence
+          // fragilise la lecture de tout le contrat, et expose à la sanction
+          // administrative de la DGCCRF.
+          //
+          // Cette section les neutralise NOMMÉMENT plutôt que par la formule
+          // générale « prévalent sur toute clause contraire » : une exclusion
+          // implicite se plaide, une exclusion énumérée se constate.
+          //
+          // ⚠️ Toute nouvelle clause limitative ajoutée aux CGV doit être
+          // ajoutée à cette liste dans le même patch.
+          title: "Particulier — clauses non opposables au consommateur",
+          body: "Ne sont pas opposables au Client consommateur, qui conserve l'intégralité des droits qu'il tient du Code de la consommation et du Code civil : la limitation et le plafonnement de responsabilité ainsi que les exclusions de réparation ; le délai de forclusion de quatre-vingt-dix jours ; l'exclusion de pénalité, d'indemnité ou de résolution en cas de retard d'exécution ; la garantie contre les réclamations de tiers mise à la charge du Client ; l'exclusion de responsabilité au titre de la sauvegarde préalable des données ; et l'engagement de non-sollicitation. Aucune stipulation des présentes, y compris la renonciation au droit de rétractation applicable aux produits numériques, ne restreint la garantie légale de conformité des contenus et services numériques ni la garantie des vices cachés, dont le consommateur conserve l'entier bénéfice ; la renonciation au droit de rétractation ne vaut que si elle a été recueillie dans les conditions énoncées à la section qui la prévoit. Le nom et l'image du consommateur ne sont utilisés à titre de référence commerciale qu'avec son accord exprès et préalable, révocable à tout moment.",
+        },
+        {
+          // 2026-08-14 — aucun délai de forclusion n'existait : une contestation
+          // de conformité restait recevable pendant cinq ans (art. 2224 C. civ.),
+          // sur une prestation dont les traces techniques (logs, versions de
+          // modèles, états des systèmes du Client) ne survivent pas à cette durée.
+          //
+          // 🔴 Réservé au Client PROFESSIONNEL, et dit comme tel. Opposé à un
+          // consommateur, un délai conventionnel réduisant la prescription légale
+          // est présumé abusif (art. R.212-1 C. conso.) et ferait tomber la clause
+          // entière. La réserve « vices cachés / dol » est ce qui la rend tenable
+          // entre professionnels au regard de l'article L442-1 du Code de commerce.
+          title: "Délai de réclamation sur une prestation",
+          body: "Le Client professionnel dispose d'un délai de quatre-vingt-dix (90) jours à compter de la livraison ou de la survenance du fait invoqué pour notifier à Axion-IA, par écrit et de manière motivée, toute réclamation relative à une prestation. À défaut, la réclamation est forclose. Ce délai ne s'applique ni en cas de dol, ni en cas de vice caché ne pouvant être décelé dans ce délai, ni au Client consommateur, qui conserve l'intégralité des délais légaux dont il bénéficie.",
         },
         {
           title: "Réclamations et règlement des litiges",
@@ -778,15 +977,44 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Procédure de",
       titleEm: "réclamation",
       intro:
-        "Procédure de traitement des réclamations relatives aux prestations de formation d'Axion-IA : qui peut réclamer, comment déposer une réclamation, délais de réponse, traitement et voies de recours.",
+        "Procédure de traitement des difficultés, des réclamations et des aléas survenus en cours de prestation chez Axion-IA : qui peut signaler, comment déposer une réclamation, délais de réponse, traitement et actions correctives, enregistrement au registre des incidents, voies de recours internes et externes.",
       sections: [
         {
+          // 🔴 Audit blanc Qualiopi 2026-08-15 — écart sur l'indicateur 31.
+          // Le RNQ V9 nomme TROIS objets : « les difficultés, réclamations et
+          // ALÉAS survenus en cours de prestation ». Le champ d'application
+          // publié n'en couvrait qu'un — la réclamation — et le mot « aléa »
+          // n'apparaissait dans aucun texte publié.
+          //
+          // Le dispositif, lui, existait déjà : le registre des incidents est
+          // opérationnel (`src/server/qualiopi/registres/incidents-service.ts`,
+          // modèle Prisma `Incident` : type, gravité, action corrective, statut,
+          // export PDF). L'écart était purement rédactionnel — mais un auditeur
+          // COFRAC cherche littéralement les trois mots du libellé officiel, et
+          // un dispositif non décrit est un dispositif qu'il ne peut pas coter.
+          //
+          // ⚠️ Les définitions ci-dessous sont alignées sur les énumérations
+          // RÉELLES de la base (IncidentType, IncidentGravite, IncidentStatut).
+          // Si ces enums évoluent, ce texte doit suivre : décrire un registre
+          // autrement qu'il n'est tenu vaut moins que ne pas le décrire.
           title: "Objet et champ d'application",
-          body: "La présente procédure décrit les modalités de dépôt et de traitement des réclamations relatives aux prestations de formation d'Axion-IA. Peut formuler une réclamation toute personne concernée par une action de formation : le stagiaire, l'entreprise cliente qui commande la formation, ainsi que le financeur (OPCO, France Travail ou tout autre organisme prenant en charge le coût). Une réclamation s'entend de toute expression écrite d'insatisfaction relative à l'organisation, au contenu, au déroulement, aux moyens pédagogiques ou aux conditions administratives d'une formation.",
+          body: "La présente procédure décrit les modalités de signalement et de traitement des difficultés, des réclamations et des aléas survenus en cours de prestation. Elle s'applique à l'ensemble des actions de formation d'Axion-IA, en présentiel comme à distance, ainsi qu'aux prestations d'accompagnement qui les prolongent. Peut la mettre en œuvre toute personne concernée par une prestation : le stagiaire, l'entreprise cliente qui la commande, le financeur (OPCO, France Travail ou tout autre organisme prenant en charge le coût), ainsi que le formateur ou l'intervenant qui la réalise. Les trois objets se distinguent par leur nature. Une difficulté est un obstacle rencontré pendant le déroulement de la prestation et signalé afin d'être levé sans attendre : rythme inadapté, prérequis manquant, défaut d'accessibilité, accès à un outil ou à une salle. Une réclamation s'entend de toute expression écrite d'insatisfaction relative à l'organisation, au contenu, au déroulement, aux moyens pédagogiques ou aux conditions administratives d'une prestation. Un aléa est un événement imprévu qui affecte l'exécution de la prestation telle qu'elle était prévue : indisponibilité d'un formateur, défaillance technique, indisponibilité des locaux, absence collective, cas de force majeure.",
         },
         {
-          title: "Comment déposer une réclamation",
-          body: "Toute réclamation est formulée par écrit, afin d'en garantir la traçabilité. Elle peut être adressée par email à contact@axion-ia.com ou par courrier au siège de l'organisme. Pour permettre un traitement efficace, la réclamation précise l'identité du réclamant, la formation concernée (intitulé et dates), une description factuelle de la situation et, le cas échéant, les attentes du réclamant.",
+          // 🔴 2026-08-15 — AUCUN DÉLAI DE DÉPÔT. Le livret d'accueil imposait
+          // « dans un délai de 10 jours ouvrés suivant la situation litigieuse »
+          // (clause retirée le même jour). Un délai de forclusion sur le dépôt
+          // d'une réclamation qualité est un non-sens au regard de l'indicateur
+          // 31 : il rend irrecevable la réclamation qui arrive après le solde de
+          // la formation, c'est-à-dire précisément celle que l'auditeur cherche.
+          //
+          // ⚠️ La dernière phrase n'est PAS un renoncement au délai de
+          // forclusion de 90 jours des CGV (section « Délai de réclamation sur
+          // une prestation ») : elle sépare la recevabilité au titre de la
+          // présente procédure QUALITÉ de la mise en jeu de la responsabilité
+          // CONTRACTUELLE. Sans cette phrase, les deux textes se démentaient.
+          title: "Comment signaler une difficulté ou déposer une réclamation",
+          body: "Une difficulté peut être signalée à tout moment, oralement au formateur pendant la séquence ou par écrit à contact@axion-ia.com. Le formateur y répond immédiatement lorsque sa levée relève de lui et la transmet au référent pédagogique dans le cas contraire. Une réclamation est formulée par écrit, afin d'en garantir la traçabilité : par email à contact@axion-ia.com ou par courrier au siège de l'organisme. Pour permettre un traitement efficace, elle précise l'identité du réclamant, la prestation concernée (intitulé et dates), une description factuelle de la situation et, le cas échéant, les attentes du réclamant. Aucun délai de dépôt n'est opposé au réclamant : une réclamation est recevable pendant le déroulement de la prestation comme après son terme. Les délais de réclamation prévus par les conditions générales de vente concernent la mise en jeu de la responsabilité contractuelle d'Axion-IA ; ils sont sans effet sur la recevabilité d'une réclamation au titre de la présente procédure.",
         },
         {
           title: "Délais de traitement",
@@ -794,23 +1022,80 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Traitement et actions correctives",
-          body: "Chaque réclamation est enregistrée puis instruite par le référent pédagogique. L'instruction consiste à analyser les faits, à recueillir si nécessaire le point de vue du formateur et des parties concernées, et à déterminer les suites appropriées. Lorsqu'un dysfonctionnement est avéré, une ou plusieurs actions correctives sont définies et mises en œuvre afin d'éviter son renouvellement.",
+          body: "Chaque réclamation est enregistrée puis instruite par le référent pédagogique. L'instruction consiste à analyser les faits, à recueillir si nécessaire le point de vue du formateur et des parties concernées, et à déterminer les suites appropriées. Lorsqu'un dysfonctionnement est avéré, une ou plusieurs actions correctives sont définies et mises en œuvre afin d'éviter son renouvellement. Le responsable qualité est propriétaire de la présente procédure : il s'assure de son application, du respect des délais annoncés et de la clôture effective de chaque dossier.",
         },
         {
-          title: "Suivi et amélioration continue",
-          body: "Les réclamations et les actions correctives associées sont consignées dans un registre interne. Elles font l'objet d'un suivi et d'une analyse périodique qui alimentent la démarche d'amélioration continue de la qualité des prestations.",
+          // 🔴 2026-08-15 — SECTION AJOUTÉE. C'est le cœur de la correction :
+          // l'indicateur 31 attend un traitement décrit des aléas, distinct de
+          // celui des réclamations (un aléa n'a pas de réclamant, personne ne
+          // se plaint, et pourtant la prestation dévie de ce qui était prévu).
+          //
+          // Les mesures de remédiation énumérées sont limitatives et doivent le
+          // rester : chacune est réellement praticable et sans surcoût pour le
+          // client. N'ajouter une mesure ici que si elle est effectivement
+          // tenable — un engagement publié se constate le jour de l'audit.
+          //
+          // ⚠️ Le délai de 24 heures ouvrées est un ENGAGEMENT PUBLIÉ : il
+          // suppose que le registre des incidents soit alimenté au fil de l'eau
+          // et non reconstitué avant l'audit. `dateIncident` et `createdAt` du
+          // modèle `Incident` sont deux champs distincts ; un écart systématique
+          // entre les deux est exactement ce qu'un auditeur regarde.
+          title: "Aléas survenus en cours de prestation",
+          body: "Tout aléa survenu en cours de prestation est déclaré au responsable qualité dans un délai de 24 heures ouvrées à compter de sa survenance ou, s'il est constaté plus tard, de sa découverte. La déclaration incombe au formateur ou à l'intervenant qui constate l'aléa ; le stagiaire, l'entreprise cliente et le financeur peuvent également le signaler, par les mêmes voies qu'une réclamation. Chaque aléa est systématiquement enregistré au registre des incidents, qui mentionne sa date, son type (pédagogique, administratif, technique ou autre), sa gravité (mineure, majeure ou critique), la session concernée le cas échéant, l'action corrective décidée et son statut de traitement (ouvert, en cours, résolu) jusqu'à la clôture du dossier. Selon la nature de l'aléa, les mesures de remédiation admises sont le report de la séquence ou de la session sans frais pour le client, le remplacement du formateur par un intervenant de compétences équivalentes, ou l'organisation d'une séquence de rattrapage permettant d'atteindre les objectifs pédagogiques prévus. Le stagiaire, l'entreprise cliente et, lorsque la prestation est financée, le financeur sont informés de l'aléa, de la mesure retenue et de ses conséquences éventuelles sur le calendrier, sur les modalités ou sur la durée de la prestation.",
         },
         {
-          title: "Voies de recours",
-          body: "Si la réponse apportée ne satisfait pas le réclamant, celui-ci peut demander un réexamen de sa situation. Lorsque la formation fait l'objet d'un financement, le financeur (OPCO, France Travail ou autre) peut également être informé. Les litiges qui ne trouveraient pas de solution amiable relèvent des dispositions prévues par les conditions générales.",
+          title: "Suivi, registres et amélioration continue",
+          body: "Les réclamations sont consignées au registre des réclamations, les aléas au registre des incidents. L'un et l'autre sont tenus à jour, exportables et tenus à la disposition du client, du financeur et de l'organisme certificateur. Les actions correctives associées, leur mise en œuvre et leur efficacité font l'objet d'un suivi et d'une analyse périodique en revue de direction, qui alimentent la démarche d'amélioration continue de la qualité des prestations.",
+        },
+        {
+          title: "Voies de recours internes",
+          body: "Si la réponse apportée ne satisfait pas le réclamant, celui-ci peut demander un réexamen de sa situation auprès de la direction d'Axion-IA, en exposant les motifs de sa contestation. Le réexamen donne lieu à une réponse écrite. Lorsque la prestation fait l'objet d'un financement, le financeur (OPCO, France Travail ou autre) peut être informé à tout moment de la réclamation et des suites qui lui ont été données.",
+        },
+        {
+          // 🔴 2026-08-15 — SECTION AJOUTÉE. Aucune voie de recours EXTERNE
+          // n'était publiée : la procédure se refermait sur « les dispositions
+          // prévues par les conditions générales », ce qu'un auditeur lit comme
+          // une absence de recours indépendant.
+          //
+          // ⚠️⚠️ NE PAS NOMMER DE MÉDIATEUR ICI. Axion-IA n'a adhéré à AUCUN
+          // dispositif de médiation de la consommation à ce jour — c'est déjà
+          // constaté aux mentions légales (« Médiation de la consommation ») et
+          // aux CGV (« Particulier — médiation de la consommation »). Écrire un
+          // nom de médiateur sur une page publique alors qu'aucune adhésion
+          // n'existe est une affirmation fausse sur un support opposable : le
+          // silence est moins grave que le mensonge.
+          //
+          // 📍 EMPLACEMENT RÉSERVÉ — le jour de l'adhésion à un médiateur agréé
+          // CECMC (obligation de l'art. L.612-1 dès la première vente à un
+          // consommateur), insérer ICI une phrase du type : « Conformément aux
+          // articles L.611-1 et suivants du Code de la consommation, le client
+          // consommateur peut recourir gratuitement au médiateur <NOM>,
+          // <ADRESSE POSTALE>, <URL>, après avoir adressé une réclamation
+          // écrite à Axion-IA. » Et dans le MÊME patch : renseigner les clés
+          // `mediateur_consommation_nom` / `mediateur_consommation_url` en
+          // configuration Qualiopi, remplacer le constat des CGV et des
+          // mentions légales, et compléter `contrat-formation.tsx` qui
+          // n'imprime aucune clause de médiation.
+          title: "Voies de recours externes",
+          body: "Lorsque le désaccord persiste à l'issue du réexamen interne, le client conserve l'intégralité des voies de recours de droit commun. Les prestations d'Axion-IA étant commercialisées auprès d'une clientèle professionnelle, le dispositif de médiation de la consommation prévu aux articles L.611-1 et suivants du Code de la consommation n'est pas applicable à ces relations et Axion-IA n'a, à ce jour, adhéré à aucun dispositif de médiation ; toute vente à un consommateur suppose l'adhésion préalable à un médiateur agréé, dont les coordonnées seront alors publiées dans la présente section. À défaut de résolution amiable, le litige relève du tribunal compétent désigné par les conditions générales de vente, soit celui du ressort du siège social d'Axion-IA. Lorsque la prestation bénéficie d'un financement public ou mutualisé, le financeur peut être saisi au titre du contrôle qu'il exerce sur les actions qu'il prend en charge. Les services régionaux de contrôle de la formation professionnelle (DREETS) exercent le contrôle des organismes de formation en application des articles L.6361-1 et suivants du Code du travail et peuvent être saisis à ce titre. Enfin, lorsque Axion-IA est titulaire de la certification Qualiopi, toute réclamation relative au respect du Référentiel National Qualité peut en outre être portée à la connaissance de son organisme certificateur, dont les coordonnées sont communiquées sur simple demande.",
         },
       ],
       metaSeo: {
-        title: "Procédure de réclamation · Axion-IA",
+        title: "Difficultés, réclamations et aléas · Axion-IA",
         description:
-          "Procédure de réclamation des formations Axion-IA : dépôt par écrit, accusé de réception sous 5 jours ouvrés, réponse circonstanciée sous 15 jours ouvrés, actions correctives et voies de recours.",
+          "Procédure Axion-IA de traitement des difficultés, réclamations et aléas : dépôt écrit sans délai opposable, accusé de réception sous 5 jours ouvrés, réponse sous 15 jours ouvrés, registre des incidents et voies de recours.",
       },
     },
+    // ⚠️ 2026-08-15 — DIVERGENCE FR/EN ASSUMÉE. Le bloc `en` ci-dessous n'a PAS
+    // été mis à jour : il décrit encore la procédure d'avant la correction de
+    // l'indicateur 31 (pas d'aléas, pas de voie de recours externe, champ
+    // d'application borné à la réclamation). Motif : décision Will du
+    // 2026-08-12 — site français uniquement, ne rien produire de nouveau en
+    // anglais ; le locale EN est par ailleurs intercepté en 301 vers le FR par
+    // `src/proxy.ts`, la page anglaise n'est donc pas servie.
+    // 🔴 SI EN EST RÉACTIVÉ (`EN_LOCALE_ENABLED=true`), ce bloc redevient
+    // public et RÉINTRODUIT l'écart d'audit : le traduire AVANT de basculer le
+    // drapeau, ou retirer la page EN de l'index.
     en: {
       title: "Complaints",
       titleEm: "procedure",

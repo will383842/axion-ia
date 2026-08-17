@@ -110,10 +110,36 @@ describe("genererJoursParDefaut", () => {
     expect(jours.map((j) => j.date)).toEqual(["2026-06-12", "2026-06-15"]);
   });
 
-  it("décale un début tombant un samedi", () => {
+  // 🔴 CE TEST VERROUILLAIT UN DÉFAUT — retourné le 16/08/2026.
+  //
+  // Il s'appelait « décale un début tombant un samedi » et exigeait que la date
+  // SAISIE par l'admin soit remplacée par une autre. Constaté sur le premier
+  // dossier réel : session du dimanche 16/08/2026 (AXI-SESS-2026-005), journée
+  // proposée le lundi 17/08. Confirmée telle quelle, la feuille d'émargement
+  // aurait porté une date contredisant la convention — deux pièces du même
+  // dossier en désaccord, sur exactement ce que l'émargement sert à prouver
+  // (indicateurs 9 et 11).
+  //
+  // 🔑 La distinction est de NATURE, pas de commodité : les journées suivantes
+  // sont DÉDUITES, la première est SAISIE. Le saut de week-end reste juste pour
+  // les premières, faux pour la seconde.
+  it("🔴 NE déplace PAS un début saisi un samedi — c'est une date, pas une déduction", () => {
     // 2026-06-13 est un samedi.
     const jours = genererJoursParDefaut({ dateDebutIso: "2026-06-13", dureeHeures: 7 });
-    expect(jours[0]?.date).toBe("2026-06-15");
+    expect(jours[0]?.date, "la date saisie par l'admin a été remplacée").toBe("2026-06-13");
+  });
+
+  it("🔴 ni un début saisi un dimanche — le cas réel AXI-SESS-2026-005", () => {
+    // 2026-08-16 est un dimanche. C'est LE cas qui a révélé le défaut.
+    const jours = genererJoursParDefaut({ dateDebutIso: "2026-08-16", dureeHeures: 7 });
+    expect(jours[0]?.date).toBe("2026-08-16");
+  });
+
+  it("mais saute bien le week-end pour les journées SUIVANTES, y compris depuis un samedi", () => {
+    // Samedi 2026-06-13, 14 h : le samedi est gardé (saisi), le dimanche sauté
+    // (déduit) → lundi.
+    const jours = genererJoursParDefaut({ dateDebutIso: "2026-06-13", dureeHeures: 14 });
+    expect(jours.map((j) => j.date)).toEqual(["2026-06-13", "2026-06-15"]);
   });
 
   it("10 h → une journée pleine puis une demi-journée de 3 h", () => {

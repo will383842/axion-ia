@@ -6,7 +6,7 @@
 "use server";
 
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
@@ -15,6 +15,7 @@ import { SITE_URL } from "@/lib/seo";
 import { pingIndexNow } from "@/lib/indexnow";
 import { enqueueGoogleIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
 import { isJobOfferIndexable } from "@/lib/careers/job-offers";
+import { normalizeApplicantCountries } from "@/lib/careers/format";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { CAREER_CATEGORY_SLUGS } from "@/content/careers/categories";
 import type {
@@ -102,6 +103,9 @@ export interface JobOfferListItem {
   filledAt: Date | null;
   validThrough: Date | null;
   updatedAt: Date;
+  /** Date de publication EFFECTIVE (publishedAt ?? datePosted) — celle que
+   *  Google for Jobs voit dans le JSON-LD (même règle que job-posting.ts). */
+  postedAt: Date;
   applicationsCount: number;
 }
 
@@ -138,6 +142,8 @@ export async function listJobOffersAction(input: Partial<ListJobOffersInput> = {
         filledAt: true,
         validThrough: true,
         updatedAt: true,
+        publishedAt: true,
+        datePosted: true,
         _count: { select: { applications: true } },
       },
     }),
@@ -155,6 +161,7 @@ export async function listJobOffersAction(input: Partial<ListJobOffersInput> = {
     filledAt: r.filledAt,
     validThrough: r.validThrough,
     updatedAt: r.updatedAt,
+    postedAt: r.publishedAt ?? r.datePosted,
     applicationsCount: r._count.applications,
   }));
   return {
@@ -211,10 +218,16 @@ const upsertSchema = z.object({
   bodyJsonEn: z.string().optional(),
   bodyTextEn: z.string().default(""),
   employmentType: z.string().max(20).default("FULL_TIME"),
+  // Second type schema.org optionnel ("" → undefined → null en base).
+  secondaryEmploymentType: z.preprocess(emptyToUndef, z.string().max(20).optional()),
   workMode: z.enum(["on_site", "hybrid", "remote"]).default("on_site"),
   city: z.preprocess(emptyToUndef, z.string().max(120).optional()),
   region: z.preprocess(emptyToUndef, z.string().max(120).optional()),
   country: z.string().length(2).default("FR"),
+  // Pays d'où l'on accepte les candidatures — saisis en clair, séparés par des
+  // virgules (« FR, BE, MA »). Vide = France seule. Codes ISO 3166-1 alpha-2 ;
+  // ce qui n'en est pas un est ignoré silencieusement par la normalisation.
+  applicantCountries: z.preprocess(emptyToUndef, z.string().max(300).optional()),
   salaryMin: optInt,
   salaryMax: optInt,
   salaryPeriod: z.string().max(10).default("YEAR"),
@@ -330,10 +343,16 @@ export async function upsertJobOfferAction(
     bodyEn: d.bodyEn || d.bodyFr,
     bodyTextEn: d.bodyTextEn || d.bodyTextFr,
     employmentType: d.employmentType,
+    // Garde-fou : un second type identique au premier n'apporte rien → null.
+    secondaryEmploymentType:
+      d.secondaryEmploymentType && d.secondaryEmploymentType !== d.employmentType
+        ? d.secondaryEmploymentType
+        : null,
     workMode: d.workMode,
     city: d.city ?? null,
     region: d.region ?? null,
     country: d.country,
+    applicantCountries: normalizeApplicantCountries(d.applicantCountries?.split(",")),
     salaryMin: d.salaryMin ?? null,
     salaryMax: d.salaryMax ?? null,
     salaryPeriod: d.salaryPeriod,
@@ -380,6 +399,7 @@ export async function upsertJobOfferAction(
     revalidatePath(adminPath("fr", "offres-emploi"));
     revalidatePath("/fr/carrieres");
     revalidatePath(`/fr/carrieres/${d.slug}`);
+    revalidateTag("admin:job-offers-stale", "default");
     if (existing?.slug && existing.slug !== d.slug) {
       revalidatePath(`/fr/carrieres/${existing.slug}`);
     }
@@ -432,6 +452,7 @@ export async function archiveJobOfferAction(
   ]);
   revalidatePath(adminPath("fr", "offres-emploi"));
   revalidatePath("/fr/carrieres");
+  revalidateTag("admin:job-offers-stale", "default");
   if (archived?.slug) {
     revalidatePath(`/fr/carrieres/${archived.slug}`);
     pingOfferIndexing(archived.slug, "delete");
@@ -469,8 +490,68 @@ export async function setJobOfferFilledAction(
   revalidatePath(adminPath("fr", "offres-emploi"));
   revalidatePath("/fr/carrieres");
   revalidatePath(`/fr/carrieres/${offer.slug}`);
+  revalidateTag("admin:job-offers-stale", "default");
   pingOfferIndexing(offer.slug, "delete");
   return { ok: true };
+}
+
+/**
+ * Republie une offre TOUJOURS OUVERTE : `publishedAt = maintenant` → le
+ * `datePosted` du JSON-LD (publishedAt ?? datePosted, cf. job-posting.ts) et le
+ * `lastmod` sitemap (updatedAt) suivent, puis ping IndexNow + Google Indexing.
+ *
+ * ⚠️ Republication = geste HUMAIN : à cliquer uniquement si l'offre est
+ * réellement toujours ouverte (idéalement après relecture/retouche du texte).
+ * Google sanctionne les dates rafraîchies artificiellement — c'est pour ça
+ * qu'aucun cron ne fait ce geste à notre place (il ne fait que le rappeler).
+ */
+export async function republishJobOfferAction(
+  _prev: JobOfferActionState,
+  formData: FormData,
+): Promise<JobOfferActionState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  const parsed = idSchema.safeParse({ id: formData.get("id") });
+  if (!parsed.success) return { ok: false, error: "ID invalide." };
+
+  const existing = await prisma.jobOffer.findUnique({ where: { id: parsed.data.id } });
+  if (!existing) return { ok: false, error: "Offre introuvable." };
+  if (existing.status !== "published" || existing.filledAt) {
+    return { ok: false, error: "Seule une offre publiée et non pourvue peut être republiée." };
+  }
+  if (existing.validThrough && existing.validThrough.getTime() < Date.now()) {
+    return {
+      ok: false,
+      error: "Offre expirée (date de fin passée) — modifier la date de fin avant de republier.",
+    };
+  }
+
+  const [offer] = await prisma.$transaction([
+    prisma.jobOffer.update({
+      where: { id: parsed.data.id },
+      data: { publishedAt: new Date() },
+    }),
+    prisma.activityLog.create({
+      data: {
+        adminUserId: session.userId,
+        action: "joboffer.republished",
+        targetType: "job_offer",
+        targetId: parsed.data.id,
+        ipAddress: await getClientIp(),
+      },
+    }),
+  ]);
+  revalidatePath(adminPath("fr", "offres-emploi"));
+  revalidatePath("/fr/carrieres");
+  revalidatePath(`/fr/carrieres/${offer.slug}`);
+  // Pastille sidebar « offres à republier » — recompte immédiat.
+  revalidateTag("admin:job-offers-stale", "default");
+  pingOfferIndexing(offer.slug, "publish", offer);
+  return { ok: true, id: offer.id };
 }
 
 /** Duplique une offre (statut draft, slug suffixé) pour des postes similaires. */

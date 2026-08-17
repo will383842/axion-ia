@@ -182,7 +182,7 @@ export const TOURS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour sur nos missions tourangelles).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit in Tours precisely maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers cover every size — from local micro-businesses to industrial mid-caps across the Tours basin (industry, energy, agrifood, services) — with an in-person read-out at your premises and a concrete action plan handed over face to face.",

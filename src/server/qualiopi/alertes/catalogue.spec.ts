@@ -44,6 +44,7 @@ const CODES_ATTENDUS: string[] = [
   // bloquée en `en_cours` sans qu'aucune alerte ne se lève (R03 exige `realisee`,
   // que la clôture auto refuse justement de poser sans émargement).
   "session_bloquee_en_cours",
+  "session_sans_dispositif_emargement",
   // Phase « Tout pour animer » (2026-08-05) : le slot `diaporama` du kit (LE
   // .pptx projeté) n'est pas déposé pour une session qui démarre sous 7 jours.
   // Jamais levée pour une formation sans kit résolvable (sur-mesure, dupliquée).
@@ -92,6 +93,13 @@ const CODES_ATTENDUS: string[] = [
   "job_ia_echoue",
   "suppression_rgpd_j30",
   "revue_trimestrielle_a_faire",
+  // Chaîne d'envoi d'e-mails (audit du 2026-08-16). Comme
+  // `besoin_adaptation_declare`, ces deux codes naissent d'un cron DISTINCT
+  // (`formation-crons.email-sante`) et non du balayage d'`evaluerAlertes()` —
+  // d'où leur `resolutionAuto: false`, sans quoi le premier
+  // `synchroniserAlertes` venu les résoudrait avant que quiconque les ait lus.
+  "emails_en_echec",
+  "emails_bloques_en_file",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

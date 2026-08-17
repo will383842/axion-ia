@@ -45,7 +45,7 @@ import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { type AuditTier, getAuditTierMeta } from "@/content/audit-taxonomy";
 import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesIndexableNow } from "@/content/villes";
+import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 
 interface Props {
@@ -175,7 +175,7 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
     };
   });
 
-  const villes = getVillesIndexableNow().slice(0, 48);
+  const villes = getVillesCoreIndexableNow().slice(0, 48);
 
   return (
     <>

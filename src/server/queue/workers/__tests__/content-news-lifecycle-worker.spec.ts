@@ -5,8 +5,10 @@
  * `startNewsLifecycleWorker()`, puis l'invoquer directement.
  *
  * Couvre :
- *  1. Happy path : 1 article > 90j → archive Article + revalidatePath
- *     + enqueueIndexingForTier1 (lifecycleEvent='delete').
+ *  1. Happy path : 1 article > 90j → archive Article + revalidateContent
+ *     (Fix 2026-08-15 D7 — API interne, le revalidatePath direct était un
+ *     no-op silencieux en worker bg) + enqueueIndexingForTier1
+ *     (lifecycleEvent='delete').
  *  2. Failure path : Article.update throw (article supprimé manuellement) →
  *     swallow + continue, indexing pas enqueué.
  *  3. Edge case : 0 article candidat archive + count > 0 candidates demote →
@@ -23,7 +25,7 @@ const {
   countMock,
   readConfigMock,
   enqueueIndexingMock,
-  revalidatePathMock,
+  revalidateContentMock,
   workerCtorMock,
   capturedProcessor,
 } = vi.hoisted(() => {
@@ -34,7 +36,8 @@ const {
     countMock: vi.fn(),
     readConfigMock: vi.fn(),
     enqueueIndexingMock: vi.fn().mockResolvedValue(undefined),
-    revalidatePathMock: vi.fn(),
+    // Fix 2026-08-15 (D7) — le worker passe par revalidateContent ({ok,reason}).
+    revalidateContentMock: vi.fn().mockResolvedValue({ ok: true }),
     workerCtorMock: vi.fn((_name: string, fn: (job: Job) => Promise<void>) => {
       captured.fn = fn;
       return {
@@ -70,8 +73,8 @@ vi.mock("@/server/content-gen/indexing/enqueue", () => ({
   enqueueIndexingForTier1: enqueueIndexingMock,
 }));
 
-vi.mock("next/cache", () => ({
-  revalidatePath: revalidatePathMock,
+vi.mock("@/server/content-gen/shared/revalidate-content", () => ({
+  revalidateContent: revalidateContentMock,
 }));
 
 async function getProcessor(): Promise<(job: Job) => Promise<void>> {
@@ -104,7 +107,8 @@ describe(
       readConfigMock.mockReset();
       readConfigMock.mockResolvedValue({ active: false });
       enqueueIndexingMock.mockClear();
-      revalidatePathMock.mockClear();
+      revalidateContentMock.mockClear();
+      revalidateContentMock.mockResolvedValue({ ok: true });
       workerCtorMock.mockClear();
     });
 
@@ -134,7 +138,13 @@ describe(
       expect(updateArg.data.status).toBe("archived");
       expect(updateArg.data.indexationTier).toBe("tier_3_noindex_nofollow");
 
-      expect(revalidatePathMock).toHaveBeenCalledWith("/fr/actualites/audit-rgpd-2024");
+      // Fix 2026-08-15 (D7) — revalidation EN LOT via l'API interne : page
+      // archivée + sitemaps + index actualités dans un seul POST.
+      expect(revalidateContentMock).toHaveBeenCalledTimes(1);
+      const [revalInput] = revalidateContentMock.mock.calls[0] as [{ paths: string[] }];
+      expect(revalInput.paths).toContain("/fr/actualites/audit-rgpd-2024");
+      expect(revalInput.paths).toContain("/sitemap-news.xml");
+      expect(revalInput.paths).toContain("/fr/actualites");
       expect(enqueueIndexingMock).toHaveBeenCalledTimes(1);
       const enqArg = enqueueIndexingMock.mock.calls[0]?.[0] as {
         articleId: string;
@@ -179,7 +189,7 @@ describe(
       expect(articleUpdateMock).not.toHaveBeenCalled();
       expect(enqueueIndexingMock).not.toHaveBeenCalled();
       // Pas d'archives → pas de revalidate sitemap-news global
-      expect(revalidatePathMock).not.toHaveBeenCalled();
+      expect(revalidateContentMock).not.toHaveBeenCalled();
       // count appelé pour demote candidates
       expect(countMock).toHaveBeenCalledTimes(1);
     });

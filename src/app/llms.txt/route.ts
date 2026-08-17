@@ -17,8 +17,10 @@
 // Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
 import {
-  INTERVENTION_TIERS,
+  CODAGE_TIERS,
+  UN_A_UN_TIERS,
   formatAmount,
+  getEntryLabel,
   getFormationCatalogPriceRange,
   getTierById,
 } from "@/content/pricing";
@@ -30,9 +32,17 @@ export const runtime = "edge";
 // HTTP `Cache-Control` (1h fresh + 24h SWR) below for CDN caching.
 
 export function GET() {
+  // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
+  // (990 €), pas la journée Dirigeant (1 390 €) : « à partir de » doit pointer
+  // le tier le moins cher du groupe UN_A_UN_TIERS.
   const coachingPrice = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
+    getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
+  );
+  // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
+  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(
+    /^(dès\s|À partir de )/,
+    "à partir de ",
   );
   // Prix d'entrée catalogue formations — dérivé de la matrice (jamais en dur).
   const formationsMinPrice = formatAmount(getFormationCatalogPriceRange().minEur, "fr", {
@@ -65,12 +75,13 @@ export function GET() {
 > Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
 
-## Modules — 4 prestations
+## Modules — 5 prestations
 
 - [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — formations intra-entreprise sur site ou à distance : offres générales, par métier (${SITE_URL}/fr/formations/metiers) et par secteur d'activité (${SITE_URL}/fr/formations/secteurs), 4 h à 2 jours, dès ${formationsMinPrice} par groupe (2-15 pers.). Tarifs HT : ${SITE_URL}/fr/formations/tarifs.
 - [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
 - [${SERVICE_BY_ID.implementation.officialFr}](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
-- [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.${qualiopiSection}
+- [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.
+- [${SERVICE_BY_ID.sitesWeb.officialFr}](${SITE_URL}/fr/sites-web-augmentes) — sites web et SaaS avec IA intégrée (chatbot RAG, contenu SEO/AEO, automatisations métier), développement sur mesure hébergé UE, ${sitesWebEntry}.${qualiopiSection}
 
 ## Preuve & méthode
 
@@ -85,12 +96,13 @@ export function GET() {
 - [Blog](${SITE_URL}/fr/blog) — articles tier-1 indexable (méthodologie, cas d'usage, retours terrain). Chaque article rédigé après une mission réelle, pensé pour rester actionnable 12 mois.
 - [Catégories du blog](${SITE_URL}/fr/blog/categorie) — hubs thématiques (formations IA, coaching 1-to-1, audits IA, implémentation & automatisation, sites web augmentés). Hub par thème : ${SITE_URL}/fr/blog/categorie/{slug}.
 - [Flux RSS du blog](${SITE_URL}/fr/blog/feed.xml) — flux machine-readable des derniers articles (signal de fraîcheur / polling crawlers).
-- [Actualités IA](${SITE_URL}/fr/actualites) — veille hebdomadaire IA opérationnelle pour dirigeants de PME/ETI : articles d'actualité sourcés puis réécrits (analyse, implications concrètes, à retenir). Chaque article dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/actualites/{slug}.
+- [Actualités IA](${SITE_URL}/fr/actualites) — veille IA opérationnelle pour dirigeants de PME/ETI : articles d'actualité sourcés puis réécrits (analyse, implications concrètes, à retenir). La date portée par chaque article fait foi sur la fraîcheur — aucune cadence de publication n'est promise. Chaque article dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/actualites/{slug}.
 - [Flux RSS Actualités IA](${SITE_URL}/fr/actualites/feed.xml) — flux machine-readable de la veille (signal de fraîcheur / polling crawlers).
 - [FAQ](${SITE_URL}/fr/faq) — Q/R structurées, ${SITE_URL}/fr/faq/par-thematique pour navigation.
-- [Glossaire](${SITE_URL}/fr/glossaire) — termes IA opérationnelle (RAG, fine-tuning, agents, etc.).
+- [Base de connaissances](${SITE_URL}/fr/connaissances) — fiches citables sourcées : méthodologies, comparatifs, playbooks, cas d'usage sectoriels, définitions. C'est le corpus le plus dense du site pour une citation par un moteur de réponse. Chaque fiche : ${SITE_URL}/fr/connaissances/{slug}. Index machine-readable : ${SITE_URL}/sitemap-knowledge.xml. Sélection éditoriale : ${SITE_URL}/fr/ressources (flux ${SITE_URL}/fr/ressources/feed.xml).
+- [Glossaire](${SITE_URL}/fr/glossaire) — termes IA opérationnelle (RAG, fine-tuning, agents, etc.). Chaque terme dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/glossaire/{slug}.
 - [Guide IA pour entreprises 2026](${SITE_URL}/fr/guide-ia) — vue d'ensemble enjeux + roadmap.
-- [Observatoire de l'IA 2026](${SITE_URL}/fr/observatoire-ia) — étude Axion-IA sur l'adoption de l'IA dans les entreprises françaises (maturité, usages, budgets, freins, RGPD, intentions d'investissement). Données ouvertes CC BY 4.0, export CSV : ${SITE_URL}/api/observatoire/export-csv. Méthodo : questionnaire 16 questions, 13 régions × 30 secteurs × 4 tailles.
+- [Observatoire de l'IA 2026](${SITE_URL}/fr/observatoire-ia) — étude Axion-IA sur l'adoption de l'IA dans les entreprises françaises (maturité, usages, budgets, freins, RGPD, intentions d'investissement). Données ouvertes CC BY 4.0, export CSV : ${SITE_URL}/api/observatoire/export-csv · export JSON : ${SITE_URL}/api/observatoire/export-json. Méthodo : questionnaire 16 questions, 13 régions × 30 secteurs × 4 tailles.
 
 ## Implantations géographiques
 
@@ -138,6 +150,7 @@ export function GET() {
 
 - [Verbose llms.txt](${SITE_URL}/llms-full.txt) — version étendue avec contenus inline.
 - [Sitemap-index racine](${SITE_URL}/sitemap-index.xml) — listing complet des sub-sitemaps (~17 500 URLs).
+- [Sitemap base de connaissances](${SITE_URL}/sitemap-knowledge.xml) — toutes les fiches citables publiées, avec leur date de dernière révision.
 - [Image Sitemap FR](${SITE_URL}/sitemaps/images-fr.xml) — Google Images, banque CC BY 4.0.
 - [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, miroir EN.
 - [Image Sitemap Services](${SITE_URL}/sitemap-images-services.xml) — 72 images marketing sur 20 pages services.

@@ -124,7 +124,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // isolation-check, KB transitions, etc.). Pas de violation isolation —
   // exceptions explicites doctrine §4.1bis.
   /^\.github\/workflows\/ci\.yml$/,
-  /^\.github\/workflows\/gsc-crawl-stats-weekly\.yml$/,
+  /^\.github\/workflows\/gsc-search-analytics-weekly\.yml$/,
   /^\.github\/workflows\/content-gen-seed\.yml$/,
   /^\.github\/workflows\/enable-openai-embeddings\.yml$/,
   // Workflow de seed KB manuel — référence content-gen (seeding KB) en CI.
@@ -137,7 +137,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^prisma\/seed\.ts$/,
   /^prisma\/seeds\/blog-fs-bootstrap\.ts$/,
   /^scripts\/image-bank\/isolation-check\.ts$/,
-  /^scripts\/perf\/export-gsc-crawl-stats\.mjs$/,
+  /^scripts\/perf\/export-gsc-search-analytics\.mjs$/,
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/web-vitals\/page\.tsx$/,
   /^src\/app\/\[locale\]\/centre-aide\/\[slug\]\/page\.tsx$/,
   /^src\/app\/\[locale\]\/guides\/\[slug\]\/page\.tsx$/,
@@ -223,6 +223,67 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // empêcher, et sur les SUPPORTS DE FORMATION, terrain direct de l'audit
   // Qualiopi.
   /^tests\/unit\/ci\/gate-a11y-cablage\.spec\.ts$/,
+  // Exception ajoutée 2026-08-16 (audit GEO/AEO, GEO-145) — MÊME RAISONNEMENT
+  // que l'exception a11y ci-dessus.
+  //
+  // Cette garde de sitemap lit `prisma/seeds/content-gen/author-profile.ts`
+  // pour vérifier que le profil `manon` y est déclaré ACTIF. C'est la
+  // PRÉCONDITION de la déclaration de `/fr/equipe/manon` dans `pages.xml` : la
+  // page est DB-dépendante et répond 404 si le profil est absent ou inactif.
+  // Déclarer dans un sitemap une URL qui peut 404 est pire que ne pas la
+  // déclarer — la garde lie donc la déclaration à ce qui la rend légitime.
+  //
+  // Lecture de fichier en assertion, aucun `import`, aucune dépendance à
+  // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
+  /^tests\/unit\/seo\/sitemap-hygiene\.spec\.ts$/,
+  // Exception ajoutée 2026-08-16 (audit GEO/AEO, GEO-010 et GEO-071) — MÊME
+  // RAISONNEMENT que les exceptions ci-dessus.
+  //
+  // Cette garde vérifie que les pages éditoriales cessent d'afficher une date de
+  // « dernière vérification » fabriquée à partir de la date de l'article. Elle
+  // doit donc citer le chargeur (`content-gen/blog/loader.ts`) et le composant
+  // (`components/content-gen/ArticleSources`) : c'est précisément le couplage
+  // qu'elle surveille. Lui interdire de les nommer reviendrait à lui interdire
+  // de faire son travail.
+  //
+  // Lecture de fichier en assertion, aucun `import` d'exécution : le couplage
+  // que le § 4.1bis interdit n'existe pas ici.
+  //
+  // 🔑 C'est la TROISIÈME garde de ce chantier à trébucher ici. La règle
+  // implicite mérite d'être dite : une garde qui surveille une frontière doit
+  // pouvoir nommer les deux côtés. Ajouter l'exception fait partie du travail,
+  // ce n'est pas un contournement.
+  /^tests\/unit\/seo\/sources-eeat\.spec\.ts$/,
+  // Exception ajoutée 2026-08-16 (audit GEO/AEO E2E, GEO-028) — MÊME RAISONNEMENT
+  // que l'exception a11y ci-dessus.
+  //
+  // Ce test LIT `prisma/seeds/content-gen/author-profile.ts` pour en extraire le
+  // chemin du portrait de byline, puis vérifie que ce fichier, s'il est local et
+  // hors budget de poids, est bien servi par `next/image`. Lecture de fichier en
+  // assertion, aucun `import`, aucune dépendance à l'exécution : le couplage que
+  // § 4.1bis interdit n'existe pas ici.
+  //
+  // Coder le chemin en dur dans le test serait la fausse simplification : le
+  // portrait changerait dans le seed et la garde continuerait à mesurer l'ancien
+  // fichier — verte sur une régression. Le SSOT est le seed, la garde doit le
+  // suivre. C'est précisément le défaut mesuré (1,5 Mo servis en 64 × 64 sur
+  // toutes les pages éditoriales) que ce fichier existe pour empêcher.
+  /^src\/components\/knowledge\/public\/AuthorByline\.spec\.tsx$/,
+  // Exception ajoutée 2026-08-16 (audit GEO/AEO E2E, mesure des gates).
+  //
+  // Ce test LIT CE FICHIER-CI, pour vérifier qu'une exception d'architecture ne
+  // désigne pas un script disparu : `export-gsc-crawl-stats` a été renommé en
+  // `export-gsc-search-analytics`, et une exception qui pointe un fichier
+  // inexistant ne protège plus rien — elle a juste l'air de protéger.
+  //
+  // Une garde qui surveille une frontière doit pouvoir NOMMER LES DEUX CÔTÉS.
+  // C'est le seul cas où le nom de la zone est irréductible : on peut reformuler
+  // une phrase, pas un chemin qu'on ouvre en lecture. Ajouter l'exception fait
+  // donc partie du travail, ce n'est pas un contournement.
+  //
+  // Lecture de fichier en assertion, aucun `import`, aucune dépendance à
+  // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
+  /^tests\/unit\/ci\/gate-mobile-et-inp\.spec\.ts$/,
   // Exceptions ajoutées 2026-05-20 (sessions city-quality + S+5 P2 + keywords + sentry).
   // Ces fichiers mentionnent "content-gen" uniquement dans des commentaires JSDoc
   // ou des commentaires de code (référence à un consommateur, contexte audit, URL
@@ -408,6 +469,15 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   //   (`"server/content-gen/lib/category-mapper.ts"` — miroir de la migration
   //   20260616180000, non renommable sans migration). Aucun import, aucun code
   //   pipeline : exactement le même cas que `admin-nav.test.ts` ci-dessus.
+  // - keyword-opportunity-detector.ts (2026-08-15) : worker du pipeline
+  //   content-gen à part entière — il détecte les opportunités de mots-clés qui
+  //   alimentent la génération, et il est enregistré parmi les crons content-gen
+  //   (`queues.ts`). Son nom ne porte simplement pas le préfixe `content-` du
+  //   motif générique `content-*-worker.ts` ci-dessus. Le marqueur vient de son
+  //   import d'alerte (`shared/content-gen-alerts`), ajouté pour que la détection
+  //   de chute de position PRÉVIENNE réellement : elle se contentait d'un
+  //   `console.warn` sous un commentaire affirmant à tort qu'une alerte Telegram
+  //   était câblée ailleurs. Consommateur légitime, pas une fuite de périmètre.
   /^prisma\/migrations\/\d+_content_template_history\/migration\.sql$/,
   /^scripts\/activate-content-gen-value-metier\.ts$/,
   /^scripts\/depublish-en-translations\.ts$/,
@@ -415,6 +485,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/admin-nav\.test\.ts$/,
   /^src\/scripts\/backfill-hero-images\.ts$/,
   /^src\/content\/__tests__\/services-ssot\.spec\.ts$/,
+  /^src\/server\/queue\/workers\/keyword-opportunity-detector\.ts$/,
 ];
 
 /**

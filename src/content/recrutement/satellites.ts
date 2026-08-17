@@ -3,13 +3,13 @@
 // ville (et ses alentours par proximité) depuis une seule page — sans exposer
 // des pages ville quasi-dupliquées (anti-doorway). Décision Will 2026-06-08.
 
-import { VILLES, type Ville } from "@/content/villes";
+import { VILLES_CORE, type VilleData } from "@/content/villes/core";
 
 /** Seuil population T1+T2 (aligné sur le SSG premium existant). */
 export const HUB_MIN_POPULATION = 100_000;
 
 /** Villes T1+T2 (40) listées dans le JobPosting France. */
-export const HUB_VILLES: ReadonlyArray<Ville> = VILLES.filter(
+export const HUB_VILLES: ReadonlyArray<VilleData> = VILLES_CORE.filter(
   (v) => v.population >= HUB_MIN_POPULATION,
 );
 

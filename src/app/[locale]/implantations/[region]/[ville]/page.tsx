@@ -44,7 +44,8 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { fmtPopulation } from "@/lib/intl";
 
 import { getRegion } from "@/content/regions";
-import { VILLES, type Ville, isVilleIndexable } from "@/content/villes";
+import { type Ville, isVilleIndexable } from "@/content/villes";
+import { villesPrerenduesAuBuild } from "@/content/villes/prerendu";
 import { resolveVilleWithCopy } from "@/content/villes/resolve-with-copy";
 import {
   AUDIT_TIERS,
@@ -88,7 +89,13 @@ export function generateStaticParams(): Array<{ region: string; ville: string }>
   // ~13 500 routes (économie ~5 GB disk + 8 min build).
   // Les villes T3 restent indexables (sitemap.xml + meta tags OK), elles sont
   // juste pas pré-rendues au build — Google les crawle = ISR génère = cachée.
-  return VILLES.filter((v) => v.population >= 100_000).map((v) => ({
+  //
+  // 2026-08-16 (GEO-118) — le critère vit dans `@/content/villes/prerendu` parce
+  // qu'il a un SECOND consommateur : le job `warm` du déploiement doit revalider
+  // exactement ces pages-là, et pas d'autres (cf. l'en-tête de ce module). Deux
+  // endroits qui décrivent le même ensemble finissent par diverger — c'est le
+  // défaut même que GEO-118 constate.
+  return villesPrerenduesAuBuild().map((v) => ({
     region: v.region,
     ville: v.slug,
   }));

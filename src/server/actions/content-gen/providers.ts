@@ -16,7 +16,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { writeAuditLog } from "@/server/content-gen/audit-log";
 import type { ProviderKey, ProviderRole } from "../../../../prisma/generated/client";
-import { requireAdminWriteRateLimited } from "./_auth";
+import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
 const ProviderIdSchema = z.string().min(1).max(64);
@@ -47,6 +47,9 @@ export interface ProviderRow {
 }
 
 export async function listProviders(): Promise<ReadonlyArray<ProviderRow>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon
+  // (config providers = noms de variables d'env des clés API, budgets, modèles).
+  await requireAdmin();
   const rows = await prisma.providerConfig.findMany({
     orderBy: [{ role: "asc" }, { provider: "asc" }],
   });

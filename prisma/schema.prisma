@@ -280,11 +280,29 @@ enum SurveyStatus {
 
 // CLAUDE.md §14 livre la doctrine FR : super admin / admin / editeur / lecteur.
 // Convention §17 (commentaires + identifiers en anglais) → on garde editor/reader.
+/// Rôles d'administration.
+///
+/// 🔴 AJOUTÉS EN FIN D'ÉNUMÉRATION, jamais intercalés. Un `ALTER TYPE … ADD
+/// VALUE … BEFORE` réordonne le type Postgres, et tout tri par rang change de
+/// sens en silence. L'ordre ici n'a aucune signification hiérarchique : la
+/// hiérarchie réelle vit dans `src/server/auth/habilitations.ts`.
+///
+/// `responsable_qualite` et `secretaire` (2026-08-15) rendent la matrice
+/// d'habilitation EXPRIMABLE : jusque-là, il n'existait aucun rôle pour la
+/// personne qui gère le dossier sans engager l'organisme — la seule façon de
+/// lui donner accès était `editor`, qui pouvait attester, facturer, conclure
+/// un devis et habiliter un formateur.
 enum AdminRole {
   super_admin
   admin
   editor // = editeur (FR doctrine §14)
   reader // = lecteur (FR doctrine §14)
+  /// Pilote la qualité : atteste, valide une évaluation finale, habilite un
+  /// formateur (ind. 11/21/22). N'engage JAMAIS sur le contractuel ni le financier.
+  responsable_qualite
+  /// Poste administratif : tout ce qui n'engage pas — créer une session,
+  /// inscrire, générer les brouillons, convoquer, relancer, classer, consulter.
+  secretaire
 }
 
 enum AdminStatus {
@@ -730,6 +748,13 @@ model Submission {
   contactName        String            @map("contact_name") @db.Text
   contactRole        String?           @map("contact_role") @db.VarChar(100)
   contactEmail       String            @map("contact_email") @db.Citext
+  /// Index de recherche RGPD (2026-08-12). `contact_email` étant chiffré avec
+  /// un IV ALÉATOIRE, aucune égalité SQL n'y est possible : l'export art. 15 et
+  /// l'effacement art. 17 renvoyaient donc VIDE en répondant « succès ».
+  /// HMAC-SHA256 déterministe — helper `src/lib/security/email-hash.ts`.
+  /// Nullable : lignes antérieures au remplissage rétroactif, et remis à NULL
+  /// après effacement pour que la personne redevienne introuvable.
+  contactEmailHash   String?           @map("contact_email_hash") @db.VarChar(64)
   contactPhone       String?           @map("contact_phone") @db.Text
   // Payload form
   details            Json
@@ -793,6 +818,11 @@ model Submission {
   @@index([locale])
   @@index([submittedAt])
   @@index([contactEmail])
+  /// Index de l'empreinte e-mail — c'est LUI que doivent interroger l'export
+  /// (art. 15) et l'effacement (art. 17). `@@index([contactEmail])` ci-dessus
+  /// ne sert plus à rien depuis le chiffrement : il indexe des cryptogrammes
+  /// tous différents.
+  @@index([contactEmailHash])
   // Sprint Notif Infra 2026-05-26 — filtres inbox.
   @@index([needsAttention, archivedAt])
   @@index([lastRepliedAt])
@@ -900,6 +930,18 @@ model EmailLog {
   @@index([entityType, entityId])
   @@index([recipient])
   @@index([createdAt])
+  /// Audit du 2026-08-16 — `job_id` etait le SEUL critere de filtre sans index,
+  /// et il est devenu le plus chaud du modele : depuis que la ligne « en
+  /// attente » est posee a l'enfilage, CHAQUE envoi lit par `job_id` (garde
+  /// anti-doublon) puis ecrit par `job_id` + `status` (cloture). Deux balayages
+  /// sequentiels par e-mail, invisibles sur les 102 lignes d'aujourd'hui et
+  /// quadratiques a mesure que le journal grossit -- exactement le profil d'un
+  /// defaut qui n'apparait qu'apres la mise a l'echelle.
+  ///
+  /// Compose `(job_id, status)` et non `job_id` seul : il sert la cloture
+  /// telle quelle, et sert la garde anti-doublon par prefixe gauche. Un seul
+  /// index couvre donc les deux acces.
+  @@index([jobId, status])
   @@map("email_logs")
 }
 
@@ -3812,6 +3854,74 @@ model WebVitalSample {
   @@map("web_vital_samples")
 }
 
+/// Événement de tunnel d'acquisition (simulateur de gains, pages
+/// d'atterrissage publicitaires).
+///
+/// ── Pourquoi une table plutôt que Plausible seul ──────────────────────────
+/// Plausible donne des totaux par événement. Il ne permet pas de reconstituer
+/// un PARCOURS : savoir que 100 visiteurs ont démarré et 30 terminé ne dit pas
+/// à quel écran les 70 autres sont partis, ni si ceux qui décrochent viennent
+/// d'une campagne précise. C'est pourtant la seule information qui indique
+/// quoi corriger. Le chaînage par `sessionId` le permet ici.
+///
+/// ── Ce que cette table ne contient JAMAIS ─────────────────────────────────
+/// Aucune donnée nominative, aucune adresse IP (même hachée), aucun montant
+/// exact — seulement des tranches. Le montant exact, croisé au secteur et à
+/// l'effectif, réidentifierait une entreprise. `sessionId` est ÉPHÉMÈRE
+/// (`sessionStorage` du navigateur, jamais un cookie) : il disparaît à la
+/// fermeture de l'onglet et ne suit personne d'un site à l'autre.
+///
+/// Cette combinaison — première partie, finalité unique, pas de recoupement,
+/// rétention bornée — est ce qui range la mesure sous l'exemption de
+/// consentement de la CNIL pour la mesure d'audience. Y ajouter une donnée
+/// identifiante ferait tomber l'exemption et exigerait une bannière : les
+/// pages de tunnel n'en ont volontairement pas.
+model FunnelEvent {
+  id String @id @default(cuid())
+
+  /// Tunnel concerné : `simulateur`, `diagnostic`.
+  funnel String @db.VarChar(40)
+  /// Nom d'événement, aligné sur le type `FunnelEvent` de `src/lib/tracking.ts`.
+  event  String @db.VarChar(48)
+
+  /// Identifiant de session éphémère — permet de chaîner un parcours, pas
+  /// d'identifier une personne.
+  sessionId String @map("session_id") @db.VarChar(64)
+
+  locale     String? @db.VarChar(10)
+  route      String? @db.VarChar(255)
+  deviceType String? @map("device_type") @db.VarChar(10)
+
+  /// Écran atteint, et son rang : c'est ce qui donne la courbe d'abandon.
+  step      String? @db.VarChar(60)
+  stepIndex Int?    @map("step_index")
+  stepTotal Int?    @map("step_total")
+
+  /// Caractéristiques déclarées de l'entreprise, jamais nominatives.
+  sector    String? @db.VarChar(60)
+  headcount String? @db.VarChar(40)
+
+  /// Tranche de gain estimé — jamais le montant exact.
+  gainBucket String? @map("gain_bucket") @db.VarChar(20)
+
+  /// Attribution publicitaire, relue côté serveur depuis le cookie UTM.
+  utmSource   String? @map("utm_source") @db.VarChar(80)
+  utmMedium   String? @map("utm_medium") @db.VarChar(80)
+  utmCampaign String? @map("utm_campaign") @db.VarChar(120)
+
+  /// Page d'atterrissage et emplacement du bouton, pour comparer les variantes.
+  landing   String? @db.VarChar(60)
+  placement String? @db.VarChar(40)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([funnel, event, createdAt(sort: Desc)])
+  @@index([sessionId])
+  /// Sert la purge de rétention, qui balaie par date.
+  @@index([createdAt])
+  @@map("funnel_events")
+}
+
 /// Ledger de coût atomique par appel provider. Source de vérité cost cap.
 model CostLedger {
   id           String      @id @default(cuid())
@@ -6432,6 +6542,21 @@ model Enrollment {
   attestationDocumentId String?                  @map("attestation_document_id") @db.Uuid
   attestationDocument   DocumentGenere?          @relation("EnrollmentAttestation", fields: [attestationDocumentId], references: [id], onDelete: SetNull)
   attestationGenereeAt  DateTime?                @map("attestation_generee_at")
+  /// Convocation reglementaire (ind. 9) reellement PARTIE — pas seulement generee.
+  ///
+  /// 🔴 Verifie en production le 15/08/2026 : AUCUNE convocation n'etait jamais
+  /// partie, sur tout l'historique. La cause n'etait pas le cron, qui tourne
+  /// bien, mais sa selection : une FENETRE [J-5,5 ; J-4,5] sur `dateDebut`.
+  /// Or aucune session reelle n'a jamais existe cinq jours avant son debut —
+  /// la session du 31/07 a ete creee le 31/07 a 14h51 pour un debut a 07h00, et
+  /// celle du 16/08 la veille. Une session creee A L'INTERIEUR de sa propre
+  /// fenetre n'y entre jamais, et rien ne la rattrape.
+  ///
+  /// Cette colonne remplace le balayage par date par un ETAT : « cette
+  /// inscription a-t-elle recu sa convocation ? ». Le cron devient rattrapant,
+  /// et une execution manquee (deploiement, coupure Redis) cesse d'etre
+  /// definitive.
+  convocationEnvoyeeAt  DateTime?                @map("convocation_envoyee_at")
   // ── Inter-entreprises (R-INTER) : financement PAR PARTICIPANT ──────────────
   // Utilisés uniquement quand la session est `interEntreprises` (participants de
   // sociétés différentes, chacun son financeur/sa facture). En intra : null
@@ -6463,6 +6588,9 @@ model Enrollment {
   @@index([traineeId])
   @@index([statut])
   @@index([clientId])
+  /// Selection du cron de convocation : les inscriptions actives non encore
+  /// convoquees. Sans lui, le rattrapage balaie toute la table chaque jour.
+  @@index([convocationEnvoyeeAt, statut])
   @@map("enrollments")
 }
 
@@ -8583,21 +8711,31 @@ model JobOffer {
   bodyTextEn String @map("body_text_en") @db.Text
 
   // JobPosting / Google for Jobs
-  employmentType String      @default("FULL_TIME") @map("employment_type") @db.VarChar(20)
-  workMode       JobWorkMode @default(on_site) @map("work_mode")
-  city           String?     @db.VarChar(120)
-  region         String?     @db.VarChar(120)
-  country        String      @default("FR") @db.VarChar(2)
+  employmentType          String      @default("FULL_TIME") @map("employment_type") @db.VarChar(20)
+  // Second type schema.org optionnel — JobPosting.employmentType accepte un
+  // TABLEAU : une offre ouverte « en CDI ou en freelance » doit déclarer les
+  // deux, sinon Google la cache à la moitié des profils qu'elle accepte.
+  secondaryEmploymentType String?     @map("secondary_employment_type") @db.VarChar(20)
+  workMode                JobWorkMode @default(on_site) @map("work_mode")
+  city                    String?     @db.VarChar(120)
+  region                  String?     @db.VarChar(120)
+  country                 String      @default("FR") @db.VarChar(2)
   // Zone d'emploi multi-villes (postes itinérants/territoriaux) : tableau JSON de
   // { city, region? } → JobPosting multi-location (visible Google for Jobs dans
   // toutes ces villes depuis UNE annonce, sans pages dupliquées). FR-only.
-  jobLocations   Json?       @map("job_locations")
-  salaryMin      Int?        @map("salary_min")
-  salaryMax      Int?        @map("salary_max")
-  salaryPeriod   String      @default("YEAR") @map("salary_period") @db.VarChar(10)
-  salaryCurrency String      @default("EUR") @map("salary_currency") @db.VarChar(3)
-  salaryVisible  Boolean     @default(true) @map("salary_visible")
-  isCommission   Boolean     @default(false) @map("is_commission")
+  jobLocations            Json?       @map("job_locations")
+  // Pays d'où l'on accepte les candidatures (ISO 3166-1 alpha-2) → JobPosting
+  // `applicantLocationRequirements`. Vide = France seule (défaut historique).
+  // Indispensable pour les missions 100 % à distance ouvertes à la francophonie :
+  // Google for Jobs filtre les offres TELECOMMUTE sur le pays du chercheur, donc
+  // sans ces codes l'annonce reste invisible hors de France.
+  applicantCountries      String[]    @default([]) @map("applicant_countries")
+  salaryMin               Int?        @map("salary_min")
+  salaryMax               Int?        @map("salary_max")
+  salaryPeriod            String      @default("YEAR") @map("salary_period") @db.VarChar(10)
+  salaryCurrency          String      @default("EUR") @map("salary_currency") @db.VarChar(3)
+  salaryVisible           Boolean     @default(true) @map("salary_visible")
+  isCommission            Boolean     @default(false) @map("is_commission")
 
   // Mobilité — n'affiche permis/véhicule sur le formulaire que si true
   requiresDriverLicense Boolean @default(false) @map("requires_driver_license")
@@ -8689,6 +8827,25 @@ model JobApplication {
   consentVersion String  @map("consent_version") @db.VarChar(40)
   locale         Locale  @default(fr)
 
+  /// Lot L4 — accord de CONSERVATION EN VIVIER (case optionnelle, décochée par
+  /// défaut, textes v2). Il ne se déduit PAS de `consentVersion` : celui-ci
+  /// n'atteste que du consentement à l'ÉTUDE de la candidature, qui est
+  /// obligatoire. `null` = pas d'accord vivier — c'est le cas de TOUT le stock
+  /// antérieur, et c'est précisément ce qui justifie la mécanique
+  /// d'information + opposition ci-dessous.
+  consentVivierAt DateTime? @map("consent_vivier_at")
+
+  /// Mécanique « stock » (plan §2.3, option (b), fenêtre d'opposition 30 j) —
+  /// trois horodatages, trois faits distincts, jamais déduits l'un de l'autre :
+  ///  · `vivierInfoSentAt`  : l'email d'information est PARTI (départ de l'horloge) ;
+  ///  · `vivierOpposedAt`   : la personne s'est OPPOSÉE (un clic, sans login) ;
+  ///  · `vivierSyncedAt`    : la fiche a été INTÉGRÉE au vivier CRM (idempotence).
+  /// Une opposition posée après l'intégration reste vraie : c'est le CRM qui
+  /// reçoit alors un `opt_out`, on ne réécrit jamais l'histoire côté site.
+  vivierInfoSentAt DateTime? @map("vivier_info_sent_at")
+  vivierOpposedAt  DateTime? @map("vivier_opposed_at")
+  vivierSyncedAt   DateTime? @map("vivier_synced_at")
+
   // Workflow admin
   status         JobApplicationStatus @default(new)
   internalNotes  String?              @map("internal_notes") @db.Text
@@ -8700,6 +8857,10 @@ model JobApplication {
   @@index([offerId])
   @@index([status, needsAttention])
   @@index([submittedAt])
+  /// Lot L4 — l'index qui porte le job J+30 : « les fiches informées, non
+  /// opposées, pas encore intégrées ». Sans lui le job scannerait toute la
+  /// table à chaque passage quotidien.
+  @@index([vivierInfoSentAt, vivierOpposedAt, vivierSyncedAt])
   @@map("job_applications")
 }
 
@@ -10520,4 +10681,192 @@ model PodcastRequest {
   @@index([status, createdAt(sort: Desc)])
   @@index([createdAt(sort: Desc)])
   @@map("podcast_requests")
+}
+
+// ============================================================
+// Lot L2 (2026-08-14) — OUTBOX de synchronisation vers Axion CRM Pro
+// ============================================================
+// Motif « outbox » : l'événement à émettre est POSÉ EN BASE avant toute
+// tentative réseau. Aucun appel réseau n'est fait sur le chemin du formulaire —
+// le CRM peut être injoignable, cela ne change rien pour l'utilisateur.
+//
+// ⚠️ L'écriture est POST-COMMIT, pas dans la transaction métier, sauf au seul
+// point de capture qui en ouvre déjà une (`chatbot/tools/capturer-lead.ts`, via
+// le paramètre `tx`). Ce choix est délibéré et documenté dans
+// `src/server/crm-sync/enqueue.ts` : dans la même transaction, un échec
+// d'insertion de l'outbox ferait ROLLBACK la soumission — un lead perdu à cause
+// de la synchro CRM, ce que la doctrine « zéro perte de lead » interdit. Le
+// filet contre la fenêtre (crash entre les deux écritures) est la
+// réconciliation, qui compare les enregistrements source aux `subject_ref` émis.
+//
+// L'émission réelle est best-effort, et le rejeu périodique rattrape tout ce
+// qui a échoué. Un CRM indisponible = des lignes `pending` qui s'accumulent,
+// jamais une soumission perdue ni un formulaire bloqué.
+//
+// INERTIE : tant que `CRM_SYNC_ENABLED` est absent/false, RIEN n'est écrit
+// dans cette table et aucun appel réseau n'est émis (cf. src/server/crm-sync).
+
+enum CrmSyncStatus {
+  /// En attente d'émission (ou d'une nouvelle tentative).
+  pending
+  /// Acquittée par le CRM (2xx).
+  sent
+  /// Dernière tentative en échec — sera rejouée.
+  failed
+  /// Refus DÉFINITIF du CRM (422 : contrat, consentement, taxonomie) ou
+  /// plafond de tentatives atteint. Ne sera plus rejouée : à traiter à la main.
+  gave_up
+}
+
+model CrmSyncOutbox {
+  id String @id @default(uuid()) @db.Uuid
+
+  /// Clé d'idempotence de l'ÉVÉNEMENT, envoyée telle quelle au CRM, qui la
+  /// stocke en `activities.external_ref`. Rejouer la même ligne ne crée donc
+  /// jamais de doublon côté CRM.
+  eventId String @unique @map("event_id") @db.Uuid
+
+  /// Type d'événement du contrat d'ingestion (form_submission, calendly_booked,
+  /// newsletter_optin, application_submitted…).
+  eventType String @map("event_type") @db.VarChar(64)
+
+  /// Référence de l'enregistrement SOURCE (`site:submission:<uuid>`) — permet
+  /// de retrouver la ligne d'origine depuis la console et de réconcilier.
+  subjectRef String @map("subject_ref") @db.VarChar(180)
+
+  /// `business` ou `vivier` — informatif côté site (la destination reste une
+  /// décision du CRM), mais indispensable pour filtrer les flux candidats.
+  universe String @db.VarChar(16)
+
+  /// Corps exact envoyé au CRM (PII déchiffrées au moment de la construction).
+  payload Json
+
+  status   CrmSyncStatus @default(pending)
+  attempts Int           @default(0)
+
+  lastError      String?   @map("last_error") @db.VarChar(500)
+  lastAttemptAt  DateTime? @map("last_attempt_at")
+  /// Backoff exponentiel : le rejeu ne reprend pas une ligne avant cette date.
+  nextAttemptAt  DateTime? @map("next_attempt_at")
+  sentAt         DateTime? @map("sent_at")
+  responseStatus Int?      @map("response_status")
+  /// Statut renvoyé par le CRM (created / updated / noop_idempotent /
+  /// pending_match / opted_out) — utile au tableau de santé de la synchro.
+  crmResult      String?   @map("crm_result") @db.VarChar(32)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status, nextAttemptAt])
+  @@index([subjectRef])
+  @@index([createdAt(sort: Desc)])
+  @@map("crm_sync_outbox")
+}
+
+/// REGISTRE DE PREUVE DES CONSENTEMENTS (lot L4, plan §2.8.1).
+///
+/// Avant ce registre, la preuve était ÉCLATÉE et partiellement absente :
+/// `details.consentVersion` dans un JSON pour les submissions, une colonne
+/// dédiée pour les candidatures, et RIEN du tout pour la newsletter. En cas de
+/// contrôle, « prouvez que cette personne a consenti, à quelle version du texte
+/// et quand » n'avait pas de réponse uniforme.
+///
+/// Trois partis pris :
+///  1. Le registre vit CÔTÉ SITE, là où le consentement est recueilli. Le CRM
+///     n'en reçoit qu'une projection (dernier état + version) — il n'est jamais
+///     la source de vérité d'un consentement.
+///  2. Il est APPEND-ONLY : un retrait n'efface pas l'accord, il ajoute une
+///     ligne `optout`. L'historique est la preuve ; le réécrire la détruirait.
+///  3. Il ne porte AUCUNE adresse en clair — seulement `personKey`
+///     (= `hashEmailForLookup(email)`, la clé qui traverse les deux systèmes).
+///     Un registre de preuve RGPD qui serait lui-même un annuaire d'emails
+///     serait une régression, pas une garantie.
+model ConsentEvent {
+  id String @id @default(uuid()) @db.Uuid
+
+  /// `hashEmailForLookup(email)` — jamais l'email lui-même.
+  personKey String @map("person_key") @db.VarChar(64)
+
+  /// Point de capture (`job-application-form`, `newsletter`…) : sans lui, deux
+  /// consentements de finalités différentes seraient indiscernables.
+  formRef String @map("form_ref") @db.VarChar(64)
+
+  /// Version EXACTE du texte affiché (`careers-v2-2026-08-13`…). C'est elle qui
+  /// permet de reconstituer ce que la personne a réellement lu.
+  consentVersion String @map("consent_version") @db.VarChar(64)
+
+  /// `optin` | `optout`.
+  action String @db.VarChar(16)
+
+  /// Quand le consentement a été DONNÉ (≠ `createdAt`, quand la ligne a été
+  /// écrite) : un enregistrement différé ou rejoué ne doit pas décaler la preuve.
+  occurredAt DateTime @map("occurred_at")
+
+  ipHash    String?  @map("ip_hash") @db.VarChar(64)
+  userAgent String?  @map("user_agent") @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  /// « Tout l'historique de consentement de cette personne, du plus récent au
+  /// plus ancien » — la requête de l'art. 15 et celle d'un contrôle CNIL.
+  @@index([personKey, occurredAt(sort: Desc)])
+  @@map("consent_events")
+}
+
+// ============================================================
+// Lot L5 — ÉVÉNEMENTS ENTRANTS du CRM (consentements CRM → site)
+// ============================================================
+//
+// Le flux principal est site → CRM. Les consentements font exception : ils
+// doivent converger DANS LES DEUX SENS, sinon les deux systèmes finissent par
+// écrire des états opposés (plan §« Synchro BIDIRECTIONNELLE »).
+//
+// Cette table est le JOURNAL de ce que le CRM nous a envoyé, et rien d'autre :
+//   · `eventId` UNIQUE ⇒ idempotence. Rejouer le même événement ne réapplique
+//     rien et répond quand même 200 — un émetteur qui retente sur timeout ne
+//     doit pas voir d'erreur pour un travail déjà fait.
+//   · `payload` conserve le corps reçu tel quel : quand un effet ne s'applique
+//     pas (adresse inconnue du site), l'événement reste PROUVABLE. Une
+//     opposition qu'on n'a pas su rattacher doit laisser une trace, pas
+//     disparaître.
+//
+// 🔴 ANTI-BOUCLE : un événement consigné ici porte `origin='crm'` et ne
+// repart JAMAIS vers le CRM par l'outbox. Le handler n'appelle donc aucune
+// fonction `sync*ToCrm` — c'est vérifié par un test qui espionne le module.
+//
+// INERTIE : la route existe mais aucun émetteur n'est configuré tant que le
+// CRM n'a pas son secret ; sans `SITE_SYNC_HMAC_SECRET`, tout est refusé.
+
+model CrmInboundEvent {
+  id String @id @default(uuid()) @db.Uuid
+
+  /// Identifiant de l'événement chez l'ÉMETTEUR (le CRM). Clé d'idempotence.
+  eventId String @unique @map("event_id") @db.VarChar(80)
+
+  /// `consent_optout` | `consent_optin` | `erasure`.
+  eventType String @map("event_type") @db.VarChar(40)
+
+  /// sha256(email en minuscules) — NON salé, calculé par le CRM. Ce n'est PAS
+  /// le `person_key` du site (qui est un HMAC clé, cf. `email-hash.ts`) : les
+  /// deux ne se comparent jamais directement.
+  emailHash String @map("email_hash") @db.VarChar(64)
+
+  /// `business` ou `vivier` — l'univers concerné par l'opposition.
+  scope String @db.VarChar(16)
+
+  /// Corps reçu, conservé intégralement (preuve + rejeu manuel éventuel).
+  payload Json
+
+  /// Renseigné quand le traitement local a été mené à son terme (avec ou sans
+  /// effet). `null` = reçu mais pas encore appliqué.
+  processedAt DateTime? @map("processed_at")
+
+  /// Résumé de l'effet local : `applied` (une ligne modifiée), `no_match`
+  /// (aucune correspondance côté site), `ignored` (hors périmètre).
+  outcome String? @db.VarChar(24)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([emailHash])
+  @@index([createdAt(sort: Desc)])
+  @@map("crm_inbound_events")
 }

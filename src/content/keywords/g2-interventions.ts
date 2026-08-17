@@ -322,7 +322,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Formez vos équipes PME à l'IA — résultats dès J+1 sur vos vrais cas",
       metaTitle: "Formation IA pour PME — sur site, cas réels",
       metaDescription:
-        "Cabinet IA spécialisé PME : sessions 1 à 3 jours sur site, exercices sur vos dossiers réels. Équipes autonomes, ROI mesurable sous 30 jours.",
+        "Cabinet IA spécialisé PME : sessions de 1 à 2 jours sur site, exercices sur vos dossiers réels. Équipes autonomes, ROI mesurable sous 30 jours.",
       h2Variants: [
         "Pourquoi la formation IA sur site dépasse les MOOCs pour les PME",
         "Formats disponibles : 1 jour, 2 jours, 3 jours ou cycle modulaire",
@@ -1852,7 +1852,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "Former les équipes IT de votre ETI à l'IA : au-delà du ChatGPT",
       metaTitle: "Formation IA équipes IT ETI — DSI Axion-IA",
       metaDescription:
-        "Pour les DSI et équipes IT d'ETI : formation IA avancée (RAG, agents, API LLM, gouvernance données). 1 à 3 jours sur vos architectures réelles.",
+        "Pour les DSI et équipes IT d'ETI : formation IA avancée (RAG, agents, API LLM, gouvernance données). 1 à 2 jours sur vos architectures réelles.",
       h2Variants: [
         "Ce que les équipes IT apprennent en formation IA avancée",
         "Gouvernance IA pour le DSI : contrôle des usages et sécurité",

@@ -48,14 +48,22 @@ interface PublicKbItem {
   readingTime: number | null;
 }
 
-export async function fetchPublicKbList(opts: { take?: number } = {}): Promise<PublicKbItem[]> {
+export async function fetchPublicKbList(
+  opts: { take?: number; skip?: number } = {},
+): Promise<PublicKbItem[]> {
   const take = opts.take ?? 48;
+  const skip = opts.skip ?? 0;
   const now = new Date();
   try {
     const rows = await prisma.knowledgeEntry.findMany({
       where: publicEntryFilter(now),
-      orderBy: [{ pinned: "desc" }, { featured: "desc" }, { publishedAt: "desc" }],
+      // L'ordre doit être TOTAL et STABLE : une pagination par `skip` sur un
+      // tri à égalités fait glisser les lignes d'une page à l'autre entre deux
+      // requêtes, et des fiches disparaissent du maillage sans que rien ne le
+      // signale. `id` départage — il est unique.
+      orderBy: [{ pinned: "desc" }, { featured: "desc" }, { publishedAt: "desc" }, { id: "desc" }],
       take,
+      skip,
       select: {
         type: true,
         publishedAt: true,
@@ -83,6 +91,23 @@ export async function fetchPublicKbList(opts: { take?: number } = {}): Promise<P
   } catch {
     // Table absente bootstrap → fail-soft listing vide
     return [];
+  }
+}
+
+/**
+ * Nombre total de fiches publiques — pour la pagination du hub.
+ *
+ * Même prédicat SSOT que `fetchPublicKbList` : un compte qui ne compterait pas
+ * exactement ce que la liste montre produirait une dernière page vide, ou pire,
+ * une page manquante — donc des fiches de nouveau orphelines.
+ *
+ * Fail-soft à 0 comme le listing (table absente au bootstrap, ou stub de build).
+ */
+export async function countPublicKbEntries(): Promise<number> {
+  try {
+    return await prisma.knowledgeEntry.count({ where: publicEntryFilter(new Date()) });
+  } catch {
+    return 0;
   }
 }
 

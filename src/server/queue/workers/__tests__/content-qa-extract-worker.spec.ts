@@ -5,7 +5,9 @@
  * `startContentQaExtractWorker()`, puis l'invoquer directement.
  *
  * Couvre :
- *  1. Happy path : 2 Q/R extraites → 2 upserts FAQ + revalidatePath + logStep.
+ *  1. Happy path : 2 Q/R extraites → 2 upserts FAQ + revalidateContent
+ *     (Fix 2026-08-15 D7 — API interne, revalidatePath direct = no-op en
+ *     worker bg) + logStep.
  *  2. Failure path : upsert Prisma échoue → logStepError + skipped, ne throw pas.
  *  3. Edge case : faqs vide → skip early avec logStep, 0 upsert.
  *  4. Kill switch actif → throw `kill_switch_active` (retry BullMQ).
@@ -21,7 +23,7 @@ const {
   readConfigMock,
   logStepMock,
   logStepErrorMock,
-  revalidatePathMock,
+  revalidateContentMock,
   workerCtorMock,
   capturedProcessor,
 } = vi.hoisted(() => {
@@ -31,7 +33,8 @@ const {
     readConfigMock: vi.fn(),
     logStepMock: vi.fn().mockResolvedValue(undefined),
     logStepErrorMock: vi.fn().mockResolvedValue(undefined),
-    revalidatePathMock: vi.fn(),
+    // Fix 2026-08-15 (D7) — le worker passe par revalidateContent ({ok,reason}).
+    revalidateContentMock: vi.fn().mockResolvedValue({ ok: true }),
     workerCtorMock: vi.fn((_name: string, fn: (job: Job) => Promise<void>) => {
       captured.fn = fn;
       return {
@@ -62,8 +65,8 @@ vi.mock("@/server/content-gen/shared/generation-log", () => ({
   logStepError: logStepErrorMock,
 }));
 
-vi.mock("next/cache", () => ({
-  revalidatePath: revalidatePathMock,
+vi.mock("@/server/content-gen/shared/revalidate-content", () => ({
+  revalidateContent: revalidateContentMock,
 }));
 
 // Mock faq-sanitizer: pass-through pour isoler le worker des dépendances DOMPurify/jsdom.
@@ -120,11 +123,12 @@ describe("content-qa-extract-worker — Sprint S+5 P2-10 sub-agent C", () => {
     readConfigMock.mockResolvedValue({ active: false });
     logStepMock.mockClear();
     logStepErrorMock.mockClear();
-    revalidatePathMock.mockClear();
+    revalidateContentMock.mockClear();
+    revalidateContentMock.mockResolvedValue({ ok: true });
     workerCtorMock.mockClear();
   });
 
-  it("happy path — 2 Q/R → 2 upserts FAQ + revalidatePath + logStep", async () => {
+  it("happy path — 2 Q/R → 2 upserts FAQ + revalidateContent + logStep", async () => {
     faqUpsertMock.mockResolvedValue({ id: "faq-1" });
 
     const processor = await getProcessor();
@@ -151,7 +155,8 @@ describe("content-qa-extract-worker — Sprint S+5 P2-10 sub-agent C", () => {
     const slug1 = (faqUpsertMock.mock.calls[0]?.[0] as { where: { slug: string } }).where.slug;
     expect(slug1).toContain("audit-ia-pme-2026");
     expect(slug1).toContain("combien");
-    expect(revalidatePathMock).toHaveBeenCalledWith("/fr/faq");
+    // Fix 2026-08-15 (D7) — /fr/faq revalidé via l'API interne.
+    expect(revalidateContentMock).toHaveBeenCalledWith({ paths: ["/fr/faq"] });
     // logStep "Extracting N Q/R" + logStep "Q/R post-process done" = 2 calls
     expect(logStepMock).toHaveBeenCalledTimes(2);
   });

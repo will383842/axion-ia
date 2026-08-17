@@ -19,10 +19,12 @@ function makeOffer(over: Partial<JobOffer> = {}): JobOffer {
     bodyJsonEn: null,
     bodyTextEn: "Mission",
     employmentType: "FULL_TIME",
+    secondaryEmploymentType: null,
     workMode: "on_site",
     city: "Lyon",
     region: "Auvergne-Rhône-Alpes",
     country: "FR",
+    applicantCountries: [],
     salaryMin: 40000,
     salaryMax: 55000,
     salaryPeriod: "YEAR",
@@ -57,6 +59,12 @@ function makeOffer(over: Partial<JobOffer> = {}): JobOffer {
 }
 
 describe("buildJobPostingJsonLd", () => {
+  it("employmentType : scalaire seul, TABLEAU quand un second type est déclaré", () => {
+    expect(buildJobPostingJsonLd(makeOffer())!.employmentType).toBe("FULL_TIME");
+    const dual = buildJobPostingJsonLd(makeOffer({ secondaryEmploymentType: "CONTRACTOR" }))!;
+    expect(dual.employmentType).toEqual(["FULL_TIME", "CONTRACTOR"]);
+  });
+
   it("émet les champs requis pour une offre publiée", () => {
     const j = buildJobPostingJsonLd(makeOffer());
     expect(j).not.toBeNull();
@@ -125,5 +133,58 @@ describe("buildJobPostingJsonLd", () => {
   it("sur-site → Place avec PostalAddress", () => {
     const j = buildJobPostingJsonLd(makeOffer())!;
     expect(j.jobLocation).toBeTruthy();
+  });
+
+  it("remote sans pays déclarés → France seule (comportement historique)", () => {
+    const j = buildJobPostingJsonLd(makeOffer({ workMode: "remote", city: null }))!;
+    expect(j.applicantLocationRequirements).toEqual({ "@type": "Country", name: "France" });
+  });
+
+  it("remote multi-pays → un nœud Country par pays, avec le code ISO", () => {
+    const j = buildJobPostingJsonLd(
+      makeOffer({ workMode: "remote", city: null, applicantCountries: ["FR", "BE", "MA", "SN"] }),
+    )!;
+    expect(j.applicantLocationRequirements).toEqual([
+      { "@type": "Country", name: "France", identifier: "FR" },
+      { "@type": "Country", name: "Belgique", identifier: "BE" },
+      { "@type": "Country", name: "Maroc", identifier: "MA" },
+      { "@type": "Country", name: "Sénégal", identifier: "SN" },
+    ]);
+  });
+
+  it("un seul pays déclaré → objet, pas tableau (schema.org accepte les deux)", () => {
+    const j = buildJobPostingJsonLd(
+      makeOffer({ workMode: "remote", city: null, applicantCountries: ["MA"] }),
+    )!;
+    expect(j.applicantLocationRequirements).toEqual({
+      "@type": "Country",
+      name: "Maroc",
+      identifier: "MA",
+    });
+  });
+
+  it("hybride multi-pays → les pays déclarés remplacent le France en dur", () => {
+    const j = buildJobPostingJsonLd(
+      makeOffer({ workMode: "hybrid", applicantCountries: ["FR", "BE"] }),
+    )!;
+    expect(j.jobLocationType).toBe("TELECOMMUTE");
+    expect(j.applicantLocationRequirements).toEqual([
+      { "@type": "Country", name: "France", identifier: "FR" },
+      { "@type": "Country", name: "Belgique", identifier: "BE" },
+    ]);
+  });
+
+  it("codes en minuscules / doublons / vides → normalisés sans casser le JSON-LD", () => {
+    const j = buildJobPostingJsonLd(
+      makeOffer({
+        workMode: "remote",
+        city: null,
+        applicantCountries: [" fr ", "FR", "be", "", "XYZ"],
+      }),
+    )!;
+    expect(j.applicantLocationRequirements).toEqual([
+      { "@type": "Country", name: "France", identifier: "FR" },
+      { "@type": "Country", name: "Belgique", identifier: "BE" },
+    ]);
   });
 });

@@ -56,9 +56,11 @@ export const IA_POUR_LE_BTP: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous transformez des notes dictées sur le terrain en un compte-rendu diffusable, et vous nommez ce qui ne sort jamais de l'entreprise AVANT de coller quoi que ce soit dans un outil.",
       objectifGlobalId: "obj-1",
-      // Le module pose aussi la règle de confidentialité qui tient la journée :
-      // prix, marges, clients, sous-traitance ne sortent pas.
-      objectifsSecondairesIds: ["obj-5"],
+      // Le module pose aussi la règle de confidentialité qui tient la journée —
+      // prix, marges, clients, sous-traitance ne sortent pas — et la fait
+      // contrôler sur la production du binôme au contrôle croisé : « qu'est-ce
+      // qui n'aurait jamais dû être collé dans l'outil ? » (obj-2).
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:
@@ -226,10 +228,12 @@ export const IA_POUR_LE_BTP: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez un courrier de chantier qui protège l'entreprise — constat de retard, relance de sous-traitant, demande d'avenant — et vous reconnaissez une pièce qui engage avant de l'envoyer.",
-      objectifGlobalId: "obj-1",
-      // Constat de retard, relance de sous-traitant, demande d'avenant : les
-      // écrits qui tiennent le planning — l'appui au suivi passe par eux.
-      objectifsSecondairesIds: ["obj-2"],
+      objectifGlobalId: "obj-3",
+      // L'atelier produit deux pièces : le courrier qui engage, et un
+      // compte-rendu du chantier en cours (obj-1). La vérification fait barrer
+      // au stylo toute référence contractuelle que l'auteur n'a pas recopiée
+      // pièce du marché en main (obj-4).
+      objectifsSecondairesIds: ["obj-1", "obj-4"],
       dureeMin: 5,
       notes: {
         script:
@@ -367,10 +371,13 @@ export const IA_POUR_LE_BTP: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous dégrossissez une trame de mémoire technique et vous faites répondre une pièce technique à vos questions — sans laisser passer une seule affirmation que vos documents ne prouvent pas.",
-      objectifGlobalId: "obj-3",
-      // Le module fait aussi parler CCTP, notices et règlements : la synthèse
-      // de documents techniques est son deuxième livrable.
-      objectifsSecondairesIds: ["obj-4"],
+      objectifGlobalId: "obj-6",
+      // Le premier temps de l'atelier fait parler CCTP, notice ou règlement de
+      // consultation — trois questions, la phrase exacte retrouvée dans le
+      // document pour chacune (obj-5). Et la borne sécurité s'y applique : la
+      // causerie se reformule à partir d'un document déjà validé, l'analyse de
+      // risques se refuse net (obj-7).
+      objectifsSecondairesIds: ["obj-5", "obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -505,10 +512,13 @@ export const IA_POUR_LE_BTP: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repartez avec trois pièces finalisées, leur grille de contrôle avant envoi renseignée, trois usages datés — et un usage que vous vous interdisez, par écrit.",
-      objectifGlobalId: "obj-5",
-      // Les trois pièces finalisées sont les écrits de la journée : le module
-      // clôt aussi la production ouverte aux modules 1 à 3.
-      objectifsSecondairesIds: ["obj-1"],
+      objectifGlobalId: "obj-8",
+      // Le premier temps relit les demandes de la journée et compte ce qui a
+      // failli sortir de l'entreprise — un prix, une marge, un nom de client,
+      // un salarié (obj-2) ; la synthèse referme sur ce qu'on ne fait jamais
+      // faire à l'IA : chiffrer, produire la sécurité, trier des personnes
+      // (obj-7).
+      objectifsSecondairesIds: ["obj-2", "obj-7"],
       dureeMin: 5,
       notes: {
         script:

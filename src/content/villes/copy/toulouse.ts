@@ -178,7 +178,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, option infra locale pour données sensibles aérospatiales. Le plan d'action remis est portable — exécutable par tout intégrateur de l'Aerospace Valley ou par vos équipes en interne, sans contrat de prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, option infra locale pour données sensibles aérospatiales. Le plan d'action remis est portable — exécutable par tout intégrateur de l'Aerospace Valley ou par vos équipes en interne, sans contrat de prestation continue obligatoire.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Toulouse micro-businesses to large aerospace group divisions in the greater basin.",

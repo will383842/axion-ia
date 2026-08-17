@@ -9,6 +9,8 @@ import { startOptionExpirationWorker } from "./workers/option-expiration-worker"
 import { startOptionReminderWorker } from "./workers/option-reminder-worker";
 import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
 import { startCalendlyPollWorker } from "./workers/calendly-poll-worker";
+import { startCrmSyncWorker } from "./workers/crm-sync-worker";
+import { startVivierCronsWorker } from "./workers/vivier-crons-worker";
 import { startBookingCronsWorker } from "./workers/booking-crons-worker";
 import { startContentGenWorker } from "./workers/content-gen-worker";
 import { startOrchestratorWorker } from "./workers/content-orchestrator-worker";
@@ -85,6 +87,15 @@ async function main() {
     // réservation entre dans le site : Calendly Free n'émet pas de webhook et
     // le client réserve sur calendly.com. Ne pas le retirer sans lire l'ADR 0039.
     startCalendlyPollWorker(),
+    // Synchro sortante vers Axion CRM Pro (lot L2, 2026-08-14). Inerte tant que
+    // `CRM_SYNC_ENABLED` n'est pas à "true" : aucune ligne d'outbox n'existe,
+    // donc le balayage ne trouve rien et aucun appel réseau n'est émis.
+    startCrmSyncWorker(),
+    // Vivier candidats (lot L4, 2026-08-14) — passage quotidien qui intègre au
+    // vivier les candidatures dont la fenêtre d'opposition de 30 jours est
+    // échue. Inerte tant que personne n'a été informé : `vivierInfoSentAt` est
+    // alors NULL partout et la requête ne remonte rien.
+    startVivierCronsWorker(),
     // Content Generator V1 — 14 workers (§ 13 master prompt v1.7 + Pass B P0-7
     // + Sprints 9-12.5 V2 + Audit final P0-3 + Sprint S6.3 doc-sync P3-15)
     startContentGenWorker(),

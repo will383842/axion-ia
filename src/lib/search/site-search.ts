@@ -14,7 +14,7 @@
  * Tout est fail-open (try/catch sur la DB) : au build stub.invalid la partie DB
  * renvoie [], la partie statique (villes/services) reste fonctionnelle.
  */
-import { getIndexableVilles } from "@/content/villes";
+import { getIndexableVillesCore } from "@/content/villes/core";
 import { SERVICES } from "@/content/services";
 import { searchKnowledge, type KbSearchHit } from "@/lib/knowledge/search-fts";
 import { prisma } from "@/lib/prisma";
@@ -49,7 +49,7 @@ export interface SiteSearchResults {
 function searchVilles(query: string, limit: number): SiteSearchVille[] {
   const nq = normalize(query);
   if (nq.length < 2) return [];
-  return getIndexableVilles()
+  return getIndexableVillesCore()
     .filter((v) => normalize(v.nameFr).includes(nq))
     .slice(0, limit)
     .map((v) => ({ nameFr: v.nameFr, region: v.region, slug: v.slug }));

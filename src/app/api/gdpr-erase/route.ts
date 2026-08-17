@@ -26,6 +26,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { eraseKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import {
@@ -34,6 +36,7 @@ import {
   eraseSubmissionsForEmail,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -83,6 +86,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eraseKbDataForEmail(email),
   ]);
 
+  // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
+  // univers et inscrit l'empreinte en liste de suppression (ce qui empêche une
+  // réinsertion par un futur import).
+  //
+  // 🔴 NON BLOQUANT, et calculé AVANT d'effacer localement l'adresse : une
+  // personne qui exerce son droit à l'effacement doit l'obtenir sur le site,
+  // que le second système réponde ou non. Lui renvoyer une erreur parce qu'un
+  // CRM inerte n'a pas répondu serait une régression de droit.
+  const crmResult = await propagateGdprToCrm({
+    action: "erase",
+    personKey: hashEmailForLookup(email) ?? "",
+    email,
+  });
+
   // Activity log RGPD : trace forensique immuable
   await prisma.activityLog.create({
     data: {
@@ -97,10 +114,41 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
         chatConversationsDeleted: chatResult.conversationsDeleted,
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
+        // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
+        // local doit se voir dans le journal, jamais se supposer.
+        crmStatus: crmResult.status,
       },
       ipAddress: req.headers.get("x-forwarded-for") ?? null,
     },
   });
+
+  // ── Confirmation à la personne ───────────────────────────────────────────
+  // 🔴 Ajouté le 2026-08-13. Jusque-là, l'effacement s'exécutait sans que la
+  // personne en soit JAMAIS informée. Deux conséquences : aucune preuve de son
+  // côté, et — puisque son adresse vient d'être anonymisée ci-dessus — plus
+  // aucun moyen de la recontacter. L'omission était donc DÉFINITIVE.
+  //
+  // L'adresse ne survit plus que dans `email`, variable locale : la mettre en
+  // file la copie dans la charge utile de la tâche, seul endroit où elle
+  // persistera. C'est aussi pourquoi l'envoi est mis en file ICI et non
+  // ailleurs — le déplacer après une future étape d'effacement le casserait.
+  //
+  // Meilleur effort : l'effacement est fait et acté. Un échec d'envoi ne doit
+  // pas transformer une réussite en erreur 500 côté visiteur.
+  try {
+    await enqueueEmail("rgpd-effacement-confirme", email, "fr", {
+      effectueLe: new Date().toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+      demandes: submissionsResult.anonymized,
+      newsletter: newsletterResult.deleted,
+      conversations: chatResult.conversationsDeleted,
+    });
+  } catch (err) {
+    console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);
+  }
 
   // Telegram alert (DPO doit savoir — art. 30 RGPD register update)
   try {
@@ -121,6 +169,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       kbBookmarksDeleted: kbResult.bookmarksDeleted,
       chatConversationsDeleted: chatResult.conversationsDeleted,
       chatEscalationsAnonymized: chatResult.escalationsAnonymized,
+      /** `ok` | `deferred` | `failed` — cf. `notice.retentionExceptions`. */
+      crm: crmResult.status,
     },
     notice: {
       explanation:
@@ -129,6 +179,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         "Submissions : anonymisées in-place (audit business + facturation préservés sans PII).",
         "ActivityLog : conservé (immuable, art. 30 RGPD register).",
         "generation_logs / cost_ledger / web_vital_samples : logs techniques sans PII visiteur (purgés par retention-purge-worker).",
+        // Conservé au titre de l'art. 17(3)(e) : c'est la preuve exigée par
+        // l'art. 7(1). L'effacer reviendrait à détruire la démonstration que le
+        // traitement passé était licite — y compris celui qu'on vient d'effacer.
+        // Le registre ne contient AUCUNE adresse en clair, seulement une
+        // empreinte : il ne permet pas de retrouver la personne.
+        "consent_events : registre de preuve des consentements, conservé sous forme d'empreinte (art. 7(1) et 17(3)(e) RGPD).",
       ],
       contactDpo: "contact@axion-ia.com",
     },

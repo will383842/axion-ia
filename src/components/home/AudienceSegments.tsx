@@ -17,6 +17,9 @@ import Image from "next/image";
 import { Hammer, Building2, Building, Landmark } from "lucide-react";
 
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
+import { homeImageFor } from "@/content/home/home-images";
+import { getHomePhotoCredit } from "@/content/home/home-photos";
+import { UnsplashCreditList } from "@/components/media/UnsplashCreditList";
 import { ACCENT_CLASSES, type ServiceAccent } from "@/content/services-visual";
 import { cn } from "@/lib/utils";
 
@@ -56,8 +59,8 @@ interface SegmentVisual {
    * laissait un vide — et le titre redevient court.
    */
   headcount: string;
-  imageTarget: string;
-  image?: { src: string; alt: string };
+  /** Cle du visuel dans HOME_IMAGES / HOME_PHOTO_CREDITS. */
+  slot: string;
 }
 
 /** Ordre = celui de `audienceSegments` dans la home (TPE → PME → ETI → GE). */
@@ -68,7 +71,7 @@ const SEGMENT_VISUALS: readonly SegmentVisual[] = [
     accent: "terracotta",
     Icon: Hammer,
     level: 1,
-    imageTarget: "public/illustrations/home-audience-01-tpe.avif",
+    slot: "audience-01-tpe",
   },
   {
     id: "pme",
@@ -76,7 +79,7 @@ const SEGMENT_VISUALS: readonly SegmentVisual[] = [
     accent: "ochre",
     Icon: Building2,
     level: 2,
-    imageTarget: "public/illustrations/home-audience-02-pme.avif",
+    slot: "audience-02-pme",
   },
   {
     id: "eti",
@@ -84,7 +87,7 @@ const SEGMENT_VISUALS: readonly SegmentVisual[] = [
     accent: "primary",
     Icon: Building,
     level: 3,
-    imageTarget: "public/illustrations/home-audience-03-eti.avif",
+    slot: "audience-03-eti",
   },
   {
     id: "large",
@@ -92,7 +95,7 @@ const SEGMENT_VISUALS: readonly SegmentVisual[] = [
     accent: "sage",
     Icon: Landmark,
     level: 4,
-    imageTarget: "public/illustrations/home-audience-04-grands-comptes.avif",
+    slot: "audience-04-grands-comptes",
   },
 ] as const;
 
@@ -116,106 +119,114 @@ export function AudienceSegments({
     // alors les règles `sm:` APRÈS `md:`/`lg:`. Le jeton a été déclaré le
     // 2026-08-10 dans globals.css — l'ordre est rétabli, `sm:` est de nouveau
     // utilisable partout.)
-    <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-      {segments.map((seg, idx) => {
-        const v = SEGMENT_VISUALS[idx];
-        if (!v) return null;
-        const a = ACCENT_CLASSES[v.accent];
+    <>
+      <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        {segments.map((seg, idx) => {
+          const v = SEGMENT_VISUALS[idx];
+          if (!v) return null;
+          const a = ACCENT_CLASSES[v.accent];
+          const image = homeImageFor(v.slot, isFr);
 
-        return (
-          <li key={seg.id} className="h-full">
-            <FadeInOnView delay={idx * 70} className="h-full">
-              <article
-                className={cn(
-                  "bg-paper border-border group flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-300",
-                  "hover:shadow-subtle hover:-translate-y-1",
-                  a.hoverBorder,
-                )}
-              >
-                {/* ── Bande visuelle 16:9 ── */}
-                <div
+          return (
+            <li key={seg.id} className="h-full">
+              <FadeInOnView delay={idx * 70} className="h-full">
+                <article
                   className={cn(
-                    "relative aspect-[16/9] w-full overflow-hidden",
-                    !v.image && BAND_GRADIENT[v.accent],
+                    "bg-paper border-border group flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-300",
+                    "hover:shadow-subtle hover:-translate-y-1",
+                    a.hoverBorder,
                   )}
                 >
-                  {v.image ? (
-                    <Image
-                      src={v.image.src}
-                      alt={v.image.alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <>
-                      {/* Jauge d'échelle — `level` barres pleines sur 4. */}
-                      <div
-                        aria-hidden="true"
-                        className="absolute inset-0 flex items-end justify-end gap-2 p-5"
-                      >
-                        {BAR_HEIGHTS.map((h, barIdx) => (
-                          <span
-                            key={h}
-                            className={cn(
-                              "w-3 rounded-full transition-transform duration-500 group-hover:scale-y-105",
-                              h,
-                              BAR_FILL[v.accent],
-                              barIdx < v.level ? "opacity-90" : "opacity-[0.18]",
-                            )}
-                            style={{ transformOrigin: "bottom" }}
-                          />
-                        ))}
-                      </div>
-                      {/* Tranche d'effectif — remplit la bande que la jauge
-                          seule laissait vide, et décharge le titre. */}
-                      <div className="absolute bottom-5 left-6">
-                        <p
-                          className={cn(
-                            "text-[2.25rem] leading-[0.9] font-semibold tracking-tight",
-                            a.text,
-                          )}
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {v.headcount}
-                        </p>
-                        <p className="text-fg-muted mt-1.5 text-[11px] leading-tight font-bold tracking-[0.14em] uppercase">
-                          {isFr ? "salariés" : "employees"}
-                        </p>
-                      </div>
-                    </>
-                  )}
-
-                  {/* Puce d'icône — présente dans les deux modes */}
-                  <span
-                    aria-hidden="true"
+                  {/* ── Bande visuelle 16:9 ── */}
+                  <div
                     className={cn(
-                      "shadow-subtle absolute top-4 left-4 inline-flex h-11 w-11 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110",
-                      a.chipSolid,
+                      "relative aspect-[16/9] w-full overflow-hidden",
+                      !image && BAND_GRADIENT[v.accent],
                     )}
                   >
-                    <v.Icon className="h-5 w-5" strokeWidth={2} />
-                  </span>
-                </div>
+                    {image ? (
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <>
+                        {/* Jauge d'échelle — `level` barres pleines sur 4. */}
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-0 flex items-end justify-end gap-2 p-5"
+                        >
+                          {BAR_HEIGHTS.map((h, barIdx) => (
+                            <span
+                              key={h}
+                              className={cn(
+                                "w-3 rounded-full transition-transform duration-500 group-hover:scale-y-105",
+                                h,
+                                BAR_FILL[v.accent],
+                                barIdx < v.level ? "opacity-90" : "opacity-[0.18]",
+                              )}
+                              style={{ transformOrigin: "bottom" }}
+                            />
+                          ))}
+                        </div>
+                        {/* Tranche d'effectif — remplit la bande que la jauge
+                          seule laissait vide, et décharge le titre. */}
+                        <div className="absolute bottom-5 left-6">
+                          <p
+                            className={cn(
+                              "text-[2.25rem] leading-[0.9] font-semibold tracking-tight",
+                              a.text,
+                            )}
+                            style={{ fontFamily: "var(--font-serif)" }}
+                          >
+                            {v.headcount}
+                          </p>
+                          <p className="text-fg-muted mt-1.5 text-[11px] leading-tight font-bold tracking-[0.14em] uppercase">
+                            {isFr ? "salariés" : "employees"}
+                          </p>
+                        </div>
+                      </>
+                    )}
 
-                {/* ── Corps ── */}
-                <div className="flex flex-1 flex-col p-6">
-                  <h3 className="text-fg text-lg leading-tight font-semibold tracking-tight">
-                    {seg.title}
-                  </h3>
-                  <p
-                    className={cn("mt-2 text-base leading-snug italic", a.text)}
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {seg.lead}
-                  </p>
-                  <p className="text-fg-soft mt-3 text-sm leading-relaxed">{seg.detail}</p>
-                </div>
-              </article>
-            </FadeInOnView>
-          </li>
-        );
-      })}
-    </ul>
+                    {/* Puce d'icône — présente dans les deux modes */}
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "shadow-subtle absolute top-4 left-4 inline-flex h-11 w-11 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110",
+                        a.chipSolid,
+                      )}
+                    >
+                      <v.Icon className="h-5 w-5" strokeWidth={2} />
+                    </span>
+                  </div>
+
+                  {/* ── Corps ── */}
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="text-fg text-lg leading-tight font-semibold tracking-tight">
+                      {seg.title}
+                    </h3>
+                    <p
+                      className={cn("mt-2 text-base leading-snug italic", a.text)}
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {seg.lead}
+                    </p>
+                    <p className="text-fg-soft mt-3 text-sm leading-relaxed">{seg.detail}</p>
+                  </div>
+                </article>
+              </FadeInOnView>
+            </li>
+          );
+        })}
+      </ul>
+      <UnsplashCreditList
+        credits={SEGMENT_VISUALS.map((v) => getHomePhotoCredit(v.slot)).filter(
+          (c): c is NonNullable<typeof c> => Boolean(c),
+        )}
+      />
+    </>
   );
 }

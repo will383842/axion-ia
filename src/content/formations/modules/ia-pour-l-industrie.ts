@@ -70,7 +70,11 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous prenez n'importe quelle pièce du système documentaire du site — mode opératoire, plan, compte rendu de poste, cahier des charges client — et vous dites dans quel régime d'usage elle peut aller, ou qu'elle ne sort pas, en justifiant votre réponse devant un auditeur.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-1",
+      // La séquence de pratique produit en outre la liste rouge du site, avec sa
+      // case « à trancher par le QSE » pour les cas litigieux : le module sert
+      // donc aussi, en second, l'objectif de tenue de cette liste.
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:
@@ -242,11 +246,7 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous transformez des notes brutes — page de cahier de poste photographiée, deux minutes dictées, mail de client — en fiche de non-conformité complète et en projet de réponse client, sans qu'aucune cause n'ait été inventée.",
-      objectifGlobalId: "obj-1",
-      // La fiche se construit en reprenant les donnees du poste (quantites,
-      // lot, arrets, rebuts) depuis le compte rendu de poste : c'est la
-      // synthese de donnees de production dans sa forme documentaire.
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-3",
       dureeMin: 5,
       notes: {
         script:
@@ -402,7 +402,12 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous mettez à jour un écrit maîtrisé de votre site — mode opératoire d'atelier, gamme de maintenance préventive, compte rendu d'intervention type, procédure de contrôle — et vous produisez la fiche d'évolution de version qui dit ce qui change, pourquoi, qui est impacté et qui valide.",
-      objectifGlobalId: "obj-2",
+      objectifGlobalId: "obj-4",
+      // La consigne de pratique impose en outre de surligner les paragraphes à
+      // portée de sécurité ou de process, de les recopier de la version en
+      // vigueur et de les faire revalider par le référent QSE : c'est là que
+      // l'interdit central des deux jours s'exerce sur pièce.
+      objectifsSecondairesIds: ["obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -560,12 +565,7 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous répondez à un questionnaire client ou à une grille d'audit en appuyant chaque réponse sur une pièce du site, et vous transformez en question interne toute réponse que vous ne pouvez pas prouver.",
-      objectifGlobalId: "obj-1",
-      // Repondre a un questionnaire ou a un dossier de qualification impose de
-      // reprendre les indicateurs du site depuis les enregistrements, avec leur
-      // date de releve : c'est la synthese de donnees de production telle que
-      // le programme la travaille.
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-6",
       dureeMin: 5,
       notes: {
         script:
@@ -723,11 +723,7 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez une revue d'écart appuyée sur le référentiel réellement applicable chez vous, et le plan d'action daté qui en découle — une ligne par écart, avec porteur, échéance et preuve attendue.",
-      objectifGlobalId: "obj-1",
-      // La revue d'ecart et le plan d'action reprennent les indicateurs et les
-      // enregistrements du site : la synthese de donnees de production s'y fait
-      // sous contrainte de source datee.
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-7",
       dureeMin: 5,
       notes: {
         script:
@@ -877,10 +873,13 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous dites devant un projet de suivi ou de contrôle automatisé si l'on est encore sur de l'activité ou déjà sur l'évaluation d'une personne, et vous savez ce que cela déclenche avant toute mise en service.",
-      objectifGlobalId: "obj-4",
-      // Le module qualifie aussi ce qui peut etre soumis a un assistant :
-      // les indicateurs individuels sont deja sur la liste rouge du module 1.
-      objectifsSecondairesIds: ["obj-5"],
+      objectifGlobalId: "obj-8",
+      // Le module sert la première moitié de l'objectif — la qualification à la
+      // grille en quatre questions ; la procédure d'usage qui le complète
+      // s'écrit au module 7. Il rouvre en outre la liste rouge du module 1 :
+      // les relevés nominatifs y figurent déjà, et c'est à elle que le
+      // formateur renvoie tout participant qui veut déposer les siens.
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:
@@ -1034,7 +1033,16 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous disposez de la procédure d'usage de l'IA de votre site, rédigée et prête à être versée au manuel qualité et présentée à un auditeur.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-2",
+      // C'est ICI que la liste rouge du site cesse d'être un brouillon
+      // d'atelier pour devenir la pièce écrite versée au manuel qualité : le
+      // module la reverse littéralement dans la procédure d'usage, ce qui en
+      // fait l'aboutissement de l'objectif 2 et non un simple rappel.
+      // Il sert en outre la seconde moitié de l'objectif 8 — la rédaction de
+      // la procédure d'usage elle-même, dont le module 6 a posé la
+      // qualification — et la règle de revalidation des écrits à portée
+      // sécurité du module 3 (objectif 5).
+      objectifsSecondairesIds: ["obj-8", "obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -1185,10 +1193,13 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous savez lesquelles de vos productions des deux jours sont diffusables en l'état, lesquelles repassent par la qualité ou par le référent QSE, et par quoi vous commencez lundi.",
-      objectifGlobalId: "obj-4",
-      // La revue des productions rejuge les ecrits qualite produits aux
-      // modules 2, 4 et 5 : c'est la derniere passe sur le suivi qualite.
-      objectifsSecondairesIds: ["obj-1"],
+      objectifGlobalId: "obj-5",
+      // Le tri avant diffusion est la dernière application de l'objectif :
+      // toute pièce portant un paragraphe surligné au module 3 va en pile
+      // « référent QSE ». L'évaluation des acquis qui ouvre le module porte en
+      // outre sur les régimes d'usage, la liste rouge, la vérification aux
+      // sources et la qualification des dispositifs de suivi.
+      objectifsSecondairesIds: ["obj-1", "obj-2", "obj-6", "obj-8"],
       dureeMin: 5,
       notes: {
         script:

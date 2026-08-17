@@ -15,6 +15,7 @@ import { revalidatePath, updateTag } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { adminPath } from "@/lib/admin-path";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
@@ -68,7 +69,49 @@ export async function updateCalendlyEventAction(
   if (endTime !== undefined) data.endTime = endTime ? new Date(endTime) : null;
 
   try {
-    await prisma.calendlyEvent.update({ where: { id }, data });
+    // L'état AVANT sert de garde : la synchro CRM ne doit partir que sur un
+    // VRAI changement de statut, pas à chaque édition d'un champ quelconque
+    // (chaque émission porte un event_id neuf — sans cette garde, rééditer
+    // les notes dupliquerait l'événement dans la timeline CRM).
+    const before = parsed.data.status
+      ? await prisma.calendlyEvent.findUnique({ where: { id }, select: { status: true } })
+      : null;
+
+    const updated = await prisma.calendlyEvent.update({ where: { id }, data });
+
+    // Synchro CRM (lot L2) — l'issue d'un RDV est une interaction de la
+    // timeline : honoré (completed), non honoré (no_show), annulé (canceled).
+    // « scheduled » n'émet rien : la prise du RDV a déjà été émise à la
+    // capture. Sans adresse d'invité, pas de clé de personne → rien.
+    const kindByStatus = {
+      completed: "completed",
+      no_show: "no_show",
+      canceled: "canceled",
+    } as const;
+    const newStatus = parsed.data.status;
+    if (
+      newStatus &&
+      newStatus !== before?.status &&
+      newStatus in kindByStatus &&
+      updated.inviteeEmail
+    ) {
+      await syncCalendlyEventToCrm({
+        kind: kindByStatus[newStatus as keyof typeof kindByStatus],
+        subjectRef: `site:calendly_event:${id}`,
+        sourceSlug: "calendly",
+        ...(updated.startTime ? { occurredAt: updated.startTime } : {}),
+        person: {
+          email: updated.inviteeEmail,
+          fullName: updated.inviteeName ?? null,
+          phone: updated.inviteePhone ?? null,
+        },
+        payload: {
+          eventTypeName: updated.eventTypeName,
+          source: "admin_status_change",
+        },
+      });
+    }
+
     revalidatePath(adminPath("fr", "contacts/appels"));
     revalidatePath(adminPath("fr", `contacts/appels/${id}`));
     // Le badge « à traiter » de la sidebar doit tomber tout de suite, pas
@@ -132,6 +175,23 @@ export async function createManualCalendlyEventAction(
       },
       select: { id: true },
     });
+    // Synchro CRM (lot L2) — une saisie manuelle est un rendez-vous comme un
+    // autre : le CRM n'a pas à savoir par quelle porte il est entré.
+    if (data.inviteeEmail) {
+      await syncCalendlyEventToCrm({
+        kind: "booked",
+        subjectRef: `site:calendly_event:${event.id}`,
+        sourceSlug: "calendly",
+        ...(data.startTime ? { occurredAt: new Date(data.startTime) } : {}),
+        person: {
+          email: data.inviteeEmail,
+          fullName: data.inviteeName ?? null,
+          phone: data.inviteePhone ?? null,
+        },
+        payload: { eventTypeName: data.eventTypeName, source: "manual_import" },
+      });
+    }
+
     revalidatePath(adminPath("fr", "contacts/appels"));
     return { ok: true, eventId: event.id };
   } catch (e) {

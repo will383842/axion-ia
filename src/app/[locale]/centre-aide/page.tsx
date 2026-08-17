@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
+import { EditorialPhotoCredit } from "@/components/media/EditorialPhotoCredit";
 import { HelpHeroSchema } from "@/components/sections/HelpHeroSchema";
 import { slugify } from "@/content/transversal";
 import { listHelpArticles } from "@/lib/help-articles/reader";
@@ -157,6 +158,7 @@ export default async function HelpCenter({ params }: Props) {
               slot="AIDE-01-hero"
               aspectRatio="16:9"
               filenameTarget="public/illustrations/centre-aide-hero.avif"
+              src="/illustrations/centre-aide-hero.avif"
               caption={
                 isFr
                   ? "Bibliothèque éditoriale — réponses rangées comme dans un manuel"
@@ -164,10 +166,11 @@ export default async function HelpCenter({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'une bibliothèque de conseils ouverte, symbole du centre d'aide Axion-IA."
-                  : "Editorial illustration of an open advice library, symbol of the Axion-IA help center."
+                  ? "Rayonnages d'une bibliothèque garnie de livres, éclairés à la lumière du jour."
+                  : "Library shelves filled with books, lit by daylight."
               }
             />
+            <EditorialPhotoCredit slot="centre-aide-hero" />
           </div>
         </Container>
       </Section>

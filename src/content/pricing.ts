@@ -299,12 +299,18 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
  * Nouveaux brackets canoniques : 2 paliers identiques pour tous les formats
  * collectifs (Essentielle, Gagner du temps, Intervention Claude, Approfondie) :
  *   2 à 15 personnes  : 2 450 € HT (prix d'entrée)
- *   16 à 30 personnes : 3 950 € HT (grande équipe)
  *
  * IDs `essentielle-standard` (2-15) / `essentielle-complete` (16-30) conservés
  * pour compat avec le shortId du BookingCalendar (`standard` / `complete`) et
  * les URLs `?tier=`. Le palier `intimiste` (3e bracket) est supprimé.
  */
+// 🔴 Palier « Grand groupe · 16 à 30 » SUPPRIMÉ le 2026-08-13 (décision Will :
+// « non, pas de 2 à 30 personnes »). C'était une donnée MORTE de la génération
+// « interventions » (aucune page ne la rendait — vérifié en prod), mais tant
+// qu'elle vivait ici, elle finissait rebranchée : c'est ce mécanisme qui a fait
+// annoncer 2 450 € aux moteurs IA via llms-full.txt. L'offre réelle est la
+// FORMATION_PRICE_MATRIX (2 à 15 participants) ; au-delà de 15 → Conférence,
+// sur devis. Ne PAS réintroduire de palier d'effectif ici sans décision Will.
 export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
     id: "essentielle-standard",
@@ -315,21 +321,12 @@ export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     priceFlat: 2450,
     isFeatured: true,
   },
-  {
-    id: "essentielle-complete",
-    labelFr: "Grand groupe",
-    labelEn: "Large group",
-    rangeFr: "16 à 30 personnes",
-    rangeEn: "16 to 30 people",
-    priceFlat: 3950,
-  },
 ];
 
 /**
  * Sous-tiers Approfondie (2 jours) — refonte tarifaire Will 2026-06-03.
  * Mêmes 2 brackets que les autres formats collectifs :
  *   2 à 15 personnes  : 3 250 € HT
- *   16 à 30 personnes : 4 850 € HT
  */
 export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
@@ -341,21 +338,12 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     priceFlat: 3250,
     isFeatured: true,
   },
-  {
-    id: "approfondie-complete",
-    labelFr: "Grand groupe",
-    labelEn: "Large group",
-    rangeFr: "16 à 30 personnes",
-    rangeEn: "16 to 30 people",
-    priceFlat: 4850,
-  },
 ];
 
 /**
  * Sous-tiers Gagner du temps (1 jour) — refonte tarifaire Will 2026-06-03.
  * Format passé d'un prix unique à 2 paliers (mêmes brackets que les autres).
  *   2 à 15 personnes  : 2 450 € HT
- *   16 à 30 personnes : 3 950 € HT
  */
 export const TEMPS_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
@@ -367,21 +355,12 @@ export const TEMPS_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     priceFlat: 2450,
     isFeatured: true,
   },
-  {
-    id: "temps-complete",
-    labelFr: "Grand groupe",
-    labelEn: "Large group",
-    rangeFr: "16 à 30 personnes",
-    rangeEn: "16 to 30 people",
-    priceFlat: 3950,
-  },
 ];
 
 /**
  * Sous-tiers Intervention Claude (1 jour) — refonte tarifaire Will 2026-06-03.
- * Format passé d'un prix unique (2-8 pers) à 2 paliers jusqu'à 30 personnes.
+ * Format passé d'un prix unique (2-8 pers) à 2 paliers jusqu'à 15 personnes.
  *   2 à 15 personnes  : 2 650 € HT
- *   16 à 30 personnes : 4 250 € HT
  */
 export const CLAUDE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
   {
@@ -393,14 +372,6 @@ export const CLAUDE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     priceFlat: 2650,
     isFeatured: true,
   },
-  {
-    id: "claude-complete",
-    labelFr: "Grand groupe",
-    labelEn: "Large group",
-    rangeFr: "16 à 30 personnes",
-    rangeEn: "16 to 30 people",
-    priceFlat: 4250,
-  },
 ];
 
 export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
@@ -409,7 +380,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // par l'unique formation 4 h restante (Démarrage IA Express).
     // Will 2026-07-06 — alignement sur le vrai catalogue V2 : le format 4 h
     // (gamme IA standard, cf. FORMATION_PRICE_MATRIX["ia-standard"]["4h"]) démarre
-    // à 1 200 € HT pour 2 à 30 personnes. Ce tier legacy porte le prix d'entrée
+    // à 1 200 € HT pour 2 à 15 personnes. Ce tier legacy porte le prix d'entrée
     // « à partir de » consommé par la home, les ~400 villes, /tarifs et llms.txt :
     // il passe donc à 1 200 € / 2-30 pour ne plus propager l'ancien 690 € (ex-590)
     // fantôme, qui ne correspondait à aucune formation réellement proposée.
@@ -419,8 +390,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     priceFlat: 1200,
     durationFr: "Demi-journée (4 h)",
     durationEn: "Half-day (4 h)",
-    groupSizeFr: "2 à 30 personnes",
-    groupSizeEn: "2 to 30 people",
+    groupSizeFr: "2 à 15 personnes",
+    groupSizeEn: "2 to 15 people",
     descriptionFr:
       "Format express demi-journée pour découvrir l'IA ou cadrer un cas d'usage métier précis.",
     descriptionEn: "Half-day express format to discover AI or frame a specific business use case.",
@@ -434,8 +405,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     priceFlat: 2450,
     durationFr: "1 journée",
     durationEn: "1 day",
-    groupSizeFr: "2 à 30 personnes",
-    groupSizeEn: "2 to 30 people",
+    groupSizeFr: "2 à 15 personnes",
+    groupSizeEn: "2 to 15 people",
     subTiers: ESSENTIELLE_SUB_TIERS,
     descriptionFr: "Format de découverte de l'IA opérationnelle en une journée sur site.",
     descriptionEn: "Discovery format for operational AI in a single on-site day.",
@@ -449,8 +420,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     priceFlat: 2450,
     durationFr: "1 journée",
     durationEn: "1 day",
-    groupSizeFr: "2 à 30 personnes",
-    groupSizeEn: "2 to 30 people",
+    groupSizeFr: "2 à 15 personnes",
+    groupSizeEn: "2 to 15 people",
     subTiers: TEMPS_SUB_TIERS,
     descriptionFr:
       "Une journée pour gagner du temps concrètement : automatisations IA sur les tâches récurrentes et intégration dans le flux de travail quotidien.",
@@ -466,8 +437,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     priceFlat: 3250,
     durationFr: "2 jours",
     durationEn: "2 days",
-    groupSizeFr: "2 à 30 personnes",
-    groupSizeEn: "2 to 30 people",
+    groupSizeFr: "2 à 15 personnes",
+    groupSizeEn: "2 to 15 people",
     subTiers: APPROFONDIE_SUB_TIERS,
     descriptionFr:
       "Approfondissement IA sur deux journées consécutives — même grille d'effectif qu'Essentielle (2-15 / 16-30 personnes).",
@@ -541,8 +512,8 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     priceFlat: 2650,
     durationFr: "1 journée",
     durationEn: "1 day",
-    groupSizeFr: "2 à 30 personnes",
-    groupSizeEn: "2 to 30 people",
+    groupSizeFr: "2 à 15 personnes",
+    groupSizeEn: "2 to 15 people",
     subTiers: CLAUDE_SUB_TIERS,
     descriptionFr: "Une journée 100 % dédiée à Claude (Anthropic) : Chat · Cowork · Code.",
     descriptionEn: "A full day 100 % focused on Claude (Anthropic): Chat · Cowork · Code.",

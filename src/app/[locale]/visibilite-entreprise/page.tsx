@@ -38,7 +38,7 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { VISIBILITE_UNSPLASH } from "@/content/visibilite-entreprise-unsplash";
 import { ServicesGrid } from "@/components/services/ServicesGrid";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesIndexableNow } from "@/content/villes";
+import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -82,7 +82,7 @@ export default async function VisibiliteClient({ params }: Props) {
 
   const pageImages = getPageImages(PATH);
   const heroImage = pageImages.find((i) => i.slot === "hero");
-  const villes = getVillesIndexableNow().slice(0, 60);
+  const villes = getVillesCoreIndexableNow().slice(0, 60);
   const bannerImage = pageImages.find((i) => i.slot === "banner");
   const roiInfographic = pageImages.find((i) => i.slot === "inline");
   const processImage = VISIBILITE_UNSPLASH.find((i) => i.slot === "hero");

@@ -186,7 +186,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais déclenchée à ce jour).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated in your Saint-Étienne structure and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size — from Loire micro-businesses and industrial SMEs to large-enterprise HQs (Casino Guichard-Perrachon, Thuasne, Aubert & Duval).",
