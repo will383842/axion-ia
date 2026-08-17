@@ -136,7 +136,11 @@
 <script>
 (function () {
   'use strict';
-  var PAGES = [{"f":"couv1.jpg","n":"","s":true},{"f":"p001.jpg","n":"01","s":true},{"f":"p002.jpg","n":"02","s":false},{"f":"p003.jpg","n":"03","s":false},{"f":"p004.jpg","n":"04","s":false},{"f":"p005.jpg","n":"05","s":false},{"f":"p006.jpg","n":"06","s":false},{"f":"p007.jpg","n":"07","s":false},{"f":"p008.jpg","n":"08","s":false},{"f":"p009.jpg","n":"09","s":false},{"f":"p010.jpg","n":"10","s":false},{"f":"p011.jpg","n":"11","s":false},{"f":"p012.jpg","n":"12","s":false},{"f":"p013.jpg","n":"13","s":false},{"f":"p014.jpg","n":"14","s":false},{"f":"p015.jpg","n":"15","s":false},{"f":"p016.jpg","n":"16","s":false},{"f":"p017.jpg","n":"17","s":false},{"f":"p018.jpg","n":"18","s":false},{"f":"p019.jpg","n":"19","s":false},{"f":"p020.jpg","n":"20","s":false},{"f":"p021.jpg","n":"21","s":false},{"f":"p022.jpg","n":"22","s":false},{"f":"p023.jpg","n":"23","s":false},{"f":"p024.jpg","n":"24","s":false},{"f":"p025.jpg","n":"25","s":false},{"f":"p026.jpg","n":"26","s":false},{"f":"p027.jpg","n":"27","s":false},{"f":"p028.jpg","n":"28","s":false},{"f":"p029.jpg","n":"29","s":false},{"f":"p030.jpg","n":"30","s":false},{"f":"p031.jpg","n":"31","s":false},{"f":"p032.jpg","n":"32","s":false},{"f":"p033.jpg","n":"33","s":false},{"f":"p034.jpg","n":"34","s":false},{"f":"p035.jpg","n":"35","s":false},{"f":"p036.jpg","n":"36","s":false},{"f":"p037.jpg","n":"37","s":false},{"f":"p038.jpg","n":"38","s":false},{"f":"p039.jpg","n":"39","s":false},{"f":"p040.jpg","n":"40","s":false},{"f":"p041.jpg","n":"41","s":false},{"f":"p042.jpg","n":"42","s":false},{"f":"p043.jpg","n":"43","s":false},{"f":"p044.jpg","n":"44","s":false},{"f":"p045.jpg","n":"45","s":false},{"f":"p046.jpg","n":"46","s":false},{"f":"p047.jpg","n":"47","s":false},{"f":"p048.jpg","n":"48","s":false},{"f":"p049.jpg","n":"49","s":false},{"f":"p050.jpg","n":"50","s":false},{"f":"p051.jpg","n":"51","s":false},{"f":"p052.jpg","n":"52","s":false},{"f":"p053.jpg","n":"53","s":false},{"f":"p054.jpg","n":"54","s":false},{"f":"p055.jpg","n":"55","s":false},{"f":"p056.jpg","n":"56","s":false},{"f":"p057.jpg","n":"57","s":false},{"f":"p058.jpg","n":"58","s":false},{"f":"p059.jpg","n":"59","s":false},{"f":"p060.jpg","n":"60","s":false},{"f":"p061.jpg","n":"61","s":false},{"f":"p062.jpg","n":"62","s":false},{"f":"p063.jpg","n":"63","s":false},{"f":"p064.jpg","n":"64","s":false},{"f":"p065.jpg","n":"65","s":false},{"f":"p066.jpg","n":"66","s":false},{"f":"p067.jpg","n":"67","s":false},{"f":"p068.jpg","n":"68","s":false},{"f":"p069.jpg","n":"69","s":false},{"f":"p070.jpg","n":"70","s":false},{"f":"p071.jpg","n":"71","s":false},{"f":"p072.jpg","n":"72","s":false},{"f":"p073.jpg","n":"73","s":false},{"f":"p074.jpg","n":"74","s":false},{"f":"p075.jpg","n":"75","s":false},{"f":"p076.jpg","n":"76","s":false},{"f":"p077.jpg","n":"77","s":false},{"f":"p078.jpg","n":"78","s":false},{"f":"p079.jpg","n":"79","s":false},{"f":"p080.jpg","n":"80","s":false},{"f":"p081.jpg","n":"81","s":false},{"f":"p082.jpg","n":"82","s":false},{"f":"p083.jpg","n":"83","s":false},{"f":"p084.jpg","n":"84","s":false},{"f":"couv4.jpg","n":"","s":true}];
+  // Champ c = couverture. Seules les couvertures sont CENTREES — un livre
+  // ferme se regarde de face. Une page interieure isolee (la 01, la 84) n'est
+  // pas centree : elle occupe la moitie qui lui revient, l'autre restant
+  // blanche, parce que c'est la seule chose qui puisse exister sur papier.
+  var PAGES = [{"f":"couv1.jpg","n":"","s":true,"c":true},{"f":"p001.jpg","n":"01","s":true,"c":false},{"f":"p002.jpg","n":"02","s":false,"c":false},{"f":"p003.jpg","n":"03","s":false,"c":false},{"f":"p004.jpg","n":"04","s":false,"c":false},{"f":"p005.jpg","n":"05","s":false,"c":false},{"f":"p006.jpg","n":"06","s":false,"c":false},{"f":"p007.jpg","n":"07","s":false,"c":false},{"f":"p008.jpg","n":"08","s":false,"c":false},{"f":"p009.jpg","n":"09","s":false,"c":false},{"f":"p010.jpg","n":"10","s":false,"c":false},{"f":"p011.jpg","n":"11","s":false,"c":false},{"f":"p012.jpg","n":"12","s":false,"c":false},{"f":"p013.jpg","n":"13","s":false,"c":false},{"f":"p014.jpg","n":"14","s":false,"c":false},{"f":"p015.jpg","n":"15","s":false,"c":false},{"f":"p016.jpg","n":"16","s":false,"c":false},{"f":"p017.jpg","n":"17","s":false,"c":false},{"f":"p018.jpg","n":"18","s":false,"c":false},{"f":"p019.jpg","n":"19","s":false,"c":false},{"f":"p020.jpg","n":"20","s":false,"c":false},{"f":"p021.jpg","n":"21","s":false,"c":false},{"f":"p022.jpg","n":"22","s":false,"c":false},{"f":"p023.jpg","n":"23","s":false,"c":false},{"f":"p024.jpg","n":"24","s":false,"c":false},{"f":"p025.jpg","n":"25","s":false,"c":false},{"f":"p026.jpg","n":"26","s":false,"c":false},{"f":"p027.jpg","n":"27","s":false,"c":false},{"f":"p028.jpg","n":"28","s":false,"c":false},{"f":"p029.jpg","n":"29","s":false,"c":false},{"f":"p030.jpg","n":"30","s":false,"c":false},{"f":"p031.jpg","n":"31","s":false,"c":false},{"f":"p032.jpg","n":"32","s":false,"c":false},{"f":"p033.jpg","n":"33","s":false,"c":false},{"f":"p034.jpg","n":"34","s":false,"c":false},{"f":"p035.jpg","n":"35","s":false,"c":false},{"f":"p036.jpg","n":"36","s":false,"c":false},{"f":"p037.jpg","n":"37","s":false,"c":false},{"f":"p038.jpg","n":"38","s":false,"c":false},{"f":"p039.jpg","n":"39","s":false,"c":false},{"f":"p040.jpg","n":"40","s":false,"c":false},{"f":"p041.jpg","n":"41","s":false,"c":false},{"f":"p042.jpg","n":"42","s":false,"c":false},{"f":"p043.jpg","n":"43","s":false,"c":false},{"f":"p044.jpg","n":"44","s":false,"c":false},{"f":"p045.jpg","n":"45","s":false,"c":false},{"f":"p046.jpg","n":"46","s":false,"c":false},{"f":"p047.jpg","n":"47","s":false,"c":false},{"f":"p048.jpg","n":"48","s":false,"c":false},{"f":"p049.jpg","n":"49","s":false,"c":false},{"f":"p050.jpg","n":"50","s":false,"c":false},{"f":"p051.jpg","n":"51","s":false,"c":false},{"f":"p052.jpg","n":"52","s":false,"c":false},{"f":"p053.jpg","n":"53","s":false,"c":false},{"f":"p054.jpg","n":"54","s":false,"c":false},{"f":"p055.jpg","n":"55","s":false,"c":false},{"f":"p056.jpg","n":"56","s":false,"c":false},{"f":"p057.jpg","n":"57","s":false,"c":false},{"f":"p058.jpg","n":"58","s":false,"c":false},{"f":"p059.jpg","n":"59","s":false,"c":false},{"f":"p060.jpg","n":"60","s":false,"c":false},{"f":"p061.jpg","n":"61","s":false,"c":false},{"f":"p062.jpg","n":"62","s":false,"c":false},{"f":"p063.jpg","n":"63","s":false,"c":false},{"f":"p064.jpg","n":"64","s":false,"c":false},{"f":"p065.jpg","n":"65","s":false,"c":false},{"f":"p066.jpg","n":"66","s":false,"c":false},{"f":"p067.jpg","n":"67","s":false,"c":false},{"f":"p068.jpg","n":"68","s":false,"c":false},{"f":"p069.jpg","n":"69","s":false,"c":false},{"f":"p070.jpg","n":"70","s":false,"c":false},{"f":"p071.jpg","n":"71","s":false,"c":false},{"f":"p072.jpg","n":"72","s":false,"c":false},{"f":"p073.jpg","n":"73","s":false,"c":false},{"f":"p074.jpg","n":"74","s":false,"c":false},{"f":"p075.jpg","n":"75","s":false,"c":false},{"f":"p076.jpg","n":"76","s":false,"c":false},{"f":"p077.jpg","n":"77","s":false,"c":false},{"f":"p078.jpg","n":"78","s":false,"c":false},{"f":"p079.jpg","n":"79","s":false,"c":false},{"f":"p080.jpg","n":"80","s":false,"c":false},{"f":"p081.jpg","n":"81","s":false,"c":false},{"f":"p082.jpg","n":"82","s":false,"c":false},{"f":"p083.jpg","n":"83","s":false,"c":false},{"f":"p084.jpg","n":"84","s":false,"c":false},{"f":"couv4.jpg","n":"","s":true,"c":true}];
   var BASE = 'pages-web/';
   var livre = document.getElementById('livre');
   var pgG = document.getElementById('pgG'), pgD = document.getElementById('pgD');
@@ -153,6 +157,11 @@
   // La page 01 non plus — c'est le recto qui ouvre le livre (cf. l'appariement
   // en tete de build-flipbook.cjs).
   function seule(k) { return !!(PAGES[k] && PAGES[k].s); }
+  function estCouv(k) { return !!(PAGES[k] && PAGES[k].c); }
+  // Demi-page blanche : un GIF transparent 1x1 etire par la cellule, dont le
+  // fond creme vient de la regle .livre img. Pas de src vide, qui afficherait
+  // l'icone d'image cassee du navigateur a la place du contre-plat.
+  var VIDE = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
   // La page d'EN FACE compte aussi : si elle est seule, la vue est solo, et
   // avancer de deux la sauterait. Sans ce terme, la 4e de couverture devenait
   // inatteignable des que la 84 se retrouvait seule en fin de livre.
@@ -175,18 +184,39 @@
 
   function libelle() {
     var g = PAGES[i], d = PAGES[i + 1];
-    if (g && g.s) return g.f === 'couv1.jpg' ? 'couverture' : 'dos de couverture';
-    if (MOBILE() || !d || seule(i + 1)) return g && g.n ? 'page ' + g.n : (i + 1) + ' / ' + PAGES.length;
-    if (g && g.n && d.n) return 'pages ' + g.n + '–' + d.n;
+    // Le test portait sur s (page isolee) et non sur c (couverture). Depuis
+    // que la 01 est isolee pour ouvrir le livre sur une belle page, elle
+    // s'annoncait « dos de couverture ». On nomme ce qu'on montre.
+    if (g && g.c) return g.f === 'couv1.jpg' ? 'couverture' : 'dos de couverture';
+    var isole = MOBILE() || seule(i) || seule(i + 1);
+    if (isole) return g && g.n ? 'page ' + g.n : (i + 1) + ' / ' + PAGES.length;
+    if (g && g.n && d && d.n) return 'pages ' + g.n + '–' + d.n;
     return (i + 1) + ' / ' + PAGES.length;
   }
 
   function rendre() {
-    var solo = MOBILE() || seule(i) || seule(i + 1);
-    livre.classList.toggle('solo', solo);
-    pgG.src = url(i);
-    if (solo) { pgD.style.display = 'none'; }
-    else { pgD.style.display = ''; pgD.src = url(i + 1); }
+    var isole = MOBILE() || seule(i) || seule(i + 1);
+    // Centre UNIQUEMENT pour une couverture. La 01 et la 84 sont des pages du
+    // livre : les centrer donnerait une ouverture qui n'existe pas sur papier.
+    var centre = isole && (MOBILE() || estCouv(i));
+    livre.classList.toggle('solo', centre);
+
+    if (!isole) {
+      pgG.style.display = ''; pgD.style.display = '';
+      pgG.src = url(i); pgD.src = url(i + 1);
+    } else if (centre) {
+      pgG.style.display = ''; pgD.style.display = 'none';
+      pgG.src = url(i);
+    } else {
+      // Page interieure isolee : impaire = recto = moitie DROITE, paire = verso
+      // = moitie GAUCHE. En face, une demi-page blanche — le contre-plat pour
+      // la 01, l'interieur de la 4e pour la 84.
+      var n = parseInt(PAGES[i].n, 10);
+      var aDroite = n % 2 === 1;
+      pgG.style.display = ''; pgD.style.display = '';
+      pgG.src = aDroite ? VIDE : url(i);
+      pgD.src = aDroite ? url(i) : VIDE;
+    }
     compte.textContent = libelle();
     bPrec.disabled = i <= 0;
     bDebut.disabled = i <= 0;
