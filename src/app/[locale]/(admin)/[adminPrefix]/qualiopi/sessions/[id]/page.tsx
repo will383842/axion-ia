@@ -69,6 +69,8 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
 import { AncresHubSession } from "@/features/admin-qualiopi/session-hub/AncresHubSession";
 import { ancresVisibles, CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
+import { ChecklistSession } from "@/features/admin-qualiopi/session-hub/ChecklistSession";
+import { prochainesEcheances } from "@/server/qualiopi/parcours/echeances-service";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -455,7 +457,20 @@ export default async function SessionHubPage({ params }: PageProps) {
   const base = `/${locale}/${adminPrefix}/qualiopi/sessions`;
   const sessionBase = `${base}/${id}`;
   // Ce que la session attend encore de nous. Deduit, jamais coche.
-  const preparationKit = await lirePreparation(id);
+  //
+  // 🔴 Le parcours est lu par le MÊME service que « À traiter », en balayage
+  // CIBLÉ (`sessionIds`) : une seconde traduction des lignes Prisma vers les
+  // étapes fabriquerait deux vérités, et le jour où une quinzième étape arrive
+  // l'un des deux écrans compterait encore sur quatorze.
+  //
+  // ⚠️ `catch` : la checklist est un CONFORT de lecture. Une lecture en échec
+  // ne doit pas faire tomber le dossier entier — on perd la checklist, pas la
+  // page.
+  const [preparationKit, echeances] = await Promise.all([
+    lirePreparation(id),
+    prochainesEcheances({ sessionIds: [id] }).catch(() => null),
+  ]);
+  const parcours = echeances?.parSession.get(id) ?? null;
   const dateValidation = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 
   const sectionHeadCls =
@@ -526,9 +541,10 @@ export default async function SessionHubPage({ params }: PageProps) {
           section est réellement rendue — un lien mort apprend à ne plus faire
           confiance à la barre. */}
       <AncresHubSession
-        ancres={ancresVisibles(
-          preparationKit !== null && preparationKit.aPreparer ? ["preparation-kit"] : [],
-        )}
+        ancres={ancresVisibles([
+          ...(parcours !== null ? ["checklist"] : []),
+          ...(preparationKit !== null && preparationKit.aPreparer ? ["preparation-kit"] : []),
+        ])}
       />
 
       {/* ── En-tête de la session ─────────────────────────────────────────── */}
@@ -663,6 +679,16 @@ export default async function SessionHubPage({ params }: PageProps) {
       </section>
 
       {/* ── Cycle de vie ─────────────────────────────────────────────────── */}
+      {/* 🔴 La checklist, juste après l'identité de la session : c'est la
+          question qu'on se pose en ouvrant un dossier — « où en est-il ? » —
+          et le serveur la calculait déjà sans jamais la rendre ici. */}
+      {parcours !== null ? (
+        <section id="checklist" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Où en est ce dossier</h2>
+          <ChecklistSession etapes={parcours.etapes} fait={parcours.fait} total={parcours.total} />
+        </section>
+      ) : null}
+
       <section id="cycle-de-vie" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Cycle de vie</h2>
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">

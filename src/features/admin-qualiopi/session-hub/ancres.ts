@@ -54,6 +54,10 @@ export interface AncreHub {
  */
 export const ANCRES_HUB_SESSION: readonly AncreHub[] = [
   { id: "infos", libelle: "Informations" },
+  // Conditionnelle : sans parcours calculé (session hors périmètre, ou lecture
+  // en échec), la section n'est pas rendue du tout — une checklist vide se
+  // lirait comme « aucune obligation », le contraire de la vérité.
+  { id: "checklist", libelle: "Où en est ce dossier", conditionnelle: true },
   { id: "cycle-de-vie", libelle: "Cycle de vie" },
   { id: "lieu", libelle: "Lieu" },
   { id: "formateur", libelle: "Formateur" },
