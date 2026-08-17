@@ -59,6 +59,13 @@ export function ReglementInterieurPdf({
   data: ReglementInterieurData;
   identite: OrganismeIdentite;
 }): React.ReactElement {
+  // Renvoi vers la procédure de réclamation publiée (cf. article 8). Le règlement
+  // intérieur PUBLIÉ porte déjà cette phrase (`src/content/legal.ts`) ; la pièce
+  // remise ne la portait pas. `identite.site` peut être vide (config Qualiopi non
+  // renseignée) : on énonce alors l'existence de la procédure plutôt que
+  // d'imprimer une URL tronquée du type « /reclamations ».
+  const siteBase = identite.site.replace(/\/+$/, "");
+
   return (
     <Document>
       <QualiopiPage
@@ -228,11 +235,32 @@ export function ReglementInterieurPdf({
         </DocSection>
 
         {/* Article 8 — Réclamations */}
+        {/*
+          🔴 Audit blanc 2026-08-15. Cet article disposait que « toute réclamation
+          DOIT être formulée [...] dans un délai de 10 jours ouvrés suivant la
+          situation litigieuse ». C'était la formulation la plus contraignante des
+          deux pièces remises au stagiaire (le livret d'accueil portait la même
+          règle, en liste à puces), et ce délai ne figurait NI dans la procédure
+          publiée sur /reclamations, NI dans le règlement intérieur publié
+          (`src/content/legal.ts`, entrée « reglement-interieur », article 8).
+
+          Le stagiaire recevait donc deux règles différentes sur le même droit, et
+          celle qui éteignait son droit de réclamer au bout de dix jours était
+          précisément celle qui n'était pas publiée. Devant un auditeur COFRAC,
+          c'est une divergence entre la pièce remise et la procédure documentée ;
+          devant un juge, une clause abrégeant le délai pour agir relève de la
+          liste grise de l'article R.212-2 10° du Code de la consommation
+          (présomption simple d'abus).
+
+          Le paragraphe suivant est conservé tel quel : accusé de réception sous
+          5 jours ouvrés et réponse circonstanciée sous 15 jours ouvrés sont des
+          engagements DE L'ORGANISME, favorables au stagiaire, et identiques à
+          ceux de la procédure publiée.
+        */}
         <DocSection title="Article 8 — Réclamations">
           <Text style={local.articleBody}>
-            Toute réclamation doit être formulée par écrit (courrier ou email) auprès du référent
-            pédagogique de l'organisme dans un délai de 10 jours ouvrés suivant la situation
-            litigieuse.
+            Toute réclamation relative au déroulement de la formation est formulée par écrit
+            (courrier ou email) auprès du référent pédagogique de l'organisme.
           </Text>
           <Text style={local.articleBody}>
             L'organisme s'engage à accuser réception de la réclamation dans les 5 jours ouvrés et à
@@ -240,6 +268,11 @@ export function ReglementInterieurPdf({
             de sa réception.
           </Text>
           <FieldRow label="Email réclamations" value={identite.email || "—"} />
+          <Text style={pdfStyles.legalNote}>
+            {siteBase
+              ? `Les modalités détaillées de dépôt, de traitement et de recours figurent dans la procédure de réclamation publiée sur ${siteBase}/reclamations.`
+              : "Les modalités détaillées de dépôt, de traitement et de recours figurent dans la procédure de réclamation publiée sur notre site, rubrique « Réclamations », et communiquée sur simple demande."}
+          </Text>
         </DocSection>
 
         {/* Article 9 — Protection des données */}

@@ -55,7 +55,7 @@ import {
 } from "@/components/formations/FormationsCatalogueFilterable";
 import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesIndexableNow } from "@/content/villes";
+import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
 import {
   FORMATION_DUREE_FACTS,
@@ -377,7 +377,7 @@ export default async function FormationsEntreprise({ params }: Props) {
     },
   ];
 
-  const villes = getVillesIndexableNow().slice(0, 60);
+  const villes = getVillesCoreIndexableNow().slice(0, 60);
 
   // Données slim du catalogue passées au filtre client (prix déjà formaté côté
   // serveur → catalog-v2 reste hors bundle client). Refonte 2026-07-19 : filtre
@@ -467,8 +467,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       id: "nombre-participants",
       question: isFr ? "Combien de personnes peut-on former ?" : "How many people can be trained?",
       answer: isFr
-        ? "De 2 à 30 personnes selon la formation (les gammes Agents & Automatisations et Claude sont en groupes limités à 12 pour garder un atelier efficace). Le tarif étant par session, former plus de personnes optimise le coût par participant."
-        : "From 2 to 30 people depending on the training (the Agents & Automation and Claude ranges are capped at 12 for an effective workshop). As the price is per session, training more people optimises the cost per participant.",
+        ? "De 2 à 15 personnes selon la formation (les gammes Agents & Automatisations et Claude sont en groupes limités à 12 pour garder un atelier efficace). Le tarif étant par session, former plus de personnes optimise le coût par participant."
+        : "From 2 to 15 people depending on the training (the Agents & Automation and Claude ranges are capped at 12 for an effective workshop). As the price is per session, training more people optimises the cost per participant.",
     },
     {
       id: "prerequis",

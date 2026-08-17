@@ -7,6 +7,7 @@ import {
   setJobOfferFilledAction,
   cloneJobOfferAction,
   deleteJobOfferAction,
+  republishJobOfferAction,
   type JobOfferActionState,
 } from "@/features/admin-job-offers/actions";
 
@@ -53,6 +54,14 @@ function ActionForm({
 export function OfferLifecycleActions({ id }: { id: string }) {
   return (
     <div className="admin-actions-row">
+      {/* Republication = rafraîchit la date que Google for Jobs affiche.
+          Geste réservé à une offre TOUJOURS ouverte (règle anti-spam Google). */}
+      <ActionForm
+        action={republishJobOfferAction}
+        id={id}
+        label="Republier (rafraîchir la date)"
+        confirmMessage="Republier cette offre ? La date de publication vue par Google passera à aujourd'hui. À faire UNIQUEMENT si l'offre est toujours ouverte (idéalement après relecture du texte)."
+      />
       <ActionForm action={setJobOfferFilledAction} id={id} label="Marquer pourvu" />
       <ActionForm action={cloneJobOfferAction} id={id} label="Dupliquer" />
       <ActionForm

@@ -182,7 +182,7 @@ async function collectIndexableCityUrls(
 
 async function collectImageBankUrls(siteUrl: string): Promise<string[]> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    return [];
+    return collectImageBankUrlsFromSitemap(siteUrl);
   }
   try {
     const { prisma } = await import("../src/lib/prisma");
@@ -205,8 +205,38 @@ async function collectImageBankUrls(siteUrl: string): Promise<string[]> {
     }
     return urls;
   } catch (err) {
+    // Post-deploy GH Actions : ni DATABASE_URL ni client Prisma généré — le
+    // repli sitemap lit la prod live (défaut 2026-08-11 : « Cannot find module
+    // 'prisma/generated/client' » → les URLs galerie n'étaient JAMAIS soumises).
     console.warn(
-      `[indexnow-ping] image-bank URLs skipped :`,
+      `[indexnow-ping] image-bank via DB indisponible (${err instanceof Error ? err.message : String(err)}) — repli sitemap`,
+    );
+    return collectImageBankUrlsFromSitemap(siteUrl);
+  }
+}
+
+/**
+ * Repli sans DB : extrait les URLs de pages galerie du sitemap images public
+ * (rendu au runtime par la prod, donc complet même quand ce script tourne dans
+ * un contexte sans base — job post-deploy GH Actions notamment).
+ * `<image:loc>` (fichiers) n'est pas capté : le motif exige la balise nue `<loc>`.
+ */
+async function collectImageBankUrlsFromSitemap(siteUrl: string): Promise<string[]> {
+  try {
+    const res = await fetch(`${siteUrl}/sitemaps/images-fr.xml`, {
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) {
+      console.warn(`[indexnow-ping] sitemap images-fr.xml → HTTP ${res.status}, image-bank skip`);
+      return [];
+    }
+    const xml = await res.text();
+    const urls = Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g), (m) => m[1]!);
+    console.log(`[indexnow-ping] image-bank via sitemap : ${urls.length} URLs`);
+    return urls;
+  } catch (err) {
+    console.warn(
+      `[indexnow-ping] image-bank sitemap fallback échoué :`,
       err instanceof Error ? err.message : err,
     );
     return [];

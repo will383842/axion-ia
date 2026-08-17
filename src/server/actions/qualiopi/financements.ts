@@ -23,7 +23,11 @@
 import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
@@ -50,6 +54,9 @@ import {
   CLIENT_FACTURABLE_SELECT,
 } from "@/server/qualiopi/financements/destinataire-facture";
 import { DELAI_PAIEMENT_DEFAUT_JOURS } from "@/server/qualiopi/financements/conditions-client";
+import { choisirCreancePourFacture } from "@/server/qualiopi/financements/facture-par-creance";
+import { creerDossierDepuisSession } from "@/server/qualiopi/financements/dossier-financement";
+import { changementOuvreUnDossier } from "@/server/qualiopi/financements/dossier-auto";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
@@ -277,6 +284,51 @@ export async function setFinancementSessionAction(input: {
 
   if (Object.keys(updateData).length === 0) return { error: "Aucun champ à mettre à jour" };
 
+  // 🔴 COHÉRENCE type de client × dispositif de financement — garde SERVEUR.
+  //
+  // Aucune validation croisée n'existait : rien n'interdisait un CPF sur une
+  // entreprise ni un OPCO sur un particulier. Les formulaires masquent, la
+  // Server Action acceptait — et un dispositif incohérent ne se voit qu'au
+  // refus du financeur, des semaines plus tard, quand la formation a eu lieu.
+  //
+  // Deux contradictions seulement, celles qui ne souffrent aucune exception :
+  //   · le CPF est le compte d'une PERSONNE. Une personne morale n'en a pas.
+  //   · un OPCO finance l'obligation de formation d'un EMPLOYEUR. Un particulier
+  //     qui se forme à titre individuel n'en relève d'aucun.
+  //
+  // ⚠️ `france_travail` n'est PAS restreint : un demandeur d'emploi est un
+  // particulier, mais un employeur peut aussi monter une POEI. `mixte` et
+  // `direct` non plus. Une garde qui refuserait un cas légitime serait pire que
+  // l'absence de garde — on la contournerait, et elle finirait désarmée.
+  if (fields.financementType === "cpf" || fields.financementType === "opco") {
+    const avecClient = await prisma.trainingSession
+      .findUnique({ where: { id: sessionId }, select: { client: { select: { type: true } } } })
+      .catch(() => null);
+    const typeClient = avecClient?.client?.type ?? null;
+
+    if (fields.financementType === "cpf" && typeClient === "entreprise") {
+      return {
+        error:
+          "Financement refusé : le CPF est le compte personnel d'un stagiaire, une personne morale n'en dispose pas. " +
+          "Pour une entreprise, choisissez OPCO ou financement direct.",
+      };
+    }
+    if (fields.financementType === "opco" && typeClient === "particulier") {
+      return {
+        error:
+          "Financement refusé : un OPCO finance l'obligation de formation d'un employeur — un particulier n'en relève pas. " +
+          "Pour un particulier, choisissez CPF, France Travail ou financement direct.",
+      };
+    }
+  }
+
+  // Le financement AVANT écriture : c'est lui qui dit si ce changement fait
+  // ENTRER la session dans le périmètre suivi (cf. `changementOuvreUnDossier`).
+  // Lu ici, pas après : après, il est déjà écrasé.
+  const avant = await prisma.trainingSession
+    .findUnique({ where: { id: sessionId }, select: { financementType: true } })
+    .catch(() => null);
+
   await prisma.trainingSession.update({
     where: { id: sessionId },
     data: updateData as Parameters<typeof prisma.trainingSession.update>[0]["data"],
@@ -290,6 +342,42 @@ export async function setFinancementSessionAction(input: {
     session,
   });
 
+  // ── 🔴 SOUS-LOT 8C — le dossier de financement s'ouvre TOUT SEUL ──────────
+  //
+  // Il n'avait qu'un appelant : un bouton. Vérifié en production, **zéro
+  // dossier n'existait** — donc aucune alerte de suivi financeur, aucune ligne
+  // au cockpit, pour aucune affaire. Le suivi OPCO était éteint sans que rien
+  // ne le dise.
+  //
+  // 🔑 Pourquoi il est légitime d'automatiser ICI alors que le bouton manuel
+  // est gardé par `deposer_demande_financeur` : ce n'est pas le même acte.
+  // Ouvrir le dossier (`a_monter`) est un classeur vide qui ne parle à
+  // personne ; DÉPOSER la demande (`a_monter → envoye`) engage l'organisme au
+  // nom du client et reste le clic habilité qu'il a toujours été.
+  // Produire ≠ remettre.
+  //
+  // Fail-soft, et c'est délibéré : le financement de la session vient d'être
+  // enregistré. Faire échouer l'action parce que la vue de PILOTAGE n'a pas pu
+  // s'ouvrir perdrait la donnée métier au profit de son tableau de bord.
+  // L'échec est journalisé, et le bouton manuel reste le rattrapage.
+  if (changementOuvreUnDossier(avant?.financementType, fields.financementType)) {
+    try {
+      const dossier = await creerDossierDepuisSession(sessionId);
+      await logQualiopiActivity({
+        action: "qualiopi.dossier_financement.ouvert_auto",
+        targetType: "DossierFinancement",
+        targetId: dossier.id,
+        changes: { sessionId, financementType: fields.financementType, statut: "a_monter" },
+        session,
+      });
+    } catch (err) {
+      console.error("[financements] ouverture auto du dossier impossible", {
+        sessionId,
+        err: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+
   return { data: { id: sessionId } };
 }
 
@@ -300,7 +388,8 @@ export async function setFinancementSessionAction(input: {
 export async function validerAccordOpcoAction(input: {
   sessionId: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : acter l'accord OPCO conditionne la facturation subrogee.
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
   const parsed = validerAccordOpcoSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId } = parsed.data;
@@ -347,7 +436,8 @@ export async function genererFactureFormationAction(input: {
   destinataire: FactureFormationDestinataire;
   ventilation: "forfait" | "horaire";
 }): Promise<ActionResult<{ factureId: string; numero: string; documentId: string | null }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : facture de formation : numerotation legale, TVA.
+  const adminSession = await requireHabilitation("facturer");
 
   // Stub-aware : build-time, aucune facture ne doit être créée
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
@@ -381,6 +471,25 @@ export async function genererFactureFormationAction(input: {
       dateDebut: true,
       dateFin: true,
       clientId: true,
+      // 🔴 Les créances du dossier — c'est elles qui disent QUI doit et COMBIEN.
+      // Sans ce `select`, le destinataire était écrasé à « opco » en subrogation
+      // et le reste à charge n'était facturable à personne.
+      dossiersFinancement: {
+        orderBy: { createdAt: "asc" },
+        take: 1,
+        select: {
+          id: true,
+          payeurs: {
+            select: {
+              id: true,
+              payeurType: true,
+              payeurNom: true,
+              montantAttenduCents: true,
+              factureFormationId: true,
+            },
+          },
+        },
+      },
       client: {
         select: {
           ...CLIENT_FACTURABLE_SELECT,
@@ -479,10 +588,53 @@ export async function genererFactureFormationAction(input: {
     totalHtCents = result.totalHtCents;
   }
 
-  // ── Destinataire : subrogation → OPCO ────────────────────────────────────
-  const destinataireEffectif: FactureFormationDestinataire = trainingSession.opcoSubrogation
-    ? "opco"
-    : destinataire;
+  // ── 🔴 DESTINATAIRE ET MONTANT VIENNENT DE LA CRÉANCE ────────────────────
+  //
+  // Cette ligne valait `opcoSubrogation ? "opco" : destinataire` : le choix de
+  // l'humain était ÉCRASÉ dès que la subrogation était cochée. Conséquence,
+  // **le reste à charge n'était facturable à personne** — impossible d'émettre
+  // depuis la session la seconde facture, celle de l'entreprise. Le seul
+  // contournement était une facture libre ressaisie à la main, sans lien avec
+  // le dossier.
+  //
+  // La règle métier n'a pourtant jamais été douteuse (plan, Lot 8 étape 6) :
+  // **l'OPCO paie sa part, le client le reste à charge**. Deux factures. Ce qui
+  // manquait n'était pas la décision, c'était le chemin.
+  //
+  // `DossierPayeur` était conçu pour ça depuis l'origine. On facture donc PAR
+  // CRÉANCE : le destinataire vient de la ligne, le montant aussi (plus de
+  // double comptage : facturer le total de la session à l'OPCO puis le reste à
+  // l'entreprise réclamerait deux fois la même somme), et le rattachement
+  // s'écrit à l'émission.
+  //
+  // ⚠️ Sans dossier ni créance, on retombe sur le comportement historique. Un
+  // dossier peut légitimement ne pas exister (financement direct, affaire
+  // antérieure au mécanisme) : refuser là serait bloquer une émission licite.
+  // `?? []` sur le TABLEAU lui-même : une session lue par un chemin qui ne
+  // sélectionne pas la relation rendrait `undefined`, et l'indexation lèverait.
+  const dossier = (trainingSession.dossiersFinancement ?? [])[0];
+  const creances = dossier?.payeurs ?? [];
+  const dossierId = dossier?.id ?? null;
+  const choix = choisirCreancePourFacture(creances, destinataire);
+
+  if (!choix.ok && choix.raison !== "aucune_creance") {
+    return { error: choix.message };
+  }
+
+  const destinataireEffectif: FactureFormationDestinataire = destinataire;
+  if (choix.ok) {
+    // Le montant de la créance PRIME sur la ventilation calculée : c'est lui
+    // qui porte la part réellement due par ce débiteur après application du
+    // plafond du financeur.
+    totalHtCents = choix.montantHtCents;
+    lignes = [
+      {
+        designation: `${lignes[0]?.designation ?? "Prestation de formation"} — part ${choix.creance.payeurNom}`,
+        quantite: 1,
+        prixUnitaireHtCents: choix.montantHtCents,
+      },
+    ];
+  }
 
   // 🔴 Identité de l'ACHETEUR — nom + SIRET + adresse (art. L.441-9 C. com.,
   // 242 nonies A CGI). Ce chemin enregistrait `trainingSession.titreSession`
@@ -558,6 +710,12 @@ export async function genererFactureFormationAction(input: {
         // Rattache la facture au client CRM : sans ce lien, le hub et les
         // relances retombent sur le libellé figé au lieu de la fiche client.
         ...(trainingSession.clientId != null ? { clientId: trainingSession.clientId } : {}),
+        // 🔴 LE RATTACHEMENT AU DOSSIER, jamais écrit jusqu'ici par aucun
+        // émetteur. Son absence rendait `marquerPaiementRecuSiSoldee` du CODE
+        // MORT — sa condition n'était jamais vraie — donc un dossier
+        // n'atteignait jamais `paiement_recu` autrement qu'à la main, et le
+        // pilotage ne voyait jamais un euro encaissé.
+        ...(dossierId !== null ? { dossierFinancementId: dossierId } : {}),
         destinataire: destinataireEffectif,
         destinataireNom: acheteur.nom,
         destinataireSiret: acheteur.siret,
@@ -580,6 +738,33 @@ export async function genererFactureFormationAction(input: {
       select: { id: true, numero: true, documentId: true },
     });
   });
+
+  // 🔴 Le second lien : la CRÉANCE pointe vers sa facture.
+  //
+  // Sans lui, on saurait qu'un dossier a des factures sans savoir QUELLE
+  // créance chacune solde — donc impossible de dire ce qu'il reste à encaisser
+  // de chaque payeur, ce que le plan exige explicitement (Lot 8, étape 6).
+  //
+  // C'est aussi lui qui rend l'anti-double-émission opérant : sans marquage, la
+  // même créance se refacturerait indéfiniment.
+  //
+  // Best-effort : la facture est émise et porte un numéro légal. Faire échouer
+  // l'action ici laisserait une facture réelle non rattachée, ce qui est PIRE
+  // que le rattachement manquant — on journalise et on continue.
+  if (choix.ok) {
+    try {
+      await prisma.dossierPayeur.update({
+        where: { id: choix.creance.id },
+        data: { factureFormationId: facture.id },
+      });
+    } catch (err) {
+      console.error("[financements] rattachement créance → facture impossible", {
+        creanceId: choix.creance.id,
+        factureId: facture.id,
+        err: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.facture.generer",
@@ -685,7 +870,8 @@ export async function verifierSousTraitantAction(input: {
   trainerId: string;
   sousTraitantNda: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : lever la reserve d'un sous-traitant l'autorise a animer.
+  const adminSession = await requireHabilitation("habiliter_formateur");
   const parsed = verifierSousTraitantSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { trainerId, sousTraitantNda } = parsed.data;

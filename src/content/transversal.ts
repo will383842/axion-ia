@@ -199,7 +199,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
       answer:
-        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les tarifs publics affichés sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 1-3 jours, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
+        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les tarifs publics affichés sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
       keyPoints: [
         "Toutes les capitales régionales, et plus largement toute ville française",
         "Tarifs publics identiques partout, sans surcoût géographique",
@@ -382,7 +382,10 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-08-12",
     related: ["definition-axion-ia", "tarifs-publics-transparents", "comment-commencer"],
     fr: {
-      question: "Quels sont les 3 modules ?",
+      // « Quels sont les 3 modules ? » reformulée le 2026-08-13 (décision Will) :
+      // le titre affichait « 3 » alors que la réponse explique les 5 prestations.
+      // Le SLUG `les-3-modules-axion-ia` reste, lui, INCHANGÉ (URL indexée).
+      question: "Quels sont les modules d'Axion-IA ?",
       answer:
         "Le découpage historique en trois modules — interventions, audit, implémentation — a été élargi : l'offre Axion-IA compte aujourd'hui cinq prestations, et c'est cette liste qui fait foi.\n\nLes Formations IA se déroulent en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants, dans vos locaux ou à distance. Le Coaching IA 1-to-1 est une journée de 7 à 8 heures avec une seule personne, sur son poste réel. L'Audit IA cartographie vos process et chiffre les opportunités, sur quatre niveaux selon la taille de l'entreprise et le périmètre. L'Implémentation IA met en production les automatisations retenues, avec 30 jours de support inclus à la livraison. Les Sites web & SaaS IA greffent chatbot, recherche sémantique ou agents sur votre site existant, ou construisent une plateforme IA-native.\n\nCes cinq prestations sont indépendantes : rien n'oblige à les enchaîner dans cet ordre.",
       keyPoints: [
@@ -417,7 +420,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
     },
     en: {
-      question: "What are the 3 modules?",
+      question: "What are Axion-IA's modules?",
       answer: modulesAnswerEn(),
     },
   },
@@ -1129,7 +1132,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "En combien de temps les équipes sont-elles opérationnelles après une formation IA ?",
       answer:
-        "Dès le lendemain. Les formations Axion-IA sont construites pour cela : chaque notion fait l'objet d'une démonstration courte, suivie d'une pratique immédiate sur les tâches réelles apportées par les participants. Personne ne repart avec des notes à retranscrire — on repart avec ce qu'on a produit en séance.\n\nÀ l'issue d'une journée, chacun dispose de prompts construits sur ses propres cas, de trames réutilisables et d'une liste de 5 premières actions à mener dans son poste. L'acquisition est vérifiée pendant la session par les exercices, puis par un quiz individuel de 10 questions dont le seuil de réussite est fixé à 7 sur 10 ; une attestation individuelle mentionnant les compétences acquises est remise à l'issue du parcours.\n\nLa vitesse d'installation dépend ensuite du format retenu. Une demi-journée de 4 heures lève les blocages et pose les premiers usages ; une journée de 7 heures installe une pratique commune ; les formats de 2 à 3 jours vont jusqu'à la construction d'automatisations. Les formations de 2 jours sont scindables en deux journées espacées, ce qui laisse le temps de pratiquer entre les deux.",
+        "Dès le lendemain. Les formations Axion-IA sont construites pour cela : chaque notion fait l'objet d'une démonstration courte, suivie d'une pratique immédiate sur les tâches réelles apportées par les participants. Personne ne repart avec des notes à retranscrire — on repart avec ce qu'on a produit en séance.\n\nÀ l'issue d'une journée, chacun dispose de prompts construits sur ses propres cas, de trames réutilisables et d'une liste de 5 premières actions à mener dans son poste. L'acquisition est vérifiée pendant la session par les exercices, puis par un quiz individuel de 10 questions dont le seuil de réussite est fixé à 7 sur 10 ; une attestation individuelle mentionnant les compétences acquises est remise à l'issue du parcours.\n\nLa vitesse d'installation dépend ensuite du format retenu. Une demi-journée de 4 heures lève les blocages et pose les premiers usages ; une journée de 7 heures installe une pratique commune ; les formats de 2 journées vont jusqu'à la construction d'automatisations. Les formations de 2 jours sont scindables en deux journées espacées, ce qui laisse le temps de pratiquer entre les deux.",
       keyPoints: [
         "Opérationnel dès le lendemain : la pratique se fait en séance, sur vos vraies tâches",
         "Chacun repart avec ses prompts, des trames réutilisables et 5 premières actions",
@@ -2380,7 +2383,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment monter mes équipes en compétence sur l'IA ?",
       answer:
-        "Par la pratique, sur vos propres cas, et en commençant par un périmètre restreint plutôt que par toute l'entreprise d'un coup. Le chemin le plus courant : une demi-journée de 4 heures pour lever les blocages d'un premier groupe, puis une journée pour installer une pratique commune, puis un format de 2 à 3 jours pour les équipes qui doivent construire des automatisations.\n\nLes sessions se tiennent en intra, par groupe de 2 à 15 personnes, sur site ou à distance. On y couvre les mêmes fondamentaux quel que soit le métier : formuler une demande structurée, choisir le bon assistant selon le besoin, vérifier une production avant de la diffuser, et savoir quelles données ne sortent jamais de l'entreprise. Le reste du programme est calé sur votre métier ou votre secteur d'activité.\n\nCe qui fait tenir la montée en compétence, c'est ce qui reste après : des prompts construits en séance, une trame commune écrite par l'équipe elle-même, et des cas d'usage identifiés service par service. Comptez au moins 11 jours ouvrés entre la confirmation et la session, le temps de préparer les cas et les accès.",
+        "Par la pratique, sur vos propres cas, et en commençant par un périmètre restreint plutôt que par toute l'entreprise d'un coup. Le chemin le plus courant : une demi-journée de 4 heures pour lever les blocages d'un premier groupe, puis une journée pour installer une pratique commune, puis un format de 2 journées pour les équipes qui doivent construire des automatisations.\n\nLes sessions se tiennent en intra, par groupe de 2 à 15 personnes, sur site ou à distance. On y couvre les mêmes fondamentaux quel que soit le métier : formuler une demande structurée, choisir le bon assistant selon le besoin, vérifier une production avant de la diffuser, et savoir quelles données ne sortent jamais de l'entreprise. Le reste du programme est calé sur votre métier ou votre secteur d'activité.\n\nCe qui fait tenir la montée en compétence, c'est ce qui reste après : des prompts construits en séance, une trame commune écrite par l'équipe elle-même, et des cas d'usage identifiés service par service. Comptez au moins 11 jours ouvrés entre la confirmation et la session, le temps de préparer les cas et les accès.",
       keyPoints: [
         "Commencer par un groupe et un format court plutôt que par toute l'entreprise",
         "4 heures pour lever les blocages, 1 journée pour installer une pratique commune",
@@ -2738,7 +2741,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Emmener l'équipe",
           detail:
-            "Une session collective, de 4 heures à 1-3 jours selon le périmètre, en groupe de 2 à 15 participants. Sans les personnes qui s'en serviront tous les jours, l'outil tombe en désuétude en quelques semaines.",
+            "Une session collective, de 4 heures à 2 journées selon le périmètre, en groupe de 2 à 15 participants. Sans les personnes qui s'en serviront tous les jours, l'outil tombe en désuétude en quelques semaines.",
         },
       ],
       nuances: [
@@ -4038,11 +4041,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se passe une formation IA en entreprise ?",
       answer:
-        "Toujours en intra, dans vos locaux ou à distance, pour un seul et même groupe de 2 à 15 personnes. Une journée type dure 7 heures ; le catalogue va de la demi-journée de 4 heures aux formats de 2 à 3 jours, ces derniers étant scindables en journées espacées.\n\nLe déroulé est le même partout. On pose d'abord le cadre — ce qu'une IA sait faire, ce qu'elle fait mal, et les données qui ne sortent jamais de l'entreprise — puis chaque notion est démontrée en direct avant d'être pratiquée immédiatement sur les tâches réelles apportées par les participants. Les exercices sont différenciés par profil et une partie se fait en binômes. La journée se termine par ce que chacun applique dès le lundi suivant.\n\nEn amont, on cale avec vous la formation, les cas à travailler et, si besoin, les accès aux outils : le délai d'accès est d'au moins 11 jours ouvrés à compter de la confirmation. À l'issue, un quiz individuel de 10 questions valide les acquis, avec un seuil de réussite à 7 sur 10, et une attestation individuelle est remise.",
+        "Toujours en intra, dans vos locaux ou à distance, pour un seul et même groupe de 2 à 15 personnes. Une journée type dure 7 heures ; le catalogue va de la demi-journée de 4 heures aux formats de 2 journées, ceux-ci étant scindables en journées espacées.\n\nLe déroulé est le même partout. On pose d'abord le cadre — ce qu'une IA sait faire, ce qu'elle fait mal, et les données qui ne sortent jamais de l'entreprise — puis chaque notion est démontrée en direct avant d'être pratiquée immédiatement sur les tâches réelles apportées par les participants. Les exercices sont différenciés par profil et une partie se fait en binômes. La journée se termine par ce que chacun applique dès le lundi suivant.\n\nEn amont, on cale avec vous la formation, les cas à travailler et, si besoin, les accès aux outils : le délai d'accès est d'au moins 11 jours ouvrés à compter de la confirmation. À l'issue, un quiz individuel de 10 questions valide les acquis, avec un seuil de réussite à 7 sur 10, et une attestation individuelle est remise.",
       keyPoints: [
         "Toujours en intra : une session est montée pour une seule entreprise",
         "Groupe de 2 à 15 personnes, sur site ou à distance, au même tarif",
-        "Journée type de 7 heures ; du format 4 heures aux parcours de 2 à 3 jours",
+        "Journée type de 7 heures ; du format 4 heures aux parcours de 2 journées",
         "Le cadre de confidentialité est posé avant tout atelier",
         "Quiz individuel de 10 questions et attestation individuelle à l'issue",
       ],
@@ -4105,7 +4108,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Proposez-vous une formation ChatGPT ou Claude pour les entreprises ?",
       answer:
-        "Oui, et sans se limiter à un seul éditeur. Les formations Axion-IA font pratiquer côte à côte les trois assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — pour que chacun sache lequel choisir selon le besoin, plutôt que d'apprendre par cœur les menus d'un produit. Le reste du paysage (Microsoft Copilot, Mistral, Perplexity, Midjourney, Sora, HeyGen) est situé en panorama, pour savoir à quoi sert quoi, sans être manipulé en séance.\n\nLe contenu va au-delà de la prise en main : formuler une demande structurée avec la méthode AXION, construire des prompts réutilisables sur ses tâches récurrentes, créer ses propres assistants, vérifier une production avant de la diffuser, et savoir quelles données ne se soumettent jamais.\n\nCe parti pris d'indépendance a une raison simple : les modèles changent vite. Une compétence attachée à un seul produit se périme avec lui ; une méthode de formulation et de vérification, non. Les sessions se tiennent en intra, en groupe de 2 à 15 personnes, sur site ou à distance, de la demi-journée de 4 heures aux parcours de 2 à 3 jours.",
+        "Oui, et sans se limiter à un seul éditeur. Les formations Axion-IA font pratiquer côte à côte les trois assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — pour que chacun sache lequel choisir selon le besoin, plutôt que d'apprendre par cœur les menus d'un produit. Le reste du paysage (Microsoft Copilot, Mistral, Perplexity, Midjourney, Sora, HeyGen) est situé en panorama, pour savoir à quoi sert quoi, sans être manipulé en séance.\n\nLe contenu va au-delà de la prise en main : formuler une demande structurée avec la méthode AXION, construire des prompts réutilisables sur ses tâches récurrentes, créer ses propres assistants, vérifier une production avant de la diffuser, et savoir quelles données ne se soumettent jamais.\n\nCe parti pris d'indépendance a une raison simple : les modèles changent vite. Une compétence attachée à un seul produit se périme avec lui ; une méthode de formulation et de vérification, non. Les sessions se tiennent en intra, en groupe de 2 à 15 personnes, sur site ou à distance, de la demi-journée de 4 heures aux parcours de 2 journées.",
       keyPoints: [
         "ChatGPT, Claude et Gemini pratiqués côte à côte, sur vos propres cas",
         "Copilot, Mistral, Perplexity et les outils d'image ou de vidéo situés en panorama",
@@ -4190,7 +4193,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "4 heures ne remplacent pas un parcours",
           detail:
-            "Le format lève les blocages et installe les premiers usages. Construire des automatisations et les mettre en service demande un format de 2 à 3 jours.",
+            "Le format lève les blocages et installe les premiers usages. Construire des automatisations et les mettre en service demande un format de 2 journées.",
         },
         {
           title: "Ce n'est pas réservé aux petites équipes",

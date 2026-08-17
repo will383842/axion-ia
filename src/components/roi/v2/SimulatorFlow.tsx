@@ -70,9 +70,15 @@ interface SimulatorFlowProps {
   /** Variante tunnel : masque les liens de sortie autres que les CTA. */
   funnel?: boolean;
   /**
-   * Habillage. `light` sur `/roi`, page éditoriale ivoire ; `dark` dans le
-   * tunnel publicitaire, pour être dans la continuité visuelle de
-   * `/diagnostic`. Le basculement passe entièrement par les variables de
+   * Habillage. `dark` PARTOUT depuis le 2026-08-14 : `/diagnostic`,
+   * `/simulateur` et `/roi`. Cette note disait auparavant « `light` sur
+   * `/roi`, page éditoriale ivoire » — le bloc du simulateur y est désormais
+   * sombre comme dans le tunnel, pour qu'un visiteur passant d'une page à
+   * l'autre reconnaisse le même endroit. Seul le contenu de référencement
+   * sous l'outil reste sur fond ivoire.
+   *
+   * `light` demeure le défaut et reste utilisable — aucune page ne s'en sert
+   * aujourd'hui. Le basculement passe entièrement par les variables de
    * `.sim-scope` (cf. `globals.css`) : aucun composant n'est dupliqué, donc
    * aucune correction ne peut s'appliquer à un habillage et pas à l'autre.
    */

@@ -35,6 +35,7 @@ import {
 import { saveSessionJoursAction } from "@/server/actions/qualiopi/session-jours";
 import {
   emettreLiensSessionAction,
+  envoyerLiensEmargementAction,
   revoquerLiensSessionAction,
 } from "@/server/actions/qualiopi/emargement-liens";
 
@@ -191,6 +192,7 @@ export default async function EmargementPage({ params }: PageProps) {
         sessionId={id}
         hasCreneaux={hasCreneaux}
         emettreAction={emettreLiensSessionAction}
+        envoyerAction={envoyerLiensEmargementAction}
         revoquerAction={revoquerLiensSessionAction}
       />
 

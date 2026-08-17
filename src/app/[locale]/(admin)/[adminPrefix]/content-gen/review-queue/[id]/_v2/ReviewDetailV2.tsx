@@ -223,8 +223,14 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             </label>
             <input id="approve-notes" name="notes" className="admin-input" />
           </div>
+          {/* Fix 2026-08-15 (audit e2e, E6) — l'ancien libellé « (en ligne, non
+              indexé) » mentait : depuis la décision du 2026-06-16 (« tout contenu
+              publié doit être indexé »), `approveReview` publie en tier-1
+              INDEXABLE (`enqueuePublish(id, true)`), exactement comme le bouton
+              ci-dessous. Le libellé dit désormais la vérité — le comportement de
+              publication, lui, est inchangé (décision de Will). */}
           <button type="submit" className="admin-button">
-            Approuver (en ligne, non indexé)
+            Approuver et publier (visible sur Google)
           </button>
         </form>
 

@@ -55,7 +55,13 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous écrivez votre règle de soumission — quel extrait, sur quel outil, sous quel régime — et vous la faites tenir sur trois extraits pièges sans laisser passer un secret.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-2",
+      // Le module fait d'abord relever, dans les paramètres de l'outil et sans
+      // rien lui soumettre, ce qui est journalisé et retenu pour
+      // l'entraînement, d'où le régime d'usage réel du poste (obj-1) ; la
+      // section 2 du runbook traite la propriété des sorties — titularité,
+      // contamination copyleft, cession au client (obj-3).
+      objectifsSecondairesIds: ["obj-1", "obj-3"],
       dureeMin: 5,
       notes: {
         script:
@@ -253,10 +259,11 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous faites générer les tests d'une de vos fonctions et vous les passez au vert, et vous chiffrez ce qu'une revue assistée signale à tort.",
-      objectifGlobalId: "obj-2",
-      // Ce module sert aussi l'assistance au code proprement dite : la methode
-      // AXION appliquee a une demande technique et la generation de tests.
-      objectifsSecondairesIds: ["obj-1"],
+      objectifGlobalId: "obj-4",
+      // La seconde moitié de l'énoncé — chiffrer ce qu'une revue assistée
+      // signale à tort sur un changement porteur de défauts connus — est
+      // l'objectif 5.
+      objectifsSecondairesIds: ["obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -434,10 +441,11 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous avez chiffré le taux d'erreur d'une production IA sur votre propre environnement, et vous transformez une demande floue en spécification testable.",
-      objectifGlobalId: "obj-3",
-      // Ce module produit aussi la documentation technique proprement dite :
-      // runbook d'astreinte et compte rendu d'incident.
-      objectifsSecondairesIds: ["obj-1"],
+      objectifGlobalId: "obj-6",
+      // La seconde moitié de l'énoncé — transformer une demande floue en
+      // spécification testable, puis produire le runbook qu'un binôme exécute
+      // sans son auteur — est l'objectif 7.
+      objectifsSecondairesIds: ["obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -629,10 +637,10 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous avez qualifié deux tâches, éprouvé une automatisation avec sa procédure de retour arrière, et retenu les articles de charte que vous soumettrez à validation.",
-      objectifGlobalId: "obj-4",
-      // La gouvernance de l'usage (charte, journalisation, filtrage, revue
-      // humaine) prolonge directement la regle de confidentialite du jour 1.
-      objectifsSecondairesIds: ["obj-5"],
+      objectifGlobalId: "obj-8",
+      // Les articles de charte retenus pour validation prolongent directement
+      // la règle de soumission écrite au jour 1 (obj-2).
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:

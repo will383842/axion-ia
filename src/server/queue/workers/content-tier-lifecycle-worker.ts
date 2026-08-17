@@ -24,7 +24,10 @@ import {
 } from "@/server/content-gen/lifecycle/tier-decisions";
 import { fetchSearchConsoleCtr } from "@/server/content-gen/lifecycle/analytics-clients";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
-import { buildArticleUrl } from "@/server/content-gen/indexing/url-builder";
+import { buildArticleUrl, buildArticlePath } from "@/server/content-gen/indexing/url-builder";
+// Fix 2026-08-15 (D9 audit e2e) — revalidation ISR de la page démotée via l'API
+// interne (revalidatePath direct = no-op en worker bg, cf. P1-16).
+import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { alertTier3Stagnant } from "@/server/content-gen/shared/content-gen-alerts";
 
@@ -51,6 +54,7 @@ async function applyPromote(
   articleId: string,
   slug: string,
   isNews: boolean,
+  templateVariant: string | null,
   reason: string,
 ): Promise<void> {
   await prisma.article.update({
@@ -60,7 +64,15 @@ async function applyPromote(
       promotedAt: new Date(),
     },
   });
-  await enqueueIndexingForTier1({ articleId, slug, isNews, origin: "tier-promote" });
+  // Fix 2026-08-15 (D8) — templateVariant propagé pour que les guides soient
+  // pingés sous /fr/guides/… (et non /fr/blog/… qui 308).
+  await enqueueIndexingForTier1({
+    articleId,
+    slug,
+    isNews,
+    templateVariant,
+    origin: "tier-promote",
+  });
   console.log(`[tier-lifecycle] PROMOTE article=${articleId} reason=${reason}`);
 }
 
@@ -68,6 +80,7 @@ async function applyDemote(
   articleId: string,
   slug: string,
   isNews: boolean,
+  templateVariant: string | null,
   reason: string,
 ): Promise<void> {
   await prisma.article.update({
@@ -77,18 +90,37 @@ async function applyDemote(
       promotedAt: null,
     },
   });
+  // Fix 2026-08-15 (D9 audit e2e) — revalider la page AVANT le ping. Sans ça,
+  // le meta `noindex` n'apparaissait qu'à l'expiration ISR (≤ 1 h) alors que le
+  // ping `URL_UPDATED` partait immédiatement : Google pouvait re-crawler une
+  // page qui servait encore `index,follow` — le demote était invisible pour le
+  // crawler. Best-effort (revalidateContent ne throw jamais) ; l'échec est
+  // journalisé (D1) — la page se rattrapera à l'expiration ISR.
+  const demotedPath = buildArticlePath({ slug, isNews, templateVariant });
+  const reval = await revalidateContent({
+    // Les sitemaps aussi : un tier-2 sort du sitemap, l'index ISR doit suivre.
+    paths: [demotedPath, "/sitemap.xml", "/sitemap-index.xml"],
+  });
+  if (!reval.ok) {
+    console.error(
+      `[tier-lifecycle] revalidation ISR échouée pour ${demotedPath} (${reval.reason ?? "unknown"}) — noindex visible à l'expiration ISR`,
+    );
+  }
   // Anti-yoyo (audit indexation 2026-06-17, décision Will) : un demote de tier ne
   // SUPPRIME pas la page (elle reste 200 en ligne, juste noindex,follow). On ne doit
   // donc JAMAIS émettre `URL_DELETED` (= demande de suppression définitive Google/Bing)
   // sur un simple demote — réservé à l'archivage/suppression réel (cf. actions KB
   // delete-entry / _transition). On signale un simple `URL_UPDATED`.
-  // NB : avec la publication systématique en tier_1 + promotedAt (content-publish-worker),
-  // les articles sont désormais protégés du demote (respectManualPromote) → ce chemin
-  // est quasi inerte, mais on garde la sémantique correcte en défense-en-profondeur.
+  // Fix 2026-08-15 (D9) — commentaire périmé corrigé : depuis le P4 élagage
+  // (décision Will 2026-06-21), le publish ne pose PLUS `promotedAt` à la
+  // naissance tier-1 → ce chemin n'est PAS inerte : c'est LA voie normale de
+  // démotion des sous-performants chroniques dès que les creds GSC sont
+  // branchés (`promotedAt` reste réservé à une future protection manuelle).
   await enqueueIndexingForTier1({
     articleId,
     slug,
     isNews,
+    templateVariant,
     origin: "tier-promote",
     lifecycleEvent: "update",
   });
@@ -117,7 +149,11 @@ async function processArticles(
   for (const article of candidates) {
     const t = article.translations[0];
     if (!t) continue;
-    const url = buildArticleUrl({ slug: t.slug, isNews: article.isNews });
+    // Fix 2026-08-15 (D8 audit e2e) — templateVariant propagé : un article
+    // GUIDE interrogé sur l'URL /fr/blog/guide-… (308 → /fr/guides/…) avait des
+    // métriques GSC NULLES à vie → décisions promote/demote toujours no_data.
+    const templateVariant = article.templateVariant ?? null;
+    const url = buildArticleUrl({ slug: t.slug, isNews: article.isNews, templateVariant });
     const metrics = await fetchSearchConsoleCtr(url, windowDays);
     const ageDays = article.publishedAt
       ? Math.floor((Date.now() - article.publishedAt.getTime()) / 86_400_000)
@@ -132,10 +168,10 @@ async function processArticles(
     });
 
     if (decision.action === "promote" && decision.nextTier === "tier_1_indexable") {
-      await applyPromote(article.id, t.slug, article.isNews, decision.reason);
+      await applyPromote(article.id, t.slug, article.isNews, templateVariant, decision.reason);
       stats.promoted++;
     } else if (decision.action === "demote") {
-      await applyDemote(article.id, t.slug, article.isNews, decision.reason);
+      await applyDemote(article.id, t.slug, article.isNews, templateVariant, decision.reason);
       stats.demoted++;
     } else if (decision.reason === "no_data") {
       stats.noData++;

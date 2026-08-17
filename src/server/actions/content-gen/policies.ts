@@ -130,6 +130,10 @@ const BATCH_DEFAULTS: BatchSettings = {
 };
 
 export async function getBatchSettings(): Promise<BatchSettings> {
+  // Fix 2026-08-15 (audit e2e, E5) — "use server" fait de chaque export un
+  // endpoint POST public : lectures gardées comme les mutations. Les workers
+  // BullMQ ne passent PAS par ici (ils lisent `readContentGenConfig` en direct).
+  await requireAdmin();
   const raw = await readContentGenConfig<Partial<BatchSettings>>("batches", BATCH_DEFAULTS);
   return {
     workersConcurrency: raw.workersConcurrency ?? BATCH_DEFAULTS.workersConcurrency,
@@ -170,6 +174,8 @@ export async function updateBatchSettings(input: BatchSettings): Promise<void> {
 // ────────────────────────────────────────────────────────────────────
 
 export async function getMaxPublishPerDay(): Promise<number> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   return readContentGenConfig<number>("MAX_PUBLISH_PER_DAY", 30);
 }
 
@@ -242,6 +248,8 @@ const POLICIES_DEFAULTS: ContentPolicies = {
 };
 
 export async function getPolicies(): Promise<ContentPolicies> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   // Fusion avec les défauts : une config `policies` persistée AVANT l'ajout d'un
   // champ (ex. `newsAutoPublish` 2026-07-01) ne le contient pas → sans merge,
   // `cfg.newsAutoPublish` serait `undefined` (case décochée en UI alors que le
@@ -290,6 +298,10 @@ const LLMS_TXT_DEFAULT = `# Axion-IA — Cabinet IA opérationnel français
 `;
 
 export async function getLlmsTxt(): Promise<string> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  // La route publique /llms.txt ne passe pas par ici (vérifié par grep : seuls
+  // les écrans admin importent cette action).
+  await requireAdmin();
   return readContentGenConfig<string>("llms_txt", LLMS_TXT_DEFAULT);
 }
 
@@ -329,6 +341,8 @@ const QUALITY_LOOP_DEFAULTS: QualityLoopSettings = {
 };
 
 export async function getQualityLoop(): Promise<QualityLoopSettings> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   return readContentGenConfig<QualityLoopSettings>("quality_loop", QUALITY_LOOP_DEFAULTS);
 }
 
@@ -371,6 +385,8 @@ const QA_DEFAULTS: QaPolicies = {
 };
 
 export async function getQaPolicies(): Promise<QaPolicies> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   return readContentGenConfig<QaPolicies>("qa_policies", QA_DEFAULTS);
 }
 
@@ -405,6 +421,8 @@ export interface SearchIntentDistribution {
 }
 
 export async function getSearchIntentDistribution(): Promise<SearchIntentDistribution> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   // 🔴 `readContentGenConfig` fait un `as unknown as T` NON VÉRIFIÉ : les
   // valeurs par défaut ne servent que si la LIGNE EST ABSENTE, jamais si elle
   // est mal formée. Or celle de production porte `commercial_investigation` et

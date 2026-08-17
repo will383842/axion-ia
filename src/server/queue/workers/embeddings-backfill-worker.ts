@@ -22,6 +22,7 @@ import { Worker, type Job } from "bullmq";
 import OpenAI from "openai";
 import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
 
 export const EMBEDDINGS_BACKFILL_QUEUE = "embeddings-backfill";
 
@@ -79,6 +80,47 @@ async function runBackfill(_job: Job): Promise<RunStats> {
       update: {
         value: {
           skippedReason: "OPENAI_EMBEDDINGS_ENABLED=false",
+          at: new Date().toISOString(),
+          ...stats,
+        },
+      },
+    });
+    return stats;
+  }
+
+  // Fix 2026-08-15 (audit e2e, F8) — ce worker fait des appels OpenAI PAYANTS
+  // sans jamais consulter le kill switch global content-gen (seul le flag env
+  // OPENAI_EMBEDDINGS_ENABLED le gatait). Un arrêt d'urgence — par exemple
+  // l'auto-arrêt du quota-guard sur compte OpenAI à sec — laissait donc ce cron
+  // quotidien continuer à dépenser (ou à échouer bruyamment sur le même compte
+  // à sec). Même motif que les autres workers : skip PROPRE (pas d'échec, trace
+  // dans embeddings_last_run), lecture fail-safe (DB illisible = arrêt).
+  const killSwitch = await readKillSwitchFailSafe();
+  if (killSwitch.active) {
+    const stats: RunStats = {
+      processed: 0,
+      skipped: 0,
+      errors: 0,
+      estimatedCostUsd: 0,
+      totalArticlesWithoutEmbedding: 0,
+      durationMs: Date.now() - startMs,
+    };
+    console.warn(
+      `[embeddings-backfill] kill switch actif (${killSwitch.reason ?? "sans raison"}) — skip run`,
+    );
+    await prisma.contentGenConfig.upsert({
+      where: { key: "embeddings_last_run" },
+      create: {
+        key: "embeddings_last_run",
+        value: {
+          skippedReason: `kill_switch actif : ${killSwitch.reason ?? "sans raison"}`,
+          at: new Date().toISOString(),
+          ...stats,
+        },
+      },
+      update: {
+        value: {
+          skippedReason: `kill_switch actif : ${killSwitch.reason ?? "sans raison"}`,
           at: new Date().toISOString(),
           ...stats,
         },

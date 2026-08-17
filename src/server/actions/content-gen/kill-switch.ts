@@ -39,6 +39,10 @@ export interface KillSwitchState {
 }
 
 export async function getKillSwitch(): Promise<KillSwitchState> {
+  // Fix 2026-08-15 (audit e2e, E5) — "use server" fait de chaque export un
+  // endpoint POST public. Les workers ne passent pas par ici : ils lisent le
+  // kill switch via `readContentGenConfig` en direct (vérifié par grep).
+  await requireAdmin();
   return readContentGenConfig<KillSwitchState>(KEY, { active: false });
 }
 

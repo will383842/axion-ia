@@ -1,0 +1,256 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catalogue Axion-IA — à feuilleter</title>
+<meta name="description" content="Le catalogue complet des offres Axion-IA : formations IA, coaching 1-to-1, audits et implémentation. Une double-page par offre.">
+<style>
+  :root { --creme:#faf8f3; --encre:#1a1613; --terracotta:#b23f16; --ratio:1.2943; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; height:100%; background:#14100e; color:var(--creme);
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overscroll-behavior: none; }
+
+  .barre { position:fixed; inset:0 0 auto 0; z-index:30; display:flex; flex-wrap:wrap; gap:10px;
+    align-items:center; justify-content:space-between; padding:10px 16px;
+    background:rgba(20,16,14,.92); backdrop-filter:blur(8px); }
+  .barre h1 { margin:0; font-size:15px; font-weight:800; letter-spacing:-.01em; }
+  .barre .sous { margin:0; font-size:12px; opacity:.62; }
+  .dl { display:inline-block; padding:7px 15px; border-radius:999px; background:var(--terracotta);
+    color:var(--creme); font-weight:700; font-size:13px; text-decoration:none; white-space:nowrap; }
+  .dl:hover { background:#8f320f; }
+
+  /* La scène tient dans l'écran : le livre se cale sur la plus contraignante des
+     deux dimensions, pour qu'aucune page ne soit jamais coupée. */
+  .scene { position:fixed; inset:58px 0 62px 0; display:grid; place-items:center;
+    perspective:2600px; padding:10px; }
+  .livre { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:0;
+    width:min(96vw, calc((100vh - 132px) * 2 / var(--ratio)));
+    aspect-ratio: 2 / var(--ratio);
+    box-shadow:0 18px 50px rgba(0,0,0,.55); transform-style:preserve-3d; }
+  /* Couverture : une page centree, moitie moins large. */
+  .livre.solo { grid-template-columns:1fr;
+    width:min(52vw, calc((100vh - 132px) / var(--ratio)));
+    aspect-ratio: 1 / var(--ratio); }
+  .livre.solo::after { display:none; }
+  .livre img { display:block; width:100%; height:100%; object-fit:contain; background:var(--creme); }
+  /* Le pli central : deux dégradés symétriques, sinon les deux pages semblent
+     une seule image coupée en deux. */
+  .livre::after { content:''; position:absolute; top:0; bottom:0; left:50%; width:34px;
+    transform:translateX(-50%); pointer-events:none; z-index:5;
+    background:linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,.16) 46%, rgba(0,0,0,.16) 54%, rgba(0,0,0,0)); }
+
+  /* ---- la feuille qui tourne ---- */
+  .feuille { position:absolute; top:0; bottom:0; width:50%; z-index:10;
+    transform-style:preserve-3d; transition:transform 640ms cubic-bezier(.31,.06,.24,1); }
+  .feuille.droite { left:50%; transform-origin:left center; }
+  .feuille.gauche { left:0; transform-origin:right center; }
+  .feuille.droite.va { transform:rotateY(-178deg); }
+  .feuille.gauche.va { transform:rotateY(178deg); }
+  .feuille .face { position:absolute; inset:0; backface-visibility:hidden; overflow:hidden;
+    background:var(--creme); }
+  .feuille .face.verso { transform:rotateY(180deg); }
+  .feuille .face::after { content:''; position:absolute; inset:0; opacity:0; pointer-events:none;
+    transition:opacity 640ms; }
+  .feuille.droite .face::after { background:linear-gradient(to left, rgba(0,0,0,.3), rgba(0,0,0,0) 38%); }
+  .feuille.gauche .face::after { background:linear-gradient(to right, rgba(0,0,0,.3), rgba(0,0,0,0) 38%); }
+  .feuille.va .face::after { opacity:1; }
+
+  /* ---- navigation ---- */
+  .nav { position:fixed; left:50%; transform:translateX(-50%); bottom:12px; z-index:30;
+    display:flex; align-items:center; gap:10px; padding:7px 10px; border-radius:999px;
+    background:rgba(250,248,243,.1); backdrop-filter:blur(10px);
+    border:1px solid rgba(250,248,243,.16); }
+  .nav button { appearance:none; border:0; cursor:pointer; width:40px; height:40px; border-radius:50%;
+    background:var(--creme); color:var(--encre); font-size:18px; font-weight:700;
+    display:grid; place-items:center; }
+  .nav button:disabled { opacity:.3; cursor:default; }
+  .nav .compte { font-size:13px; font-weight:600; font-variant-numeric:tabular-nums;
+    min-width:96px; text-align:center; }
+  .aide { position:fixed; left:50%; transform:translateX(-50%); bottom:64px; z-index:30;
+    padding:6px 14px; border-radius:999px; background:rgba(250,248,243,.12);
+    font-size:12px; font-weight:600; transition:opacity .4s; }
+
+  /* ---- mobile : une page par écran, zoom natif conservé ---- */
+  @media (max-width: 720px) {
+    .scene { inset:74px 0 60px 0; padding:0; }
+    .livre { grid-template-columns:1fr; width:100vw;
+      width:min(100vw, calc((100vh - 140px) / var(--ratio)));
+      aspect-ratio: 1 / var(--ratio); }
+    .livre::after { display:none; }
+    .feuille { display:none; }
+    .barre { padding:8px 12px; }
+    .barre h1 { font-size:14px; }
+    .nav { bottom:max(10px, env(safe-area-inset-bottom, 0px)); }
+  }
+</style>
+
+<div class="barre">
+  <div>
+    <h1>Catalogue Axion-IA</h1>
+    <p class="sous">Formations, coaching 1-to-1, audits et implémentation · Organisme certifié Qualiopi</p>
+  </div>
+  <a class="dl" href="./catalogue-axion-ia.pdf" download>Télécharger le PDF</a>
+</div>
+
+<div class="scene">
+  <div class="livre" id="livre">
+    <img id="pgG" alt="" decoding="async">
+    <img id="pgD" alt="" decoding="async">
+  </div>
+</div>
+
+<div class="nav" role="group" aria-label="Navigation dans le catalogue">
+  <button type="button" id="prec" aria-label="Page précédente">&#8249;</button>
+  <span class="compte" id="compte" aria-live="polite"></span>
+  <button type="button" id="suiv" aria-label="Page suivante">&#8250;</button>
+</div>
+<div class="aide" id="aide"></div>
+
+<script>
+(function () {
+  'use strict';
+  var PAGES = [{"f":"couv1.jpg","n":"","s":true},{"f":"p001.jpg","n":"01","s":false},{"f":"p002.jpg","n":"02","s":false},{"f":"p003.jpg","n":"03","s":false},{"f":"p004.jpg","n":"04","s":false},{"f":"p005.jpg","n":"05","s":false},{"f":"p006.jpg","n":"06","s":false},{"f":"p007.jpg","n":"07","s":false},{"f":"p008.jpg","n":"08","s":false},{"f":"p009.jpg","n":"09","s":false},{"f":"p010.jpg","n":"10","s":false},{"f":"p011.jpg","n":"11","s":false},{"f":"p012.jpg","n":"12","s":false},{"f":"p013.jpg","n":"13","s":false},{"f":"p014.jpg","n":"14","s":false},{"f":"p015.jpg","n":"15","s":false},{"f":"p016.jpg","n":"16","s":false},{"f":"p017.jpg","n":"17","s":false},{"f":"p018.jpg","n":"18","s":false},{"f":"p019.jpg","n":"19","s":false},{"f":"p020.jpg","n":"20","s":false},{"f":"p021.jpg","n":"21","s":false},{"f":"p022.jpg","n":"22","s":false},{"f":"p023.jpg","n":"23","s":false},{"f":"p024.jpg","n":"24","s":false},{"f":"p025.jpg","n":"25","s":false},{"f":"p026.jpg","n":"26","s":false},{"f":"p027.jpg","n":"27","s":false},{"f":"p028.jpg","n":"28","s":false},{"f":"p029.jpg","n":"29","s":false},{"f":"p030.jpg","n":"30","s":false},{"f":"p031.jpg","n":"31","s":false},{"f":"p032.jpg","n":"32","s":false},{"f":"p033.jpg","n":"33","s":false},{"f":"p034.jpg","n":"34","s":false},{"f":"p035.jpg","n":"35","s":false},{"f":"p036.jpg","n":"36","s":false},{"f":"p037.jpg","n":"37","s":false},{"f":"p038.jpg","n":"38","s":false},{"f":"p039.jpg","n":"39","s":false},{"f":"p040.jpg","n":"40","s":false},{"f":"p041.jpg","n":"41","s":false},{"f":"p042.jpg","n":"42","s":false},{"f":"p043.jpg","n":"43","s":false},{"f":"p044.jpg","n":"44","s":false},{"f":"p045.jpg","n":"45","s":false},{"f":"p046.jpg","n":"46","s":false},{"f":"p047.jpg","n":"47","s":false},{"f":"p048.jpg","n":"48","s":false},{"f":"p049.jpg","n":"49","s":false},{"f":"p050.jpg","n":"50","s":false},{"f":"p051.jpg","n":"51","s":false},{"f":"p052.jpg","n":"52","s":false},{"f":"p053.jpg","n":"53","s":false},{"f":"p054.jpg","n":"54","s":false},{"f":"p055.jpg","n":"55","s":false},{"f":"p056.jpg","n":"56","s":false},{"f":"p057.jpg","n":"57","s":false},{"f":"p058.jpg","n":"58","s":false},{"f":"p059.jpg","n":"59","s":false},{"f":"p060.jpg","n":"60","s":false},{"f":"p061.jpg","n":"61","s":false},{"f":"p062.jpg","n":"62","s":false},{"f":"p063.jpg","n":"63","s":false},{"f":"p064.jpg","n":"64","s":false},{"f":"p065.jpg","n":"65","s":false},{"f":"p066.jpg","n":"66","s":false},{"f":"p067.jpg","n":"67","s":false},{"f":"p068.jpg","n":"68","s":false},{"f":"p069.jpg","n":"69","s":false},{"f":"p070.jpg","n":"70","s":false},{"f":"p071.jpg","n":"71","s":false},{"f":"p072.jpg","n":"72","s":false},{"f":"p073.jpg","n":"73","s":false},{"f":"p074.jpg","n":"74","s":false},{"f":"p075.jpg","n":"75","s":false},{"f":"p076.jpg","n":"76","s":false},{"f":"p077.jpg","n":"77","s":false},{"f":"p078.jpg","n":"78","s":false},{"f":"p079.jpg","n":"79","s":false},{"f":"p080.jpg","n":"80","s":false},{"f":"p081.jpg","n":"81","s":false},{"f":"p082.jpg","n":"82","s":false},{"f":"p083.jpg","n":"83","s":false},{"f":"p084.jpg","n":"84","s":false},{"f":"couv4.jpg","n":"","s":true}];
+  var BASE = 'pages-web/';
+  var livre = document.getElementById('livre');
+  var pgG = document.getElementById('pgG'), pgD = document.getElementById('pgD');
+  var bPrec = document.getElementById('prec'), bSuiv = document.getElementById('suiv');
+  var compte = document.getElementById('compte'), aide = document.getElementById('aide');
+
+  var MOBILE = function () { return window.matchMedia('(max-width: 720px)').matches; };
+  var i = 0;            // index de la page de GAUCHE de la vue courante
+  var enCours = false;
+
+  // Une couverture n'a pas de vis-a-vis : elle avance d'un cran, pas de deux.
+  function seule(k) { return !!(PAGES[k] && PAGES[k].s); }
+  function pas() { return (MOBILE() || seule(i)) ? 1 : 2; }
+  function url(k) { return PAGES[k] ? BASE + PAGES[k].f : ''; }
+
+  // Préchargement du voisinage. Fait PENDANT la lecture, jamais pendant le
+  // tournage : au moment du geste l'image d'arrivée est déjà décodée.
+  var cache = {};
+  function precharger(k) {
+    for (var d = -2; d <= 3; d++) {
+      var j = k + d;
+      if (j < 0 || j >= PAGES.length || cache[j]) continue;
+      var im = new Image();
+      im.decoding = 'async';
+      im.src = url(j);
+      cache[j] = im;
+    }
+  }
+
+  function libelle() {
+    var g = PAGES[i], d = PAGES[i + 1];
+    if (g && g.s) return g.f === 'couv1.jpg' ? 'couverture' : 'dos de couverture';
+    if (MOBILE() || !d || seule(i + 1)) return g && g.n ? 'page ' + g.n : (i + 1) + ' / ' + PAGES.length;
+    if (g && g.n && d.n) return 'pages ' + g.n + '–' + d.n;
+    return (i + 1) + ' / ' + PAGES.length;
+  }
+
+  function rendre() {
+    var solo = MOBILE() || seule(i) || seule(i + 1);
+    livre.classList.toggle('solo', solo);
+    pgG.src = url(i);
+    if (solo) { pgD.style.display = 'none'; }
+    else { pgD.style.display = ''; pgD.src = url(i + 1); }
+    compte.textContent = libelle();
+    bPrec.disabled = i <= 0;
+    bSuiv.disabled = i + pas() >= PAGES.length;
+    precharger(i);
+  }
+
+  // Une feuille = un élément, deux faces, deux images. Rien d'autre à animer :
+  // c'est ce qui permet au tournage de tenir dans une image d'affichage.
+  function tourner(sens, fin) {
+    if (MOBILE() || seule(i) || seule(i + 1) || seule(i + pas())) { fin(); return; }
+    var rectoIdx = sens > 0 ? i + 1 : i;           // la face qu'on soulève
+    var versoIdx = sens > 0 ? i + 2 : i - 1;       // ce qu'on découvre au dos
+    if (!PAGES[rectoIdx] || !PAGES[versoIdx]) { fin(); return; }
+
+    var f = document.createElement('div');
+    f.className = 'feuille ' + (sens > 0 ? 'droite' : 'gauche');
+    var recto = document.createElement('div'); recto.className = 'face';
+    var verso = document.createElement('div'); verso.className = 'face verso';
+    var iR = new Image(); iR.src = url(rectoIdx); iR.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block';
+    var iV = new Image(); iV.src = url(versoIdx); iV.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block';
+    recto.appendChild(iR); verso.appendChild(iV);
+    f.appendChild(recto); f.appendChild(verso);
+    livre.appendChild(f);
+
+    // On découvre déjà la page d'arrivée SOUS la feuille : quand celle-ci passe
+    // le quart de tour, ce qui apparaît est la bonne page, pas un trou.
+    if (sens > 0) pgD.src = url(i + 3 <= PAGES.length ? i + 3 : rectoIdx);
+    else pgG.src = url(Math.max(0, i - 2));
+
+    enCours = true;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { f.classList.add('va'); });
+    });
+
+    var fait = false;
+    var finir = function () {
+      if (fait) return; fait = true;
+      if (f.parentNode) f.parentNode.removeChild(f);
+      enCours = false; fin();
+    };
+    // 'transitionend' remonte le DOM : sans ce filtre, la transition d'ombre
+    // d'une face couperait le tournage avant qu'il ait commencé.
+    f.addEventListener('transitionend', function (e) {
+      if (e.target === f && e.propertyName === 'transform') finir();
+    });
+    setTimeout(finir, 900);
+  }
+
+  function suivant() {
+    cacherAide();
+    if (enCours || i + pas() >= PAGES.length) return;
+    tourner(1, function () { i += pas(); rendre(); });
+  }
+  function precedent() {
+    cacherAide();
+    if (enCours || i <= 0) return;
+    tourner(-1, function () { i = Math.max(0, i - pas()); rendre(); });
+  }
+
+  bSuiv.addEventListener('click', suivant);
+  bPrec.addEventListener('click', precedent);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); suivant(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); precedent(); }
+    else if (e.key === 'Home') { i = 0; rendre(); }
+    else if (e.key === 'End') { i = Math.max(0, PAGES.length - pas()); rendre(); }
+  });
+
+  // Balayage : seuil à 45px et garde verticale, pour ne pas voler le geste au
+  // lecteur qui a zoomé et fait glisser la page.
+  var x0 = null, y0 = null;
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) { x0 = null; return; }
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (x0 === null || !e.changedTouches.length) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    x0 = null;
+    if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    if (dx < 0) suivant(); else precedent();
+  }, { passive: true });
+
+  var aideVue = false;
+  function cacherAide() {
+    if (aideVue) return; aideVue = true;
+    aide.style.opacity = '0'; setTimeout(function () { aide.style.display = 'none'; }, 400);
+  }
+  aide.textContent = MOBILE() ? 'Balayez pour tourner · pincez pour zoomer' : 'Flèches ← → pour tourner les pages';
+  setTimeout(cacherAide, 6000);
+
+  var etaitMobile = MOBILE();
+  window.addEventListener('resize', function () {
+    var m = MOBILE();
+    if (m === etaitMobile) return;
+    etaitMobile = m;
+    if (!m && i % 2 === 1) i -= 1;  // en double-page, on repart d'une page paire
+    rendre();
+  });
+
+  rendre();
+})();
+</script>

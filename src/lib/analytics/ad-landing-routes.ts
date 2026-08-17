@@ -28,10 +28,23 @@
 /**
  * Segments de route concernés, sans préfixe de langue.
  *
- * Volontairement restreint aux pages de TUNNEL PUBLICITAIRE. `/roi` n'y figure
- * pas : c'est une page publique indexée, où Clarity garde tout son intérêt.
+ * ── `/roi` ajoutée le 2026-08-14, contre l'avis initial ──────────────────
+ * Ce commentaire disait auparavant : « `/roi` n'y figure pas : c'est une page
+ * publique indexée, où Clarity garde tout son intérêt. » La capture mobile a
+ * tranché autrement. Sur `/fr/roi`, la bannière occupait environ 45 % du
+ * premier écran d'un visiteur venu de Google — c'est-à-dire de quelqu'un qui
+ * n'a jamais vu le site et décide en trois secondes s'il reste.
+ *
+ * Le calcul est simple : une carte de chaleur sur une page dont le premier
+ * écran est couvert par un pavé de consentement n'apprend pas grand-chose,
+ * alors que le pavé, lui, coûte des visiteurs à chaque première visite. On
+ * garde Plausible (anonyme, sans cookie, toujours actif) et on renonce à
+ * Clarity ICI — pas ailleurs.
+ *
+ * ⚠️ Reste vrai : la bannière disparaît parce qu'AUCUN script tiers n'est
+ * chargé, jamais parce qu'on la masque. La distinction est tout.
  */
-const AD_LANDING_SEGMENTS = ["/diagnostic", "/simulateur"] as const;
+const AD_LANDING_SEGMENTS = ["/diagnostic", "/simulateur", "/roi"] as const;
 
 /**
  * True si le chemin est une page d'atterrissage publicitaire.

@@ -28,6 +28,22 @@ import {
 import { ensureAsciiSlug } from "../utils/slug";
 
 export interface CreateImageInput {
+  /**
+   * Identifiant imposé par l'appelant — GEO-094.
+   *
+   * 🔑 Le pipeline d'import crée un dossier `<base>/<uuid>/` et TOUS les
+   * consommateurs publics (galerie, carrousel presse, page détail, console)
+   * reconstruisent l'URL en `{CDN}/image-bank/{image.id}/…`. Le nom du dossier
+   * et l'identifiant de la ligne doivent donc être le MÊME uuid.
+   *
+   * Ils ne l'étaient pas : l'import tirait son uuid et le jetait, Prisma en
+   * générait un autre. Résultat, la ligne pointait un dossier qui n'a jamais
+   * existé. Passer l'uuid ici rétablit le contrat **par construction** — c'est
+   * plus sûr que de renommer le dossier après coup (fenêtre de course).
+   *
+   * Omis (seed, imports historiques) : Prisma génère l'id comme avant.
+   */
+  id?: string;
   categoryId?: string;
   filePath: string;
   thumbnailPath?: string;

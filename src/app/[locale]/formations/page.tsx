@@ -353,13 +353,22 @@ export default async function FormationsHub({ params }: Props) {
         title={isFr ? "Explosez la productivité de vos équipes" : "Boost your teams' productivity"}
         titleEm={isFr ? "par des formations performantes" : "with high-impact trainings"}
         description={
+          // ⚠️ « 100 % clients satisfaits » a été RETIRÉ des quatre variantes le
+          // 2026-08-12 (décision Will). C'était une statistique invérifiable,
+          // affichée dès l'accroche, et elle s'affichait dans les deux branches
+          // — y compris hors flag Qualiopi. Le site publie par ailleurs de vrais
+          // avis clients vérifiés : c'est ce qui doit porter la réassurance, pas
+          // un chiffre rond que personne ne peut recouper.
+          // « 100 % pratique » est CONSERVÉ : il décrit le format de la session
+          // (aucune théorie, on travaille sur les outils du client), pas un
+          // résultat obtenu. Ne pas confondre les deux.
           isFr
             ? ofPublicHero
-              ? "Certifié Qualiopi · jusqu'à 100 % finançable OPCO · 100 % clients satisfaits."
-              : "100 % clients satisfaits · 100 % pratique, sur vos propres outils et cas d'usage · prix publics par groupe."
+              ? "Certifié Qualiopi · jusqu'à 100 % finançable OPCO · prix publics par groupe."
+              : "100 % pratique, sur vos propres outils et cas d'usage · prix publics par groupe."
             : ofPublicHero
-              ? "Qualiopi-certified · up to 100% OPCO-fundable · 100% satisfied clients."
-              : "100% satisfied clients · 100% hands-on, on your own tools and use cases · public prices per group."
+              ? "Qualiopi-certified · up to 100% OPCO-fundable · public prices per group."
+              : "100% hands-on, on your own tools and use cases · public prices per group."
         }
         ctas={
           // CTA primary « Réserver un appel » (aligné Header) + Secondary
@@ -1488,10 +1497,26 @@ export default async function FormationsHub({ params }: Props) {
                         "France métropolitaine systématiquement. À l'international, nous intervenons dans les sociétés francophones (Belgique, Suisse, Luxembourg, Québec, Maghreb francophone, etc.) sur des missions d'une semaine minimum — pour garantir un transfert d'autonomie complet à votre équipe. Devis sur mesure.",
                     },
                     {
+                      // ⚠️ Cette réponse promettait « on rembourse intégralement » si
+                      // la formation ne servait à rien, et affirmait que « 100 % de nos
+                      // clients » en ressortaient autonomes. Les deux ont été retirés le
+                      // 2026-08-12 (décision Will) :
+                      //   · la garantie de résultat contredisait frontalement les CGV
+                      //     (`src/content/legal.ts`), qui posent une obligation de MOYENS
+                      //     et disent noir sur blanc « aucune garantie de résultat n'est
+                      //     donnée ; les gains, ROI ou performances évoqués sont
+                      //     indicatifs ». Une page publique ne peut pas engager au-delà
+                      //     du contrat ;
+                      //   · « 100 % de nos clients » est une statistique invérifiable, et
+                      //     donc un argument de vente à risque pour un organisme de
+                      //     formation.
+                      // Ne PAS réintroduire de promesse de résultat ici. Ce qui peut être
+                      // affirmé, c'est ce que le devis engage et ce que les CGV prévoient
+                      // — c'est ce que dit la réponse ci-dessous.
                       id: "remboursement",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Si l'équipe n'a rien tiré de la formation (cas extrêmement rare), on rembourse intégralement. Concrètement, 100 % de nos clients ressortent en maîtrisant 3-5 automatisations applicables à leurs tâches dès le lendemain.",
+                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos outils, de vos données et de ce que vos équipes appliquent ensuite. Ce que nous engageons figure au devis : le programme, la durée, le nombre de participants et les supports remis. En cas d'imprévu de votre côté, la session est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.",
                     },
                   ]
                 : [
@@ -1551,10 +1576,14 @@ export default async function FormationsHub({ params }: Props) {
                         "Metropolitan France systematically. Internationally, we intervene in French-speaking organisations (Belgium, Switzerland, Luxembourg, Quebec, French-speaking Maghreb, etc.) on missions of one week minimum — to make travel cost-effective and guarantee a complete autonomy transfer to your team. Custom quote including travel and accommodation costs.",
                     },
                     {
+                      // Miroir EN de la correction du 2026-08-12 — voir le commentaire
+                      // détaillé sur l'entrée `remboursement` du bloc FR. Le site est
+                      // servi en français uniquement, mais laisser ici la promesse
+                      // retirée côté FR reviendrait à la garder armée dans le dépôt.
                       id: "guarantee",
                       question: "Guarantee?",
                       answer:
-                        "If the team got nothing from the training (extremely rare), we refund in full. Concretely, 100 % of our customers come out mastering 3-5 automations applicable to their tasks the next day.",
+                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your tools, your data and what your teams apply afterwards. What we do commit to is written in the quote: the programme, the duration, the number of participants and the materials handed over. If something unexpected comes up on your side, the session can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.",
                     },
                   ]
             }

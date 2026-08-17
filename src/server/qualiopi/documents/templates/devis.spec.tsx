@@ -91,6 +91,39 @@ describe("DevisPdf — mentions obligatoires", () => {
     expect(text).toContain("Devis gratuit, valable jusqu'au 06/07/2026");
   });
 
+  // 🔴 2026-08-14 — le devis ne renvoyait à AUCUNE condition générale, alors
+  // que la convention, la convention tripartite et le contrat de formation les
+  // annexent. Le volet formation était couvert ; l'audit, l'implémentation, le
+  // site web et le coaching ne l'étaient pas — c'est-à-dire les prestations qui
+  // portent le risque « systèmes du Client / fournisseurs tiers / contenus
+  // générés ». Sans connaissance des CGV AVANT l'engagement (art. 1119 C. civ.),
+  // les clauses limitatives ne sont pas opposables.
+  //
+  // Assertions volontairement fragmentaires : `collectPdfText` fabrique des
+  // espaces, une phrase entière se casserait sur un retour à la ligne.
+  it("renvoie aux CGV et les rend opposables, URL comprise", () => {
+    expect(text).toContain("Conditions générales de vente");
+    expect(text).toContain("https://www.axion-ia.fr/conditions-generales");
+    expect(text).toMatch(/pr[ée]valent sur toutes conditions d'achat/);
+  });
+
+  it("le « Bon pour accord » couvre aussi les CGV, pas seulement les montants", () => {
+    // Le client doit accepter les CGV par le MÊME geste que les totaux : c'est
+    // la signature qui vaut acceptation, pas une transmission antérieure
+    // hypothétique.
+    expect(text).toMatch(/reconna[îi]t avoir pris connaissance/);
+  });
+
+  it("sans site renseigné, énonce quand même l'opposabilité sans URL tronquée", () => {
+    // Config Qualiopi incomplète : `site` vide. Le renvoi doit dégrader vers
+    // « communiquées sur simple demande » — jamais vers « /conditions-generales »
+    // seul, qui ne mène nulle part sur un PDF imprimé.
+    const sansSite = devisText(makeDevis({ identite: { ...IDENTITE, site: "" } }));
+    expect(sansSite).toContain("Conditions générales de vente");
+    expect(sansSite).toContain("communiquées sur simple demande");
+    expect(sansSite).not.toContain("/conditions-generales");
+  });
+
   it("porte la mention d'exonération TVA (régime exoneration_261)", () => {
     expect(text).toContain(LEGAL_MENTIONS.factureExonerationTva);
   });
@@ -175,6 +208,46 @@ describe("DevisPdf — estimation de financement", () => {
   it("masque le bloc estimation quand aucun montant n'est fourni", () => {
     const text = devisText(makeDevis());
     expect(text).not.toContain("Estimation de financement");
+  });
+
+  // ── Sous-lot 8G — la certification commande l'impression du montant ──────
+  //
+  // 🔴 Le test qui doit rougir : un devis OPCO émis sans certification ne doit
+  // porter AUCUN chiffre de prise en charge. L'audit OPCO du 15/08 (T8) a
+  // constaté l'inverse — le montant s'imprimait sur l'offre que le client
+  // accepte, pour un financement que l'art. L.6316-1 rend inaccessible.
+  it("🔴 la mention d'indisponibilité RETIRE les montants au lieu de s'y ajouter", () => {
+    const text = devisText(
+      makeDevis({
+        financementSuggere: "OPCO",
+        // Les montants sont présents dans les données — c'est exactement le
+        // piège : le gabarit doit les ignorer, pas compter sur leur absence.
+        montantOpcoEstimeCents: 150000,
+        resteAChargeCents: 130000,
+        mentionEstimationIndisponible:
+          "Financement mutualisé (OPCO, CPF, France Travail) : aucune estimation de prise en " +
+          "charge n'est communiquée à ce stade. L'accès à ces fonds est subordonné à la " +
+          "certification Qualiopi de l'organisme (art. L.6316-1).",
+      }),
+    );
+    const normalise = text.replace(/ | /g, " ");
+    expect(normalise).not.toContain("1 500,00");
+    expect(normalise).not.toContain("1 300,00");
+    expect(text).not.toContain("Prise en charge estimée");
+    expect(text).not.toContain("Reste à charge estimé");
+  });
+
+  it("mais garde le bloc VISIBLE et explique — un silence ferait croire qu'aucun financement n'existe", () => {
+    const text = devisText(
+      makeDevis({
+        financementSuggere: "OPCO",
+        mentionEstimationIndisponible:
+          "aucune estimation de prise en charge n'est communiquée à ce stade (art. L.6316-1)",
+      }),
+    );
+    expect(text).toContain("Estimation de financement");
+    expect(text).toContain("Financement envisagé : OPCO");
+    expect(text).toContain("L.6316-1");
   });
 });
 

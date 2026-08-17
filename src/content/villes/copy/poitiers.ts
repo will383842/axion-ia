@@ -92,13 +92,13 @@ export const POITIERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 30 personnes)",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 15 personnes)",
             detail:
               "Idéal pour les indépendants, cabinets, agences numériques et petites structures du centre de Poitiers : une demi-journée pour installer les premiers outils IA et lever les blocages, sans immobiliser l'équipe une journée entière.",
           },
           {
             sizeLabel: "PME",
-            price: "Essentielle (1 jour, 2 à 30 personnes) ou Gagner du temps (1 jour)",
+            price: "Essentielle (1 jour, 2 à 15 personnes) ou Gagner du temps (1 jour)",
             detail:
               "La journée Essentielle pour monter en compétence un service entier d'assurance, de tertiaire ou de tourisme ; la journée Gagner du temps pour cibler l'automatisation des tâches répétitives d'un département (gestion de dossiers, relation client, production de contenu).",
           },
@@ -122,7 +122,7 @@ export const POITIERS_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
+            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -184,13 +184,13 @@ export const POITIERS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 30 personnes)",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 15 personnes)",
             detail:
               "Idéal pour les indépendants, cabinets, agences numériques et petites structures du centre de Poitiers : une demi-journée pour installer les premiers outils IA et lever les blocages, sans immobiliser l'équipe une journée entière.",
           },
           {
             sizeLabel: "PME",
-            price: "Essentielle (1 jour, 2 à 30 personnes) ou Gagner du temps (1 jour)",
+            price: "Essentielle (1 jour, 2 à 15 personnes) ou Gagner du temps (1 jour)",
             detail:
               "La journée Essentielle pour monter en compétence un service entier d'assurance, de tertiaire ou de tourisme ; la journée Gagner du temps pour cibler l'automatisation des tâches répétitives d'un département (gestion de dossiers, relation client, production de contenu).",
           },
@@ -214,7 +214,7 @@ export const POITIERS_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
+            a: "La Formation 4 heures comme la journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté, par exemple pour une grande audience au Futuroscope ou dans un auditoire d'entreprise.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",

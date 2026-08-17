@@ -9,7 +9,7 @@
  * + fallback rétro-compat (singleton serviceSector quand pas de poids).
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, beforeAll } from "vitest";
 import type { Job } from "bullmq";
 
 // ─── Hoisted mocks (identiques au harnais orchestrator-per-campaign) ───────────
@@ -44,14 +44,138 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/server/actions/content-gen/_settings", () => ({
   readContentGenConfig: (key: string) => readConfigMock(key),
 }));
-vi.mock("@/server/content-gen/scheduler/anti-burst", () => ({
-  computeAntiBurstSchedule: vi.fn(() => []),
-  msSinceStartOfDay: vi.fn(() => 0),
+vi.mock("@/server/content-gen/scheduler/anti-burst", async () => {
+  const actual = await vi.importActual<typeof import("@/server/content-gen/scheduler/anti-burst")>(
+    "@/server/content-gen/scheduler/anti-burst",
+  );
+  return {
+    ...actual,
+    computeAntiBurstSchedule: vi.fn(() => []),
+    // Milieu de journée (2026-08-15) : le rythme quotidien n'est pas le sujet de
+    // ce fichier, on veut simplement un budget de tick non nul.
+    msSinceStartOfDay: vi.fn(() => 43_200_000),
+  };
+});
+
+// Reprise du retard (2026-08-15) — hors sujet ici : neutralisée.
+vi.mock("@/server/content-gen/recovery/backlog-recovery", () => ({
+  DEFAULT_RECOVERY_SETTINGS: {
+    enabled: false,
+    maxPerTick: 0,
+    maxPerDay: 0,
+    maxRetries: 3,
+    stuckAfterMinutes: 60,
+  },
+  drainFailedJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+  sweepStuckJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+  sweepStrandedQualityJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+}));
+
+vi.mock("@/server/content-gen/config-store", () => ({
+  readKillSwitchFailSafe: vi.fn(async () => ({ active: false })),
 }));
 vi.mock("@/server/content-gen/shared/content-gen-alerts", () => ({
   alertCampaignDone: (...args: unknown[]) => alertCampaignDoneMock(...args),
 }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
+
+// ─── Dataset villes réduit (perf + pouvoir de détection) ─────────────────────
+//
+// `expandVilleAnchors` importe `@/content/villes/core` — le point d'entrée
+// structurel introduit par le découplage du 2026-08-16 (~578 ms, contre ~41 s
+// pour le barrel `@/content/villes` et ses 2 118 imports de contenu éditorial).
+//
+// Le mock ci-dessous n'est donc PLUS là pour la vitesse : il est là pour le
+// POUVOIR DE DÉTECTION. Sur les 2 157 communes réelles, « rayon 50 km autour de
+// Paris » renvoie des dizaines de résultats et on ne peut affirmer qu'un vague
+// `toContain` — c'est précisément ce que faisait l'ancien test, qui passait même
+// quand le filtre par département était cassé. Avec 8 communes choisies, chaque
+// mode a un contre-exemple à écarter et l'assertion devient une égalité exacte.
+//
+// On substitue 8 communes RÉELLES (coordonnées INSEE copiées de `data/`).
+// `@/lib/geo` n'est PAS mocké : haversine, le tri par distance et le filtre
+// `maxKm` restent le vrai code. Le jeu est choisi pour que chaque mode ait un
+// contre-exemple à écarter — sans quoi l'assertion ne prouve rien :
+//   - rayon 50 km depuis Paris : 3 communes dedans, Lyon/Saint-Étienne/Marseille dehors
+//   - même département depuis Lyon : Villeurbanne (69) dedans, Saint-Étienne
+//     (42) dehors ALORS QU'ELLE EST À ~52 km — c'est le département qui tranche,
+//     pas la distance.
+// `vi.hoisted` : la factory de `vi.mock` est remontée en tête de fichier, elle ne
+// peut donc pas fermer sur un `const` de module ordinaire.
+const { VILLES_FIXTURE, VILLES_FIXTURE_BY_SLUG } = vi.hoisted(() => {
+  const villes = [
+    {
+      slug: "paris",
+      region: "ile-de-france",
+      departement: "75",
+      geo: { lat: 48.8589, lon: 2.347 },
+    },
+    {
+      slug: "saint-denis",
+      region: "ile-de-france",
+      departement: "93",
+      geo: { lat: 48.9378, lon: 2.3657 },
+    },
+    {
+      slug: "boulogne-billancourt",
+      region: "ile-de-france",
+      departement: "92",
+      geo: { lat: 48.8375, lon: 2.2429 },
+    },
+    {
+      slug: "versailles",
+      region: "ile-de-france",
+      departement: "78",
+      geo: { lat: 48.8039, lon: 2.1191 },
+    },
+    {
+      slug: "lyon",
+      region: "auvergne-rhone-alpes",
+      departement: "69",
+      geo: { lat: 45.758, lon: 4.8351 },
+    },
+    {
+      slug: "villeurbanne",
+      region: "auvergne-rhone-alpes",
+      departement: "69",
+      geo: { lat: 45.7719, lon: 4.8898 },
+    },
+    {
+      slug: "saint-etienne",
+      region: "auvergne-rhone-alpes",
+      departement: "42",
+      geo: { lat: 45.4241, lon: 4.3665 },
+    },
+    {
+      slug: "marseille",
+      region: "provence-alpes-cote-d-azur",
+      departement: "13",
+      geo: { lat: 43.2803, lon: 5.3806 },
+    },
+  ];
+  return {
+    VILLES_FIXTURE: villes,
+    VILLES_FIXTURE_BY_SLUG: new Map(villes.map((v) => [v.slug, v] as const)),
+  };
+});
+
+vi.mock("@/content/villes/core", () => ({
+  VILLES_CORE: VILLES_FIXTURE,
+  getVilleCore: (slug: string) => VILLES_FIXTURE_BY_SLUG.get(slug),
+  getVilleCoreByInsee: () => undefined,
+  getAllVilleSlugs: () => VILLES_FIXTURE.map((v) => v.slug),
+  getVillesCoreByRegion: (region: string) => VILLES_FIXTURE.filter((v) => v.region === region),
+  getVillesCoreByDepartement: (code: string) =>
+    VILLES_FIXTURE.filter((v) => v.departement === code),
+  getVillesCoreIndexableNow: () => VILLES_FIXTURE,
+  getIndexableVillesCore: () => VILLES_FIXTURE,
+  hasVilleCopy: () => true,
+  isPremiumVilleCore: () => true,
+  isVilleIndexable: () => true,
+  cohortSize: () => VILLES_FIXTURE.length,
+  getRegionByDepartement: () => undefined,
+}));
+
 vi.mock("bullmq", () => ({
   Queue: vi.fn().mockImplementation(() => ({ add: vi.fn().mockResolvedValue({ id: "b1" }) })),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -159,19 +283,56 @@ describe("multi-axes — helpers purs", () => {
     expect(sampleTargetSecteur({}, 0)).toBeNull();
   });
 
-  it("expandVilleAnchors : none = no-op ; radius étend ; ancres préservées", async () => {
+  // `expandVilleAnchors` importe `@/lib/geo` dynamiquement (import paresseux
+  // volontaire, pour alléger le boot du worker). Le premier appel paie donc la
+  // transformation vitest de geo + case-studies + transversal. On l'isole ici :
+  // les tests qui suivent mesurent la logique, pas le chargement du module, et
+  // si ce coût dérive un jour c'est CE hook qui échoue — pas un test au hasard.
+  // `expandVilleAnchors` fait `Promise.all([import("@/lib/geo"), import(".../core")])`.
+  // Lancées EN CONCURRENCE à froid, vitest transformait le vrai module avant de
+  // lui substituer le mock ; charger geo seul d'abord sérialise la résolution.
+  // Coût désormais marginal, mais on garde le préchauffage : il isole l'import
+  // du module sous test, donc une dérive future échoue ICI et pas au hasard.
+  beforeAll(async () => {
+    await import("@/lib/geo");
+  }, 30000);
+
+  it("expandVilleAnchors : none = no-op", async () => {
     expect(await expandVilleAnchors(["paris"], "none", null)).toEqual(["paris"]);
+    expect(await expandVilleAnchors(["paris"], "none", 50)).toEqual(["paris"]);
+    // Ancres vides : sortie immédiate, quel que soit le mode.
+    expect(await expandVilleAnchors([], "radius", 50)).toEqual([]);
+  });
+
+  it("expandVilleAnchors : radius étend jusqu'au rayon et s'arrête là", async () => {
     const expanded = await expandVilleAnchors(["paris"], "radius", 50);
-    expect(expanded).toContain("paris");
-    expect(expanded.length).toBeGreaterThan(1); // Paris a des communes < 50 km
-    // same_departement : toutes les communes renvoyées partagent le département.
+    // Les 3 communes franciliennes du jeu sont à moins de 50 km de Paris…
+    expect(new Set(expanded)).toEqual(
+      new Set(["paris", "saint-denis", "boulogne-billancourt", "versailles"]),
+    );
+    // …et rien au-delà n'entre : c'est le filtre `maxKm` qu'on vérifie ici.
+    expect(expanded).not.toContain("lyon");
+    expect(expanded).not.toContain("marseille");
+  });
+
+  it("expandVilleAnchors : same_departement tranche par département, pas par distance", async () => {
     const dept = await expandVilleAnchors(["lyon"], "same_departement", null);
-    expect(dept).toContain("lyon");
-    // Timeout large : 1er appel = import dynamique de geo + villes (~2150 communes
-    // + case-studies), volontairement paresseux pour alléger le boot du worker.
-    // Le coût (~22s) est un artefact de transform vitest (rapide en prod compilé) ;
-    // 60s absorbe la contention CPU quand la suite tourne en parallèle.
-  }, 60000);
+    expect(new Set(dept)).toEqual(new Set(["lyon", "villeurbanne"]));
+    // Saint-Étienne est à ~52 km de Lyon — plus proche que bien des communes du
+    // 69 — mais elle est dans le 42. Si ce filtre sautait, l'assertion tomberait.
+    expect(dept).not.toContain("saint-etienne");
+  });
+
+  it("expandVilleAnchors : l'ancre est préservée même sans voisine éligible", async () => {
+    // Marseille est seule dans le 13 : le mode ne doit rien perdre.
+    expect(await expandVilleAnchors(["marseille"], "same_departement", null)).toEqual([
+      "marseille",
+    ]);
+    // Ancre inconnue du dataset : ignorée pour l'expansion, jamais supprimée.
+    expect(await expandVilleAnchors(["ville-inexistante"], "radius", 50)).toEqual([
+      "ville-inexistante",
+    ]);
+  });
 });
 
 // ─── Comportement orchestrateur ──────────────────────────────────────────────

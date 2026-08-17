@@ -61,6 +61,10 @@ export interface AuthorRow {
 }
 
 export async function getAuthor(slug: string): Promise<AuthorRow | null> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  // Seule la page admin /content-gen/author/* consomme cette action (vérifié
+  // par grep) — les pages publiques auteur ne passent pas par ici.
+  await requireAdmin();
   const validatedSlug = SlugSchema.parse(slug);
   const r = await prisma.authorProfile.findUnique({ where: { slug: validatedSlug } });
   if (!r) return null;

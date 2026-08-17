@@ -99,11 +99,28 @@ export function sha256Buffer(buffer: Buffer): string {
 // ──────────────────────────────────────────────────────────
 
 /**
- * Strip EXIF en gardant uniquement l'orientation 1 (rotation neutre).
- * RGPD critique : GPS + datetime + camera info supprimés.
+ * Redresse l'image d'après son EXIF, puis livre un fichier SANS aucune
+ * métadonnée : ni GPS, ni date, ni modèle d'appareil.
+ *
+ * 🔴 Rectifié le 2026-08-16 (audit GEO/AEO, GEO-091). Cette fonction s'appelait
+ * `stripExifPreserveOrientation` et sa docstring promettait « RGPD critique :
+ * GPS + datetime + camera info supprimés » — pour un corps qui faisait
+ * `withMetadata({ orientation: 1 })`, c'est-à-dire exactement l'inverse :
+ *
+ *   - `withMetadata()` CONSERVE tout l'EXIF (« Include all metadata (EXIF, XMP,
+ *     IPTC) from the input image »). C'est son ABSENCE qui strippe. Mesuré :
+ *     EXIF d'entrée 300 octets → sortie 300 octets, tag GPS `0x8825` intact.
+ *   - `{ orientation: 1 }` écrasait l'indice de rotation SANS pivoter les
+ *     pixels : une photo portrait ressortait couchée, et le navigateur ne
+ *     pouvait plus la redresser puisque l'indice avait disparu.
+ *
+ * `.autoOrient()` cuit la rotation dans les pixels ; plus aucun tag n'est alors
+ * nécessaire. ⚠️ Ne réintroduisez pas `withMetadata()` ici « pour normaliser » :
+ * ce serait rouvrir la fuite. Pour écrire des métadonnées voulues (copyright,
+ * géotag de l'organisation), utilisez `withExif()`, qui ignore l'EXIF d'entrée.
  */
-export function stripExifPreserveOrientation(input: Sharp): Sharp {
-  return input.withMetadata({ orientation: 1 });
+export function stripExifAndAutoOrient(input: Sharp): Sharp {
+  return input.autoOrient();
 }
 
 export async function getImageMetadata(buffer: Buffer): Promise<Metadata> {
@@ -248,7 +265,7 @@ export async function generateAllVariants(args: {
   square: Buffer;
   lqip: string;
 }> {
-  const input = stripExifPreserveOrientation(sharp(args.buffer));
+  const input = stripExifAndAutoOrient(sharp(args.buffer));
 
   const [thumbWebp, smWebp, mdWebp, lgWebp, xlWebp, mdAvif, lgAvif, og, square, lqip] =
     await Promise.all([
@@ -278,8 +295,20 @@ export async function generateAllVariants(args: {
 }
 
 /**
- * Embed IPTC/XMP copyright via Sharp withMetadata.
- * Fallback exiftool CLI si dispo (V1.5).
+ * Inscrit le copyright dans le fichier livré — et RIEN d'autre.
+ *
+ * 🔑 `withExif()` est documenté « Set EXIF metadata in the output image,
+ * **ignoring any EXIF in the input image** ». C'est précisément ce qu'il faut
+ * ici : on veut écrire une mention voulue sans réimporter au passage le GPS et
+ * la date de prise de vue de la source. `withMetadata({ exif })` — l'ancienne
+ * écriture, dépréciée par Sharp au profit de `withExif()`/`withExifMerge()` —
+ * faisait l'inverse : elle conservait l'EXIF d'entrée en plus (GEO-091).
+ *
+ * ⚠️ Ne passez jamais à `withExifMerge()` sur une image d'origine externe : le
+ * « merge » est justement ce qui laisse repasser les tags de la source.
+ *
+ * L'appel est synchrone ; la signature reste `Promise` pour le repli exiftool
+ * prévu en V1.5.
  */
 export async function embedCopyrightMetadata(
   input: Sharp,
@@ -289,15 +318,14 @@ export async function embedCopyrightMetadata(
     licenseUrl: string;
   },
 ): Promise<Sharp> {
-  return input.withMetadata({
-    orientation: 1,
-    icc: "sRGB",
-    exif: {
+  return input
+    .autoOrient()
+    .withIccProfile("sRGB")
+    .withExif({
       IFD0: {
         Copyright: `© ${options.year} ${options.creditText}. Licensed under CC BY 4.0 — ${options.licenseUrl}`,
       },
-    },
-  });
+    });
 }
 
 // ──────────────────────────────────────────────────────────

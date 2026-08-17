@@ -9,29 +9,35 @@ import {
   AUDIT_TIERS,
   CODAGE_TIERS,
   IMPLEMENTATION_TIERS,
-  INTERVENTION_TIERS,
+  getFormationCatalogPriceRange,
   UN_A_UN_TIERS,
   formatAmount,
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
+import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
 
+// `pricing-tokens` n'importe que `@/lib/intl` + `@/content/pricing` : aucune
+// dépendance Node, la route reste donc en `edge` (vérifié audit H4, LOT 4).
 export const runtime = "edge";
 
 export function GET() {
   // Sprint 14.10.5 — prix dérivés du SSOT pricing.ts (zéro hardcode).
   // L'ancienne mention « 290-1990 € » audit était OBSOLÈTE (les vrais tiers
   // commencent à 490 €). Range complet du catalogue audit (Flash → ETI).
-  const interventionsEntry = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-    "fr",
-  );
-  const interventionsCompact = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-    "fr",
-    { compact: true },
-  );
+  // 🔴 2026-08-13 — ces deux valeurs venaient de `INTERVENTION_TIERS`
+  // (« intervention-essentielle », 2 450 €), la génération PRÉCÉDENTE de
+  // l'offre. Les pages `/interventions/*` redirigent vers `/formations` depuis
+  // la migration, mais leurs TARIFS continuaient d'alimenter ce fichier : les
+  // moteurs IA lisaient « Formations IA à partir de 2 450 € HT » alors que le
+  // site affiche 1 200 € (4 h) et 1 900 € (journée). Prix d'entrée doublé pour
+  // quiconque interroge une IA sur nos tarifs.
+  // La source correcte est `FORMATION_PRICE_MATRIX`, celle que servent
+  // /formations, /tarifs et le catalogue.
+  const formationsEntryEur = getFormationCatalogPriceRange().minEur;
+  const interventionsEntry = formatAmount(formationsEntryEur, "fr");
+  const interventionsCompact = formatAmount(formationsEntryEur, "fr", { compact: true });
   // Audit = prix d'entrée « à partir de » : les niveaux Ciblé/PME/ETI sont
   // « à partir de 1 900 € · sur devis » depuis 2026-06-03 (plus de borne haute
   // priceMax → l'ancienne fourchette Flash→PME-max rendait « NaN »).
@@ -65,13 +71,29 @@ export function GET() {
 Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la catégorie « Actions de formation » — marque de certification qualité délivrée au nom de l'État français (Ministère du Travail). À ce titre, les formations, audits et accompagnements 1-to-1 sont **finançables** par les dispositifs de formation professionnelle (OPCO, France Travail — AIF — selon le dispositif et l'éligibilité). Identifiants légaux (n° de déclaration d'activité, n° de certificat) : ${SITE_URL}/fr/mentions-legales.`
     : "";
 
+  // 🔴 AUDIT GEO/AEO 2026-08-15 (GEO-002) — `FAQ_GLOBAL` et `CASE_STUDIES` sont
+  // de la PROSE STOCKÉE : leurs montants sont écrits en tokens `{{price:…}}`
+  // résolus au rendu depuis le SSOT (cf. `pricing-tokens.ts`). Les pages
+  // publiques et `/api/markdown` les résolvent ; ce fichier, non. Mesuré au
+  // 2026-08-14 : 26 gabarits servis en clair aux moteurs de réponse, sur la
+  // question qu'on leur pose le plus — le prix.
+  //
+  // ⚠️ Décision actée Will : on NE bascule PAS ces tokens de `|flat` vers
+  // `|from`. La prose porte déjà son amorce (« à partir de … »), et le mode
+  // `from` rendrait « à partir de À partir de ».
+  // `collapsePriceProseDuplicates` rattrape les collisions résiduelles, comme
+  // dans `api/markdown/[type]/[slug]/route.ts`.
+  const renderFr = (s: string) => collapsePriceProseDuplicates(resolvePriceTokens(s, "fr"));
+  const renderEn = (s: string) => resolvePriceTokens(s, "en");
+
   const faqBlock = FAQ_GLOBAL.map(
-    (f) => `### ${f.fr.question}\n\n${f.fr.answer}\n\n(EN) ${f.en.answer}`,
+    (f) =>
+      `### ${renderFr(f.fr.question)}\n\n${renderFr(f.fr.answer)}\n\n(EN) ${renderEn(f.en.answer)}`,
   ).join("\n\n");
 
   const caseBlock = CASE_STUDIES.map(
     (c) =>
-      `### ${c.fr.title} (${c.industry}, ${c.size})\n\n${c.fr.excerpt} · Métrique : ${c.metric}.`,
+      `### ${renderFr(c.fr.title)} (${c.industry}, ${c.size})\n\n${renderFr(c.fr.excerpt)} · Métrique : ${c.metric}.`,
   ).join("\n\n");
 
   const body = `# Axion-IA — full content for AI crawlers
@@ -90,7 +112,7 @@ Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur 
 ## 5 modules
 
 ### Module 1 — ${SERVICE_BY_ID.formations.officialFr} (à partir de ${interventionsEntry})
-17 formations IA intra-entreprise sur site (ou distance), 4 paliers durée (4 h à 3 jours), pratique sur vos vrais outils (ChatGPT, Claude, Mistral, agents IA, automatisations). Tarifs HT par groupe (pas par personne), dès ${interventionsCompact}.
+Formations IA intra-entreprise sur site (ou à distance), de 4 h à 2 jours, pratique sur vos vrais outils (ChatGPT, Claude, Mistral, agents IA, automatisations). Tarifs HT par groupe (pas par personne), dès ${interventionsCompact}.
 URL : ${SITE_URL}/fr/formations · Tarifs : ${SITE_URL}/fr/formations/tarifs
 
 ### Module 2 — ${SERVICE_BY_ID.audit.officialFr} (${auditRange})
@@ -117,9 +139,9 @@ ${faqBlock}
 
 ${caseBlock}
 
-## Actualités IA — veille hebdomadaire
+## Actualités IA — veille opérationnelle
 
-Axion-IA publie une veille IA opérationnelle destinée aux dirigeants de PME et d'ETI : chaque semaine, les actualités marquantes de l'IA sont sourcées puis intégralement réécrites en articles autonomes (contexte, analyse, implications concrètes pour l'entreprise, points à retenir). Objectif : transformer le flux d'annonces en décisions actionnables, sans jargon ni hype.
+Axion-IA publie une veille IA opérationnelle destinée aux dirigeants de PME et d'ETI : les actualités marquantes de l'IA sont sourcées puis intégralement réécrites en articles autonomes (contexte, analyse, implications concrètes pour l'entreprise, points à retenir). Objectif : transformer le flux d'annonces en décisions actionnables, sans jargon ni hype. La date de publication portée par chaque article et le flux RSS ci-dessous font foi sur la fraîcheur — aucune cadence n'est promise.
 
 C'est le format pensé pour être cité par les moteurs de réponse IA (Perplexity, ChatGPT Search, Claude, Bing Copilot, Google AIO) : contenu daté, sourcé et à jour.
 

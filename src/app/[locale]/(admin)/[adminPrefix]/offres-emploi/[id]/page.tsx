@@ -38,6 +38,7 @@ export default async function EditJobOfferPage({ params }: PageProps) {
     bodyFrHtml: o.bodyFr,
     bodyEnHtml: o.bodyEn,
     employmentType: o.employmentType,
+    secondaryEmploymentType: o.secondaryEmploymentType ?? "",
     contractLabel: o.contractLabel ?? "",
     workMode: o.workMode,
     remoteDaysPerWeek: o.remoteDaysPerWeek?.toString() ?? "",

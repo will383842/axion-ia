@@ -14,6 +14,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncFormSubmissionToCrm } from "@/server/crm-sync";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
@@ -21,6 +22,7 @@ import { hashIp } from "@/lib/security/ip-hash";
 import { getClientIp } from "@/lib/client-ip";
 import { parseLocale } from "@/lib/schemas/locale";
 import { notify } from "@/server/notifications";
+import { enqueueEmail } from "@/server/queue/queues";
 import { adminPath } from "@/lib/admin-path";
 import { podcastRequestSchema } from "@/lib/schemas/podcast-request-schema";
 
@@ -103,6 +105,32 @@ export async function submitPodcastRequestAction(
       },
       select: { id: true },
     });
+
+    // 6 bis. Synchro CRM (lot L2) — inerte tant que `CRM_SYNC_ENABLED` ≠ "true".
+    await syncFormSubmissionToCrm({
+      subjectRef: `site:podcast_request:${created.id}`,
+      formType: "podcast",
+      sourceSlug: "site-formulaire-podcast",
+      person: { email: d.email, fullName: d.leaderName, phone: d.phone },
+      company: { name: d.companyName, postcode: d.postalCode, city: d.city, sector: d.activity },
+      consent: { version: CONSENT_VERSION, textRef: "podcast-form" },
+      payload: { source },
+    });
+
+    // 7 bis. Accusé de réception au dirigeant (2026-08-13).
+    // Ce formulaire — relayé par les QR des flyers papier — ne renvoyait RIEN.
+    // Quelqu'un proposait son entreprise pour un tournage et n'entendait plus
+    // jamais parler de nous. Meilleur effort : la demande est déjà en base, un
+    // échec d'envoi ne doit pas la perdre.
+    try {
+      await enqueueEmail("podcast-demande-recue", d.email, locale, {
+        leaderName: d.leaderName,
+        companyName: d.companyName,
+        city: d.city,
+      });
+    } catch (err) {
+      console.error("[podcast-request] accusé de réception impossible :", err);
+    }
 
     // 7. Notification Will — Telegram (groupe « Messages »). Le canal WhatsApp
     // se greffe automatiquement dès que WHATSAPP_CALLMEBOT_APIKEY +

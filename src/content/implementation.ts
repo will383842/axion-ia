@@ -3,6 +3,14 @@
 // Sprint 7 baseline. Note: ban du mot « formation » levé 2026-05-07 (ADR
 // `axionia/docs/adr/0003-lift-formation-ban.md`) — vocabulaire libre désormais.
 // Sprint 14.10.5 (2026-05-08) : prix IA custom dérivés de pricing.ts (SSOT).
+// 2026-08-15 : les `answer` FR, les 3 paliers de maturité et le titre de la
+// section chiffrée disent désormais CE QUI EST LIVRÉ — ce qui tourne en
+// production, la documentation, la reprise en main par vos équipes — plutôt que
+// des bénéfices vagues. L'implémentation est une prestation de CONSEIL (pas une
+// action de formation) : aucune garantie de résultat, aucun chiffre de
+// performance inventé. Les blocs `benefits` / `metrics` / `faqs` FR restent
+// portés par `implementation-fr-overrides.ts` (les valeurs ci-dessous ne sont
+// que le repli de forme).
 
 import { IMPLEMENTATION_TIERS, formatAmountRange, getTierById } from "./pricing";
 import { IMPL_FR_OVERRIDES } from "./implementation-fr-overrides";
@@ -95,7 +103,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       ...IMPL_FR_OVERRIDES["ia-custom"],
       eyebrow: "Service premium · Module 3",
       title: `IA custom d'entreprise (${IA_CUSTOM_RANGE_FR})`,
-      answer: `Implémentation IA sur mesure pour grands comptes : modèles fine-tuned sur vos données, intégration profonde dans vos systèmes, équipe dédiée. Tarif sur devis, livraison ${IA_CUSTOM_TIER.durationFr}.`,
+      answer: `Implémentation IA sur mesure pour grands comptes : modèles ajustés à vos données, intégration profonde dans vos systèmes, équipe dédiée. Vous repartez avec la solution en production, son code, ses pipelines et sa documentation d'exploitation, hébergés dans votre périmètre. Tarif sur devis, livraison ${IA_CUSTOM_TIER.durationFr}.`,
     }),
     en: makeEn({
       eyebrow: "Premium service · Module 3",
@@ -112,7 +120,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3",
       title: "Chatbots IA pour entreprise",
       answer:
-        "Déploiement de chatbots IA d'entreprise : SAV, support interne, qualification de leads. Intégrations Slack/Teams/site web, base de connaissances RAG sur vos documents, monitoring des performances.",
+        "Déploiement de chatbots IA d'entreprise : SAV, support interne, qualification de leads. À la livraison : l'assistant branché sur vos canaux (Slack, Teams, site web), une base de connaissances RAG que vos équipes mettent à jour elles-mêmes, des règles d'escalade écrites et le suivi des conversations.",
     }),
     en: makeEn({
       eyebrow: "AI implementation · Module 3",
@@ -130,7 +138,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3",
       title: "Automatiser vos processus métier",
       answer:
-        "Automatisation IA de processus métier : ordres de mission, validations, reporting, workflow conditionnels. Connexion à vos outils (CRM, ERP, mail, calendrier). ROI mesurable.",
+        "Automatisation IA de processus métier : ordres de mission, validations, reporting, workflows conditionnels. Le flux tourne en production, branché sur vos outils (CRM, ERP, mail, calendrier) ; vous gardez le code, la documentation, les seuils de validation et le journal des exécutions.",
     }),
     en: makeEn({
       eyebrow: "AI implementation · Module 3",
@@ -148,7 +156,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3",
       title: "Structurer vos données métier",
       answer:
-        "Mise en forme de données non structurées (emails, PDFs, contrats, factures) en JSON exploitable. Pipelines de parsing IA, contrôle qualité, push vers vos systèmes downstream.",
+        "Mise en forme de données non structurées (e-mails, PDF, contrats, factures) en JSON exploitable. Vous récupérez le pipeline de parsing, le schéma de données validé champ par champ, les règles de contrôle qualité et la file de relecture des cas douteux, poussés vers vos systèmes.",
     }),
     en: makeEn({
       eyebrow: "AI implementation · Module 3",
@@ -166,7 +174,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3",
       title: "IA pour CRM et ERP",
       answer:
-        "Greffer de l'IA sur votre CRM/ERP : enrichissement de fiches, scoring leads, prévisions ventes, génération de comptes-rendus. Compatible Salesforce, HubSpot, Sage, Cegid, Microsoft Dynamics.",
+        "Greffer de l'IA sur votre CRM/ERP : enrichissement de fiches, scoring de leads, prévisions de ventes, génération de comptes-rendus. Sans migration : les scores et les synthèses s'écrivent dans vos propres champs, et les connecteurs vous restent documentés. Compatible Salesforce, HubSpot, Sage, Cegid, Microsoft Dynamics.",
     }),
     en: makeEn({
       eyebrow: "AI implementation · Module 3",
@@ -184,7 +192,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3",
       title: "Génération et analyse documentaire IA",
       answer:
-        "Production assistée de documents (devis, contrats, comptes-rendus) à partir de templates et de données métier. Lecture IA de documents entrants pour extraction et classification automatique.",
+        "Production assistée de documents (devis, contrats, comptes-rendus) à partir de vos modèles et de vos données métier. Lecture IA des pièces entrantes pour extraction, classement et rattachement au bon dossier ; corpus indexé et recherche par le sens, chaque réponse citant son document source.",
     }),
     en: makeEn({
       eyebrow: "AI implementation · Module 3",
@@ -202,7 +210,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3",
       title: "Agents IA autonomes",
       answer:
-        "Déploiement d'agents IA capables d'enchaîner plusieurs étapes : recherche, synthèse, action sur vos systèmes. Cas d'usage : prospection, support, veille concurrentielle, opérations.",
+        "Déploiement d'agents IA capables d'enchaîner plusieurs étapes : recherche, synthèse, action sur vos systèmes. Cas d'usage : prospection, support, veille concurrentielle, opérations. L'agent démarre en mode suggestion, passe en autonomie une fois son comportement vérifié, et journalise chaque décision ; son code et ses prompts vous sont livrés.",
     }),
     en: makeEn({
       eyebrow: "AI implementation · Module 3",
@@ -220,7 +228,7 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3",
       title: "Intégrations IA + outils existants",
       answer:
-        "Connecteurs IA vers vos outils : Slack, Teams, Notion, Airtable, Google Workspace, mail. APIs propres, monitoring, gestion des limites de taux et coûts par usage.",
+        "Connecteurs IA vers vos outils : Slack, Teams, Notion, Airtable, Google Workspace, mail. APIs documentées, authentification à portée limitée, reprise sur erreur, plafonds de coûts par flux et tableau de suivi de la dépense — un outil de plus se relie sans tout refaire.",
     }),
     en: makeEn({
       eyebrow: "AI implementation · Module 3",
@@ -238,13 +246,13 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
       eyebrow: "Implémentation IA · Module 3 · Sur demande",
       title: "IA dans vos outils no-code existants",
       answer:
-        "Sur demande client uniquement : si votre équipe utilise déjà n8n, Make, Zapier, Bubble ou Airtable, nous y intégrons l'IA proprement. Notre approche par défaut reste le code custom (souveraineté des données, zéro lock-in éditeur, performances 10× supérieures). Voir notre position sur le sujet en FAQ globale.",
+        "Sur demande client uniquement : si votre équipe utilise déjà n8n, Make, Zapier, Bubble ou Airtable, nous y intégrons l'IA proprement. Vous récupérez des scénarios documentés, un nommage clair et la main sur vos automatisations. Notre approche par défaut reste le code custom (souveraineté des données, zéro lock-in éditeur, coûts maîtrisés à l'échelle). Voir notre position sur le sujet en FAQ globale.",
     }),
     en: makeEn({
       eyebrow: "Implémentation IA · Module 3 · Sur demande",
       title: "IA dans vos outils no-code existants",
       answer:
-        "Sur demande client uniquement : si votre équipe utilise déjà n8n, Make, Zapier, Bubble ou Airtable, nous y intégrons l'IA proprement. Notre approche par défaut reste le code custom (souveraineté des données, zéro lock-in éditeur, performances 10× supérieures). Voir notre position sur le sujet en FAQ globale.",
+        "Sur demande client uniquement : si votre équipe utilise déjà n8n, Make, Zapier, Bubble ou Airtable, nous y intégrons l'IA proprement. Vous récupérez des scénarios documentés, un nommage clair et la main sur vos automatisations. Notre approche par défaut reste le code custom (souveraineté des données, zéro lock-in éditeur, coûts maîtrisés à l'échelle). Voir notre position sur le sujet en FAQ globale.",
     }),
   },
 ];
@@ -315,15 +323,15 @@ function makeFr(args: {
     benefits: args.benefits ?? [
       {
         title: "Spécification chiffrée",
-        description: "Périmètre, jalons, budgets fermés avant tout démarrage.",
+        description: "Périmètre, jalons et budget fermés par écrit avant tout démarrage.",
       },
       {
-        title: "Implémentation guidée",
-        description: "Sprints courts, démos hebdomadaires, validation continue.",
+        title: "Une solution qui tourne",
+        description: "Mise en production progressive, testée sur vos cas réels.",
       },
       {
         title: "Hand-off documenté",
-        description: "Documentation, runbook, 30 j de support post-livraison.",
+        description: "Code, documentation, runbook et 30 j de support après livraison.",
       },
     ],
     processTitle: "Comment ça se déroule",
@@ -333,10 +341,14 @@ function makeFr(args: {
       { title: "Déploiement", description: "Mise en production progressive, tests utilisateurs." },
       { title: "Support 30 j", description: "Maintenance corrective + évolutions mineures." },
     ],
-    metricsTitle: "Résultats observés",
+    // « Repères chiffrés » et non « Résultats observés » : ces chiffres sont des
+    // ordres de grandeur de LIVRAISON (délais, couverture, périmètre), pas des
+    // performances constatées chez des clients. Ne pas y réintroduire de gain de
+    // productivité chiffré — les CGV posent une obligation de moyens.
+    metricsTitle: "Repères chiffrés",
     metrics: args.metrics ?? [
       { number: "4-12", suffix: "sem", label: "Délai de livraison" },
-      { number: "+40", suffix: "%", label: "Productivité moyenne" },
+      { number: "100", suffix: "%", label: "Livrables documentés" },
       { number: "30", suffix: "j", label: "Support post-livraison" },
     ],
     faqTitle: "Questions fréquentes",
@@ -375,19 +387,19 @@ function makeFr(args: {
           rank: 1,
           name: "Découverte",
           description:
-            "Aucune intégration IA en production. On part de zéro et on déploie un quick-win d'abord — preuve de valeur en 4-6 semaines.",
+            "Aucune intégration IA en production. On part de zéro sur un premier périmètre restreint : à l'arrivée, un cas qui tourne pour de vrai, sa documentation et la prise en main par vos équipes.",
         },
         {
           rank: 2,
           name: "En cours",
           description:
-            "Premiers POCs ou outils SaaS IA isolés. On industrialise et on connecte au reste de votre stack (CRM, ERP, data warehouse).",
+            "Premiers POC ou outils SaaS IA isolés. On industrialise l'existant et on le connecte au reste de votre stack (CRM, ERP, entrepôt de données) : un flux stable, monitoré, dont vous gardez le code et les clés.",
         },
         {
           rank: 3,
           name: "Avancée",
           description:
-            "IA en production sur plusieurs cas. On apporte expertise sur les sujets complexes (RAG custom, agents, fine-tuning ciblé).",
+            "IA en production sur plusieurs cas. On intervient sur les sujets complexes (RAG custom, agents, fine-tuning ciblé) et on transmet : documentation d'exploitation, procédures de mise à jour, passation à vos équipes.",
         },
       ],
     },

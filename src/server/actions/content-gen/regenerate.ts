@@ -24,6 +24,8 @@ import * as Sentry from "@sentry/nextjs";
 import { Queue } from "bullmq";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+// Fix 2026-08-15 (audit e2e) — options par défaut partagées des files content-gen.
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 import { requireAdmin } from "./_auth";
 import {
   buildRegenerationJobData,
@@ -38,7 +40,12 @@ function getContentGenQueue(): Queue | null {
   if (contentGenQueue) return contentGenQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  contentGenQueue = new Queue("content-gen", { connection: { url: redisUrl } });
+  // Fix 2026-08-15 (audit e2e) — `defaultJobOptions` partagées : sans elles
+  // la file héritait du défaut BullMQ (1 tentative, pas de backoff).
+  contentGenQueue = new Queue("content-gen", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return contentGenQueue;
 }
 

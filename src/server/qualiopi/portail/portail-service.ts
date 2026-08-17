@@ -22,6 +22,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
+import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
 import type {
   EnrollmentStatut,
   DocumentType,
@@ -62,6 +63,14 @@ export interface QuestionnaireResume {
   /** Titre de la session rattachée — affiché en tête du questionnaire. */
   sessionTitre: string;
   /**
+   * Dates et statut de la session — nécessaires pour décider À QUEL MOMENT le
+   * questionnaire est proposé (cf. `questionnaire-moment.ts`). Sans elles, le
+   * portail proposait « votre retour à chaud » la veille de la formation.
+   */
+  sessionDateDebut: Date | null;
+  sessionDateFin: Date | null;
+  sessionStatut: string | null;
+  /**
    * Objectifs pédagogiques de la formation. Le questionnaire de POSITIONNEMENT
    * demande au bénéficiaire de s'auto-évaluer sur chacun : c'est ce qui en fait
    * une évaluation des acquis à l'entrée (off.8) et non un simple déclaratif,
@@ -78,6 +87,16 @@ export interface PieceRemise {
   /** URL re-signée à CHAQUE lecture — jamais la valeur stockée (expire en 900 s). */
   pdfUrl: string | null;
   remiseLe: Date;
+  /**
+   * Formation à laquelle la pièce se rattache.
+   *
+   * 🔴 Ajouté le 16/08/2026. Sans lui, l'espace listait les pièces à plat, et
+   * la déduplication se faisait par TYPE toutes sessions confondues : à deux
+   * formations, la convocation de l'une masquait celle de l'autre. Une pièce
+   * sans son dossier n'est pas classable — ni par le stagiaire, ni par nous.
+   */
+  sessionId: string | null;
+  sessionTitre: string;
 }
 
 export interface EspaceStagiaire {
@@ -331,6 +350,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               titreSession: true,
               dateDebut: true,
               dateFin: true,
+              statut: true,
               formation: { select: { objectifsPedagogiques: true } },
               // Pièces d'information de la session. On ne remonte QUE les types
               // destinés au stagiaire : ni convention, ni facture, ni lettre de
@@ -402,6 +422,9 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       token: q.token,
       reponduAt: q.reponduAt ?? null,
       sessionTitre: e.session?.titreSession ?? "",
+      sessionDateDebut: e.session?.dateDebut ?? null,
+      sessionDateFin: e.session?.dateFin ?? null,
+      sessionStatut: e.session?.statut ?? null,
       objectifs,
     }));
   });
@@ -410,18 +433,28 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
   // doublons (le dossier INVEST SUN en portait deux de chaque), et présenter au
   // stagiaire deux règlements intérieurs de dates différentes est pire que n'en
   // présenter aucun.
-  const parType = new Map<
-    string,
-    (typeof trainee.enrollments)[number]["session"]["documents"][number]
-  >();
-  for (const e of trainee.enrollments) {
-    for (const d of e.session?.documents ?? []) {
-      if (!parType.has(d.type)) parType.set(d.type, d);
-    }
-  }
+  // 🔴 Clé = SESSION + TYPE, et non le type seul (correctif du 16/08/2026).
+  //
+  // La déduplication portait sur le type toutes sessions confondues, avec le
+  // premier arrivé gagnant. Le raisonnement d'origine — « présenter deux
+  // règlements intérieurs de dates différentes est pire que n'en présenter
+  // aucun » — est juste POUR UN STAGIAIRE À UNE SESSION, et devient faux à
+  // deux : la convocation d'une formation masquait celle de l'autre, sans que
+  // l'ordre soit garanti. Cas réel : une stagiaire inscrite à deux sessions.
+  //
+  // On garde la déduplication là où elle protège (deux règlements intérieurs
+  // d'une MÊME session), et on la retire là où elle efface (deux formations).
+  // La plus récente l'emporte, comme l'annonçait déjà le commentaire d'origine.
+  const piecesRetenues = retenirPiecesParSessionEtType(
+    trainee.enrollments.map((e) => ({
+      sessionId: e.session?.id ?? null,
+      sessionTitre: e.session?.titreSession ?? "",
+      documents: e.session?.documents ?? [],
+    })),
+  );
 
   const pieces: PieceRemise[] = await Promise.all(
-    [...parType.values()].map(async (doc) => {
+    piecesRetenues.map(async ({ doc, sessionId, sessionTitre }) => {
       // Même règle que les attestations : URL re-signée 24 h à CHAQUE lecture.
       // La `pdfUrl` stockée expire en 900 s — la servir telle quelle donnerait
       // un lien mort au stagiaire.
@@ -431,7 +464,14 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       } catch {
         // Fail-soft : mieux vaut un lien peut-être expiré qu'un espace en erreur.
       }
-      return { type: doc.type, numero: doc.numero, pdfUrl, remiseLe: doc.createdAt };
+      return {
+        type: doc.type,
+        numero: doc.numero,
+        pdfUrl,
+        remiseLe: doc.createdAt,
+        sessionId,
+        sessionTitre,
+      };
     }),
   );
 

@@ -20,6 +20,7 @@
 
 import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 const ERASED_PLACEHOLDER = "[erased-rgpd-art17]";
 
@@ -49,12 +50,23 @@ export interface EraseNewsletterResult {
  */
 export async function eraseSubmissionsForEmail(email: string): Promise<EraseSubmissionsResult> {
   const hashedEmail = `erased:${hashEmail(email)}@erased.local`;
+  // 🔴 On interroge l'EMPREINTE, jamais `contactEmail`. Cette colonne est
+  // chiffrée avec un IV aléatoire : l'égalité SQL qui se trouvait ici
+  // n'anonymisait JAMAIS aucune ligne, tout en renvoyant « succès ».
+  // Le repli sur `contactEmail` couvre les lignes en clair (chatbot,
+  // candidatures, podcast) et celles antérieures au remplissage rétroactif.
+  const lookupHash = hashEmailForLookup(email);
   const result = await prisma.submission.updateMany({
-    where: { contactEmail: email },
+    where: {
+      OR: [...(lookupHash ? [{ contactEmailHash: lookupHash }] : []), { contactEmail: email }],
+    },
     data: {
       contactName: ERASED_PLACEHOLDER,
       contactRole: null,
       contactEmail: hashedEmail,
+      // Remise à NULL : sans cela, une seconde demande d'effacement — ou un
+      // export ultérieur — retrouverait encore la ligne anonymisée.
+      contactEmailHash: null,
       contactPhone: null,
       address: null,
       internalNotes: null,
@@ -104,8 +116,13 @@ export async function eraseChatDataForEmail(email: string): Promise<EraseChatRes
   // Ancres pour rattacher une conversation à la personne :
   //  - leads (Submission) de cet email → conversations via submissionId (backlink) ;
   //  - escalades de cet email → conversation référencée (conversation_id).
+  // Empreinte : `contactEmail` est chiffré avec un IV aléatoire, l'égalité SQL
+  // ne peut jamais correspondre (cf. `lib/security/email-hash.ts`).
+  const lookupHash = hashEmailForLookup(email);
   const subs = await prisma.submission.findMany({
-    where: { contactEmail: email },
+    where: {
+      OR: [...(lookupHash ? [{ contactEmailHash: lookupHash }] : []), { contactEmail: email }],
+    },
     select: { id: true },
   });
   const subIds = subs.map((s) => s.id);

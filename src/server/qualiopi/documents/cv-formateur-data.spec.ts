@@ -11,6 +11,7 @@ import { describe, it, expect } from "vitest";
 import {
   parseDomainesCompetences,
   buildCvFormateurData,
+  deduirePieceCompetences,
   formatDateFr,
   type TrainerCvSource,
 } from "./cv-formateur-data";
@@ -121,8 +122,42 @@ describe("buildCvFormateurData", () => {
     ).toBe(true);
   });
 
+  it("🔒 un cvUrl pointant vers la fiche générée n'est PAS annoncé comme un CV téléversé", () => {
+    // Audit blanc 2026-08-15 : dès le premier versement, `cvUrl` pointe vers la
+    // pièce que l'organisme vient de produire. La fiche affirmait pourtant
+    // « CV téléversé dans le dossier formateur » — elle se citait elle-même
+    // comme preuve d'un dépôt qui n'a jamais eu lieu.
+    const data = buildCvFormateurData(
+      { ...BASE, cvUrl: "https://axion-ia.com/api/qualiopi/documents/abc-123" },
+      [],
+      MAINTENANT,
+    );
+    expect(data.pieceCompetences).toBe("fiche_organisme");
+  });
+
   it("la date d'édition est celle injectée (aucun new Date() caché)", () => {
     const data = buildCvFormateurData(BASE, [], MAINTENANT);
     expect(data.dateEdition).toBe(formatDateFr(MAINTENANT));
+  });
+});
+
+describe("deduirePieceCompetences", () => {
+  it("aucune URL → aucune pièce", () => {
+    expect(deduirePieceCompetences(null)).toBe("aucune");
+    expect(deduirePieceCompetences("")).toBe("aucune");
+    expect(deduirePieceCompetences("   ")).toBe("aucune");
+  });
+
+  it("URL de la route des pièces générées → fiche établie par l'organisme", () => {
+    expect(deduirePieceCompetences("/api/qualiopi/documents/abc")).toBe("fiche_organisme");
+    expect(deduirePieceCompetences("https://axion-ia.com/api/qualiopi/documents/abc")).toBe(
+      "fiche_organisme",
+    );
+  });
+
+  it("URL externe (R2, drive, site du formateur) → CV réellement téléversé", () => {
+    expect(deduirePieceCompetences("https://cdn.axion-ia.com/cv/sophie-martin.pdf")).toBe(
+      "cv_televerse",
+    );
   });
 });

@@ -1,8 +1,10 @@
 /**
  * Qualiopi — Service Évaluations des acquis (AGENT A — T9).
  *
- * createEvaluation       : calcule score/niveau/réussite via scoring.ts,
- *                          insère EvaluationAcquis, retourne { id }.
+ * createEvaluation       : vérifie la cohérence de la date avec le calendrier de
+ *                          la session, calcule score/niveau/réussite via
+ *                          scoring.ts, insère EvaluationAcquis, retourne { id }.
+ * incoherenceDateEvaluation : règle PURE de chronologie (indicateur 4).
  * listEvaluationsForEnrollment : liste toutes les évaluations d'une inscription.
  * getFinaleReussite      : retourne le résultat de l'évaluation finale la plus
  *                          récente (null si aucune).
@@ -44,16 +46,106 @@ export interface CreateEvaluationInput {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Cohérence chronologique — indicateur 4 (non graduable)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Début de la journée civile UTC, en millisecondes — convention du dépôt. */
+export function jourUtc(d: Date): number {
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+}
+
+/** JJ/MM/AAAA en UTC — indépendant de la locale du serveur. */
+export function formaterJourUtc(d: Date): string {
+  const jour = String(d.getUTCDate()).padStart(2, "0");
+  const mois = String(d.getUTCMonth() + 1).padStart(2, "0");
+  return `${jour}/${mois}/${d.getUTCFullYear()}`;
+}
+
+/**
+ * Message d'erreur si la date d'une évaluation contredit le calendrier de la
+ * session, `null` si elle est cohérente. Fonction PURE : c'est elle qui porte
+ * la règle, `createEvaluation` ne fait que l'appliquer.
+ *
+ * 🔴 Audit blanc de certification 2026-08-15 — non-conformité MAJEURE.
+ *
+ * Le dossier unique de l'organisme portait une évaluation « initiale (avant
+ * formation) » datée du 04/08/2026 pour une session tenue et clôturée le
+ * 31/07/2026, affichée juste sous l'évaluation « finale » du 31/07. Sur une
+ * seule capture d'écran, l'auditeur lisait un « avant formation » daté APRÈS
+ * l'« après formation ». L'indicateur 4 n'est pas graduable : c'est bloquant.
+ *
+ * Rien ne l'empêchait : le schéma Zod de l'action serveur ne demandait qu'une
+ * chaîne non vide, et le service persistait `new Date(...)` sans jamais la
+ * confronter à `session.dateDebut`.
+ *
+ * ⚠️ Comparaison à la JOURNÉE civile, jamais à la milliseconde : une
+ * évaluation saisie le matin même du premier jour est parfaitement légitime —
+ * c'est le cas NOMINAL du positionnement d'entrée. Seule l'inversion de l'ordre
+ * des jours est refusée. Une garde plus stricte que le métier ferait refuser la
+ * saisie honnête, et apprendrait à contourner la garde.
+ */
+export function incoherenceDateEvaluation(params: {
+  type: CreateEvaluationInput["type"];
+  dateEvaluation: Date;
+  dateDebutSession: Date;
+}): string | null {
+  const { type, dateEvaluation, dateDebutSession } = params;
+
+  if (Number.isNaN(dateEvaluation.getTime())) {
+    return "La date d'évaluation est invalide.";
+  }
+  if (Number.isNaN(dateDebutSession.getTime())) {
+    return "La date de début de la session est invalide : la cohérence de l'évaluation ne peut pas être vérifiée.";
+  }
+
+  const jourEvaluation = jourUtc(dateEvaluation);
+  const jourDebut = jourUtc(dateDebutSession);
+  const debutLisible = formaterJourUtc(dateDebutSession);
+  const evaluationLisible = formaterJourUtc(dateEvaluation);
+
+  if (type === "initiale") {
+    if (jourEvaluation > jourDebut) {
+      return (
+        `Une évaluation initiale ne peut pas être datée après le début de la session du ${debutLisible} ` +
+        `(date saisie : ${evaluationLisible}). Une évaluation « avant formation » postérieure à la ` +
+        `formation n'est pas une preuve recevable : corrigez la date, ou enregistrez cette évaluation ` +
+        `comme intermédiaire ou finale.`
+      );
+    }
+    return null;
+  }
+
+  // Symétrique, et pour l'intermédiaire aussi : « en cours de formation » et
+  // « après formation » sont l'un comme l'autre impossibles avant le premier
+  // jour. Une garde qui ne couvrirait que la finale laisserait le même dossier
+  // incohérent se reconstituer d'un cran à côté.
+  if (jourEvaluation < jourDebut) {
+    const libelle = type === "finale" ? "finale" : "intermédiaire";
+    return (
+      `Une évaluation ${libelle} ne peut pas être datée avant le début de la session du ${debutLisible} ` +
+      `(date saisie : ${evaluationLisible}). Corrigez la date, ou enregistrez cette évaluation comme initiale.`
+    );
+  }
+
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // createEvaluation
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Crée une évaluation des acquis.
  *
- * 1. Calcule score/niveau/réussite via scoring.ts (fonctions pures).
- * 2. Lit le seuil de réussite depuis la config Qualiopi.
- * 3. Insère `EvaluationAcquis` en DB.
- * 4. Retourne `{ id }`.
+ * 1. Vérifie la cohérence de `dateEvaluation` avec `session.dateDebut`.
+ * 2. Calcule score/niveau/réussite via scoring.ts (fonctions pures).
+ * 3. Lit le seuil de réussite depuis la config Qualiopi.
+ * 4. Insère `EvaluationAcquis` en DB.
+ * 5. Retourne `{ id }`.
+ *
+ * Lève une erreur en français, lisible telle quelle par l'admin : l'action
+ * serveur (`createEvaluationAcquisAction`) remonte `err.message` dans
+ * `{ error }`, donc le texte ci-dessous s'affiche directement dans la console.
  *
  * Stub-aware : lève si DATABASE_URL contient "stub.invalid" (pas de mutation au build).
  */
@@ -62,17 +154,65 @@ export async function createEvaluation(input: CreateEvaluationInput): Promise<{ 
     throw new Error("createEvaluation: stub DB — non disponible au build");
   }
 
+  // ── Garde chronologique (indicateur 4) ──────────────────────────────────────
+  //
+  // Lecture AVANT tout calcul : rien ne doit être écrit si la date contredit le
+  // calendrier de la session. C'est le point de passage OBLIGÉ des deux chemins
+  // de création (saisie humaine par l'action serveur, transcription automatique
+  // du questionnaire de positionnement) — la garde tient donc les deux.
+  const dateEvaluation = new Date(input.dateEvaluation);
+
+  const inscription = await prisma.enrollment.findUnique({
+    where: { id: input.enrollmentId },
+    select: { session: { select: { dateDebut: true } } },
+  });
+  if (inscription === null) {
+    throw new Error(
+      "Inscription introuvable : la cohérence de la date d'évaluation ne peut pas être vérifiée.",
+    );
+  }
+
+  const dateDebutSession = inscription.session?.dateDebut;
+  if (!(dateDebutSession instanceof Date)) {
+    throw new Error(
+      "Session de l'inscription illisible : la cohérence de la date d'évaluation ne peut pas être vérifiée.",
+    );
+  }
+
+  const incoherence = incoherenceDateEvaluation({
+    type: input.type,
+    dateEvaluation,
+    dateDebutSession,
+  });
+  if (incoherence !== null) {
+    throw new Error(incoherence);
+  }
+
   const seuilReussitePct = await getQualiopiConfig("seuil_reussite_pct");
 
   const { scoreObtenu, scoreMax, scorePct } = computeEvaluationScore(input.competences);
   const niveauGlobal = niveauFromScore(scorePct);
-  const reussite = reussiteFromScore(scorePct, seuilReussitePct);
+
+  // 🔴 Une évaluation d'ENTRÉE ne « réussit » pas.
+  //
+  // Le dossier audité affichait « Réussite : Oui » sur un positionnement
+  // d'entrée : le stagiaire y déclarait ses niveaux de DÉPART, et le système en
+  // tirait un verdict de réussite parce que la moyenne dépassait le seuil.
+  // Réussir avant d'avoir été formé ne veut rien dire, et affiché à côté de la
+  // finale ça donne à lire un parcours qui n'a rien appris à personne.
+  //
+  // La colonne `reussite` est NOT NULL avec `@default(false)` : `false` est donc
+  // le seul « non renseigné » disponible ici. Le score et le niveau, eux, restent
+  // écrits — ils portent le niveau d'entrée, qui est précisément la preuve
+  // attendue à l'indicateur 4.
+  const reussite =
+    input.type === "initiale" ? false : reussiteFromScore(scorePct, seuilReussitePct);
 
   const created = await prisma.evaluationAcquis.create({
     data: {
       enrollmentId: input.enrollmentId,
       type: input.type,
-      dateEvaluation: new Date(input.dateEvaluation),
+      dateEvaluation,
       scoreObtenu,
       scoreMax,
       scorePct,

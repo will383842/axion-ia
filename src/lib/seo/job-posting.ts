@@ -87,7 +87,11 @@ export function buildJobPostingJsonLd(
     datePosted: posted.toISOString(),
     // validThrough émis uniquement si explicitement fixé par l'admin (cf. supra).
     ...(explicitValidThrough ? { validThrough: explicitValidThrough.toISOString() } : {}),
-    employmentType: offer.employmentType,
+    // Tableau si un second type est déclaré (« CDI ou freelance ») — schema.org
+    // l'accepte nativement et Google matche alors les DEUX filtres de contrat.
+    employmentType: offer.secondaryEmploymentType
+      ? [offer.employmentType, offer.secondaryEmploymentType]
+      : offer.employmentType,
     hiringOrganization: HIRING_ORG,
     // Image de l'annonce (recommandée par Google for Jobs). URL absolue.
     image: careerImage(offer.slug).url,

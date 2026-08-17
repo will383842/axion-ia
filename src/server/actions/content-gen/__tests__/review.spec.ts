@@ -21,6 +21,11 @@ const transactionMock = vi.fn();
 const activityLogMock = vi.fn();
 const revalidatePathMock = vi.fn();
 const queueAddMock = vi.fn();
+// Fix 2026-08-15 (E4) — `requestEdits` interroge désormais la clé BullMQ avant
+// d'enfiler (motif anti-zombie). null = aucun job existant → `add` direct.
+// `(...args: unknown[])` côté mock exige une signature à paramètres rest, sinon
+// TypeScript refuse l'expansion (TS2556).
+const queueGetJobMock = vi.fn(async (..._args: unknown[]) => null);
 
 vi.mock("@/auth", () => ({ auth: () => authMock() }));
 
@@ -46,6 +51,8 @@ vi.mock("next/cache", () => ({ revalidatePath: (p: string) => revalidatePathMock
 vi.mock("bullmq", () => ({
   Queue: vi.fn().mockImplementation(() => ({
     add: (...args: unknown[]) => queueAddMock(...args),
+    // Fix 2026-08-15 (E4) — requis par le motif remove-then-enqueue de requestEdits.
+    getJob: (...args: unknown[]) => queueGetJobMock(...args),
   })),
 }));
 
@@ -104,7 +111,14 @@ beforeEach(() => {
   process.env.REDIS_URL = "redis://test.invalid:6379";
   authMock.mockResolvedValue(ADMIN_SESSION);
   reviewUpdateManyMock.mockResolvedValue({ count: 1 });
-  reviewFindUniqueMock.mockResolvedValue({ jobId: "job-1", status: "pending" });
+  // Fix 2026-08-15 (E4) — `requestEdits` lit désormais `job.qualityScore` +
+  // `job.qualityImprovementAttempts` pour construire le payload/jobId de la
+  // boucle qualité.
+  reviewFindUniqueMock.mockResolvedValue({
+    jobId: "job-1",
+    status: "pending",
+    job: { qualityScore: 80, qualityImprovementAttempts: 0 },
+  });
   reviewFindManyMock.mockResolvedValue([makeReviewRow()]);
   reviewCountMock.mockResolvedValue(1);
   jobUpdateMock.mockResolvedValue({ id: "job-1" });

@@ -72,7 +72,7 @@ const accentClasses: Record<
   },
 };
 
-/** Libellé d'effectif dérivé des tranches de la matrice prix (ex « 2 à 30 personnes »). */
+/** Libellé d'effectif dérivé des tranches de la matrice prix (ex « 2 à 15 personnes »). */
 function groupSizeLabel(brackets: ReadonlyArray<FormationBracket>): string {
   let min = Number.POSITIVE_INFINITY;
   let max = 0;

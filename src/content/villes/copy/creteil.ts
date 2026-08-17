@@ -99,13 +99,13 @@ export const CRETEIL_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures ({{price:intervention-4h|flat}})",
             detail:
-              "Pour indépendants, cabinets et commerçants cristoliens jusqu'à une douzaine de personnes : session de 4 heures sur site, de 2 à 30 participants, pour une première prise en main concrète d'outils IA installés sur les postes.",
+              "Pour indépendants, cabinets et commerçants cristoliens jusqu'à une douzaine de personnes : session de 4 heures sur site, de 2 à 15 participants, pour une première prise en main concrète d'outils IA installés sur les postes.",
           },
           {
             sizeLabel: "PME",
             price: "Formation Essentielle ou Gagner du temps (1 jour)",
             detail:
-              "La formation Essentielle sur une journée (de 2 à 30 participants, {{price:intervention-essentielle|flat}}) pour l'équipe entière, ou le format Gagner du temps (1 jour) pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
+              "La formation Essentielle sur une journée (de 2 à 15 participants, {{price:intervention-essentielle|flat}}) pour l'équipe entière, ou le format Gagner du temps (1 jour) pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
           },
           {
             sizeLabel: "ETI",
@@ -127,7 +127,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir sur site ?",
-            a: "La Formation 4 heures et les formats sur une journée (Essentielle, Gagner du temps) montent jusqu'à 30 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
+            a: "La Formation 4 heures et les formats sur une journée (Essentielle, Gagner du temps) montent jusqu'à 15 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la formation ?",
@@ -201,13 +201,13 @@ export const CRETEIL_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures ({{price:intervention-4h|flat}})",
             detail:
-              "Pour indépendants, cabinets et commerçants cristoliens jusqu'à une douzaine de personnes : session de 4 heures sur site, de 2 à 30 participants, pour une première prise en main concrète d'outils IA installés sur les postes.",
+              "Pour indépendants, cabinets et commerçants cristoliens jusqu'à une douzaine de personnes : session de 4 heures sur site, de 2 à 15 participants, pour une première prise en main concrète d'outils IA installés sur les postes.",
           },
           {
             sizeLabel: "PME",
             price: "Formation Essentielle ou Gagner du temps (1 jour)",
             detail:
-              "La formation Essentielle sur une journée (de 2 à 30 participants, {{price:intervention-essentielle|flat}}) pour l'équipe entière, ou le format Gagner du temps (1 jour) pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
+              "La formation Essentielle sur une journée (de 2 à 15 participants, {{price:intervention-essentielle|flat}}) pour l'équipe entière, ou le format Gagner du temps (1 jour) pour concentrer la session sur l'automatisation des tâches répétitives d'un département.",
           },
           {
             sizeLabel: "ETI",
@@ -229,7 +229,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir sur site ?",
-            a: "La Formation 4 heures et les formats sur une journée (Essentielle, Gagner du temps) montent jusqu'à 30 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
+            a: "La Formation 4 heures et les formats sur une journée (Essentielle, Gagner du temps) montent jusqu'à 15 personnes en interaction. Au-delà, le format Conférence avec plénière puis ateliers en sous-groupes est mieux adapté aux grandes audiences cristoliennes.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la formation ?",

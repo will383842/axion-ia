@@ -40,6 +40,9 @@ export interface RssSource {
 }
 
 export async function listRssSources(): Promise<ReadonlyArray<RssSource>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  // Le worker RSS ne passe pas par ici (il lit `readContentGenConfig` en direct).
+  await requireAdmin();
   return readContentGenConfig<ReadonlyArray<RssSource>>(KEY, []);
 }
 

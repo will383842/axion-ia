@@ -93,38 +93,89 @@ export interface ManifesteAuditResult {
 /**
  * Associe chaque indicateur à la liste des DocumentType qui servent de preuve.
  * Seuls les types présents en base sont comptés (les 0 ne sont pas affichés).
+ *
+ * 🔴 Révision 2026-08-15 (audit blanc). Une pièce ne figure ici que si elle
+ * PROUVE l'exigence de l'indicateur en face duquel elle est présentée. Ce
+ * manifeste est lu par l'auditrice à côté du référentiel : lui montrer un kit
+ * de financement à l'indicateur 19 (« ressources pédagogiques »), un certificat
+ * de réalisation à l'indicateur 3 (« taux d'obtention des certifications ») ou
+ * une convention tripartite à l'indicateur 27 (« sous-traitance ») ne remplit
+ * pas la colonne : cela ouvre un écart, parce que l'organisme démontre qu'il
+ * n'a pas lu ce qu'il produit. Un indicateur SANS pièce documentaire est
+ * préférable à une pièce hors sujet — ses éléments constatés restent affichés,
+ * et le trou se voit.
+ *
+ * Les types absents de cette table (facture, devis, avoir, kit_opco, kit_cpf,
+ * kit_france_travail, autorisation_captation) ne prouvent aucun indicateur du
+ * RNQ : ils restent intégralement joints au ZIP, ils ne sont simplement pas
+ * présentés comme preuve de quelque chose qu'ils ne prouvent pas.
  */
 const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   // C1 — Information public
-  1: ["livret_accueil", "reglement_interieur"],
+  // Le règlement intérieur ne dit rien des prestations, de leurs tarifs ni de
+  // leurs délais d'accès : il informe sur les conditions de déroulement, donc
+  // il est rattaché à off.9 et à lui seul.
+  1: ["livret_accueil"],
   2: ["satisfaction", "grille_evaluation"],
-  3: ["certificat_realisation", "attestation"],
+  // off.3 (conditionnel « cert ») — taux d'OBTENTION des certifications
+  // préparées. Ni le certificat de réalisation (qui atteste une présence) ni
+  // l'attestation de fin de formation (qui atteste des acquis) ne disent qu'une
+  // certification a été obtenue. La preuve de cet indicateur est statistique et
+  // publiée ; aucune pièce du registre ne la porte.
+  3: [],
 
   // C2 — Objectifs
   4: ["positionnement"],
-  5: ["convocation"],
-  6: ["convention", "convention_tripartite"],
-  7: ["convention", "lettre_mission"],
-  8: ["positionnement"],
+  // off.5 / off.6 — le PROGRAMME est l'annexe que la convention annonce : c'est
+  // lui qui énonce les objectifs et détaille les contenus et les modalités,
+  // donc la pièce que l'auditrice ouvre sur ces deux indicateurs. La
+  // convocation, elle, informe des conditions de déroulement : elle relève
+  // d'off.9 et n'a jamais rien prouvé des objectifs.
+  5: ["programme"],
+  6: ["programme", "convention", "contrat", "convention_tripartite"],
+  // off.7 (conditionnel « cert ») — adéquation des contenus aux exigences du
+  // référentiel de certification visée. Ni la convention ni la lettre de
+  // mission ne portent ce croisement contenus ↔ référentiel.
+  7: [],
+  // off.8 — positionnement ET évaluation des acquis à l'entrée : la grille
+  // d'évaluation est la seconde moitié de l'exigence.
+  8: ["positionnement", "grille_evaluation"],
 
   // C3 — Accueil & suivi
-  9: ["convocation", "livret_accueil"],
-  10: ["convention"],
-  11: ["grille_evaluation", "attestation"],
-  12: ["emargement", "releve_connexion"],
+  9: ["convocation", "livret_accueil", "reglement_interieur", "organisation_action"],
+  10: ["convention", "contrat"],
+  11: ["grille_evaluation", "attestation", "attestation_partielle"],
+  12: ["emargement", "releve_connexion", "organisation_action"],
   13: [],
   14: [],
   15: [],
-  16: ["certificat_realisation", "attestation"],
+  // off.16 (conditionnel « cert ») — présentation effective des bénéficiaires
+  // aux épreuves de certification. Les preuves sont les inscriptions et les
+  // convocations aux épreuves : aucune n'est produite au registre. Le
+  // certificat de réalisation atteste l'exécution de l'action, pas l'accès à
+  // une certification.
+  16: [],
 
   // C4 — Moyens (inventaire_moyens = doc A14, LOT 2)
-  17: ["lettre_mission", "inventaire_moyens"],
-  18: ["convention_tripartite", "inventaire_moyens"],
-  19: ["kit_opco", "kit_cpf", "kit_france_travail", "inventaire_moyens"],
+  17: ["lettre_mission", "liste_formateurs", "inventaire_moyens"],
+  // off.18 — coordination des INTERVENANTS (pédagogiques, administratifs,
+  // logistiques), pas des financeurs : la lettre de mission et le contrat de
+  // sous-traitance sont les pièces qui les mobilisent et répartissent les
+  // rôles. La convention tripartite, elle, organise une prise en charge
+  // financière.
+  18: ["lettre_mission", "contrat_sous_traitance", "inventaire_moyens"],
+  // off.19 — ressources PÉDAGOGIQUES mises à disposition. Les kits OPCO / CPF /
+  // France Travail sont des dossiers de financement : les présenter ici
+  // revenait à répondre « voici nos demandes de prise en charge » à la question
+  // « quels supports remettez-vous aux bénéficiaires ». Le programme, lui,
+  // décrit les moyens et supports mobilisés.
+  19: ["programme", "inventaire_moyens"],
   20: [],
 
   // C5 — Qualification
-  21: ["lettre_mission", "cv_formateur"],
+  // La liste des formateurs (titres, qualités, lien contractuel) est réclamée
+  // telle quelle par off.21 ; une fiche par intervenant n'en tient pas lieu.
+  21: ["cv_formateur", "liste_formateurs", "lettre_mission"],
   22: [],
 
   // C6 — Environnement
@@ -132,7 +183,11 @@ const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   24: [],
   25: [],
   26: [],
-  27: ["convention_tripartite"],
+  // off.27 — la procédure écrite prouve que les dispositions sont DÉFINIES, le
+  // contrat de sous-traitance qu'elles sont APPLIQUÉES. La convention
+  // tripartite qui figurait ici est une convention de financement : elle ne
+  // porte aucune clause de sous-traitance.
+  27: ["procedure_sous_traitance", "contrat_sous_traitance"],
   // off.28 (AFEST) : AFEST retiré le 2026-08-10 — le 1-to-1 est du conseil
   // (décision 2026-07-17). Plus aucun document coaching (protocole AFEST,
   // attestation, émargement 1-to-1) ne sert de preuve à cet indicateur ;
@@ -168,8 +223,18 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   const conformite = await evaluerConformite();
 
   // Comptage global des documents par type (une seule requête groupBy)
+  //
+  // 🔴 Les pièces ANNULÉES sont exclues du comptage, exactement comme elles le
+  // sont de la constitution du ZIP (`genererDossierAuditZip`, même filtre).
+  // Sans ce `where`, le manifeste ANNONÇAIT des preuves que le dossier remis ne
+  // contenait pas : « lettre_mission — 1 document » à l'indicateur 17 alors que
+  // la seule pièce de ce type avait été annulée et que le ZIP n'en portait
+  // aucune. L'auditrice ouvre le dossier à la page annoncée et n'y trouve rien.
+  // Une pièce annulée ne se compte NULLE PART ; sa trace reste au registre
+  // (motif, date, auteur) et au journal d'activité.
   const docCounts = await prisma.documentGenere.groupBy({
     by: ["type"],
+    where: { annuleeAt: null },
     _count: { _all: true },
   });
 
@@ -273,7 +338,14 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
 
   // Construction des entrées du manifeste
   const indicateurs: IndicateurManifeste[] = conformite.indicateurs.map((ind) => {
-    const docTypes = INDICATEUR_DOCUMENT_TYPES[ind.numero] ?? [];
+    // 🔴 Un indicateur NON APPLICABLE ne présente aucune pièce. Le Markdown
+    // l'écrivait déjà (« Non applicable au périmètre de l'OF. », sans rubrique
+    // « Documents »), mais le JSON — donc la vue manifeste de la console, celle
+    // que l'auditrice lit à l'écran — continuait de lister deux rubriques de
+    // documents sous l'indicateur 7 marqué « Non applicable ». Les deux sorties
+    // disent désormais la même chose : hors périmètre, rien à montrer.
+    const docTypes =
+      ind.statut === "non_applicable" ? [] : (INDICATEUR_DOCUMENT_TYPES[ind.numero] ?? []);
     const documents: PreuveDocument[] = docTypes
       .map((type) => ({ type, count: countByType.get(type) ?? 0 }))
       .filter((d) => d.count > 0);

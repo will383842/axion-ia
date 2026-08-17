@@ -15,8 +15,42 @@ export interface ArticleSourceItem {
 interface ArticleSourcesProps {
   readonly items: ReadonlyArray<ArticleSourceItem>;
   readonly locale: Locale;
-  /** Date de dernière vérification éditoriale (fraîcheur E-E-A-T). */
+  /**
+   * Date à laquelle les LIENS ci-dessous ont été réellement re-vérifiés.
+   *
+   * 🔴 GEO-071 (audit GEO/AEO 2026-08-14) — NE PAS y passer la date de
+   * modification de l'article. C'est ce qui se faisait : les trois pages
+   * appelantes transmettaient `updatedAt`, et le composant l'affichait sous
+   * l'étiquette « Dernière vérification ». On affirmait donc au lecteur ET aux
+   * moteurs que les sources avaient été contrôlées ce jour-là, alors que
+   * personne ne les avait ouvertes. Une affirmation E-E-A-T fabriquée est pire
+   * qu'une absence : elle se donne pour une preuve.
+   *
+   * Tant qu'aucun processus ne produit cette date (le moniteur de fraîcheur des
+   * liens écrit dans un système de fichiers éphémère — GEO-070, non corrigé), la
+   * prop reste VIDE et la ligne ne s'affiche pas. La date de l'article, elle,
+   * est déjà rendue ailleurs sur la page.
+   */
   readonly lastVerified?: string | null;
+}
+
+/**
+ * Caractères qui ne peuvent pas apparaître dans une URL qu'on sert : backtick
+ * (séquelle de génération LLM), espaces, guillemets, chevrons. `new URL()` les
+ * tolère pour certains ; nous non.
+ */
+const CARACTERES_INTERDITS = /[`\s"'<>]/;
+
+/** Une URL est servable si elle est analysable, en http(s), et sans caractère interdit. */
+export function estUrlServable(url: string | null | undefined): boolean {
+  const brut = url?.trim() ?? "";
+  if (brut.length === 0 || CARACTERES_INTERDITS.test(brut)) return false;
+  try {
+    const u = new URL(brut);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -34,9 +68,18 @@ export function ArticleSources({ items, locale, lastVerified }: ArticleSourcesPr
   // Refonte AEO 2026-06-22 — ne garder que les sources avec une URL http(s)
   // valide ET un libellé non vide. Évite un bloc « Sources » contenant des
   // entrées cassées (lien mort / titre absent). 0 item valide → pas de bloc.
-  const validItems = items.filter(
-    (s) => /^https?:\/\//.test(s.url?.trim() ?? "") && (s.name?.trim().length ?? 0) > 0,
-  );
+  //
+  // 🔴 DURCI 2026-08-16 (audit GEO/AEO, GEO-010) — le test d'origine ne portait
+  // que sur le PRÉFIXE : `/^https?:\/\//` accepte n'importe quoi derrière, y
+  // compris une URL terminée par une backtick (séquelle de génération) ou
+  // contenant une espace. Ces URLs franchissaient le filtre et étaient servies
+  // telles quelles dans le HTML **et** dans le `CreativeWork` du JSON-LD : on
+  // publiait une citation qui ne mène nulle part, sous une étiquette de source.
+  //
+  // Deux barrières désormais : le constructeur `URL` (qui refuse ce qui n'est
+  // pas analysable) et un rejet explicite des caractères qui n'ont rien à faire
+  // dans une URL servie. `URL` seul ne suffit pas — il tolère la backtick.
+  const validItems = items.filter((s) => estUrlServable(s.url) && (s.name?.trim().length ?? 0) > 0);
   if (validItems.length === 0) return null;
   const isFr = locale === "fr";
 

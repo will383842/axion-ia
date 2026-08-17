@@ -72,10 +72,24 @@ export interface SelectKeywordOptions {
   /** ContentType hint pour affiner la selection (optionnel). */
   readonly contentType?: string;
   /**
-   * Phase 6 Sprint Perfection 2026-05-22 — ID ville pour keywords géo à la volée.
-   * Si fourni + ville pas dans les 100 seeds en dur : génère keyword géo via keyword-templates.ts.
+   * Phase 6 Sprint Perfection 2026-05-22 — ville pour la synthèse géo de repli.
+   *
+   * ⚠️ 2026-08-15 : ce champ ne court-circuite PLUS le vivier en base. La
+   * synthèse géo n'intervient qu'en REPLI, quand le vivier est épuisé pour la
+   * verticale — l'usage pour lequel elle a été écrite (villes tier 3/4 non
+   * seedées). Le placer en tête laissait 1 835 mots-clés inutilisés et
+   * plafonnait la diversité à ~7 angles par ville.
    */
   readonly city?: CityRef;
+  /**
+   * Graine de rotation pour la synthèse géo de repli (2026-08-15).
+   *
+   * Le compteur en mémoire du process repart de zéro à chaque redémarrage du
+   * worker : après un redéploiement, chaque ville reprenait au premier gabarit.
+   * Passer une valeur stable et croissante (le `slotIndex` du job) rend la
+   * rotation reproductible et insensible aux redémarrages.
+   */
+  readonly rotationSeed?: number;
   /**
    * P1-8 — ID de la campagne appelante (ContentGenJob.campaignId).
    *
@@ -128,19 +142,30 @@ export interface SelectedKeyword {
 export async function selectKeywordRich(
   options: SelectKeywordOptions,
 ): Promise<SelectedKeyword | null> {
-  const { vertical, campaignId, city } = options;
+  const { vertical, campaignId, city, rotationSeed } = options;
 
-  // 0. Mode géo à la volée — villes tier 3/4 non seedées en DB. Pas de
-  //    métadonnées intent/cluster (keyword synthétisé à la volée).
-  if (city) {
-    const geoKws = generateGeoKeywords(vertical, city);
-    if (geoKws.length > 0) {
-      const counter = inMemoryCounters.get(`geo_${vertical}_${city.name}`) ?? 0;
-      const kw = selectGeoKeyword(vertical, city, counter);
-      inMemoryCounters.set(`geo_${vertical}_${city.name}`, counter + 1);
-      return kw ? { term: kw, searchIntent: null, clusterId: null } : null;
-    }
-  }
+  // ⚠️ Fix 2026-08-15 — le mode géo était placé ICI, AVANT la base, et il
+  // court-circuitait donc le vivier pour TOUT job portant une ville.
+  //
+  // Conséquence mesurée en production : les 1 835 mots-clés longue traîne du
+  // vivier n'avaient JAMAIS servi (aucun `usage_count`, aucune date d'usage,
+  // aucun verrou), et seuls 12 jobs sur 2 319 portaient un mot-clé. Or presque
+  // tous les jobs de campagne portent une ville : ils tombaient tous sur le
+  // générateur géo et ses ~7 gabarits par verticale. Le générateur disposait
+  // donc d'environ sept angles par ville — après quoi tout nouveau contenu était
+  // mécaniquement un doublon. C'est ce qui produisait 73 % de rejets « même
+  // sujet qu'un article existant », et c'est ce qui plafonnait le rendement
+  // autour de 30 %.
+  //
+  // Le mode géo n'a jamais été conçu pour ça : son commentaire d'origine dit
+  // « villes tier 3/4 NON SEEDÉES en DB ». Il redevient donc ce qu'il devait
+  // être — un REPLI, quand le vivier est épuisé pour la verticale.
+  //
+  // Cela restaure l'intention explicite de la décision du 2026-06-14 (cf.
+  // en-tête de `content-orchestrator-worker.ts`) : le mot-clé porte le SUJET,
+  // la ville porte la LOCALISATION séparément via `anchorVilleSlug`. Les
+  // mots-clés du vivier sont d'ailleurs non-géo (`is_local = false`), donc
+  // aucune régression géographique : la ville reste appliquée par le générateur.
 
   // P1-8 (2026-06-25) — Isolation de pool par campagne. Quand un `campaignId`
   //  est fourni, on restreint la sélection aux mots-clés DE cette campagne PLUS
@@ -205,12 +230,37 @@ export async function selectKeywordRich(
         }),
       );
     }
-    // DB vide pour cette vertical → fallback in-memory.
+    // DB vide pour cette vertical → fallback géo puis in-memory.
   } catch {
-    // DB unavailable (build SSG, tests, bootstrap) → fallback in-memory.
+    // DB unavailable (build SSG, tests, bootstrap) → fallback géo puis in-memory.
   }
 
-  // 2. Fallback in-memory depuis les seeds (pas de métadonnées intent/cluster).
+  // 2. REPLI géo — le vivier est épuisé (ou injoignable) pour cette verticale.
+  //    C'est l'usage pour lequel ce mode a été écrit : les villes tier 3/4 non
+  //    seedées en base. Pas de métadonnées intent/cluster (terme synthétisé).
+  if (city) {
+    const geoKws = generateGeoKeywords(vertical, city);
+    if (geoKws.length > 0) {
+      // Rotation DÉTERMINISTE (fix 2026-08-15). Le compteur en mémoire du
+      // process repartait de zéro à chaque redémarrage du worker : après un
+      // redéploiement, chaque ville reprenait au premier gabarit et produisait
+      // le même sujet qu'avant. `rotationSeed` (le slotIndex du job, stable et
+      // croissant) donne une rotation reproductible qui survit aux
+      // redémarrages. Sans graine, on retombe sur le compteur mémoire.
+      let index: number;
+      if (rotationSeed !== undefined) {
+        index = rotationSeed;
+      } else {
+        const key = `geo_${vertical}_${city.name}`;
+        index = inMemoryCounters.get(key) ?? 0;
+        inMemoryCounters.set(key, index + 1);
+      }
+      const kw = selectGeoKeyword(vertical, city, index);
+      if (kw) return { term: kw, searchIntent: null, clusterId: null };
+    }
+  }
+
+  // 3. Fallback in-memory depuis les seeds (pas de métadonnées intent/cluster).
   const memTerm = selectFromMemory(vertical);
 
   // P2-4 — Log structure si tous les keywords sont epuises (DB vide + seeds vides).

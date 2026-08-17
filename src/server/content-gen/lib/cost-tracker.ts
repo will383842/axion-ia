@@ -17,14 +17,33 @@ import { safeTelegramContext } from "./pii-safe";
 import type { ProviderKey, Prisma } from "../../../../prisma/generated/client";
 
 /**
+ * Fix 2026-08-15 (audit e2e, F2) — chaîne RÉELLE des providers texte.
+ *
+ * L'ancien code décidait du kill switch en comptant les `ProviderConfig`
+ * role=text enabled EN BASE. Or `anthropic` est seedé role=text enabled=true
+ * (prisma/seeds/content-gen/provider-config.ts) alors que la chaîne réelle du
+ * routeur est `text: [openaiProvider]` SEUL (décision Will 2026-07-09,
+ * commentée dans `provider-router.ts` — le fallback Anthropic est RETIRÉ).
+ * Symptôme observé : cap OpenAI atteint → openai désactivé → le kill switch ne
+ * se déclenchait PAS (anthropic comptait encore) → les jobs continuaient
+ * d'échouer en `auth_failed` au lieu d'être mis en pause proprement.
+ *
+ * ⚠️ À maintenir aligné avec `ROLE_TO_PROVIDERS.text` de `provider-router.ts`
+ * (constante non exportée là-bas — dupliquée ici à dessein, avec ce renvoi).
+ * Même alignement que `CRITICAL_PROVIDERS` dans `providers/quota-guard.ts`.
+ */
+export const TEXT_CHAIN_PROVIDERS: ReadonlyArray<ProviderKey> = ["openai"];
+
+/**
  * Audit final P1-9 fix — gestion automatique du dépassement cost cap.
  *
- * Actions cascadées :
- *  1. Désactive `ProviderConfig.enabled=false` pour ce provider (fallback
- *     chain prendra le relais automatiquement).
+ * Actions cascadées (docstring aligné Fix 2026-08-15 F1/F2) :
+ *  1. Désactive `ProviderConfig.enabled=false` pour ce provider, avec marqueur
+ *     `extraConfig.disabled_by_cost_cap` (permet au reset mensuel de ré-armer).
  *  2. Alerte Telegram tag MONITORING (Will sait dans la minute).
- *  3. Si après désactivation aucun provider role=text n'est plus enabled
- *     → activer kill switch global content-gen (`ContentGenConfig.kill_switch`).
+ *  3. Si après désactivation plus aucun provider de la chaîne texte RÉELLE
+ *     (`TEXT_CHAIN_PROVIDERS`) n'est enabled → activer kill switch global
+ *     content-gen (`ContentGenConfig.kill_switch`, marqué auto/cost_cap).
  *  4. Trace dans `ContentGenConfig.cost_cap_events` (audit trail
  *     accessible dashboard admin).
  *
@@ -35,11 +54,40 @@ import type { ProviderKey, Prisma } from "../../../../prisma/generated/client";
  */
 async function handleCostCapHit(provider: ProviderKey, spent: number, cap: number): Promise<void> {
   try {
-    // 1. Désactive le provider
-    await prisma.providerConfig.update({
+    // 1. Désactive le provider.
+    //
+    // Fix 2026-08-15 (audit e2e, F1) — on MARQUE la désactivation comme
+    // automatique dans `extraConfig.disabled_by_cost_cap`. Symptôme observé :
+    // le reset mensuel (`resetMonthlyCostCounters`) remettait le compteur à 0
+    // mais ne ré-activait RIEN — un cap atteint le 20 du mois laissait la
+    // génération morte à perpétuité (assertCostCapAvailable throw sur
+    // `!config.enabled` quel que soit le compteur), alors que l'alerte Telegram
+    // promettait « reset 1er du mois ». Ce marqueur permet au reset de
+    // distinguer une désactivation cost-cap (à ré-armer) d'une désactivation
+    // VOLONTAIRE par un admin (à ne jamais toucher). On ne pose le marqueur que
+    // si le provider était encore enabled — s'il avait déjà été coupé à la main,
+    // on ne requalifie pas la décision humaine.
+    const existing = await prisma.providerConfig.findUnique({
       where: { provider },
-      data: { enabled: false },
+      select: { enabled: true, extraConfig: true },
     });
+    if (existing?.enabled !== false) {
+      const extra = (existing?.extraConfig as Record<string, unknown> | null) ?? {};
+      await prisma.providerConfig.update({
+        where: { provider },
+        data: {
+          enabled: false,
+          extraConfig: {
+            ...extra,
+            disabled_by_cost_cap: {
+              at: new Date().toISOString(),
+              spent_usd: Number(spent.toFixed(2)),
+              cap_usd: Number(cap.toFixed(2)),
+            },
+          } as never,
+        },
+      });
+    }
   } catch (err) {
     console.warn(
       `[cost-tracker] failed to auto-disable provider ${provider}:`,
@@ -50,19 +98,29 @@ async function handleCostCapHit(provider: ProviderKey, spent: number, cap: numbe
   // 2. Alerte Telegram (fail-soft) — Pass B P1-7 : champs passés via
   // safeTelegramContext() pour garantir minimisation PII (ADR 0010) même
   // si un futur ajout introduit un email/name dans le payload alert.
+  //
+  // Fix 2026-08-15 (F2) — l'ancien message affirmait « Fallback chain prend le
+  // relais » : FAUX pour le rôle text depuis la décision Will 2026-07-09
+  // (chaîne = OpenAI seul, aucun fallback). Will lisait donc une alerte
+  // rassurante pendant que la génération était en réalité à l'arrêt. Le
+  // message dit maintenant la vérité selon que le provider a un relais ou non.
   try {
     const context = safeTelegramContext({
       provider,
       monthly_spent_usd: Number(spent.toFixed(2)),
       monthly_cap_usd: Number(cap.toFixed(2)),
     });
+    const isTextChainProvider = TEXT_CHAIN_PROVIDERS.includes(provider);
     await sendTelegram({
       tag: "MONITORING",
       body:
         `*Cost cap content-gen atteint*\n` +
         `${context}\n` +
-        `Action auto : provider désactivé. Fallback chain prend le relais.\n` +
-        `Réactivation : admin /content-gen/settings/providers ou reset 1er du mois.`,
+        `Action auto : provider désactivé. ` +
+        (isTextChainProvider
+          ? `⚠️ AUCUN fallback pour la génération texte (chaîne = OpenAI seul) : production texte à l'arrêt.\n`
+          : `Impact limité à son rôle (pas de bascule automatique).\n`) +
+        `Réactivation : admin /content-gen/settings/providers ou reset 1er du mois (automatique).`,
       silent: false,
     });
   } catch (err) {
@@ -72,31 +130,41 @@ async function handleCostCapHit(provider: ProviderKey, spent: number, cap: numbe
     );
   }
 
-  // 3. Vérifie si plus aucun provider role=text enabled → kill switch global
+  // 3. Vérifie s'il reste un provider de la chaîne texte RÉELLE → sinon kill
+  // switch global.
+  //
+  // Fix 2026-08-15 (F2) — la décision portait sur `role=text enabled` EN BASE,
+  // qui inclut anthropic (seedé text) alors que le routeur ne l'utilise plus
+  // (cf. TEXT_CHAIN_PROVIDERS en tête de fichier). Résultat : openai en cap ne
+  // déclenchait jamais le kill switch. On compte désormais les providers de la
+  // chaîne réellement câblée dans `provider-router.ts`.
+  //
+  // Fix 2026-08-15 (F1) — la valeur porte `auto: true` + `source: "cost_cap"`
+  // pour que le reset mensuel puisse lever CE kill switch-là (posé par le
+  // cost-cap) sans jamais toucher à un kill switch manuel ni à celui du
+  // quota-guard (quota épuisé ne guérit pas au changement de mois).
   try {
     const remaining = await prisma.providerConfig.count({
-      where: { role: "text", enabled: true },
+      where: { provider: { in: [...TEXT_CHAIN_PROVIDERS] }, enabled: true },
     });
     if (remaining === 0) {
+      const killSwitchValue = {
+        active: true,
+        reason: `Auto-trigger : toute la chaîne texte en cost cap (dernier=${provider})`,
+        triggered_at: new Date().toISOString(),
+        triggered_by: "system:cost-tracker",
+        auto: true,
+        source: "cost_cap",
+      };
       await prisma.contentGenConfig.upsert({
         where: { key: "kill_switch" },
         create: {
           key: "kill_switch",
-          value: {
-            active: true,
-            reason: `Auto-trigger : tous les providers role=text en cost cap (dernier=${provider})`,
-            triggered_at: new Date().toISOString(),
-            triggered_by: "system:cost-tracker",
-          } as never,
+          value: killSwitchValue as never,
           updatedBy: "system:cost-tracker",
         },
         update: {
-          value: {
-            active: true,
-            reason: `Auto-trigger : tous les providers role=text en cost cap (dernier=${provider})`,
-            triggered_at: new Date().toISOString(),
-            triggered_by: "system:cost-tracker",
-          } as never,
+          value: killSwitchValue as never,
           updatedBy: "system:cost-tracker",
           updatedAt: new Date(),
         },
@@ -105,11 +173,14 @@ async function handleCostCapHit(provider: ProviderKey, spent: number, cap: numbe
         await sendTelegram({
           tag: "INCIDENT",
           body:
+            // Fix 2026-08-15 (F1/F2) : wording aligné sur le comportement réel —
+            // chaîne texte (pas « tous les role=text » en base), et le reset du
+            // 1er du mois lève désormais ce kill switch automatiquement.
             `*🛑 Kill switch global auto-activé*\n` +
-            `Cause : tous les providers role=text en cost cap mensuel.\n` +
+            `Cause : toute la chaîne texte (OpenAI seul) en cost cap mensuel.\n` +
             `Dernier provider tombé : \`${provider}\`.\n` +
-            `Workers content-gen en pause. Réactivation manuelle requise après reset du mois\n` +
-            `ou augmentation cap : admin /content-gen/settings/kill-switch.`,
+            `Workers content-gen en pause. Levée AUTOMATIQUE au reset du 1er du mois,\n` +
+            `ou avant : augmenter le cap puis admin /content-gen/settings/kill-switch.`,
           silent: false,
         });
       } catch {
@@ -386,13 +457,156 @@ export async function trackCost(args: CostTrackingArgs): Promise<void> {
   }
 }
 
+/** Récapitulatif du reset mensuel (loggé + alerté par cost-cap-reset-worker). */
+export interface MonthlyResetSummary {
+  /** Nombre de compteurs `currentMonthSpentUsd` remis à 0. */
+  readonly countersReset: number;
+  /** Providers ré-activés (désactivés automatiquement par le cost-cap). */
+  readonly reenabledProviders: ReadonlyArray<ProviderKey>;
+  /** true si le kill switch auto (posé par le cost-cap) a été levé. */
+  readonly killSwitchLifted: boolean;
+}
+
 /**
- * Reset mensuel `currentMonthSpentUsd = 0` pour tous les providers.
- * À appeler par cron job 1er du mois 00:01 (cf. § 13.2 master prompt).
+ * Reset mensuel des compteurs de dépense + RÉARMEMENT de ce que le cost-cap a
+ * coupé. À appeler par cron job 1er du mois 00:01 (cf. § 13.2 master prompt).
+ *
+ * Fix 2026-08-15 (audit e2e, F1) — l'ancienne version remettait seulement
+ * `currentMonthSpentUsd = 0`. Or au cap 100 %, `handleCostCapHit` a mis
+ * `enabled=false` (et éventuellement le kill switch), et
+ * `assertCostCapAvailable` throw sur `!config.enabled` QUEL QUE SOIT le
+ * compteur : cap atteint le 20 du mois ⇒ génération morte à perpétuité, alors
+ * que l'en-tête du worker ET l'alerte Telegram affirmaient que le reset
+ * relançait tout. Désormais le reset :
+ *
+ *  1. remet les compteurs à 0 (comme avant — toujours en premier, c'est le
+ *     geste critique) ;
+ *  2. ré-active les providers portant le marqueur
+ *     `extraConfig.disabled_by_cost_cap` (posé par `handleCostCapHit`) — et
+ *     SEULEMENT ceux-là : un provider désactivé à la main par un admin n'a pas
+ *     ce marqueur et reste intouché ;
+ *  3. lève le kill switch UNIQUEMENT s'il a été posé par le cost-cap
+ *     (`triggered_by === "system:cost-tracker"`, ou `auto === true` +
+ *     `source === "cost_cap"` pour les valeurs écrites après ce fix). Un kill
+ *     switch manuel, ou posé par le quota-guard (compte à sec — le changement
+ *     de mois n'y change rien), n'est JAMAIS touché ;
+ *  4. éteint le bandeau admin `cost_cap_80_active` (F6 — aucun code ne le
+ *     repassait à false : alerte périmée affichée indéfiniment = accoutumance).
+ *
+ * Chaque étape post-compteurs est fail-soft : une erreur est loggée mais
+ * n'empêche pas les suivantes (le reset des compteurs, lui, throw si KO —
+ * comportement d'origine conservé, le worker doit rougir).
  */
-export async function resetMonthlyCostCounters(): Promise<number> {
+export async function resetMonthlyCostCounters(): Promise<MonthlyResetSummary> {
+  // 1. Compteurs à 0 — critique, en premier, non protégé (échec = job failed).
   const result = await prisma.providerConfig.updateMany({
     data: { currentMonthSpentUsd: 0 },
   });
-  return result.count;
+
+  const reenabledProviders: ProviderKey[] = [];
+  let killSwitchLifted = false;
+
+  // 2. Ré-activation des providers auto-désactivés par le cost-cap.
+  try {
+    const disabledRows = await prisma.providerConfig.findMany({
+      where: { enabled: false },
+      select: { provider: true, extraConfig: true },
+    });
+    for (const row of disabledRows) {
+      const extra = row.extraConfig as Record<string, unknown> | null;
+      // Pas de marqueur = désactivation VOLONTAIRE (admin) → on ne touche pas.
+      if (!extra || extra["disabled_by_cost_cap"] === undefined) continue;
+      const restExtra: Record<string, unknown> = { ...extra };
+      delete restExtra["disabled_by_cost_cap"];
+      await prisma.providerConfig.update({
+        where: { provider: row.provider },
+        data: { enabled: true, extraConfig: restExtra as never },
+      });
+      reenabledProviders.push(row.provider);
+    }
+  } catch (err) {
+    console.warn(
+      "[cost-tracker] reset mensuel : ré-activation providers échouée :",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
+  // 3. Levée du kill switch SI ET SEULEMENT SI posé par le cost-cap.
+  try {
+    const row = await prisma.contentGenConfig.findUnique({ where: { key: "kill_switch" } });
+    const value = row?.value as {
+      active?: boolean;
+      auto?: boolean;
+      source?: string;
+      triggered_by?: string;
+    } | null;
+    const posedByCostCap =
+      value?.triggered_by === "system:cost-tracker" ||
+      (value?.auto === true && value?.source === "cost_cap");
+    if (value?.active === true && posedByCostCap) {
+      await prisma.contentGenConfig.update({
+        where: { key: "kill_switch" },
+        data: {
+          value: {
+            active: false,
+            reason: "Levé automatiquement : reset mensuel du cost cap",
+            resolved_at: new Date().toISOString(),
+            resolved_by: "system:cost-cap-reset",
+          } as never,
+          updatedBy: "system:cost-cap-reset",
+          updatedAt: new Date(),
+        },
+      });
+      killSwitchLifted = true;
+    }
+  } catch (err) {
+    console.warn(
+      "[cost-tracker] reset mensuel : levée kill switch échouée :",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
+  // 4. F6 — extinction du bandeau « coût 80/100 % » (même motif que
+  // `resolveAnomaly` dans content-monitoring-worker : updateMany no-op si la
+  // clé n'existe pas, pas de création inutile).
+  try {
+    await prisma.contentGenConfig.updateMany({
+      where: { key: "cost_cap_80_active" },
+      data: {
+        value: { active: false, resolvedAt: new Date().toISOString() } as never,
+        updatedBy: "system:cost-cap-reset",
+      },
+    });
+  } catch (err) {
+    console.warn(
+      "[cost-tracker] reset mensuel : extinction bandeau cost_cap_80_active échouée :",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
+  // 5. Journal + alerte Telegram de ce qui a été réarmé (best-effort).
+  if (reenabledProviders.length > 0 || killSwitchLifted) {
+    console.log(
+      `[cost-tracker] reset mensuel : providers ré-activés=[${reenabledProviders.join(", ")}] ` +
+        `killSwitchLifted=${killSwitchLifted}`,
+    );
+    try {
+      await sendTelegram({
+        tag: "MONITORING",
+        silent: true,
+        body:
+          `*Reset mensuel cost cap*\n` +
+          `Compteurs remis à 0 (${result.count} provider(s)).\n` +
+          (reenabledProviders.length > 0
+            ? `Providers ré-activés (coupés par le cost-cap) : ${reenabledProviders.map((p) => `\`${p}\``).join(", ")}.\n`
+            : "") +
+          (killSwitchLifted ? `Kill switch auto (cost-cap) levé — génération relancée.\n` : "") +
+          `Les providers désactivés manuellement restent désactivés.`,
+      });
+    } catch {
+      // best-effort — l'alerte ne conditionne pas le reset.
+    }
+  }
+
+  return { countersReset: result.count, reenabledProviders, killSwitchLifted };
 }

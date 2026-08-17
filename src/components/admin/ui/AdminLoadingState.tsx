@@ -16,6 +16,26 @@ interface AdminLoadingStateProps {
   /** Override aria-label pour le bloc d'attente. */
   ariaLabel?: string;
   className?: string;
+  /**
+   * Lot 4 — ce bloc d'attente doit-il être ANNONCÉ au lecteur d'écran ?
+   *
+   * `true` (défaut) : région live (`role=status`, qui implique
+   * `aria-live=polite`). C'est le bon réglage pour une frontière de ROUTE
+   * (`loading.tsx`) : en App Router, une navigation n'affiche qu'une seule
+   * frontière — la plus proche du segment qui change — donc une seule voix.
+   *
+   * `false` : `aria-busy` seul, aucune région live. Pour les SECTIONS
+   * multiples d'une même page, où plusieurs attentes coexistent à l'écran.
+   *
+   * 🔴 Pourquoi ce drapeau existe. Le plan (Lot 4) pose comme critère de sortie
+   * « *au lecteur d'écran, le chargement du hub est annoncé UNE fois, pas
+   * cinq* ». Or ce composant posait `aria-live` sans condition : le jour où
+   * l'on découpe le hub en cinq sections suspendues — l'objet même du lot —
+   * le lecteur les énonce toutes les cinq. Le défaut n'existait pas encore ;
+   * il serait NÉ du lot. Le remède n'est pas de renoncer au découpage, c'est
+   * de ne laisser qu'une voix.
+   */
+  announce?: boolean;
 }
 
 export function AdminLoadingState({
@@ -24,15 +44,21 @@ export function AdminLoadingState({
   cols,
   ariaLabel = "Chargement en cours",
   className,
+  announce = true,
 }: AdminLoadingStateProps): React.ReactElement {
   return (
     <div
-      role="status"
-      aria-live="polite"
+      // `role=status` implique déjà `aria-live=polite` : les deux ne partent
+      // qu'ensemble, sinon un lecteur d'écran annoncerait quand même.
+      {...(announce ? ({ role: "status", "aria-live": "polite" } as const) : {})}
+      // Muet ou non, l'état d'occupation reste exposé : c'est lui qui dit à la
+      // technologie d'assistance que la zone n'est pas vide par erreur. Ce
+      // qu'on retire, c'est l'ANNONCE, pas l'information.
+      aria-busy="true"
       aria-label={ariaLabel}
       className={cn("admin-loading-state", className)}
     >
-      <span className="sr-only">{ariaLabel}</span>
+      {announce ? <span className="sr-only">{ariaLabel}</span> : null}
       {variant === "table" ? <TableSkeleton rows={count ?? 5} cols={cols ?? 6} /> : null}
       {variant === "card" ? <CardListSkeleton count={count ?? 3} /> : null}
       {variant === "stat-grid" ? <StatGridSkeleton count={count ?? 4} /> : null}

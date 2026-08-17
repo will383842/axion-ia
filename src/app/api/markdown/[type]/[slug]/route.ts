@@ -7,7 +7,8 @@
  * d'ingestion +30-50 % vs markdown brut + perte d'information structurée).
  *
  * URL canonique : `/api/markdown/{type}/{slug}`
- *   - type : "blog" | "actualites" | "cas-concrets" | "centre-aide" | "faq"
+ *   - type : "blog" | "actualites" | "guides" | "cas-concrets" | "centre-aide"
+ *            | "faq" | "glossaire"
  *   - slug : slug FR canonique
  *
  * Découvrabilité : les pages HTML correspondantes émettent un
@@ -39,12 +40,18 @@
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 
 interface RouteParams {
   params: Promise<{ type: string; slug: string }>;
 }
 
+// 🔴 AUDIT GEO/AEO 2026-08-15 (GEO-038) — `glossaire` AJOUTÉ.
+// `/glossaire/[slug]` émet un `<link rel="alternate" type="text/markdown">`
+// vers `/api/markdown/glossaire/<slug>` depuis sa création, et ce type n'a
+// jamais été enregistré ici : les 60 fiches annonçaient aux crawlers LLM une
+// ressource qui répondait 404. Même mode d'échec — et même correctif — que la
+// branche `faq` du 2026-08-10 : on lit la MÊME source que la page.
 const ALLOWED_TYPES = new Set([
   "blog",
   "actualites",
@@ -52,6 +59,7 @@ const ALLOWED_TYPES = new Set([
   "cas-concrets",
   "centre-aide",
   "faq",
+  "glossaire",
 ]);
 
 interface MarkdownContent {
@@ -132,44 +140,75 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
   }
 
   if (type === "cas-concrets") {
-    const translation = await prisma.caseStudyTranslation.findFirst({
-      where: {
-        locale: "fr",
-        slug,
-        caseStudy: { status: "published" },
-      },
-      include: { caseStudy: true },
-    });
-    if (!translation) return null;
+    // 🔴 CORRIGÉ 2026-08-15 (GEO-039) — cette branche lisait
+    // `CaseStudyTranslation.bodyText ?? .body`. Ces deux colonnes N'EXISTENT PAS
+    // sur ce modèle (cf. `schema.prisma` : `problem` / `solution` +
+    // `problemText` / `solutionText`), et le double `as unknown as` masquait
+    // l'erreur au typecheck. Résultat mesuré en prod : 200 `text/markdown` avec
+    // un corps réduit au titre et au pied de page — un moteur de réponse en
+    // conclut que la fiche n'a rien à dire, ce qui est PIRE qu'un 404.
+    //
+    // On lit désormais la MÊME source que `/cas-concrets/[slug]`, à savoir le
+    // SSOT fichier `@/content/case-studies` (la page ne consulte pas la DB).
+    const { getCaseStudy } = await import("@/content/case-studies");
+    const cs = getCaseStudy(slug);
+    if (!cs) return null;
+    const copy = cs.fr;
+    const body = [
+      `<h2>Contexte</h2><p>${copy.context}</p>`,
+      `<h2>Problème</h2><p>${copy.problem}</p>`,
+      `<h2>Solution</h2><p>${copy.solution}</p>`,
+      `<h2>Résultat</h2><p>${copy.result}</p>`,
+      `<blockquote>${copy.testimonialQuote} — ${copy.testimonialAuthor}, ${copy.testimonialRole}</blockquote>`,
+    ].join("\n");
     return {
-      title: translation.title,
-      // CaseStudyTranslation peut ne pas avoir d'excerpt — fallback null
-      excerpt: (translation as unknown as { excerpt?: string | null }).excerpt ?? null,
-      body:
-        (translation as unknown as { bodyText?: string | null }).bodyText ??
-        (translation as unknown as { body?: string }).body ??
-        "",
-      updatedAt: translation.updatedAt,
+      title: copy.title,
+      excerpt: copy.excerpt,
+      body,
+      updatedAt: new Date(cs.datePublished ?? SITE_EDITORIAL_DATE),
       canonicalSegment: "cas-concrets",
     };
   }
 
   if (type === "centre-aide") {
-    const translation = await prisma.helpArticleTranslation.findFirst({
-      where: {
-        locale: "fr",
-        slug,
-        helpArticle: { status: "published" },
-      },
-      include: { helpArticle: true },
-    });
-    if (!translation) return null;
+    // 🔴 CORRIGÉ 2026-08-15 (GEO-038) — cette branche interrogeait directement
+    // `prisma.helpArticleTranslation`, alors que `/centre-aide/[slug]` lit via
+    // `getHelpArticleBySlug()`, dont le drapeau `HELP_BACKEND_UNIFIED` est OFF
+    // par défaut : la page sert le SSOT `HELP_ARTICLES` et la route ne trouvait
+    // RIEN en base → 404 sur une ressource annoncée en `<link rel="alternate">`.
+    // Même mode d'échec que la branche `faq` (corrigée le 2026-08-10).
+    // ⚠️ Le drapeau reste volontairement INCHANGÉ : le reader le gère seul, et
+    // l'activer serait un tout autre chantier.
+    const { getHelpArticleBySlug } = await import("@/lib/help-articles/reader");
+    const article = await getHelpArticleBySlug(slug, "fr");
+    if (!article) return null;
     return {
-      title: translation.title,
-      excerpt: translation.excerpt,
-      body: translation.bodyText ?? translation.body,
-      updatedAt: translation.updatedAt,
+      title: article.fr.title,
+      excerpt: article.fr.excerpt || null,
+      body: article.fr.body,
+      // Le reader unifié ne remonte pas de date (le SSOT fichier n'en porte
+      // pas) : on annonce la date éditoriale du site, celle-là même que la page
+      // publique déclare dans son JSON-LD `Article`.
+      updatedAt: new Date(SITE_EDITORIAL_DATE),
       canonicalSegment: "centre-aide",
+    };
+  }
+
+  if (type === "glossaire") {
+    // GEO-038 — même source que `/glossaire/[slug]` : le SSOT fichier
+    // `glossary-extension` (aucun appel DB, donc insensible au stub de build).
+    const { getGlossaryTermBySlug } = await import("@/content/glossary-extension");
+    const term = getGlossaryTermBySlug(slug);
+    if (!term) return null;
+    const exemples = term.examples.map((e) => `<p>${e}</p>`).join("\n");
+    const alias =
+      term.aliases.length > 0 ? `<p>Aussi appelé : ${term.aliases.join(", ")}.</p>` : "";
+    return {
+      title: term.term,
+      excerpt: null,
+      body: [`<p>${term.fr}</p>`, alias, exemples].filter(Boolean).join("\n"),
+      updatedAt: new Date(SITE_EDITORIAL_DATE),
+      canonicalSegment: "glossaire",
     };
   }
 

@@ -31,6 +31,19 @@ import {
 import { ContactConfirmedEmail, contactConfirmedSubject } from "./contact-confirmed";
 import { RoiReportEmail, roiReportSubject } from "./roi-report";
 import { GdprExportLinkEmail, gdprExportLinkSubject } from "./gdpr-export-link";
+import { RgpdDemandeRecueEmail, rgpdDemandeRecueSubject } from "./rgpd-demande-recue";
+import {
+  RgpdEffacementConfirmeEmail,
+  rgpdEffacementConfirmeSubject,
+} from "./rgpd-effacement-confirme";
+import { PodcastDemandeRecueEmail, podcastDemandeRecueSubject } from "./podcast-demande-recue";
+import { RappelConfirmeEmail, rappelConfirmeSubject } from "./rappel-confirme";
+import {
+  ChatbotDemandeTransmiseEmail,
+  chatbotDemandeTransmiseSubject,
+} from "./chatbot-demande-transmise";
+import { CandidatureRecueEmail, candidatureRecueSubject } from "./candidature-recue";
+import { AvisRecuEmail, avisRecuSubject } from "./avis-recu";
 import { QuoteRequestReceivedEmail, quoteRequestReceivedSubject } from "./quote-request-received";
 import { PaymentLinkEmail, paymentLinkSubject } from "./payment-link";
 import { PaymentReceiptEmail, paymentReceiptSubject } from "./payment-receipt";
@@ -68,6 +81,10 @@ import {
 } from "./qualiopi-satisfaction-j1";
 import { QualiopiSuiviJ30Email, qualiopiSuiviJ30Subject } from "./qualiopi-suivi-j30";
 import {
+  QualiopiPositionnementEmail,
+  qualiopiPositionnementSubject,
+} from "./qualiopi-positionnement";
+import {
   QualiopiQuestionnaireRelanceEmail,
   qualiopiQuestionnaireRelanceSubject,
 } from "./qualiopi-questionnaire-relance";
@@ -76,6 +93,10 @@ import {
   qualiopiEnqueteEntrepriseSubject,
 } from "./qualiopi-enquete-entreprise";
 import { QualiopiPortailAccesEmail, qualiopiPortailAccesSubject } from "./qualiopi-portail-acces";
+import {
+  QualiopiEmargementLienEmail,
+  qualiopiEmargementLienSubject,
+} from "./qualiopi-emargement-lien";
 import {
   QualiopiAttestationDisponibleEmail,
   qualiopiAttestationDisponibleSubject,
@@ -130,6 +151,15 @@ import {
 import { QuoteReminderEmail, quoteReminderSubject } from "./quote-reminder";
 import { QuoteExpiredEmail, quoteExpiredSubject } from "./quote-expired";
 import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
+import {
+  CandidatureCommercialConfirmeeEmail,
+  candidatureCommercialConfirmeeSubject,
+} from "./candidature-commercial-confirmee";
+import {
+  CandidatureCommercialRecapEmail,
+  candidatureCommercialRecapSubject,
+} from "./candidature-commercial-recap";
+import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 
@@ -192,6 +222,34 @@ const TEMPLATES: TemplateMap = {
   "gdpr-export-link": {
     subject: gdprExportLinkSubject,
     component: GdprExportLinkEmail,
+  },
+  "rgpd-demande-recue": {
+    subject: rgpdDemandeRecueSubject,
+    component: RgpdDemandeRecueEmail,
+  },
+  "rgpd-effacement-confirme": {
+    subject: rgpdEffacementConfirmeSubject,
+    component: RgpdEffacementConfirmeEmail,
+  },
+  "podcast-demande-recue": {
+    subject: podcastDemandeRecueSubject,
+    component: PodcastDemandeRecueEmail,
+  },
+  "rappel-confirme": {
+    subject: rappelConfirmeSubject,
+    component: RappelConfirmeEmail,
+  },
+  "chatbot-demande-transmise": {
+    subject: chatbotDemandeTransmiseSubject,
+    component: ChatbotDemandeTransmiseEmail,
+  },
+  "candidature-recue": {
+    subject: candidatureRecueSubject,
+    component: CandidatureRecueEmail,
+  },
+  "avis-recu": {
+    subject: avisRecuSubject,
+    component: AvisRecuEmail,
   },
   "quote-request-received": {
     subject: quoteRequestReceivedSubject,
@@ -274,6 +332,10 @@ const TEMPLATES: TemplateMap = {
     subject: qualiopiSuiviJ30Subject,
     component: QualiopiSuiviJ30Email,
   },
+  "qualiopi-positionnement": {
+    subject: qualiopiPositionnementSubject,
+    component: QualiopiPositionnementEmail,
+  },
   "qualiopi-questionnaire-relance": {
     subject: qualiopiQuestionnaireRelanceSubject,
     component: QualiopiQuestionnaireRelanceEmail,
@@ -295,6 +357,13 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-portail-acces": {
     subject: qualiopiPortailAccesSubject,
     component: QualiopiPortailAccesEmail,
+  },
+  // Lien personnel de signature de présence. Gabarit DÉDIÉ : réemployer
+  // `qualiopi-portail-acces` ferait dire au message « vous pouvez ignorer cet
+  // email » à quelqu'un qui doit précisément ne pas l'ignorer.
+  "qualiopi-emargement-lien": {
+    subject: qualiopiEmargementLienSubject,
+    component: QualiopiEmargementLienEmail,
   },
   "qualiopi-alerte-interne": {
     subject: qualiopiAlerteInterneSubject,
@@ -358,6 +427,19 @@ const TEMPLATES: TemplateMap = {
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
   "convention-envoi": { subject: conventionEnvoiSubject, component: ConventionEnvoiEmail },
   "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
+  // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12)
+  "candidature-commercial-confirmee": {
+    subject: candidatureCommercialConfirmeeSubject,
+    component: CandidatureCommercialConfirmeeEmail,
+  },
+  "candidature-commercial-recap": {
+    subject: candidatureCommercialRecapSubject,
+    component: CandidatureCommercialRecapEmail,
+  },
+  "vivier-information": {
+    subject: vivierInformationSubject,
+    component: VivierInformationEmail,
+  },
 };
 
 /** Tous les noms de templates email enregistrés (pour tests de couverture). */

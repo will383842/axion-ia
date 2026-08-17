@@ -24,6 +24,24 @@ export type EmailJobName =
   // Simulateur de gains v2 — envoi du rapport au dirigeant qui le demande.
   | "roi-report"
   | "gdpr-export-link"
+  // RGPD (2026-08-13). Deux manques criants comblés : une demande déposée
+  // depuis le portail ne déclenchait AUCUN accusé — et l'effacement art. 17
+  // n'envoyait aucune preuve d'exécution, alors que l'adresse est anonymisée
+  // juste après, ce qui rendait l'omission irrattrapable.
+  | "rgpd-demande-recue"
+  | "rgpd-effacement-confirme"
+  // Accusés commerciaux ajoutés le 2026-08-13 : ces trois canaux ne
+  // répondaient RIEN à l'expéditeur. Gabarits dédiés et non
+  // `contact-confirmed`, qui sert déjà à huit flux différents.
+  | "podcast-demande-recue"
+  | "rappel-confirme"
+  | "chatbot-demande-transmise"
+  // Remplacent `contact-confirmed` sur deux flux ou il disait FAUX :
+  // il promettait une reponse « sous 48 heures ouvrees » a un candidat
+  // (un recrutement ne se traite pas en deux jours) et annoncait un
+  // rappel a quelqu'un qui venait simplement de laisser un avis.
+  | "candidature-recue"
+  | "avis-recu"
   // Sprint X.5bis — parcours B (formulaire devis qualifié)
   | "quote-request-received"
   // Sprint X.13 (Booking V1) — paiements Stripe Checkout
@@ -80,9 +98,17 @@ export type EmailJobName =
   | "qualiopi-rappel-j7"
   | "qualiopi-satisfaction-j1"
   | "qualiopi-suivi-j30"
+  // Positionnement (ind. 8) — AVANT la formation. Distinct de l'accès portail :
+  // celui-ci demandait qu'on l'ignore, cf. `qualiopi-positionnement.tsx`.
+  | "qualiopi-positionnement"
   // Relance de questionnaire sans réponse (J+3 / J+10) + enquête ENTREPRISE.
   | "qualiopi-questionnaire-relance"
   | "qualiopi-enquete-entreprise"
+  // Lien PERSONNEL de signature de la feuille de présence. 🔴 Il n'existait
+  // pas : `emettreLiensSessionAction` fabriquait les jetons et les affichait à
+  // l'écran, sans jamais rien envoyer. La chaîne probante des indicateurs 9 et
+  // 11 reposait sur un envoi que personne n'avait écrit.
+  | "qualiopi-emargement-lien"
   | "qualiopi-attestation-disponible"
   | "qualiopi-relance-impayee"
   | "qualiopi-portail-acces"
@@ -98,7 +124,33 @@ export type EmailJobName =
   | "facture-envoi"
   // Convention de formation — envoi MANUEL du lien de signature au client.
   // Sans lui, l'admin copiait l'URL brute du lien dans sa messagerie.
-  | "convention-envoi";
+  | "convention-envoi"
+  // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12) :
+  // accusé chaleureux au candidat + récapitulatif complet à l'équipe interne.
+  | "candidature-commercial-confirmee"
+  | "candidature-commercial-recap"
+  // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
+  // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
+  | "vivier-information";
+
+/**
+ * Lot L4 — passage quotidien du vivier candidats.
+ *
+ * ⚠️ Ces types vivent ICI, et non dans le worker, CONTRAIREMENT au motif des
+ * autres files. Raison mesurée : `queues.ts` est importé par toute Server
+ * Action qui enfile quoi que ce soit ; s'il pointait vers le worker (même en
+ * `import type`), l'outil de test résout quand même le module et tire derrière
+ * lui `server/vivier/stock` → `crm-sync` → `queues` — un CYCLE, et ~2 s de
+ * chargement supplémentaires. Ce coût a fait DÉPASSER le budget de 5 s d'un
+ * test sans rapport (`api/calendly/client-event`), qui passait avant.
+ * Déclarer les types dans ce module partagé supprime l'arête, donc le cycle.
+ */
+export type VivierCronJobType = "integrate-stock";
+
+export interface VivierCronJobData {
+  readonly type?: VivierCronJobType;
+  readonly tick?: string;
+}
 
 export interface EmailJobData {
   template: EmailJobName;

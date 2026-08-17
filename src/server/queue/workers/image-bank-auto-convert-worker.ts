@@ -104,9 +104,18 @@ async function runConvert(data: ImageBankAutoConvertJobData): Promise<ImageBankA
   }
 
   // Upscale si largeur < 1200 px (gate Google Discover recommandé).
+  //
+  // 🔑 On mesure sur `meta.autoOrient`, pas sur `meta.width` : Sharp documente
+  // que `width`/`height` sont les pixels STOCKÉS, « EXIF orientation is not taken
+  // into consideration ». Une photo portrait de téléphone est stockée en paysage,
+  // donc la largeur brute est la HAUTEUR réelle — le seuil se déclenchait à
+  // l'envers. Et `.autoOrient()` doit précéder le `resize`, sinon l'upscale
+  // produit un buffer sans EXIF dont les pixels n'ont jamais pivoté : l'indice de
+  // rotation est perdu et plus rien ne peut redresser l'image (GEO-092).
   let input: Buffer = sourceBuffer;
-  if (meta.width < 1200) {
+  if (meta.autoOrient.width < 1200) {
     input = (await sharp(sourceBuffer, SHARP_LIMITS)
+      .autoOrient()
       .resize(1200, null, { kernel: "lanczos3", withoutEnlargement: false })
       .toBuffer()) as Buffer;
   }
@@ -118,7 +127,10 @@ async function runConvert(data: ImageBankAutoConvertJobData): Promise<ImageBankA
   const useContain = CONTAIN_TYPES.has(imageType) || isLogo;
 
   for (const v of VARIANTS) {
-    let pipe = sharp(input, SHARP_LIMITS);
+    // `.autoOrient()` est idempotent : sur le buffer déjà redressé par l'upscale
+    // il ne reste plus d'EXIF d'orientation, donc il ne fait rien. Le poser ici
+    // couvre le chemin SANS upscale, qui part de la source brute.
+    let pipe = sharp(input, SHARP_LIMITS).autoOrient();
 
     if (v.suffix === "-og" && v.width !== null && v.height !== null) {
       if (useContain) {
@@ -138,21 +150,33 @@ async function runConvert(data: ImageBankAutoConvertJobData): Promise<ImageBankA
       pipe = pipe.resize(v.width, null, { withoutEnlargement: true });
     }
 
-    // EXIF/XMP — copyright + creator inscrits dans le fichier (Google Images lit ces données)
-    pipe = pipe.withMetadata({
-      exif: {
-        IFD0: {
-          Copyright: "© 2026 Axion-IA — CC BY 4.0",
-          Artist: "Axion-IA",
-          ImageDescription: targetSlug,
-          Software: "Axion-IA image pipeline (Sharp)",
-          ...(data.geoLat && data.geoLon
-            ? {
-                GPSLatitude: data.geoLat.toString(),
-                GPSLongitude: data.geoLon.toString(),
-              }
-            : {}),
-        },
+    // EXIF — copyright + créateur inscrits dans le fichier (Google Images lit ces données).
+    //
+    // 🔑 `withExif()` et NON `withMetadata({ exif })` : le premier est documenté
+    // « Set EXIF metadata in the output image, IGNORING any EXIF in the input
+    // image », le second conservait en plus tout l'EXIF de la source. La
+    // différence est une fuite de données personnelles : une photo de terrain
+    // arrive avec la position de qui l'a prise, et on la republiait telle quelle
+    // (GEO-091, rectifié le 2026-08-16). `withMetadata({ exif })` est d'ailleurs
+    // déprécié par Sharp au profit de `withExif()`.
+    //
+    // ⚠️ Le géotag ci-dessous est VOULU : ce sont les coordonnées portées par la
+    // fiche de l'image (lieu d'intervention), un signal Google Images assumé —
+    // à ne pas confondre avec le GPS parasite de l'appareil photo, que
+    // `withExif()` élimine. Ne remplacez pas par `withExifMerge()` : le « merge »
+    // est exactement ce qui laisserait repasser les tags de la source.
+    pipe = pipe.withExif({
+      IFD0: {
+        Copyright: "© 2026 Axion-IA — CC BY 4.0",
+        Artist: "Axion-IA",
+        ImageDescription: targetSlug,
+        Software: "Axion-IA image pipeline (Sharp)",
+        ...(data.geoLat && data.geoLon
+          ? {
+              GPSLatitude: data.geoLat.toString(),
+              GPSLongitude: data.geoLon.toString(),
+            }
+          : {}),
       },
     });
 

@@ -59,7 +59,13 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez un contenu qui tient la voix de votre marque à partir d'un dossier de marque écrit, testé sur une publication réelle de votre entreprise.",
-      objectifGlobalId: "obj-1",
+      // Le dossier de marque sur la trame fournie, la demande structurée par les
+      // cinq leviers AXION et la relance avec le persona du voisin sont
+      // exactement obj-2. Le régime d'usage et ce qui ne se dépose jamais —
+      // fichier de contacts, export nominatif — sont posés ici en ouverture de
+      // journée, sans être l'objet du module : obj-1 en secondaire.
+      objectifGlobalId: "obj-2",
+      objectifsSecondairesIds: ["obj-1"],
       dureeMin: 10,
       notes: {
         script:
@@ -251,10 +257,12 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous déclinez un message unique sur plusieurs formats sans le réécrire, et vous planifiez douze semaines de contenus avec un nom par ligne.",
-      objectifGlobalId: "obj-2",
-      // La déclinaison produit elle-même des contenus finis (publication,
-      // newsletter, script, communiqué) : le module sert aussi obj-1.
-      objectifsSecondairesIds: ["obj-1"],
+      // La déclinaison d'un message réel sur trois formats, avec le relevé de ce
+      // que chaque format a obligé à retirer, est obj-3. Le second temps de
+      // l'atelier construit le calendrier des douze semaines avec un titulaire
+      // par ligne et le confronte aux heures annoncées : obj-4 en secondaire.
+      objectifGlobalId: "obj-3",
+      objectifsSecondairesIds: ["obj-4"],
       dureeMin: 5,
       notes: {
         script:
@@ -419,10 +427,14 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous commentez les résultats d'une campagne sans exposer vos données, et vous savez comment votre marque est décrite par un assistant — et ce qui se corrige sur vos propres pages.",
-      objectifGlobalId: "obj-3",
-      // La veille concurrentielle et la visibilité de marque occupent un atelier
-      // entier de ce module.
-      objectifsSecondairesIds: ["obj-4"],
+      // Le commentaire de campagne écrit à partir de valeurs saisies à la main,
+      // sans dépôt d'export ni calcul confié à l'outil, puis l'arbitrage entre
+      // trois hypothèses de test à budget constant, sont obj-5. Le second temps
+      // de l'atelier — erreurs de l'assistant sur la marque, corrections à
+      // porter sur ses pages, veille dégrossie marquée « à vérifier à la
+      // source » — sert obj-6 en secondaire.
+      objectifGlobalId: "obj-5",
+      objectifsSecondairesIds: ["obj-6"],
       dureeMin: 5,
       notes: {
         script:
@@ -595,7 +607,13 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous ne diffusez plus un contenu sans savoir ce qui a été vérifié et par qui — votre grille de relecture est écrite, et le document unique du jour a un titulaire et une date de revue.",
-      objectifGlobalId: "obj-5",
+      // La grille de relecture construite sur les erreurs relevées en séance,
+      // passée sur une production du jour, puis le titulaire et la date de revue
+      // du document unique, sont obj-8. Le deuxième temps de l'atelier classe
+      // les douze cas de diffusion en « je publie » / « je publie avec
+      // mention » / « je ne publie pas » : obj-7 en secondaire.
+      objectifGlobalId: "obj-8",
+      objectifsSecondairesIds: ["obj-7"],
       dureeMin: 5,
       notes: {
         script:

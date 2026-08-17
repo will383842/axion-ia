@@ -11,6 +11,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 
 export const EscaladerQuestionInputSchema = z
@@ -61,6 +62,22 @@ export async function escaladerQuestion(
     notified = await sendTelegram({ tag: "CONTACT", body, silent: false });
   } catch (err) {
     console.warn("[escalader_question] notification Telegram échouée:", err);
+  }
+
+  // Confirmation au visiteur (2026-08-13). C'est le pire endroit pour un
+  // silence : la personne vient d'écrire dans une fenêtre de discussion
+  // qu'elle va fermer. Sans cet e-mail il ne lui reste AUCUNE trace de son
+  // geste — ni preuve, ni rappel, ni moyen de relancer.
+  // Meilleur effort, comme la notification : l'escalade est déjà persistée.
+  if (input.contact_email) {
+    try {
+      await enqueueEmail("chatbot-demande-transmise", input.contact_email, "fr", {
+        contexte: "question",
+        extrait: input.question.slice(0, 200),
+      });
+    } catch (err) {
+      console.warn("[escalader_question] confirmation e-mail échouée:", err);
+    }
   }
 
   return { escalationId: escalation.id, statut: escalation.statut, notified };
