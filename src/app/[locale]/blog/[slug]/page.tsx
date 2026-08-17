@@ -14,6 +14,7 @@ import { QualiopiContentBadge } from "@/components/qualiopi/QualiopiContentBadge
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
+import { resoudreImagePartageArticle } from "@/lib/seo/og-image-article";
 import { ArticleTOC, extractTocItems, type TocItem } from "@/components/seo/ArticleTOC";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
@@ -124,13 +125,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ogType: "article", // VIS-05/SEO-05
     // D2 (VIS-08) — utilise la hero réelle comme og:image quand dispo (au lieu
     // de la carte /api/og générique) pour les partages sociaux + previews LLM.
-    ...(view.featuredImage
-      ? {
-          ogImage: view.featuredImage.startsWith("http")
-            ? view.featuredImage
-            : `${SITE_URL}${view.featuredImage}`,
-        }
-      : {}),
+    //
+    // 🔴 Recensement OG 2026-08-17 — la hero était le SEUL candidat, ce qui
+    // rendait muet le champ « URL de l'image OG » de la console. L'ordre de
+    // priorité vit désormais dans `resoudreImagePartageArticle`, partagé avec
+    // `/actualites/[slug]` : surcharge console, puis hero, puis carte générique.
+    ...resoudreImagePartageArticle({ ...view, slug }, SITE_URL),
     // GEO-142 (audit GEO/AEO 2026-08-14) — les 126 articles de blog n'émettaient
     // AUCUNE balise `article:*`, alors que `/actualites/[slug]` les émet depuis
     // toujours par le même mécanisme. Mesuré en production le 2026-08-16 :

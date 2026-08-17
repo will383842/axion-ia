@@ -19,6 +19,7 @@ import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 // ~228 fichiers qui l'attendent depuis `@/lib/seo` continuent de fonctionner
 // sans changement.
 import { SITE_URL } from "@/lib/site-url";
+import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
 export { SITE_URL };
 
 // Logo carré officiel Axion-IA (512×512, PNG, fond blanc) — cible de
@@ -100,6 +101,41 @@ interface ProductSeoInput {
    * + `twitter.images` for LinkedIn/Slack/Twitter/Facebook previews.
    */
   ogImage?: string;
+  /**
+   * Dimensions RÉELLES de `ogImage`, en pixels.
+   *
+   * 🔴 Recensement OG 2026-08-17 — sans ces champs, la fabrique déclarait
+   * `1200×630` pour **toute** image, y compris celles qu'elle n'a pas
+   * fabriquées. Les 133 photos de blog mesuraient 1080×607 : on annonçait donc
+   * une taille que le fichier n'avait pas.
+   *
+   * 🔑 Une dimension inventée est pire qu'une dimension absente : LinkedIn et
+   * Facebook réservent la vignette d'après ce qu'on déclare, avant même de
+   * télécharger le fichier. Quand `ogImage` est fourni SANS ces deux champs,
+   * on n'émet donc plus `og:image:width`/`height` du tout — le crawler mesure
+   * lui-même, ce qui est lent mais exact.
+   *
+   * Les deux doivent être fournis ensemble ; l'un sans l'autre est ignoré.
+   */
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  /**
+   * Sous-ligne de la carte `/api/og` (le « eyebrow » de la maquette).
+   *
+   * 🔴 Recensement OG 2026-08-17 — `/api/og` accepte ce paramètre depuis sa
+   * refonte du 2026-08-13, et **aucun appelant ne l'a jamais passé**. Les
+   * 1 533 cartes du site portent donc rigoureusement la même sous-ligne.
+   *
+   * ⚠️ Volontairement NON câblé par famille pour l'instant. Remplacer la
+   * ligne de marque par une étiquette de rubrique n'est pas un gain évident :
+   * on gagne une information de contexte, on perd la promesse commerciale. Ce
+   * point est un arbitrage éditorial, pas une correction technique — le
+   * paramètre existe pour que la surcharge en console puisse s'en servir, et
+   * pour qu'un choix par famille soit possible une fois le rendu vu.
+   *
+   * Sans effet quand `ogImage` est fourni : la carte n'est alors pas la nôtre.
+   */
+  ogEyebrow?: string;
   /**
    * Optional accent for `/api/og` dynamic image (purple/orange/green). Le défaut
    * (accent omis) = terracotta, signature de marque. `primary` (bleu) RETIRÉ
@@ -251,6 +287,9 @@ export function buildProductMetadata({
   description,
   alternates,
   ogImage,
+  ogImageWidth,
+  ogImageHeight,
+  ogEyebrow,
   ogAccent,
   ogType = "website",
   article,
@@ -262,7 +301,26 @@ export function buildProductMetadata({
   // For pages that need a custom static OG (homepage), pass `ogImage`.
   const resolvedOgImage =
     ogImage ??
-    `${SITE_URL}/api/og?title=${encodeURIComponent(title)}${ogAccent ? `&accent=${ogAccent}` : ""}`;
+    `${SITE_URL}/api/og?title=${encodeURIComponent(title)}` +
+      `${ogAccent ? `&accent=${ogAccent}` : ""}` +
+      `${ogEyebrow ? `&eyebrow=${encodeURIComponent(ogEyebrow)}` : ""}`;
+  // Dimensions déclarées aux réseaux sociaux (`og:image:width` / `height`).
+  //
+  // 🔴 Recensement OG 2026-08-17 — ces deux nombres étaient écrits en dur à
+  // `1200` / `630` pour toutes les images, mesurées ou non. C'était faux sur
+  // les 1 667 URLs indexables : nos cartes rendent 1200×675, les photos de
+  // blog mesuraient 1080×607. Trois cas, et un seul est honnête par défaut :
+  //
+  //   1. aucune `ogImage` → c'est NOTRE carte `/api/og`, dont la taille est la
+  //      constante partagée avec le renderer. On peut la déclarer.
+  //   2. `ogImage` + dimensions fournies → l'appelant a mesuré, on le suit.
+  //   3. `ogImage` sans dimensions → on ne sait pas. On n'émet RIEN plutôt
+  //      qu'un nombre inventé.
+  const dimensionsDeclarees: { width: number; height: number } | Record<string, never> = ogImage
+    ? ogImageWidth !== undefined && ogImageHeight !== undefined
+      ? { width: ogImageWidth, height: ogImageHeight }
+      : {}
+    : { width: OG_IMAGE_LARGEUR, height: OG_IMAGE_HAUTEUR };
   // EN locale désactivé (2026-05-16) → omettre hreflang="en" pour ne pas
   // signaler à Google une alternate EN qui répond 301. Quand EN sera
   // réactivé (EN_LOCALE_ENABLED=true), hreflang="en" revient automatique.
@@ -346,8 +404,7 @@ export function buildProductMetadata({
       images: [
         {
           url: resolvedOgImage,
-          width: 1200,
-          height: 630,
+          ...dimensionsDeclarees,
           alt: title,
         },
       ],

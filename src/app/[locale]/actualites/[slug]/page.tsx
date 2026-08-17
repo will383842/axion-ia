@@ -34,6 +34,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { resoudreImagePartageArticle } from "@/lib/seo/og-image-article";
 import { buildNewsArticleJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
 import { SuggestedContent } from "@/components/suggested/SuggestedContent";
@@ -191,6 +192,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t.metaTitle ?? `${t.title} · Axion-IA`,
     description: t.metaDescription ?? t.excerpt ?? t.title,
     ogType: "article", // VIS-05/SEO-05
+    // 🔴 Recensement OG 2026-08-17 — les 49 actualités servaient TOUTES la carte
+    // générique `/api/og`, alors que `t.ogImage` était déjà chargé quelques
+    // lignes plus bas… pour le seul JSON-LD. La donnée existait, la page la
+    // lisait, et le partage social ne la voyait pas. Même résolution que
+    // `/blog/[slug]` : surcharge console, puis hero, puis carte générique.
+    // `slug` passé aussi : le manifeste de rapatriement est indexé par slug, et
+    // rien n'interdit qu'une actualité y figure un jour. Aujourd'hui le script
+    // ne parcourt que le sitemap du blog — une actualité n'y est donc pas, et
+    // retombe simplement sur sa hero.
+    ...resoudreImagePartageArticle(
+      { ogImage: t.ogImage, featuredImage: t.article.featuredImage, slug },
+      SITE_URL,
+    ),
     // SEO news 2026 — OG article:* (fraîcheur + attribution, lus par
     // Facebook/LinkedIn/crawlers news) + autodiscovery du flux RSS section.
     rssFeed: `${SITE_URL}/fr/actualites/feed.xml`,

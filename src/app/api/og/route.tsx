@@ -21,6 +21,10 @@
 
 import { ImageResponse } from "@vercel/og";
 
+// Module TIER-0 sans aucun import : la seule chose importable ici sans rejouer
+// le 502 edge de l'audit GSC 2026-05-18 (cf. l'en-tête de `og-format.ts`).
+import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
+
 export const runtime = "edge";
 
 // hex-ok: dynamic OG image runs in Edge runtime where Tailwind tokens are
@@ -362,10 +366,12 @@ export async function GET(req: Request) {
         </div>
       </div>
     </div>,
-    // 1200×675 = plancher Google Discover (cohérent avec opengraph-image.tsx).
+    // Plancher Google Discover. La valeur est partagée avec `opengraph-image.tsx`
+    // ET avec la déclaration `og:image:width/height` de `seo.ts` : c'est la
+    // divergence entre ces trois-là qui faisait mentir les 1 667 pages.
     {
-      width: 1200,
-      height: 675,
+      width: OG_IMAGE_LARGEUR,
+      height: OG_IMAGE_HAUTEUR,
       // 🔴 GEO-058 (audit GEO/AEO 2026-08-14) — AUCUNE image OG n'était mise en
       // cache par le CDN. Mesuré en production le 2026-08-16 :
       //   Cache-Control: public, max-age=0, must-revalidate

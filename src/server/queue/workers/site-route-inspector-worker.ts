@@ -239,7 +239,14 @@ export function startSiteRouteInspectorWorker() {
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 1,
-      lockDuration: 600_000, // 10 min max (500 routes × 2s = ~17 min → on prend 500 max)
+      // 10 min, alors qu'un run complet dure ~17 min (500 routes × 2 s). Ce
+      // n'est PAS une incohérence : BullMQ renouvelle le verrou tant que le
+      // process vit (`LockManager`, toutes les `lockRenewTime / 2` = 2,5 min
+      // ici — cf. `node_modules/bullmq/dist/cjs/classes/lock-manager.js`).
+      // La durée ne borne donc pas le run, elle borne le délai de reprise
+      // APRÈS une mort du process : la rallonger retarderait la reprise.
+      // Vérifié le 2026-08-17 avant de « corriger » ce qui n'était pas cassé.
+      lockDuration: 600_000,
       removeOnComplete: { count: 100 },
       removeOnFail: { count: 500 },
     },
