@@ -346,7 +346,9 @@ export const contentPsiMonitorQueue: Queue | null = connection
 /**
  * Sprint A 2026-05-21 D-P5-3 — Rapport qualité hebdomadaire content-gen.
  * Cron lundi 7h00 UTC (≈ 8h CET). KPIs publiés/rejetés/coût/villes/anomalies.
- * Destinataire : WEEKLY_REPORT_EMAIL env var (défaut williamsjullin@gmail.com).
+ * Destinataire : WEEKLY_REPORT_EMAIL, sinon l'adresse de l'organisme
+ * (`lib/destinataires-internes.ts`). Ce commentaire annonçait encore un repli
+ * sur une boîte Gmail personnelle, qui n'existe plus.
  */
 export const contentWeeklyReportQueue: Queue | null = connection
   ? new Queue("content-weekly-report", {
@@ -1554,11 +1556,45 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "0 7 * * *",
         jobId: "formation-crons-alertes-cron",
       },
-      // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9 Qualiopi), daily 08:00 UTC
+      // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9 Qualiopi).
+      //
+      // 🔴 HORAIRE, et non plus quotidien (2026-08-16). #612 avait retiré la
+      // fenêtre basse : la sélection se fait par ÉTAT (`convocationEnvoyeeAt:
+      // null`), donc une exécution manquée n'est plus définitive. Il restait
+      // pourtant un trou que l'état ne pouvait pas combler — un trou de
+      // CALENDRIER : une session créée le 15/08 à 14h51, après le passage de
+      // 08:00 UTC, pour un début le 16/08 à 07h00, ne rencontre AUCUN passage
+      // avant son propre démarrage. Vérifié sur AXI-SESS-2026-005 : #612 était
+      // bien déployé, le cron a bien tourné, et rien n'est parti — parce qu'au
+      // moment où il est passé la session n'existait pas encore.
+      //
+      // Passer à l'heure ramène ce trou de 24 h à moins d'une heure, et le fait
+      // POUR TOUS LES CHEMINS de création — session créée par l'écran, par une
+      // reprise, inscription ajoutée après coup, date avancée. Un déclencheur
+      // posé à la création aurait dû être recopié à chacun de ces endroits, et
+      // c'est précisément le genre de recopie qui diverge au premier oubli.
+      //
+      // Coût : 24 passages/jour d'une requête indexée qui ne ramène presque
+      // jamais rien. Ce qu'il ne couvre toujours pas — une session créée moins
+      // d'une heure avant son début — reste compté et journalisé comme écart
+      // ind. 9 par `handleConvocationJ5`, parce qu'aucun envoi ne le répare.
       {
         type: "formation-crons.convocation-j5",
-        pattern: "0 8 * * *",
+        pattern: "0 * * * *",
         jobId: "formation-crons-convocation-j5-cron",
+      },
+      // 2026-08-16 — liens de signature J-0, à 06:00 UTC (08:00 Paris l'été).
+      //
+      // AVANT le passage des alertes (07:00) : ainsi une session servie le matin
+      // ne déclenche pas, une heure plus tard, l'alerte qui dit que personne ne
+      // peut signer. L'ordre des crons est ici une règle, pas un détail — deux
+      // passages inversés produiraient une alerte critique quotidienne sur des
+      // sessions parfaitement en ordre, et une alerte qui crie à tort cesse
+      // d'être lue.
+      {
+        type: "formation-crons.liens-emargement-j0",
+        pattern: "0 6 * * *",
+        jobId: "formation-crons-liens-emargement-j0-cron",
       },
       // Hub facturation Phase 3 — marquage retards (statut seul, AUCUN email),
       // daily 06:30 UTC (avant les alertes 07:00 pour qu'elles voient l'état à jour)

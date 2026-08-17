@@ -1403,6 +1403,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "MailCheck",
       group: "ops",
     },
+    // ⚠️ Le lien vers le tableau de bord ZeptoMail (demande Will, 2026-08-16)
+    // n'est VOLONTAIREMENT pas ici : `admin-nav.test.ts` verrouille l'invariant
+    // « tout href de la navigation est une route interne préfixée
+    // /<locale>/<adminPrefix> ». Un lien sortant le casse — et cet invariant
+    // n'est pas décoratif : le rendu de la nav construit des `<Link>` Next et
+    // la mise en surbrillance de l'entrée active compare des chemins.
+    // Le lien vit donc SUR la page « E-mails envoyés », à côté du journal
+    // qu'il complète. C'est aussi sa place logique : notre journal dit ce que
+    // l'application a TENTÉ, ZeptoMail ce que le relais a réellement REMIS —
+    // l'écart entre les deux est l'information, et elle se lit côte à côte.
     { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "Map", group: "ops" },
     { href: `${base}/infra`, label: "Infra & outils", icon: "Wrench", group: "ops" },
     {
@@ -1451,6 +1461,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Tags",
       group: "ops",
       navLevel: 2,
+    },
+    // Relecture du catalogue papier avant tirage KDP (2026-08-16). Niveau 1 :
+    // ce n'est pas un sous-onglet des QR, c'est le livre lui-même — les QR n'en
+    // sont qu'un composant imprimé. Icône "BookOpenText" et non "BookOpen", que
+    // « QR du catalogue » porte déjà dans ce même groupe.
+    {
+      href: `${base}/catalogue-imprime`,
+      label: "Catalogue imprimé",
+      icon: "BookOpenText",
+      group: "ops",
     },
     // ── système ──────────────────────────────────────────────────────────
     { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "system" },

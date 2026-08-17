@@ -111,7 +111,21 @@ export async function BlogListingView({ locale, currentPageRequested }: ViewProp
   // silencieux vers la dernière page — acceptable en `?page=`, mais une URL de
   // CHEMIN hors bornes doit 404 pour ne pas créer d'alias indexables).
   const totalPages = Math.max(1, Math.ceil(sortedPosts.length / ARTICLES_PER_PAGE));
-  if (currentPageRequested > totalPages) notFound();
+  // 🔴 GEO-061 — l'exception du build stub, sans laquelle on figerait des 404.
+  //
+  // `generateStaticParams` de `/blog/page/[num]` pré-rend les pages 2 à 5 pour
+  // qu'elles entrent dans le manifeste de pré-rendu (sans quoi Next les sert
+  // `no-store`, mesuré en production). Or le build tourne avec les URLs stub
+  // (ADR 0026) : la base rend 0 article, `totalPages` vaut donc 1, et chacune
+  // de ces pages partirait en `notFound()`. On figerait un 404 STATIQUE là où
+  // il y avait un 200 dynamique — strictement pire.
+  //
+  // Au build on laisse donc passer et on rend la coquille vide. Elle est
+  // repeuplée par l'ISR, et surtout **immédiatement** par le job de chauffe
+  // post-déploiement, qui revalide puis purge ces chemins (les deux listes du
+  // job les portent). En production, une page hors bornes reste un 404 franc.
+  const auBuildStub = process.env.DATABASE_URL?.includes("stub.invalid") ?? false;
+  if (currentPageRequested > totalPages && !auBuildStub) notFound();
   const currentPage = currentPageRequested;
   const offset = (currentPage - 1) * ARTICLES_PER_PAGE;
   const paginatedPosts = sortedPosts.slice(offset, offset + ARTICLES_PER_PAGE);

@@ -2041,3 +2041,79 @@ describe("🔴 une règle qui dégénère est bornée ET le dit", () => {
     expect(reglesTronquees).toHaveLength(1);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// R03quater — la session a commencé et personne ne peut signer
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 session_sans_dispositif_emargement — l'alerte qui se lève PENDANT", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  function sessionSansLien(patch: Record<string, unknown> = {}) {
+    return {
+      id: "s-005",
+      numero: "AXI-SESS-2026-005",
+      titreSession: "IA pour la finance",
+      dateDebut: new Date("2026-08-16T07:00:00Z"),
+      client: { raisonSociale: "INVEST SUN" },
+      _count: { enrollments: 1, jours: 0 },
+      ...patch,
+    };
+  }
+
+  it("lève une alerte CRITIQUE — personne ne peut émarger", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([sessionSansLien()]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_sans_dispositif_emargement");
+    expect(a, "aucune alerte : le trou du dossier réel est toujours ouvert").toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("s-005");
+  });
+
+  it("🔴 le message NOMME la cause première quand aucune journée n'est déclarée", async () => {
+    // Dire « aucun lien émis » sans dire pourquoi enverrait chercher au mauvais
+    // endroit : l'émission est refusée À LA RACINE tant que les journées
+    // manquent.
+    mp.trainingSession.findMany.mockResolvedValue([sessionSansLien()]);
+    const a = (await evaluerAlertes()).find((x) => x.code === "session_sans_dispositif_emargement");
+    expect(a?.message).toContain("Aucune journée n'est déclarée");
+  });
+
+  it("et dit autre chose quand elles le sont", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([
+      sessionSansLien({ _count: { enrollments: 1, jours: 1 } }),
+    ]);
+    const a = (await evaluerAlertes()).find((x) => x.code === "session_sans_dispositif_emargement");
+    expect(a?.message).toContain("Les journées sont déclarées");
+    expect(a?.message).not.toContain("Aucune journée");
+  });
+
+  it("le message dit l'ÉCHÉANCE — 48 h, après quoi la feuille reste vierge", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([sessionSansLien()]);
+    const a = (await evaluerAlertes()).find((x) => x.code === "session_sans_dispositif_emargement");
+    expect(a?.message).toContain("48 h");
+  });
+
+  it("🔴 exige des inscrits ET l'absence de jeton vivant — le diagnostic est vérifié", async () => {
+    // Une alerte qui ment sur son diagnostic envoie chercher un émargement qui
+    // existe. Le filtre est en base : on le vérifie sur le `where`.
+    await evaluerAlertes();
+    const appels = mp.trainingSession.findMany.mock.calls.map(
+      (c) => (c[0] as { where: Record<string, unknown> }).where,
+    );
+    const w = appels.find((x) => Array.isArray(x["AND"])) as
+      { AND: Array<Record<string, unknown>>; statut: unknown; dateDebut: unknown } | undefined;
+    expect(w, "la règle n'interroge pas la base comme prévu").toBeDefined();
+    if (w === undefined) return;
+    expect(w.AND[0]).toHaveProperty("enrollments.some");
+    expect(w.AND[1]).toHaveProperty("enrollments.none");
+    // Fenêtre glissante : sans borne haute, le premier passage remonterait tout
+    // l'historique d'un coup.
+    expect(w.dateDebut).toHaveProperty("gte");
+    expect(w.dateDebut).toHaveProperty("lte");
+  });
+});

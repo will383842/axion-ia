@@ -258,15 +258,18 @@ export async function expandVilleAnchors(
   radiusKm: number | null,
 ): Promise<string[]> {
   if (mode === "none" || baseSlugs.length === 0) return baseSlugs;
-  const [{ getNearbyVilles }, { getVille }] = await Promise.all([
+  // `core` et non le barrel `@/content/villes` : on ne lit ici que geo et
+  // departement. Le barrel tire 29 Mo de contenu éditorial (2 118 imports
+  // statiques) dont rien n'est utilisé — ~578 ms contre ~41 s à froid.
+  const [{ getNearbyVilles }, { getVilleCore }] = await Promise.all([
     import("@/lib/geo"),
-    import("@/content/villes"),
+    import("@/content/villes/core"),
   ]);
   const out = new Set<string>(baseSlugs);
   const radius = radiusKm && radiusKm > 0 ? radiusKm : 50;
   for (const slug of baseSlugs) {
     if (out.size >= MAX_EXPANDED_VILLES) break;
-    const origin = getVille(slug);
+    const origin = getVilleCore(slug);
     if (!origin) continue;
     if (mode === "radius") {
       const nearby = getNearbyVilles(origin.geo, NEARBY_PER_ANCHOR, {

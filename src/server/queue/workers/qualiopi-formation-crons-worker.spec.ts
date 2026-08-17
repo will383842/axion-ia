@@ -75,6 +75,15 @@ vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   synchroniserAlertes: vi.fn().mockResolvedValue({ crees: 0, resolues: 0 }),
 }));
 
+// Lot 14 — la notification des alertes a quitté le cron pour `envoi-groupe`.
+// Ce qui reste à tester ICI, c'est la DÉLÉGATION et le fail-soft ; le routage,
+// le groupage et le claim sont testés dans `alertes/envoi-groupe.spec.ts`.
+vi.mock("@/server/qualiopi/alertes/envoi-groupe", () => ({
+  notifierAlertesGroupees: vi
+    .fn()
+    .mockResolvedValue({ messages: 0, alertes: 0, sansGuichet: 0, replis: [] }),
+}));
+
 vi.mock("@/server/qualiopi/formations/state-machine", () => ({
   assertSessionTransition: vi.fn(),
 }));
@@ -92,9 +101,9 @@ import {
   envoyerConvocation,
   envoyerRelanceQuestionnaire,
   envoyerEnqueteEntreprise,
-  notifierAlerteInterne,
 } from "@/server/qualiopi/notifications/notifications-service";
 import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe";
 import { decideSessionTransitions } from "@/server/qualiopi/formations/crons";
 import { formationCronsHandler } from "./qualiopi-formation-crons-worker";
 
@@ -121,8 +130,8 @@ const mockPrisma = prisma as unknown as {
 const mockEnvoyerConvocation = envoyerConvocation as ReturnType<typeof vi.fn>;
 const mockEnvoyerRelance = envoyerRelanceQuestionnaire as ReturnType<typeof vi.fn>;
 const mockEnvoyerEnquete = envoyerEnqueteEntreprise as ReturnType<typeof vi.fn>;
-const mockNotifierAlerteInterne = notifierAlerteInterne as ReturnType<typeof vi.fn>;
 const mockSynchroniserAlertes = synchroniserAlertes as ReturnType<typeof vi.fn>;
+const mockNotifierGroupees = notifierAlertesGroupees as ReturnType<typeof vi.fn>;
 const mockDecide = decideSessionTransitions as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -377,70 +386,53 @@ describe("handleAlertes (via formationCronsHandler)", () => {
     vi.clearAllMocks();
     delete process.env["DATABASE_URL"];
     mockSynchroniserAlertes.mockResolvedValue({ crees: 0, resolues: 0 });
+    mockNotifierGroupees.mockResolvedValue({
+      messages: 0,
+      alertes: 0,
+      sansGuichet: 0,
+      replis: [],
+    });
   });
 
-  it("notifie chaque alerte critique non-résolue et non-notifiée", async () => {
-    mockPrisma.alerteSysteme.findMany.mockResolvedValue([{ id: "alerte-1" }, { id: "alerte-2" }]);
-    mockNotifierAlerteInterne.mockResolvedValue(undefined);
+  it("synchronise PUIS notifie — dans cet ordre", async () => {
+    // 🔴 L'ordre porte du sens : notifier avant de synchroniser enverrait
+    // l'état d'hier, et notamment des alertes que la synchro s'apprêtait à
+    // résoudre. On alerterait sur des causes déjà disparues.
+    const appels: string[] = [];
+    mockSynchroniserAlertes.mockImplementation(async () => {
+      appels.push("sync");
+      return { crees: 3, resolues: 1 };
+    });
+    mockNotifierGroupees.mockImplementation(async () => {
+      appels.push("notif");
+      return { messages: 2, alertes: 7, sansGuichet: 0, replis: [] };
+    });
 
     await formationCronsHandler({
       type: "formation-crons.alertes",
       tick: "2026-06-06T07:00:00Z",
     });
 
-    // Filtre = non-résolue + non-notifiée, ET (critique OU code de déblocage
-    // du parcours vente) — le seuil critique reste l'anti-spam par défaut.
-    const findArgs = mockPrisma.alerteSysteme.findMany.mock.calls[0]![0] as {
-      where: Record<string, unknown>;
-    };
-    expect(findArgs.where).toMatchObject({
-      resolue: false,
-      notifiedAt: null,
-      OR: [
-        { niveau: "critique" },
-        { code: { in: ["devis_signe_convention", "moteur_assemble_a_publier"] } },
-      ],
-    });
-    expect(mockNotifierAlerteInterne).toHaveBeenCalledTimes(2);
-    expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-1");
-    expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-2");
+    expect(appels).toEqual(["sync", "notif"]);
+    expect(mockNotifierGroupees).toHaveBeenCalledTimes(1);
   });
 
-  it("les DÉBLOCAGES vente sont notifiés même sans être critiques", async () => {
-    // Promesse du plan « Nouvelle vente » §1a : devis signé et fin de cycle
-    // moteur préviennent l'équipe par email — sans camper l'écran d'alertes.
-    mockPrisma.alerteSysteme.findMany.mockResolvedValue([{ id: "alerte-deblocage" }]);
-    mockNotifierAlerteInterne.mockResolvedValue(undefined);
-
-    await formationCronsHandler({
-      type: "formation-crons.alertes",
-      tick: "2026-08-05T07:00:00Z",
-    });
-
-    expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-deblocage");
-  });
-
-  it("ne notifie rien si aucune alerte critique en attente", async () => {
-    mockPrisma.alerteSysteme.findMany.mockResolvedValue([]);
-
+  it("le cron ne lit plus les alertes lui-même", async () => {
+    // Lot 14 — la sélection des candidates (non résolue, non notifiée,
+    // critique OU code de déblocage) appartient désormais à `envoi-groupe`,
+    // qui la teste. La garder ici en double la ferait diverger le jour où
+    // l'une des deux change : c'est le défaut de duplication du Lot 10.
     await formationCronsHandler({
       type: "formation-crons.alertes",
       tick: "2026-06-06T07:00:00Z",
     });
-
-    expect(mockNotifierAlerteInterne).not.toHaveBeenCalled();
+    expect(mockPrisma.alerteSysteme.findMany).not.toHaveBeenCalled();
   });
 
-  it("continue en cas d'erreur sur une notification (fail-soft)", async () => {
-    mockPrisma.alerteSysteme.findMany.mockResolvedValue([
-      { id: "alerte-ok-1" },
-      { id: "alerte-ko" },
-      { id: "alerte-ok-2" },
-    ]);
-    mockNotifierAlerteInterne
-      .mockResolvedValueOnce(undefined)
-      .mockRejectedValueOnce(new Error("Email service down"))
-      .mockResolvedValueOnce(undefined);
+  it("continue en cas d'erreur de notification (fail-soft)", async () => {
+    // Le cron ne doit JAMAIS remonter une erreur : BullMQ rejouerait le job,
+    // et la synchronisation repasserait sur toute la base pour un e-mail.
+    mockNotifierGroupees.mockRejectedValue(new Error("Email service down"));
 
     await expect(
       formationCronsHandler({
@@ -448,8 +440,17 @@ describe("handleAlertes (via formationCronsHandler)", () => {
         tick: "2026-06-06T07:00:00Z",
       }),
     ).resolves.toBeUndefined();
+  });
 
-    expect(mockNotifierAlerteInterne).toHaveBeenCalledTimes(3);
+  it("une erreur de synchronisation n'empêche pas le cron d'aboutir", async () => {
+    mockSynchroniserAlertes.mockRejectedValue(new Error("DB down"));
+
+    await expect(
+      formationCronsHandler({
+        type: "formation-crons.alertes",
+        tick: "2026-06-06T07:00:00Z",
+      }),
+    ).resolves.toBeUndefined();
   });
 });
 

@@ -29,6 +29,8 @@ import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { regimeEstimationMutualisee } from "@/server/qualiopi/financements/estimation-certification";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
   isRegimeTva,
@@ -400,6 +402,15 @@ export async function sendDevisAction(
           devis.financementSuggere)
         : undefined;
 
+    // Sous-lot 8G — décidé UNE fois, ici, avec l'état réel du drapeau, puis
+    // transmis au gabarit. Le gabarit ne lit pas la configuration : un PDF qui
+    // consulterait l'environnement rendrait deux pièces différentes pour le
+    // même devis selon l'endroit d'où on le regénère.
+    const regimeEstimation = regimeEstimationMutualisee(
+      devis.financementSuggere,
+      isQualiopiCertificationObtenue(),
+    );
+
     const data: DevisData = {
       numero: devis.numero,
       dateEmission: formatDate(new Date()),
@@ -417,10 +428,21 @@ export async function sendDevisAction(
       ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),
       ...(devis.activite !== null ? { activiteLabel: ACTIVITE_LABELS[devis.activite] } : {}),
       ...(financementLabel !== undefined ? { financementSuggere: financementLabel } : {}),
-      ...(devis.montantOpcoEstimeCents !== null
-        ? { montantOpcoEstimeCents: devis.montantOpcoEstimeCents }
-        : {}),
-      ...(devis.resteAChargeCents !== null ? { resteAChargeCents: devis.resteAChargeCents } : {}),
+      // 🔴 Sous-lot 8G — les montants d'estimation ne partent au PDF que si le
+      // financement mutualisé est réellement accessible. Sinon la pièce porte
+      // la mention à leur place : l'accès aux fonds OPCO/CPF/France Travail est
+      // subordonné à la certification (L.6316-1), et un devis est l'offre que
+      // le client accepte, pas une note de travail.
+      ...(regimeEstimation.presentable
+        ? {
+            ...(devis.montantOpcoEstimeCents !== null
+              ? { montantOpcoEstimeCents: devis.montantOpcoEstimeCents }
+              : {}),
+            ...(devis.resteAChargeCents !== null
+              ? { resteAChargeCents: devis.resteAChargeCents }
+              : {}),
+          }
+        : { mentionEstimationIndisponible: regimeEstimation.mention ?? "" }),
     };
 
     const yearGeneration = new Date().getFullYear();

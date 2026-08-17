@@ -224,6 +224,87 @@ function designerSession(s: {
 }
 
 /** R03bis — Session sans formateur : démarre sous 7 jours, aucun formateur principal assigné. */
+/**
+ * R03quater — LA SESSION A COMMENCÉ ET PERSONNE NE PEUT SIGNER.
+ *
+ * 🔴 Le trou constaté sur le premier dossier réel, AXI-SESS-2026-005 : la
+ * stagiaire n'a jamais pu émarger, et **aucune alerte ne pouvait le signaler
+ * tant qu'il était encore temps**.
+ *
+ *   · R03 `emargement_manquant` exige `statut = "realisee"`. Or la clôture
+ *     automatique refuse de passer en `realisee` une session dont aucun inscrit
+ *     ne porte de trace de présence (`skippedSansEmargement`). Une session non
+ *     émargée reste `en_cours` — R03 ne la voit donc JAMAIS. La garde qui
+ *     protège la clôture aveugle l'alerte qui devait la surveiller.
+ *   · R03ter `session_bloquee_en_cours` attend `dateFin ≤ now − 3 j`, soit un
+ *     jour APRÈS l'expiration des jetons (fenêtre de 48 h après la fin).
+ *
+ * Les deux CONSTATENT après coup. Celle-ci se lève pendant que le rattrapage
+ * est encore possible : émettre les liens et les envoyer prend deux minutes le
+ * jour même, et rien du tout trois jours plus tard.
+ *
+ * ⚠️ Le diagnostic est VÉRIFIÉ, pas supposé : on exige qu'il y ait des inscrits
+ * ET qu'aucun d'eux n'ait de jeton vivant. Une session sans inscrit n'a rien à
+ * faire signer ; une session dont les jetons ont été volontairement révoqués
+ * (report, annulation) ne relève pas de cette alerte non plus — elle sera
+ * couverte par sa propre trajectoire.
+ */
+async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      // Elle a commencé, et pas il y a un mois : fenêtre glissante de 7 jours,
+      // pour la même raison que R03ter — sans borne haute, le premier passage
+      // remonterait toutes les sessions jamais émargées de l'historique.
+      dateDebut: { lte: now, gte: daysAgo(7, now) },
+      AND: [
+        // Il y a bien quelqu'un à faire signer.
+        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        // Et personne n'a de lien vivant.
+        {
+          enrollments: {
+            none: {
+              emargementTokens: { some: { revokedAt: null, expiresAt: { gt: now } } },
+            },
+          },
+        },
+      ],
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      client: { select: { raisonSociale: true } },
+      _count: { select: { enrollments: true, jours: true } },
+    },
+    take: 50,
+  });
+
+  return sessions.map((s) => {
+    // Le message NOMME la cause première : sans journées déclarées, l'émission
+    // des liens est refusée à la racine (`creerTokenInscription` lève). Dire
+    // « aucun lien émis » sans dire pourquoi enverrait chercher au mauvais
+    // endroit.
+    const causePremiere =
+      s._count.jours === 0
+        ? "Aucune journée n'est déclarée : l'émission des liens sera refusée tant que ce n'est pas fait. Déclarez les journées, générez les créneaux, puis envoyez les liens."
+        : "Les journées sont déclarées : émettez les liens et envoyez-les aux stagiaires.";
+    return {
+      code: "session_sans_dispositif_emargement",
+      niveau: "critique" as AlerteNiveau,
+      titre: "Session en cours sans dispositif de signature",
+      message:
+        `La session ${designerSession(s)} a commencé et aucun de ses ${s._count.enrollments} ` +
+        `inscrit${s._count.enrollments > 1 ? "s" : ""} ne dispose d'un lien de signature valide. ` +
+        `Personne ne peut émarger. ${causePremiere} ` +
+        `Les liens expirent 48 h après la fin de la session : passé ce délai, la feuille restera vierge.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    };
+  });
+}
+
 async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> {
   const horizon = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
   const sessions = await prisma.trainingSession.findMany({
@@ -1574,16 +1655,28 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
       financeurNom: true,
       numeroDossierExterne: true,
       echeanceFinanceurAt: true,
+      // 🔴 16/08 — sans subrogation, le financeur ne verse RIEN à l'organisme :
+      // il rembourse son adhérent. L'alerte disait pourtant « relancer le
+      // financeur » dans les deux cas, ce qui envoie réclamer à quelqu'un qui
+      // ne doit rien et laisse le vrai débiteur tranquille. Le message suit
+      // désormais le circuit réel.
+      subrogation: true,
       ...SELECT_DOSSIER_LIBELLE,
     },
   });
   for (const d of enRetard) {
     if (!d.echeanceFinanceurAt) continue;
+    const echeance = d.echeanceFinanceurAt.toLocaleDateString("fr-FR");
+    const financeur = d.financeurNom ?? "financeur non nommé";
     alertes.push({
       code: "financeur_paiement_en_retard",
       niveau: "critique",
-      titre: "Paiement du financeur en retard (échéance dépassée)",
-      message: `Le paiement du dossier ${libelleDossier(d)} (${d.financeurNom ?? "financeur non nommé"}) était attendu le ${d.echeanceFinanceurAt.toLocaleDateString("fr-FR")} et n'est pas reçu : relancer le financeur.`,
+      titre: d.subrogation
+        ? "Paiement du financeur en retard (échéance dépassée)"
+        : "Encaissement en retard — hors subrogation, c'est le client qui doit",
+      message: d.subrogation
+        ? `Le paiement du dossier ${libelleDossier(d)} (${financeur}) était attendu le ${echeance} et n'est pas reçu : relancer le financeur.`
+        : `Le règlement du dossier ${libelleDossier(d)} était attendu le ${echeance} et n'est pas reçu. ⚠️ Ce dossier est SANS subrogation : ${financeur} rembourse le client, il ne verse rien à l'organisme. C'est le CLIENT qu'il faut relancer.`,
       cibleType: "DossierFinancement",
       cibleId: d.id,
     });
@@ -1876,6 +1969,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
   { nom: "kit_sorties_non_pretes", fn: regleSortiesKitNonPretes },
   { nom: "session_bloquee_en_cours", fn: regleSessionBloqueeEnCours },
+  { nom: "session_sans_dispositif_emargement", fn: regleSessionSansDispositifEmargement },
   { nom: "diaporama_manquant_session", fn: regleDiaporamaManquant },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },

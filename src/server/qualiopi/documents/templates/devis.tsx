@@ -164,6 +164,18 @@ export interface DevisData {
   montantOpcoEstimeCents?: number;
   /** Reste à charge client estimé (centimes) — indicatif. */
   resteAChargeCents?: number;
+  /**
+   * Sous-lot 8G — mention qui REMPLACE l'estimation quand le financement
+   * mutualisé n'est pas accessible faute de certification (L.6316-1).
+   *
+   * 🔴 Sa présence retire les montants du bloc : ce n'est pas un complément
+   * d'information, c'est une substitution. Un devis qui porterait à la fois
+   * « Prise en charge estimée : 2 400 € » et « aucune estimation n'est
+   * communiquée » se lirait comme une contradiction, et le client retiendrait
+   * le chiffre. Résolue par `regimeEstimationMutualisee()` chez l'appelant, une
+   * seule fois, avec l'état réel du drapeau de certification.
+   */
+  mentionEstimationIndisponible?: string;
   estCopie?: boolean;
   /**
    * Preuves de signature RÉELLEMENT apposées, par partie.
@@ -203,8 +215,16 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
   const cgvMention = siteBase
     ? `L'acceptation du présent devis emporte acceptation des Conditions générales de vente d'${identite.raisonSociale || "Axion-IA"}, consultables sur ${siteBase}/conditions-generales et communiquées sur simple demande. Elles prévalent sur toutes conditions d'achat du client, sauf dérogation écrite et signée des deux parties.`
     : `L'acceptation du présent devis emporte acceptation des Conditions générales de vente, communiquées sur simple demande. Elles prévalent sur toutes conditions d'achat du client, sauf dérogation écrite et signée des deux parties.`;
+  // Sous-lot 8G — la mention d'indisponibilité PRIME sur les montants : voir le
+  // commentaire de `mentionEstimationIndisponible`. Le bloc reste affiché (le
+  // client doit savoir que le dispositif existe), seuls les chiffres partent.
+  const estimationIndisponible =
+    data.mentionEstimationIndisponible !== undefined &&
+    data.mentionEstimationIndisponible.trim() !== "";
   const afficheEstimation =
-    data.montantOpcoEstimeCents !== undefined || data.resteAChargeCents !== undefined;
+    estimationIndisponible ||
+    data.montantOpcoEstimeCents !== undefined ||
+    data.resteAChargeCents !== undefined;
 
   return (
     <Document>
@@ -291,18 +311,25 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
         {/* Estimation de financement (indicative — jamais contractuelle) */}
         {afficheEstimation ? (
           <LegalCallout variant="info" title="Estimation de financement">
-            {[
-              data.financementSuggere !== undefined && data.financementSuggere !== ""
-                ? `Financement suggéré : ${data.financementSuggere}. `
-                : "",
-              data.montantOpcoEstimeCents !== undefined
-                ? `Prise en charge estimée : ${formatEurosFromCents(data.montantOpcoEstimeCents)}. `
-                : "",
-              data.resteAChargeCents !== undefined
-                ? `Reste à charge estimé : ${formatEurosFromCents(data.resteAChargeCents)}. `
-                : "",
-              "Estimation indicative, non contractuelle — sous réserve de l'accord de prise en charge du financeur.",
-            ].join("")}
+            {estimationIndisponible
+              ? [
+                  data.financementSuggere !== undefined && data.financementSuggere !== ""
+                    ? `Financement envisagé : ${data.financementSuggere}. `
+                    : "",
+                  data.mentionEstimationIndisponible ?? "",
+                ].join("")
+              : [
+                  data.financementSuggere !== undefined && data.financementSuggere !== ""
+                    ? `Financement suggéré : ${data.financementSuggere}. `
+                    : "",
+                  data.montantOpcoEstimeCents !== undefined
+                    ? `Prise en charge estimée : ${formatEurosFromCents(data.montantOpcoEstimeCents)}. `
+                    : "",
+                  data.resteAChargeCents !== undefined
+                    ? `Reste à charge estimé : ${formatEurosFromCents(data.resteAChargeCents)}. `
+                    : "",
+                  "Estimation indicative, non contractuelle — sous réserve de l'accord de prise en charge du financeur.",
+                ].join("")}
           </LegalCallout>
         ) : null}
 

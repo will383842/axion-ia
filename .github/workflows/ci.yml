@@ -613,3 +613,21 @@ jobs:
             await p.\$disconnect();
           })().catch(err => { console.error('::error::', err.message); process.exit(1); });
           "
+
+      # ── T0 — volumétrie (plan de tenue à la charge, § T0) ─────────────────
+      #
+      # 🔴 Pourquoi ici, et pas dans un job à part : Gate D est le SEUL endroit
+      # du dépôt qui dispose d'un Postgres migré à neuf. Un job dédié devrait
+      # réinstaller les dépendances et re-migrer pour la même chose — quinze
+      # minutes de CI pour recréer ce qui existe déjà trois lignes plus haut.
+      #
+      # La vérification « zéro ligne sur base fraîche » ci-dessus tourne AVANT :
+      # on ne seede qu'après l'avoir passée, sinon la fixture la ferait échouer.
+      - name: Fixture volumétrique (1 200 sessions, 8 000 inscriptions)
+        run: pnpm volumetrie:seed
+      - name: Mesure des surfaces admin au volume cible
+        # Rouge si une liste admin n'a pas de baseline committée, ou si elle est
+        # plus lente que son budget. C'est l'exigence du plan T0 : « la CI refuse
+        # un merge touchant les listes admin si aucune baseline volumétrique
+        # n'est committée ». Le journal imprime les valeurs à committer.
+        run: pnpm volumetrie:mesure

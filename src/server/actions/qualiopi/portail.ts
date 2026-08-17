@@ -24,6 +24,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { enqueueEmail } from "@/server/queue/queues";
 import {
   requireAdminWrite,
   requireSuperAdmin,
@@ -393,13 +394,39 @@ export async function demanderSuppressionRgpdAction(): Promise<ActionResult<{ id
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Génère un accès portail pour un stagiaire (ADMIN).
- * Retourne le token et l'URL de connexion à transmettre au stagiaire.
+ * Génère un accès portail pour un stagiaire (ADMIN) **et le lui envoie**.
+ *
+ * 🔴 L'envoi manquait, et l'écran affirmait le contraire. `creerAcces` créait le
+ * jeton, journalisait, rendait l'URL — et rien ne partait. La fiche session
+ * affichait alors « Accès actif — expire le … » : vrai en base, faux pour la
+ * personne concernée, qui n'avait jamais rien reçu. Le seul émetteur du gabarit
+ * `qualiopi-portail-acces` était `demanderAccesParEmail`, c'est-à-dire le
+ * self-service « j'ai perdu mon lien » — un chemin que le stagiaire ne peut
+ * emprunter que s'il connaît déjà l'existence de son espace.
+ *
+ * ⚠️ L'e-mail porte `ouvertParOrganisme: true`. Sans ce drapeau, le gabarit
+ * dirait « vous avez demandé un nouveau lien […] vous pouvez ignorer cet
+ * email » à quelqu'un qui n'a rien demandé — exactement le défaut corrigé le
+ * 15/08 sur le positionnement.
+ *
+ * L'envoi est FAIL-SOFT : l'accès est créé et rendu même si l'e-mail échoue,
+ * avec `envoyeAuStagiaire: false`. Perdre l'accès parce que la file d'e-mails
+ * est indisponible serait pire que devoir transmettre le lien à la main — mais
+ * l'appelant doit savoir lequel des deux cas il a sous les yeux, sinon on
+ * recrée le mensonge qu'on vient de retirer.
  */
 export async function genererPortailAccesAction(input: {
   traineeId: string;
   joursValidite?: number;
-}): Promise<ActionResult<{ id: string; token: string; url: string; expiresAt: Date }>> {
+}): Promise<
+  ActionResult<{
+    id: string;
+    token: string;
+    url: string;
+    expiresAt: Date;
+    envoyeAuStagiaire: boolean;
+  }>
+> {
   const session = await requireAdminWrite();
 
   const parsed = genererPortailAccesSchema.safeParse(input);
@@ -415,15 +442,48 @@ export async function genererPortailAccesAction(input: {
   const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://axion-ia.com";
   const url = `${baseUrl}/fr/portail/acces/${acces.token}`;
 
+  let envoyeAuStagiaire = false;
+  try {
+    const stagiaire = await prisma.trainee.findUnique({
+      where: { id: v.traineeId },
+      select: { email: true, nom: true, prenom: true },
+    });
+    if (stagiaire !== null && stagiaire.email !== "") {
+      await enqueueEmail(
+        "qualiopi-portail-acces",
+        stagiaire.email,
+        "fr",
+        {
+          stagiairePrenomNom: `${stagiaire.prenom} ${stagiaire.nom}`.trim(),
+          lienPortail: url,
+          ouvertParOrganisme: true,
+        },
+        {
+          jobId: `qualiopi-portail-acces-admin-${acces.id}-${Date.now()}`,
+          entityType: "PortailAcces",
+          entityId: acces.id,
+        },
+      );
+      envoyeAuStagiaire = true;
+    }
+  } catch (err) {
+    console.error(
+      "[portail] accès créé mais e-mail non envoyé",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+
   await logQualiopiActivity({
     action: "qualiopi.portail.generer_acces",
     targetType: "PortailAcces",
     targetId: acces.id,
-    changes: { traineeId: v.traineeId, expiresAt: acces.expiresAt },
+    changes: { traineeId: v.traineeId, expiresAt: acces.expiresAt, envoyeAuStagiaire },
     session,
   });
 
-  return { data: { id: acces.id, token: acces.token, url, expiresAt: acces.expiresAt } };
+  return {
+    data: { id: acces.id, token: acces.token, url, expiresAt: acces.expiresAt, envoyeAuStagiaire },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

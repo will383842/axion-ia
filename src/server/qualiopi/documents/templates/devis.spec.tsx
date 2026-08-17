@@ -209,6 +209,46 @@ describe("DevisPdf — estimation de financement", () => {
     const text = devisText(makeDevis());
     expect(text).not.toContain("Estimation de financement");
   });
+
+  // ── Sous-lot 8G — la certification commande l'impression du montant ──────
+  //
+  // 🔴 Le test qui doit rougir : un devis OPCO émis sans certification ne doit
+  // porter AUCUN chiffre de prise en charge. L'audit OPCO du 15/08 (T8) a
+  // constaté l'inverse — le montant s'imprimait sur l'offre que le client
+  // accepte, pour un financement que l'art. L.6316-1 rend inaccessible.
+  it("🔴 la mention d'indisponibilité RETIRE les montants au lieu de s'y ajouter", () => {
+    const text = devisText(
+      makeDevis({
+        financementSuggere: "OPCO",
+        // Les montants sont présents dans les données — c'est exactement le
+        // piège : le gabarit doit les ignorer, pas compter sur leur absence.
+        montantOpcoEstimeCents: 150000,
+        resteAChargeCents: 130000,
+        mentionEstimationIndisponible:
+          "Financement mutualisé (OPCO, CPF, France Travail) : aucune estimation de prise en " +
+          "charge n'est communiquée à ce stade. L'accès à ces fonds est subordonné à la " +
+          "certification Qualiopi de l'organisme (art. L.6316-1).",
+      }),
+    );
+    const normalise = text.replace(/ | /g, " ");
+    expect(normalise).not.toContain("1 500,00");
+    expect(normalise).not.toContain("1 300,00");
+    expect(text).not.toContain("Prise en charge estimée");
+    expect(text).not.toContain("Reste à charge estimé");
+  });
+
+  it("mais garde le bloc VISIBLE et explique — un silence ferait croire qu'aucun financement n'existe", () => {
+    const text = devisText(
+      makeDevis({
+        financementSuggere: "OPCO",
+        mentionEstimationIndisponible:
+          "aucune estimation de prise en charge n'est communiquée à ce stade (art. L.6316-1)",
+      }),
+    );
+    expect(text).toContain("Estimation de financement");
+    expect(text).toContain("Financement envisagé : OPCO");
+    expect(text).toContain("L.6316-1");
+  });
 });
 
 describe("DevisPdf — identifiants émetteur manquants signalés (jamais masqués)", () => {

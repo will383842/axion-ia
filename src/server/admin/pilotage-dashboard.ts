@@ -121,7 +121,10 @@ interface Plage {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface TuilesPilotage {
-  /** Lignes a_preparer + en_cours + signature_attente. Affiché « 200+ » si plafonné. */
+  /**
+   * Lignes a_preparer + en_cours + signature_attente + attente_financeur.
+   * Affiché « 200+ » si plafonné.
+   */
   dossiersActifs: string;
   /** Lignes de la colonne « À solder ». Affiché « 200+ » si plafonné. */
   aSolder: string;
@@ -1045,8 +1048,21 @@ export async function getPilotageDashboard(
 
   // Tuiles. CA de la période = sessions/audits réalisés + coaching signé —
   // même addition sur N-1 pour que le delta compare des périmètres identiques.
+  // 🔴 Sous-lot 8D — `attente_financeur` DOIT entrer dans ce compte.
+  //
+  // Ces lignes se trouvaient auparavant dans `a_preparer` : les extraire dans
+  // une colonne à elles aurait, sans cette ligne, fait BAISSER « dossiers
+  // actifs » sans qu'aucune affaire ne disparaisse. Un indicateur qui bouge
+  // parce qu'on a rangé autrement, et non parce que la réalité a changé, est un
+  // chiffre faux mais plausible — la pire espèce, personne ne le vérifie.
+  //
+  // Et sur le fond : une affaire qui attend l'accord de son financeur est on ne
+  // peut plus ACTIVE. C'est même celle qui demande le plus d'attention.
   const nbActifs =
-    pipeline.a_preparer.length + pipeline.en_cours.length + pipeline.signature_attente.length;
+    pipeline.a_preparer.length +
+    pipeline.en_cours.length +
+    pipeline.signature_attente.length +
+    pipeline.attente_financeur.length;
   const margeMois = consolidation.mois.find((m) => m.mois === moisCourant)?.margeCents ?? 0;
   const caToutesActivites = caPeriode + caCoachingPeriode;
   const caToutesActivitesN1 = caPeriodeN1 + caCoachingPeriodeN1;

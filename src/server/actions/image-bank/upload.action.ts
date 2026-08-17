@@ -116,6 +116,13 @@ export async function uploadImageAction(formData: FormData): Promise<UploadActio
     const isLogo = resolvedModule === "logo";
     const created = await imageBankService.create(
       {
+        // 🔴 GEO-094 — l'id de la ligne DOIT être le nom du dossier de stockage.
+        // Le pipeline a écrit dans `<base>/<imported.uuid>/`, et tous les
+        // consommateurs publics reconstruisent `{CDN}/image-bank/{image.id}/…`.
+        // Sans cette ligne, Prisma générait un id sans rapport et la fiche
+        // pointait un dossier inexistant : les images téléversées depuis la
+        // console ne s'affichaient ni ne se téléchargeaient en production.
+        id: imported.uuid,
         filePath: imported.filePath,
         thumbnailPath: imported.thumbnailPath,
         ...(imported.avifPath ? { avifPath: imported.avifPath } : {}),

@@ -136,14 +136,20 @@ describe("shouldNotifyWhatsApp", () => {
     }
   });
 
-  it("faux pour contact / support / podcast (retirés le 2026-08-09 — pas urgents)", () => {
-    for (const c of [
-      "CONTACT_FORM_SUBMITTED",
-      "CUSTOMER_SUPPORT_REQUEST",
-      "PODCAST_REQUEST_SUBMITTED",
-    ] as const) {
+  it("faux pour support / podcast (retirés le 2026-08-09 — pas urgents)", () => {
+    for (const c of ["CUSTOMER_SUPPORT_REQUEST", "PODCAST_REQUEST_SUBMITTED"] as const) {
       expect(shouldNotifyWhatsApp(c), c).toBe(false);
     }
+  });
+
+  // Décision INVERSÉE le 2026-08-16, sur demande explicite de Will après un
+  // envoi de contrôle où rien n'est arrivé sur son téléphone. Le formulaire
+  // unifié est la porte d'entrée commerciale du site : une demande qui dort
+  // jusqu'à la prochaine ouverture de Telegram coûte plus cher que la dilution
+  // du fil. Ce test remplace celui qui verrouillait l'exclusion — il verrouille
+  // maintenant l'inverse, pour que le prochain retrait soit lui aussi conscient.
+  it("VRAI pour le formulaire de contact (remis le 2026-08-16)", () => {
+    expect(shouldNotifyWhatsApp("CONTACT_FORM_SUBMITTED")).toBe(true);
   });
 
   // Garde générale plutôt qu'un échantillon : couvre newsletter, déploiements,

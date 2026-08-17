@@ -42,6 +42,7 @@ import {
   listSuggestedOffers,
 } from "@/lib/careers/job-offers";
 import type { JobOffer } from "../../../../../prisma/generated/client";
+import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
 export const revalidate = 3600;
 
@@ -280,7 +281,11 @@ export default async function JobOfferDetailPage({
 
   const title = isFr ? offer.titleFr : offer.titleEn;
   const summary = isFr ? offer.summaryFr : offer.summaryEn;
-  const bodyHtml = sanitizeContentGenHtml(isFr ? offer.bodyFr : offer.bodyEn);
+  // GEO-079/081 — reecriture des liens internes au rendu (cf. le module dedie).
+  const bodyHtml = prefixerLiensInternes(
+    sanitizeContentGenHtml(isFr ? offer.bodyFr : offer.bodyEn),
+    loc,
+  );
   const sal = salaryLabel(offer, isFr);
   const applyHref = `/carrieres/${offer.slug}/postuler`;
   const isClosed = isOfferClosed(offer);

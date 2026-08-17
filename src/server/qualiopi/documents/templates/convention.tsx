@@ -380,6 +380,40 @@ export function ConventionPdf({
             à mettre à disposition un local et les équipements convenus, conformes aux règles
             d&apos;hygiène et de sécurité qui lui incombent.
           </Text>
+          {/*
+            🔴 16/08 — LA CLAUSE QUI MANQUAIT LÀ OÙ ELLE SERT LE PLUS.
+
+            La convention TRIPARTITE a reçu ce jour-là sa clause de défaillance
+            du financeur. Mais la tripartite n'existe QUE s'il y a subrogation.
+            Sans subrogation — le client règle l'organisme et se fait rembourser
+            par son OPCO — la pièce contractuelle est CELLE-CI, et elle ne
+            portait pas un mot sur le financement : ni « OPCO », ni
+            « financeur », ni « subrogation ». Vérifié : zéro occurrence, ici
+            comme aux CGV.
+
+            Or c'est exactement la configuration où le risque se réalise. Si
+            l'OPCO refuse, réduit ou revient sur son accord, la somme reste due
+            à l'organisme — mais aucun texte ne le disait au client, qui pouvait
+            de bonne foi considérer sa dette éteinte par le refus d'un tiers.
+
+            Le texte suit celui de la tripartite : deux rédactions différentes
+            du même engagement, sur deux pièces du même dossier, s'interprètent
+            l'une contre l'autre (art. 1190 C. civ.).
+
+            ⚠️ Rédigée pour être opposable et lisible, elle n'a pas été relue
+            par un avocat — pas plus que le reste de cette pièce. Elle vaut
+            mieux que le silence, qui était l'état précédent.
+          */}
+          <Text style={pdfStyles.paragraph}>
+            Lorsque le client sollicite une prise en charge auprès d&apos;un financeur (opérateur de
+            compétences, France Travail ou tout autre organisme), cette démarche relève de la
+            relation entre le client et son financeur. Elle ne modifie ni le prix convenu, ni son
+            exigibilité : en l&apos;absence de subrogation de paiement expressément convenue, le
+            client règle l&apos;intégralité du prix à l&apos;organisme et fait son affaire du
+            remboursement. En cas de refus, de réduction, de caducité de l&apos;accord ou de
+            non-paiement par le financeur, pour quelque cause que ce soit, les sommes
+            correspondantes demeurent dues par le client.
+          </Text>
         </DocSection>
 
         {/* 6. Données personnelles */}

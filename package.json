@@ -72,6 +72,8 @@
     "image-bank:isolation-check": "tsx scripts/image-bank/isolation-check.ts",
     "qualiopi:seed": "tsx prisma/seeds/qualiopi/index.ts",
     "qualiopi:seed-demo": "tsx prisma/seeds/qualiopi/demo.ts",
+    "volumetrie:seed": "tsx prisma/seeds/volumetrie/fixture-volumetrique.ts",
+    "volumetrie:mesure": "tsx scripts/volumetrie/mesurer.ts",
     "qualiopi:purge-demo": "tsx prisma/scripts/purge-demo-qualiopi.ts",
     "backfill:echeance": "tsx scripts/backfill-echeance-factures.ts",
     "calendly:webhook:subscribe": "tsx scripts/calendly-webhook-subscribe.ts",
@@ -98,7 +100,8 @@
     "worker": "tsx src/server/queue/worker.ts",
     "adr:new": "tsx scripts/adr-new.ts",
     "verify:all": "pnpm typecheck && pnpm lint && pnpm i18n:check && pnpm anti-siren:check && pnpm anti-hex:check && pnpm use-client:check && pnpm contrast:check && pnpm radius:check && pnpm admin-nav:routes-check && pnpm image-bank:isolation-check && pnpm qualiopi:isolation-check && pnpm test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "notif:test-telegram": "tsx scripts/notif/test-telegram.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.1",

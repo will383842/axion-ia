@@ -22,7 +22,11 @@
  *   8. kb_sectorielle      : kb_sector_tags (1)
  */
 
-import { getVille, VILLES } from "@/content/villes";
+// Structure depuis `core` (~578 ms) et data économique depuis son propre module
+// (~1,25 s) : ce fichier a besoin des deux, mais JAMAIS du contenu éditorial —
+// inutile de payer les 29 Mo de `copy/` que traîne le barrel `@/content/villes`.
+import { getVilleCore, VILLES_CORE } from "@/content/villes/core";
+import { getVilleEconomicData } from "@/content/villes/economic-data";
 import type { EconomicDataDimension } from "@/content/villes/economic-data/types";
 import { requireAdmin } from "./_auth";
 
@@ -178,9 +182,9 @@ function scoreSourcedList<T extends { source: string }>(
  * Pure — pas d'I/O DB, lit uniquement les fichiers TS curatés.
  */
 export async function computeCityCoverage(slug: PilotCitySlug): Promise<CityCoverageRow | null> {
-  const ville = getVille(slug);
+  const ville = getVilleCore(slug);
   if (!ville) return null;
-  const eco = ville.economicData;
+  const eco = getVilleEconomicData(slug);
 
   // ── Dimension 1 : identité INSEE ──────────────────────────────────────
   const identiteCriteria: ReadonlyArray<Criterion> = [
@@ -521,7 +525,7 @@ export async function getCityCoverage(): Promise<CityCoverageSummary> {
       totalCriteriaGreen,
       totalCriteria,
     },
-    totalCitiesInBase: VILLES.length,
+    totalCitiesInBase: VILLES_CORE.length,
   };
 }
 

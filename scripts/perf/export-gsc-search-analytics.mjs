@@ -1,12 +1,36 @@
 /**
- * P2-28 (audit re-run 2026-05-15 AGENT 7) — Export Crawl Stats Google Search Console.
+ * Export hebdomadaire des PERFORMANCES DE RECHERCHE Google Search Console.
  *
- * Exporte chaque lundi 08:00 UTC les crawl stats GSC pour `axion-ia.com` dans
- * `_AUDIT/crawl-stats-YYYY-WW.csv`. Permet de mesurer :
- *  - le ratio crawl Googlebot / pages publiées factory (gate < 30 % = ROUGE)
- *  - les pages les plus crawlées (validation que le tier-1 IndexNow fonctionne)
- *  - les types de fichiers Googlebot priorise (HTML / JS / CSS / IMG)
- *  - les codes HTTP rencontrés par Googlebot (3xx / 4xx / 5xx → fix priority)
+ * 🔴 RENOMMÉ le 2026-08-16 — GEO-032 (audit GEO/AEO du 2026-08-14, lot 16).
+ *
+ * Ce script s'appelait `export-gsc-crawl-stats` et écrivait
+ * `_AUDIT/crawl-stats-YYYY-WW.csv`. Son en-tête promettait quatre mesures :
+ * ratio de crawl Googlebot, pages les plus crawlées, types de fichiers
+ * priorisés, codes HTTP rencontrés. **Il n'en produisait aucune.**
+ *
+ * Ce qu'il interroge réellement, et a toujours interrogé, c'est
+ * `searchAnalytics/query` avec `dimensions: ["page"]` — dont les colonnes sont
+ * `page,impressions,clicks,ctr,position`. Ce sont des données de PERFORMANCE
+ * (ce que les internautes ont vu et cliqué), pas d'EXPLORATION (ce que
+ * Googlebot est venu chercher). Les deux ne se recoupent pas : une page peut
+ * être crawlée sans jamais apparaître, et inversement.
+ *
+ * 🔑 POURQUOI ÇA NE SERA PAS « RÉPARÉ » — ne retentez pas.
+ * Le rapport « Statistiques d'exploration » de Search Console **n'a pas d'API
+ * publique** : il n'existe que dans l'interface web. La mesure promise n'était
+ * donc pas seulement absente, elle était **irréalisable telle qu'écrite**. Pour
+ * de vraies données d'exploration, la source est ailleurs : les journaux du
+ * serveur (Caddy), filtrés sur l'agent Googlebot.
+ *
+ * ⚠️ CONSÉQUENCE À CONNAÎTRE. Le seuil « budget de crawl < 30 % de la
+ * production = ROUGE » cité dans plusieurs documents d'audit **n'a jamais été
+ * mesuré**, faute de données d'exploration. Toute conclusion tirée de ces CSV
+ * sur le comportement de Googlebot repose sur les mauvaises colonnes.
+ *
+ * Ce que ce script mesure vraiment, et qui reste utile :
+ *  - les pages qui rapportent des impressions et des clics, semaine par semaine
+ *  - la position moyenne et son évolution
+ *  - le suivi dans la durée de l'effet des publications sur la visibilité
  *
  * Auth : **OAuth refresh_token flow**, aligné avec `src/server/content-gen/seo/gsc-client.ts`
  * (commit f2ba3ec — worker keyword-sync). Réutilise les 3 credentials OAuth
@@ -23,7 +47,7 @@
  *
  * Usage local :
  *   set -a && source ../.secrets/api-tokens.env && set +a
- *   node scripts/perf/export-gsc-crawl-stats.mjs
+ *   node scripts/perf/export-gsc-search-analytics.mjs
  *
  * Doc API : https://developers.google.com/webmaster-tools/v1/searchanalytics/query
  */
@@ -142,7 +166,7 @@ async function main() {
     !process.env.GSC_OAUTH_REFRESH_TOKEN
   ) {
     console.warn(
-      "[gsc-crawl-stats] GSC_OAUTH_* credentials absent — skip (fail-soft). Set GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET, GSC_OAUTH_REFRESH_TOKEN.",
+      "[gsc-search-analytics] GSC_OAUTH_* credentials absent — skip (fail-soft). Set GSC_OAUTH_CLIENT_ID, GSC_OAUTH_CLIENT_SECRET, GSC_OAUTH_REFRESH_TOKEN.",
     );
     return;
   }
@@ -154,11 +178,11 @@ async function main() {
     const week = isoWeek();
     const outDir = path.join(process.cwd(), "_AUDIT");
     await fs.mkdir(outDir, { recursive: true });
-    const outFile = path.join(outDir, `crawl-stats-${week}.csv`);
+    const outFile = path.join(outDir, `search-analytics-${week}.csv`);
     await fs.writeFile(outFile, csv, "utf8");
-    console.log(`[gsc-crawl-stats] export OK → ${outFile} (${rows.length} rows)`);
+    console.log(`[gsc-search-analytics] export OK → ${outFile} (${rows.length} rows)`);
   } catch (err) {
-    console.error("[gsc-crawl-stats] error:", err?.message ?? err);
+    console.error("[gsc-search-analytics] error:", err?.message ?? err);
     // Exit 0 pour fail-soft côté workflow.
     process.exit(0);
   }

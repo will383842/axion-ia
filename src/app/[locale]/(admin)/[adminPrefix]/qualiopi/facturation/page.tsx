@@ -343,6 +343,12 @@ export default async function FacturationHubPage({
               joursRetard: d.joursRetard,
               palierLibelle: d.palierLibelle,
               destinataire: d.destinataire,
+              // Sous-lot 8E — qui doit réellement la somme, et ce qui empêche
+              // l'envoi. Transmis tels quels : le refus est rédigé côté serveur,
+              // au même endroit que la règle qui le produit.
+              qualiteDebiteur: d.qualiteDebiteur,
+              empechement: d.empechement,
+              precisionDestinataire: d.precisionDestinataire,
               penalitesActives: d.penalitesActives,
               historique: d.historique.map((h) => ({
                 palierLibelle: h.palierLibelle,

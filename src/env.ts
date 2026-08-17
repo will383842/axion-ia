@@ -374,6 +374,21 @@ export const env = createEnv({
           });
         }
       }),
+
+    // ─── Banque d'images — GEO-094 (audit GEO/AEO 2026-08-14) ────────────────
+    //
+    // 🔴 Ces deux variables étaient utilisées dans le code SANS être déclarées
+    // ici ni dans aucun `.env*.example`. Conséquence mesurée : chaque appelant
+    // repliait sur SON propre défaut, et ces défauts divergeaient
+    // (`/var/data/image-bank` à l'écriture, `/data/image-bank` à la lecture) —
+    // on lisait dans un dossier où rien n'a jamais été écrit.
+    //
+    // Les déclarer ici ne change aucun comportement par défaut ; ça rend
+    // simplement la configuration VISIBLE, et une divergence future détectable.
+    /** Racine du volume de stockage des variantes. Défaut : `/var/data/image-bank`. */
+    IMAGE_BANK_STORAGE_PATH: z.string().min(1).optional(),
+    /** Préfixe CDN servant `/image-bank/*`. Vide = servi par la même origine. */
+    IMAGE_BANK_CDN_URL: z.string().url().optional(),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
@@ -402,6 +417,8 @@ export const env = createEnv({
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    IMAGE_BANK_STORAGE_PATH: process.env.IMAGE_BANK_STORAGE_PATH,
+    IMAGE_BANK_CDN_URL: process.env.IMAGE_BANK_CDN_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
     REDIS_URL: process.env.REDIS_URL,

@@ -42,6 +42,7 @@ import { KbSources } from "@/components/knowledge/KbSources";
 import { KbToc } from "@/components/knowledge/KbToc";
 import { KbRelatedEntries } from "@/components/knowledge/KbRelatedEntries";
 import { findRelatedKbEntries } from "@/lib/knowledge/related-entries";
+import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -149,7 +150,9 @@ export default async function ConnaissanceDetail({ params }: Props) {
 
   // Sommaire — détecte les h2 du body SANITISÉ, injecte ancres + data-speakable.
   // < 3 h2 → bodyHtml inchangé + toc vide (pas de sommaire sur entrée courte).
-  const { html: bodyHtml, toc } = buildToc(sanitizeTiptapHtml(entry.body));
+  // GEO-079/081 — reecriture des liens internes au rendu (cf. le module dedie).
+  const { html: bodyHtmlBrut, toc } = buildToc(sanitizeTiptapHtml(entry.body));
+  const bodyHtml = prefixerLiensInternes(bodyHtmlBrut, locale);
 
   // Maillage KB→KB (cluster topique) — relations éditoriales → tags → domaine.
   // Levier d'autorité topique. Masqué si < 2 voisins (composant).
