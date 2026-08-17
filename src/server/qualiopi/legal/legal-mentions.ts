@@ -86,7 +86,15 @@ export const LEGAL_MENTIONS = {
     "Prestations de formation professionnelle au sens des articles L.6313-1 et suivants du Code du travail.",
   // 2026-08-10 (décision Will) : mention `afestProtocole` supprimée — le module
   // AFEST 1-to-1 (et son template `protocole-afest.tsx`, seul lecteur) a disparu.
-  /** Déclaration d'activité (lettre DREETS). */
+  /**
+   * Déclaration d'activité — formulation GÉNÉRIQUE, sans numéro.
+   *
+   * Conservée telle quelle : elle reste juste quand le numéro n'est pas
+   * disponible au point d'appel. Dès qu'il l'est, préférer
+   * `formatMentionDeclarationActivite(nda)` ci-dessous, qui porte le numéro —
+   * c'est lui que l'art. L.6352-12 attend sur les documents contractuels et
+   * publicitaires, pas seulement le principe de l'enregistrement.
+   */
   declarationActivite:
     "Déclaration d'activité enregistrée auprès du préfet de région du lieu de direction effective (article R.6351-2 du Code du travail). Cet enregistrement ne vaut pas agrément de l'État.",
   /** RGPD — base réglementaire. */
@@ -94,6 +102,74 @@ export const LEGAL_MENTIONS = {
 } as const;
 
 export type LegalMentionKey = keyof typeof LEGAL_MENTIONS;
+
+/**
+ * Numéro de déclaration d'activité d'Axion-IA — SSOT du dépôt.
+ *
+ * Récépissé du **17 août 2026**, préfet de la région Auvergne-Rhône-Alpes
+ * (DREETS ARA, Lyon), art. R.6351-6 C. trav. Attribué à AXION IA, SAS, siège
+ * 11 avenue Paul Verlaine — ELITE BUREAUX boîte 53 — 38100 Grenoble.
+ *
+ * ⚠️ NE PAS recopier ce littéral ailleurs. Deux endroits le consomment :
+ *   - `QUALIOPI_CONFIG_REGISTRY.nda_numero` en défaut de registre — d'où il
+ *     irrigue les onze gabarits PDF et les surfaces publiques ;
+ *   - le pied de page légal des e-mails, qui n'a pas d'accès DB.
+ * Une troisième copie serait la copie qui diverge : c'est exactement le défaut
+ * que l'audit F26 avait relevé sur l'identité commerciale (deux structures qui
+ * ne se parlaient pas, la facture utilisant la plus pauvre).
+ *
+ * Le contournement admin reste possible et prioritaire : une valeur saisie dans
+ * `SiteSetting` écrase ce défaut pour tout ce qui passe par la configuration.
+ */
+export const NDA_NUMERO = "84381100438" as const;
+
+/**
+ * Région dont le préfet a enregistré la déclaration d'activité.
+ *
+ * Le récépissé du 17 août 2026 émane de la DREETS **Auvergne-Rhône-Alpes**, ce
+ * qui découle du siège (Grenoble, 38) : l'art. R.6351-2 rattache la déclaration
+ * au préfet de région du lieu de direction effective.
+ *
+ * Codé en dur, exactement comme l'adresse du siège dans `src/lib/seo.ts` et pour
+ * le même motif : ce n'est pas un réglage, c'est une conséquence du siège. Elle
+ * ne change qu'au transfert de siège — lequel passera de toute façon par une
+ * modification de code (et par une nouvelle déclaration).
+ */
+export const REGION_DECLARATION_ACTIVITE = "Auvergne-Rhône-Alpes" as const;
+
+/**
+ * Précision OBLIGATOIRE dès qu'on fait état de l'enregistrement (art. L.6352-12
+ * C. trav.). Publier le numéro sans elle est une infraction, pas un raccourci
+ * de mise en page.
+ *
+ * Exportée séparément pour les supports où la phrase complète ne tient pas —
+ * typiquement un pied de page d'e-mail, qui affiche « NDA 84381100438 » puis
+ * cette précision. Partout ailleurs, préférer
+ * `formatMentionDeclarationActivite`, qui produit les deux d'un bloc.
+ */
+export const MENTION_NON_AGREMENT = "Cet enregistrement ne vaut pas agrément de l'État." as const;
+
+/**
+ * Mention de déclaration d'activité PORTANT LE NUMÉRO.
+ *
+ * 🔴 La seconde phrase n'est pas décorative. L'art. L.6352-12 C. trav. interdit
+ * de faire état de l'enregistrement sans préciser qu'il **ne vaut pas agrément
+ * de l'État** : publier le numéro seul est une infraction, pas une omission de
+ * style. Elle est donc soudée au numéro dans cette fonction — aucun appelant ne
+ * peut afficher l'un sans l'autre.
+ *
+ * Repli sur la formulation générique si le numéro est vide, plutôt qu'une chaîne
+ * bancale : un appelant qui n'a pas le numéro dit encore quelque chose de vrai.
+ */
+export function formatMentionDeclarationActivite(nda: string): string {
+  const numero = typeof nda === "string" ? nda.trim() : "";
+  if (numero === "") return LEGAL_MENTIONS.declarationActivite;
+  return (
+    `Déclaration d'activité enregistrée sous le numéro ${numero} auprès du préfet de la région ` +
+    `${REGION_DECLARATION_ACTIVITE} (article R.6351-6 du Code du travail). ` +
+    MENTION_NON_AGREMENT
+  );
+}
 
 /**
  * Mention OBLIGATOIRE accompagnant la marque/logo Qualiopi (règles d'usage

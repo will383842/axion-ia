@@ -8,7 +8,10 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
 import { buildProductMetadata } from "@/lib/seo";
-import { buildQualiopiCertificationsSection } from "@/components/qualiopi/certifications-section";
+import {
+  buildDeclarationActiviteSection,
+  buildQualiopiCertificationsSection,
+} from "@/components/qualiopi/certifications-section";
 import { resolveLegalIdentity, buildLegalIdentitySections } from "@/lib/legal-identity";
 
 interface Props {
@@ -58,11 +61,21 @@ export default async function MentionsLegales({ params }: Props) {
   // mise à jour < 1 h dès que Will renseigne l'identité en console admin.
   const identity = await resolveLegalIdentity();
   const identitySections = buildLegalIdentitySections(identity, isFr);
-  // Section « Certifications & agréments » dérivée de la config Qualiopi —
-  // `null` hors Phase B (cf. buildQualiopiCertificationsSection). Append aux
-  // sections statiques sans muter `content/legal.ts`.
-  const certifs = await buildQualiopiCertificationsSection(isFr);
-  const sections = [...identitySections, ...copy.sections, ...(certifs ? [certifs] : [])];
+  // Section « Déclaration d'activité » (NDA + mention L.6352-12) et section
+  // « Certifications & agréments » (Qualiopi). DEUX sections distinctes, et
+  // deux gardes distinctes : le NDA s'affiche dès que le numéro existe, la
+  // certification seulement quand elle est réellement obtenue. Les confondre
+  // avait rendu le NDA invisible jusqu'au 2026-08-17.
+  const [declaration, certifs] = await Promise.all([
+    buildDeclarationActiviteSection(isFr),
+    buildQualiopiCertificationsSection(isFr),
+  ]);
+  const sections = [
+    ...identitySections,
+    ...copy.sections,
+    ...(declaration ? [declaration] : []),
+    ...(certifs ? [certifs] : []),
+  ];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: isFr ? p.pathFr : p.pathEn, label: copy.title }];

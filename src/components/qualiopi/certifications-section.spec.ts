@@ -11,14 +11,74 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/server/qualiopi/config/public-identity", () => ({
   getQualiopiPublicIdentity: vi.fn(),
+  getNdaPublic: vi.fn(),
 }));
 
-import { getQualiopiPublicIdentity } from "@/server/qualiopi/config/public-identity";
-import { buildQualiopiCertificationsSection } from "./certifications-section";
+import { getNdaPublic, getQualiopiPublicIdentity } from "@/server/qualiopi/config/public-identity";
+import {
+  buildDeclarationActiviteSection,
+  buildQualiopiCertificationsSection,
+} from "./certifications-section";
 
 const mockIdentity = getQualiopiPublicIdentity as unknown as ReturnType<typeof vi.fn>;
+const mockNda = getNdaPublic as unknown as ReturnType<typeof vi.fn>;
 
-beforeEach(() => mockIdentity.mockReset());
+beforeEach(() => {
+  mockIdentity.mockReset();
+  mockNda.mockReset();
+});
+
+/**
+ * 🔴 Le défaut que ces tests verrouillent (2026-08-17).
+ *
+ * Le NDA était rendu à l'intérieur de la section Qualiopi, donc derrière
+ * `getQualiopiPublicIdentity`, qui est `null` tant que la certification n'est pas
+ * obtenue. Le récépissé DREETS du 17 août 2026 n'aurait donc rien affiché sur le
+ * site — un numéro légalement mentionnable retenu par une garde qui ne le
+ * concerne pas. Les deux premiers tests ci-dessous échouent sur l'ancien code.
+ */
+describe("buildDeclarationActiviteSection", () => {
+  it("affiche le NDA MÊME SANS certification Qualiopi", async () => {
+    mockNda.mockResolvedValue("84381100438");
+    // Certification absente — c'est exactement l'état de production.
+    mockIdentity.mockResolvedValue(null);
+
+    const section = await buildDeclarationActiviteSection(true);
+    expect(section).not.toBeNull();
+    expect(section?.title).toBe("Déclaration d'activité");
+    expect(section?.body).toContain("84381100438");
+  });
+
+  it("le numéro n'est JAMAIS publié sans « ne vaut pas agrément de l'État »", async () => {
+    // Art. L.6352-12 C. trav. : faire état de l'enregistrement sans cette
+    // précision est une infraction, pas une omission de style.
+    mockNda.mockResolvedValue("84381100438");
+    const section = await buildDeclarationActiviteSection(true);
+    expect(section?.body).toContain("ne vaut pas agrément de l'État");
+    // Et l'autorité qui a enregistré, telle qu'elle figure sur le récépissé.
+    expect(section?.body).toContain("Auvergne-Rhône-Alpes");
+  });
+
+  it("ne revendique AUCUNE certification — le mot Qualiopi n'apparaît pas", async () => {
+    mockNda.mockResolvedValue("84381100438");
+    const section = await buildDeclarationActiviteSection(true);
+    expect(section?.body).not.toContain("Qualiopi");
+    expect(section?.body).not.toContain("certifié");
+  });
+
+  it("renvoie null si le numéro n'est pas disponible (pas de section vide)", async () => {
+    mockNda.mockResolvedValue("");
+    expect(await buildDeclarationActiviteSection(true)).toBeNull();
+  });
+
+  it("EN : intitulé traduit, mention légale française conservée verbatim", async () => {
+    mockNda.mockResolvedValue("84381100438");
+    const section = await buildDeclarationActiviteSection(false);
+    expect(section?.title).toBe("Training provider registration");
+    expect(section?.body).toContain("Activity registration number (NDA): 84381100438.");
+    expect(section?.body).toContain("ne vaut pas agrément de l'État");
+  });
+});
 
 describe("buildQualiopiCertificationsSection", () => {
   it("renvoie null hors Phase B (identité absente)", async () => {
@@ -43,9 +103,11 @@ describe("buildQualiopiCertificationsSection", () => {
     const section = await buildQualiopiCertificationsSection(true);
     expect(section).not.toBeNull();
     expect(section?.title).toBe("Certifications & agréments");
-    // NDA + base juridique déclaration d'activité (verbatim).
-    expect(section?.body).toContain("11380490538");
-    expect(section?.body).toContain("ne vaut pas agrément de l'État");
+    // 🔴 Le NDA n'est PLUS ici — il a sa propre section depuis le 2026-08-17.
+    // L'y laisser le ferait apparaître deux fois sur la page le jour où la
+    // certification sera obtenue.
+    expect(section?.body).not.toContain("11380490538");
+    expect(section?.body).not.toContain("ne vaut pas agrément de l'État");
     // N° de certificat + mention obligatoire de la marque + validité formatée FR.
     expect(section?.body).toContain("CERT-2026-001");
     expect(section?.body).toContain("Certif'OF");

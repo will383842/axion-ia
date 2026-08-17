@@ -8,12 +8,20 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
 import { buildProductMetadata } from "@/lib/seo";
+import { buildDeclarationActiviteSection } from "@/components/qualiopi/certifications-section";
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
 
 const SLUG = "conditions-generales" as const;
+// ISR — 2026-08-17. La page était intégralement figée au build. Elle porte
+// désormais la section « Déclaration d'activité », dont le numéro est lu au
+// runtime : sans revalidation, la mention serait absente du HTML jusqu'au
+// déploiement suivant (au build, la base est le stub `stub.invalid` et le
+// drapeau de divulgation n'est pas un build-arg). Même valeur et même motif que
+// `/mentions-legales`.
+export const revalidate = 3600;
 // Date de dernière révision de FOND de cette page — à tenir à jour, les CGV
 // renvoyant elles-mêmes à cette date pour déterminer la version applicable.
 // Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
@@ -28,7 +36,12 @@ const SLUG = "conditions-generales" as const;
 // forclusion 90 jours) + verrou « clauses non opposables au consommateur ».
 // 🔴 Cette date fait foi : l'intro des CGV renvoie à elle pour déterminer la
 // version applicable. La modifier SANS toucher au texte antidate une version.
-const LAST_UPDATED_ISO = "2026-08-14";
+//
+// 2026-08-17 : ajout de la section « Déclaration d'activité » — numéro de
+// déclaration obtenu le jour même (récépissé DREETS Auvergne-Rhône-Alpes) et
+// mention obligatoire « ne vaut pas agrément de l'État » (art. L.6352-12
+// C. trav.). Le texte rendu change réellement, la date suit.
+const LAST_UPDATED_ISO = "2026-08-17";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -52,6 +65,14 @@ export default async function ConditionsGenerales({ params }: Props) {
   const isFr = loc === "fr";
   const p = getLegal(SLUG);
   const copy = p[loc];
+  // Section « Déclaration d'activité » — le NDA est une mention due sur les
+  // documents contractuels et publicitaires (art. L.6352-4), et les CGV sont les
+  // deux à la fois. Ajoutée en fin de sections plutôt qu'insérée dans le corps
+  // de « Dispositions propres à la formation professionnelle » : y injecter du
+  // texte de configuration mêlerait une donnée runtime à une clause figée, et la
+  // clause resterait juste à sa place. `null` si le numéro n'est pas disponible.
+  const declaration = await buildDeclarationActiviteSection(isFr);
+  const sections = [...copy.sections, ...(declaration ? [declaration] : [])];
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: isFr ? p.pathFr : p.pathEn, label: copy.title }];
@@ -67,8 +88,8 @@ export default async function ConditionsGenerales({ params }: Props) {
         title={copy.title}
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
-        sections={copy.sections}
-        lastUpdated={isFr ? "14 août 2026" : "August 14, 2026"}
+        sections={sections}
+        lastUpdated={isFr ? "17 août 2026" : "August 17, 2026"}
         lastUpdatedIso={LAST_UPDATED_ISO}
         relatedLinks={[
           { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
