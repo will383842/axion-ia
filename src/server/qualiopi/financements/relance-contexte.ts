@@ -27,6 +27,10 @@
 import { prisma } from "@/lib/prisma";
 import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
 import { libellePalier } from "@/server/qualiopi/financements/relance-paliers";
+import {
+  resoudreDestinataireRelance,
+  type QualiteDebiteur,
+} from "@/server/qualiopi/financements/relance-destinataire";
 
 /** Seuil au-delà duquel le pointage bancaire est jugé trop ancien pour relancer. */
 export const POINTAGE_BANCAIRE_FRAIS_JOURS = 7;
@@ -94,8 +98,22 @@ export interface DetailRelance {
   joursRetard: number;
   palier: string;
   palierLibelle: string;
-  /** Destinataire retenu (email de contact du client), ou null si absent. */
+  /**
+   * Destinataire retenu, ou `null` si aucun n'est connu.
+   *
+   * 🔴 Sous-lot 8E — ce champ contenait l'e-mail du CLIENT, quel que soit le
+   * destinataire de la facture. Sur une facture subrogée à l'OPCO, l'écran
+   * annonçait donc le client comme débiteur, et l'action le relançait. Il est
+   * désormais dérivé de la facture par `relance-destinataire.ts`, le même
+   * service que celui qui décide de l'envoi réel.
+   */
   destinataire: string | null;
+  /** Qui doit la somme : l'entreprise cliente, un financeur, ou le bénéficiaire. */
+  qualiteDebiteur: QualiteDebiteur;
+  /** Ce qui empêche l'envoi, à afficher tel quel, ou `null` si envoyable. */
+  empechement: string | null;
+  /** Contexte à afficher à côté du destinataire (subrogation, n° de dossier). */
+  precisionDestinataire: string | null;
   /** Les pénalités sont-elles activées pour ce client ? Faux par défaut. */
   penalitesActives: boolean;
   /** Relances DÉJÀ envoyées sur cette facture, de la plus ancienne à la plus récente. */
@@ -136,11 +154,25 @@ export async function getDetailsRelances(
             montantHtCents: true,
             montantTtcCents: true,
             echeanceAt: true,
+            destinataire: true,
             destinataireNom: true,
+            // Sous-lot 8E : le contact du financeur vit sur le dossier, pas sur
+            // le client. Sans ces colonnes, l'écran ne peut pas dire qui doit.
+            dossierFinancement: {
+              select: {
+                financeurNom: true,
+                financeurContactNom: true,
+                financeurContactEmail: true,
+                numeroDossierExterne: true,
+                subrogation: true,
+              },
+            },
             client: {
               select: {
                 raisonSociale: true,
+                contactNom: true,
                 contactEmail: true,
+                opcoIdentifie: true,
                 penalitesRetardActives: true,
               },
             },
@@ -194,16 +226,29 @@ export async function getDetailsRelances(
         f.echeanceAt !== null
           ? Math.max(0, Math.floor((now.getTime() - f.echeanceAt.getTime()) / 86_400_000))
           : 0;
+      const debiteur = resoudreDestinataireRelance({
+        destinataire: f.destinataire,
+        destinataireNom: f.destinataireNom,
+        dossier: f.dossierFinancement,
+        client: f.client,
+      });
       out.set(r.id, {
         relanceId: r.id,
         factureNumero: f.numero,
+        // 🔴 `clientNom` reste le nom du CLIENT de l'affaire — c'est ce qui
+        // permet à l'admin de reconnaître le dossier dans sa liste. Le débiteur,
+        // lui, est porté par `qualiteDebiteur` / `precisionDestinataire` : les
+        // confondre est précisément ce qui a produit le défaut 8E.
         clientNom: f.client?.raisonSociale ?? f.destinataireNom,
         resteDuCents,
         echeanceAt: f.echeanceAt,
         joursRetard,
         palier: r.palier,
         palierLibelle: libellePalier(r.palier),
-        destinataire: f.client?.contactEmail ?? null,
+        destinataire: debiteur.email,
+        qualiteDebiteur: debiteur.qualite,
+        empechement: debiteur.empechement,
+        precisionDestinataire: debiteur.precision,
         penalitesActives: f.client?.penalitesRetardActives ?? false,
         historique: historiqueParFacture.get(f.id) ?? [],
       });

@@ -14,10 +14,18 @@ interface Props {
 }
 
 const SLUG = "reclamations" as const;
-// Date de dernière révision éditoriale des pages légales (alignée sur la
-// déclaration d'accessibilité, 6 mai 2026). À mettre à jour à chaque révision
-// de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
-const LAST_UPDATED_ISO = "2026-05-06";
+// Date de dernière révision éditoriale de CETTE page. À mettre à jour à chaque
+// révision de fond. Label affiché localisé ; `lastUpdatedIso` alimente
+// <time dateTime>.
+//
+// 🔴 Audit blanc 2026-08-15 — la procédure publiée a été refondue ce jour
+// (élargissement aux difficultés et aux aléas, section « Aléas survenus en
+// cours de prestation », voies de recours externes : cf. `src/content/legal.ts`,
+// entrée « reclamations »). La page affichait encore « 6 mai 2026 », date de
+// l'alignement éditorial d'ensemble des pages légales. Une procédure
+// substantiellement révisée qui affiche une date antérieure à sa révision est,
+// à elle seule, un constat de document non maîtrisé.
+const LAST_UPDATED_ISO = "2026-08-15";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -57,7 +65,7 @@ export default async function Reclamations({ params }: Props) {
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={copy.sections}
-        lastUpdated={isFr ? "6 mai 2026" : "May 6, 2026"}
+        lastUpdated={isFr ? "15 août 2026" : "August 15, 2026"}
         lastUpdatedIso={LAST_UPDATED_ISO}
         relatedLinks={[
           {

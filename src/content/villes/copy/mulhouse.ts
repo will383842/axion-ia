@@ -217,7 +217,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Gestion spécifique des flux transfrontaliers France-Suisse-Allemagne selon votre contexte. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Gestion spécifique des flux transfrontaliers France-Suisse-Allemagne selon votre contexte. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your Mulhouse business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Mulhouse micro-businesses to large industrial mid-caps at Île Napoléon, Bourtzwiller engineering firms and Haut-Rhin chemicals and materials players.",

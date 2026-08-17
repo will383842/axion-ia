@@ -1,0 +1,97 @@
+name: GSC Search Analytics weekly export
+
+# Export hebdo des PERFORMANCES DE RECHERCHE Search Console dans
+# `_AUDIT/search-analytics-YYYY-WW.csv`.
+#
+# 🔴 RENOMMÉ le 2026-08-16 — GEO-032. Ce workflow s'appelait « Crawl Stats »
+# et prétendait mesurer le gate « budget de crawl < 30 % de la production ».
+# Il n'a jamais exporté de données d'exploration : le script interroge
+# `searchAnalytics`, dont les colonnes sont impressions/clics/CTR/position.
+# Le rapport « Statistiques d'exploration » de GSC n'a pas d'API publique —
+# la mesure promise était irréalisable, pas seulement absente. Pour de vraies
+# données d'exploration : les journaux Caddy filtrés sur Googlebot.
+#
+# Schedule : lundi 08:00 UTC (créneau low-traffic + GSC API stable, données
+# de la semaine N-1 finalisées).
+#
+# Auth : **OAuth refresh_token flow** (cohérent avec `src/server/content-gen/seo/gsc-client.ts`
+# commit f2ba3ec — worker keyword-sync). Réutilise les credentials Desktop
+# OAuth client + refresh long-lived setup dans la conv parallèle GCP.
+#
+# GH secrets requis (à copier depuis Coolify `.secrets/api-tokens.env`) :
+#   - GSC_OAUTH_CLIENT_ID
+#   - GSC_OAUTH_CLIENT_SECRET
+#   - GSC_OAUTH_REFRESH_TOKEN
+#
+# GH variable requise : GSC_PROPERTY_URL (déjà set 2026-05-15).
+#
+# Si secrets absents → script fail-soft → workflow vert avec warning visible.
+#
+# Output : commit + push automatique sur `main` du CSV généré.
+
+on:
+  schedule:
+    # Tous les lundis 08:00 UTC (09h CEST été / 10h CET hiver).
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (no commit/push)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    name: GSC export → _AUDIT/search-analytics-*.csv
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Run export
+        env:
+          GSC_OAUTH_CLIENT_ID: ${{ secrets.GSC_OAUTH_CLIENT_ID }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+          GSC_PROPERTY_URL: ${{ vars.GSC_PROPERTY_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GSC_OAUTH_REFRESH_TOKEN:-}" ]; then
+            echo "::warning::GSC_OAUTH_* secrets absent — skipping export"
+            exit 0
+          fi
+          if [ -z "${GSC_PROPERTY_URL:-}" ]; then
+            echo "::warning::GSC_PROPERTY_URL var absent — defaulting to sc-domain:axion-ia.com"
+          fi
+          node scripts/perf/export-gsc-search-analytics.mjs
+
+      - name: Commit CSV if changed
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          set -euo pipefail
+          git config user.name "axion-ia-bot"
+          git config user.email "bot@axion-ia.com"
+          if [ -n "$(git status --porcelain _AUDIT/search-analytics-*.csv)" ]; then
+            week=$(date -u +%G-W%V)
+            git add _AUDIT/search-analytics-*.csv
+            git commit -m "chore(audit): gsc crawl stats export $week"
+            git push
+          else
+            echo "No CSV change — skip commit"
+          fi

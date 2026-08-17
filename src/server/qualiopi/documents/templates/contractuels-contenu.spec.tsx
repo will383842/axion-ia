@@ -248,6 +248,53 @@ describe("ConventionTripartitePdf — contenu", () => {
     );
     expect(t).toContain("Fait à Grenoble, le 01/06/2026");
   });
+
+  // ── Sous-lot 8B — la pièce que lit l'OPCO doit valoir la bipartite ───────
+  //
+  // 🔴 Le test qui doit rougir : cette convention invoque L.6353-1 en tête de
+  // page et n'en portait AUCUNE des trois mentions, ni les cinq sections de
+  // fond que la bipartite a reçues le 02/08. C'était la plus exposée des deux
+  // pièces — celle transmise au financeur — et la moins complète.
+  it("🔴 porte les TROIS mentions de l'article L.6353-1", () => {
+    expect(text).toContain("Moyens pédagogiques et techniques");
+    expect(text).toContain("Suivi de l'exécution et évaluation");
+    expect(text).toContain("Sanction de la formation");
+    // Et les replis décrivent le dispositif RÉEL, pas une formule creuse.
+    expect(text).toContain("émargement");
+    expect(text).toContain("positionnement");
+    expect(text).toContain("Attestation de fin de formation");
+  });
+
+  it("🔴 porte les cinq sections de fond alignées sur la bipartite", () => {
+    expect(text).toContain("Obligations des parties");
+    expect(text).toContain("Données à caractère personnel");
+    expect(text).toContain("Propriété intellectuelle et confidentialité");
+    expect(text).toContain("Responsabilité et force majeure");
+    expect(text).toContain("Droit applicable et différends");
+  });
+
+  it("🔴 dit ce qui se passe quand l'OPCO refuse, réduit ou ne paie pas", () => {
+    // Le trou de l'audit (Q3) : le système sait facturer N payeurs, mais aucun
+    // texte ne permettait de réémettre au client. Sans cette clause, un refus
+    // d'OPCO laisse l'organisme sans fondement pour réclamer la somme.
+    expect(text).toContain("refus");
+    expect(text).toContain("demeure le débiteur du prix");
+  });
+
+  it("annonce la transmission des pièces au financeur — c'est LUI qui lit cette page", () => {
+    expect(text).toContain("transmises à l'OPCO");
+  });
+
+  it("est établie en TROIS exemplaires, pas deux", () => {
+    expect(text).toContain("trois exemplaires originaux");
+  });
+
+  it("garde une numérotation continue après l'ajout des sections", () => {
+    // Renuméroter une liste référencée par rang casse ses renvois. Ici aucun
+    // renvoi n'existe, mais la numérotation doit rester lisible bout en bout.
+    expect(text).toContain("10. Documents annexés");
+    expect(text).toContain("11. Signatures");
+  });
 });
 
 // ============================================================

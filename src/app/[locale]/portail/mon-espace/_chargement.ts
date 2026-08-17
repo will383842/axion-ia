@@ -28,6 +28,7 @@
 import { cache } from "react";
 
 import { getPortailToken } from "@/server/qualiopi/portail/cookie";
+import { questionnaireEstDu } from "@/server/qualiopi/portail/questionnaire-moment";
 import {
   verifierToken,
   getEspaceStagiaire,
@@ -58,7 +59,16 @@ export const chargerEspaceStagiaire = cache(async (): Promise<ResultatEspace> =>
   }
 });
 
-/** Questionnaires restant à remplir — le compteur de la pastille « À faire ». */
-export function questionnairesEnAttente(espace: EspaceStagiaire) {
-  return espace.questionnaires.filter((q) => q.reponduAt === null);
+/**
+ * Questionnaires réellement DUS — le compteur de la pastille « À faire ».
+ *
+ * 🔴 Ne filtrait auparavant que sur `reponduAt === null`, sans aucune condition
+ * de date : le portail d'une stagiaire proposait, la veille de sa formation,
+ * « votre retour à chaud, pendant que la formation est encore fraîche » et
+ * « quelques semaines après ». Une satisfaction recueillie avant l'action
+ * n'évalue pas l'action — elle la fabrique. La règle vit dans un module pur,
+ * `questionnaire-moment.ts`.
+ */
+export function questionnairesEnAttente(espace: EspaceStagiaire, maintenant: Date = new Date()) {
+  return espace.questionnaires.filter((q) => questionnaireEstDu(q, maintenant));
 }

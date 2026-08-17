@@ -19,6 +19,7 @@ function makeOffer(over: Partial<JobOffer> = {}): JobOffer {
     bodyJsonEn: null,
     bodyTextEn: "Mission",
     employmentType: "FULL_TIME",
+    secondaryEmploymentType: null,
     workMode: "on_site",
     city: "Lyon",
     region: "Auvergne-Rhône-Alpes",
@@ -58,6 +59,12 @@ function makeOffer(over: Partial<JobOffer> = {}): JobOffer {
 }
 
 describe("buildJobPostingJsonLd", () => {
+  it("employmentType : scalaire seul, TABLEAU quand un second type est déclaré", () => {
+    expect(buildJobPostingJsonLd(makeOffer())!.employmentType).toBe("FULL_TIME");
+    const dual = buildJobPostingJsonLd(makeOffer({ secondaryEmploymentType: "CONTRACTOR" }))!;
+    expect(dual.employmentType).toEqual(["FULL_TIME", "CONTRACTOR"]);
+  });
+
   it("émet les champs requis pour une offre publiée", () => {
     const j = buildJobPostingJsonLd(makeOffer());
     expect(j).not.toBeNull();

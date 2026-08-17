@@ -18,7 +18,11 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   genererFactureLibre,
   genererAvoirFacture,
@@ -41,6 +45,7 @@ import {
 import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
 import { calculerPenalitesRetard } from "@/server/qualiopi/financements/penalites";
 import { libellePalier, tonPalier } from "@/server/qualiopi/financements/relance-paliers";
+import { resoudreDestinataireRelance } from "@/server/qualiopi/financements/relance-destinataire";
 import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
@@ -76,7 +81,8 @@ export async function genererFactureLibreAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : emettre une facture engage l'organisme comptablement.
+  const session = await requireHabilitation("facturer");
   const parsed = GenererFactureLibreSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
@@ -184,7 +190,8 @@ export async function genererFactureDepuisDevisAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : facture issue d'un devis accepte.
+  const session = await requireHabilitation("facturer");
   const parsed = DepuisDevisSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
 
@@ -378,7 +385,8 @@ export async function genererAvoirAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : avoir : piece fiscale a numerotation legale AXI-AVO.
+  const session = await requireHabilitation("facturer");
   const parsed = GenererAvoirSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide (motif : 5 caractères minimum)." };
 
@@ -488,7 +496,8 @@ export async function creerDossierFinancementAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : ouverture d'une demande de prise en charge.
+  const session = await requireHabilitation("deposer_demande_financeur");
   const parsed = CreerDossierSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
@@ -556,7 +565,8 @@ export async function transitionnerDossierAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : transition d'un dossier de financement.
+  const session = await requireHabilitation("deposer_demande_financeur");
   const parsed = TransitionDossierSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
@@ -836,13 +846,26 @@ export async function envoyerRelanceAction(
       montantHtCents: true,
       montantTtcCents: true,
       echeanceAt: true,
+      destinataire: true,
       destinataireNom: true,
       clientId: true,
+      // Sous-lot 8E : sur une facture subrogée, le débiteur est le financeur, et
+      // son gestionnaire vit ici — pas sur le client.
+      dossierFinancement: {
+        select: {
+          financeurNom: true,
+          financeurContactNom: true,
+          financeurContactEmail: true,
+          numeroDossierExterne: true,
+          subrogation: true,
+        },
+      },
       client: {
         select: {
           raisonSociale: true,
           contactEmail: true,
           contactNom: true,
+          opcoIdentifie: true,
           penalitesRetardActives: true,
         },
       },
@@ -852,7 +875,31 @@ export async function envoyerRelanceAction(
   });
   if (facture === null) return { error: "Facture introuvable." };
 
-  const to = input.to ?? facture.client?.contactEmail ?? null;
+  // ── 🔴 SOUS-LOT 8E — À QUI on réclame ─────────────────────────────────────
+  //
+  // Cette ligne valait `input.to ?? facture.client?.contactEmail`. Sur une
+  // facture libellée à l'OPCO (subrogation), elle envoyait donc au CLIENT une
+  // relance — au palier haut, une **mise en demeure** chiffrant des pénalités
+  // L.441-10 — pour une somme qu'il ne doit pas. L'audit OPCO du 15/08 (T4) l'a
+  // relevé ; ce module en fait désormais une dérivation unique, partagée avec
+  // l'écran qui l'annonce (`relance-contexte.ts`).
+  //
+  // L'empêchement est un REFUS, pas un avertissement : sans contact financeur
+  // connu, on n'envoie rien. Se rabattre sur le client serait exactement la
+  // faute qu'on corrige.
+  const debiteur = resoudreDestinataireRelance(
+    {
+      destinataire: facture.destinataire,
+      destinataireNom: facture.destinataireNom,
+      dossier: facture.dossierFinancement,
+      client: facture.client,
+    },
+    input.to,
+  );
+  if (debiteur.empechement !== null) {
+    return { error: debiteur.empechement };
+  }
+  const to = debiteur.email;
   if (to === null) {
     return { error: "Aucun destinataire : renseigner un email (ou l'email de contact du client)." };
   }
@@ -906,8 +953,11 @@ export async function envoyerRelanceAction(
     to,
     "fr",
     {
-      destinataireNom:
-        facture.client?.contactNom ?? facture.client?.raisonSociale ?? facture.destinataireNom,
+      // 🔴 8E — le nom d'appel suit le DÉBITEUR, pas le client. Écrire
+      // « Madame Dupont » (le contact du client) en tête d'une relance adressée
+      // au gestionnaire d'un OPCO nommerait la mauvaise personne dans un
+      // courrier qui peut être une mise en demeure.
+      destinataireNom: debiteur.nom,
       numeroFacture: facture.numero,
       // RESTE DÛ NET — jamais le TTC total : un client ayant versé son acompte
       // recevait sinon une relance au montant plein.
@@ -1074,7 +1124,8 @@ export async function emettreFactureBrouillonAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : LE clic qui rend la facture definitive.
+  const session = await requireHabilitation("facturer");
   const parsed = EmettreBrouillonSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
 

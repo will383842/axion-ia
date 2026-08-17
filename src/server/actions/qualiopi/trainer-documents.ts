@@ -17,6 +17,7 @@ import {
   requireAdminWrite,
   requireAdminDelete,
   logQualiopiActivity,
+  requireHabilitation,
 } from "@/server/actions/qualiopi/_guards";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -116,7 +117,8 @@ const validateSchema = z.object({
 export async function validateTrainerDocumentAction(
   input: z.infer<typeof validateSchema>,
 ): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : seule une piece VALIDE compte pour la conformite du formateur.
+  const session = await requireHabilitation("habiliter_formateur");
   const parsed = validateSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, statutValidation, rejetMotif } = parsed.data;

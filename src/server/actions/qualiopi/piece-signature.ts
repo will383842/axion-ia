@@ -56,6 +56,7 @@ import type { PartieSignataire } from "@/server/qualiopi/documents/signature/doc
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
+import { envoyerPositionnement } from "@/server/qualiopi/notifications/notifications-service";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 
 /**
@@ -219,7 +220,89 @@ async function objectionMetier(
  *
  * ⚠️ N'échoue JAMAIS bruyamment.
  */
+/**
+ * Pièces dont la conclusion ENGAGE l'action de formation.
+ *
+ * C'est le moment exact où le positionnement doit partir : avant, on ne sait
+ * pas encore si l'action aura lieu ; après, c'est un oubli qui coûte
+ * l'indicateur 8. Le devis n'y figure pas — un accord commercial n'engage pas
+ * encore une formation.
+ */
+const PIECES_QUI_ENGAGENT_LACTION: ReadonlySet<string> = new Set([
+  "convention",
+  "convention_tripartite",
+  "contrat",
+]);
+
+/**
+ * Envoie le questionnaire de positionnement à TOUS les stagiaires de la session
+ * dès que la pièce qui engage l'action est intégralement signée (ind. 8).
+ *
+ * 🔴 Demandé par Will le 2026-08-15, après le premier dossier réel : « ça ne
+ * pourrait pas devenir automatique pour qu'il n'y ait pas d'oubli ? ». Sur ce
+ * dossier, le positionnement n'est parti que parce qu'on l'a cherché la veille
+ * de la formation. Aucun cron ne le portait, aucune alerte ne le réclamait.
+ *
+ * ⚠️ IDEMPOTENT par `envoyeAt: null` : re-signer, ou repasser par ce chemin,
+ * ne renvoie rien. C'est la garde qui autorise à l'appeler sans réfléchir.
+ *
+ * ⚠️ FAIL-SOFT, par stagiaire ET globalement : une panne d'e-mail ne doit
+ * JAMAIS annuler une signature déjà écrite et chaînée. Le rattrapage manuel
+ * (« Envoyer au stagiaire ») reste disponible, et la relance J+3 prend le
+ * relais.
+ */
+async function declencherPositionnement(documentGenereId: string): Promise<void> {
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: documentGenereId },
+    select: { sessionId: true },
+  });
+  if (piece?.sessionId == null) return;
+
+  const questionnaires = await prisma.questionnaire.findMany({
+    where: {
+      type: "positionnement",
+      envoyeAt: null,
+      reponduAt: null,
+      enrollment: { sessionId: piece.sessionId },
+    },
+    select: { id: true },
+  });
+
+  for (const q of questionnaires) {
+    try {
+      await envoyerPositionnement(q.id);
+      // `envoyerPositionnement` n'écrit pas la trace — l'appelant la pose, comme
+      // le fait l'envoi manuel. Sans elle, impossible de distinguer « jamais
+      // envoyé » de « envoyé, sans réponse », et la relance J+3 ne partirait
+      // jamais.
+      await prisma.questionnaire.update({
+        where: { id: q.id },
+        data: { envoyeAt: new Date() },
+      });
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { action: "declencherPositionnement" },
+        extra: { documentGenereId, questionnaireId: q.id },
+      });
+    }
+  }
+}
+
 async function consequenceSignatureComplete(type: string, documentGenereId: string): Promise<void> {
+  if (PIECES_QUI_ENGAGENT_LACTION.has(type)) {
+    // Encapsulé : `declencherPositionnement` capture déjà par stagiaire, mais
+    // une panne AVANT la boucle (lecture de la pièce) remonterait ici et
+    // ferait échouer une signature valide.
+    try {
+      await declencherPositionnement(documentGenereId);
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { action: "consequenceSignatureComplete:positionnement" },
+        extra: { documentGenereId, type },
+      });
+    }
+    return;
+  }
   if (type !== "devis") return;
   try {
     // ⚠️ `updateMany` avec garde sur le statut : un devis déjà `accepte` ou

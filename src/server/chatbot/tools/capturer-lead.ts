@@ -8,9 +8,12 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { syncFormSubmissionToCrm } from "@/server/crm-sync";
 import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 /**
  * Notifie l'équipe d'un NOUVEAU lead chatbot (best-effort, fail-soft — ne fait
@@ -107,6 +110,7 @@ export async function capturerLead(
           companyName: input.structure ?? "Via chatbot",
           contactName: input.nom,
           contactEmail: input.email,
+          contactEmailHash: hashEmailForLookup(input.email),
           ...(input.telephone ? { contactPhone: input.telephone } : {}),
           details: { besoin: input.besoin_resume, canal: "chatbot", consentementRgpd: true },
           source: "chatbot",
@@ -127,6 +131,22 @@ export async function capturerLead(
         data: { submissionId: submission.id },
       });
 
+      // Synchro CRM (lot L2) — ici, et ICI SEULEMENT, l'outbox est écrite DANS
+      // la transaction métier : c'est le seul point de capture du site qui en
+      // ouvre déjà une. On y gagne la garantie « si le lead existe, l'événement
+      // existe » sans rien changer au risque. Ailleurs, l'écriture est
+      // post-commit pour qu'un échec de synchro ne puisse jamais faire
+      // rollback un lead.
+      await syncFormSubmissionToCrm({
+        tx,
+        subjectRef: `site:submission:${submission.id}`,
+        formType: "autre",
+        sourceSlug: "chatbot",
+        person: { email: input.email, fullName: input.nom, phone: input.telephone ?? null },
+        ...(input.structure ? { company: { name: input.structure } } : {}),
+        payload: { canal: "chatbot" },
+      });
+
       return { submissionId: submission.id, idempotent: false };
     });
   } catch (err) {
@@ -144,6 +164,21 @@ export async function capturerLead(
   // idempotent → pas de double-ping). Fail-soft : n'impacte pas le résultat.
   if (!result.idempotent) {
     await notifyNewLead(input, result.submissionId);
+
+    // Confirmation au visiteur (2026-08-13). Il laissait son adresse dans une
+    // fenêtre de discussion qu'il allait fermer, et ne recevait rien : aucune
+    // trace de son geste, ni preuve ni moyen de relancer.
+    //
+    // 🔴 Sous la même garde `!result.idempotent` que la notification interne :
+    // un rejeu ne doit PAS renvoyer un second e-mail à la même personne.
+    try {
+      await enqueueEmail("chatbot-demande-transmise", input.email, "fr", {
+        contexte: "rappel",
+        ...(input.besoin_resume ? { extrait: input.besoin_resume.slice(0, 200) } : {}),
+      });
+    } catch (err) {
+      console.warn("[capturer_lead] confirmation e-mail échouée:", err);
+    }
   }
   return result;
 }

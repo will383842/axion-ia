@@ -124,6 +124,14 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
         clients={clients}
         devis={devis}
         redirectAfterCreate={sessionsListUrl}
+        // Lot 1bis — les URLs sont construites ICI parce que seul le serveur
+        // connaît le `locale` et le préfixe d'administration (secret injecté
+        // par Coolify). Les laisser deviner au composant client produirait un
+        // lien mort le jour où le préfixe change.
+        liensPrerequis={{
+          formations: `/${locale}/${adminPrefix}/qualiopi/formations/new`,
+          clients: `/${locale}/${adminPrefix}/qualiopi/clients/new`,
+        }}
       />
     </AdminPageShell>
   );

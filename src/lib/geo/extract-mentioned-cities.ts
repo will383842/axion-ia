@@ -28,7 +28,7 @@
  *   - Appelé au publish, pas en hot path render
  */
 
-import { VILLES, type Ville } from "@/content/villes";
+import { VILLES_CORE, type VilleData } from "@/content/villes/core";
 
 /**
  * Échappe les caractères regex spéciaux dans le nom d'une ville (ex: "L'Haÿ-les-Roses").
@@ -54,7 +54,7 @@ interface ExtractOptions {
   readonly forceInclude?: string;
   /**
    * Cap nombre max villes mentionnées (anti-spam SEO). Default 20.
-   * Au-delà, on garde les 20 premières dans l'ordre VILLES (Paris, Lyon, etc.).
+   * Au-delà, on garde les 20 premières dans l'ordre VILLES_CORE (Paris, Lyon, etc.).
    */
   readonly maxCities?: number;
 }
@@ -89,12 +89,12 @@ export function extractMentionedCitiesFromText(text: string, options?: ExtractOp
   // (le LLM peut écrire "ile-de-france" sans accent dans son output).
   const normalizedBody = stripDiacritics(text).toLowerCase();
 
-  for (const ville of VILLES) {
+  for (const ville of VILLES_CORE) {
     if (result.size >= maxCities) break;
     if (result.has(ville.slug)) continue; // déjà ajouté via forceInclude
 
     // Match prioritaire : slug exact (`paris`, `boulogne-billancourt`, etc.)
-    // Le slug est déjà normalisé (lowercase, no accents) côté Ville source.
+    // Le slug est déjà normalisé (lowercase, no accents) côté VilleData source.
     const slugPattern = new RegExp(`\\b${escapeRegex(ville.slug)}\\b`, "i");
     if (slugPattern.test(normalizedBody)) {
       result.add(ville.slug);
@@ -126,7 +126,7 @@ export function findMentionedCitiesWithOffsets(
   const seen = new Set<string>();
   const normalized = stripDiacritics(text).toLowerCase();
 
-  for (const ville of VILLES) {
+  for (const ville of VILLES_CORE) {
     if (seen.has(ville.slug)) continue;
     const normalizedName = stripDiacritics(ville.nameFr).toLowerCase();
     if (normalizedName.length < 4) continue;
@@ -142,7 +142,7 @@ export function findMentionedCitiesWithOffsets(
 }
 
 /**
- * Utilitaire helper : prend une `Ville` source et retourne les autres slugs
+ * Utilitaire helper : prend une `VilleData` source et retourne les autres slugs
  * mentionnés dans un texte (exclut la source). Utile pour générer le cross-link
  * mesh "Articles blog parlant aussi de Lyon, Marseille…" depuis hub Paris.
  */
@@ -150,4 +150,4 @@ export function getMentionedCitiesExcluding(text: string, excludeSlug: string): 
   return extractMentionedCitiesFromText(text).filter((s) => s !== excludeSlug);
 }
 
-export type { Ville };
+export type { VilleData };

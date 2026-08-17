@@ -24,6 +24,7 @@ vi.mock("@/lib/prisma", () => ({
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   // OBLIGATOIRE : `deleteTrainerDocumentAction` appelle desormais
   // `requireAdminDelete`, HORS du try/catch. Sans cette entree le binding vaut
   // `undefined` et les 2 tests de `describe("deleteTrainerDocumentAction")`

@@ -41,6 +41,14 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: vi.fn(() => Promise.resolve({ enqueued: true })),
+}));
+
+vi.mock("@/server/notifications", () => ({
+  notify: vi.fn(() => Promise.resolve()),
+}));
+
 vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: vi.fn((v: string | null) => (v === null ? null : `decrypted:${v}`)),
 }));
@@ -53,6 +61,8 @@ vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
 import { prisma } from "@/lib/prisma";
 import { exporterDonneesStagiaire, supprimerStagiaire, creerDemandeRgpd } from "./rgpd-service";
+import { enqueueEmail } from "@/server/queue/queues";
+import { notify } from "@/server/notifications";
 import { supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
 import { COLONNES_SCELLEES } from "@/server/qualiopi/emargement/reconstruction";
 
@@ -480,5 +490,78 @@ describe("RGPD — signatures d'émargement", () => {
     // ce qui reste, grâce au filtre `imagePurgeeAt: null`.
     expect(mockSupprimerImage).toHaveBeenCalledTimes(2);
     expect(mockPrisma.emargementSignature.update).toHaveBeenCalledTimes(1);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// creerDemandeRgpd — notification des deux parties (2026-08-13)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Ce que ces tests protègent : avant cette date, déposer une demande RGPD
+// depuis le portail ne déclenchait RIEN. Ni accusé à la personne, ni alerte à
+// l'équipe. La demande pouvait dormir jusqu'à ce que la personne saisisse la
+// CNIL — le délai de réponse étant d'un mois à compter du dépôt.
+
+describe("creerDemandeRgpd — prévient les deux parties", () => {
+  const DEPOT = new Date("2026-08-13T09:00:00.000Z");
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.rgpdDemande.create.mockResolvedValue({
+      id: "rgpd-notif-1",
+      type: "suppression",
+      demandeAt: DEPOT,
+    });
+    mockPrisma.trainee.findUnique.mockResolvedValue({
+      email: "jean@exemple.fr",
+      nom: "Dupont",
+      prenom: "Jean",
+    });
+  });
+
+  it("envoie un accusé de réception à la personne", async () => {
+    await creerDemandeRgpd("t-1", "suppression");
+
+    expect(enqueueEmail).toHaveBeenCalledTimes(1);
+    const [gabarit, destinataire, , charge] = vi.mocked(enqueueEmail).mock.calls[0]!;
+    expect(gabarit).toBe("rgpd-demande-recue");
+    expect(destinataire).toBe("jean@exemple.fr");
+    expect(charge).toMatchObject({ type: "suppression", reference: "rgpd-notif-1" });
+  });
+
+  it("ALERTE l'équipe avec l'échéance légale calculée", async () => {
+    // Sans cette alerte, personne n'apprend l'existence de la demande : c'est
+    // le défaut d'origine, et le plus coûteux des deux.
+    await creerDemandeRgpd("t-1", "suppression");
+
+    expect(notify).toHaveBeenCalledTimes(1);
+    const evenement = vi.mocked(notify).mock.calls[0]![0] as {
+      category: string;
+      payload: Record<string, unknown>;
+    };
+    expect(evenement.category).toBe("RGPD_REQUEST_SUBMITTED");
+    expect(evenement.payload.traineeEmail).toBe("jean@exemple.fr");
+    expect(evenement.payload.traineeNom).toBe("Jean Dupont");
+    // Dépôt le 13 août + 30 jours = 12 septembre.
+    expect(String(evenement.payload.echeance)).toContain("septembre");
+  });
+
+  it("rend quand même la demande si une notification échoue", async () => {
+    // La demande est DÉJÀ enregistrée quand on notifie. Faire échouer l'action
+    // remplacerait un défaut silencieux par une perte franche : la personne
+    // croirait sa demande refusée alors qu'elle est en base.
+    vi.mocked(notify).mockRejectedValueOnce(new Error("telegram muet"));
+
+    const resultat = await creerDemandeRgpd("t-1", "suppression");
+    expect(resultat.id).toBe("rgpd-notif-1");
+  });
+
+  it("ne tente rien si le stagiaire n'a pas d'adresse connue", async () => {
+    mockPrisma.trainee.findUnique.mockResolvedValue(null);
+
+    const resultat = await creerDemandeRgpd("t-1", "export");
+    expect(resultat.id).toBe("rgpd-notif-1");
+    expect(enqueueEmail).not.toHaveBeenCalled();
+    expect(notify).not.toHaveBeenCalled();
   });
 });

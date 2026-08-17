@@ -49,7 +49,15 @@ export const IA_POUR_LE_JURIDIQUE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous qualifiez tout document AVANT de l'ouvrir dans un outil — soumissible tel quel, après traitement, ou jamais — et vous tenez la formule de refus devant un collègue pressé.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-1",
+      // Le second temps de l'atelier classe les cinq documents du jeu dans les
+      // trois régimes et exige la justification écrite ; le contrôle croisé
+      // fait nommer les deux verrous que l'anonymisation ne lève pas de la même
+      // façon : c'est l'objectif 1.
+      // Le premier temps lit les conditions d'utilisation de trois outils et
+      // conclut le régime de chacun, ou son ambiguïté (objectif 2) — servi ici
+      // et nulle part ailleurs.
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:
@@ -220,10 +228,16 @@ export const IA_POUR_LE_JURIDIQUE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez une synthèse de contrat sous VOTRE grille de vigilance, chaque case appuyée sur une citation du texte — une synthèse qui prépare votre relecture, jamais qui la remplace.",
-      objectifGlobalId: "obj-1",
-      // La grille de points de vigilance construite et appliquée ici EST le
-      // repérage des clauses à risque vendu en objectif 2.
-      objectifsSecondairesIds: ["obj-2"],
+      objectifGlobalId: "obj-4",
+      // La synthèse est produite sous la grille du stagiaire, chaque case
+      // appuyée sur la phrase recopiée ou marquée « absente du contrat », après
+      // le test de la dernière clause posé en démonstration : c'est
+      // l'objectif 4.
+      // Le premier temps de l'atelier construit la grille ordonnée et pondérée
+      // selon la position type (objectif 3) ; le contrôle croisé cherche dans
+      // la synthèse du binôme les quatre défauts et la question qui manque
+      // (objectif 5).
+      objectifsSecondairesIds: ["obj-3", "obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -367,11 +381,14 @@ export const IA_POUR_LE_JURIDIQUE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez un document type réutilisable, vous ne faites de veille que sur un texte que vous fournissez, et vous savez quoi répondre quand la direction demande « qu'a-t-on le droit de faire avec l'IA ? ».",
-      objectifGlobalId: "obj-3",
-      // La démonstration et l'atelier « texte fourni » de ce module SONT la
-      // veille réglementaire assistée vendue en objectif 4 — bornée au seul
-      // geste tenable : interroger un texte qu'on apporte.
-      objectifsSecondairesIds: ["obj-4"],
+      objectifGlobalId: "obj-6",
+      // L'atelier produit le document type réutilisable, adapte les trois
+      // articles de charte au vocabulaire de l'entreprise et coche la liste
+      // d'opposabilité : c'est l'objectif 6.
+      // Le deuxième temps interroge un texte réglementaire que le stagiaire
+      // fournit lui-même, phrase d'appui exigée, et fait écrire la phrase de
+      // refus (objectif 7) — servi ici et nulle part ailleurs.
+      objectifsSecondairesIds: ["obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -499,7 +516,13 @@ export const IA_POUR_LE_JURIDIQUE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous reconnaissez une référence inventée avant qu'elle ne sorte du service, et vous repartez avec un dossier de cadrage IA prêt à être remis à la direction.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-8",
+      // La chasse à l'hallucination relève les trois références fausses et les
+      // deux approximations d'une note juridique produite par l'IA, la
+      // vérification les réécrit en formulation vérifiable en nommant la source
+      // à ouvrir, et l'atelier rédige la note d'une page à la direction — ce
+      // que le service fait, ne fait pas, ce qui reste à trancher :
+      // c'est l'objectif 8.
       dureeMin: 5,
       notes: {
         script:

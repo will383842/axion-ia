@@ -2,7 +2,9 @@
  * Qualiopi — Service d'envoi d'emails transactionnels lifecycle (T15).
  *
  * Fonctions exportées :
- *   envoyerConvocation        : enrollment confirmé → qualiopi-convocation
+ *   envoyerConvocation        : cron J-5 (off.9) → qualiopi-convocation
+ *                               ⚠️ PAS appelé à la confirmation d'inscription —
+ *                               cf. le commentaire de la fonction.
  *   envoyerRappelJ7           : session J-7 → qualiopi-rappel-j7 (par enrollment)
  *   envoyerSatisfactionJ1     : session réalisée J+1 → qualiopi-satisfaction-j1
  *   envoyerSuiviJ30           : session réalisée J+30 → qualiopi-suivi-j30
@@ -19,6 +21,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
@@ -118,8 +121,39 @@ async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promi
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Envoie la convocation officielle au stagiaire lors de la confirmation
- * de son inscription (enrollment). Idempotent : jobId fixe par enrollmentId.
+ * Envoie la convocation officielle au stagiaire. Idempotent : jobId fixe par
+ * enrollmentId.
+ *
+ * ── Ce que cet e-mail transmet, exactement ───────────────────────────────────
+ *
+ * AUCUNE pièce jointe : il porte le lien personnel vers l'espace stagiaire,
+ * qui délivre programme, règlement intérieur, livret d'accueil et questionnaire
+ * de positionnement. Le PDF de convocation
+ * (documents/templates/convocation.tsx) dit désormais exactement cela — il
+ * annonçait auparavant des documents « transmis avec cette convocation », ce
+ * qui était faux. Les deux textes sont solidaires : si l'on retire un jour
+ * `lienPortail` du payload, ou si l'on attache réellement les fichiers, il faut
+ * rectifier le gabarit PDF dans le même geste.
+ *
+ * ── 🔴 Pourquoi ce gabarit n'a JAMAIS été déclenché (audit blanc 2026-08-15) ──
+ *
+ * Zéro envoi sur 98 e-mails et 11 gabarits utilisés, tous dossiers confondus.
+ * Le seul appelant est le cron `formation-crons.convocation-j5`
+ * (queue/workers/qualiopi-formation-crons-worker.ts), qui ne retient que les
+ * sessions `planifiee` dont `dateDebut` tombe dans [now+4,5 j ; now+5,5 j] au
+ * passage quotidien de 08:00 UTC. Deux conséquences :
+ *
+ *   1. `enrollTraineeAction` (actions/qualiopi/enrollments.ts) N'APPELLE PAS
+ *      cette fonction — contrairement à ce qu'annonçait l'en-tête du fichier.
+ *      Rien ne part à la confirmation de l'inscription.
+ *   2. Le cron ne rattrape RIEN : une inscription enregistrée à moins de 5
+ *      jours de la session — le cas d'un premier dossier réel — n'a plus aucune
+ *      fenêtre, et le stagiaire ne reçoit jamais de convocation.
+ *
+ * Le chaînon manquant est donc un appel au point de confirmation d'inscription,
+ * et/ou un rattrapage dans le cron pour les enrollments créés après J-5. Les
+ * deux fichiers concernés sont hors du périmètre de ce correctif : ne pas
+ * câbler à l'aveugle depuis ici.
  */
 export async function envoyerConvocation(enrollmentId: string): Promise<void> {
   if (isStub()) return;
@@ -154,6 +188,23 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
 
+  // La convocation ATTESTE que les documents sont accessibles « par le lien
+  // personnel qui vous est adressé par courriel avec cette convocation ». Si la
+  // création du jeton échoue, `getOrCreatePortailLien` retombe EN SILENCE sur la
+  // route nue /portail/mon-espace, qui refuse l'accès faute de session : la
+  // pièce affirmerait alors ce que l'e-mail ne tient pas.
+  //
+  // On laisse malgré tout PARTIR la convocation — la retenir romprait
+  // l'obligation d'information (indicateur 9) alors que la page de refus offre
+  // une demande d'accès — mais le défaut est journalisé, jamais deviné.
+  if (lienPortail === `${baseUrl}/fr/portail/mon-espace`) {
+    console.error(
+      `[notifications] convocation: aucun lien portail personnel pour le stagiaire ${trainee.id} ` +
+        `(inscription ${enrollmentId}) — la convocation part avec un lien d'accès NON personnalisé, ` +
+        `alors que le PDF annonce un accès direct aux documents`,
+    );
+  }
+
   await enqueueEmail(
     "qualiopi-convocation",
     trainee.email,
@@ -168,8 +219,22 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
       numeroSession: session.numero,
       lienPortail,
     },
-    { jobId: `qualiopi-convocation-${enrollmentId}` },
+    // 🔴 Clé de DATE, comme rappel-j7 / satisfaction-j1 / suivi-j30. La
+    // convocation etait le seul envoi a ne pas en porter, alors qu'elle est le
+    // seul a porter une obligation reglementaire (ind. 9). Sans elle, la
+    // deduplication BullMQ expire au min(7 jours, 1 000 jobs) et un second
+    // envoi redevient possible sans que rien ne le dise.
+    { jobId: `qualiopi-convocation-${enrollmentId}-${dateKey(session.dateDebut)}` },
   );
+
+  // 🔴 ÉTAT, et non fenêtre de date. C'est cette colonne qui rend le cron
+  // rattrapant : tant qu'elle est nulle, l'inscription reste candidate. Posée
+  // APRÈS l'enqueue — poser avant ferait mentir la colonne si la file est
+  // indisponible, et le rattrapage ne reviendrait jamais.
+  await prisma.enrollment.update({
+    where: { id: enrollmentId },
+    data: { convocationEnvoyeeAt: new Date() },
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -457,6 +522,64 @@ const LIBELLE_QUESTIONNAIRE: Record<string, string> = {
  * Idempotence : le jobId inclut le numéro de relance — la relance N ne part
  * qu'une fois, la relance N+1 reste possible.
  */
+/**
+ * Envoie le questionnaire de POSITIONNEMENT au stagiaire (indicateur 8).
+ *
+ * 🔴 Remplace le repli sur `demanderAccesParEmail()`, qui envoyait le template
+ * de RE-DEMANDE d'accès portail — un email affirmant une demande que le
+ * stagiaire n'avait pas faite, et se terminant par « vous pouvez ignorer cet
+ * email ». Constaté sur le premier dossier réel, la veille de la formation :
+ * l'indicateur 8 reposait sur un message qui demandait qu'on l'ignore.
+ *
+ * ⚠️ Volontairement SANS garde sur `envoyeAt` : renvoyer le positionnement est
+ * légitime (le stagiaire a perdu le mail, l'adresse a changé). La garde qui
+ * compte — « déjà répondu » — est posée en amont dans `envoyerQuestionnaireAction`.
+ */
+export async function envoyerPositionnement(questionnaireId: string): Promise<void> {
+  if (isStub()) return;
+
+  const q = await prisma.questionnaire.findUnique({
+    where: { id: questionnaireId },
+    select: {
+      id: true,
+      reponduAt: true,
+      enrollment: {
+        select: {
+          trainee: { select: { id: true, email: true, nom: true, prenom: true } },
+          session: { select: { numero: true, titreSession: true, dateDebut: true } },
+        },
+      },
+    },
+  });
+
+  // Un positionnement déjà répondu n'a plus de destinataire : le renvoyer
+  // laisserait croire au stagiaire que sa réponse s'est perdue.
+  if (!q || q.reponduAt !== null) return;
+
+  const { trainee, session } = q.enrollment;
+  if (!trainee.email) return;
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
+
+  await enqueueEmail(
+    "qualiopi-positionnement",
+    trainee.email,
+    "fr",
+    {
+      stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`.trim(),
+      titreFormation: session.titreSession,
+      dateDebutFormation: fmtDate(session.dateDebut),
+      lienQuestionnaire,
+      numeroSession: session.numero,
+    },
+    // 🔴 `jobId` horodaté, PAS `qualiopi-positionnement-${q.id}` : la
+    // déduplication BullMQ rendrait tout renvoi silencieusement inopérant, et
+    // c'est exactement le renvoi qu'on vient de rendre nécessaire.
+    { jobId: `qualiopi-positionnement-${q.id}-${Date.now()}` },
+  );
+}
+
 export async function envoyerRelanceQuestionnaire(questionnaireId: string): Promise<void> {
   if (isStub()) return;
 
@@ -512,6 +635,23 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
       },
       { jobId: `qualiopi-enquete-entreprise-relance-${q.id}-${numeroRelance}` },
     );
+  } else if (q.type === "positionnement") {
+    // 🔴 2026-08-15 — MÊME DÉFAUT que l'envoi initial, trouvé en auditant les
+    // autres e-mails à la demande de Will.
+    //
+    // Le cron `relance-questionnaires` ne filtre PAS sur le type : un
+    // positionnement sans réponse à J+3 était relancé avec
+    // `qualiopi-questionnaire-relance`, dont le corps affirme « Vous avez suivi
+    // la formation X » et dont l'objet annonce « votre avis sur X ».
+    //
+    // Un positionnement se recueille AVANT la formation. Les deux phrases
+    // étaient donc fausses, et la seconde transformait un questionnaire
+    // préparatoire en enquête de satisfaction — sur une formation que le
+    // stagiaire n'avait pas encore suivie.
+    //
+    // On relance avec le template de positionnement, qui dit « avant le début
+    // de la formation » — la phrase juste dans les deux cas.
+    await envoyerPositionnement(q.id);
   } else {
     const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
     await enqueueEmail(
@@ -614,8 +754,9 @@ export async function envoyerEnqueteEntreprise(sessionId: string): Promise<void>
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Envoie une alerte interne à l'équipe Axion-IA (destinataire = env var
- * QUALIOPI_ALERTE_EMAIL ou WEEKLY_REPORT_EMAIL ou noreply admin).
+ * Envoie une alerte interne à l'équipe Axion-IA (destinataire résolu par
+ * `destinataireAlertesInternes()` : QUALIOPI_ALERTE_EMAIL, sinon
+ * WEEKLY_REPORT_EMAIL, sinon l'adresse de l'organisme).
  * NE PAS utiliser pour notifier des stagiaires.
  * Idempotent : jobId = qualiopi-alerte-interne-{alerteId}.
  */
@@ -647,11 +788,14 @@ export async function notifierAlerteInterne(alerteId: string): Promise<void> {
 
   if (!alerte) return;
 
-  // Destinataire interne : priorité QUALIOPI_ALERTE_EMAIL, sinon WEEKLY_REPORT_EMAIL
-  const destinataire =
-    process.env["QUALIOPI_ALERTE_EMAIL"] ??
-    process.env["WEEKLY_REPORT_EMAIL"] ??
-    "williamsjullin@gmail.com";
+  // Destinataire interne — SSOT `lib/destinataires-internes.ts`.
+  //
+  // 🔴 Le repli en dur était une adresse Gmail PERSONNELLE, et il était recopié
+  // à la main dans un second fichier (celui des candidatures commerciales, qui
+  // envoie le CV complet d'un candidat). Trois valeurs coexistaient pour la
+  // même question : la troisième était juste, les deux autres fausses.
+  // Décision de Will le 16/08 : `contact@axion-ia.com`, résolue en UN endroit.
+  const destinataire = destinataireAlertesInternes();
 
   const payload: Record<string, unknown> = {
     niveau: alerte.niveau,

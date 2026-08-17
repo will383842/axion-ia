@@ -21,10 +21,11 @@
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncFormSubmissionToCrm } from "@/server/crm-sync";
 import { SubmissionType } from "../../../prisma/generated/client";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { encryptPii } from "@/lib/pii-crypto";
+import { encryptPii, decryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -34,9 +35,11 @@ import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
 import { roiCallbackSchema, roiReportRequestSchema } from "@/lib/schemas/roi-report-schema";
 import { decodeAnswers, REPORT_QUERY_PARAM, ROI_QUERY_PARAM } from "@/lib/roi/encode";
+import type { RoiSubmissionDetails } from "@/lib/roi/submission-details";
 import { diagnose } from "@/lib/roi/diagnose";
 import { clientSectorLabel } from "@/content/sectors";
 import { HEADCOUNT_BANDS } from "@/content/roi/model/types";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 export type RoiReportState =
   // `submissionId` est rendu au client pour qu'il puisse, dans un SECOND temps,
@@ -119,6 +122,28 @@ export async function submitRoiReportAction(
   const sectorLabel =
     answers.sector === "generique" ? "Autre secteur" : clientSectorLabel(answers.sector);
 
+  // Typé par `RoiSubmissionDetails` : ce JSON est lu par l'export CSV de la
+  // console, et Prisma ne contraint pas `details`. Sans ce type, renommer une
+  // clé ici viderait une colonne de l'export en silence.
+  const details: RoiSubmissionDetails = {
+    unifiedType: "simulateur_roi",
+    consentVersion: CONSENT_VERSION,
+    // Le diagnostic encodé permet de rejouer EXACTEMENT le rapport vu par le
+    // prospect — indispensable pour préparer un appel sans lui redemander ce
+    // qu'il vient de saisir.
+    diagnostic: data.diagnostic,
+    reportUrl,
+    maturity: answers.maturity,
+    // Les agrégats sont dupliqués ici pour rester filtrables en console sans
+    // avoir à re-décoder le diagnostic.
+    savedHoursPerYear: report.totalSavedHoursPerYear,
+    savedEurPerYear: report.totalSavedEurPerYear,
+    fteRecovered: report.fteRecovered,
+    topTaskIds: report.topTasks.map((t) => t.task.id),
+    ...(turnstilePassed ? {} : { turnstilePassed: false as const }),
+    ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
+  };
+
   try {
     const submission = await prisma.submission.create({
       data: {
@@ -127,30 +152,34 @@ export async function submitRoiReportAction(
         companyName: data.companyName ?? "—",
         contactName: encryptPii(data.nom),
         contactEmail: encryptPii(data.email),
+        contactEmailHash: hashEmailForLookup(data.email),
         contactPhone: null,
         sector: answers.sector,
         employeesCount: headcountLabel,
-        details: {
-          unifiedType: "simulateur_roi",
-          consentVersion: CONSENT_VERSION,
-          // Le diagnostic encodé permet de rejouer EXACTEMENT le rapport vu par
-          // le prospect — indispensable pour préparer un appel sans lui
-          // redemander ce qu'il vient de saisir.
-          diagnostic: data.diagnostic,
-          reportUrl,
-          maturity: answers.maturity,
-          // Les agrégats sont dupliqués ici pour rester filtrables en console
-          // sans avoir à re-décoder le diagnostic.
-          savedHoursPerYear: report.totalSavedHoursPerYear,
-          savedEurPerYear: report.totalSavedEurPerYear,
-          fteRecovered: report.fteRecovered,
-          topTaskIds: report.topTasks.map((t) => t.task.id),
-          ...(turnstilePassed ? {} : { turnstilePassed: false }),
-          ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
-        } as object,
+        details: details as object,
         ipAddress: ip,
         ipHash: safeHashIp(ip),
         userAgent,
+      },
+    });
+
+    // Synchro CRM (lot L2) — outbox locale, best-effort, jamais bloquante.
+    // Ne fait rien tant que `CRM_SYNC_ENABLED` n'est pas à "true".
+    await syncFormSubmissionToCrm({
+      subjectRef: `site:submission:${submission.id}`,
+      formType: "simulateur_roi",
+      occurredAt: submission.submittedAt,
+      person: { email: data.email, fullName: data.nom },
+      company: {
+        name: data.companyName ?? null,
+        sizeCategory: answers.headcount,
+        sector: answers.sector,
+      },
+      consent: { version: CONSENT_VERSION, at: submission.submittedAt, textRef: "roi-report-form" },
+      payload: {
+        savedEurPerYear: report.totalSavedEurPerYear,
+        maturity: answers.maturity,
+        ...(Object.keys(funnel).length > 0 ? { funnel } : {}),
       },
     });
 
@@ -267,7 +296,19 @@ export async function attachRoiCallbackAction(
   try {
     const existing = await prisma.submission.findUnique({
       where: { id: submissionId },
-      select: { id: true, contactPhone: true, companyName: true },
+      // `contactEmail`/`contactName` : nécessaires pour confirmer le rappel à
+      // la personne. Ils sont chiffrés au repos, d'où le déchiffrement plus bas.
+      select: {
+        id: true,
+        contactPhone: true,
+        companyName: true,
+        contactEmail: true,
+        contactName: true,
+        // La locale n'est pas dans le formulaire de rappel : on reprend celle
+        // de la soumission d'origine, pour ne pas répondre en français à
+        // quelqu'un qui a fait tout le parcours en anglais.
+        locale: true,
+      },
     });
     if (!existing) {
       return { ok: false, error: "Demande introuvable. Renvoyez-vous le rapport, puis réessayez." };
@@ -279,6 +320,23 @@ export async function attachRoiCallbackAction(
       where: { id: submissionId },
       data: { contactPhone: encryptPii(telephone) },
     });
+
+    // Confirmation à la personne (2026-08-13). C'est le geste le plus engageant
+    // du tunnel — laisser son numéro APRÈS avoir reçu son rapport, sans y être
+    // contraint — et il ne recevait aucune confirmation. Le numéro est rappelé
+    // dans l'e-mail pour qu'une faute de frappe se voie tout de suite.
+    try {
+      const clair = decryptPii(existing.contactEmail);
+      if (clair && clair.includes("@")) {
+        const prenom = decryptPii(existing.contactName)?.split(" ")[0] ?? "";
+        await enqueueEmail("rappel-confirme", clair, existing.locale, {
+          prenom: prenom || "et merci",
+          telephone,
+        });
+      }
+    } catch (err) {
+      console.error("[roi-callback] confirmation impossible :", err);
+    }
 
     // Meilleur effort : un lead qui accepte d'être rappelé est le plus chaud du
     // tunnel, la notification doit partir — mais son échec ne doit pas faire

@@ -31,7 +31,11 @@ import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
@@ -85,6 +89,10 @@ import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  montantPrisEnChargeCents,
+  resteAChargeCents,
+} from "@/server/qualiopi/financements/prise-en-charge-montant";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -367,7 +375,16 @@ export async function genererConventionTripartiteAction(input: {
       montantHtCents: true,
       opcoSubrogation: true,
       numeroDossierOpco: true,
+      // 🔴 16/08 — `priseEnChargeMontantCents` était sélectionné SEUL et lu comme
+      // un total. C'est un TARIF : son sens dépend entièrement de l'unité, et
+      // les plafonds le bornent. Sans ces quatre champs, la convention imprimait
+      // « Prise en charge OPCO : 40,00 € » pour un OPCO couvrant 40 €/h sur 14 h
+      // et 8 participants, soit 4 480 € — un facteur 112, sur la pièce que lit
+      // le financeur et que trois parties signent.
       priseEnChargeMontantCents: true,
+      priseEnChargeUnite: true,
+      priseEnChargePlafondFormationCents: true,
+      priseEnChargePlafondAnnuelCents: true,
       formationSnapshot: true,
       formation: {
         select: {
@@ -403,8 +420,29 @@ export async function genererConventionTripartiteAction(input: {
     ? opcoLabel(session.client.opcoIdentifie)
     : "OPCO (à préciser)";
   const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
-  const montantPrisEnCharge = (session.priseEnChargeMontantCents ?? 0) / 100;
   const prixHt = session.montantHtCents / 100;
+
+  // 🔴 16/08 — le montant pris en charge se CALCULE, il ne se lit pas.
+  //
+  // `priseEnChargeMontantCents` est un TARIF (€/h, €/j, €/formation,
+  // €/an/salarié) : le lire brut imprimait « 40,00 € » là où l'OPCO couvre
+  // 40 €/h × 14 h × 8 participants = 4 480 €. Sur une pièce contractuelle
+  // signée par trois parties, avec un reste à charge faux du même écart.
+  //
+  // ⚠️ `null` = montant NON ÉTABLI (tarif absent, unité absente, durée requise
+  // et inconnue). Le gabarit le dit alors, au lieu d'imprimer 0 — un zéro se
+  // lirait comme « le financeur ne prend rien en charge », ce qui est une
+  // affirmation, et une affirmation fausse.
+  const basePriseEnCharge = {
+    priseEnChargeMontantCents: session.priseEnChargeMontantCents,
+    priseEnChargeUnite: session.priseEnChargeUnite,
+    priseEnChargePlafondFormationCents: session.priseEnChargePlafondFormationCents,
+    priseEnChargePlafondAnnuelCents: session.priseEnChargePlafondAnnuelCents,
+    dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
+    nbParticipants: session.nbParticipantsPrevus,
+  };
+  const priseEnChargeCents = montantPrisEnChargeCents(basePriseEnCharge);
+  const resteCents = resteAChargeCents(basePriseEnCharge, session.montantHtCents);
 
   const doc = await generateDocument({
     type: "convention_tripartite",
@@ -434,8 +472,9 @@ export async function genererConventionTripartiteAction(input: {
           lieu: resolveLieuDocument(session, identite),
           effectif: session.nbParticipantsPrevus,
           prixHt,
-          montantPrisEnCharge,
-          resteAChargeClient: Math.max(0, prixHt - montantPrisEnCharge),
+          // `null` quand le montant n'est pas établi : le gabarit le DIT.
+          montantPrisEnCharge: priseEnChargeCents !== null ? priseEnChargeCents / 100 : null,
+          resteAChargeClient: resteCents !== null ? resteCents / 100 : null,
           dateConvention: formatDateFr(new Date()),
         },
         identite,
@@ -1123,7 +1162,8 @@ export async function genererCertificatRealisationAction(input: {
   enrollmentId: string;
   rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : certificat de realisation R.6313-3 : piece opposable au financeur.
+  const adminSession = await requireHabilitation("attester");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
@@ -1323,7 +1363,8 @@ export async function genererKitOpcoAction(input: {
   sessionId: string;
   rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : kit OPCO depose au nom du client (mandat).
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
@@ -1437,7 +1478,8 @@ export async function genererKitCpfAction(input: {
   enrollmentId: string;
   rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : kit CPF/EDOF depose au nom du stagiaire.
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
@@ -1531,7 +1573,8 @@ export async function genererKitFranceTravailAction(input: {
   enrollmentId: string;
   rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : kit France Travail (AIF/POEI/CSP).
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
@@ -3073,6 +3116,14 @@ export async function genererContratSousTraitanceAction(input: {
 
 const trainerIdSchema = z.object({ trainerId: z.string().uuid() });
 
+/** Libellés des actions de développement des compétences (ind. 22). */
+const DEV_ACTION_LABELS: Record<string, string> = {
+  entretien_professionnel: "Entretien professionnel",
+  formation_suivie: "Formation suivie",
+  veille: "Veille",
+  autre: "Autre",
+};
+
 /**
  * Verse la fiche formateur au dossier de preuves et ferme la boucle ind. 21.
  *
@@ -3094,7 +3145,8 @@ const trainerIdSchema = z.object({ trainerId: z.string().uuid() });
 export async function verserFicheFormateurAction(input: {
   trainerId: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : la fiche formateur materialise la verification des competences (ind. 21/22).
+  const adminSession = await requireHabilitation("habiliter_formateur");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = trainerIdSchema.safeParse(input);
@@ -3140,12 +3192,51 @@ export async function verserFicheFormateurAction(input: {
   // pièce de preuve de l'indicateur 21 — sortait sans aucune habilitation, pendant
   // que la liste des formateurs en annonçait 33. Deux pièces du même dossier se
   // contredisaient.
+  //
+  // 🔴 Audit blanc 2026-08-15 : cette requête ne portait AUCUN filtre de statut.
+  // La fiche versée au dossier énumérait 57 formations habilitées quand le
+  // catalogue en comptait 22 — une trentaine d'intitulés retirés de l'offre y
+  // figuraient encore. La pièce remise à l'auditrice habilitait donc
+  // l'intervenant sur des prestations qui n'existent plus, et sur-déclarait son
+  // périmètre de 159 %, alors que la liste se compare directement au catalogue.
+  //
+  // `not: "archive"` plutôt que `= "actif"` : le statut `publie` désigne une
+  // formation bel et bien à l'offre, l'écarter sous-déclarerait le périmètre —
+  // l'erreur symétrique, tout aussi fausse devant un auditeur. Même doctrine que
+  // `listFormationOptions` (`remuneration/rules-queries.ts`) et que le Formation
+  // Engine.
+  //
+  // ⚠️ Le filtre ne supprime RIEN en base : la ligne `TrainerHabilitation`
+  // subsiste et réapparaîtra si la formation est désarchivée. Il n'écarte du
+  // DOCUMENT que ce qui n'est plus proposé.
   const habilitations = await prisma.trainerHabilitation.findMany({
-    where: { trainerId: trainer.id },
+    where: { trainerId: trainer.id, formation: { statut: { not: "archive" } } },
     select: { formation: { select: { titre: true } } },
     orderBy: { formation: { titre: "asc" } },
   });
   const titresHabilitations: string[] = habilitations.map((h) => h.formation.titre);
+
+  // Actions d'entretien / développement des compétences (ind. 22).
+  //
+  // 🔴 Audit blanc 2026-08-15 : la mention légale au pied de la fiche affirmait
+  // « synthétise […] l'entretien de ces compétences (indicateur 22) » sans en
+  // restituer UNE SEULE ligne. Une pièce qui annonce une preuve qu'elle ne porte
+  // pas est pire qu'une pièce muette : elle oriente l'auditeur vers un constat.
+  // Les actions sont donc listées, et leur absence est écrite noir sur blanc
+  // plutôt que passée sous silence (`[]` → section rendue avec le constat).
+  const actionsDeveloppementRaw = await prisma.trainerDevelopmentAction.findMany({
+    where: { trainerId: trainer.id },
+    orderBy: { dateAction: "desc" },
+    // Borne haute défensive : la fiche est une synthèse, pas un journal. 50
+    // lignes couvrent très largement les 3 ans de cycle de certification.
+    take: 50,
+    select: { type: true, dateAction: true, description: true },
+  });
+  const actionsDeveloppement = actionsDeveloppementRaw.map((a) => ({
+    date: formatDateFr(a.dateAction),
+    type: DEV_ACTION_LABELS[a.type] ?? a.type,
+    description: a.description,
+  }));
 
   const identite = await getOrganismeIdentite();
   const maintenant = new Date();
@@ -3168,17 +3259,28 @@ export async function verserFicheFormateurAction(input: {
   // peut exiger des pièces sources) — cette garde n'écarte que le cas totalement vide.
   const aDesCompetences =
     Array.isArray(trainer.domainesCompetences) && trainer.domainesCompetences.length > 0;
-  const aDesHabilitations = trainer.formationsHabilitees.length > 0;
+  // 🔴 Lit `titresHabilitations` — ce que la fiche IMPRIME — et non le tableau
+  // legacy `trainer.formationsHabilitees`, qui compte aussi les formations
+  // archivées (et, historiquement, des ids orphelins). Sur cet écart la garde ne
+  // gardait plus rien : un formateur habilité sur 30 formations toutes retirées
+  // du catalogue la franchissait, et la fiche sortait sans une seule
+  // habilitation tout en posant `cvUrl` — indicateur 21 vert sur une pièce vide.
+  const aDesHabilitations = titresHabilitations.length > 0;
   if (!aDesCompetences && !aDesHabilitations && nbCvSource === 0) {
     return {
       error:
-        "Fiche non versée : ce formateur n'a ni domaine de compétence, ni habilitation, ni CV source. Renseignez sa maîtrise (indicateur 21) avant de verser sa fiche au dossier.",
+        "Fiche non versée : ce formateur n'a ni domaine de compétence, ni habilitation sur une formation du catalogue en vigueur, ni CV source. Renseignez sa maîtrise (indicateur 21) avant de verser sa fiche au dossier.",
     };
   }
 
   const data = {
     ...buildCvFormateurData(trainer, titresHabilitations, maintenant),
+    // Écrase la déduction faite depuis `cvUrl` : ici on COMPTE les CV sources
+    // validés, la seule lecture qui ne confonde pas un CV téléversé avec la
+    // fiche que cette action s'apprête à produire.
     cvJoint: nbCvSource > 0,
+    pieceCompetences: nbCvSource > 0 ? ("cv_televerse" as const) : ("fiche_organisme" as const),
+    actionsDeveloppement,
   };
 
   let doc: { id: string; numero: string };
@@ -3238,7 +3340,11 @@ export async function verserFicheFormateurAction(input: {
       documentId: doc.id,
       numero: doc.numero,
       nbCompetences: data.domainesCompetences.length,
+      // Habilitations RETENUES (catalogue en vigueur) — c'est ce chiffre qui doit
+      // se retrouver sur la pièce, et donc dans la trace.
       nbHabilitations: titresHabilitations.length,
+      nbActionsDeveloppement: actionsDeveloppement.length,
+      pieceCompetences: data.pieceCompetences,
     },
     session: adminSession,
   });

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,17 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 
 // Dev-only component gallery. Reach it at /fr/components or /en/components.
 // Sprint 4 will add composite sections; Sprint 5 builds product pages on top.
+//
+// GEO-138 (audit GEO/AEO 2026-08-15) — cette page n'exportait AUCUNE metadata :
+// elle héritait donc du layout racine `robots: { index: true, follow: true }`,
+// le titre par défaut de la home et (avant ce lot) son canonical `/fr`. Elle
+// répondait 200 sans `X-Robots-Tag` — seul le `Disallow` de robots.txt la
+// protégeait, ce qui n'empêche pas l'indexation d'une URL découverte par lien.
+// Aligné sur `/[locale]/design/page.tsx`, qui porte déjà ce noindex.
+export const metadata: Metadata = {
+  title: { absolute: "Bibliothèque de composants · Axion-IA" },
+  robots: { index: false, follow: false },
+};
 export default function ComponentsPage() {
   return (
     <>

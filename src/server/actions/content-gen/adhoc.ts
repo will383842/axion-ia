@@ -6,6 +6,8 @@ import crypto from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
+// Fix 2026-08-15 (audit e2e) — options par défaut partagées des files content-gen.
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 import { requireAdminWriteRateLimited } from "./_auth";
 
 // `landing_ville` exclu : CLI-only, hors REGISTRY content-gen (generators/index.ts)
@@ -88,7 +90,12 @@ export async function dispatchAdHocJob(input: AdHocJobInput): Promise<{ jobId: s
 
     const redisUrl = process.env.REDIS_URL;
     if (redisUrl && !redisUrl.includes("stub.invalid")) {
-      const q = new Queue("content-gen", { connection: { url: redisUrl } });
+      // Fix 2026-08-15 (audit e2e) — `defaultJobOptions` partagées : sans elles
+      // la file héritait du défaut BullMQ (1 tentative, pas de backoff).
+      const q = new Queue("content-gen", {
+        connection: { url: redisUrl },
+        defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+      });
       await q.add(
         "generate",
         {

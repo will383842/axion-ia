@@ -107,6 +107,9 @@ export async function listTemplates(filters?: {
   contentType?: ContentType;
   isActive?: boolean;
 }): Promise<ReadonlyArray<TemplateRow>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon
+  // (les prompts systèmes des templates sont des données internes).
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   if (filters !== undefined) ListTemplatesFiltersSchema.parse(filters);
   const rows = await prisma.contentTemplate.findMany({
@@ -120,6 +123,8 @@ export async function listTemplates(filters?: {
 }
 
 export async function getTemplate(id: string): Promise<TemplateDetail | null> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   TemplateIdSchema.parse(id);
   const r = await prisma.contentTemplate.findUnique({ where: { id } });

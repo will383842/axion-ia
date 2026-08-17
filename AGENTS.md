@@ -18,7 +18,28 @@ Toute PR qui touche le code frontend doit respecter ces seuils sur les **15 page
 
 Exception : `/appel` (réservation d'appel, iframe Calendly client-heavy) → INP ≤ 150 ms, First Load ≤ 110 KB gz.
 
-Tout patch qui dégrade ces seuils requiert un STOP & ASK Will + ADR justifié. Lighthouse CI (`pnpm lhci`) gate les PR. Bundle delta gate (`size-limit`) bloque les PR avec > +5 KB gz vs `main`.
+Tout patch qui dégrade ces seuils requiert un STOP & ASK Will + ADR justifié.
+
+⚠️ **Vérité des gates (rectifiée le 2026-08-15, audit GEO/AEO E2E — GEO-025).** Ce
+paragraphe affirmait que Lighthouse CI et `size-limit` bloquaient les PR. C'est **faux**,
+et l'a toujours été :
+
+- **Le seul gate réellement bloquant est le `lhci` _post-deploy_** (job `lhci` de
+  `.github/workflows/deploy-coolify.yml`), qui mesure 5 URLs de la **prod live** après
+  l'atterrissage. Il échoue le workflow, donc il alerte — mais **après** la mise en ligne.
+- **Les gates PR de budget sont en reporting, pas en blocage** : dans
+  `.github/workflows/ci.yml`, les steps « Bundle size » (`pnpm bundle:check`, size-limit),
+  « Bundle delta vs main » (`size-limit-action`) et « Lighthouse CI » (`pnpm lhci:autorun`)
+  portent tous les trois `continue-on-error: true`. **Aucune PR qui alourdit le bundle ne
+  rougira.** Conséquence directe : toute revue qui écrit « le risque bundle est couvert par
+  la gate » raisonne sur une fausse sécurité. Un patch susceptible d'alourdir une route se
+  mesure **à la main**, avant/après.
+- Le Lighthouse CI **PR-time** ne doit pas être repassé bloquant tant que le bind loopback
+  de la CI n'est pas réparé (`next start` ne bind pas sur 127.0.0.1 en CI).
+
+Ne repassez pas ces gates en bloquant « au passage » : un ratchet posé sur un seuil déjà
+dépassé (le bucket « Shell partagé » mesure 134,87 kB réels pour une limite affichée à
+100 kB) ouvre un rouge permanent sur toutes les PR. Seuil aligné d'abord, blocage ensuite.
 
 Source de vérité : `_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md`.
 

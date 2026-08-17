@@ -4,7 +4,12 @@
 // renvoie `Bad Request: can't parse entities`. Cf.
 // https://core.telegram.org/bots/api#markdownv2-style
 
-import type { NotificationCategory, NotificationEvent, NotificationSeverity } from "./types";
+import type {
+  CrmSyncAlertKind,
+  NotificationCategory,
+  NotificationEvent,
+  NotificationSeverity,
+} from "./types";
 import { telegramGroupFor, type TelegramGroup } from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
@@ -34,11 +39,14 @@ const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
 const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   calendly: { emoji: "📅", label: "CALENDLY" },
   candidatures: { emoji: "💼", label: "CANDIDATURE" },
+  "monteur-video": { emoji: "🎬", label: "MONTEUR VIDÉO" },
+  "commercial-memo": { emoji: "🧲", label: "COMMERCIAL MÉMO" },
   presse: { emoji: "📰", label: "PRESSE" },
   investisseurs: { emoji: "💰", label: "INVESTISSEUR" },
   interventions: { emoji: "🛠️", label: "INTERVENTION" },
   avis: { emoji: "⭐", label: "AVIS CLIENT" },
   messages: { emoji: "💬", label: "MESSAGE" },
+  "crm-sync": { emoji: "🔗", label: "SYNCHRO CRM" },
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
 
@@ -54,8 +62,12 @@ const TITLES: Record<NotificationCategory, string> = {
   PRESS_REQUEST_SUBMITTED: "Demande presse / média",
   RECRUITMENT_RECEIVED: "Candidature spontanée",
   JOB_APPLICATION_RECEIVED: "Candidature à une offre",
+  VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature monteur vidéo",
+  COMMERCIAL_APPLICATION_RECEIVED: "Candidature commercial",
+  JOB_OFFERS_STALE: "Offres d'emploi à republier",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
   PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
+  RGPD_REQUEST_SUBMITTED: "⚖️ Demande RGPD — délai 1 mois",
   SPEAKER_INVITATION_RECEIVED: "Invitation conférence",
   INVESTOR_INQUIRY_RECEIVED: "Demande investisseur / M&A",
   CUSTOMER_SUPPORT_REQUEST: "Support client",
@@ -81,6 +93,22 @@ const TITLES: Record<NotificationCategory, string> = {
   STRIPE_EVENT: "Stripe — événement",
   STRIPE_WEBHOOK_SIGNATURE_FAIL: "Stripe — signature webhook invalide",
   MONITORING_ALERT: "Alerte monitoring",
+  CRM_SYNC_ALERT: "Synchro CRM — anomalie",
+};
+
+/**
+ * Libellé humain de chaque anomalie de synchro.
+ *
+ * `Record<CrmSyncAlertKind, …>` : ajouter un `kind` sans son libellé ne compile
+ * pas. Une alerte dont on ne saurait pas dire ce qu'elle signale ne vaudrait
+ * pas mieux que pas d'alerte du tout.
+ */
+const CRM_SYNC_ALERT_LABELS: Record<CrmSyncAlertKind, string> = {
+  gave_up: "Abandon définitif — le lead n'arrivera pas au CRM",
+  backlog: "File d'attente au-dessus du seuil",
+  reconcile_gap: "Enregistrements source sans ligne d'outbox",
+  reconcile_failed: "Échec du batch de réconciliation",
+  scan_capped: "Balayage d'abonnés plafonné — un optout CRM peut être raté",
 };
 
 const MD_V2_RESERVED = /[_*[\]()~`>#+\-=|{}.!\\]/g;
@@ -178,6 +206,9 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Nom", p.contactName),
         formatKV("Email", p.contactEmail),
         "contactPhone" in p ? formatKV("Téléphone", p.contactPhone) : null,
+        // Le CONTENU du message, en tête (demande Will 2026-08-12) : c'est ce
+        // qu'on veut lire depuis le téléphone, avant les métadonnées.
+        "message" in p ? formatKV("Message", p.message) : null,
         "ville" in p ? formatKV("Ville", p.ville) : null,
         "companyName" in p ? formatKV("Société", p.companyName) : null,
         "companySize" in p ? formatKV("Taille", p.companySize) : null,
@@ -200,7 +231,8 @@ function formatBody(event: NotificationEvent): string {
       ].filter((v): v is string => v !== null);
       return lines.join("\n");
     }
-    case "JOB_APPLICATION_RECEIVED": {
+    case "JOB_APPLICATION_RECEIVED":
+    case "VIDEO_EDITOR_APPLICATION_RECEIVED": {
       const p = event.payload;
       return [
         formatKV("Candidat", p.contactName),
@@ -210,11 +242,49 @@ function formatBody(event: NotificationEvent): string {
         p.offerCategory ? formatKV("Catégorie", careerCategoryLabel(p.offerCategory, true)) : null,
         p.city ? formatKV("Ville", p.city) : null,
         p.salaryExpectation ? formatKV("Prétention", p.salaryExpectation) : null,
+        p.motivationExcerpt ? formatKV("Motivation", p.motivationExcerpt) : null,
         formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
         p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
         formatKV(
           "Voir en console",
           `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "COMMERCIAL_APPLICATION_RECEIVED": {
+      // Message COURT par choix : les 6 champs qui permettent de juger la
+      // candidature depuis l'écran verrouillé. Le récap complet (expériences,
+      // pitch, message libre) vit dans l'email interne + la console.
+      const p = event.payload;
+      return [
+        formatKV("Candidat", p.contactName),
+        p.ville ? formatKV("Ville", p.ville) : null,
+        p.zone ? formatKV("Zone souhaitée", p.zone) : null,
+        p.b2bYears ? formatKV("Expérience B2B", p.b2bYears) : null,
+        p.availability ? formatKV("Disponible", p.availability) : null,
+        formatKV("Utilise l'IA", p.usesAi ? "oui" : "non"),
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "JOB_OFFERS_STALE": {
+      const p = event.payload;
+      const lines = p.offers.map((o) =>
+        formatKV(o.kind === "statique" ? "Page statique" : "Offre", `${o.title} — ${o.daysOld} j`),
+      );
+      return [
+        formatKV("Seuil", `${p.thresholdDays} jours sans republication`),
+        ...lines,
+        formatKV("Republier en console", `${SITE_URL}${adminPath("fr", "offres-emploi")}`),
+        formatKV(
+          "Règle",
+          "republier UNIQUEMENT si l'offre est toujours ouverte (bouton Republier) — les pages statiques passent par une modif de code",
         ),
       ]
         .filter((v): v is string => v !== null)
@@ -235,6 +305,16 @@ function formatBody(event: NotificationEvent): string {
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
+    }
+    case "RGPD_REQUEST_SUBMITTED": {
+      const p = event.payload;
+      return [
+        formatKV("Nature", p.type === "suppression" ? "Effacement (art. 17)" : "Accès (art. 15)"),
+        formatKV("Personne", p.traineeNom),
+        formatKV("Email", p.traineeEmail),
+        formatKV("À traiter avant le", p.echeance),
+        formatKV("Référence", p.demandeId),
+      ].join("\n");
     }
     case "PODCAST_REQUEST_SUBMITTED": {
       const p = event.payload;
@@ -294,6 +374,7 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Email", p.inviteeEmail),
         formatKV("Téléphone", p.inviteePhone),
         formatKV("Début", humanDateOrText(p.eventStartTime)),
+        formatKV("Réponses formulaire", p.answersText),
         formatKV("Page", p.pageUrl),
         formatKV("UTM source", p.utmSource),
         formatKV("UTM campagne", p.utmCampaign),
@@ -423,6 +504,18 @@ function formatBody(event: NotificationEvent): string {
       return [
         formatKV("Type", p.kind),
         formatKV("Détails", JSON.stringify(p.details).slice(0, 800)),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CRM_SYNC_ALERT": {
+      const p = event.payload;
+      return [
+        formatKV("Anomalie", CRM_SYNC_ALERT_LABELS[p.kind]),
+        formatKV("Nombre", p.count),
+        formatKV("Source", p.subjectRef),
+        formatKV("Détail", p.detail?.slice(0, 400)),
+        formatKV("Console", `${SITE_URL}${adminPath("fr", "synchro-crm")}`),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");

@@ -22,6 +22,7 @@ vi.mock("@/server/qualiopi/registres/veille-service", () => ({
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid" }),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   requireAdminDelete: vi.fn().mockResolvedValue({ userId: "admin-uuid" }),
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));

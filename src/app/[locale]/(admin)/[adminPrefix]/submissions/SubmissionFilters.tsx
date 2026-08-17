@@ -23,6 +23,10 @@ const CLIENT_UNIFIED_TYPES = [
   "formation",
   "un_a_un",
   "devis",
+  // Tunnel publicitaire (2026-08-12) : ces leads arrivent avec un gain estimé
+  // et un diagnostic complet. Sans entrée de filtre, ils restaient noyés
+  // parmi les messages de contact ordinaires.
+  "simulateur_roi",
   "support_client",
 ] as const;
 const AUTRE_UNIFIED_TYPES = [

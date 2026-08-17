@@ -24,12 +24,19 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   // investisseur (signal stratégique fort), "info" pour les 4 autres. ---
   PRESS_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
   RECRUITMENT_RECEIVED: { channels: ["telegram"], severity: "info" },
+  // Rappel hebdo « offres à republier » (cron offres-fraicheur) — maintenance
+  // SEO, pas un lead : Telegram seul, jamais WhatsApp.
+  JOB_OFFERS_STALE: { channels: ["telegram"], severity: "warn" },
   JOB_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
+  VIDEO_EDITOR_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
+  COMMERCIAL_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   REVIEW_SUBMITTED: { channels: ["telegram"], severity: "info" },
   // Demande de tournage podcast (2026-07-21) — lead entrant, Telegram groupe
   // « Messages ». `rateLimitPerHour` volontairement absent : le volume attendu
   // est faible et le rate-limit IP côté Server Action suffit.
   PODCAST_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
+  // `warn` et non `info` : un délai légal court dès le dépôt.
+  RGPD_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "warn" },
   SPEAKER_INVITATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   INVESTOR_INQUIRY_RECEIVED: { channels: ["telegram"], severity: "warn" },
   CUSTOMER_SUPPORT_REQUEST: { channels: ["telegram"], severity: "warn" },
@@ -77,6 +84,23 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
     severity: "warn",
     rateLimitPerHour: 30,
   },
+
+  // --- Synchro CRM (lot L5) ---
+  //
+  // `error` et pas `warn` : un abandon définitif est un lead qui n'arrivera
+  // JAMAIS au CRM sans intervention humaine. Le canal Sentry double Telegram
+  // pour que l'anomalie survive à un salon non lu.
+  //
+  // `rateLimitPerHour` est une SECONDE ceinture, pas la première : l'anti-bruit
+  // réel est la clé de dédup horaire par `kind` posée dans `crm-sync/alerts.ts`
+  // (4 types × 1/h = 4 messages/h au pire). Ce plafond de 12 ne mord donc
+  // jamais en fonctionnement nominal — il n'est là que si un futur appelant
+  // oubliait la clé de dédup.
+  CRM_SYNC_ALERT: {
+    channels: ["telegram", "sentry"],
+    severity: "error",
+    rateLimitPerHour: 12,
+  },
 };
 
 export function getRouting(category: NotificationCategory): RoutingEntry {
@@ -96,20 +120,24 @@ export function shouldDispatchAsync(severity: NotificationSeverity): boolean {
 // grossier — le groupe « Messages » recevait 12 catégories très différentes
 // (une candidature, un investisseur et une demande de devis dans le même fil),
 // et le groupe « RDV » mélangeait Calendly avec 6 catégories du tunnel de
-// réservation payante éteint. On passe à 8 groupes thématiques.
+// réservation payante éteint. On passe à 8 groupes thématiques (+ le salon 🎬
+// monteur vidéo ajouté le 2026-08-12, dédié à une seule offre).
 //
 // DEUX BOTS : le groupe 📅 Calendly a son propre bot (`TELEGRAM_CALENDLY_BOT_TOKEN`),
-// les 7 autres gardent le bot historique. Cf. `resolveTelegramTarget()` plus bas,
+// tous les autres gardent le bot historique. Cf. `resolveTelegramTarget()` plus bas,
 // qui traite (bot, salon) comme un COUPLE — ne jamais les résoudre séparément.
 
 export type TelegramGroup =
   | "calendly"
   | "candidatures"
+  | "monteur-video"
+  | "commercial-memo"
   | "presse"
   | "investisseurs"
   | "interventions"
   | "avis"
   | "messages"
+  | "crm-sync"
   | "system";
 
 /**
@@ -132,6 +160,20 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // 💼 Candidatures — offres d'emploi publiées ET candidature spontanée/commerciale.
   JOB_APPLICATION_RECEIVED: "candidatures",
   RECRUITMENT_RECEIVED: "candidatures",
+  // Le rappel « offres à republier » vit avec les offres qu'il concerne.
+  JOB_OFFERS_STALE: "candidatures",
+
+  // 🎬 Monteur vidéo — les candidatures à l'offre `monteur-video-freelance-distance`
+  // SEULEMENT, dans leur propre salon (demande Will 2026-08-12 : « cette annonce
+  // seule, pas mélangée avec les autres offres »). Le tri par offre se fait au
+  // call-site (`videoEditorNotificationCategory`), pas ici.
+  VIDEO_EDITOR_APPLICATION_RECEIVED: "monteur-video",
+
+  // 🧲 Commercial Mémo — les candidatures commerciales du tunnel sans CV
+  // `/devenir-commercial-ia/candidature` (annonce Mémorial de l'Isère) SEULEMENT,
+  // dans leur propre salon (même logique que le monteur vidéo : une campagne de
+  // recrutement = un fil, jamais mélangée aux autres candidatures).
+  COMMERCIAL_APPLICATION_RECEIVED: "commercial-memo",
 
   // 📰 Presse
   PRESS_REQUEST_SUBMITTED: "presse",
@@ -152,7 +194,15 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   CONTACT_FORM_SUBMITTED: "messages",
   CUSTOMER_SUPPORT_REQUEST: "messages",
   PODCAST_REQUEST_SUBMITTED: "messages",
+  RGPD_REQUEST_SUBMITTED: "messages",
   SPEAKER_INVITATION_RECEIVED: "messages",
+
+  // 🔗 Synchro CRM — salon dédié plutôt que Système, pour une raison précise :
+  // ces alertes se lisent en RÉGIME (« la file monte depuis 3 h »), pas à
+  // l'unité. Noyées entre deux sauvegardes réussies, la tendance disparaît.
+  // Le salon est optionnel : sans `TELEGRAM_CHAT_ID_CRM_SYNC`, on retombe sur
+  // 🔔 Système, exactement là où ces messages seraient allés sinon.
+  CRM_SYNC_ALERT: "crm-sync",
 
   // 🔔 Système — newsletter, ops, et le tunnel de réservation payante ÉTEINT.
   //
@@ -240,6 +290,31 @@ const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Noti
   // ⭐ Avis client à modérer.
   "REVIEW_SUBMITTED",
 
+  // 🎬 Candidatures monteur vidéo — demande EXPLICITE de Will (2026-08-12) pour
+  // CETTE offre seulement. Ce n'est PAS un retour en arrière sur l'exclusion des
+  // candidatures (ci-dessous) : `JOB_APPLICATION_RECEIVED` reste hors WhatsApp.
+  // CallMeBot = un seul fil → la séparation passe par l'en-tête 🎬 MONTEUR VIDÉO.
+  "VIDEO_EDITOR_APPLICATION_RECEIVED",
+
+  // 🧲 Candidatures commerciales (tunnel Mémorial de l'Isère) — même décision
+  // que le monteur vidéo (Will 2026-08-12) : campagne active à fort enjeu, le
+  // doublon WhatsApp est voulu. Séparation par l'en-tête 🧲 COMMERCIAL MÉMO.
+  "COMMERCIAL_APPLICATION_RECEIVED",
+
+  // ✉️ Formulaire de contact — REMIS le 2026-08-16, sur demande explicite de
+  // Will après un envoi de contrôle où il n'a rien reçu sur son téléphone.
+  //
+  // Il en avait été retiré le 2026-08-09 au motif que « ce sont des gens qui
+  // attendent une réponse, mais rarement dans l'heure ». La décision s'inverse
+  // en connaissance de cause : le formulaire unifié est la porte d'entrée
+  // commerciale principale du site, et laisser une demande dormir jusqu'à la
+  // prochaine ouverture de Telegram coûte plus cher que la dilution du fil.
+  //
+  // ⚠️ C'est le premier flux à VOLUME de cette liste. Si le fil WhatsApp devient
+  // bruyant, c'est ici qu'il faudra revenir — pas sur Calendly ni sur les
+  // demandes de prestation.
+  "CONTACT_FORM_SUBMITTED",
+
   // ── HORS WhatsApp, sur décision explicite de Will (2026-08-09) ─────────────
   // Ne pas les remettre sans le lui redemander — leur absence est un CHOIX, pas
   // un oubli, et `__tests__/whatsapp.test.ts` la verrouille explicitement.
@@ -249,9 +324,10 @@ const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Noti
   //    le pic du 05/08 (17 candidatures en une journée) montre que ce volume
   //    noie un fil qui doit rester réservé à l'urgent. Restent sur Telegram,
   //    dans leur groupe 💼 Candidatures.
-  //  · `CONTACT_FORM_SUBMITTED`, `CUSTOMER_SUPPORT_REQUEST`,
-  //    `PODCAST_REQUEST_SUBMITTED` — y étaient aussi, retirées : ce sont des gens
-  //    qui attendent une réponse, mais rarement dans l'heure.
+  //  · `CUSTOMER_SUPPORT_REQUEST`, `PODCAST_REQUEST_SUBMITTED` — retirées le
+  //    2026-08-09 : ce sont des gens qui attendent une réponse, mais rarement
+  //    dans l'heure. (`CONTACT_FORM_SUBMITTED` figurait ici jusqu'au 2026-08-16,
+  //    puis a été REMIS sur demande de Will — voir plus haut.)
   //  · `NEWSLETTER_*`, `DEPLOY_*`, `BACKUP_*`, `INCIDENT_DETECTED`,
   //    `SECURITY_ALERT`, `STRIPE_*`, `MONITORING_ALERT` — jamais ajoutées.
   //  · les 6 dormantes `BOOKING_*`/`OPTION_*` — tunnel éteint, aucun émetteur.
@@ -268,11 +344,14 @@ export function shouldNotifyWhatsApp(category: NotificationCategory): boolean {
 const CHAT_ID_ENV: Record<TelegramGroup, string> = {
   calendly: "TELEGRAM_CHAT_ID_CALENDLY",
   candidatures: "TELEGRAM_CHAT_ID_CANDIDATURES",
+  "monteur-video": "TELEGRAM_CHAT_ID_MONTEUR_VIDEO",
+  "commercial-memo": "TELEGRAM_CHAT_ID_COMMERCIAL_MEMO",
   presse: "TELEGRAM_CHAT_ID_PRESSE",
   investisseurs: "TELEGRAM_CHAT_ID_INVESTISSEURS",
   interventions: "TELEGRAM_CHAT_ID_INTERVENTIONS",
   avis: "TELEGRAM_CHAT_ID_AVIS",
   messages: "TELEGRAM_CHAT_ID_MESSAGES",
+  "crm-sync": "TELEGRAM_CHAT_ID_CRM_SYNC",
   system: "TELEGRAM_CHAT_ID_SYSTEM",
 };
 
@@ -288,12 +367,30 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
 const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   calendly: ["TELEGRAM_CHAT_ID_RDV", "TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   candidatures: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
+  // Tant que Will n'a pas créé le salon dédié, ces candidatures retombent dans
+  // 💼 Candidatures — exactement là où elles arrivaient avant cette séparation.
+  "monteur-video": [
+    "TELEGRAM_CHAT_ID_CANDIDATURES",
+    "TELEGRAM_CHAT_ID_MESSAGES",
+    "TELEGRAM_CHAT_ID",
+  ],
+  // Même repli que le monteur vidéo : tant que le salon 🧲 n'existe pas, ces
+  // candidatures retombent dans 💼 Candidatures — rien ne se perd.
+  "commercial-memo": [
+    "TELEGRAM_CHAT_ID_CANDIDATURES",
+    "TELEGRAM_CHAT_ID_MESSAGES",
+    "TELEGRAM_CHAT_ID",
+  ],
   presse: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   investisseurs: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   interventions: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   // L'avis tombait dans Système avant le 2026-08-09 — on y retombe.
   avis: ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
   messages: ["TELEGRAM_CHAT_ID"],
+  // Tant que le salon 🔗 dédié n'existe pas, ces alertes techniques retombent
+  // dans 🔔 Système — là où elles seraient allées si on n'avait pas créé de
+  // groupe. Le repli n'est donc jamais une perte, juste un mélange.
+  "crm-sync": ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
   system: ["TELEGRAM_CHAT_ID"],
 };
 
@@ -326,7 +423,7 @@ export interface TelegramTarget {
  */
 export function resolveTelegramTarget(group: TelegramGroup): TelegramTarget | undefined {
   const mainBot = envValue("TELEGRAM_BOT_TOKEN");
-  // Seul le groupe Calendly a un bot dédié ; les 7 autres partagent l'historique.
+  // Seul le groupe Calendly a un bot dédié ; tous les autres partagent l'historique.
   const dedicatedBot = group === "calendly" ? envValue("TELEGRAM_CALENDLY_BOT_TOKEN") : mainBot;
   const dedicatedChat = envValue(CHAT_ID_ENV[group]);
 

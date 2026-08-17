@@ -128,10 +128,6 @@ type StaticSitemapId =
   | "help"
   | "cas-concrets"
   | "comparaisons"
-  // Sprint S+3 P0-7 (audit 18-TYPE-7) — hub `/guides` dans son propre sub-sitemap.
-  // Les guides individuels restent émis via sub-sitemap `blog` (continuité Articles).
-  // Le sub-sitemap `guides` ne contient que le hub lui-même (lastmod = BUILD_TIME).
-  | "guides"
   // Sprint S+4-A 2026-05-18 (audit 22-TYPE-11) — sub-sitemap dédié glossaire
   // (hub /glossaire + 60 termes /glossaire/[slug]).
   | "glossaire"
@@ -183,6 +179,13 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // EN `/my-data/export` partage le même endpoint, on exclut la clé canonique.
   "/mes-donnees/export",
   "/confirmation",
+  // GEO-130 (audit GEO/AEO 2026-08-14) — `/demande-devis/confirmation` porte
+  // `robots: { index: false }` (cf. sa `generateMetadata`) et figurait pourtant
+  // dans `pages.xml` : mesure en production le 2026-08-16, 3 occurrences.
+  // Meme incoherence « noindexed URL in sitemap » que `/mes-donnees/export`
+  // ci-dessus. La cle `/confirmation` ne la couvrait pas : ce sont deux entrees
+  // distinctes de `routing.pathnames`.
+  "/demande-devis/confirmation",
   // Variante tunnel du simulateur (2026-08-12) : même contenu que `/roi`, sans
   // en-tête ni pied de page, servie au trafic payant. Elle porte `noindex` —
   // l'annoncer dans pages.xml produirait exactement l'incohérence Search
@@ -383,8 +386,15 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "help",
     "cas-concrets",
     "comparaisons",
-    // Sprint S+3 P0-7 (audit 18-TYPE-7) — sub-sitemap dédié hub /guides.
-    "guides",
+    // "guides" RETIRÉ de generateSitemaps() 2026-08-16 (audit GEO/AEO, GEO-147).
+    // Ce sub-sitemap ne contenait QU'UNE URL — le hub `/fr/guides` — déjà émise
+    // par `pages.xml` (la clé `/guides` est dans `routing.pathnames` et n'a
+    // jamais figuré dans `EXCLUDED_FROM_INDEX`). Mesuré en production le
+    // 2026-08-16 : `guides.xml` = 1 `<loc>`, la MÊME que dans `pages.xml`.
+    // Un sub-sitemap redondant à une URL coûte une entrée d'index et un
+    // `lastmod` figé au 2026-06-08 pour toujours, sans rien annoncer de neuf.
+    // AUCUNE URL n'est perdue : les guides individuels sont émis par le
+    // sub-sitemap `blog` (`resolveArticleRoute` les route vers `/guides/:slug`).
     // Sprint S+4-A 2026-05-18 (audit 22-TYPE-11) — sub-sitemap glossaire (hub + 60 termes).
     "glossaire",
     // "presse" RETIRÉ de generateSitemaps() 2026-07-31 (audit indexation GSC) —
@@ -565,8 +575,6 @@ export default async function sitemap(props: {
       return filterEnIfDisabled(buildCasConcretsSitemap(editorialFor("cas-concrets")));
     case "comparaisons":
       return filterEnIfDisabled(buildComparaisonsSitemap(editorialFor("comparaisons")));
-    case "guides":
-      return filterEnIfDisabled(buildGuidesHubSitemap(editorialFor("guides")));
     case "glossaire":
       return filterEnIfDisabled(buildGlossarySitemap(editorialFor("glossaire")));
     case "presse":
@@ -732,6 +740,21 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
   // (audit sitelinks 2026-07-06). FR uniquement (doctrine content-gen v1.2).
   entries.push({
     url: `${SITE_URL}/fr/equipe/williams`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  });
+  // GEO-145 (audit GEO/AEO 2026-08-14) — `/fr/equipe/manon` manquait, alors que
+  // c'est la page CIBLE du `@id` du noeud `Person` porte par tout le JSON-LD
+  // editorial (1 500+ fiches). Un `@id` d'auteur qui pointe une URL qu'aucun
+  // sitemap ne declare laisse le graphe d'entite ouvert.
+  //
+  // Le profil vient de la base (`AuthorProfile`, seed `content-gen`), contrairement
+  // a `williams` qui est code en dur — donc cette URL depend d'un profil ACTIF.
+  // Verifie en production le 2026-08-16 : `GET /fr/equipe/manon` repond 200.
+  // Garde : `tests/unit/seo/sitemap-hygiene.spec.ts` verrouille le seed actif.
+  entries.push({
+    url: `${SITE_URL}/fr/equipe/manon`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.6,
@@ -1087,22 +1110,6 @@ function buildSecteursSitemap(now: Date): MetadataRoute.Sitemap {
     for (const svc of SERVICE_DEFS) {
       push(`/secteurs/${sector.slug}/${svc.slug}`, 0.6);
     }
-  }
-  return entries;
-}
-
-function buildGuidesHubSitemap(now: Date): MetadataRoute.Sitemap {
-  const entries: MetadataRoute.Sitemap = [];
-  const hubKey = "/guides" as const;
-  for (const locale of effectiveLocales) {
-    const url = `${SITE_URL}/${locale}/guides`;
-    entries.push({
-      url,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.7,
-      alternates: { languages: alternateLanguages(hubKey) },
-    });
   }
   return entries;
 }

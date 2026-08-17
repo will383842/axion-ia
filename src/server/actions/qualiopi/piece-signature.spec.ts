@@ -25,7 +25,12 @@ vi.mock("@/lib/prisma", () => ({
     documentGenere: { findUnique: vi.fn() },
     devis: { findFirst: vi.fn(), updateMany: vi.fn() },
     documentSignature: { count: vi.fn(), findMany: vi.fn() },
+    questionnaire: { findMany: vi.fn(), update: vi.fn() },
   },
+}));
+
+vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
+  envoyerPositionnement: vi.fn(),
 }));
 
 vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
@@ -49,6 +54,7 @@ vi.mock("next/headers", () => ({
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("./_guards", () => ({
   requireAdminWrite: vi.fn(),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   logQualiopiActivity: vi.fn(),
 }));
 
@@ -57,6 +63,7 @@ import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/tok
 import { signerDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sendTelegram } from "@/lib/telegram";
+import { envoyerPositionnement } from "@/server/qualiopi/notifications/notifications-service";
 import { signerPieceParJetonAction } from "./piece-signature";
 
 type Mock = ReturnType<typeof vi.fn>;
@@ -64,7 +71,9 @@ const mockPrisma = prisma as unknown as {
   documentGenere: { findUnique: Mock };
   devis: { findFirst: Mock; updateMany: Mock };
   documentSignature: { count: Mock; findMany: Mock };
+  questionnaire: { findMany: Mock; update: Mock };
 };
+const mockPositionnement = envoyerPositionnement as unknown as Mock;
 const mockVerif = verifierTokenDocument as unknown as Mock;
 const mockSigner = signerDocument as unknown as Mock;
 const mockLimit = checkRateLimit as unknown as Mock;
@@ -102,6 +111,9 @@ beforeEach(() => {
     statutSignature: "partielle",
   });
   mockTelegram.mockResolvedValue(undefined);
+  mockPrisma.questionnaire.findMany.mockResolvedValue([]);
+  mockPrisma.questionnaire.update.mockResolvedValue({});
+  mockPositionnement.mockResolvedValue(undefined);
 });
 
 function entree(over: Record<string, unknown> = {}) {
@@ -112,6 +124,109 @@ function entree(over: Record<string, unknown> = {}) {
     ...over,
   };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Déclenchement automatique du positionnement (2026-08-15)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 le positionnement part À LA CONCLUSION de la pièce qui engage l'action", () => {
+  function conventionConclue() {
+    mockPrisma.documentGenere.findUnique
+      // 1er appel : lecture de la pièce par l'action.
+      .mockResolvedValueOnce({ type: "convention", numero: "AXI-DOC-2026-032" })
+      // 2e appel : lecture du rattachement session par le déclencheur.
+      .mockResolvedValueOnce({ sessionId: "sess-1" });
+    mockSigner.mockResolvedValue({
+      ok: true,
+      signatureId: "sig-1",
+      selfHash: "a".repeat(64),
+      statutSignature: "signee",
+    });
+  }
+
+  it("envoie à CHAQUE stagiaire de la session, et pose la trace d'envoi", async () => {
+    conventionConclue();
+    mockPrisma.questionnaire.findMany.mockResolvedValue([{ id: "q-1" }, { id: "q-2" }]);
+
+    const res = await signerPieceParJetonAction(entree());
+
+    expect(res).toMatchObject({ ok: true });
+    expect(mockPositionnement).toHaveBeenCalledTimes(2);
+    expect(mockPositionnement).toHaveBeenNthCalledWith(1, "q-1");
+    // 🔴 Sans `envoyeAt`, impossible de distinguer « jamais envoyé » de
+    // « envoyé, sans réponse » — et la relance J+3 ne partirait jamais.
+    expect(mockPrisma.questionnaire.update).toHaveBeenCalledTimes(2);
+  });
+
+  it("🔴 ne part PAS sur une signature PARTIELLE — la convention n'est pas conclue", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "convention",
+      numero: "AXI-DOC-2026-032",
+    });
+    // `statutSignature: "partielle"` par défaut : le client a signé, l'organisme
+    // n'a pas contresigné. Envoyer ici promettrait une formation non conclue.
+    await signerPieceParJetonAction(entree());
+    expect(mockPositionnement).not.toHaveBeenCalled();
+  });
+
+  it("🔴 IDEMPOTENT : ne cible que les questionnaires jamais envoyés ni répondus", async () => {
+    conventionConclue();
+    await signerPieceParJetonAction(entree());
+
+    const where = (
+      mockPrisma.questionnaire.findMany.mock.calls[0]![0] as {
+        where: Record<string, unknown>;
+      }
+    ).where;
+    // Ces trois gardes sont la raison pour laquelle ce chemin peut être
+    // rejoué sans spammer le stagiaire. Les retirer casse ce test.
+    expect(where["type"]).toBe("positionnement");
+    expect(where["envoyeAt"]).toBeNull();
+    expect(where["reponduAt"]).toBeNull();
+    expect(where["enrollment"]).toMatchObject({ sessionId: "sess-1" });
+  });
+
+  it("un DEVIS intégralement signé ne déclenche aucun positionnement", async () => {
+    // Un accord commercial n'engage pas encore une action de formation.
+    mockSigner.mockResolvedValue({
+      ok: true,
+      signatureId: "sig-1",
+      selfHash: "a".repeat(64),
+      statutSignature: "signee",
+    });
+    await signerPieceParJetonAction(entree());
+    expect(mockPositionnement).not.toHaveBeenCalled();
+    // Le devis, lui, passe bien `accepte` : l'ajout n'a pas dérouté l'existant.
+    expect(mockPrisma.devis.updateMany).toHaveBeenCalled();
+  });
+
+  it("🔴 une panne d'e-mail n'annule PAS une signature déjà écrite et chaînée", async () => {
+    conventionConclue();
+    mockPrisma.questionnaire.findMany.mockResolvedValue([{ id: "q-1" }]);
+    mockPositionnement.mockRejectedValue(new Error("SMTP indisponible"));
+
+    const res = await signerPieceParJetonAction(entree());
+
+    expect(res).toMatchObject({ ok: true, statutSignature: "signee" });
+  });
+
+  it("une pièce sans session rattachée sort sans rien envoyer", async () => {
+    mockPrisma.documentGenere.findUnique
+      .mockResolvedValueOnce({ type: "convention", numero: "AXI-DOC-2026-032" })
+      .mockResolvedValueOnce({ sessionId: null });
+    mockSigner.mockResolvedValue({
+      ok: true,
+      signatureId: "sig-1",
+      selfHash: "a".repeat(64),
+      statutSignature: "signee",
+    });
+
+    const res = await signerPieceParJetonAction(entree());
+
+    expect(res).toMatchObject({ ok: true });
+    expect(mockPrisma.questionnaire.findMany).not.toHaveBeenCalled();
+  });
+});
 
 describe("🔴 le devis doit être ENCORE SIGNABLE — garde serveur", () => {
   it("accepte un devis `envoye`", async () => {

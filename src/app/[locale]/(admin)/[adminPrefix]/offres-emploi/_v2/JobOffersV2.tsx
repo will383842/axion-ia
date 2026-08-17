@@ -5,7 +5,7 @@
 // utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, TriangleAlert } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -18,6 +18,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobOfferListItem } from "@/features/admin-job-offers/actions";
+import type { StaleJobPosting } from "@/server/careers/freshness";
 import { CAREER_CATEGORIES, careerCategoryLabel } from "@/content/careers/categories";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -25,6 +26,19 @@ const STATUS_LABELS: Record<string, string> = {
   published: "Publié",
   archived: "Archivé",
 };
+
+// Date de publication effective (celle du JSON-LD Google) + âge en jours.
+// Rendu serveur uniquement → Intl est stable (pas d'hydration mismatch).
+const DATE_FR = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
+function postedCell(postedAt: Date): React.ReactElement {
+  const days = Math.max(0, Math.floor((Date.now() - postedAt.getTime()) / 86_400_000));
+  return (
+    <>
+      {DATE_FR.format(postedAt)}
+      <span className="admin-meta-small"> · {days} j</span>
+    </>
+  );
+}
 const WORKMODE_LABELS: Record<string, string> = {
   on_site: "Sur site",
   hybrid: "Hybride",
@@ -49,6 +63,8 @@ interface Props {
   total: number;
   page: number;
   totalPages: number;
+  /** Offres à republier (fraîcheur Google for Jobs) — bandeau d'alerte. */
+  staleOffers?: ReadonlyArray<StaleJobPosting>;
 }
 
 export function JobOffersV2({
@@ -58,6 +74,7 @@ export function JobOffersV2({
   total,
   page,
   totalPages,
+  staleOffers = [],
 }: Props): React.ReactElement {
   const columns: ReadonlyArray<AdminTableColumn<JobOfferListItem>> = [
     { key: "order", header: "Ordre", cell: (o) => o.displayOrder },
@@ -76,6 +93,11 @@ export function JobOffersV2({
       key: "location",
       header: "Lieu",
       cell: (o) => o.city ?? WORKMODE_LABELS[o.workMode] ?? "—",
+    },
+    {
+      key: "posted",
+      header: "Publiée le",
+      cell: (o) => postedCell(o.postedAt),
     },
     {
       key: "status",
@@ -114,6 +136,38 @@ export function JobOffersV2({
           </Link>
         }
       />
+
+      {/* Bandeau fraîcheur Google for Jobs : offres dont la date de publication
+          effective dépasse 45 j. Republier = clic HUMAIN (fiche offre) après
+          avoir vérifié que l'offre est toujours ouverte — jamais automatique
+          (fausse fraîcheur = pénalité Google). Les offres statiques (pages hors
+          DB) se republient par une modif de code. */}
+      {staleOffers.length > 0 ? (
+        <AdminCard className="mb-[var(--space-admin-5)]">
+          <p className="admin-label flex items-center gap-2" role="alert">
+            <TriangleAlert size={16} aria-hidden="true" className="shrink-0" />
+            {staleOffers.length} offre{staleOffers.length > 1 ? "s" : ""} à republier — la date vue
+            par Google dépasse 45 jours, l&apos;offre devient invisible dans les filtres « récent »
+            de Google for Jobs.
+          </p>
+          <ul className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-2)]">
+            {staleOffers.map((o) => (
+              <li key={`${o.kind}-${o.slug}`} className="admin-meta-small">
+                {o.kind === "db" && o.id ? (
+                  <Link href={`/fr/${adminPrefix}/offres-emploi/${o.id}`} className="admin-link">
+                    {o.title}
+                  </Link>
+                ) : (
+                  <>
+                    {o.title} <span className="admin-meta-small">(page statique — modif code)</span>
+                  </>
+                )}{" "}
+                · {o.daysOld} jours — si toujours ouverte : relire puis « Republier » sur la fiche.
+              </li>
+            ))}
+          </ul>
+        </AdminCard>
+      ) : null}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">

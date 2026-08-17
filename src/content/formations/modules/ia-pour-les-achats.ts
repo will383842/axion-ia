@@ -50,7 +50,15 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous distinguez ce qui peut entrer dans un outil d'IA de ce qui n'y entre jamais, et vous disposez de vos trois devis de travail pour les ateliers de la journée.",
-      objectifGlobalId: "obj-5",
+      // La vérification tranche par écrit les cinq cas de soumission — devis
+      // d'artisan, tableau de prix négociés, cahier des charges publié, fil de
+      // litige, contrat-cadre — et l'atelier remplit la liste rouge en trois
+      // colonnes : c'est obj-1, mot pour mot.
+      objectifGlobalId: "obj-1",
+      // Le premier temps d'atelier fait retrouver, sur son propre compte, le
+      // régime d'usage et l'engagement de non-réutilisation — ou son absence —
+      // noté daté en tête de dossier : obj-2.
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:
@@ -216,10 +224,12 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez un comparatif de trois devis sous vos propres critères pondérés, totaux recalculés à la main, avec les questions à reposer à chaque fournisseur.",
-      objectifGlobalId: "obj-1",
-      // La séquence « du besoin flou à la consultation » produit la trame de
-      // consultation structurée — l'amorce du cahier des charges vendu en obj-2.
-      objectifsSecondairesIds: ["obj-2"],
+      objectifGlobalId: "obj-4",
+      // Deux autres objectifs sont servis ici : le test des trois montants tirés
+      // au hasard, qui autorise ou non l'exploitation du document déposé
+      // (premier temps, obj-3), et la trame de consultation structurée tirée de
+      // deux lignes de besoin (troisième temps, obj-5).
+      objectifsSecondairesIds: ["obj-3", "obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -355,7 +365,11 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous rédigez une séquence de relance à trois niveaux prête à l'envoi, un courrier de réserve confronté aux modèles du kit, et vous tenez un face-à-face avec un fournisseur qui refuse.",
-      objectifGlobalId: "obj-3",
+      objectifGlobalId: "obj-6",
+      // Les deux autres temps d'atelier servent obj-7 : le courrier de réserve à
+      // réception, confronté phrase à phrase aux modèles validés du kit, et la
+      // préparation du face-à-face fournisseur — limite basse et plan B écrits.
+      objectifsSecondairesIds: ["obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -488,10 +502,11 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous faites tomber une note de marché inventée en la confrontant à vos sources, et votre dossier d'arbitrage fournisseur est prêt à partir au décideur.",
-      objectifGlobalId: "obj-4",
-      // La note d'arbitrage prolonge le comparatif du module 2 : le module sert
-      // aussi l'analyse de devis vendue en obj-1.
-      objectifsSecondairesIds: ["obj-1"],
+      objectifGlobalId: "obj-8",
+      // L'évaluation croisée du dossier reprend la grille du comparatif du
+      // module 2 — « critères posés, totaux recalculés » — et contrôle donc
+      // aussi obj-4, sur lequel s'appuie la note d'arbitrage.
+      objectifsSecondairesIds: ["obj-4"],
       dureeMin: 5,
       notes: {
         script:

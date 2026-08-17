@@ -1,0 +1,323 @@
+================================================================================
+DOMAINE: Idempotence Qualiopi — attestations J3 (attestation-service + cron attestations-auto) et convocation J4 (notif
+================================================================================
+ 1. src/server/qualiopi/evaluations/attestation-service.ts:135
+    A) La garde d'idempotence des attestations est une simple LECTURE en mémoire du champ attestationGenereeAt, sans aucun verrou : deux exécutions concurrentes lisent toutes les deux null et pa
+    FIX> Remplacer la lecture par un claim atomique : `const claim = await prisma.enrollment.updateMany({ where: { id: enrollmentId, attestationGenereeAt: null }, data: { attestationGenereeAt: new Da
+ 2. src/server/qualiopi/evaluations/attestation-service.ts:84
+    A) La valeur lue à la ligne 135 provient d'un findUnique effectué en tout début de fonction : c'est un instantané, périmé dès que la génération dure plus que quelques millisecondes.
+ 3. src/server/qualiopi/evaluations/attestation-service.ts:421
+    A) L'ÉCRITURE de attestationGenereeAt (chemin nominal, celui qui produit un PDF) n'intervient qu'à la ligne 421, soit 286 lignes et de nombreux allers-retours I/O après la lecture de la gard
+ 4. src/server/qualiopi/evaluations/attestation-service.ts:175
+    A) Il existe une seconde écriture de attestationGenereeAt, sur le chemin « aucune » (< 60 %), celle-là proche de la garde (ligne 175) — c'est le seul chemin quasi atomique du service.
+ 5. src/server/qualiopi/evaluations/attestation-service.ts:165
+    A) Entre la garde (135) et l'écriture (421) le service exécute une lecture de configuration en base.
+ 6. src/server/qualiopi/evaluations/attestation-service.ts:205
+    A) Entre la garde et l'écriture, le service lit l'identité de l'organisme et génère un QR code (I/O + calcul).
+ 7. src/server/qualiopi/evaluations/attestation-service.ts:228
+    A) Entre la garde et l'écriture, le service fait une requête Prisma supplémentaire pour le formateur principal.
+ 8. src/server/qualiopi/evaluations/attestation-service.ts:264
+    A) Entre la garde et l'écriture, le service lit les résultats de l'évaluation finale (requête base).
+ 9. src/server/qualiopi/evaluations/attestation-service.ts:350
+    A) Entre la garde et l'écriture, le service lit éventuellement le document précédent (cas force).
+10. src/server/qualiopi/evaluations/attestation-service.ts:357
+    A) Le pas le plus long de la fenêtre : generateDocument (allocation d'un numéro immuable + rendu React-PDF + upload R2 + insertion DocumentGenere) s'exécute AVANT que la colonne de garde soi
+    FIX> Poser le claim atomique AVANT l'appel à generateDocument ; en cas d'exception, remettre attestationGenereeAt à null pour que le cron du lendemain rattrape.
+11. src/server/qualiopi/evaluations/attestation-service.ts:427
+    A) Après la génération, un e-mail « attestation disponible » est envoyé — un doublon de génération produit donc aussi un doublon d'e-mail au stagiaire (le jobId de cet e-mail n'a pas de clé 
+12. src/server/queue/workers/qualiopi-formation-crons-worker.ts:382
+    A) handleAttestationsAuto sélectionne les candidats sur la colonne nulle attestationGenereeAt — mais cette sélection n'est qu'un filtre de lecture, aucun verrou n'est posé sur les lignes ret
+13. src/server/queue/workers/qualiopi-formation-crons-worker.ts:396
+    A) La boucle du cron appelle le service sans option force et sans re-vérifier l'état entre deux itérations : la liste est figée au moment du findMany.
+14. src/server/queue/queues.ts:575
+    A) Le cron formation-crons est configuré avec attempts: 3 : un échec en fin de boucle relance handleAttestationsAuto depuis le début, sur une liste re-calculée — les enrollments dont l'attes
+15. src/server/qualiopi/notifications/notifications-service.ts:678
+    A) PATRON À PROPAGER — le claim atomique existe déjà, écrit mot pour mot dans notifierAlerteInterne : updateMany conditionné sur la colonne nulle, test de count, et libération du verrou en c
+    FIX> Transposer tel quel sur Enrollment.attestationGenereeAt (A) et sur une nouvelle colonne Enrollment.convocationEnvoyeeAt (B). Le mécanisme de libération du verrou en cas d'échec est décrit li
+16. src/server/qualiopi/notifications/notifications-service.ts:726
+    A) Le patron de libération du verrou (indispensable pour rester rattrapable) est lui aussi déjà écrit dans le même fichier.
+17. prisma/schema.prisma:6541
+    A) Le SEUL @@unique du modèle Enrollment porte sur (sessionId, traineeId) : il empêche deux inscriptions du même stagiaire à la même session, mais RIEN en base n'empêche deux attestations po
+18. prisma/schema.prisma:6671
+    A) Le schéma déclare explicitement l'absence de contrainte d'unicité sur les documents générés — le doublon d'attestation n'est donc arrêté par aucun garde-fou base de données.
+19. prisma/schema.prisma:6514
+    A) Le champ de garde attestationGenereeAt est bien nullable, donc directement utilisable comme colonne de claim atomique (aucune migration de type nécessaire).
+20. src/server/qualiopi/notifications/notifications-service.ts:221
+    B) jobId SANS clé de date — convocation : `qualiopi-convocation-{enrollmentId}`. Son unicité ne tient qu'à la présence du job dans Redis.
+21. src/server/qualiopi/notifications/notifications-service.ts:295
+    B) jobId AVEC clé de date — rappel J-7 : `qualiopi-rappel-j7-{enrollmentId}-{dateKey(dateDebut)}`.
+22. src/server/qualiopi/notifications/notifications-service.ts:357
+    B) jobId AVEC clé de date — satisfaction J+1 : `qualiopi-satisfaction-j1-{enrollmentId}-{dateKey(dateFin)}`.
+23. src/server/qualiopi/notifications/notifications-service.ts:408
+    B) jobId AVEC clé de date — suivi J+30 : `qualiopi-suivi-j30-{enrollmentId}-{dateKey(dateFin)}`.
+24. src/server/qualiopi/notifications/notifications-service.ts:477
+    B) jobId SANS clé de date — attestation disponible : `qualiopi-attestation-disponible-{enrollmentId}`. C'est le pendant e-mail du défaut A.
+25. src/server/qualiopi/notifications/notifications-service.ts:563
+    B) jobId SANS clé de date mais AVEC un discriminant de rang (numéro de relance) — enquête entreprise relancée.
+26. src/server/qualiopi/notifications/notifications-service.ts:578
+    B) jobId SANS clé de date mais AVEC un discriminant de rang (numéro de relance) — relance questionnaire stagiaire ; la trace persistante correspondante (relanceCount / derniereRelanceAt) est
+27. src/server/qualiopi/notifications/notifications-service.ts:658
+    B) jobId AVEC clé de date — enquête entreprise : `qualiopi-enquete-entreprise-{sessionId}-{dateKey(dateFin)}`.
+28. src/server/qualiopi/notifications/notifications-service.ts:719
+    B) jobId SANS clé de date — alerte interne ; mais c'est le SEUL des neuf à être doublé d'un verrou persistant en base (notifiedAt), ce qui le rend indépendant de la rétention Redis.
+29. src/server/qualiopi/notifications/notifications-service.ts:160
+    B) envoyerConvocation ne consulte AUCUN état persistant avant d'enfiler l'e-mail : la fonction lit l'enrollment uniquement pour composer le message, jamais pour savoir si la convocation est 
+30. src/server/queue/workers/qualiopi-formation-crons-worker.ts:693
+    B) Le cron de convocation sélectionne les sessions sur une fenêtre GLISSANTE et FERMÉE de 24 h autour de J-5 : une inscription enregistrée après le passage du cron (donc à moins de 4,5 jours
+    FIX> Remplacer la fenêtre fermée par une borne haute seule (`dateDebut: { lte: now + 5,5 j, gte: now }`) et filtrer sur `convocationEnvoyeeAt: null` : la sélection devient rattrapable pour toute 
+31. src/server/queue/workers/qualiopi-formation-crons-worker.ts:717
+    B) La boucle du cron appelle envoyerConvocation sans aucune trace persistante d'envoi ; le commentaire du handler reconnaît lui-même que l'idempotence repose exclusivement sur le jobId BullM
+32. src/server/queue/workers/qualiopi-formation-crons-worker.ts:679
+    B) Le contrat d'idempotence annoncé par le cron est explicitement adossé à BullMQ et au seul état « pending » du job.
+33. prisma/schema.prisma:6507
+    B) COLONNE MANQUANTE : le modèle Enrollment ne porte AUCUN champ d'état de convocation (il porte emargementSigneAt, attestationGenereeAt, edofVerifieAt, mais rien pour la convocation) — c'es
+    FIX> Migration additive : `convocationEnvoyeeAt DateTime? @map("convocation_envoyee_at")` sur Enrollment, + index partiel pour la sélection du cron, puis claim atomique (patron notifications-serv
+34. src/server/queue/queues.ts:49
+    B) La rétention BullMQ sur laquelle repose l'unicité du jobId est bornée EN ÂGE ET EN NOMBRE : passé 7 jours ou au-delà de 1 000 jobs complétés dans la file emails, le job `qualiopi-convocat
+35. src/server/queue/queues.ts:53
+    B) La file emails utilise bien ce defaultJobOptions (aucun override de rétention) — la borne 7 jours / 1 000 jobs s'applique donc à tous les e-mails Qualiopi, convocation comprise.
+36. src/server/queue/queues.ts:774
+    B) enqueueEmail se contente de transmettre le jobId à BullMQ : il n'y a aucune déduplication applicative en amont ni en aval.
+37. prisma/schema.prisma:899
+    B) Le journal EmailLog, seule trace durable d'envoi, déclare explicitement que sa colonne jobId N'EST PAS unique — il ne peut donc pas servir de verrou d'idempotence en remplacement de la co
+GAPS: 1) Concurrence réelle non établie : je n'ai pas vérifié le nombre d'instances du process worker en production ni la `concurrency` du Worker BullMQ `formation-crons` (je n'ai lu que la configuration de la Queue dans queues.ts, pas l'appel `new Worker(...)` de s 
+
+================================================================================
+DOMAINE: Distinction ENTREPRISE / PARTICULIER (Client.type) — schéma, lecteurs métier, destinataire de facture, L.6353-
+================================================================================
+ 1. prisma/schema.prisma:5298
+    L'enum ClientType n'a que deux valeurs : `entreprise` et `particulier`.
+ 2. prisma/schema.prisma:5336
+    Client.type est de type ClientType avec pour défaut `entreprise` — donc tout client créé sans choix explicite est réputé entreprise.
+ 3. prisma/schema.prisma:5335
+    Le modèle Client ne porte AUCUN champ de personne physique séparé (pas de prenom, pas de civilite, pas de dateNaissance) : l'identité d'un particulier est écrasée dans le champ `raisonSocial
+    FIX> Ajouter civilite/prenom/nom nullables sur Client (ou une relation vers une entité PersonnePhysique) et faire dériver raisonSociale pour les particuliers, afin que l'identité du signataire d'
+ 4. prisma/schema.prisma:5359
+    Le seul champ nominatif « personne » du modèle Client est `contactNom`, qui désigne le contact d'une entreprise — pas le client particulier lui-même.
+ 5. src/server/actions/qualiopi/facturation-hub.ts:282
+    Lecture métier n°1 (bloquante) : facturation-hub refuse la facturation d'un particulier tant que le délai de rétractation de 10 jours n'est pas expiré. C'est le SEUL endroit de src/** où Cli
+ 6. src/server/actions/qualiopi/facturation-hub.ts:308
+    Lecture métier n°2 (bloquante) : le plafond d'acompte de 30 % (L.6353-6) n'est contrôlé que si Client.type vaut `particulier`, et uniquement quand un `acomptePercent` est transmis.
+ 7. src/server/actions/qualiopi/facturation-hub.ts:210
+    Le select Prisma du devis ne charge du client QUE son `type` — la garde L.6353-6 n'a donc accès à aucun autre attribut client.
+ 8. src/app/[locale]/(admin)/[adminPrefix]/qualiopi/facturation/page.tsx:405
+    Lecture métier n°3 : Client.type pilote la classification du canal réglementaire de facturation électronique (liste des factures) — un particulier bascule en e-reporting.
+ 9. src/app/[locale]/(admin)/[adminPrefix]/qualiopi/facturation/[id]/page.tsx:204
+    Lecture métier n°4 : même classification sur la fiche d'une facture.
+10. src/server/qualiopi/financements/e-invoicing/canal.ts:58
+    Ce que décide `clientEstParticulier` : le canal réglementaire `e_reporting` au lieu de `pa_einvoicing`.
+11. src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/page.tsx:272
+    Lecture métier n°5 : sur la liste des clients, le type masque le formulaire de branche (IDCC / taille / OPCO) pour un particulier.
+12. src/components/admin/qualiopi/ClientBrancheForm.tsx:83
+    Effet de `estParticulier` dans ClientBrancheForm : l'OPCO n'est jamais transmis pour un particulier.
+13. src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/edit/page.tsx:69
+    Lecture métier n°6 : l'édition d'un client masque SIRET / NAF quand le type est `particulier` (les champs ne sont alors jamais transmis à l'action).
+14. src/components/admin/qualiopi/ClientEditForm.tsx:150
+    Effet côté formulaire d'édition : SIRET et NAF sont exclus de la mise à jour pour un particulier.
+15. src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/page.tsx:264
+    Lectures métier n°7 et n°8 : purement d'affichage (badge « Particulier » / « Entreprise »), aucune décision.
+16. src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/page.tsx:208
+    Affichage identique sur la liste des clients (colonne « Type »).
+17. src/server/qualiopi/financements/destinataire-facture.ts:32
+    PROUVÉ : `resoudreDestinataireFacture` ne lit PAS Client.type — le contrat d'entrée `ClientFacturable` ne déclare aucun champ `type`.
+18. src/server/qualiopi/financements/destinataire-facture.ts:73
+    La signature de `resoudreDestinataireFacture` n'accepte que l'enum `FactureFormationDestinataire` et un `ClientFacturable` : la nature du client n'entre jamais dans la fonction.
+19. src/server/qualiopi/financements/destinataire-facture.ts:112
+    Le select Prisma partagé pour alimenter la résolution du destinataire ne sélectionne pas `type` — donc aucun appelant ne peut le lui fournir.
+    FIX> Le destinataire `entreprise` est renvoyé avec SIRET/TVA intracom même quand le Client est un particulier ; ajouter `type` à `ClientFacturable` pour au moins ne pas imprimer un bloc « entrepr
+20. src/server/qualiopi/financements/acompte.ts:54
+    La règle L.6353-6 point (1) est bien CALCULÉE dans acompte.ts, et le module documente lui-même qu'elle n'était historiquement pas appliquée.
+21. src/server/qualiopi/financements/acompte.ts:68
+    Le prédicat de refus existe et refuse par défaut quand la date d'engagement est inconnue.
+22. src/server/actions/qualiopi/facturation-hub.ts:287
+    La règle L.6353-6 (1) EST appliquée côté serveur, par un unique appelant : `genererFactureDepuisDevisAction` dans facturation-hub.ts, qui retourne une erreur au lieu d'émettre la facture.
+23. src/server/actions/qualiopi/facturation-hub.ts:38
+    C'est le SEUL appelant applicatif : `encaissementAutorise` n'est importé nulle part ailleurs que dans facturation-hub.ts (hors specs). Les autres émetteurs de FactureFormation ne passent don
+    FIX> Faire passer les autres producteurs de facture (facture-libre, plan-recurrent, factures-inter, facturation-1to1, action `financements`) par le même garde-fou, ou centraliser le refus dans `g
+24. src/server/actions/qualiopi/documents.ts:598
+    `calculerAcompte` (qui produit l'échéancier L.6353-6 points 2 et 3) n'est appelé qu'à UN endroit applicatif, et cet appel force `nature: "particulier"` en dur — il ne lit jamais Client.type.
+25. src/server/actions/qualiopi/documents.ts:597
+    Ce même appel force aussi `cpf: false` en dur, sans lire le financement réel de la session.
+26. src/server/qualiopi/crm/submission-to-client.ts:109
+    INFÉRENCE DU TYPE : le type est DEVINÉ à partir de la seule présence d'un nom de société dans la Submission — « pas de société ⇒ particulier ».
+27. src/server/qualiopi/crm/submission-to-client.ts:104
+    La condition d'inférence est un simple test de chaîne non vide et différente du placeholder « — » : un indépendant qui ne remplit pas le champ société devient un particulier, et à l'inverse 
+    FIX> Garder l'inférence comme pré-remplissage uniquement (ce qu'elle est) mais exiger une confirmation explicite du type dans le formulaire avant création, plutôt qu'un `<select>` pré-positionné 
+28. src/server/actions/qualiopi/clients.ts:44
+    Aucune inférence du type à partir du SIRET n'existe : le SIRET reste facultatif et le schéma de création ne le corrèle jamais au type.
+29. src/server/actions/qualiopi/clients.ts:38
+    Le schéma de création n'impose AUCUNE cohérence type × champs entreprise : `type` est optionnel et indépendant de siret/nafCode/taille/idcc/opco.
+    FIX> Ajouter un `.superRefine` interdisant siret/nafCode/taille/idcc/opcoIdentifie quand `type === "particulier"` — aujourd'hui seule l'UI les masque, et une Server Action est appelable directeme
+30. src/server/actions/qualiopi/documents.ts:473
+    CONTRAT L.6353-3 : la génération du contrat de formation prend un `enrollmentId` et RIEN d'autre — la décision ne lit pas Client.type.
+31. src/server/actions/qualiopi/documents.ts:533
+    Preuve : le select Prisma de la génération du contrat ne charge ni `client` ni `client.type` (il ne charge que le stagiaire et la session).
+    FIX> Charger `session.client.type` et refuser (ou au minimum avertir) l'émission d'un contrat L.6353-3 quand le client rattaché est de type `entreprise`, et symétriquement pour la convention.
+32. src/server/actions/qualiopi/documents.ts:264
+    CONVENTION L.6353-1 : la génération de la convention charge bien le client, mais SANS son `type` — elle ne peut donc pas vérifier qu'il s'agit d'une personne morale.
+33. src/components/admin/qualiopi/DocumentsSection.tsx:1224
+    QUI DÉCIDE réellement : un humain, par un clic sur un bouton de la console. Le bouton « Contrat de formation (particulier, L.6353-3) » est rendu inconditionnellement pour toute inscription s
+34. src/components/admin/qualiopi/DocumentsSection.tsx:760
+    Symétriquement, la convention est déclenchée par un autre bouton de la même console, sur `sessionId`, sans lecture du type de client.
+35. src/server/qualiopi/documents/templates/contrat-formation.tsx:190
+    Le gabarit du contrat replafonne l'acompte à 30 % à l'impression — un rattrapage d'affichage qui n'empêche pas l'émission du document pour un client entreprise.
+36. src/server/actions/qualiopi/financements.ts:261
+    VALIDATION CROISÉE type × financement : ELLE N'EXISTE PAS. `setFinancementSessionAction` écrit `financementType` (dont `cpf`) sans jamais charger ni lire le client de la session.
+    FIX> Ajouter dans `setFinancementSessionAction` (et dans `validation-service.ts`) une règle croisée : refuser/alerter `financementType = "cpf"` sur une session dont le client est de type `entrepr
+37. src/server/qualiopi/financements/validation-service.ts:161
+    Le service de validation des financements ne charge jamais le client : ses règles CPF portent uniquement sur `session.financementType`, `session.edofVerifieAt` et `formation.cpfEligible`.
+38. src/server/qualiopi/financements/validation-service.ts:243
+    Deuxième règle CPF du même service, elle aussi aveugle au type de client.
+39. src/server/actions/qualiopi/financements.ts:88
+    L'enum des destinataires de facture contient une valeur `entreprise` utilisable sur n'importe quel dossier, y compris pour un client particulier : rien ne croise cette valeur avec Client.typ
+GAPS: 1) Périmètre limité à `src/**` et `prisma/schema.prisma` du dépôt C:/Users/willi/Documents/Projets/Axion-IA/axionia. Les scripts hors `src/` (seeds, migrations SQL, `scripts/`, jobs de maintenance) n'ont PAS été inspectés : une lecture ou une écriture de `clie 
+
+================================================================================
+DOMAINE: Numérotation AXI-* — inventaire exhaustif des allocateurs de numéro de série (dépôt axionia)
+================================================================================
+ 1. src/lib/invoice-numbering.ts:39
+    Le patron CORRECT avec verrou consultatif existe dans src/lib/invoice-numbering.ts : pg_advisory_xact_lock pris via $executeRawUnsafe sur le client transactionnel `tx`. Il n'alloue PAS de nu
+    FIX> Aucun (référence). Le contrat d'appel est explicite : « MUST be called inside a `prisma.$transaction(async (tx) => { ... })` block. Calling outside a transaction defeats the lock and risks d
+ 2. src/features/invoice/admin-actions.ts:144
+    Le verrou de invoice-numbering.ts est bien pris DANS une transaction chez ses 3 appelants : il reçoit le `tx` fourni par prisma.$transaction.
+    FIX> Aucun. Les 2 autres sites sont src/features/invoice/admin-actions.ts:399 et src/features/contract/admin-actions.ts:275.
+ 3. src/server/actions/qualiopi/audit-missions.ts:67
+    SEUL allocateur AXI-* à prendre un verrou consultatif : createAuditMissionAction. Le lock est pris à l'intérieur de prisma.$transaction (ligne 66), sur le client `tx`, donc libéré au COMMIT.
+    FIX> Aucun. C'est le patron de référence côté AXI-* : lock + allocation + insert dans une seule tx, aucun I/O lent sous verrou.
+ 4. src/server/qualiopi/numbering/allocate.ts:55
+    Le patron PAR DÉFAUT (nextNumero) ne prend AUCUN verrou : c'est écrit et assumé dans l'en-tête du module, avec la raison (le rendu PDF serait tenu sous verrou sur trois sites).
+    FIX> Aucun changement d'architecture ici : c'est justement parce que le rendu PDF est DANS la fenêtre d'allocation que le verrou est refusé. Sortir le rendu de la fenêtre (patron facture-libre/pl
+ 5. src/server/qualiopi/numbering/allocate.ts:110
+    nextNumero = lecture MAX(séquence) + 1, purement applicative : aucun SQL brut, aucune transaction, aucun verrou. La sérialisation repose entièrement sur l'index unique + la reprise P2002 de 
+    FIX> Aucun (référence). formatSeriesNumber (ligne 129) est le SEUL constructeur de numéro AXI-* du dépôt : grep de `formatSeriesNumber(`/`formatDocumentNumber(` hors specs ne rend que allocate.ts
+ 6. src/server/qualiopi/numbering/retry.ts:38
+    withNumberRetry relance la closure ENTIÈRE (allocation + insertion) sur P2002, sans aucun nettoyage de ce que la tentative précédente a produit (PDF rendu, objet R2 uploadé, DocumentGenere c
+    FIX> Le helper est correct en soi ; c'est la composition « allouer → produire un effet externe → insérer » qui laisse l'orphelin. Cf. les 3 sites J1 ci-dessous.
+ 7. src/server/qualiopi/documents/documents-service.ts:581
+    DÉFAUT J1 — documents-service.generateDocument : allocation (494), rendu PDF (524), upload R2 (581), puis insertion (589). Sur P2002, la boucle `continue` (680) réalloue et re-rend, laissant
+    FIX> Allocation ligne 494 (`const numero = await nextNumero(numberingType, year, (prefixe) =>`), rendu ligne 524 (`const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRende
+ 8. src/server/qualiopi/financements/facturation-service.ts:296
+    DÉFAUT J1 — facturation-service.genererFactureFormation : allocation (247), generateDocument = rendu + upload R2 + création DocumentGenere (296), puis création de la facture (308). Sur P2002
+    FIX> Allocation ligne 247 (`const numero = await nextNumero("facture", annee, (prefixe) =>`), insertion ligne 308 (`const facture = await prisma.factureFormation.create({`), retry ligne 346 (`if 
+ 9. src/server/qualiopi/coaching-1to1/facturation-1to1.ts:136
+    DÉFAUT J1 — facturation-1to1.genererFactureCoaching : allocation (111), generateDocument (136), création de la facture (151). Même orphelin qu'en facturation-service sur retry P2002 (186).
+    FIX> Allocation ligne 111 (`const numero = await nextNumero("facture", annee, (prefixe) =>`), insertion ligne 151 (`const facture = await prisma.factureFormation.create({`), retry ligne 186 (`if 
+10. src/server/qualiopi/financements/plan-recurrent.ts:277
+    PATRON DÉJÀ CORRECT — plan-recurrent.emettreFactureBrouillon : l'écriture en base (updateMany, 241) précède le rendu PDF (304). La boucle de reprise P2002 (267) ne peut donc laisser aucun PD
+    FIX> Aucun. Allocation ligne 232, écriture ligne 241 (`const { count: updated } = await prisma.factureFormation.updateMany({`), generateDocument ligne 304, en dehors de la boucle. C'est le patron
+11. src/server/qualiopi/financements/facture-libre.ts:242
+    PATRON DÉJÀ CORRECT — facture-libre.genererFactureLibre : allocation (190), insertion (198) dans la boucle ; PDF (269) hors boucle, après succès. Le commentaire nomme explicitement le défaut
+    FIX> Aucun. Allocation ligne 190, insertion ligne 198 (`const facture = await prisma.factureFormation.create({`), generateDocument ligne 269.
+12. src/server/qualiopi/financements/facture-libre.ts:447
+    PATRON DÉJÀ CORRECT — facture-libre.genererAvoirFacture (série AXI-AVO) : allocation (391), insertion (399), PDF (472) hors boucle.
+    FIX> Aucun. Allocation ligne 391 (`const numero = await nextNumero("avoir", annee, (prefixe) =>`), insertion ligne 399 (`const avoir = await prisma.factureFormation.create({`), generateDocument l
+13. src/server/actions/qualiopi/devis.ts:213
+    Site d'appel sans effet externe intercalé — devis.createDevisAction : allocation (213) puis create (219), le tout dans la closure withNumberRetry (206). Aucun PDF entre les deux.
+    FIX> Aucun. Le PDF du devis est produit plus tard par sendDevisAction (ligne 287), sur un numéro déjà scellé en base.
+14. src/server/actions/qualiopi/devis.ts:858
+    Site d'appel sans effet externe intercalé — devis.reviseDevisAction (révision) : allocation (858) puis create (864) dans withNumberRetry (854).
+    FIX> Aucun.
+15. src/server/actions/qualiopi/clients.ts:180
+    Site d'appel sans effet externe intercalé — clients : allocation (180, série AXI-CLI sans millésime) puis create (186) dans withNumberRetry (168).
+    FIX> Aucun.
+16. src/server/actions/qualiopi/financements.ts:549
+    Site d'appel sans effet externe intercalé — actions/qualiopi/financements.ts : helper genererNumeroFacture (208) appelé en 550, create en 551, dans withNumberRetry (549).
+    FIX> Aucun sur ce chemin. Le PDF de ce module est produit par une action distincte (generateDocument ligne 873) sur une facture déjà en base, puis rattaché par update ligne 885.
+17. src/server/actions/qualiopi/factures-inter.ts:231
+    Site d'appel sans effet externe intercalé — factures-inter : helper genererNumeroFacture (48) appelé en 232, create en 233, dans withNumberRetry (231).
+    FIX> Aucun.
+18. src/server/qualiopi/registres/reclamations-service.ts:109
+    Site d'appel sans effet externe intercalé — registres/reclamations-service : allocation (85, via allocuerNumeroReclamation appelé en 109) puis create (111).
+    FIX> Aucun (aucun PDF). Reste la dette signalée par le code lui-même : deux écrivains concurrents sur la même série AXI-REC (cf. actions/qualiopi/reclamations.ts:62-65).
+19. src/server/actions/qualiopi/reclamations.ts:102
+    Site d'appel sans effet externe intercalé — actions/qualiopi/reclamations : allocation (67, via allocuerNumero appelé en 102) puis create (105).
+    FIX> Aucun.
+20. src/server/actions/qualiopi/formations.ts:147
+    Site d'appel sans effet externe intercalé — formations.createFormationAction : allocateFormationNumero (numbering.ts:47) appelé en 148, create en 149, dans withNumberRetry (147).
+    FIX> Aucun. Second site du même helper : formations.ts:846 (`const numero = await allocateFormationNumero();`) suivi du create ligne 847.
+21. src/server/qualiopi/formations/catalog-import.ts:472
+    Site d'appel sans effet externe intercalé — catalog-import.createFormationWithNumero : allocation (472) puis create (479) dans une boucle de reprise locale (467).
+    FIX> Aucun.
+22. src/server/actions/qualiopi/sessions.ts:197
+    Site d'appel — sessions.createSessionAction : allocateSessionNumero (numbering.ts:82) appelé en 199 DANS prisma.$transaction, mais SANS lui passer `tx`. La lecture du MAX se fait donc hors d
+    FIX> Pas de défaut J1 (aucun PDF entre allocation et insertion, insert ligne 202). En revanche l'option `tx` du helper existe précisément pour ce cas et n'est pas utilisée ici : passer `{ tx }` r
+23. src/server/actions/qualiopi/sessions-recurrentes.ts:193
+    Site d'appel — sessions-recurrentes.creerSessionsRecurrentesAction : N numéros PRÉ-ALLOUÉS en boucle AVANT la transaction (200), toutes les lectures voyant le même MAX ; les inserts n'ont li
+    FIX> Pas de défaut J1 (aucun PDF intercalé ; insert ligne 244 `const created: { id: string; numero: string } = await tx.trainingSession.create({`). Le partage du même rang de base par les occurre
+24. src/server/actions/qualiopi/sessions-recurrentes.ts:398
+    Site d'appel — sessions-recurrentes (report de session) : allocation (398) hors transaction, insert (406) dans la transaction. Aucun PDF intercalé.
+    FIX> Aucun défaut J1. À noter : aucune reprise P2002 n'enveloppe ce chemin (pas de withNumberRetry autour du $transaction ligne 404), contrairement à sessions.ts:197.
+GAPS: 1) INVENTAIRE DES SITES nextNumero : 17 appels directs recensés par grep sur tout le dépôt (allocate.ts exclu). Répartition : audit-missions.ts:78 · documents-service.ts:494 · facturation-1to1.ts:111 · facturation-service.ts:247 · facture-libre.ts:190 et :391  
+
+================================================================================
+DOMAINE: Double-affectation d'un formateur — detection de conflit (getTrainerConflicts) vs chemins d'affectation (Train
+================================================================================
+ 1. src/features/admin-planning/queries.ts:324
+    getTrainerConflicts(trainerId, cible) est une LECTURE seule, exportee, qui prend un trainerId et une cible {key, debut, fin, statut}. Elle n'est appelee par aucune ecriture.
+ 2. src/features/admin-planning/queries.ts:328
+    Fenetre temporelle : duree de la cible elargie de -1 jour au debut et +1 jour a la fin (bornes UTC). Si cible.fin est null, la borne haute repart de cible.debut.
+ 3. src/features/admin-planning/queries.ts:333
+    getTrainerConflicts n'interroge QUE les formations et les coachings. Les missions d'audit (AuditMission), pourtant normalisees dans le meme planning par fetchAudits, sont EXCLUES : un format
+    FIX> Ajouter fetchAudits(from, to, { trainerId }) au Promise.all et concatener le resultat dans findConflicts (fetchAudits existe deja ligne 184 et filtre bien sur formateurId ligne 195).
+ 4. src/features/admin-planning/queries.ts:55
+    Cote formations, le filtre `trainerId` est traduit en `formateurPrincipalId` UNIQUEMENT. Un formateur affecte en co_formateur / assistant / tuteur_afest (ligne SessionFormateur sans FK) est 
+    FIX> Remplacer par un OR : { OR: [{ formateurPrincipalId: filters.trainerId }, { sessionFormateurs: { some: { trainerId: filters.trainerId } } }] } — c'est exactement le predicat deja utilise en 
+ 5. src/features/admin-planning/conflicts.ts:49
+    Ce que la detection exclut : la cible elle-meme (par `key`) et toute prestation annulee/reportee ; si la CIBLE est annulee/reportee, le resultat est vide.
+ 6. src/features/admin-planning/conflicts.ts:16
+    Statuts exclus du conflit : `annulee` et `reportee` (une session `planifiee` ou `en_cours` mobilise donc le formateur).
+ 7. src/app/[locale]/(admin)/[adminPrefix]/planning/[type]/[id]/page.tsx:100
+    SEUL appelant de production de getTrainerConflicts dans tout le depot : la page de detail 360° du planning. C'est un affichage a posteriori, pas une garde.
+ 8. src/features/admin-planning/queries.spec.ts:21
+    Autres appelants : uniquement le fichier de tests (aucun autre module applicatif ne l'importe).
+ 9. src/server/actions/qualiopi/trainers.ts:558
+    assignTrainerToSessionAction est l'action qui assigne le formateur PRINCIPAL a une session (trainerId=null = retrait).
+10. src/server/actions/qualiopi/trainers.ts:606
+    La SEULE garde dure de l'action est isTrainerHabilite (actif / habilitation / sous-traitant verifie). Aucun appel a getTrainerConflicts, findConflicts, eventsOverlap ni a une lecture de Trai
+11. src/server/qualiopi/trainers/trainers.ts:130
+    isTrainerHabilite ne connait AUCUNE notion de date : ses trois regles portent sur `actif`, la liste d'habilitations et `sousTraitantVerifieAt`. Elle ne peut structurellement pas detecter une
+12. src/server/actions/qualiopi/trainers.ts:568
+    La lecture de la session dans l'action ne selectionne QUE formationId : ni dateDebut, ni dateFin, ni statut. Un controle de conflit est donc impossible en l'etat sans elargir ce select — c'e
+    FIX> select: { formationId: true, dateDebut: true, dateFin: true, statut: true } et typer `let trainingSession: { formationId: string; dateDebut: Date; dateFin: Date; statut: string } | null;` (l
+13. src/server/actions/qualiopi/trainers.ts:621
+    L'ecriture (FK + ligne SessionFormateur principal) part directement apres la garde d'habilitation, sans aucun controle de disponibilite intercale.
+14. src/server/actions/qualiopi/trainers.ts:614
+    POINT D'INSERTION EXACT du controle de conflit : ligne 614 du fichier — immediatement APRES `tarifSnapshot = ...` (ligne 613) et AVANT l'accolade fermante du bloc `if (trainerId !== null)` q
+    FIX> Inserer en ligne 614 : `const conflits = await getTrainerConflicts(trainerId, { key: \`formation:${sessionId}\`, debut: trainingSession.dateDebut, fin: trainingSession.dateFin, statut: train
+15. src/server/qualiopi/trainers/session-formateurs.ts:19
+    session-formateurs.ts declare QUATRE roles d'affectation : principal, co_formateur, assistant, tuteur_afest. Un correctif limite au principal ne couvrirait donc qu'un role sur quatre.
+16. src/server/qualiopi/trainers/session-formateurs.ts:4
+    session-formateurs.ts ne contient AUCUNE I/O : ce sont des fonctions pures, declarees explicitement comme partagees par seulement deux consommateurs (le backfill et le dual-write du principa
+17. src/server/actions/qualiopi/trainers.ts:624
+    Le seul writer applicatif de TrainingSession.formateurPrincipalId dans tout src/ est assignTrainerToSessionAction (les autres occurrences en ecriture apparente sont des filtres `where`, ex. 
+18. prisma/scripts/backfill-session-formateurs-2026-07-09.ts:52
+    Deuxieme et dernier chemin qui CREE une ligne SessionFormateur : le script de backfill one-shot. Il upsert des roles derives (donc potentiellement co_formateur / assistant / tuteur_afest) sa
+19. src/server/qualiopi/evaluations/attestation-service.ts:218
+    Le champ Json legacy TrainingSession.coFormateurs n'est ecrit par aucun code applicatif : il n'est que LU (le code le documente lui-meme comme vide en pratique). Il n'est donc pas un chemin 
+20. src/server/actions/qualiopi/audit-missions.ts:133
+    Chemin d'affectation PARALLELE non couvert : assignAuditFormateurAction ecrit AuditMission.formateurId sans AUCUNE garde — ni habilitation, ni conflit, ni disponibilite. Un formateur deja en
+    FIX> Appeler getTrainerConflicts(v.formateurId, { key: `audit:${v.id}`, debut, fin, statut }) apres avoir lu les dates de l'audit — apres avoir d'abord ajoute fetchAudits dans getTrainerConflicts
+21. src/server/actions/qualiopi/coaching-parcours.ts:116
+    Chemin d'affectation PARALLELE non couvert : createCoachingParcoursAction cree jusqu'a N seances CoachingSession pour un trainerId en ne verifiant que `actif`, sans aucun controle de chevauc
+22. src/components/admin/qualiopi/AssignFormateurForm.tsx:20
+    L'ecran d'affectation ne connait rien des conflits : AssignFormateurForm ne recoit que { id, label, habilite } par formateur et n'affiche que l'erreur serveur. Meme un correctif serveur-seul
+23. src/server/qualiopi/trainers/availability-queries.ts:31
+    TrainerAvailability (conges/maladie/formation interne) n'est consulte par AUCUNE server action : ses deux seules lectures alimentent des ecrans (fiche formateur, hub planning, dashboard pilo
+    FIX> Reutiliser joursEnConflit(joursPrestation, joursIndisponibles(indispos)) (availability.ts:116) dans assignTrainerToSessionAction, au meme point d'insertion ligne 614.
+24. prisma/schema.prisma:6395
+    Modele SessionFormateur : la table ne porte AUCUNE colonne de date. Ses deux index sont (session_id, trainer_id) unique et (trainer_id, session_id) — aucun ne peut repondre seul a « ce forma
+25. prisma/migrations/20260709120000_session_formateurs/migration.sql:34
+    L'unicite du principal par session est une contrainte SQL brute (index partiel), non representable en Prisma — elle garantit un seul principal, jamais l'absence de chevauchement entre sessio
+26. prisma/schema.prisma:6337
+    Modele TrainerAvailability : bornes de jour INCLUSES, colonnes @db.Date. Son index composite (trainer_id, date_debut, date_fin) est le SEUL index du schema qui reponde directement a « ce for
+27. prisma/schema.prisma:6133
+    Cote sessions, l'index qui sert « ce formateur est-il libre du X au Y » est @@index([formateurPrincipalId, dateDebut]) — il ne couvre QUE le formateur principal (la FK), pas les lignes Sessi
+    FIX> Pour couvrir les co-formateurs sans join couteux, ajouter une colonne de dates denormalisee sur session_formateurs OU s'appuyer sur @@index([trainerId, sessionId]) + l'index (dateDebut, date
+28. prisma/schema.prisma:8995
+    Cote coaching, l'index equivalent existe : @@index([trainerId, dateSeance]). Mais il n'y a pas d'index sur dateSeanceFin, alors que fetchCoachings filtre sur les DEUX colonnes en OR (queries
+29. prisma/schema.prisma:10552
+    Cote audits, les index (formateurId) et (dateDebut, dateFin) existent separement mais AUCUN index composite (formateurId, dateDebut) — l'equivalent de celui des sessions manque.
+30. src/server/actions/qualiopi/session-jours.ts:96
+    Piste connexe : SessionJour.trainerId (formateur override d'UNE journee, prevu pour le desistement/co-animation) n'a AUCUN writer — saveSessionJoursAction ne pose que date/heures/horairesCon
+GAPS: 1) Je n'ai PAS pu etablir s'il existe un ecran ou une server action permettant d'ajouter un co_formateur / assistant / tuteur_afest a une session : aucun writer applicatif de SessionFormateur autre que assignTrainerToSessionAction (role `principal` uniquement) 
+

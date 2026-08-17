@@ -12,6 +12,11 @@
  *
  * Les `icon` sont résolus côté composant (lucide). FR canonique — EN = miroir
  * (locale 301→FR, règle Will 2026-05-16).
+ *
+ * 2026-08-15 — chaque domaine se termine désormais par une ligne qui dit ce qui
+ * RESTE au client à la fin : ce qui tourne, ce qui est documenté, ce que ses
+ * équipes reprennent en main. L'implémentation est une prestation de CONSEIL :
+ * on valorise les livrables, jamais un résultat promis.
  */
 
 export type ExpertiseIconName =
@@ -53,6 +58,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Agents de recherche, de veille et de synthèse",
       "Orchestration multi-agents et enchaînement de tâches",
       "Garde-fous, validation humaine et journalisation des actions",
+      "Code, prompts et journal des actions livrés et documentés",
     ],
   },
   {
@@ -65,6 +71,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Réponses fondées sur vos documents (RAG, anti-hallucination)",
       "Multilingue, multicanal (web, e-mail, WhatsApp, messageries)",
       "Escalade vers un humain et passation de contexte",
+      "Base de connaissances éditable par vos équipes, sans dépendre de nous",
     ],
   },
   {
@@ -77,6 +84,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Relances, notifications et approbations automatiques",
       "Tri, routage et priorisation des demandes",
       "Déclencheurs sur événements (formulaire, e-mail, webhook)",
+      "Workflows documentés, seuils modifiables, exécutions tracées",
     ],
   },
   {
@@ -89,6 +97,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Intégration d'API LLM dans vos applications maison",
       "Migration et fiabilisation des données",
       "Single sign-on, gestion des droits, hébergement UE",
+      "Connecteurs documentés, suivi des coûts d'API et alertes sur erreur",
     ],
   },
   {
@@ -101,6 +110,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Rapprochements (bancaire, factures, commandes)",
       "Synthèse et résumé de documents longs",
       "Génération de documents à partir de modèles",
+      "Schéma validé, règles d'extraction et relecture des cas douteux",
     ],
   },
   {
@@ -113,6 +123,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Réponses sourcées et citables (anti-hallucination)",
       "Assistant qui connaît vos procédures et votre métier",
       "Mise à jour continue à mesure que vos données évoluent",
+      "Index livré avec sa procédure de mise à jour, tenue par vos équipes",
     ],
   },
   {
@@ -125,6 +136,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Assistance des conseillers en temps réel (suggestions de réponse)",
       "Analyse de satisfaction (verbatims, NPS, avis)",
       "Personnalisation, recommandations et rétention",
+      "Règles d'escalade écrites et historique des échanges qui reste chez vous",
     ],
   },
   {
@@ -137,6 +149,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Rédaction de devis, offres et propositions commerciales",
       "Prévision des ventes et pilotage du pipeline",
       "Préparation de RDV, comptes-rendus et next steps",
+      "Scores et comptes-rendus écrits dans vos propres champs, sans doublon",
     ],
   },
   {
@@ -149,6 +162,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Génération de fiches produits à l'échelle",
       "Tarification dynamique et gestion des promotions",
       "Détection de fraude au paiement",
+      "Règles de recommandation et de tarification pilotables par votre équipe",
     ],
   },
   {
@@ -161,6 +175,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Emailing, campagnes et personnalisation 1:1",
       "Génération et retouche de visuels et vidéos",
       "Veille concurrentielle et analyse de performance",
+      "Modèles de production et validation humaine avant publication",
     ],
   },
   {
@@ -173,6 +188,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Prévision de trésorerie et reporting financier",
       "Notes de frais, rapprochements et clôture assistés",
       "Détection d'anomalies et de fraude",
+      "Contrôles de cohérence, seuils d'alerte et piste d'audit des traitements",
     ],
   },
   {
@@ -185,6 +201,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Onboarding et offboarding automatisés",
       "Assistant RH interne (questions, procédures, congés)",
       "Formation interne et montée en compétences",
+      "Critères de tri explicites, traçables et révisables par vos RH",
     ],
   },
   {
@@ -197,6 +214,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Maintenance prédictive des équipements",
       "Contrôle qualité automatisé par vision",
       "Suivi temps réel et alertes proactives",
+      "Prévisions et alertes branchées sur vos outils, seuils réglables",
     ],
   },
   {
@@ -209,6 +227,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Classement, modération et indexation d'images",
       "Détection d'anomalies et d'incidents",
       "Comptage, mesure et inventaire visuel",
+      "Modèle de détection, images de contrôle et procédure de recalibrage",
     ],
   },
   {
@@ -221,6 +240,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Prévisions, scoring et aide à la décision",
       "Détection d'anomalies et d'opportunités",
       "Qualité, gouvernance et fiabilisation des données",
+      "Tableaux de bord actualisés seuls, définition documentée des indicateurs",
     ],
   },
   {
@@ -233,6 +253,7 @@ export const IMPLEMENTATION_EXPERTISES: ReadonlyArray<ExpertiseDomain> = [
       "Pilotage centralisé + assistant autonome par site",
       "Harmonisation des process et des bonnes pratiques",
       "Gouvernance, droits et conformité à l'échelle",
+      "Déploiement reproductible site par site, avec sa documentation",
     ],
   },
 ];

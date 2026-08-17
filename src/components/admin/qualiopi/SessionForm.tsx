@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { createSessionAction } from "@/server/actions/qualiopi/sessions";
 import { createRecurringSessionsAction } from "@/server/actions/qualiopi/sessions-recurrentes";
 import { LieuFieldset } from "@/components/admin/qualiopi/LieuFieldset";
+import { AdminPrerequisManquant } from "@/components/admin/ui/AdminPrerequisManquant";
 import {
   LIEU_VALUES_VIDE,
   lieuPayload,
@@ -60,6 +61,19 @@ export interface SessionFormProps {
   onSuccess?: (sessionId: string) => void;
   /** URL de redirection après création (alternative à onSuccess). */
   redirectAfterCreate?: string;
+  /**
+   * URLs des actions qui lèvent un prérequis manquant (Lot 1bis).
+   *
+   * Construites côté serveur : ce composant est client et ne connaît ni le
+   * `locale` ni le préfixe d'administration — lui faire deviner une URL
+   * produirait un lien mort le jour où le préfixe change.
+   */
+  liensPrerequis?: {
+    /** Formulaire de création d&apos;une formation. */
+    formations: string;
+    /** Formulaire de création d&apos;un client. */
+    clients: string;
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -96,6 +110,7 @@ export function SessionForm({
   devis = [],
   onSuccess,
   redirectAfterCreate,
+  liensPrerequis,
 }: SessionFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -273,11 +288,23 @@ export function SessionForm({
             </option>
           ))}
         </select>
-        {formations.length === 0 && (
-          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-            Aucune formation publiée disponible. Publiez d&apos;abord une formation.
-          </p>
-        )}
+        {/* 🔴 Lot 1bis — la phrase existait, le CHEMIN non.
+            « Publiez d'abord une formation » est juste, et laissait quand même
+            chercher où. Un état vide bloquant porte le lien vers l'action
+            exacte, pas vers un menu. */}
+        {formations.length === 0 &&
+          (liensPrerequis ? (
+            <AdminPrerequisManquant
+              bloquant
+              message="Aucune formation publiée : une session se rattache toujours à une formation."
+              href={liensPrerequis.formations}
+              libelleAction="Créer une formation"
+            />
+          ) : (
+            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+              Aucune formation publiée disponible. Publiez d&apos;abord une formation.
+            </p>
+          ))}
       </div>
 
       {/* ── Titre de session (optionnel) ───────────────────────────────────── */}
@@ -328,33 +355,49 @@ export function SessionForm({
         idPrefix="session-lieu"
       />
 
-      {/* ── Client (optionnel) ────────────────────────────────────────────── */}
-      {clients.length > 0 && (
-        <>
-          <div className="mb-[var(--space-admin-5)]">
-            <label className={labelCls} htmlFor="session-client">
-              Client{" "}
-              <span className="font-normal text-[color:var(--color-admin-fg-muted)] normal-case">
-                (optionnel)
-              </span>
-            </label>
-            <select
-              id="session-client"
-              value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
-              disabled={isPending}
-              className={selectCls}
-            >
-              <option value="">— Aucun client —</option>
-              {clients.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.numero} — {c.raisonSociale}
-                </option>
-              ))}
-            </select>
-          </div>
+      {/* ── Client ────────────────────────────────────────────────────────── */}
+      {/* 🔴 Lot 1bis — ce bloc DISPARAISSAIT entièrement quand aucun client
+          n'existait (`clients.length > 0 && …`). L'utilisateur ne voyait pas un
+          champ vide : il ne voyait PAS LE CHAMP. Il ne pouvait donc pas
+          soupçonner qu'il manquait quelque chose, et créait une session sans
+          client sans savoir que sans client il n'y aura ni convention, ni
+          facture, ni dossier de financement — trois blocages qu'il découvrirait
+          un par un, plus tard, sans jamais remonter jusqu'ici.
 
-          {/* F8 — rattachement du devis.
+          Un champ qui s'efface n'enseigne rien. Un champ qui reste et
+          s'explique enseigne le processus au moment où la question se pose. */}
+      <>
+        <div className="mb-[var(--space-admin-5)]">
+          <label className={labelCls} htmlFor="session-client">
+            Client{" "}
+            <span className="font-normal text-[color:var(--color-admin-fg-muted)] normal-case">
+              (optionnel ici — requis pour la convention et la facturation)
+            </span>
+          </label>
+          <select
+            id="session-client"
+            value={clientId}
+            onChange={(e) => setClientId(e.target.value)}
+            disabled={isPending || clients.length === 0}
+            className={selectCls}
+          >
+            <option value="">— Aucun client —</option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.numero} — {c.raisonSociale}
+              </option>
+            ))}
+          </select>
+          {clients.length === 0 && liensPrerequis ? (
+            <AdminPrerequisManquant
+              message="Aucun client enregistré. La session pourra être créée, mais ni convention, ni facture, ni dossier de financement tant qu'elle n'est rattachée à personne."
+              href={liensPrerequis.clients}
+              libelleAction="Créer un client"
+            />
+          ) : null}
+        </div>
+
+        {/* F8 — rattachement du devis.
             La colonne `devis_id` existait et l'action savait l'écrire, mais
             aucun écran ne permettait de choisir le devis : le lien était
             inatteignable. Et depuis F7, « Transformer en convention » EXIGE une
@@ -364,37 +407,36 @@ export function SessionForm({
             client. Proposer les autres fabriquerait des rattachements
             incohérents que rien ne rattraperait — la convention porterait alors
             le prix d'un devis appartenant à quelqu'un d'autre. */}
-          <div className="mb-[var(--space-admin-5)]">
-            <label className={labelCls} htmlFor="session-devis">
-              Devis d&apos;origine{" "}
-              <span className="font-normal text-[color:var(--color-admin-fg-muted)] normal-case">
-                (optionnel)
-              </span>
-            </label>
-            <select
-              id="session-devis"
-              value={devisId}
-              onChange={(e) => setDevisId(e.target.value)}
-              disabled={isPending || clientId === ""}
-              className={selectCls}
-            >
-              <option value="">— Aucun devis —</option>
-              {devisDuClient.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.numero} — {(d.montantHtCents / 100).toLocaleString("fr-FR")} € HT
-                </option>
-              ))}
-            </select>
-            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              {clientId === ""
-                ? "Choisissez d'abord un client pour voir ses devis acceptés."
-                : devisDuClient.length === 0
-                  ? "Aucun devis accepté pour ce client. « Transformer en convention » restera indisponible tant qu'aucune session n'est rattachée à un devis."
-                  : "Rattacher le devis permet de générer la convention depuis la fiche du devis, et trace le lien commercial → pédagogique du dossier."}
-            </p>
-          </div>
-        </>
-      )}
+        <div className="mb-[var(--space-admin-5)]">
+          <label className={labelCls} htmlFor="session-devis">
+            Devis d&apos;origine{" "}
+            <span className="font-normal text-[color:var(--color-admin-fg-muted)] normal-case">
+              (optionnel)
+            </span>
+          </label>
+          <select
+            id="session-devis"
+            value={devisId}
+            onChange={(e) => setDevisId(e.target.value)}
+            disabled={isPending || clientId === ""}
+            className={selectCls}
+          >
+            <option value="">— Aucun devis —</option>
+            {devisDuClient.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.numero} — {(d.montantHtCents / 100).toLocaleString("fr-FR")} € HT
+              </option>
+            ))}
+          </select>
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {clientId === ""
+              ? "Choisissez d'abord un client pour voir ses devis acceptés."
+              : devisDuClient.length === 0
+                ? "Aucun devis accepté pour ce client. « Transformer en convention » restera indisponible tant qu'aucune session n'est rattachée à un devis."
+                : "Rattacher le devis permet de générer la convention depuis la fiche du devis, et trace le lien commercial → pédagogique du dossier."}
+          </p>
+        </div>
+      </>
 
       {/* ── Financement (optionnel) ───────────────────────────────────────── */}
       <div className="mb-[var(--space-admin-5)]">

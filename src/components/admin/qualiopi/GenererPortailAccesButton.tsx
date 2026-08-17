@@ -15,10 +15,21 @@ type ActionResult<T> = { data: T } | { error: string };
 
 interface GenererPortailAccesButtonProps {
   traineeId: string;
-  genererAction: (input: {
-    traineeId: string;
-    joursValidite?: number;
-  }) => Promise<ActionResult<{ id: string; token: string; url: string; expiresAt: Date }>>;
+  genererAction: (input: { traineeId: string; joursValidite?: number }) => Promise<
+    ActionResult<{
+      id: string;
+      token: string;
+      url: string;
+      expiresAt: Date;
+      /**
+       * 🔴 L'accès a-t-il RÉELLEMENT été transmis ? Jusqu'au 16/08 rien ne
+       * partait, et l'écran affichait « Accès actif » — vrai en base, faux pour
+       * la personne. L'envoi est fail-soft : il peut échouer sans faire perdre
+       * l'accès, mais l'admin doit savoir lequel des deux cas il a sous les yeux.
+       */
+      envoyeAuStagiaire?: boolean;
+    }>
+  >;
 }
 
 export function GenererPortailAccesButton({
@@ -29,6 +40,7 @@ export function GenererPortailAccesButton({
   const [result, setResult] = useState<{
     url: string;
     expiresAt: Date;
+    envoyeAuStagiaire: boolean;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -42,7 +54,11 @@ export function GenererPortailAccesButton({
       if ("error" in res) {
         setError(res.error);
       } else {
-        setResult({ url: res.data.url, expiresAt: new Date(res.data.expiresAt) });
+        setResult({
+          url: res.data.url,
+          expiresAt: new Date(res.data.expiresAt),
+          envoyeAuStagiaire: res.data.envoyeAuStagiaire === true,
+        });
       }
     });
   }
@@ -83,6 +99,14 @@ export function GenererPortailAccesButton({
 
       {result && (
         <div className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-3)]">
+          <p
+            role="status"
+            className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg)]"
+          >
+            {result.envoyeAuStagiaire
+              ? "Lien envoyé au stagiaire par e-mail."
+              : "Lien NON transmis : l'e-mail n'a pas pu partir. Copiez-le et envoyez-le vous-même."}
+          </p>
           <p className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             Lien d&apos;accès portail (valable jusqu&apos;au {expiresLabel ?? "—"})
           </p>

@@ -7,6 +7,7 @@ import { FOUNDER, BRAND } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
+import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 
 // SITE_URL vit désormais dans `@/lib/site-url`, un module tier-0 sans autre
 // dépendance que `@/env`. Ce fichier fait 2 249 lignes et tire tout le graphe
@@ -215,7 +216,10 @@ export function ensureArticleMetaTitle(
   const mt = (metaTitle ?? "").trim();
   const base = mt.length >= META_TITLE_MISSING_BELOW ? mt : title.trim();
   if (base.length >= META_TITLE_SUFFIX_BELOW) return base;
-  if (base.endsWith(TITLE_BRAND_SUFFIX)) return base;
+  // GEO-057 — `endsWith` laissait passer « … Axion-IA … » et fabriquait un
+  // deuxième « · Axion-IA ». La marque ne doit apparaître qu'UNE fois, où
+  // qu'elle soit déjà.
+  if (base.includes("Axion-IA")) return base;
   const suffixed = `${base}${TITLE_BRAND_SUFFIX}`;
   return suffixed.length <= META_TITLE_MAX ? suffixed : base;
 }
@@ -265,16 +269,29 @@ export function buildProductMetadata({
   const enDisabled = isEnLocaleDisabled();
   // title-double-suffix fix (2026-06-14) : le root layout déclare
   // `title.template = "%s · Axion-IA"`. Next.js l'applique à toute `title` string
-  // renvoyée ici. Si le titre source contient DÉJÀ « · Axion-IA », le template
-  // le ré-ajoute → « … · Axion-IA · Axion-IA ». On renvoie alors `{ absolute }`
+  // renvoyée ici. Si le titre source porte DÉJÀ la marque, le template la
+  // ré-ajoute → « … · Axion-IA · Axion-IA ». On renvoie alors `{ absolute }`
   // (bypass template) ; sinon la string brute (le template appose le suffixe).
-  const TITLE_SUFFIX = " · Axion-IA";
+  //
+  // GEO-057 (audit GEO/AEO 2026-08-15) — le test était `endsWith(" · Axion-IA")`
+  // et ne couvrait donc QUE le suffixe exact. Un titre qui porte la marque
+  // AILLEURS qu'en toute fin la reprenait une seconde fois via le template.
+  // Trois familles vivantes le prouvaient en SERP :
+  //   · `/faq/[slug]`      « … · FAQ Axion-IA »            → « … · FAQ Axion-IA · Axion-IA »
+  //   · `/stack-ia/[tool]` « … · cabinet Axion-IA »        → « … · cabinet Axion-IA · Axion-IA »
+  //   · `/blog/page/N`     « … · Axion-IA · page 2 »       → « … · page 2 · Axion-IA »
+  // On généralise donc le bypass à « la marque est DÉJÀ quelque part dans le
+  // titre ». C'est un SUR-ENSEMBLE strict de l'ancien test : tout titre finissant
+  // par ` · Axion-IA` contient « Axion-IA », donc le comportement existant est
+  // conservé au bit près. Aucun titre ne perd sa marque : on cesse seulement de
+  // l'écrire deux fois.
+  const BRAND = "Axion-IA";
   // P0 qualité 2026-06-25 — filet de sécurité longueur titre pour les ARTICLES
   // uniquement (ogType="article"). Si le titre fourni est court (< 45 car), on le
   // suffixe «  · Axion-IA » sans dépasser 60 car. Déterministe, ne touche que les
   // titres courts ; les pages services (ogType="website") restent inchangées.
   const effectiveTitle = ogType === "article" ? ensureArticleMetaTitle(title, title) : title;
-  const resolvedTitle: NonNullable<Metadata["title"]> = effectiveTitle.endsWith(TITLE_SUFFIX)
+  const resolvedTitle: NonNullable<Metadata["title"]> = effectiveTitle.includes(BRAND)
     ? { absolute: effectiveTitle }
     : effectiveTitle;
   // Sprint Web Vitals fix 2026-05-17 — normalize canonical (strip trailing
@@ -908,6 +925,41 @@ export function buildOrganizationJsonLd({
       "https://www.linkedin.com/company/axion-ia-france",
       "https://about.me/axion-ia",
       "https://www.indiehackers.com/AxionIA",
+      // GEO-045 / arbitrage A4 — F6S DECLAREE le 2026-08-16, une fois la fiche
+      // CORRIGEE et pas avant.
+      //
+      // Pourquoi cette fiche compte : sur « Qui est Axion-IA ? », le moteur de
+      // reponse teste cite F6S en source n°2 (Crunchbase en n°1) et ZERO fois
+      // axion-ia.com. Ce sont ces pages qui definissent l'entreprise pour les
+      // moteurs de reponse aujourd'hui — les declarer en `sameAs`, c'est dire
+      // explicitement « cette fiche, c'est moi » au lieu de laisser deviner.
+      //
+      // 🔴 L'ORDRE EST LA CONDITION. Avant correction, la fiche annoncait un
+      // siege a PARIS. La declarer alors aurait revenu a SIGNER SOI-MEME
+      // l'erreur que les moteurs arbitrent deja contre nous — c'est exactement
+      // ce que l'arbitrage A4 interdit. Corrigee par Will le 2026-08-16
+      // (localisation Grenoble, fondation 2026, site sans redirection), verifiee
+      // par lui apres rechargement.
+      //
+      // ⚠️ Le suffixe `1` du slug n'est PAS un doublon : F6S a du suffixer parce
+      // que `axion-ia` etait deja pris par le profil MEMBRE. Deux types d'objets
+      // ne partagent pas une URL. C'est bien la fiche SOCIETE.
+      //
+      // ⚠️ Verification automatique IMPOSSIBLE sur ce domaine : F6S sert un mur
+      // anti-bot (`<title>Checking your browser</title>`, 200 trompeur). Un
+      // `curl` de controle ne prouvera jamais rien ici — ne pas conclure d'un
+      // 200 que la page est bonne.
+      "https://www.f6s.com/axion-ia1",
+      // GEO-020 / GEO-045 — Crunchbase DECLAREE le 2026-08-16, meme condition :
+      // apres correction, pas avant. C'est la source n°1 citee par le moteur de
+      // reponse sur « Qui est Axion-IA ? ».
+      //
+      // ⚠️ Meme impossibilite de verification automatique que F6S, sur un autre
+      // mode : Crunchbase repond 403 aux robots (`<title>One moment, please…</title>`,
+      // 8 760 octets de page de controle). L'audit ne l'avait pas vue non plus.
+      // La seule verification possible est humaine, connectee — elle a ete faite
+      // par Will le 2026-08-16.
+      "https://www.crunchbase.com/organization/axion-ia",
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
@@ -1424,6 +1476,7 @@ export function buildLocalBusinessJsonLd({
   openingHours,
 }: LocalBusinessJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
+  const sameAsAnnuaires = buildLocalBusinessSameAsFR();
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -1440,6 +1493,24 @@ export function buildLocalBusinessJsonLd({
       name: areaServed.name,
     },
     knowsLanguage: ["fr", "en"],
+    // 🔴 GEO-046 (audit GEO/AEO 2026-08-14) — `buildLocalBusinessSameAsFR()`
+    // existait, exporte, teste... et N'AVAIT AUCUN APPELANT. Le module de
+    // citations locales etait donc inerte pour DEUX raisons independantes : ses
+    // donnees sont vides, et rien ne l'appelait. On corrige ici la seconde.
+    //
+    // Aujourd'hui cette liste est VIDE (toutes les entrees ont `listingUrl:
+    // null`) : la cle `sameAs` n'est donc pas emise, et le JSON-LD est
+    // strictement inchange. Ce qui change, c'est que le jour ou les URLs sont
+    // renseignees, elles ARRIVENT — au lieu de rester dans un module que
+    // personne n'interroge.
+    //
+    // ⚠️ ARBITRAGE A4 — NE PAS renseigner ces `listingUrl` avant d'avoir
+    // CORRIGE les fiches correspondantes. Les deux plus visibles (LinkedIn, Les
+    // Pepites Tech) ancrent aujourd'hui l'entite a PARIS et ecorchent le nom du
+    // fondateur : les declarer en `sameAs` reviendrait a SIGNER SOI-MEME
+    // l'erreur que les moteurs arbitrent deja contre nous. L'ordre est :
+    // corriger les fiches (R-01 a R-03), puis renseigner ici.
+    ...(sameAsAnnuaires.length > 0 ? { sameAs: [...sameAsAnnuaires] } : {}),
     ...(priceRange ? { priceRange } : {}),
     ...(address
       ? {
@@ -2086,7 +2157,10 @@ export function buildImageGraphJsonLd({
       encodingFormat: img.encodingFormat ?? "image/png",
       representativeOfPage: img.representativeOfPage === true,
       license,
-      acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
+      // `/cgu` n'a jamais existé : les 141 ImageObject des pages marketing
+      // pointaient un 404 (audit GEO/AEO 2026-08-14, GEO-016). La page réelle
+      // est `/conditions-generales` (EN : `/terms`), résolue via `routing.pathnames`.
+      acquireLicensePage: `${SITE_URL}/${locale}${resolveLocalizedPath("/conditions-generales", locale)}`,
       creator: {
         "@type": "Organization",
         // VIS-17 (audit visibilité 2026-06-05) — aligne sur l'@id canonique de

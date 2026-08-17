@@ -144,6 +144,10 @@ export function repartirHeuresEnJournees(
  * le vendredi et le lundi, pas le vendredi et le samedi. C'est la même règle que
  * le repli de `genererCreneaux`, appliquée ici à la proposition initiale.
  *
+ * 🔴 SAUF la première journée, qui est reprise telle quelle : elle n'est pas
+ * déduite, c'est `dateDebutIso` que l'admin a saisi (cf. le commentaire dans le
+ * corps de la fonction).
+ *
  * @param dateDebutIso Jour civil `YYYY-MM-DD` (heure de Paris) du premier jour.
  * @param dureeHeures  Durée TOTALE de la session.
  * @param heuresParJour Heures effectives par journée pleine (défaut 7).
@@ -158,11 +162,29 @@ export function genererJoursParDefaut(input: {
 
   const jours: JourSession[] = [];
   let iso = input.dateDebutIso;
-  for (const heures of parts) {
-    // Un début de session tombant un week-end est décalé : personne ne planifie
-    // délibérément le premier jour d'une formation un samedi via une génération
-    // automatique. L'admin reste libre de l'y remettre à la main.
-    while (estWeekend(iso)) iso = jourSuivant(iso);
+  for (const [rang, heures] of parts.entries()) {
+    // 🔴 Le saut de week-end ne s'applique QU'À PARTIR DE LA DEUXIÈME journée.
+    //
+    // Constaté sur le premier dossier réel, AXI-SESS-2026-005 : session du
+    // dimanche 16/08/2026, journée proposée le lundi 17/08. Le commentaire
+    // d'origine assumait le raisonnement à voix haute — « personne ne planifie
+    // délibérément le premier jour d'une formation un samedi » — et c'est ce
+    // « personne » qui était faux.
+    //
+    // La distinction n'est pas de commodité, elle est de NATURE : les journées
+    // suivantes sont DÉDUITES (une formation de 14 h démarrée un vendredi tient
+    // vendredi + lundi, pas vendredi + samedi), la première est SAISIE. Déplacer
+    // une donnée déduite est un service ; déplacer une donnée saisie est une
+    // contradiction du choix de l'utilisateur.
+    //
+    // Ce que ça coûtait : ces journées portent les dates et horaires imprimés
+    // sur la FEUILLE D'ÉMARGEMENT, pièce à valeur probante des indicateurs 9 et
+    // 11. Confirmée telle quelle, la feuille aurait porté « 17/08 » quand la
+    // convention porte « 16/08 » — deux pièces du même dossier qui se
+    // contredisent, sur exactement ce que l'émargement sert à prouver.
+    if (rang > 0) {
+      while (estWeekend(iso)) iso = jourSuivant(iso);
+    }
     jours.push({ date: iso, ...horairesProposes(heures) });
     iso = jourSuivant(iso);
   }

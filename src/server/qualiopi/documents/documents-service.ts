@@ -24,6 +24,7 @@ import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions
 import { evaluerIdentite, exigeIdentiteComplete } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { pieceSignable } from "@/server/qualiopi/documents/signature/parties-requises";
+import { versionGabaritCourante } from "@/server/qualiopi/documents/templates/gabarit-versions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 /**
@@ -568,6 +569,20 @@ export async function generateDocument(
             data: props.data,
             ...(typeof props.identite === "object" && props.identite !== null
               ? { identite: props.identite }
+              : {}),
+            // 🔴 La VERSION DU GABARIT, à côté des données.
+            //
+            // L'instantané garantissait la fidélité des données et pas celle du
+            // texte : on rejouait de vieilles données à travers le composant
+            // d'aujourd'hui. Retoucher une convention réécrivait donc
+            // rétroactivement l'exemplaire signé de toutes les conventions déjà
+            // signées — des clauses que le signataire n'a jamais lues, sous un
+            // document présenté comme sa copie.
+            //
+            // ⚠️ `null` quand la pièce n'est pas signable : la question ne se
+            // pose pas, et stocker un nombre laisserait croire qu'elle se pose.
+            ...(versionGabaritCourante(input.type) !== null
+              ? { gabaritVersion: versionGabaritCourante(input.type) }
               : {}),
           }),
         ) as unknown;

@@ -44,6 +44,19 @@ export const env = createEnv({
 
     SMTP_HOST: z.string().default("localhost"),
     SMTP_PORT: z.coerce.number().int().positive().default(2525),
+    // 🔴 Audit du 2026-08-16 — ces deux variables n'étaient déclarées NULLE
+    // PART, alors qu'elles décident à elles seules si la production parle à
+    // Zoho en TLS authentifié ou retombe sur `localhost:2525` en clair (cf.
+    // `assertTransportUtilisable` dans `src/lib/email/client.ts`).
+    //
+    // Volontairement `.optional()` et NON requises en production : le dev et
+    // les tests tournent sans, et surtout une exigence bloquante ici ferait
+    // échouer le BOOT du conteneur si les variables portaient un autre nom côté
+    // Coolify — on transformerait un défaut d'e-mail en panne de site. Le refus
+    // dur vit dans `client.ts`, au moment de l'envoi. Les déclarer ici les rend
+    // typées, documentées, et visibles de quiconque lit la configuration.
+    SMTP_USER: z.string().optional(),
+    SMTP_PASS: z.string().optional(),
     SMTP_FROM_ADDRESS: z.string().email().default("noreply@axion-ia.com"),
     SMTP_FROM_NAME: z.string().default("Axion-IA"),
     SMTP_FROM_MARKETING: z.string().email().default("news@axion-ia.com"),
@@ -51,6 +64,28 @@ export const env = createEnv({
     PMTA_API_KEY: z.string().optional(),
     MAILWIZZ_API_URL: z.string().url().optional(),
     MAILWIZZ_API_KEY: z.string().optional(),
+
+    // ── Synchro sortante vers Axion CRM Pro (lot L2, 2026-08-14) ───────────
+    // Drapeau MAÎTRE : tant qu'il ne vaut pas exactement "true", aucune ligne
+    // d'outbox n'est écrite et aucun appel réseau n'est émis — le site se
+    // comporte EXACTEMENT comme avant le lot. Rollback = repasser à "false".
+    // Optionnelles toutes les quatre : un site sans CRM doit démarrer.
+    CRM_SYNC_ENABLED: z.enum(["true", "false"]).optional(),
+    // Second verrou, propre aux flux CANDIDATS. Ne s'ouvre qu'après que les
+    // textes de consentement v2 sont servis en production (le CRM rejette de
+    // toute façon toute fiche candidat sans consentement v2).
+    CRM_SYNC_CANDIDATES_ENABLED: z.enum(["true", "false"]).optional(),
+    CRM_SYNC_URL: z.string().url().optional(),
+    // Secret partagé du canal signé (64 hex). Jamais dans un commit.
+    SITE_SYNC_HMAC_SECRET: z.string().optional(),
+    // ── Reprise du STOCK de candidatures (lot L4, 2026-08-14) ──────────────
+    // Autorise l'ENVOI de l'email d'information au stock existant (fenêtre
+    // d'opposition de 30 jours avant intégration au vivier). Distinct de
+    // CRM_SYNC_CANDIDATES_ENABLED à dessein : on informe les candidats AVANT
+    // d'ouvrir le canal CRM — c'est même l'ordre imposé, la fenêtre de 30 jours
+    // devant s'écouler d'abord. Tant qu'il n'est pas à "true", la campagne
+    // refuse de s'exécuter sans même lire la base.
+    VIVIER_STOCK_ENABLED: z.enum(["true", "false"]).optional(),
 
     TELEGRAM_BOT_TOKEN: z.string().optional(),
     TELEGRAM_CHAT_ID: z.string().optional(),
@@ -60,7 +95,7 @@ export const env = createEnv({
     // (`TELEGRAM_CHAT_ID_RDV`) — jamais dans le salon Calendly, où ce bot-là
     // n'est pas membre. Cf. `resolveTelegramTarget()` dans notifications/routing.ts.
     //
-    // Les 8 `TELEGRAM_CHAT_ID_<GROUPE>` ne sont volontairement PAS déclarés ici :
+    // Les 9 `TELEGRAM_CHAT_ID_<GROUPE>` ne sont volontairement PAS déclarés ici :
     // ils sont lus par `process.env` direct dans `routing.ts`, comme les 3
     // existants depuis 2026-07-09. Les déclarer ici obligerait à toucher deux
     // fichiers pour ajouter un groupe.
@@ -243,6 +278,13 @@ export const env = createEnv({
     RETENTION_GENERATION_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_COST_LEDGER_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_WEB_VITALS_MONTHS: z.coerce.number().int().min(1).optional(),
+    // Tunnels d'acquisition. Défaut 12 mois côté worker — sous le plafond de
+    // 13 mois de la CNIL pour la mesure d'audience, dont dépend l'absence de
+    // bannière sur les pages de tunnel.
+    RETENTION_FUNNEL_EVENTS_MONTHS: z.coerce.number().int().min(1).optional(),
+    // Candidatures : 24 mois, recommandation CNIL pour un candidat non
+    // retenu. La purge supprime AUSSI le CV et la photo sur le disque.
+    RETENTION_CANDIDATURES_MONTHS: z.coerce.number().int().min(1).optional(),
 
     // Content Generator V1 (Sprint 1 Day 1 AGT-B) — providers IA + KB ingest.
     // Toutes optional V1 : le BUILD continue sans elles ; seul le RUN (génération
@@ -332,6 +374,21 @@ export const env = createEnv({
           });
         }
       }),
+
+    // ─── Banque d'images — GEO-094 (audit GEO/AEO 2026-08-14) ────────────────
+    //
+    // 🔴 Ces deux variables étaient utilisées dans le code SANS être déclarées
+    // ici ni dans aucun `.env*.example`. Conséquence mesurée : chaque appelant
+    // repliait sur SON propre défaut, et ces défauts divergeaient
+    // (`/var/data/image-bank` à l'écriture, `/data/image-bank` à la lecture) —
+    // on lisait dans un dossier où rien n'a jamais été écrit.
+    //
+    // Les déclarer ici ne change aucun comportement par défaut ; ça rend
+    // simplement la configuration VISIBLE, et une divergence future détectable.
+    /** Racine du volume de stockage des variantes. Défaut : `/var/data/image-bank`. */
+    IMAGE_BANK_STORAGE_PATH: z.string().min(1).optional(),
+    /** Préfixe CDN servant `/image-bank/*`. Vide = servi par la même origine. */
+    IMAGE_BANK_CDN_URL: z.string().url().optional(),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
@@ -360,6 +417,8 @@ export const env = createEnv({
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    IMAGE_BANK_STORAGE_PATH: process.env.IMAGE_BANK_STORAGE_PATH,
+    IMAGE_BANK_CDN_URL: process.env.IMAGE_BANK_CDN_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
     REDIS_URL: process.env.REDIS_URL,
@@ -369,6 +428,8 @@ export const env = createEnv({
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT,
+    SMTP_USER: process.env.SMTP_USER,
+    SMTP_PASS: process.env.SMTP_PASS,
     SMTP_FROM_ADDRESS: process.env.SMTP_FROM_ADDRESS,
     SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
     SMTP_FROM_MARKETING: process.env.SMTP_FROM_MARKETING,
@@ -376,6 +437,11 @@ export const env = createEnv({
     PMTA_API_KEY: process.env.PMTA_API_KEY,
     MAILWIZZ_API_URL: process.env.MAILWIZZ_API_URL,
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
+    CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
+    CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
+    CRM_SYNC_URL: process.env.CRM_SYNC_URL,
+    SITE_SYNC_HMAC_SECRET: process.env.SITE_SYNC_HMAC_SECRET,
+    VIVIER_STOCK_ENABLED: process.env.VIVIER_STOCK_ENABLED,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CALENDLY_BOT_TOKEN: process.env.TELEGRAM_CALENDLY_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
@@ -425,6 +491,8 @@ export const env = createEnv({
     RETENTION_GENERATION_LOGS_MONTHS: process.env.RETENTION_GENERATION_LOGS_MONTHS,
     RETENTION_COST_LEDGER_MONTHS: process.env.RETENTION_COST_LEDGER_MONTHS,
     RETENTION_WEB_VITALS_MONTHS: process.env.RETENTION_WEB_VITALS_MONTHS,
+    RETENTION_FUNNEL_EVENTS_MONTHS: process.env.RETENTION_FUNNEL_EVENTS_MONTHS,
+    RETENTION_CANDIDATURES_MONTHS: process.env.RETENTION_CANDIDATURES_MONTHS,
     // Content Generator V1 (Sprint 1 Day 1 AGT-B)
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,

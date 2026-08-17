@@ -19,6 +19,9 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(),
       findFirst: vi.fn(),
     },
+    enrollment: {
+      findUnique: vi.fn(),
+    },
   },
 }));
 
@@ -30,6 +33,7 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   createEvaluation,
+  incoherenceDateEvaluation,
   listEvaluationsForEnrollment,
   getFinaleReussite,
 } from "./evaluations-service";
@@ -40,6 +44,7 @@ const mockPrisma = prisma as unknown as {
     findMany: ReturnType<typeof vi.fn>;
     findFirst: ReturnType<typeof vi.fn>;
   };
+  enrollment: { findUnique: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -55,6 +60,9 @@ function makeCompetences(notes: Array<1 | 2 | 3 | undefined>) {
   }));
 }
 
+/** Session de référence : elle démarre le 10/06/2026 à 09 h. */
+const SESSION_DEBUT_10_JUIN = { session: { dateDebut: new Date("2026-06-10T09:00:00.000Z") } };
+
 // ─────────────────────────────────────────────────────────────────────────────
 // createEvaluation
 // ─────────────────────────────────────────────────────────────────────────────
@@ -64,6 +72,7 @@ describe("createEvaluation", () => {
     vi.clearAllMocks();
     mockGetConfig.mockResolvedValue(70);
     mockPrisma.evaluationAcquis.create.mockResolvedValue({ id: "eval-uuid-1" });
+    mockPrisma.enrollment.findUnique.mockResolvedValue(SESSION_DEBUT_10_JUIN);
   });
 
   it("retourne l'id créé", async () => {
@@ -79,7 +88,7 @@ describe("createEvaluation", () => {
   it("calcule et insère score/niveau/réussite corrects (score 100 % → acquis + réussi)", async () => {
     await createEvaluation({
       enrollmentId: "enroll-2",
-      type: "initiale",
+      type: "finale",
       dateEvaluation: "2026-06-10",
       competences: makeCompetences([3, 3, 3]),
     });
@@ -171,6 +180,243 @@ describe("createEvaluation", () => {
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// incoherenceDateEvaluation — la règle PURE
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 Audit blanc 2026-08-15, indicateur 4 (non graduable). Le dossier portait
+// une « initiale (avant formation) » du 04/08 pour une session close le 31/07,
+// affichée sous la « finale » du 31/07. Ces cas rougissent si la garde saute.
+
+describe("incoherenceDateEvaluation", () => {
+  const DEBUT = new Date("2026-07-31T09:00:00.000Z");
+
+  it("🔴 REFUSE une initiale datée APRÈS le début de session (le cas de l'audit)", () => {
+    const message = incoherenceDateEvaluation({
+      type: "initiale",
+      dateEvaluation: new Date("2026-08-04"),
+      dateDebutSession: DEBUT,
+    });
+    expect(message).not.toBeNull();
+    // Le message doit être lisible par un humain, et nommer LA date en cause.
+    expect(message).toContain("31/07/2026");
+    expect(message).toContain("04/08/2026");
+    expect(message).toContain("initiale");
+  });
+
+  it("accepte une initiale datée le JOUR MÊME du début (cas nominal)", () => {
+    expect(
+      incoherenceDateEvaluation({
+        type: "initiale",
+        dateEvaluation: new Date("2026-07-31"),
+        dateDebutSession: DEBUT,
+      }),
+    ).toBeNull();
+  });
+
+  it("accepte une initiale datée la veille", () => {
+    expect(
+      incoherenceDateEvaluation({
+        type: "initiale",
+        dateEvaluation: new Date("2026-07-30"),
+        dateDebutSession: DEBUT,
+      }),
+    ).toBeNull();
+  });
+
+  it("🔴 REFUSE une finale datée AVANT le début de session (symétrique)", () => {
+    const message = incoherenceDateEvaluation({
+      type: "finale",
+      dateEvaluation: new Date("2026-07-30"),
+      dateDebutSession: DEBUT,
+    });
+    expect(message).not.toBeNull();
+    expect(message).toContain("finale");
+    expect(message).toContain("31/07/2026");
+  });
+
+  it("🔴 REFUSE une intermédiaire datée AVANT le début de session", () => {
+    expect(
+      incoherenceDateEvaluation({
+        type: "intermediaire",
+        dateEvaluation: new Date("2026-07-29"),
+        dateDebutSession: DEBUT,
+      }),
+    ).toContain("intermédiaire");
+  });
+
+  it("accepte une finale datée le jour même du début (session d'une journée)", () => {
+    expect(
+      incoherenceDateEvaluation({
+        type: "finale",
+        dateEvaluation: new Date("2026-07-31"),
+        dateDebutSession: DEBUT,
+      }),
+    ).toBeNull();
+  });
+
+  it("compare à la JOURNÉE, pas à la milliseconde : 00 h 00 vs 09 h 00 le même jour passe", () => {
+    // Une session commence à 09 h ; l'évaluation d'entrée saisie via un champ
+    // `type="date"` arrive à minuit UTC. Comparée à la milliseconde, elle serait
+    // « avant » — et surtout la finale du même jour serait refusée.
+    expect(
+      incoherenceDateEvaluation({
+        type: "finale",
+        dateEvaluation: new Date("2026-07-31T00:00:00.000Z"),
+        dateDebutSession: DEBUT,
+      }),
+    ).toBeNull();
+  });
+
+  it("refuse une date d'évaluation invalide plutôt que de persister une date NaN", () => {
+    expect(
+      incoherenceDateEvaluation({
+        type: "finale",
+        dateEvaluation: new Date("pas une date"),
+        dateDebutSession: DEBUT,
+      }),
+    ).toContain("invalide");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// createEvaluation — garde chronologique appliquée
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("createEvaluation — cohérence des dates", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockGetConfig.mockResolvedValue(70);
+    mockPrisma.evaluationAcquis.create.mockResolvedValue({ id: "eval-uuid-1" });
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      session: { dateDebut: new Date("2026-07-31T09:00:00.000Z") },
+    });
+  });
+
+  it("🔴 lève ET N'ÉCRIT RIEN pour une initiale postérieure au début de session", async () => {
+    await expect(
+      createEvaluation({
+        enrollmentId: "enroll-audit",
+        type: "initiale",
+        dateEvaluation: "2026-08-04",
+        competences: makeCompetences([3, 3]),
+      }),
+    ).rejects.toThrow(
+      /initiale ne peut pas être datée après le début de la session du 31\/07\/2026/,
+    );
+
+    expect(mockPrisma.evaluationAcquis.create).not.toHaveBeenCalled();
+  });
+
+  it("🔴 lève ET N'ÉCRIT RIEN pour une finale antérieure au début de session", async () => {
+    await expect(
+      createEvaluation({
+        enrollmentId: "enroll-audit",
+        type: "finale",
+        dateEvaluation: "2026-07-20",
+        competences: makeCompetences([3]),
+      }),
+    ).rejects.toThrow(/finale ne peut pas être datée avant le début de la session/);
+
+    expect(mockPrisma.evaluationAcquis.create).not.toHaveBeenCalled();
+  });
+
+  it("laisse passer la saisie légitime du JOUR MÊME (initiale et finale)", async () => {
+    await createEvaluation({
+      enrollmentId: "enroll-ok",
+      type: "initiale",
+      dateEvaluation: "2026-07-31",
+      competences: makeCompetences([2]),
+    });
+    await createEvaluation({
+      enrollmentId: "enroll-ok",
+      type: "finale",
+      dateEvaluation: "2026-07-31",
+      competences: makeCompetences([3]),
+    });
+
+    expect(mockPrisma.evaluationAcquis.create).toHaveBeenCalledTimes(2);
+  });
+
+  it("🔴 refuse d'écrire si l'inscription est introuvable (garde invérifiable)", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(null);
+
+    await expect(
+      createEvaluation({
+        enrollmentId: "enroll-fantome",
+        type: "initiale",
+        dateEvaluation: "2026-07-31",
+        competences: makeCompetences([2]),
+      }),
+    ).rejects.toThrow(/Inscription introuvable/);
+
+    expect(mockPrisma.evaluationAcquis.create).not.toHaveBeenCalled();
+  });
+
+  it("persiste la date d'évaluation telle que saisie", async () => {
+    await createEvaluation({
+      enrollmentId: "enroll-ok",
+      type: "finale",
+      dateEvaluation: "2026-08-02",
+      competences: makeCompetences([3]),
+    });
+
+    const call = mockPrisma.evaluationAcquis.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(call.data["dateEvaluation"]).toEqual(new Date("2026-08-02"));
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// createEvaluation — pas de « réussite » sur une évaluation d'entrée
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 Le dossier audité affichait « Réussite : Oui » sur un positionnement
+// d'entrée : le stagiaire y déclarait son niveau de DÉPART et le système en
+// tirait un verdict de réussite. Réussir avant d'avoir été formé ne veut rien
+// dire — et lu à côté de la finale, ça donne un parcours qui n'a rien appris.
+
+describe("createEvaluation — réussite d'une évaluation initiale", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockGetConfig.mockResolvedValue(70);
+    mockPrisma.evaluationAcquis.create.mockResolvedValue({ id: "eval-uuid-1" });
+    mockPrisma.enrollment.findUnique.mockResolvedValue(SESSION_DEBUT_10_JUIN);
+  });
+
+  it("🔴 n'écrit JAMAIS reussite=true sur une initiale, même à 100 %", async () => {
+    await createEvaluation({
+      enrollmentId: "enroll-init",
+      type: "initiale",
+      dateEvaluation: "2026-06-09",
+      competences: makeCompetences([3, 3, 3]),
+    });
+
+    const call = mockPrisma.evaluationAcquis.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(call.data["reussite"]).toBe(false);
+    // Le niveau d'entrée, lui, RESTE écrit : c'est la preuve attendue à l'indicateur 4.
+    expect(call.data["scorePct"]).toBe(100);
+    expect(call.data["niveauGlobal"]).toBe("acquis");
+  });
+
+  it("une finale à 100 % reste bien réussie (la garde ne déborde pas)", async () => {
+    await createEvaluation({
+      enrollmentId: "enroll-fin",
+      type: "finale",
+      dateEvaluation: "2026-06-12",
+      competences: makeCompetences([3, 3, 3]),
+    });
+
+    const call = mockPrisma.evaluationAcquis.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(call.data["reussite"]).toBe(true);
   });
 });
 

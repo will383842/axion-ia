@@ -17,17 +17,19 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     formation: { count: vi.fn(), findMany: vi.fn() },
     trainingSession: { count: vi.fn() },
-    evaluationAcquis: { count: vi.fn() },
-    appreciation: { count: vi.fn(), groupBy: vi.fn() },
-    questionnaire: { count: vi.fn() },
+    evaluationAcquis: { count: vi.fn(), findMany: vi.fn() },
+    appreciation: { count: vi.fn(), groupBy: vi.fn(), findMany: vi.fn() },
+    questionnaire: { count: vi.fn(), findMany: vi.fn() },
     reclamation: { count: vi.fn() },
     veille: { count: vi.fn() },
     partenariat: { count: vi.fn() },
     sousTraitant: { count: vi.fn() },
     trainer: { count: vi.fn() },
     trainerDevelopmentAction: { count: vi.fn() },
+    trainerDocument: { findMany: vi.fn() },
     trainee: { count: vi.fn() },
     enrollment: { count: vi.fn() },
+    client: { findMany: vi.fn() },
     documentGenere: { count: vi.fn() },
     revueDirection: { count: vi.fn() },
     supportFormation: { count: vi.fn(), findMany: vi.fn() },
@@ -47,17 +49,23 @@ import { evaluerConformite } from "./conformite-service";
 type MockPrisma = {
   formation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   trainingSession: { count: ReturnType<typeof vi.fn> };
-  evaluationAcquis: { count: ReturnType<typeof vi.fn> };
-  appreciation: { count: ReturnType<typeof vi.fn>; groupBy: ReturnType<typeof vi.fn> };
-  questionnaire: { count: ReturnType<typeof vi.fn> };
+  evaluationAcquis: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
+  appreciation: {
+    count: ReturnType<typeof vi.fn>;
+    groupBy: ReturnType<typeof vi.fn>;
+    findMany: ReturnType<typeof vi.fn>;
+  };
+  questionnaire: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   reclamation: { count: ReturnType<typeof vi.fn> };
   veille: { count: ReturnType<typeof vi.fn> };
   partenariat: { count: ReturnType<typeof vi.fn> };
   sousTraitant: { count: ReturnType<typeof vi.fn> };
   trainer: { count: ReturnType<typeof vi.fn> };
   trainerDevelopmentAction: { count: ReturnType<typeof vi.fn> };
+  trainerDocument: { findMany: ReturnType<typeof vi.fn> };
   trainee: { count: ReturnType<typeof vi.fn> };
   enrollment: { count: ReturnType<typeof vi.fn> };
+  client: { findMany: ReturnType<typeof vi.fn> };
   documentGenere: { count: ReturnType<typeof vi.fn> };
   revueDirection: { count: ReturnType<typeof vi.fn> };
   supportFormation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
@@ -78,17 +86,27 @@ function setupEmpty() {
   mockP.formation.findMany.mockResolvedValue([]);
   mockP.trainingSession.count.mockResolvedValue(0);
   mockP.evaluationAcquis.count.mockResolvedValue(0);
+  // off.8 : les évaluations initiales sont désormais RAPPROCHÉES de la date de
+  // début de session (audit blanc 2026-08-15) → findMany, plus count.
+  mockP.evaluationAcquis.findMany.mockResolvedValue([]);
   mockP.appreciation.count.mockResolvedValue(0);
   mockP.appreciation.groupBy.mockResolvedValue([]);
+  // off.30 : QUI s'exprime (personne physique), pas seulement en quelle qualité.
+  mockP.appreciation.findMany.mockResolvedValue([]);
   mockP.questionnaire.count.mockResolvedValue(0);
+  // off.4 : idem off.8 — le questionnaire de positionnement porte une date.
+  mockP.questionnaire.findMany.mockResolvedValue([]);
   mockP.reclamation.count.mockResolvedValue(0);
   mockP.veille.count.mockResolvedValue(0);
   mockP.partenariat.count.mockResolvedValue(0);
   mockP.sousTraitant.count.mockResolvedValue(0);
   mockP.trainer.count.mockResolvedValue(0);
   mockP.trainerDevelopmentAction.count.mockResolvedValue(0);
+  // off.21 : pièces de compétence VALIDÉES au dossier formateur.
+  mockP.trainerDocument.findMany.mockResolvedValue([]);
   mockP.trainee.count.mockResolvedValue(0);
   mockP.enrollment.count.mockResolvedValue(0);
+  mockP.client.findMany.mockResolvedValue([]);
   // ⚠️ Compteur de documents NEUTRE par défaut. Les tests qui le règlent
   // (off.9, off.12…) ne visent PAS la procédure de sous-traitance : sans ce
   // découplage, régler `documentGenere.count` pour l'un de ces indicateurs
@@ -120,6 +138,56 @@ function setupMoyens(
     .mockResolvedValueOnce(
       verifies.map((v) => ({ categorie: v.categorie, _count: { _all: v.count } })),
     );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Repères de dates (off.4 / off.8 — audit blanc 2026-08-15)
+//
+// Volontairement DANS LE PASSÉ : le service calcule `maintenant = new Date()`
+// au runtime, donc une session « démarrée » doit l'être quelle que soit la date
+// d'exécution des tests.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const DEBUT_SESSION = new Date("2024-03-04T09:00:00.000Z");
+const AVANT_DEBUT = new Date("2024-02-26T14:00:00.000Z");
+const APRES_DEBUT = new Date("2024-03-08T17:00:00.000Z");
+
+/**
+ * Nombre d'inscriptions rattachées à une session DÉJÀ DÉMARRÉE — dénominateur
+ * commun de la couverture off.4 / off.8. C'est le 3e appel à `enrollment.count`,
+ * distingué par son `where.session` (les deux autres portent sur
+ * `adaptationsRealisees` et `emargementSigneAt`).
+ */
+function setupInscritsSessionsDemarrees(nb: number): void {
+  mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+    Promise.resolve(args?.where?.["session"] !== undefined ? nb : 0),
+  );
+}
+
+/** Ligne de questionnaire de positionnement répondu, telle que la lit off.4. */
+function positionnement(
+  enrollmentId: string,
+  reponduAt: Date,
+  dateDebut: Date = DEBUT_SESSION,
+): { enrollmentId: string; reponduAt: Date; enrollment: { session: { dateDebut: Date } } } {
+  return { enrollmentId, reponduAt, enrollment: { session: { dateDebut } } };
+}
+
+/** Ligne d'évaluation initiale, telle que la lit off.8. */
+function evaluationInitiale(
+  enrollmentId: string | null,
+  dateEvaluation: Date,
+  dateDebut: Date | null = DEBUT_SESSION,
+): {
+  enrollmentId: string | null;
+  dateEvaluation: Date;
+  enrollment: { session: { dateDebut: Date } } | null;
+} {
+  return {
+    enrollmentId,
+    dateEvaluation,
+    enrollment: dateDebut === null ? null : { session: { dateDebut } },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -300,28 +368,92 @@ describe("evaluerConformite", () => {
 
   // ── off.30 : appréciation multi-parties (T17 — CLUSTER 2) ─────────────────
 
-  it("off.30 [P1] couvert si ≥2 sources d'appréciation DISTINCTES (multi-parties réel)", async () => {
+  it("off.30 couvert si 2 qualités déclarées portées par 2 personnes physiques distinctes", async () => {
     mockP.appreciation.count.mockResolvedValue(5);
     mockP.appreciation.groupBy.mockResolvedValue([
       { source: "stagiaire" },
       { source: "entreprise" },
     ]);
+    mockP.appreciation.findMany.mockResolvedValue([
+      { source: "stagiaire", clientId: null, trainee: { email: "stagiaire@exemple.fr" } },
+      { source: "entreprise", clientId: "cli-1", trainee: null },
+    ]);
+    mockP.client.findMany.mockResolvedValue([{ id: "cli-1", contactEmail: "rh@exemple.fr" }]);
     const result = await evaluerConformite();
     const ind30 = result.indicateurs.find((i) => i.numero === 30);
     expect(ind30?.statut).toBe("couvert");
   });
 
-  it("off.30 [P1] a_completer si une seule source d'appréciation (pas multi-parties)", async () => {
-    mockP.appreciation.count.mockResolvedValue(3);
+  // ── off.30 : une QUALITÉ déclarée n'est pas une PARTIE PRENANTE ────────────
+  //
+  // 🔴 Non-conformité relevée (audit blanc 2026-08-15). Le `groupBy(["source"])`
+  // comptait les qualités déclarées. Chez cet organisme, les deux « sources
+  // distinctes » sont la MÊME personne physique : la stagiaire est aussi la
+  // représentante du client. L'indicateur affichait « multi-parties » sur une
+  // seule voix.
+  //
+  // 🔴 CE TEST ROUGIT SI LA GARDE SAUTE : deux sources distinctes sont bien
+  // présentes — c'est exactement ce que l'ancienne règle exigeait. Sans le
+  // décompte des personnes physiques, l'indicateur repasse « couvert ».
+  it("off.30 a_completer si les deux sources sont la MÊME personne physique", async () => {
+    mockP.appreciation.count.mockResolvedValue(2);
+    mockP.appreciation.groupBy.mockResolvedValue([
+      { source: "stagiaire" },
+      { source: "entreprise" },
+    ]);
+    mockP.appreciation.findMany.mockResolvedValue([
+      { source: "stagiaire", clientId: null, trainee: { email: "marie.dupont@client.fr" } },
+      { source: "entreprise", clientId: "cli-1", trainee: null },
+    ]);
+    // Le contact du client, c'est la stagiaire elle-même (casse et espaces
+    // différents : la normalisation doit les rapprocher, pas les distinguer).
+    mockP.client.findMany.mockResolvedValue([
+      { id: "cli-1", contactEmail: " Marie.Dupont@Client.fr " },
+    ]);
+    const result = await evaluerConformite();
+    const ind30 = result.indicateurs.find((i) => i.numero === 30);
+    expect(ind30?.statut).toBe("a_completer");
+    expect(ind30?.preuves.join(" ")).toContain("1 personne physique distincte");
+    expect(ind30?.preuves.join(" ")).toMatch(/Multi-parties non démontré/);
+  });
+
+  it("off.30 a_completer si une seule qualité déclarée, même avec 2 personnes distinctes", async () => {
+    // Deux stagiaires font deux personnes, mais une seule partie prenante.
+    mockP.appreciation.count.mockResolvedValue(2);
     mockP.appreciation.groupBy.mockResolvedValue([{ source: "stagiaire" }]);
+    mockP.appreciation.findMany.mockResolvedValue([
+      { source: "stagiaire", clientId: null, trainee: { email: "a@exemple.fr" } },
+      { source: "stagiaire", clientId: null, trainee: { email: "b@exemple.fr" } },
+    ]);
     const result = await evaluerConformite();
     const ind30 = result.indicateurs.find((i) => i.numero === 30);
     expect(ind30?.statut).toBe("a_completer");
   });
 
+  // Élément constaté HONNÊTE quand la base ne porte pas l'information : on
+  // n'invente pas d'auteur, et l'indicateur n'est pas couvert sur ce seul critère.
+  it("off.30 a_completer et rattachement annoncé « non établi » si aucun auteur identifiable", async () => {
+    mockP.appreciation.count.mockResolvedValue(4);
+    mockP.appreciation.groupBy.mockResolvedValue([
+      { source: "stagiaire" },
+      { source: "financeur" },
+    ]);
+    mockP.appreciation.findMany.mockResolvedValue([
+      { source: "stagiaire", clientId: null, trainee: null },
+      { source: "financeur", clientId: null, trainee: null },
+    ]);
+    const result = await evaluerConformite();
+    const ind30 = result.indicateurs.find((i) => i.numero === 30);
+    expect(ind30?.statut).toBe("a_completer");
+    expect(ind30?.preuves.join(" ")).toMatch(
+      /2 appréciations, rattachement des auteurs non établi/,
+    );
+  });
+
   it("off.30 a_completer si 0 appréciation", async () => {
     mockP.appreciation.count.mockResolvedValue(0);
     mockP.appreciation.groupBy.mockResolvedValue([]);
+    mockP.appreciation.findMany.mockResolvedValue([]);
     const result = await evaluerConformite();
     const ind30 = result.indicateurs.find((i) => i.numero === 30);
     expect(ind30?.statut).toBe("a_completer");
@@ -417,17 +549,46 @@ describe("evaluerConformite", () => {
 
   // ── off.21 : formateurs avec CV réel (T17 — CLUSTER 2) ───────────────────
 
-  it("off.21 [P1] couvert si ≥1 formateur actif avec CV téléversé ET à jour (< 24 mois)", async () => {
+  it("off.21 couvert si fiche à jour (< 24 mois) ET pièce de compétence validée au dossier", async () => {
     // trainer.count : 1=actif, 2=actif+cvUrl, 3=actif+cvUrl+cvUploadedAt<24 mois (récent)
     mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
+    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("couvert");
   });
 
-  it("off.21 [P1] a_completer si CV présent mais PÉRIMÉ (aucun < 24 mois)", async () => {
+  // ── off.21 : la fiche que l'outil génère lui-même ne justifie rien ─────────
+  //
+  // 🔴 Non-conformité relevée (audit blanc 2026-08-15) : la couverture reposait
+  // sur `cvUrl` non null. Or quand l'outil produit la fiche formateur, c'est LUI
+  // qui pose cette URL — l'organisme validait donc une pièce qu'il s'était
+  // écrite, et l'élément constaté annonçait « CV téléversé ».
+  //
+  // 🔴 CE TEST ROUGIT SI LA CONDITION AJOUTÉE SAUTE : fiche présente et récente,
+  // mais aucune pièce validée → sans la garde, l'indicateur repasse au vert.
+  it("off.21 a_completer si fiche récente MAIS aucune pièce de compétence validée", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(2).mockResolvedValueOnce(2);
+    mockP.trainerDocument.findMany.mockResolvedValue([]);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+    expect(ind21?.preuves.join(" ")).toMatch(/Aucune pièce de compétence validée/);
+  });
+
+  it("off.21 : l'élément constaté ne prétend plus « CV téléversé », mais « fiche formateur au dossier »", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
+    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    const result = await evaluerConformite();
+    const preuves = result.indicateurs.find((i) => i.numero === 21)?.preuves.join(" ") ?? "";
+    expect(preuves).toMatch(/fiche formateur au dossier/i);
+    expect(preuves).not.toMatch(/CV téléversé/i);
+  });
+
+  it("off.21 a_completer si CV présent mais PÉRIMÉ (aucun < 24 mois)", async () => {
     // 2 CV téléversés mais aucun daté de moins de 24 mois → 3e appel = 0.
     mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(2).mockResolvedValueOnce(0);
+    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");
@@ -435,6 +596,7 @@ describe("evaluerConformite", () => {
 
   it("off.21 a_completer si formateurs actifs mais 0 avec cvUrl", async () => {
     mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(0).mockResolvedValueOnce(0);
+    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");
@@ -569,8 +731,15 @@ describe("evaluerConformite", () => {
     expect(result.indicateurs.find((i) => i.numero === 17)?.statut).toBe("a_completer");
   });
 
-  it("off.18 couvert si chaque catégorie utilisée a ≥1 moyen vérifié", async () => {
+  it("off.18 couvert si inventaire complet ET modalités de coordination écrites", async () => {
     mockP.trainer.count.mockResolvedValue(1);
+    mockGetConfig.mockImplementation((key: string) =>
+      Promise.resolve(
+        key === "modalites_coordination"
+          ? "Le responsable pédagogique pilote ; point de coordination avant chaque session, compte rendu partagé."
+          : "",
+      ),
+    );
     setupMoyens(
       [
         { categorie: "salle", count: 2 },
@@ -583,6 +752,62 @@ describe("evaluerConformite", () => {
     );
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 18)?.statut).toBe("couvert");
+  });
+
+  // ── off.18 : la coordination se PROUVE par écrit (audit blanc 2026-08-15) ──
+  //
+  // 🔴 Non-conformité relevée : l'indicateur se déduisait d'un NOMBRE de
+  // formateurs actifs et d'un inventaire vérifié. Avec un intervenant unique,
+  // « 1 formateur coordonné » ne coordonne personne.
+  //
+  // 🔴 CE TEST ROUGIT SI LA GARDE SAUTE : inventaire parfait, 1 formateur, mais
+  // aucune preuve écrite — sans la condition ajoutée, l'indicateur repasse au vert.
+  it("off.18 a_completer si inventaire complet MAIS aucune preuve écrite de coordination", async () => {
+    mockP.trainer.count.mockResolvedValue(1);
+    setupMoyens(
+      [
+        { categorie: "salle", count: 2 },
+        { categorie: "plateforme", count: 1 },
+      ],
+      [
+        { categorie: "salle", count: 1 },
+        { categorie: "plateforme", count: 1 },
+      ],
+    );
+    const result = await evaluerConformite();
+    const ind18 = result.indicateurs.find((i) => i.numero === 18);
+    expect(ind18?.statut).toBe("a_completer");
+    expect(ind18?.preuves.join(" ")).toMatch(/Aucune preuve écrite de coordination/);
+  });
+
+  it("off.18 couvert par une pièce « inventaire des moyens » / « organisation de l'action » au registre", async () => {
+    mockP.trainer.count.mockResolvedValue(1);
+    mockP.documentGenere.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      const type = args?.where?.["type"] as { in?: string[] } | string | undefined;
+      const cible =
+        typeof type === "object" && Array.isArray(type.in) && type.in.includes("inventaire_moyens");
+      return Promise.resolve(cible ? 1 : 0);
+    });
+    setupMoyens([{ categorie: "salle", count: 1 }], [{ categorie: "salle", count: 1 }]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 18)?.statut).toBe("couvert");
+  });
+
+  it("off.18 : une pièce de coordination ne suffit pas si une catégorie de moyens n'est pas vérifiée", async () => {
+    // La preuve écrite s'AJOUTE aux conditions LOT 2, elle ne les remplace pas.
+    mockP.trainer.count.mockResolvedValue(1);
+    mockGetConfig.mockImplementation((key: string) =>
+      Promise.resolve(key === "modalites_coordination" ? "Coordination hebdomadaire." : ""),
+    );
+    setupMoyens(
+      [
+        { categorie: "salle", count: 1 },
+        { categorie: "materiel", count: 1 },
+      ],
+      [{ categorie: "salle", count: 1 }],
+    );
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 18)?.statut).toBe("a_completer");
   });
 
   it("off.18 a_completer si une catégorie utilisée n'a aucun moyen vérifié", async () => {
@@ -650,22 +875,128 @@ describe("evaluerConformite", () => {
     expect(result.indicateurs.find((i) => i.numero === 2)?.statut).toBe("couvert");
   });
 
-  it("off.4 [P1] mesuré par le questionnaire de positionnement (≠ grille d'acquis off.8)", async () => {
+  // ── off.4 / off.8 : la DATE et la COUVERTURE (audit blanc 2026-08-15) ─────
+  //
+  // 🔴 Non-conformité relevée : `nbPositionnementsBesoin > 0` — aucune contrainte
+  // de date, aucune notion de couverture. UNE réponse, saisie n'importe quand,
+  // « couvrait » les 22 formations du catalogue. Analyser un besoin après avoir
+  // formé n'est pas une analyse du besoin.
+
+  it("off.4 mesuré par le questionnaire de positionnement (≠ grille d'acquis off.8)", async () => {
     mockP.formation.count.mockResolvedValue(2);
-    // Grille d'acquis présente (off.8) mais AUCUN questionnaire de positionnement répondu.
-    mockP.evaluationAcquis.count.mockResolvedValue(3);
-    mockP.questionnaire.count.mockResolvedValue(0);
+    setupInscritsSessionsDemarrees(1);
+    // Grille d'acquis présente et DANS LES TEMPS (off.8 couvert) mais AUCUN
+    // questionnaire de positionnement répondu → off.4 reste à compléter.
+    mockP.evaluationAcquis.findMany.mockResolvedValue([evaluationInitiale("enr-1", AVANT_DEBUT)]);
+    mockP.questionnaire.findMany.mockResolvedValue([]);
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 4)?.statut).toBe("a_completer");
-    // off.8 (acquis), lui, est couvert par la grille.
     expect(result.indicateurs.find((i) => i.numero === 8)?.statut).toBe("couvert");
   });
 
-  it("off.4 [P1] couvert si formations + ≥1 questionnaire de positionnement répondu", async () => {
+  it("off.4 couvert si TOUS les inscrits des sessions démarrées sont positionnés avant le début", async () => {
     mockP.formation.count.mockResolvedValue(2);
-    mockP.questionnaire.count.mockResolvedValue(1);
+    setupInscritsSessionsDemarrees(2);
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
     const result = await evaluerConformite();
-    expect(result.indicateurs.find((i) => i.numero === 4)?.statut).toBe("couvert");
+    const ind4 = result.indicateurs.find((i) => i.numero === 4);
+    expect(ind4?.statut).toBe("couvert");
+    expect(ind4?.preuves.join(" ")).toContain("2 inscrits sur 2");
+  });
+
+  // 🔴 CE TEST ROUGIT SI LA GARDE DE DATE SAUTE. Sans le filtre
+  // `reponduAt <= session.dateDebut`, ces deux réponses comptent normalement :
+  // 2/2 inscrits « positionnés » → l'indicateur repasse « couvert » et
+  // l'assertion « a_completer » échoue.
+  it("off.4 a_completer si le positionnement a été répondu APRÈS le début de la session", async () => {
+    mockP.formation.count.mockResolvedValue(2);
+    setupInscritsSessionsDemarrees(2);
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", APRES_DEBUT),
+      positionnement("enr-2", APRES_DEBUT),
+    ]);
+    const result = await evaluerConformite();
+    const ind4 = result.indicateurs.find((i) => i.numero === 4);
+    expect(ind4?.statut).toBe("a_completer");
+    // Les hors-délai sont AFFICHÉS séparément, plus fondus dans un compteur unique.
+    expect(ind4?.preuves.join(" ")).toMatch(/2 positionnements répondus HORS DÉLAI/);
+    expect(ind4?.preuves.join(" ")).toContain("0 inscrit sur 2");
+  });
+
+  // 🔴 CE TEST ROUGIT SI L'ÉLÉMENT CONSTATÉ REDEVIENT VOLUMÉTRIQUE. Une seule
+  // réponse conforme sur 22 inscrits : l'ancien `> 0` couvrait l'indicateur.
+  it("off.4 a_completer si un seul inscrit sur 22 est positionné (couverture partielle)", async () => {
+    mockP.formation.count.mockResolvedValue(22);
+    setupInscritsSessionsDemarrees(22);
+    mockP.questionnaire.findMany.mockResolvedValue([positionnement("enr-1", AVANT_DEBUT)]);
+    const result = await evaluerConformite();
+    const ind4 = result.indicateurs.find((i) => i.numero === 4);
+    expect(ind4?.statut).toBe("a_completer");
+    expect(ind4?.preuves.join(" ")).toContain("1 inscrit sur 22");
+    expect(ind4?.preuves.join(" ")).toContain("21 inscrit(s) entré(s) en formation");
+  });
+
+  it("off.4 : un positionnement anticipé sur une session À VENIR ne fabrique pas de couverture", async () => {
+    // Session future → hors du dénominateur (l'inscrit n'est pas en défaut),
+    // et hors du numérateur : la couverture ne peut pas dépasser 100 %.
+    const futur = new Date("2099-01-10T09:00:00.000Z");
+    mockP.formation.count.mockResolvedValue(1);
+    setupInscritsSessionsDemarrees(0);
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-futur", new Date("2098-12-01T09:00:00.000Z"), futur),
+    ]);
+    const result = await evaluerConformite();
+    const ind4 = result.indicateurs.find((i) => i.numero === 4);
+    expect(ind4?.statut).toBe("a_completer");
+    expect(ind4?.preuves.join(" ")).toContain("0 inscrit sur 0");
+  });
+
+  it("off.8 couvert si tous les inscrits sont évalués à l'entrée AVANT le début", async () => {
+    setupInscritsSessionsDemarrees(2);
+    mockP.evaluationAcquis.findMany.mockResolvedValue([
+      evaluationInitiale("enr-1", AVANT_DEBUT),
+      evaluationInitiale("enr-2", DEBUT_SESSION), // le jour même, avant/à l'ouverture
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 8)?.statut).toBe("couvert");
+  });
+
+  // 🔴 CE TEST ROUGIT SI LA GARDE DE DATE SAUTE : sans le filtre
+  // `dateEvaluation <= session.dateDebut`, ces deux grilles « initiales »
+  // saisies pendant l'action couvrent 2/2 et l'indicateur repasse au vert.
+  it("off.8 a_completer si la grille initiale a été saisie APRÈS le démarrage", async () => {
+    setupInscritsSessionsDemarrees(2);
+    mockP.evaluationAcquis.findMany.mockResolvedValue([
+      evaluationInitiale("enr-1", APRES_DEBUT),
+      evaluationInitiale("enr-2", APRES_DEBUT),
+    ]);
+    const result = await evaluerConformite();
+    const ind8 = result.indicateurs.find((i) => i.numero === 8);
+    expect(ind8?.statut).toBe("a_completer");
+    expect(ind8?.preuves.join(" ")).toMatch(/HORS DÉLAI/);
+  });
+
+  it("off.8 a_completer si un seul inscrit sur trois est évalué à l'entrée", async () => {
+    setupInscritsSessionsDemarrees(3);
+    mockP.evaluationAcquis.findMany.mockResolvedValue([evaluationInitiale("enr-1", AVANT_DEBUT)]);
+    const result = await evaluerConformite();
+    const ind8 = result.indicateurs.find((i) => i.numero === 8);
+    expect(ind8?.statut).toBe("a_completer");
+    expect(ind8?.preuves.join(" ")).toContain("1 inscrit sur 3");
+  });
+
+  it("off.8 : une évaluation initiale sans session rattachée (1-to-1) ne prouve rien", async () => {
+    setupInscritsSessionsDemarrees(1);
+    mockP.evaluationAcquis.findMany.mockResolvedValue([
+      evaluationInitiale(null, AVANT_DEBUT, null),
+    ]);
+    const result = await evaluerConformite();
+    const ind8 = result.indicateurs.find((i) => i.numero === 8);
+    expect(ind8?.statut).toBe("a_completer");
+    expect(ind8?.preuves.join(" ")).toMatch(/sans session rattachée/);
   });
 
   it("off.27 [P1] a_completer si sous-traitant référencé mais NON conforme (NDA/data.gouv/contrat manquants)", async () => {

@@ -28,6 +28,14 @@ import { SITEMAP_CACHE_HEADER } from "@/server/image-bank/constants";
 
 export const dynamic = "force-static";
 
+// GEO-037 (audit GEO/AEO 2026-08-14) — cette licence n'est déclarée QUE sur les
+// images dont Axion-IA détient les droits (`origin` absent ou `"own"` dans le
+// manifeste). Les photos tierces curées localement (`origin: "unsplash"`) sont
+// servies par notre domaine mais restent la propriété du photographe : leur
+// déclarer une licence CC BY 4.0 reviendrait à accorder à des tiers un droit de
+// réutilisation qu'on ne détient pas — et Google Images affiche le badge
+// « Licensable » sur la foi de cette déclaration. Pour elles, la balise est
+// simplement OMISE : l'image reste indexable, elle n'est juste pas licenciée.
 const LICENSE_URL = "https://creativecommons.org/licenses/by/4.0/";
 
 export function GET(): Response {
@@ -39,11 +47,15 @@ export function GET(): Response {
     const absPageUrl = `${SITE_URL}/fr${page.path === "/" ? "" : page.path}`;
     const imageBlocks = page.images.map((img) => {
       totalImages += 1;
+      const licenceLigne =
+        img.origin === "unsplash"
+          ? ""
+          : `
+      <image:license>${LICENSE_URL}</image:license>`;
       return `    <image:image>
       <image:loc>${SITE_URL}${img.src}</image:loc>
       <image:title>${escapeXml(img.nameFr)}</image:title>
-      <image:caption>${escapeXml(img.altFr)}</image:caption>
-      <image:license>${LICENSE_URL}</image:license>
+      <image:caption>${escapeXml(img.altFr)}</image:caption>${licenceLigne}
     </image:image>`;
     });
 
@@ -55,6 +67,7 @@ export function GET(): Response {
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <!-- ${urlBlocks.length} pages de services — ${totalImages} images -->
   <!-- CC BY 4.0 — © 2026 Axion-IA — aiGenerated:true (AI Act art. 50) -->
+  <!-- Les photos tierces (Unsplash) sont indexables mais NON licenciées : voir GEO-037 -->
 ${urlBlocks.join("\n")}
 </urlset>
 `;

@@ -13,6 +13,7 @@
 import crypto from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncNewsletterOptInToCrm, syncNewsletterOptOutToCrm } from "@/server/crm-sync";
 import { newsletterSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -22,8 +23,18 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { hashIp } from "@/lib/security/ip-hash";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 
 export type NewsletterState = { ok: true } | { ok: false; error: string };
+
+/**
+ * Première version de consentement NOMMÉE pour la lettre (décision actée
+ * 2026-08-13). La lettre n'en persistait aucune : le double opt-in prouvait le
+ * geste, mais rien ne disait QUEL texte la personne avait accepté. Cette
+ * constante voyage avec la fiche vers le CRM ; la persister côté site suppose
+ * une colonne, qui viendra avec le lot « consentements centralisés ».
+ */
+const NEWSLETTER_CONSENT_VERSION = "newsletter-v1-2026-08-13";
 
 export async function subscribeNewsletterAction(
   _prev: NewsletterState,
@@ -163,6 +174,30 @@ export async function confirmNewsletterAction(token: string | null): Promise<Con
         confirmToken: null,
       },
     });
+    // Synchro CRM (lot L2) — émise à la CONFIRMATION, jamais à la demande
+    // d'inscription : tant que l'adresse n'est pas confirmée, il n'y a pas de
+    // consentement à transmettre (et l'inscription peut être le fait d'un tiers).
+    await syncNewsletterOptInToCrm({
+      subjectRef: `site:newsletter_subscriber:${sub.id}`,
+      person: { email: sub.email },
+      consent: {
+        version: NEWSLETTER_CONSENT_VERSION,
+        at: new Date(),
+        textRef: "newsletter-double-optin",
+      },
+      ...(sub.source ? { payload: { source: sub.source } } : {}),
+    });
+
+    // REGISTRE DE PREUVE (lot L4) — la lettre n'en avait AUCUNE : le double
+    // opt-in prouvait le geste, mais rien ne disait QUEL texte avait été
+    // accepté. C'est désormais consigné, et à la CONFIRMATION seulement.
+    await recordConsentEvent({
+      email: sub.email,
+      formRef: CONSENT_FORM_REFS.newsletter,
+      consentVersion: NEWSLETTER_CONSENT_VERSION,
+      action: "optin",
+    });
+
     await notify({
       category: "NEWSLETTER_CONFIRMED",
       payload: { email: redactEmail(sub.email), locale: sub.locale },
@@ -218,6 +253,25 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
         unsubscribedAt: new Date(),
       },
     });
+    // Synchro CRM (lot L2) — l'opposition doit valoir PARTOUT : le CRM inscrit
+    // l'adresse (hashée) en liste d'opposition business, ce qui empêche aussi
+    // toute réinsertion par un futur re-scrape.
+    await syncNewsletterOptOutToCrm({
+      subjectRef: `site:newsletter_subscriber:${sub.id}`,
+      person: { email: sub.email },
+      payload: { reason: "unsubscribe-link" },
+    });
+
+    // Le RETRAIT est une preuve au même titre que l'accord : il s'AJOUTE au
+    // registre (`optout`), il n'efface pas la ligne d'opt-in. C'est la
+    // succession des deux qui raconte l'histoire complète.
+    await recordConsentEvent({
+      email: sub.email,
+      formRef: CONSENT_FORM_REFS.newsletter,
+      consentVersion: NEWSLETTER_CONSENT_VERSION,
+      action: "optout",
+    });
+
     await notify({
       category: "NEWSLETTER_UNSUBSCRIBED",
       payload: { email: redactEmail(sub.email), locale: sub.locale },

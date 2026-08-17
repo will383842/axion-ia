@@ -1,16 +1,20 @@
 // Page candidature commercial — INDEXABLE (intention « devenir commercial » +
-// destination des CTA des pages ville/France). Formulaire = îlot client unique
-// (CommercialApplicationForm) ; le reste est server-rendered (Web Vitals).
+// destination des CTA des pages France/memo-isere). Refonte 2026-08-12 :
+// tunnel step-by-step SANS CV (brief Mémorial de l'Isère) — un écran par
+// question, sauvegarde locale, mobile-first. Le formulaire est un îlot client
+// unique (CommercialApplicationWizard) ; la coquille reste server-rendered.
+//
+// Contenu FR tutoyé uniquement : le locale EN est 301 → FR au runtime
+// (cf. AGENTS.md), les métadonnées EN restent pour le jour du re-enable.
 
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
-import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { CommercialApplicationForm } from "@/components/forms/CommercialApplicationForm";
+import { CommercialApplicationWizard } from "@/components/forms/commercial-application/CommercialApplicationWizard";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
 import { buildProductMetadata } from "@/lib/seo";
 
@@ -25,16 +29,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const title = isFr
-    ? "Candidature commercial Axion-IA · rejoignez le réseau"
-    : "Axion-IA sales rep application · join the network";
+    ? "Candidature commercial Axion-IA · 3 minutes, sans CV"
+    : "Axion-IA sales rep application · 3 minutes, no resume";
   return {
     ...buildProductMetadata({
       locale,
       path: "/devenir-commercial-ia/candidature",
       title,
       description: isFr
-        ? "Candidatez pour devenir commercial indépendant Axion-IA : quelques informations suffisent. Produits IA faciles à vendre, commissions déplafonnées, statut indépendant."
-        : "Apply to become an independent Axion-IA sales rep: a few details are enough. Easy-to-sell AI products, uncapped commissions, self-employed status.",
+        ? "Deviens commercial indépendant Axion-IA : pas de CV, pas de lettre de motivation — quelques questions essentielles, 3 minutes chrono. Produits IA faciles à vendre, commissions déplafonnées, statut indépendant."
+        : "Become an independent Axion-IA sales rep: no resume, no cover letter — a few essential questions, 3 minutes flat. Easy-to-sell AI products, uncapped commissions, self-employed status.",
     }),
     title: { absolute: title },
     keywords: buildCommercialKeywords(),
@@ -45,8 +49,7 @@ export default async function CommercialApplicationPage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const loc = locale as Locale;
-  const isFr = loc === "fr";
+  const isFr = locale === "fr";
 
   return (
     <>
@@ -62,32 +65,10 @@ export default async function CommercialApplicationPage({ params }: Props) {
         />
       </Container>
 
-      <section className="bg-paper py-12 sm:py-16">
+      <section className="bg-paper py-10 sm:py-16">
         <Container>
-          {/* Eyebrow → pastille centrée sur la page, au-dessus du contenu. */}
-          <HeroBadge className="mb-8 sm:mb-10">
-            <span
-              aria-hidden="true"
-              className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
-            />
-            {isFr ? "Candidature" : "Application"}
-          </HeroBadge>
-          <div className="mx-auto max-w-2xl">
-            <h1 className="display-editorial text-fg">
-              {isFr ? "Devenez commercial" : "Become a sales rep"}{" "}
-              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
-                Axion-IA
-              </span>
-            </h1>
-            <p className="text-fg-soft mt-5 text-lg leading-relaxed">
-              {isFr
-                ? "Quelques informations suffisent pour postuler. Statut indépendant, produits financés faciles à vendre, revenus déplafonnés — et démarrer ne vous coûte rien."
-                : "A few details are enough to apply. Self-employed status, easy-to-sell funded products, uncapped income — and getting started costs you nothing."}
-            </p>
-
-            <div className="mt-10">
-              <CommercialApplicationForm isFr={isFr} />
-            </div>
+          <div className="mx-auto max-w-xl">
+            <CommercialApplicationWizard />
           </div>
         </Container>
       </section>

@@ -204,7 +204,7 @@ export default async function ComparisonsListPage({ params }: Props) {
           <div className="grid gap-4 sm:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle as="h2" className="flex items-center gap-2">
                   <Sprout className="text-terracotta h-5 w-5" aria-hidden="true" />
                   {isFr ? "1. Découverte" : "1. Discovery"}
                 </CardTitle>
@@ -224,7 +224,7 @@ export default async function ComparisonsListPage({ params }: Props) {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle as="h2" className="flex items-center gap-2">
                   <Boxes className="text-terracotta h-5 w-5" aria-hidden="true" />
                   {isFr ? "2. Déploiement" : "2. Deployment"}
                 </CardTitle>
@@ -244,7 +244,7 @@ export default async function ComparisonsListPage({ params }: Props) {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle as="h2" className="flex items-center gap-2">
                   <Building2 className="text-terracotta h-5 w-5" aria-hidden="true" />
                   {isFr ? "3. Industrialisation" : "3. Industrialisation"}
                 </CardTitle>

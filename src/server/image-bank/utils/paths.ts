@@ -58,15 +58,56 @@ export function galleryIndexUrlFor(siteUrl: string, locale: ImageBankLocale): st
   return `${siteUrl}/${locale}/${GALLERY_SEGMENT[locale]}/`;
 }
 
-/** Convertit un chemin local `public/image-bank/uuid/xxx.webp` en URL publique. */
+/**
+ * Convertit un chemin de fichier local en URL publique servable.
+ *
+ * 🔴 RECTIFIÉ le 2026-08-16 — GEO-094 (audit GEO/AEO du 2026-08-14, lot 18).
+ *
+ * L'implémentation précédente retirait le préfixe `public/` et ajoutait un `/`.
+ * Ça marche en développement, où le stockage est `public/image-bank/…`. En
+ * production, le stockage est un volume Docker `/var/data/image-bank/…`, qui
+ * n'est pas sous `public/` : le chemin ressortait donc **inchangé, avec un `/`
+ * de plus** → `//var/data/image-bank/<uuid>/image-lg.webp`.
+ *
+ * Un `//` de tête n'est pas un chemin : c'est une **URL protocole-relative**.
+ * Le navigateur la résout en `https://var/data/…`, un hôte qui n'existe pas.
+ * Autrement dit, les images téléversées depuis la console n'ont jamais pu
+ * s'afficher en production. Le symptôme avait déjà été contourné à la main dans
+ * `resolveAdminThumbSrc` le 2026-08-02, sans que la cause soit corrigée ici.
+ *
+ * 🔑 La forme servable est la même dans les deux environnements :
+ * `/image-bank/<uuid>/<fichier>` — c'est ce que reconstruisent déjà TOUS les
+ * consommateurs publics (galerie, carrousel presse, page détail), préfixé par
+ * `IMAGE_BANK_CDN_URL` quand il est défini. On produit donc directement cette
+ * forme, quelle que soit la racine de stockage.
+ *
+ * ⚠️ Côté infrastructure, `/image-bank/*` doit être servi depuis le volume
+ * (Caddy ou CDN). C'est hors du dépôt, et c'est le prérequis de tout ce qui
+ * précède.
+ */
 export function publicUrlFromLocalPath(filePath: string): string {
-  return "/" + filePath.replace(/^public\//, "").replace(/\\/g, "/");
+  const normalise = filePath.replace(/\\/g, "/");
+  // On repart des DEUX derniers segments (`<uuid>/<fichier>`) : c'est
+  // l'invariant du pipeline d'import, indépendant de la racine de stockage.
+  const segments = normalise.split("/").filter(Boolean);
+  const fichier = segments[segments.length - 1];
+  const dossier = segments[segments.length - 2];
+  if (fichier && dossier) {
+    return `${STORAGE_URL_PREFIX}/${dossier}/${fichier}`;
+  }
+  // Repli : chemin inattendu (moins de deux segments) — on ne fabrique pas une
+  // URL au hasard, on conserve l'ancien comportement.
+  return "/" + normalise.replace(/^public\//, "");
 }
 
 /** Storage base path selon NODE_ENV (dev = public/, prod = S3 ou /var/data). */
 export function getStorageBasePath(): string {
   if (process.env.NODE_ENV === "production") {
-    return process.env.IMAGE_BANK_STORAGE_PATH ?? "/var/data/image-bank";
+    // `?.trim() ||` et non `??` : une variable DÉFINIE mais VIDE (cas courant
+    // quand on déclare la clé sans valeur dans un panneau de configuration)
+    // n'est pas `null`, donc `??` la laissait passer et la racine devenait la
+    // chaîne vide. Défaut trouvé par la garde en écrivant ce correctif.
+    return process.env.IMAGE_BANK_STORAGE_PATH?.trim() || "/var/data/image-bank";
   }
   return `public${STORAGE_URL_PREFIX}`;
 }

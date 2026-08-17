@@ -192,7 +192,7 @@ export const NANTES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause disponible, non activée à ce jour sur nos missions nantaises).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit in Nantes maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers cover every size, from Nantes independent micro-businesses to large industrial enterprises across the metropolis. Output: an actionable costed PDF deliverable handed over in person, jargon-free, no lock-in.",

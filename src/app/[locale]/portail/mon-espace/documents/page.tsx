@@ -51,6 +51,16 @@ export default async function MesDocumentsPage({ params }: PageProps) {
       {(espace) => {
         const rien = espace.attestations.length === 0 && espace.pieces.length === 0;
 
+        // Un espace s'organise par DOSSIER, pas par type de pièce (Lot 18).
+        // L'ordre d'apparition des formations est celui des pièces, qui suit
+        // celui des inscriptions : stable, et sans tri arbitraire à expliquer.
+        const groupesPieces: { titre: string; pieces: typeof espace.pieces }[] = [];
+        for (const piece of espace.pieces) {
+          const existant = groupesPieces.find((g) => g.titre === piece.sessionTitre);
+          if (existant) existant.pieces.push(piece);
+          else groupesPieces.push({ titre: piece.sessionTitre, pieces: [piece] });
+        }
+
         return (
           <>
             <header className="mb-8">
@@ -128,36 +138,53 @@ export default async function MesDocumentsPage({ params }: PageProps) {
             {espace.pieces.length > 0 ? (
               <section>
                 <h2 className="text-fg-muted mb-3 text-xs font-semibold tracking-wide uppercase">
-                  Documents de ma formation
+                  {groupesPieces.length > 1
+                    ? "Documents de mes formations"
+                    : "Documents de ma formation"}
                 </h2>
-                <ul className="space-y-3">
-                  {espace.pieces.map((p) => (
-                    <li
-                      key={p.numero}
-                      className="bg-paper shadow-card flex flex-wrap items-center justify-between gap-4 rounded-xl p-5"
-                    >
-                      <div className="min-w-0">
-                        <p className="text-mocha font-serif text-base font-semibold">
-                          {LIBELLES_PIECE[p.type] ?? p.type}
-                        </p>
-                        <p className="text-fg-muted mt-0.5 text-xs">
-                          Remis le {formatDateCourte(p.remiseLe)}
-                        </p>
-                      </div>
-                      {p.pdfUrl ? (
-                        <a
-                          href={p.pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-terracotta hover:text-terracotta-deep inline-flex shrink-0 items-center gap-1.5 text-sm font-medium"
+                {groupesPieces.map((groupe) => (
+                  <div key={groupe.titre} className="mb-6 last:mb-0">
+                    {/*
+                      Le titre de la formation n'apparaît QUE s'il y en a
+                      plusieurs : à une seule, il répète le contexte déjà donné
+                      par la page et ajoute du bruit. À deux, il est la seule
+                      chose qui permet de savoir de quelle formation on parle.
+                    */}
+                    {groupesPieces.length > 1 && groupe.titre !== "" ? (
+                      <h3 className="text-mocha mb-2 font-serif text-sm font-semibold">
+                        {groupe.titre}
+                      </h3>
+                    ) : null}
+                    <ul className="space-y-3">
+                      {groupe.pieces.map((p) => (
+                        <li
+                          key={p.numero}
+                          className="bg-paper shadow-card flex flex-wrap items-center justify-between gap-4 rounded-xl p-5"
                         >
-                          <Download className="size-4" aria-hidden="true" />
-                          Télécharger
-                        </a>
-                      ) : null}
-                    </li>
-                  ))}
-                </ul>
+                          <div className="min-w-0">
+                            <p className="text-mocha font-serif text-base font-semibold">
+                              {LIBELLES_PIECE[p.type] ?? p.type}
+                            </p>
+                            <p className="text-fg-muted mt-0.5 text-xs">
+                              Remis le {formatDateCourte(p.remiseLe)}
+                            </p>
+                          </div>
+                          {p.pdfUrl ? (
+                            <a
+                              href={p.pdfUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-terracotta hover:text-terracotta-deep inline-flex shrink-0 items-center gap-1.5 text-sm font-medium"
+                            >
+                              <Download className="size-4" aria-hidden="true" />
+                              Télécharger
+                            </a>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </section>
             ) : null}
 

@@ -281,7 +281,7 @@ export default async function CaseStudiesListing({ params }: Props) {
           <div className="grid gap-4 sm:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle as="h2" className="flex items-center gap-2">
                   <Users className="text-terracotta h-5 w-5" aria-hidden="true" />
                   {isFr ? "Par taille" : "By size"}
                 </CardTitle>
@@ -294,7 +294,7 @@ export default async function CaseStudiesListing({ params }: Props) {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle as="h2" className="flex items-center gap-2">
                   <Building2 className="text-terracotta h-5 w-5" aria-hidden="true" />
                   {isFr ? "Par secteur" : "By industry"}
                 </CardTitle>
@@ -307,7 +307,7 @@ export default async function CaseStudiesListing({ params }: Props) {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle as="h2" className="flex items-center gap-2">
                   <Wallet className="text-terracotta h-5 w-5" aria-hidden="true" />
                   {isFr ? "Par budget" : "By budget"}
                 </CardTitle>

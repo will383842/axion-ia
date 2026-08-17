@@ -96,6 +96,20 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
     job.status === "generating_image" ||
     job.status === "quality_improving";
 
+  // Fix 2026-08-15 (audit e2e, E8) — les jobs en quarantaine n'avaient AUCUNE
+  // issue : le bouton « Rejouer » n'apparaissait que pour failed/cancelled, la
+  // seule action restante était la suppression définitive (contenu perdu à vie,
+  // slot de campagne consommé). Aligné sur les statuts que le serveur accepte
+  // (`RETRYABLE_JOB_STATUSES` de jobs.ts). Les `landing_ville` restent exclus :
+  // CLI-only, le serveur refuse leur rejeu (E1) — on ne montre pas un bouton
+  // qui mènerait à coup sûr à une erreur.
+  const isRetryable =
+    (job.status === "failed" ||
+      job.status === "cancelled" ||
+      job.status === "quarantined_critical" ||
+      job.status === "quarantined_factcheck") &&
+    job.contentType !== "landing_ville";
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -103,7 +117,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
         description={`${contentTypeLabelFr(job.contentType)} · ${jobStatusLabelFr(job.status)} · créé ${formatDateFr(job.createdAt)}`}
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
-            {job.status === "failed" || job.status === "cancelled" ? (
+            {isRetryable ? (
               <form action={retry}>
                 <button type="submit" className="admin-button">
                   Rejouer

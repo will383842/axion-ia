@@ -180,7 +180,10 @@ export default async function GalleryIndexPage({
   });
 
   return (
-    <main className="container mx-auto px-4 py-12">
+    // GEO-123 (audit GEO/AEO 2026-08-14) — conteneur de mise en page, pas un
+    // `<main>` : le layout `[locale]` en porte deja un, et deux `<main>`
+    // imbriques rendent le contenu principal non identifiable.
+    <div className="container mx-auto px-4 py-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
@@ -217,7 +220,7 @@ export default async function GalleryIndexPage({
           ))}
         </nav>
       )}
-    </main>
+    </div>
   );
 }
 

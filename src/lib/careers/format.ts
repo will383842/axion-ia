@@ -33,13 +33,22 @@ export const EMPLOYMENT_TYPE_LABELS: Record<string, { fr: string; en: string }> 
  * Libellé lisible du type de contrat. `contractLabel` (piloté en console) prime
  * toujours ; sinon on traduit l'enum ; en dernier recours on renvoie `null`
  * plutôt que l'enum brut — un libellé technique n'a rien à faire en façade.
+ * Un second type déclaré (JSON-LD en tableau) s'affiche « X ou Y » : la façade
+ * doit dire la même chose que ce qu'on déclare à Google.
  */
 export function contractTypeLabel(
-  o: Pick<JobOffer, "contractLabel" | "employmentType">,
+  o: Pick<JobOffer, "contractLabel" | "employmentType"> & {
+    secondaryEmploymentType?: string | null;
+  },
   isFr: boolean,
 ): string | null {
   if (o.contractLabel) return o.contractLabel;
-  return EMPLOYMENT_TYPE_LABELS[o.employmentType]?.[isFr ? "fr" : "en"] ?? null;
+  const primary = EMPLOYMENT_TYPE_LABELS[o.employmentType]?.[isFr ? "fr" : "en"] ?? null;
+  if (!primary) return null;
+  const secondary = o.secondaryEmploymentType
+    ? (EMPLOYMENT_TYPE_LABELS[o.secondaryEmploymentType]?.[isFr ? "fr" : "en"] ?? null)
+    : null;
+  return secondary ? `${primary} ${isFr ? "ou" : "or"} ${secondary}` : primary;
 }
 
 /**

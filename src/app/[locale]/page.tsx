@@ -439,6 +439,33 @@ export default async function Home({ params }: HomeProps) {
                     : "Photo of the Axion-IA team wearing terracotta sweaters under the « Axion-IA.com — AI at the service of humans » sign."
                 }
                 priority
+                // 🔴 GEO-125 (audit GEO/AEO 2026-08-15) — mesuré en production le
+                // 2026-08-14 sur Pixel 7 (412 px, DPR 2,625) : 62 Ko d'image hero
+                // téléchargés à t = 146 ms, en plein dans la fenêtre du LCP, pour
+                // un élément dont `getBoundingClientRect().width === 0`.
+                //
+                // Cause : `priority` émet un `<link rel="preload" as="image">` qui
+                // n'est PAS conditionné au media, et le `sizes` par défaut d'
+                // `Illustration` (« (max-width: 1024px) 100vw, 600px ») déclare un
+                // cas mobile qui n'existe pas — le `hidden lg:block` ci-dessus ne
+                // peint jamais cette image sous 1024 px.
+                //
+                // ⚠️ Le plan d'audit prescrivait `sizes="600px"`. C'EST UNE
+                // RÉGRESSION : la sélection `srcset` multiplie la taille déclarée
+                // par le DPR. 600 × 2,625 = 1 575 → le navigateur retiendrait le
+                // candidat 1920w, soit PLUS que les 1200w actuels (412 × 2,625 =
+                // 1 081 → 1200w). On déclare donc la largeur RÉELLE de l'élément
+                // sous 1024 px — nulle — ce qui fait retomber le préchargeur sur
+                // le plus petit candidat (16w, ~1 Ko).
+                //
+                // Le seuil 1024 px est celui de `lg:` (Tailwind) : les deux règles
+                // doivent bouger ENSEMBLE. Si le hero devient visible en mobile,
+                // ce `sizes` doit disparaître — la garde
+                // `home-hero-sizes.spec.ts` rougit dans ce cas.
+                //
+                // Desktop : `(min-width: 1024px)` → 600px, identique à l'existant.
+                // Aucun changement sur le LCP desktop.
+                sizes="(min-width: 1024px) 600px, 1px"
               />
             </div>
             {/* Bloc SVG décoratif retiré (commit polish) — remplacé par
@@ -840,8 +867,8 @@ export default async function Home({ params }: HomeProps) {
                       subEn: "On-site · From a half-day",
                       categoryFr: "Formation",
                       categoryEn: "Training",
-                      includesFr: "Ateliers métier · Sur site · Groupes 1–30 pers.",
-                      includesEn: "Business workshops · On-site · Groups of 1–30",
+                      includesFr: "Ateliers métier · Sur site · Groupes 2 à 15 pers.",
+                      includesEn: "Business workshops · On-site · Groups of 2 to 15",
                       price: interventionEntryPrice,
                       href: "/formations" as const,
                     },

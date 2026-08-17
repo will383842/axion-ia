@@ -376,6 +376,23 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description:
       "Rôles qualité : référent handicap, responsable qualité, référent pédagogique — mission et cadence de revue par rôle.",
   },
+
+  // ── Coordination des intervenants (indicateur 18) ─────────────────────────
+  // 🔴 Audit blanc 2026-08-15. L'indicateur 18 se déduisait d'un NOMBRE de
+  // formateurs actifs et de moyens vérifiés. Avec un intervenant unique, ce
+  // compte ne prouve rien : coordonner suppose au minimum une règle écrite
+  // disant qui pilote, à quels moments l'information se transmet et sur quel
+  // support. C'est cette règle que l'auditeur demande à lire.
+  //
+  // Clé de MÊME nature que `gouvernance_roles` (texte libre, défaut VIDE,
+  // renseigné par Will et jamais inventé). Tant qu'elle est vide, off.18 n'est
+  // couvert que si une pièce « inventaire des moyens » ou « organisation de
+  // l'action » non annulée existe au registre — cf. `conformite-service.ts`.
+  modalites_coordination: {
+    ...str(),
+    description:
+      "Modalités de coordination des intervenants : qui pilote, quels points de coordination, sur quel support et à quelle fréquence (condition de couverture off.18).",
+  },
 } as const satisfies Record<string, ConfigEntry<unknown>>;
 
 export type QualiopiConfigKey = keyof typeof QUALIOPI_CONFIG_REGISTRY;

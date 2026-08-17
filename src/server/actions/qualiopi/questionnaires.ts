@@ -46,9 +46,9 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import {
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
+  envoyerPositionnement,
   envoyerRelanceQuestionnaire,
 } from "@/server/qualiopi/notifications/notifications-service";
-import { demanderAccesParEmail } from "@/server/qualiopi/portail/portail-service";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -112,9 +112,16 @@ export async function envoyerQuestionnaireAction(input: {
         await envoyerSuiviJ30(enrollmentId);
         break;
       default:
-        // `positionnement` — pas de cron dédié : le portail liste le
-        // questionnaire, on envoie donc l'accès (jeton 90 j + email).
-        await demanderAccesParEmail(email);
+        // `positionnement` — email DÉDIÉ, qui nomme la formation, sa date, et
+        // ce qu'on attend du stagiaire.
+        //
+        // 🔴 Envoyait auparavant `demanderAccesParEmail(email)`, c'est-à-dire
+        // le template de RE-DEMANDE self-service d'un accès perdu. Le stagiaire
+        // lisait « vous avez demandé un nouveau lien » (faux) et « si vous
+        // n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet
+        // email » — une invitation explicite à ignorer la seule pièce qui
+        // fonde l'indicateur 8. Constaté sur le premier dossier réel.
+        await envoyerPositionnement(questionnaireId);
         break;
     }
   } catch {

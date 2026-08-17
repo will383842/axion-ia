@@ -183,7 +183,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour sur nos missions bordelaises).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit in Bordeaux maps what can be automated at your organisation and quantifies the 12-24 month return on investment. From a wine-estate micro-business to a metropolitan aerospace group, four tiers from Sur place to Mid-cap Strategic cover every size. Read-out always in person at your Bordeaux offices, costed PDF deliverable handed over face to face.",
@@ -825,7 +825,7 @@ export const BORDEAUX_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Bordeaux individually supports executives and managers in aerospace/space (Aerospace Valley), wine trade, French Tech Bordeaux and Gironde mid-caps. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — aerospace RFP qualification, wine-sector documentation, digital product development, mid-cap commercial management. You progress at your own pace, without superfluous theory.",
