@@ -544,6 +544,114 @@ async function regleSatisfactionManquante(now: Date): Promise<AlerteCandidate[]>
   }));
 }
 
+/**
+ * R04bis — Positionnement sans réponse à l'approche de la session (indicateur 8).
+ *
+ * 🔴 Le trou trouvé le 2026-08-17 en construisant la checklist du Lot 1 : sur
+ * les quatorze étapes d'un dossier, DOUZE avaient déjà leur code d'alerte. Le
+ * positionnement, non — alors qu'il porte un indicateur à lui seul (« analyse
+ * du besoin du bénéficiaire avant l'entrée en formation ») et que c'est
+ * précisément l'étape ratée sur le premier dossier réel : le questionnaire y a
+ * été répondu APRÈS le début de la formation, où il ne positionne plus rien.
+ *
+ * ⚠️ La règle se déclenche à J-2, pas après. Un positionnement se recueille
+ * AVANT la séance : signaler son absence une fois la session commencée
+ * n'apporterait plus qu'un constat, et le plan est explicite — une alerte doit
+ * GARDER, pas CONSTATER. C'est aussi pourquoi elle ne regarde que les sessions
+ * `planifiee` : à `en_cours`, il est trop tard pour que le geste serve.
+ *
+ * `envoyeAt` et non `reponduAt` en premier critère : ce que l'organisme doit,
+ * c'est l'ENVOI. Une non-réponse du stagiaire n'est pas une faute de
+ * l'organisme ; l'absence de tentative tracée, si.
+ */
+async function reglePositionnementSansReponse(now: Date): Promise<AlerteCandidate[]> {
+  const dansDeuxJours = daysFromNow(2, now);
+  const enrollments = await prisma.enrollment.findMany({
+    where: {
+      session: {
+        statut: "planifiee",
+        dateDebut: { lte: dansDeuxJours, gte: now },
+      },
+      statut: { in: ["planifiee", "presente"] },
+      questionnaires: {
+        none: { type: "positionnement", reponduAt: { not: null } },
+      },
+    },
+    select: {
+      id: true,
+      trainee: { select: { nom: true, prenom: true } },
+      session: { select: { numero: true, dateDebut: true } },
+      questionnaires: {
+        where: { type: "positionnement" },
+        select: { envoyeAt: true },
+      },
+    },
+  });
+  return enrollments.map((e) => {
+    const envoye = e.questionnaires.some((q) => q.envoyeAt !== null);
+    return {
+      code: "positionnement_sans_reponse",
+      niveau: "important" as AlerteNiveau,
+      titre: "Questionnaire de positionnement sans réponse",
+      // Deux situations, deux messages : « jamais envoyé » est un manquement de
+      // l'organisme, « envoyé sans réponse » appelle une relance. Les
+      // confondre ferait relancer un stagiaire qui n'a jamais rien reçu.
+      message: envoye
+        ? `Le positionnement de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) a été envoyé mais reste sans réponse, à moins de 2 jours du début. Relancer.`
+        : `Le positionnement de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) n'a JAMAIS été envoyé, à moins de 2 jours du début (indicateur 8).`,
+      cibleType: "Enrollment",
+      cibleId: e.id,
+    };
+  });
+}
+
+/**
+ * R04ter — Suivi à froid (J+30) sans réponse (indicateur 30).
+ *
+ * L'autre code manquant du 2026-08-17. Le recueil à froid est l'obligation la
+ * plus facilement oubliée du parcours : elle tombe un mois après la fin, quand
+ * le dossier a quitté tous les écrans.
+ *
+ * ⚠️ Fenêtre à J+37 et non J+30 : l'envoi automatique part à J+30, et le
+ * signaler le jour même transformerait un envoi normal en alerte. Sept jours
+ * laissent au stagiaire le temps de répondre — la même marge que la première
+ * relance.
+ *
+ * 🔴 Et une borne ARRIÈRE à J+120. Sans elle, chaque session réalisée depuis
+ * l'ouverture de l'organisme resterait candidate pour toujours : l'alerte
+ * cesserait de dire « fais-le maintenant » pour devenir un inventaire des
+ * regrets, et la liste se remplirait de lignes que personne ne peut solder.
+ */
+async function regleSuiviFroidManquant(now: Date): Promise<AlerteCandidate[]> {
+  const borneHaute = daysAgo(37, now);
+  const borneBasse = daysAgo(120, now);
+  const enrollments = await prisma.enrollment.findMany({
+    where: {
+      session: {
+        statut: "realisee",
+        dateFin: { lte: borneHaute, gte: borneBasse },
+      },
+      statut: { in: ["planifiee", "presente"] },
+      questionnaires: {
+        none: { type: "satisfaction_froid", reponduAt: { not: null } },
+      },
+    },
+    select: {
+      id: true,
+      trainee: { select: { nom: true, prenom: true } },
+      session: { select: { numero: true } },
+    },
+  });
+  return enrollments.map((e) => ({
+    code: "suivi_froid_manquant",
+    niveau: "important" as AlerteNiveau,
+    titre: "Suivi à froid (J+30) sans réponse",
+    message: `Le suivi à 30 jours de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) est sans réponse plus de 37 jours après la fin. Relancer — l'indicateur 30 exige un recueil tracé.`,
+    cibleType: "Enrollment",
+    cibleId: e.id,
+  }));
+}
+
 /** R05 — Évaluation des acquis manquante : session realisee > 2 jours sans éval finale. */
 async function regleEvaluationAcquisManquante(now: Date): Promise<AlerteCandidate[]> {
   const threshold = daysAgo(2, now);
@@ -1999,6 +2107,11 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
+  // Lot 1 §1.4 — les deux seules étapes du parcours d'un dossier qui n'avaient
+  // AUCUN code d'alerte. Les douze autres en avaient déjà un ; ajouter une
+  // alerte « échéance dépassée » globale les aurait signalées deux fois.
+  { nom: "positionnement_sans_reponse", fn: reglePositionnementSansReponse },
+  { nom: "suivi_froid_manquant", fn: regleSuiviFroidManquant },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
