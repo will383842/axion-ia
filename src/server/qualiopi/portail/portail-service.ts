@@ -23,6 +23,25 @@ import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
+import { pieceEstRemise } from "./piece-remise";
+
+/**
+ * Les types de pièces que l'ESPACE STAGIAIRE remonte (Lot 1ter).
+ *
+ * ⚠️ Vue plus étroite que `TYPES_REMIS_AU_BENEFICIAIRE`, qui est l'autorité :
+ * attestations, certificats et grilles en sont exclus parce qu'ils ont leur
+ * PROPRE bloc dans cet espace — les remonter ici les afficherait deux fois.
+ * `piece-remise.spec.ts` garantit que cette liste reste un sous-ensemble : plus
+ * stricte, jamais plus large.
+ */
+export const TYPES_PIECES_ESPACE_STAGIAIRE = [
+  "programme",
+  "reglement_interieur",
+  "livret_accueil",
+  "convocation",
+  "organisation_action",
+  "autorisation_captation",
+] as const;
 import type {
   EnrollmentStatut,
   DocumentType,
@@ -352,14 +371,24 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               dateFin: true,
               statut: true,
               formation: { select: { objectifsPedagogiques: true } },
-              // Pièces d'information de la session. On ne remonte QUE les types
-              // destinés au stagiaire : ni convention, ni facture, ni lettre de
-              // mission — ce sont des pièces contractuelles ou internes.
+              // Pièces d'information de la session — ni facture, ni kit
+              // financeur, ni pièce de preuve interne.
+              //
+              // ⚠️ Cette liste est une VUE, plus étroite que l'autorité : elle
+              // exclut délibérément les attestations et certificats, qui ont
+              // leur propre bloc dans cet espace — les remonter ici les
+              // afficherait deux fois. Un test garantit qu'elle reste un
+              // SOUS-ENSEMBLE de `TYPES_REMIS_AU_BENEFICIAIRE` : elle peut être
+              // plus stricte, jamais plus large.
+              //
+              // 🔴 `organisation_action` et `autorisation_captation` s'y
+              // ajoutent (Lot 1ter) : la première sert l'indicateur 9
+              // (information du bénéficiaire — « QUAND, OÙ et COMMENT »), la
+              // seconde est un consentement que le stagiaire doit pouvoir lire
+              // avant de le donner.
               documents: {
                 where: {
-                  type: {
-                    in: ["programme", "reglement_interieur", "livret_accueil", "convocation"],
-                  },
+                  type: { in: [...TYPES_PIECES_ESPACE_STAGIAIRE] },
                 },
                 select: {
                   id: true,
@@ -453,8 +482,44 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     })),
   );
 
+  // Lot 1ter — le calendrier, gardé à part plutôt qu'enfilé dans le
+  // regroupeur : celui-ci ne fait qu'un regroupement par (session, type), et
+  // lui ajouter des champs dont il n'a pas besoin élargirait son contrat pour
+  // le confort d'un seul appelant.
+  const calendrierParSession = new Map<
+    string,
+    { debut: Date | null; fin: Date | null; statut: string | null }
+  >();
+  for (const e of trainee.enrollments) {
+    if (e.session?.id == null) continue;
+    calendrierParSession.set(e.session.id, {
+      debut: e.session.dateDebut ?? null,
+      fin: e.session.dateFin ?? null,
+      statut: e.session.statut ?? null,
+    });
+  }
+
+  // 🔴 Lot 1ter — « produire ≠ remettre ». La requête dit QUELS types peuvent
+  // apparaître ; cette règle dit QUAND. Sans elle, le jour où les six pièces
+  // standard seront produites à la création de la session, le stagiaire les
+  // verrait TOUTES — c'est le défaut du 16/08 sur les questionnaires, transposé
+  // aux documents. La règle existe donc AVANT la génération automatique.
+  const maintenant = new Date();
+  const piecesRemises = piecesRetenues.filter(({ doc, sessionId }) => {
+    const cal = sessionId != null ? calendrierParSession.get(sessionId) : undefined;
+    return pieceEstRemise(
+      {
+        type: doc.type,
+        sessionDateDebut: cal?.debut ?? null,
+        sessionDateFin: cal?.fin ?? null,
+        sessionStatut: cal?.statut ?? null,
+      },
+      maintenant,
+    );
+  });
+
   const pieces: PieceRemise[] = await Promise.all(
-    piecesRetenues.map(async ({ doc, sessionId, sessionTitre }) => {
+    piecesRemises.map(async ({ doc, sessionId, sessionTitre }) => {
       // Même règle que les attestations : URL re-signée 24 h à CHAQUE lecture.
       // La `pdfUrl` stockée expire en 900 s — la servir telle quelle donnerait
       // un lien mort au stagiaire.
