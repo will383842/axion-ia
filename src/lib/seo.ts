@@ -20,6 +20,7 @@ import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 // sans changement.
 import { SITE_URL } from "@/lib/site-url";
 import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
+import { surchargeOgPour } from "@/server/seo/og-overrides";
 export { SITE_URL };
 
 // Logo carré officiel Axion-IA (512×512, PNG, fond blanc) — cible de
@@ -280,7 +281,29 @@ export function ensureArticleMetaDescription(
   return best ? truncateMetaDescription(best) : md;
 }
 
-export function buildProductMetadata({
+/**
+ * 🔴 POURQUOI CETTE FONCTION EST DEVENUE ASYNCHRONE — recensement OG 2026-08-17.
+ *
+ * Elle consulte désormais la table des surcharges d'aperçu (`og_overrides`),
+ * qui est ce que Will DÉCIDE depuis la console, par-dessus ce que le code
+ * calcule. C'est le seul point du site par lequel passent 146 des 150 pages :
+ * y brancher la surcharge les rend toutes modifiables d'un coup, sans toucher
+ * une ligne dans chacune.
+ *
+ * 🔑 LE COÛT N'EST PAS UNE REQUÊTE PAR PAGE. Le chargeur garde la table entière
+ * en mémoire du process (elle se compte en dizaines de lignes) ; le coût
+ * marginal d'une page est une recherche dans une Map.
+ *
+ * ⚠️ LA SURCHARGE NE TOUCHE QUE L'APERÇU SOCIAL. Ni le `<title>` de la page, ni
+ * sa meta description, ni sa canonique ne bougent : retoucher une vignette et
+ * modifier son référencement sont deux décisions différentes, et les confondre
+ * ferait changer le SEO en croyant changer une image.
+ *
+ * Sous le build `stub.invalid`, le chargeur rend une table vide : les pages
+ * pré-rendues sont donc EXACTEMENT celles d'avant. C'est l'enregistrement
+ * d'une surcharge qui régénère la page, pas le build.
+ */
+export async function buildProductMetadata({
   locale,
   path,
   title,
@@ -294,16 +317,36 @@ export function buildProductMetadata({
   ogType = "website",
   article,
   rssFeed,
-}: ProductSeoInput): Metadata {
+}: ProductSeoInput): Promise<Metadata> {
   const fr = alternates?.fr ?? resolveLocalizedPath(path, "fr");
   const en = alternates?.en ?? resolveLocalizedPath(path, "en");
+
+  // La décision humaine, s'il y en a une, passe AVANT le calcul.
+  //
+  // On interroge sur le chemin complet servi (préfixe de locale inclus), parce
+  // que c'est ce que Will voit dans l'explorateur d'URLs et ce qu'il copie pour
+  // poser une surcharge. `normalizePath` plus bas ne s'applique qu'aux
+  // canoniques : ici on compare des chemins tels quels.
+  const surcharge = await surchargeOgPour(`/${locale}${path === "/" ? "" : path}`);
+  const ogImageEffectif = surcharge?.ogImage ?? ogImage;
+  const ogLargeurEffective = surcharge?.ogImage
+    ? (surcharge.ogImageWidth ?? undefined)
+    : ogImageWidth;
+  const ogHauteurEffective = surcharge?.ogImage
+    ? (surcharge.ogImageHeight ?? undefined)
+    : ogImageHeight;
+  const ogEyebrowEffectif = surcharge?.ogEyebrow ?? ogEyebrow;
+  // Titre et description de l'APERÇU uniquement — le `<title>` et la meta
+  // description de la page restent ceux calculés par l'appelant.
+  const ogTitreEffectif = surcharge?.ogTitle?.trim() || title;
+
   // Default OG image : dynamic `/api/og` with title + optional accent.
   // For pages that need a custom static OG (homepage), pass `ogImage`.
   const resolvedOgImage =
-    ogImage ??
-    `${SITE_URL}/api/og?title=${encodeURIComponent(title)}` +
+    ogImageEffectif ??
+    `${SITE_URL}/api/og?title=${encodeURIComponent(ogTitreEffectif)}` +
       `${ogAccent ? `&accent=${ogAccent}` : ""}` +
-      `${ogEyebrow ? `&eyebrow=${encodeURIComponent(ogEyebrow)}` : ""}`;
+      `${ogEyebrowEffectif ? `&eyebrow=${encodeURIComponent(ogEyebrowEffectif)}` : ""}`;
   // Dimensions déclarées aux réseaux sociaux (`og:image:width` / `height`).
   //
   // 🔴 Recensement OG 2026-08-17 — ces deux nombres étaient écrits en dur à
@@ -316,11 +359,16 @@ export function buildProductMetadata({
   //   2. `ogImage` + dimensions fournies → l'appelant a mesuré, on le suit.
   //   3. `ogImage` sans dimensions → on ne sait pas. On n'émet RIEN plutôt
   //      qu'un nombre inventé.
-  const dimensionsDeclarees: { width: number; height: number } | Record<string, never> = ogImage
-    ? ogImageWidth !== undefined && ogImageHeight !== undefined
-      ? { width: ogImageWidth, height: ogImageHeight }
-      : {}
-    : { width: OG_IMAGE_LARGEUR, height: OG_IMAGE_HAUTEUR };
+  //
+  // La même règle s'applique à une image posée par surcharge : si Will n'a pas
+  // renseigné ses dimensions, on n'en déclare aucune plutôt que de reprendre
+  // celles de notre carte, qui ne décriraient pas SON fichier.
+  const dimensionsDeclarees: { width: number; height: number } | Record<string, never> =
+    ogImageEffectif
+      ? ogLargeurEffective !== undefined && ogHauteurEffective !== undefined
+        ? { width: ogLargeurEffective, height: ogHauteurEffective }
+        : {}
+      : { width: OG_IMAGE_LARGEUR, height: OG_IMAGE_HAUTEUR };
   // EN locale désactivé (2026-05-16) → omettre hreflang="en" pour ne pas
   // signaler à Google une alternate EN qui répond 301. Quand EN sera
   // réactivé (EN_LOCALE_ENABLED=true), hreflang="en" revient automatique.
@@ -363,6 +411,11 @@ export function buildProductMetadata({
   const pathNorm = normalizePath(path);
   // Perfection 2026 — description bornée 158 car (SERP/OG/Twitter cohérents).
   const metaDescription = truncateMetaDescription(description);
+  // Description de l'APERÇU. Bornée elle aussi : une surcharge trop longue
+  // serait tronquée par les réseaux, autant le faire proprement chez nous.
+  const ogDescriptionEffective = surcharge?.ogDescription?.trim()
+    ? truncateMetaDescription(surcharge.ogDescription.trim())
+    : metaDescription;
   const languages: Record<string, string> = {
     fr: `/fr${frNorm}`,
     "x-default": `/fr${frNorm}`,
@@ -394,26 +447,30 @@ export function buildProductMetadata({
       languages,
       ...(rssFeed ? { types: { "application/rss+xml": rssFeed } } : {}),
     },
+    // 🔑 `title` et `description` ci-dessus sont ceux de la PAGE. Ceux
+    // ci-dessous sont ceux de l'APERÇU, et eux seuls peuvent être surchargés.
+    // Les confondre reviendrait à modifier le référencement d'une page en
+    // croyant retoucher sa vignette.
     openGraph: {
       type: ogType,
       locale: locale === "fr" ? "fr_FR" : "en_US",
       url: `${SITE_URL}/${locale}${pathNorm}`,
-      title,
-      description: metaDescription,
+      title: ogTitreEffectif,
+      description: ogDescriptionEffective,
       siteName: "Axion-IA",
       images: [
         {
           url: resolvedOgImage,
           ...dimensionsDeclarees,
-          alt: title,
+          alt: ogTitreEffectif,
         },
       ],
       ...ogArticleFields,
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description: metaDescription,
+      title: ogTitreEffectif,
+      description: ogDescriptionEffective,
       images: [resolvedOgImage],
     },
     // Refonte AEO 2026-06-22 — directives fines : snippets illimités (réponses

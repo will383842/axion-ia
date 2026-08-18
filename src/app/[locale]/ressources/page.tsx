@@ -26,7 +26,7 @@ export const revalidate = 3600;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: "/ressources",
     title: locale === "fr" ? "Ressources · cabinet IA Axion-IA" : "Resources · Axion-IA",

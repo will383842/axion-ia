@@ -25,8 +25,9 @@ import { buildProductMetadata } from "@/lib/seo";
 import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
 
 /** Première image OpenGraph des métadonnées, sous une forme lisible. */
-function premiereImageOg(meta: ReturnType<typeof buildProductMetadata>) {
-  const images = meta.openGraph?.images;
+async function premiereImageOg(meta: ReturnType<typeof buildProductMetadata>) {
+  const resolu = await meta;
+  const images = resolu.openGraph?.images;
   expect(Array.isArray(images)).toBe(true);
   const premiere = (images as unknown[])[0];
   return premiere as { url: string; width?: number; height?: number; alt?: string };
@@ -41,15 +42,15 @@ const BASE = {
 };
 
 describe("dimensions déclarées de l'image de partage", () => {
-  it("sans image fournie : déclare la taille RÉELLE de notre carte /api/og", () => {
-    const image = premiereImageOg(buildProductMetadata(BASE));
+  it("sans image fournie : déclare la taille RÉELLE de notre carte /api/og", async () => {
+    const image = await premiereImageOg(buildProductMetadata(BASE));
 
     expect(image.url).toContain("/api/og?title=");
     expect(image.width).toBe(OG_IMAGE_LARGEUR);
     expect(image.height).toBe(OG_IMAGE_HAUTEUR);
   });
 
-  it("la carte /api/og fait 1200×675, jamais 1200×630", () => {
+  it("la carte /api/og fait 1200×675, jamais 1200×630", async () => {
     // Valeurs écrites en clair : si quelqu'un modifie la constante partagée,
     // ce test doit l'obliger à venir constater le changement ici, parce que
     // la valeur est aussi celle que le renderer edge produit réellement.
@@ -58,8 +59,8 @@ describe("dimensions déclarées de l'image de partage", () => {
     expect(OG_IMAGE_HAUTEUR).not.toBe(630);
   });
 
-  it("image fournie SANS dimensions : n'invente rien, n'émet aucune dimension", () => {
-    const image = premiereImageOg(
+  it("image fournie SANS dimensions : n'invente rien, n'émet aucune dimension", async () => {
+    const image = await premiereImageOg(
       buildProductMetadata({ ...BASE, ogImage: "https://exemple.test/photo.jpg" }),
     );
 
@@ -68,8 +69,8 @@ describe("dimensions déclarées de l'image de partage", () => {
     expect(image.height).toBeUndefined();
   });
 
-  it("image fournie AVEC dimensions : reprend celles que l'appelant a mesurées", () => {
-    const image = premiereImageOg(
+  it("image fournie AVEC dimensions : reprend celles que l'appelant a mesurées", async () => {
+    const image = await premiereImageOg(
       buildProductMetadata({
         ...BASE,
         ogImage: "https://exemple.test/photo.jpg",
@@ -82,8 +83,8 @@ describe("dimensions déclarées de l'image de partage", () => {
     expect(image.height).toBe(607);
   });
 
-  it("une seule des deux dimensions ne suffit pas : on n'émet toujours rien", () => {
-    const image = premiereImageOg(
+  it("une seule des deux dimensions ne suffit pas : on n'émet toujours rien", async () => {
+    const image = await premiereImageOg(
       buildProductMetadata({
         ...BASE,
         ogImage: "https://exemple.test/photo.jpg",

@@ -234,7 +234,7 @@ export async function generateMetadata({
       robots: { index: false, follow: true },
     };
   }
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}`,
     title: offer.metaTitle ?? `${isFr ? offer.titleFr : offer.titleEn} · Axion-IA.com`,

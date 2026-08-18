@@ -216,6 +216,23 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
               >
                 voir la page
               </a>
+              {/* Deux portées offertes explicitement : modifier CETTE page, ou
+                  TOUTE la famille. Le second lien est le seul moyen d'atteindre
+                  les milliers de pages ville×service. */}
+              <Link
+                href={`${base}/apercus/surcharge?portee=route&cible=${encodeURIComponent(m.exemple)}`}
+                className="rounded border border-neutral-300 px-1.5 py-0.5 text-xs hover:bg-neutral-50"
+              >
+                modifier cette URL
+              </Link>
+              {m.routes > 1 ? (
+                <Link
+                  href={`${base}/apercus/surcharge?portee=modele&cible=${encodeURIComponent(m.pathPattern)}`}
+                  className="rounded border border-neutral-300 px-1.5 py-0.5 text-xs hover:bg-neutral-50"
+                >
+                  modifier les {m.routes.toLocaleString("fr-FR")} pages du modèle
+                </Link>
+              ) : null}
             </header>
 
             {m.defauts.length > 0 ? (

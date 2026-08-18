@@ -4680,6 +4680,67 @@ model SiteRoute {
   @@map("site_routes")
 }
 
+/// Portée d'une surcharge d'aperçu : une URL précise, ou tout un modèle.
+enum OgOverridePortee {
+  route
+  modele
+
+  @@map("og_override_portee")
+}
+
+/// Surcharge éditoriale de l'aperçu de partage — ce que Will DÉCIDE.
+///
+/// 🔴 POURQUOI — recensement OG du 2026-08-17. L'aperçu de chaque page était
+/// entièrement calculé dans le code : aucune page n'était modifiable depuis la
+/// console, et le seul champ qui prétendait l'être (« URL de l'image OG » du
+/// formulaire blog) n'était lu par personne.
+///
+/// 🔑 DEUX PORTÉES, PARCE QUE LE SITE A DEUX ÉCHELLES.
+///
+///   · `route`  — une URL précise (`/fr/audit`). Le cas courant.
+///   · `modele` — un `pathPattern` entier (`/fr/audit/par-ville/[ville]`), qui
+///     couvre d'un coup les 10 162 pages ville×service. Ces pages ne sont même
+///     pas au catalogue `SiteRoute` : sans cette portée, elles seraient
+///     inatteignables. Une surcharge par URL y serait de toute façon absurde.
+///
+/// La portée `route` l'emporte toujours sur `modele` : le particulier bat le
+/// général, sinon une exception serait impossible à poser.
+///
+/// ⚠️ Cette table ne touche QUE l'aperçu social (`og:*` / `twitter:*`). Elle ne
+/// change ni le `<title>` ni la meta description de la page : ce sont deux
+/// décisions différentes, et les confondre ferait modifier le référencement en
+/// croyant retoucher une vignette.
+model OgOverride {
+  id     String           @id @default(cuid())
+  portee OgOverridePortee
+  /// Chemin visé, préfixe de locale inclus. Pour `modele`, les segments entre
+  /// crochets valent joker (`/fr/audit/par-ville/[ville]`).
+  cible  String           @db.VarChar(1000)
+
+  ogTitle       String? @map("og_title") @db.VarChar(500)
+  ogDescription String? @map("og_description") @db.VarChar(500)
+  ogImage       String? @map("og_image") @db.VarChar(1000)
+  /// Dimensions RÉELLES de `ogImage`, si elles ont été mesurées. Jamais
+  /// devinées : une taille inventée est pire qu'une taille absente.
+  ogImageWidth  Int?    @map("og_image_width")
+  ogImageHeight Int?    @map("og_image_height")
+  /// Sous-ligne de la carte générée. Sans effet si `ogImage` est fourni.
+  ogEyebrow     String? @map("og_eyebrow") @db.VarChar(200)
+
+  /// Désactiver sans supprimer : on garde la trace de ce qui a été décidé.
+  actif Boolean @default(true)
+  note  String? @db.Text
+
+  createdBy String?  @map("created_by") @db.VarChar(120)
+  updatedBy String?  @map("updated_by") @db.VarChar(120)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([portee, cible])
+  @@index([actif])
+  @@map("og_overrides")
+}
+
 model SiteRouteAnomaly {
   id          String    @id @default(cuid())
   siteRouteId String    @map("site_route_id")
