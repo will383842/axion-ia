@@ -589,9 +589,13 @@ describe("réconciliation — parité sur les CINQ familles de capture", () => {
 
   it("le rapport porte les cinq familles, jamais moins", async () => {
     const rapport = await collectReconciliation();
-    expect(rapport.families.map((f) => f.family).sort()).toEqual(
-      ["calendly_event", "customer_review", "job_application", "newsletter_subscriber", "submission"],
-    );
+    expect(rapport.families.map((f) => f.family).sort()).toEqual([
+      "calendly_event",
+      "customer_review",
+      "job_application",
+      "newsletter_subscriber",
+      "submission",
+    ]);
   });
 
   it("un rendez-vous Calendly avec adresse SANS ligne d'outbox est un manquant, avec sa référence exacte", async () => {

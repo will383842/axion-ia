@@ -70,11 +70,7 @@ const MAX_REPORTED_IDS = 20;
  * enregistrement qui, par construction, n'émet pas n'est pas un manquant).
  */
 export type CrmSyncFamily =
-  | "submission"
-  | "job_application"
-  | "calendly_event"
-  | "newsletter_subscriber"
-  | "customer_review";
+  "submission" | "job_application" | "calendly_event" | "newsletter_subscriber" | "customer_review";
 
 export interface ReconcileFamilyReport {
   family: CrmSyncFamily;
