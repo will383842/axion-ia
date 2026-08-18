@@ -16,6 +16,11 @@ import {
   buildCommercialFaqItems,
 } from "@/components/services/devenir-commercial/CommercialPageBody";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
+import {
+  COMMISSION_FORMATION_PAR_JOURNEE_EUR,
+  commissionFormation,
+  formatAmount,
+} from "@/content/pricing";
 import { COMMERCIAL_OFFER_DATE_POSTED } from "@/content/recrutement/dates";
 import { getHubLocations } from "@/content/recrutement/satellites";
 import { getRegion } from "@/content/regions";
@@ -59,16 +64,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const title = isFr
-    ? "Devenir commercial IA indépendant · revenus déplafonnés · Axion-IA"
-    : "Become an independent AI sales rep · uncapped income · Axion-IA";
+    ? "Devenir commercial IA indépendant · 500 € par journée vendue" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+    : "Become an independent AI sales rep · €500 per day sold"; /* price-exempt: commission commerciale de recrutement, pas un tarif client */
   return {
     ...(await buildProductMetadata({
       locale,
       path: "/devenir-commercial-ia",
       title,
       description: isFr
-        ? "Emploi commercial dans l'IA partout en France : devenez commercial indépendant (agent commercial, VRP, apporteur d'affaires) et vendez formations, audits et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grandes entreprises. Statut libre, revenus déplafonnés, emploi du temps libre — démarrer ne coûte rien."
-        : "Sales job in AI across France: become an independent sales rep and sell AI trainings, audits and integrations to small businesses, SMEs, mid-caps and large enterprises. Free status, uncapped income — getting started costs nothing.",
+        ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act oblige TPE, PME, ETI et grands groupes à former leurs équipes à l'IA." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+        : "€500 for you per AI training day sold, uncapped. The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     })),
     title: { absolute: title },
     keywords: buildCommercialKeywords(),
@@ -126,8 +131,8 @@ export default async function DevenirCommercialHub({ params }: Props) {
       ? "Commercial indépendant en IA (agent commercial, VRP, apporteur d'affaires)"
       : "Independent AI sales representative (agent or business introducer)",
     description: isFr
-      ? "Axion-IA recrute des commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grandes entreprises. Statut indépendant, produits souvent finançables, rémunération à la commission déplafonnée, emploi du temps libre."
-      : "Axion-IA is hiring independent sales reps across France to sell its AI trainings, audits, 1-on-1 support and integrations to companies of all sizes. Self-employed status, often-fundable products, uncapped commission-based pay.",
+      ? `Axion-IA recrute des commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grands groupes. L'AI Act impose à toute entreprise qui utilise l'IA de former ses équipes (article 4, en vigueur) et les formations sont finançables OPCO : la demande est déjà là. ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "fr", { compact: true })} par journée de formation vendue, quel que soit le format. Statut indépendant, revenus non plafonnés, emploi du temps libre.`
+      : `Axion-IA is hiring independent sales reps across France to sell its AI trainings, audits, 1-on-1 support and integrations to businesses of every size. The AI Act requires any company using AI to train its staff (article 4, in force) and trainings are OPCO-fundable: the demand is already there. ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "en", { compact: true })} per training day sold, whatever the format. Self-employed status, uncapped income, flexible schedule.`,
     datePosted: COMMERCIAL_OFFER_DATE_POSTED,
     employmentType: "CONTRACTOR",
     occupationalCategory: isFr
@@ -148,9 +153,13 @@ export default async function DevenirCommercialHub({ params }: Props) {
     jobBenefits: isFr
       ? "Statut indépendant, revenus déplafonnés, emploi du temps libre, démarrage sans coût, portefeuille conservé, formation à l'offre."
       : "Self-employed status, uncapped income, flexible schedule, no-cost start, keep your portfolio, training provided.",
+    // Le montant vient de la SSOT (`pricing.ts`) — un taux UNIQUE par journée,
+    // le même que celui affiché par la grille du corps de page et par
+    // /memo-isere. Aucun littéral ici : c'est ce qui a permis à deux barèmes
+    // publics de coexister jusqu'au 2026-08-18.
     incentiveCompensation: isFr
-      ? "Rémunération 100 % à la commission : montant fixe par formation vendue, pourcentage de la facture sur les audits et intégrations. Revenus non plafonnés."
-      : "100% commission-based pay: flat amount per training sold, percentage of the invoice on audits and integrations. Uncapped income.",
+      ? `Rémunération 100 % à la commission, comptée en journées de formation vendues : ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "fr", { compact: true })} par journée, quel que soit le format — une formation de 2 journées rapporte donc ${formatAmount(commissionFormation(2), "fr", { compact: true })}. Pourcentage de la facture en plus sur les audits et intégrations. Revenus non plafonnés.`
+      : `100% commission-based pay, counted in training days sold: ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "en", { compact: true })} per day whatever the format — a 2-day training therefore pays ${formatAmount(commissionFormation(2), "en", { compact: true })}. Plus a percentage of the invoice on audits and integrations. Uncapped income.`,
     hiringOrganization: {
       "@type": "Organization",
       name: "Axion-IA (axion-ia.com)",

@@ -17,6 +17,7 @@ import { ArrowLeft, ArrowRight, Check, Plus } from "lucide-react";
 import { submitCommercialApplicationAction } from "@/features/commercial-application/actions";
 import { trackFunnel } from "@/lib/tracking";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
+import { cn } from "@/lib/utils";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { GhostButton, PrimaryButton, StepTransition } from "./ui";
 import {
@@ -45,9 +46,20 @@ import {
 
 const TOTAL_STEPS = 9;
 
-/** Promesse de l'écran d'accueil — commission commerciale de recrutement,
- *  pas un tarif client. */
-const PROMESSE_COMMISSION = "500 € par journée de formation vendue"; // price-exempt: commission recrutement
+/** Encouragement affiché dans la jauge, indexé par numéro d'écran (1..9).
+ *  Le taux d'abandon d'un tunnel à 9 écrans se joue sur la perception du
+ *  chemin restant : un pourcentage muet ne rassure personne. */
+const ENCOURAGEMENTS: Readonly<Record<number, string>> = {
+  1: "C’est parti 🚀",
+  2: "Ça roule 👌",
+  3: "Bien joué 👏",
+  4: "Ça avance 💪",
+  5: "Déjà la moitié 🎯",
+  6: "Plus que 3 écrans",
+  7: "Plus que 2 écrans",
+  8: "Dernière ligne droite 🏁",
+  9: "Dernier écran 🎉",
+};
 
 /** Noms d'écrans des événements Plausible « Candidature Step » — anonymes,
  *  jamais de donnée personnelle (doctrine privacy-first de lib/tracking). */
@@ -273,12 +285,28 @@ export function CommercialApplicationWizard(): React.ReactNode {
         <HoneypotField />
 
         {screen > 0 ? (
-          <div className="mb-7">
-            <div className="text-fg-muted mb-2 flex items-baseline justify-between text-[12px] font-bold tracking-[0.14em] uppercase">
-              <span>Ta candidature</span>
-              <span className="tabular-nums">
-                Étape {screen} sur {TOTAL_STEPS}
-              </span>
+          /* Jauge d'avancement — refondue le 2026-08-18 (retour Will : « + de
+             pep's, sinon ils décrochent »).
+             • COLLANTE sous le header : sur une étape longue (le parcours peut
+               porter 8 expériences), la jauge sortait de l'écran et le candidat
+               perdait de vue ce qu'il lui restait à faire.
+             • SEGMENTÉE en 9 marches plutôt qu'un filet continu de 6 px : on
+               compte les marches restantes d'un coup d'œil, ce qu'une barre
+               lisse ne permet pas.
+             • ENCOURAGEMENT qui change avec l'avancement — le seul élément qui
+               dise « tu y es presque » avant l'écran final. */
+          <div className="border-terracotta/25 bg-paper/95 shadow-subtle sticky top-[calc(var(--header-h)+0.5rem)] z-20 mb-6 rounded-2xl border px-4 py-3 backdrop-blur">
+            <div className="flex items-baseline justify-between gap-3">
+              <p className="text-fg-muted text-[13px] font-bold tracking-[0.08em] uppercase">
+                Étape{" "}
+                <span className="text-terracotta-deep font-serif text-lg tabular-nums">
+                  {screen}
+                </span>{" "}
+                <span className="tabular-nums">/ {TOTAL_STEPS}</span>
+              </p>
+              <p className="text-terracotta-deep text-[13px] font-semibold">
+                {ENCOURAGEMENTS[screen] ?? "Ça avance 👏"}
+              </p>
             </div>
             <div
               role="progressbar"
@@ -286,12 +314,18 @@ export function CommercialApplicationWizard(): React.ReactNode {
               aria-valuemin={0}
               aria-valuemax={100}
               aria-label={`Progression : étape ${screen} sur ${TOTAL_STEPS}`}
-              className="bg-border/70 h-1.5 w-full overflow-hidden rounded-full"
+              className="mt-2.5 flex gap-1"
             >
-              <div
-                className="bg-terracotta h-full rounded-full transition-[width] duration-300 ease-out motion-reduce:transition-none"
-                style={{ width: `${pct}%` }}
-              />
+              {Array.from({ length: TOTAL_STEPS }, (_, i) => (
+                <span
+                  key={i}
+                  aria-hidden="true"
+                  className={cn(
+                    "h-2.5 flex-1 rounded-full transition-colors duration-300 motion-reduce:transition-none",
+                    i < screen ? "bg-terracotta" : "bg-border/70",
+                  )}
+                />
+              ))}
             </div>
           </div>
         ) : null}
@@ -299,67 +333,56 @@ export function CommercialApplicationWizard(): React.ReactNode {
         <div ref={headingRef} tabIndex={-1} className="outline-none">
           <StepTransition key={screen}>
             {screen === 0 ? (
-              /* Accueil enrichi (retour Will 2026-08-13 « blocosse, trop
-                 vide ») : mini-cartes + rappel de la promesse, dans le langage
-                 visuel du site (cartes serif, terracotta — cf. memo-isere). */
-              <div className="text-center sm:text-left">
-                <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
-                  <span
-                    aria-hidden="true"
-                    className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
-                  />
-                  <span className="text-terracotta-deep text-sm font-semibold">
-                    Candidatures ouvertes
-                  </span>
-                </div>
-                <h1 className="text-fg text-[32px] leading-[1.1] font-bold tracking-tight text-balance sm:text-[40px]">
-                  Rejoins Axion-IA — commercial indépendant 👋
-                </h1>
-                <p className="text-fg-soft mt-5 text-lg leading-relaxed text-pretty">
-                  Pas de CV. Pas de lettre de motivation. Juste quelques questions essentielles.
+              /* Écran d'accueil — allégé le 2026-08-18. La pastille
+                 « Candidatures ouvertes », le `h1` et l'accroche « pas de CV »
+                 vivent désormais dans la COQUILLE SERVEUR de la page : ils y
+                 restent visibles pendant les 9 écrans (avant, ils
+                 disparaissaient dès la première question et la page perdait son
+                 `h1`). Il ne reste ici que ce qui prépare le geste : ce qu'on
+                 va demander, et combien de temps ça prend. */
+              <div>
+                <h2 className="text-fg text-[26px] leading-[1.15] font-bold tracking-tight text-balance sm:text-[30px]">
+                  On y va ? 👋
+                </h2>
+                <p className="text-fg-soft mt-2.5 text-[15px] leading-relaxed text-pretty">
+                  9 écrans, une question à la fois. Tu peux revenir en arrière à tout moment, rien
+                  n’est perdu.
                 </p>
 
-                <ul className="mt-7 grid grid-cols-1 gap-3 text-left sm:grid-cols-3" role="list">
+                <ol className="mt-6 space-y-2.5" role="list">
                   {[
+                    { n: "1", t: "Qui tu es", d: "Contact, ville, code postal." },
                     {
-                      emoji: "✅",
-                      title: "Zéro CV",
-                      text: "Un message libre remplace la lettre de motivation.",
+                      n: "2",
+                      t: "Ton expérience",
+                      d: "Vente B2B, postes des 10 dernières années.",
                     },
+                    { n: "3", t: "Ton terrain", d: "IA, outils, secteur souhaité, déplacements." },
                     {
-                      emoji: "⏱️",
-                      title: "3 minutes",
-                      text: "Une question par écran, à portée de pouce.",
-                    },
-                    {
-                      emoji: "💾",
-                      title: "Reprise possible",
-                      text: "Tes réponses sont sauvegardées sur ton appareil : ferme, reviens, tu reprends où tu étais.",
+                      n: "4",
+                      t: "Toi, en vrai",
+                      d: "Quelques lignes libres — pas de formulaire type.",
                     },
                   ].map((c) => (
                     <li
-                      key={c.title}
-                      className="border-border bg-paper shadow-subtle rounded-2xl border p-4"
+                      key={c.n}
+                      className="border-border bg-bg flex items-start gap-3 rounded-2xl border p-3.5"
                     >
-                      <p className="text-fg font-serif text-lg leading-snug font-semibold">
-                        <span aria-hidden="true" className="mr-1.5">
-                          {c.emoji}
+                      <span
+                        aria-hidden="true"
+                        className="bg-terracotta-soft text-terracotta-deep inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-serif text-base font-semibold"
+                      >
+                        {c.n}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="text-fg block leading-snug font-semibold">{c.t}</span>
+                        <span className="text-fg-soft mt-0.5 block text-[13px] leading-snug">
+                          {c.d}
                         </span>
-                        {c.title}
-                      </p>
-                      <p className="text-fg-soft mt-1 text-sm leading-relaxed">{c.text}</p>
+                      </span>
                     </li>
                   ))}
-                </ul>
-
-                <div className="border-terracotta/30 bg-terracotta-soft/40 mt-4 rounded-2xl border px-5 py-4 text-left">
-                  <p className="text-terracotta-deep font-serif text-xl leading-snug font-semibold">
-                    {PROMESSE_COMMISSION}
-                  </p>
-                  <p className="text-fg-soft mt-1 text-sm leading-relaxed">
-                    Revenus non plafonnés, statut indépendant, secteur à toi.
-                  </p>
-                </div>
+                </ol>
               </div>
             ) : null}
             {screen === 1 ? <StepIdentite a={answers} set={set} errors={errors} /> : null}

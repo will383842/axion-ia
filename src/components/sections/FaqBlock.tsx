@@ -25,6 +25,13 @@ interface FaqBlockProps {
   permalinkBase?: string;
   /** Pass-through to FaqAccordion — locale-aware label for the permalink. */
   permalinkLabel?: string;
+  /**
+   * Classes utilitaires additionnelles sur la `<section>`. Sert d'abord à
+   * resserrer le rythme vertical sur les pages mobile-first : le défaut
+   * `py-24` (96 px) coûte deux tiers d'écran de vide sur un téléphone.
+   * `cn` = tailwind-merge, donc un `py-*` passé ici REMPLACE le défaut.
+   */
+  className?: string;
 }
 
 const toneClasses: Record<FaqTone, string> = {
@@ -44,9 +51,10 @@ export function FaqBlock({
   tone = "canvas",
   permalinkBase,
   permalinkLabel,
+  className,
 }: FaqBlockProps) {
   return (
-    <section id="axion-faq" className={cn("py-24 sm:py-28 lg:py-36", toneClasses[tone])}>
+    <section id="axion-faq" className={cn("py-24 sm:py-28 lg:py-36", toneClasses[tone], className)}>
       <Container className="max-w-3xl">
         {eyebrow ? (
           <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">

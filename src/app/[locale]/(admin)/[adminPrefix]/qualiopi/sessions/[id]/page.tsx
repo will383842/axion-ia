@@ -880,7 +880,27 @@ export default async function SessionHubPage({ params }: PageProps) {
             C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette session
             ».
           </p>
-          <DossierSessionButton sessionId={id} />
+          {/* 🔴 Le registre des signatures filtre par session depuis toujours :
+              `listerRegistreSignatures({ sessionId })` accepte le paramètre, et
+              la page `mode-auditeur/signatures` le lit dans son URL. AUCUN écran
+              ne le posait — zéro lien portant ce paramètre dans tout `src/app`
+              et `src/components`. Le filtre existait, testé, et n'était
+              atteignable qu'en tapant l'URL à la main.
+
+              Pire : quand ce registre atteint sa limite de lignes, il conseille
+              lui-même de « le restreindre à une session pour obtenir une vue
+              exhaustive » — sans offrir le moindre chemin pour le faire. Ce lien
+              est ce chemin, et il part de là où l'auditeur pose la question :
+              le hub de la session. */}
+          <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+            <DossierSessionButton sessionId={id} />
+            <Link
+              href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures?session=${id}`}
+              className="admin-button-ghost"
+            >
+              Registre des signatures de cette session
+            </Link>
+          </div>
         </div>
 
         <DocumentsSection
