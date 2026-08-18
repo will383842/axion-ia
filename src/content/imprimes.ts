@@ -28,6 +28,26 @@
  * chose et donneraient une fausse fraîcheur. Règle déjà posée pour les PDF KDP.
  */
 
+import { formatAmount } from "@/content/pricing";
+
+/**
+ * Valeur de la visibilité offerte TELLE QU'ELLE EST IMPRIMÉE sur le tirage en
+ * cours du flyer A5 — vérifiée dans le PDF servi, pas déduite.
+ *
+ * Elle est SÉPARÉE de `VISIBILITE_OFFERTE_VALEUR_EUR` (la SSOT) exprès. Un
+ * imprimé ne se met pas à jour : le jour où le tarif de référence bouge, ce
+ * flyer continue de dire l'ancien montant jusqu'au retirage. Garder deux
+ * constantes rend cet écart VISIBLE — `flyer-valeur-visibilite.spec.ts` rougit
+ * et nomme le retirage à faire. Les fusionner ferait mentir la description sur
+ * l'objet qu'elle décrit ; exempter la ligne (ce qu'on faisait) rendait l'écart
+ * invisible dans les deux sens.
+ */
+export const VALEUR_VISIBILITE_SUR_LE_FLYER = 650;
+
+/** « 0 € » et « 650 € » formatés par le helper de la SSOT, jamais écrits à la main. */
+const GRATUIT = formatAmount(0, "fr", { compact: true });
+const VALEUR_BARREE = formatAmount(VALEUR_VISIBILITE_SUR_LE_FLYER, "fr", { compact: true });
+
 export interface FichierImprime {
   /** Chemin sous `public/`, tel qu'il est servi. Sans slash initial. */
   chemin: string;
@@ -125,8 +145,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     icon: "Newspaper",
     nom: "Flyer A5 · recto-verso",
     format: "A5 · 148 × 210 mm fini · 154 × 216 mm avec 3 mm de fond perdu",
-    resume:
-      "La présentation courte d’Axion-IA : les cinq activités, le financement OPCO jusqu’à 0 € de reste à charge, et la visibilité offerte à 0 € au lieu de 650 €. À laisser après un rendez-vous ou à diffuser en salon.", // price-exempt: décrit ce qui est DÉJÀ IMPRIMÉ sur le flyer A5, pas un tarif servi
+    resume: `La présentation courte d’Axion-IA : les cinq activités, le financement OPCO jusqu’à ${GRATUIT} de reste à charge, et la visibilité offerte à ${GRATUIT} au lieu de ${VALEUR_BARREE}. À laisser après un rendez-vous ou à diffuser en salon.`,
     fichiersPublics: [
       {
         chemin: "imprimes/flyer-a5-axion-ia.pdf",

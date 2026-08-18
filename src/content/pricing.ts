@@ -889,6 +889,22 @@ export const PRICING_CATEGORIES = {
   codage: CODAGE_TIERS,
 } as const;
 
+/**
+ * Valeur affichée de la visibilité offerte — le « au lieu de X € » des supports.
+ *
+ * Ce n'est pas un tier : la visibilité est TOUJOURS servie à 0 €, elle ne se
+ * vend pas. Mais le montant barré est une affirmation tarifaire d'Axion-IA, et
+ * à ce titre il appartient à la SSOT comme n'importe quel prix. Il vivait
+ * jusqu'ici dans une seule chaîne de `content/imprimes.ts`, exemptée du
+ * garde-fou anti-prix-en-dur : le faire évoluer n'aurait rougi nulle part.
+ *
+ * ⚠️ Le changer ne suffit PAS à le changer partout : le flyer A5 est un objet
+ * imprimé. `flyer-valeur-visibilite.spec.ts` échoue tant que le tirage n'a pas
+ * été refait et `VALEUR_VISIBILITE_SUR_LE_FLYER` réaligné — c'est voulu, c'est
+ * le seul endroit où « il faut réimprimer » peut se dire.
+ */
+export const VISIBILITE_OFFERTE_VALEUR_EUR = 650;
+
 // ============================================================================
 // Helpers
 // ============================================================================
