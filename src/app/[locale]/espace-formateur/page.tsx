@@ -16,6 +16,18 @@
  * AVANT que cette session n'entre dans le quotidien du formateur. La chercher
  * session par session serait le meilleur moyen qu'elle ne soit jamais signée —
  * c'est exactement ce qui s'est passé jusqu'ici.
+ *
+ * ## Ce qui change ensuite : la page s'appelait « À faire » et ne réclamait qu'une signature
+ *
+ * Elle ne parlait pas des SESSIONS. Un émargement resté vide, des journées de
+ * présence jamais confirmées : rien de tout cela n'apparaissait avant d'ouvrir
+ * la formation concernée, une par une. C'est le trou que le Lot 1 §1.4 vient de
+ * boucher côté console, et il était identique ici.
+ *
+ * 🔴 Mais on ne recopie PAS la liste de la console. Treize de ses quinze étapes
+ * sont gardées par `requireAdminWrite` : les afficher ferait au formateur une
+ * liste de reproches sur des gestes qu'il ne peut pas poser. Le tri est fait,
+ * clé par clé et motif par motif, dans `etapes-formateur.ts`.
  */
 
 import { CircleCheckBig } from "lucide-react";
@@ -23,8 +35,10 @@ import Link from "next/link";
 
 import { requireFormateur } from "@/server/formateur/guard";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
+import { EcheancesFormateur } from "@/components/espace-formateur/EcheancesFormateur";
 import { signerLettreMissionFormateurAction } from "@/server/actions/qualiopi/lettre-mission-signature";
 import { lireLettresMissionDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
+import { echeancesDuFormateur } from "@/server/formateur/echeances-formateur";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 
@@ -35,10 +49,19 @@ export const dynamic = "force-dynamic";
 export default async function EspaceFormateurAccueilPage(): Promise<React.ReactElement> {
   const { trainerId } = await requireFormateur();
 
-  // Lu APRÈS la garde d'authentification : la lecture ne connaît que
-  // `trainerId`, elle n'a aucun moyen de vérifier elle-même que l'appelant est
-  // bien ce formateur-là.
-  const lettres = await lireLettresMissionDuFormateur(trainerId);
+  // Lu APRÈS la garde d'authentification : les deux lectures ne connaissent que
+  // `trainerId`, elles n'ont aucun moyen de vérifier elles-mêmes que l'appelant
+  // est bien ce formateur-là.
+  //
+  // 🔴 `echeancesDuFormateur` ne prend QUE le `trainerId` : les identifiants de
+  // session sortent de `listMyTrainingSessions`, jamais d'un paramètre d'URL.
+  // Le repli sur liste vide vaut pour les lettres, pas contre elles — la
+  // signature est le devoir premier de cette page, elle ne doit pas disparaître
+  // parce que le calcul des échéances a échoué.
+  const [lettres, echeances] = await Promise.all([
+    lireLettresMissionDuFormateur(trainerId),
+    echeancesDuFormateur(trainerId).catch(() => []),
+  ]);
 
   // 🔴 On compte celles où le formateur peut AGIR, pas toutes les lettres :
   // les lettres déjà signées restent affichées (c'est sa preuve), mais elles
@@ -49,14 +72,17 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
     <CoquilleFormateur section="accueil" aSigner={aSigner}>
       <header className="mb-8">
         <h1 className="text-mocha font-serif text-2xl font-semibold sm:text-3xl">À faire</h1>
-        <p className="text-fg-soft mt-2 text-sm">
-          {aSigner === 0
-            ? "Aucun document ne vous attend."
-            : aSigner === 1
-              ? "Un document attend votre signature."
-              : `${aSigner} documents attendent votre signature.`}
-        </p>
+        {/* La phrase d'accueil compte les DEUX. Annoncer « aucun document ne vous
+            attend » au-dessus de quatre échéances dépassées ferait un écran qui
+            se contredit lui-même à trois lignes d'intervalle. */}
+        <p className="text-fg-soft mt-2 text-sm">{resume(aSigner, echeances.length)}</p>
       </header>
+
+      {echeances.length > 0 && (
+        <div className="mb-10">
+          <EcheancesFormateur echeances={echeances} />
+        </div>
+      )}
 
       {lettres.length === 0 ? (
         <RienASigner />
@@ -113,6 +139,32 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
       </section>
     </CoquilleFormateur>
   );
+}
+
+/**
+ * La phrase d'accueil, en une seule fonction.
+ *
+ * Deux compteurs, quatre cas. Les concaténer à la volée dans le JSX produisait
+ * « 0 document attend votre signature » ou une phrase orpheline sans verbe :
+ * les pluriels français ne survivent pas à une interpolation improvisée.
+ */
+function resume(aSigner: number, aTraiter: number): string {
+  const signature =
+    aSigner === 0
+      ? null
+      : aSigner === 1
+        ? "un document attend votre signature"
+        : `${aSigner} documents attendent votre signature`;
+  const sessions =
+    aTraiter === 0
+      ? null
+      : aTraiter === 1
+        ? "un point est à traiter sur vos formations"
+        : `${aTraiter} points sont à traiter sur vos formations`;
+
+  if (signature === null && sessions === null) return "Rien ne vous attend.";
+  const phrase = [signature, sessions].filter((p): p is string => p !== null).join(", et ");
+  return `${phrase.charAt(0).toUpperCase()}${phrase.slice(1)}.`;
 }
 
 function CarteActivite({ href, titre, detail }: { href: string; titre: string; detail: string }) {
