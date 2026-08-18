@@ -22,6 +22,9 @@ import {
 } from "@react-email/components";
 import { type ReactNode } from "react";
 import type { ReviewStats } from "../review-stats";
+// Module PUR (aucun import next/prisma) — sûr dans un rendu d'e-mail exécuté
+// hors requête, dans le worker.
+import { MENTION_NON_AGREMENT, NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
 
 /**
  * Stats avis injectées par `renderEmailTemplate` juste avant le rendu (valeurs
@@ -262,6 +265,7 @@ const TXT = {
     legalForm: "SAS française",
     siret: "SIRET",
     vat: "TVA",
+    nda: "NDA",
     contact: "Contact :",
     followBrand: "Suivez l'aventure Axion-IA",
     followFounder: "et Williams, son fondateur",
@@ -282,6 +286,7 @@ const TXT = {
     legalForm: "French company (SAS)",
     siret: "Reg. no.",
     vat: "VAT",
+    nda: "Training provider reg. no.",
     contact: "Contact:",
     followBrand: "Follow the Axion-IA journey",
     followFounder: "and Williams, its founder",
@@ -316,9 +321,23 @@ export function EmailLayout({
     [
       COMPANY.registration ? `${t.siret} ${COMPANY.registration}` : "",
       COMPANY.vat ? `${t.vat} ${COMPANY.vat}` : "",
+      // 2026-08-17 — n° de déclaration d'activité. Les e-mails d'Axion-IA
+      // portent des devis, des convocations et des relances : ce sont des
+      // documents commerciaux d'un organisme de formation, la mention y est due.
+      //
+      // Constante de code, pas de configuration : ce pied de page est rendu dans
+      // le worker, hors requête, sans accès garanti à la base — et le numéro ne
+      // change pas.
+      `${t.nda} ${NDA_NUMERO}`,
     ],
     "  ·  ",
   );
+  // 🔴 Indissociable de la ligne ci-dessus, et jamais rendue sans elle. L'art.
+  // L.6352-12 C. trav. interdit de faire état de l'enregistrement sans préciser
+  // qu'il ne vaut pas agrément : publier le numéro seul dans un pied de page
+  // commercial serait une infraction, pas un raccourci. Importée depuis la SSOT
+  // des mentions plutôt que retapée — une formulation, un seul endroit.
+  const ndaMention = MENTION_NON_AGREMENT;
 
   return (
     <Html lang={locale}>
@@ -432,6 +451,8 @@ export function EmailLayout({
                   {idLine}
                 </>
               ) : null}
+              <br />
+              {ndaMention}
               <br />
               {t.contact}{" "}
               <Link

@@ -12,9 +12,9 @@
  * valeur est renseignée → dégradation gracieuse si la config est partielle.
  */
 
-import { getQualiopiPublicIdentity } from "@/server/qualiopi/config/public-identity";
+import { getNdaPublic, getQualiopiPublicIdentity } from "@/server/qualiopi/config/public-identity";
 import {
-  LEGAL_MENTIONS,
+  formatMentionDeclarationActivite,
   formatMentionMarqueQualiopi,
 } from "@/server/qualiopi/legal/legal-mentions";
 
@@ -42,6 +42,45 @@ function formatDateFr(iso: string): string {
   return `${Number(d)} ${mois[idx]} ${y}`;
 }
 
+/**
+ * Section « Déclaration d'activité » — le NDA et sa mention obligatoire.
+ *
+ * 🔴 SECTION AUTONOME depuis le 2026-08-17, et c'est tout l'objet du patch. Le
+ * NDA vivait à l'intérieur de `buildQualiopiCertificationsSection`, donc derrière
+ * la garde de certification Qualiopi. Le récépissé DREETS obtenu le 17 août 2026
+ * n'aurait rien affiché sur le site, faute d'une certification qui n'arrivera
+ * pas avant des mois. Un enregistrement administratif et une certification
+ * qualité ne se conditionnent pas l'un l'autre — cf. `computeNdaPublic`.
+ *
+ * `null` si le numéro n'est pas disponible (hors Phase B, ou config vide) :
+ * on n'affiche jamais un titre de section suivi d'un vide.
+ *
+ * ⚠️ La mention « cet enregistrement ne vaut pas agrément de l'État » n'est pas
+ * ajoutée ici mais produite par `formatMentionDeclarationActivite`, qui la soude
+ * au numéro (art. L.6352-12). Ne pas la réécrire à la main dans cette fonction :
+ * ce serait rouvrir la possibilité d'un numéro publié sans elle.
+ */
+export async function buildDeclarationActiviteSection(
+  isFr: boolean,
+): Promise<{ title: string; body: string } | null> {
+  const nda = await getNdaPublic();
+  if (!nda) return null;
+
+  const parts = [
+    isFr
+      ? `Axion-IA est un organisme de formation déclaré. Numéro de déclaration d'activité (NDA) : ${nda}.`
+      : `Axion-IA is a registered training provider. Activity registration number (NDA): ${nda}.`,
+    // Mention légale française verbatim, dans les deux langues : c'est un texte
+    // réglementaire opposable, pas une phrase d'agrément traduisible.
+    formatMentionDeclarationActivite(nda),
+  ];
+
+  return {
+    title: isFr ? "Déclaration d'activité" : "Training provider registration",
+    body: parts.join(" "),
+  };
+}
+
 export async function buildQualiopiCertificationsSection(
   isFr: boolean,
 ): Promise<{ title: string; body: string } | null> {
@@ -50,18 +89,12 @@ export async function buildQualiopiCertificationsSection(
 
   const parts: string[] = [];
 
-  // ── Déclaration d'activité (NDA) ──
-  if (id.nda) {
-    parts.push(
-      isFr
-        ? `Numéro de déclaration d'activité (NDA) : ${id.nda}.`
-        : `Activity registration number (NDA): ${id.nda}.`,
-    );
-    // Base juridique verbatim (inclut « ne vaut pas agrément de l'État »).
-    parts.push(LEGAL_MENTIONS.declarationActivite);
-  }
-
   // ── Certification Qualiopi ──
+  //
+  // Le NDA N'EST PLUS ICI : il a sa propre section
+  // (`buildDeclarationActiviteSection`), affichée dès que le numéro existe et
+  // sans attendre la certification. L'y remettre le ferait apparaître deux fois
+  // le jour où Qualiopi sera obtenu.
   //
   // 🔴 Garde sur les champs vides (2026-08-10). La parenthèse s'ouvrait EN DUR
   // sur « (certificat n° ${id.qualiopiNumero} » : si le numéro n'était pas

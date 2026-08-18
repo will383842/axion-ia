@@ -58,6 +58,7 @@ import {
 } from "@/server/qualiopi/documents/pertinence-piece";
 import type { DocumentType } from "../../../../prisma/generated/client";
 import { TriangleAlert } from "lucide-react";
+import { lienTelechargement } from "@/lib/content-disposition";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -1539,14 +1540,28 @@ export function DocumentsSection({
                           plus jamais comme cible du lien. */}
                       {doc.pdfUrl !== null && doc.pdfUrl !== undefined && doc.pdfUrl !== "" ? (
                         <span className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+                          {/* 🔴 L'étiquette disait « Télécharger » et le lien OUVRAIT.
+                              Depuis la PR 686 la route sert la pièce en consultation
+                              (`inline`) : l'intitulé décrivait l'ancien
+                              comportement. Un bouton qui annonce autre chose que
+                              ce qu'il fait est pire qu'un bouton absent — on
+                              clique, on ne trouve pas le fichier, on reclique.
+                              Deux verbes, deux gestes distincts. */}
                           <a
                             href={`/api/qualiopi/documents/${doc.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="admin-button-ghost"
-                            aria-label={`Télécharger ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
+                            aria-label={`Ouvrir ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
                           >
-                            Télécharger
+                            Ouvrir
+                          </a>
+                          <a
+                            href={lienTelechargement(`/api/qualiopi/documents/${doc.id}`)}
+                            className="admin-button-ghost"
+                            aria-label={`Enregistrer ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
+                          >
+                            Enregistrer
                           </a>
                           {/* 2026-08-02 — le registre sert l'ORIGINAL SCELLÉ, cadres de
                               signature vides : c'est voulu (l'empreinte signée ne doit
@@ -1560,8 +1575,8 @@ export function DocumentsSection({
                               href={`/api/qualiopi/pieces/${doc.id}/exemplaire-signe`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"
-                              aria-label={`Télécharger l'exemplaire signé de ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
+                              className="admin-button-ghost"
+                              aria-label={`Ouvrir l'exemplaire signé de ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
                             >
                               Exemplaire signé
                             </a>

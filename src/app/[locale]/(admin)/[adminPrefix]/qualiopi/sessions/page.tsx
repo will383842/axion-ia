@@ -33,6 +33,7 @@ import { LIBELLE_ETAT_DOSSIER } from "@/server/qualiopi/parcours/libelles";
 import { FENETRE_SESSIONS_MOIS, parsePageParam } from "@/server/qualiopi/presence/sessions-liste";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { SEUIL_PARTIELLE_PCT } from "@/server/qualiopi/presence/taux";
+import { AdminEmptyState } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -112,9 +113,20 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
   const pagination = `page ${liste.page} / ${liste.totalPages}`;
   const description = `${perimetre} · ${liste.total} sessions · ${pagination}.`;
   const labelArchives = `Voir les archives (${liste.nbArchives} sessions plus anciennes)`;
-  const messageVide = avecArchives
-    ? "Aucune session. Créez-en une depuis la page Formations."
-    : "Aucune session sur la période. Ouvrez les archives, ou créez-en une.";
+  // 🔴 Le message envoyait AILLEURS que là où se trouve l'action.
+  //
+  // Il disait « Créez-en une depuis la page Formations » : la création se fait
+  // sur `sessions/new`, et le bouton « + Nouvelle session » qui y mène est
+  // **sur cette page même**, en tête. On envoyait donc chercher ailleurs un
+  // bouton déjà visible — c'est le pire des états vides : il coûte un
+  // aller-retour ET fait douter de ce qu'on a sous les yeux.
+  //
+  // La seconde branche disait « Ouvrez les archives » sans rien de cliquable,
+  // alors que `hrefArchives` est calculé juste au-dessus.
+  const titreVide = avecArchives ? "Aucune session au registre" : "Aucune session sur la période";
+  const descriptionVide = avecArchives
+    ? "Le registre est vide : aucune session n'a encore été créée."
+    : `Des sessions plus anciennes existent peut-être hors des ${FENETRE_SESSIONS_MOIS} derniers mois.`;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -201,9 +213,25 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
       </div>
 
       {sessions.length === 0 ? (
-        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          {messageVide}
-        </p>
+        <AdminEmptyState
+          title={titreVide}
+          description={descriptionVide}
+          primaryAction={
+            <Link href={`${base}/new`} className="admin-button">
+              + Nouvelle session
+            </Link>
+          }
+          secondaryAction={
+            avecArchives ? undefined : (
+              <Link
+                href={hrefArchives}
+                className="text-[color:var(--color-admin-accent)] underline underline-offset-2"
+              >
+                {labelArchives}
+              </Link>
+            )
+          }
+        />
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">

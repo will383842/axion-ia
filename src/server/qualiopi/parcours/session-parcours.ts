@@ -84,6 +84,7 @@ export type EtapeCle =
   | "formateur_assigne"
   | "convention_generee"
   | "convention_signee"
+  | "convention_contresignee"
   | "positionnement_envoye"
   | "positionnement_repondu"
   | "convocation_envoyee"
@@ -171,14 +172,53 @@ function piecesVivantes(
  * deux signatures sur trois — sans que l'organisme ait contresigné. Rien ne
  * planterait ; l'écran mentirait.
  */
-function pieceEntierementSignee(
+/** La partie ORGANISME du circuit — celle qui contresigne, toujours en dernier. */
+const PARTIE_ORGANISME = "axionia";
+
+/**
+ * Les parties APPOSÉES sur une pièce.
+ */
+function partiesApposees(
+  piece: { readonly id: string },
+  signaturesParPiece: SessionParcoursInput["signaturesParPiece"],
+): ReadonlySet<string> {
+  return new Set((signaturesParPiece.get(piece.id) ?? []).map((s) => s.partie));
+}
+
+/**
+ * TOUTES les parties externes requises ont-elles signé ?
+ *
+ * 🔴 On interroge `partiesRequisesPour` — le SSOT des dix circuits — et on en
+ * retire l'organisme. On ne compte PAS « au moins une signature qui n'est pas la
+ * nôtre » : sur une convention TRIPARTITE, dont le circuit exige
+ * `["client", "financeur", "axionia"]`, cette approximation passerait au vert
+ * sur la seule signature du financeur, le client n'ayant rien signé.
+ *
+ * ⚠️ Recompter les parties ici les ferait diverger du SSOT au premier circuit
+ * ajouté — c'est l'avertissement que portait déjà l'ancienne version, et qui
+ * reste vrai après la scission.
+ */
+function signeeParToutesLesPartiesExternes(
   piece: { readonly id: string; readonly type: string },
   signaturesParPiece: SessionParcoursInput["signaturesParPiece"],
 ): boolean {
   const requises = partiesRequisesPour(piece.type);
   if (requises === null || requises.length === 0) return false;
-  const apposees = new Set((signaturesParPiece.get(piece.id) ?? []).map((s) => s.partie));
-  return requises.every((p) => apposees.has(p));
+  const externes = requises.filter((p) => p !== PARTIE_ORGANISME);
+  // Un circuit UNILATÉRAL (autorisation d'image : une seule partie, et c'est
+  // le tiers) n'a pas d'organisme à retirer — mais il n'a pas non plus de
+  // contreseing, et cette fonction ne le rencontre pas pour une convention.
+  if (externes.length === 0) return false;
+  const apposees = partiesApposees(piece, signaturesParPiece);
+  return externes.every((p) => apposees.has(p));
+}
+
+/** L'organisme a-t-il contresigné ? */
+function contresigneeParOrganisme(
+  piece: { readonly id: string },
+  signaturesParPiece: SessionParcoursInput["signaturesParPiece"],
+): boolean {
+  return partiesApposees(piece, signaturesParPiece).has(PARTIE_ORGANISME);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -250,22 +290,70 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   );
 
   // ── 3. Convention signée — TOUTES les parties ─────────────────────────────
-  const conventionSignee = conventions.some((c) => pieceEntierementSignee(c, signaturesParPiece));
-  const signeeAMoitie =
-    !conventionSignee && conventions.some((c) => (signaturesParPiece.get(c.id) ?? []).length > 0);
+  // 🔴 DEUX ACTES, DEUX LIGNES — Lot 3sexies.
+  //
+  // Une seule étape « Convention signée par toutes les parties » confondait
+  // deux gestes qui n'ont ni le même auteur, ni le même délai, ni le même
+  // moyen d'action :
+  //
+  //   · le CLIENT signe par son lien — on ne peut que relancer ;
+  //   · l'ORGANISME contresigne — c'est NOUS, et rien ne l'empêche.
+  //
+  // Confondues, la ligne restait rouge sans dire laquelle des deux manquait.
+  // Or le geste diffère du tout au tout : relancer un tiers, ou cliquer
+  // soi-même. La contresignature oubliée était invisible, alors que c'est la
+  // seule des deux qui ne dépend de personne d'autre.
+  //
+  // ⚠️ La clé `convention_signee` est CONSERVÉE : elle est lue ailleurs
+  // (`echeances-service`), et la renommer aurait cassé ces lecteurs en
+  // silence. Ce qui change, c'est ce qu'elle mesure — la signature du client,
+  // désormais nommée telle quelle.
+  const conventionSigneeClient = conventions.some((c) =>
+    signeeParToutesLesPartiesExternes(c, signaturesParPiece),
+  );
+  const conventionContresignee = conventions.some((c) =>
+    contresigneeParOrganisme(c, signaturesParPiece),
+  );
   etapes.push(
     etape({
       cle: "convention_signee",
-      libelle: "Convention signée par toutes les parties",
-      fait: conventionSignee,
+      libelle: "Convention signée par le client",
+      fait: conventionSigneeClient,
+      faitLe: null,
+      echeance: avant(debut, 3),
+      borne: debut,
+      maintenant,
+      geste: "Le client signe par son lien. Sans réponse : relancer, ou réémettre le lien.",
+    }),
+  );
+
+  etapes.push(
+    etape({
+      cle: "convention_contresignee",
+      libelle: "Convention contresignée par l'organisme",
+      // ⚠️ On ne coche PAS sur `conventionComplete` : une convention où seul
+      // l'organisme aurait signé passerait alors pour contresignée à bon
+      // droit — ce qu'elle est —, mais l'inverse aussi serait vrai si l'on
+      // s'appuyait sur la complétude. Les deux lignes se mesurent séparément,
+      // c'est tout l'intérêt de les séparer.
+      fait: conventionContresignee,
       faitLe: null,
       echeance: avant(debut, 3),
       borne: debut,
       maintenant,
       geste:
-        "Le client signe par son lien ; l'organisme CONTRESIGNE en dernier — acte habilité, jamais automatique.",
-      ...(signeeAMoitie
-        ? { avertissement: "Signée d'un seul côté : un seul côté signé ne vaut pas signature." }
+        "Acte HABILITÉ, jamais automatique : bloc Signatures, « Contresigner ». Rien d'extérieur ne le retient.",
+      ...(conventionSigneeClient && !conventionContresignee
+        ? {
+            avertissement:
+              "Le client a signé, PAS nous. C'est le seul geste des deux qui ne dépend de personne d'autre.",
+          }
+        : {}),
+      ...(!conventionSigneeClient && conventionContresignee
+        ? {
+            avertissement:
+              "Contresignée avant que le client ait signé : vérifier le circuit, l'organisme signe en DERNIER.",
+          }
         : {}),
     }),
   );
@@ -507,7 +595,11 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       },
       maintenant,
       avancement: { fait: froid, total: n },
-      geste: "Automatique J+30. 🔴 Recueilli AVANT J+30, il ne mesure pas le même objet.",
+      // ⚠️ Pas d'emoji ici : ce texte est RENDU À L'ÉCRAN (« À traiter » affiche
+      // `etape.geste`). Le dépôt interdit l'emoji dans l'UI — lucide-react, et
+      // l'information s'écrit en toutes lettres. Un 🔴 dans une chaîne de
+      // commentaire est légitime ; dans une chaîne rendue, c'est de l'UI.
+      geste: "Automatique J+30. Attention : recueilli AVANT J+30, il ne mesure pas le même objet.",
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
     }),

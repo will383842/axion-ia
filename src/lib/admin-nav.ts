@@ -27,6 +27,7 @@
 // Les sous-onglets QR dérivent de leur SSOT plutôt que d'être recopiés ici
 // (cf. le commentaire au point d'insertion, groupe « ops »).
 import { QR_CATEGORIES } from "@/features/admin-qr-codes/categories";
+import { IMPRIMES } from "@/content/imprimes";
 
 // Refonte « Boîte de réception » 2026-07-29 : le groupe `rendez-vous` est
 // SUPPRIMÉ. Ses 3 items lisaient la même table `calendly_events` et le clic sur
@@ -1467,16 +1468,35 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "ops" as const,
       navLevel: 2 as const,
     })),
-    // Relecture du catalogue papier avant tirage KDP (2026-08-16). Niveau 1 :
-    // ce n'est pas un sous-onglet des QR, c'est le livre lui-même — les QR n'en
-    // sont qu'un composant imprimé. Icône "BookOpenText" et non "BookOpen", que
-    // « Catalogue en ligne » porte déjà dans ce même groupe.
+    // ── IMPRIMÉS ─────────────────────────────────────────────────────────
+    //
+    // Demande Will 2026-08-17 : « un onglet qui rassemble tous les imprimés, et
+    // en sous-onglet catalogue, flyer A5, etc. »
+    //
+    // Avant : un unique onglet « Catalogue imprimé » (2026-08-16) qui ne
+    // parlait que des PRIX du livre KDP. Le catalogue A4 48 pages et le flyer
+    // n'avaient nulle part où aller. L'ancienne adresse redirige.
+    //
+    // 🔑 Les sous-onglets sont DÉRIVÉS de `IMPRIMES`, plus recopiés. Une liste
+    //   recopiée à la main finit toujours par diverger de sa source — c'est
+    //   arrivé aux catégories de QR juste au-dessus, où une catégorie du SSOT
+    //   n'avait NI entrée de nav NI page.
+    //
+    // Icône "Printer" pour le hub : "BookOpenText" désignait le seul livre, et
+    // ne dit plus rien maintenant qu'un flyer partage le tiroir.
     {
-      href: `${base}/catalogue-imprime`,
-      label: "Catalogue imprimé",
-      icon: "BookOpenText",
+      href: `${base}/imprimes`,
+      label: "Imprimés",
+      icon: "Printer",
       group: "ops",
     },
+    ...IMPRIMES.map((i) => ({
+      href: `${base}/imprimes/${i.id}`,
+      label: i.nom,
+      icon: i.icon,
+      group: "ops" as const,
+      navLevel: 2 as const,
+    })),
     // ── système ──────────────────────────────────────────────────────────
     { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "system" },
     {

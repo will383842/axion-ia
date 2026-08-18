@@ -59,13 +59,14 @@ const etapeDe = (p: ReturnType<typeof construireParcours>, cle: string) =>
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("🔴 le dossier couvre les quatorze étapes du plan", () => {
+describe("🔴 le dossier couvre les quinze étapes du plan", () => {
   it("les rend toutes, dans l'ordre chronologique", () => {
     const p = construireParcours(dossier({ inscriptions: [inscription()] }));
     expect(p.etapes.map((e) => e.cle)).toEqual([
       "formateur_assigne",
       "convention_generee",
       "convention_signee",
+      "convention_contresignee",
       "positionnement_envoye",
       "positionnement_repondu",
       "convocation_envoyee",
@@ -144,19 +145,74 @@ describe("🔴 un seul côté signé ne vaut PAS signature", () => {
     annuleeAt: null,
   };
 
-  it("le client a signé, l'organisme n'a pas contresigné : l'étape reste ouverte", () => {
-    // La liste des parties vient de `partiesRequisesPour` (SSOT des dix
-    // circuits). La recompter ici la ferait diverger, et l'écran afficherait
-    // « convention signée » sur une pièce que l'organisme n'a jamais conclue.
+  it("le client a signé, l'organisme n'a pas contresigné : DEUX lignes, une seule verte", () => {
+    // 🔴 L'INTENTION D'ORIGINE EST PRÉSERVÉE, elle a changé de ligne.
+    //
+    // Avant, une seule étape « Convention signée par toutes les parties »
+    // portait les deux gestes, et l'assertion vérifiait qu'elle restait ROUGE
+    // sur une pièce signée d'un seul côté. Depuis la scission (Lot 3sexies),
+    // c'est la ligne du CONTRESEING qui doit rester rouge — et celle du client
+    // devient légitimement verte, puisqu'il a bel et bien signé.
+    //
+    // Ce qui ne doit PAS changer : rien, nulle part, ne doit laisser croire
+    // que la convention est conclue. C'est ce que ce test garde.
     const p = construireParcours(
       dossier({
         documents: [convention],
         signaturesParPiece: new Map([["doc1", [{ partie: "client" }]]]),
       }),
     );
-    const e = etapeDe(p, "convention_signee");
-    expect(e.etat).not.toBe("fait");
-    expect(e.avertissement).toContain("un seul côté signé");
+    expect(etapeDe(p, "convention_signee").etat).toBe("fait");
+
+    const contreseing = etapeDe(p, "convention_contresignee");
+    expect(contreseing.etat).not.toBe("fait");
+    // Et le message dit QUI doit agir : c'est le seul des deux gestes qui ne
+    // dépend de personne d'autre que nous.
+    expect(contreseing.avertissement).toContain("PAS nous");
+  });
+
+  it("🔴 TRIPARTITE : le financeur seul ne suffit pas", () => {
+    // Le défaut que j'ai FAILLI introduire en scindant l'étape. Une première
+    // version testait « au moins une signature qui n'est pas la nôtre » : sur
+    // une convention tripartite, dont le circuit exige
+    // ["client", "financeur", "axionia"], elle serait passée au vert sur la
+    // seule signature du financeur — le client n'ayant rien signé.
+    //
+    // La liste des parties vient de `partiesRequisesPour`, le SSOT des dix
+    // circuits. La recompter ici la ferait diverger au premier circuit ajouté.
+    const tripartite = { ...convention, type: "convention_tripartite" };
+    const partiel = construireParcours(
+      dossier({
+        documents: [tripartite],
+        signaturesParPiece: new Map([["doc1", [{ partie: "financeur" }]]]),
+      }),
+    );
+    expect(etapeDe(partiel, "convention_signee").etat).not.toBe("fait");
+
+    const complet = construireParcours(
+      dossier({
+        documents: [tripartite],
+        signaturesParPiece: new Map([["doc1", [{ partie: "financeur" }, { partie: "client" }]]]),
+      }),
+    );
+    expect(etapeDe(complet, "convention_signee").etat).toBe("fait");
+  });
+
+  it("🔴 contresignée AVANT la signature du client : le circuit est inversé", () => {
+    // L'organisme signe en DERNIER. Une pièce contresignée sans signature
+    // client signale un circuit mal joué — et, avant la scission, elle aurait
+    // fait passer l'étape unique pour « à moitié faite » sans dire de quel
+    // côté. Le contre-cas est celui qui prouve que les deux mesures sont bien
+    // indépendantes.
+    const p = construireParcours(
+      dossier({
+        documents: [convention],
+        signaturesParPiece: new Map([["doc1", [{ partie: "axionia" }]]]),
+      }),
+    );
+    expect(etapeDe(p, "convention_signee").etat).not.toBe("fait");
+    expect(etapeDe(p, "convention_contresignee").etat).toBe("fait");
+    expect(etapeDe(p, "convention_contresignee").avertissement).toContain("DERNIER");
   });
 
   it("toutes les parties ont signé : l'étape est faite", () => {
@@ -233,8 +289,13 @@ describe("🔴 fixture « dossier-invest-sun-1 » — les défauts réels rejou�
 
   const p = construireParcours(investSun);
 
-  it("la convention signée d'un seul côté n'est pas verte", () => {
-    expect(etapeDe(p, "convention_signee").etat).toBe("hors_delai");
+  it("🔴 le défaut réel : le client avait signé, NOUS jamais", () => {
+    // Dossier de production rejoué. La convention portait UNE signature, celle
+    // du client. Avant la scission, une seule ligne rouge disait « convention
+    // non signée » — sans dire de quel côté, donc sans dire que le geste
+    // manquant était le NÔTRE et qu'il ne dépendait de personne.
+    expect(etapeDe(p, "convention_signee").etat).toBe("fait");
+    expect(etapeDe(p, "convention_contresignee").etat).toBe("hors_delai");
   });
 
   it("l'émargement jamais signé est HORS DÉLAI — les jetons ont expiré", () => {
@@ -260,7 +321,7 @@ describe("🔴 fixture « dossier-invest-sun-1 » — les défauts réels rejou�
   });
 
   it("l'avancement n'inventé pas d'étapes : n sur N réels", () => {
-    expect(p.avancement.total).toBe(14);
+    expect(p.avancement.total).toBe(15);
     expect(p.avancement.fait).toBeLessThan(p.avancement.total);
   });
 });
@@ -371,7 +432,7 @@ describe("🔴 un statut terminal REPLIE la checklist", () => {
   });
 
   it("session annulée : repliée, et aucune action réclamée", () => {
-    // Dérouler quatorze étapes sur une session annulée demanderait des gestes
+    // Dérouler quinze étapes sur une session annulée demanderait des gestes
     // que plus personne ne doit poser.
     const p = construireParcours(
       dossier({
@@ -414,11 +475,11 @@ describe("🔴 les avertissements qui coûtent cher à oublier", () => {
 // Ce que l'exigence voulait dire, et qui est juste : **aucune étape ne doit se
 // retrouver sans état terminal PAR OUBLI**. Le code ne distinguait pas les deux
 // `null` — une borne oubliée ressemblait exactement à une borne volontairement
-// absente. Désormais l'absence se DÉCLARE, et ce test balaie les quatorze clés.
+// absente. Désormais l'absence se DÉCLARE, et ce test balaie les quinze clés.
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
-  // Un dossier qui exerce les quatorze étapes, longtemps après la fin : c'est
+  // Un dossier qui exerce les quinze étapes, longtemps après la fin : c'est
   // le seul moment où toutes ont eu l'occasion de devenir terminales.
   const p = construireParcours(
     dossier({
@@ -434,9 +495,9 @@ describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
     }),
   );
 
-  it("les quatorze étapes sont bien rendues", () => {
+  it("les quinze étapes sont bien rendues", () => {
     // Sans ceci, une liste vide ferait passer tout le bloc au vert.
-    expect(p.etapes).toHaveLength(14);
+    expect(p.etapes).toHaveLength(15);
   });
 
   it.each(p.etapes.map((e) => [e.cle, e] as const))(
@@ -474,4 +535,64 @@ describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
     const avecBorne = p.etapes.find((e) => e.cle === "convention_signee")!;
     expect(avecBorne.motifSansBorne).toBeUndefined();
   });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 AUCUN EMOJI DANS CE QUI EST RENDU À L'ÉCRAN
+//
+// Trouvé le 2026-08-17 par la vague d'agents, dans MON code du matin : la ligne
+// `geste` du suivi à froid portait un « 🔴 » — et « À traiter » rend
+// `etape.geste` tel quel. L'emoji était donc DÉJÀ affiché en production.
+//
+// Le dépôt l'interdit : lucide-react pour les icônes, et l'information s'écrit
+// en toutes lettres (un emoji n'a pas de texte alternatif, un lecteur d'écran
+// l'annonce « gros cercle rouge » au milieu d'une phrase).
+//
+// ⚠️ La règle ne vaut QUE pour les chaînes rendues. Un 🔴 en commentaire est
+// légitime — et abondant dans ce fichier. C'est pourquoi ce test lit les VALEURS
+// produites, pas le source : un test statique sur le fichier s'accuserait de ses
+// propres commentaires, piège déjà payé le 17/08 sur une autre garde.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 rien de ce qui s'affiche ne porte d'emoji", () => {
+  const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\u{FE0F}]/u;
+
+  const p = construireParcours(
+    dossier({
+      session: {
+        statut: "realisee",
+        dateDebut: DEBUT,
+        dateFin: FIN,
+        formateurPrincipalId: "f1",
+        financementType: "direct",
+      },
+      maintenant: d("2026-09-20T09:00:00.000Z"),
+      inscriptions: [inscription()],
+    }),
+  );
+
+  it("les quinze étapes sont bien là", () => {
+    // Sans ceci, une liste vide ferait passer tout le bloc au vert.
+    expect(p.etapes).toHaveLength(15);
+  });
+
+  it.each(p.etapes.map((e) => [e.cle, e] as const))(
+    "%s : ni le libellé, ni la mention, ni le geste, ni l'avertissement",
+    (_cle, etape) => {
+      for (const [champ, valeur] of [
+        ["libelle", etape.libelle],
+        ["mention", etape.mention],
+        ["geste", etape.geste],
+        ["avertissement", etape.avertissement ?? ""],
+        ["motifSansBorne", etape.motifSansBorne ?? ""],
+      ] as const) {
+        expect(
+          EMOJI.test(valeur),
+          `L'étape « ${etape.cle} » porte un emoji dans son champ « ${champ} », et ` +
+            `ce champ est RENDU À L'ÉCRAN. Un emoji n'a pas de texte alternatif : ` +
+            `un lecteur d'écran l'annonce au milieu de la phrase.`,
+        ).toBe(false);
+      }
+    },
+  );
 });

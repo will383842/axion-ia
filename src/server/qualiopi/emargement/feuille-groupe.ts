@@ -18,6 +18,7 @@ import { parisDateISO } from "@/server/qualiopi/presence/time";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import { demiJourneeCommencee } from "./creneaux-signables";
 import { mentionComplete } from "./mentions";
+import { whereSessionsDuFormateur } from "@/server/formateur/collectif-queries";
 
 export interface LigneGroupe {
   creneauId: string;
@@ -102,8 +103,23 @@ export async function lireFeuilleGroupe(
 ): Promise<DemiJourneeGroupe[] | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
+  // 🔴 L'APPARTENANCE SE VÉRIFIE ICI, pas chez l'appelant.
+  //
+  // Cette fonction recevait déjà `trainerId` — mais ne s'en servait QUE pour
+  // filtrer les contresignatures déjà posées. Elle rendait donc les noms des
+  // inscrits et les créneaux de N'IMPORTE QUELLE session. Elle était sûre
+  // uniquement parce que son unique appelant gardait AVANT de l'appeler.
+  //
+  // ⚠️ Une sécurité qui repose sur l'ORDRE D'APPEL tient tant qu'il n'y a
+  // qu'un appelant. Le Lot 7 va en multiplier ; le second qui inverserait
+  // l'ordre ouvrirait la fuite sans qu'aucun test ne bouge, puisque le premier
+  // continuerait de passer. On déplace donc la garde dans la lecture, comme le
+  // fait déjà `lireKitFormateur`.
+  //
+  // La règle vient du SSOT `whereSessionsDuFormateur` : la recopier ici la
+  // ferait diverger le jour où un troisième rôle d'intervenant apparaîtra.
+  const session = await prisma.trainingSession.findFirst({
+    where: { id: sessionId, ...whereSessionsDuFormateur(trainerId) },
     select: {
       titreSession: true,
       statut: true,

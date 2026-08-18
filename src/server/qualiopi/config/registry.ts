@@ -7,10 +7,14 @@
  *
  * Réutilise `SiteSetting` (cat. `qualiopi`) — PAS de table `config_systeme`.
  * Placeholders légaux à défaut VIDE (renseignés par Will, jamais inventés).
+ * Seule exception : un identifiant légal DÉLIVRÉ et permanent, dont le défaut
+ * est la valeur réelle (cf. `nda_numero`) — ce n'est plus un placeholder, c'est
+ * un fait, et le laisser vide priverait le rendu figé au build de sa mention.
  */
 
 import { z } from "zod";
 import { BRAND } from "@/lib/brand";
+import { NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
 import { REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 
 /** Définition typée d'une clé : schéma Zod + défaut + description. */
@@ -163,12 +167,35 @@ const bool = (def: boolean) => ({ schema: boolSchema, default: def });
 
 export const QUALIOPI_CONFIG_REGISTRY = {
   // ── Identité organisme (placeholders légaux — à renseigner par Will) ──
-  // ✅ 2026-08-17 : NDA OBTENU — 84381100438, attribué par la DREETS
-  // Auvergne-Rhône-Alpes. 🔴 Il ne vaut PAS certification Qualiopi : le
-  // récépissé porte lui-même « cet enregistrement ne vaut pas agrément de
-  // l'État » (R.6351-6). Ne pas confondre les deux surfaces.
+  //
+  // 🟢 2026-08-17 — le NDA n'est plus un placeholder : il est ATTRIBUÉ.
+  // Récépissé de déclaration d'activité du 17 août 2026, préfet de la région
+  // Auvergne-Rhône-Alpes (DREETS ARA), art. R.6351-6 C. trav.
+  //
+  // Pourquoi un DÉFAUT DE CODE et pas seulement une saisie admin : le build SSG
+  // tourne sur la base stub (`stub.invalid`), où `getQualiopiConfig` retombe
+  // toujours sur le défaut du registre. Sans valeur ici, la mention légale
+  // n'existerait dans le HTML statique qu'après repeuplement ISR — une mention
+  // obligatoire absente du rendu figé pendant une heure après chaque déploiement.
+  //
+  // La saisie admin reste prioritaire (une ligne `SiteSetting` écrase le défaut).
+  // ⚠️ Corollaire : si `qualiopi.nda_numero` existe en base avec une chaîne VIDE
+  // — cas d'un formulaire enregistré avant l'attribution — c'est le vide qui
+  // gagne, pas ce défaut. La migration `20260817120000_nda_declaration_activite`
+  // efface cette ligne-là, et rien d'autre.
+  //
+  // 🔴 Il ne vaut PAS certification Qualiopi : le récépissé porte lui-même
+  // « cet enregistrement ne vaut pas agrément de l'État ». Ne pas confondre les
+  // deux surfaces.
+  //
+  // ⚠️ FUSION 2026-08-17 : les deux branches étaient COMPLÉMENTAIRES, pas
+  // concurrentes. L'une posait le vrai numéro en défaut de code, l'autre la
+  // validation de format (11 chiffres, pas de clé de contrôle — le NDA réel
+  // ÉCHOUE à Luhn, contrairement au SIRET). On garde les DEUX : le schéma
+  // valide, `default` porte la valeur.
   nda_numero: {
     ...identifiantChiffre(11, "NDA", null),
+    default: NDA_NUMERO,
     description: "N° de déclaration d'activité (NDA, 11 chiffres).",
   },
   // ── Médiation de la consommation (obligatoire dès qu'un PARTICULIER contracte) ──

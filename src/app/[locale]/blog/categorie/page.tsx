@@ -13,7 +13,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { FOUNDER } from "@/lib/brand";
+import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ServiceHero } from "@/components/sections/ServiceHero";
@@ -181,7 +181,9 @@ export default async function BlogCategoriesHub({ params }: Props) {
     ...(latestDate
       ? {
           extra: {
-            reviewedBy: { "@id": `${SITE_URL}/${locale}/equipe/williams#person` },
+            // `@id` canonique, jamais interpolé par la locale : la fiche `/equipe/[slug]`
+            // 404 hors FR, donc `…/en/equipe/williams#person` désignait une entité sans page.
+            reviewedBy: { "@id": FOUNDER_PERSON_ID },
           },
         }
       : {}),

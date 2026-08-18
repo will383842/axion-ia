@@ -2,6 +2,10 @@
  * Qualiopi — Server Actions Session de formation (T3).
  *
  * createSessionAction      : crée une session planifiée (validation canCreateSessionFor).
+ * setSessionLieuAction     : corrige le lieu de déroulement.
+ * setSessionDatesAction    : corrige les dates de déroulement (garde de motif si
+ *                            des pièces s'appuient déjà dessus). ⚠️ Ce n'est PAS
+ *                            un report — voir son en-tête.
  * transitionSessionAction  : applique une transition de statut (machine à états).
  *
  * Chaque création/transition écrit une FormationTransition (event sourcing).
@@ -35,7 +39,17 @@ import {
   buildFormationSnapshot,
 } from "@/server/qualiopi/formations/formation-snapshot";
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
+import {
+  compterJoursHorsPlage,
+  messageRefusDates,
+  verdictDates,
+} from "@/server/qualiopi/sessions/requalification-dates";
 import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-reelle";
+import { refusMotif } from "@/server/qualiopi/formations/transition-motif";
+import {
+  isTrainerHabilite,
+  type TrainerHabilitationFields,
+} from "@/server/qualiopi/trainers/trainers";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
 // caller externe). Un `export type { … }` dans un module "use server" est
@@ -67,6 +81,12 @@ const createSessionSchema = z.object({
   montantHtCents: z.number().int().min(0),
   clientId: z.string().uuid().optional(),
   devisId: z.string().uuid().optional(),
+  // Formateur principal — FACULTATIF : une session se planifie souvent avant que
+  // l'on sache qui l'animera, et la fiche session permet de l'assigner ensuite.
+  // Mais dès qu'il est fourni, il subit EXACTEMENT le contrôle d'habilitation de
+  // l'assignation (garde plus bas) : accepter ici ce que la fiche refuse
+  // ouvrirait une porte dérobée vers un formateur non habilité.
+  trainerId: z.string().uuid().optional(),
   financementType: z.enum(FINANCEMENT_TYPES).optional(),
   recurrence: z.number().int().min(1).optional(),
   // Lieu de déroulement — facultatif, mais imprimé sur la convention, la
@@ -77,6 +97,21 @@ const createSessionSchema = z.object({
 const setSessionLieuSchema = z.object({
   id: z.string().uuid(),
   ...lieuInputSchema.shape,
+});
+
+const setSessionDatesSchema = z.object({
+  id: z.string().uuid(),
+  dateDebut: z.coerce.date(),
+  dateFin: z.coerce.date(),
+  /**
+   * 🔴 Motif de CORRECTION — exigé seulement quand des pièces s'appuient déjà
+   * sur ces dates (émargement signé, signature, convocation partie, document
+   * émis, créneau généré).
+   *
+   * Sur une session vierge il reste absent : corriger une coquille ne doit pas
+   * devenir une cérémonie. Voir `sessions/requalification-dates.ts`.
+   */
+  motifRequalification: z.string().trim().min(10).max(500).optional(),
 });
 
 const transitionSessionSchema = z.object({
@@ -187,6 +222,71 @@ export async function createSessionAction(
     }
   }
 
+  // 🔴 Le formateur ne pouvait PAS être choisi à la création d'une session.
+  //
+  // `formateurPrincipalId` n'avait qu'un seul écrivain — `assignTrainerToSession`
+  // depuis la FICHE de la session, donc APRÈS coup. Or c'est au moment où l'on
+  // planifie que l'on sait qui anime : le champ était réclamé au mauvais moment,
+  // et une session partait sans formateur jusqu'à ce que quelqu'un rouvre la
+  // fiche. Entre-temps, les documents nominatifs retombaient sur la raison
+  // sociale de l'organisme au lieu du nom de l'intervenant.
+  //
+  // La garde ici est la MÊME que celle de l'assignation, et pour la même raison :
+  // le formulaire ne propose que des formateurs habilités, mais une garde
+  // d'interface ne protège que les usages ordinaires — une Server Action est
+  // appelable directement. `isTrainerHabilite` est RÉUTILISÉ, jamais réécrit :
+  // deux formulations de la même règle divergent au premier amendement.
+  //
+  // ⚠️ Les habilitations viennent de la relation `TrainerHabilitation`, JAMAIS de
+  // la colonne legacy `Trainer.formationsHabilitees` : celle-ci contient des
+  // SLUGS en production alors que la garde compare des UUID (constat F11), donc
+  // `includes()` n'y serait jamais vrai et tout formateur serait refusé.
+  let tarifFormateurCents: number | null = null;
+  if (v.trainerId !== undefined) {
+    let trainer:
+      | (Omit<TrainerHabilitationFields, "formationIdsHabilites"> & {
+          tarifJourneeHtCents: number | null;
+          habilitations: { formationId: string }[];
+        })
+      | null;
+    try {
+      trainer = await prisma.trainer.findUnique({
+        where: { id: v.trainerId },
+        select: {
+          actif: true,
+          statut: true,
+          sousTraitantVerifieAt: true,
+          tarifJourneeHtCents: true,
+          // 🔴 `retireAt: null` — la dé-habilitation ne SUPPRIME plus la ligne
+          // depuis le 2026-08-17 (migration `trainer_habilitation_retrait`) :
+          // elle la DATE, pour que la preuve de conformité d'une session déjà
+          // animée survive au retrait (ind. 21/22). Conséquence directe pour
+          // toute garde : lire les habilitations sans ce filtre, c'est lire
+          // l'HISTORIQUE et déclarer habilité un formateur qui ne l'est plus.
+          // `listTrainers` porte le même filtre — l'écran ne le proposerait
+          // donc pas, mais une Server Action s'appelle sans passer par l'écran.
+          habilitations: { where: { retireAt: null }, select: { formationId: true } },
+        },
+      });
+    } catch {
+      return { error: "Erreur lors de la lecture du formateur" };
+    }
+    if (!trainer) return { error: "Formateur introuvable" };
+
+    const check = isTrainerHabilite(
+      { ...trainer, formationIdsHabilites: trainer.habilitations.map((h) => h.formationId) },
+      v.formationId,
+    );
+    if (!check.ok) {
+      return { error: `Assignation refusée : ${check.raison}` };
+    }
+
+    // Tarif FIGÉ à l'affectation, comme le fait l'assignation depuis la fiche :
+    // la rémunération due se calcule sur le prix convenu ce jour-là, pas sur le
+    // barème du formateur au moment où l'on édite le relevé.
+    tarifFormateurCents = trainer.tarifJourneeHtCents ?? null;
+  }
+
   // Snapshot légal (WS5) — fige la formation telle que vendue à cette session.
   const formationSnapshot = buildFormationSnapshot(formation, new Date());
 
@@ -213,6 +313,10 @@ export async function createSessionAction(
             statut: "planifiee",
             ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
             ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
+            // Le champ Prisma s'appelle `formateurPrincipalId` : il n'existe pas
+            // de `trainerId` sur `TrainingSession`. Le nom d'entrée reste
+            // `trainerId` pour coller à celui de l'assignation.
+            ...(v.trainerId !== undefined ? { formateurPrincipalId: v.trainerId } : {}),
             // 🔴 Audit certification 2026-07-26 (F58). `financementType` était
             // facultatif ET sans valeur par défaut : une session créée sans le
             // préciser restait à NULL. Le BPF s'en sortait par un repli
@@ -233,6 +337,32 @@ export async function createSessionAction(
           },
           select: { id: true, numero: true },
         });
+
+        // 🔴 DUAL-WRITE, dans la MÊME transaction que la session.
+        //
+        // Le formateur d'une session est rattaché par DEUX voies concurrentes que
+        // le schéma porte toutes les deux : la FK `formateurPrincipalId` et une
+        // ligne `session_formateurs`. Écrire la FK seule ne serait pas une demi-
+        // mesure, ce serait une INCOHÉRENCE : la fiche session et les documents
+        // liraient bien le formateur (ils lisent la FK), pendant que tout ce qui
+        // AGRÈGE lirait zéro — `fiabilite-service` compte les missions par
+        // `sessionFormateur.count`, `remuneration/marge` ventile par
+        // `sessionFormateur.groupBy`. Un formateur affiché sur ses sessions mais
+        // crédité d'aucune mission et d'aucune marge : l'écart ne se voit qu'en
+        // recoupant deux écrans, donc il ne se voit pas.
+        //
+        // `create` et non `upsert` : la session vient d'être créée dans cette
+        // transaction, aucune ligne ne peut préexister.
+        if (v.trainerId !== undefined) {
+          await tx.sessionFormateur.create({
+            data: {
+              sessionId: newSession.id,
+              trainerId: v.trainerId,
+              role: "principal",
+              tarifHtCents: tarifFormateurCents,
+            },
+          });
+        }
 
         // Journées PROPOSÉES (D14), dérivées de la durée de la formation.
         //
@@ -287,6 +417,11 @@ export async function createSessionAction(
       formationId: v.formationId,
       dateDebut: v.dateDebut,
       dateFin: v.dateFin,
+      // Tracé même à `null` : « aucun formateur choisi à la création » est un
+      // fait d'audit, pas une absence d'information. Sans lui, impossible de
+      // distinguer plus tard une session partie sans intervenant d'une session
+      // dont le journal aurait simplement omis le champ.
+      formateurPrincipalId: v.trainerId ?? null,
     },
     session,
   });
@@ -364,6 +499,192 @@ export async function setSessionLieuAction(
 }
 
 /**
+ * Corrige les DATES de déroulement d'une session (`dateDebut` / `dateFin`).
+ *
+ * Pourquoi une action dédiée : il n'existait aucune écriture capable de toucher
+ * ces deux champs après la création. `createSessionAction`, `setSessionLieuAction`
+ * et `transitionSessionAction` étaient les seules écritures sur une session —
+ * autrement dit, un « 09 » saisi pour un « 10 » restait faux pour toujours.
+ *
+ * Le seul contournement était « Reporter » : il crée une SECONDE session et
+ * laisse la première au registre en statut « Reportée ». Pour une faute de
+ * frappe, cela verse au registre légal la trace d'un report qui n'a jamais eu
+ * lieu — et l'auditeur qui lit « session reportée » cherche un motif qui
+ * n'existe pas. ⚠️ « Reporter » n'est d'ailleurs pas la porte sûre qu'on croit :
+ * `reportSessionAction` (sessions-recurrentes.ts) n'a AUCUNE garde de preuves et
+ * reporte sans un mot une session dont la feuille d'émargement est signée.
+ *
+ * Le statut n'est PAS un verrou ici, même raisonnement que pour le lieu : une
+ * session réalisée dont la plage est fausse doit pouvoir être rectifiée, sinon
+ * l'erreur est figée dans une pièce d'audit sans que rien ne soit protégé.
+ *
+ * 🔴 La garde n'INTERDIT pas — elle exige un MOTIF quand des pièces s'appuient
+ * déjà sur ces dates, et le verse au journal. Règle pure et testée dans
+ * `@/server/qualiopi/sessions/requalification-dates`. Un refus dur renverrait
+ * vers « Reporter », c'est-à-dire vers le défaut lui-même.
+ *
+ * ⚠️ Ce qui NE SUIT PAS cette correction, volontairement :
+ *   · les documents DÉJÀ générés — un PDF émis est figé, il faut le réémettre ;
+ *   · les `PresenceCreneau` déjà générés — ils peuvent porter une signature ;
+ *   · les `SessionJour` — voir la décision détaillée plus bas.
+ */
+export async function setSessionDatesAction(input: {
+  id: string;
+  dateDebut: Date;
+  dateFin: Date;
+  /** Exigé seulement si des pièces s'appuient déjà sur les dates. */
+  motifRequalification?: string;
+}): Promise<
+  ActionResult<{
+    id: string;
+    /** Journées déclarées qui tombent HORS de la nouvelle plage. 0 = rien à faire. */
+    joursHorsPlage: number;
+    /** Total des journées déclarées, pour situer le chiffre ci-dessus. */
+    nbJours: number;
+  }>
+> {
+  const session = await requireAdminWrite();
+  const parsed = setSessionDatesSchema.safeParse(input);
+  if (!parsed.success) {
+    // Le message de zod est utile ici (motif trop court) : le renvoyer plutôt
+    // qu'un « Données invalides » opaque devant lequel l'admin ne peut rien.
+    return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
+  }
+  const v = parsed.data;
+
+  // Même invariant qu'à la création (cf. `createSessionAction`). Le dupliquer
+  // est voulu : une plage inversée produit une durée négative sur la convention.
+  if (v.dateFin <= v.dateDebut) {
+    return { error: "La date de fin doit être postérieure à la date de début" };
+  }
+
+  let avantSession: { dateDebut: Date; dateFin: Date } | null;
+  try {
+    avantSession = await prisma.trainingSession.findUnique({
+      where: { id: v.id },
+      select: { dateDebut: true, dateFin: true },
+    });
+  } catch {
+    return { error: "Erreur lors de la lecture de la session" };
+  }
+  if (!avantSession) return { error: "Session introuvable" };
+
+  // 🔴 GARDE DE REQUALIFICATION.
+  //
+  // On compte ce qui s'appuie déjà sur ces dates AVANT d'écrire. Aucun de ces
+  // compteurs n'interdit quoi que ce soit : ils déterminent si un motif écrit
+  // est exigé, et ils nourrissent le texte rendu à l'écran.
+  //
+  // ⚠️ Sur `DocumentGenere`, la relation vers la session s'appelle `session`
+  // (pas `trainingSession`). `PresenceCreneau` n'a pas de `sessionId` : on y
+  // arrive par `enrollment`.
+  let compteurs: [number, number, number, number, number, number, Array<{ date: Date }>];
+  try {
+    compteurs = await Promise.all([
+      prisma.documentGenere.count({ where: { sessionId: v.id, annuleeAt: null } }),
+      prisma.enrollment.count({
+        where: { sessionId: v.id, convocationEnvoyeeAt: { not: null } },
+      }),
+      prisma.emargementToken.count({
+        where: { enrollment: { sessionId: v.id }, revokedAt: null },
+      }),
+      prisma.documentSignature.count({
+        where: { documentGenere: { sessionId: v.id }, revokedAt: null },
+      }),
+      prisma.enrollment.count({ where: { sessionId: v.id, emargementSigneAt: { not: null } } }),
+      prisma.presenceCreneau.count({ where: { enrollment: { sessionId: v.id } } }),
+      prisma.sessionJour.findMany({ where: { sessionId: v.id }, select: { date: true } }),
+    ]);
+  } catch (err) {
+    Sentry.captureException(err);
+    return { error: "Erreur lors de la lecture des pièces de la session" };
+  }
+  const [
+    documentsEmis,
+    convocationsEnvoyees,
+    liensEmargement,
+    signatures,
+    emargementsSignes,
+    creneaux,
+    joursDeclares,
+  ] = compteurs;
+
+  const avant = {
+    dateDebut: avantSession.dateDebut.toISOString(),
+    dateFin: avantSession.dateFin.toISOString(),
+  };
+  const apres = { dateDebut: v.dateDebut.toISOString(), dateFin: v.dateFin.toISOString() };
+
+  const verdict = verdictDates({
+    avant,
+    apres,
+    preuves: {
+      emargementsSignes,
+      signatures,
+      liensEmargement,
+      convocationsEnvoyees,
+      documentsEmis,
+      creneaux,
+    },
+  });
+
+  if (verdict.motifRequis && (v.motifRequalification ?? "") === "") {
+    return { error: messageRefusDates(verdict.enJeu) };
+  }
+
+  // 🔴 On ne décale PAS les `SessionJour` — décision et ses trois raisons dans
+  // l'en-tête de `compterJoursHorsPlage`. Le prix de cette décision est une
+  // divergence, et une divergence ne vaut que si elle SE VOIT : on compte les
+  // journées désormais hors plage et on les rend à l'appelant, qui les affiche
+  // et renvoie vers « Journées réellement animées » (sous-page Émargement) — le
+  // seul écran habilité à les réécrire, avec sa propre garde de motif.
+  //
+  // ⚠️ `SessionJour.date` est en `@db.Date` (minuit UTC) : on retombe sur le
+  // jour civil par `toISOString`, comme le fait déjà `session-jours.ts`. La
+  // plage, elle, est un `DateTime` : c'est `parisDateISO` qui donne son jour.
+  const joursHorsPlage = compterJoursHorsPlage({
+    joursISO: joursDeclares.map((j) => j.date.toISOString().slice(0, 10)),
+    debutISO: parisDateISO(v.dateDebut),
+    finISO: parisDateISO(v.dateFin),
+  });
+
+  try {
+    await prisma.trainingSession.update({
+      where: { id: v.id },
+      data: { dateDebut: v.dateDebut, dateFin: v.dateFin },
+    });
+  } catch (err) {
+    Sentry.captureException(err);
+    return { error: "Erreur lors de l'enregistrement des dates" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.session.dates.set",
+    targetType: "TrainingSession",
+    targetId: v.id,
+    changes: {
+      avant,
+      apres,
+      // Le motif et l'enjeu vont au JOURNAL, pas seulement à l'écran : c'est là
+      // que l'auditeur ira chercher pourquoi la pièce et le dossier ont divergé,
+      // et il doit y trouver une phrase écrite par un humain.
+      ...(verdict.motifRequis
+        ? {
+            requalification: {
+              motif: v.motifRequalification,
+              enJeu: verdict.enJeu,
+            },
+          }
+        : {}),
+      ...(joursHorsPlage > 0 ? { joursHorsPlage } : {}),
+    },
+    session,
+  });
+
+  return { data: { id: v.id, joursHorsPlage, nbJours: joursDeclares.length } };
+}
+
+/**
  * Applique une transition de statut à une session.
  *
  * Validation : assertSessionTransition lève si la transition est interdite.
@@ -395,6 +716,20 @@ export async function transitionSessionAction(input: {
 
   const fromStatus = currentSession.statut;
   const toStatus = v.toStatus as TrainingSessionStatut;
+
+  // 🔴 Le motif des transitions terminales — constaté le 2026-08-17.
+  //
+  // Reporter exigeait un motif, ANNULER n'en exigeait aucun. Un clic sur un
+  // bouton rouge, et c'était fait. Or annuler est PLUS engageant que reporter :
+  // l'état est terminal, et la transition révoque en cascade les jetons
+  // d'émargement. Un auditeur qui demande « pourquoi cette session a-t-elle été
+  // annulée ? » n'obtenait aucune réponse : la donnée n'avait jamais été
+  // demandée.
+  //
+  // La règle vit dans un module PUR, lu par l'écran ET par le serveur : deux
+  // copies divergeraient, et l'utilisateur verrait un refus incompréhensible.
+  const refus = refusMotif(toStatus, v.reason);
+  if (refus !== null) return { error: refus };
 
   // Garde financement : si la cible est en_cours, vérifier les validations bloquantes.
   if (toStatus === "en_cours") {

@@ -119,13 +119,17 @@ describe("buildAdminNav SSOT", () => {
     // parmi 45 QR de catalogue. Les 4 sous-onglets DÉRIVENT désormais de
     // `QR_CATEGORIES` : ce décompte suivra automatiquement toute catégorie
     // ajoutée, et `categories.spec.ts` refuse une route sans page. = 149.
+    // 2026-08-17 : 149 → 152. L'onglet isolé « Catalogue imprimé » est remplacé
+    // par le hub « Imprimés » et ses trois sous-onglets (catalogue A4, flyer A5,
+    // livre KDP), soit −1 +4 = +3. Les sous-onglets sont DÉRIVÉS de `IMPRIMES`
+    // (src/content/imprimes.ts) : ce décompte suivra tout imprimé ajouté.
     // +1 (2026-08-18, « Aperçus de partage », sous « Toutes les URLs ») :
     // recensement OG du 2026-08-17. Aucun écran ne montrait ce que le site sert
     // quand on partage un lien — `site_routes` connaissait le titre, la meta
     // description et le H1, et rien de la vignette. L'entrée vit sous
     // l'explorateur d'URLs et non dans `settings/` : même inventaire, même
-    // inspecteur, même RBAC. = 150.
-    expect(items.length).toBe(150);
+    // inspecteur, même RBAC. = 153.
+    expect(items.length).toBe(153);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

@@ -3,7 +3,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { env } from "@/env";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
-import { FOUNDER, BRAND } from "@/lib/brand";
+import { FOUNDER, FOUNDER_PERSON_ID, founderUrl, BRAND } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
@@ -1102,10 +1102,10 @@ export function buildOrganizationJsonLd({
     // page d'autorité `/equipe/williams`).
     founder: {
       "@type": "Person",
-      "@id": `${SITE_URL}/fr/equipe/williams#person`,
+      "@id": FOUNDER_PERSON_ID,
       name: FOUNDER.fullName,
       jobTitle: isFr ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn,
-      url: `${SITE_URL}/fr/equipe/williams`,
+      url: founderUrl(),
       sameAs: [FOUNDER.linkedin],
     },
     areaServed: ["FR", "EU"],
@@ -1226,7 +1226,11 @@ const PERSONA_SLUGS = new Set(["manon"]);
 
 export function buildPersonJsonLd({
   locale,
-  slug = "will",
+  // 2026-08-17 — le défaut valait `"will"` alors que `FOUNDER.slug` vaut `"williams"` :
+  // tout appelant qui ne précisait rien fabriquait un nœud Person ancré sur
+  // `/a-propos#will`, une ancre morte, DISTINCT de la fiche `/fr/equipe/williams`. Deux
+  // identifiants pour une personne ne se renforcent pas, ils se partagent l'autorité.
+  slug = FOUNDER.slug,
   // Audit E-E-A-T 2026-06-22 (P1) — identité par défaut dérivée du SSOT `FOUNDER`
   // (lib/brand.ts) au lieu de littéraux divergents. `name` = nom complet d'entité
   // (« Williams Jullin »), cohérent avec `Organization.founder` + la page
@@ -1245,12 +1249,23 @@ export function buildPersonJsonLd({
   const isFr = locale === "fr";
   const resolvedJobTitle = jobTitle ?? (isFr ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn);
   const resolvedImage = image ?? `${SITE_URL}/opengraph-image`;
+  /**
+   * Le fondateur porte l'`@id` canonique et l'URL de SA fiche ; tout autre slug garde
+   * l'ancre `/a-propos#{slug}` d'avant. Un `@id` est un nom d'entité : le poser sur
+   * quelqu'un d'autre fusionnerait deux personnes, ce qui est pire que de n'en nommer
+   * aucune. Le slug legacy `"will"` est reconnu pour que les appelants non migrés
+   * convergent au lieu de continuer à diverger en silence.
+   */
+  const estLeFondateur = slug === FOUNDER.slug || slug === "will";
   return {
     "@context": "https://schema.org",
     "@type": "Person",
+    ...(estLeFondateur ? { "@id": FOUNDER_PERSON_ID } : {}),
     name,
     jobTitle: resolvedJobTitle,
-    url: `${SITE_URL}/${locale}/${isFr ? "a-propos" : "about"}#${slug}`,
+    url: estLeFondateur
+      ? founderUrl()
+      : `${SITE_URL}/${locale}/${isFr ? "a-propos" : "about"}#${slug}`,
     image: resolvedImage,
     sameAs,
     worksFor: {
@@ -1354,8 +1369,12 @@ export function buildArticleJsonLd({
   datePublished,
   dateModified,
   articleBody,
-  authorSlug = "will",
-  authorName = "Williams",
+  // 2026-08-17 — défauts dérivés du SSOT. `"will"` / `"Williams"` fabriquaient, sur CHAQUE
+  // article sans auteur explicite, un nœud Person anonyme (aucun `@id`) ancré sur une ancre
+  // morte : le volume éditorial du site n'alimentait donc aucune entité. C'est le gisement
+  // d'autorité le plus large du dépôt, et il se perdait sur deux valeurs par défaut.
+  authorSlug = FOUNDER.slug,
+  authorName = FOUNDER.fullName,
   image,
   keywords,
   articleSection,
@@ -1378,11 +1397,22 @@ export function buildArticleJsonLd({
     image: resolvedImage,
     datePublished,
     dateModified: dateModified ?? datePublished,
-    author: {
-      "@type": "Person",
-      name: authorName,
-      url: `${SITE_URL}/${locale}/${isFr ? "a-propos" : "about"}#${authorSlug}`,
-    },
+    /**
+     * L'auteur d'un article signé du fondateur cite l'entité canonique, il ne la
+     * redécrit pas. Sans `@id`, chaque article créait un `Person` anonyme de plus :
+     * des centaines de nœuds homonymes, aucun ne renforçant la fiche `/fr/equipe/williams`.
+     * Les autres auteurs (personas éditoriales) gardent la forme d'avant — leur identité
+     * est gérée par leurs propres fabriques, et leur poser cet `@id` fusionnerait deux
+     * personnes distinctes.
+     */
+    author:
+      authorSlug === FOUNDER.slug || authorSlug === "will"
+        ? { "@type": "Person", "@id": FOUNDER_PERSON_ID, name: authorName, url: founderUrl() }
+        : {
+            "@type": "Person",
+            name: authorName,
+            url: `${SITE_URL}/${locale}/${isFr ? "a-propos" : "about"}#${authorSlug}`,
+          },
     // Perfection 2026 — référence le nœud Organization complet du layout
     // (@id #organization : adresse, vatID, sameAs) au lieu d'un Organization
     // partiel inline → cohérence @id cross-type (JSON-LD reste valide).

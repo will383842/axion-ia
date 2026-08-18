@@ -22,6 +22,7 @@ import {
   changerStatutPlanAction,
   emettreFactureBrouillonAction,
 } from "@/server/actions/qualiopi/facturation-hub";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 type Activite = "formation" | "un_a_un" | "audit" | "implementation" | "site_web";
 type PlanStatut = "actif" | "pause" | "clos";
@@ -110,6 +111,7 @@ export function PlansRecurrentsPanel({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const { demander, dialogue } = useConfirmation();
 
   const [showCreate, setShowCreate] = useState(false);
   const [clientId, setClientId] = useState("");
@@ -191,12 +193,23 @@ export function PlansRecurrentsPanel({
   function changerStatut(planId: string, statut: PlanStatut) {
     reset();
     // Clore un plan est irréversible (pas de réouverture) → confirmation.
-    if (
-      statut === "clos" &&
-      !window.confirm("Clore définitivement ce plan ? Il ne pourra pas être rouvert.")
-    ) {
+    if (statut === "clos") {
+      demander(
+        {
+          titre: "Clore définitivement ce plan récurrent ?",
+          description:
+            "Il ne pourra pas être rouvert : les sessions à venir qu'il devait engendrer ne seront plus créées.",
+          destructif: true,
+          libelleConfirmer: "Clore",
+        },
+        () => appliquerStatut(planId, statut),
+      );
       return;
     }
+    appliquerStatut(planId, statut);
+  }
+
+  function appliquerStatut(planId: string, statut: PlanStatut) {
     startTransition(async () => {
       const res = await changerStatutPlanAction({ planId, statut });
       if ("error" in res) {
@@ -228,6 +241,7 @@ export function PlansRecurrentsPanel({
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-5)]">
+      {dialogue}
       <div className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           Le cron génère des factures en BROUILLON à échéance ; l&apos;émission reste manuelle.

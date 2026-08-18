@@ -27,6 +27,12 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { resolveInterventionSlugForFormation } from "@/server/qualiopi/vente/kit-formation";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
+import {
+  ATTENTE_JOURS,
+  MARGE_AVANT_SESSION_JOURS,
+  titreReclamation,
+  verdictSignature,
+} from "./seuil-signature";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -249,6 +255,64 @@ function designerSession(s: {
  * (report, annulation) ne relève pas de cette alerte non plus — elle sera
  * couverte par sa propre trajectoire.
  */
+/**
+ * Session commencée, liens d'émargement VIVANTS, et pas une seule signature.
+ *
+ * 🔴 C'est l'angle mort que les trois autres règles laissaient ouvert, et il
+ * est ouvert PAR le cron de 06:00 : celui-ci crée les jetons, ce qui éteint
+ * `session_sans_dispositif_emargement` (qui exige l'absence de jeton vivant).
+ * La session disparaît alors de toute surveillance jusqu'à J+3.
+ *
+ * ⚠️ On teste l'ÉTAT réel — `emargementSigneAt` sur les inscriptions —, pas
+ * l'existence du dispositif. Avoir posé le dispositif n'est pas avoir émargé,
+ * et c'est exactement la confusion qui rendait la session invisible.
+ *
+ * La borne haute est `dateFin + 48 h` : au-delà, les jetons ont expiré, le
+ * geste n'est plus possible, et `session_bloquee_en_cours` prend le relais pour
+ * CONSTATER. Alerter après ferait crier une alerte qui ne sert plus à rien —
+ * et une alerte qui crie sans issue cesse d'être lue.
+ */
+async function regleEmargementAucuneSignature(now: Date): Promise<AlerteCandidate[]> {
+  const finJetons = new Date(now.getTime() - 48 * 60 * 60 * 1000);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      dateDebut: { lte: now },
+      // Fenêtre encore rattrapable : les jetons vivent 48 h après la fin.
+      dateFin: { gte: finJetons },
+      AND: [
+        // Il y a bien quelqu'un à faire signer.
+        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        // Le dispositif EST en place — c'est ce qui distingue cette règle de
+        // `session_sans_dispositif_emargement`, sa jumelle en négatif.
+        {
+          enrollments: {
+            some: { emargementTokens: { some: { revokedAt: null, expiresAt: { gt: now } } } },
+          },
+        },
+        // Et personne n'a signé. `emargementSigneAt` est posé à la PREMIÈRE
+        // signature, quel que soit le canal (portail ou grille présentielle).
+        { enrollments: { none: { emargementSigneAt: { not: null } } } },
+      ],
+    },
+    select: { id: true, numero: true, titreSession: true, dateDebut: true, dateFin: true },
+    take: 100,
+  });
+
+  return sessions.map((s) => ({
+    code: "emargement_aucune_signature" as const,
+    niveau: "critique" as const,
+    titre: "Liens d'émargement partis, aucune signature",
+    message:
+      `Session ${s.numero}${s.titreSession ? ` — ${s.titreSession}` : ""} : les liens sont ` +
+      `en circulation depuis le ${s.dateDebut.toLocaleDateString("fr-FR")} et PERSONNE n'a signé. ` +
+      `Les jetons expirent 48 h après le ${s.dateFin.toLocaleDateString("fr-FR")} : après, ` +
+      `l'émargement ne sera plus rattrapable et l'écart devra être consigné (ind. 12).`,
+    cibleType: "TrainingSession" as const,
+    cibleId: s.id,
+  }));
+}
+
 async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCandidate[]> {
   const sessions = await prisma.trainingSession.findMany({
     where: {
@@ -1628,27 +1692,71 @@ async function regleMoteurAssembleAPublier(_now: Date): Promise<AlerteCandidate[
  * signature (statut dérivé recalculé). 7 jours SANS mouvement = ça traîne.
  */
 async function regleSignatureEnAttente(now: Date): Promise<AlerteCandidate[]> {
+  // 🔴 Le seuil était ABSOLU et aveugle à la session.
+  //
+  // On attendait sept jours quelle que soit la date de début. Une convention
+  // signée d'un seul côté pour une session qui commence dans trois jours
+  // n'alertait pas — elle aurait alerté quatre jours APRÈS le démarrage. Or la
+  // convention se conclut AVANT l'entrée en formation (L.6353-1) : passé le
+  // premier jour, l'alerte ne prévient plus, elle constate.
+  //
+  // On élargit donc la requête aux deux causes, puis on tranche par le module
+  // pur. ⚠️ Le critère « avant la session » ne peut pas REMPLACER l'attente :
+  // devis, sous-traitance et lettres de mission n'ont aucune session, et ne
+  // seraient plus surveillés du tout — un défaut silencieux, donc pire.
   const pieces = await prisma.documentGenere.findMany({
     where: {
       statutSignature: { in: ["en_attente", "partielle"] },
-      updatedAt: { lte: daysAgo(7, now) },
+      OR: [
+        { updatedAt: { lte: daysAgo(ATTENTE_JOURS, now) } },
+        {
+          session: {
+            dateDebut: { lte: new Date(now.getTime() + MARGE_AVANT_SESSION_JOURS * 86400000) },
+          },
+        },
+      ],
     },
-    select: { id: true, type: true, numero: true, statutSignature: true, updatedAt: true },
+    select: {
+      id: true,
+      type: true,
+      numero: true,
+      statutSignature: true,
+      updatedAt: true,
+      session: { select: { numero: true, dateDebut: true } },
+    },
   });
-  return pieces.map((p) => ({
-    code: p.statutSignature === "partielle" ? "signature_contreseing_du" : "signature_en_attente",
-    niveau: "important" as const,
-    titre:
-      p.statutSignature === "partielle"
-        ? "Pièce signée d'un seul côté depuis +7 jours"
-        : "Lien de signature sans signature depuis +7 jours",
-    message:
-      p.statutSignature === "partielle"
-        ? `La pièce ${p.numero} (${p.type}) porte une signature depuis le ${p.updatedAt.toLocaleDateString("fr-FR")} mais il manque la contrepartie : contresigner ou relancer l'autre partie.`
-        : `La pièce ${p.numero} (${p.type}) attend sa première signature depuis le ${p.updatedAt.toLocaleDateString("fr-FR")} : relancer le signataire ou réémettre le lien.`,
-    cibleType: "DocumentGenere",
-    cibleId: p.id,
-  }));
+
+  const candidates: AlerteCandidate[] = [];
+  for (const p of pieces) {
+    const partielle = p.statutSignature === "partielle";
+    const verdict = verdictSignature({
+      modifieeLe: p.updatedAt,
+      dateDebut: p.session?.dateDebut ?? null,
+      maintenant: now,
+    });
+    if (!verdict.reclamer || verdict.motif === null) continue;
+
+    const depuis = p.updatedAt.toLocaleDateString("fr-FR");
+    const situation =
+      verdict.motif === "attente"
+        ? ""
+        : ` La session ${p.session?.numero ?? ""} commence le ${p.session?.dateDebut.toLocaleDateString("fr-FR") ?? ""}.`;
+
+    candidates.push({
+      code: partielle ? "signature_contreseing_du" : "signature_en_attente",
+      // Une session déjà commencée sans pièce conclue n'est plus « important » :
+      // l'écart est constitué, il ne se rattrape plus par une relance.
+      niveau:
+        verdict.motif === "session_commencee" ? ("critique" as const) : ("important" as const),
+      titre: titreReclamation({ motif: verdict.motif, partielle }),
+      message: partielle
+        ? `La pièce ${p.numero} (${p.type}) porte une signature depuis le ${depuis} mais il manque la contrepartie : contresigner ou relancer l'autre partie.${situation}`
+        : `La pièce ${p.numero} (${p.type}) attend sa première signature depuis le ${depuis} : relancer le signataire ou réémettre le lien.${situation}`,
+      cibleType: "DocumentGenere",
+      cibleId: p.id,
+    });
+  }
+  return candidates;
 }
 
 /**
@@ -2078,6 +2186,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "kit_sorties_non_pretes", fn: regleSortiesKitNonPretes },
   { nom: "session_bloquee_en_cours", fn: regleSessionBloqueeEnCours },
   { nom: "session_sans_dispositif_emargement", fn: regleSessionSansDispositifEmargement },
+  { nom: "emargement_aucune_signature", fn: regleEmargementAucuneSignature },
   { nom: "diaporama_manquant_session", fn: regleDiaporamaManquant },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },

@@ -25,7 +25,10 @@ import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLife
 import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
 import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
 import { SessionLieuForm } from "@/components/admin/qualiopi/SessionLieuForm";
+import { SessionDatesForm } from "@/components/admin/qualiopi/SessionDatesForm";
 import { lieuValuesDepuisSession } from "@/components/admin/qualiopi/lieu-values";
+import { parisDateISO, parisMinutesDuJour } from "@/server/qualiopi/presence/time";
+import { compterJoursHorsPlage } from "@/server/qualiopi/sessions/requalification-dates";
 import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntreprisesSection";
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
@@ -67,6 +70,10 @@ import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signatu
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
+import { AncresHubSession } from "@/features/admin-qualiopi/session-hub/AncresHubSession";
+import { ancresVisibles, CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
+import { ChecklistSession } from "@/features/admin-qualiopi/session-hub/ChecklistSession";
+import { prochainesEcheances } from "@/server/qualiopi/parcours/echeances-service";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -110,6 +117,21 @@ function formatDateFR(d: Date): string {
     month: "long",
     year: "numeric",
   });
+}
+
+/**
+ * Valeur pour `<input type="datetime-local">`, ancrée sur Europe/Paris.
+ *
+ * ⚠️ Calculée ICI, côté serveur, et pas dans le composant client : formater une
+ * `Date` avec les accesseurs locaux donnerait un résultat différent au rendu
+ * serveur et au rendu navigateur dès qu'un poste n'est pas à l'heure de Paris —
+ * erreur d'hydratation, et surtout heure fausse affichée dans le champ.
+ */
+function pourInputDateTimeLocal(d: Date): string {
+  const minutes = parisMinutesDuJour(d);
+  const hh = String(Math.floor(minutes / 60)).padStart(2, "0");
+  const mm = String(minutes % 60).padStart(2, "0");
+  return `${parisDateISO(d)}T${hh}:${mm}`;
 }
 
 function statutColor(s: TrainingSessionStatut): string {
@@ -203,6 +225,23 @@ export default async function SessionHubPage({ params }: PageProps) {
   if (!trainingSession) notFound();
 
   const mentionTvaSession = mentionTva(await getQualiopiConfig("regime_tva"));
+
+  // 🔴 DIVERGENCE PLAGE ↔ JOURNÉES, rendue visible en permanence.
+  //
+  // Corriger les dates d'une session ne décale PAS les `SessionJour` — décision
+  // et ses trois raisons dans `sessions/requalification-dates.ts`. Le prix de
+  // cette décision est une divergence possible ; une divergence silencieuse est
+  // un piège, donc on la compte à chaque rendu et l'écran la dit.
+  const joursDeclaresSession = await prisma.sessionJour.findMany({
+    where: { sessionId: id },
+    select: { date: true },
+  });
+  const joursHorsPlageSession = compterJoursHorsPlage({
+    // `@db.Date` stocke minuit UTC : `toISOString` redonne le jour civil.
+    joursISO: joursDeclaresSession.map((j) => j.date.toISOString().slice(0, 10)),
+    debutISO: parisDateISO(trainingSession.dateDebut),
+    finISO: parisDateISO(trainingSession.dateFin),
+  });
 
   // 🔴 UI 2026-07-27 — l'écran ne prévenait JAMAIS que les documents sortiraient
   // en SPÉCIMEN. On le découvrait en ouvrant le PDF, une fois généré — ou pas du
@@ -453,7 +492,20 @@ export default async function SessionHubPage({ params }: PageProps) {
   const base = `/${locale}/${adminPrefix}/qualiopi/sessions`;
   const sessionBase = `${base}/${id}`;
   // Ce que la session attend encore de nous. Deduit, jamais coche.
-  const preparationKit = await lirePreparation(id);
+  //
+  // 🔴 Le parcours est lu par le MÊME service que « À traiter », en balayage
+  // CIBLÉ (`sessionIds`) : une seconde traduction des lignes Prisma vers les
+  // étapes fabriquerait deux vérités, et le jour où une quinzième étape arrive
+  // l'un des deux écrans compterait encore sur quatorze.
+  //
+  // ⚠️ `catch` : la checklist est un CONFORT de lecture. Une lecture en échec
+  // ne doit pas faire tomber le dossier entier — on perd la checklist, pas la
+  // page.
+  const [preparationKit, echeances] = await Promise.all([
+    lirePreparation(id),
+    prochainesEcheances({ sessionIds: [id] }).catch(() => null),
+  ]);
+  const parcours = echeances?.parSession.get(id) ?? null;
   const dateValidation = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 
   const sectionHeadCls =
@@ -519,8 +571,19 @@ export default async function SessionHubPage({ params }: PageProps) {
         }
       />
 
+      {/* Sommaire interne : dix sections, aucun moyen d'en atteindre une sans
+          tout dérouler. Les ancres conditionnelles ne sont listées que si leur
+          section est réellement rendue — un lien mort apprend à ne plus faire
+          confiance à la barre. */}
+      <AncresHubSession
+        ancres={ancresVisibles([
+          ...(parcours !== null ? ["checklist"] : []),
+          ...(preparationKit !== null && preparationKit.aPreparer ? ["preparation-kit"] : []),
+        ])}
+      />
+
       {/* ── En-tête de la session ─────────────────────────────────────────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="infos" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Informations générales</h2>
         <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
           {/* Formation */}
@@ -651,24 +714,53 @@ export default async function SessionHubPage({ params }: PageProps) {
       </section>
 
       {/* ── Cycle de vie ─────────────────────────────────────────────────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      {/* 🔴 La checklist, juste après l'identité de la session : c'est la
+          question qu'on se pose en ouvrant un dossier — « où en est-il ? » —
+          et le serveur la calculait déjà sans jamais la rendre ici. */}
+      {parcours !== null ? (
+        <section id="checklist" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Où en est ce dossier</h2>
+          <ChecklistSession etapes={parcours.etapes} fait={parcours.fait} total={parcours.total} />
+        </section>
+      ) : null}
+
+      <section id="cycle-de-vie" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Cycle de vie</h2>
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
           <SessionLifecycleButtons
             sessionId={id}
             statut={trainingSession.statut as TrainingSessionStatut}
+            baseSessions={base}
           />
         </div>
       </section>
 
+      {/* ── Dates de déroulement ───────────────────────────────────────────
+          🔴 Rangé ICI, avec le lieu, et surtout PAS dans « Cycle de vie » : les
+          dates sont un ATTRIBUT de la session, le report est un ÉVÉNEMENT qui
+          crée une seconde session et laisse la première « Reportée » au
+          registre. Voisiner avec les boutons de report ferait choisir le
+          marteau-pilon pour une faute de frappe. */}
+      <section id="dates" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+        <h2 className={sectionHeadCls}>Dates de déroulement</h2>
+        <SessionDatesForm
+          sessionId={id}
+          initialDateDebut={pourInputDateTimeLocal(trainingSession.dateDebut)}
+          initialDateFin={pourInputDateTimeLocal(trainingSession.dateFin)}
+          joursHorsPlage={joursHorsPlageSession}
+          nbJoursDeclares={joursDeclaresSession.length}
+          hrefJournees={`${sessionBase}/emargement`}
+        />
+      </section>
+
       {/* ── Lieu de déroulement (convention L.6353-1 · Qualiopi off.9) ────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Lieu de déroulement</h2>
         <SessionLieuForm sessionId={id} initial={lieuValuesDepuisSession(trainingSession)} />
       </section>
 
       {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="formateur" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Formateur principal</h2>
         <AssignFormateurForm
           sessionId={id}
@@ -678,7 +770,10 @@ export default async function SessionHubPage({ params }: PageProps) {
       </section>
 
       {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section
+        id="inter-entreprises"
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Inter-entreprises</h2>
         <InterEntreprisesSection
           sessionId={id}
@@ -692,7 +787,10 @@ export default async function SessionHubPage({ params }: PageProps) {
           Placé AVANT les sous-pages : c'est le premier geste après une vente,
           et le seul que rien ne rappelait jusqu'ici. */}
       {preparationKit !== null && preparationKit.aPreparer ? (
-        <section className="mb-[var(--space-admin-8)]">
+        <section
+          id="preparation-kit"
+          className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+        >
           <PreparationKitSession
             sessionId={id}
             etape={preparationKit.etape}
@@ -709,7 +807,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       ) : null}
 
       {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="sous-pages" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Sous-pages</h2>
         <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
           <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
@@ -743,7 +841,7 @@ export default async function SessionHubPage({ params }: PageProps) {
        *         genererPortailAccesAction, revoquerPortailAccesAction.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="stagiaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Stagiaires</h2>
         <EnrollmentsSection
           sessionId={id}
@@ -767,7 +865,7 @@ export default async function SessionHubPage({ params }: PageProps) {
        * Affiche les DocumentGenere existants + lien de téléchargement PDF.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="documents" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Documents</h2>
 
         {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
@@ -913,7 +1011,7 @@ export default async function SessionHubPage({ params }: PageProps) {
        * (saisirReponsesQuestionnaireAction) par stagiaire.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="questionnaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Questionnaires de satisfaction</h2>
         <QuestionnairesSection
           sessionId={id}
