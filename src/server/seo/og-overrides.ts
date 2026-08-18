@@ -17,7 +17,7 @@
  * Prisma — même motif que `knowledge-rss.ts` et `knowledge-sitemap.ts` — et on
  * rend une table vide. Conséquence VOULUE : le build fige les pages SANS
  * surcharge, donc exactement ce qu'elles rendent aujourd'hui. C'est
- * l'enregistrement d'une surcharge qui régénère la page (`revalidateEtPurge`),
+ * l'enregistrement d'une surcharge qui régénère la page (`revalidateAndPurge`),
  * pas le build.
  */
 

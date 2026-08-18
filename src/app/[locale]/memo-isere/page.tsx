@@ -107,14 +107,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Devenez commercial IA indépendant, de Grenoble à Lyon · 500 €/jour vendu" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
     : "Become an independent AI sales rep between Grenoble and Lyon";
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/memo-isere",
       title,
       description: isFr
         ? "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon — 474 communes, vous choisissez votre zone. Vendez des formations IA finançables OPCO : 500 € par journée de formation vendue, revenus non plafonnés." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
         : "Axion-IA is hiring independent sales reps between Grenoble, Valence, Die and Lyon — 474 towns, you pick your area. Sell OPCO-fundable AI trainings: €500 per training day sold, uncapped income." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-    }),
+    })),
     title: { absolute: title },
   };
 }

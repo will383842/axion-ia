@@ -25,7 +25,7 @@ export async function generateMetadata({
   const isFr = locale === "fr";
   const offer = await getJobOfferBySlug(slug);
   const title = offer ? (isFr ? offer.titleFr : offer.titleEn) : isFr ? "offre" : "role";
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale: locale as Locale,
     path: `/carrieres/${slug}/postuler`,
     title: isFr ? `Postuler · ${title} · Axion-IA.com` : `Apply · ${title} · Axion-IA.com`,

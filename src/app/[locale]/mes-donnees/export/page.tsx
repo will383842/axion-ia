@@ -21,7 +21,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: "/mes-donnees/export",
     title:

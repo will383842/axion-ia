@@ -186,7 +186,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { robots: { index: false, follow: false } };
   }
 
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/actualites/${slug}`,
     title: t.metaTitle ?? `${t.title} · Axion-IA`,

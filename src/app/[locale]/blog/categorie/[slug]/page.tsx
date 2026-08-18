@@ -100,7 +100,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // qu'une meta thin/générique identique sur 5 pages (audit SEO 2026-06-24).
   // Fallback générique pour les catégories FS legacy hors content-gen.
   const richDescription = categoryDescription(slug, locale as Locale);
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale,
     path: `/blog/categorie/${slug}`,
     // Pas de « Axion-IA » ici : le template `%s · Axion-IA` l'appose (sinon doublon).

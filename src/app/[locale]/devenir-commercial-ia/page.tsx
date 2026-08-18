@@ -62,14 +62,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Devenir commercial IA indépendant · revenus déplafonnés · Axion-IA"
     : "Become an independent AI sales rep · uncapped income · Axion-IA";
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/devenir-commercial-ia",
       title,
       description: isFr
         ? "Emploi commercial dans l'IA partout en France : devenez commercial indépendant (agent commercial, VRP, apporteur d'affaires) et vendez formations, audits et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grandes entreprises. Statut libre, revenus déplafonnés, emploi du temps libre — démarrer ne coûte rien."
         : "Sales job in AI across France: become an independent sales rep and sell AI trainings, audits and integrations to small businesses, SMEs, mid-caps and large enterprises. Free status, uncapped income — getting started costs nothing.",
-    }),
+    })),
     title: { absolute: title },
     keywords: buildCommercialKeywords(),
   };

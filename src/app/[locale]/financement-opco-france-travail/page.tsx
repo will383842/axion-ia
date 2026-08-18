@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Financez vos formations IA avec l'OPCO (salariés) ou France Travail (demandeurs d'emploi). Organisme certifié Qualiopi, Axion-IA étudie votre prise en charge — en tout ou partie selon votre situation — et monte le dossier avec vous, partout en France."
     : "Fund your AI trainings with OPCO (employees) or France Travail (jobseekers). As a Qualiopi-certified provider, Axion-IA studies your coverage — in whole or in part depending on your situation — and builds the file with you, across France.";
   return {
-    ...buildProductMetadata({ locale, path: PATH, title, description }),
+    ...(await buildProductMetadata({ locale, path: PATH, title, description })),
     title: { absolute: title },
   };
 }

@@ -32,14 +32,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Candidature commercial Axion-IA · 3 minutes, sans CV"
     : "Axion-IA sales rep application · 3 minutes, no resume";
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/devenir-commercial-ia/candidature",
       title,
       description: isFr
         ? "Deviens commercial indépendant Axion-IA : pas de CV, pas de lettre de motivation — quelques questions essentielles, 3 minutes chrono. Produits IA faciles à vendre, commissions déplafonnées, statut indépendant."
         : "Become an independent Axion-IA sales rep: no resume, no cover letter — a few essential questions, 3 minutes flat. Easy-to-sell AI products, uncapped commissions, self-employed status.",
-    }),
+    })),
     title: { absolute: title },
     keywords: buildCommercialKeywords(),
   };

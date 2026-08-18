@@ -188,7 +188,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : fallbackEn;
   const description = truncateForSerp(rawDescription, 155);
 
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/implantations/${region.slug}/${ville.slug}`,
     title,

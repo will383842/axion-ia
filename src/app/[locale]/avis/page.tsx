@@ -158,7 +158,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   if (!hasLocale(routing.locales, locale)) return {};
   const sp = await searchParams;
   const { hasActiveFilter } = toFilters(sp);
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: "/avis",
     title: "Avis clients Axion-IA · Retours d'expérience vérifiés",

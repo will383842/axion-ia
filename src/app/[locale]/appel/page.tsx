@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Réserver un appel · votre projet IA · Axion-IA"
     : "Book a call · your AI project · Axion-IA";
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/appel",
       title: titleStr,
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "Un premier échange de 30 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale."
         : "Un premier échange de 30 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale.",
       alternates: { fr: "/appel", en: "/book-a-call" },
-    }),
+    })),
     title: { absolute: titleStr },
   };
 }

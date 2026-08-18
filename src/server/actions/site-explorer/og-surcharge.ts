@@ -15,7 +15,7 @@
  *   2. le cache de rendu Next (`revalidatePath`) — vérifié le 2026-08-17 sur
  *      une application Next 16.3.0 minimale : il régénère bien une page SSG
  *      sans `revalidate`, et sa variante `"page"` régénère toute une famille ;
- *   3. le cache Cloudflare (`revalidateEtPurge`), sans quoi l'edge sert
+ *   3. le cache Cloudflare (`revalidateAndPurge`), sans quoi l'edge sert
  *      l'ancienne page jusqu'à expiration de son `s-maxage`.
  */
 

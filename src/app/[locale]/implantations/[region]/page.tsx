@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // metaTitle + metaDesc hand-crafted per région (Will 2026-05-26) — voir
   // `regions.ts` champs metaTitleFr / metaDescFr. Anti-duplicate-content,
   // mention positionnement expert + 5 services + ville/région.
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/implantations/${region.slug}`,
     title: isFr ? region.metaTitleFr : (region.metaTitleEn ?? region.metaTitleFr),

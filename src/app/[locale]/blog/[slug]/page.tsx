@@ -117,7 +117,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     excerpt: view.excerpt,
     directAnswer: view.directAnswer,
   });
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/blog/${slug}`,
     title: view.metaTitle ?? view.title,

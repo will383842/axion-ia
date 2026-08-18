@@ -225,12 +225,12 @@ export async function generateMetadata({
   // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).
   if (!isFr) {
     return {
-      ...buildProductMetadata({
+      ...(await buildProductMetadata({
         locale: locale as Locale,
         path: `/carrieres/${slug}`,
         title: offer.metaTitle ?? `${offer.titleEn} · Axion-IA.com`,
         description: (offer.metaDescription ?? offer.summaryEn).slice(0, 160),
-      }),
+      })),
       robots: { index: false, follow: true },
     };
   }
