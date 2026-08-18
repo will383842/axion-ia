@@ -80,6 +80,20 @@ function libelleTypeDocument(type: string): string {
   return TYPE_DOCUMENT_LABELS[type] ?? `« ${type} »`;
 }
 
+/**
+ * Compte du registre, et — quand la liste des pièces est plafonnée — combien
+ * en sont réellement montrées.
+ *
+ * ⚠️ Le compte reste celui du registre : il n'est JAMAIS remplacé par le
+ * nombre de pièces affichées. Écrire « 5 pièces » là où il y en a douze
+ * mentirait sur le registre lui-même, pas seulement sur l'affichage.
+ */
+function compteEtAffichage(doc: IndicateurManifeste["documents"][number]): string {
+  const compte = `${doc.count} pièce${doc.count > 1 ? "s" : ""}`;
+  if (doc.pieces.length >= doc.count) return compte;
+  return `${compte}, ${doc.pieces.length} affichée${doc.pieces.length > 1 ? "s" : ""}`;
+}
+
 /** Étoile « NC majeure » commune aux deux vues. */
 function SuperStar(): React.ReactElement {
   return (
@@ -248,17 +262,54 @@ function VueManifeste({ lignes }: { lignes: IndicateurManifeste[] }): React.Reac
                 {ind.documents.map((doc, i) => (
                   <li
                     key={`${doc.type}-${i}`}
-                    className="flex items-center gap-[var(--space-admin-3)] rounded bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)]"
+                    className="rounded bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)]"
                   >
-                    <span
-                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]"
-                      title={doc.type}
-                    >
-                      {libelleTypeDocument(doc.type)}
-                    </span>
-                    <span className="ml-auto shrink-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      {doc.count} pièce{doc.count > 1 ? "s" : ""}
-                    </span>
+                    <div className="flex items-center gap-[var(--space-admin-3)]">
+                      <span
+                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]"
+                        title={doc.type}
+                      >
+                        {libelleTypeDocument(doc.type)}
+                      </span>
+                      <span className="ml-auto shrink-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                        {compteEtAffichage(doc)}
+                      </span>
+                    </div>
+
+                    {/* 🔴 Les pièces étaient un COMPTE, et rien d'autre. « 3
+                        pièces » sur l'écran que l'auditrice consulte, sans un
+                        numéro, sans un lien : il fallait quitter le manifeste,
+                        deviner la session et rouvrir le registre pour savoir
+                        DE QUOI on parlait. Le modèle ne portait aucun
+                        identifiant — la cause était en amont, dans
+                        `PreuveDocument`. */}
+                    {doc.pieces.length > 0 && (
+                      <ul className="mt-[var(--space-admin-2)] flex flex-wrap gap-[var(--space-admin-2)]">
+                        {doc.pieces.map((piece) => (
+                          <li key={piece.id}>
+                            <a
+                              href={`/api/qualiopi/documents/${piece.id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="admin-button-ghost"
+                              aria-label={`Ouvrir ${libelleTypeDocument(doc.type)} n° ${piece.numero}`}
+                            >
+                              {piece.numero}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {/* Une troncature muette se lit comme une liste complète —
+                        règle du dépôt, déjà écrite en toutes lettres sur le
+                        registre des signatures. On dit le plafond LÀ où il
+                        mord, et où retrouver le reste. */}
+                    {doc.pieces.length < doc.count && (
+                      <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                        {`Liste plafonnée : ${doc.count} pièce${doc.count > 1 ? "s" : ""} au registre, ${doc.pieces.length} accessible${doc.pieces.length > 1 ? "s" : ""} ici. Le dossier d'audit ZIP les porte toutes.`}
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>

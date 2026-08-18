@@ -39,34 +39,42 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+    # UN SEUL LOT — incident du 2026-08-18 (main inconstructible ~6 h).
+    #
+    # Ce bloc portait quatre groupes (next-stack / typescript / tooling / tests).
+    # Quatre groupes = quatre PR par exécution, et CHACUNE réécrit
+    # `pnpm-lock.yaml`. Le 18/08, trois d'entre elles (#677, #675, #678) ont été
+    # fusionnées en VINGT-QUATRE SECONDES. Chacune était verte contre le `main`
+    # qu'elle connaissait, et aucune paire n'entrait en conflit git : les blocs
+    # ajoutés au lockfile ne se touchaient pas. Mais deux ajoutaient la MÊME
+    # entrée `baseline-browser-mapping@2.11.14` à des endroits différents. Git a
+    # additionné les deux ; YAML refuse une clé répétée.
+    #
+    #     ERR_PNPM_BROKEN_LOCKFILE  duplicated mapping key (4307:3)
+    #
+    # Conflit SÉMANTIQUE : invisible à une fusion ligne à ligne, par
+    # construction. Résultat : `main` ne s'installait plus, ne se construisait
+    # plus, ne se déployait plus, et les 7 PR ouvertes étaient gelées.
+    #
+    # Dependabot rebase bien ses PR quand la base bouge — mais de façon
+    # ASYNCHRONE. Vingt-quatre secondes ne lui en laissent pas le temps. La
+    # course est perdue avant d'être vue.
+    #
+    # Un seul groupe = une seule PR par exécution = un seul lockfile à fusionner.
+    # La course ne peut plus naître, quelle que soit la vitesse des fusions.
+    #
+    # ⚠️ Ce que ce réglage ne couvre PAS : la même collision entre deux PR de
+    # FONCTIONNALITÉ (le 18/08 aussi, #709 et #692 se sont contredites sur un
+    # décompte d'étapes). Seul `strict: true` sur la protection de `main` couvre
+    # ce cas-là. Voir la PR de cet ajout pour l'arbitrage.
+    #
+    # ⚠️ Contrepartie assumée : un seul mauvais bump bloque tout le lot. Le
+    # remède reste celui déjà pratiqué plus haut — une entrée `ignore` ciblée,
+    # le temps que le pair rattrape.
     groups:
-      next-stack:
+      npm-tout:
         patterns:
-          - "next"
-          - "@next/*"
-          - "react"
-          - "react-dom"
-          - "@types/react*"
-      typescript:
-        patterns:
-          - "typescript"
-          - "@typescript-eslint/*"
-      tooling:
-        patterns:
-          - "eslint*"
-          - "prettier*"
-          - "husky"
-          - "lint-staged"
-          - "@commitlint/*"
-      tests:
-        patterns:
-          - "vitest"
-          - "@vitest/*"
-          - "@testing-library/*"
-          - "playwright"
-          - "@playwright/*"
-          - "@axe-core/*"
-          - "jest-axe"
+          - "*"
     commit-message:
       prefix: chore(deps)
       include: scope
