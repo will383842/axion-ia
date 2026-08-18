@@ -73,7 +73,7 @@ function domaineDe(url: string): string {
 function CadreVide({ hauteur }: { hauteur: string }) {
   return (
     <div
-      className={`flex ${hauteur} w-full items-center justify-center border-b border-neutral-200 bg-neutral-100 text-center text-xs text-neutral-500`}
+      className={`flex ${hauteur} w-full items-center justify-center border-b border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] text-center text-xs text-[color:var(--color-admin-fg-muted)]`}
     >
       Aucune image — le lien se partagera nu
     </div>
@@ -90,7 +90,7 @@ export function ApercuPartage({ reseau, image, titre, description, url, largeurR
 
   if (reseau === "linkedin") {
     return (
-      <figure className="w-full max-w-[520px] overflow-hidden rounded-lg border border-neutral-300 bg-white shadow-sm">
+      <figure className="w-full max-w-[520px] overflow-hidden rounded-lg border border-[color:var(--color-admin-border-strong)] bg-white shadow-sm">
         {grandeCarte ? (
           <>
             {image ? (
@@ -98,14 +98,16 @@ export function ApercuPartage({ reseau, image, titre, description, url, largeurR
                 src={image}
                 alt=""
                 loading="lazy"
-                className="aspect-[1200/675] w-full border-b border-neutral-200 object-cover"
+                className="aspect-[1200/675] w-full border-b border-[color:var(--color-admin-border)] object-cover"
               />
             ) : (
               <CadreVide hauteur="h-[240px]" />
             )}
             <figcaption className="px-3 py-2">
-              <p className="line-clamp-2 text-sm font-semibold text-neutral-900">{titreAffiche}</p>
-              <p className="mt-0.5 text-xs text-neutral-500">{domaine}</p>
+              <p className="line-clamp-2 text-sm font-semibold text-[color:var(--color-admin-fg)]">
+                {titreAffiche}
+              </p>
+              <p className="mt-0.5 text-xs text-[color:var(--color-admin-fg-muted)]">{domaine}</p>
             </figcaption>
           </>
         ) : (
@@ -116,14 +118,16 @@ export function ApercuPartage({ reseau, image, titre, description, url, largeurR
                 src={image}
                 alt=""
                 loading="lazy"
-                className="h-20 w-20 flex-none rounded border border-neutral-200 object-cover"
+                className="h-20 w-20 flex-none rounded border border-[color:var(--color-admin-border)] object-cover"
               />
             ) : (
-              <div className="h-20 w-20 flex-none rounded bg-neutral-100" />
+              <div className="h-20 w-20 flex-none rounded bg-[color:var(--color-admin-surface-sunken)]" />
             )}
             <div className="min-w-0">
-              <p className="line-clamp-2 text-sm font-semibold text-neutral-900">{titreAffiche}</p>
-              <p className="mt-0.5 text-xs text-neutral-500">{domaine}</p>
+              <p className="line-clamp-2 text-sm font-semibold text-[color:var(--color-admin-fg)]">
+                {titreAffiche}
+              </p>
+              <p className="mt-0.5 text-xs text-[color:var(--color-admin-fg-muted)]">{domaine}</p>
             </div>
           </figcaption>
         )}
@@ -149,9 +153,15 @@ export function ApercuPartage({ reseau, image, titre, description, url, largeurR
             <CadreVide hauteur="h-[160px]" />
           )}
           <figcaption className="px-2.5 py-2">
-            <p className="line-clamp-2 text-[13px] font-medium text-neutral-900">{titreAffiche}</p>
-            <p className="line-clamp-2 text-[12px] text-neutral-600">{descriptionAffichee}</p>
-            <p className="mt-0.5 text-[11px] text-neutral-400">{domaine}</p>
+            <p className="line-clamp-2 text-[13px] font-medium text-[color:var(--color-admin-fg)]">
+              {titreAffiche}
+            </p>
+            <p className="line-clamp-2 text-[12px] text-[color:var(--color-admin-fg-muted)]">
+              {descriptionAffichee}
+            </p>
+            <p className="mt-0.5 text-[11px] text-[color:var(--color-admin-fg-disabled)]">
+              {domaine}
+            </p>
           </figcaption>
         </div>
       </figure>
@@ -159,20 +169,22 @@ export function ApercuPartage({ reseau, image, titre, description, url, largeurR
   }
 
   return (
-    <figure className="w-full max-w-[460px] border-l-4 border-neutral-300 bg-white py-1 pl-3">
+    <figure className="w-full max-w-[460px] border-l-4 border-[color:var(--color-admin-border-strong)] bg-white py-1 pl-3">
       <figcaption>
-        <p className="text-xs font-semibold text-neutral-500">{domaine}</p>
+        <p className="text-xs font-semibold text-[color:var(--color-admin-fg-muted)]">{domaine}</p>
         <p className="line-clamp-2 text-sm font-semibold" style={{ color: SLACK_LIEN }}>
           {titreAffiche}
         </p>
-        <p className="line-clamp-3 text-[13px] text-neutral-700">{descriptionAffichee}</p>
+        <p className="line-clamp-3 text-[13px] text-[color:var(--color-admin-fg-soft)]">
+          {descriptionAffichee}
+        </p>
       </figcaption>
       {image ? (
         <img
           src={image}
           alt=""
           loading="lazy"
-          className="mt-1.5 aspect-[1200/675] w-[360px] max-w-full rounded border border-neutral-200 object-cover"
+          className="mt-1.5 aspect-[1200/675] w-[360px] max-w-full rounded border border-[color:var(--color-admin-border)] object-cover"
         />
       ) : (
         <div className="mt-1.5 w-[360px] max-w-full">
@@ -190,7 +202,7 @@ export function ApercuPartageTrio(props: Omit<Props, "reseau">) {
     <div className="flex flex-wrap items-start gap-6">
       {reseaux.map((r) => (
         <div key={r} className="space-y-1.5">
-          <p className="text-xs font-semibold tracking-wide text-neutral-500 uppercase">
+          <p className="text-xs font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
             {LIBELLE[r]}
           </p>
           <ApercuPartage reseau={r} {...props} />

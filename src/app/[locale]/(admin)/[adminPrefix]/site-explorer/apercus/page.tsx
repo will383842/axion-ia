@@ -13,6 +13,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { AlertCircle } from "lucide-react";
 import { auth } from "@/auth";
 import {
   listerApercusParModele,
@@ -37,10 +38,14 @@ const NATURE_LABELS: Record<NatureApercu, string> = {
 };
 
 const NATURE_TONS: Record<NatureApercu, string> = {
-  carte_generee: "bg-neutral-100 text-neutral-700",
-  image_propre: "bg-emerald-100 text-emerald-800",
-  image_tierce: "bg-amber-100 text-amber-800",
-  aucune: "bg-red-100 text-red-800",
+  carte_generee:
+    "bg-[color:var(--color-admin-surface-sunken)] text-[color:var(--color-admin-fg-soft)]",
+  image_propre:
+    "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]",
+  image_tierce:
+    "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
+  aucune:
+    "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]",
 };
 
 interface PageProps {
@@ -60,16 +65,18 @@ function Tuile({
   aide?: string;
 }) {
   const tons: Record<string, string> = {
-    neutral: "border-neutral-200 bg-white",
-    green: "border-emerald-200 bg-emerald-50",
-    amber: "border-amber-200 bg-amber-50",
-    red: "border-red-200 bg-red-50",
+    neutral: "border-[color:var(--color-admin-border)] bg-white",
+    green: "border-[color:var(--color-admin-success)] bg-[color:var(--color-admin-success-soft)]",
+    amber: "border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)]",
+    red: "border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)]",
   };
   return (
     <div className={`rounded-lg border p-3 ${tons[ton]}`}>
       <p className="text-2xl font-semibold tabular-nums">{valeur.toLocaleString("fr-FR")}</p>
-      <p className="text-xs text-neutral-600">{label}</p>
-      {aide ? <p className="mt-0.5 text-[11px] text-neutral-500">{aide}</p> : null}
+      <p className="text-xs text-[color:var(--color-admin-fg-muted)]">{label}</p>
+      {aide ? (
+        <p className="mt-0.5 text-[11px] text-[color:var(--color-admin-fg-muted)]">{aide}</p>
+      ) : null}
     </div>
   );
 }
@@ -106,11 +113,11 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
       <header className="space-y-1">
         <div className="flex flex-wrap items-baseline gap-3">
           <h1 className="text-xl font-semibold">Aperçus de partage</h1>
-          <Link href={base} className="text-sm text-blue-700 underline">
+          <Link href={base} className="text-sm text-[color:var(--color-admin-info)] underline">
             ← Toutes les URLs
           </Link>
         </div>
-        <p className="max-w-3xl text-sm text-neutral-600">
+        <p className="max-w-3xl text-sm text-[color:var(--color-admin-fg-muted)]">
           Ce que voient WhatsApp, LinkedIn et Slack quand un lien du site est partagé. Une ligne par{" "}
           <strong>modèle d&apos;URL</strong> : les pages qui ne diffèrent que d&apos;un nom de ville
           partagent le même aperçu, à un mot près.
@@ -153,7 +160,7 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
           n'a encore rien relevé produirait un écran désert qu'on lirait comme
           « tout va bien ». */}
       {stats.relevees === 0 ? (
-        <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+        <p className="rounded-lg border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] p-3 text-sm text-[color:var(--color-admin-warning-fg)]">
           Aucune route n&apos;a encore été relevée. L&apos;inspecteur passe chaque nuit et traite
           500 URLs par run — les aperçus apparaîtront au fil de ses passages. Le bouton «
           ré-inspecter » de la fiche d&apos;une URL force son relevé immédiatement.
@@ -161,12 +168,15 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
       ) : null}
 
       <nav className="flex flex-wrap items-center gap-2 text-sm">
-        <Link href="?" className="rounded border border-neutral-300 px-2 py-1 hover:bg-neutral-50">
+        <Link
+          href="?"
+          className="rounded border border-[color:var(--color-admin-border-strong)] px-2 py-1 hover:bg-[color:var(--color-admin-paper-alt)]"
+        >
           Tous
         </Link>
         <Link
           href="?defauts=1"
-          className="rounded border border-red-300 bg-red-50 px-2 py-1 text-red-800 hover:bg-red-100"
+          className="rounded border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] px-2 py-1 text-[color:var(--color-admin-destructive-fg)] hover:bg-[color:var(--color-admin-destructive-soft)]"
         >
           En défaut ({enDefaut})
         </Link>
@@ -174,7 +184,7 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
           <Link
             key={n}
             href={`?nature=${n}`}
-            className="rounded border border-neutral-300 px-2 py-1 hover:bg-neutral-50"
+            className="rounded border border-[color:var(--color-admin-border-strong)] px-2 py-1 hover:bg-[color:var(--color-admin-paper-alt)]"
           >
             {NATURE_LABELS[n]}
           </Link>
@@ -182,7 +192,7 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
       </nav>
 
       {tronque ? (
-        <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+        <p className="rounded-lg border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] p-3 text-sm text-[color:var(--color-admin-warning-fg)]">
           Lecture bornée à {luesr.toLocaleString("fr-FR")} routes : au-delà, la page cesserait de se
           charger. Des modèles peuvent manquer — affiner par catégorie ou par recherche pour voir le
           reste. (Cette limite est dite, jamais silencieuse.)
@@ -191,28 +201,38 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
 
       <section className="space-y-8">
         {modeles.length === 0 ? (
-          <p className="text-sm text-neutral-600">Aucun modèle ne correspond à ce filtre.</p>
+          <p className="text-sm text-[color:var(--color-admin-fg-muted)]">
+            Aucun modèle ne correspond à ce filtre.
+          </p>
         ) : null}
 
         {modeles.map((m) => (
-          <article key={m.pathPattern} className="space-y-3 border-t border-neutral-200 pt-5">
+          <article
+            key={m.pathPattern}
+            className="space-y-3 border-t border-[color:var(--color-admin-border)] pt-5"
+          >
             <header className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <code className="rounded bg-neutral-100 px-1.5 py-0.5 text-sm">{m.pathPattern}</code>
+              <code className="rounded bg-[color:var(--color-admin-surface-sunken)] px-1.5 py-0.5 text-sm">
+                {m.pathPattern}
+              </code>
               <span className={`rounded px-1.5 py-0.5 text-xs ${NATURE_TONS[m.nature]}`}>
                 {NATURE_LABELS[m.nature]}
               </span>
-              <span className="text-xs text-neutral-500">
+              <span className="text-xs text-[color:var(--color-admin-fg-muted)]">
                 {m.routes.toLocaleString("fr-FR")} route{m.routes > 1 ? "s" : ""} · {m.relevees}{" "}
                 relevée{m.relevees > 1 ? "s" : ""}
               </span>
-              <Link href={`${base}/${m.id}`} className="text-xs text-blue-700 underline">
+              <Link
+                href={`${base}/${m.id}`}
+                className="text-xs text-[color:var(--color-admin-info)] underline"
+              >
                 fiche de l&apos;exemple
               </Link>
               <a
                 href={m.exemple}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs text-blue-700 underline"
+                className="text-xs text-[color:var(--color-admin-info)] underline"
               >
                 voir la page
               </a>
@@ -221,14 +241,14 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
                   les milliers de pages ville×service. */}
               <Link
                 href={`${base}/apercus/surcharge?portee=route&cible=${encodeURIComponent(m.exemple)}`}
-                className="rounded border border-neutral-300 px-1.5 py-0.5 text-xs hover:bg-neutral-50"
+                className="rounded border border-[color:var(--color-admin-border-strong)] px-1.5 py-0.5 text-xs hover:bg-[color:var(--color-admin-paper-alt)]"
               >
                 modifier cette URL
               </Link>
               {m.routes > 1 ? (
                 <Link
                   href={`${base}/apercus/surcharge?portee=modele&cible=${encodeURIComponent(m.pathPattern)}`}
-                  className="rounded border border-neutral-300 px-1.5 py-0.5 text-xs hover:bg-neutral-50"
+                  className="rounded border border-[color:var(--color-admin-border-strong)] px-1.5 py-0.5 text-xs hover:bg-[color:var(--color-admin-paper-alt)]"
                 >
                   modifier les {m.routes.toLocaleString("fr-FR")} pages du modèle
                 </Link>
@@ -236,9 +256,13 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
             </header>
 
             {m.defauts.length > 0 ? (
-              <ul className="space-y-0.5 text-sm text-red-800">
+              <ul className="space-y-0.5 text-sm text-[color:var(--color-admin-destructive-fg)]">
                 {m.defauts.map((d) => (
-                  <li key={d}>🔴 {d}</li>
+                  <li key={d} className="flex items-start gap-1.5">
+                    {/* Convention console : un composant lucide-react, jamais un emoji. */}
+                    <AlertCircle className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+                    {d}
+                  </li>
                 ))}
               </ul>
             ) : null}
@@ -252,7 +276,7 @@ export default async function ApercusPage({ params, searchParams }: PageProps) {
                 largeurReelle={m.ogImageWidth}
               />
             ) : (
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-[color:var(--color-admin-fg-muted)]">
                 Pas encore relevée — l&apos;aperçu s&apos;affichera après le passage de
                 l&apos;inspecteur.
               </p>
