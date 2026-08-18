@@ -126,7 +126,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: "Flyer A5 · recto-verso",
     format: "A5 · 148 × 210 mm fini · 154 × 216 mm avec 3 mm de fond perdu",
     resume:
-      "La présentation courte d’Axion-IA : les cinq activités, le financement OPCO jusqu’à 0 € de reste à charge, et la visibilité offerte à 0 € au lieu de 650 €. À laisser après un rendez-vous ou à diffuser en salon." /* price-exempt: 650 € n'est PAS un tarif Axion-IA — la visibilité n'est vendue nulle part, `pricing.ts` n'en porte aucune ligne et la page /visibilite-entreprise dit « sans surcoût ». C'est un ancrage de valeur créé le 2026-07-17 pour le catalogue (p.48), repris sur le flyer A5, et déjà whitelisté « hors offres » par check-harmonie.cjs. Le tokeniser serait faux : aucun palier n'existe derrière. ⛔ Will : montant non documenté, cf. prix de référence L.112-1-1. */,
+      "La présentation courte d’Axion-IA : les cinq activités, le financement OPCO jusqu’à 0 € de reste à charge, et la visibilité offerte à 0 € au lieu de 650 €. À laisser après un rendez-vous ou à diffuser en salon.", // price-exempt: décrit ce qui est DÉJÀ IMPRIMÉ sur le flyer A5, pas un tarif servi
     fichiersPublics: [
       {
         chemin: "imprimes/flyer-a5-axion-ia.pdf",
