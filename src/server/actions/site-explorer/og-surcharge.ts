@@ -26,6 +26,9 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { revalidateAndPurge } from "@/server/cache/revalidate-and-purge";
 import { oublierSurchargesOg } from "@/server/seo/og-overrides";
+// Helper PUR, hébergé hors de ce module : `"use server"` interdit d'exporter
+// autre chose que des fonctions `async` (cf. en-tête de chemin-de-route.ts).
+import { cheminDeRoute } from "@/server/seo/chemin-de-route";
 import { requireAdminWrite } from "./_guards";
 
 export interface EntreeSurcharge {
@@ -55,21 +58,6 @@ export interface ResultatSurcharge {
 function vide(v: string | null | undefined): string | null {
   const t = (v ?? "").trim();
   return t.length > 0 ? t : null;
-}
-
-/**
- * Convertit un chemin servi en chemin de FICHIER de route.
- *
- * `revalidatePath` raisonne sur l'arborescence des fichiers, pas sur les URLs :
- * `/fr/audit/par-ville/[ville]` doit lui être présenté comme
- * `/[locale]/audit/par-ville/[ville]`. Vérifié sur reproduction minimale le
- * 2026-08-17 — sans cette conversion, la régénération par modèle ne fait rien
- * et l'échec est SILENCIEUX.
- */
-export function cheminDeRoute(cible: string): string {
-  const segments = cible.split("/").filter(Boolean);
-  if (segments.length === 0) return "/[locale]";
-  return `/[locale]/${segments.slice(1).join("/")}`.replace(/\/$/, "");
 }
 
 export async function enregistrerSurchargeOg(entree: EntreeSurcharge): Promise<ResultatSurcharge> {
