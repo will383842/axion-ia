@@ -7,6 +7,7 @@
 // base, un enregistrement partiel ne doit jamais casser la fiche.
 
 import { AdminBadge } from "@/components/admin/ui";
+import { formatDateFr } from "@/lib/format-date-fr";
 import {
   B2B_ANNEES_OPTIONS,
   DEPLACEMENT_OPTIONS,
@@ -90,8 +91,19 @@ function Row({ label, value }: { label: string; value: string }) {
 
 export function CandidatureCommercialeDetail({
   candidature,
+  vivierConsentAt,
+  consentVersion,
 }: {
   candidature: Record<string, unknown>;
+  /**
+   * Horodatage de l'accord de conservation en vivier. Il vit à la RACINE de
+   * `details`, pas dans `details.candidature` — il n'arrivait donc jamais
+   * jusqu'ici et n'était lisible que dans le dump JSON replié. Absent = pas
+   * d'accord (c'est la convention posée à l'écriture, cf. `actions.ts`).
+   */
+  vivierConsentAt?: string | null;
+  /** Version du texte de consentement accepté — la preuve datée du geste. */
+  consentVersion?: string | null;
 }) {
   const c = candidature;
   const b2b = asObject(c.b2b);
@@ -102,18 +114,28 @@ export function CandidatureCommercialeDetail({
   const pitch = asString(c.pitch);
   const messageLibre = asString(c.messageLibre);
 
+  // ⚠️ La saisie libre « Autre » n'était rendue QUE si la puce `autre` figurait
+  // encore dans le tableau. Or décocher la puce ne vide pas le champ texte
+  // (il n'est que masqué) : le texte partait en base et n'était plus jamais
+  // affiché. On le rend donc dès qu'il existe, puce ou pas.
+  const withAutre = (
+    ids: string[],
+    options: Parameters<typeof optionLabel>[0],
+    autre: string | null,
+  ): string[] => {
+    const labelled = ids.map((id) =>
+      id === "autre" && autre ? `Autre (${autre})` : optionLabel(options, id),
+    );
+    return autre && !ids.includes("autre") ? [...labelled, `Autre (${autre})`] : labelled;
+  };
   const iaOutils = ia
-    ? asStringArray(ia.outils).map((id) =>
-        id === "autre" && asString(ia.outilAutre)
-          ? `Autre (${asString(ia.outilAutre)})`
-          : optionLabel(IA_OUTILS_OPTIONS, id),
-      )
+    ? withAutre(asStringArray(ia.outils), IA_OUTILS_OPTIONS, asString(ia.outilAutre))
     : [];
   const infoUsages = informatique
-    ? asStringArray(informatique.usages).map((id) =>
-        id === "autre" && asString(informatique.usageAutre)
-          ? `Autre (${asString(informatique.usageAutre)})`
-          : optionLabel(INFORMATIQUE_USAGES_OPTIONS, id),
+    ? withAutre(
+        asStringArray(informatique.usages),
+        INFORMATIQUE_USAGES_OPTIONS,
+        asString(informatique.usageAutre),
       )
     : [];
   const zones = zone ? asStringArray(zone.zones) : [];
@@ -165,7 +187,27 @@ export function CandidatureCommercialeDetail({
             />
           ) : null}
           {asString(c.linkedin) ? (
-            <Row label="LinkedIn" value={asString(c.linkedin) as string} />
+            <>
+              <dt className="admin-dt">LinkedIn</dt>
+              <dd className="admin-dd">
+                {/* Rendu CLIQUABLE : un profil LinkedIn recopié à la main est
+                    la première chose qu'un recruteur ouvre. Le candidat peut
+                    saisir l'URL sans protocole (le schéma l'autorise) — on la
+                    préfixe, sinon le lien serait relatif à la console. */}
+                <a
+                  href={
+                    /^https?:\/\//i.test(asString(c.linkedin) as string)
+                      ? (asString(c.linkedin) as string)
+                      : `https://${asString(c.linkedin)}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="admin-link"
+                >
+                  {asString(c.linkedin)}
+                </a>
+              </dd>
+            </>
           ) : null}
           {asString(c.sourceConnaissance) ? (
             <Row
@@ -173,15 +215,36 @@ export function CandidatureCommercialeDetail({
               value={optionLabel(SOURCE_OPTIONS, asString(c.sourceConnaissance) as string)}
             />
           ) : null}
+          {/* Preuve de consentement — jusqu'ici invisible en console : elle
+              n'existait que dans le dump JSON « Informations techniques ». */}
+          <Row
+            label="Conservation en vivier"
+            value={
+              vivierConsentAt
+                ? `Accepté le ${formatDateFr(vivierConsentAt)}`
+                : "Non — pas d’accord enregistré"
+            }
+          />
+          {consentVersion ? <Row label="Version du consentement" value={consentVersion} /> : null}
         </dl>
       </div>
 
       <div className="admin-card">
         <h2 className="admin-h2">Zone et outils</h2>
         <dl className="admin-dl">
+          {/* Le `<dd>` valait la chaîne VIDE dès qu'une zone était choisie :
+              la console affichait un libellé « Zone souhaitée » suivi de rien,
+              les zones réelles n'apparaissant que dans les puces sous la liste.
+              On y remet le compte, les puces gardent le détail. */}
           <Row
             label="Zone souhaitée"
-            value={zoneMobile ? "Peu importe — mobile" : zones.length > 0 ? "" : "—"}
+            value={
+              zoneMobile
+                ? "Peu importe — mobile"
+                : zones.length > 0
+                  ? `${zones.length} zone${zones.length > 1 ? "s" : ""} choisie${zones.length > 1 ? "s" : ""}`
+                  : "—"
+            }
           />
         </dl>
         {!zoneMobile ? <ChipList items={zones} /> : null}

@@ -314,7 +314,17 @@ export const commercialApplicationSchema = z
     zoneMobile: z.boolean(),
     /** Labels lisibles (« Isère (38) », « Auvergne-Rhône-Alpes »). */
     zones: z.array(z.string().trim().min(1).max(60)).max(30).optional(),
-    deplacement: z.enum(DEPLACEMENT_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),
+    /**
+     * OBLIGATOIRE (Will 2026-08-18). Métier de terrain : une candidature sans
+     * réponse ici n'est pas exploitable côté recrutement.
+     *
+     * ⚠️ PAS de `.optional()` — et surtout pas d'`z.enum().optional()` sur un
+     * champ dont l'UI peut renvoyer la chaîne vide : ce couple rejette `""`
+     * avec un message générique, sans jamais désigner le champ fautif (défaut
+     * constaté sur le formulaire de contact le 2026-08-17). Ici l'UI est en
+     * chips et le wizard garantit une valeur non vide avant l'envoi.
+     */
+    deplacement: z.enum(DEPLACEMENT_OPTIONS.map((o) => o.id) as [string, ...string[]]),
     pitch: z.string().trim().min(150).max(800),
     messageLibre: z.string().trim().max(2000).optional(),
     disponibilite: z.string().regex(MOIS_ANNEE),

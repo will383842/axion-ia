@@ -703,7 +703,16 @@ export function StepZone({ a, set, errors }: StepProps) {
       ) : null}
 
       <div className="mt-7">
-        <ChipGroup legend="Es-tu prêt à te déplacer chez les clients ?" optionalHint columns={1}>
+        {/* OBLIGATOIRE (retour Will 2026-08-18) : le métier est du terrain,
+            une candidature sans réponse ici n'est pas exploitable. Le tap ne
+            DÉ-sélectionne donc plus (un radio obligatoire qu'on peut vider
+            laisserait le candidat bloqué sans comprendre pourquoi). */}
+        <ChipGroup
+          legend="Es-tu prêt à te déplacer chez les clients ?"
+          requiredField
+          columns={1}
+          error={errors.deplacement}
+        >
           {DEPLACEMENT_OPTIONS.map((o) => (
             <Chip
               key={o.id}
@@ -711,7 +720,7 @@ export function StepZone({ a, set, errors }: StepProps) {
               value={o.id}
               label={o.label}
               checked={a.deplacement === o.id}
-              onToggle={(v) => set({ deplacement: a.deplacement === v ? "" : v })}
+              onToggle={(v) => set({ deplacement: v })}
             />
           ))}
         </ChipGroup>
