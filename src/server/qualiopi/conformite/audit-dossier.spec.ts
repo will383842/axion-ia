@@ -63,7 +63,7 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
 import { getObjectBufferR2, isR2Configured } from "@/lib/r2-storage";
 import { renderRegistrePdfBuffer } from "@/server/qualiopi/registres/registres-pdf";
-import { genererManifesteAudit, genererDossierAuditZip } from "./audit-dossier";
+import { genererManifesteAudit, genererDossierAuditZip, MAX_PIECES_LISTEES } from "./audit-dossier";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
 import JSZip from "jszip";
 // Type réel de l'énumération Prisma : un type de document mal orthographié dans
@@ -718,7 +718,9 @@ describe("Manifeste — une pièce annulée ne se compte nulle part", () => {
     );
     const manifeste = await genererManifesteAudit();
     const ind17 = manifeste.json.indicateurs.find((i) => i.numero === 17);
-    expect(ind17?.documents).toContainEqual({ type: "lettre_mission", count: 1 });
+    // `pieces` est vide ici : le double de `findMany` du bloc ne rend rien.
+    // Le comptage, lui, vient du `groupBy` — c'est bien lui qui est testé.
+    expect(ind17?.documents).toContainEqual({ type: "lettre_mission", count: 1, pieces: [] });
   });
 
   it("le manifeste du ZIP n'annonce aucune pièce que le ZIP ne contient pas", async () => {
@@ -896,5 +898,170 @@ describe("Manifeste — un indicateur non applicable ne présente aucune pièce"
     expect(typesAnnonces(manifeste, 12)).toEqual(
       expect.arrayContaining(["emargement", "releve_connexion"]),
     );
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 2026-08-17 — le manifeste annonçait des pièces qu'il ne permettait pas
+// d'ouvrir.
+//
+// `PreuveDocument` valait `{ type, count }` : un libellé et un nombre. L'écran
+// de l'auditrice affichait « Feuille d'émargement — 3 pièces » sans un seul
+// numéro, sans un seul lien. La cause était EN AMONT de l'affichage : le modèle
+// ne portait aucun identifiant, donc aucune vue ne POUVAIT en proposer.
+//
+// Le remède porte sa propre limite : une session peut cumuler des dizaines de
+// pièces d'un même type, et une liste de deux cents liens n'est pas une preuve,
+// c'est un annuaire. D'où un plafond — qui doit se DIRE quand il mord : une
+// troncature muette se lit comme une liste complète.
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface PieceDeRegistre {
+  readonly id: string;
+  readonly type: DocumentType;
+  readonly numero: string;
+  readonly createdAt: Date;
+  readonly annulee: boolean;
+}
+
+/**
+ * Double de `prisma.documentGenere.findMany` qui HONORE `where.type`,
+ * `where.annuleeAt`, `orderBy: { createdAt: "desc" }` et surtout `take`.
+ *
+ * 🔴 `take` est honoré EXPRÈS. Si le double tronquait de lui-même, le test du
+ * plafond ne testerait que le double : retirer `take: MAX_PIECES_LISTEES` du
+ * code de production ne changerait rien et la garde ne garderait rien. Ici,
+ * le retirer fait remonter les douze pièces — et les assertions rougissent.
+ */
+function findManyPiecesBornees(registre: ReadonlyArray<PieceDeRegistre>) {
+  return (args?: {
+    where?: { type?: DocumentType; annuleeAt?: Date | null };
+    take?: number;
+  }): Promise<unknown[]> => {
+    const retenues = registre
+      .filter((p) => args?.where?.type === undefined || p.type === args.where.type)
+      .filter((p) => (args?.where?.annuleeAt === null ? !p.annulee : true))
+      .slice()
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    const bornees = args?.take === undefined ? retenues : retenues.slice(0, args.take);
+    return Promise.resolve(bornees.map((p) => ({ id: p.id, numero: p.numero })));
+  };
+}
+
+/** Fabrique `n` émargements datés croissants — le plus récent porte le n° le plus haut. */
+function emargements(n: number): PieceDeRegistre[] {
+  return Array.from({ length: n }, (_, i) => ({
+    id: `doc-${String(i + 1).padStart(3, "0")}`,
+    type: "emargement" as DocumentType,
+    numero: `AXI-EMAR-2026-${String(i + 1).padStart(3, "0")}`,
+    createdAt: new Date(2026, 0, i + 1),
+    annulee: false,
+  }));
+}
+
+describe("Manifeste — les pièces sont DÉSIGNABLES, et le plafond se dit", () => {
+  function armerRegistre(registre: ReadonlyArray<PieceDeRegistre>): void {
+    mockPrisma.documentGenere.groupBy.mockImplementation(
+      groupByHonorantAnnulation(registre.map((p) => ({ type: p.type, annulee: p.annulee }))),
+    );
+    mockPrisma.documentGenere.findMany.mockImplementation(findManyPiecesBornees(registre));
+  }
+
+  /** La rubrique « Documents » d'un indicateur, pour un type donné. */
+  function rubrique(
+    manifeste: Awaited<ReturnType<typeof genererManifesteAudit>>,
+    numero: number,
+    type: string,
+  ) {
+    return manifeste.json.indicateurs
+      .find((i) => i.numero === numero)
+      ?.documents.find((d) => (d.type as string) === type);
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+    mockPrisma.veille.count.mockResolvedValue(0);
+    mockPrisma.appreciation.count.mockResolvedValue(0);
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    mockGetConfig.mockResolvedValue("");
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    mockIsR2Configured.mockReturnValue(true);
+    armerRegistre([]);
+  });
+
+  it("chaque pièce annoncée porte son identifiant ET son numéro", async () => {
+    armerRegistre(emargements(2));
+    const manifeste = await genererManifesteAudit();
+
+    // off.12 (émargement / relevé de connexion), les plus récentes d'abord.
+    expect(rubrique(manifeste, 12, "emargement")?.pieces).toEqual([
+      { id: "doc-002", numero: "AXI-EMAR-2026-002" },
+      { id: "doc-001", numero: "AXI-EMAR-2026-001" },
+    ]);
+  });
+
+  it("une pièce ANNULÉE n'est jamais proposée au téléchargement", async () => {
+    armerRegistre([
+      ...emargements(1),
+      {
+        id: "doc-mort",
+        type: "emargement" as DocumentType,
+        numero: "AXI-EMAR-2026-666",
+        createdAt: new Date(2026, 5, 1),
+        annulee: true,
+      },
+    ]);
+    const manifeste = await genererManifesteAudit();
+    const r = rubrique(manifeste, 12, "emargement");
+    expect(r?.count).toBe(1);
+    expect(r?.pieces.map((p) => p.id)).toEqual(["doc-001"]);
+  });
+
+  it("le plafond mord : le compte reste EXACT, l'énumération est bornée", async () => {
+    armerRegistre(emargements(12));
+    const manifeste = await genererManifesteAudit();
+    const r = rubrique(manifeste, 12, "emargement");
+
+    // Le compte est celui du registre — jamais remplacé par le nombre affiché.
+    expect(r?.count).toBe(12);
+    expect(r?.pieces).toHaveLength(MAX_PIECES_LISTEES);
+    expect(r?.pieces[0]).toEqual({ id: "doc-012", numero: "AXI-EMAR-2026-012" });
+  });
+
+  it("le plafond est ANNONCÉ dans le Markdown remis au certificateur", async () => {
+    armerRegistre(emargements(12));
+    const manifeste = await genererManifesteAudit();
+    expect(manifeste.markdown).toContain(
+      `- \`emargement\` : 12 documents — ${MAX_PIECES_LISTEES} numéros listés sur 12 :`,
+    );
+  });
+
+  it("sous le plafond, aucune troncature n'est annoncée (contrôle de sensibilité)", async () => {
+    armerRegistre(emargements(2));
+    const manifeste = await genererManifesteAudit();
+    expect(manifeste.markdown).toContain(
+      "- `emargement` : 2 documents — AXI-EMAR-2026-002, AXI-EMAR-2026-001",
+    );
+    expect(manifeste.markdown).not.toMatch(/numéros? listés? sur/);
+  });
+
+  it("le format de la ligne Markdown est INCHANGÉ : les numéros s'ajoutent, ils ne remplacent rien", async () => {
+    armerRegistre(emargements(1));
+    const manifeste = await genererManifesteAudit();
+    // Le préfixe historique « - `type` : N document(s) » reste intact ; aucun
+    // identifiant technique n'est versé sur le document imprimé.
+    expect(manifeste.markdown).toContain("- `emargement` : 1 document — AXI-EMAR-2026-001");
+    expect(manifeste.markdown).not.toContain("doc-001");
+  });
+
+  it("aucune requête de pièces pour un type absent du registre", async () => {
+    armerRegistre(emargements(1));
+    await genererManifesteAudit();
+    const typesInteroges = mockPrisma.documentGenere.findMany.mock.calls.map(
+      (appel) => (appel[0] as { where: { type: string } }).where.type,
+    );
+    expect(typesInteroges).toEqual(["emargement"]);
   });
 });

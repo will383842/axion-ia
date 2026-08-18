@@ -50,11 +50,50 @@ export interface DossierAuditZipResult {
   readonly avertissements: string[];
 }
 
+/**
+ * Nombre maximum de pièces NOMMÉES par type de document dans le manifeste.
+ *
+ * 🔴 Le manifeste n'a jamais porté le moindre identifiant : `{ type, count }`,
+ * rien d'autre. L'auditrice lisait « émargement — 12 pièces » sans qu'aucune de
+ * ces douze pièces ne soit désignable, ni ouvrable depuis l'écran. Le compte
+ * disait qu'il y avait quelque chose ; il ne disait pas QUOI.
+ *
+ * Mais une session peut porter des dizaines de pièces d'un même type : lister
+ * les 200 émargements d'une année transformerait la carte de l'indicateur en
+ * annuaire, et le manifeste imprimé en listing. On plafonne donc à cinq — assez
+ * pour ouvrir un échantillon et vérifier une numérotation, pas assez pour noyer
+ * la lecture.
+ *
+ * ⚠️ Le plafond se DIT partout où il mord (`count > pieces.length`) : à
+ * l'écran comme dans le Markdown. Une troncature muette se lit comme une liste
+ * complète, et l'auditrice conclurait qu'il n'existe que cinq pièces là où le
+ * registre en porte douze. `count` reste EXACT (il vient du `groupBy`) — seule
+ * l'énumération est bornée.
+ */
+export const MAX_PIECES_LISTEES = 5;
+
+/** Une pièce désignable : son identifiant technique et son numéro au registre. */
+export interface PieceReference {
+  /** `DocumentGenere.id` — cible de `/api/qualiopi/documents/<id>`. */
+  readonly id: string;
+  /** Numéro au registre (`AXI-DOC-2026-038`), seul lisible par un humain. */
+  readonly numero: string;
+}
+
 export interface PreuveDocument {
   /** Type Prisma du document (DocumentType enum). */
   readonly type: DocumentType;
-  /** Nombre de documents de ce type en base. */
+  /**
+   * Nombre EXACT de documents de ce type en base (pièces annulées exclues).
+   * Jamais plafonné : c'est le compte du registre.
+   */
   readonly count: number;
+  /**
+   * Pièces désignables de ce type, les plus récentes d'abord, PLAFONNÉES à
+   * {@link MAX_PIECES_LISTEES}. `pieces.length < count` signifie « liste
+   * tronquée » — et doit être annoncé par tout rendu.
+   */
+  readonly pieces: readonly PieceReference[];
 }
 
 export interface IndicateurManifeste {
@@ -336,6 +375,40 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
 
   const countByType = new Map<DocumentType, number>(docCounts.map((d) => [d.type, d._count._all]));
 
+  // ── Pièces DÉSIGNABLES, par type ─────────────────────────────────────────
+  //
+  // Le `groupBy` ci-dessus donne des COMPTES ; il ne donne aucun identifiant.
+  // Sans identifiant, ni la console ni le Markdown ne peuvent renvoyer vers la
+  // pièce : le manifeste annonçait des preuves qu'il ne permettait pas d'ouvrir.
+  //
+  // Une requête par type, bornée à MAX_PIECES_LISTEES : on ne rapatrie jamais
+  // les milliers de lignes du registre, et le plafond est appliqué par Postgres
+  // (`take`), pas après coup en mémoire. Seuls les types qui servent de preuve
+  // à un indicateur ET qui existent en base sont interrogés — les autres ne
+  // seraient affichés nulle part.
+  const typesInteroges = [
+    ...new Set(
+      Object.values(INDICATEUR_DOCUMENT_TYPES).flatMap((types) => types ?? ([] as DocumentType[])),
+    ),
+  ].filter((type) => (countByType.get(type) ?? 0) > 0);
+
+  const piecesParType = new Map<DocumentType, PieceReference[]>(
+    await Promise.all(
+      typesInteroges.map(async (type): Promise<[DocumentType, PieceReference[]]> => {
+        const pieces = await prisma.documentGenere.findMany({
+          // ⚠️ MÊME filtre que le comptage et que la constitution du ZIP : une
+          // pièce annulée ne se compte nulle part, et ne se propose donc pas
+          // non plus en téléchargement.
+          where: { type, annuleeAt: null },
+          select: { id: true, numero: true },
+          orderBy: { createdAt: "desc" },
+          take: MAX_PIECES_LISTEES,
+        });
+        return [type, pieces];
+      }),
+    ),
+  );
+
   // Construction des entrées du manifeste
   const indicateurs: IndicateurManifeste[] = conformite.indicateurs.map((ind) => {
     // 🔴 Un indicateur NON APPLICABLE ne présente aucune pièce. Le Markdown
@@ -347,7 +420,11 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     const docTypes =
       ind.statut === "non_applicable" ? [] : (INDICATEUR_DOCUMENT_TYPES[ind.numero] ?? []);
     const documents: PreuveDocument[] = docTypes
-      .map((type) => ({ type, count: countByType.get(type) ?? 0 }))
+      .map((type) => ({
+        type,
+        count: countByType.get(type) ?? 0,
+        pieces: piecesParType.get(type) ?? [],
+      }))
       .filter((d) => d.count > 0);
 
     // Fusionner les preuves de conformite-service avec les preuves enrichies du manifeste
@@ -615,6 +692,28 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Suffixe Markdown d'une rubrique « Documents » : les NUMÉROS des pièces.
+ *
+ * Le format de la ligne est INCHANGÉ (« - `type` : N document(s) ») — seuls des
+ * numéros s'y ajoutent, et jamais d'identifiants techniques : un UUID sur une
+ * feuille imprimée ne dit rien à personne, alors qu'un numéro de registre est
+ * exactement ce que l'auditrice recoupe avec `preuves/<type>/<numero>.pdf` dans
+ * le ZIP du même dossier.
+ *
+ * ⚠️ Quand la liste est plafonnée, le suffixe le DIT. Un « 12 documents — A, B,
+ * C, D, E » muet se lirait comme une énumération complète, donc comme un
+ * registre de cinq pièces amputé de sept.
+ */
+function suffixeNumeros(d: PreuveDocument): string {
+  const numeros = d.pieces.map((p) => p.numero);
+  if (numeros.length === 0) return "";
+  if (numeros.length < d.count) {
+    return ` — ${numeros.length} numéro${numeros.length > 1 ? "s" : ""} listé${numeros.length > 1 ? "s" : ""} sur ${d.count} : ${numeros.join(", ")}`;
+  }
+  return ` — ${numeros.join(", ")}`;
+}
+
 function buildMarkdown(payload: ManifesteAuditPayload): string {
   const lignes: string[] = [];
 
@@ -668,7 +767,9 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
           lignes.push("");
           lignes.push("**Documents :**");
           for (const d of ind.documents) {
-            lignes.push(`- \`${d.type}\` : ${d.count} document${d.count > 1 ? "s" : ""}`);
+            lignes.push(
+              `- \`${d.type}\` : ${d.count} document${d.count > 1 ? "s" : ""}${suffixeNumeros(d)}`,
+            );
           }
         }
 
