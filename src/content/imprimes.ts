@@ -126,7 +126,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: "Flyer A5 · recto-verso",
     format: "A5 · 148 × 210 mm fini · 154 × 216 mm avec 3 mm de fond perdu",
     resume:
-      "La présentation courte d’Axion-IA : les cinq activités, le financement OPCO jusqu’à 0 € de reste à charge, et la visibilité offerte à 0 € au lieu de 650 €. À laisser après un rendez-vous ou à diffuser en salon.",
+      "La présentation courte d’Axion-IA : les cinq activités, le financement OPCO jusqu’à 0 € de reste à charge, et la visibilité offerte à 0 € au lieu de 650 €. À laisser après un rendez-vous ou à diffuser en salon." /* price-exempt: montant IMPRIMÉ sur le flyer, figé au tirage. Le tokeniser ferait DÉRIVER la description du papier réellement distribué. */,
     fichiersPublics: [
       {
         chemin: "imprimes/flyer-a5-axion-ia.pdf",
