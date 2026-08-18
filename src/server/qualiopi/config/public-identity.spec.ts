@@ -23,7 +23,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 }));
 
 import { prisma } from "@/lib/prisma";
-import { computeQualiopiPublicIdentity } from "./public-identity";
+import { computeNdaPublic, computeQualiopiPublicIdentity } from "./public-identity";
 
 const mockFindUnique = prisma.siteSetting.findUnique as unknown as ReturnType<typeof vi.fn>;
 
@@ -104,5 +104,53 @@ describe("computeQualiopiPublicIdentity — gate Phase A/B", () => {
     expect(res?.qualiopiValidite).toBe("2031-06-30");
     // catégories non renseignées → défaut du registre
     expect(res?.categoriesCertifiees).toBe("Actions de formation");
+  });
+});
+
+/**
+ * 🔴 Découplage du 2026-08-17 — le NDA ne dépend PAS de la certification.
+ *
+ * L'enregistrement DREETS est un fait administratif que l'art. L.6352-12 impose
+ * même de mentionner ; la certification Qualiopi est une attestation de qualité
+ * délivrée après audit. Les enfermer dans la même garde avait rendu le récépissé
+ * du 17 août 2026 invisible sur le site. Le premier test ci-dessous échoue sur
+ * l'ancien code : c'est lui qui garde la séparation.
+ */
+describe("computeNdaPublic — enregistrement ≠ certification", () => {
+  it("🚨 Phase B SANS certification → le NDA sort quand même", async () => {
+    process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
+    delete process.env.QUALIOPI_CERTIFICATION_OBTENUE;
+    seedConfig({ "qualiopi.nda_numero": "84381100438" });
+
+    expect(await computeNdaPublic()).toBe("84381100438");
+    // Et la revendication Qualiopi, elle, reste bien éteinte.
+    expect(await computeQualiopiPublicIdentity()).toBeNull();
+  });
+
+  it("Phase A → chaîne vide, et AUCUN accès DB", async () => {
+    delete process.env.OF_PUBLIC_DISCLOSURE_ENABLED;
+    seedConfig({ "qualiopi.nda_numero": "84381100438" });
+
+    expect(await computeNdaPublic()).toBe("");
+    expect(mockFindUnique).not.toHaveBeenCalled();
+  });
+
+  it("clé absente en base → défaut du registre (le numéro réel, dispo au build stub)", async () => {
+    // Le build SSG tourne sur `stub.invalid` : `findUnique` renvoie null. Sans
+    // défaut de registre, la mention légale manquerait du HTML figé.
+    process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
+    seedConfig({});
+
+    expect(await computeNdaPublic()).toBe("84381100438");
+  });
+
+  it("ligne enregistrée VIDE → chaîne vide (le vide en base gagne sur le défaut)", async () => {
+    // Comportement de `getQualiopiConfig`, documenté ici parce qu'il justifie la
+    // migration `20260817120000_nda_declaration_activite`, qui supprime
+    // précisément cette ligne-là.
+    process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
+    seedConfig({ "qualiopi.nda_numero": "" });
+
+    expect(await computeNdaPublic()).toBe("");
   });
 });
