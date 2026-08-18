@@ -170,11 +170,23 @@ function resolveLocalizedPath(path: string, locale: Locale): string {
 }
 
 /**
+ * Longueur maximale servie d'une meta description. Au-delà,
+ * `truncateMetaDescription()` coupe et ajoute une ellipse — **silencieusement**.
+ *
+ * 🔑 Exporté pour que le garde-fou statique
+ * (`src/lib/__tests__/meta-description-longueur.spec.ts`) mesure la MÊME valeur
+ * que le rendu. Un seuil recopié dans le test dérive du seuil réel sans que
+ * personne ne le voie ; c'est la classe de défaut que ce garde-fou existe pour
+ * empêcher, il aurait été absurde de la reproduire dans le garde-fou lui-même.
+ */
+export const META_DESCRIPTION_MAX = 158;
+
+/**
  * Borne une meta description à 158 caractères (anti-troncature SERP Google).
  * Coupe au dernier mot complet sous la limite + ellipse. Perfection 2026 :
  * démontre un contrôle éditorial et évite les « … » imposés par le moteur.
  */
-export function truncateMetaDescription(d: string, max = 158): string {
+export function truncateMetaDescription(d: string, max = META_DESCRIPTION_MAX): string {
   if (d.length <= max) return d;
   const slice = d.slice(0, max - 1);
   const lastSpace = slice.lastIndexOf(" ");
