@@ -889,6 +889,30 @@ export const PRICING_CATEGORIES = {
   codage: CODAGE_TIERS,
 } as const;
 
+/**
+ * Valeur de référence du coup de projecteur — le montant BARRÉ affiché face au
+ * 0 € de l'offre (podcast dirigeant, interviews des équipes, page dédiée).
+ *
+ * Décision Will 2026-08-18 : ce montant est bien celui du podcast, il doit être
+ * conservé et affiché barré, avec l'offre à 0 € en regard.
+ *
+ * Ce n'est pas un `PricingTier` et ça ne doit pas en devenir un : la visibilité
+ * n'est jamais vendue, elle accompagne toute prestation. Mais un prix barré est
+ * une affirmation tarifaire — en droit de la consommation, une réduction
+ * annoncée engage sur la réalité de son prix de référence. Il appartient donc
+ * à la SSOT au même titre qu'un tarif servi, et pas à une chaîne de caractères
+ * isolée dans un fichier de contenu.
+ *
+ * HISTORIQUE — pourquoi ce commentaire est long. Le montant a vécu en dur dans
+ * `content/imprimes.ts` sous un marqueur `price-exempt`, qui éteignait le
+ * garde-fou anti-prix-obsolète. Faute de source, #724 en a conclu qu'aucun prix
+ * de référence n'existait et l'a retiré du texte ET du PDF. C'était une
+ * déduction raisonnable à partir du dépôt seul — et fausse. La valeur existait,
+ * elle n'était simplement écrite nulle part où on puisse la vérifier. C'est
+ * exactement ce que cette constante corrige.
+ */
+export const VALEUR_REFERENCE_COUP_DE_PROJECTEUR_EUR = 650;
+
 // ============================================================================
 // Helpers
 // ============================================================================
