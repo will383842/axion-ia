@@ -18,6 +18,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight, Rss, Newspaper, ShieldCheck, CalendarClock } from "lucide-react";
 import { routing } from "@/i18n/routing";
+import { FOUNDER_PERSON_ID } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
@@ -197,7 +198,7 @@ export default async function ActualitesHub({ params }: Props) {
     // E-E-A-T : revue éditoriale rattachée au nœud Person canonique du fondateur
     // (référence `@id`, pas de duplication d'identité). Parité hub /blog.
     extra: {
-      reviewedBy: { "@id": `${SITE_URL}/fr/equipe/williams#person` },
+      reviewedBy: { "@id": FOUNDER_PERSON_ID },
     },
   });
 

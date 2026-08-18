@@ -16,7 +16,7 @@
  */
 
 import { SITE_URL } from "@/lib/seo";
-import { FOUNDER } from "@/lib/brand";
+import { FOUNDER, FOUNDER_PERSON_ID, founderUrl } from "@/lib/brand";
 
 // Audit E-E-A-T 2026-06-22 (P1) — identité (nom, fonction, LinkedIn, knowsAbout)
 // dérivée du SSOT `FOUNDER` (lib/brand.ts). Seules la bio longue + la photo
@@ -52,15 +52,23 @@ export const WILLIAMS_PROFILE = {
   isActive: true,
 } as const;
 
-/** Nœud Person JSON-LD de Williams (sameAs LinkedIn, worksFor Organization). */
-export function buildPersonWilliamsJsonLd(locale: string = "fr"): Record<string, unknown> {
+/**
+ * Nœud Person JSON-LD de Williams (sameAs LinkedIn, worksFor Organization).
+ *
+ * ⚠️ Le paramètre `locale` NE change plus l'`@id` ni l'`url`, et c'est une correction, pas
+ * une régression. La fiche `/equipe/[slug]` 404 hors FR (`page.tsx` → `notFound()`) : un
+ * appel en `en` fabriquait donc un `@id` `…/en/equipe/williams#person` qui ne désignait
+ * aucune page servie — une seconde entité pour la même personne, née d'un argument. L'`@id`
+ * canonique vit dans `FOUNDER_PERSON_ID` et ne dépend de rien.
+ */
+export function buildPersonWilliamsJsonLd(_locale: string = "fr"): Record<string, unknown> {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": `${SITE_URL}/${locale}/equipe/williams#person`,
+    "@id": FOUNDER_PERSON_ID,
     name: FOUNDER.fullName,
     jobTitle: FOUNDER.jobTitleFr,
-    url: `${SITE_URL}/${locale}/equipe/williams`,
+    url: founderUrl(),
     image: `${SITE_URL}${WILLIAMS_PHOTO}`,
     sameAs: [WILLIAMS_LINKEDIN],
     worksFor: { "@id": `${SITE_URL}/#organization` },

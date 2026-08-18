@@ -21,7 +21,15 @@ import {
   buildHowToJsonLd,
   buildQAPageJsonLd,
 } from "@/lib/seo-content-gen-factories";
-import { buildFaqJsonLd } from "@/lib/seo";
+import {
+  buildFaqJsonLd,
+  buildPersonJsonLd,
+  // Homonyme de la factory content-gen importée au-dessus : ce sont DEUX fonctions
+  // distinctes, et c'est celle-ci — la générique de `lib/seo` — qui signait chaque article
+  // d'un `Person` anonyme.
+  buildArticleJsonLd as buildArticleJsonLdGenerique,
+} from "@/lib/seo";
+import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 import { buildPersonWilliamsJsonLd } from "@/lib/seo/williams-person";
 
 /** Collecte récursive des anomalies de structure dans un nœud JSON-LD. */
@@ -138,5 +146,69 @@ describe("jsonld-validation (gate schema CI)", () => {
     const p = buildPersonWilliamsJsonLd("fr");
     expectValidJsonLd("Person Williams", p);
     expect(String(p["@id"])).toMatch(/\/fr\/equipe\/williams#person$/);
+  });
+
+  /**
+   * UNE personne, UN `@id` (2026-08-17).
+   *
+   * Le dépôt fabriquait quatre identifiants pour Williams : `/fr/equipe/williams#person`
+   * (la fiche), `/{locale}/equipe/williams#person` (les `reviewedBy`, donc un second en EN),
+   * `/a-propos#will` (les défauts de `buildPersonJsonLd` et `buildArticleJsonLd`), et rien
+   * du tout sur l'auteur de chaque article — un `Person` anonyme par page. Un `@id` est un
+   * NOM d'entité : quatre noms ne décrivent pas mieux une personne, ils la divisent en
+   * quatre moitiés dont aucune ne fait autorité.
+   */
+  describe("une seule entité Person pour le fondateur", () => {
+    /**
+     * `buildOrganizationJsonLd` n'est pas exercé ici : plusieurs de ses paramètres ont pour
+     * valeur par défaut une variable d'environnement SERVEUR, que cet environnement de test
+     * refuse de lire. Son `founder["@id"]` dérive de la même constante — il ne peut pas
+     * diverger sans que le typage casse.
+     */
+    it("la fiche et le Person par défaut citent le MÊME `@id`", () => {
+      expect(buildPersonWilliamsJsonLd("fr")["@id"]).toBe(FOUNDER_PERSON_ID);
+      expect(buildPersonJsonLd({ locale: "fr" })["@id"]).toBe(FOUNDER_PERSON_ID);
+    });
+
+    it("la locale ne fabrique plus un second `@id` — la fiche n'existe qu'en FR", () => {
+      expect(buildPersonWilliamsJsonLd("en")["@id"]).toBe(FOUNDER_PERSON_ID);
+      expect(buildPersonJsonLd({ locale: "en" })["@id"]).toBe(FOUNDER_PERSON_ID);
+    });
+
+    it("l'auteur d'un article signé du fondateur CITE l'entité au lieu de la redécrire", () => {
+      const article = buildArticleJsonLdGenerique({
+        locale: "fr",
+        path: "/blog/exemple",
+        headline: "Un titre",
+        description: "Une description.",
+        datePublished: "2026-08-17",
+      }) as { author: { "@id"?: string; name: string; url: string } };
+      expect(article.author["@id"]).toBe(FOUNDER_PERSON_ID);
+      expect(article.author.name).toBe(FOUNDER.fullName);
+      expect(article.author.url).not.toContain("#will");
+    });
+
+    it("le slug legacy `will` converge au lieu de continuer à diverger", () => {
+      expect(buildPersonJsonLd({ locale: "fr", slug: "will" })["@id"]).toBe(FOUNDER_PERSON_ID);
+    });
+
+    /**
+     * Le garde-fou qui compte : poser l'`@id` du fondateur sur quelqu'un d'autre
+     * FUSIONNERAIT deux personnes, ce qui est pire que de n'en identifier aucune.
+     */
+    it("n'attribue JAMAIS l'`@id` du fondateur à un autre auteur", () => {
+      const autre = buildPersonJsonLd({ locale: "fr", slug: "invite", name: "Autre Personne" });
+      expect(autre).not.toHaveProperty("@id");
+      const articleAutre = buildArticleJsonLdGenerique({
+        locale: "fr",
+        path: "/blog/invite",
+        headline: "Un titre",
+        description: "Une description.",
+        datePublished: "2026-08-17",
+        authorSlug: "invite",
+        authorName: "Autre Personne",
+      }) as { author: { "@id"?: string } };
+      expect(articleAutre.author).not.toHaveProperty("@id");
+    });
   });
 });
