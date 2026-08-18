@@ -25,7 +25,10 @@ import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLife
 import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
 import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
 import { SessionLieuForm } from "@/components/admin/qualiopi/SessionLieuForm";
+import { SessionDatesForm } from "@/components/admin/qualiopi/SessionDatesForm";
 import { lieuValuesDepuisSession } from "@/components/admin/qualiopi/lieu-values";
+import { parisDateISO, parisMinutesDuJour } from "@/server/qualiopi/presence/time";
+import { compterJoursHorsPlage } from "@/server/qualiopi/sessions/requalification-dates";
 import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntreprisesSection";
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
@@ -112,6 +115,21 @@ function formatDateFR(d: Date): string {
     month: "long",
     year: "numeric",
   });
+}
+
+/**
+ * Valeur pour `<input type="datetime-local">`, ancrée sur Europe/Paris.
+ *
+ * ⚠️ Calculée ICI, côté serveur, et pas dans le composant client : formater une
+ * `Date` avec les accesseurs locaux donnerait un résultat différent au rendu
+ * serveur et au rendu navigateur dès qu'un poste n'est pas à l'heure de Paris —
+ * erreur d'hydratation, et surtout heure fausse affichée dans le champ.
+ */
+function pourInputDateTimeLocal(d: Date): string {
+  const minutes = parisMinutesDuJour(d);
+  const hh = String(Math.floor(minutes / 60)).padStart(2, "0");
+  const mm = String(minutes % 60).padStart(2, "0");
+  return `${parisDateISO(d)}T${hh}:${mm}`;
 }
 
 function statutColor(s: TrainingSessionStatut): string {
@@ -205,6 +223,23 @@ export default async function SessionHubPage({ params }: PageProps) {
   if (!trainingSession) notFound();
 
   const mentionTvaSession = mentionTva(await getQualiopiConfig("regime_tva"));
+
+  // 🔴 DIVERGENCE PLAGE ↔ JOURNÉES, rendue visible en permanence.
+  //
+  // Corriger les dates d'une session ne décale PAS les `SessionJour` — décision
+  // et ses trois raisons dans `sessions/requalification-dates.ts`. Le prix de
+  // cette décision est une divergence possible ; une divergence silencieuse est
+  // un piège, donc on la compte à chaque rendu et l'écran la dit.
+  const joursDeclaresSession = await prisma.sessionJour.findMany({
+    where: { sessionId: id },
+    select: { date: true },
+  });
+  const joursHorsPlageSession = compterJoursHorsPlage({
+    // `@db.Date` stocke minuit UTC : `toISOString` redonne le jour civil.
+    joursISO: joursDeclaresSession.map((j) => j.date.toISOString().slice(0, 10)),
+    debutISO: parisDateISO(trainingSession.dateDebut),
+    finISO: parisDateISO(trainingSession.dateFin),
+  });
 
   // 🔴 UI 2026-07-27 — l'écran ne prévenait JAMAIS que les documents sortiraient
   // en SPÉCIMEN. On le découvrait en ouvrant le PDF, une fois généré — ou pas du
@@ -672,6 +707,24 @@ export default async function SessionHubPage({ params }: PageProps) {
             baseSessions={base}
           />
         </div>
+      </section>
+
+      {/* ── Dates de déroulement ───────────────────────────────────────────
+          🔴 Rangé ICI, avec le lieu, et surtout PAS dans « Cycle de vie » : les
+          dates sont un ATTRIBUT de la session, le report est un ÉVÉNEMENT qui
+          crée une seconde session et laisse la première « Reportée » au
+          registre. Voisiner avec les boutons de report ferait choisir le
+          marteau-pilon pour une faute de frappe. */}
+      <section id="dates" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+        <h2 className={sectionHeadCls}>Dates de déroulement</h2>
+        <SessionDatesForm
+          sessionId={id}
+          initialDateDebut={pourInputDateTimeLocal(trainingSession.dateDebut)}
+          initialDateFin={pourInputDateTimeLocal(trainingSession.dateFin)}
+          joursHorsPlage={joursHorsPlageSession}
+          nbJoursDeclares={joursDeclaresSession.length}
+          hrefJournees={`${sessionBase}/emargement`}
+        />
       </section>
 
       {/* ── Lieu de déroulement (convention L.6353-1 · Qualiopi off.9) ────── */}
