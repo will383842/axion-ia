@@ -215,6 +215,10 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
     case 6: {
       if (!a.zoneMobile && a.zones.length === 0)
         e.zones = "Choisis au moins une zone, ou « Peu importe, je suis mobile ».";
+      // Le déplacement chez le client n'est PLUS facultatif (Will 2026-08-18) :
+      // c'est un métier de terrain, la réponse conditionne l'exploitabilité de
+      // la candidature. Garde miroir côté serveur dans `model.ts`.
+      if (!a.deplacement) e.deplacement = "Dis-nous si tu peux te déplacer chez les clients.";
       return e;
     }
     case 7: {
@@ -293,7 +297,10 @@ export function buildSubmissionPayload(a: WizardAnswers): CommercialApplicationI
       : {}),
     zoneMobile: a.zoneMobile,
     ...(a.zoneMobile || a.zones.length === 0 ? {} : { zones: a.zones }),
-    ...(a.deplacement ? { deplacement: a.deplacement } : {}),
+    // OBLIGATOIRE depuis le 2026-08-18 : plus de `...(x ? {} : {})`, le champ
+    // part TOUJOURS. Un spread conditionnel sur un champ devenu requis ferait
+    // échouer le schéma serveur avec un message générique côté candidat.
+    deplacement: a.deplacement,
     pitch: a.pitch.trim(),
     ...(a.messageLibre.trim() ? { messageLibre: a.messageLibre.trim() } : {}),
     disponibilite: mmYYYY(a.dispoMois, a.dispoAnnee),

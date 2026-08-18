@@ -1575,6 +1575,129 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  // ===== Recrutement commercial (/memo-isere + tunnel de candidature) =====
+  // Photos Unsplash curées POUR ces deux pages (planche-contact relue, cf.
+  // `scripts/curate-memo-isere-unsplash.mjs`) puis servies en AVIF LOCAL — la
+  // page hotlinkait auparavant `images.unsplash.com`, donc rien n'était
+  // indexable sous notre domaine. `origin: "unsplash"` : le fichier est chez
+  // nous, le droit reste au photographe (aucune licence CC BY déclarée), et
+  // l'attribution est rendue sur la page (CGU Unsplash §9).
+  {
+    path: "/memo-isere",
+    images: [
+      {
+        src: "/illustrations/memo-isere/commercial-independant-ia-rendez-vous-dirigeant-pme-axion-ia.avif",
+        origin: "unsplash",
+        nameFr: "Rendez-vous commercial IA chez une PME — Axion-IA",
+        nameEn: "AI sales meeting at an SME — Axion-IA",
+        altFr:
+          "Deux dirigeantes de PME en rendez-vous autour d'une tablette : le rendez-vous commercial que tu décrocheras sur ta zone.",
+        altEn:
+          "Two SME executives meeting over a tablet: the sales appointment you will land in your area.",
+        width: 1600,
+        height: 1200,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/memo-isere/territoire-corridor-grenoble-lyon-valence-die-axion-ia.avif",
+        origin: "unsplash",
+        nameFr: "Corridor Grenoble – Valence – Die – Lyon : 474 communes",
+        nameEn: "Grenoble – Valence – Die – Lyon corridor: 474 towns",
+        altFr:
+          "Vallée alpine traversée par une route et un village : le corridor Grenoble – Valence – Die – Lyon, terrain de jeu du commercial Axion-IA.",
+        altEn:
+          "An Alpine valley crossed by a road and a village: the Grenoble – Valence – Die – Lyon corridor, the Axion-IA sales rep's territory.",
+        width: 1600,
+        height: 900,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/memo-isere/formation-ia-entreprise-presentation-equipe-axion-ia.avif",
+        origin: "unsplash",
+        nameFr: "Journée de formation IA en entreprise — le produit vendu",
+        nameEn: "In-company AI training day — the product sold",
+        altFr:
+          "Formateur devant une petite équipe et un tableau blanc couvert de notes : la journée de formation IA que tu auras vendue.",
+        altEn:
+          "A trainer facing a small team and a whiteboard covered with notes: the AI training day you will have sold.",
+        width: 1600,
+        height: 900,
+        slot: "banner",
+      },
+      {
+        src: "/illustrations/memo-isere/accompagnement-demarrage-commercial-equipe-axion-ia.avif",
+        origin: "unsplash",
+        nameFr: "Accompagnement au démarrage du commercial Axion-IA",
+        nameEn: "Start-up support for the Axion-IA sales rep",
+        altFr:
+          "Équipe réunie devant un mur de notes : préparation des supports, des argumentaires et des premiers rendez-vous.",
+        altEn:
+          "A team gathered in front of a wall of notes: preparing materials, pitches and first appointments.",
+        width: 1600,
+        height: 900,
+        slot: "inline",
+      },
+      {
+        src: "/illustrations/memo-isere/clients-industrie-site-production-axion-ia.avif",
+        origin: "unsplash",
+        nameFr: "Sites industriels — clients à démarcher",
+        nameEn: "Industrial sites — prospects to canvass",
+        altFr:
+          "Atelier de production moderne et lumineux : les sites industriels de ta zone, premiers acheteurs de formation IA.",
+        altEn:
+          "A bright modern production workshop: the industrial sites in your area, first buyers of AI training.",
+        width: 1200,
+        height: 900,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/memo-isere/clients-tertiaire-siege-services-b2b-axion-ia.avif",
+        origin: "unsplash",
+        nameFr: "Sièges et services B2B — clients à démarcher",
+        nameEn: "Head offices and B2B services — prospects to canvass",
+        altFr:
+          "Équipe réunie autour d'un ordinateur portable dans un siège régional : les services B2B à former à l'IA.",
+        altEn:
+          "A team gathered around a laptop in a regional head office: the B2B services to be trained in AI.",
+        width: 1200,
+        height: 900,
+        slot: "grid",
+      },
+      {
+        src: "/illustrations/memo-isere/clients-commerce-artisan-tpe-locale-axion-ia.avif",
+        origin: "unsplash",
+        nameFr: "Commerces, artisans et TPE — clients à démarcher",
+        nameEn: "Shops, craftspeople and micro-businesses — prospects to canvass",
+        altFr:
+          "Commerçant servant un client derrière son comptoir : les TPE et artisans de ta zone, excellentes premières ventes.",
+        altEn:
+          "A shopkeeper serving a customer behind the counter: the micro-businesses and craftspeople in your area, excellent first sales.",
+        width: 1200,
+        height: 900,
+        slot: "grid",
+      },
+    ],
+  },
+  {
+    path: "/devenir-commercial-ia/candidature",
+    images: [
+      {
+        src: "/illustrations/memo-isere/candidature-commercial-ia-sans-cv-mobile-axion-ia.avif",
+        origin: "unsplash",
+        nameFr: "Candidature commercial IA en 3 minutes, depuis son téléphone",
+        nameEn: "AI sales rep application in 3 minutes, from your phone",
+        altFr:
+          "Un homme sourit devant son téléphone, une vallée en arrière-plan : la candidature se remplit en 3 minutes, d'où que tu sois.",
+        altEn:
+          "A man smiling at his phone with a valley behind him: the application takes three minutes, wherever you are.",
+        width: 1400,
+        height: 1050,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+    ],
+  },
 ];
 
 // ---------------------------------------------------------------------------
