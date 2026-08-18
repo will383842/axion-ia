@@ -109,6 +109,102 @@ const SECTEURS = [
   { emoji: "🖥️", label: "Agences & ESN" },
 ] as const;
 
+// ── Rémunération ────────────────────────────────────────────────────────────
+//
+// 🔑 UNE SEULE valeur en dur sur toute la page : la commission par JOURNÉE.
+// Tous les montants affichés en descendent par multiplication. Deux raisons :
+//   1. Le retour Will du 2026-08-18 — « il faut que le visiteur comprenne que
+//      c'est 500 € PAR JOURNÉE : un programme de 3 journées = 1 500 € ». Une
+//      grille écrite à la main ne dit pas cette règle, elle la cache derrière
+//      des totaux.
+//   2. Le garde-fou prix (`no-hardcoded-prices.spec.ts`) traque tout littéral
+//      « N € » dans les pages. Un montant CALCULÉ n'en est pas un — et il ne
+//      peut pas diverger le jour où la commission bouge.
+
+/** Commission commerciale versée à l'apporteur, par journée de formation vendue. */
+const COMMISSION_PAR_JOURNEE = 500; // price-exempt: commission commerciale de recrutement, pas un tarif client
+
+/**
+ * Montant en euros, typographie FR. Jamais de littéral « N € » dans la source.
+ *
+ * Groupage fait À LA MAIN plutôt que par `toLocaleString("fr-FR")` : le runtime
+ * du conteneur ne garantit pas l'ICU complet, et sans lui « 1500 € » sort tel
+ * quel — un montant à quatre chiffres collés se lit deux fois moins vite. Les
+ * séparateurs sont des espaces fines insécables (U+202F), comme l'exige la
+ * typographie française, et l'espace avant le € est insécable (U+00A0) pour
+ * qu'un montant ne se coupe jamais en fin de ligne.
+ */
+function euros(montant: number): string {
+  const groupe = String(montant).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return `${groupe} €`;
+}
+
+/** Commission due pour `jours` journées vendues. */
+function commission(jours: number): string {
+  return euros(jours * COMMISSION_PAR_JOURNEE);
+}
+
+/**
+ * Le catalogue RÉEL, avec sa durée réelle — source
+ * `src/content/formations/skeletons.ts` + `interventions-taxonomy.ts`.
+ * Le commercial doit pouvoir lire « ce que je vends → ce que je touche »
+ * sans faire l'opération lui-même.
+ *
+ * ⚠️ Le format demi-journée « Démarrage IA Express » (4 h) est VOLONTAIREMENT
+ * absent : sa commission n'est écrite nulle part et la déduire au prorata
+ * serait l'inventer.
+ */
+interface LigneCommission {
+  readonly nom: string;
+  readonly detail: string;
+  readonly jours: number;
+  /** Palier ouvert (« et plus ») — mis en avant et suffixé d'un « + ». */
+  readonly etPlus?: boolean;
+}
+
+const CATALOGUE_COMMISSIONS: readonly LigneCommission[] = [
+  { nom: "Essentielle", detail: "1 journée · découverte de l’IA appliquée", jours: 1 },
+  { nom: "Gagner du temps", detail: "1 journée · automatiser les tâches répétitives", jours: 1 },
+  { nom: "Intervention Claude", detail: "1 journée · 100 % dédiée à Claude", jours: 1 },
+  { nom: "Conférence", detail: "1 journée plénière · grands effectifs", jours: 1 },
+  { nom: "Approfondie", detail: "2 journées consécutives · ancrage durable", jours: 2 },
+  {
+    nom: "Programme sur mesure",
+    detail: "3 journées et plus · multi-sites, multi-équipes",
+    jours: 3,
+    etPlus: true,
+  },
+] as const;
+
+/** Trois mois-types, construits à partir du catalogue ci-dessus. */
+interface ScenarioMois {
+  readonly titre: string;
+  readonly detail: string;
+  readonly jours: number;
+  /** Scénario mis en avant (bordure terracotta). */
+  readonly fort?: boolean;
+}
+
+const SCENARIOS_MOIS: readonly ScenarioMois[] = [
+  {
+    titre: "Ton premier mois",
+    detail: "Deux Essentielles vendues à deux PME de ton secteur.",
+    jours: 2,
+  },
+  {
+    titre: "Un mois de croisière",
+    detail: "Une Essentielle et deux Approfondies : trois clients, cinq journées.",
+    jours: 5,
+  },
+  {
+    titre: "Une ETI dans ton portefeuille",
+    detail:
+      "40 salariés à former, ça se découpe en 3 groupes de 15 maximum. Trois Approfondies chez UN seul client.",
+    jours: 6,
+    fort: true,
+  },
+] as const;
+
 /** Teintes cyclées des cartes « territoire » — la couleur remplace la vignette
  *  photo : 13 vignettes de banque d'images sans rapport avec le territoire
  *  qu'elles étiquetaient étaient du bruit répété (et 13 requêtes image). */
@@ -423,8 +519,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien gagne-t-on exactement ?",
-      answer:
-        "500 € par journée de formation vendue, sans plafond. Exemple de calcul : 5 journées vendues dans le mois = 2 500 €, 20 journées = 10 000 €. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. C'est un exemple de calcul, pas une promesse : tes revenus dépendent de tes ventes." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+      answer: `Ta commission se compte en JOURNÉES de formation vendues : ${commission(1)} par journée, sans plafond. Une formation Essentielle dure 1 journée — ${commission(1)} pour toi. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : tes revenus dépendent de tes ventes.`,
     },
     {
       id: "statut",
@@ -509,8 +604,7 @@ export default async function MemoIserePage({ params }: Props) {
       "Prospecter les PME, ETI et grands groupes de sa zone (TPE et artisans compris) (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
     jobBenefits:
       "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, activité évolutive (responsable de secteur).",
-    incentiveCompensation:
-      "Rémunération 100 % à la commission : 500 € par journée de formation vendue, sans plafond ; pourcentage de la facture sur les audits et intégrations IA." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+    incentiveCompensation: `Rémunération 100 % à la commission, comptée en journées de formation vendues : ${commission(1)} par journée, sans plafond. Une formation de 2 journées rapporte ${commission(2)}, un programme de 3 journées ${commission(3)}. Pourcentage de la facture en plus sur les audits et intégrations IA.`,
     hiringOrganization: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
@@ -574,11 +668,16 @@ export default async function MemoIserePage({ params }: Props) {
                   sur votre territoire
                 </span>
               </h1>
+              {/* Chapô TENU COURT : c'est lui qui décide si le bouton reste
+                  au-dessus de la ligne de flottaison. La règle de calcul
+                  (× journées) est portée juste dessous par les trois
+                  chiffres-clés — la répéter ici coûtait deux lignes et
+                  repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Le job : proposer aux <strong>PME, ETI et grands groupes</strong> de ta zone des
-                formations et des audits IA — que l’AI Act rend incontournables et que l’OPCO
-                finance. Toi, tu touches la commission. De Grenoble à Valence, de Die à Lyon, tu
-                choisis ton secteur.
+                Tu proposes aux <strong>PME, ETI et grands groupes</strong> de ta zone des
+                formations IA — l’AI Act les rend incontournables, l’OPCO les finance. Toi, tu
+                touches <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à
+                Lyon, tu choisis ton secteur.
               </p>
 
               {/* CTA remonté AVANT la photo : sur mobile il était sous une image
@@ -613,7 +712,7 @@ export default async function MemoIserePage({ params }: Props) {
                 />
                 <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
                   <p className="font-serif text-3xl leading-none font-semibold text-white drop-shadow sm:text-4xl">
-                    {"500 €" /* price-exempt: commission recrutement */}
+                    {commission(1)}
                   </p>
                   <p className="mt-1 text-[11px] font-bold tracking-[0.14em] text-white/85 uppercase">
                     par journée de formation vendue
@@ -623,17 +722,17 @@ export default async function MemoIserePage({ params }: Props) {
             </div>
 
             {/* Chiffres-clés — 3 colonnes serrées sur mobile (l'ancienne grille
-                `grid-cols-2 sm:grid-cols-3` laissait la 3ᵉ carte orpheline). */}
+                `grid-cols-2 sm:grid-cols-3` laissait la 3ᵉ carte orpheline).
+                Les deux premiers portent la RÈGLE, pas un chiffre isolé : la
+                commission se MULTIPLIE par les journées. C'est la chose que le
+                visiteur doit avoir comprise avant de descendre (Will
+                2026-08-18). Le nombre de secteurs est repris juste en dessous,
+                dans le panneau sombre. */}
             <ul className="grid grid-cols-3 gap-2 sm:gap-3 lg:col-span-2" role="list">
               {[
-                {
-                  label: "Par jour vendu",
-                  value: "500 €", // price-exempt: commission recrutement
-                } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+                { label: "1 journée vendue", value: commission(1) },
+                { label: "Un programme de 3 journées", value: commission(3) },
                 { label: "Plafond de revenus", value: "Aucun" },
-                // On choisit un SECTEUR (13 territoires), pas une commune
-                // (cadrage Will 2026-08-13 — une commune seule est trop petite).
-                { label: "Secteurs au choix", value: String(MEMO_ZONE_CLUSTERS.length) },
               ].map((f) => (
                 <li
                   key={f.label}
@@ -696,15 +795,12 @@ export default async function MemoIserePage({ params }: Props) {
               <h2 className="font-serif text-[26px] leading-snug font-semibold text-[color:var(--color-bg)] sm:text-4xl">
                 L’IA, tout le monde en parle.{" "}
                 <span className="text-terracotta-soft italic">
-                  Toi, tu vas être payé pour la vendre. 💶
+                  Toi, tu es payé à la journée vendue. 💶
                 </span>
               </h2>
               <dl className="grid grid-cols-3 gap-3 sm:gap-4">
                 {[
-                  {
-                    v: "500 €", // price-exempt: commission recrutement
-                    l: "par jour vendu",
-                  } /* price-exempt: commission recrutement */,
+                  { v: commission(1), l: "par journée vendue" },
                   { v: String(MEMO_ZONE_CLUSTERS.length), l: "secteurs au choix" },
                   { v: totalAll > 0 ? `${totalAll} avis` : "4,9/5", l: "clients conquis" },
                 ].map((s) => (
@@ -991,69 +1087,141 @@ export default async function MemoIserePage({ params }: Props) {
       {/* CTA band terracotta — pattern /fr/audit */}
       <BandeCta title="Les secteurs partent un par un ⏳" track="memo-band-apply" />
 
-      {/* 6 ── Rémunération transparente */}
+      {/* 6 ── Rémunération — la RÈGLE d'abord, le catalogue ensuite, les
+          mois-types en dernier. Retour Will 2026-08-18 : le visiteur doit
+          comprendre que la commission se compte en JOURNÉES, pas en ventes —
+          « 1 programme de 3 journées = 1 500 € ». L'ancienne grille donnait
+          trois totaux abstraits (5 / 10 / 20 jours) sans jamais nommer une
+          seule formation : impossible de se projeter. */}
       <Section
         className={SEC}
         eyebrow="Rémunération"
-        title="500 € par journée de formation" /* price-exempt: commission recrutement */
-        titleEm="vendue"
-        description="Sans plafond, sans quota, sans salaire fixe à mériter : chaque vente te paie. Une ETI qui forme 40 personnes, c'est des dizaines de journées d'un coup — et les audits et intégrations IA rapportent en plus un pourcentage de la facture."
+        title="Tu ne vends pas des contrats."
+        titleEm="Tu vends des journées."
+        description="Ta commission ne dépend ni du prix payé par le client, ni de la taille de l’équipe formée : elle se compte en journées de formation. Une journée vendue, une commission. Deux journées, deux commissions. Et l’OPCO paie la formation à ta place."
       >
         <>
-          <div className="mx-auto grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-            {[
-              {
-                jours: "5 jours vendus",
-                mois: "2 500 €", // price-exempt: commission recrutement
-              } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-              {
-                jours: "10 jours vendus",
-                mois: "5 000 €", // price-exempt: commission recrutement
-              } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-              {
-                jours: "20 jours vendus",
-                mois: "10 000 €", // price-exempt: commission recrutement
-              } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-            ].map((t, i) => (
-              <div
-                key={t.jours}
-                className={[
-                  // Mobile : la carte se lit en LIGNE (libellé à gauche, montant
-                  // à droite) — trois blocs centrés empilés faisaient trois fois
-                  // la hauteur pour la même information.
-                  "flex items-center justify-between gap-4 rounded-2xl border p-4 sm:flex-col sm:justify-center sm:gap-0 sm:p-6 sm:text-center",
-                  i === 2
+          {/* ── L'équation, en trois temps ───────────────────────────────── */}
+          <div className="border-terracotta/30 bg-terracotta-soft/40 mx-auto max-w-3xl rounded-3xl border p-5 sm:p-8">
+            <ol
+              className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-center sm:gap-4"
+              role="list"
+            >
+              <li>
+                <p className="text-terracotta-deep font-serif text-3xl leading-none font-semibold sm:text-5xl">
+                  1
+                </p>
+                <p className="text-fg-soft mt-2 text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
+                  journée vendue
+                </p>
+              </li>
+              <li aria-hidden="true" className="text-fg-muted font-serif text-2xl sm:text-4xl">
+                =
+              </li>
+              <li>
+                <p className="text-terracotta-deep font-serif text-3xl leading-none font-semibold sm:text-5xl">
+                  {commission(1)}
+                </p>
+                <p className="text-fg-soft mt-2 text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
+                  pour toi
+                </p>
+              </li>
+            </ol>
+            <p className="text-fg mt-5 text-center text-[15px] leading-relaxed sm:text-base">
+              {`Et ça se multiplie sans plafond : un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
+            </p>
+          </div>
+
+          {/* ── Le catalogue réel, avec la commission en face ─────────────── */}
+          <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
+            Ce que tu vends · ce que tu touches
+          </h3>
+          <p className="text-fg-muted mx-auto mt-2 max-w-2xl text-center text-sm">
+            Le catalogue Axion-IA, tel qu’il est vendu aujourd’hui.
+          </p>
+          <ul className="mx-auto mt-6 max-w-3xl space-y-2.5" role="list">
+            {CATALOGUE_COMMISSIONS.map((f) => (
+              <li
+                key={f.nom}
+                className={cn(
+                  "flex items-center justify-between gap-4 rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-0.5 sm:p-5",
+                  f.etPlus
                     ? "border-terracotta bg-terracotta/5 shadow-card"
                     : "border-border bg-paper shadow-subtle",
-                ].join(" ")}
+                )}
               >
-                <p className="text-fg-muted text-sm font-medium">{t.jours}</p>
-                <p className="text-terracotta-deep font-serif text-3xl font-semibold sm:mt-2 sm:text-4xl">
-                  {t.mois}
-                </p>
-                <p className="text-fg-muted hidden text-xs sm:mt-1 sm:block">dans le mois</p>
-              </div>
+                <span className="min-w-0">
+                  <span className="text-fg block font-serif text-base leading-snug font-semibold sm:text-lg">
+                    {f.nom}
+                  </span>
+                  <span className="text-fg-muted mt-0.5 block text-[13px] leading-snug">
+                    {f.detail}
+                  </span>
+                </span>
+                <span className="shrink-0 text-right">
+                  <span className="text-terracotta-deep block font-serif text-2xl leading-none font-semibold whitespace-nowrap sm:text-3xl">
+                    {commission(f.jours)}
+                    {f.etPlus ? <span className="text-lg sm:text-xl">+</span> : null}
+                  </span>
+                  <span className="text-fg-muted mt-1 block text-[11px] font-semibold tracking-wide uppercase">
+                    pour toi
+                  </span>
+                </span>
+              </li>
             ))}
-          </div>
+          </ul>
+
+          {/* ── Ce que ça donne sur un mois ───────────────────────────────── */}
+          <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
+            Ce que ça donne sur un mois
+          </h3>
+          <ul className="mx-auto mt-6 grid max-w-4xl gap-3 sm:grid-cols-3 sm:gap-4" role="list">
+            {SCENARIOS_MOIS.map((s) => (
+              <li
+                key={s.titre}
+                className={cn(
+                  "flex h-full flex-col rounded-2xl border p-5",
+                  s.fort
+                    ? "border-terracotta bg-terracotta/5 shadow-card"
+                    : "border-border bg-paper shadow-subtle",
+                )}
+              >
+                <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
+                  {s.titre}
+                </p>
+                <p className="text-terracotta-deep mt-2 font-serif text-3xl leading-none font-semibold sm:text-4xl">
+                  {commission(s.jours)}
+                </p>
+                <p className="text-fg-muted mt-1 text-xs font-semibold tracking-wide uppercase">
+                  {`${s.jours} journées vendues`}
+                </p>
+                <p className="text-fg-soft mt-3 text-sm leading-relaxed">{s.detail}</p>
+              </li>
+            ))}
+          </ul>
           <p className="text-fg-muted mx-auto mt-4 max-w-2xl text-center text-sm">
             {/* Chaîne JS unique + marqueur ATTACHÉS : prettier avait éclaté le
                 texte JSX et déplacé le marqueur hors de la ligne du montant →
-                garde-fou prix rouge en CI alors qu'il passait en local. */}
-            {
-              "Exemples de calcul (500 € × journées vendues) — pas une promesse de revenus : tes commissions dépendent de tes ventes." /* price-exempt: commission recrutement */
-            }
+                garde-fou prix rouge en CI alors qu'il passait en local.
+                Ici les montants sont CALCULÉS, donc plus aucun littéral à
+                exempter — mais le principe reste : un exemple n'est pas une
+                promesse, et ça doit se lire. */}
+            Ce sont des exemples de calcul, pas une promesse de revenus : tes commissions dépendent
+            de tes ventes. Rien ne t’interdit d’aller au-delà — il n’y a pas de plafond.
           </p>
-          <div className="mx-auto mt-8 grid max-w-3xl gap-4 sm:grid-cols-2">
+
+          <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">
             <div className="border-border bg-paper shadow-subtle rounded-2xl border p-5 sm:p-6">
               <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
                 Produit n°1 — Formations IA
               </p>
               <p className="mt-2 font-serif text-xl font-semibold">
-                {"500 € par journée vendue" /* price-exempt: commission recrutement */}
+                {`${commission(1)} par journée vendue`}
               </p>
               <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                 Formations au poste de travail, finançables OPCO, rendues incontournables par l’AI
-                Act. Une ETI qui forme 40 personnes = des dizaines de journées.
+                Act. Une grande équipe se forme en plusieurs groupes : autant de journées, autant de
+                commissions — chez un seul client.
               </p>
             </div>
             <div className="border-border bg-paper shadow-subtle rounded-2xl border p-5 sm:p-6">
@@ -1067,9 +1235,13 @@ export default async function MemoIserePage({ params }: Props) {
                 Un audit IA, c’est simple à expliquer : on cartographie les process de l’entreprise,
                 on chiffre où l’IA fait gagner du temps et de l’argent, et le dirigeant repart avec
                 un plan d’action priorisé. Quatre niveaux selon la taille (TPE → ETI) — ta
-                commission suit le niveau vendu.
+                commission suit le niveau vendu, et elle s’ajoute aux journées de formation.
               </p>
             </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <CtaCandidature track="memo-remuneration-apply" />
           </div>
         </>
       </Section>
@@ -1128,12 +1300,8 @@ export default async function MemoIserePage({ params }: Props) {
                   accent: "plum" as const,
                   Icon: LineChart,
                   title: "Tu touches à chaque vente",
-                  description:
-                    "500 € par journée de formation vendue, commission selon le type d'audit IA. Ton tableau de bord suit tout en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-                  stat: {
-                    figure: "500 €", // price-exempt: commission recrutement
-                    label: "par jour vendu",
-                  } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+                  description: `${commission(1)} par journée de formation vendue — donc ${commission(2)} pour une Approfondie de 2 journées, ${commission(3)} pour un programme de 3. Commission en plus sur les audits IA.`,
+                  stat: { figure: commission(1), label: "par journée vendue" },
                 },
               ].map((c, i) => (
                 <li key={c.title} className="h-full">
