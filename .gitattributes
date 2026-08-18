@@ -1,0 +1,80 @@
+# ============================================================================
+# EOL — le dépôt est en LF, sur toutes les plateformes et quelle que soit la
+# configuration git de chaque machine.
+#
+# Préparé 2026-06-02 (inerte), ACTIVÉ 2026-08-18. Ce qui a fait pencher :
+#
+# Sans ce fichier, la seule protection était le `core.autocrlf` de chaque poste
+# — donc aucune. Deux conséquences, l'une connue, l'autre découverte tard :
+#
+#   1. `pnpm format:check` flaguait des dizaines de fichiers en local Windows
+#      (prettier impose `endOfLine: lf`). Bruit permanent, dans lequel une VRAIE
+#      faute de formatage pouvait se noyer et partir en CI.
+#
+#   2. 🔴 Plus grave : un test de la suite rougissait. `confirmations.spec.ts`
+#      cherche une chaîne littérale portant un saut de ligne
+#      (`"setDemande(null);\n          await geste"`) dans un source lu en
+#      `\r\n` → `indexOf` rend -1. Le fichier analysé était pourtant CORRECT et
+#      identique à `main` : le test rougissait pour une raison fausse. Comme le
+#      hook `pre-push` lance `vitest run` complet, il devenait INFRANCHISSABLE
+#      depuis Windows, pour n'importe quelle branche.
+#
+# 🔑 Tout test statique cherchant un `\n` littéral dans un source est aveugle
+# sous Windows sans ce fichier.
+#
+# ⚠️ L'activation n'a renormalisé AUCUN fichier : l'index était déjà
+# intégralement en LF (`git ls-files --eol` → 9 492 `i/lf`, 1 347 binaires,
+# zéro `i/crlf`). Ce fichier ne change donc rien au contenu versionné — il
+# garantit seulement que le checkout écrit du LF sur disque, et qu'un poste mal
+# configuré ne pourra plus committer du CRLF.
+# ============================================================================
+
+# Tout fichier texte détecté par git → LF dans l'index, quelle que soit la
+# plateforme (neutralise core.autocrlf hétérogène entre machines).
+* text=auto eol=lf
+
+# Scripts shell : LF obligatoire (CRLF casse l'exécution sous Linux / CI / Docker).
+*.sh text eol=lf
+
+# Fichiers explicitement texte (par sûreté, même si `text=auto` les couvre).
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.css text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.prisma text eol=lf
+*.sql text eol=lf
+
+# 🔴 SVG = TEXTE, pas binaire. La proposition de 2026-06-02 le classait parmi
+# les binaires ; l'essai du 2026-08-18 a montré que c'était un défaut RÉEL, et
+# dans le mauvais sens : marqué `binary`, git cesse de convertir, donc il aurait
+# figé dans l'index les CRLF présents sur le disque Windows. Mesuré :
+# `public/logos/clients/axa.svg` passait de 4 603 à 4 690 octets — 87 octets de
+# `\r` entrés en dépôt, par la règle censée protéger le dépôt.
+# En texte, ces 14 SVG sont inchangés (l'index est déjà en LF).
+*.svg text eol=lf
+
+# Binaires : aucune conversion EOL (évite la corruption).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.mp4 binary
+*.webm binary
