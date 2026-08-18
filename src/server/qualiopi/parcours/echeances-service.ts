@@ -53,6 +53,75 @@ const FENETRE_ARRIERE_JOURS = 45;
 /** Plafond de sessions examinées en une passe. Voir `troncature`. */
 const PLAFOND_SESSIONS = 300;
 
+/**
+ * La ligne Prisma telle que la requête ci-dessous la rapporte, réduite à ce
+ * dont le parcours a besoin.
+ *
+ * Décrite explicitement plutôt qu'inférée : elle est le CONTRAT entre la
+ * requête et le mapping. Inférée, un `select` amputé par mégarde ferait
+ * simplement disparaître un champ du type — et l'étape correspondante se
+ * calculerait sur `undefined` sans que rien ne rougisse.
+ */
+export interface LigneSessionParcours {
+  readonly statut: string;
+  readonly dateDebut: Date;
+  readonly dateFin: Date;
+  readonly formateurPrincipalId: string | null;
+  readonly financementType: SessionParcoursInput["session"]["financementType"];
+  readonly documents: SessionParcoursInput["documents"];
+  readonly enrollments: ReadonlyArray<{
+    readonly id: string;
+    readonly statut: string;
+    readonly emargementSigneAt: Date | null;
+    readonly convocationEnvoyeeAt: Date | null;
+    readonly questionnaires: SessionParcoursInput["inscriptions"][number]["questionnaires"];
+    readonly evaluations: ReadonlyArray<{ readonly dateEvaluation: Date }>;
+    readonly emargementTokens: ReadonlyArray<{ readonly id: string }>;
+    readonly presences: ReadonlyArray<{ readonly id: string }>;
+    readonly trainee: { readonly portailAcces: ReadonlyArray<{ readonly id: string }> };
+  }>;
+}
+
+/**
+ * 🔴 LE MAPPING EST UNIQUE — une seule traduction ligne Prisma → parcours.
+ *
+ * Il était écrit en clair dans `prochainesEcheances`. Le hub de session a
+ * besoin du MÊME parcours, et le recopier aurait fabriqué deux vérités : le
+ * jour où une quinzième étape arrive, l'une des deux copies l'ignore, et
+ * l'écran qui compte « 12/14 » n'est plus celui qui compte « 13/15 ». C'est la
+ * doctrine SSOT du dépôt, et le défaut qu'on a déjà payé sept fois sur les
+ * habilitations.
+ */
+export function entreeParcours(
+  s: LigneSessionParcours,
+  signaturesParPiece: ReadonlyMap<string, { partie: string }[]>,
+  maintenant: Date,
+): SessionParcoursInput {
+  return {
+    session: {
+      statut: s.statut as SessionParcoursInput["session"]["statut"],
+      dateDebut: s.dateDebut,
+      dateFin: s.dateFin,
+      formateurPrincipalId: s.formateurPrincipalId,
+      financementType: s.financementType,
+    },
+    documents: s.documents,
+    signaturesParPiece,
+    inscriptions: s.enrollments.map((e) => ({
+      id: e.id,
+      statut: e.statut,
+      emargementSigneAt: e.emargementSigneAt,
+      convocationEnvoyeeAt: e.convocationEnvoyeeAt,
+      questionnaires: e.questionnaires,
+      evaluationFinaleAt: e.evaluations[0]?.dateEvaluation ?? null,
+      aUnAccesPortail: e.trainee.portailAcces.length > 0,
+    })),
+    liensEmargementActifs: s.enrollments.reduce((n, e) => n + e.emargementTokens.length, 0),
+    creneauxEmargement: s.enrollments.reduce((n, e) => n + e.presences.length, 0),
+    maintenant,
+  };
+}
+
 export interface EcheanceSession {
   readonly sessionId: string;
   readonly numero: string;
@@ -63,10 +132,24 @@ export interface EcheanceSession {
 
 export interface ResultatEcheances {
   readonly echeances: ReadonlyArray<EcheanceSession>;
-  /** Pire état rencontré par session — pour la colonne « Dossier » de la liste. */
+  /**
+   * Le parcours de chaque session du périmètre.
+   *
+   * `pire` / `fait` / `total` alimentent la colonne « Dossier » de la liste.
+   *
+   * 🔴 `etapes` porte les QUATORZE étapes, pas seulement celles qui appellent
+   * une action : le hub d'une session doit montrer ce qui est FAIT autant que
+   * ce qui reste, sinon la checklist se lit comme une liste de reproches. Elles
+   * sont déjà construites par `construireParcours` — on les jetait.
+   */
   readonly parSession: ReadonlyMap<
     string,
-    { readonly pire: EtatEtape; readonly fait: number; readonly total: number }
+    {
+      readonly pire: EtatEtape;
+      readonly fait: number;
+      readonly total: number;
+      readonly etapes: ReadonlyArray<EtapeParcours>;
+    }
   >;
   /**
    * 🔴 Non nul si le plafond a mordu. Une liste tronquée en silence se lit
@@ -199,38 +282,18 @@ export async function prochainesEcheances(options?: {
   }
 
   const echeances: EcheanceSession[] = [];
-  const parSession = new Map<string, { pire: EtatEtape; fait: number; total: number }>();
+  const parSession = new Map<
+    string,
+    { pire: EtatEtape; fait: number; total: number; etapes: ReadonlyArray<EtapeParcours> }
+  >();
 
   for (const s of retenues) {
-    const entree: SessionParcoursInput = {
-      session: {
-        statut: s.statut as SessionParcoursInput["session"]["statut"],
-        dateDebut: s.dateDebut,
-        dateFin: s.dateFin,
-        formateurPrincipalId: s.formateurPrincipalId,
-        financementType: s.financementType,
-      },
-      documents: s.documents,
-      signaturesParPiece,
-      inscriptions: s.enrollments.map((e) => ({
-        id: e.id,
-        statut: e.statut,
-        emargementSigneAt: e.emargementSigneAt,
-        convocationEnvoyeeAt: e.convocationEnvoyeeAt,
-        questionnaires: e.questionnaires,
-        evaluationFinaleAt: e.evaluations[0]?.dateEvaluation ?? null,
-        aUnAccesPortail: e.trainee.portailAcces.length > 0,
-      })),
-      liensEmargementActifs: s.enrollments.reduce((n, e) => n + e.emargementTokens.length, 0),
-      creneauxEmargement: s.enrollments.reduce((n, e) => n + e.presences.length, 0),
-      maintenant,
-    };
-
-    const parcours = construireParcours(entree);
+    const parcours = construireParcours(entreeParcours(s, signaturesParPiece, maintenant));
     parSession.set(s.id, {
       pire: parcours.pire,
       fait: parcours.avancement.fait,
       total: parcours.avancement.total,
+      etapes: parcours.etapes,
     });
 
     for (const etape of parcours.etapes) {
