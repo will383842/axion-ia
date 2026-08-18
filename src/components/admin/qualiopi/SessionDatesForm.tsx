@@ -102,7 +102,7 @@ export function SessionDatesForm({
       setSuccessMsg(
         "Dates enregistrées. Les documents déjà générés ne changent pas — réémettre la convention, la convocation ou la feuille d'émargement pour qu'ils le portent." +
           (result.data.joursHorsPlage > 0
-            ? ` ⚠️ ${result.data.joursHorsPlage} journée${result.data.joursHorsPlage > 1 ? "s" : ""} déclarée${result.data.joursHorsPlage > 1 ? "s" : ""} sur ${result.data.nbJours} tombe${result.data.joursHorsPlage > 1 ? "nt" : ""} désormais HORS de cette plage : les journées ne sont pas décalées automatiquement. Corrigez-les dans « Journées réellement animées », sous-page Émargement.`
+            ? ` Attention : ${result.data.joursHorsPlage} journée${result.data.joursHorsPlage > 1 ? "s" : ""} déclarée${result.data.joursHorsPlage > 1 ? "s" : ""} sur ${result.data.nbJours} tombe${result.data.joursHorsPlage > 1 ? "nt" : ""} désormais HORS de cette plage : les journées ne sont pas décalées automatiquement. Corrigez-les dans « Journées réellement animées », sous-page Émargement.`
             : ""),
       );
       router.refresh();
