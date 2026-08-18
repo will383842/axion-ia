@@ -432,7 +432,7 @@ describe("🔴 un statut terminal REPLIE la checklist", () => {
   });
 
   it("session annulée : repliée, et aucune action réclamée", () => {
-    // Dérouler quatorze étapes sur une session annulée demanderait des gestes
+    // Dérouler quinze étapes sur une session annulée demanderait des gestes
     // que plus personne ne doit poser.
     const p = construireParcours(
       dossier({
@@ -475,11 +475,11 @@ describe("🔴 les avertissements qui coûtent cher à oublier", () => {
 // Ce que l'exigence voulait dire, et qui est juste : **aucune étape ne doit se
 // retrouver sans état terminal PAR OUBLI**. Le code ne distinguait pas les deux
 // `null` — une borne oubliée ressemblait exactement à une borne volontairement
-// absente. Désormais l'absence se DÉCLARE, et ce test balaie les quatorze clés.
+// absente. Désormais l'absence se DÉCLARE, et ce test balaie les quinze clés.
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
-  // Un dossier qui exerce les quatorze étapes, longtemps après la fin : c'est
+  // Un dossier qui exerce les quinze étapes, longtemps après la fin : c'est
   // le seul moment où toutes ont eu l'occasion de devenir terminales.
   const p = construireParcours(
     dossier({
