@@ -55,8 +55,8 @@ export default async function ImprimesPage({ params }: PageProps) {
           <a
             key={imprime.id}
             href={`/fr/${adminPrefix}/imprimes/${imprime.id}`}
-            className="admin-card"
-            style={{ display: "block", textDecoration: "none", color: "inherit" }}
+            className="admin-card block"
+            style={{ textDecoration: "none", color: "inherit" }}
           >
             <div
               style={{
