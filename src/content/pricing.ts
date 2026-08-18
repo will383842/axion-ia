@@ -804,10 +804,32 @@ export interface CommercialCommission {
 }
 
 /**
+ * Commission commerciale versée à l'apporteur d'affaires, PAR JOURNÉE de
+ * formation vendue. **Taux UNIQUE** — décision Will 2026-08-18 : « tout mettre
+ * à 500 et pas différents tarifs ».
+ *
+ * 🔑 Avant cette date la grille portait 350 € / 800 € / 1 350 € selon le format,
+ * soit 350, 400 puis 450 € la journée : trois taux différents pour le même
+ * travail, et un écart de 150 €/j avec la page `/memo-isere` qui annonçait
+ * 500 €/journée — les deux barèmes étaient publics EN MÊME TEMPS. Les montants
+ * par format se DÉRIVENT désormais de cette constante, ils ne se réécrivent
+ * plus à la main : c'est ce qui empêche l'écart de revenir.
+ */
+export const COMMISSION_FORMATION_PAR_JOURNEE_EUR = 500;
+
+/** Commission due pour `jours` journées de formation vendues. */
+export function commissionFormation(jours: number): number {
+  return jours * COMMISSION_FORMATION_PAR_JOURNEE_EUR;
+}
+
+/**
  * Barème de commissions du réseau commercial Axion-IA. Décision Will 2026-06-08 :
  * formations = commission fixe par vente ; audit/implémentation = % de la
  * facture ; 1-to-1 = sur barème (montant non public). Affiché en clair sur les
  * pages publiques /devenir-commercial-ia (transparence = conversion candidats).
+ *
+ * Formations : montant = `COMMISSION_FORMATION_PAR_JOURNEE_EUR` × nombre de
+ * journées (cf. ci-dessus). Aucun montant de formation écrit en dur ici.
  */
 export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
   {
@@ -815,29 +837,35 @@ export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
     labelFr: "Formation 1 jour",
     labelEn: "1-day training",
     kind: "flat",
-    flatEur: 350,
+    flatEur: commissionFormation(1),
     basisTierId: "intervention-essentielle",
-    descriptionFr: "Commission fixe pour chaque formation collective d'une journée vendue.",
-    descriptionEn: "Flat commission for each one-day group training sold.",
+    descriptionFr:
+      "Commission fixe pour chaque formation collective d'une journée vendue — même taux à la journée que les formats longs.",
+    descriptionEn:
+      "Flat commission for each one-day group training sold — same per-day rate as longer formats.",
   },
   {
     id: "com-formation-2j",
     labelFr: "Formation 2 jours",
     labelEn: "2-day training",
     kind: "flat",
-    flatEur: 800,
+    flatEur: commissionFormation(2),
     basisTierId: "intervention-approfondie",
-    descriptionFr: "Commission fixe pour chaque formation approfondie de deux jours vendue.",
-    descriptionEn: "Flat commission for each two-day deep-dive training sold.",
+    descriptionFr:
+      "Commission fixe pour chaque formation approfondie de deux jours vendue — deux journées, donc deux fois la commission.",
+    descriptionEn:
+      "Flat commission for each two-day deep-dive training sold — two days, so twice the commission.",
   },
   {
     id: "com-formation-3j",
     labelFr: "Formation 3 jours et +",
     labelEn: "3-day+ training",
     kind: "flat",
-    flatEur: 1350,
-    descriptionFr: "Commission fixe pour chaque format long (3 jours ou plus) vendu.",
-    descriptionEn: "Flat commission for each long format (3 days or more) sold.",
+    flatEur: commissionFormation(3),
+    descriptionFr:
+      "Commission fixe pour chaque format long (3 jours ou plus) vendu — et au-delà de 3 journées, la commission suit.",
+    descriptionEn:
+      "Flat commission for each long format (3 days or more) sold — beyond 3 days, the commission follows.",
   },
   {
     id: "com-un-a-un",

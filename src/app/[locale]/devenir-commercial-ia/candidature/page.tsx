@@ -96,8 +96,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/devenir-commercial-ia/candidature",
       title,
       description: isFr
-        ? "Deviens commercial indépendant Axion-IA : pas de CV, pas de lettre de motivation — quelques questions essentielles, 3 minutes chrono. Produits IA faciles à vendre, commissions déplafonnées, statut indépendant."
-        : "Become an independent Axion-IA sales rep: no resume, no cover letter — a few essential questions, 3 minutes flat. Easy-to-sell AI products, uncapped commissions, self-employed status.",
+        ? "Candidatez en 3 minutes, sans CV : 500 € pour vous par journée de formation IA vendue. L'AI Act l'impose aux TPE, PME, ETI et grands groupes." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+        : "Apply in 3 minutes, no resume: €500 for you per AI training day sold. The AI Act mandates it for small businesses, SMEs, mid-caps and large groups." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     }),
     title: { absolute: title },
     keywords: buildCommercialKeywords(),
