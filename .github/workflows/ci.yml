@@ -360,6 +360,27 @@ jobs:
     # should not block deploys until it gets a proper env fixture.
     # TODO follow-up: pass full mock env (e.g. via `--build-arg` or a
     # .env.smoke file) so this gate can re-enable as required.
+    # ─────────────────────────────────────────────────────────────────────────
+    # 🔴 GATE C N'EST PLUS UN CONTEXTE EXIGÉ (2026-08-18) — ET POURQUOI
+    #
+    # Ce job porte `continue-on-error: true` (plus bas, posé le 2026-05-10 : le
+    # smoke build échoue sur la validation Zod faute d'env complet). Il ne PEUT
+    # donc pas rougir. Mesuré sur les 25 runs précédant le 2026-08-18 :
+    # 15 succès, 3 annulés, 1 skippé, ZÉRO échec.
+    #
+    # Il restait pourtant exigé par la protection de `main`, et il dure ~32 min.
+    # C'était donc, à lui seul, le PLAFOND de chaque cycle : avec `strict: true`,
+    # chaque fusion périme les PR restantes et fait repayer ce cycle. Retiré des
+    # contextes exigés, le cycle tombe de ~32 min à ~20 min.
+    #
+    # Le retirer ne perd AUCUNE sécurité : un contrôle qui ne peut pas échouer
+    # ne protège de rien. Le job continue de tourner et de journaliser.
+    #
+    # ⚠️ COUPLAGE À NE PAS PERDRE. Le jour où quelqu'un donne à ce job sa
+    # fixture d'env complète et RETIRE le `continue-on-error`, il redevient un
+    # vrai garde-fou — et il faut alors le REMETTRE dans les contextes exigés de
+    # la protection de `main`, sinon il rougira sans jamais rien bloquer.
+    # ─────────────────────────────────────────────────────────────────────────
     name: Gate C · Docker smoke test
     runs-on: ubuntu-latest
     # 30 → 60 (2026-06-02) : une fois l'ENOSPC réglé (step free-disk ci-dessus),
