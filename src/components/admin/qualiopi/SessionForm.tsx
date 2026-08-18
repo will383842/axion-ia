@@ -47,11 +47,27 @@ export interface DevisOption {
   montantHtCents: number;
 }
 
+export interface FormateurOption {
+  id: string;
+  /** `Prénom Nom` — suffixé « (sous-traitant) », comme sur la fiche session. */
+  label: string;
+}
+
 export interface SessionFormProps {
   /** Formations publiées disponibles pour la session. */
   formations: FormationOption[];
   /** Clients disponibles pour rattachement optionnel. */
   clients?: ClientOption[];
+  /**
+   * Formateurs ASSIGNABLES, indexés par formation.
+   *
+   * La liste est calculée côté serveur par `isTrainerHabilite` — la fonction
+   * qu'appelle aussi la garde de `createSessionAction`. Ce composant ne rejuge
+   * donc RIEN : il affiche ce qui lui est donné. Refaire ici le calcul
+   * d'habilitation le ferait diverger de la garde au premier amendement, et
+   * l'écran proposerait des formateurs que l'action refuse.
+   */
+  formateursParFormation?: Record<string, FormateurOption[]>;
   /**
    * Devis ACCEPTÉS, rattachables à la session (F8).
    * `clientId` sert au filtrage : un devis n'est pertinent que pour son client.
@@ -73,6 +89,8 @@ export interface SessionFormProps {
     formations: string;
     /** Formulaire de création d&apos;un client. */
     clients: string;
+    /** Liste des formateurs — d&apos;où l&apos;on ouvre une fiche pour l&apos;habiliter. */
+    formateurs: string;
   };
 }
 
@@ -108,6 +126,7 @@ export function SessionForm({
   formations,
   clients = [],
   devis = [],
+  formateursParFormation = {},
   onSuccess,
   redirectAfterCreate,
   liensPrerequis,
@@ -134,6 +153,34 @@ export function SessionForm({
   const devisDuClient = devis.filter((d) => d.clientId === clientId);
   const devisRetenuValide = devisId === "" || devisDuClient.some((d) => d.id === devisId);
   if (!devisRetenuValide) setDevisId("");
+
+  // ── Formateur principal, filtré par la formation choisie ───────────────────
+  //
+  // Même patron que client → devis : un formateur n'est proposé que pour les
+  // formations sur lesquelles il est habilité. Changer de formation doit donc
+  // relâcher le formateur retenu, sinon on enverrait à l'action un couple que sa
+  // garde refuserait — un refus arrivant APRÈS la saisie de tout le formulaire.
+  const [trainerId, setTrainerId] = useState("");
+  const [formationDejaArbitree, setFormationDejaArbitree] = useState("");
+  const formateursHabilites = formateursParFormation[formationId] ?? [];
+
+  // 🔑 La règle de pré-remplissage, et pourquoi elle s'arrête à UN.
+  //
+  // Quand un seul formateur est habilité, il n'y a pas de choix à faire : le
+  // demander serait une question dont la réponse est déjà connue, et c'est
+  // exactement ce qui fait qu'on oublie de la remplir. On la pré-remplit.
+  //
+  // Dès qu'ils sont DEUX, on ne choisit pas à la place de l'utilisateur. Poser
+  // le premier de la liste par défaut serait pire que ne rien poser : le défaut
+  // ne se voit pas, et une session partirait avec un formateur qui n'a jamais
+  // été désigné — sur une pièce que le client reçoit et qu'un auditeur lit.
+  //
+  // L'arbitrage est rejoué à chaque CHANGEMENT de formation (et une seule fois
+  // par formation, sinon on écraserait un choix manuel à chaque rendu).
+  if (formationId !== formationDejaArbitree) {
+    setFormationDejaArbitree(formationId);
+    setTrainerId(formateursHabilites.length === 1 ? (formateursHabilites[0]?.id ?? "") : "");
+  }
   const [financementType, setFinancementType] = useState("");
   const [lieu, setLieu] = useState<LieuValues>(LIEU_VALUES_VIDE);
 
@@ -231,6 +278,9 @@ export function SessionForm({
           ...(titreSession.trim() ? { titreSession: titreSession.trim() } : {}),
           ...(clientId ? { clientId } : {}),
           ...(devisId ? { devisId } : {}),
+          // `trainerId` n'est envoyé QUE s'il est renseigné : le champ est
+          // facultatif, et une chaîne vide échouerait la validation `uuid()`.
+          ...(trainerId ? { trainerId } : {}),
           ...(financementType
             ? {
                 financementType: financementType as
@@ -305,6 +355,58 @@ export function SessionForm({
               Aucune formation publiée disponible. Publiez d&apos;abord une formation.
             </p>
           ))}
+      </div>
+
+      {/* ── Formateur principal ───────────────────────────────────────────── */}
+      {/* 🔴 Ce champ N'EXISTAIT PAS à la création. `formateurPrincipalId` n'avait
+          qu'un écrivain — l'assignation depuis la FICHE, donc après coup. On
+          demandait donc au planificateur de revenir sur ses pas pour renseigner
+          la seule chose qu'il savait au moment où il planifiait.
+
+          La liste est celle des formateurs HABILITÉS sur la formation choisie,
+          calculée côté serveur par la fonction qu'utilise la garde de l'action.
+          Un sous-traitant non vérifié n'y figure donc pas : l'écran ne propose
+          jamais un choix que l'enregistrement refuserait. */}
+      <div className="mb-[var(--space-admin-5)]">
+        <label className={labelCls} htmlFor="session-formateur">
+          Formateur principal{" "}
+          <span className="font-normal text-[color:var(--color-admin-fg-muted)] normal-case">
+            (optionnel ici — assignable ensuite depuis la fiche de la session)
+          </span>
+        </label>
+        <select
+          id="session-formateur"
+          value={trainerId}
+          onChange={(e) => setTrainerId(e.target.value)}
+          disabled={
+            isPending || modeRecurrent || formationId === "" || formateursHabilites.length === 0
+          }
+          className={selectCls}
+        >
+          <option value="">— Aucun formateur —</option>
+          {formateursHabilites.map((f) => (
+            <option key={f.id} value={f.id}>
+              {f.label}
+            </option>
+          ))}
+        </select>
+        {formationId !== "" && formateursHabilites.length === 0 && liensPrerequis ? (
+          <AdminPrerequisManquant
+            message="Aucun formateur habilité sur cette formation. La session pourra être créée, mais les documents nominatifs porteront la raison sociale de l'organisme au lieu du nom de l'intervenant, et aucune lettre de mission ne pourra être émise. Ajoutez cette formation aux habilitations d'un formateur."
+            href={liensPrerequis.formateurs}
+            libelleAction="Gérer les formateurs"
+          />
+        ) : (
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {modeRecurrent
+              ? "Série récurrente : le formateur s'assigne occurrence par occurrence depuis leurs fiches — ce choix ne serait pas enregistré ici."
+              : formationId === ""
+                ? "Choisissez d'abord une formation pour voir ses formateurs habilités."
+                : formateursHabilites.length === 1
+                  ? "Un seul formateur est habilité sur cette formation : il est pré-sélectionné."
+                  : "Plusieurs formateurs sont habilités : désignez celui qui animera. Aucun n'est choisi par défaut — un formateur jamais désigné se retrouverait pourtant nommé sur la convention."}
+          </p>
+        )}
       </div>
 
       {/* ── Titre de session (optionnel) ───────────────────────────────────── */}
