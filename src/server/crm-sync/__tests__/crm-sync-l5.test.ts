@@ -24,6 +24,8 @@ const {
   subscriber,
   submission,
   jobApplication,
+  calendlyEvent,
+  customerReview,
   queueAdd,
   enqueueSpy,
   siteSettingUpsert,
@@ -46,6 +48,8 @@ const {
   subscriber: { findMany: vi.fn(), update: vi.fn() },
   submission: { findMany: vi.fn() },
   jobApplication: { findMany: vi.fn() },
+  calendlyEvent: { findMany: vi.fn() },
+  customerReview: { findMany: vi.fn() },
   queueAdd: vi.fn(),
   enqueueSpy: vi.fn(),
   siteSettingUpsert: vi.fn(),
@@ -58,6 +62,8 @@ vi.mock("@/lib/prisma", () => ({
     newsletterSubscriber: subscriber,
     submission,
     jobApplication,
+    calendlyEvent,
+    customerReview,
     siteSetting: {
       upsert: (...args: unknown[]) => siteSettingUpsert(...args),
     },
@@ -138,6 +144,8 @@ beforeEach(() => {
   subscriber.update.mockResolvedValue({});
   submission.findMany.mockResolvedValue([]);
   jobApplication.findMany.mockResolvedValue([]);
+  calendlyEvent.findMany.mockResolvedValue([]);
+  customerReview.findMany.mockResolvedValue([]);
 });
 
 afterEach(() => {
@@ -567,5 +575,56 @@ describe("alerte de file d'attente", () => {
     });
     expect(outbox.count).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+});
+
+// ── Étape 0, ligne 12 (2026-08-18) — les cinq familles sont comparées ────────
+describe("réconciliation — parité sur les CINQ familles de capture", () => {
+  beforeEach(() => {
+    process.env.CRM_SYNC_ENABLED = "true";
+    process.env.CRM_SYNC_URL = "https://crm.test/api/internal/site-sync";
+    process.env.CRM_SYNC_CANDIDATES_ENABLED = "true";
+    outbox.findFirst.mockResolvedValue({ createdAt: new Date(Date.now() - 6 * 24 * 3600 * 1000) });
+  });
+
+  it("le rapport porte les cinq familles, jamais moins", async () => {
+    const rapport = await collectReconciliation();
+    expect(rapport.families.map((f) => f.family).sort()).toEqual(
+      ["calendly_event", "customer_review", "job_application", "newsletter_subscriber", "submission"],
+    );
+  });
+
+  it("un rendez-vous Calendly avec adresse SANS ligne d'outbox est un manquant, avec sa référence exacte", async () => {
+    calendlyEvent.findMany.mockResolvedValue([{ id: "cal-1" }, { id: "cal-2" }]);
+    outbox.findMany.mockResolvedValue([{ subjectRef: "site:calendly_event:cal-1" }]);
+    const rapport = await collectReconciliation();
+    const famille = rapport.families.find((f) => f.family === "calendly_event");
+    expect(famille?.sources).toBe(2);
+    expect(famille?.emitted).toBe(1);
+    expect(famille?.missingIds).toEqual(["site:calendly_event:cal-2"]);
+    // Et la requête n'a demandé QUE les rendez-vous dont l'adresse est connue :
+    // sans adresse, rien ne peut émettre — ce n'est pas un manquant de synchro.
+    const appel = calendlyEvent.findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(appel.where).toMatchObject({ inviteeEmail: { not: null } });
+    expect(Object.keys(appel.where)).toContain("capturedAt");
+  });
+
+  it("newsletter : seules les inscriptions CONFIRMÉES sont attendues (fenêtre sur confirmedAt)", async () => {
+    subscriber.findMany.mockResolvedValue([{ id: "nl-1" }]);
+    outbox.findMany.mockResolvedValue([{ subjectRef: "site:newsletter_subscriber:nl-1" }]);
+    const rapport = await collectReconciliation();
+    const famille = rapport.families.find((f) => f.family === "newsletter_subscriber");
+    expect(famille?.missing).toBe(0);
+    const appel = subscriber.findMany.mock.calls.at(-1)?.[0] as { where: Record<string, unknown> };
+    expect(Object.keys(appel.where)).toEqual(["confirmedAt"]);
+  });
+
+  it("avis : un avis créé sans ligne d'outbox est un manquant (référence site:customer_review:…)", async () => {
+    customerReview.findMany.mockResolvedValue([{ id: "av-1" }]);
+    outbox.findMany.mockResolvedValue([]);
+    const rapport = await collectReconciliation();
+    const famille = rapport.families.find((f) => f.family === "customer_review");
+    expect(famille?.missingIds).toEqual(["site:customer_review:av-1"]);
+    expect(rapport.totalMissing).toBe(1);
   });
 });

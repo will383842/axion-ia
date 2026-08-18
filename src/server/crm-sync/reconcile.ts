@@ -59,7 +59,22 @@ const MAX_SOURCES_PER_FAMILY = 2000;
 /** Nombre d'identifiants manquants détaillés dans le rapport (le reste est compté). */
 const MAX_REPORTED_IDS = 20;
 
-export type CrmSyncFamily = "submission" | "job_application";
+/**
+ * Les cinq familles de capture du site qui émettent vers le CRM.
+ *
+ * Étape 0, ligne 12 (2026-08-18) : la réconciliation ne comparait que les
+ * formulaires et les candidatures — le critère de PARITÉ du cahier des charges
+ * (« sur une semaine, ce que la console voit = ce que le CRM reçoit, toutes
+ * familles ») était mesuré sur deux familles sur cinq. Calendly, newsletter et
+ * avis rejoignent la comparaison ; chacune avec SA condition d'émission (un
+ * enregistrement qui, par construction, n'émet pas n'est pas un manquant).
+ */
+export type CrmSyncFamily =
+  | "submission"
+  | "job_application"
+  | "calendly_event"
+  | "newsletter_subscriber"
+  | "customer_review";
 
 export interface ReconcileFamilyReport {
   family: CrmSyncFamily;
@@ -93,6 +108,9 @@ export interface ReconcileReport {
 const FAMILY_LABELS: Record<CrmSyncFamily, string> = {
   submission: "Formulaires (submissions)",
   job_application: "Candidatures aux offres",
+  calendly_event: "Rendez-vous Calendly (invité identifié)",
+  newsletter_subscriber: "Newsletter (inscriptions confirmées)",
+  customer_review: "Avis clients",
 };
 
 /**
@@ -196,6 +214,59 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
       truncated: false,
     });
   }
+
+  // ── Les trois familles ajoutées le 2026-08-18 (ligne 12) ─────────────────
+  // Chacune ne compte que ce qui DOIT émettre :
+  //  - Calendly : l'émission exige l'adresse de l'invité (le widget ne la
+  //    transmet pas ; c'est l'enrichissement API qui la récupère). Un
+  //    rendez-vous sans adresse n'a, par construction, aucune ligne d'outbox —
+  //    et c'est un défaut d'enrichissement, pas de synchro. On compare donc
+  //    les rendez-vous DONT l'adresse est connue, par date de capture.
+  //  - Newsletter : l'émission a lieu à la CONFIRMATION du double opt-in
+  //    (`newsletter_optin`), jamais à la demande. Fenêtre sur `confirmedAt`.
+  //  - Avis : émis à la soumission (`review_posted`), quel que soit le statut
+  //    de modération. Fenêtre sur `createdAt`.
+  families.push(
+    await compareFamily({
+      family: "calendly_event",
+      universe: "business",
+      since,
+      until,
+      loadIds: (from, to) =>
+        prisma.calendlyEvent.findMany({
+          where: { capturedAt: { gte: from, lt: to }, inviteeEmail: { not: null } },
+          select: { id: true },
+          orderBy: { capturedAt: "asc" },
+          take: MAX_SOURCES_PER_FAMILY,
+        }),
+    }),
+    await compareFamily({
+      family: "newsletter_subscriber",
+      universe: "business",
+      since,
+      until,
+      loadIds: (from, to) =>
+        prisma.newsletterSubscriber.findMany({
+          where: { confirmedAt: { gte: from, lt: to } },
+          select: { id: true },
+          orderBy: { confirmedAt: "asc" },
+          take: MAX_SOURCES_PER_FAMILY,
+        }),
+    }),
+    await compareFamily({
+      family: "customer_review",
+      universe: "business",
+      since,
+      until,
+      loadIds: (from, to) =>
+        prisma.customerReview.findMany({
+          where: { createdAt: { gte: from, lt: to } },
+          select: { id: true },
+          orderBy: { createdAt: "asc" },
+          take: MAX_SOURCES_PER_FAMILY,
+        }),
+    }),
+  );
 
   return {
     ranAt,
