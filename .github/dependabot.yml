@@ -39,6 +39,36 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # ── stripe : gelé tant que l'intégration DORT (2026-08-18) ──────────────
+      #
+      # Stripe est NEUTRALISÉ par défaut (`src/lib/stripe.ts`,
+      # `isStripeConfigured()` exige `STRIPE_ENABLED=true`) : les paiements se
+      # font par virement + saisie manuelle en admin. Le code Stripe est en
+      # place mais ne s'exécute pas.
+      #
+      # 🔑 Le SDK Stripe type `apiVersion` comme UN SEUL littéral par version.
+      # Résultat : la moindre montée MINEURE casse le typecheck —
+      #   PR #731, stripe 22.1.1 → 22.5.0 :
+      #   src/lib/stripe.ts(43,5): error TS2322:
+      #     Type '"2026-04-22.dahlia"' is not assignable to type '"2026-07-29.dahlia"'.
+      # …et pousse à bumper `STRIPE_API_VERSION` par réflexe pour reverdir la CI.
+      #
+      # Or `src/lib/stripe.ts` l'interdit explicitement : « Bump = ADR explicit
+      # + revue webhook event shapes. Stripe pousse parfois des breaking changes
+      # sur les events ; on contrôle. » Un bump réflexe changerait le
+      # comportement du jour où Stripe sera réactivé, sans que personne n'ait
+      # relu les formes d'événements. Le rouge de CI faisait pression pour
+      # violer un contrat écrit — on retire la pression, pas le contrat.
+      #
+      # On ne fige QUE les montées de version (minor/patch ; major déjà couvert
+      # ci-dessus). Les alertes de SÉCURITÉ Dependabot ne portent pas de
+      # `update-types` et continuent donc de passer.
+      #
+      # ⏭️ À RETIRER le jour où Stripe est réactivé (`STRIPE_ENABLED=true`) :
+      #    monter alors le SDK et `STRIPE_API_VERSION` ensemble, en PR
+      #    délibérée, avec l'ADR et la revue des webhooks.
+      - dependency-name: "stripe"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
     # UN SEUL LOT — incident du 2026-08-18 (main inconstructible ~6 h).
     #
     # Ce bloc portait quatre groupes (next-stack / typescript / tooling / tests).
