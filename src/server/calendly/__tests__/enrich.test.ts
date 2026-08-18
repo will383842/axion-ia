@@ -31,6 +31,11 @@ vi.mock("@/lib/prisma", () => ({
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
+const syncCrmMock = vi.fn();
+vi.mock("@/server/crm-sync", () => ({
+  syncCalendlyEventToCrm: (...args: unknown[]) => syncCrmMock(...args),
+}));
+
 import { enrichCalendlyEvent } from "../enrich";
 
 /** Ligne vierge type : ce que produit une capture Embed JS sans jeton. */
@@ -66,6 +71,8 @@ function apiData(overrides: Record<string, unknown> = {}) {
       timezone: "Europe/Paris",
       location: null,
       calendlyStatus: "active",
+      /** `no_show` de l'invitee Calendly : l'hôte a coché « Mark as no-show ». */
+      noShow: false,
       cancelUrl: "https://calendly.com/cancellations/abc",
       rescheduleUrl: null,
       eventTypeName: "Premier contact — 30 min",
@@ -79,6 +86,7 @@ beforeEach(() => {
   process.env.CALENDLY_API_TOKEN = "pat_test";
   updateMock.mockResolvedValue({});
   notifyMock.mockResolvedValue({ ok: true, channels: {} });
+  syncCrmMock.mockResolvedValue(undefined);
 });
 
 describe("enrichCalendlyEvent", () => {
@@ -273,5 +281,127 @@ describe("enrichCalendlyEvent", () => {
     // L'horodatage seul est écrit : la tentative a bien eu lieu.
     const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
     expect(Object.keys(data)).toEqual(["enrichedAt"]);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// L'ISSUE D'UN RDV DOIT ARRIVER AU CRM SANS GESTE (2026-08-18, préalables ligne 13)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// L'ASYMÉTRIE que ces tests suppriment : l'annulation était déjà détectée
+// automatiquement (sondage BullMQ → `enrich`), mais `enrich.ts` n'importait PAS
+// `@/server/crm-sync`. Il sonnait Telegram et ne disait rien au CRM. Autrement
+// dit l'automatisation existait pour l'AFFICHAGE et pas pour la SYNCHRO : le CRM
+// n'apprenait l'annulation que si un humain repassait le statut à la main dans
+// la console (`admin-calendly/actions.ts`). La prise de RDV, elle, part toute
+// seule depuis `discover.ts` — d'où l'asymétrie.
+//
+// Le no-show, lui, n'était même pas détecté : `api.ts` ne lisait pas le champ
+// `no_show` de l'invitee Calendly, alors que c'est exactement ce que l'hôte
+// coche dans l'agenda (« Mark as no-show »).
+
+describe("enrichCalendlyEvent — issue du RDV vers le CRM, sans geste humain", () => {
+  it("un no-show déclaré dans Calendly devient `no_show` et part au CRM", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({
+        status: "scheduled",
+        inviteeEmail: "jean@example.com",
+        inviteeName: "Jean Dupont",
+        startTime: new Date("2026-08-03T09:00:00Z"),
+        endTime: new Date("2026-08-03T09:30:00Z"),
+      }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ calendlyStatus: "active", noShow: true }));
+
+    const res = await enrichCalendlyEvent("evt_1");
+    expect(res.ok).toBe(true);
+
+    const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(data["status"]).toBe("no_show");
+
+    expect(syncCrmMock).toHaveBeenCalledOnce();
+    const emis = syncCrmMock.mock.calls[0]?.[0] as {
+      kind: string;
+      subjectRef: string;
+      person: { email: string };
+      payload: Record<string, unknown>;
+    };
+    expect(emis.kind).toBe("no_show");
+    // Même `subjectRef` que la prise de RDV (`discover.ts`) et que la saisie
+    // manuelle : sans ça le CRM verrait deux affaires distinctes.
+    expect(emis.subjectRef).toBe("site:calendly_event:evt_1");
+    expect(emis.person.email).toBe("jean@example.com");
+    expect(emis.payload["source"]).toBe("api_poll");
+  });
+
+  it("une annulation détectée automatiquement part au CRM (pas seulement Telegram)", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({ status: "scheduled", inviteeEmail: "jean@example.com" }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ calendlyStatus: "canceled" }));
+
+    await enrichCalendlyEvent("evt_1");
+
+    expect(notifyMock).toHaveBeenCalledOnce();
+    expect(syncCrmMock).toHaveBeenCalledOnce();
+    const emis = syncCrmMock.mock.calls[0]?.[0] as { kind: string; person: { email: string } };
+    expect(emis.kind).toBe("canceled");
+    expect(emis.person.email).toBe("jean@example.com");
+  });
+
+  it("un statut inchangé n'émet RIEN — pas de doublon dans la timeline CRM", async () => {
+    // Chaque émission porte un `event_id` neuf : re-sonder toutes les 10 min une
+    // ligne déjà annulée dupliquerait l'interaction côté CRM.
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({ status: "canceled", inviteeEmail: "jean@example.com" }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ calendlyStatus: "canceled" }));
+    await enrichCalendlyEvent("evt_1");
+    expect(syncCrmMock).not.toHaveBeenCalled();
+  });
+
+  it("sans adresse d'invité, aucune émission (pas de clé de personne)", async () => {
+    findUniqueMock.mockResolvedValueOnce(emptyRow({ status: "scheduled", inviteeEmail: null }));
+    fetchInviteeMock.mockResolvedValueOnce(
+      apiData({ calendlyStatus: "canceled", inviteeEmail: null }),
+    );
+    await enrichCalendlyEvent("evt_1");
+    expect(syncCrmMock).not.toHaveBeenCalled();
+  });
+
+  it("un échec d'émission CRM ne fait pas échouer l'enrichissement", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({ status: "scheduled", inviteeEmail: "jean@example.com" }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ calendlyStatus: "canceled" }));
+    syncCrmMock.mockRejectedValueOnce(new Error("outbox down"));
+    const res = await enrichCalendlyEvent("evt_1");
+    expect(res.ok).toBe(true);
+  });
+
+  // L'humain a vu l'appel ; l'API ne l'a pas vu. Un `completed` posé en console
+  // n'est donc jamais contredit par un `no_show` venu de Calendly.
+  it("ne rétrograde pas un `completed` posé à la main, et n'émet rien", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({ status: "completed", inviteeEmail: "jean@example.com" }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ noShow: true }));
+    await enrichCalendlyEvent("evt_1");
+    const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(data).not.toHaveProperty("status");
+    expect(syncCrmMock).not.toHaveBeenCalled();
+  });
+
+  // Une absence l'emporte sur une annulation : si Calendly dit les deux, c'est
+  // que l'hôte a annulé APRÈS avoir constaté l'absence.
+  it("no_show et annulation simultanés → `no_show`", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({ status: "scheduled", inviteeEmail: "jean@example.com" }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ calendlyStatus: "canceled", noShow: true }));
+    await enrichCalendlyEvent("evt_1");
+    const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(data["status"]).toBe("no_show");
+    expect((syncCrmMock.mock.calls[0]?.[0] as { kind: string }).kind).toBe("no_show");
   });
 });

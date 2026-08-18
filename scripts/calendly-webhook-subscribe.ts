@@ -26,8 +26,21 @@ const token = process.env.CALENDLY_API_TOKEN?.trim();
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com").replace(/\/+$/, "");
 const callbackUrl = `${siteUrl}/api/calendly/webhook`;
 
-/** Les deux seuls types traités par la route — cf. `api/calendly/webhook/route.ts`. */
-const EVENTS = ["invitee.created", "invitee.canceled"] as const;
+/**
+ * Les seuls types traités par la route — cf. `api/calendly/webhook/route.ts`.
+ *
+ * `invitee_no_show.created` a été ajouté le 2026-08-18 : sans lui, une absence
+ * cochée dans l'agenda n'arrivait que par le sondage (≤ 10 min), voire jamais si
+ * elle tombait hors de la fenêtre de rattrapage.
+ *
+ * ⚠️ Un abonnement DÉJÀ créé garde la liste d'évènements qu'il avait à sa
+ * création, et ce script ne la met PAS à jour : il détecte l'abonnement existant
+ * et s'arrête (étape 2). Pour livrer un type ajouté ici, il faut SUPPRIMER
+ * l'abonnement côté Calendly puis relancer — ce qui régénère aussi une
+ * `signing_key`, à reposer dans Coolify. Sans abonnement (cas actuel, plan
+ * gratuit), il n'y a rien à faire.
+ */
+const EVENTS = ["invitee.created", "invitee.canceled", "invitee_no_show.created"] as const;
 
 async function api(path: string, init?: RequestInit): Promise<{ status: number; body: unknown }> {
   const res = await fetch(path.startsWith("http") ? path : `${CALENDLY_API_BASE}${path}`, {

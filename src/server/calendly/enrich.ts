@@ -17,12 +17,32 @@
 //     ancienne heure après un déplacement d'invité produirait une fiche qui
 //     ment, ce qui est pire que pas de fiche du tout pour un agenda.
 //
-// Seul le statut terminal posé après coup (`completed` / `no_show`) est protégé :
-// il décrit ce qui s'est passé pendant l'appel, ce que l'API ne sait pas.
+// Seul le statut terminal posé après coup est protégé : il décrit ce qui s'est
+// passé pendant l'appel, et l'humain qui l'a saisi a vu l'appel.
+//
+// ── L'ISSUE DU RDV VA AUSSI AU CRM (2026-08-18) ───────────────────────────────
+//
+// Ce module détectait déjà les annulations tout seul, mais il ne le disait qu'à
+// Telegram : il n'importait pas `@/server/crm-sync`. L'automatisation existait
+// donc pour l'AFFICHAGE et pas pour la SYNCHRO — le CRM n'apprenait une
+// annulation que si quelqu'un repassait le statut à la main dans la console,
+// alors que la PRISE de rendez-vous, elle, part toute seule depuis `discover.ts`.
+// C'était une asymétrie, pas une décision.
+//
+// Deux statuts partent d'ici, et deux seulement :
+//   · `canceled` — l'invité (ou l'hôte) a annulé côté Calendly ;
+//   · `no_show`  — l'hôte a coché « Mark as no-show ». Contrairement à ce qu'on
+//     a longtemps écrit ici, l'API le sait : l'invitee porte `no_show`.
+//
+// `completed` reste MANUEL, et ce n'est pas un oubli : rien dans l'API ne dit
+// qu'un rendez-vous a été honoré. Une règle temporelle (« l'heure de fin est
+// passée depuis N heures ⇒ honoré ») affirmerait au CRM un fait commercial que
+// personne n'a constaté — et un rendez-vous passé n'a pas forcément eu lieu.
 
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { notify } from "@/server/notifications";
+import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 
 export type EnrichOutcome =
@@ -38,8 +58,18 @@ export type EnrichOutcome =
     }
   | { ok: false; reason: string };
 
-/** `active`/`canceled` (API Calendly) → enum `CalendlyEventStatus`. */
-function mapCalendlyStatus(raw: string | null): "scheduled" | "canceled" | null {
+/**
+ * État Calendly → enum `CalendlyEventStatus`.
+ *
+ * `noShow` l'emporte sur l'annulation : quand les deux sont vrais, c'est que
+ * l'hôte a annulé le créneau APRÈS avoir constaté l'absence. Garder « annulé »
+ * dans ce cas effacerait l'information la plus utile des deux.
+ */
+function mapCalendlyStatus(
+  raw: string | null,
+  noShow: boolean,
+): "scheduled" | "canceled" | "no_show" | null {
+  if (noShow) return "no_show";
   if (raw === "canceled") return "canceled";
   if (raw === "active") return "scheduled";
   return null;
@@ -159,9 +189,10 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   // On ne rétrograde jamais un statut posé manuellement en fin de parcours
   // (`completed` / `no_show`) : il décrit ce qui s'est réellement passé pendant
   // l'appel, ce que l'API ne peut pas savoir.
-  const mapped = mapCalendlyStatus(d.calendlyStatus);
+  const mapped = mapCalendlyStatus(d.calendlyStatus, d.noShow);
   const terminal = row.status === "completed" || row.status === "no_show";
   const canceled = mapped === "canceled" && row.status !== "canceled" && !terminal;
+  const noShow = mapped === "no_show" && !terminal;
   if (mapped && mapped !== row.status && !terminal) {
     data["status"] = mapped;
     updatedFields.push("status");
@@ -177,20 +208,55 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     return { ok: false, reason: "db_write_failed" };
   }
 
-  // Alerte Telegram sur les deux évènements qu'on vient tout juste de rendre
-  // détectables. Les catégories existaient depuis l'ADR 0030 mais n'avaient
-  // AUCUN émetteur : sans webhook, rien ne pouvait constater une annulation.
-  // Best-effort strict — `notify()` ne throw pas, et un échec d'alerte ne doit
-  // pas faire passer un enrichissement réussi pour un échec.
+  const inviteeEmail = (data["inviteeEmail"] as string | undefined) ?? row.inviteeEmail ?? "";
+  // Le nom et le type de RDV viennent de la ligne, complétés par ce que
+  // l'enrichissement vient d'écrire. Sans eux, l'alerte disait seulement
+  // « annulation » + un identifiant technique : illisible depuis un téléphone,
+  // et il fallait ouvrir la console pour savoir DE QUEL rendez-vous il s'agit.
+  const inviteeName = (data["inviteeName"] as string | undefined) ?? row.inviteeName ?? undefined;
+  const eventName = (data["eventTypeName"] as string | undefined) ?? row.eventTypeName ?? undefined;
+  // L'horaire le plus récent : celui que l'enrichissement vient d'écrire s'il a
+  // bougé, sinon celui de la ligne.
+  const occurredAt = (data["startTime"] as Date | undefined) ?? row.startTime;
+
+  // ── Synchro CRM (lot L2) ────────────────────────────────────────────────────
+  //
+  // Émise sur TRANSITION seulement (`canceled` / `noShow` sont déjà des gardes
+  // de changement d'état) : chaque émission porte un `event_id` neuf, donc
+  // re-sonder toutes les 10 minutes une ligne déjà annulée dupliquerait
+  // l'interaction dans la timeline CRM.
+  //
+  // Sans adresse d'invité, pas de clé de personne — rien ne part, exactement
+  // comme dans `discover.ts` et `admin-calendly/actions.ts`.
+  //
+  // `syncCalendlyEventToCrm` ne lève jamais et n'appelle aucun réseau (l'émission
+  // part par l'outbox) ; le try/catch reste par principe : un échec de synchro ne
+  // doit pas faire passer un enrichissement réussi pour un échec.
+  if ((canceled || noShow) && inviteeEmail) {
+    try {
+      await syncCalendlyEventToCrm({
+        kind: canceled ? "canceled" : "no_show",
+        subjectRef: `site:calendly_event:${eventId}`,
+        sourceSlug: "calendly",
+        ...(occurredAt ? { occurredAt } : {}),
+        person: {
+          email: inviteeEmail,
+          fullName: inviteeName ?? null,
+          phone: (data["inviteePhone"] as string | undefined) ?? row.inviteePhone ?? null,
+        },
+        payload: { eventTypeName: eventName ?? row.eventTypeName, source: "api_poll" },
+      });
+    } catch (e) {
+      Sentry.captureException(e);
+    }
+  }
+
+  // Alerte Telegram sur les deux évènements qu'on avait rendus détectables. Les
+  // catégories existaient depuis l'ADR 0030 mais n'avaient AUCUN émetteur : sans
+  // webhook, rien ne pouvait constater une annulation. Best-effort strict —
+  // `notify()` ne throw pas, et un échec d'alerte ne doit pas faire passer un
+  // enrichissement réussi pour un échec.
   if (canceled || rescheduled) {
-    const inviteeEmail = (data["inviteeEmail"] as string | undefined) ?? row.inviteeEmail ?? "";
-    // Le nom et le type de RDV viennent de la ligne, complétés par ce que
-    // l'enrichissement vient d'écrire. Sans eux, l'alerte disait seulement
-    // « annulation » + un identifiant technique : illisible depuis un téléphone,
-    // et il fallait ouvrir la console pour savoir DE QUEL rendez-vous il s'agit.
-    const inviteeName = (data["inviteeName"] as string | undefined) ?? row.inviteeName ?? undefined;
-    const eventName =
-      (data["eventTypeName"] as string | undefined) ?? row.eventTypeName ?? undefined;
     try {
       if (canceled) {
         await notify({

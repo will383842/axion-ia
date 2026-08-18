@@ -238,3 +238,52 @@ describe("fetchCalendlyInvitee — résolution", () => {
     expect(res).toMatchObject({ ok: false, reason: "http_error" });
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// L'ABSENCE DÉCLARÉE DANS CALENDLY (2026-08-18)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Ce champ était dans la réponse et n'était pas lu. On en avait conclu, à tort,
+// que l'API « ne connaît que active/canceled ». C'est vrai pour « honoré » ; ça
+// ne l'est pas pour « absent » : quand l'hôte coche « Mark as no-show »,
+// l'invitee porte `no_show` = `{ uri, created_at }` au lieu de `null`.
+//
+// C'est le premier maillon de la chaîne « un no-show déclaré dans Calendly
+// arrive dans le CRM sans geste » : si ce champ n'est pas lu, tout le reste est
+// aveugle, quel que soit le soin apporté à `enrich.ts`.
+
+describe("fetchCalendlyInvitee — absence déclarée par l'hôte", () => {
+  it("`no_show` renseigné → noShow vrai", async () => {
+    fetchMock.mockResolvedValueOnce(
+      jsonRes({
+        resource: {
+          name: "Jean",
+          email: "jean@example.com",
+          status: "active",
+          no_show: {
+            uri: "https://api.calendly.com/invitee_no_shows/NS",
+            created_at: "2026-08-03T11:00:00.000000Z",
+          },
+        },
+      }),
+    );
+    const res = await fetchCalendlyInvitee(INVITEE_URI);
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+    expect(res.data.noShow).toBe(true);
+  });
+
+  it.each([[null], [undefined]])("`no_show` à %s → noShow faux", async (valeur) => {
+    fetchMock.mockResolvedValueOnce(
+      jsonRes({
+        resource: { name: "Jean", email: "jean@example.com", status: "active", no_show: valeur },
+      }),
+    );
+    const res = await fetchCalendlyInvitee(INVITEE_URI);
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+    // Un `no_show` absent ne doit JAMAIS produire un « absent » : ce serait
+    // annoncer au CRM un rendez-vous non honoré qui a peut-être eu lieu.
+    expect(res.data.noShow).toBe(false);
+  });
+});
