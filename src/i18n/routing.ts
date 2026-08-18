@@ -146,6 +146,14 @@ export const routing = defineRouting({
     // EN miroir `/team/[slug]` aligné avec la convention `/a-propos → /about`.
     "/equipe/[slug]": { fr: "/equipe/[slug]", en: "/team/[slug]" },
 
+    // Catalogue des livres (2026-08-17). Les fiches et le hub 404 hors FR — les
+    // ouvrages sont écrits en français, et une fiche produit traduite pour un livre
+    // qui n'existe pas dans cette langue promettrait ce qui n'existe pas. Le miroir
+    // EN est déclaré malgré tout, comme pour `/equipe/[slug]` : sans entrée ici, les
+    // `Link` typés du hub tombent en `as never` et ne typechecknent pas.
+    "/livres": { fr: "/livres", en: "/books" },
+    "/livres/[slug]": { fr: "/livres/[slug]", en: "/books/[slug]" },
+
     // City Domination 2026-05-18 P1-21 (audit cross-cut 14 EEAT 2026) — pages
     // EEAT trust signals publiques. Couplée au hub /transparence (AI Act art.
     // 50) elles construisent la posture éditoriale machine-readable + humain-

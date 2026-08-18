@@ -20,6 +20,7 @@ import {
   getAllHelpCategorySlugs,
 } from "@/content/transversal";
 import { getAllComparisonSlugs } from "@/content/comparaisons";
+import { livresPublies } from "@/content/livres";
 import { AUTOMATISATION_SLUGS_FR, AUTOMATISATION_SLUGS_EN } from "@/content/automatisations";
 import { getIndexableRegions } from "@/content/regions";
 import { VILLES, getIndexableVilles, isVilleIndexable } from "@/content/villes";
@@ -759,6 +760,32 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
     changeFrequency: "monthly",
     priority: 0.6,
   });
+  /**
+   * Catalogue des livres (2026-08-17) — SEULS les ouvrages réellement en vente.
+   *
+   * `livresPublies()` filtre sur l'URL d'achat, et c'est la même condition qui met les
+   * fiches en `noindex`. Déclarer au sitemap une page qu'on demande par ailleurs de ne pas
+   * indexer est une contradiction que la Search Console remonte en « page exclue par la
+   * balise noindex » — un signal de négligence sur un domaine, pour un gain nul. Le hub
+   * suit ses fiches : rien à lister, rien à déclarer.
+   */
+  const livres = livresPublies();
+  if (livres.length > 0) {
+    entries.push({
+      url: `${SITE_URL}/fr/livres`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+    for (const livre of livres) {
+      entries.push({
+        url: `${SITE_URL}/fr/livres/${livre.slug}`,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+  }
   return entries;
 }
 
