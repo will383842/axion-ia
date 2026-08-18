@@ -393,6 +393,32 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
     expect(mockSessionUpdate).toHaveBeenCalled();
   });
 
+  // 🔴 Défaut constaté le 2026-08-18. Le passage de la dé-habilitation du
+  // `deleteMany` à un `updateMany` daté (2026-08-17) a filtré `listTrainers` et
+  // `getFormationIdsHabilites` sur `retireAt: null`, mais PAS cette lecture-ci,
+  // qui interroge `prisma.trainer` en direct. La ligne retirée restant en base,
+  // la garde continuait de la compter : le registre affichait « habilitation
+  // retirée » pendant que l'assignation l'acceptait encore.
+  //
+  // Le test porte sur la REQUÊTE et non sur un scénario de refus, parce que le
+  // filtre est appliqué par Prisma : un mock qui renvoie déjà la bonne liste ne
+  // peut pas distinguer une garde filtrée d'une garde qui ne l'est pas.
+  it("ne lit que les habilitations ACTIVES — une habilitation retirée ne vaut plus", async () => {
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "salarie",
+      habilitations: [{ formationId: FORMATION_ID }],
+      sousTraitantVerifieAt: null,
+    });
+    mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
+    await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+    const arg = mockTrainerFindUnique.mock.calls[0]?.[0] as {
+      select?: { habilitations?: { where?: { retireAt?: null } } };
+    };
+    expect(arg?.select?.habilitations?.where).toEqual({ retireAt: null });
+  });
+
   it("REFUSE un formateur non habilité sur la formation", async () => {
     mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockTrainerFindUnique.mockResolvedValue({

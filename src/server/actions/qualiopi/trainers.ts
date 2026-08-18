@@ -628,7 +628,14 @@ export async function assignTrainerToSessionAction(
           statut: true,
           sousTraitantVerifieAt: true,
           tarifJourneeHtCents: true,
-          habilitations: { select: { formationId: true } },
+          // 🔴 `retireAt: null` — même correctif que la garde de création, et
+          // pour la même raison. Le passage du `deleteMany` à l'`updateMany`
+          // daté (2026-08-17) a filtré `listTrainers` et
+          // `getFormationIdsHabilites`, mais PAS cette lecture-ci, qui interroge
+          // `prisma.trainer` en direct. L'assignation depuis la fiche session
+          // acceptait donc encore un formateur dont l'habilitation venait d'être
+          // retirée : le registre disait « retirée », la garde lisait « présente ».
+          habilitations: { where: { retireAt: null }, select: { formationId: true } },
         },
       });
     } catch {
