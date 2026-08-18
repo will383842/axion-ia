@@ -432,7 +432,7 @@ describe("🔴 un statut terminal REPLIE la checklist", () => {
   });
 
   it("session annulée : repliée, et aucune action réclamée", () => {
-    // Dérouler quatorze étapes sur une session annulée demanderait des gestes
+    // Dérouler quinze étapes sur une session annulée demanderait des gestes
     // que plus personne ne doit poser.
     const p = construireParcours(
       dossier({
