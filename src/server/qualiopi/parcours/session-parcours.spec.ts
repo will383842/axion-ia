@@ -571,9 +571,15 @@ describe("🔴 rien de ce qui s'affiche ne porte d'emoji", () => {
     }),
   );
 
-  it("les quatorze étapes sont bien là", () => {
+  it("les quinze étapes sont bien là", () => {
     // Sans ceci, une liste vide ferait passer tout le bloc au vert.
-    expect(p.etapes).toHaveLength(14);
+    //
+    // 14 → 15 le 2026-08-18 : #709 a ajouté `convention_contresignee` — la
+    // contresignature de l'organisme est un acte DISTINCT de la signature du
+    // client, et c'était tout l'objet de cette PR de la faire apparaître. Le
+    // compte n'y avait pas été reporté, et ce test verrouille précisément
+    // qu'aucune étape n'apparaît ni ne disparaît sans qu'on le dise.
+    expect(p.etapes).toHaveLength(15);
   });
 
   it.each(p.etapes.map((e) => [e.cle, e] as const))(

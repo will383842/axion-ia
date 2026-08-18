@@ -125,8 +125,13 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     icon: "Newspaper",
     nom: "Flyer A5 · recto-verso",
     format: "A5 · 148 × 210 mm fini · 154 × 216 mm avec 3 mm de fond perdu",
+    // price-exempt: « 0 € de reste à charge » décrit l'effet du financement OPCO,
+    // ce n'est pas un tarif Axion-IA — aucun changement de barème ne peut le
+    // périmer, et il n'a donc rien à dériver de `pricing.ts`. Le montant qui
+    // ÉTAIT un tarif (« au lieu de 650 € ») a lui été retiré : ce résumé décrit
+    // un imprimé, le prix vit dans le PDF et dans la SSOT, pas en double ici.
     resume:
-      "La présentation courte d’Axion-IA : les cinq activités, le financement OPCO jusqu’à 0 € de reste à charge, et la visibilité offerte à 0 € au lieu de 650 €. À laisser après un rendez-vous ou à diffuser en salon.",
+      "La présentation courte d’Axion-IA : les cinq activités, le financement OPCO jusqu’à 0 € de reste à charge, et la visibilité offerte au lieu de son tarif habituel. À laisser après un rendez-vous ou à diffuser en salon.", // price-exempt
     fichiersPublics: [
       {
         chemin: "imprimes/flyer-a5-axion-ia.pdf",

@@ -55,8 +55,14 @@ export default async function ImprimesPage({ params }: PageProps) {
           <a
             key={imprime.id}
             href={`/fr/${adminPrefix}/imprimes/${imprime.id}`}
-            className="admin-card"
-            style={{ display: "block", textDecoration: "none", color: "inherit" }}
+            // `block` par la CLASSE et non par `style` : le garde-fou
+            // carte-lien ne lit que `className`, et il a raison de s'y tenir —
+            // reconnaître aussi un `style` inline l'obligerait à rattacher la
+            // propriété à la bonne balise, donc à parser le JSX. Une seule
+            // façon de poser `display` sur une carte-lien, c'est ce qui rend la
+            // garde vérifiable.
+            className="admin-card block"
+            style={{ textDecoration: "none", color: "inherit" }}
           >
             <div
               style={{
