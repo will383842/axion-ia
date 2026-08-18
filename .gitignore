@@ -80,3 +80,7 @@ Thumbs.db
 
 # Console documents (dev local storage, hors web-root)
 .console-docs/
+
+# Planches-contact Unsplash (curation) — intermédiaires, jamais versionnées.
+# Le choix retenu est tracé dans les SSOT de crédits (src/content/**/*-photos.ts).
+_contact/

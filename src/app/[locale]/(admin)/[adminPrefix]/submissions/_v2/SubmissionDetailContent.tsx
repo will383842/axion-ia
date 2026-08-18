@@ -67,6 +67,13 @@ export async function SubmissionDetailContent({
     details && details.candidature && typeof details.candidature === "object"
       ? (details.candidature as Record<string, unknown>)
       : null;
+  // Preuve de consentement — vit à la RACINE de `details`, pas dans
+  // `details.candidature` : sans ce passage explicite, la fiche candidature ne
+  // pouvait PAS l'afficher (elle ne reçoit que le sous-objet).
+  const vivierConsentAt =
+    details && typeof details.vivierConsentAt === "string" ? details.vivierConsentAt : null;
+  const consentVersion =
+    details && typeof details.consentVersion === "string" ? details.consentVersion : null;
   const titreSociete =
     submission.companyName && submission.companyName !== "—"
       ? submission.companyName
@@ -104,7 +111,13 @@ export async function SubmissionDetailContent({
         }
       />
       <div className="admin-detail-grid">
-        {candidature ? <CandidatureCommercialeDetail candidature={candidature} /> : null}
+        {candidature ? (
+          <CandidatureCommercialeDetail
+            candidature={candidature}
+            vivierConsentAt={vivierConsentAt}
+            consentVersion={consentVersion}
+          />
+        ) : null}
         {messageText && !candidature ? (
           <div className="admin-card admin-card-wide">
             <h2 className="admin-h2">Message</h2>

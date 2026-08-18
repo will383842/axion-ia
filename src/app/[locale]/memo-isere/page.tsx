@@ -5,19 +5,35 @@
 // (13 EPCI, geo.api.gouv.fr — cf. content/recrutement/memo-isere-zone.ts).
 // Le candidat CHOISIT sa zone tant qu'elle est disponible.
 //
-// Design : rythme de /fr/audit (retour Will 2026-08-12 « respecte la page
-// audit ») — panneau sombre tôt, section terracotta pleine largeur, bandes CTA
-// terracotta répétées, grille géographique par territoires — avec les
-// composants partagés (HeroBadge, FeatureMediaCard, DarkTriadPanel, FaqBlock).
+// Design : rythme de /fr/audit (panneau sombre tôt, section terracotta pleine
+// largeur, bandes CTA répétées) avec les composants partagés (HeroBadge,
+// FeatureMediaCard, DarkTriadPanel, FaqBlock).
 //
-// CTA « J'envoie ma candidature » : depuis le 2026-08-12, tous les CTA
-// pointent vers le tunnel de candidature sans CV
-// /devenir-commercial-ia/candidature (l'ancre d'attente #postuler n'a plus de
-// raison d'être ; l'id reste posé sur le CtaBlock final au cas où des liens
-// externes #postuler circulent déjà).
+// ── Refonte MOBILE-FIRST 2026-08-18 ────────────────────────────────────────
+// L'annonce est lue sur un téléphone (QR code du journal, lien SMS/WhatsApp) :
+// la page est désormais dessinée d'abord pour 390 px de large.
 //
-// 📷 Images : pool Unsplash déjà curé du site (revirement Will 2026-08-12 —
-// remplacer les emplacements à créer par de vraies photos). Crédits affichés.
+//   1. RYTHME — toutes les sections passent à `py-12` sur mobile (le défaut
+//      `Section` monte à `py-24`, soit 96 px de vide en haut ET en bas de
+//      chaque bloc : sur 17 sections, ~1,5 écran de scroll pour rien).
+//   2. CTA AU-DESSUS DE LA LIGNE DE FLOTTAISON — le bouton passe AVANT la
+//      photo du héros. Auparavant il arrivait après un chapô de 6 lignes et
+//      une image en 4/5 (517 px de haut sur un 414), donc à ~2 écrans.
+//   3. PHOTOS PLEINE LARGEUR sur mobile (`-mx-4`), cadrées dès `sm`.
+//   4. AVIS EN CARROUSEL À DÉFILEMENT (scroll-snap CSS, zéro JS) : 6 cartes
+//      empilées faisaient 6 écrans à elles seules.
+//   5. « TON SECTEUR » REMONTE en 3ᵉ position — « où ? » est la question n°2
+//      d'un lecteur d'annonce locale, elle était traitée en 12ᵉ section.
+//
+// 📷 Images : 7 photos Unsplash CURÉES pour cette page (planche-contact relue,
+// cf. `scripts/curate-memo-isere-unsplash.mjs`) et servies en AVIF LOCAL depuis
+// `/public/illustrations/memo-isere` — 0 hotlink, indexables Google Images sous
+// notre domaine (déclarées dans `src/lib/seo/page-images.ts`). Crédits
+// photographes rendus sous chaque photo (CGU Unsplash §9).
+//
+// CTA « J'envoie ma candidature » : tous les CTA pointent vers le tunnel de
+// candidature sans CV /devenir-commercial-ia/candidature (l'id `#postuler`
+// reste posé sur le CtaBlock final pour les liens externes déjà partagés).
 
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -50,7 +66,8 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
-import { careerImage, CAREERS_HERO } from "@/content/careers/careers-images";
+import { cn } from "@/lib/utils";
+import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
 import {
@@ -61,38 +78,46 @@ import {
 
 export const revalidate = 3600;
 
-// 📷 Images : pool Unsplash déjà CURÉ du site (décision Will 2026-08-12,
-// « mets des images Unsplash à la place ») — jamais de nouvelles photos sans
-// relecture en planche-contact (l'API ne filtre pas le N&B).
-const IMG_HERO = careerImage("business-developer-ia"); // poignée de main B2B
-const IMG_TERRAIN = careerImage("formateur-ia-itinerant"); // formation en salle
-const IMG_EQUIPE = CAREERS_HERO; // équipe en collaboration
-// Vignettes des cartes territoires — pool curé, cyclé sur les 13 cartes.
-const ZONE_CARD_IMAGES = [
-  careerImage("business-developer-ia"),
-  careerImage("consultant-ia-generative"),
-  careerImage("consultant-data-strategie"),
-  careerImage("formateur-ia-itinerant"),
-  careerImage("product-manager-ia"),
-  CAREERS_HERO,
-] as const;
+/** Rythme vertical unique de la page. Mobile d'abord : `py-12` (48 px) au lieu
+ *  des `py-24` (96 px) hérités du défaut `Section`. */
+const SEC = "py-12 sm:py-16 lg:py-24";
+
+/** Photo pleine largeur sur mobile, cadrée et arrondie dès `sm`.
+ *
+ *  ⚠️ Ne fonctionne que parce que les sections ne portent plus de `<Container>`
+ *  IMBRIQUÉ : `Section` en rend déjà un. Le doublon appliquait la gouttière
+ *  DEUX fois (32 px de marge sur un écran de 390, soit 16 % de la largeur
+ *  perdue) et `-mx-4` ne rattrapait qu'un des deux niveaux — la photo
+ *  « pleine largeur » s'arrêtait donc à 16 px du bord. */
+const BLEED = "-mx-4 sm:mx-0";
 
 // Secteurs démarchés — le job = les PME QUEL QUE SOIT le secteur (Will
 // 2026-08-12). Emojis assumés : ambiance fun/sympa demandée, même registre
 // que les perks des pages carrières.
 const SECTEURS = [
-  { emoji: "🏭", label: "Industrie & sites de production" },
+  { emoji: "🏭", label: "Industrie & production" },
   { emoji: "🏗️", label: "BTP & construction" },
   { emoji: "🚚", label: "Transport & logistique" },
   { emoji: "🏢", label: "Sièges & services B2B" },
-  { emoji: "🧾", label: "Cabinets comptables & juridiques" },
+  { emoji: "🧾", label: "Comptables & juristes" },
   { emoji: "🏥", label: "Santé, cliniques & labos" },
   { emoji: "🛒", label: "Négoce & distribution" },
   { emoji: "🏨", label: "Hôtellerie & restauration" },
-  { emoji: "🌾", label: "Agroalimentaire & viticulture" },
+  { emoji: "🌾", label: "Agroalimentaire & vigne" },
   { emoji: "🏠", label: "Immobilier & promotion" },
-  { emoji: "⚙️", label: "Ateliers & artisans qui grandissent" },
+  { emoji: "⚙️", label: "Ateliers & artisans" },
   { emoji: "🖥️", label: "Agences & ESN" },
+] as const;
+
+/** Teintes cyclées des cartes « territoire » — la couleur remplace la vignette
+ *  photo : 13 vignettes de banque d'images sans rapport avec le territoire
+ *  qu'elles étiquetaient étaient du bruit répété (et 13 requêtes image). */
+const ZONE_TINTS = [
+  "from-terracotta-soft to-paper text-terracotta-deep",
+  "from-ochre-soft to-paper text-ochre-deep",
+  "from-sage-soft to-paper text-sage",
+  "from-primary-soft to-paper text-primary",
+  "from-plum-soft to-paper text-plum-deep",
 ] as const;
 
 interface Props {
@@ -119,7 +144,118 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Étoiles pleines d'un avis (rating 1..5) — rendu texte + aria, zéro JS.
+// ── Primitives locales ──────────────────────────────────────────────────────
+
+/** Photo curée + crédit photographe (CGU Unsplash §9 — l'attribution ne se
+ *  retire pas sans retirer la photo). */
+function Photo({
+  slot,
+  alt,
+  ratio,
+  sizes,
+  priority,
+  className,
+  frameClassName,
+  creditClassName,
+  creditHandledByGroup,
+  children,
+}: {
+  slot: MemoIserePhotoSlot;
+  alt: string;
+  /** Classe de ratio Tailwind, ex. `aspect-[4/3]`. Fixe la boîte ⇒ CLS = 0. */
+  ratio: string;
+  sizes: string;
+  priority?: boolean;
+  className?: string;
+  frameClassName?: string;
+  /** Le crédit d'une photo pleine largeur doit récupérer la gouttière que le
+   *  `-mx-4` de la photo a annulée — sans quoi il colle au bord de l'écran. */
+  creditClassName?: string;
+  /**
+   * Masque l'attribution SOUS cette photo — à n'utiliser que si un
+   * `<GroupCredit>` la porte ailleurs pour le groupe. L'attribution reste
+   * obligatoire (CGU Unsplash §9) : ce drapeau déplace le crédit, il ne le
+   * supprime jamais.
+   */
+  creditHandledByGroup?: boolean;
+  /** Surcouches posées sur la photo (badge flottant, dégradé de lisibilité). */
+  children?: React.ReactNode;
+}) {
+  const p = memoPhoto(slot);
+  return (
+    <figure className={className}>
+      <div
+        className={cn(
+          "border-border shadow-card relative overflow-hidden border",
+          ratio,
+          frameClassName,
+        )}
+      >
+        <Image
+          src={p.src}
+          alt={alt}
+          fill
+          sizes={sizes}
+          {...(priority ? { priority: true } : {})}
+          className="object-cover"
+        />
+        {children}
+      </div>
+      {creditHandledByGroup ? null : (
+        <figcaption>
+          <UnsplashCredit
+            photographerName={p.photographer}
+            photographerUrl={p.photographerUrl}
+            className={cn("text-right", creditClassName)}
+          />
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+/** Attribution MUTUALISÉE d'une rangée de photos (CGU Unsplash §9).
+ *  Trois crédits « Photo : X sur Unsplash » sous trois vignettes de 118 px
+ *  débordaient sur trois lignes chacun et pesaient plus lourd que les photos
+ *  elles-mêmes. Une ligne pour la rangée dit exactement la même chose. */
+function GroupCredit({
+  slots,
+  className,
+}: {
+  slots: readonly MemoIserePhotoSlot[];
+  className?: string;
+}) {
+  const photos = slots.map(memoPhoto);
+  return (
+    <p className={cn("text-fg-muted mt-2 text-xs", className)}>
+      Photos :{" "}
+      {photos.map((p, i) => (
+        <span key={p.slot}>
+          {i > 0 ? ", " : ""}
+          <a
+            href={`${p.photographerUrl}?utm_source=axion-ia&utm_medium=referral`}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            className="hover:text-fg underline underline-offset-2 transition-colors"
+          >
+            {p.photographer}
+          </a>
+        </span>
+      ))}{" "}
+      sur{" "}
+      <a
+        href="https://unsplash.com/?utm_source=axion-ia&utm_medium=referral"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        className="hover:text-fg underline underline-offset-2 transition-colors"
+      >
+        Unsplash
+      </a>
+    </p>
+  );
+}
+
+/** Étoiles pleines d'un avis (rating 1..5) — rendu texte + aria, zéro JS. */
 function Stars({ rating }: { rating: number }) {
   return (
     <span aria-label={`${rating}/5`} className="text-terracotta inline-flex items-center gap-0.5">
@@ -130,10 +266,9 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-/** Carte d'avis — pep's 2026-08-12 : liseré terracotta, guillemet géant en
- *  filigrane, avatar-initiale, hover levé — les cartes plates « manquaient
- *  d'énergie » (retour Will). Carte ENTIÈRE cliquable vers la page publique de
- *  l'avis /avis/[slug] (exigence Will 2026-08-12), focus visible. */
+/** Carte d'avis — liseré terracotta, guillemet géant en filigrane,
+ *  avatar-initiale, hover levé. Carte ENTIÈRE cliquable vers la page publique
+ *  de l'avis /avis/[slug] (exigence Will 2026-08-12), focus visible. */
 function ReviewCard({ r }: { r: PublicReview }) {
   const who = `${r.authorFirstName} ${r.authorLastInitial}`;
   const context = [r.companyName, r.cityName].filter(Boolean).join(" · ");
@@ -143,7 +278,7 @@ function ReviewCard({ r }: { r: PublicReview }) {
       aria-label={`Lire l'avis complet de ${who}`}
       className="focus-visible:ring-terracotta block h-full rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
-      <figure className="border-border bg-paper shadow-subtle hover:shadow-card relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 pt-7 transition-all duration-300 hover:-translate-y-1">
+      <figure className="border-border bg-paper shadow-subtle hover:shadow-card relative flex h-full flex-col overflow-hidden rounded-2xl border p-5 pt-6 transition-all duration-300 hover:-translate-y-1 sm:p-6 sm:pt-7">
         <span
           aria-hidden="true"
           className="absolute inset-x-0 top-0 h-1.5"
@@ -160,9 +295,9 @@ function ReviewCard({ r }: { r: PublicReview }) {
         </span>
         <Stars rating={r.rating} />
         {r.title ? (
-          <p className="mt-3 font-serif text-xl leading-snug font-semibold">{r.title}</p>
+          <p className="mt-3 font-serif text-lg leading-snug font-semibold sm:text-xl">{r.title}</p>
         ) : null}
-        <blockquote className="text-fg-soft mt-2 line-clamp-5 leading-relaxed">
+        <blockquote className="text-fg-soft mt-2 line-clamp-5 text-[15px] leading-relaxed">
           {r.comment}
         </blockquote>
         <figcaption className="mt-auto flex items-center gap-3 pt-5">
@@ -190,18 +325,18 @@ function ReviewCard({ r }: { r: PublicReview }) {
   );
 }
 
-/** Bande CTA terracotta pleine largeur — le pattern de /fr/audit (« On cadre
- *  votre audit IA, au bon niveau »), répété entre les grandes sections. */
+/** Bande CTA terracotta pleine largeur — le pattern de /fr/audit, répété entre
+ *  les grandes sections. */
 function BandeCta({ title, track }: { title: string; track: string }) {
   return (
     <section
-      className="py-12 sm:py-14"
+      className="py-10 sm:py-14"
       style={{
         background:
           "linear-gradient(135deg, var(--color-terracotta), var(--color-terracotta-deep))",
       }}
     >
-      <Container className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
+      <Container className="flex flex-col items-center gap-5 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
         <h2 className="max-w-xl font-serif text-2xl leading-snug font-semibold text-[color:var(--color-bg)] sm:text-3xl">
           {title}
         </h2>
@@ -209,7 +344,7 @@ function BandeCta({ title, track }: { title: string; track: string }) {
           href="/devenir-commercial-ia/candidature"
           size="lg"
           track={track}
-          className="text-terracotta-deep shrink-0 bg-[color:var(--color-paper)] shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] hover:bg-[color:var(--color-bg)]"
+          className="text-terracotta-deep w-full shrink-0 justify-center bg-[color:var(--color-paper)] shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] hover:bg-[color:var(--color-bg)] sm:w-auto"
         >
           J’envoie ma candidature →
         </Cta>
@@ -218,11 +353,19 @@ function BandeCta({ title, track }: { title: string; track: string }) {
   );
 }
 
-/** CTA candidature — répété sur la page. Pointe vers le tunnel sans CV
- *  (3 minutes, un écran par question) depuis le 2026-08-12. */
+/** CTA candidature — répété sur la page. Pleine largeur sur mobile (à portée
+ *  du pouce), dimensionné au contenu dès `sm`. */
 function CtaCandidature({ track }: { track: string }) {
   return (
-    <Cta href="/devenir-commercial-ia/candidature" size="lg" track={track}>
+    <Cta
+      href="/devenir-commercial-ia/candidature"
+      size="lg"
+      track={track}
+      // `shrink-0` + `whitespace-nowrap` : posé à côté du micro-texte « 3
+      // minutes chrono », le bouton se laissait comprimer et son intitulé
+      // passait sur deux lignes avec la flèche seule en dessous.
+      className="w-full shrink-0 justify-center whitespace-nowrap sm:w-auto"
+    >
       J’envoie ma candidature →
     </Cta>
   );
@@ -250,7 +393,7 @@ export default async function MemoIserePage({ params }: Props) {
   // adoption, salariés…) pèse plus qu'une simple raison sociale — beaucoup
   // d'indépendants en ont une aussi.
   const ENTREPRISE_RE =
-    /(DSI|groupe|collaborateurs?|salari[ée]s?|équipes?|adoption|industriel(?:le)?|production|PME|ETI|direction|managers?)/i;
+    /(DSI|groupe|collaborateurs?|salari[ée]s?|équipes?|adoption|industriel(?:le)?|production|PME|ETI|direction|managers?)/i;
   const scored = poolIsere
     .map((r) => ({
       r,
@@ -407,10 +550,13 @@ export default async function MemoIserePage({ params }: Props) {
         <Breadcrumbs items={[{ href: "/memo-isere", label: "Recrutement Sud-Grésivaudan" }]} />
       </Container>
 
-      {/* 1 ── HERO conversion */}
-      <Section tone="halo-warm">
-        <Container>
-          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-14">
+      {/* 1 ── HERO conversion.
+          Ordre MOBILE : badge → titre → chapô court → CTA → photo → chiffres.
+          Le bouton est ainsi atteint sans scroll sur un 390×844 ; la photo, en
+          4/3 (et non plus 4/5), ne pousse plus le reste hors de l'écran. */}
+      <Section tone="halo-warm" className="pt-8 pb-12 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-24">
+        <>
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14">
             <div>
               <HeroBadge className="mb-5 justify-start">
                 <span
@@ -419,7 +565,7 @@ export default async function MemoIserePage({ params }: Props) {
                 />
                 Vu dans Le Mémo de l’Isère · On recrute
               </HeroBadge>
-              <h1 className="display-editorial text-fg">
+              <h1 className="display-editorial text-fg text-balance">
                 Devenez commercial IA indépendant{" "}
                 <span
                   className="text-terracotta italic"
@@ -429,72 +575,92 @@ export default async function MemoIserePage({ params }: Props) {
                 </span>
               </h1>
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Le job : démarcher les <strong>PME, ETI et grands groupes</strong> de ta zone — du
-                site industriel au siège régional, <strong>quel que soit le secteur</strong> — et
-                leur proposer des formations et des audits IA, que l’AI Act rend incontournables et
-                que l’OPCO finance. Toi, tu touches la commission. De Grenoble à Valence, de Die à
-                Lyon, tu choisis ton secteur : un vrai territoire à toi.
+                Le job : proposer aux <strong>PME, ETI et grands groupes</strong> de ta zone des
+                formations et des audits IA — que l’AI Act rend incontournables et que l’OPCO
+                finance. Toi, tu touches la commission. De Grenoble à Valence, de Die à Lyon, tu
+                choisis ton secteur.
               </p>
 
-              <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {[
-                  {
-                    label: "Par jour de formation vendu",
-                    value: "500 €", // price-exempt: commission recrutement
-                  } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-                  { label: "Plafond de revenus", value: "Aucun" },
-                  // On choisit un SECTEUR (13 territoires), pas une commune
-                  // (cadrage Will 2026-08-13 — une commune seule est trop petite).
-                  { label: "Secteurs au choix", value: String(MEMO_ZONE_CLUSTERS.length) },
-                ].map((f) => (
-                  <div
-                    key={f.label}
-                    className="border-border bg-paper/80 shadow-subtle rounded-2xl border px-4 py-3"
-                  >
-                    <p className="text-terracotta-deep font-serif text-2xl leading-snug font-semibold">
-                      {f.value}
-                    </p>
-                    <p className="text-fg-muted mt-1 text-[11px] font-semibold tracking-wide uppercase">
-                      {f.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-8 flex flex-wrap items-center gap-4">
+              {/* CTA remonté AVANT la photo : sur mobile il était sous une image
+                  de 517 px de haut, donc jamais vu au premier écran. */}
+              <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
                 <CtaCandidature track="memo-hero-apply" />
                 <p className="text-fg-muted text-sm">
-                  3 minutes chrono ⏱️ · zéro CV, zéro lettre de motivation — juste un message qui te
-                  ressemble
+                  3 minutes chrono ⏱️ · zéro CV, zéro lettre de motivation
                 </p>
               </div>
             </div>
 
             <div>
-              <div className="border-border shadow-card relative aspect-[4/5] overflow-hidden rounded-3xl border">
-                <Image
-                  src={IMG_HERO.url}
-                  alt="Rendez-vous commercial B2B — poignée de main avec un dirigeant de PME"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover"
+              <Photo
+                slot="hero"
+                alt="Deux dirigeantes de PME en rendez-vous autour d'une tablette : le rendez-vous commercial que tu décrocheras sur ta zone."
+                ratio="aspect-[4/3]"
+                sizes="(max-width: 1024px) 100vw, 46vw"
+                priority
+                className={BLEED}
+                frameClassName="rounded-none border-x-0 sm:rounded-3xl sm:border-x"
+                creditClassName="px-4 sm:px-0"
+              >
+                {/* Pastille de promesse posée sur la photo — le chiffre-clé se
+                    lit dès le premier écran, même sans les cartes ci-dessous. */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+                  style={{
+                    background: "linear-gradient(to top, rgba(26,24,21,0.62), transparent)",
+                  }}
                 />
-              </div>
-              <UnsplashCredit
-                photographerName={IMG_HERO.byName}
-                photographerUrl={IMG_HERO.byUrl}
-                className="text-right"
-              />
+                <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
+                  <p className="font-serif text-3xl leading-none font-semibold text-white drop-shadow sm:text-4xl">
+                    {"500 €" /* price-exempt: commission recrutement */}
+                  </p>
+                  <p className="mt-1 text-[11px] font-bold tracking-[0.14em] text-white/85 uppercase">
+                    par journée de formation vendue
+                  </p>
+                </div>
+              </Photo>
             </div>
+
+            {/* Chiffres-clés — 3 colonnes serrées sur mobile (l'ancienne grille
+                `grid-cols-2 sm:grid-cols-3` laissait la 3ᵉ carte orpheline). */}
+            <ul className="grid grid-cols-3 gap-2 sm:gap-3 lg:col-span-2" role="list">
+              {[
+                {
+                  label: "Par jour vendu",
+                  value: "500 €", // price-exempt: commission recrutement
+                } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+                { label: "Plafond de revenus", value: "Aucun" },
+                // On choisit un SECTEUR (13 territoires), pas une commune
+                // (cadrage Will 2026-08-13 — une commune seule est trop petite).
+                { label: "Secteurs au choix", value: String(MEMO_ZONE_CLUSTERS.length) },
+              ].map((f) => (
+                <li
+                  key={f.label}
+                  className="border-border bg-paper/80 shadow-subtle rounded-2xl border px-3 py-3 sm:px-4"
+                >
+                  <p className="text-terracotta-deep font-serif text-xl leading-snug font-semibold sm:text-2xl">
+                    {f.value}
+                  </p>
+                  <p className="text-fg-muted mt-1 text-[10px] leading-tight font-semibold tracking-wide uppercase sm:text-[11px]">
+                    {f.label}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
-        </Container>
+        </>
       </Section>
 
-      {/* 2 ── Bande de réassurance */}
-      <Section className="py-6 sm:py-8 lg:py-8">
-        <Container>
-          <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3" role="list">
+      {/* 2 ── Bande de réassurance. Pas de défilement horizontal ici : ce sont
+          des mentions non cliquables, un conteneur scrollable les rendrait
+          inatteignables au clavier. Elles s'enroulent, c'est tout. */}
+      <Section className="py-5 sm:py-8 lg:py-8">
+        <>
+          <ul
+            className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:justify-center sm:gap-x-8 sm:gap-y-3"
+            role="list"
+          >
             {[
               "Organisme certifié Qualiopi",
               "Formations finançables OPCO",
@@ -505,19 +671,19 @@ export default async function MemoIserePage({ params }: Props) {
                 key={t}
                 className="text-fg-soft inline-flex items-center gap-2 text-sm font-medium"
               >
-                <ShieldCheck aria-hidden="true" className="text-sage h-4 w-4" />
+                <ShieldCheck aria-hidden="true" className="text-sage h-4 w-4 shrink-0" />
                 {t}
               </li>
             ))}
           </ul>
-        </Container>
+        </>
       </Section>
 
       {/* 2bis ── Panneau sombre d'ouverture — le pattern « L'IA, tout le monde
           en parle » de /fr/audit : une déclaration franche + 3 chiffres. */}
-      <Section className="py-10 sm:py-12 lg:py-14">
-        <Container>
-          <div className="bg-mocha relative overflow-hidden rounded-2xl px-7 py-9 sm:px-10 sm:py-11">
+      <Section className="py-8 sm:py-12 lg:py-14">
+        <>
+          <div className="bg-mocha relative overflow-hidden rounded-2xl px-6 py-8 sm:px-10 sm:py-11">
             <span
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 opacity-30"
@@ -526,14 +692,14 @@ export default async function MemoIserePage({ params }: Props) {
                   "radial-gradient(90% 120% at 85% 0%, var(--color-terracotta) 0%, transparent 55%)",
               }}
             />
-            <div className="relative grid items-center gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-              <h2 className="font-serif text-3xl leading-snug font-semibold text-[color:var(--color-bg)] sm:text-4xl">
+            <div className="relative grid items-center gap-7 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+              <h2 className="font-serif text-[26px] leading-snug font-semibold text-[color:var(--color-bg)] sm:text-4xl">
                 L’IA, tout le monde en parle.{" "}
                 <span className="text-terracotta-soft italic">
                   Toi, tu vas être payé pour la vendre. 💶
                 </span>
               </h2>
-              <dl className="grid grid-cols-3 gap-4">
+              <dl className="grid grid-cols-3 gap-3 sm:gap-4">
                 {[
                   {
                     v: "500 €", // price-exempt: commission recrutement
@@ -544,10 +710,10 @@ export default async function MemoIserePage({ params }: Props) {
                 ].map((s) => (
                   <div key={s.l}>
                     <dt className="sr-only">{s.l}</dt>
-                    <dd className="text-terracotta-soft font-serif text-2xl font-semibold sm:text-3xl">
+                    <dd className="text-terracotta-soft font-serif text-xl font-semibold sm:text-3xl">
                       {s.v}
                     </dd>
-                    <dd className="mt-1 text-[11px] font-semibold tracking-wide text-[color:var(--color-bg)]/70 uppercase">
+                    <dd className="mt-1 text-[10px] leading-tight font-semibold tracking-wide text-[color:var(--color-bg)]/70 uppercase sm:text-[11px]">
                       {s.l}
                     </dd>
                   </div>
@@ -555,19 +721,20 @@ export default async function MemoIserePage({ params }: Props) {
               </dl>
             </div>
           </div>
-        </Container>
+        </>
       </Section>
 
       {/* 3 ── Pourquoi c'est si facile à vendre */}
       <Section
         tone="sand"
+        className={SEC}
         eyebrow="L'opportunité"
         title="Pourquoi c'est si"
         titleEm="facile à vendre"
         description="Tu n'arrives pas avec un produit à pousser : tu arrives avec une obligation légale, un financement déjà prévu et une demande qui explose."
       >
-        <Container>
-          <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        <>
+          <ol className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {[
               {
                 accent: "terracotta" as const,
@@ -614,36 +781,203 @@ export default async function MemoIserePage({ params }: Props) {
               </li>
             ))}
           </ol>
-          <div className="mt-8 text-center">
+          <div className="mt-8">
             <CtaCandidature track="memo-sell-apply" />
           </div>
-        </Container>
+        </>
       </Section>
 
-      {/* 3bis ── Tes futurs clients — TOUS les secteurs (Will 2026-08-12 :
-          « démarcher les PME quel que soit le secteur », ambiance fun). */}
+      {/* 4 ── TON SECTEUR — remonté ici (12ᵉ section auparavant). « Où ? » est
+          la question n°2 d'un lecteur d'annonce locale : elle ne peut pas
+          attendre 10 écrans de scroll. La photo du corridor alpin ouvre le
+          bloc, en pleine largeur sur mobile. */}
       <Section
-        className="py-14 sm:py-16 lg:py-20"
+        id="ton-secteur"
+        className={SEC}
+        eyebrow="Ton secteur"
+        title={`${MEMO_ZONE_TOTAL} communes, de Grenoble à`}
+        titleEm="Lyon, Valence et Die"
+        description="Tu choisis TON SECTEUR — pas une commune : l'un de ces 13 territoires, des dizaines de communes chacun. Tant qu'il est disponible, il est à toi."
+      >
+        <>
+          <Photo
+            slot="territoire"
+            alt="Vallée alpine traversée par une route et un village : le corridor Grenoble – Valence – Die – Lyon, terrain de jeu du commercial Axion-IA."
+            ratio="aspect-[16/10] sm:aspect-[21/9]"
+            sizes="(min-width: 1366px) 1286px, 100vw"
+            className={cn(BLEED, "mb-8")}
+            frameClassName="rounded-none border-x-0 sm:rounded-3xl sm:border-x"
+            creditClassName="px-4 sm:px-0"
+          >
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                // Assombrissement renforcé : le sous-titre tombait sur la
+                // partie CLAIRE de la vallée (herbe ensoleillée) et passait
+                // sous le seuil de contraste.
+                background:
+                  "linear-gradient(to top, rgba(26,24,21,0.86) 0%, rgba(26,24,21,0.55) 35%, rgba(26,24,21,0.12) 62%, transparent 80%)",
+              }}
+            />
+            <div className="absolute inset-x-4 bottom-4 sm:inset-x-8 sm:bottom-7">
+              <p className="font-serif text-2xl leading-tight font-semibold text-white sm:text-4xl">
+                Un vrai territoire, pas une liste d’adresses
+              </p>
+              <p className="mt-1.5 max-w-xl text-sm leading-snug text-white/85 sm:text-base">
+                {MEMO_ZONE_TOTAL} communes réparties en {MEMO_ZONE_CLUSTERS.length} secteurs, les
+                petites incluses.
+              </p>
+            </div>
+          </Photo>
+
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+            {MEMO_ZONE_CLUSTERS.map((cl, i) => (
+              <li key={cl.label}>
+                <div
+                  className={cn(
+                    "border-border bg-paper shadow-subtle hover:border-terracotta hover:shadow-card flex h-full items-start gap-4 rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-0.5",
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-gradient-to-br",
+                      ZONE_TINTS[i % ZONE_TINTS.length],
+                    )}
+                  >
+                    <span className="font-serif text-xl leading-none font-semibold">
+                      {cl.communes.length}
+                    </span>
+                    <span className="mt-0.5 text-[9px] font-bold tracking-wide uppercase opacity-80">
+                      communes
+                    </span>
+                  </span>
+                  <span className="min-w-0">
+                    <h3 className="text-fg flex items-center gap-1.5 font-serif text-base leading-snug font-semibold">
+                      <MapPin aria-hidden="true" className="text-terracotta h-4 w-4 shrink-0" />
+                      {cl.label}
+                    </h3>
+                    <p className="text-fg-muted mt-1 text-[13px] leading-relaxed">
+                      {cl.principales.slice(0, 3).join(" · ")}
+                      {cl.communes.length > 3 ? "…" : ""}
+                    </p>
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <details className="border-border bg-paper shadow-subtle group mt-5 overflow-hidden rounded-2xl border">
+            <summary className="text-fg flex min-h-[52px] cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+              Voir la liste complète des {MEMO_ZONE_TOTAL} communes
+              <span
+                aria-hidden="true"
+                className="text-terracotta transition-transform duration-200 group-open:rotate-90"
+              >
+                →
+              </span>
+            </summary>
+            <div className="border-border space-y-4 border-t px-5 py-4">
+              {MEMO_ZONE_CLUSTERS.map((cl) => (
+                <p key={cl.label} className="text-fg-muted text-[13px] leading-relaxed">
+                  <span className="text-fg font-semibold">{cl.label} : </span>
+                  {cl.communes.join(" · ")}
+                </p>
+              ))}
+            </div>
+          </details>
+          <p data-speakable className="text-fg-muted mt-5 max-w-2xl text-sm leading-relaxed">
+            Ta commune n’est pas dans la liste mais tu es à proximité ? Candidate quand même — on
+            regarde ensemble, le secteur s’adapte.
+          </p>
+          <div className="mt-7">
+            <CtaCandidature track="memo-zone-apply" />
+          </div>
+        </>
+      </Section>
+
+      {/* 5 ── Tes futurs clients — triptyque photo (industrie / tertiaire /
+          commerce) puis la grille de secteurs. Sur mobile le triptyque défile
+          horizontalement : trois photos empilées = un écran perdu. */}
+      <Section
+        tone="sand"
+        className={SEC}
         eyebrow="Tes futurs clients"
         title="Ton prochain client ? Le site industriel"
         titleEm="d'à côté"
         titleTail=" — ou le siège régional"
         description="PME, ETI et grands groupes d'abord : plus l'équipe est grande, plus la vente est grosse — une ETI qui forme 40 personnes, c'est des dizaines de journées facturées. L'AI Act ne fait pas de tri entre les secteurs, l'OPCO non plus."
       >
-        <Container>
+        <>
+          {/* Triptyque : trois tuiles VERTICALES sur mobile (une bande d'un seul
+              coup d'œil) qui basculent en 4/3 dès `sm`. Une grille, pas un
+              carrousel : ces tuiles ne sont pas cliquables, un conteneur
+              scrollable les rendrait inatteignables au clavier. */}
+          <ul className="grid grid-cols-3 gap-2 sm:gap-4" role="list">
+            {[
+              {
+                slot: "secteur-industrie" as const,
+                titre: "Industrie",
+                alt: "Atelier de production moderne et lumineux : les sites industriels de ta zone, premiers acheteurs de formation IA.",
+              },
+              {
+                slot: "secteur-tertiaire" as const,
+                titre: "Bureaux",
+                alt: "Équipe réunie autour d'un ordinateur portable dans un siège régional : les services B2B à former à l'IA.",
+              },
+              {
+                slot: "secteur-commerce" as const,
+                titre: "Commerces",
+                alt: "Commerçant servant un client derrière son comptoir : les TPE et artisans de ta zone, excellentes premières ventes.",
+              },
+            ].map((c) => (
+              <li key={c.slot}>
+                <Photo
+                  slot={c.slot}
+                  alt={c.alt}
+                  ratio="aspect-[3/4] sm:aspect-[4/3]"
+                  sizes="(max-width: 640px) 32vw, 30vw"
+                  frameClassName="rounded-2xl"
+                  creditHandledByGroup
+                >
+                  <span
+                    aria-hidden="true"
+                    // Mi-hauteur sur mobile : à 118 px de large, un libellé
+                    // passe vite sur deux lignes et la première ressortait
+                    // du voile.
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 sm:h-2/5"
+                    style={{
+                      background: "linear-gradient(to top, rgba(26,24,21,0.8), transparent)",
+                    }}
+                  />
+                  <p className="absolute inset-x-2.5 bottom-2.5 font-serif text-[13px] leading-tight font-semibold text-white sm:inset-x-4 sm:bottom-3 sm:text-lg sm:leading-snug">
+                    {c.titre}
+                  </p>
+                </Photo>
+              </li>
+            ))}
+          </ul>
+          <GroupCredit
+            slots={["secteur-industrie", "secteur-tertiaire", "secteur-commerce"]}
+            className="mb-7 text-right"
+          />
+
           <ul
-            className="mx-auto grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"
+            className="mx-auto grid max-w-4xl grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"
             role="list"
           >
             {SECTEURS.map((s) => (
               <li
                 key={s.label}
-                className="border-border bg-paper shadow-subtle hover:border-terracotta flex items-center gap-3 rounded-2xl border px-4 py-3 transition-all duration-300 hover:-translate-y-0.5"
+                className="border-border bg-paper shadow-subtle hover:border-terracotta flex min-h-[56px] items-center gap-2.5 rounded-2xl border px-3 py-2.5 transition-all duration-300 hover:-translate-y-0.5 sm:px-4 sm:py-3"
               >
-                <span aria-hidden="true" className="text-2xl">
+                <span aria-hidden="true" className="text-xl sm:text-2xl">
                   {s.emoji}
                 </span>
-                <span className="text-fg text-sm leading-snug font-medium">{s.label}</span>
+                <span className="text-fg text-[13px] leading-snug font-medium sm:text-sm">
+                  {s.label}
+                </span>
               </li>
             ))}
           </ul>
@@ -651,20 +985,22 @@ export default async function MemoIserePage({ params }: Props) {
             … et tous les autres, du grand groupe à la TPE du coin : si une entreprise de ta zone a
             des équipes et des dossiers à traiter, elle est concernée.
           </p>
-        </Container>
+        </>
       </Section>
 
-      {/* 4 ── Rémunération transparente */}
+      {/* CTA band terracotta — pattern /fr/audit */}
+      <BandeCta title="Les secteurs partent un par un ⏳" track="memo-band-apply" />
+
+      {/* 6 ── Rémunération transparente */}
       <Section
-        tone="sand"
-        className="py-14 sm:py-16 lg:py-20"
+        className={SEC}
         eyebrow="Rémunération"
         title="500 € par journée de formation" /* price-exempt: commission recrutement */
         titleEm="vendue"
         description="Sans plafond, sans quota, sans salaire fixe à mériter : chaque vente te paie. Une ETI qui forme 40 personnes, c'est des dizaines de journées d'un coup — et les audits et intégrations IA rapportent en plus un pourcentage de la facture."
       >
-        <Container>
-          <div className="mx-auto grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
+        <>
+          <div className="mx-auto grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
             {[
               {
                 jours: "5 jours vendus",
@@ -682,21 +1018,24 @@ export default async function MemoIserePage({ params }: Props) {
               <div
                 key={t.jours}
                 className={[
-                  "rounded-2xl border p-6 text-center",
+                  // Mobile : la carte se lit en LIGNE (libellé à gauche, montant
+                  // à droite) — trois blocs centrés empilés faisaient trois fois
+                  // la hauteur pour la même information.
+                  "flex items-center justify-between gap-4 rounded-2xl border p-4 sm:flex-col sm:justify-center sm:gap-0 sm:p-6 sm:text-center",
                   i === 2
                     ? "border-terracotta bg-terracotta/5 shadow-card"
                     : "border-border bg-paper shadow-subtle",
                 ].join(" ")}
               >
                 <p className="text-fg-muted text-sm font-medium">{t.jours}</p>
-                <p className="text-terracotta-deep mt-2 font-serif text-4xl font-semibold">
+                <p className="text-terracotta-deep font-serif text-3xl font-semibold sm:mt-2 sm:text-4xl">
                   {t.mois}
                 </p>
-                <p className="text-fg-muted mt-1 text-xs">dans le mois</p>
+                <p className="text-fg-muted hidden text-xs sm:mt-1 sm:block">dans le mois</p>
               </div>
             ))}
           </div>
-          <p className="text-fg-muted mx-auto mt-5 max-w-2xl text-center text-sm">
+          <p className="text-fg-muted mx-auto mt-4 max-w-2xl text-center text-sm">
             {/* Chaîne JS unique + marqueur ATTACHÉS : prettier avait éclaté le
                 texte JSX et déplacé le marqueur hors de la ligne du montant →
                 garde-fou prix rouge en CI alors qu'il passait en local. */}
@@ -704,8 +1043,8 @@ export default async function MemoIserePage({ params }: Props) {
               "Exemples de calcul (500 € × journées vendues) — pas une promesse de revenus : tes commissions dépendent de tes ventes." /* price-exempt: commission recrutement */
             }
           </p>
-          <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2">
-            <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
+          <div className="mx-auto mt-8 grid max-w-3xl gap-4 sm:grid-cols-2">
+            <div className="border-border bg-paper shadow-subtle rounded-2xl border p-5 sm:p-6">
               <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
                 Produit n°1 — Formations IA
               </p>
@@ -717,7 +1056,7 @@ export default async function MemoIserePage({ params }: Props) {
                 Act. Une ETI qui forme 40 personnes = des dizaines de journées.
               </p>
             </div>
-            <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
+            <div className="border-border bg-paper shadow-subtle rounded-2xl border p-5 sm:p-6">
               <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
                 Produit n°2 — Audits IA
               </p>
@@ -732,14 +1071,13 @@ export default async function MemoIserePage({ params }: Props) {
               </p>
             </div>
           </div>
-        </Container>
+        </>
       </Section>
 
-      {/* 5 ── Comment ça marche — section terracotta pleine largeur, le bloc
-          signature de /fr/audit (« Un audit IA rigoureux et complet ») : les
-          cartes blanches claquent sur le fond terracotta. */}
+      {/* 7 ── Comment ça marche — section terracotta pleine largeur, le bloc
+          signature de /fr/audit : les cartes blanches claquent sur le fond. */}
       <section
-        className="py-16 sm:py-20"
+        className="py-12 sm:py-16 lg:py-20"
         style={{
           background:
             "linear-gradient(150deg, var(--color-terracotta) 0%, var(--color-terracotta-deep) 100%)",
@@ -759,8 +1097,8 @@ export default async function MemoIserePage({ params }: Props) {
               marche
             </span>
           </h2>
-          <div className="mt-10">
-            <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          <div className="mt-8 sm:mt-10">
+            <ol className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
               {[
                 {
                   accent: "terracotta" as const,
@@ -814,31 +1152,28 @@ export default async function MemoIserePage({ params }: Props) {
         </Container>
       </section>
 
-      {/* 6 ── Bandeau image terrain */}
-      <Section className="py-14 sm:py-16 lg:py-20">
-        <Container className="max-w-4xl">
-          <div className="border-border shadow-card relative aspect-[16/9] overflow-hidden rounded-3xl border">
-            <Image
-              src={IMG_TERRAIN.url}
-              alt="Présentation d'une formation IA devant une équipe en entreprise"
-              fill
-              sizes="(max-width: 1024px) 100vw, 896px"
-              className="object-cover"
-            />
-          </div>
-          <UnsplashCredit
-            photographerName={IMG_TERRAIN.byName}
-            photographerUrl={IMG_TERRAIN.byUrl}
-            className="text-right"
+      {/* 8 ── Bandeau image terrain */}
+      <Section className="py-10 sm:py-14 lg:py-20">
+        <div className="mx-auto max-w-4xl">
+          <Photo
+            slot="terrain"
+            alt="Formateur devant une petite équipe et un tableau blanc couvert de notes : la journée de formation IA que tu auras vendue."
+            ratio="aspect-[16/10] sm:aspect-[16/9]"
+            sizes="(max-width: 640px) 100vw, 896px"
+            className={BLEED}
+            frameClassName="rounded-none border-x-0 sm:rounded-3xl sm:border-x"
+            creditClassName="px-4 sm:px-0"
           />
-        </Container>
+        </div>
       </Section>
 
-      {/* 7 ── Avis clients (preuve que le produit se vend) */}
+      {/* 9 ── Avis clients (preuve que le produit se vend).
+          Mobile : carrousel à défilement horizontal avec accroche magnétique
+          (scroll-snap CSS, zéro JS) — six cartes empilées valaient six écrans. */}
       {reviews.length >= 3 ? (
         <Section
           tone="sand"
-          className="py-14 sm:py-16 lg:py-20"
+          className={SEC}
           eyebrow="La preuve"
           title="Le produit que tu vendras, nos clients le"
           titleEm="recommandent"
@@ -848,32 +1183,35 @@ export default async function MemoIserePage({ params }: Props) {
               : undefined
           }
         >
-          <Container>
-            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          <>
+            <ul
+              className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 lg:grid-cols-3"
+              role="list"
+            >
               {reviews.map((r) => (
-                <li key={r.id} className="h-full">
+                <li key={r.id} className="w-[86%] shrink-0 snap-start sm:w-auto">
                   <ReviewCard r={r} />
                 </li>
               ))}
             </ul>
-            <div className="mt-8 text-center">
+            <p aria-hidden="true" className="text-fg-muted mt-2 text-xs sm:hidden">
+              Fais glisser pour lire les autres avis →
+            </p>
+            <div className="mt-7">
               <CtaCandidature track="memo-reviews-apply" />
             </div>
-          </Container>
+          </>
         </Section>
       ) : null}
 
-      {/* CTA band terracotta — pattern /fr/audit (entre avis et intégration) */}
-      <BandeCta title="Les secteurs partent un par un ⏳" track="memo-band-apply" />
-
-      {/* 8 ── Intégration & aide au démarrage */}
+      {/* 10 ── Intégration & aide au démarrage */}
       <Section
-        className="py-14 sm:py-16 lg:py-20"
+        className={SEC}
         eyebrow="Jamais seul"
         title="Intégration et aide au"
         titleEm="démarrage"
       >
-        <Container>
+        <>
           <DarkTriadPanel
             items={[
               {
@@ -899,102 +1237,96 @@ export default async function MemoIserePage({ params }: Props) {
               },
             ]}
           />
-          <div className="mx-auto mt-8 max-w-3xl">
-            <div className="border-border shadow-card relative aspect-[16/9] overflow-hidden rounded-3xl border">
-              <Image
-                src={IMG_EQUIPE.url}
-                alt="L'équipe en préparation — supports, argumentaires et premiers rendez-vous"
-                fill
-                sizes="(max-width: 1024px) 100vw, 768px"
-                className="object-cover"
-              />
-            </div>
-            <UnsplashCredit
-              photographerName={IMG_EQUIPE.byName}
-              photographerUrl={IMG_EQUIPE.byUrl}
-              className="text-right"
+          <div className="mx-auto mt-7 max-w-3xl">
+            <Photo
+              slot="equipe"
+              alt="Équipe réunie devant un mur de notes : préparation des supports, des argumentaires et des premiers rendez-vous."
+              ratio="aspect-[16/10] sm:aspect-[16/9]"
+              sizes="(max-width: 640px) 100vw, 768px"
+              className={BLEED}
+              frameClassName="rounded-none border-x-0 sm:rounded-3xl sm:border-x"
+              creditClassName="px-4 sm:px-0"
             />
           </div>
-        </Container>
+        </>
       </Section>
 
-      {/* 9 ── Poste évolutif */}
+      {/* 11 ── Poste évolutif — escalier à trois marches. Les trois vignettes de
+          banque d'images qui l'illustraient ne montraient pas l'évolution (trois
+          scènes de bureau interchangeables) : la marche numérotée la MONTRE. */}
       <Section
         tone="sand"
-        className="py-14 sm:py-16 lg:py-20"
+        className={SEC}
         eyebrow="La suite"
         title="Une activité qui"
         titleEm="évolue"
         description="Apporteur d'affaires aujourd'hui, responsable demain : les meilleurs commerciaux de chaque zone prennent l'animation de leur secteur, puis du réseau."
       >
-        <Container>
-          {/* Images : pool Unsplash déjà CURÉ du site uniquement (careerImage),
-              bande en tête de carte comme les blocs territoires — retour Will
-              2026-08-13. Crédit photographe affiché sous chaque carte. */}
-          <ol className="mx-auto grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
+        <>
+          <ol className="mx-auto grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3 sm:items-end">
             {[
               {
                 step: "Aujourd'hui",
                 title: "Commercial indépendant",
                 text: "Tu vends sur ta zone, tu encaisses tes commissions.",
-                img: careerImage("business-developer-ia"),
-                alt: "Commercial indépendant en rendez-vous avec un dirigeant d'entreprise",
+                // ⚠️ L'écart de `padding-top` DESCEND avec le rang : combiné à
+                // `sm:items-end`, c'est le bord HAUT qui monte de marche en
+                // marche. L'ordre inverse dessinait un escalier qui descend —
+                // exactement le contraire de la progression racontée.
+                height: "sm:pt-14",
+                tint: "from-terracotta-soft",
               },
               {
                 step: "Ensuite",
                 title: "Responsable de secteur",
                 text: "Tu animes les commerciaux de ton secteur et touches sur leurs ventes.",
-                img: careerImage("customer-success-ia"),
-                alt: "Responsable de secteur qui anime son équipe de commerciaux",
+                height: "sm:pt-10",
+                tint: "from-ochre-soft",
               },
               {
                 step: "Demain",
                 title: "Responsable réseau",
                 text: "Tu structures la force de vente sur plusieurs départements.",
-                img: careerImage("responsable-reseau-commercial"),
-                alt: "Responsable réseau qui structure la force de vente sur plusieurs départements",
+                height: "sm:pt-0",
+                tint: "from-sage-soft",
               },
-            ].map((s) => (
-              <li key={s.title} className="flex h-full flex-col">
-                <div className="border-border bg-paper shadow-subtle flex flex-1 flex-col overflow-hidden rounded-2xl border">
-                  <div className="relative aspect-[16/10] w-full overflow-hidden">
-                    <Image
-                      src={s.img.url}
-                      alt={s.alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col p-6">
-                    <p className="text-terracotta text-xs font-semibold tracking-wide uppercase">
-                      {s.step}
-                    </p>
-                    <p className="mt-1 font-serif text-lg font-semibold">{s.title}</p>
-                    <p className="text-fg-soft mt-2 text-sm leading-relaxed">{s.text}</p>
-                  </div>
+            ].map((s, i) => (
+              <li key={s.title} className={cn("flex h-full flex-col", s.height)}>
+                <div
+                  className={cn(
+                    "border-border shadow-subtle to-paper flex flex-1 flex-col rounded-2xl border bg-gradient-to-b p-5 sm:p-6",
+                    s.tint,
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="bg-terracotta text-paper inline-flex h-9 w-9 items-center justify-center rounded-full font-serif text-lg font-semibold"
+                  >
+                    {i + 1}
+                  </span>
+                  <p className="text-terracotta-deep mt-4 text-xs font-bold tracking-wide uppercase">
+                    {s.step}
+                  </p>
+                  <h3 className="mt-1 font-serif text-lg leading-snug font-semibold">{s.title}</h3>
+                  <p className="text-fg-soft mt-2 text-sm leading-relaxed">{s.text}</p>
                 </div>
-                <UnsplashCredit
-                  photographerName={s.img.byName}
-                  photographerUrl={s.img.byUrl}
-                  className="text-right"
-                />
               </li>
             ))}
           </ol>
-        </Container>
+        </>
       </Section>
 
-      {/* 10 ── Fondateur — bande mocha pleine largeur, même mise en page que le
-          bandeau sombre de /fr/audit (retour Will 2026-08-12). */}
-      <section className="bg-mocha-rich text-mocha-fg py-16 sm:py-20 lg:py-24">
+      {/* 12 ── Fondateur — bande mocha pleine largeur, même mise en page que le
+          bandeau sombre de /fr/audit (retour Will 2026-08-12). Sur mobile le
+          portrait passe EN TÊTE : un visage ouvre le bloc mieux qu'un eyebrow. */}
+      <section className="bg-mocha-rich text-mocha-fg py-12 sm:py-16 lg:py-24">
         <Container>
-          <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl">
+          <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+            <div className="order-2 max-w-2xl lg:order-1">
               <p className="text-mocha-fg/70 text-[13px] font-medium tracking-[0.16em] uppercase">
                 Qui recrute
               </p>
-              <h2 className="mt-4 text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.05] font-semibold tracking-tight">
+              <h2 className="mt-3 text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.05] font-semibold tracking-tight">
                 Le mot du{" "}
                 <span
                   className="text-terracotta-soft italic"
@@ -1013,28 +1345,28 @@ export default async function MemoIserePage({ params }: Props) {
               <p className="mt-5 font-semibold">Williams Jullin</p>
               <p className="text-mocha-fg/70 text-sm">Fondateur d’Axion-IA · Grenoble</p>
             </div>
-            <div className="shrink-0">
+            <div className="order-1 shrink-0 lg:order-2">
               <Image
                 src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
                 alt="Williams Jullin, fondateur d'Axion-IA"
                 width={224}
                 height={224}
-                className="h-44 w-44 rounded-3xl object-cover sm:h-56 sm:w-56"
+                className="h-32 w-32 rounded-3xl object-cover sm:h-44 sm:w-44 lg:h-56 lg:w-56"
               />
             </div>
           </div>
         </Container>
       </section>
 
-      {/* 11 ── Profils recherchés */}
+      {/* 13 ── Profils recherchés */}
       <Section
-        className="py-14 sm:py-16 lg:py-20"
+        className={SEC}
         eyebrow="Les profils"
         title="Débutant ou routier de la vente :"
         titleEm="bienvenue"
         description="Ce qui compte, c'est l'aisance relationnelle et la connaissance du territoire — pas le diplôme 👋 Activité d'indépendant, sans lien de subordination, ouverte à toutes et à tous sans discrimination."
       >
-        <Container>
+        <>
           <ul className="mx-auto flex max-w-3xl flex-wrap justify-center gap-2" role="list">
             {[
               "Commerciaux indépendants",
@@ -1054,83 +1386,13 @@ export default async function MemoIserePage({ params }: Props) {
               </li>
             ))}
           </ul>
-        </Container>
+        </>
       </Section>
 
-      {/* 12 ── Zone couverte — petits blocs avec vignette (demande Will
-          2026-08-12, « mieux visuellement que des bandeaux ») ; la liste
-          complète des 474 communes reste dans UN déroulant global (SEO/GEO). */}
-      <Section
-        tone="sand"
-        className="py-14 sm:py-16 lg:py-20"
-        eyebrow="Ton secteur"
-        title={`${MEMO_ZONE_TOTAL} communes, de Grenoble à`}
-        titleEm="Lyon, Valence et Die"
-        description="En indépendant ou apporteur d'affaires, tu choisis TON SECTEUR — pas une commune : l'un de ces 13 territoires, des dizaines de communes chacun. Tant qu'il est disponible, il est à toi."
-      >
-        <Container>
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" role="list">
-            {MEMO_ZONE_CLUSTERS.map((cl, i) => {
-              const img = ZONE_CARD_IMAGES[i % ZONE_CARD_IMAGES.length] ?? CAREERS_HERO;
-              return (
-                <li key={cl.label}>
-                  <div className="border-border bg-paper shadow-subtle hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1">
-                    <div className="relative aspect-[16/10] w-full overflow-hidden">
-                      <Image
-                        src={img.url}
-                        alt=""
-                        aria-hidden="true"
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <span className="bg-terracotta text-paper absolute right-2 bottom-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold">
-                        {cl.communes.length} communes
-                      </span>
-                    </div>
-                    <div className="flex flex-1 flex-col p-4">
-                      <h3 className="font-serif text-base leading-snug font-semibold">
-                        {cl.label}
-                      </h3>
-                      <p className="text-fg-muted mt-1 text-xs leading-relaxed">
-                        {cl.principales.slice(0, 3).join(" · ")}
-                        {cl.communes.length > 3 ? "…" : ""}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-          <details className="border-border bg-paper shadow-subtle group mt-6 overflow-hidden rounded-2xl border">
-            <summary className="text-fg flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden">
-              Voir la liste complète des {MEMO_ZONE_TOTAL} communes
-              <span
-                aria-hidden="true"
-                className="text-terracotta transition-transform duration-200 group-open:rotate-90"
-              >
-                →
-              </span>
-            </summary>
-            <div className="border-border space-y-4 border-t px-5 py-4">
-              {MEMO_ZONE_CLUSTERS.map((cl) => (
-                <p key={cl.label} className="text-fg-muted text-[13px] leading-relaxed">
-                  <span className="text-fg font-semibold">{cl.label} : </span>
-                  {cl.communes.join(" · ")}
-                </p>
-              ))}
-            </div>
-          </details>
-          <p data-speakable className="text-fg-muted mt-6 max-w-2xl text-sm leading-relaxed">
-            Ta commune n’est pas dans la liste mais tu es à proximité ? Candidate quand même — on
-            regarde ensemble, le secteur s’adapte.
-          </p>
-        </Container>
-      </Section>
-
-      {/* 13 ── FAQ AEO */}
+      {/* 14 ── FAQ AEO */}
       <FaqBlock
         tone="canvas"
+        className={SEC}
         eyebrow="FAQ"
         title="Questions"
         titleEm="fréquentes"
@@ -1138,10 +1400,11 @@ export default async function MemoIserePage({ params }: Props) {
         items={faqItems}
       />
 
-      {/* 14 ── CTA final (id="postuler" conservé pour les liens externes déjà
+      {/* 15 ── CTA final (id="postuler" conservé pour les liens externes déjà
           partagés — le CTA pointe vers le tunnel de candidature) */}
       <div id="postuler">
         <CtaBlock
+          className="py-14 sm:py-20 lg:py-28"
           eyebrow="On recrute"
           title="Prêt à devenir le commercial IA de"
           titleEm="ta zone ?"
@@ -1154,6 +1417,7 @@ export default async function MemoIserePage({ params }: Props) {
         href="/devenir-commercial-ia/candidature"
         label="J'envoie ma candidature"
         track="memo-sticky-apply"
+        threshold={420}
       />
     </>
   );
