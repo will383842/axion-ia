@@ -37,6 +37,10 @@ import {
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-reelle";
 import { refusMotif } from "@/server/qualiopi/formations/transition-motif";
+import {
+  isTrainerHabilite,
+  type TrainerHabilitationFields,
+} from "@/server/qualiopi/trainers/trainers";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
 // caller externe). Un `export type { … }` dans un module "use server" est
@@ -68,6 +72,12 @@ const createSessionSchema = z.object({
   montantHtCents: z.number().int().min(0),
   clientId: z.string().uuid().optional(),
   devisId: z.string().uuid().optional(),
+  // Formateur principal — FACULTATIF : une session se planifie souvent avant que
+  // l'on sache qui l'animera, et la fiche session permet de l'assigner ensuite.
+  // Mais dès qu'il est fourni, il subit EXACTEMENT le contrôle d'habilitation de
+  // l'assignation (garde plus bas) : accepter ici ce que la fiche refuse
+  // ouvrirait une porte dérobée vers un formateur non habilité.
+  trainerId: z.string().uuid().optional(),
   financementType: z.enum(FINANCEMENT_TYPES).optional(),
   recurrence: z.number().int().min(1).optional(),
   // Lieu de déroulement — facultatif, mais imprimé sur la convention, la
@@ -188,6 +198,71 @@ export async function createSessionAction(
     }
   }
 
+  // 🔴 Le formateur ne pouvait PAS être choisi à la création d'une session.
+  //
+  // `formateurPrincipalId` n'avait qu'un seul écrivain — `assignTrainerToSession`
+  // depuis la FICHE de la session, donc APRÈS coup. Or c'est au moment où l'on
+  // planifie que l'on sait qui anime : le champ était réclamé au mauvais moment,
+  // et une session partait sans formateur jusqu'à ce que quelqu'un rouvre la
+  // fiche. Entre-temps, les documents nominatifs retombaient sur la raison
+  // sociale de l'organisme au lieu du nom de l'intervenant.
+  //
+  // La garde ici est la MÊME que celle de l'assignation, et pour la même raison :
+  // le formulaire ne propose que des formateurs habilités, mais une garde
+  // d'interface ne protège que les usages ordinaires — une Server Action est
+  // appelable directement. `isTrainerHabilite` est RÉUTILISÉ, jamais réécrit :
+  // deux formulations de la même règle divergent au premier amendement.
+  //
+  // ⚠️ Les habilitations viennent de la relation `TrainerHabilitation`, JAMAIS de
+  // la colonne legacy `Trainer.formationsHabilitees` : celle-ci contient des
+  // SLUGS en production alors que la garde compare des UUID (constat F11), donc
+  // `includes()` n'y serait jamais vrai et tout formateur serait refusé.
+  let tarifFormateurCents: number | null = null;
+  if (v.trainerId !== undefined) {
+    let trainer:
+      | (Omit<TrainerHabilitationFields, "formationIdsHabilites"> & {
+          tarifJourneeHtCents: number | null;
+          habilitations: { formationId: string }[];
+        })
+      | null;
+    try {
+      trainer = await prisma.trainer.findUnique({
+        where: { id: v.trainerId },
+        select: {
+          actif: true,
+          statut: true,
+          sousTraitantVerifieAt: true,
+          tarifJourneeHtCents: true,
+          // 🔴 `retireAt: null` — la dé-habilitation ne SUPPRIME plus la ligne
+          // depuis le 2026-08-17 (migration `trainer_habilitation_retrait`) :
+          // elle la DATE, pour que la preuve de conformité d'une session déjà
+          // animée survive au retrait (ind. 21/22). Conséquence directe pour
+          // toute garde : lire les habilitations sans ce filtre, c'est lire
+          // l'HISTORIQUE et déclarer habilité un formateur qui ne l'est plus.
+          // `listTrainers` porte le même filtre — l'écran ne le proposerait
+          // donc pas, mais une Server Action s'appelle sans passer par l'écran.
+          habilitations: { where: { retireAt: null }, select: { formationId: true } },
+        },
+      });
+    } catch {
+      return { error: "Erreur lors de la lecture du formateur" };
+    }
+    if (!trainer) return { error: "Formateur introuvable" };
+
+    const check = isTrainerHabilite(
+      { ...trainer, formationIdsHabilites: trainer.habilitations.map((h) => h.formationId) },
+      v.formationId,
+    );
+    if (!check.ok) {
+      return { error: `Assignation refusée : ${check.raison}` };
+    }
+
+    // Tarif FIGÉ à l'affectation, comme le fait l'assignation depuis la fiche :
+    // la rémunération due se calcule sur le prix convenu ce jour-là, pas sur le
+    // barème du formateur au moment où l'on édite le relevé.
+    tarifFormateurCents = trainer.tarifJourneeHtCents ?? null;
+  }
+
   // Snapshot légal (WS5) — fige la formation telle que vendue à cette session.
   const formationSnapshot = buildFormationSnapshot(formation, new Date());
 
@@ -214,6 +289,10 @@ export async function createSessionAction(
             statut: "planifiee",
             ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
             ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
+            // Le champ Prisma s'appelle `formateurPrincipalId` : il n'existe pas
+            // de `trainerId` sur `TrainingSession`. Le nom d'entrée reste
+            // `trainerId` pour coller à celui de l'assignation.
+            ...(v.trainerId !== undefined ? { formateurPrincipalId: v.trainerId } : {}),
             // 🔴 Audit certification 2026-07-26 (F58). `financementType` était
             // facultatif ET sans valeur par défaut : une session créée sans le
             // préciser restait à NULL. Le BPF s'en sortait par un repli
@@ -234,6 +313,32 @@ export async function createSessionAction(
           },
           select: { id: true, numero: true },
         });
+
+        // 🔴 DUAL-WRITE, dans la MÊME transaction que la session.
+        //
+        // Le formateur d'une session est rattaché par DEUX voies concurrentes que
+        // le schéma porte toutes les deux : la FK `formateurPrincipalId` et une
+        // ligne `session_formateurs`. Écrire la FK seule ne serait pas une demi-
+        // mesure, ce serait une INCOHÉRENCE : la fiche session et les documents
+        // liraient bien le formateur (ils lisent la FK), pendant que tout ce qui
+        // AGRÈGE lirait zéro — `fiabilite-service` compte les missions par
+        // `sessionFormateur.count`, `remuneration/marge` ventile par
+        // `sessionFormateur.groupBy`. Un formateur affiché sur ses sessions mais
+        // crédité d'aucune mission et d'aucune marge : l'écart ne se voit qu'en
+        // recoupant deux écrans, donc il ne se voit pas.
+        //
+        // `create` et non `upsert` : la session vient d'être créée dans cette
+        // transaction, aucune ligne ne peut préexister.
+        if (v.trainerId !== undefined) {
+          await tx.sessionFormateur.create({
+            data: {
+              sessionId: newSession.id,
+              trainerId: v.trainerId,
+              role: "principal",
+              tarifHtCents: tarifFormateurCents,
+            },
+          });
+        }
 
         // Journées PROPOSÉES (D14), dérivées de la durée de la formation.
         //
@@ -288,6 +393,11 @@ export async function createSessionAction(
       formationId: v.formationId,
       dateDebut: v.dateDebut,
       dateFin: v.dateFin,
+      // Tracé même à `null` : « aucun formateur choisi à la création » est un
+      // fait d'audit, pas une absence d'information. Sans lui, impossible de
+      // distinguer plus tard une session partie sans intervenant d'une session
+      // dont le journal aurait simplement omis le champ.
+      formateurPrincipalId: v.trainerId ?? null,
     },
     session,
   });

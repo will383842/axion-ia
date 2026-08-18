@@ -35,6 +35,7 @@ vi.mock("@/server/actions/qualiopi/sessions-recurrentes", () => ({
 const LIENS = {
   formations: "/fr/admin-x/qualiopi/formations/new",
   clients: "/fr/admin-x/qualiopi/clients/new",
+  formateurs: "/fr/admin-x/qualiopi/formateurs",
 };
 
 const FORMATION = { id: "f-1", titre: "IA appliquée", numero: "AXI-FOR-001" };
