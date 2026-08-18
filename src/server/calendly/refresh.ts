@@ -40,11 +40,20 @@ export const MAX_PER_RUN = 25;
 /**
  * Fenêtre de rattrapage après l'heure prévue.
  *
- * On continue de surveiller un créneau jusqu'à 2 h APRÈS son début : une
- * annulation de dernière minute est précisément celle qu'on veut connaître.
- * Au-delà, le rendez-vous a eu lieu (ou non) et ce n'est plus l'API qui le dira.
+ * 2 h jusqu'au 2026-08-18, au motif qu'« au-delà, le rendez-vous a eu lieu (ou
+ * non) et ce n'est plus l'API qui le dira ». La seconde moitié de cette phrase
+ * était fausse : l'invitee Calendly porte `no_show`, que l'hôte coche APRÈS le
+ * créneau — souvent le lendemain matin, en faisant le point sur sa semaine.
+ * Avec 2 h, la déclaration arrivait systématiquement hors fenêtre et personne ne
+ * la voyait jamais ; il fallait ressaisir l'absence à la main dans la console.
+ *
+ * 48 h couvre « marqué le lendemain », qui est le cas réel. Le coût est borné :
+ * le sondage passe toutes les 10 min, `MAX_PER_RUN` plafonne à 25 lignes par
+ * passage (≤ 50 appels API, quota Calendly 60/min) et `overflow` le dit si le
+ * plafond est atteint — jamais de troncature muette. Une ligne qui ne bouge plus
+ * quitte la fenêtre d'elle-même au bout de 48 h.
  */
-export const GRACE_HOURS = 2;
+export const GRACE_HOURS = 48;
 
 export interface RefreshOutcome {
   readonly ok: boolean;
@@ -82,10 +91,13 @@ export async function refreshUpcomingCalendlyEvents(): Promise<RefreshOutcome> {
   const cutoff = new Date(Date.now() - GRACE_HOURS * 3600_000);
 
   // Candidats : ce qui peut ENCORE changer.
-  //   • statut `scheduled` — un rendez-vous déjà annulé ou terminé est figé ;
+  //   • statut `scheduled` — un rendez-vous déjà annulé, honoré ou constaté
+  //     absent est figé ;
   //   • une URI d'invitee — sans elle, rien à demander à Calendly ;
-  //   • à venir, OU sans horaire connu (capture jamais enrichie : c'est
-  //     justement le cas qu'on veut rattraper).
+  //   • à venir ou passé de moins de `GRACE_HOURS` (une annulation de dernière
+  //     minute et un no-show coché le lendemain sont tous deux dans la fenêtre),
+  //     OU sans horaire connu (capture jamais enrichie : c'est justement le cas
+  //     qu'on veut rattraper).
   let candidates: Array<{ id: string }>;
   try {
     candidates = await prisma.calendlyEvent.findMany({

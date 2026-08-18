@@ -14,6 +14,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { encryptPii } from "@/lib/pii-crypto";
 
 /**
  * Notifie l'équipe d'un NOUVEAU lead chatbot (best-effort, fail-soft — ne fait
@@ -103,15 +104,30 @@ export async function capturerLead(
   let result: CapturerLeadResult;
   try {
     result = await prisma.$transaction(async (tx) => {
+      // 🔴 PII CHIFFRÉ AU REPOS (2026-08-18). Ces trois champs partaient EN
+      // CLAIR : `capturer_lead` était le dernier point de capture du site à
+      // écrire une identité lisible dans `submissions`, alors que le formulaire
+      // unifié chiffre depuis 2026-07-01 et que `contact_name` / `contact_phone`
+      // sont en `@db.Text` précisément pour recevoir du `enc:v1:`.
+      //
+      // Deux précisions qui comptent :
+      //  · `encryptPii` est IDEMPOTENT et NO-OP sans `PII_ENCRYPTION_KEY` — les
+      //    lignes déjà écrites en clair restent lisibles (`decryptPii` renvoie
+      //    telle quelle toute valeur sans préfixe `enc:v1:`), donc AUCUNE
+      //    reprise de données n'est nécessaire ;
+      //  · `contactEmailHash` reste calculé sur l'adresse EN CLAIR. C'est lui,
+      //    et lui seul, qui rend une personne retrouvable (art. 15 / 17) : l'IV
+      //    du chiffrement est aléatoire, donc aucune égalité SQL n'est possible
+      //    sur `contact_email`.
       const submission = await tx.submission.create({
         data: {
           type: "contact",
           locale: "fr",
           companyName: input.structure ?? "Via chatbot",
-          contactName: input.nom,
-          contactEmail: input.email,
+          contactName: encryptPii(input.nom),
+          contactEmail: encryptPii(input.email),
           contactEmailHash: hashEmailForLookup(input.email),
-          ...(input.telephone ? { contactPhone: input.telephone } : {}),
+          ...(input.telephone ? { contactPhone: encryptPii(input.telephone) } : {}),
           details: { besoin: input.besoin_resume, canal: "chatbot", consentementRgpd: true },
           source: "chatbot",
           ...(ctx.ipHash ? { ipHash: ctx.ipHash } : {}),

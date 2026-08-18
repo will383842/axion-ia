@@ -136,6 +136,28 @@ Règle d'écriture (`enrich.ts`), en deux moitiés :
 Seul le statut terminal posé après coup (`completed` / `no_show`) est protégé :
 il décrit ce qui s'est passé pendant l'appel, ce que l'API ne peut pas savoir.
 
+> **Amendement 2026-08-18 — la seconde phrase était vraie pour moitié.**
+>
+> « Ce que l'API ne peut pas savoir » vaut pour `completed` : rien, dans l'API
+> Calendly, ne dit qu'un rendez-vous a été honoré. Ça ne vaut PAS pour
+> `no_show` : la ressource `invitee` porte un champ `no_show`, renseigné dès que
+> l'hôte coche « Mark as no-show » dans son agenda. Ce champ existait dans la
+> réponse et n'était simplement pas lu.
+>
+> Depuis, `api.ts` l'expose (`noShow`), `enrich.ts` en fait le statut `no_show`
+> — l'absence l'emporte sur une annulation concomitante, l'hôte ayant alors
+> annulé APRÈS avoir constaté l'absence — et la fenêtre de rattrapage de
+> `refresh.ts` passe de 2 h à 48 h, sans quoi la déclaration, faite le
+> lendemain, tombait systématiquement hors de portée du sondage.
+>
+> Un statut terminal posé À LA MAIN reste protégé : l'humain qui a saisi
+> `completed` a vu l'appel, l'API non.
+>
+> `completed` demeure donc un geste de console, et c'est délibéré : la seule
+> automatisation possible serait une règle temporelle (« l'heure de fin est
+> passée ⇒ honoré »), qui affirmerait au CRM un fait commercial que personne
+> n'a constaté.
+
 ### E. Les deux catégories de notification mortes sont réveillées
 
 `CALENDLY_INVITEE_CANCELED` et `CALENDLY_INVITEE_RESCHEDULED` existaient depuis
@@ -147,6 +169,17 @@ détecter ; il émet donc l'alerte correspondante, avec un `dedupKey` par
 
 Un premier remplissage d'horaire (null → valeur) n'est pas un déplacement, et
 une annulation n'est jamais annoncée deux fois ni depuis un statut terminal.
+
+> **Amendement 2026-08-18 — l'alerte partait, la synchro CRM non.**
+>
+> `enrich.ts` n'importait pas `@/server/crm-sync`. Une annulation détectée
+> automatiquement sonnait Telegram et ne disait RIEN au CRM : l'automatisation
+> existait pour l'affichage et pas pour la synchro. Le CRM n'apprenait
+> l'annulation que si un humain repassait le statut à la main en console,
+> alors que la PRISE de rendez-vous, elle, partait seule depuis `discover.ts`.
+>
+> `enrich.ts` émet désormais `calendly_canceled` et `calendly_no_show` — sur
+> TRANSITION seulement, et jamais sans adresse d'invité (pas de clé de personne).
 
 ### F. Un gate CI relie la nav aux routes réelles
 

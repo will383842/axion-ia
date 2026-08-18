@@ -10,13 +10,23 @@
 "use server";
 
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
+import { csvEscape } from "@/lib/csv";
 import { ROI_DETAILS_KEYS as K } from "@/lib/roi/submission-details";
+import {
+  listSubmissionsSchema,
+  buildSubmissionsWhere,
+  normalizeSearch,
+  matchSubmissionSearch,
+  exportedScope,
+  type ListSubmissionsInput,
+} from "./query";
 import type {
   SubmissionType,
   SubmissionStatus,
@@ -47,44 +57,14 @@ async function requireAdminReadSession() {
 // ============================================================
 // listSubmissions — filtres + pagination
 // ============================================================
+//
+// Le schéma de filtres et la construction du `where` vivent dans `./query`
+// (module NON `"use server"`, puisqu'il exporte des fonctions synchrones). Ils
+// y ont été déplacés le 2026-08-18 parce que le listing et l'export en avaient
+// chacun leur version, et que celle de l'export oubliait quatre clauses — dont
+// la corbeille.
 
-const listSubmissionsSchema = z.object({
-  type: z.enum(["audit", "implementation", "intervention", "contact", "all"]).default("all"),
-  /** Filtre fin sur details.unifiedType (ex « recrutement » → onglet Commercial). */
-  unifiedType: z.string().optional(),
-  /**
-   * Filtre multi-types sur details.unifiedType (ex onglet « Clients » = audit +
-   * implementation + formation + un_a_un + devis + support_client). Prioritaire
-   * sur `unifiedType` si fourni.
-   */
-  unifiedTypeIn: z.array(z.string()).optional(),
-  status: z.enum(["new", "in_progress", "processed", "archived", "all"]).default("all"),
-  locale: z.enum(["fr", "en", "all"]).default("all"),
-  search: z.string().optional(),
-  /** ISO date YYYY-MM-DD inclusif. */
-  dateFrom: z.string().optional(),
-  dateTo: z.string().optional(),
-  page: z.coerce.number().int().min(1).default(1),
-  pageSize: z.coerce.number().int().min(10).max(100).default(25),
-  /**
-   * Sprint Notif Infra 2026-05-26 / fix P0-2 audit 2026-05-27 — par défaut on
-   * masque les submissions archivées (archivedAt non null). L'admin peut
-   * activer le toggle pour les voir.
-   */
-  includeArchived: z.coerce.boolean().default(false),
-  /**
-   * Sprint Notif Infra 2026-05-26 / fix P1-2 audit 2026-05-27 — filtre
-   * sur le statut réponse (computed depuis replyCount + dernière deliveryStatus).
-   */
-  replyStatus: z.enum(["all", "unanswered", "answered", "failed"]).default("all"),
-  /**
-   * Corbeille (2026-07-10) — `false` (défaut) masque les messages soft-deleted
-   * (deletedAt non null). `true` = onglet « Corbeille » : n'affiche QUE les
-   * soft-deleted (le filtre archivés est alors ignoré).
-   */
-  deleted: z.coerce.boolean().default(false),
-});
-export type ListSubmissionsInput = z.infer<typeof listSubmissionsSchema>;
+export type { ListSubmissionsInput } from "./query";
 
 export interface SubmissionListItem {
   id: string;
@@ -132,72 +112,13 @@ export async function listSubmissionsAction(
   await requireAdminReadSession();
   const parsed = listSubmissionsSchema.parse(input);
 
-  const where: Parameters<typeof prisma.submission.findMany>[0] extends infer T
-    ? T extends { where?: infer W }
-      ? W
-      : never
-    : never = {};
-
-  if (parsed.type !== "all") where.type = parsed.type;
-  // Filtre par catégorie (details.unifiedType en JSON Postgres). `unifiedTypeIn`
-  // (onglet « Clients » = plusieurs types) → OR de equals ; sinon type unique.
-  // NB : `where.OR` est libre ici (la recherche est filtrée EN MÉMOIRE après
-  // déchiffrement, cf. plus bas — elle ne pose plus de clause OR SQL).
-  if (parsed.unifiedTypeIn && parsed.unifiedTypeIn.length > 0) {
-    (where as { OR?: unknown }).OR = parsed.unifiedTypeIn.map((t) => ({
-      details: { path: ["unifiedType"], equals: t },
-    }));
-  } else if (parsed.unifiedType) {
-    (where as { details?: unknown }).details = {
-      path: ["unifiedType"],
-      equals: parsed.unifiedType,
-    };
-  }
-  if (parsed.status !== "all") where.status = parsed.status;
-  if (parsed.locale !== "all") where.locale = parsed.locale;
-
-  // Corbeille (2026-07-10) — l'onglet « Corbeille » n'affiche QUE les
-  // soft-deleted et ignore le filtre archivés ; sinon on masque toujours les
-  // soft-deleted (deletedAt non null).
-  if (parsed.deleted) {
-    where.deletedAt = { not: null };
-  } else {
-    where.deletedAt = null;
-    // Sprint Notif Infra 2026-05-26 / fix P0-2 audit 2026-05-27 — masque les
-    // archivés par défaut. L'admin peut les ré-inclure via toggle.
-    if (!parsed.includeArchived) {
-      where.archivedAt = null;
-    }
-  }
-
-  // Sprint Notif Infra 2026-05-26 / fix P1-2 audit 2026-05-27 — filtre
-  // par statut réponse. "unanswered" = needsAttention=true (par défaut à la
-  // création de la Submission), "answered" = replyCount>0, "failed" = a au
-  // moins une reply avec deliveryStatus ∈ {failed, bounced}.
-  if (parsed.replyStatus === "unanswered") {
-    where.needsAttention = true;
-  } else if (parsed.replyStatus === "answered") {
-    where.replyCount = { gt: 0 };
-  } else if (parsed.replyStatus === "failed") {
-    where.replies = {
-      some: { deliveryStatus: { in: ["failed", "bounced"] } },
-    };
-  }
-
-  if (parsed.dateFrom || parsed.dateTo) {
-    where.submittedAt = {};
-    if (parsed.dateFrom) (where.submittedAt as { gte?: Date }).gte = new Date(parsed.dateFrom);
-    if (parsed.dateTo) {
-      const to = new Date(parsed.dateTo);
-      to.setUTCHours(23, 59, 59, 999);
-      (where.submittedAt as { lte?: Date }).lte = to;
-    }
-  }
-
+  // Un SEUL constructeur de `where`, partagé avec l'export CSV (cf. `./query`).
+  //
   // NB : la recherche par email/nom N'EST PAS un filtre SQL. `contactEmail` /
   // `contactName` sont chiffrés au repos (AES-GCM, IV aléatoire → non
   // déterministe), donc un `contains` SQL ne matche jamais. On filtre en mémoire
   // après déchiffrement (voir plus bas). `companyName` reste en clair.
+  const where = buildSubmissionsWhere(parsed);
 
   // Sélection partagée liste + recherche.
   const select = {
@@ -266,8 +187,7 @@ export async function listSubmissionsAction(
     };
   };
 
-  const searchQ =
-    parsed.search && parsed.search.trim().length >= 2 ? parsed.search.trim().toLowerCase() : null;
+  const searchQ = normalizeSearch(parsed.search);
 
   let mapped: ReturnType<typeof mapRow>[];
   let total: number;
@@ -281,14 +201,7 @@ export async function listSubmissionsAction(
       take: SEARCH_SCAN_CAP,
       select,
     });
-    const filtered = scanned
-      .map(mapRow)
-      .filter(
-        (r) =>
-          (r.contactEmail ?? "").toLowerCase().includes(searchQ) ||
-          (r.contactName ?? "").toLowerCase().includes(searchQ) ||
-          (r.companyName ?? "").toLowerCase().includes(searchQ),
-      );
+    const filtered = scanned.map(mapRow).filter((r) => matchSubmissionSearch(r, searchQ));
     total = filtered.length;
     const start = (parsed.page - 1) * parsed.pageSize;
     mapped = filtered.slice(start, start + parsed.pageSize);
@@ -493,82 +406,89 @@ async function hashEmailForAudit(email: string): Promise<string> {
 // ============================================================
 // exportSubmissionsCsv — UTF-8 BOM (Excel compatible)
 // ============================================================
+//
+// 🔴 CE QUI A CHANGÉ LE 2026-08-18 (préalable CRM, ligne 13)
+// ----------------------------------------------------------
+// 1. LE PLAFOND ÉTAIT MUET. `take: 5000` tronquait sans rien dire : ni en-tête,
+//    ni ligne, ni journal. Un opérateur téléchargeait 5 000 lignes en croyant
+//    tenir la totalité, et c'est aussi l'outil de réponse à une demande d'accès
+//    RGPD — une troncature muette y est une réponse FAUSSE.
+//    Il est remplacé par une pagination interne par curseur : l'export rend
+//    désormais N lignes pour N soumissions. Un garde-fou dur subsiste
+//    (`PLAFOND_EXPORT`), mais il est BRUYANT (ligne visible dans le fichier,
+//    Sentry, journal RGPD) et fixé dix fois plus haut — voir sa justification.
+//
+// 2. LE PÉRIMÈTRE DIVERGEAIT. Le `where` était reconstruit ici, en oubliant la
+//    corbeille, les archives, la plage de dates et le statut réponse : l'export
+//    ressortait des messages supprimés et ignorait les filtres de l'écran. Il
+//    n'y a plus qu'un constructeur, dans `./query`.
+//
+// 3. `parsed.pageSize` / `parsed.page` étaient posés à 100 / 1 pour satisfaire
+//    Zod et n'étaient JAMAIS relus. Le raccourci est resté, mais il est nommé.
+
+/**
+ * Taille d'une page lue en base pendant l'export.
+ *
+ * 500 lignes × ~400 octets de champs sélectionnés ≈ 200 ko en vol. La mémoire
+ * de la requête est donc bornée par la page, pas par la taille de la base.
+ */
+const TAILLE_PAGE_EXPORT = 500;
+
+/**
+ * Garde-fou dur, VOLONTAIREMENT conservé — et le chiffre est motivé.
+ *
+ * Une Server Action ne peut pas diffuser en flux : elle retourne le CSV en une
+ * seule chaîne, qui est ensuite recopiée par la sérialisation RSC. Le coût
+ * mémoire est donc proportionnel au TOTAL, pas à la page.
+ *
+ * Mesure sur une ligne réelle de cet export (22 colonnes, `details` non
+ * sérialisé — seules des clés dérivées en sortent) : ~250 à 400 octets. À
+ * 50 000 lignes : ~20 Mo de CSV, soit ~40 Mo en UTF-16 côté V8, plus le tableau
+ * de lignes et la copie RSC — de l'ordre de 100 à 150 Mo au pic. C'est tenable
+ * dans le conteneur ; 200 000 lignes ne le seraient pas.
+ *
+ * 50 000 correspond à ~137 soumissions PAR JOUR pendant un an. Le volume réel
+ * est de l'ordre de quelques unités par jour : ce plafond n'est pas atteignable
+ * à l'échelle du produit. S'il l'était, le remède n'est pas de l'augmenter mais
+ * de diffuser depuis le route handler (`api/admin/submissions/export`), ce que
+ * l'action ne peut structurellement pas faire.
+ */
+const PLAFOND_EXPORT = 50_000;
 
 export async function exportSubmissionsCsvAction(
   input: Partial<ListSubmissionsInput> = {},
 ): Promise<{ filename: string; csv: string }> {
   // Sprint 15 fix Fork 2 C2-2 : RGPD — export PII reservé super_admin/admin
   const session = await requireAdminWriteSession();
+  // `page` / `pageSize` ne servent qu'à satisfaire le schéma partagé avec le
+  // listing : l'export ne pagine pas pour l'utilisateur, il pagine en interne.
   const parsed = listSubmissionsSchema.parse({ ...input, pageSize: 100, page: 1 });
 
-  // Activity log d'audit RGPD
-  const exportFilters: {
-    type: string;
-    status: string;
-    locale: string;
-    unifiedType?: string;
-    unifiedTypeIn?: string[];
-  } = {
-    type: parsed.type,
-    status: parsed.status,
-    locale: parsed.locale,
-    // Le journal RGPD doit décrire le périmètre RÉELLEMENT exporté.
-    ...(parsed.unifiedType ? { unifiedType: parsed.unifiedType } : {}),
-    ...(parsed.unifiedTypeIn?.length ? { unifiedTypeIn: parsed.unifiedTypeIn } : {}),
-  };
-  await prisma.activityLog.create({
-    data: {
-      adminUserId: session.userId,
-      action: "submission.exported",
-      targetType: "submission",
-      changes: exportFilters,
-      ipAddress: await getClientIp(),
-    },
-  });
+  const where = buildSubmissionsWhere(parsed);
+  const searchQ = normalizeSearch(parsed.search);
 
-  const where: Record<string, unknown> = {};
-  if (parsed.type !== "all") where.type = parsed.type;
-  // Filtre fin « Catégorie » (2026-07-29) — sans ça, l'export renverrait TOUTES
-  // les soumissions alors que l'écran n'en montre qu'une catégorie : un CSV qui
-  // ne correspond pas à ce qu'on regarde est pire qu'un export absent.
-  if (parsed.unifiedTypeIn && parsed.unifiedTypeIn.length > 0) {
-    where.OR = parsed.unifiedTypeIn.map((t) => ({
-      details: { path: ["unifiedType"], equals: t },
-    }));
-  } else if (parsed.unifiedType) {
-    where.details = { path: ["unifiedType"], equals: parsed.unifiedType };
-  }
-  if (parsed.status !== "all") where.status = parsed.status;
-  if (parsed.locale !== "all") where.locale = parsed.locale;
-
-  // Cap export a 5000 lignes pour ne pas saturer la RAM admin V1.
-  const rows = await prisma.submission.findMany({
-    where,
-    orderBy: { submittedAt: "desc" },
-    take: 5000,
-    select: {
-      id: true,
-      type: true,
-      status: true,
-      locale: true,
-      companyName: true,
-      sector: true,
-      contactName: true,
-      contactRole: true,
-      contactEmail: true,
-      contactPhone: true,
-      employeesCount: true,
-      address: true,
-      assignedTo: true,
-      internalNotes: true,
-      submittedAt: true,
-      // `details` porte le type métier fin, l'attribution publicitaire et — pour
-      // les leads du simulateur — le gain estimé. Il n'était pas sélectionné :
-      // l'export était donc inutilisable pour prioriser un rappel ou alimenter
-      // un CRM, alors que la donnée existe en base depuis le premier jour.
-      details: true,
-    },
-  });
+  const selection = {
+    id: true,
+    type: true,
+    status: true,
+    locale: true,
+    companyName: true,
+    sector: true,
+    contactName: true,
+    contactRole: true,
+    contactEmail: true,
+    contactPhone: true,
+    employeesCount: true,
+    address: true,
+    assignedTo: true,
+    internalNotes: true,
+    submittedAt: true,
+    // `details` porte le type métier fin, l'attribution publicitaire et — pour
+    // les leads du simulateur — le gain estimé. Il n'était pas sélectionné :
+    // l'export était donc inutilisable pour prioriser un rappel ou alimenter
+    // un CRM, alors que la donnée existe en base depuis le premier jour.
+    details: true,
+  } as const;
 
   const headers = [
     "id",
@@ -600,12 +520,11 @@ export async function exportSubmissionsCsvAction(
     "maturiteNumerique",
     "lienRapport",
   ];
-  const escape = (v: unknown): string => {
-    if (v == null) return "";
-    const s = String(v);
-    if (/[",\n;]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
-    return s;
-  };
+  // 🔴 L'échappement local ne protégeait QUE le séparateur et les guillemets ;
+  // il laissait passer un champ commençant par `=`, `+`, `-` ou `@`, que le
+  // tableur ÉVALUE à l'ouverture. Le helper partagé (`@/lib/csv`) neutralise ce
+  // préfixe, comme le fait déjà l'export public de l'observatoire.
+  const escape = csvEscape;
   // `details` est un Json libre : on y pioche défensivement, une clé absente
   // ne doit jamais faire échouer l'export entier.
   const lire = (source: unknown, ...chemin: string[]): unknown => {
@@ -617,7 +536,13 @@ export async function exportSubmissionsCsvAction(
     return courant;
   };
 
-  const lines = rows.map((raw) => {
+  /** Une ligne DB → une ligne CSV, PII déchiffré. */
+  const versLigne = (
+    raw: Prisma.SubmissionGetPayload<{ select: typeof selection }>,
+  ): {
+    csv: string;
+    recherche: { contactEmail: string; contactName: string; companyName: string };
+  } => {
     const d = raw.details;
     // Déchiffre le PII (enc:v1) pour un export lisible. No-op sur le clair.
     const r: Record<string, unknown> = {
@@ -638,8 +563,80 @@ export async function exportSubmissionsCsvAction(
       maturiteNumerique: lire(d, K.maturite),
       lienRapport: lire(d, K.rapport),
     };
-    return headers.map((h) => escape(r[h])).join(";");
+    return {
+      csv: headers.map((h) => escape(r[h])).join(";"),
+      recherche: {
+        contactEmail: String(r["contactEmail"] ?? ""),
+        contactName: String(r["contactName"] ?? ""),
+        companyName: String(r["companyName"] ?? ""),
+      },
+    };
+  };
+
+  // ── Lecture paginée par CURSEUR ─────────────────────────────────────────────
+  //
+  // Curseur et non `skip`/`take` : l'ordre est `submittedAt desc`, et une
+  // soumission qui arrive PENDANT l'export décalerait toute la fenêtre — avec
+  // `skip`, la même ligne serait rendue deux fois et une autre sautée. Le
+  // couple (`submittedAt`, `id`) rend l'ordre total, donc le curseur stable.
+  const lines: string[] = [];
+  let curseur: string | null = null;
+  let tronque = false;
+  for (;;) {
+    const page: Prisma.SubmissionGetPayload<{ select: typeof selection }>[] =
+      await prisma.submission.findMany({
+        where,
+        orderBy: [{ submittedAt: "desc" }, { id: "desc" }],
+        take: TAILLE_PAGE_EXPORT,
+        ...(curseur ? { cursor: { id: curseur }, skip: 1 } : {}),
+        select: selection,
+      });
+    if (page.length === 0) break;
+    for (const raw of page) {
+      const l = versLigne(raw);
+      // La recherche libre porte sur des champs CHIFFRÉS : elle ne peut pas
+      // être une clause SQL, elle s'applique après déchiffrement — ligne à
+      // ligne, donc sans le plafond de scan de 2 000 lignes du listing.
+      if (searchQ && !matchSubmissionSearch(l.recherche, searchQ)) continue;
+      lines.push(l.csv);
+      if (lines.length >= PLAFOND_EXPORT) {
+        tronque = true;
+        break;
+      }
+    }
+    if (tronque || page.length < TAILLE_PAGE_EXPORT) break;
+    curseur = page[page.length - 1]!.id;
+  }
+
+  // Compté AVANT l'éventuelle ligne d'avertissement : le journal RGPD doit dire
+  // combien de soumissions sont sorties, pas combien de lignes contient le
+  // fichier.
+  const lignesDonnees = lines.length;
+
+  // Une troncature ne doit JAMAIS être muette : elle se voit dans le fichier,
+  // dans Sentry, et dans le journal RGPD (plus bas).
+  if (tronque) {
+    const avertissement =
+      `EXPORT TRONQUÉ à ${PLAFOND_EXPORT} lignes — ` +
+      `le fichier est INCOMPLET. Restreindre la plage de dates ou les filtres.`;
+    lines.push(escape(`### ${avertissement}`));
+    Sentry.captureMessage(`[submissions:export] ${avertissement}`, "warning");
+  }
+
+  // Journal d'audit RGPD — écrit APRÈS la lecture pour pouvoir consigner ce qui
+  // a réellement été rendu (nombre de lignes, troncature éventuelle). Il ne
+  // portait que trois filtres sur onze : il ne permettait pas de dire de quel
+  // extrait une demande d'accès avait fait l'objet.
+  await prisma.activityLog.create({
+    data: {
+      adminUserId: session.userId,
+      action: "submission.exported",
+      targetType: "submission",
+      changes: { ...exportedScope(parsed), lignes: lignesDonnees, tronque },
+      ipAddress: await getClientIp(),
+    },
   });
+
   // BOM UTF-8 + CRLF (Windows Excel friendly)
   const csv = "﻿" + headers.join(";") + "\r\n" + lines.join("\r\n");
   const filename = `axion-ia-submissions-${new Date().toISOString().slice(0, 10)}.csv`;
