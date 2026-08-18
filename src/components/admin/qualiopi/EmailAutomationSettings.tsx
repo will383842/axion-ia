@@ -22,6 +22,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { libelleTemplateEmail } from "@/server/email/outbox-policy";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -67,6 +68,7 @@ export function EmailAutomationSettings({
   const [clientId, setClientId] = useState<string>("");
   const [template, setTemplate] = useState<string>("");
   const [mode, setMode] = useState<"auto" | "validation">("validation");
+  const { demander, dialogue } = useConfirmation();
 
   function enregistrer() {
     setErreur(null);
@@ -78,11 +80,25 @@ export function EmailAutomationSettings({
       const cible = scope === "global" ? "TOUS les clients" : "ce client";
       const nature =
         template === "" ? "toutes les natures d'email" : libelleTemplateEmail(template);
-      const ok = window.confirm(
-        `Passer ${nature} en envoi AUTOMATIQUE pour ${cible} ?\n\nCes emails partiront sans passer par votre relecture. Un email envoyé ne se rappelle pas.`,
+      demander(
+        {
+          titre: `Passer ${nature} en envoi AUTOMATIQUE pour ${cible} ?`,
+          // ⚠️ La conséquence, pas la question. C'est le seul réglage de la
+          // console qui retire un humain de la boucle : le dire en toutes
+          // lettres est ce qui distingue un choix d'un clic réflexe.
+          description:
+            "Ces e-mails partiront SANS passer par votre relecture. Un e-mail envoyé ne se rappelle pas.",
+          destructif: true,
+          libelleConfirmer: "Activer l'envoi automatique",
+        },
+        () => enregistrerVraiment(),
       );
-      if (!ok) return;
+      return;
     }
+    enregistrerVraiment();
+  }
+
+  function enregistrerVraiment() {
     startTransition(async () => {
       const r = await definirAction({
         scope,
@@ -114,6 +130,7 @@ export function EmailAutomationSettings({
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-4)]">
+      {dialogue}
       {reglages.length === 0 ? (
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           Aucune règle personnalisée : le comportement par défaut s&apos;applique.

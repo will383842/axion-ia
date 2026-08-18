@@ -195,7 +195,7 @@ export function GenererFactureButton({
             rel="noopener noreferrer"
             className="text-[color:var(--color-admin-accent)] underline"
           >
-            Télécharger le PDF de la facture
+            Ouvrir le PDF de la facture
           </a>
         </p>
       )}

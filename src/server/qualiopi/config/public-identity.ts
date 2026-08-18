@@ -31,6 +31,41 @@ import {
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
+/**
+ * N° de déclaration d'activité exposable publiquement, ou `""`.
+ *
+ * 🔴 2026-08-17. Le NDA n'avait qu'UN chemin vers une surface publique :
+ * `computeQualiopiPublicIdentity()`, qui rend `null` tant que la certification
+ * Qualiopi n'est pas obtenue. Le numéro était donc enfermé dans le même bloc que
+ * la revendication Qualiopi. Le jour où le récépissé DREETS est arrivé (17 août
+ * 2026), le site n'en aurait rien affiché — alors que la certification, elle,
+ * doit rester éteinte encore longtemps.
+ *
+ * Ce sont deux choses distinctes, et c'est précisément la distinction que le
+ * découplage F13 (2026-07-25) avait déjà faite au niveau des DRAPEAUX sans la
+ * faire au niveau du RENDU :
+ *   - l'enregistrement DREETS est un fait administratif, opposable, que
+ *     l'art. L.6352-12 impose même de mentionner dès qu'on en fait état ;
+ *   - la certification Qualiopi est une attestation de qualité délivrée après
+ *     audit, qu'on ne revendique jamais sans certificat.
+ *
+ * Cette fonction ne dépend donc PAS de `isQualiopiCertificationObtenue()`. Elle
+ * reste gatée sur la Phase A/B, comme toute surface publique de l'OF : hors
+ * Phase B, aucune activité d'organisme n'est présentée, un numéro de déclaration
+ * n'y aurait rien à éclairer — et le retour anticipé garantit zéro accès DB.
+ *
+ * Chaîne vide = « pas de numéro » (config non renseignée, ou build stub avant
+ * que le défaut de registre n'existe). Les appelants OMETTENT alors la mention.
+ */
+export async function computeNdaPublic(): Promise<string> {
+  if (!isQualiopiPublicDisclosureEnabled()) return "";
+  const nda = await getQualiopiConfig("nda_numero");
+  return nda.trim();
+}
+
+/** Version mémoïsée par requête — cf. `computeNdaPublic`. */
+export const getNdaPublic = cache(computeNdaPublic);
+
 /** Identité Qualiopi exposable côté public (Phase B uniquement). */
 export interface QualiopiPublicIdentity {
   raisonSociale: string;

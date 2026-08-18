@@ -18,6 +18,7 @@ import type {
   updateIncidentAction,
   supprimerIncidentAction,
 } from "@/server/actions/qualiopi/incidents";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 type IncidentType = "pedagogique" | "administratif" | "technique" | "autre";
 type IncidentGravite = "mineur" | "majeur" | "critique";
@@ -71,6 +72,7 @@ export function IncidentRowActions({
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { demander, dialogue } = useConfirmation();
 
   const [type, setType] = useState<IncidentType>(incident.type as IncidentType);
   const [gravite, setGravite] = useState<IncidentGravite>(incident.gravite as IncidentGravite);
@@ -106,7 +108,19 @@ export function IncidentRowActions({
   }
 
   function handleDelete() {
-    if (!window.confirm("Supprimer définitivement cet incident du registre ?")) return;
+    demander(
+      {
+        titre: "Supprimer définitivement cet incident du registre ?",
+        description:
+          "Le registre des réclamations est une pièce d'audit (ind. 31) : un incident retiré ne peut plus être montré.",
+        destructif: true,
+        libelleConfirmer: "Supprimer",
+      },
+      () => supprimerVraiment(),
+    );
+  }
+
+  function supprimerVraiment() {
     setError(null);
     startTransition(async () => {
       const result = await supprimerAction({ id: incident.id });
@@ -120,6 +134,7 @@ export function IncidentRowActions({
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-2)]">
+      {dialogue}
       <div className="flex flex-wrap gap-[var(--space-admin-2)]">
         <button
           type="button"

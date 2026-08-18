@@ -43,6 +43,7 @@ import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 import {
   envoyerConvocation,
+  envoyerPositionnement,
   envoyerRappelJ7,
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
@@ -51,6 +52,10 @@ import {
 } from "@/server/qualiopi/notifications/notifications-service";
 import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe";
+import {
+  gestePositionnement,
+  HORIZON_JOURS,
+} from "@/server/qualiopi/parcours/relance-positionnement";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types job
@@ -72,6 +77,9 @@ export type FormationCronJobType =
   | "formation-crons.alertes"
   // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9)
   | "formation-crons.convocation-j5"
+  // 2026-08-17 — recueil du POSITIONNEMENT avant l'entrée en formation (ind. 8).
+  // ⚠️ Pas un compte à rebours : état + rattrapage, cf. `relance-positionnement.ts`.
+  | "formation-crons.positionnement"
   // 2026-08-16 — liens de signature des sessions qui COMMENCENT aujourd'hui.
   // Envoyer un lien n'engage pas l'organisme (signer, si) : automatisable.
   | "formation-crons.liens-emargement-j0"
@@ -763,6 +771,120 @@ async function handleConvocationJ5(): Promise<void> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Positionnement — recueil et relances AVANT l'entrée en formation (ind. 8)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Envoie les positionnements jamais partis, relance ceux restés sans réponse.
+ *
+ * 🔴 Le défaut : le positionnement partait UNE fois, à la conclusion de la
+ * pièce contractuelle, et plus rien ensuite. Un stagiaire silencieux n'était
+ * jamais relancé, et le jour de la formation arrivait sans que le besoin ait
+ * été recueilli. Devant un auditeur, une non-réponse du stagiaire n'est pas une
+ * faute de l'organisme — l'absence de tentative tracée, si.
+ *
+ * ⚠️ Aucune fenêtre basse, exactement comme la convocation : le critère est
+ * l'ÉTAT du questionnaire, pas la distance à une date. Une exécution manquée
+ * cesse d'être définitive. La décision vit dans `relance-positionnement.ts`.
+ */
+async function handlePositionnement(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] positionnement: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const plafond = new Date(now.getTime() + (HORIZON_JOURS + 0.5) * 24 * 60 * 60 * 1000);
+
+  const candidats = await prisma.questionnaire.findMany({
+    where: {
+      type: "positionnement",
+      // L'ÉTAT : tant que personne n'a répondu, le questionnaire reste candidat.
+      reponduAt: null,
+      enrollment: {
+        statut: { in: ["planifiee", "presente"] },
+        session: {
+          statut: "planifiee",
+          // Pas encore commencée. Un positionnement recueilli après le début ne
+          // mesure plus le besoin d'entrée : la pièce serait datée et FAUSSE.
+          dateDebut: { gt: now, lte: plafond },
+        },
+      },
+    },
+    select: {
+      id: true,
+      envoyeAt: true,
+      reponduAt: true,
+      relanceCount: true,
+      derniereRelanceAt: true,
+      enrollment: { select: { session: { select: { dateDebut: true } } } },
+    },
+  });
+
+  let envoyes = 0;
+  let relances = 0;
+  let ko = 0;
+
+  for (const q of candidats) {
+    const geste = gestePositionnement({
+      envoyeAt: q.envoyeAt,
+      reponduAt: q.reponduAt,
+      relanceCount: q.relanceCount,
+      derniereRelanceAt: q.derniereRelanceAt,
+      dateDebut: q.enrollment.session.dateDebut,
+      maintenant: now,
+    });
+    if (geste === "rien") continue;
+
+    try {
+      await envoyerPositionnement(q.id);
+      if (geste === "relancer") {
+        // 🔴 La trace de la relance EST la preuve. Sans elle, on ne saurait ni
+        // combien de fois on a tenté, ni quand — et le plafond ne tiendrait pas.
+        await prisma.questionnaire.update({
+          where: { id: q.id },
+          data: { relanceCount: { increment: 1 }, derniereRelanceAt: now },
+        });
+        relances++;
+      } else {
+        envoyes++;
+      }
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] positionnement: erreur questionnaire ${q.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  // ⚠️ Ce que le cron ne peut PAS rattraper, il le DIT — même règle que la
+  // convocation. Une session démarrée sans positionnement recueilli est un
+  // écart d'indicateur 8 : il se consigne, il ne se répare pas par un envoi.
+  const manques = await prisma.questionnaire.count({
+    where: {
+      type: "positionnement",
+      reponduAt: null,
+      enrollment: {
+        statut: { in: ["planifiee", "presente"] },
+        session: { dateDebut: { lte: now }, statut: { in: ["planifiee", "en_cours", "realisee"] } },
+      },
+    },
+  });
+  if (manques > 0) {
+    console.error(
+      `[formation-crons] positionnement: ${manques} inscription(s) dont la session a DÉMARRÉ sans ` +
+        `positionnement recueilli — écart ind. 8 à consigner, aucun envoi rétroactif ne le répare`,
+    );
+  }
+
+  console.log(
+    `[formation-crons] positionnement: ${envoyes} envoi(s), ${relances} relance(s), ${ko} erreur(s) ` +
+      `(${candidats.length} candidat(s), ${manques} session(s) démarrée(s) sans réponse)`,
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Hub facturation Phase 3 — factures en retard (STATUT SEULEMENT)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -1310,6 +1432,7 @@ async function handleLiensEmargementJ0(): Promise<void> {
 
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
+  "formation-crons.positionnement": handlePositionnement,
   "formation-crons.cloture-auto": handleClotureAuto,
   "formation-crons.attestations-auto": handleAttestationsAuto,
   "formation-crons.rappel-j7": handleRappelJ7,

@@ -6,6 +6,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteConsoleDocAction } from "@/server/actions/console-documents/documents.actions";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 export function ConsoleDocDeleteButton({
   id,
@@ -17,9 +18,21 @@ export function ConsoleDocDeleteButton({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const { demander, dialogue } = useConfirmation();
 
   function onDelete(): void {
-    if (!window.confirm(`Supprimer définitivement « ${title} » ?`)) return;
+    demander(
+      {
+        titre: `Supprimer définitivement « ${title} » ?`,
+        description: "Le document disparaît de la console. L'action reste tracée au journal.",
+        destructif: true,
+        libelleConfirmer: "Supprimer",
+      },
+      () => supprimerVraiment(),
+    );
+  }
+
+  function supprimerVraiment(): void {
     setError(null);
     const fd = new FormData();
     fd.set("id", id);
@@ -32,6 +45,7 @@ export function ConsoleDocDeleteButton({
 
   return (
     <span className="inline-flex flex-col items-end">
+      {dialogue}
       <button
         type="button"
         onClick={onDelete}
