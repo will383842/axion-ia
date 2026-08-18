@@ -28,6 +28,28 @@
  * chose et donneraient une fausse fraîcheur. Règle déjà posée pour les PDF KDP.
  */
 
+import { formatAmount } from "@/content/pricing";
+
+/**
+ * Valeur du coup de projecteur TELLE QU'ELLE EST ENCRÉE sur le tirage en cours
+ * du flyer A5 — lue dans le PDF servi (`pypdf`), pas supposée : le recto porte
+ * « 650 € 0 € » juste avant « Un coup de projecteur, offert ».
+ *
+ * SÉPARÉE de `VALEUR_REFERENCE_COUP_DE_PROJECTEUR_EUR` (la SSOT) exprès. Un
+ * imprimé ne se redéploie pas : le jour où la référence bouge, ce flyer
+ * continue d'annoncer l'ancien montant jusqu'au retirage. Deux constantes
+ * rendent cet écart VISIBLE — `flyer-valeur-projecteur.spec.ts` rougit et nomme
+ * le retirage à faire. Les fusionner ferait mentir la console sur l'objet
+ * qu'elle décrit ; exempter la ligne (ce qu'on faisait) rendait l'écart
+ * invisible dans les deux sens, et c'est ainsi qu'on a fini par retirer un
+ * montant parfaitement légitime.
+ */
+export const VALEUR_PROJECTEUR_SUR_LE_FLYER = 650;
+
+/** Montants formatés par le helper de la SSOT, jamais écrits à la main. */
+const GRATUIT = formatAmount(0, "fr", { compact: true });
+const VALEUR_BARREE = formatAmount(VALEUR_PROJECTEUR_SUR_LE_FLYER, "fr", { compact: true });
+
 export interface FichierImprime {
   /** Chemin sous `public/`, tel qu'il est servi. Sans slash initial. */
   chemin: string;
@@ -125,8 +147,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     icon: "Newspaper",
     nom: "Flyer A5 · recto-verso",
     format: "A5 · 148 × 210 mm fini · 154 × 216 mm avec 3 mm de fond perdu",
-    resume:
-      "La présentation courte d’Axion-IA : les cinq activités, la prise en charge OPCO jusqu’au reste à charge nul, et la visibilité offerte. À laisser après un rendez-vous ou à diffuser en salon.",
+    resume: `La présentation courte d’Axion-IA : les cinq activités, la prise en charge OPCO jusqu’au reste à charge nul, et le coup de projecteur — podcast, interviews, page dédiée — affiché ${VALEUR_BARREE} barré puis ${GRATUIT}. À laisser après un rendez-vous ou à diffuser en salon.`,
     fichiersPublics: [
       {
         chemin: "imprimes/flyer-a5-axion-ia.pdf",
