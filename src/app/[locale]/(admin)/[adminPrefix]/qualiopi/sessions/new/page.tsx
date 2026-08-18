@@ -16,6 +16,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SessionForm } from "@/components/admin/qualiopi/SessionForm";
 import { prisma } from "@/lib/prisma";
+import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -101,6 +102,44 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
     devis = [];
   }
 
+  // 🔴 Le formateur n'était choisissable qu'APRÈS la création, depuis la fiche.
+  //
+  // On projette ici, pour CHAQUE formation, la liste des formateurs réellement
+  // assignables. Le calcul est fait côté serveur parce que l'habilitation se lit
+  // en base — et surtout parce qu'elle doit être calculée par
+  // `isTrainerHabilite`, la fonction que la garde de l'action appelle elle aussi.
+  // Réécrire la règle dans le composant client la ferait diverger au premier
+  // amendement : l'écran proposerait alors des formateurs que l'action refuse,
+  // ou masquerait des formateurs qu'elle accepte.
+  //
+  // Deux conséquences directes de cette réutilisation, voulues :
+  //   - un formateur INACTIF n'apparaît nulle part (`actifOnly` + la garde) ;
+  //   - un SOUS-TRAITANT sans `sousTraitantVerifieAt` n'est pas proposé, parce
+  //     que `isTrainerHabilite` le refuse déjà. Le proposer reviendrait à faire
+  //     échouer la création sur une case que l'écran venait d'offrir.
+  //
+  // Les habilitations viennent de la relation `TrainerHabilitation` (portée par
+  // `listTrainers` sous le nom `formationIdsHabilites`), jamais de la colonne
+  // legacy `formationsHabilitees` qui contient des slugs en production.
+  let formateursParFormation: Record<string, Array<{ id: string; label: string }>> = {};
+  try {
+    const formateursActifs = await listTrainers({ actifOnly: true });
+    const projection: Record<string, Array<{ id: string; label: string }>> = {};
+    for (const f of formations) {
+      projection[f.id] = formateursActifs
+        .filter((t) => isTrainerHabilite(t, f.id).ok)
+        .map((t) => ({
+          id: t.id,
+          // Le libellé EXACT de la fiche session. Deux écrans qui nomment la même
+          // personne différemment obligent à vérifier qu'il s'agit bien d'elle.
+          label: `${t.prenom} ${t.nom}${t.statut === "sous_traitant" ? " (sous-traitant)" : ""}`,
+        }));
+    }
+    formateursParFormation = projection;
+  } catch {
+    formateursParFormation = {};
+  }
+
   const sessionsListUrl = `/${locale}/${adminPrefix}/qualiopi/sessions`;
 
   return (
@@ -123,6 +162,7 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
         formations={formations}
         clients={clients}
         devis={devis}
+        formateursParFormation={formateursParFormation}
         redirectAfterCreate={sessionsListUrl}
         // Lot 1bis — les URLs sont construites ICI parce que seul le serveur
         // connaît le `locale` et le préfixe d'administration (secret injecté
@@ -131,6 +171,13 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
         liensPrerequis={{
           formations: `/${locale}/${adminPrefix}/qualiopi/formations/new`,
           clients: `/${locale}/${adminPrefix}/qualiopi/clients/new`,
+          // Vers la LISTE, et non vers « créer un formateur » : quand aucun
+          // formateur n'est habilité sur la formation choisie, le geste qui lève
+          // le blocage est le plus souvent d'ajouter cette formation aux
+          // habilitations d'un formateur qui existe déjà — ce qui se fait depuis
+          // sa fiche, atteignable depuis la liste. Un lien « Créer un formateur »
+          // enverrait créer un doublon.
+          formateurs: `/${locale}/${adminPrefix}/qualiopi/formateurs`,
         }}
       />
     </AdminPageShell>
