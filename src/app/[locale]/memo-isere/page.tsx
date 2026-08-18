@@ -68,6 +68,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { cn } from "@/lib/utils";
 import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
+import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
 import {
@@ -111,8 +112,9 @@ const SECTEURS = [
 
 // ── Rémunération ────────────────────────────────────────────────────────────
 //
-// 🔑 UNE SEULE valeur en dur sur toute la page : la commission par JOURNÉE.
-// Tous les montants affichés en descendent par multiplication. Deux raisons :
+// 🔑 AUCUNE valeur en dur sur cette page : la commission par JOURNÉE vient de
+// la SSOT `pricing.ts`, et tous les montants affichés en descendent par
+// multiplication. Trois raisons :
 //   1. Le retour Will du 2026-08-18 — « il faut que le visiteur comprenne que
 //      c'est 500 € PAR JOURNÉE : un programme de 3 journées = 1 500 € ». Une
 //      grille écrite à la main ne dit pas cette règle, elle la cache derrière
@@ -120,9 +122,14 @@ const SECTEURS = [
 //   2. Le garde-fou prix (`no-hardcoded-prices.spec.ts`) traque tout littéral
 //      « N € » dans les pages. Un montant CALCULÉ n'en est pas un — et il ne
 //      peut pas diverger le jour où la commission bouge.
+//   3. 🔴 Cette page a porté sa PROPRE copie de la constante jusqu'au
+//      2026-08-18, pendant que `/devenir-commercial-ia` affichait la grille de
+//      `pricing.ts` : 500 €/j ici, 350 €/j là-bas, les deux publics en même
+//      temps. Une constante dupliquée ne prévient jamais qu'elle a divergé —
+//      d'où l'import plutôt qu'un littéral, même identique.
 
 /** Commission commerciale versée à l'apporteur, par journée de formation vendue. */
-const COMMISSION_PAR_JOURNEE = 500; // price-exempt: commission commerciale de recrutement, pas un tarif client
+const COMMISSION_PAR_JOURNEE = COMMISSION_FORMATION_PAR_JOURNEE_EUR;
 
 /**
  * Montant en euros, typographie FR. Jamais de littéral « N € » dans la source.
@@ -225,16 +232,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const title = isFr
-    ? "Devenez commercial IA indépendant, de Grenoble à Lyon · 500 €/jour vendu" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-    : "Become an independent AI sales rep between Grenoble and Lyon";
+    ? "500 € par journée vendue · commercial IA indépendant Grenoble-Lyon" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+    : "€500 per day sold · independent AI sales rep, Grenoble-Lyon"; /* price-exempt: commission commerciale de recrutement, pas un tarif client */
   return {
     ...buildProductMetadata({
       locale,
       path: "/memo-isere",
       title,
       description: isFr
-        ? "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon — 474 communes, vous choisissez votre zone. Vendez des formations IA finançables OPCO : 500 € par journée de formation vendue, revenus non plafonnés." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-        : "Axion-IA is hiring independent sales reps between Grenoble, Valence, Die and Lyon — 474 towns, you pick your area. Sell OPCO-fundable AI trainings: €500 per training day sold, uncapped income." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+        ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act l'impose aux TPE, PME, ETI et grands groupes : 474 communes au choix." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+        : "€500 for you per AI training day sold, uncapped. The AI Act mandates it for small businesses, SMEs, mid-caps and large groups: 474 towns to pick from." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     }),
     title: { absolute: title },
   };
@@ -565,8 +572,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "paiement",
       question: "Comment et quand suis-je payé ?",
-      answer:
-        "En tant qu'indépendant, tu factures ta commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. 500 € par journée de formation vendue, pourcentage sur les audits et intégrations — le tableau de suivi te montre tes ventes et tes commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+      answer: `En tant qu'indépendant, tu factures ta commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations — le tableau de suivi te montre tes ventes et tes commissions en temps réel.`,
     },
     {
       id: "engagement",
@@ -589,8 +595,7 @@ export default async function MemoIserePage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "JobPosting",
     title: "Commercial indépendant IA (apporteur d'affaires)",
-    description:
-      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI et grands groupes locaux — TPE et artisans compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+    description: `Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des TPE, PME, ETI et grands groupes locaux — artisans et commerçants compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. ${commission(1)} par journée de formation vendue, revenus non plafonnés, statut libre. Débutants acceptés, formation à l'offre fournie.`,
     // Date RÉELLE de mise en ligne de l'annonce (règle Google for Jobs : jamais
     // une date antérieure à l'existence de l'URL). À rafraîchir UNIQUEMENT lors
     // d'une vraie republication de l'offre (contenu revu, offre toujours ouverte).
