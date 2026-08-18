@@ -3,9 +3,9 @@
  *
  * ## Le défaut que ce module empêche
  *
- * `construireParcours` déroule les quatorze étapes d'un dossier de session. Elles
+ * `construireParcours` déroule les quinze étapes d'un dossier de session. Elles
  * sont écrites pour la console : elles nomment des boutons de la console, et
- * douze d'entre elles sont gardées par `requireAdminWrite`. Les déverser telles
+ * treize d'entre elles sont gardées par `requireAdminWrite`. Les déverser telles
  * quelles sur l'accueil du formateur produirait une **liste de reproches sur des
  * gestes qu'il ne peut pas poser** — « convention non signée », « attestation non
  * émise », « suivi à froid non recueilli ». Aucun de ces gestes ne lui est
@@ -30,7 +30,7 @@
  * 🔴 Un `Set` ou un tableau de clés incluses laisse une étape NOUVELLE tomber
  * silencieusement du bon côté (exclue par défaut) sans que personne n'ait
  * tranché. Le `Record` exhaustif fait ROUGIR le compilateur le jour où une
- * quinzième clé est ajoutée à `EtapeCle` : celui qui l'ajoute doit décider, et
+ * seizième clé est ajoutée à `EtapeCle` : celui qui l'ajoute doit décider, et
  * écrire pourquoi. C'est le même patron que `borne: Date | { sansBorne }` du
  * parcours — l'absence de décision se DÉCLARE, elle ne se déduit pas.
  *
@@ -71,6 +71,15 @@ export const ETAPES_DU_FORMATEUR: Readonly<Record<EtapeCle, boolean>> = {
    * l'inquiéterait sur un circuit dont il ne tient aucun bout.
    */
   convention_signee: false,
+
+  /**
+   * NON — la contresignature est l'acte de l'ORGANISME (#709). Le parcours la
+   * nomme lui-même « acte HABILITÉ, jamais automatique », posé depuis le bloc
+   * Signatures de la console. C'est même la seule des deux lignes de convention
+   * qui ne dépende de personne d'autre que nous : la réclamer au formateur
+   * désignerait le mauvais responsable, et il n'a de toute façon pas le bouton.
+   */
+  convention_contresignee: false,
 
   /**
    * NON — l'envoi part du bloc Inscriptions de la console (ind. 8). Le

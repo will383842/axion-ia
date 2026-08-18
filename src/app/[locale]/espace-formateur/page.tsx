@@ -24,7 +24,7 @@
  * la formation concernée, une par une. C'est le trou que le Lot 1 §1.4 vient de
  * boucher côté console, et il était identique ici.
  *
- * 🔴 Mais on ne recopie PAS la liste de la console. Douze de ses quatorze étapes
+ * 🔴 Mais on ne recopie PAS la liste de la console. Treize de ses quinze étapes
  * sont gardées par `requireAdminWrite` : les afficher ferait au formateur une
  * liste de reproches sur des gestes qu'il ne peut pas poser. Le tri est fait,
  * clé par clé et motif par motif, dans `etapes-formateur.ts`.
