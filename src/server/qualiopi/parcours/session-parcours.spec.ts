@@ -571,9 +571,9 @@ describe("🔴 rien de ce qui s'affiche ne porte d'emoji", () => {
     }),
   );
 
-  it("les quatorze étapes sont bien là", () => {
+  it("les quinze étapes sont bien là", () => {
     // Sans ceci, une liste vide ferait passer tout le bloc au vert.
-    expect(p.etapes).toHaveLength(14);
+    expect(p.etapes).toHaveLength(15);
   });
 
   it.each(p.etapes.map((e) => [e.cle, e] as const))(
