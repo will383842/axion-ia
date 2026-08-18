@@ -5,6 +5,10 @@ on:
     branches: [main, staging]
   push:
     branches: [main, staging]
+  # File de fusion (2026-08-18). SANS ce déclencheur, une file activée attend
+  # indéfiniment des checks qui ne se lancent jamais : elle se bloque au premier
+  # usage. Il s'ajoute AVANT d'activer la file, jamais après.
+  merge_group:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -16,6 +20,22 @@ env:
   # ce qui pouvait masquer des incompatibilités runtime entre CI et prod.
   NODE_VERSION: "24"
   PNPM_VERSION: 10.33.4
+
+# ─────────────────────────────────────────────────────────────────────────────
+# POURQUOI B, C ET D N'ATTENDENT PLUS A (2026-08-18)
+#
+# Les trois portaient `needs: gate-a`. Mesuré sur le run de #717 : A dure
+# 16 min 49, puis C démarre et dure 32 min → 49 min de cycle. En parallèle, le
+# cycle vaut max(A, C) = 32 min. Dix-sept minutes rendues à CHAQUE passage, et
+# le dépôt est PUBLIC : les minutes Actions sont gratuites.
+#
+# Le `needs` n'était pas une dépendance de données : aucun `needs.<job>.outputs`,
+# aucun artefact échangé entre les jobs. C'était de la mise en file, rien d'autre.
+#
+# Contrepartie assumée : quand A échoue, C et D auront tourné pour rien. En
+# échange, une PR cassée rend TOUS ses défauts en une seule passe, au lieu de les
+# révéler l'un après l'autre, un cycle de 49 min à la fois.
+# ─────────────────────────────────────────────────────────────────────────────
 
 jobs:
   gate-a:
@@ -111,8 +131,9 @@ jobs:
 
   gate-b:
     name: Gate B · per-PR
-    needs: gate-a
-    if: github.event_name == 'pull_request'
+    # `merge_group` doit figurer ici : en file de fusion, un job SKIPPÉ sur un
+    # contexte EXIGÉ n'est pas un job vert — la file resterait bloquée dessus.
+    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     # 45 → 75 (2026-05-29) : une fois l'ENOSPC résolu (free-disk ci-dessous), le
     # build SSG (17 928 pages) + bundle + E2E + Lighthouse dépassait de peu 45 min.
@@ -340,7 +361,6 @@ jobs:
     # TODO follow-up: pass full mock env (e.g. via `--build-arg` or a
     # .env.smoke file) so this gate can re-enable as required.
     name: Gate C · Docker smoke test
-    needs: gate-a
     runs-on: ubuntu-latest
     # 30 → 60 (2026-06-02) : une fois l'ENOSPC réglé (step free-disk ci-dessus),
     # le `docker build` complet (compile + 18k pages SSG ~12min + copie standalone
@@ -523,7 +543,6 @@ jobs:
     # FTS raw SQL (`prisma/migrations_fts/`) appliqué après migrate deploy pour
     # détecter aussi les régressions FTS GIN + trgm.
     name: Gate D · Prisma migrate deploy (DB fresh)
-    needs: gate-a
     runs-on: ubuntu-latest
     timeout-minutes: 15
     services:
