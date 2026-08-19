@@ -30,7 +30,8 @@ export type NatureApercu =
   | "carte_generee" // notre carte /api/og — le cas de l'immense majorité
   | "image_propre" // un vrai fichier sur notre domaine
   | "image_tierce" // hébergée ailleurs : casse si le tiers la retire
-  | "aucune"; // le lien se partage nu
+  | "aucune" // relevée, et elle n'a AUCUNE image : le lien se partage nu
+  | "non_relevee"; // l'inspecteur n'est pas passé — on ne sait rien, et on le dit
 
 export interface ApercuModele {
   /** Identifiant de la route représentative (pour ouvrir sa fiche). */
@@ -72,7 +73,20 @@ export interface StatistiquesApercus {
   readonly injoignables: number;
 }
 
-function natureDe(ogImage: string | null): NatureApercu {
+/**
+ * 🔴 « JAMAIS RELEVÉE » N'EST PAS « SANS IMAGE ».
+ *
+ * Cette fonction ne regardait que `ogImage`. Or une route que l'inspecteur n'a
+ * pas encore visitée a `ogImage = null` — non parce qu'elle n'a pas d'image,
+ * mais parce que personne n'a regardé. L'écran affichait donc « Aucune image »
+ * sur des modèles dont on ne savait rien, en contradiction directe avec ses
+ * propres compteurs, qui excluent les non-relevées et affichaient 0.
+ *
+ * `defautsDe()` faisait déjà la distinction (« jamais relevée : elle n'a rien
+ * dit ») ; les deux fonctions se contredisaient.
+ */
+function natureDe(ogImage: string | null, ogInspectedAt: Date | null): NatureApercu {
+  if (!ogInspectedAt) return "non_relevee";
   if (!ogImage) return "aucune";
   try {
     const u = new URL(ogImage, SITE_URL);
@@ -176,7 +190,17 @@ export async function listerApercusParModele(filtres: FiltresApercus = {}): Prom
       ogImageStatus: true,
       ogInspectedAt: true,
     },
-    orderBy: [{ pathPattern: "asc" }, { ogInspectedAt: "desc" }],
+    // 🔴 `nulls: "last"` EST INDISPENSABLE, PAS COSMÉTIQUE.
+    //
+    // En PostgreSQL, `ORDER BY x DESC` place les NULL en PREMIER. Le tri
+    // d'origine ramenait donc, pour chaque modèle, une route JAMAIS relevée —
+    // exactement celle qui n'a rien à montrer. Constaté en production :
+    // `/fr/implantations/[region]/[ville]` annonçait « 385 relevées » et
+    // affichait « Pas encore relevée » sur son exemple.
+    //
+    // Le commentaire de la boucle plus bas affirmait « le premier de chaque
+    // groupe est le plus récemment relevé » : c'était l'inverse du vrai.
+    orderBy: [{ pathPattern: "asc" }, { ogInspectedAt: { sort: "desc", nulls: "last" } }],
     take: PLAFOND_LECTURE + 1,
   });
 
@@ -187,8 +211,9 @@ export async function listerApercusParModele(filtres: FiltresApercus = {}): Prom
   for (const l of utiles) {
     const existant = parModele.get(l.pathPattern);
     if (existant) {
-      // Le premier de chaque groupe est le plus récemment relevé (tri SQL) :
-      // on ne remplace pas l'exemple, on compte seulement.
+      // Le premier de chaque groupe est le plus récemment relevé — garanti par
+      // le `nulls: "last"` ci-dessus, sans lequel ce serait une non-relevée.
+      // On ne remplace pas l'exemple, on compte seulement.
       parModele.set(l.pathPattern, {
         ...existant,
         routes: existant.routes + 1,
@@ -213,7 +238,7 @@ export async function listerApercusParModele(filtres: FiltresApercus = {}): Prom
       ogDeclaredHeight: l.ogDeclaredHeight,
       ogImageStatus: l.ogImageStatus,
       ogInspectedAt: l.ogInspectedAt,
-      nature: natureDe(l.ogImage),
+      nature: natureDe(l.ogImage, l.ogInspectedAt),
       defauts: defautsDe(l),
     });
   }
@@ -264,7 +289,7 @@ export async function statistiquesApercus(): Promise<StatistiquesApercus> {
     modeles.add(l.pathPattern);
     if (!l.ogInspectedAt) continue;
     relevees++;
-    switch (natureDe(l.ogImage)) {
+    switch (natureDe(l.ogImage, l.ogInspectedAt)) {
       case "carte_generee":
         carteGeneree++;
         break;

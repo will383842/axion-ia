@@ -35,6 +35,9 @@ const NATURE_LABELS: Record<NatureApercu, string> = {
   image_propre: "Image propre",
   image_tierce: "Hébergée ailleurs",
   aucune: "Aucune image",
+  // Dire « on ne sait pas » plutôt que d'affirmer un défaut qu'on n'a pas
+  // constaté : l'inspecteur n'est simplement pas encore passé sur cet exemple.
+  non_relevee: "Pas encore relevée",
 };
 
 const NATURE_TONS: Record<NatureApercu, string> = {
@@ -46,6 +49,9 @@ const NATURE_TONS: Record<NatureApercu, string> = {
     "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
   aucune:
     "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]",
+  // Ton neutre, jamais alarmant : une absence de mesure n'est pas un défaut.
+  non_relevee:
+    "bg-[color:var(--color-admin-surface-sunken)] text-[color:var(--color-admin-fg-muted)]",
 };
 
 interface PageProps {
