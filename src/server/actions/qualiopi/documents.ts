@@ -28,6 +28,7 @@
 "use server";
 
 import React from "react";
+import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { ecartEffectif, mentionStagiaires } from "@/server/qualiopi/documents/stagiaires-nommes";
@@ -136,6 +137,9 @@ import {
   montantPrisEnChargeCents,
   resteAChargeCents,
 } from "@/server/qualiopi/financements/prise-en-charge-montant";
+// Annulation d'une pièce : les liens de signature en circulation meurent avec
+// la valeur de la pièce (§ 24).
+import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -3564,6 +3568,15 @@ const annulerDocumentSchema = z.object({
  * ⚠️ N'annule PAS les signatures portées par la pièce. Elles restent au registre
  * des signatures : la personne a signé, ce fait ne se réécrit pas. C'est la
  * VALEUR de la pièce qui tombe, pas l'historique.
+ *
+ * ⚠️ En revanche elle RÉVOQUE les liens de signature encore en circulation. Ils
+ * survivaient à l'annulation : le tiers qui avait reçu le sien par e-mail
+ * pouvait encore signer, des jours après. Rien d'une faille — le lien et son
+ * porteur étaient légitimes — mais la signature déclenche des CONSÉQUENCES
+ * AUTOMATIQUES (envoi des questionnaires de positionnement à des stagiaires
+ * réels, bascule d'un devis en `accepte`), sans qu'aucun écran humain
+ * s'interpose. `signerDocument` refuse désormais de fond ; couper le lien évite
+ * en plus au signataire un geste inutile.
  */
 export async function annulerDocumentAction(input: {
   documentId: string;
@@ -3606,6 +3619,25 @@ export async function annulerDocumentAction(input: {
     where: { id: documentId },
     data: { annuleeAt: new Date(), annuleeMotif: motif, annuleePar },
   });
+
+  // Les liens de signature encore vivants meurent avec la valeur de la pièce.
+  //
+  // ⚠️ APRÈS l'écriture, et FAIL-SOFT : l'annulation est l'acte que l'auditeur
+  // lira, la révocation en découle. La perdre parce que la seconde a échoué
+  // inverserait l'ordre d'importance — et `signerDocument` refuse de toute façon
+  // une pièce annulée, quel que soit l'état du jeton.
+  try {
+    await revoquerTokensDocument({
+      documentGenereId: documentId,
+      motif: `Pièce annulée au registre : ${motif}`,
+      parAdminId: adminSession.userId,
+    });
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "annulerDocumentAction:revocation_liens" },
+      extra: { documentId, numero: doc.numero },
+    });
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.document.annulee",

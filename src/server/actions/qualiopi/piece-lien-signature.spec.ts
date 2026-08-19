@@ -81,6 +81,9 @@ function piece(over: Record<string, unknown> = {}) {
     numero: "AXI-CTRST-2026-001",
     hashSha256: "c".repeat(64),
     metadata: {},
+    // Colonne toujours présente en base : la laisser absente du gabarit ferait
+    // passer TOUTES les pièces pour annulées (`undefined !== null`).
+    annuleeAt: null as Date | null,
     clientId: null,
     traineeId: null,
     sousTraitantId: ST,
@@ -254,6 +257,23 @@ describe("🔴 gardes communes", () => {
     expect("error" in res).toBe(true);
     if (!("error" in res)) return;
     expect(res.error).toContain("SPÉCIMEN");
+    expect(mockCreer).not.toHaveBeenCalled();
+  });
+
+  it("🔴 refuse une pièce ANNULÉE — n'envoyer personne signer ce qui ne vaut plus", async () => {
+    // Le service refuse au clic ; adresser quand même l'invitation ferait
+    // parcourir tout le geste au signataire — jusqu'au tracé — pour un défaut
+    // que l'organisme voyait avant d'envoyer.
+    mp.documentGenere.findUnique.mockResolvedValue(
+      piece({ annuleeAt: new Date("2026-08-12T09:00:00Z") }),
+    );
+    const res = await emettreLienSignatureAction({
+      documentGenereId: DOC,
+      partie: "sous_traitant",
+    });
+    expect("error" in res).toBe(true);
+    if (!("error" in res)) return;
+    expect(res.error.toLowerCase()).toContain("annul");
     expect(mockCreer).not.toHaveBeenCalled();
   });
 

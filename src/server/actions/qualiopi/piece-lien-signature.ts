@@ -277,6 +277,7 @@ export async function emettreLienSignatureAction(
       numero: true,
       hashSha256: true,
       metadata: true,
+      annuleeAt: true,
       clientId: true,
       traineeId: true,
       sousTraitantId: true,
@@ -297,6 +298,16 @@ export async function emettreLienSignatureAction(
   // Sans elles, on adresse à un tiers une invitation à signer une pièce que le
   // service refusera au moment du clic — c'est-à-dire qu'on lui fait perdre son
   // temps sur un défaut que l'organisme pouvait voir.
+  // Une pièce annulée ne fait plus foi : `signerDocument` la refuse. Émettre
+  // quand même le lien ferait parcourir tout le geste au signataire — ouvrir la
+  // page, lire la pièce, tracer sa signature — pour un défaut que l'organisme
+  // voyait avant d'envoyer.
+  if (piece.annuleeAt !== null) {
+    return {
+      error: `La pièce ${piece.numero} a été annulée : elle ne fait plus foi et ne peut plus être signée. Émettez le lien sur la pièce qui la remplace.`,
+    };
+  }
+
   const meta = piece.metadata;
   const estSpecimen =
     typeof meta === "object" && meta !== null && !Array.isArray(meta)

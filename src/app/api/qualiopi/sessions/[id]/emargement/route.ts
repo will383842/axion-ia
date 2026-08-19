@@ -61,10 +61,21 @@ export async function GET(
     return NextResponse.json({ error: tirage.message }, { status: statut });
   }
 
-  // Numéro de la feuille au registre, s'il y en a une. On prend la plus RÉCENTE :
-  // c'est celle que l'admin a sous les yeux dans « Documents générés ».
+  // Numéro de la feuille au registre, s'il y en a une. On prend la plus RÉCENTE
+  // qui fasse ENCORE FOI : c'est celle que l'admin a sous les yeux dans
+  // « Documents générés ».
+  //
+  // 🔴 `annuleeAt: null` n'est pas un raffinement. Ce tirage se présente comme la
+  // réimpression de la pièce dont il emprunte le numéro — jusque dans le nom du
+  // fichier, « <numero>-a-jour.pdf ». Emprunter celui d'une feuille que le
+  // registre déclare sans valeur produit un document qui se réclame d'une pièce
+  // annulée, et rien sur le PDF ne le dit : il n'existe aucun filigrane
+  // « ANNULÉ » dans le dépôt.
+  //
+  // Même filtre, et pour la même raison, que `documents-service.ts:313` : « la
+  // chaîne de remplacement doit désigner la dernière qui faisait foi ».
   const officielle = await prisma.documentGenere.findFirst({
-    where: { type: "emargement", sessionId: id },
+    where: { type: "emargement", sessionId: id, annuleeAt: null },
     orderBy: { createdAt: "desc" },
     select: { numero: true },
   });

@@ -98,6 +98,10 @@ function piece(over: Record<string, unknown> = {}) {
     hashSha256: "c".repeat(64),
     metadata: {},
     sessionId: SESSION,
+    // Colonne toujours présente en base. L'omettre du gabarit ferait passer
+    // TOUTES les pièces pour annulées (`undefined !== null`) et rendrait vertes,
+    // pour la mauvaise raison, les 36 assertions de refus de ce fichier.
+    annuleeAt: null as Date | null,
     signatures: [] as Array<{ id: string }>,
     session: {
       formateurPrincipalId: null,
