@@ -67,14 +67,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Devenir commercial IA indépendant · 500 € par journée vendue" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
     : "Become an independent AI sales rep · €500 per day sold"; /* price-exempt: commission commerciale de recrutement, pas un tarif client */
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/devenir-commercial-ia",
       title,
       description: isFr
         ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act oblige TPE, PME, ETI et grands groupes à former leurs équipes à l'IA." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
         : "€500 for you per AI training day sold, uncapped. The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-    }),
+    })),
     title: { absolute: title },
     keywords: buildCommercialKeywords(),
   };

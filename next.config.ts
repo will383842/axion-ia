@@ -729,14 +729,20 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      {
-        source: "/opengraph-image",
-        headers: [{ key: "Cache-Control", value: "public, max-age=86400, s-maxage=604800" }],
-      },
-      {
-        source: "/twitter-image",
-        headers: [{ key: "Cache-Control", value: "public, max-age=86400, s-maxage=604800" }],
-      },
+      // 🔴 Recensement OG 2026-08-17 — les deux entrées `/opengraph-image` et
+      // `/twitter-image` ont été RETIRÉES d'ici, et elles ne sont pas perdues :
+      //
+      //   · `/opengraph-image` pose désormais son `Cache-Control` dans sa propre
+      //     réponse (`src/app/opengraph-image.tsx`), comme `/api/og`. Ici, la
+      //     règle ne remplaçait pas le `max-age=0, must-revalidate` que la route
+      //     émet : elle s'y AJOUTAIT. Deux en-têtes contradictoires étaient
+      //     servis, et les caches retenaient le plus restrictif — donc aucun
+      //     cache du tout, l'inverse exact de l'intention.
+      //   · `/twitter-image` ne correspond à AUCUNE route : aucun fichier de ce
+      //     nom n'existe sous `src/app`. La règle décorait une URL en 404.
+      //
+      // 🔑 Une règle d'en-tête posée sur une route qui pose déjà le sien ne
+      // gagne pas : elle double. Vérifier la réponse, pas la configuration.
     ];
   },
 };

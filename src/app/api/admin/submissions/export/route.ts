@@ -26,6 +26,17 @@ export async function GET(request: NextRequest) {
       locale: (sp.get("locale") as never) ?? undefined,
       dateFrom: sp.get("dateFrom") ?? undefined,
       dateTo: sp.get("dateTo") ?? undefined,
+      // Ces quatre-là n'étaient pas transmis : l'export ignorait donc la
+      // recherche, le statut de réponse, et sortait de la corbeille des
+      // messages que l'écran masquait.
+      search: sp.get("search") ?? undefined,
+      replyStatus: (sp.get("replyStatus") as never) ?? undefined,
+      // ⚠️ `z.coerce.boolean()` rend TRUE pour la chaîne "false" (toute chaîne
+      // non vide est truthy). On ne transmet donc le champ que lorsqu'il vaut
+      // explicitement "true" — sinon `?deleted=false` viderait l'export dans la
+      // corbeille.
+      ...(sp.get("includeArchived") === "true" ? { includeArchived: true } : {}),
+      ...(sp.get("deleted") === "true" ? { deleted: true } : {}),
     });
     return new NextResponse(csv, {
       status: 200,

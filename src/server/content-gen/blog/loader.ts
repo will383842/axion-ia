@@ -55,6 +55,18 @@ export interface BlogArticleView {
    * null = pas d'image hero disponible (articles FS ou articles DB sans image).
    */
   readonly featuredImage: string | null;
+  /**
+   * Image de partage choisie à la main dans la console (champ « URL de l'image
+   * OG » de `BlogForm`). Distincte de la hero : la hero est ce qu'on VOIT dans
+   * l'article, celle-ci est ce que LinkedIn affiche. Elles coïncidaient par
+   * défaut ; elles ne sont pas la même décision éditoriale.
+   *
+   * 🔴 Recensement OG 2026-08-17 — champ écrit par la console, lu par personne.
+   */
+  readonly ogImage: string | null;
+  /** Dimensions de `ogImage` si mesurées en base ; null pour une URL saisie. */
+  readonly ogImageWidth: number | null;
+  readonly ogImageHeight: number | null;
   /** VIS-08 — Alt sémantique de l'image hero (image-bank). null si absent. */
   readonly featuredImageAlt: string | null;
   /** VIS-03 — Réponse directe (snippet 0 / featured snippet). null si absente. */
@@ -110,6 +122,10 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
     isNews: false,
     // P2-3 — Les articles FS (hardcodés) n'ont pas d'image hero.
     featuredImage: null,
+    // …ni de surcharge d'image de partage : ils ne passent pas par la console.
+    ogImage: null,
+    ogImageWidth: null,
+    ogImageHeight: null,
     featuredImageAlt: null,
     directAnswer: null,
     photographerName: null,
@@ -234,6 +250,11 @@ export async function loadBlogArticleForView(
       isNews: catTags?.isNews ?? false,
       // P2-3 — Image hero DB article (Article.featuredImage String?).
       featuredImage: dbArticle.featuredImage ?? null,
+      // Recensement OG 2026-08-17 — la surcharge d'image de partage saisie en
+      // console. Séparée de la hero à dessein (cf. le type).
+      ogImage: dbArticle.ogImage ?? null,
+      ogImageWidth: dbArticle.ogImageWidth ?? null,
+      ogImageHeight: dbArticle.ogImageHeight ?? null,
       // VIS-08 — Alt sémantique image-bank (fallback titre côté page si null).
       featuredImageAlt: dbArticle.featuredImageAlt ?? null,
       // VIS-03 — Snippet 0 généré (fallback excerpt côté page si null).
@@ -308,6 +329,11 @@ export async function loadBlogIndexForView(
     // Miniatures cartes (audit 2026-06-24) — listPublishedArticles expose désormais
     // la hero (legacy Article path) ; null pour le backend KB unifié / articles FS.
     featuredImage: a.featuredImage,
+    // Vue de LISTING : l'image de partage ne sert qu'à la page de détail, elle
+    // n'est donc pas chargée ici (une colonne de plus sur 300 lignes pour rien).
+    ogImage: null,
+    ogImageWidth: null,
+    ogImageHeight: null,
     featuredImageAlt: a.featuredImageAlt,
     directAnswer: null,
     photographerName: null,

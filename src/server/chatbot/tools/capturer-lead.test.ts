@@ -6,7 +6,7 @@
  * transactionnelle + course concurrente (conflit P2002 → 0 doublon).
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Prisma } from "../../../../prisma/generated/client";
 
 const findUnique = vi.fn();
@@ -42,7 +42,13 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmailMock(...a),
 }));
 
+const sendTelegramMock = vi.fn((..._a: unknown[]) => Promise.resolve({ ok: true }));
+vi.mock("@/lib/telegram", () => ({
+  sendTelegram: (...a: unknown[]) => sendTelegramMock(...a),
+}));
+
 import { capturerLead, CapturerLeadInputSchema } from "@/server/chatbot/tools/capturer-lead";
+import { decryptPii, isEncryptedPii } from "@/lib/pii-crypto";
 
 const ctx = { tenantId: "t1", conversationId: "conv-1" };
 const validInput = {
@@ -59,6 +65,7 @@ beforeEach(() => {
   convUpdate.mockReset();
   transaction.mockClear();
   enqueueEmailMock.mockClear();
+  sendTelegramMock.mockClear();
 });
 
 describe("T-17 capturer_lead", () => {
@@ -160,5 +167,81 @@ describe("capturer_lead — confirmation au visiteur", () => {
     await capturerLead(validInput, ctx);
 
     expect(enqueueEmailMock).not.toHaveBeenCalled();
+  }, 20_000);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PII chiffré au repos (2026-08-18, préalables CRM ligne 13)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Ce que ces tests protègent : `capturer_lead` était le SEUL point de capture
+// du site à écrire nom / e-mail / téléphone EN CLAIR dans `submissions`. Le
+// formulaire unifié chiffre depuis 2026-07-01 (`unified-contact/actions.ts`),
+// et les colonnes sont en `@db.Text` précisément pour recevoir du `enc:v1:`.
+// Le chatbot est éteint (`CHATBOT_ENABLED`) : c'est un défaut DORMANT, qui
+// attend un rallumage — donc invisible tant qu'on ne le regarde pas.
+//
+// Contrepartie testée aussi : la notification interne et l'e-mail de
+// confirmation doivent continuer de porter la valeur EN CLAIR. Un Telegram qui
+// annonce « Email : enc:v1:… » et un envoi vers cette même chaîne, c'est un
+// lead perdu — le remède serait pire que le mal.
+
+const CLE_TEST = "a".repeat(64);
+
+describe("capturer_lead — PII chiffré au repos (AES-256-GCM)", () => {
+  beforeEach(() => {
+    process.env.PII_ENCRYPTION_KEY = CLE_TEST;
+    findUnique.mockResolvedValue(null);
+    submissionCreate.mockResolvedValue({ id: "sub-pii" });
+    idemCreate.mockResolvedValue({});
+  });
+  afterEach(() => {
+    delete process.env.PII_ENCRYPTION_KEY;
+  });
+
+  it("chiffre nom / e-mail / téléphone avant l'écriture en base", async () => {
+    await capturerLead({ ...validInput, telephone: "+33611223344" }, ctx);
+
+    const data = submissionCreate.mock.calls[0]![0].data as Record<string, string>;
+    expect(isEncryptedPii(data.contactName)).toBe(true);
+    expect(isEncryptedPii(data.contactEmail)).toBe(true);
+    expect(isEncryptedPii(data.contactPhone)).toBe(true);
+    // Rien d'exploitable en clair ne doit subsister dans la ligne écrite.
+    expect(JSON.stringify(data)).not.toContain("jean@acme.fr");
+    expect(JSON.stringify(data)).not.toContain("Jean Dupont");
+    expect(JSON.stringify(data)).not.toContain("+33611223344");
+    // …et le chiffrement doit être réversible, sinon on a perdu le lead.
+    expect(decryptPii(data.contactName)).toBe("Jean Dupont");
+    expect(decryptPii(data.contactEmail)).toBe("jean@acme.fr");
+    expect(decryptPii(data.contactPhone)).toBe("+33611223344");
+  }, 20_000);
+
+  it("garde le hash de recherche calculé sur l'adresse EN CLAIR", async () => {
+    // `contactEmailHash` est l'index RGPD (art. 15 / 17). Le calculer sur le
+    // ciphertext le rendrait inutilisable : l'IV est aléatoire, donc deux
+    // captures de la même adresse donneraient deux hash différents et la
+    // personne redeviendrait introuvable.
+    const { hashEmailForLookup } = await import("@/lib/security/email-hash");
+    await capturerLead(validInput, ctx);
+    const data = submissionCreate.mock.calls[0]![0].data as Record<string, string>;
+    expect(data.contactEmailHash).toBe(hashEmailForLookup("jean@acme.fr"));
+  }, 20_000);
+
+  it("notifie l'équipe et écrit au visiteur avec la valeur EN CLAIR", async () => {
+    await capturerLead({ ...validInput, telephone: "+33611223344" }, ctx);
+
+    const corps = (sendTelegramMock.mock.calls[0]![0] as { body: string }).body;
+    expect(corps).toContain("jean@acme.fr");
+    expect(corps).toContain("Jean Dupont");
+    expect(corps).not.toContain("enc:v1:");
+
+    expect(enqueueEmailMock.mock.calls[0]![1]).toBe("jean@acme.fr");
+  }, 20_000);
+
+  it("sans clé, la ligne reste en clair (repli dev) — aucun `enc:v1:` bâtard", async () => {
+    delete process.env.PII_ENCRYPTION_KEY;
+    await capturerLead(validInput, ctx);
+    const data = submissionCreate.mock.calls[0]![0].data as Record<string, string>;
+    expect(data.contactEmail).toBe("jean@acme.fr");
   }, 20_000);
 });

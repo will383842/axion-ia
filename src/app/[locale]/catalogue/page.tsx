@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Feuilletez le catalogue complet des offres Axion-IA : formations IA, coaching individuel, audits et implémentations. Une double page par offre — le programme réel, les acquis, la durée et le prix. À consulter en ligne ou à télécharger en PDF."
     : "Browse the complete Axion-IA catalogue: AI training, one-to-one coaching, audits and implementations. One double page per offering — the real programme, the learning outcomes, the duration and the price. Read online or download as PDF.";
   return {
-    ...buildProductMetadata({ locale, path: PATH, title, description }),
+    ...(await buildProductMetadata({ locale, path: PATH, title, description })),
     title: { absolute: `${title} · Axion-IA` },
   };
 }

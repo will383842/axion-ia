@@ -15,6 +15,10 @@
 // Ni l'import ni le runtime n'étaient en cause ; on garde `@vercel/og` (= api/og).
 import { ImageResponse } from "@vercel/og";
 
+// Module TIER-0 sans aucun import : seul import tolérable dans ce fichier edge
+// (cf. la cause racine du 502 documentée juste en dessous).
+import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
+
 // Audit GSC 5xx 2026-05-18 — fix `/opengraph-image` retournant 502 Bad Gateway.
 //
 // Cause racine : import `@/lib/brand` → import `@/env` (Zod schema validation
@@ -34,9 +38,13 @@ export const alt = "Axion-IA — Cabinet IA opérationnel B2B";
 // (OG image < 1200×675 = pas éligible Discover surface Android/iOS Chrome).
 // 1200×630 = standard OG Facebook/Twitter, mais 45px court Discover floor.
 // 1200×675 = compatible Discover ET OG/Twitter (les viewports ignorent ratio).
+//
+// Recensement OG 2026-08-17 : cette taille était juste ICI et fausse dans la
+// déclaration `og:image:height` de `seo.ts`, qui annonçait 630 aux réseaux
+// sociaux. Les deux lisent maintenant la même constante.
 export const size = {
-  width: 1200,
-  height: 675,
+  width: OG_IMAGE_LARGEUR,
+  height: OG_IMAGE_HAUTEUR,
 };
 
 export const contentType = "image/png";
@@ -137,6 +145,26 @@ export default function OpengraphImage() {
     </div>,
     {
       ...size,
+      // 🔴 Recensement OG 2026-08-17 — cette route renvoyait DEUX `Cache-Control`.
+      //
+      //   Cache-Control: public, max-age=86400, s-maxage=604800   ← next.config.ts
+      //   Cache-Control: public, max-age=0, must-revalidate       ← défaut Next
+      //
+      // Mesuré en production. `headers()` de `next.config.ts` AJOUTE un en-tête,
+      // il ne remplace pas celui que la route émet — et quand deux directives
+      // s'opposent, les caches retiennent la plus restrictive. Le réglage
+      // soigneusement choisi dans la configuration ne servait donc à rien :
+      // l'image était re-téléchargée à chaque aperçu.
+      //
+      // 🔑 Poser un en-tête dans la configuration ne prouve pas qu'il est SERVI.
+      // Le seul témoin est la réponse réelle.
+      //
+      // On le pose donc là où `/api/og` le pose déjà — dans la réponse
+      // elle-même, qui gagne — et l'entrée correspondante a été retirée de
+      // `next.config.ts`. Le rendu est une fonction pure : rien à revalider.
+      headers: {
+        "Cache-Control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400",
+      },
     },
   );
 }

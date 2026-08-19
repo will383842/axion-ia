@@ -109,7 +109,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Le catalogue complet des formations IA en entreprise Axion-IA : ${total} formations opérationnelles — offres générales, par métier, par secteur d'activité — partout en France.${finBit} Prix publics par groupe (2 à 15 pers.).`
     : `The full catalogue of Axion-IA corporate AI trainings: ${total} operational trainings — general, role-specific, industry-specific — across France.${finBit} Public prices per group (2-15 people).`;
   return {
-    ...buildProductMetadata({ locale, path: PATH, title, description }),
+    ...(await buildProductMetadata({ locale, path: PATH, title, description })),
     title: { absolute: title },
   };
 }

@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Audit IA en entreprise · plan d'action chiffré · Axion-IA"
       : "Enterprise AI audit · costed action plan · Axion-IA";
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/audit",
       title: titleStr,
@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         loc === "fr"
           ? "Audit IA : cartographie complète de votre entreprise, identification des priorités et rapport chiffré sous 7 jours. Premiers gains visibles en quelques jours. Partout en France."
           : "Enterprise AI audit across France: we map where AI saves you time and money, and you leave with a costed, prioritised action plan.",
-    }),
+    })),
     title: { absolute: titleStr },
   };
 }

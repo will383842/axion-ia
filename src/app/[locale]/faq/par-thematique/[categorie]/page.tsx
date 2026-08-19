@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = getFaqCategory(categorie);
   if (!cat) return {};
   const isFr = locale === "fr";
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/faq/par-thematique/${categorie}`,
     title: isFr

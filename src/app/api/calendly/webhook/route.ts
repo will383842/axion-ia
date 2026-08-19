@@ -128,7 +128,17 @@ export async function POST(req: NextRequest): Promise<Response> {
       // nouvelle ligne, et le `refresh` qui suit constate l'annulation de
       // l'ancienne — le couple d'alertes est donc correct sans cas particulier ici.
       await discoverNewCalendlyEvents();
-    } else if (eventType === "invitee.canceled") {
+    } else if (eventType === "invitee.canceled" || eventType === "invitee_no_show.created") {
+      // `invitee_no_show.created` = l'hôte a coché « Mark as no-show ». Même
+      // traitement qu'une annulation : le refresh re-interroge l'invitee, y lit
+      // `no_show`, pose le statut et émet l'évènement CRM. Sans cette ligne, la
+      // déclaration n'arrivait qu'au prochain sondage — ou jamais, si elle
+      // tombait hors de la fenêtre de rattrapage.
+      //
+      // `invitee_no_show.deleted` (l'hôte se ravise) n'est VOLONTAIREMENT pas
+      // traité : `enrich.ts` refuse de rétrograder un statut terminal, donc le
+      // rejouer ne produirait rien. Rétablir un rendez-vous déclaré absent reste
+      // un geste de console.
       await refreshUpcomingCalendlyEvents();
     } else {
       // Type inconnu (Calendly en ajoute au fil du temps) : 200 pour ne pas

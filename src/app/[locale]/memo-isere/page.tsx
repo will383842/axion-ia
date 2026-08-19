@@ -235,14 +235,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "500 € par journée vendue · commercial IA indépendant Grenoble-Lyon" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
     : "€500 per day sold · independent AI sales rep, Grenoble-Lyon"; /* price-exempt: commission commerciale de recrutement, pas un tarif client */
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/memo-isere",
       title,
       description: isFr
         ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act l'impose aux TPE, PME, ETI et grands groupes : 474 communes au choix." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
         : "€500 for you per AI training day sold, uncapped. The AI Act mandates it for small businesses, SMEs, mid-caps and large groups: 474 towns to pick from." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-    }),
+    })),
     title: { absolute: title },
   };
 }

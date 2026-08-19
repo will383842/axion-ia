@@ -87,14 +87,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `IA pour ${sector.labelFr} · cas d'usage & ROI · Axion-IA`
     : `AI for ${sector.labelFr} · use cases & ROI · Axion-IA`;
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: `/secteurs/${sector.slug}`,
       title,
       description: isFr
         ? `Intelligence artificielle pour ${sector.fullFr} : audit, formation, implémentation, accompagnement 1-to-1 et sites web augmentés. Cas d'usage concrets, bénéfices chiffrés et feuille de route adaptée au secteur.`
         : `Artificial intelligence for ${sector.fullFr}: audit, training, implementation, 1-to-1 support and AI-augmented websites. Concrete use cases, quantified benefits and a sector roadmap.`,
-    }),
+    })),
     title: { absolute: title },
   };
 }

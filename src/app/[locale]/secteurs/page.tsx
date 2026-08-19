@@ -45,14 +45,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "L'IA par secteur d'activité · cas d'usage métier · Axion-IA"
     : "AI by business sector · industry use cases · Axion-IA";
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/secteurs",
       title,
       description: isFr
         ? "L'intelligence artificielle appliquée à votre secteur : comptabilité, BTP, santé, juridique, commerce, industrie, RH, collectivités… Cas d'usage concrets, bénéfices chiffrés et feuille de route par métier."
         : "AI applied to your sector: accounting, construction, healthcare, legal, retail, industry, HR, public sector… Concrete use cases, quantified benefits and a roadmap per industry.",
-    }),
+    })),
     title: { absolute: title },
   };
 }

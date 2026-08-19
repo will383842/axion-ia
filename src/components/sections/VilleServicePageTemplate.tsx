@@ -233,7 +233,7 @@ export async function buildPageMetadata(
       ? `Axion-IA délivre ${meta.nameFr.toLowerCase()} à ${ville.nameFr} sur site. Tarifs publics affichés, calendrier en temps réel, vous gardez la main sur vos données.`
       : `Axion-IA delivers ${meta.nameEn.toLowerCase()} in ${ville.nameFr} on site. Public pricing displayed, real-time calendar, you keep control of your data.`;
 
-  const result = buildProductMetadata({
+  const result = await buildProductMetadata({
     locale,
     path: `${meta.pathFr}/${ville.slug}`,
     title,

@@ -51,7 +51,7 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale: locale as Locale,
     path: "/carrieres",
     title: isFr ? "Carrières · rejoindre Axion-IA.com" : "Careers · join Axion-IA.com",

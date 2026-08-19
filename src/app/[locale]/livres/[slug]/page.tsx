@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const livre = livreParSlug(slug);
   if (livre === undefined) return {};
 
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale,
     path: `/livres/${livre.slug}`,
     title: `${livre.title} — ${livre.subtitle} · ${livre.author.name}`,

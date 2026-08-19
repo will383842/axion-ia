@@ -93,7 +93,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Axion-IA est un organisme de formation certifié Qualiopi au titre des actions de formation. Découvrez ce que la certification garantit : qualité, sérieux, conformité au Référentiel National Qualité et formations IA finançables (OPCO, France Travail selon votre situation)."
     : "Axion-IA is a Qualiopi-certified training provider for training actions. Discover what the certification guarantees: quality, seriousness, compliance with the National Quality Framework and AI trainings that can be funded (OPCO, France Travail depending on your situation).";
   return {
-    ...buildProductMetadata({ locale, path: PATH, title, description }),
+    ...(await buildProductMetadata({ locale, path: PATH, title, description })),
     title: { absolute: title },
   };
 }

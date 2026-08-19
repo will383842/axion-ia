@@ -190,6 +190,14 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/queue\/workers\/__tests__\/.*\.(spec|test)\.ts$/,
   // seed-cities.ts — mentionne "content-gen" dans un commentaire de contexte seulement.
   /^prisma\/seeds\/cities\/seed-cities\.ts$/,
+  // scripts/og/rapatrier-heros-blog.ts (recensement OG 2026-08-17) — rapatrie
+  // les `og:image` Unsplash des articles vers notre domaine. Le marqueur
+  // "content-gen" vient de DEUX références au CHEMIN d'une documentation
+  // (`docs/content-gen/UNSPLASH-COMPLIANCE.md`) : une en commentaire, une dans
+  // un `console.log` qui rappelle l'obligation CGU §6 à l'opérateur. Aucun
+  // import, aucun couplage d'exécution avec le pipeline de génération. Même cas
+  // que seed-cities.ts — mention de contexte, pas du code content-gen.
+  /^scripts\/og\/rapatrier-heros-blog\.ts$/,
   // AdminSidebarNav — navigation admin légitime vers /content-gen routes.
   /^src\/components\/admin\/ui\/AdminSidebarNav\.tsx$/,
   // Workers transverses qui lisent ContentGenConfig de façon légitime (lecture seule).

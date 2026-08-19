@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale) || locale !== "fr") return {};
 
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale,
     path: "/livres",
     title: TITRE,

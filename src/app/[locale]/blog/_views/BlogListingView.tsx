@@ -42,14 +42,18 @@ export function blogPagePath(page: number): string {
   return page > 1 ? `/blog/page/${page}` : "/blog";
 }
 
-export function buildBlogListingMetadata(locale: string, page: number): Metadata {
+// Asynchrone depuis le recensement OG 2026-08-17 : `buildProductMetadata`
+// consulte les surcharges d'aperçu. Les deux appelants (`/blog` et
+// `/blog/page/[num]`) sont déjà des `generateMetadata` async — ils gagnent un
+// `await`, rien de plus.
+export async function buildBlogListingMetadata(locale: string, page: number): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const titleBase =
     locale === "fr"
       ? "Blog · méthodologie & cas d'usage IA · Axion-IA"
       : "Blog · methodology & AI use cases · Axion-IA";
   const title = page > 1 ? `${titleBase} · page ${page}` : titleBase;
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: blogPagePath(page),
     title,

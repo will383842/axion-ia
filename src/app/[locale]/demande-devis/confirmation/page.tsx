@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale,
     path: isFr ? "/demande-devis/confirmation" : "/request-quote/confirmation",
     title: isFr ? "Demande envoyée · Axion-IA" : "Request sent · Axion-IA",
