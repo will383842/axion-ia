@@ -114,11 +114,23 @@ export async function SubmissionsV2({
   // L'export doit porter le MÊME périmètre que l'écran : filtres de l'URL +
   // types forcés de la vue (Clients / Presse / …). Sans `unifiedTypeIn`, le CSV
   // d'un onglet filtré ramènerait toutes les soumissions du site.
+  //
+  // 🔴 Le commentaire ci-dessus était vrai pour quatre paramètres sur neuf. Les
+  // dates, la recherche, le statut de réponse, les archives et la corbeille
+  // n'étaient PAS transmis : depuis l'onglet Corbeille, « Exporter CSV »
+  // téléchargeait la boîte de réception. La liste ci-dessous est désormais
+  // celle que `listSubmissionsAction` reçoit juste au-dessus.
   const csvParams = new URLSearchParams({
     ...(searchParams["type"] ? { type: searchParams["type"] } : {}),
     ...(searchParams["unifiedType"] ? { unifiedType: searchParams["unifiedType"] } : {}),
     ...(searchParams["status"] ? { status: searchParams["status"] } : {}),
     ...(searchParams["locale"] ? { locale: searchParams["locale"] } : {}),
+    ...(searchParams["search"] ? { search: searchParams["search"] } : {}),
+    ...(searchParams["replyStatus"] ? { replyStatus: searchParams["replyStatus"] } : {}),
+    ...(searchParams["dateFrom"] ? { dateFrom: searchParams["dateFrom"] } : {}),
+    ...(searchParams["dateTo"] ? { dateTo: searchParams["dateTo"] } : {}),
+    ...(includeArchived ? { includeArchived: "true" } : {}),
+    ...(deleted ? { deleted: "true" } : {}),
   });
   for (const t of forcedTypes ?? []) csvParams.append("unifiedTypeIn", t);
   const csvUrl = `/api/admin/submissions/export?${csvParams.toString()}`;

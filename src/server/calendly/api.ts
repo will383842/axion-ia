@@ -53,6 +53,19 @@ export interface CalendlyInviteeData {
   location: string | null;
   /** `active` | `canceled` côté Calendly → mappé par l'appelant. */
   calendlyStatus: string | null;
+  /**
+   * L'hôte a marqué l'invité ABSENT dans Calendly (« Mark as no-show »).
+   *
+   * 🔴 Ce champ existait dans la réponse et n'était pas lu. On en a longtemps
+   * conclu, à tort, que « l'API ne connaît que active/canceled, elle ne sait pas
+   * ce qui s'est passé pendant l'appel » : c'est vrai pour « honoré », c'est
+   * FAUX pour « absent ». L'invitee porte `no_show`, valant `null` quand rien
+   * n'est déclaré et un objet `{ uri, created_at }` quand l'absence l'a été.
+   *
+   * Conséquence : un no-show déclaré dans l'agenda peut remonter tout seul, sans
+   * ressaisie en console. Voir `enrich.ts`.
+   */
+  noShow: boolean;
   cancelUrl: string | null;
   rescheduleUrl: string | null;
   /** Nom humain de l'event-type (ex « Premier contact — 30 min »). */
@@ -270,6 +283,11 @@ export async function fetchCalendlyInvitee(
       timezone: stringOrNull(invitee["timezone"], 80),
       location,
       calendlyStatus: stringOrNull(invitee["status"] ?? event["status"], 40),
+      // `no_show` est `null` tant que personne n'a rien déclaré ; c'est un objet
+      // `{ uri, created_at }` une fois l'absence marquée. On ne garde que le
+      // booléen : l'URI ne sert qu'à ANNULER la déclaration côté Calendly, ce
+      // que le site ne fait pas.
+      noShow: Boolean(invitee["no_show"]),
       cancelUrl: stringOrNull(invitee["cancel_url"], 500),
       rescheduleUrl: stringOrNull(invitee["reschedule_url"], 500),
       eventTypeName: stringOrNull(event["name"], 255),
