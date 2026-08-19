@@ -117,6 +117,7 @@ const BPF_FIXTURE = {
   nbSessions: 5,
   nbStagiairesDistincts: 30,
   nbHeuresStagiaires: 300,
+  sessionsNonChiffrables: [],
   caTotalHtCents: 1500000,
   caParFinanceur: { opco: 500000, cpf: 300000, france_travail: 200000, direct: 500000, mixte: 0 },
   nbFormateursInternes: 2,

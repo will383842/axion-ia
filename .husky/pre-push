@@ -1,8 +1,42 @@
 #!/bin/sh
-pnpm typecheck
+# 🔴 2026-08-19 — `pnpm typecheck` et `pnpm test` RETIRÉS de ce hook (décision Will,
+# audit Qualiopi E2E constat `P3-02`). Mesuré : le hook coûtait **41 minutes** par
+# push (817 fichiers, 23 428 tests) — et il prouvait MOINS que la CI.
+#
+# Pourquoi c'est sûr :
+#   · `main` est protégée par 4 gates obligatoires. Gate A rejoue `typecheck` ET
+#     la suite complète **sur le commit de fusion** — l'état qui ira réellement en
+#     production. Ce hook, lui, testait un état pré-fusion qui n'y va jamais.
+#   · `typecheck` reste dans `pre-commit` : un seul passage local suffit, et une
+#     erreur de type est précisément ce qui se découvre le mieux tôt.
+#
+# Pourquoi c'était NUISIBLE, et pas seulement lent : le 2026-08-19, deux pushes
+# consécutifs sur le même arbre ont rendu 2 échecs puis 0, sur un fichier que la
+# branche ne touchait pas (`calendly/client-event`, vert en isolation, limiteur de
+# débit entièrement mocké donc sans dépendance Redis). **La suite n'est pas
+# reproductible.** Un développeur qui paie 41 minutes pour un verdict qui peut être
+# faux apprend `--no-verify` — et désarme d'un coup les sept contrôles statiques que
+# `pre-commit` rejoue. Une garde qu'on contourne ne garde plus rien.
+#
+# Ce qui remplace : les tests LIÉS aux fichiers modifiés. Quelques secondes, et ça
+# attrape la régression locale évidente. Le filet exhaustif reste en CI, bloquant.
 pnpm i18n:check
 pnpm zod:check
-pnpm test
+
+# ⚠️ `origin/main` peut manquer sur un clone frais ou un dépôt hors ligne : on ne
+# bloque pas le push pour ça, on le DIT. Un hook qui échoue faute de référence
+# apprendrait `--no-verify` aussi sûrement qu'un hook trop lent.
+if git rev-parse --verify --quiet origin/main >/dev/null; then
+  FICHIERS_MODIFIES=$(git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.ts' '*.tsx' | tr '\n' ' ')
+  if [ -n "${FICHIERS_MODIFIES}" ]; then
+    echo "→ tests liés aux fichiers modifiés (le filet complet est en CI, Gate A)"
+    pnpm exec vitest related --run ${FICHIERS_MODIFIES} || exit 1
+  else
+    echo "→ aucun .ts/.tsx modifié depuis origin/main : pas de test à jouer"
+  fi
+else
+  echo "⚠️ origin/main introuvable — tests liés non joués. Gate A reste bloquante en CI."
+fi
 
 # Audit A1 P2-6 (2026-05-15) — pnpm audit avant push : attrape les
 # new high/critical CVE introduites localement avant que la nightly

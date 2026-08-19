@@ -1576,6 +1576,40 @@ describe("evaluerAlertes — signatures_en_attente", () => {
     setupEmptyMocks();
   });
 
+  it("🔴 la requête ÉCARTE les pièces annulées — elles ne se signent plus", async () => {
+    // Constat `D3-4-06` (audit E2E 2026-08-19). La requête de cette règle
+    // filtrait `statutSignature` SANS `annuleeAt: null`, alors que le SSOT
+    // `pieces-en-attente.ts:47` le porte — avec, en commentaire, la description
+    // exacte du défaut : « annuler une pièce erronée la laissait […] à réclamer
+    // indéfiniment la signature d'un document qu'on vient précisément de
+    // déclarer sans valeur ».
+    //
+    // Le correctif avait été appliqué à la liste « À traiter » de la console et
+    // JAMAIS au moteur d'alertes. Conséquence : chaque nuit, une pièce annulée
+    // ressortait en CRITIQUE (« Pièce sans aucune signature — la session a DÉJÀ
+    // commencé ») et déclenchait un e-mail. Tous les jours, sur une pièce sans
+    // valeur — jusqu'à ce que l'administrateur apprenne à ignorer les alertes
+    // critiques de signature, c'est-à-dire le pire résultat possible.
+    //
+    // ⚠️ On assertionne la REQUÊTE, pas le résultat : le mock rend ce qu'on lui
+    // dit, donc filtrer en mémoire passerait un test sur les alertes rendues.
+    // C'est le `where` envoyé à la base qui décide, et lui seul.
+    await evaluerAlertes();
+    const appels = mp.documentGenere.findMany.mock.calls as Array<
+      [{ where?: { statutSignature?: unknown; annuleeAt?: unknown } }]
+    >;
+    const requetesSignature = appels
+      .map((c) => c[0]?.where)
+      .filter((w) => w?.statutSignature !== undefined);
+
+    // Témoin de non-vacuité : si la règle cessait d'interroger `documentGenere`
+    // sur `statutSignature`, ce test passerait en ne vérifiant plus rien.
+    expect(requetesSignature.length).toBeGreaterThan(0);
+    for (const where of requetesSignature) {
+      expect(where?.annuleeAt).toBeNull();
+    }
+  });
+
   it("🔴 pièce signée d'UN SEUL côté depuis +7 jours → contreseing dû", async () => {
     // Le cas INVEST SUN : le client signe, puis la pièce attend le contreseing
     // de l'organisme — invisible sans ouvrir la fiche session.
@@ -1631,7 +1665,15 @@ describe("evaluerAlertes — signatures_en_attente", () => {
         }>;
       };
     };
-    expect(arg.where.statutSignature.in).toStrictEqual(["en_attente", "partielle"]);
+    // ⚠️ Comparaison TRIÉE depuis le 2026-08-19. Le prédicat vient désormais du
+    // SSOT `enAttente()` (constat `D3-4-06`), qui déclare `["partielle",
+    // "en_attente"]` — l'ordre inverse. Or l'ordre d'un `IN` SQL n'a aucune
+    // signification : verrouiller l'ordre ferait rougir la garde sur un
+    // changement qui ne change rien, et pousserait à recopier le filtre plutôt
+    // qu'à l'importer. C'est exactement la recopie qui a produit le défaut.
+    expect([...arg.where.statutSignature.in].sort()).toStrictEqual(
+      ["en_attente", "partielle"].sort(),
+    );
     expect(arg.where.OR).toHaveLength(2);
 
     const parAttente = arg.where.OR.find((c) => c.updatedAt !== undefined);

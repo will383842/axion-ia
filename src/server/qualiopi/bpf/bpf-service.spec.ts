@@ -143,15 +143,75 @@ describe("computeBpf", () => {
     expect(result.nbHeuresStagiaires).toBe(140);
   });
 
-  it("ignore les sessions sans dureeReelleHeures ou nbParticipantsReels", async () => {
+  /**
+   * 🔴 2026-08-19 — CE TEST A ÉTÉ RÉÉCRIT, et c'est le point.
+   *
+   * Il affirmait auparavant : « ignore les sessions sans dureeReelleHeures ou
+   * nbParticipantsReels », et attendait `35` sur un jeu où une session portait
+   * `nbParticipantsReels: null`. Il **consacrait le défaut** :
+   * `nbParticipantsReels` n'a AUCUN écrivain dans tout le code applicatif — 17
+   * occurrences, que des lectures, de l'affichage et des fixtures. La colonne est
+   * donc TOUJOURS `null` en production, et `nbHeuresStagiaires` valait toujours 0.
+   *
+   * Le BPF déposé à la DREETS annonçait un chiffre d'affaires complet en face de
+   * « 0 heure stagiaire » — la ligne même sur laquelle l'administration recoupe
+   * l'activité déclarée, et le NDA 84381100438 est en jeu.
+   *
+   * ⚠️ La fabrique `makeSession` posait `nbParticipantsReels: 10` par défaut :
+   * toute cette suite testait un état que la production n'atteint jamais.
+   *
+   * Le repli sur l'effectif inscrit était déjà la doctrine du dépôt ailleurs —
+   * `facturation-service.ts` et `financements.ts` écrivent tous deux
+   * `nbParticipantsReels ?? nbParticipantsPrevus`. Les auteurs SAVAIENT que la
+   * valeur manque ; le BPF était le seul à l'ignorer.
+   */
+  it("compte les heures stagiaires même quand `nbParticipantsReels` est null (l'état RÉEL de la prod)", async () => {
     mockPrisma.trainingSession.findMany.mockResolvedValue([
-      makeSession({ id: "s1", dureeReelleHeures: null, nbParticipantsReels: 10 }),
-      makeSession({ id: "s2", dureeReelleHeures: 7, nbParticipantsReels: null }),
-      makeSession({ id: "s3", dureeReelleHeures: 7, nbParticipantsReels: 5 }), // 35
+      makeSession({
+        id: "s1",
+        dureeReelleHeures: 7,
+        nbParticipantsReels: null,
+        enrollments: [{ traineeId: "t1" }, { traineeId: "t2" }, { traineeId: "t3" }],
+      }),
     ]);
 
     const result = await computeBpf(2026);
-    expect(result.nbHeuresStagiaires).toBe(35);
+    expect(result.nbHeuresStagiaires).toBe(21); // 7 h × 3 inscrits
+  });
+
+  it("préfère `nbParticipantsReels` quand il EST renseigné", async () => {
+    // Le repli ne doit pas écraser une constatation humaine explicite : si
+    // quelqu'un a saisi l'effectif réel, il fait foi contre le nombre d'inscrits.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({
+        id: "s1",
+        dureeReelleHeures: 7,
+        nbParticipantsReels: 2,
+        enrollments: [{ traineeId: "t1" }, { traineeId: "t2" }, { traineeId: "t3" }],
+      }),
+    ]);
+
+    const result = await computeBpf(2026);
+    expect(result.nbHeuresStagiaires).toBe(14); // 7 h × 2 constatés, pas 3 inscrits
+  });
+
+  it("ne fabrique rien quand la durée manque — et NOMME la session non chiffrable", async () => {
+    // 🔴 Le silence est le défaut d'origine. Une session qu'on ne sait pas
+    // chiffrer ne doit pas être absorbée dans un 0 : elle doit être NOMMÉE, sinon
+    // le BPF affirme une exhaustivité qu'il n'a pas.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ id: "s1", dureeReelleHeures: null, nbParticipantsReels: 10 }),
+      makeSession({
+        id: "s2",
+        dureeReelleHeures: 7,
+        nbParticipantsReels: null,
+        enrollments: [{ traineeId: "t1" }, { traineeId: "t2" }],
+      }),
+    ]);
+
+    const result = await computeBpf(2026);
+    expect(result.nbHeuresStagiaires).toBe(14); // seule s2 est chiffrable
+    expect(result.sessionsNonChiffrables).toStrictEqual(["s1"]);
   });
 
   it("calcule le CA total HT", async () => {
@@ -313,6 +373,7 @@ describe("bpfToCsv", () => {
     nbSessions: 15,
     nbStagiairesDistincts: 87,
     nbHeuresStagiaires: 609,
+    sessionsNonChiffrables: [],
     caTotalHtCents: 4500000,
     caParFinanceur: {
       opco: 1500000,
@@ -358,6 +419,22 @@ describe("bpfToCsv", () => {
     expect(csv).toContain("15"); // nbSessions
     expect(csv).toContain("87"); // nbStagiairesDistincts
     expect(csv).toContain("609"); // nbHeuresStagiaires
+  });
+
+  it("NOMME les sessions non chiffrables dans le CSV déposé", () => {
+    // 🔴 C'est la surface que lit celui qui dépose le bilan. Compter une session
+    // pour zéro sans le dire ferait affirmer au BPF une exhaustivité qu'il n'a
+    // pas — et l'écart ne se découvrirait qu'au contrôle.
+    const csv = bpfToCsv({ ...bpfFixture, sessionsNonChiffrables: ["s1", "s2"] });
+    expect(csv).toContain("non chiffrables");
+    expect(csv).toContain("2");
+  });
+
+  it("n'affiche PAS la ligne d'avertissement quand tout est chiffrable", () => {
+    // Une ligne « 0 session non chiffrable » sur tous les bilans deviendrait du
+    // décor, et cesserait d'être lue le jour où elle compte.
+    const csv = bpfToCsv({ ...bpfFixture, sessionsNonChiffrables: [] });
+    expect(csv).not.toContain("non chiffrables");
   });
 
   it("convertit les centimes en euros (2 décimales)", () => {

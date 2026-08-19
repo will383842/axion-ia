@@ -96,6 +96,51 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "qualite",
   },
 
+  // ── Vigilance URSSAF des sous-traitants (audit E2E 2026-08-19, `D5-4-01`) ──
+  //
+  // 🔴 Ces trois codes étaient ÉMIS par le balayage et ABSENTS de ce catalogue.
+  // Conséquence en chaîne, mesurée : `guichetPourCode` rendait `undefined`,
+  // `regrouperAlertes` les rangeait dans `sansGuichet`, et `envoi-groupe.ts`
+  // écrivait un `console.error` sans rien envoyer — elles n'arrivaient donc dans
+  // AUCUNE boîte. Et `codesAutoResolution` étant dérivé de ce catalogue, elles ne
+  // se refermaient JAMAIS, même après régularisation.
+  //
+  // Enjeu : art. L.8222-1 du code du travail — l'organisme est solidairement
+  // responsable des cotisations de son sous-traitant s'il ne s'est pas assuré de
+  // sa vigilance. D'où le guichet `direction` : c'est un risque financier qui
+  // engage l'entreprise, pas un sujet de conformité pédagogique.
+  //
+  // `resolutionAuto: true` pour les trois : le balayage quotidien les réémet tant
+  // que la cause dure, donc leur fermeture automatique est exacte — et c'est ce
+  // qui manquait le plus, puisqu'une alerte qui ne se referme pas finit acquittée
+  // à la main pour faire taire l'écran, y compris le jour où le manquement est réel.
+  vigilance_urssaf_absente: {
+    niveau: "critique",
+    titre: "Attestation de vigilance URSSAF absente (responsabilité solidaire)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  vigilance_urssaf_perimee: {
+    niveau: "critique",
+    titre: "Attestation de vigilance URSSAF périmée (responsabilité solidaire)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  vigilance_urssaf_expire_j30: {
+    niveau: "important",
+    titre: "Attestation de vigilance URSSAF expire dans 30 jours",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  // Même défaut, même correctif (`D5-4-01`). Guichet `formateur` : ce sont les
+  // sorties de démonstration du kit d'animation, préparées par celui qui anime.
+  kit_sorties_non_pretes: {
+    niveau: "important",
+    titre: "Sorties de démonstration non produites",
+    resolutionAuto: true,
+    guichet: "formateur",
+  },
+
   // ── Pilotage qualité ────────────────────────────────────────────────────────
   responsable_qualite_absent: {
     niveau: "important",

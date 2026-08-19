@@ -128,6 +128,36 @@ export const ROLES_PAR_GUICHET: Readonly<Record<GuichetAlerte, ReadonlyArray<Rol
   formateur: [],
 };
 
+/**
+ * Qui a le droit d'OUVRIR l'écran des alertes — dérivé de `ROLES_PAR_GUICHET`.
+ *
+ * 🔴 Constat `D5-4-02` (audit E2E 2026-08-19). `ROLES_PAR_GUICHET` route les
+ * alertes vers `responsable_qualite` (guichet qualité) et `secretaire` (guichet
+ * administratif) — ils les reçoivent donc par e-mail. Mais
+ * `qualiopi/a-traiter/page.tsx` et `api/qualiopi/alertes/stream` testaient
+ * `role !== "admin" && role !== "super_admin"` : **les deux rôles destinataires
+ * étaient redirigés vers l'écran de connexion en cliquant sur le lien du
+ * message qu'ils venaient de recevoir.**
+ *
+ * Le Lot 10 a créé les rôles, le Lot 14 leur a routé les alertes, et les deux
+ * surfaces de lecture sont restées sur la garde d'avant.
+ *
+ * ⚠️ DÉRIVÉ, jamais recopié. Une liste en dur ici divergerait de
+ * `ROLES_PAR_GUICHET` au premier guichet ajouté — et le nouveau destinataire
+ * serait, lui aussi, renvoyé à la connexion. C'est exactement le mécanisme qui a
+ * produit ce défaut.
+ *
+ * ⚠️ L'écran « À traiter » AFFICHE et REDIRIGE : il ne pose aucun acte engageant.
+ * Le droit d'y entrer n'est donc pas le droit d'agir — chaque action reste
+ * gardée par sa propre habilitation.
+ */
+export function peutLireLesAlertes(role: string | null | undefined): boolean {
+  if (role == null) return false;
+  return Object.values(ROLES_PAR_GUICHET).some((roles) =>
+    (roles as ReadonlyArray<string>).includes(role),
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Le routage d'un code
 // ─────────────────────────────────────────────────────────────────────────────

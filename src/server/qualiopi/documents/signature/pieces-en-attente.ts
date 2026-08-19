@@ -36,7 +36,20 @@ import type { DocumentType, DocumentStatutSignature } from "../../../../../prism
  * Une FONCTION et pas une constante : Prisma attend un tableau mutable pour
  * `in`, et un objet figé (`as const`) est refusé à la compilation.
  */
-function enAttente(): {
+/**
+ * ⚠️ EXPORTÉE le 2026-08-19 (audit E2E, constat `D3-4-06`).
+ *
+ * Elle était privée, et c'est ce qui a permis la divergence : le moteur
+ * d'alertes (`alertes/evaluateur.ts`, `regleSignatureEnAttente`) avait recopié
+ * le filtre `statutSignature` **sans** `annuleeAt: null`. Résultat, chaque nuit,
+ * une pièce annulée ressortait en alerte CRITIQUE et déclenchait un e-mail —
+ * sur un document que l'organisme venait de déclarer sans valeur.
+ *
+ * 🔑 Le correctif n'est pas de recopier le filtre au bon endroit : c'est de
+ * n'avoir qu'UN endroit. Tout nouveau consommateur doit appeler cette fonction,
+ * jamais réécrire son prédicat.
+ */
+export function enAttente(): {
   statutSignature: { in: DocumentStatutSignature[] };
   annuleeAt: null;
 } {
