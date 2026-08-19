@@ -41,6 +41,12 @@ import {
   buildFormationSnapshot,
 } from "@/server/qualiopi/formations/formation-snapshot";
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
+import type { LieuTypeValue } from "@/server/qualiopi/lieu/format-lieu";
+import { isTrainerHabilite, HABILITATION_ACTIVE_WHERE } from "@/server/qualiopi/trainers/trainers";
+import {
+  parseCoFormateurs,
+  type SessionFormateurRoleValue,
+} from "@/server/qualiopi/trainers/session-formateurs";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -318,6 +324,10 @@ export async function createRecurringSessionsAction(
  *     Gestion @@unique [sessionId, traineeId] : si un enrollment cible existe
  *     déjà (stagiaire déjà inscrit), l'enrollment source est supprimé (le
  *     stagiaire reste inscrit via l'enrollment cible existant).
+ *   - Le LIEU de déroulement (7 colonnes `lieu*`) et les AFFECTATIONS
+ *     formateur suivent la prestation. Le formateur principal repasse par la
+ *     garde `isTrainerHabilite` : il n'est reconduit que s'il est ENCORE
+ *     habilité (cf. le bloc dédié plus bas).
  *   - Tout est dans une seule transaction.
  *
  * @param input Paramètres du report.
@@ -348,6 +358,22 @@ export async function reportSessionAction(
     clientId: string | null;
     financementType: string | null;
     sessionParentId: string | null;
+    // 🔴 Lieu de déroulement (off.9 + L.6353-1) — cf. bloc du `select`.
+    lieuType: LieuTypeValue | null;
+    lieuIntitule: string | null;
+    lieuAdresse: string | null;
+    lieuCodePostal: string | null;
+    lieuVille: string | null;
+    lieuSalle: string | null;
+    lieuVisioUrl: string | null;
+    // 🔴 Formateur — cf. bloc du `select`.
+    formateurPrincipalId: string | null;
+    coFormateurs: unknown;
+    sessionFormateurs: Array<{
+      trainerId: string;
+      role: SessionFormateurRoleValue;
+      tarifHtCents: number | null;
+    }>;
     formation: { dureeHeures: number };
     enrollments: Array<{ id: string; traineeId: string; statut: string }>;
   } | null;
@@ -371,6 +397,38 @@ export async function reportSessionAction(
         clientId: true,
         financementType: true,
         sessionParentId: true,
+        // 🔴 Vérification du plan 2026-08-19 — LE REPORT PERDAIT LE LIEU.
+        //
+        // Les 7 colonnes `lieu*` n'étaient ni lues ici, ni écrites au `create`,
+        // et `reportSessionSchema` ne les demandait pas en ressaisie. La session
+        // de remplacement naissait donc SANS lieu de déroulement, et ses
+        // documents se rabattaient sur l'adresse de l'organisme : une convention
+        // pour une formation tenue chez le client annonçait l'adresse
+        // d'Axion-IA. Or le lieu est une mention de la convention
+        // (art. L.6353-1 : conditions de déroulement) et l'objet même de
+        // l'indicateur 9. Un report reconduit la MÊME prestation : le lieu suit,
+        // au même titre que le montant et le snapshot légal.
+        lieuType: true,
+        lieuIntitule: true,
+        lieuAdresse: true,
+        lieuCodePostal: true,
+        lieuVille: true,
+        lieuSalle: true,
+        lieuVisioUrl: true,
+        // 🔴 Même vérification — LE REPORT PERDAIT LE FORMATEUR.
+        //
+        // Sans `formateurPrincipalId`, l'alerte `session_sans_formateur`
+        // (`alertes/evaluateur.ts`, qui interroge `formateurPrincipalId: null`)
+        // levait sur CHAQUE report — une alerte systématiquement fausse finit
+        // par n'être plus lue. `sessionFormateurs` est lu en plus de la FK :
+        // l'assignation écrit les DEUX (dual-write), n'en reporter qu'un
+        // laisserait la charge et le commissionnement aveugles sur la nouvelle
+        // session.
+        formateurPrincipalId: true,
+        coFormateurs: true,
+        sessionFormateurs: {
+          select: { trainerId: true, role: true, tarifHtCents: true },
+        },
         // L5 — durée du catalogue, pour proposer les journées de la session
         // reportée (sinon aucun jour → aucun lien d'émargement émissible).
         formation: { select: { dureeHeures: true } },
@@ -394,6 +452,65 @@ export async function reportSessionAction(
     };
   }
 
+  // 🔴 LE FORMATEUR REPASSE PAR LA GARDE — arbitrage du 2026-08-19.
+  //
+  // Recopier `formateurPrincipalId` tel quel court-circuiterait
+  // `isTrainerHabilite` : si l'habilitation a été retirée ENTRE l'ancienne et la
+  // nouvelle date, le report la RÉINSTALLERAIT en silence, sur des dates que
+  // personne n'a validées. Un report est un acte de continuité administrative,
+  // pas une ré-affectation : il ne doit rien installer que l'écran d'affectation
+  // refuserait aujourd'hui.
+  //
+  // Le report n'est pas BLOQUÉ pour autant : les dates ont changé, la session de
+  // remplacement doit exister quoi qu'il arrive. Le formateur est simplement
+  // omis — et l'alerte `session_sans_formateur` lève alors À BON DROIT : elle
+  // NOMME ce qu'il reste à faire, là où une recopie l'aurait tue.
+  let formateurRetenuId: string | null = null;
+  if (ancienne.formateurPrincipalId !== null) {
+    try {
+      const trainer = await prisma.trainer.findUnique({
+        where: { id: ancienne.formateurPrincipalId },
+        select: {
+          actif: true,
+          statut: true,
+          sousTraitantVerifieAt: true,
+          // Habilitations ACTIVES seulement : la dé-habilitation historise au
+          // lieu de supprimer, lire sans ce filtre serait lire l'historique.
+          habilitations: {
+            where: { ...HABILITATION_ACTIVE_WHERE },
+            select: { formationId: true },
+          },
+        },
+      });
+      if (
+        trainer !== null &&
+        isTrainerHabilite(
+          { ...trainer, formationIdsHabilites: trainer.habilitations.map((h) => h.formationId) },
+          ancienne.formationId,
+        ).ok
+      ) {
+        formateurRetenuId = ancienne.formateurPrincipalId;
+      }
+    } catch {
+      // Lecture indisponible : on ne DEVINE pas une habilitation. La session part
+      // sans formateur et l'alerte le signale — jamais l'inverse.
+    }
+  }
+  /** Le principal que la garde vient d'écarter, s'il y en a un. */
+  const formateurEcarteId =
+    ancienne.formateurPrincipalId !== null && formateurRetenuId === null
+      ? ancienne.formateurPrincipalId
+      : null;
+
+  // Le Json `coFormateurs` ne doit pas réinstaller par la porte de derrière le
+  // principal que la garde vient d'écarter : `resolvePrincipalTrainerId` retombe
+  // dessus quand la FK est nulle, et les documents nominatifs (convention,
+  // convocation, émargement) le nommeraient quand même.
+  const coFormateursReportes =
+    formateurEcarteId !== null
+      ? parseCoFormateurs(ancienne.coFormateurs).filter((e) => e.trainerId !== formateurEcarteId)
+      : ancienne.coFormateurs;
+
   // Allouer le numéro de la nouvelle session (sans suffixe de récurrence)
   const nouveauNumero = await allocateSessionNumero();
 
@@ -415,6 +532,23 @@ export async function reportSessionAction(
           montantHtCents: ancienne!.montantHtCents,
           statut: "planifiee",
           sessionReporteeId: ancienne!.id,
+          // 🔴 Le LIEU suit la prestation (off.9 / L.6353-1). Recopié colonne à
+          // colonne, `null` compris : un report qui n'emporte pas le lieu produit
+          // une convention et une convocation muettes sur les conditions de
+          // déroulement, et les documents se rabattent sur l'adresse de
+          // l'organisme — c'est-à-dire une mention FAUSSE, pas une mention
+          // absente.
+          lieuType: ancienne!.lieuType,
+          lieuIntitule: ancienne!.lieuIntitule,
+          lieuAdresse: ancienne!.lieuAdresse,
+          lieuCodePostal: ancienne!.lieuCodePostal,
+          lieuVille: ancienne!.lieuVille,
+          lieuSalle: ancienne!.lieuSalle,
+          lieuVisioUrl: ancienne!.lieuVisioUrl,
+          // Co-animateurs reportés (purgés du principal écarté, cf. plus haut).
+          coFormateurs: coFormateursReportes as never,
+          // Le principal n'est posé que s'il a REPASSÉ la garde d'habilitation.
+          ...(formateurRetenuId !== null ? { formateurPrincipalId: formateurRetenuId } : {}),
           ...(ancienne!.formationSnapshot != null
             ? { formationSnapshot: ancienne!.formationSnapshot as never }
             : {}),
@@ -445,6 +579,31 @@ export async function reportSessionAction(
             date: new Date(`${j.date}T00:00:00.000Z`),
             heureDebut: j.heureDebut,
             heureFin: j.heureFin,
+          })),
+        });
+      }
+
+      // 🔴 Dual-write des affectations — `assignTrainerToSessionAction` écrit la
+      // FK `formateurPrincipalId` ET la table normalisée `SessionFormateur`
+      // (socle de la charge par formateur et du commissionnement). Ne reporter
+      // que la FK laisserait la nouvelle session avec un formateur invisible de
+      // ces deux lectures : un troisième état où deux tables du même dossier se
+      // contredisent.
+      const rowsFormateurs = ancienne!.sessionFormateurs.filter(
+        (r) => r.trainerId !== formateurEcarteId,
+      );
+      if (rowsFormateurs.length > 0) {
+        await tx.sessionFormateur.createMany({
+          data: rowsFormateurs.map((r) => ({
+            sessionId: nouvelle.id,
+            trainerId: r.trainerId,
+            role: r.role,
+            // Le tarif est un SNAPSHOT figé à l'affectation : le prix convenu ne
+            // se renégocie pas parce que la date bouge, il suit le formateur.
+            tarifHtCents: r.tarifHtCents,
+            // `heuresAnimees` NE suit PAS : la session reportée n'a pas eu lieu.
+            // Recopier ses heures ferait rémunérer deux fois la même journée.
+            heuresAnimees: null,
           })),
         });
       }
@@ -548,6 +707,12 @@ export async function reportSessionAction(
       nouvelleDateFin: v.nouvelleDateFin,
       motif: v.motif,
       enrollmentsMigres: ancienne.enrollments.length,
+      // Tracé explicitement : un formateur ÉCARTÉ par la garde d'habilitation
+      // est une décision de la machine sur un acte engageant. Elle doit être
+      // lisible au journal, sinon l'admin découvre la session sans formateur
+      // sans jamais savoir pourquoi.
+      formateurReporte: formateurRetenuId,
+      ...(formateurEcarteId !== null ? { formateurEcarteNonHabilite: formateurEcarteId } : {}),
     },
     session: adminSession,
   });

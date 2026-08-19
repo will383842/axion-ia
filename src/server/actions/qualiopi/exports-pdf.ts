@@ -26,6 +26,7 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { CvFormateurPdf } from "@/server/qualiopi/documents/templates/cv-formateur";
 import { buildCvFormateurData, formatDateFr } from "@/server/qualiopi/documents/cv-formateur-data";
+import { whereHabilitationsDeclarables } from "@/server/qualiopi/trainers/trainers";
 import { FicheAdaptationPdf } from "@/server/qualiopi/documents/templates/fiche-adaptation";
 import { RegistrePdf, type RegistreData } from "@/server/qualiopi/documents/templates/registre";
 import {
@@ -185,8 +186,16 @@ export async function genererCvFormateurAction(input: {
   // Cf. audit certification 2026-07-25 (F11) : la colonne legacy
   // `formationsHabilitees` contient des slugs en production et ne résolvait plus
   // rien face à un `id IN (...)`.
+  //
+  // 🔴 Vérification du plan 2026-08-19 : cette requête ne portait AUCUN filtre.
+  // C'était le défaut initial du lot A5 — 57 intitulés déclarés pour 22 au
+  // catalogue, soit une sur-déclaration de 159 % — corrigé sur la fiche versée
+  // mais laissé ouvert ICI, c'est-à-dire sur l'AUTRE bouton du même écran. Le
+  // document produit est le même aux yeux de l'auditrice : il porte donc
+  // exactement le même filtre, et il le porte depuis la MÊME définition
+  // (`trainers.ts`) — la recopier une deuxième fois recréerait la divergence.
   const habilitations = await prisma.trainerHabilitation.findMany({
-    where: { trainerId: trainer.id },
+    where: whereHabilitationsDeclarables(trainer.id),
     select: { formation: { select: { titre: true } } },
     orderBy: { formation: { titre: "asc" } },
   });

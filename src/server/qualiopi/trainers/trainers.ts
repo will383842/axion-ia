@@ -13,6 +13,58 @@
 import { prisma } from "@/lib/prisma";
 import type { Trainer, TrainerStatut } from "../../../../prisma/generated/client";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Habilitations : DEUX notions, une seule définition de chacune
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Habilitation ACTIVE — ce que la GARDE d'assignation regarde.
+ *
+ * 🔴 Depuis le 2026-08-17 la dé-habilitation ne SUPPRIME plus la ligne, elle la
+ * DATE (`retireAt`) : la preuve de conformité d'une session déjà animée survit
+ * au retrait (ind. 21/22). Conséquence directe : lire `TrainerHabilitation` sans
+ * ce filtre, c'est lire l'HISTORIQUE et déclarer habilité quelqu'un qui ne l'est
+ * plus.
+ */
+export const HABILITATION_ACTIVE_WHERE = { retireAt: null } as const;
+
+/**
+ * Formation encore À L'OFFRE — ce qu'une pièce a le droit de citer.
+ *
+ * `not: "archive"` plutôt que `= "actif"` : le statut `publie` désigne une
+ * formation bel et bien proposée ; l'écarter SOUS-déclarerait le périmètre du
+ * formateur — l'erreur symétrique, tout aussi fausse devant un auditeur. Même
+ * doctrine que `listFormationOptions` et que le Formation Engine.
+ */
+export const FORMATION_AU_CATALOGUE_WHERE = { statut: { not: "archive" } } as const;
+
+/**
+ * Habilitation DÉCLARABLE — ce qu'une pièce IMPRIMÉE peut annoncer : active, ET
+ * portant sur une formation encore au catalogue.
+ *
+ * 🔴 Vérification du plan Qualiopi 2026-08-19 : les deux générateurs de la fiche
+ * formateur (`verserFicheFormateurAction` et `genererCvFormateurAction`)
+ * recopiaient chacun leur propre filtre — et avaient divergé. L'un filtrait
+ * `archive` sans `retireAt`, l'autre ne filtrait rien du tout, et la liste des
+ * intervenants comptait `retireAt` sans `archive`. Deux pièces du même dossier
+ * se contredisaient, dans les deux sens. La DUPLICATION était la cause : une
+ * définition recopiée à trois endroits diverge au premier amendement, et rien ne
+ * signale l'écart. Il n'y en a donc plus qu'UNE.
+ */
+export const HABILITATION_DECLARABLE_WHERE = {
+  ...HABILITATION_ACTIVE_WHERE,
+  formation: FORMATION_AU_CATALOGUE_WHERE,
+} as const;
+
+/**
+ * `where` complet des habilitations déclarables d'UN formateur — à passer tel
+ * quel à `prisma.trainerHabilitation.findMany`. Point d'entrée unique des
+ * générateurs de pièces.
+ */
+export function whereHabilitationsDeclarables(trainerId: string) {
+  return { trainerId, ...HABILITATION_DECLARABLE_WHERE };
+}
+
 export interface ListTrainersOpts {
   /** Filtre par statut (salarie / sous_traitant). */
   statut?: TrainerStatut;
@@ -51,11 +103,26 @@ export async function listTrainers(opts?: ListTrainersOpts): Promise<TrainerAvec
       orderBy: [{ nom: "asc" }, { prenom: "asc" }],
       ...(opts?.limit !== undefined ? { take: opts.limit } : {}),
       ...(opts?.offset !== undefined ? { skip: opts.offset } : {}),
-      // 🔴 `retireAt: null` — seules les habilitations ACTIVES comptent. Sans
-      // ce filtre, un formateur dé-habilité continuerait d'apparaître habilité
-      // partout, et la garde `isTrainerHabilite` le laisserait animer.
+      // 🔴 `HABILITATION_ACTIVE_WHERE` — seules les habilitations ACTIVES
+      // comptent. Sans ce filtre, un formateur dé-habilité continuerait
+      // d'apparaître habilité partout, et la garde `isTrainerHabilite` le
+      // laisserait animer.
+      //
+      // ⚠️ Et VOLONTAIREMENT pas `HABILITATION_DECLARABLE_WHERE` : cette lecture
+      // alimente `isTrainerHabilite` et l'écran d'affectation, pas une pièce
+      // imprimée. `archiveFormationAction` autorise explicitement l'archivage
+      // « même avec des sessions en cours/réalisées » — une session vivante peut
+      // donc porter une formation archivée. Écarter ici les formations archivées
+      // interdirait de remplacer le formateur d'une session en cours, sur une
+      // formation retirée du catalogue APRÈS sa planification : un formateur qui
+      // se désiste ne serait plus remplaçable. Le filtre `archive` appartient aux
+      // POINTS D'IMPRESSION, où sur-déclarer trompe l'auditeur ; pas à la garde,
+      // où il empêcherait un acte légitime.
       include: {
-        habilitations: { where: { retireAt: null }, select: { formationId: true } },
+        habilitations: {
+          where: { ...HABILITATION_ACTIVE_WHERE },
+          select: { formationId: true },
+        },
       },
     });
     return rows.map(({ habilitations, ...t }) => {
@@ -73,7 +140,7 @@ export async function getFormationIdsHabilites(trainerId: string): Promise<strin
     const rows = await prisma.trainerHabilitation.findMany({
       // Même filtre que `listTrainers` : une habilitation retirée reste au
       // registre pour l'auditeur, elle ne rend plus le formateur habilité.
-      where: { trainerId, retireAt: null },
+      where: { trainerId, ...HABILITATION_ACTIVE_WHERE },
       select: { formationId: true },
     });
     return rows.map((r) => r.formationId);
