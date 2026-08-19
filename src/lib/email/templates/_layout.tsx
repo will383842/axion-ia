@@ -25,6 +25,9 @@ import type { ReviewStats } from "../review-stats";
 // Module PUR (aucun import next/prisma) — sûr dans un rendu d'e-mail exécuté
 // hors requête, dans le worker.
 import { MENTION_NON_AGREMENT, NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
+// Drapeau d'AFFIRMATION de la certification. Lecture `process.env` pure, aucun
+// import next/prisma : compatible avec le rendu d'e-mail hors requête (worker).
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 /**
  * Stats avis injectées par `renderEmailTemplate` juste avant le rendu (valeurs
@@ -314,6 +317,21 @@ export function EmailLayout({
   const rs = CURRENT_REVIEW_STATS;
   // Ligne avis RÉELLE (masquée sous 5 avis — même seuil que l'AggregateRating du site).
   const showReviews = rs.count >= 5 && rs.avg > 0;
+  // 🔴 2026-08-19 — `trust` est un booléen de MISE EN PAGE (« ce gabarit affiche
+  // un bandeau de confiance »), pas un drapeau de certification : six gabarits
+  // (booking-completed-thanks, contract-signed, qualiopi-attestation-disponible,
+  // qualiopi-suivi-j30, quote-signed, submission-reply) le passent en attribut
+  // JSX nu. Le lockup « Organisme de formation certifié Qualiopi » partait donc
+  // dans ces e-mails quoi qu'il arrive, alors que la certification n'est PAS
+  // obtenue (6 non-conformités majeures au 2026-08-15) — cas qualifié d'ILLÉGAL
+  // par l'en-tête de `server/qualiopi/config/flag.ts`.
+  //
+  // On conjugue les deux notions au lieu de remplacer l'une par l'autre : le
+  // bandeau de confiance survit (il porte aussi la note avis, qui est vraie et
+  // vérifiable), seule l'IMAGE de certification est conditionnée. Le bandeau
+  // n'est rendu que s'il lui reste quelque chose à montrer, pour ne pas laisser
+  // un cadre vide dans les clients mail.
+  const afficherLockupQualiopi = isQualiopiCertificationObtenue();
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
   const reviewLine = `★★★★★  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
   const orgLine = joinDefined([`${COMPANY.name} · ${t.legalForm}`, COMPANY.address], " — ");
@@ -382,15 +400,17 @@ export function EmailLayout({
                 </Button>
               </Section>
             )}
-            {trust && (
+            {trust && (afficherLockupQualiopi || showReviews) && (
               <Section style={trustBand} className="ax-trust">
-                <Img
-                  src={QUALIOPI_LOCKUP}
-                  width="340"
-                  height="227"
-                  alt={t.qualiopiAlt}
-                  style={{ margin: "0 auto", display: "block", border: "0", maxWidth: "100%" }}
-                />
+                {afficherLockupQualiopi && (
+                  <Img
+                    src={QUALIOPI_LOCKUP}
+                    width="340"
+                    height="227"
+                    alt={t.qualiopiAlt}
+                    style={{ margin: "0 auto", display: "block", border: "0", maxWidth: "100%" }}
+                  />
+                )}
                 {showReviews && <Text style={starsStyle}>{reviewLine}</Text>}
               </Section>
             )}

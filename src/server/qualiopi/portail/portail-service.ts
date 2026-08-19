@@ -26,6 +26,37 @@ import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
 import { pieceEstRemise } from "./piece-remise";
 
 /**
+ * Les pièces COLLECTIVES : elles décrivent l'ACTION, pas une personne. Tout
+ * inscrit de la session a le droit de les lire, et elles ne portent en base
+ * aucun `traineeId`.
+ */
+export const TYPES_PIECES_COLLECTIVES_ESPACE_STAGIAIRE = [
+  "programme",
+  "reglement_interieur",
+  "livret_accueil",
+  "organisation_action",
+] as const;
+
+/**
+ * 🔴 Les pièces NOMINATIVES : elles portent le NOM et l'EMPLOYEUR d'une seule
+ * personne, et `documents_generes.trainee_id` dit laquelle — la convocation et
+ * l'autorisation de captation sont établies par stagiaire, à dessein (« un
+ * consentement est individuel »).
+ *
+ * La distinction n'est pas cosmétique : la lecture de l'espace part de la
+ * SESSION, et la session ne connaît pas de destinataire. Sans elle, le filtre de
+ * type laissait entrer les pièces de tous les inscrits ; la déduplication
+ * (session, type) en gardait alors UNE, la plus récente, et la servait à tout le
+ * monde. En inter-entreprises les participants sont des concurrents (même
+ * doctrine que `emargement/portail-queries.ts`), et la `pdfUrl` est re-signée
+ * 24 h à chaque lecture : la pièce d'autrui était réellement téléchargeable.
+ */
+export const TYPES_PIECES_NOMINATIVES_ESPACE_STAGIAIRE = [
+  "convocation",
+  "autorisation_captation",
+] as const;
+
+/**
  * Les types de pièces que l'ESPACE STAGIAIRE remonte (Lot 1ter).
  *
  * ⚠️ Vue plus étroite que `TYPES_REMIS_AU_BENEFICIAIRE`, qui est l'autorité :
@@ -33,14 +64,13 @@ import { pieceEstRemise } from "./piece-remise";
  * PROPRE bloc dans cet espace — les remonter ici les afficherait deux fois.
  * `piece-remise.spec.ts` garantit que cette liste reste un sous-ensemble : plus
  * stricte, jamais plus large.
+ *
+ * ⚠️ La liste dit QUELS types peuvent apparaître ; elle ne dit RIEN de qui les
+ * voit. La requête, elle, doit trancher les deux — cf. le `where` ci-dessous.
  */
 export const TYPES_PIECES_ESPACE_STAGIAIRE = [
-  "programme",
-  "reglement_interieur",
-  "livret_accueil",
-  "convocation",
-  "organisation_action",
-  "autorisation_captation",
+  ...TYPES_PIECES_COLLECTIVES_ESPACE_STAGIAIRE,
+  ...TYPES_PIECES_NOMINATIVES_ESPACE_STAGIAIRE,
 ] as const;
 import type {
   EnrollmentStatut,
@@ -386,9 +416,31 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               // (information du bénéficiaire — « QUAND, OÙ et COMMENT »), la
               // seconde est un consentement que le stagiaire doit pouvoir lire
               // avant de le donner.
+              //
+              // 🔴 Le filtre porte sur le TYPE **et sur le DESTINATAIRE**. La
+              // lecture part de la session, qui ne connaît aucun bénéficiaire :
+              // filtrée par le seul type, elle remontait les pièces nominatives
+              // de TOUS les inscrits, et la déduplication (session, type) en
+              // servait une seule — la plus récente — à chacun d'eux.
+              //
+              // ⚠️ Les pièces nominatives exigent l'ÉGALITÉ stricte, jamais
+              // `traineeId: null` en repli. Les convocations produites avant le
+              // 21/07/2026 (`genererConvocationAction` ne renseignait pas encore
+              // `refs.traineeId`) nomment quelqu'un sans dire qui : rien dans la
+              // ligne ne permet de les rattacher. Elles cessent donc d'être
+              // visibles — de leur destinataire compris.
+              //
+              // C'est un choix ASSUMÉ, et il faut le lire comme tel : un
+              // stagiaire dont la convocation n'est pas rattachée ne verra plus
+              // rien à cette ligne, au lieu de voir celle d'un autre. Ne pas
+              // montrer se rattrape en régénérant la pièce ; avoir montré le nom
+              // et l'employeur d'un concurrent ne se rattrape pas.
               documents: {
                 where: {
-                  type: { in: [...TYPES_PIECES_ESPACE_STAGIAIRE] },
+                  OR: [
+                    { type: { in: [...TYPES_PIECES_COLLECTIVES_ESPACE_STAGIAIRE] } },
+                    { type: { in: [...TYPES_PIECES_NOMINATIVES_ESPACE_STAGIAIRE] }, traineeId },
+                  ],
                 },
                 select: {
                   id: true,

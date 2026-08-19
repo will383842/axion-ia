@@ -847,6 +847,27 @@ async function handlePositionnement(): Promise<void> {
         });
         relances++;
       } else {
+        // 🔴 SANS CETTE ÉCRITURE, le cron renvoyait le MÊME e-mail chaque matin.
+        //
+        // `gestePositionnement` décide sur l'ÉTAT : tant que `envoyeAt` est nul,
+        // il rend « envoyer ». La branche ne posait rien — donc, sur l'horizon de
+        // 15 jours, jusqu'à quinze e-mails identiques au stagiaire, et la branche
+        // « relancer » jamais atteinte : le plafond de 2 ne bornait rien.
+        //
+        // Posée APRÈS l'enqueue, comme convocation / satisfaction-j1 : marquer
+        // avant ferait mentir la colonne si la file est indisponible, et le
+        // rattrapage ne reviendrait jamais. Le `envoyeAt: null` du `where` ferme
+        // la course entre deux passages concurrents.
+        //
+        // `updateMany` et non `update`, comme satisfaction-j1 (l. ~547) et
+        // enquete-entreprise-j30 : à zéro ligne touchée — un autre passage a
+        // déjà marqué — `update` lèverait P2025, que le `catch` compterait en
+        // `ko` et journaliserait comme une erreur, ALORS QUE L'E-MAIL EST PARTI.
+        // Le compteur mentirait sur un envoi réussi. `updateMany` est muet.
+        await prisma.questionnaire.updateMany({
+          where: { id: q.id, envoyeAt: null },
+          data: { envoyeAt: now },
+        });
         envoyes++;
       }
     } catch (err) {
@@ -1111,6 +1132,18 @@ async function handleRelanceQuestionnaires(): Promise<void> {
     where: {
       reponduAt: null,
       envoyeAt: { not: null, gte: plafond90j },
+      // 🔴 Le positionnement a son PROPRE canal (`formation-crons.positionnement`).
+      //
+      // Il est devenu éligible ici le jour où l'envoi initial a enfin posé
+      // `envoyeAt`. Or ce cron-ci ne connaît QUE la distance à l'envoi : il
+      // ignore la date de début de session, et relancerait donc un
+      // positionnement jusqu'à 90 jours APRÈS le début — voire après la fin — de
+      // la formation. `gestePositionnement` l'interdit explicitement : recueilli
+      // après le début, le positionnement ne mesure plus le besoin d'entrée, la
+      // pièce serait datée et FAUSSE. Deux calendriers sur le même compteur
+      // rendraient de surcroît la trace inexplicable devant un auditeur (1ʳᵉ
+      // relance à J+3 ou J+4 selon le cron qui a gagné la course).
+      type: { not: "positionnement" },
       OR: [
         // 1ʳᵉ relance : envoyé depuis ≥ 3 jours, jamais relancé.
         { relanceCount: 0, envoyeAt: { lte: j3 } },

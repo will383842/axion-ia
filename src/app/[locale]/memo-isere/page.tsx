@@ -54,6 +54,9 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
+// Drapeau d'AFFIRMATION de la certification (≠ drapeau de visibilité des pages OF) :
+// il autorise, et lui seul, à écrire « certifié Qualiopi » sur une surface publique.
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -766,7 +769,24 @@ export default async function MemoIserePage({ params }: Props) {
             role="list"
           >
             {[
-              "Organisme certifié Qualiopi",
+              // 🔴 2026-08-19 — « Organisme certifié Qualiopi » était une entrée
+              // LITTÉRALE de ce tableau, dans un fichier qui n'importait aucun
+              // drapeau : la mention partait en production quoi qu'il arrive, et
+              // y était encore mesurée le 2026-08-19 (3 occurrences sur la page).
+              // Or la certification n'est PAS obtenue (6 non-conformités majeures
+              // au 2026-08-15), et l'en-tête de `server/qualiopi/config/flag.ts`
+              // qualifie d'ILLÉGAL le fait d'afficher « Qualiopi » avant elle.
+              //
+              // On ne SUPPRIME pas la ligne : la bande de réassurance perdrait un
+              // repère, et la mention redeviendra exacte le jour de la
+              // certification. On bascule vers la formulation NON ASSERTIVE déjà
+              // retenue par le dépôt dans le livret d'accueil stagiaire
+              // (`server/qualiopi/documents/templates/livret-accueil.tsx`) : elle
+              // dit vrai — la démarche qualité est bien alignée sur le RNQ — sans
+              // revendiquer un certificat qu'Axion-IA ne détient pas.
+              isQualiopiCertificationObtenue()
+                ? "Organisme certifié Qualiopi"
+                : "Démarche qualité alignée sur le référentiel national qualité",
               "Formations finançables OPCO",
               "Statut libre : micro-entreprise, VRP, apporteur",
               "Cumulable avec ton job actuel",

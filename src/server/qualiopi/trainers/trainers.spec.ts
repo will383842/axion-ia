@@ -166,6 +166,15 @@ describe("🔴 seules les habilitations ACTIVES rendent un formateur habilité",
     const args = mockFindMany.mock.calls.at(-1)![0] as {
       include: { habilitations: { where?: { retireAt?: null } } };
     };
+    // `toEqual` et non `toMatchObject` : l'égalité STRICTE est ce qui donne à ce
+    // test sa seconde fonction, décidée le 2026-08-19. Le filtre
+    // `formation: { statut: { not: "archive" } }` — celui des pièces imprimées —
+    // ne doit PAS remonter jusqu'ici. `archiveFormationAction` autorise
+    // l'archivage « même avec des sessions en cours/réalisées » : l'ajouter
+    // rendrait `isTrainerHabilite` négatif pour toute session dont la formation
+    // a été retirée du catalogue après coup, et un formateur qui se désiste ne
+    // serait plus remplaçable. Ce test rougit si quelqu'un l'ajoute « pour
+    // cohérence ».
     expect(
       args.include.habilitations.where,
       "Sans ce filtre, un formateur dé-habilité continuerait d'apparaître " +

@@ -8,12 +8,20 @@
  * les actions de cadrage AFEST, protocole, attestation, émargement, kits
  * financeurs (OPCO / CPF / France Travail), financement tiers et certification
  * France Compétences ont été supprimées avec le module. Ne reste que la
- * facturation directe au client. RBAC admin (requireAdminWrite).
+ * facturation directe au client.
+ *
+ * RBAC : `requireHabilitation("facturer")`, PAS `requireAdminWrite`. Le SSOT
+ * (`@/server/auth/habilitations`) range nommément la facture de coaching sous
+ * `facturer` — « facturer couvre l'émission d'une facture de formation, d'une
+ * facture libre, d'un avoir ET d'une facture de coaching : ce sont le même
+ * engagement, et les distinguer inviterait à durcir l'un en oubliant l'autre ».
+ * `requireAdminWrite` autorise `editor` : la garde ne correspondait donc pas à
+ * la doctrine écrite du dépôt (`_guards.ts:48-50`). Garde : `coaching-facturation.spec.ts`.
  */
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { requireAdminWrite, logQualiopiActivity } from "./_guards";
+import { requireHabilitation, logQualiopiActivity } from "./_guards";
 import { genererFactureCoaching } from "@/server/qualiopi/coaching-1to1/facturation-1to1";
 
 export interface CoachingActionResult {
@@ -33,7 +41,8 @@ export async function genererFactureCoachingAction(
 ): Promise<CoachingActionResult> {
   let session;
   try {
-    session = await requireAdminWrite();
+    // Acte ENGAGEANT : émission d'une facture de coaching (cf. SSOT habilitations).
+    session = await requireHabilitation("facturer");
   } catch {
     return { ok: false, error: "Non autorisé." };
   }

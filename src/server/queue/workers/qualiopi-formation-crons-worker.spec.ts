@@ -31,6 +31,10 @@ vi.mock("@/lib/prisma", () => ({
     questionnaire: {
       findMany: vi.fn(),
       updateMany: vi.fn(),
+      // Positionnement 2026-08-19 — la trace d'envoi et celle des relances sont
+      // posées ligne à ligne (`update`), et l'écart ind. 8 est compté (`count`).
+      update: vi.fn(),
+      count: vi.fn(),
     },
     alerteSysteme: {
       findMany: vi.fn(),
@@ -55,6 +59,7 @@ vi.mock("@/lib/prisma", () => ({
 
 vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
   envoyerConvocation: vi.fn(),
+  envoyerPositionnement: vi.fn(),
   envoyerRappelJ7: vi.fn(),
   envoyerSatisfactionJ1: vi.fn(),
   envoyerSuiviJ30: vi.fn(),
@@ -99,6 +104,7 @@ vi.mock("@/server/qualiopi/formations/transition-helper", () => ({
 import { prisma } from "@/lib/prisma";
 import {
   envoyerConvocation,
+  envoyerPositionnement,
   envoyerRelanceQuestionnaire,
   envoyerEnqueteEntreprise,
 } from "@/server/qualiopi/notifications/notifications-service";
@@ -110,7 +116,12 @@ import { formationCronsHandler } from "./qualiopi-formation-crons-worker";
 const mockPrisma = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
-  questionnaire: { findMany: ReturnType<typeof vi.fn>; updateMany: ReturnType<typeof vi.fn> };
+  questionnaire: {
+    findMany: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    count: ReturnType<typeof vi.fn>;
+  };
   alerteSysteme: { findMany: ReturnType<typeof vi.fn> };
   factureFormation: {
     findMany: ReturnType<typeof vi.fn>;
@@ -128,6 +139,7 @@ const mockPrisma = prisma as unknown as {
 };
 
 const mockEnvoyerConvocation = envoyerConvocation as ReturnType<typeof vi.fn>;
+const mockEnvoyerPositionnement = envoyerPositionnement as ReturnType<typeof vi.fn>;
 const mockEnvoyerRelance = envoyerRelanceQuestionnaire as ReturnType<typeof vi.fn>;
 const mockEnvoyerEnquete = envoyerEnqueteEntreprise as ReturnType<typeof vi.fn>;
 const mockSynchroniserAlertes = synchroniserAlertes as ReturnType<typeof vi.fn>;
@@ -991,5 +1003,136 @@ describe("handleDevisExpiration — expiration + relance J+3 (via formationCrons
   it("aucun devis dormant → aucune relance", async () => {
     await lancer();
     expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Positionnement (2026-08-19) — l'envoi doit laisser une TRACE
+//
+// 🔴 Le cron sélectionnait sur l'ÉTAT (« jamais répondu ») mais n'écrivait rien
+// après un envoi initial : `envoyeAt` restait nul, `gestePositionnement` rendait
+// « envoyer » au passage suivant, et le stagiaire recevait le même e-mail chaque
+// matin — jusqu'à quinze fois sur l'horizon de 15 jours. Le plafond de relances
+// ne bornait rien non plus, puisque la branche « relancer » n'était jamais
+// atteinte. Ces tests relisent l'état entre deux passages : c'est le seul
+// montage capable de distinguer « idempotent » de « renvoie tout ».
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("handlePositionnement — deux passages, UN SEUL envoi", () => {
+  const JOUR_MS = 24 * 60 * 60 * 1000;
+
+  let ligne: {
+    id: string;
+    envoyeAt: Date | null;
+    reponduAt: Date | null;
+    relanceCount: number;
+    derniereRelanceAt: Date | null;
+    enrollment: { session: { dateDebut: Date } };
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+
+    ligne = {
+      id: "q-pos-1",
+      envoyeAt: null,
+      reponduAt: null,
+      relanceCount: 0,
+      derniereRelanceAt: null,
+      // Session dans 10 jours : sous l'horizon de 15 j, et pas encore commencée.
+      enrollment: { session: { dateDebut: new Date(Date.now() + 10 * JOUR_MS) } },
+    };
+
+    // La requête réelle ne filtre PAS sur `envoyeAt` : la ligne reste rendue
+    // après l'envoi. C'est `gestePositionnement` qui doit alors dire « rien » —
+    // encore faut-il que l'état qu'il lit ait été écrit.
+    mockPrisma.questionnaire.findMany.mockImplementation(async () => [{ ...ligne }]);
+    // La marque d'envoi passe par `updateMany` (muet à zéro ligne, comme
+    // satisfaction-j1) ; la relance, elle, passe par `update`. Les deux mocks
+    // partagent la même ligne en mémoire, sans quoi le second passage relirait
+    // un état qui n'a pas bougé et le test ne prouverait rien.
+    mockPrisma.questionnaire.updateMany.mockImplementation(
+      async (args: { where: { id: string; envoyeAt?: null }; data: Record<string, unknown> }) => {
+        // `envoyeAt: null` au `where` ferme la course entre deux passages : une
+        // ligne déjà marquée n'est pas réécrite.
+        if (args.where.envoyeAt === null && ligne.envoyeAt !== null) return { count: 0 };
+        if (args.data["envoyeAt"] instanceof Date) {
+          ligne.envoyeAt = args.data["envoyeAt"];
+          return { count: 1 };
+        }
+        return { count: 0 };
+      },
+    );
+    mockPrisma.questionnaire.update.mockImplementation(
+      async (args: { where: { id: string; envoyeAt?: null }; data: Record<string, unknown> }) => {
+        if (args.data["derniereRelanceAt"] instanceof Date) {
+          ligne.derniereRelanceAt = args.data["derniereRelanceAt"];
+          ligne.relanceCount += 1;
+        }
+        return { ...ligne };
+      },
+    );
+    mockPrisma.questionnaire.count.mockResolvedValue(0);
+    mockEnvoyerPositionnement.mockResolvedValue(undefined);
+  });
+
+  const lancer = () =>
+    formationCronsHandler({
+      type: "formation-crons.positionnement",
+      tick: "2026-08-19T07:30:00Z",
+    });
+
+  it("DEUX passages consécutifs n'envoient qu'UN e-mail au stagiaire", async () => {
+    await lancer();
+    await lancer();
+
+    expect(mockEnvoyerPositionnement).toHaveBeenCalledTimes(1);
+    expect(mockEnvoyerPositionnement).toHaveBeenCalledWith("q-pos-1");
+    // La trace est ce qui rend le second passage muet.
+    expect(ligne.envoyeAt).toBeInstanceOf(Date);
+  });
+
+  it("échec d'envoi → AUCUNE trace posée, et le passage suivant RÉESSAIE", async () => {
+    // 🔴 Marquer avant l'enqueue ferait mentir la colonne dès que la file est
+    // indisponible : un positionnement définitivement perdu, sans rattrapage.
+    mockEnvoyerPositionnement.mockRejectedValueOnce(new Error("file indisponible"));
+
+    await expect(lancer()).resolves.toBeUndefined();
+
+    expect(ligne.envoyeAt).toBeNull();
+    expect(mockPrisma.questionnaire.updateMany).not.toHaveBeenCalled();
+
+    await lancer();
+
+    expect(mockEnvoyerPositionnement).toHaveBeenCalledTimes(2);
+    expect(ligne.envoyeAt).toBeInstanceOf(Date);
+  });
+});
+
+describe("relance-questionnaires — le positionnement a son PROPRE canal", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+    mockPrisma.questionnaire.findMany.mockResolvedValue([]);
+  });
+
+  it("exclut le type positionnement de la sélection", async () => {
+    // 🔴 Une fois `envoyeAt` posé, le positionnement devenait éligible ICI —
+    // or ce cron ignore la date de début de session et relancerait donc un
+    // positionnement jusqu'à 90 jours APRÈS le début de la formation, ce que
+    // `gestePositionnement` interdit (la pièce serait datée et FAUSSE).
+    await formationCronsHandler({
+      type: "formation-crons.relance-questionnaires",
+      tick: "2026-08-19T08:30:00Z",
+    });
+
+    const where = (
+      mockPrisma.questionnaire.findMany.mock.calls[0]![0] as {
+        where: { type?: { not: string } };
+      }
+    ).where;
+
+    expect(where.type).toEqual({ not: "positionnement" });
   });
 });

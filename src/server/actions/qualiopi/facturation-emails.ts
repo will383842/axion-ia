@@ -44,6 +44,12 @@ export async function envoyerDevisEmailAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
+  // `requireAdminWrite` ASSUMÉ : cette action TRANSMET un devis déjà émis (elle
+  // exige `statut === "envoye"` et un PDF déjà généré). Conclure le devis est un
+  // acte distinct, gardé par `requireHabilitation("conclure_devis")` dans
+  // `devis.ts` ; le lien de signature émis ici est celui du CLIENT, pas
+  // l'engagement de l'organisme. Envoyer une pièce est la colonne « n'engage
+  // rien » du SSOT.
   const session = await requireAdminWrite();
   const parsed = EnvoyerDevisSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
@@ -180,6 +186,9 @@ export async function envoyerFactureEmailAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
+  // `requireAdminWrite` ASSUMÉ : la facture est déjà ÉMISE quand on arrive ici —
+  // l'action refuse explicitement un brouillon et exige un PDF existant.
+  // L'émission, elle, passe par `requireHabilitation("facturer")`.
   const session = await requireAdminWrite();
   const parsed = EnvoyerFactureSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };

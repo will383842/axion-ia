@@ -1,9 +1,26 @@
 /**
  * KB-4 — Helper transition générique workflow.
  * Encapsule : lecture entry → validate state machine → snapshot version → update + audit + revalidate.
+ *
+ * 🔴 2026-08-19 — retrait de `"use server"` : cette fonction n'est plus exposée
+ * comme Server Action (donc plus appelable depuis n'importe quel client). Même
+ * geste que `ingest.ts` (P0-S1-1), pour le même risque, en pire :
+ *
+ *   - `executeTransition` ne lit AUCUNE session. Sa décision d'autorisation
+ *     repose sur `input.context.userRole` et `input.context.system`, deux champs
+ *     fournis par l'APPELANT — et `state-machine.ts:181` court-circuite la
+ *     vérification de rôle dès que `context.system === true`. Une autorisation
+ *     qui vient du payload n'est pas une autorisation.
+ *   - `extraEntryUpdates?: Prisma.KnowledgeEntryUpdateInput` est injecté tel quel
+ *     dans `tx.knowledgeEntry.update` : exposé, l'endpoint n'était pas un
+ *     changement de statut mais une ÉCRITURE ARBITRAIRE sur l'entrée.
+ *
+ * L'autorisation réelle vit chez les 7 appelants (`publish`, `approve`,
+ * `archive`, `restore`, `unpublish`, `submit-for-review`, `schedule-publish`),
+ * qui sont eux des Server Actions gardées et passent un `context` construit
+ * depuis leur propre session. Ce module reste un helper serveur → serveur ;
+ * aucun composant client ne l'importe. Défense en profondeur.
  */
-
-"use server";
 
 import { headers } from "next/headers";
 import type { KbStatus, Prisma } from "../../../../prisma/generated/client";

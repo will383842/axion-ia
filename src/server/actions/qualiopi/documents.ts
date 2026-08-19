@@ -125,7 +125,11 @@ import { readFormationForDocs } from "@/server/qualiopi/formations/formation-sna
 import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
-import { listTrainers } from "@/server/qualiopi/trainers/trainers";
+import {
+  listTrainers,
+  FORMATION_AU_CATALOGUE_WHERE,
+  whereHabilitationsDeclarables,
+} from "@/server/qualiopi/trainers/trainers";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import {
@@ -3032,11 +3036,21 @@ export async function genererListeFormateursAction(): Promise<
 
   // Intitulés des formations habilitées, résolus en UNE requête pour tous les
   // intervenants : un `findMany` par formateur ferait N+1 sur une page admin.
+  //
+  // 🔴 Vérification du plan 2026-08-19 : cette résolution ne filtrait PAS les
+  // formations archivées, alors que `listTrainers` filtre déjà les habilitations
+  // retirées. La liste annonçait donc un `nbHabilitations` établi sur un critère
+  // et citait des intitulés établis sur un autre — un formateur pouvait y être
+  // crédité de 2 habilitations dont une retirée de l'offre. La fiche formateur,
+  // elle, filtre les deux : confrontées, les deux pièces du même dossier ne
+  // disaient pas la même chose (c'est le défaut F11).
+  //
+  // Le filtre est celui, unique, de `trainers.ts` — pas une troisième recopie.
   const tousIds = [...new Set(trainers.flatMap((t) => t.formationIdsHabilites))];
   const formations =
     tousIds.length > 0
       ? await prisma.formation.findMany({
-          where: { id: { in: tousIds } },
+          where: { id: { in: tousIds }, ...FORMATION_AU_CATALOGUE_WHERE },
           select: { id: true, titre: true },
         })
       : [];
@@ -3069,17 +3083,22 @@ export async function genererListeFormateursAction(): Promise<
                   (d): d is string => typeof d === "string",
                 )
               : [];
+            // Les intitulés DÉCLARABLES, résolus une seule fois : le nombre
+            // imprimé et les exemples imprimés doivent sortir du MÊME ensemble.
+            // Compter d'un côté (`t.nbHabilitations`, filtré `retireAt` seul) et
+            // citer de l'autre (filtré `archive`) était exactement l'incohérence
+            // que l'auditrice relève en confrontant les deux colonnes.
+            const titresDeclarables = t.formationIdsHabilites
+              .map((id) => titreParId.get(id))
+              .filter((titre): titre is string => typeof titre === "string");
             return {
               nomPrenom: `${t.prenom} ${t.nom}`,
               statut: t.statut,
               domaines,
-              nbHabilitations: t.nbHabilitations,
+              nbHabilitations: titresDeclarables.length,
               // Trois suffisent à montrer le LIEN avec les prestations : la
               // liste exhaustive de 57 intitulés noierait la pièce.
-              exemplesHabilitations: t.formationIdsHabilites
-                .map((id) => titreParId.get(id))
-                .filter((titre): titre is string => typeof titre === "string")
-                .slice(0, 3),
+              exemplesHabilitations: titresDeclarables.slice(0, 3),
               cvAuDossier: (cvParTrainer.get(t.id) ?? 0) > 0,
               ...(t.sousTraitantNda ? { sousTraitantNda: t.sousTraitantNda } : {}),
               depuis: t.dateEmbauche ? formatDate(t.dateEmbauche) : "",
@@ -3269,17 +3288,19 @@ export async function verserFicheFormateurAction(input: {
   // l'intervenant sur des prestations qui n'existent plus, et sur-déclarait son
   // périmètre de 159 %, alors que la liste se compare directement au catalogue.
   //
-  // `not: "archive"` plutôt que `= "actif"` : le statut `publie` désigne une
-  // formation bel et bien à l'offre, l'écarter sous-déclarerait le périmètre —
-  // l'erreur symétrique, tout aussi fausse devant un auditeur. Même doctrine que
-  // `listFormationOptions` (`remuneration/rules-queries.ts`) et que le Formation
-  // Engine.
+  // 🔴 Vérification du plan 2026-08-19 : ce filtre était écrit ICI à la main, et
+  // il lui MANQUAIT `retireAt: null`. Depuis le 2026-08-17 la dé-habilitation
+  // horodate la ligne au lieu de la supprimer : la pièce VERSÉE AU REGISTRE —
+  // preuve de l'indicateur 21 — déclarait donc l'intervenant habilité sur des
+  // prestations dont l'habilitation avait été RETIRÉE. Le filtre vient
+  // désormais de `whereHabilitationsDeclarables`, l'unique définition partagée
+  // avec l'export direct et la liste des intervenants (cf. `trainers.ts`).
   //
   // ⚠️ Le filtre ne supprime RIEN en base : la ligne `TrainerHabilitation`
-  // subsiste et réapparaîtra si la formation est désarchivée. Il n'écarte du
-  // DOCUMENT que ce qui n'est plus proposé.
+  // subsiste (retirée ou sur formation archivée) et reste lisible par
+  // l'auditeur. Il n'écarte du DOCUMENT que ce qui n'est plus déclarable.
   const habilitations = await prisma.trainerHabilitation.findMany({
-    where: { trainerId: trainer.id, formation: { statut: { not: "archive" } } },
+    where: whereHabilitationsDeclarables(trainer.id),
     select: { formation: { select: { titre: true } } },
     orderBy: { formation: { titre: "asc" } },
   });

@@ -140,6 +140,22 @@ function setupMoyens(
     );
 }
 
+/**
+ * Mock des lignes lues par off.5 (`objectifsPedagogiques` des formations
+ * actives). `formation.findMany` sert TROIS requêtes distinctes ; on discrimine
+ * sur le `select`, jamais sur l'ordre d'appel — une cascade de
+ * `mockResolvedValueOnce` décalerait la séquence des tests voisins.
+ */
+function setupFormationsObjectifs(rows: Array<{ objectifsPedagogiques: unknown }>): void {
+  mockP.formation.findMany.mockImplementation((args?: { select?: Record<string, unknown> }) => {
+    if (args?.select?.["objectifsPedagogiques"] !== undefined) return Promise.resolve(rows);
+    if (args?.select?.["typesActionQualiopi"] !== undefined) {
+      return Promise.resolve([{ typesActionQualiopi: ["classique"] }]);
+    }
+    return Promise.resolve([]);
+  });
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Repères de dates (off.4 / off.8 — audit blanc 2026-08-15)
 //
@@ -258,9 +274,16 @@ describe("evaluerConformite", () => {
     expect(result.indicateurs.find((i) => i.numero === 6)?.statut).toBe("a_completer");
   });
 
-  it("off.5/6 DURCIS : couverts si ≥1 formation structurée + contenu réellement produit", async () => {
+  it("off.5/6 DURCIS : couverts si objectifs renseignés + contenu réellement produit", async () => {
+    // [2026-08-19] off.5 lit désormais `objectifsPedagogiques`, plus seulement
+    // `statutGeneration` : la structure générée reste nécessaire pour off.6,
+    // elle ne suffit plus pour off.5. Le mock fournit donc les objectifs.
     mockP.formation.count.mockResolvedValue(3); // total ET filtrés (structure/contenu) = 3
-    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["classique"] }]);
+    setupFormationsObjectifs([
+      { objectifsPedagogiques: [{ id: "o1", verbe: "Identifier" }] },
+      { objectifsPedagogiques: [{ id: "o2", verbe: "Analyser" }] },
+      { objectifsPedagogiques: [{ id: "o3", verbe: "Construire" }] },
+    ]);
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 5)?.statut).toBe("couvert");
     expect(result.indicateurs.find((i) => i.numero === 6)?.statut).toBe("couvert");
@@ -1000,9 +1023,13 @@ describe("evaluerConformite", () => {
   });
 
   it("off.27 [P1] a_completer si sous-traitant référencé mais NON conforme (NDA/data.gouv/contrat manquants)", async () => {
-    // total > 0 mais aucun conforme (le 2e appel avec where renvoie 0).
-    mockP.sousTraitant.count.mockImplementation((args?: { where?: unknown }) =>
-      Promise.resolve(args?.where ? 0 : 3),
+    // total > 0 mais aucun conforme. Discriminé sur `nda`, clé propre à la
+    // requête « conformes » : depuis que le dénominateur filtre lui aussi
+    // (`actif: true`, 2026-08-19), tester la seule présence d'un `where` rendait
+    // 0 des DEUX côtés — le test passait encore, sur un scénario vide qui
+    // n'était plus celui de son titre.
+    mockP.sousTraitant.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+      Promise.resolve(args?.where?.["nda"] !== undefined ? 0 : 3),
     );
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("a_completer");
@@ -1030,8 +1057,14 @@ describe("evaluerConformite", () => {
   // gelé l'indicateur sur une pièce volontairement non exigée.
   it("off.27 couvert par un FORMATEUR INDÉPENDANT conforme, sans aucun organisme", async () => {
     mockP.sousTraitant.count.mockResolvedValue(0); // aucun organisme sous-traitant
+    // Le formateur indépendant est référencé ET conforme : les deux requêtes
+    // portent `statut: "sous_traitant"`, elles doivent rendre le MÊME homme.
+    // L'ancien mock ne répondait 1 qu'à la requête « conforme » et 0 à celle qui
+    // le référence — un conforme sur zéro référencé. L'incohérence passait
+    // inaperçue tant que la couverture se lisait `conformes > 0` ; elle est
+    // visible depuis que la règle compare conformes et référencés.
     mockP.trainer.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
-      Promise.resolve(args?.where?.["sousTraitantContratSigneAt"] !== undefined ? 1 : 0),
+      Promise.resolve(args?.where?.["statut"] === "sous_traitant" ? 1 : 0),
     );
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("couvert");
@@ -1106,5 +1139,90 @@ describe("evaluerConformite", () => {
     mockP.trainerDevelopmentAction.count.mockResolvedValue(3);
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 22)?.statut).toBe("couvert");
+  });
+
+  // ── off.27 : la procédure écrite est une voie de SECOURS, pas un joker ─────
+  //
+  // 🔴 Trouvé le 2026-08-19. Le `||` posé le 2026-08-04 n'était conditionné par
+  // rien : dès qu'une procédure existait au registre, l'indicateur passait au
+  // vert quel que soit l'état des intervenants réellement mobilisés. Le
+  // commentaire de la règle énonçait pourtant la doctrine inverse — un OF qui
+  // sous-traite prouve par la vigilance exercée sur CHAQUE intervenant, un OF
+  // qui ne sous-traite pas encore prouve par sa procédure. L'affichage savait
+  // déjà distinguer les deux voies (la preuve « dispositions prouvées par la
+  // procédure écrite » n'est rendue que si aucun sous-traitant n'est
+  // référencé) ; la couverture, elle, ne le savait pas.
+  //
+  // Le scénario est celui d'un super-indicateur (NC majeure) affiché couvert
+  // alors qu'aucun des cinq intervenants n'a de NDA, de vérification data.gouv
+  // ni de contrat signé.
+  it("🔴 off.27 : 5 sous-traitants référencés, 0 conformes + 1 procédure → a_completer", async () => {
+    // Discriminé sur `nda` : c'est la clé propre à la requête « conformes ».
+    // Discriminer sur la seule présence d'un `where` ne distinguerait plus rien
+    // depuis que le dénominateur filtre lui aussi (`actif: true`).
+    mockP.sousTraitant.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+      Promise.resolve(args?.where?.["nda"] !== undefined ? 0 : 5),
+    );
+    mockP.trainer.count.mockResolvedValue(0);
+    mockP.documentGenere.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+      Promise.resolve(args?.where?.["type"] === "procedure_sous_traitance" ? 1 : 0),
+    );
+    const result = await evaluerConformite();
+    const ind27 = result.indicateurs.find((i) => i.numero === 27);
+    expect(ind27?.statut).toBe("a_completer");
+    expect(ind27?.preuves.join(" ")).toMatch(/5 référencés au total/);
+  });
+
+  // ── off.27 : le dénominateur ne compte que les sous-traitants ACTIFS ───────
+  //
+  // 🔴 Trouvé le 2026-08-19. Le numérateur filtrait `actif: true`, le
+  // dénominateur ne filtrait rien — alors que la ligne voisine
+  // (`trainer.count({ actif: true })`) filtre correctement : un oubli, pas une
+  // convention. Conséquence : archiver un sous-traitant faisait BAISSER le taux
+  // de conformité d'un super-indicateur, et aucune action ne pouvait le
+  // corriger. La garde porte sur les deux effets : le libellé montré au
+  // propriétaire, et le ratio conformes/référencés qui décide la couverture.
+  it("🔴 off.27 : un sous-traitant ARCHIVÉ ne compte plus au dénominateur", async () => {
+    mockP.sousTraitant.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      if (args?.where?.["nda"] !== undefined) return Promise.resolve(1); // conforme et actif
+      if (args?.where?.["actif"] !== undefined) return Promise.resolve(1); // actifs
+      return Promise.resolve(2); // toutes lignes, inactif compris
+    });
+    mockP.trainer.count.mockResolvedValue(0);
+    const result = await evaluerConformite();
+    const ind27 = result.indicateurs.find((i) => i.numero === 27);
+    expect(ind27?.preuves.join(" ")).toMatch(/1 référencé au total — 1 organisme/);
+    expect(ind27?.statut).toBe("couvert");
+  });
+
+  // ── off.5 : la couverture doit LIRE les objectifs ──────────────────────────
+  //
+  // 🔴 Dernier des huit faux positifs de l'audit blanc du 2026-08-15. off.5
+  // exige des objectifs pédagogiques définis ; la règle ne regardait que
+  // `statutGeneration`, c'est-à-dire l'état d'avancement du moteur de
+  // génération. `Formation.objectifsPedagogiques` n'était lu nulle part. Une
+  // formation sortie de « intention » avec un tableau d'objectifs VIDE
+  // déclarait l'indicateur couvert.
+  it("🔴 off.5 : 3 formations hors intention, aucune ne porte d'objectif → a_completer", async () => {
+    mockP.formation.count.mockResolvedValue(3);
+    setupFormationsObjectifs([
+      { objectifsPedagogiques: [] },
+      { objectifsPedagogiques: [] },
+      { objectifsPedagogiques: [] },
+    ]);
+    const result = await evaluerConformite();
+    const ind5 = result.indicateurs.find((i) => i.numero === 5);
+    expect(ind5?.statut).toBe("a_completer");
+    expect(ind5?.preuves.join(" ")).toMatch(/0\/3/);
+  });
+
+  it("off.5 : couvert si CHAQUE formation active porte au moins un objectif", async () => {
+    mockP.formation.count.mockResolvedValue(2);
+    setupFormationsObjectifs([
+      { objectifsPedagogiques: [{ id: "o1", verbe: "Identifier" }] },
+      { objectifsPedagogiques: [{ id: "o2", verbe: "Construire" }] },
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 5)?.statut).toBe("couvert");
   });
 });

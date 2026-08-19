@@ -417,6 +417,152 @@ describe("getEspaceStagiaire", () => {
 
     expect(espace.attestations[0]!.pdfUrl).toBeNull();
   });
+
+  // ── Cloisonnement : une pièce NOMINATIVE n'appartient qu'à son destinataire ──
+  //
+  // 🔴 En inter-entreprises les inscrits sont des concurrents (même doctrine que
+  // `emargement/portail-queries.ts`). La convocation porte le nom et l'employeur
+  // d'UNE personne ; sa `pdfUrl` est re-signée 24 h à chaque lecture, donc ce qui
+  // s'affiche se télécharge réellement.
+  //
+  // ⚠️ Ces tests laissent le MOCK rejouer le `where` que le service passe à
+  // Prisma, au lieu de lui servir une liste déjà triée. C'est le seul montage qui
+  // prouve quelque chose : le cloisonnement se joue dans la REQUÊTE, et un
+  // fixture filtré à la main rendrait vert un service qui ne filtre pas.
+
+  interface ClauseDocuments {
+    type?: { in: readonly string[] };
+    traineeId?: string | null;
+    OR?: readonly ClauseDocuments[];
+  }
+
+  interface LigneDocument {
+    id: string;
+    type: string;
+    numero: string;
+    pdfUrl: string | null;
+    qrToken: string | null;
+    createdAt: Date;
+    /** Colonne réelle de `documents_generes` — nulle pour les pièces collectives. */
+    traineeId: string | null;
+  }
+
+  function satisfaitClause(clause: ClauseDocuments, doc: LigneDocument): boolean {
+    if (clause.OR !== undefined && !clause.OR.some((sous) => satisfaitClause(sous, doc))) {
+      return false;
+    }
+    if (clause.type !== undefined && !clause.type.in.includes(doc.type)) return false;
+    // `undefined` = pas de filtre côté Prisma ; `null` filtre sur la valeur NULL.
+    if (clause.traineeId !== undefined && clause.traineeId !== doc.traineeId) return false;
+    return true;
+  }
+
+  const PIECE_COLLECTIVE: LigneDocument = {
+    id: "doc-programme",
+    type: "programme",
+    numero: "AXI-DOC-2026-900",
+    pdfUrl: "https://example.com/programme.pdf",
+    qrToken: null,
+    createdAt: new Date("2026-01-05T09:00:00Z"),
+    traineeId: null,
+  };
+
+  const CONVOCATION_MOI: LigneDocument = {
+    id: "doc-convoc-moi",
+    type: "convocation",
+    numero: "AXI-DOC-2026-901",
+    pdfUrl: "https://example.com/convoc-moi.pdf",
+    qrToken: null,
+    createdAt: new Date("2026-01-10T09:00:00Z"),
+    traineeId: "trainee-MOI",
+  };
+
+  // Créée APRÈS la mienne : c'est donc elle que la déduplication
+  // (session, type) retient, la plus récente l'emportant.
+  const CONVOCATION_AUTRE: LigneDocument = {
+    id: "doc-convoc-autre",
+    type: "convocation",
+    numero: "AXI-DOC-2026-902",
+    pdfUrl: "https://example.com/convoc-autre.pdf",
+    qrToken: null,
+    createdAt: new Date("2026-01-20T09:00:00Z"),
+    traineeId: "trainee-AUTRE",
+  };
+
+  // Convocation produite avant que `genererConvocationAction` ne renseigne
+  // `refs.traineeId` (commit du 21/07/2026) : elle nomme quelqu'un sans dire qui.
+  const CONVOCATION_HERITEE: LigneDocument = {
+    id: "doc-convoc-heritee",
+    type: "convocation",
+    numero: "AXI-DOC-2026-903",
+    pdfUrl: "https://example.com/convoc-heritee.pdf",
+    qrToken: null,
+    createdAt: new Date("2026-01-25T09:00:00Z"),
+    traineeId: null,
+  };
+
+  function brancherPrismaFiltrant(documents: readonly LigneDocument[]): void {
+    mockPrisma.trainee.findUnique.mockImplementation((args: unknown) => {
+      const clause =
+        (
+          args as {
+            select?: {
+              enrollments?: {
+                select?: { session?: { select?: { documents?: { where?: ClauseDocuments } } } };
+              };
+            };
+          }
+        ).select?.enrollments?.select?.session?.select?.documents?.where ?? {};
+
+      return Promise.resolve({
+        prenom: "Alice",
+        nom: "Dupont",
+        situationHandicap: false,
+        handicapDetailsChiffre: null,
+        enrollments: [
+          {
+            statut: "confirmee",
+            createdAt: new Date("2026-01-01"),
+            attestationDocument: null,
+            questionnaires: [],
+            session: {
+              id: "session-inter-1",
+              titreSession: "Formation IA — inter-entreprises",
+              dateDebut: new Date("2026-02-01"),
+              dateFin: new Date("2026-02-02"),
+              statut: "planifiee",
+              formation: { objectifsPedagogiques: [] },
+              documents: documents.filter((doc) => satisfaitClause(clause, doc)),
+            },
+          },
+        ],
+      });
+    });
+  }
+
+  it("cloisonnement : la convocation nominative d'un AUTRE inscrit n'entre pas dans l'espace", async () => {
+    mockSignedDocumentPdfUrl.mockResolvedValue(null);
+    brancherPrismaFiltrant([PIECE_COLLECTIVE, CONVOCATION_MOI, CONVOCATION_AUTRE]);
+
+    const espace = await getEspaceStagiaire("trainee-MOI");
+    const numeros = espace.pieces.map((p) => p.numero);
+
+    expect(numeros).not.toContain(CONVOCATION_AUTRE.numero);
+    expect(numeros).toContain(CONVOCATION_MOI.numero);
+    // La correction ne doit pas emporter les pièces collectives au passage.
+    expect(numeros).toContain(PIECE_COLLECTIVE.numero);
+  });
+
+  it("cloisonnement : une convocation héritée sans destinataire reste invisible", async () => {
+    mockSignedDocumentPdfUrl.mockResolvedValue(null);
+    brancherPrismaFiltrant([PIECE_COLLECTIVE, CONVOCATION_HERITEE]);
+
+    const espace = await getEspaceStagiaire("trainee-MOI");
+    const numeros = espace.pieces.map((p) => p.numero);
+
+    expect(numeros).not.toContain(CONVOCATION_HERITEE.numero);
+    expect(numeros).toContain(PIECE_COLLECTIVE.numero);
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
