@@ -8,7 +8,8 @@
  * ## L'ordre des opérations n'est pas négociable
  *
  *  1. Lire la pièce, puis AUTORISER le porteur — avant toute vérification métier.
- *  2. Gardes sur la PIÈCE : jamais un SPÉCIMEN, jamais une pièce non scellée.
+ *  2. Gardes sur la PIÈCE : jamais une pièce ANNULÉE, jamais un SPÉCIMEN, jamais
+ *     une pièce non scellée.
  *  3. Cohérence canal ↔ submission, et modalité ↔ image.
  *  4. Identité résolue CÔTÉ SERVEUR pour le canal maison — jamais depuis l'entrée.
  *  5. Image sur R2, qui LÈVE si elle échoue. Une ligne sans objet serait un
@@ -160,6 +161,8 @@ export type RefusSignatureDocument =
   | "piece_introuvable"
   | "piece_specimen"
   | "piece_non_scellee"
+  /** La pièce a été annulée au registre : elle ne fait plus foi, elle ne se signe plus. */
+  | "piece_annulee"
   | "porteur_non_autorise"
   | "partie_non_attendue"
   | "parties_requises_absentes"
@@ -215,6 +218,8 @@ const MESSAGES: Record<RefusSignatureDocument, string> = {
     "Cette pièce est un SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans Qualiopi › Configuration, régénérez la pièce, puis faites-la signer.",
   piece_non_scellee:
     "Cette pièce n'a pas d'empreinte : rien ne permettrait de prouver plus tard quel document a été signé.",
+  piece_annulee:
+    "Cette pièce a été annulée : elle ne fait plus foi et ne peut plus être signée. Votre interlocuteur vous adressera la version qui la remplace.",
   porteur_non_autorise: "Vous n'êtes pas autorisé à signer cette pièce à ce titre.",
   partie_non_attendue: "Cette partie n'a pas à signer cette pièce.",
   parties_requises_absentes:
@@ -273,6 +278,12 @@ async function lirePiece(documentGenereId: string, partie: PartieSignataire) {
       hashSha256: true,
       metadata: true,
       sessionId: true,
+      // 🔴 Le SORT de la pièce entre dans la décision de signer. Il n'y entrait
+      // pas : `verifierJeton` pesait cinq conditions — existence, pièce visée,
+      // partie, révocation, péremption — dont aucune ne regardait si la pièce
+      // faisait encore foi. Un lien légitimement émis, porté par son
+      // destinataire légitime, signait donc une pièce annulée.
+      annuleeAt: true,
       signatures: {
         where: { partie, revokedAt: null },
         select: { id: true },
@@ -697,6 +708,26 @@ export async function signerDocument(
   if (ctx.signatures.length > 0) return refus("deja_signe");
 
   // ── 2. GARDES SUR LA PIÈCE ──
+  //
+  // 🔴 Annulée d'abord. La doctrine est déjà écrite dans ce dépôt
+  // (`audit-dossier.ts`) : « une pièce annulée ne se compte NULLE PART ».
+  // Elle ne se signe donc pas non plus — signer, c'est ajouter une preuve
+  // d'engagement à un document dont l'organisme a lui-même déclaré qu'il ne
+  // valait plus rien.
+  //
+  // ⚠️ Ce qui fait la gravité n'est pas la ligne écrite, ce sont ses SUITES
+  // AUTOMATIQUES : `consequenceSignatureComplete` (piece-signature.ts) envoie
+  // les questionnaires de positionnement à des stagiaires réels dès qu'une
+  // convention ou un contrat passe `signee`, et fait basculer un devis en
+  // `accepte`. Aucun écran humain ne s'interpose entre la signature et l'effet.
+  //
+  // ⚠️ AUCUNE exception, canal papier compris. Le reversement d'une signature
+  // manuscrite recueillie AVANT l'annulation serait le seul cas légitime — mais
+  // ce porteur n'a aucun appelant dans le dépôt, et le service n'accepte pas de
+  // date de recueil distincte de `maintenant` : il ne pourrait donc pas établir
+  // l'antériorité qui justifierait l'exception. L'ouvrir sur une promesse
+  // reviendrait à rouvrir le défaut pour le seul canal où personne ne regarde.
+  if (ctx.annuleeAt !== null) return refus("piece_annulee");
   if (estSpecimen(ctx.metadata)) return refus("piece_specimen");
   // `hashSha256` est l'empreinte du PDF. Vide, la signature ne porterait sur rien
   // de vérifiable — et `documentHashSha256` est scellé dans le tuple.

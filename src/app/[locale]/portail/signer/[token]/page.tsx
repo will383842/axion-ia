@@ -108,6 +108,11 @@ export default async function SignerDevisPage({ params }: PageProps) {
       type: true,
       pdfUrl: true,
       createdAt: true,
+      // Le SORT de la pièce. Sans lui, cette page affichait la pièce et son
+      // formulaire de signature comme si de rien n'était : le lien restait
+      // valide (il l'est), et rien à l'écran ne disait que l'organisme avait
+      // annulé le document que le signataire s'apprêtait à signer.
+      annuleeAt: true,
       client: { select: { raisonSociale: true } },
       trainee: { select: { prenom: true, nom: true } },
       sousTraitant: { select: { nom: true } },
@@ -118,6 +123,21 @@ export default async function SignerDevisPage({ params }: PageProps) {
 
   const circuit = circuitPour(piece.type);
   if (circuit === null) notFound();
+
+  // 🔴 Une pièce annulée ne se signe plus — `signerDocument` la refuse. Le dire
+  // ICI évite au signataire de lire la pièce puis de tracer sa signature pour
+  // rien, et surtout de croire son engagement pris. On NOMME l'annulation
+  // plutôt que de rendre un 404 : le lien qu'il a reçu était bien le bon, c'est
+  // le document qui a changé de statut, et lui dire le contraire l'enverrait
+  // chercher une erreur de son côté.
+  if (piece.annuleeAt !== null) {
+    return (
+      <Message
+        titre="Cette pièce a été annulée"
+        detail={`${circuit.libelle} ${piece.numero} ne fait plus foi et ne peut plus être signée. ${identite.raisonSociale} vous adressera la version qui la remplace.`}
+      />
+    );
+  }
 
   // Cette partie a-t-elle DÉJÀ signé ? On le dit ici plutôt que de laisser le
   // signataire tracer une signature pour se voir refuser en `deja_signe` après
