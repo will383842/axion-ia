@@ -37,6 +37,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const rl = await checkRateLimit(`gdpr:export:request:${email}`, {
     limit: 3,
     windowSec: 86_400,
+    surPanne: "refuser",
   });
   // On ne révèle pas le rate-limit côté response (anti-enumération) ; on log silently
   if (!rl.allowed) {

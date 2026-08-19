@@ -59,10 +59,15 @@ export async function sendFormateurMagicLinkAction(
   const ip = await getClientIp();
 
   // Rate limit composite IP + e-mail (envoi d'e-mails = coûteux + anti-abus).
-  const rlIp = await checkRateLimit(`formateur:magic:ip:${ip}`, { limit: 10, windowSec: 900 });
+  const rlIp = await checkRateLimit(`formateur:magic:ip:${ip}`, {
+    limit: 10,
+    windowSec: 900,
+    surPanne: "refuser",
+  });
   const rlEmail = await checkRateLimit(`formateur:magic:email:${email}`, {
     limit: 5,
     windowSec: 900,
+    surPanne: "refuser",
   });
   // On renvoie le message générique même si rate-limité (pas d'oracle).
   if (!rlIp.allowed || !rlEmail.allowed) {
