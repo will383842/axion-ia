@@ -157,6 +157,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbPiecesCoordination,
     modalitesCoordination,
     appreciationsAuteurs,
+    // ── Audit blanc 2026-08-15, dernier faux positif — off.5 ────────────────
+    // Ajouté EN FIN de liste, pour la même raison que les précédents.
+    nbFormationsActivesAvecObjectifs,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -186,7 +189,17 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.veille.count({ where: { type: "metiers" } }),
     prisma.veille.count({ where: { type: "pedagogique" } }),
     prisma.partenariat.count(),
-    prisma.sousTraitant.count(),
+    // off.27 — DÉNOMINATEUR de la vigilance : les sous-traitants ACTIFS.
+    //
+    // 🔴 2026-08-19. Ce compteur ne portait aucun filtre alors que le
+    // numérateur (`nbSousTraitantsConformes`, plus bas) exige `actif: true` :
+    // archiver une ligne faisait donc BAISSER le taux d'un super-indicateur, et
+    // aucune action ne pouvait le corriger. Un organisme dont on ne se sert
+    // plus n'est pas un intervenant sur lequel exercer une vigilance ; il n'a
+    // rien à faire au dénominateur. La ligne voisine
+    // (`trainer.count({ actif: true })`) filtre depuis toujours — c'était un
+    // oubli, pas une convention.
+    prisma.sousTraitant.count({ where: { actif: true } }),
     prisma.trainer.count({ where: { actif: true } }),
     // off.21 : formateurs avec CV téléversé (cvUrl non null)
     prisma.trainer.count({ where: { actif: true, cvUrl: { not: null } } }),
@@ -478,6 +491,32 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       },
       take: 2000,
     }),
+    // off.5 — les OBJECTIFS eux-mêmes, et non l'avancement du moteur.
+    //
+    // 🔴 2026-08-19, dernier des huit faux positifs de l'audit blanc du 15/08.
+    // La couverture reposait sur `statutGeneration notIn ("intention",
+    // "archive")` : un état du PIPELINE DE GÉNÉRATION, pas une exigence RNQ.
+    // `Formation.objectifsPedagogiques` n'était lu nulle part dans ce fichier —
+    // une formation sortie de « intention » avec un tableau d'objectifs VIDE
+    // déclarait l'indicateur couvert.
+    //
+    // `objectifsPedagogiques` est un Json : Prisma ne sait pas compter la
+    // longueur d'un tableau Json en base, d'où le `findMany` + filtrage en
+    // mémoire. Le coût est celui d'une colonne Json sur le catalogue ACTIF
+    // (22 lignes en production) — négligeable, et `take` borne le pire cas.
+    prisma.formation
+      .findMany({
+        where: { statut: "actif" },
+        select: { objectifsPedagogiques: true },
+        take: 500,
+      })
+      .then(
+        (rows) =>
+          rows.filter((r) => {
+            const objectifs = r.objectifsPedagogiques;
+            return Array.isArray(objectifs) && objectifs.length > 0;
+          }).length,
+      ),
   ]);
 
   const typesAction = typesActionResult;
@@ -738,14 +777,39 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbInscritsSessionsDemarrees > 0 &&
       nbInscritsPositionnesAvantDebut === nbInscritsSessionsDemarrees,
   );
-  // off.5 : objectifs définis — durci sur les formations réellement structurées
-  //         (sorties de « intention »), pas la seule existence d'une fiche.
+  // off.5 : objectifs pédagogiques définis.
+  //
+  // 🔴 [2026-08-19] La couverture LIT désormais les objectifs. Elle se déduisait
+  // du `statutGeneration` — l'avancement du moteur de génération — et jamais du
+  // contenu du champ : une formation sortie de « intention » avec un tableau
+  // d'objectifs vide déclarait l'indicateur couvert, alors que c'est très
+  // exactement la pièce que l'auditeur ouvre en premier sur cette ligne.
+  //
+  // Exprimé en COUVERTURE du catalogue actif, comme off.4, off.8 et off.19 :
+  // l'auditeur tire une formation au hasard, pas la meilleure. Le compteur de
+  // structure reste affiché — il dit où en est la production —, il ne décide
+  // plus.
+  //
+  // ⚠️ Conséquence assumée : tant que les objectifs ne sont pas remontés en
+  // base, off.5 bascule en « à compléter » et le score affiché au propriétaire
+  // BAISSE. C'est le comportement correct : le score doit mesurer le dossier
+  // d'audit réel, pas l'état du pipeline logiciel.
+  const tauxObjectifsDefinis =
+    nbFormationsActives > 0
+      ? Math.round((nbFormationsActivesAvecObjectifs / nbFormationsActives) * 100)
+      : 0;
   set(
     5,
     [
-      `${nbFormationsAvecStructure} formation${nbFormationsAvecStructure > 1 ? "s" : ""} avec objectifs pédagogiques définis (structure générée)`,
+      `${nbFormationsActivesAvecObjectifs}/${nbFormationsActives} formation${nbFormationsActives > 1 ? "s" : ""} active${nbFormationsActives > 1 ? "s" : ""} portant au moins un objectif pédagogique renseigné (${tauxObjectifsDefinis} %)`,
+      `${nbFormationsAvecStructure} formation${nbFormationsAvecStructure > 1 ? "s" : ""} sortie${nbFormationsAvecStructure > 1 ? "s" : ""} de l'état « intention » (avancement de la production, ≠ preuve)`,
+      nbFormationsActives === 0
+        ? "Aucune formation active au catalogue — les objectifs ne sont pas encore démontrables"
+        : nbFormationsActivesAvecObjectifs < nbFormationsActives
+          ? `${nbFormationsActives - nbFormationsActivesAvecObjectifs} formation(s) active(s) SANS aucun objectif pédagogique renseigné`
+          : "Chaque formation active porte des objectifs pédagogiques renseignés",
     ],
-    nbFormationsAvecStructure > 0,
+    nbFormationsActives > 0 && nbFormationsActivesAvecObjectifs === nbFormationsActives,
   );
   // off.6 : contenus et modalités adaptés — durci sur les formations dont le contenu
   //         a été réellement produit (signal distinct de off.5).
@@ -1027,21 +1091,45 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   //   Le critère 6 du RNQ vise « sous-traitants ET formateurs occasionnels ».
   const totalSousTraitants = nbSousTraitants + nbFormateursSousTraitants;
   const totalSousTraitantsConformes = nbSousTraitantsConformes + nbFormateursSousTraitantsConformes;
-  set(
-    27,
-    [
-      `${totalSousTraitantsConformes} sous-traitant${totalSousTraitantsConformes > 1 ? "s" : ""} conforme${totalSousTraitantsConformes > 1 ? "s" : ""} : NDA + vérif data.gouv + contrat signé`,
-      totalSousTraitants > 0
-        ? `${totalSousTraitants} référencé${totalSousTraitants > 1 ? "s" : ""} au total — ${nbSousTraitants} organisme${nbSousTraitants > 1 ? "s" : ""}, ${nbFormateursSousTraitants} formateur${nbFormateursSousTraitants > 1 ? "s" : ""} indépendant${nbFormateursSousTraitants > 1 ? "s" : ""}`
-        : nbProceduresSousTraitance > 0
-          ? "Aucun sous-traitant référencé — dispositions prouvées par la procédure écrite versée au registre"
-          : "Aucun sous-traitant référencé — off.27 exige alors une procédure « dispositions sous-traitance »",
-      nbProceduresSousTraitance > 0
-        ? `${nbProceduresSousTraitance} procédure${nbProceduresSousTraitance > 1 ? "s" : ""} « dispositions sous-traitance » au registre`
-        : "Aucune procédure « dispositions sous-traitance » générée",
-    ],
-    totalSousTraitantsConformes > 0 || nbProceduresSousTraitance > 0,
-  );
+  // 🔴 2026-08-19 — les deux voies sont EXCLUSIVES, elles ne s'additionnent pas.
+  //
+  // La couverture s'écrivait `conformes > 0 || procédures > 0`, sans aucune
+  // condition sur le `||`. Dix intervenants référencés, tous sans NDA, sans
+  // vérification data.gouv et sans contrat signé, plus une procédure au
+  // registre : `false || true` — un super-indicateur (NC majeure) affiché
+  // « couvert ». La doctrine écrite trois lignes plus haut dit l'inverse, et
+  // l'AFFICHAGE la respectait déjà (la preuve « dispositions prouvées par la
+  // procédure écrite » n'est rendue que si `totalSousTraitants === 0`) : seule
+  // la couverture ignorait la distinction.
+  //
+  // Le choix du seuil : quand des intervenants sont mobilisés, c'est la
+  // vigilance exercée sur CHACUN qui prouve l'indicateur — un seul dossier
+  // incomplet est exactement le dossier que l'auditeur tire au sort. La
+  // procédure écrite n'est PAS ajoutée comme condition supplémentaire de cette
+  // branche : le RNQ la demande comme moyen de preuve, pas en surcroît de
+  // dossiers complets, et l'exiger gèlerait l'indicateur d'un OF dont tous les
+  // intervenants sont en règle sur une pièce qu'il n'a pas encore générée.
+  const off27Couvert =
+    totalSousTraitants === 0
+      ? nbProceduresSousTraitance > 0
+      : totalSousTraitantsConformes === totalSousTraitants;
+  const off27Preuves: string[] = [
+    `${totalSousTraitantsConformes} sous-traitant${totalSousTraitantsConformes > 1 ? "s" : ""} conforme${totalSousTraitantsConformes > 1 ? "s" : ""} : NDA + vérif data.gouv + contrat signé`,
+    totalSousTraitants > 0
+      ? `${totalSousTraitants} référencé${totalSousTraitants > 1 ? "s" : ""} au total — ${nbSousTraitants} organisme${nbSousTraitants > 1 ? "s" : ""} actif${nbSousTraitants > 1 ? "s" : ""}, ${nbFormateursSousTraitants} formateur${nbFormateursSousTraitants > 1 ? "s" : ""} indépendant${nbFormateursSousTraitants > 1 ? "s" : ""}`
+      : nbProceduresSousTraitance > 0
+        ? "Aucun sous-traitant référencé — dispositions prouvées par la procédure écrite versée au registre"
+        : "Aucun sous-traitant référencé — off.27 exige alors une procédure « dispositions sous-traitance »",
+    nbProceduresSousTraitance > 0
+      ? `${nbProceduresSousTraitance} procédure${nbProceduresSousTraitance > 1 ? "s" : ""} « dispositions sous-traitance » au registre`
+      : "Aucune procédure « dispositions sous-traitance » générée",
+  ];
+  if (totalSousTraitants > 0 && totalSousTraitantsConformes < totalSousTraitants) {
+    off27Preuves.push(
+      `${totalSousTraitants - totalSousTraitantsConformes} intervenant${totalSousTraitants - totalSousTraitantsConformes > 1 ? "s" : ""} mobilisé${totalSousTraitants - totalSousTraitantsConformes > 1 ? "s" : ""} sans dossier de vigilance complet — la procédure écrite ne supplée pas la vigilance exercée sur chacun`,
+    );
+  }
+  set(27, off27Preuves, off27Couvert);
   // off.28 (AFEST) : plus AUCUNE couverture automatique depuis le coaching
   //   (retrait 2026-08-10 — le 1-to-1 est du conseil, décision 2026-07-17 ;
   //   les parcours coaching comme preuve AFEST étaient le risque d'audit n°1).
