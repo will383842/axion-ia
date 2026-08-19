@@ -25,8 +25,38 @@ import { SITE_URL } from "@/lib/seo";
 import { escapeXml } from "@/server/image-bank/utils/xml";
 import { PAGE_IMAGES_MANIFEST } from "@/lib/seo/page-images";
 import { SITEMAP_CACHE_HEADER } from "@/server/image-bank/constants";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 export const dynamic = "force-static";
+
+// 🔴 2026-08-19 — LA FUITE QUI N'APPARAÎT DANS AUCUN `curl` DE PAGE.
+//
+// Le manifeste porte, pour `/certification-qualiopi`, huit images dont les
+// `nameFr` / `altFr` affirment la certification (« organisme de formation
+// certifié Qualiopi », et jusqu'à la formule officielle « la certification
+// qualité a été délivrée au titre de la catégorie […] »). Ces libellés sont
+// poussés à Google Images en `<image:title>` / `<image:caption>` — 23 lignes
+// portant « Qualiopi » mesurées sur la prod le 2026-08-19 — alors que la
+// certification n'est PAS obtenue (6 non-conformités majeures au 2026-08-15).
+//
+// Le HTML des pages ne la montre pas : la page `/certification-qualiopi` est,
+// elle, déjà en `notFound()` hors certification. Ce sitemap était le seul
+// chemin restant, et il déclarait en prime le `<loc>` d'une page qui répond 404.
+//
+// On gate ICI plutôt que de réécrire les libellés du manifeste, pour deux
+// raisons : (1) le manifeste est un module de données pur, partagé avec le rendu
+// `<Image>` et le JSON-LD — le toucher risquerait des pages non-OF ; (2) réécrire
+// une légende ne changerait rien au fait que les IMAGES elles-mêmes montrent un
+// certificat non détenu : ce qu'il faut, c'est ne pas les proposer à
+// l'indexation. Les libellés restent donc intacts et redeviendront exacts le
+// jour de la certification.
+//
+// ⚠️ Route `force-static` : la valeur est figée AU BUILD. C'est cohérent avec la
+// page `/certification-qualiopi` (SSG, même drapeau) — l'obtention du certificat
+// suppose de toute façon un redéploiement pour renseigner numéro, date et
+// certificateur. Défaut sécurisé côté build GH Actions : le drapeau est absent,
+// donc `false`, donc le bloc n'est pas émis.
+const PAGES_RESERVEES_AUX_CERTIFIES = new Set(["/certification-qualiopi"]);
 
 // GEO-037 (audit GEO/AEO 2026-08-14) — cette licence n'est déclarée QUE sur les
 // images dont Axion-IA détient les droits (`origin` absent ou `"own"` dans le
@@ -42,8 +72,13 @@ export function GET(): Response {
   const urlBlocks: string[] = [];
   let totalImages = 0;
 
+  const certifie = isQualiopiCertificationObtenue();
+
   for (const page of PAGE_IMAGES_MANIFEST) {
     if (page.images.length === 0) continue;
+    // Tant que la certification n'est pas obtenue, ces images (et leurs légendes
+    // affirmatives) ne partent pas à l'indexation — cf. le bloc d'en-tête.
+    if (!certifie && PAGES_RESERVEES_AUX_CERTIFIES.has(page.path)) continue;
     const absPageUrl = `${SITE_URL}/fr${page.path === "/" ? "" : page.path}`;
     const imageBlocks = page.images.map((img) => {
       totalImages += 1;
