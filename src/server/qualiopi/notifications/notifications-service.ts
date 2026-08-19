@@ -99,17 +99,15 @@ async function getLienEmargementSiPremier(
 async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promise<string> {
   const fallback = `${baseUrl}/fr/portail/mon-espace`;
   try {
-    // Recherche un accès valide existant (non-révoqué, non-expiré)
-    const acces = await prisma.portailAcces.findFirst({
-      where: {
-        traineeId,
-        revoked: false,
-        expiresAt: { gt: new Date() },
-      },
-      orderBy: { expiresAt: "desc" },
-      select: { token: true },
-    });
-    const token = acces?.token ?? (await creerAcces(traineeId)).token;
+    // 🔴 2026-08-19 (`D4-4-A`) — cette fonction relisait le jeton d'un accès
+    // encore valide pour reconstruire le lien. Ce n'est plus possible, et ce
+    // n'était pas souhaitable : `portail_acces` ne stocke plus qu'un SHA-256.
+    //
+    // Émettre un accès neuf par envoi est d'ailleurs le meilleur des deux
+    // comportements. Avec le recyclage, un SEUL e-mail intercepté valait un
+    // accès permanent, et révoquer cet accès coupait d'un coup tous les liens
+    // déjà envoyés au même stagiaire. Un accès par envoi se révoque isolément.
+    const { token } = await creerAcces(traineeId);
     return `${baseUrl}/fr/portail/acces/${token}`;
   } catch {
     return fallback;

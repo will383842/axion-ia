@@ -8261,7 +8261,9 @@ model PortailAcces {
   id         String    @id @default(uuid()) @db.Uuid
   traineeId  String    @map("trainee_id") @db.Uuid
   trainee    Trainee   @relation(fields: [traineeId], references: [id], onDelete: Cascade)
-  token      String    @unique @db.VarChar(64)
+  /// 🔴 SHA-256 hex du jeton, JAMAIS le clair (`D4-4-A`, 2026-08-19).
+  /// Le clair ne vit que dans le lien envoyé et dans le cookie du stagiaire.
+  tokenHash  String    @unique @map("token_hash") @db.VarChar(64)
   expiresAt  DateTime  @map("expires_at")
   revoked    Boolean   @default(false)
   lastUsedAt DateTime? @map("last_used_at")

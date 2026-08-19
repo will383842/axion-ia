@@ -11,12 +11,13 @@
  *
  * Règles non négociables :
  * - Token via randomBytes 32 (64 hex) — même primitives que makeQrToken.
- * - Comparaison token via timingSafeEqual (node:crypto).
+ * - Le jeton est stocké HACHÉ (SHA-256 hex) : la base ne détient aucun secret
+ *   rejouable. Le clair ne vit que dans le lien envoyé et le cookie (`D4-4-A`).
  * - Handicap décrit via decryptPii — JAMAIS en clair dans les retours.
  * - exactOptionalPropertyTypes respecté.
  */
 
-import { randomBytes, timingSafeEqual } from "node:crypto";
+import { randomBytes, createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { signedDocumentPdfUrl } from "@/lib/r2-storage";
@@ -201,14 +202,21 @@ function genererTokenPortail(): string {
   return randomBytes(32).toString("hex");
 }
 
-/** Comparaison timing-safe de deux tokens portail (même longueur attendue : 64). */
-function comparerTokenPortail(candidat: string, reference: string): boolean {
-  if (candidat.length !== reference.length) return false;
-  try {
-    return timingSafeEqual(Buffer.from(candidat, "utf8"), Buffer.from(reference, "utf8"));
-  } catch {
-    return false;
-  }
+/**
+ * SHA-256 hex du jeton — ce qui est stocké, jamais le clair.
+ *
+ * 🔴 2026-08-19 (`D4-4-A`). Ce module comparait auparavant le clair reçu au
+ * clair stocké avec `timingSafeEqual`. Cette comparaison était DÉCORATIVE : la
+ * ligne venait d'être retrouvée par `findUnique({ where: { token } })`, donc
+ * par égalité exacte du jeton — elle ne pouvait que réussir. Une précaution
+ * contre les attaques temporelles posée APRÈS une recherche par égalité ne
+ * protège de rien, et sa présence donnait à lire une table de jetons en clair
+ * comme si elle était défendue.
+ *
+ * La vraie défense est ici : la base ne détient plus de secret utilisable.
+ */
+function hacherToken(token: string): string {
+  return createHash("sha256").update(token, "utf8").digest("hex");
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -235,13 +243,17 @@ export async function creerAcces(traineeId: string, joursValidite = 90): Promise
   const acces = await prisma.portailAcces.create({
     data: {
       traineeId,
-      token,
+      tokenHash: hacherToken(token),
       expiresAt,
     },
-    select: { id: true, token: true, expiresAt: true },
+    select: { id: true, expiresAt: true },
   });
 
-  return { id: acces.id, token: acces.token, expiresAt: acces.expiresAt };
+  // ⚠️ Le CLAIR est rendu ici, et nulle part ailleurs : c'est la seule et
+  // dernière occasion de le connaître. Rendre le hachage ferait partir des
+  // liens qui rendraient 404 à l'ouverture, sans que rien ne l'indique côté
+  // organisme — la panne serait entièrement chez le stagiaire.
+  return { id: acces.id, token, expiresAt: acces.expiresAt };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -297,19 +309,14 @@ export async function verifierToken(token: string): Promise<{ traineeId: string 
     return null;
   }
 
-  // On ne peut pas filtrer par token directement en DB (champ unique) sans
-  // exposer un oracle de timing — on récupère par token (index unique) puis
-  // comparaison timing-safe en mémoire. La requête DB est par token (hachage
-  // interne B-tree, pas de timing attaque côté DB significatif).
+  // La recherche se fait par le HASH : la base ne contient plus le secret, et
+  // un porteur de dump n'y trouve rien de rejouable.
   const acces = await prisma.portailAcces.findUnique({
-    where: { token },
-    select: { id: true, traineeId: true, token: true, expiresAt: true, revoked: true },
+    where: { tokenHash: hacherToken(token) },
+    select: { id: true, traineeId: true, expiresAt: true, revoked: true },
   });
 
   if (acces === null) return null;
-
-  // Comparaison timing-safe (défense en profondeur contre cache-timing)
-  if (!comparerTokenPortail(token, acces.token)) return null;
   if (acces.revoked) return null;
   if (acces.expiresAt < new Date()) return null;
 
