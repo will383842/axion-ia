@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // indexation 2026-06-17 — fin de l'incohérence sitemap↔page).
   const thin = !isGlossaryTermIndexable(slug);
 
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/glossaire/${slug}`,
     title: isFr

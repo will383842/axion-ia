@@ -18,6 +18,8 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { SITE_URL } from "@/lib/site-url";
+import { OG_LARGEUR_MINIMALE_GRANDE_CARTE } from "@/lib/og-format";
 import type { SiteRouteAnomalyDetectorJobData } from "../types";
 
 function isStubBuild(): boolean {
@@ -72,6 +74,11 @@ export function startSiteRouteAnomalyDetectorWorker() {
         no_jsonld: 0,
         no_ai_disclaimer: 0,
         no_external_links: 0,
+        og_image_absente: 0,
+        og_image_injoignable: 0,
+        og_image_trop_petite: 0,
+        og_dimensions_mensongeres: 0,
+        og_image_tierce: 0,
       };
 
       // 1) 404 : pages avec httpStatus=404
@@ -281,13 +288,158 @@ export function startSiteRouteAnomalyDetectorWorker() {
         stats.no_external_links++;
       }
 
+      // ── 10) Aperçu de partage (recensement OG 2026-08-17) ──────────────────
+      //
+      // Ces cinq règles ne portent QUE sur des routes déjà relevées
+      // (`ogInspectedAt` non nul). Une route jamais inspectée n'a rien dit :
+      // la traiter comme « sans image » inventerait des anomalies sur les
+      // 16 000 routes que l'inspecteur n'a pas encore atteintes.
+
+      // 10a) Aucune og:image du tout → le lien se partage en URL nue.
+      const sansImageOg = await prisma.siteRoute.findMany({
+        where: {
+          visibility: "public",
+          status: "live",
+          ogInspectedAt: { not: null },
+          ogImage: null,
+        },
+        select: { id: true, pathPattern: true },
+        take: 500,
+      });
+      for (const route of sansImageOg) {
+        await upsertAnomaly({
+          siteRouteId: route.id,
+          type: "og_image_absente",
+          severity: "high",
+          description: `Aucune image de partage : ${route.pathPattern} s'affiche en lien nu sur WhatsApp et LinkedIn`,
+        });
+        stats.og_image_absente++;
+      }
+
+      // 10b) L'image répond autre chose que 200 → aperçu vide, alors que la
+      //      page, elle, déclare fièrement une image.
+      const imageInjoignable = await prisma.siteRoute.findMany({
+        where: {
+          visibility: "public",
+          status: "live",
+          ogImage: { not: null },
+          ogImageStatus: { not: 200 },
+          ogInspectedAt: { not: null },
+        },
+        select: { id: true, pathPattern: true, ogImageStatus: true, ogImage: true },
+        take: 500,
+      });
+      for (const route of imageInjoignable) {
+        await upsertAnomaly({
+          siteRouteId: route.id,
+          type: "og_image_injoignable",
+          severity: "high",
+          description:
+            `L'image de partage de ${route.pathPattern} répond ` +
+            `${route.ogImageStatus ?? "rien"} : l'aperçu est vide (${route.ogImage ?? ""})`,
+        });
+        stats.og_image_injoignable++;
+      }
+
+      // 10c) Moins de 1200 px de large → LinkedIn et Facebook remplacent la
+      //      grande carte par une vignette. C'était le cas des 134 articles de
+      //      blog servis en 1080 de large jusqu'au 2026-08-17.
+      const imageTropPetite = await prisma.siteRoute.findMany({
+        where: {
+          visibility: "public",
+          status: "live",
+          ogImageWidth: { not: null, lt: OG_LARGEUR_MINIMALE_GRANDE_CARTE },
+        },
+        select: { id: true, pathPattern: true, ogImageWidth: true, ogImageHeight: true },
+        take: 500,
+      });
+      for (const route of imageTropPetite) {
+        await upsertAnomaly({
+          siteRouteId: route.id,
+          type: "og_image_trop_petite",
+          severity: "medium",
+          description:
+            `Image de partage ${route.ogImageWidth}×${route.ogImageHeight} sur ${route.pathPattern} : ` +
+            `sous ${OG_LARGEUR_MINIMALE_GRANDE_CARTE} px de large, LinkedIn n'affiche qu'une vignette`,
+        });
+        stats.og_image_trop_petite++;
+      }
+
+      // 10d) Les balises annoncent une taille que le fichier n'a pas.
+      //
+      // 🔑 C'est LE défaut du recensement : les 1 667 pages annonçaient
+      // 1200×630 pour des fichiers en 1200×675 ou 1080×607. Les réseaux
+      // réservent la vignette d'après ce qui est déclaré, avant de télécharger.
+      const routesMesurees = await prisma.siteRoute.findMany({
+        where: {
+          visibility: "public",
+          status: "live",
+          ogImageWidth: { not: null },
+          ogDeclaredWidth: { not: null },
+        },
+        select: {
+          id: true,
+          pathPattern: true,
+          ogImageWidth: true,
+          ogImageHeight: true,
+          ogDeclaredWidth: true,
+          ogDeclaredHeight: true,
+        },
+        take: 500,
+      });
+      for (const route of routesMesurees) {
+        if (
+          route.ogImageWidth === route.ogDeclaredWidth &&
+          route.ogImageHeight === route.ogDeclaredHeight
+        ) {
+          continue;
+        }
+        await upsertAnomaly({
+          siteRouteId: route.id,
+          type: "og_dimensions_mensongeres",
+          severity: "high",
+          description:
+            `${route.pathPattern} annonce ${route.ogDeclaredWidth}×${route.ogDeclaredHeight} ` +
+            `mais le fichier fait ${route.ogImageWidth}×${route.ogImageHeight}`,
+        });
+        stats.og_dimensions_mensongeres++;
+      }
+
+      // 10e) Image hébergée par un tiers : l'aperçu casse le jour où le tiers
+      //      retire la photo, sans que rien ne rougisse chez nous.
+      const imageTierce = await prisma.siteRoute.findMany({
+        where: {
+          visibility: "public",
+          status: "live",
+          ogImage: { not: null, startsWith: "http" },
+          NOT: { ogImage: { startsWith: SITE_URL } },
+          ogInspectedAt: { not: null },
+        },
+        select: { id: true, pathPattern: true, ogImage: true },
+        take: 500,
+      });
+      for (const route of imageTierce) {
+        await upsertAnomaly({
+          siteRouteId: route.id,
+          type: "og_image_tierce",
+          severity: "low",
+          description:
+            `L'aperçu de ${route.pathPattern} est hébergé hors de notre domaine ` +
+            `(${(route.ogImage ?? "").slice(0, 80)}) : il casse si le tiers retire l'image`,
+        });
+        stats.og_image_tierce++;
+      }
+
       const total = Object.values(stats).reduce((a, b) => a + b, 0);
       console.log(
         `[site-route-anomaly-detector] done: ${total} anomalies — ` +
           `404=${stats.not_found} dup_title=${stats.duplicate_meta_title} ` +
           `dup_desc=${stats.duplicate_meta_description} dup_h1=${stats.duplicate_h1} ` +
           `orphan=${stats.orphan_page} thin=${stats.thin_content} ` +
-          `no_jsonld=${stats.no_jsonld} no_ai=${stats.no_ai_disclaimer} no_ext=${stats.no_external_links}`,
+          `no_jsonld=${stats.no_jsonld} no_ai=${stats.no_ai_disclaimer} no_ext=${stats.no_external_links} ` +
+          `og_absente=${stats.og_image_absente} og_injoignable=${stats.og_image_injoignable} ` +
+          `og_petite=${stats.og_image_trop_petite} og_dims=${stats.og_dimensions_mensongeres} ` +
+          `og_tierce=${stats.og_image_tierce}`,
       );
     },
     {

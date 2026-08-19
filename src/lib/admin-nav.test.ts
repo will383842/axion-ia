@@ -123,7 +123,13 @@ describe("buildAdminNav SSOT", () => {
     // par le hub « Imprimés » et ses trois sous-onglets (catalogue A4, flyer A5,
     // livre KDP), soit −1 +4 = +3. Les sous-onglets sont DÉRIVÉS de `IMPRIMES`
     // (src/content/imprimes.ts) : ce décompte suivra tout imprimé ajouté.
-    expect(items.length).toBe(152);
+    // +1 (2026-08-18, « Aperçus de partage », sous « Toutes les URLs ») :
+    // recensement OG du 2026-08-17. Aucun écran ne montrait ce que le site sert
+    // quand on partage un lien — `site_routes` connaissait le titre, la meta
+    // description et le H1, et rien de la vignette. L'entrée vit sous
+    // l'explorateur d'URLs et non dans `settings/` : même inventaire, même
+    // inspecteur, même RBAC. = 153.
+    expect(items.length).toBe(153);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

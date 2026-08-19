@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Devenez client Axion-IA et gagnez en visibilité : podcast dirigeant, interviews de vos équipes, page dédiée sur axion-ia.com, backlink dofollow (autorité SEO) et relais LinkedIn — offerts avec chaque formation, audit, implémentation ou site web IA."
     : "Become an Axion-IA client and gain visibility: executive podcast, team interviews, dedicated page on axion-ia.com, dofollow backlink (SEO authority) and LinkedIn share — included with every training, audit, implementation or AI website.";
   return {
-    ...buildProductMetadata({ locale, path: PATH, title, description }),
+    ...(await buildProductMetadata({ locale, path: PATH, title, description })),
     title: { absolute: title },
   };
 }

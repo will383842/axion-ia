@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const guide = await loadGuideForView(slug, locale as Locale);
   if (!guide) return {};
 
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/guides/${slug}`,
     title: `${guide.title} · Guide Axion-IA`,

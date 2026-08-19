@@ -124,7 +124,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Description ≤ 160 chars (cap SERP Google).
   const desc = copy.dek.length > 160 ? `${copy.dek.slice(0, 157).trim()}…` : copy.dek;
 
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale: loc,
     path: `/presse/${slug}`,
     title: isFr

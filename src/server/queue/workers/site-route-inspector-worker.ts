@@ -15,6 +15,7 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { extraireBalisesOg, mesurerImagePartage } from "@/server/site-explorer/og-inspection";
 import type { SiteRouteInspectorJobData } from "../types";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -140,6 +141,16 @@ async function inspectRoute(siteRouteId: string, urlPath: string): Promise<void>
     const externalLinkCount = countExternalLinks(html);
     const hasAiDisclaimer = detectAiDisclaimer(html);
 
+    // Aperçu de partage — recensement OG 2026-08-17. On relève ce que la page
+    // DÉCLARE, puis on MESURE le fichier. L'écart entre les deux est le défaut
+    // qu'aucun écran ne montrait. `mesurerImagePartage` ne télécharge jamais
+    // nos cartes `/api/og` (Cloudflare ne les cache pas : ce serait un rendu
+    // Satori de 2 s par route et par passage).
+    const og = extraireBalisesOg(html);
+    const mesure = og.image
+      ? await mesurerImagePartage(og.image, SITE_URL)
+      : { status: null, width: null, height: null, bytes: null, contentType: null, mesuree: false };
+
     await prisma.siteRoute.update({
       where: { id: siteRouteId },
       data: {
@@ -154,6 +165,18 @@ async function inspectRoute(siteRouteId: string, urlPath: string): Promise<void>
         externalLinkCount,
         hasAiDisclaimer,
         lastInspectedAt: new Date(),
+        ogImage: og.image,
+        ogTitle: og.title,
+        ogDescription: og.description,
+        ogType: og.type,
+        ogDeclaredWidth: og.declaredWidth,
+        ogDeclaredHeight: og.declaredHeight,
+        ogImageWidth: mesure.width,
+        ogImageHeight: mesure.height,
+        ogImageStatus: mesure.status,
+        ogImageBytes: mesure.bytes,
+        ogImageType: mesure.contentType,
+        ogInspectedAt: new Date(),
       },
     });
   } catch (e) {
@@ -239,7 +262,14 @@ export function startSiteRouteInspectorWorker() {
     {
       connection: getBullConnectionOrThrow(),
       concurrency: 1,
-      lockDuration: 600_000, // 10 min max (500 routes × 2s = ~17 min → on prend 500 max)
+      // 10 min, alors qu'un run complet dure ~17 min (500 routes × 2 s). Ce
+      // n'est PAS une incohérence : BullMQ renouvelle le verrou tant que le
+      // process vit (`LockManager`, toutes les `lockRenewTime / 2` = 2,5 min
+      // ici — cf. `node_modules/bullmq/dist/cjs/classes/lock-manager.js`).
+      // La durée ne borne donc pas le run, elle borne le délai de reprise
+      // APRÈS une mort du process : la rallonger retarderait la reprise.
+      // Vérifié le 2026-08-17 avant de « corriger » ce qui n'était pas cassé.
+      lockDuration: 600_000,
       removeOnComplete: { count: 100 },
       removeOnFail: { count: 500 },
     },

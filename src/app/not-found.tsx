@@ -7,6 +7,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/seo";
+import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
 import "./globals.css";
 
 // metadataBase + og:image absolus explicites pour les 404 globales.
@@ -29,11 +30,16 @@ export const metadata: Metadata = {
     // Audit GSC 2026-05-18 — cohérence dimensions avec `src/app/opengraph-image.tsx`
     // qui génère 1200×675 (Google Discover hard floor, vs 1200×630 standard OG).
     // Sans alignement, l'OG meta annonce 630 mais l'image réelle servie est 675.
+    //
+    // 🔑 Ce diagnostic était JUSTE, et il n'a été appliqué qu'ici. La fabrique
+    // `buildProductMetadata`, qui sert les 1 666 autres pages, a continué à
+    // annoncer 630 pendant trois mois — mesuré le 2026-08-17. Les valeurs
+    // viennent maintenant de `@/lib/og-format`, partagé par tout le monde.
     images: [
       {
         url: `${PROD_ORIGIN}/opengraph-image`,
-        width: 1200,
-        height: 675,
+        width: OG_IMAGE_LARGEUR,
+        height: OG_IMAGE_HAUTEUR,
         alt: "Axion-IA — Cabinet IA opérationnel B2B",
         type: "image/png",
       },

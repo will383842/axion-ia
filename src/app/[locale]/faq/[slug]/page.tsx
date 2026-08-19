@@ -95,7 +95,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // suffixe marque que si la question est courte, sinon on la laisse intacte.
   const brand = isFr ? "FAQ Axion-IA" : "Axion-IA FAQ";
   const title = copy.question.length > 50 ? copy.question : `${copy.question} · ${brand}`;
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/faq/${slug}`,
     title,

@@ -46,6 +46,25 @@ export interface PublicEntryFacade {
    */
   readonly featuredImage?: string | null;
   /**
+   * Image de partage choisie à la main dans la console
+   * (`ArticleTranslation.ogImage`, champ « URL de l'image OG » de `BlogForm`).
+   *
+   * 🔴 Recensement OG du 2026-08-17 — cette colonne existait, la console
+   * l'écrivait, et **aucune page ne la lisait**. `/blog/[slug]` prenait
+   * `featuredImage`, `/actualites/[slug]` ne s'en servait que pour le JSON-LD.
+   * Le champ était donc une commande morte : on pouvait le remplir sans que
+   * l'aperçu partagé bouge d'un pixel. Elle remonte ici pour que
+   * `generateMetadata` puisse enfin la préférer à la hero.
+   */
+  readonly ogImage?: string | null;
+  /**
+   * Dimensions réelles de `ogImage` quand elles sont connues (asset de la base
+   * de connaissances). Une URL saisie à la main n'en a pas : on ne déclare
+   * alors aucune dimension plutôt qu'un nombre inventé (cf. `og-format.ts`).
+   */
+  readonly ogImageWidth?: number | null;
+  readonly ogImageHeight?: number | null;
+  /**
    * VIS-02 (audit visibilité 2026-06-05) — Tier d'indexation réel de l'Article.
    * Optionnel : absent pour KnowledgeEntry (défaut tier-2 côté loader).
    * Permet à /blog/[slug] de dériver le `<meta robots>` correct (avant ce patch
@@ -504,6 +523,11 @@ export async function findArticleBySlug(
       updatedAt: translation.updatedAt,
       // P2-3 — Image hero article (Article.featuredImage DB String?).
       featuredImage: translation.article.featuredImage ?? null,
+      // Recensement OG 2026-08-17 — la colonne que la console écrivait depuis
+      // toujours et que personne ne lisait. Elle est per-locale, comme le reste
+      // de la traduction. Aucune dimension connue : c'est une URL libre saisie
+      // dans le formulaire, pas un asset mesuré.
+      ogImage: translation.ogImage ?? null,
       // VIS-02/03/08 (audit visibilité 2026-06-05) — tier réel, snippet 0 et alt
       // hero pour que /blog/[slug] rende le bon robots + directAnswer + alt.
       indexationTier: translation.article.indexationTier,
@@ -532,7 +556,14 @@ export async function findArticleBySlug(
         deletedAt: null,
       },
     },
-    include: { entry: true },
+    // Recensement OG 2026-08-17 — `ogImageId` pointe un `KnowledgeAsset` déjà
+    // MESURÉ (`width`/`height` en base). C'est le seul cas où l'on peut
+    // déclarer des dimensions sans les inventer. La relation était déclarée au
+    // schéma et chargée par `prisma-helpers`, mais aucune page ne s'en servait.
+    include: {
+      entry: true,
+      ogImage: { select: { originalPath: true, width: true, height: true } },
+    },
   });
   if (!translation) return null;
   return {
@@ -548,6 +579,9 @@ export async function findArticleBySlug(
     locale: translation.locale,
     publishedAt: translation.entry.publishedAt,
     updatedAt: translation.updatedAt,
+    ogImage: translation.ogImage?.originalPath ?? null,
+    ogImageWidth: translation.ogImage?.width ?? null,
+    ogImageHeight: translation.ogImage?.height ?? null,
   };
 }
 

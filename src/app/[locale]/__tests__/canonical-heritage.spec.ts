@@ -102,8 +102,8 @@ describe("buildProductMetadata — la marque n'est jamais écrite deux fois (GEO
   ];
 
   for (const titre of casQuiPortentLaMarque) {
-    it(`« ${titre} » sort en { absolute } — le template ne peut pas re-suffixer`, () => {
-      const meta = buildProductMetadata({
+    it(`« ${titre} » sort en { absolute } — le template ne peut pas re-suffixer`, async () => {
+      const meta = await buildProductMetadata({
         locale: "fr",
         path: "/audit",
         title: titre,
@@ -117,8 +117,8 @@ describe("buildProductMetadata — la marque n'est jamais écrite deux fois (GEO
     });
   }
 
-  it("un titre SANS la marque reste une string nue — c'est le template qui l'appose", () => {
-    const meta = buildProductMetadata({
+  it("un titre SANS la marque reste une string nue — c'est le template qui l'appose", async () => {
+    const meta = await buildProductMetadata({
       locale: "fr",
       path: "/audit",
       title: "Audit IA pour PME industrielles en Isère",

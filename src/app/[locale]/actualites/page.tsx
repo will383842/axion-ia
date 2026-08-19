@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   if (locale !== "fr") return { robots: { index: false, follow: false } };
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale,
     path: "/actualites",
     title: "Actualités IA · Veille opérationnelle · Axion-IA",

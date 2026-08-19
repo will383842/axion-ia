@@ -135,7 +135,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : `${tool.name} (${tool.vendor}) — AI tool sheet · Axion-IA consultancy`;
   const description = detail[loc].summary.slice(0, 158);
 
-  const meta = buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: `/stack-ia/${toolSlug}`,
     title,

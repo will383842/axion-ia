@@ -91,14 +91,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Candidature commercial Axion-IA · 3 minutes, sans CV"
     : "Axion-IA sales rep application · 3 minutes, no resume";
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/devenir-commercial-ia/candidature",
       title,
       description: isFr
         ? "Candidatez en 3 minutes, sans CV : 500 € pour vous par journée de formation IA vendue. L'AI Act l'impose aux TPE, PME, ETI et grands groupes." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
         : "Apply in 3 minutes, no resume: €500 for you per AI training day sold. The AI Act mandates it for small businesses, SMEs, mid-caps and large groups." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-    }),
+    })),
     title: { absolute: title },
     keywords: buildCommercialKeywords(),
   };

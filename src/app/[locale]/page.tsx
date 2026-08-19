@@ -81,7 +81,7 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
     ? "Cabinet IA France · Formations · Audits · Axion-IA"
     : "AI Consultancy France · Training · Audits · Axion-IA";
   return {
-    ...buildProductMetadata({
+    ...(await buildProductMetadata({
       locale,
       path: "/",
       title: titleStr,
@@ -101,7 +101,7 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
           : "Formations IA en entreprise, audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention, partout en France."
         : `Senior-only AI consultancy, zero middlemen. Audits, training, 1-to-1 coaching, implementations for SMBs. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
       alternates: { fr: "/", en: "/" },
-    }),
+    })),
     title: { absolute: titleStr },
   };
 }

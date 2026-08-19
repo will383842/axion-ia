@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = isFr
     ? `${r.service.labelFr} pour ${r.sector.labelFr} · Axion-IA`
     : `${r.service.labelFr} for ${r.sector.labelFr} · Axion-IA`;
-  const base = buildProductMetadata({
+  const base = await buildProductMetadata({
     locale,
     path: `/secteurs/${r.sector.slug}/${r.service.slug}`,
     title,
