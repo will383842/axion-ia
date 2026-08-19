@@ -8,13 +8,19 @@
  * TVA : régime dérivé de la config (`regime_tva`, défaut assujetti — cf.
  * legal/tva.ts) ; la mention n'est jamais codée en dur. Numéro séquentiel
  * AXI-FACT-YYYY-NNN.
+ *
+ * RBAC : `requireHabilitation("facturer")`. L'action alloue un numéro de la
+ * série légale et crée une pièce opposable au payeur — c'est l'acte `facturer`
+ * du SSOT. Elle était gardée par `requireAdminWrite`, qui autorise `editor`,
+ * contre la doctrine écrite du dépôt (`_guards.ts:48-50`). Garde :
+ * `factures-inter.spec.ts`.
  */
 
 "use server";
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { requireHabilitation, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -56,7 +62,8 @@ async function genererNumeroFacture(annee: number): Promise<string> {
 export async function genererFactureParInscriptionAction(
   input: z.infer<typeof schema>,
 ): Promise<ActionResult<{ id: string; numero: string }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : émission d'une facture de formation (série AXI-FACT).
+  const session = await requireHabilitation("facturer");
   const parsed = schema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
 

@@ -3,9 +3,13 @@
  *
  * V1 (KB-3) : revalide les pages admin + pages publiques alimentées par la KB.
  * Étendu en KB-6 (routes publiques branchées sur backend unifié).
+ *
+ * 🔴 2026-08-19 — retrait de `"use server"` : purger le cache ISR de tout le hub
+ * KB n'a aucune raison d'être joignable par un client anonyme (invalidation
+ * répétée = coût de rendu à la demande). Ces helpers ne sont appelés que par les
+ * Server Actions KB, gardées, et aucun composant client ne les importe. Défense
+ * en profondeur, même geste que `ingest.ts` (P0-S1-1).
  */
-
-"use server";
 
 import { revalidatePath } from "next/cache";
 import type { KbType } from "../../../../prisma/generated/client";
@@ -13,7 +17,8 @@ import { KB_PUBLIC_ROUTES } from "@/content/knowledge/routes";
 
 /**
  * Revalide les routes admin KB (liste + détail).
- * `async` requis par Next 16 strict pour tout export d'un fichier `"use server"`.
+ * `async` conservé (contrat d'appel des Server Actions appelantes) — ce n'est
+ * plus une contrainte Next depuis le retrait de la directive.
  */
 export async function revalidateAdminKbRoutes(entryId?: string): Promise<void> {
   revalidatePath("/fr/[adminPrefix]/connaissances", "page");
@@ -25,7 +30,8 @@ export async function revalidateAdminKbRoutes(entryId?: string): Promise<void> {
 /**
  * Revalide les routes publiques préservées + hub `/ressources/` selon le type.
  * En KB-3 V1, on revalide systématiquement les routes connues — KB-6 affinera.
- * `async` requis par Next 16 strict pour tout export d'un fichier `"use server"`.
+ * `async` conservé (contrat d'appel des Server Actions appelantes) — ce n'est
+ * plus une contrainte Next depuis le retrait de la directive.
  */
 export async function revalidatePublicKbRoutes(
   type: KbType,

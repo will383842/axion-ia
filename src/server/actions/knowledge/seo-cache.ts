@@ -7,9 +7,15 @@
  * - Si KnowledgeTranslation.metaTitle/metaDescription vides : copie depuis cache
  *
  * Idempotent : ré-appel sur même traduction = upsert.
+ *
+ * 🔴 2026-08-19 — retrait de `"use server"` : les deux exports de ce module
+ * étaient des Server Actions. `refreshSeoCacheForTranslation` réécrit
+ * `metaTitle`/`metaDescription` d'une traduction publiée à partir d'un simple
+ * UUID, sans lire aucune session ; `getSeoCacheForTranslation` lit du cache SEO
+ * sans contrôle. Appelés depuis `ingest.ts` (lui-même déjà retiré de la surface
+ * Server Action) et depuis le rendu serveur ; aucun composant client ne les
+ * importe. Défense en profondeur, même geste que `ingest.ts` (P0-S1-1).
  */
-
-"use server";
 
 import { prisma } from "@/lib/prisma";
 import {

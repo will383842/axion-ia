@@ -433,7 +433,13 @@ export async function enregistrerPaiementFactureAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : le SSOT définit `facturer` comme « émettre une facture, un
+  // avoir, OU ENCAISSER ». Encaisser solde une créance, fait basculer la facture
+  // en `payee` et la retire de la balance âgée comme du circuit de relance.
+  // C'était le seul des cinq actes de facturation du hub resté sur
+  // `requireAdminWrite` (qui autorise `editor`) — une exception silencieuse dans
+  // un ensemble par ailleurs durci. Garde : `facturation-hub-encaissement.spec.ts`.
+  const session = await requireHabilitation("facturer");
   const parsed = EnregistrerPaiementSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
@@ -624,6 +630,11 @@ export async function importerFacturesHistoriqueAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
+  // `requireAdminWrite` ASSUMÉ, et pas `requireHabilitation("facturer")` : rien
+  // n'est ÉMIS ici. Ces lignes reprennent des factures déjà émises hors système
+  // (`estImportee: true`), les préfixes de la série légale AXI-FACT/AXI-AVO sont
+  // refusés plus bas, et aucune pièce ni aucun numéro n'est produit. C'est du
+  // CLASSEMENT — la colonne « n'engage rien » du SSOT.
   const session = await requireAdminWrite();
   const parsed = ImportHistoriqueSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide (max 500 lignes par import)." };
@@ -723,6 +734,9 @@ export async function traiterRelanceAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
+  // `requireAdminWrite` ASSUMÉ : ignorer ou reporter une relance ne produit
+  // aucune pièce et n'engage l'organisme envers personne. « Relancer » figure
+  // nommément dans la colonne « n'engage rien » du SSOT.
   const session = await requireAdminWrite();
   const parsed = TraiterRelanceSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
@@ -811,6 +825,11 @@ export async function envoyerRelanceAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
+  // `requireAdminWrite` ASSUMÉ : la relance TRANSMET une créance déjà émise,
+  // elle n'en crée aucune. « Relancer » est explicitement rangé côté « n'engage
+  // rien » par le SSOT. Le garde-fou propre à cet envoi n'est pas un rôle mais
+  // la double validation serveur (`confirmationReleveBancaire`) + le refus sur
+  // reste dû net ≤ 0.
   const session = await requireAdminWrite();
   const parsed = EnvoyerRelanceSchema.safeParse(rawInput);
   if (!parsed.success) {
@@ -1046,6 +1065,10 @@ export async function creerPlanRecurrentAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
+  // `requireAdminWrite` ASSUMÉ : un plan récurrent ne produit que des
+  // BROUILLONS. C'est `emettreFactureBrouillonAction` — gardée par
+  // `requireHabilitation("facturer")` — qui rend chaque facture définitive.
+  // Produire un brouillon est la colonne « n'engage rien » du SSOT.
   const session = await requireAdminWrite();
   const parsed = CreerPlanSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
@@ -1090,6 +1113,8 @@ export async function changerStatutPlanAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
+  // `requireAdminWrite` ASSUMÉ : activer, mettre en pause ou clore un plan ne
+  // fait qu'ouvrir ou fermer un robinet à brouillons — aucune pièce émise.
   const session = await requireAdminWrite();
   const parsed = ChangerStatutPlanSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
@@ -1172,6 +1197,11 @@ export async function exporterFecAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
+  // 🔴 `requireAdminWrite` ASSUMÉ, et il ne faut PAS le remonter à
+  // `requireHabilitation("facturer")` : c'est une LECTURE, durcie exprès (voir
+  // le bloc ci-dessus). `facturer` garde des actes d'ÉMISSION ; l'appliquer ici
+  // ferait dire à la matrice qu'exporter le grand livre engage l'organisme, et
+  // fermerait l'export au rôle comptable qui en est le destinataire.
   const session = await requireAdminWrite();
   const parsed = ExporterFecSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Année invalide." };
