@@ -18,7 +18,12 @@
 #     échouer le backup (|| true).
 #
 # Composants (enum BackupComponent) : postgres postgres_pitr redis
-#   files_image_bank docuseal plausible_pg plausible_clickhouse secrets git_mirror
+#   files_image_bank files_documents files_utilisateurs docuseal plausible_pg
+#   plausible_clickhouse secrets git_mirror
+# ⚠️ Un composant par script. Deux scripts sous le même composant rendent la
+# détection de retard aveugle : elle raisonne sur le DERNIER run, donc le cron
+# survivant masque le cron mort. Gardé par
+# `tests/unit/ci/sauvegardes-couvrent-le-bucket.spec.ts`.
 
 # ─── Identité du script (overridable avant source) ───────────────────────────
 COMPONENT="${COMPONENT:-unknown}"

@@ -27,7 +27,7 @@ docker run --rm \
     apk add --no-cache aws-cli openssl curl bash >/dev/null
     mkdir -p /tmp/scripts
     curl -fsS https://raw.githubusercontent.com/will383842/axion-ia/main/scripts/backup-lib.sh -o /tmp/scripts/backup-lib.sh
-    export COMPONENT=files_image_bank COMPONENT_LABEL=FILES HOSTNAME_TAG=vps
+    export COMPONENT=files_utilisateurs COMPONENT_LABEL=FILES HOSTNAME_TAG=vps
     export DATE_TAG=$(date -u +%Y%m%d-%H%M%S)
     source /tmp/scripts/backup-lib.sh
     require_var BACKUP_ENCRYPTION_PASSPHRASE; require_var R2_ENDPOINT; require_var R2_BUCKET_NAME

@@ -5046,6 +5046,18 @@ enum BackupComponent {
   postgres_pitr // WAL / pgBackRest
   redis // snapshot RDB
   files_image_bank // originaux + variants banque d'images
+  // 🔴 Ajouté le 2026-08-19 (audit Qualiopi E2E, constat D66-01). Le bucket
+  // applicatif — pièces légales, supports, images de signature — n'était couvert
+  // par AUCUN composant, donc par aucun run, donc par aucun retard : le tableau
+  // de bord des sauvegardes était vert parce qu'il ne savait pas qu'il devait
+  // regarder. `scripts/backup-documents-r2.sh` le copie vers le bucket immuable.
+  files_documents // documents/ + supports/ + emargement/ du bucket applicatif
+  // 🔴 Ajouté le 2026-08-19 (constat D66-05). `scripts/vps/run-files-backup.sh`
+  // rapportait sous `files_image_bank` alors qu'il sauvegarde autre chose (CV,
+  // console-docs, reviews-media). Deux crons sous un même composant : si l'un
+  // meurt, l'autre garde le tableau vert — un témoin positif qui masque un
+  // témoin négatif.
+  files_utilisateurs // CV candidats + console-docs + reviews-media (volumes VPS)
   docuseal // DB + PDF signés
   plausible_pg // Postgres interne Plausible
   plausible_clickhouse // events ClickHouse Plausible
