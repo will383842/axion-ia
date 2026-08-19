@@ -449,7 +449,7 @@ export async function genererPortailAccesAction(input: {
       select: { email: true, nom: true, prenom: true },
     });
     if (stagiaire !== null && stagiaire.email !== "") {
-      await enqueueEmail(
+      const envoi = await enqueueEmail(
         "qualiopi-portail-acces",
         stagiaire.email,
         "fr",
@@ -464,7 +464,18 @@ export async function genererPortailAccesAction(input: {
           entityId: acces.id,
         },
       );
-      envoyeAuStagiaire = true;
+      // 🔴 2026-08-19 (constat `D5-3-01`, même famille que la convocation et les
+      // liens d'émargement) — ce drapeau était posé inconditionnellement.
+      // `enqueueEmail` ne lève pas : elle rend `{ enqueued: false }`. L'écran
+      // annonçait donc « accès envoyé au stagiaire » alors que rien n'était
+      // parti, et personne n'avait de raison de renvoyer.
+      envoyeAuStagiaire = envoi.enqueued;
+      if (!envoi.enqueued) {
+        console.error(
+          `[portail] accès créé mais e-mail NON mis en file (accès ${acces.id})` +
+            (envoi.garePourValidation === true ? " — garé en corbeille de validation" : ""),
+        );
+      }
     }
   } catch (err) {
     console.error(
