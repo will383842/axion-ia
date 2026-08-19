@@ -26,6 +26,9 @@ import {
   listTrainerDocuments,
 } from "@/server/qualiopi/trainers/documents";
 import { resolveInterventionSlugForFormation } from "@/server/qualiopi/vente/kit-formation";
+// SSOT du prédicat « pièce en attente de signature ». À n'appeler, jamais à
+// recopier — la recopie est ce qui a produit la divergence du constat `D3-4-06`.
+import { enAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import {
   ATTENTE_JOURS,
@@ -1706,7 +1709,15 @@ async function regleSignatureEnAttente(now: Date): Promise<AlerteCandidate[]> {
   // seraient plus surveillés du tout — un défaut silencieux, donc pire.
   const pieces = await prisma.documentGenere.findMany({
     where: {
-      statutSignature: { in: ["en_attente", "partielle"] },
+      // 🔴 SSOT, pas une recopie (constat `D3-4-06`, 2026-08-19). Ce prédicat
+      // portait `statutSignature` SANS `annuleeAt: null`, alors que
+      // `pieces-en-attente.ts` le portait déjà — le correctif de 2026 avait été
+      // appliqué à la liste « À traiter » de la console et jamais ici. Chaque
+      // nuit, une pièce annulée ressortait en CRITIQUE et déclenchait un e-mail,
+      // sur un document déclaré sans valeur. Le risque n'est pas l'e-mail :
+      // c'est que l'administrateur apprenne à ignorer les alertes critiques de
+      // signature, c'est-à-dire l'unique fonction du dispositif.
+      ...enAttente(),
       OR: [
         { updatedAt: { lte: daysAgo(ATTENTE_JOURS, now) } },
         {

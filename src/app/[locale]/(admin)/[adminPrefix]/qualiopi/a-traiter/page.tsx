@@ -20,6 +20,7 @@
  * Server Component — auth + redirect, force-dynamic, noindex.
  */
 
+import { peutLireLesAlertes } from "@/server/qualiopi/alertes/routage";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import {
@@ -83,8 +84,15 @@ export default async function ATraiterPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
   const role = session?.user?.role;
-  // Même garde que le reste de la console Qualiopi (alertes, sessions).
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
+  // 🔴 2026-08-19 (constat `D5-4-02`) — la garde testait `admin` / `super_admin`
+  // en dur. Or `ROLES_PAR_GUICHET` route les alertes vers `responsable_qualite`
+  // et `secretaire` : ils les recevaient par e-mail, puis étaient renvoyés à
+  // l'écran de connexion en cliquant sur le lien du message.
+  //
+  // Le droit d'entrer est désormais DÉRIVÉ du routage : est admis qui reçoit.
+  // Cet écran affiche et redirige, il ne pose aucun acte engageant — chaque
+  // action reste gardée par sa propre habilitation.
+  if (!session?.user || !peutLireLesAlertes(role)) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
