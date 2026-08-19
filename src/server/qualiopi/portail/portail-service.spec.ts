@@ -44,6 +44,10 @@ vi.mock("@/lib/r2-storage", () => ({
   isR2Configured: vi.fn().mockReturnValue(false),
   getSignedUrlR2: vi.fn().mockResolvedValue("https://r2.example.com/signed-fresh.pdf"),
   signedDocumentPdfUrl: vi.fn().mockResolvedValue(null),
+  // ⚠️ La constante doit figurer dans la fabrique du mock : un export manquant
+  // laisse la liaison à `undefined`, et le service signait alors pour une durée
+  // indéfinie sans que rien ne le signale.
+  TTL_LECTURE_NOMINATIVE_S: 15 * 60,
 }));
 
 import { prisma } from "@/lib/prisma";
@@ -408,9 +412,9 @@ describe("getEspaceStagiaire", () => {
     }
   });
 
-  // ── S1 : URL signée régénérée (24 h) ──────────────────────────────────────
+  // ── S1 : URL signée régénérée à CHAQUE lecture ────────────────────────────
 
-  it("S1 : régénère une URL signée fraîche (24 h) si R2 configuré", async () => {
+  it("S1 : régénère une URL signée fraîche si R2 configuré", async () => {
     mockSignedDocumentPdfUrl.mockResolvedValue("https://r2.example.com/signed-fresh.pdf");
     mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
 
@@ -449,8 +453,31 @@ describe("getEspaceStagiaire", () => {
         numero: "AXI-ATT-2025-042",
         createdAt: new Date("2025-11-15T09:00:00Z"),
       }),
-      86400,
+      15 * 60,
     );
+  });
+
+  it("🔴 ne signe PAS une pièce nominative pour la journée", async () => {
+    // 🔴 2026-08-19 (`D4-4-C`). Ce test-ci exigeait `86400` — il ENTÉRINAIT le
+    // défaut : la garde figeait la mauvaise valeur, et corriger le service
+    // faisait rougir la suite. Une garde qui rend le correctif douloureux
+    // finit par être « ajustée » plutôt que relue.
+    //
+    // Une URL pré-signée ne traverse aucune session : qui la détient lit la
+    // pièce. Vingt-quatre heures de droit de lecture ANONYME sur un document
+    // nominatif, pour un lien cliqué dans la minute qui suit son affichage.
+    //
+    // Le seuil est posé LARGE (une heure) exprès : il n'impose pas une valeur,
+    // il interdit de dériver vers la journée sans que personne ne le voie.
+    mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
+
+    await getEspaceStagiaire("trainee-s1c");
+
+    const durees = mockSignedDocumentPdfUrl.mock.calls.map((appel) => appel[1] as number);
+    expect(durees.length).toBeGreaterThan(0);
+    for (const duree of durees) {
+      expect(duree).toBeLessThanOrEqual(3600);
+    }
   });
 
   it("S1 : fallback vers pdfUrl DB si R2 non configuré", async () => {
@@ -497,7 +524,7 @@ describe("getEspaceStagiaire", () => {
   //
   // 🔴 En inter-entreprises les inscrits sont des concurrents (même doctrine que
   // `emargement/portail-queries.ts`). La convocation porte le nom et l'employeur
-  // d'UNE personne ; sa `pdfUrl` est re-signée 24 h à chaque lecture, donc ce qui
+  // d'UNE personne ; sa `pdfUrl` est re-signée à chaque lecture, donc ce qui
   // s'affiche se télécharge réellement.
   //
   // ⚠️ Ces tests laissent le MOCK rejouer le `where` que le service passe à

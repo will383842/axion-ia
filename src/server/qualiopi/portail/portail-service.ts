@@ -20,7 +20,7 @@
 import { randomBytes, createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import { signedDocumentPdfUrl } from "@/lib/r2-storage";
+import { signedDocumentPdfUrl, TTL_LECTURE_NOMINATIVE_S } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
@@ -482,11 +482,18 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     trainee.enrollments
       .flatMap((e) => (e.attestationDocument ? [e.attestationDocument] : []))
       .map(async (doc) => {
-        // S1 : régénère une URL signée fraîche (24 h) à la lecture pour éviter
-        // les liens expirés (pdfUrl stockée en DB expire après 900 s).
+        // 🔴 URL signée FRAÎCHE à la lecture : la `pdfUrl` stockée a été signée
+        // à la génération, elle est donc morte 900 s plus tard.
+        //
+        // ⚠️ 2026-08-19 (`D4-4-C`) — cette signature durait 24 h, au motif
+        // d'« éviter les liens expirés ». Le motif confondait deux choses : le
+        // lien STOCKÉ est périmé parce qu'il est vieux, celui-ci est signé à
+        // l'instant du rendu et n'a qu'à survivre au clic. Vingt-quatre heures
+        // de droit de lecture ANONYME sur une pièce nominative, pour un lien
+        // cliqué dans la minute.
         let pdfUrl: string | null = doc.pdfUrl ?? null;
         try {
-          pdfUrl = (await signedDocumentPdfUrl(doc, 86400)) ?? pdfUrl;
+          pdfUrl = (await signedDocumentPdfUrl(doc, TTL_LECTURE_NOMINATIVE_S)) ?? pdfUrl;
         } catch {
           // Fail-soft : on garde pdfUrl DB (peut être expirée mais vaut mieux
           // qu'une erreur bloquante).
@@ -581,10 +588,11 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     piecesRemises.map(async ({ doc, sessionId, sessionTitre }) => {
       // Même règle que les attestations : URL re-signée 24 h à CHAQUE lecture.
       // La `pdfUrl` stockée expire en 900 s — la servir telle quelle donnerait
-      // un lien mort au stagiaire.
+      // un lien mort au stagiaire. On re-signe donc, pour la durée du clic et
+      // pas pour la journée (`D4-4-C`).
       let pdfUrl: string | null = doc.pdfUrl ?? null;
       try {
-        pdfUrl = (await signedDocumentPdfUrl(doc, 86400)) ?? pdfUrl;
+        pdfUrl = (await signedDocumentPdfUrl(doc, TTL_LECTURE_NOMINATIVE_S)) ?? pdfUrl;
       } catch {
         // Fail-soft : mieux vaut un lien peut-être expiré qu'un espace en erreur.
       }
