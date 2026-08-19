@@ -13,6 +13,11 @@
  *      (identique à `generateDocument`), vérifie l'existence, re-signe, redirige.
  *   4. Fallback : `pdfUrl` stocké (peut être expiré) → redirect. Sinon 404.
  *
+ * ⚠️ Une pièce ANNULÉE reste TÉLÉCHARGEABLE, et doit le rester : un auditeur doit
+ * pouvoir lire la pièce qu'on lui dit annulée. Seul le NOM du fichier le dit —
+ * c'est le seul marquage disponible, faute de filigrane « ANNULÉ » dans le
+ * dépôt.
+ *
  * Stub-aware indirectement : route runtime only (auth), jamais appelée au build.
  */
 
@@ -52,6 +57,12 @@ export async function GET(
       pdfUrl: true,
       createdAt: true,
       estCopie: true,
+      // 🔴 Le sort de la pièce entre dans le NOM du fichier. Le PDF, lui, ne le
+      // dit pas : il n'existe aucun filigrane « ANNULÉ » dans le dépôt
+      // (`base-layout.tsx` ne connaît que COPIE et SPÉCIMEN), donc le fichier
+      // d'une pièce annulée est byte-identique à celui d'une pièce en vigueur.
+      // Rangé dans un dossier client, il s'y confond définitivement avec elle.
+      annuleeAt: true,
       // Contexte du NOM DE FICHIER téléchargé : « AXI-DOC-2026-012.pdf » ne dit
       // rien à qui range la pièce dans un dossier ; la raison sociale du client
       // (ou à défaut l'intitulé de session) dit tout.
@@ -63,11 +74,22 @@ export async function GET(
     return NextResponse.json({ error: "document_not_found" }, { status: 404 });
   }
 
+  // ⚠️ Les deux états se CUMULENT et sont indépendants : une copie d'une pièce
+  // annulée est les deux à la fois, et n'en dire qu'un reviendrait à taire
+  // l'autre. « ANNULEE » vient en tête parce que c'est l'information qui décide
+  // de la valeur du document ; « COPIE » ne décide que de son exemplaire.
+  //
+  // ⚠️ Le suffixe entre dans le LIBELLÉ, pas dans le contexte : il échappe donc
+  // à la troncature à 60 caractères qui pourrait le manger.
+  const etats = [doc.annuleeAt !== null ? "ANNULEE" : null, doc.estCopie ? "COPIE" : null]
+    .filter((e): e is string => e !== null)
+    .join(" ");
+
   const nomFichier = nomFichierDocument({
     type: doc.type,
     numero: doc.numero,
     contexte: doc.client?.raisonSociale ?? doc.session?.titreSession ?? null,
-    ...(doc.estCopie ? { suffixe: "COPIE" } : {}),
+    ...(etats === "" ? {} : { suffixe: etats }),
   });
 
   // Re-signature R2 à la demande (clé identique à generateDocument).

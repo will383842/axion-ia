@@ -22,6 +22,11 @@
  * ⚠️ Un dossier incomplet est signalé comme tel. Livrer un ZIP silencieusement
  * amputé à un auditeur est pire que de ne rien livrer : il aurait l'air complet.
  *
+ * ⚠️ Les pièces ANNULÉES n'y sont pas jointes — elles ne font plus foi — mais
+ * elles y sont NOMMÉES, avec leur motif et leur date. Les taire laisserait un
+ * trou inexpliqué dans la série des numéros ; les joindre sans marquage
+ * reviendrait à présenter comme preuve un document qu'on a soi-même annulé.
+ *
  * Stub-safe.
  */
 
@@ -44,6 +49,13 @@ export interface DossierSessionResult {
   incomplet: boolean;
   nbDocuments: number;
   nbDocumentsJoints: number;
+  /**
+   * Pièces ANNULÉES de la session, écartées du ZIP mais NOMMÉES dans l'index.
+   *
+   * Exposé pour que l'écran qui déclenche le dossier puisse le dire lui aussi :
+   * un compteur de documents qui baisse sans explication ressemble à une perte.
+   */
+  nbDocumentsAnnulees: number;
   /** Chaînes de signatures stagiaires dont la vérification a relevé une anomalie. */
   nbChainesAnormales: number;
   /**
@@ -74,6 +86,16 @@ export async function genererDossierSessionZip(
       dateDebut: true,
       dateFin: true,
       documents: {
+        // 🔴 Doctrine d'`audit-dossier.ts` : « une pièce annulée ne se compte
+        // NULLE PART ». Sans ce filtre, le ZIP téléchargeait le PDF d'une pièce
+        // que l'organisme a lui-même déclarée sans valeur, l'annonçait `[OK]`
+        // dans l'index et la comptait dans `nbDocuments` — le dossier affirmait
+        // donc qu'elle était valable.
+        //
+        // ⚠️ Le filtre est posé sur la REQUÊTE, pas dans la boucle : rien
+        // d'écrit plus bas ne peut alors atteindre une pièce annulée, même par
+        // inadvertance.
+        where: { annuleeAt: null },
         select: { id: true, type: true, numero: true, createdAt: true },
         orderBy: { createdAt: "asc" },
       },
@@ -273,10 +295,39 @@ export async function genererDossierSessionZip(
     joints += 1;
   }
 
+  // ⚠️ La condition porte sur les pièces EN VIGUEUR, et c'est le point : une
+  // session dont toutes les pièces sont annulées n'a plus rien à joindre. Faire
+  // porter le chapeau au stockage enverrait chercher une panne qui n'existe pas.
   if (session.documents.length > 0 && joints === 0) {
     avertissements.push(
       `⚠️ ${session.documents.length} document${session.documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
     );
+  }
+
+  // ── 3 bis. Pièces ANNULÉES — retirées, mais JAMAIS tues ──
+  //
+  // 🔴 Le retrait doit rester VISIBLE. Écarter la pièce sans le dire remplacerait
+  // un mensonge (« [OK] ») par un silence : l'auditeur qui suit la série des
+  // numéros trouverait un trou et n'aurait aucun moyen de savoir s'il s'agit
+  // d'une annulation motivée ou d'une pièce escamotée. La trace la disculpe.
+  //
+  // ⚠️ Le PDF lui-même ne peut PAS porter le signal : il n'existe aucun filigrane
+  // « ANNULÉ » dans le dépôt (`base-layout.tsx` ne connaît que COPIE et
+  // SPÉCIMEN). Cette section de l'index — et le suffixe du nom de fichier au
+  // téléchargement — sont les seuls marquages disponibles.
+  const annulees = await prisma.documentGenere.findMany({
+    where: { sessionId, annuleeAt: { not: null } },
+    select: { numero: true, type: true, annuleeAt: true, annuleeMotif: true },
+    orderBy: { annuleeAt: "asc" },
+  });
+  if (annulees.length > 0) {
+    index.push("", `Pièces annulées, non jointes (${annulees.length}) :`);
+    for (const a of annulees) {
+      const quand = a.annuleeAt === null ? "date inconnue" : a.annuleeAt.toISOString().slice(0, 10);
+      index.push(
+        `  ${a.numero} (${a.type}) — ${a.annuleeMotif ?? "motif non renseigné"} — ${quand}`,
+      );
+    }
   }
 
   const incomplet = avertissements.length > 0;
@@ -294,6 +345,7 @@ export async function genererDossierSessionZip(
     incomplet,
     nbDocuments: session.documents.length,
     nbDocumentsJoints: joints,
+    nbDocumentsAnnulees: annulees.length,
     nbChainesAnormales,
     nbChainesContresignAnormales,
     avertissements,
