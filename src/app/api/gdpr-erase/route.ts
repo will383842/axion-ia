@@ -21,6 +21,11 @@
 //   - generation_logs / cost_ledger / web_vital_samples / content_gen_jobs
 //     (logs techniques sans PII visiteur — voir politique-confidentialite).
 //   - ActivityLog : conservé (immuable, art. 30 RGPD register).
+//     🔴 `D5-5-05` (2026-08-20) — cette affirmation était FAUSSE jusqu'à cette
+//     date : `retention-purge-worker.ts` effaçait tout `activity_logs` de plus
+//     de 12 mois, SANS filtre d'action, traces `gdpr.*` comprises. Deux textes
+//     du dépôt se contredisaient, et c'est le silencieux qui gagnait. La purge
+//     exclut désormais le préfixe `gdpr.` et lui applique la durée des pièces.
 
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
@@ -112,7 +117,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       targetType: "self_service",
       targetId: v.jti,
       changes: {
-        email,
+        // 🔴 `D5-5-05` (2026-08-20) — c'était `email`, EN CLAIR. Sur le journal
+        // qui trace l'effacement de cette même personne, et que la purge
+        // conserve désormais cinq ans. Conserver la preuve plus longtemps
+        // n'avait de sens qu'à condition de ne pas conserver l'identifiant
+        // avec : le hachage est déterministe, donc re-hacher l'adresse fournie
+        // suffit à retrouver la trace le jour où quelqu'un conteste.
+        emailHash: hashEmailForLookup(email),
         submissionsAnonymized: submissionsResult.anonymized,
         newsletterDeleted: newsletterResult.deleted,
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
