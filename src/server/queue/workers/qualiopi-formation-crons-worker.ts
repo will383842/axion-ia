@@ -28,6 +28,10 @@ import { prisma } from "@/lib/prisma";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
 import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-reelle";
 import {
+  mesurerTraceCloture,
+  clotureSansAucuneTrace,
+} from "@/server/qualiopi/presence/trace-cloture";
+import {
   decideSessionTransitions,
   type SessionCronSnapshot,
 } from "@/server/qualiopi/formations/crons";
@@ -276,31 +280,18 @@ async function handleClotureAuto(): Promise<void> {
       // Une session sans émargement reste `en_cours` et sera signalée par l'alerte
       // R03 pour traitement manuel — au lieu d'alimenter BPF/certificats/attestations
       // avec une session non prouvée. (Symétrie avec la garde manuelle sessions.ts.)
-      const totalInscrits = await prisma.enrollment.count({
-        where: { sessionId: decision.sessionId },
-      });
-      if (totalInscrits > 0) {
-        // ⚠️ `not: null` et NON `> 0`. Le durcissement en `> 0` a été tenté puis
-        // RETIRÉ : `emargementSigneAt` n'est posé que par la grille présentielle
-        // (`saveEmargementAction`), jamais par l'import distanciel ni par la
-        // correction manuelle. Une session 100 % distancielle où personne ne se
-        // connecte — annulation de fait, panne, désistement collectif — devenait
-        // alors DÉFINITIVEMENT non clôturable, ni ici ni manuellement, et
-        // alimentait une alerte critique non résorbable.
-        // Un verrou sans porte de sortie est pire que le trou qu'il ferme.
-        // Le durcissement reste souhaitable, mais suppose d'abord que tous les
-        // chemins de saisie de présence posent une trace, et qu'un administrateur
-        // dispose d'une clôture explicite motivée. À reprendre comme un lot dédié.
-        const avecEmargement = await prisma.enrollment.count({
-          where: {
-            sessionId: decision.sessionId,
-            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
-          },
-        });
-        if (avecEmargement === 0) {
-          skippedSansEmargement++;
-          continue;
-        }
+      // 🔴 `CONF-01` (2026-08-20) — la mesure était DUPLIQUÉE avec la clôture
+      // manuelle (`actions/qualiopi/sessions.ts`), sous un commentaire disant
+      // que « les deux DOIVENT rester alignées ». Elles ne peuvent plus
+      // diverger : il n'y a qu'une mesure, dans `presence/trace-cloture.ts`,
+      // et c'est là que vit la mise en garde sur le durcissement.
+      //
+      // Elle exclut désormais les `abandon` et `exclu` : renoncer n'est pas une
+      // absence de preuve, c'est une sortie du dispositif.
+      const trace = await mesurerTraceCloture(decision.sessionId);
+      if (clotureSansAucuneTrace(trace)) {
+        skippedSansEmargement++;
+        continue;
       }
 
       const dureeReelleHeures = await resoudreDureeReelleACloture(decision.sessionId);

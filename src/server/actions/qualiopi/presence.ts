@@ -39,6 +39,7 @@ import {
   fenetreDemiJournee,
 } from "@/server/qualiopi/presence/repartition-distanciel";
 import { upsertCreneau, recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
+import { agregerReleveParStagiaire } from "@/server/qualiopi/presence/releve-agregation";
 import { storeAndSignCsv } from "@/server/qualiopi/documents/render";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -1042,6 +1043,11 @@ export async function genererReleveConnexionDocumentAction(input: {
       },
       presences: {
         select: {
+          // `enrollmentId` et `dureePrevueMinutes` ajoutés le 2026-08-20
+          // (`DIST-03`) : sans eux, impossible de regrouper par PERSONNE ni de
+          // comparer au seuil annoncé sur le document.
+          enrollmentId: true,
+          dureePrevueMinutes: true,
           dureeRealiseeMinutes: true,
           present: true,
           heureConnexion: true,
@@ -1082,13 +1088,22 @@ export async function genererReleveConnexionDocumentAction(input: {
     if (trainer) nomFormateur = `${trainer.prenom} ${trainer.nom}`.trim();
   }
 
-  const participants = releveImport.presences.map((p) => ({
-    nomPrenom: `${p.enrollment.trainee.prenom} ${p.enrollment.trainee.nom}`.trim(),
-    heureConnexion: p.heureConnexion ? formatHeureParis(p.heureConnexion) : "—",
-    heureDeconnexion: p.heureDeconnexion ? formatHeureParis(p.heureDeconnexion) : "—",
-    dureeEffective: formatMinutesToHHhMM(p.dureeRealiseeMinutes),
-    presenceValidee: p.present,
-  }));
+  // 🔴 `DIST-03` — une ligne par STAGIAIRE, pas par créneau. La règle
+  // d'agrégation vit dans un module PUR (`presence/releve-agregation.ts`) :
+  // elle est testable sans monter la chaîne PDF, et c'est là que sont écrites
+  // les raisons de chaque choix (bornes, somme, seuil).
+  const participants = agregerReleveParStagiaire(
+    releveImport.presences.map((p) => ({
+      enrollmentId: p.enrollmentId,
+      nomPrenom: `${p.enrollment.trainee.prenom} ${p.enrollment.trainee.nom}`.trim(),
+      heureConnexion: p.heureConnexion,
+      heureDeconnexion: p.heureDeconnexion,
+      dureeRealiseeMinutes: p.dureeRealiseeMinutes,
+      dureePrevueMinutes: p.dureePrevueMinutes,
+    })),
+    seuilPct,
+    { formatHeure: formatHeureParis, formatDuree: formatMinutesToHHhMM },
+  );
 
   // buildElement reçoit le numéro alloué → l'en-tête PDF affiche le vrai N°.
   const doc = await generateDocument({

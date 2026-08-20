@@ -95,16 +95,30 @@ describe("genererReleveConnexionDocumentAction", () => {
         coFormateurs: [{ trainerId: "trainer-1", role: "principal" }],
         formation: { titre: "Maîtriser l'IA générative" },
       },
+      // 🔴 2026-08-20 (`DIST-03`) — `enrollmentId` et `dureePrevueMinutes`
+      // AJOUTÉS. La fixture représentait deux stagiaires distincts mais ne
+      // portait pas la clé qui les distingue : le relevé est désormais agrégé
+      // PAR PERSONNE, et sans `enrollmentId` les deux se seraient fondus en une
+      // seule ligne. Sans `dureePrevueMinutes`, aucune conformité n'aurait pu
+      // être affirmée — c'est délibéré côté service.
+      //
+      // 🔑 Troisième fixture incomplète relevée le même jour. Une fixture est un
+      // CONTRAT : elle se recopie sur le `select` de la requête, pas sur les
+      // champs que les assertions du jour regardent.
       presences: [
         {
+          enrollmentId: "enr-marie",
           dureeRealiseeMinutes: 423,
+          dureePrevueMinutes: 480,
           present: true,
           heureConnexion: new Date("2026-06-10T07:02:00.000Z"),
           heureDeconnexion: new Date("2026-06-10T15:05:00.000Z"),
           enrollment: { trainee: { nom: "Dupont", prenom: "Marie" } },
         },
         {
+          enrollmentId: "enr-paul",
           dureeRealiseeMinutes: 90,
+          dureePrevueMinutes: 480,
           present: false,
           heureConnexion: null,
           heureDeconnexion: null,
