@@ -876,9 +876,42 @@ export async function importReleveConnexionAction(input: {
     enrollmentIdsTouches.add(enrollment.id);
   }
 
-  // 8. Recompute taux pour les enrollments touchés.
+  // 8. Recompute taux pour les enrollments touchés, ET pose la trace d'émargement.
+  //
+  // 🔴 `DIST-05` / `DIST-06` (2026-08-20) — LE DISTANCIEL NE POSAIT AUCUNE TRACE.
+  //
+  // `emargementSigneAt` n'était écrit que par la grille PRÉSENTIELLE
+  // (`saveEmargementAction`). Une session 100 % distancielle parfaitement menée
+  // — relevé importé, présences établies — n'en portait donc aucune. Trois
+  // conséquences, toutes fausses, toutes issues de la même absence :
+  //
+  //   · le **certificat de réalisation** était refusé (`DIST-05`) : l'étape
+  //     « Émargement signé » du parcours ne se validait jamais ;
+  //   · l'alerte `emargement_manquant` levait en `critique` sur CHAQUE
+  //     inscription, 48 h après la fin (`DIST-06`) ;
+  //   · l'indicateur `off.12` sous-comptait l'assiduité réellement suivie.
+  //
+  // 🔑 Le relevé de connexion EST le dispositif d'émargement du distanciel —
+  // le gabarit du document le dit en toutes lettres : « Ce document remplace la
+  // feuille d'émargement pour les formations dispensées à distance. » Ne pas
+  // poser la trace revenait à exiger une signature manuscrite d'une modalité qui
+  // n'en produit pas.
+  //
+  // ⚠️ MÊME RÈGLE QUE `CONF-02`, délibérément : la trace n'est posée que si le
+  // taux est > 0. Un stagiaire qui ne s'est jamais connecté n'a rien à attester,
+  // et le poser ferait compter une absence comme un émargement.
+  //
+  // ⚠️ Verrou write-once conservé (`emargementSigneAt: null` dans le `where`) :
+  // un ré-import ne réécrit pas la date de la première trace.
+  const maintenantTrace = new Date();
   for (const enrollmentId of enrollmentIdsTouches) {
-    await recomputeTauxPresence(enrollmentId);
+    const taux = await recomputeTauxPresence(enrollmentId);
+    if (taux > 0) {
+      await prisma.enrollment.updateMany({
+        where: { id: enrollmentId, emargementSigneAt: null },
+        data: { emargementSigneAt: maintenantTrace },
+      });
+    }
   }
 
   // Cache indicateurs : le taux de complétion dérive de `tauxPresencePct`.

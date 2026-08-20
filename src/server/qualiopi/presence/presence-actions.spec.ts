@@ -822,6 +822,54 @@ describe("importReleveConnexionAction", () => {
     expect(jour10.reduce((s, a) => s + a.dureePrevueMinutes, 0)).toBe(420);
   });
 
+  it("🔴 DIST-05 — l'import POSE la trace d'émargement, comme la grille présentielle", async () => {
+    // `emargementSigneAt` n'était écrit que par la grille PRÉSENTIELLE. Une
+    // session 100 % distancielle parfaitement menée n'en portait donc aucune, et
+    // trois conséquences fausses en découlaient : certificat de réalisation
+    // refusé, alerte `emargement_manquant` en critique 48 h après la fin, et
+    // indicateur off.12 sous-comptant l'assiduité réellement suivie.
+    //
+    // 🔑 Le relevé de connexion EST le dispositif d'émargement du distanciel —
+    // le gabarit du document le dit : « Ce document remplace la feuille
+    // d'émargement pour les formations dispensées à distance. »
+    mockRecompute.mockResolvedValue(85);
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "participants.csv",
+      content: CSV_CONTENT,
+    });
+
+    const traces = mockPrisma.enrollment.updateMany.mock.calls.filter(
+      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
+    );
+    expect(traces.length, "aucune trace posée : le certificat restera refusé").toBeGreaterThan(0);
+    // Verrou write-once : un ré-import ne réécrit pas la date de la première trace.
+    expect(
+      (traces[0]?.[0] as { where: Record<string, unknown> }).where["emargementSigneAt"],
+    ).toBeNull();
+  });
+
+  it("🔴 DIST-05 — mais PAS pour qui ne s'est jamais connecté", async () => {
+    // Même règle que `CONF-02` : un taux nul signifie « absent à tout », et il
+    // n'y a alors aucune présence à attester. Poser la trace ferait compter une
+    // absence comme un émargement — dans un indicateur montré à l'auditeur.
+    mockRecompute.mockResolvedValue(0);
+
+    await importReleveConnexionAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      plateforme: "zoom",
+      fileName: "participants.csv",
+      content: CSV_CONTENT,
+    });
+
+    const traces = mockPrisma.enrollment.updateMany.mock.calls.filter(
+      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
+    );
+    expect(traces, "une absence totale a été comptée comme un émargement").toHaveLength(0);
+  });
+
   it("crée un ReleveConnexionImport avec les bons champs", async () => {
     await importReleveConnexionAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",

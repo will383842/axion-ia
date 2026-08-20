@@ -2185,10 +2185,43 @@ describe("🔴 session_sans_dispositif_emargement — l'alerte qui se lève PEND
       titreSession: "IA pour la finance",
       dateDebut: new Date("2026-08-16T07:00:00Z"),
       client: { raisonSociale: "INVEST SUN" },
+      // 🔴 2026-08-20 (`DIST-06`) — champ AJOUTÉ. La règle lit désormais la
+      // modalité : le distanciel a son propre dispositif de preuve.
+      modalite: "presentiel",
       _count: { enrollments: 1, jours: 0 },
       ...patch,
     };
   }
+
+  it("🔴 DIST-06 — le message d'une session DISTANCIELLE parle du RELEVÉ, pas des liens", async () => {
+    // Aucune règle de cet évaluateur ne lisait `modalite`. Dire « émettez les
+    // liens » à un formateur qui anime en visio l'envoie chercher un dispositif
+    // qui n'existe pas pour lui — et discrédite l'alerte au passage.
+    mp.trainingSession.findMany.mockResolvedValue([sessionSansLien({ modalite: "distanciel" })]);
+
+    const a = (await evaluerAlertes()).find((x) => x.code === "session_sans_dispositif_emargement");
+    expect(a?.message).toContain("relevé de connexion");
+    expect(a?.message, "on envoie encore chercher des liens de signature").not.toContain(
+      "émettez les liens",
+    );
+  });
+
+  it("🔴 DIST-06 — un relevé IMPORTÉ vaut dispositif : la requête l'exige", async () => {
+    // Une session distancielle bien menée n'émet PAS de lien : sa preuve est le
+    // relevé. Sans ce filtre, l'alerte levait en `critique` sur CHACUNE d'elles.
+    //
+    // 🔑 Une alerte systématiquement fausse ne se corrige pas en la lisant
+    // mieux : elle apprend à ne plus lire la catégorie, et le jour où elle dit
+    // vrai, personne ne la voit.
+    mp.trainingSession.findMany.mockResolvedValue([sessionSansLien()]);
+    await evaluerAlertes();
+
+    const appels = mp.trainingSession.findMany.mock.calls.map((c) => JSON.stringify(c[0]));
+    expect(
+      appels.some((a) => a.includes("relevesConnexion")),
+      "la requête ne dispense pas les sessions qui ont un relevé importé",
+    ).toBe(true);
+  });
 
   it("lève une alerte CRITIQUE — personne ne peut émarger", async () => {
     mp.trainingSession.findMany.mockResolvedValue([sessionSansLien()]);

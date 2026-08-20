@@ -380,6 +380,24 @@ async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCa
             },
           },
         },
+        // 🔴 `DIST-06` (2026-08-20) — LE DISTANCIEL A SON PROPRE DISPOSITIF.
+        //
+        // Aucune règle de cet évaluateur ne lisait `modalite`. Une session
+        // 100 % distancielle n'émet PAS de lien de signature : sa preuve de
+        // présence est le relevé de connexion, et le gabarit du document le dit
+        // en toutes lettres — « Ce document remplace la feuille d'émargement
+        // pour les formations dispensées à distance ».
+        //
+        // Cette règle levait donc en `critique` sur CHAQUE session distancielle
+        // bien menée. 🔑 Une alerte systématiquement fausse ne se corrige pas
+        // en la lisant mieux : elle apprend à ne plus lire la catégorie, et le
+        // jour où elle dit vrai, personne ne la voit.
+        //
+        // Un relevé importé vaut donc dispositif. On ne fait PAS d'exception à
+        // la modalité elle-même : une session distancielle SANS relevé ni lien
+        // n'a effectivement aucun moyen de prouver la présence — l'alerte doit
+        // lever, et son message dit alors le bon geste.
+        { relevesConnexion: { none: {} } },
       ],
     },
     select: {
@@ -387,6 +405,7 @@ async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCa
       numero: true,
       titreSession: true,
       dateDebut: true,
+      modalite: true,
       client: { select: { raisonSociale: true } },
       _count: { select: { enrollments: true, jours: true } },
     },
@@ -398,19 +417,24 @@ async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCa
     // des liens est refusée à la racine (`creerTokenInscription` lève). Dire
     // « aucun lien émis » sans dire pourquoi enverrait chercher au mauvais
     // endroit.
+    // 🔴 `DIST-06` — le geste DÉPEND DE LA MODALITÉ. Dire « émettez les liens »
+    // à un formateur qui anime en visio l'envoie chercher un dispositif qui
+    // n'existe pas pour lui, et discrédite l'alerte au passage.
     const causePremiere =
-      s._count.jours === 0
-        ? "Aucune journée n'est déclarée : l'émission des liens sera refusée tant que ce n'est pas fait. Déclarez les journées, générez les créneaux, puis envoyez les liens."
-        : "Les journées sont déclarées : émettez les liens et envoyez-les aux stagiaires.";
+      s.modalite === "distanciel"
+        ? "Cette session est en distanciel : sa preuve de présence est le relevé de connexion. Exportez-le depuis la plateforme de visioconférence et importez-le sur la fiche de session."
+        : s._count.jours === 0
+          ? "Aucune journée n'est déclarée : l'émission des liens sera refusée tant que ce n'est pas fait. Déclarez les journées, générez les créneaux, puis envoyez les liens."
+          : "Les journées sont déclarées : émettez les liens et envoyez-les aux stagiaires.";
     return {
       code: "session_sans_dispositif_emargement",
       niveau: "critique" as AlerteNiveau,
       titre: "Session en cours sans dispositif de signature",
       message:
         `La session ${designerSession(s)} a commencé et aucun de ses ${s._count.enrollments} ` +
-        `inscrit${s._count.enrollments > 1 ? "s" : ""} ne dispose d'un lien de signature valide. ` +
-        `Personne ne peut émarger. ${causePremiere} ` +
-        `Les liens expirent 48 h après la fin de la session : passé ce délai, la feuille restera vierge.`,
+        `inscrit${s._count.enrollments > 1 ? "s" : ""} ne dispose d'un moyen de prouver sa présence. ` +
+        `${causePremiere} ` +
+        `${s.modalite === "distanciel" ? "Sans relevé importé, la présence restera injustifiable." : "Les liens expirent 48 h après la fin de la session : passé ce délai, la feuille restera vierge."}`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     };
