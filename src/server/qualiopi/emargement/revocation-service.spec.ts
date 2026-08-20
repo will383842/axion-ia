@@ -10,6 +10,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const findUnique = vi.fn();
+/** Le compteur de SUCCESSEURS — hors transaction, il précède l'écriture. */
+const countSuccesseurs = vi.fn();
 const updateSignature = vi.fn();
 const countSignatures = vi.fn();
 const updateEnrollment = vi.fn();
@@ -24,7 +26,10 @@ vi.mock("@/lib/prisma", () => {
   };
   return {
     prisma: {
-      emargementSignature: { findUnique: (...a: unknown[]) => findUnique(...a) },
+      emargementSignature: {
+        findUnique: (...a: unknown[]) => findUnique(...a),
+        count: (...a: unknown[]) => countSuccesseurs(...a),
+      },
       $transaction: (fn: (t: typeof tx) => Promise<void>) => fn(tx),
     },
   };
@@ -36,13 +41,16 @@ const MOTIF = "Signée par erreur sur la ligne du voisin.";
 const ADMIN = "admin-1";
 
 function signature(over: Record<string, unknown> = {}) {
-  return { id: "sig-1", revokedAt: null, enrollmentId: "enr-1", ...over };
+  return { id: "sig-1", revokedAt: null, enrollmentId: "enr-1", selfHash: "h1", ...over };
 }
 
 describe("revoquerSignature", () => {
   beforeEach(() => {
     findUnique.mockReset();
     updateSignature.mockReset().mockResolvedValue({});
+    // Par défaut : la signature est la DERNIÈRE de sa chaîne. C'est le cas
+    // nominal — révoquer un maillon interne est refusé, cf. le bloc dédié.
+    countSuccesseurs.mockReset().mockResolvedValue(0);
     countSignatures.mockReset().mockResolvedValue(1);
     updateEnrollment.mockReset().mockResolvedValue({});
   });
@@ -81,6 +89,48 @@ describe("revoquerSignature", () => {
     expect(res.ok).toBe(false);
     if (!res.ok) expect(res.raison).toBe("deja_revoquee");
     expect(updateSignature, "aucune écriture").not.toHaveBeenCalled();
+  });
+
+  // ── Le maillon terminal — DÉFAUT DE MON PROPRE CORRECTIF ──────────────────
+  //
+  // 🔴 Trouvé le 2026-08-20 par le cahier `D3-1`, APRÈS livraison. Sans cette
+  // garde, révoquer un maillon intermédiaire FABRIQUE une preuve de
+  // falsification sur une feuille intacte.
+
+  it("🔴 révoquer un maillon NON TERMINAL est refusé", async () => {
+    // Chaque signature scelle dans `prevHash` l'empreinte de la précédente, et
+    // toutes les lectures filtrent `revokedAt: null`. Retirer un maillon du
+    // milieu laisse le suivant pointer vers une empreinte devenue invisible :
+    // `verifierChaine` conclut à une rupture, et le dossier remis au
+    // certificateur déclare la feuille FALSIFIÉE.
+    findUnique.mockResolvedValue(signature());
+    countSuccesseurs.mockResolvedValue(1);
+
+    const res = await revoquerSignature("sig-1", MOTIF, ADMIN);
+    expect(res.ok).toBe(false);
+    if (!res.ok) expect(res.raison).toBe("maillon_interne");
+    expect(updateSignature, "aucune écriture").not.toHaveBeenCalled();
+  });
+
+  it("le successeur est cherché par `prevHash` ← `selfHash`, sur la MÊME inscription", async () => {
+    // 🔑 Non-vacuité du prédicat : chercher sans `prevHash` compterait toutes
+    // les signatures vivantes de l'inscription et refuserait TOUTE révocation ;
+    // chercher sans `enrollmentId` regarderait la chaîne d'un autre stagiaire.
+    findUnique.mockResolvedValue(signature({ selfHash: "empreinte-3" }));
+    await revoquerSignature("sig-1", MOTIF, ADMIN);
+    expect(countSuccesseurs).toHaveBeenCalledWith({
+      where: { enrollmentId: "enr-1", revokedAt: null, prevHash: "empreinte-3" },
+    });
+  });
+
+  it("un successeur DÉJÀ RÉVOQUÉ ne bloque pas — la chaîne vivante s'arrête là", async () => {
+    // ⚠️ Le compteur filtre `revokedAt: null` : révoquer en remontant depuis la
+    // fin doit rester possible, sinon une correction de deux signatures
+    // deviendrait impossible après la première.
+    findUnique.mockResolvedValue(signature());
+    countSuccesseurs.mockResolvedValue(0);
+    const res = await revoquerSignature("sig-1", MOTIF, ADMIN);
+    expect(res.ok).toBe(true);
   });
 
   // ── L'écriture ─────────────────────────────────────────────────────────────

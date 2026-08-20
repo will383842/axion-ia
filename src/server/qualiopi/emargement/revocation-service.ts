@@ -45,12 +45,18 @@ export const MOTIF_MIN = 10;
 
 export type ResultatRevocation =
   | { ok: true; enrollmentId: string | null; emargementRetombe: boolean }
-  | { ok: false; raison: "introuvable" | "deja_revoquee" | "motif_insuffisant"; message: string };
+  | {
+      ok: false;
+      raison: "introuvable" | "deja_revoquee" | "motif_insuffisant" | "maillon_interne";
+      message: string;
+    };
 
 const MESSAGES = {
   introuvable: "Cette signature est introuvable.",
   deja_revoquee: "Cette signature a déjà été révoquée.",
   motif_insuffisant: `Le motif doit être écrit, et faire au moins ${MOTIF_MIN} caractères : c'est lui que l'auditeur lira pour comprendre pourquoi la preuve a été retirée.`,
+  maillon_interne:
+    "Cette signature n'est pas la dernière apposée pour cette inscription : la révoquer romprait le chaînage et ferait apparaître la feuille comme FALSIFIÉE au contrôle. Révoquez d'abord les signatures postérieures, puis re-signez dans l'ordre.",
 } as const;
 
 /**
@@ -77,7 +83,9 @@ export async function revoquerSignature(
 
   const signature = await prisma.emargementSignature.findUnique({
     where: { id: signatureId },
-    select: { id: true, revokedAt: true, enrollmentId: true },
+    // `selfHash` sert à chercher un successeur : c'est lui que le maillon suivant
+    // scelle dans son `prevHash`.
+    select: { id: true, revokedAt: true, enrollmentId: true, selfHash: true },
   });
   if (signature === null) {
     return { ok: false, raison: "introuvable", message: MESSAGES.introuvable };
@@ -87,6 +95,36 @@ export async function revoquerSignature(
   // quand. On refuse, et on le dit.
   if (signature.revokedAt !== null) {
     return { ok: false, raison: "deja_revoquee", message: MESSAGES.deja_revoquee };
+  }
+
+  // 🔴 LE MAILLON DOIT ÊTRE LE DERNIER — sinon la révocation FABRIQUE une preuve
+  // de falsification. (Défaut de mon propre correctif, trouvé le 2026-08-20 par
+  // le cahier `D3-1`.)
+  //
+  // Chaque signature scelle dans `prevHash` l'empreinte de la précédente. Toutes
+  // les lectures de la chaîne — `signature-service.ts` pour trouver le maillon
+  // précédent, `dossier-session.ts` pour la vérifier — filtrent `revokedAt: null`,
+  // comme les deux index uniques partiels de PostgreSQL.
+  //
+  // Révoquer un maillon INTERMÉDIAIRE laisse donc le suivant pointer vers une
+  // empreinte devenue invisible : `verifierChaine` conclut à une
+  // `rupture_chainage`, et le dossier remis au certificateur déclare la feuille
+  // FALSIFIÉE. Sur une feuille intacte.
+  //
+  // 🔑 Cette garde existait DÉJÀ, au mot près, dans le domaine jumeau
+  // (`documents/signature/document-signature-service.ts`, refus
+  // `revocation_maillon_interne_interdite`). Je ne l'avais pas répliquée : j'ai
+  // traité un cas sans regarder la classe — exactement le travers que cet audit
+  // poursuit.
+  const successeur = await prisma.emargementSignature.count({
+    where: {
+      enrollmentId: signature.enrollmentId,
+      revokedAt: null,
+      prevHash: signature.selfHash,
+    },
+  });
+  if (successeur > 0) {
+    return { ok: false, raison: "maillon_interne", message: MESSAGES.maillon_interne };
   }
 
   const enrollmentId = signature.enrollmentId;
