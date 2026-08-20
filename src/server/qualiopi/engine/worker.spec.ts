@@ -33,8 +33,17 @@ describe("resolveNextStatutAfterApproval", () => {
     expect(resolveNextStatutAfterApproval("contenu", "contenu_genere")).toBe("contenu_valide");
   });
 
-  it("étape=assemblage → publie", () => {
-    expect(resolveNextStatutAfterApproval("assemblage", "assemble")).toBe("publie");
+  it("🔴 étape=assemblage → assemble, PAS publie", () => {
+    // 🔴 2026-08-20 (`D2-1-02`) — ce cas EXIGEAIT `publie`, et il entérinait le
+    // défaut : `statutGeneration = "publie"` rend la formation sélectionnable
+    // en création de session ET dans le tunnel de vente. Approuver un assemblage
+    // — sous `requireAdminWrite`, donc au rôle `editor` — la rendait donc
+    // vendable sans validation humaine (AI Act art. 50) ni plancher de ratio.
+    //
+    // Il recopiait le commentaire du code, qui affirmait le contraire de ce que
+    // le code faisait. Une assertion qui recopie l'implémentation ne la vérifie
+    // pas : elle la fige.
+    expect(resolveNextStatutAfterApproval("assemblage", "contenu_valide")).toBe("assemble");
   });
 
   it("étape=structure depuis structure_generee → contenu_evalue", () => {
@@ -103,7 +112,15 @@ describe("cohérence approve ↔ revert", () => {
     expect(afterReject).toBe("structure_generee");
   });
 
-  it("approuver assemblage → publie (validation finale déléguée à publishFormationAction)", () => {
-    expect(resolveNextStatutAfterApproval("assemblage", "assemble")).toBe("publie");
+  it("🔴 approuver assemblage n'A JAMAIS délégué la publication — il la FAISAIT", () => {
+    // Le libellé d'origine disait « validation finale déléguée à
+    // publishFormationAction ». C'était l'affirmation exacte du commentaire du
+    // code, et elle était fausse des deux côtés : rien n'était délégué, la
+    // publication avait lieu ici.
+    //
+    // Elle l'est désormais pour de bon : le pipeline s'arrête à `assemble`, et
+    // `publishFormationAction` (requireAdminPublish + validatedBy + ratio) est
+    // le seul chemin vers `publie`.
+    expect(resolveNextStatutAfterApproval("assemblage", "contenu_valide")).toBe("assemble");
   });
 });
