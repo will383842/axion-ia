@@ -125,6 +125,29 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — l'alerte naît de l'ÉVÉNEMENT de report, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois le nouvel accord enregistré.",
     guichet: "direction",
   },
+  /**
+   * Un e-mail a DÉFINITIVEMENT rebondi.
+   *
+   * 🔴 `D5-3-02` (2026-08-20). Un rebond dur était indiscernable d'une remise
+   * réussie : le relais acceptait le message (`sent`), le serveur destinataire
+   * le refusait ensuite, et rien ne revenait. Une convocation « envoyée »
+   * pouvait n'être jamais arrivée.
+   *
+   * Le guichet est `administratif` : corriger une adresse est un geste
+   * d'administration, pas une décision de direction ni un acte pédagogique.
+   *
+   * ⚠️ `resolutionAuto: false` — l'alerte naît d'un ÉVÉNEMENT reçu du relais,
+   * pas d'un balayage. Elle ne serait jamais réémise, donc `synchroniserAlertes`
+   * la résoudrait au premier tour, avant que quiconque l'ait lue.
+   */
+  email_rebond_dur: {
+    niveau: "important",
+    titre: "Un e-mail a définitivement rebondi",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte naît d'un ÉVÉNEMENT reçu du relais (webhook), pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois l'adresse corrigée.",
+    guichet: "administratif",
+  },
   cloture_trace_presence_incomplete: {
     niveau: "important",
     titre: "Session clôturée sans trace de présence pour tous les inscrits",

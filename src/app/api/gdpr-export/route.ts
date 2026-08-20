@@ -25,6 +25,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { exporterCandidaturesPour } from "@/server/careers/candidature-rgpd";
+import { decryptPiiObject } from "@/lib/pii-crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
@@ -187,11 +188,33 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     },
   });
 
+  // 🔴 `D5-5-02` (2026-08-20) — L'EXPORT ART. 15 RENDAIT DU CHIFFRÉ.
+  //
+  // `contactName`, `contactEmail` et `contactPhone` reçoivent des valeurs
+  // CHIFFRÉES (`enc:v1:iv:ct:tag`, AES-256-GCM) dès que `PII_ENCRYPTION_KEY` est
+  // active — le schéma Prisma le dit en toutes lettres. Elles partaient telles
+  // quelles dans la réponse.
+  //
+  // La personne qui exerce son droit d'accès recevait donc, à la place de son
+  // nom et de son adresse, une centaine de caractères de charabia. Un export
+  // illisible n'est pas un export : l'art. 15 exige une communication
+  // « sous une forme concise, transparente, compréhensible » (art. 12.1).
+  //
+  // 🔑 `decryptPiiObject` existait dans `lib/pii-crypto.ts` — écrit pour
+  // exactement ce cas, et utilisé par PERSONNE. C'est le même motif que le
+  // webhook de rebonds : la solution était écrite, jamais branchée.
+  //
+  // ⚠️ `decryptPii` est TOLÉRANT : une valeur sans le préfixe `enc:v1:` est
+  // rendue telle quelle. Les enregistrements antérieurs au chiffrement passent
+  // donc sans dommage — c'est ce qui permet de brancher la fonction sans
+  // migration de données.
+  const submissionsLisibles = submissions.map((s) => decryptPiiObject(s));
+
   return NextResponse.json({
     ok: true,
     exportedAt: new Date().toISOString(),
     email,
-    submissions,
+    submissions: submissionsLisibles,
     newsletter,
     kb,
     chat,

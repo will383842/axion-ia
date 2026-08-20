@@ -898,6 +898,12 @@ enum EmailLogStatus {
   pending
   sent
   failed
+  /// 🔴 `D5-3-02` (2026-08-20) — un REBOND. Ajouté avec le webhook ZeptoMail.
+  /// Jusqu'ici, un rebond dur était indiscernable d'une remise réussie : le
+  /// relais acceptait le message (`sent`), le serveur destinataire le refusait
+  /// ensuite, et rien ne revenait. Une convocation « envoyée » pouvait n'être
+  /// jamais arrivée.
+  bounced
 
   @@map("email_log_status")
 }
@@ -922,6 +928,15 @@ model EmailLog {
   error             String?        @db.Text
   sentAt            DateTime?      @map("sent_at")
   failedAt          DateTime?      @map("failed_at")
+  /// 🔴 `D5-3-02` — rebond signalé par le relais (webhook ZeptoMail).
+  /// `hard` = adresse morte, à ne plus solliciter. `soft` = échec temporaire
+  /// (boîte pleine, serveur indisponible) : la distinction commande le geste,
+  /// et les confondre ferait soit renoncer trop tôt, soit s'acharner en vain.
+  bounceType        String?        @map("bounce_type") @db.VarChar(10)
+  /// Motif rendu par le relais, tel quel. Non normalisé : c'est une chaîne du
+  /// fournisseur, la réécrire lui ferait dire ce qu'on aurait supposé.
+  bounceReason      String?        @map("bounce_reason") @db.Text
+  bouncedAt         DateTime?      @map("bounced_at")
   createdAt         DateTime       @default(now()) @map("created_at")
   updatedAt         DateTime       @updatedAt @map("updated_at")
 
