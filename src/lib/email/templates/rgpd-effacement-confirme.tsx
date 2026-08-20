@@ -30,6 +30,15 @@ interface Payload {
   newsletter: number;
   /** Conversations du chatbot supprimées. */
   conversations: number;
+  /**
+   * 🔴 `D5-5-03` (2026-08-20) — candidatures supprimées, FICHIERS COMPRIS.
+   *
+   * Cette énumération se donne pour exhaustive : elle est la PREUVE que la
+   * personne conserve. Elle omettait la candidature — donc le CV, la photo et le
+   * téléphone, les données les plus sensibles du dépôt. Quelqu'un pouvait croire
+   * son dossier parti alors qu'il restait en base.
+   */
+  candidatures: number;
 }
 
 const COPY = {
@@ -39,8 +48,8 @@ const COPY = {
     fait: (d: string) =>
       `Votre demande d'effacement (article 17 du RGPD) a été exécutée le ${d}. Ce message en est la confirmation ; conservez-le, il constitue votre preuve.`,
     detail: "Ont été traités :",
-    ligne: (dem: number, nl: number, conv: number) =>
-      `${dem} demande(s) de contact anonymisée(s), ${nl} inscription(s) à la lettre d'information supprimée(s), ${conv} conversation(s) avec l'assistant supprimée(s).`,
+    ligne: (dem: number, nl: number, conv: number, cand: number) =>
+      `${dem} demande(s) de contact anonymisée(s), ${nl} inscription(s) à la lettre d'information supprimée(s), ${conv} conversation(s) avec l'assistant supprimée(s), ${cand} candidature(s) supprimée(s) avec leur CV et leur photo.`,
     conserve:
       "Certaines écritures restent conservées sous forme anonymisée : les pièces comptables et le registre des traitements, que la loi nous impose de garder. Elles ne permettent plus de vous identifier.",
     contact:
@@ -54,8 +63,8 @@ const COPY = {
     fait: (d: string) =>
       `Your erasure request (GDPR article 17) was carried out on ${d}. This message is your confirmation — keep it, it is your proof.`,
     detail: "The following were processed:",
-    ligne: (dem: number, nl: number, conv: number) =>
-      `${dem} contact request(s) anonymised, ${nl} newsletter subscription(s) deleted, ${conv} assistant conversation(s) deleted.`,
+    ligne: (dem: number, nl: number, conv: number, cand: number) =>
+      `${dem} contact request(s) anonymised, ${nl} newsletter subscription(s) deleted, ${conv} assistant conversation(s) deleted, ${cand} job application(s) deleted along with their CV and photo.`,
     conserve:
       "Some records are kept in anonymised form: accounting documents and the processing register, which the law requires us to retain. They can no longer identify you.",
     contact:
@@ -88,7 +97,7 @@ export function RgpdEffacementConfirmeEmail({
       <Text style={emailStyles.paragraphStyle}>{t.fait(p.effectueLe)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.detail}</Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.ligne(p.demandes, p.newsletter, p.conversations)}
+        {t.ligne(p.demandes, p.newsletter, p.conversations, p.candidatures)}
       </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.conserve}

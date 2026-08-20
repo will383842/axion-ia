@@ -17,7 +17,51 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
-import type { DocumentType } from "../../../../prisma/generated/client";
+import type { DocumentType, TrainingSessionStatut } from "../../../../prisma/generated/client";
+
+/**
+ * Le `where` des pièces ADMISSIBLES au dossier de preuves — écrit une seule fois.
+ *
+ * ## Deux exclusions, deux raisons distinctes
+ *
+ * **`annuleeAt: null`** — une pièce déclarée sans valeur n'est pas une preuve.
+ * L'y glisser sans marquage reviendrait à présenter comme preuve un document
+ * qu'on a soi-même annulé.
+ *
+ * **La session ni ANNULÉE ni REPORTÉE** — 🔴 `D2-5-12` (2026-08-20). Ce filtre
+ * manquait. Une session reportée conserve la convention émise pour ses dates
+ * INITIALES : la pièce n'est pas annulée — elle a bien été signée — mais aucune
+ * formation n'a eu lieu à ces dates. Le certificateur recevait donc **deux
+ * conventions pour la même prestation**, dont une pour une période vide. Un
+ * dossier qui se contredit lui-même ne fait pas douter d'une pièce : il fait
+ * douter de toutes.
+ *
+ * ⚠️ `sessionId: null` est ADMIS, et ce n'est pas un oubli : les pièces
+ * générales de l'organisme (procédures, registres, lettres-cadres couvrant
+ * plusieurs sessions) n'ont pas de session et sont précisément ce que la moitié
+ * des indicateurs réclame. Les exclure viderait le dossier.
+ *
+ * 🔑 UNE fonction, pas trois recopies. Ce prédicat vivait en littéral à **trois**
+ * endroits — le comptage `groupBy`, la liste par type, et la constitution du
+ * ZIP — avec, à chaque fois, un commentaire priant le lecteur de les garder
+ * identiques. Une prière n'est pas une garantie : c'est exactement ainsi que
+ * `regleSignatureEnAttente` a divergé de `enAttente()` (constat `D3-4-06`, une
+ * alerte critique par nuit sur des pièces annulées). Tout nouveau consommateur
+ * appelle cette fonction, jamais ne réécrit son prédicat.
+ *
+ * La trace des annulations et des reports, elle, reste entière au registre
+ * (motif, date, auteur) et au journal d'activité — c'est là que l'auditeur la
+ * recoupe s'il la demande. Le dossier de PREUVES n'est pas le registre.
+ */
+export function pieceAdmissibleAuDossier(): {
+  annuleeAt: null;
+  OR: [{ sessionId: null }, { session: { statut: { notIn: TrainingSessionStatut[] } } }];
+} {
+  return {
+    annuleeAt: null,
+    OR: [{ sessionId: null }, { session: { statut: { notIn: ["annulee", "reportee"] } } }],
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -259,21 +303,22 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   }
 
   // Évaluation des 32 indicateurs
+
   const conformite = await evaluerConformite();
 
   // Comptage global des documents par type (une seule requête groupBy)
   //
-  // 🔴 Les pièces ANNULÉES sont exclues du comptage, exactement comme elles le
-  // sont de la constitution du ZIP (`genererDossierAuditZip`, même filtre).
-  // Sans ce `where`, le manifeste ANNONÇAIT des preuves que le dossier remis ne
-  // contenait pas : « lettre_mission — 1 document » à l'indicateur 17 alors que
-  // la seule pièce de ce type avait été annulée et que le ZIP n'en portait
+  // 🔴 Sans ce `where`, le manifeste ANNONÇAIT des preuves que le dossier remis
+  // ne contenait pas : « lettre_mission — 1 document » à l'indicateur 17 alors
+  // que la seule pièce de ce type avait été annulée et que le ZIP n'en portait
   // aucune. L'auditrice ouvre le dossier à la page annoncée et n'y trouve rien.
-  // Une pièce annulée ne se compte NULLE PART ; sa trace reste au registre
-  // (motif, date, auteur) et au journal d'activité.
+  //
+  // Le prédicat est celui de `pieceAdmissibleAuDossier()` — le MÊME objet, pas
+  // une copie qu'on prie de rester identique. Ce qu'il exclut, et pourquoi, est
+  // écrit une seule fois, en tête de ce fichier.
   const docCounts = await prisma.documentGenere.groupBy({
     by: ["type"],
-    where: { annuleeAt: null },
+    where: pieceAdmissibleAuDossier(),
     _count: { _all: true },
   });
 
@@ -396,10 +441,9 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     await Promise.all(
       typesInteroges.map(async (type): Promise<[DocumentType, PieceReference[]]> => {
         const pieces = await prisma.documentGenere.findMany({
-          // ⚠️ MÊME filtre que le comptage et que la constitution du ZIP : une
-          // pièce annulée ne se compte nulle part, et ne se propose donc pas
-          // non plus en téléchargement.
-          where: { type, annuleeAt: null },
+          // Ce qui ne se compte pas ne se propose pas non plus en
+          // téléchargement : même prédicat, par construction.
+          where: { type, ...pieceAdmissibleAuDossier() },
           select: { id: true, numero: true },
           orderBy: { createdAt: "desc" },
           take: MAX_PIECES_LISTEES,
@@ -512,14 +556,11 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   // Récupération de tous les DocumentGenere (id + type + numero + createdAt)
   // pour reconstruire les clés R2. On limite aux types qui ont des preuves
   // documentaires pour éviter de requêter des milliers de lignes inutiles.
-  // ⚠️ Les pièces ANNULÉES sont EXCLUES du dossier. Ce ZIP est le dossier de
-  // PREUVES remis au certificateur : une pièce déclarée sans valeur n'en est
-  // pas une, et l'y glisser sans marquage reviendrait à présenter comme preuve
-  // un document qu'on a soi-même annulé. La trace de l'annulation, elle, reste
-  // entière au registre (motif, date, auteur) et dans le journal d'activité —
-  // c'est là que l'auditeur la recoupe s'il la demande.
+  // ⚠️ Ce ZIP est le dossier de PREUVES remis au certificateur. Ce qui n'y a pas
+  // sa place — pièce annulée, session annulée ou reportée — est écrit une seule
+  // fois, en tête de ce fichier.
   const allDocuments = await prisma.documentGenere.findMany({
-    where: { annuleeAt: null },
+    where: pieceAdmissibleAuDossier(),
     select: { id: true, type: true, numero: true, createdAt: true },
     orderBy: { createdAt: "asc" },
   });

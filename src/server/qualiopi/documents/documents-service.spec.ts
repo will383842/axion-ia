@@ -364,6 +364,71 @@ describe("generateDocument — détection de régénération", () => {
     expect(whereDeDetection()).toBeUndefined();
   });
 
+  // ───────────────────────────────────────────────────────────────────────────
+  // `D2-5-07` (2026-08-20) — le contrat de sous-traitance n'avait AUCUNE identité
+  // ───────────────────────────────────────────────────────────────────────────
+
+  it("🔴 un second contrat du MÊME sous-traitant est reconnu comme régénération", async () => {
+    // Le défaut : `sousTraitantId` manquait à la clé d'identité de pièce. Un
+    // contrat de sous-traitance ne porte AUCUNE des cinq autres références, donc
+    // `filtreMemePiece` rendait `null` et la question n'était jamais posée.
+    // Régénérer produisait un SECOND ORIGINAL : deux contrats concurrents au
+    // registre, aucun des deux ne disant lequel fait foi.
+    simulerDocumentsExistants(1);
+    await generateDocument({
+      type: "contrat_sous_traitance",
+      buildElement,
+      refs: { sousTraitantId: "st-1" },
+    });
+    expect(estCopiePersiste()).toBe(true);
+    expect(whereDeDetection(), "la détection doit avoir eu lieu").toBeDefined();
+    expect(whereDeDetection()!["sousTraitantId"]).toBe("st-1");
+  });
+
+  it("un PREMIER contrat reste un original", async () => {
+    // 🔑 Témoin négatif. Sans lui, une identité qui marquerait TOUT contrat
+    // « copie » passerait le test ci-dessus.
+    simulerDocumentsExistants(0);
+    await generateDocument({
+      type: "contrat_sous_traitance",
+      buildElement,
+      refs: { sousTraitantId: "st-1" },
+    });
+    expect(estCopiePersiste()).toBe(false);
+  });
+
+  it("🔴 deux sous-traitants DIFFÉRENTS ne se marquent pas copie l'un l'autre", async () => {
+    // 🔑 Le témoin discriminant, et le piège symétrique : une identité qui
+    // ignorerait `sousTraitantId` dans le `where` — tout en interrogeant la
+    // base — estampillerait « COPIE » le contrat du deuxième sous-traitant
+    // référencé. C'est le défaut que six types de pièces ont déjà payé côté
+    // stagiaire (« deux stagiaires d'une même session », plus haut).
+    simulerDocumentsExistants(1);
+    await generateDocument({
+      type: "contrat_sous_traitance",
+      buildElement,
+      refs: { sousTraitantId: "st-2" },
+    });
+    expect(whereDeDetection()!["sousTraitantId"]).toBe("st-2");
+  });
+
+  it("🔴 le renouvellement garde son échappement : `estCopie: false` l'emporte", async () => {
+    // ⚠️ Un contrat-cadre renouvelé chaque année est un ORIGINAL, pas une copie.
+    // L'identité seule ne peut pas distinguer une réédition d'un renouvellement
+    // — rien dans les données ne le dit. L'échappement est celui qui existe déjà
+    // partout ailleurs, et il doit rester praticable : sans lui, ce correctif
+    // rendrait impossible d'émettre un vrai second contrat.
+    simulerDocumentsExistants(3);
+    await generateDocument({
+      type: "contrat_sous_traitance",
+      buildElement,
+      refs: { sousTraitantId: "st-1" },
+      estCopie: false,
+    });
+    expect(estCopiePersiste()).toBe(false);
+    expect(whereDeDetection(), "aucune interrogation quand l'appelant tranche").toBeUndefined();
+  });
+
   it("`estCopie: true` explicite l'emporte, sans interroger la base", async () => {
     simulerDocumentsExistants(0);
     await generateDocument({ type: "positionnement", buildElement, estCopie: true });

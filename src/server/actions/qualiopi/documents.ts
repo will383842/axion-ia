@@ -1330,13 +1330,54 @@ export async function genererCertificatRealisationAction(input: {
     };
   }
 
+  // 🔴 `D2-3-C1` (2026-08-20) — le certificat était STRUCTURELLEMENT impossible
+  // pour une session 100 % distancielle.
+  //
+  // La garde n'acceptait qu'une `EmargementSignature`, écrite par le seul
+  // service de signature manuscrite/canvas. L'import d'un relevé de connexion
+  // n'en écrit aucune — et le PDF du relevé affirme pourtant, en toutes lettres :
+  // « Ce document remplace la feuille d'émargement pour les formations
+  // dispensées à distance. »
+  //
+  // Une session à distance parfaitement menée — CSV de la plateforme importé,
+  // taux calculé, relevé archivé avec son empreinte — n'obtenait donc JAMAIS la
+  // pièce que l'OPCO exige pour financer. Et le trou n'apparaissait qu'au moment
+  // de justifier.
+  //
+  // ## Ce que la garde exige VRAIMENT, et qui ne change pas
+  //
+  // 🔑 Une trace VÉRIFIABLE, pas une saisie. C'est le sens de R.6313-3 et des
+  // indicateurs 9 et 11 : le taux ne doit pas reposer sur ce qu'un humain a tapé
+  // dans une grille.
+  //
+  // Le relevé de connexion satisfait cette exigence : ses créneaux portent
+  // `importId`, c'est-à-dire le rattachement au fichier d'origine, archivé avec
+  // son empreinte SHA-256. On peut le rejouer, le recompter, le confronter.
+  //
+  // ⚠️ `source: "manuel"` reste EXCLU, et c'est tout le propos : une présence
+  // saisie à la main n'est pas une trace, quelle que soit la modalité. Accepter
+  // n'importe quel `PresenceCreneau` aurait vidé la garde de sa substance —
+  // elle aurait continué d'exister en refusant seulement les dossiers vides.
   const signatures = await prisma.emargementSignature.count({
     where: { enrollmentId: enrollment.id },
   });
-  if (signatures === 0) {
+  const creneauxImportes =
+    signatures > 0
+      ? 0
+      : await prisma.presenceCreneau.count({
+          where: {
+            enrollmentId: enrollment.id,
+            source: { in: ["import_zoom", "import_teams", "import_meet"] },
+            // Le rattachement au fichier archivé : c'est LUI qui rend la trace
+            // vérifiable. Un créneau `import_*` orphelin ne prouverait rien.
+            importId: { not: null },
+          },
+        });
+
+  if (signatures === 0 && creneauxImportes === 0) {
     return {
       error:
-        "Certificat refusé : aucune signature d'émargement n'est rattachée à cette inscription. Le taux de présence doit reposer sur une trace vérifiable, pas sur une saisie (R.6313-3, indicateurs 9 et 11).",
+        "Certificat refusé : aucune trace vérifiable n'est rattachée à cette inscription — ni signature d'émargement, ni relevé de connexion importé. Le taux de présence doit reposer sur une preuve, pas sur une saisie (R.6313-3, indicateurs 9 et 11).",
     };
   }
 
