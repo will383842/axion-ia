@@ -6,10 +6,24 @@
  *   2. la console d'admin (`reseedReferenceDataAction` → page /qualiopi/config) — seed MANUEL piloté.
  *
  * Réutilise les fonctions de seed canoniques de `prisma/seeds/qualiopi/**` (mêmes
- * données que `pnpm qualiopi:seed`, zéro divergence). 100 % idempotent et non
- * destructif : crée ce qui manque, préserve l'existant (valeurs légales saisies par
- * Will, éditions admin). Protégé par un verrou applicatif Postgres pour éviter toute
- * course entre instances/processus concurrents.
+ * données que `pnpm qualiopi:seed`). 100 % idempotent et non destructif : crée ce
+ * qui manque, préserve l'existant (valeurs légales saisies par Will, éditions
+ * admin). Protégé par un verrou applicatif Postgres pour éviter toute course
+ * entre instances/processus concurrents.
+ *
+ * 🔴 Cet en-tête affirmait « zéro divergence » avec le CLI. C'était FAUX, et le
+ * fichier qui l'affirmait était précisément celui qui divergeait : le CLI
+ * appelait `reconcileOffresFromSkeleton`, pas lui.
+ *
+ * ⚠️ Les deux chemins ne sont PAS équivalents, et ne doivent pas l'être. Le CLI
+ * importe aussi le catalogue (`seedCatalogFormations`, `runCatalogueCleanup`,
+ * offres v2) : faire tourner un import de catalogue à CHAQUE démarrage serait
+ * une mauvaise idée, pas un progrès. Ce qui manquait ici, c'est la seule étape
+ * qui CORRIGE une dérive déjà en base — la réconciliation des offres.
+ *
+ * La garde `reconciliation-offres-au-demarrage.spec.ts` tient exactement cela :
+ * la réconciliation est appelée dans les deux chemins, et les étapes d'import
+ * de catalogue restent hors du démarrage.
  *
  * Contrat build : ne JAMAIS être exécuté quand DATABASE_URL contient "stub.invalid"
  * (cf. ADR 0026). Les appelants doivent garder ce check ; `seedQualiopiReferenceData`
@@ -21,7 +35,10 @@ import {
   QUALIOPI_CONFIG_REGISTRY,
   QUALIOPI_CONFIG_KEY_PREFIX,
 } from "@/server/qualiopi/config/registry";
-import { seedOffresSite } from "../../../../prisma/seeds/qualiopi/offres";
+import {
+  seedOffresSite,
+  reconcileOffresFromSkeleton,
+} from "../../../../prisma/seeds/qualiopi/offres";
 import { seedGrilleQualite } from "../../../../prisma/seeds/qualiopi/grille";
 import { seedGrilleV2 } from "../../../../prisma/seeds/qualiopi/grille-v2";
 import { seedGrilleV3 } from "../../../../prisma/seeds/qualiopi/grille-v3";
@@ -137,6 +154,25 @@ export async function seedQualiopiReferenceData(
       if (!lock?.locked) return false; // une autre instance seed déjà
       await seedQualiopiConfig(tx);
       await seedOffresSite(tx);
+      // 🔴 `D9-4-01` (2026-08-21) — CETTE LIGNE MANQUAIT.
+      //
+      // `prisma/seeds/qualiopi/index.ts` (le CLI `pnpm qualiopi:seed`) appelle
+      // `seedOffresSite` PUIS `reconcileOffresFromSkeleton`. Ce module-ci, qui
+      // sert le démarrage serveur ET le bouton de la console, n'appelait que la
+      // première. La réconciliation décidée le 2026-06-11 ne tournait donc que
+      // si un humain lançait le CLI à la main — c'est-à-dire jamais en prod.
+      //
+      // Conséquence concrète : durée, public visé et modalités d'une offre
+      // pouvaient DIVERGER du squelette de `src/content/formations` sans que
+      // rien ne les réaligne. C'est exactement la dérive que l'alerte
+      // `offres_site_non_verifiees` demande à un humain de traquer à la main
+      // tous les 30 jours — sur des informations publiées au public (RNQ, ind. 1).
+      //
+      // ⚠️ Elle ne touche QUE ces trois champs. Titre, promesse et nombre de
+      // modules restent éditables en console sans être écrasés : la
+      // réconciliation aligne ce que le squelette pilote, pas ce que l'humain
+      // rédige.
+      await reconcileOffresFromSkeleton(tx);
       await seedGrilleQualite(tx);
       await seedGrilleV2(tx);
       // v3 « Standard Axion-IA » en dernier : c'est elle qui reste active

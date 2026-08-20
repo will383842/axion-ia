@@ -79,6 +79,23 @@ export interface PieceSignaturePanelProps {
     | { data: { destinataire: string; garePourValidation: boolean; reemission: boolean } }
     | { error: string }
   >;
+  /**
+   * 🔴 `D3-3-06` (2026-08-21) — CETTE ACTION N'ÉTAIT APPELÉE DE NULLE PART.
+   *
+   * `revoquerLiensSignatureAction` était écrite, gardée, et nommait elle-même
+   * ses cas d'usage : « erreur de destinataire, pièce retirée, demande RGPD ».
+   * Aucun écran ne l'offrait. Un lien de signature parti à la mauvaise adresse
+   * restait donc VIVANT jusqu'à son expiration, et il n'existait aucun moyen de
+   * le couper — pas même sur demande d'effacement.
+   *
+   * ⚠️ Réémettre ne suffit pas : l'émission révoque le lien de la MÊME partie,
+   * pas celui envoyé par erreur à quelqu'un d'autre.
+   */
+  revoquerLiensAction: (input: {
+    documentGenereId: string;
+    partie?: PartieSignataire;
+    motif: string;
+  }) => Promise<{ data: { revoques: number } } | { error: string }>;
 }
 
 export function PieceSignaturePanel({
@@ -90,6 +107,7 @@ export function PieceSignaturePanel({
   emettreAction,
   contresignerAction,
   envoyerParEmailAction,
+  revoquerLiensAction,
 }: PieceSignaturePanelProps): React.ReactElement {
   const router = useRouter();
   const [enCours, startTransition] = useTransition();
@@ -105,6 +123,9 @@ export function PieceSignaturePanel({
   const [contresigneOuvert, setContresigneOuvert] = useState(false);
   const [trace, setTrace] = useState<string | null>(null);
   const [modeAccessible, setModeAccessible] = useState(false);
+  const [coupureOuverte, setCoupureOuverte] = useState(false);
+  const [motifCoupure, setMotifCoupure] = useState("");
+  const [coupureFaite, setCoupureFaite] = useState<number | null>(null);
 
   const signees = new Set(signatures.map((s) => s.partie));
 
@@ -325,6 +346,81 @@ export function PieceSignaturePanel({
             </button>
           </div>
         </div>
+      )}
+
+      {/* ── Couper les liens en circulation ──────────────────────────────
+          🔴 `D3-3-06` — ce bloc n'existait pas, et l'action non plus n'était
+          appelée nulle part. Un lien envoyé à la mauvaise adresse ne pouvait
+          pas être coupé.
+          ⚠️ Il coupe TOUTES les parties. C'est le geste qu'appellent les trois
+          cas d'usage réels (mauvais destinataire, pièce retirée, demande
+          d'effacement) : couper une seule partie laisserait circuler les
+          autres, ce qui est presque toujours l'inverse de l'intention. */}
+      {coupureFaite !== null ? (
+        <p role="status" className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+          {coupureFaite === 0
+            ? "Aucun lien n'était en circulation pour cette pièce."
+            : `${coupureFaite} lien${coupureFaite > 1 ? "s" : ""} coupé${coupureFaite > 1 ? "s" : ""}. Les signatures déjà apposées sont intactes : couper un lien n'efface aucune preuve.`}
+        </p>
+      ) : coupureOuverte ? (
+        <div className="mt-[var(--space-admin-3)] space-y-[var(--space-admin-2)]">
+          <label
+            htmlFor={`motif-coupure-${documentGenereId}`}
+            className="block text-[length:var(--text-admin-sm)]"
+          >
+            Motif — il est inscrit au registre et lu par l&apos;auditeur.
+          </label>
+          <input
+            id={`motif-coupure-${documentGenereId}`}
+            type="text"
+            value={motifCoupure}
+            onChange={(e) => setMotifCoupure(e.target.value)}
+            maxLength={500}
+            className="w-full rounded border border-[color:var(--color-admin-border)] px-2 py-1 text-[length:var(--text-admin-sm)]"
+          />
+          <div className="flex gap-[var(--space-admin-2)]">
+            <button
+              type="button"
+              disabled={enCours || motifCoupure.trim() === ""}
+              onClick={() => {
+                setErreur(null);
+                startTransition(() => {
+                  void revoquerLiensAction({
+                    documentGenereId,
+                    motif: motifCoupure.trim(),
+                  }).then((res) => {
+                    if ("error" in res) {
+                      setErreur(res.error);
+                      return;
+                    }
+                    setCoupureFaite(res.data.revoques);
+                    setCoupureOuverte(false);
+                    router.refresh();
+                  });
+                });
+              }}
+              className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] disabled:opacity-50"
+            >
+              {enCours ? "Coupure…" : "Confirmer la coupure"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setCoupureOuverte(false)}
+              disabled={enCours}
+              className="text-[length:var(--text-admin-sm)] underline underline-offset-4"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setCoupureOuverte(true)}
+          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] underline underline-offset-4"
+        >
+          Couper les liens en circulation
+        </button>
       )}
 
       {erreur !== null && (

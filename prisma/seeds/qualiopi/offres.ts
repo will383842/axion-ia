@@ -241,7 +241,17 @@ export async function seedOffresSite(
  * et loggue chaque écart corrigé. Ne touche QUE ces 3 champs — les autres
  * (titre, promesse, nb modules…) restent éditables en console sans être écrasés.
  */
-export async function reconcileOffresFromSkeleton(prisma: PrismaClient): Promise<void> {
+export async function reconcileOffresFromSkeleton(
+  // 🔴 2026-08-21 — ce paramètre était typé `PrismaClient` SEUL, quand sa
+  // jumelle `seedOffresSite` accepte aussi un client de transaction. C'est
+  // très probablement CE détail qui l'a laissée hors du chemin de démarrage :
+  // l'y ajouter n'aurait pas compilé, et on est passé à autre chose.
+  //
+  // ⚠️ Un écart de TYPE peut donc décider, en silence, qu'une règle métier ne
+  // s'appliquera jamais en production. Il ne se lit dans aucune revue de
+  // logique : la fonction est juste, ses tests passent, et elle ne tourne pas.
+  prisma: Prisma.TransactionClient | PrismaClient,
+): Promise<void> {
   let updated = 0;
   let aligned = 0;
   const sameModalites = (a: string[], b: string[]): boolean =>
