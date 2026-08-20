@@ -10,6 +10,7 @@
 import { prisma } from "@/lib/prisma";
 import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
@@ -96,6 +97,50 @@ async function regleResponsableQualite(now: Date): Promise<AlerteCandidate[]> {
       titre: "Responsable qualité non désigné",
       message:
         "Aucun responsable/référent qualité renseigné dans la configuration. L'auditeur COFRAC attend une personne identifiée qui pilote le référentiel et prépare les audits (critère 7).",
+    },
+  ];
+}
+
+/**
+ * R01c — Catégorie(s) d'actions certifiées non renseignées.
+ *
+ * 🔴 2026-08-20. La page publique affiche « La certification qualité a été
+ * délivrée au titre de la ou des catégories d'actions suivantes : … ». C'est une
+ * mention LÉGALE, imposée par les règles d'usage de la marque Qualiopi.
+ *
+ * Elle était produite par un DÉFAUT CODÉ EN DUR (« Actions de formation »),
+ * présent à deux endroits. Autrement dit : le site affirmait au titre du
+ * certificat une catégorie que personne n'avait lue sur le certificat. Et le
+ * défaut est servi dans trois cas silencieux par `getQualiopiConfig` — ligne
+ * absente, parse en échec, **panne de base** — qu'aucun `curl` ne distingue
+ * d'une valeur réellement configurée : les deux rendent la même page.
+ *
+ * Le certificat peut couvrir « Bilans de compétences », « VAE » ou « Actions de
+ * formation par apprentissage ». Sur-déclarer est une affirmation fausse ;
+ * sous-déclarer est une perte commerciale. Les deux se réparent en lisant le
+ * certificat — ce que le code ne peut pas faire à la place de quelqu'un.
+ *
+ * ⚠️ Cette règle n'existe QUE parce que le défaut du registre a été vidé. Y
+ * remettre une valeur la rendrait définitivement muette.
+ */
+async function regleCategoriesCertifiees(now: Date): Promise<AlerteCandidate[]> {
+  void now;
+  // Ne se déclenche pas tant que la certification n'est pas affirmée : sans
+  // revendication publique, il n'y a aucune mention à accompagner.
+  if (!isQualiopiCertificationObtenue()) return [];
+  const categories = await getQualiopiConfig("qualiopi_categories_certifiees");
+  if (categories.trim().length > 0) return [];
+  return [
+    {
+      code: "categories_certifiees_non_renseignees",
+      niveau: "important",
+      titre: "Catégorie d'actions certifiées non renseignée",
+      message:
+        "La page publique affiche la mention obligatoire de la marque Qualiopi avec une " +
+        "catégorie de repli, qu'aucun certificat n'a confirmée. Ouvrez le certificat et " +
+        "saisissez la ou les catégories exactes dans la configuration Qualiopi " +
+        "(« Catégories d'actions certifiées »). Renseignez au passage le certificateur, " +
+        "la date d'obtention et la validité : ce sont les pièces que l'auditeur demande.",
     },
   ];
 }
@@ -2190,6 +2235,7 @@ async function regleOffresNonVerifiees(now: Date): Promise<AlerteCandidate[]> {
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
+  { nom: "categories_certifiees", fn: regleCategoriesCertifiees },
   { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
