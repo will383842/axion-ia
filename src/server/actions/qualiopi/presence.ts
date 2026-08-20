@@ -464,11 +464,31 @@ export async function saveEmargementAction(input: {
   // (correction de présence) n'affectent 0 ligne → preuve horodatée immuable.
   const now = new Date();
   for (const enrollmentId of enrollmentIds) {
-    await recomputeTauxPresence(enrollmentId);
-    await prisma.enrollment.updateMany({
-      where: { id: enrollmentId, emargementSigneAt: null },
-      data: { emargementSigneAt: now },
-    });
+    const taux = await recomputeTauxPresence(enrollmentId);
+    // 🔴 `CONF-02` (2026-08-20). `emargementSigneAt` était posé pour CHAQUE
+    // inscription touchée par la sauvegarde, sans regarder ce que la grille
+    // disait — **y compris quand elle déclarait la personne absente partout**.
+    //
+    // Ce que cela produisait n'est pas cosmétique : `conformite-service.ts`
+    // compte cette colonne pour l'indicateur `off.12` (suivi de l'assiduité) et
+    // l'annonce « inscription avec émargement réellement signé ». Un stagiaire
+    // qui n'est jamais venu — donc qui n'a rien signé — gonflait donc un
+    // indicateur de conformité présenté à l'auditeur.
+    //
+    // Le taux est le bon discriminant, et il vient d'être recalculé sur les
+    // créneaux réellement enregistrés : `0` signifie « absent à tout », et il
+    // n'y a alors aucune présence à attester.
+    //
+    // ⚠️ Le verrou write-once est CONSERVÉ, et il s'entend mieux ainsi : si une
+    // grille est d'abord enregistrée « absent partout » puis corrigée, la date
+    // posée est celle de la PREMIÈRE présence constatée — pas celle du premier
+    // clic sur « Enregistrer ».
+    if (taux > 0) {
+      await prisma.enrollment.updateMany({
+        where: { id: enrollmentId, emargementSigneAt: null },
+        data: { emargementSigneAt: now },
+      });
+    }
   }
 
   // UN SEUL appel, APRÈS la boucle : `invalidateIndicateursCache` fait un
