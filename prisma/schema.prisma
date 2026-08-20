@@ -8943,6 +8943,21 @@ model JobApplication {
   firstName  String  @map("first_name") @db.Text
   lastName   String  @map("last_name") @db.Text
   email      String  @db.Text
+  /// 🔴 `D5-5-03` (2026-08-20) — empreinte de RECHERCHE RGPD.
+  ///
+  /// `email` est chiffré par `encryptPii` avec un IV ALÉATOIRE : deux
+  /// chiffrements de la même adresse donnent deux valeurs différentes. Une
+  /// égalité SQL sur cette colonne ne peut donc JAMAIS correspondre — c'est
+  /// exactement le défaut qui rendait l'export art. 15 des `Submission` vide,
+  /// corrigé là-bas par `contact_email_hash`.
+  ///
+  /// Conséquence ici : une candidature était **introuvable** par son adresse,
+  /// donc ni exportable (art. 15) ni effaçable (art. 17) — alors que le CV, la
+  /// photo et le téléphone sont les données les plus sensibles du dépôt.
+  ///
+  /// Nullable : les candidatures antérieures n'en ont pas. Le service de
+  /// recherche retombe alors sur un balayage déchiffrant, borné.
+  emailHash  String? @map("email_hash") @db.VarChar(64)
   phone      String  @db.Text
   city       String? @db.VarChar(120)
   motivation String? @db.Text
