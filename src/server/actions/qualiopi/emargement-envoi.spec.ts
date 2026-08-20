@@ -85,7 +85,15 @@ beforeEach(() => {
     tokenId: "t-1",
     expiresAt: new Date("2026-08-18T15:00:00Z"),
   });
-  mockEnqueue.mockResolvedValue(undefined);
+  // 🔴 2026-08-20 — le mock rendait `undefined`, et la VRAIE `enqueueEmail`
+  // rend `{ enqueued, garePourValidation?, outboxId? }`. Depuis `cf8b3749`, le
+  // service lit `envoi.enqueued` : `undefined.enqueued` levait un TypeError,
+  // rattrapé par le `catch` générique, et les trois cas nominaux de ce fichier
+  // partaient en « Envoi impossible ». Rouge depuis ce commit, non détecté —
+  // c'est le MÊME mock incomplet que `portail-actions.spec.ts` la veille, dans
+  // un second fichier. Un mock est un CONTRAT : il se recopie sur la signature,
+  // pas sur ce qui suffit à faire passer les assertions du jour.
+  mockEnqueue.mockResolvedValue({ enqueued: true });
   mockLog.mockResolvedValue(undefined);
 });
 
@@ -179,6 +187,45 @@ describe("🔴 les refus NOMMENT qui n'a rien reçu", () => {
         motif: "Déclarez les journées de la session avant d'émettre.",
       },
     ]);
+  });
+
+  it("🔴 une file indisponible NE compte PAS l'envoi, et NOMME le stagiaire", async () => {
+    // C'est le défaut réparé par `cf8b3749` : `enqueueEmail` rend
+    // `{ enqueued: false }` quand la file est morte, et le service comptait
+    // quand même. L'admin lisait « 2 liens envoyés » devant deux stagiaires
+    // qui ne pourront pas émarger le jour J — et ce compteur est la SEULE
+    // chose qui le lui dit. Jusqu'ici, aucun test de ce fichier ne gardait ce
+    // contrôle : le mock rendait `undefined` et n'atteignait jamais la branche.
+    mockEnqueue
+      .mockResolvedValueOnce({ enqueued: true })
+      .mockResolvedValueOnce({ enqueued: false });
+
+    const r = await envoyerLiensEmargementAction({ sessionId: SESSION_ID });
+    expect("data" in r, `échec : ${JSON.stringify(r)}`).toBe(true);
+    if (!("data" in r)) return;
+    expect(r.data.envoyes, "un envoi non enfilé a été compté comme parti").toBe(1);
+    expect(r.data.echecs).toEqual([
+      {
+        stagiaireNom: "Marc Durand",
+        motif: "File de messages indisponible — le lien n'est pas parti, réessayez.",
+      },
+    ]);
+  });
+
+  it("🔴 un e-mail GARÉ en validation se distingue d'une panne de file", async () => {
+    // Deux situations, deux gestes : une panne se réessaie, un e-mail garé
+    // s'approuve. Les confondre enverrait l'admin réessayer indéfiniment un
+    // envoi qui attend seulement sa signature.
+    mockEnqueue
+      .mockResolvedValueOnce({ enqueued: true })
+      .mockResolvedValueOnce({ enqueued: false, garePourValidation: true });
+
+    const r = await envoyerLiensEmargementAction({ sessionId: SESSION_ID });
+    expect("data" in r).toBe(true);
+    if (!("data" in r)) return;
+    expect(r.data.echecs[0]?.motif).toBe(
+      "E-mail garé en corbeille de validation — le lien ne partira qu'après approbation.",
+    );
   });
 
   it("🔴 aucune journée déclarée : le refus REPREND le message actionnable du service", async () => {
