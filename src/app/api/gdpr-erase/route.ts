@@ -28,6 +28,7 @@
 //     exclut désormais le préfixe `gdpr.` et lui applique la durée des pièces.
 
 import { NextResponse, type NextRequest } from "next/server";
+import { effacerCandidaturesPour } from "@/server/careers/candidature-rgpd";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
@@ -89,10 +90,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const chatResult = await eraseChatDataForEmail(email);
 
   // Exécution des effacements
-  const [submissionsResult, newsletterResult, kbResult] = await Promise.all([
+  const [submissionsResult, newsletterResult, kbResult, candidaturesResult] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
     eraseKbDataForEmail(email),
+    // 🔴 `D5-5-03` (2026-08-20) — LES CANDIDATURES ÉTAIENT HORS DE PORTÉE.
+    //
+    // Ni exportées, ni effacées — alors qu'une candidature porte le **CV**, la
+    // **photo** et le **téléphone**, c'est-à-dire les données les plus
+    // sensibles que ce site détienne sur une personne. Et le courriel de
+    // confirmation ÉNUMÉRAIT ce qui avait été effacé : une liste qui se donne
+    // pour exhaustive et qui omet le CV est pire qu'une absence de liste.
+    //
+    // Le défaut était plus profond qu'un oubli de branchement : `email` est
+    // chiffré avec un IV aléatoire, donc la candidature était INTROUVABLE par
+    // son adresse. Cf. `careers/candidature-rgpd.ts`.
+    effacerCandidaturesPour(email),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -160,6 +173,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       demandes: submissionsResult.anonymized,
       newsletter: newsletterResult.deleted,
       conversations: chatResult.conversationsDeleted,
+      // 🔴 `D5-5-03` — la candidature ENTRE dans l'énumération. Le courriel
+      // dressait la liste de ce qui avait été effacé sans jamais mentionner le
+      // CV : la personne pouvait croire son dossier parti alors qu'il restait
+      // en base, avec sa photo et son numéro.
+      candidatures: candidaturesResult.supprimees,
     });
   } catch (err) {
     console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);
