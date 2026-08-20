@@ -64,7 +64,21 @@ export type ActeEngageant =
   /** Habiliter un formateur sur une formation, ou lever la réserve d'un sous-traitant. */
   | "habiliter_formateur"
   /** Déposer une demande de prise en charge auprès d'un financeur, au nom du client (mandat). */
-  | "deposer_demande_financeur";
+  | "deposer_demande_financeur"
+  /**
+   * Priver d'effet une signature d'émargement déjà apposée et scellée.
+   *
+   * 🔴 `D3-3-04` (2026-08-20). C'est l'acte le plus lourd du registre : il
+   * retire sa valeur à une preuve que la loi impose de tenir (art. L.6353-1
+   * C. trav.), et sur laquelle repose le certificat de réalisation — donc la
+   * prise en charge du financeur.
+   *
+   * Réservé à la DIRECTION seule, et non au responsable qualité : celui-ci
+   * peut attester et valider, c'est-à-dire AJOUTER de la preuve. Retirer sa
+   * valeur à une preuve déjà recueillie n'est pas le même geste, et ne relève
+   * pas de la même responsabilité.
+   */
+  | "revoquer_signature";
 
 /** Les rôles NextAuth existants, plus les deux rôles métier ajoutés en 2026-08. */
 export type RoleAdmin =
@@ -138,6 +152,7 @@ export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdm
   facturer: ["super_admin", "admin"],
   habiliter_formateur: ["super_admin", "admin", "responsable_qualite"],
   deposer_demande_financeur: ["super_admin", "admin"],
+  revoquer_signature: ["super_admin", "admin"],
 };
 
 /**
@@ -161,6 +176,8 @@ export const MOTIF_REFUS: Readonly<Record<ActeEngageant, string>> = {
     "Habiliter un formateur engage la qualité de l'action (ind. 21/22) : acte réservé à la direction ou au responsable qualité.",
   deposer_demande_financeur:
     "Déposer une demande de prise en charge engage l'organisme au nom du client (mandat) : acte réservé à la direction.",
+  revoquer_signature:
+    "Priver d'effet une signature d'émargement retire sa valeur à une preuve légale : acte réservé à la direction.",
 };
 
 /**

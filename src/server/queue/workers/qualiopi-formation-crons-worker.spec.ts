@@ -57,14 +57,23 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+// 🔴 `D5-1-C1` (2026-08-20) — ces fonctions rendent désormais un BOOLÉEN :
+// `true` = remis à la file, la trace peut être écrite ; `false` = rien n'est
+// parti, l'appelant ne doit RIEN écrire.
+//
+// 🔑 Un `vi.fn()` nu rend `undefined`, que le nouveau contrat lit comme « non
+// envoyé » — les crons cesseraient alors de poser leurs traces, et quatre tests
+// rougissaient pour la FORME du mock, pas pour ce qu'ils vérifient. C'est le
+// patron « un mock incomplet est un contrat rompu », payé une cinquième fois
+// dans ce dépôt : on recopie la SIGNATURE, jamais le minimum qui passe.
 vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
   envoyerConvocation: vi.fn(),
-  envoyerPositionnement: vi.fn(),
-  envoyerRappelJ7: vi.fn(),
-  envoyerSatisfactionJ1: vi.fn(),
-  envoyerSuiviJ30: vi.fn(),
-  envoyerRelanceQuestionnaire: vi.fn(),
-  envoyerEnqueteEntreprise: vi.fn(),
+  envoyerPositionnement: vi.fn(async () => true),
+  envoyerRappelJ7: vi.fn(async () => true),
+  envoyerSatisfactionJ1: vi.fn(async () => true),
+  envoyerSuiviJ30: vi.fn(async () => true),
+  envoyerRelanceQuestionnaire: vi.fn(async () => true),
+  envoyerEnqueteEntreprise: vi.fn(async () => true),
   notifierAlerteInterne: vi.fn(),
 }));
 
@@ -153,6 +162,8 @@ const mockDecide = decideSessionTransitions as ReturnType<typeof vi.fn>;
 describe("formationCronsHandler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
   });
 
   it("dispatche vers handleConvocationJ5 pour type convocation-j5", async () => {
@@ -184,6 +195,8 @@ describe("formationCronsHandler", () => {
 describe("handleConvocationJ5 — sélection par ÉTAT, pas par fenêtre de date", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     delete process.env["DATABASE_URL"];
     mockPrisma.enrollment.count.mockResolvedValue(0);
   });
@@ -333,6 +346,8 @@ describe("handleConvocationJ5 — sélection par ÉTAT, pas par fenêtre de date
 describe("handleClotureAuto — garde émargement (audit E2E 2026-06)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     delete process.env["DATABASE_URL"];
   });
 
@@ -396,6 +411,8 @@ describe("handleClotureAuto — garde émargement (audit E2E 2026-06)", () => {
 describe("handleAlertes (via formationCronsHandler)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     delete process.env["DATABASE_URL"];
     mockSynchroniserAlertes.mockResolvedValue({ crees: 0, resolues: 0 });
     mockNotifierGroupees.mockResolvedValue({
@@ -480,6 +497,8 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
 
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     delete process.env["DATABASE_URL"];
     mockPrisma.factureFormation.findMany.mockResolvedValue([]);
     mockPrisma.factureFormation.updateMany.mockResolvedValue({ count: 1 });
@@ -690,6 +709,8 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
 describe("formation-crons.attestations-auto — garde évaluation finale", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     mockPrisma.enrollment.findMany.mockResolvedValue([]);
     mockPrisma.enrollment.count.mockResolvedValue(0);
   });
@@ -750,6 +771,8 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
 describe("questionnaires — rattrapage sans fenêtre glissante", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     mockPrisma.enrollment.findMany.mockResolvedValue([]);
   });
 
@@ -805,6 +828,8 @@ describe("questionnaires — rattrapage sans fenêtre glissante", () => {
 describe("formation-crons.relance-questionnaires", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
   });
 
   it("relance chaque questionnaire dû, une erreur n'arrête pas les suivants", async () => {
@@ -862,11 +887,17 @@ describe("formation-crons.relance-questionnaires", () => {
 describe("formation-crons.enquete-entreprise-j30", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
   });
 
   it("envoie l'enquête aux sessions réalisées ≥ J+30 puis marque envoyeAt", async () => {
     mockPrisma.trainingSession.findMany.mockResolvedValue([{ id: "sess-1" }]);
-    mockEnvoyerEnquete.mockResolvedValue(undefined);
+    // 🔴 `D5-1-C1` (2026-08-20) — `undefined` était l'ancien contrat
+    // (`Promise<void>`). L'envoi rend désormais un booléen, et le cron ne pose
+    // `envoyeAt` que s'il vaut `true` : garder `undefined` ferait tester le
+    // chemin d'ÉCHEC en croyant tester le nominal.
+    mockEnvoyerEnquete.mockResolvedValue(true);
     mockPrisma.questionnaire.updateMany.mockResolvedValue({ count: 1 });
 
     await formationCronsHandler({
@@ -937,6 +968,8 @@ describe("handleDevisExpiration — expiration + relance J+3 (via formationCrons
 
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     delete process.env["DATABASE_URL"];
     mockPrisma.devis.updateMany.mockResolvedValue({ count: 0 });
     mockPrisma.devis.findMany.mockResolvedValue([]);
@@ -1032,6 +1065,8 @@ describe("handlePositionnement — deux passages, UN SEUL envoi", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     delete process.env["DATABASE_URL"];
 
     ligne = {
@@ -1084,6 +1119,13 @@ describe("handlePositionnement — deux passages, UN SEUL envoi", () => {
     });
 
   it("DEUX passages consécutifs n'envoient qu'UN e-mail au stagiaire", async () => {
+    // 🔴 `D5-1-C1` (2026-08-20) — l'envoi rend désormais un BOOLÉEN, et le cron
+    // ne pose la trace que s'il vaut `true`. On le déclare ici, dans le test :
+    // Vitest réinitialise les doubles après les `beforeEach` (vérifié
+    // empiriquement), donc ni la fabrique du `vi.mock` ni un hook ne tiennent.
+    // C'est aussi plus lisible : ce test dit « l'envoi réussit », au lieu de
+    // le supposer.
+    mockEnvoyerPositionnement.mockResolvedValue(true);
     await lancer();
     await lancer();
 
@@ -1096,6 +1138,9 @@ describe("handlePositionnement — deux passages, UN SEUL envoi", () => {
   it("échec d'envoi → AUCUNE trace posée, et le passage suivant RÉESSAIE", async () => {
     // 🔴 Marquer avant l'enqueue ferait mentir la colonne dès que la file est
     // indisponible : un positionnement définitivement perdu, sans rattrapage.
+    // Le premier passage échoue, les suivants réussissent : `Once` s'applique
+    // au premier appel, `mockResolvedValue` aux autres.
+    mockEnvoyerPositionnement.mockResolvedValue(true);
     mockEnvoyerPositionnement.mockRejectedValueOnce(new Error("file indisponible"));
 
     await expect(lancer()).resolves.toBeUndefined();
@@ -1113,6 +1158,8 @@ describe("handlePositionnement — deux passages, UN SEUL envoi", () => {
 describe("relance-questionnaires — le positionnement a son PROPRE canal", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    //
+    //
     delete process.env["DATABASE_URL"];
     mockPrisma.questionnaire.findMany.mockResolvedValue([]);
   });

@@ -272,8 +272,34 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
  * Envoie un rappel J-7 à tous les stagiaires inscrits à une session.
  * Idempotent : jobId = qualiopi-rappel-j7-{enrollmentId}-{dateKey(dateDebut)}.
  */
-export async function envoyerRappelJ7(sessionId: string): Promise<void> {
-  if (isStub()) return;
+/**
+ * 🔴 `D5-1-C1` (2026-08-20) — POURQUOI CES FONCTIONS RENDENT UN BOOLÉEN.
+ *
+ * `enqueueEmail` NE LÈVE PAS quand l'envoi échoue : elle RETOURNE
+ * `{ enqueued: false }` si la file est absente, et
+ * `{ enqueued: false, garePourValidation: true }` si une règle
+ * `EmailAutomationSetting` gare le message en corbeille de validation.
+ *
+ * Ces six fonctions rendaient `Promise<void>`. L'appelant — les crons de
+ * `qualiopi-formation-crons-worker.ts` — posait donc la date d'envoi
+ * (`envoyeAt`, `relanceCount`) dès que l'appel ne levait pas, c'est-à-dire
+ * TOUJOURS. Le destinataire ne recevait rien, la base affirmait le contraire,
+ * et le filtre `envoyeAt: null` du cron l'écartait ensuite DÉFINITIVEMENT du
+ * rattrapage.
+ *
+ * 🔑 C'est la reconstitution littérale de l'incident « aucune convocation jamais
+ * envoyée en production ». `envoyerConvocation` a été corrigée le 2026-08-19 ;
+ * les six autres portaient le même défaut, et la même conséquence.
+ *
+ * ⚠️ `garePourValidation` compte comme NON ENVOYÉ. Le message partira peut-être,
+ * après approbation humaine — mais il n'est pas parti. Le cron doit rester en
+ * mesure de le reprendre.
+ *
+ * Le contrat est donc : `true` = remis à la file, la trace peut être écrite.
+ * `false` = rien n'est parti, l'appelant NE DOIT PAS écrire la trace.
+ */
+export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
+  if (isStub()) return false;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -301,7 +327,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
     },
   });
 
-  if (!session) return;
+  if (!session) return false;
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const dk = dateKey(session.dateDebut);
@@ -319,7 +345,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
         session.dateFin,
         baseUrl,
       );
-      await enqueueEmail(
+      const envoi = await enqueueEmail(
         "qualiopi-rappel-j7",
         trainee.email,
         "fr",
@@ -336,6 +362,15 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
         },
         { jobId: `qualiopi-rappel-j7-${enrollment.id}-${dk}` },
       );
+      if (!envoi.enqueued) {
+        console.error(
+          `[rappel-j7] NON ENVOYÉ — session ${sessionId} laissée candidate au rattrapage` +
+            (envoi.garePourValidation === true
+              ? " (e-mail garé en corbeille de validation)"
+              : " (file de messages indisponible)"),
+        );
+        return false;
+      }
     } catch (err) {
       // Fail-soft : une erreur d'enqueue ne bloque pas les autres stagiaires
       console.error(
@@ -344,6 +379,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
       );
     }
   }
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -354,8 +390,8 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
  * Envoie le questionnaire de satisfaction J+1 à un stagiaire.
  * Idempotent : jobId = qualiopi-satisfaction-j1-{enrollmentId}-{dateKey(dateFin)}.
  */
-export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<void> {
-  if (isStub()) return;
+export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<boolean> {
+  if (isStub()) return false;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -372,7 +408,7 @@ export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<void>
     },
   });
 
-  if (!enrollment) return;
+  if (!enrollment) return false;
 
   // Garantit le questionnaire AVANT l'email (idempotent) : sans lui, le stagiaire
   // arriverait sur un portail vide. Échec → throw : le cron fail-soft par
@@ -385,7 +421,7 @@ export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<void>
   const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
   const dk = dateKey(session.dateFin);
 
-  await enqueueEmail(
+  const envoi = await enqueueEmail(
     "qualiopi-satisfaction-j1",
     trainee.email,
     "fr",
@@ -398,6 +434,16 @@ export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<void>
     },
     { jobId: `qualiopi-satisfaction-j1-${enrollmentId}-${dk}` },
   );
+  if (!envoi.enqueued) {
+    console.error(
+      `[satisfaction-j1] NON ENVOYÉ — inscription ${enrollmentId} laissée candidate au rattrapage` +
+        (envoi.garePourValidation === true
+          ? " (e-mail garé en corbeille de validation)"
+          : " (file de messages indisponible)"),
+    );
+    return false;
+  }
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -408,8 +454,8 @@ export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<void>
  * Envoie le suivi post-formation J+30 à un stagiaire.
  * Idempotent : jobId = qualiopi-suivi-j30-{enrollmentId}-{dateKey(dateFin)}.
  */
-export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
-  if (isStub()) return;
+export async function envoyerSuiviJ30(enrollmentId: string): Promise<boolean> {
+  if (isStub()) return false;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -426,7 +472,7 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
     },
   });
 
-  if (!enrollment) return;
+  if (!enrollment) return false;
 
   // Même garantie que J+1 : le questionnaire à froid doit exister avant l'email.
   await creerQuestionnaire({ enrollmentId, type: "satisfaction_froid" });
@@ -436,7 +482,7 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
   const dk = dateKey(session.dateFin);
   const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
 
-  await enqueueEmail(
+  const envoi = await enqueueEmail(
     "qualiopi-suivi-j30",
     trainee.email,
     "fr",
@@ -449,6 +495,16 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
     },
     { jobId: `qualiopi-suivi-j30-${enrollmentId}-${dk}` },
   );
+  if (!envoi.enqueued) {
+    console.error(
+      `[suivi-j30] NON ENVOYÉ — inscription ${enrollmentId} laissée candidate au rattrapage` +
+        (envoi.garePourValidation === true
+          ? " (e-mail garé en corbeille de validation)"
+          : " (file de messages indisponible)"),
+    );
+    return false;
+  }
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -459,8 +515,8 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<void> {
  * Notifie le stagiaire que son attestation/certificat est disponible.
  * Idempotent : jobId = qualiopi-attestation-disponible-{enrollmentId}.
  */
-export async function envoyerAttestationDisponible(enrollmentId: string): Promise<void> {
-  if (isStub()) return;
+export async function envoyerAttestationDisponible(enrollmentId: string): Promise<boolean> {
+  if (isStub()) return false;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -477,7 +533,7 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
     },
   });
 
-  if (!enrollment) return;
+  if (!enrollment) return false;
 
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -504,7 +560,7 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
     },
   });
 
-  await enqueueEmail(
+  const envoi = await enqueueEmail(
     "qualiopi-attestation-disponible",
     trainee.email,
     "fr",
@@ -518,6 +574,16 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
     },
     { jobId: `qualiopi-attestation-disponible-${enrollmentId}` },
   );
+  if (!envoi.enqueued) {
+    console.error(
+      `[attestation-disponible] NON ENVOYÉ — inscription ${enrollmentId} laissée candidate au rattrapage` +
+        (envoi.garePourValidation === true
+          ? " (e-mail garé en corbeille de validation)"
+          : " (file de messages indisponible)"),
+    );
+    return false;
+  }
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -562,8 +628,8 @@ const LIBELLE_QUESTIONNAIRE: Record<string, string> = {
  * légitime (le stagiaire a perdu le mail, l'adresse a changé). La garde qui
  * compte — « déjà répondu » — est posée en amont dans `envoyerQuestionnaireAction`.
  */
-export async function envoyerPositionnement(questionnaireId: string): Promise<void> {
-  if (isStub()) return;
+export async function envoyerPositionnement(questionnaireId: string): Promise<boolean> {
+  if (isStub()) return false;
 
   const q = await prisma.questionnaire.findUnique({
     where: { id: questionnaireId },
@@ -581,15 +647,15 @@ export async function envoyerPositionnement(questionnaireId: string): Promise<vo
 
   // Un positionnement déjà répondu n'a plus de destinataire : le renvoyer
   // laisserait croire au stagiaire que sa réponse s'est perdue.
-  if (!q || q.reponduAt !== null) return;
+  if (!q || q.reponduAt !== null) return false;
 
   const { trainee, session } = q.enrollment;
-  if (!trainee.email) return;
+  if (!trainee.email) return false;
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
 
-  await enqueueEmail(
+  const envoi = await enqueueEmail(
     "qualiopi-positionnement",
     trainee.email,
     "fr",
@@ -605,10 +671,20 @@ export async function envoyerPositionnement(questionnaireId: string): Promise<vo
     // c'est exactement le renvoi qu'on vient de rendre nécessaire.
     { jobId: `qualiopi-positionnement-${q.id}-${Date.now()}` },
   );
+  if (!envoi.enqueued) {
+    console.error(
+      `[positionnement] NON ENVOYÉ — questionnaire ${questionnaireId} laissé candidat au rattrapage` +
+        (envoi.garePourValidation === true
+          ? " (e-mail garé en corbeille de validation)"
+          : " (file de messages indisponible)"),
+    );
+    return false;
+  }
+  return true;
 }
 
-export async function envoyerRelanceQuestionnaire(questionnaireId: string): Promise<void> {
-  if (isStub()) return;
+export async function envoyerRelanceQuestionnaire(questionnaireId: string): Promise<boolean> {
+  if (isStub()) return false;
 
   const q = await prisma.questionnaire.findUnique({
     where: { id: questionnaireId },
@@ -636,7 +712,7 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
   });
 
   // Jamais de relance sur un questionnaire non envoyé ou déjà répondu.
-  if (!q || q.envoyeAt === null || q.reponduAt !== null) return;
+  if (!q || q.envoyeAt === null || q.reponduAt !== null) return false;
 
   const { trainee, session } = q.enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -647,8 +723,8 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
     const client = session.client;
     // Sans email de contact, la relance n'a pas de destinataire — on sort SANS
     // toucher la trace : le compteur ne compte que de VRAIS envois.
-    if (!client?.contactEmail) return;
-    await enqueueEmail(
+    if (!client?.contactEmail) return false;
+    const envoi = await enqueueEmail(
       "qualiopi-enquete-entreprise",
       client.contactEmail,
       "fr",
@@ -662,6 +738,15 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
       },
       { jobId: `qualiopi-enquete-entreprise-relance-${q.id}-${numeroRelance}` },
     );
+    if (!envoi.enqueued) {
+      console.error(
+        `[relance-questionnaire] NON ENVOYÉ — questionnaire ${questionnaireId} laissé candidat au rattrapage` +
+          (envoi.garePourValidation === true
+            ? " (e-mail garé en corbeille de validation)"
+            : " (file de messages indisponible)"),
+      );
+      return false;
+    }
   } else if (q.type === "positionnement") {
     // 🔴 2026-08-15 — MÊME DÉFAUT que l'envoi initial, trouvé en auditant les
     // autres e-mails à la demande de Will.
@@ -681,7 +766,7 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
     await envoyerPositionnement(q.id);
   } else {
     const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
-    await enqueueEmail(
+    const envoi = await enqueueEmail(
       "qualiopi-questionnaire-relance",
       trainee.email,
       "fr",
@@ -694,12 +779,22 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
       },
       { jobId: `qualiopi-questionnaire-relance-${q.id}-${numeroRelance}` },
     );
+    if (!envoi.enqueued) {
+      console.error(
+        `[relance-questionnaire] NON ENVOYÉ — questionnaire ${questionnaireId} laissé candidat au rattrapage` +
+          (envoi.garePourValidation === true
+            ? " (e-mail garé en corbeille de validation)"
+            : " (file de messages indisponible)"),
+      );
+      return false;
+    }
   }
 
   await prisma.questionnaire.update({
     where: { id: q.id },
     data: { relanceCount: numeroRelance, derniereRelanceAt: new Date() },
   });
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -721,8 +816,8 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
  * Idempotent : `creerQuestionnaire` est un upsert, et le jobId est stable.
  * L'appelant marque `envoyeAt` après succès (même contrat que satisfaction-j1).
  */
-export async function envoyerEnqueteEntreprise(sessionId: string): Promise<void> {
-  if (isStub()) return;
+export async function envoyerEnqueteEntreprise(sessionId: string): Promise<boolean> {
+  if (isStub()) return false;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -741,7 +836,7 @@ export async function envoyerEnqueteEntreprise(sessionId: string): Promise<void>
     },
   });
 
-  if (!session) return;
+  if (!session) return false;
   const enrollment = session.enrollments[0];
   const client = session.client;
   // Pas de contact email ou pas d'inscrit : rien à envoyer — throw pour que
@@ -760,7 +855,7 @@ export async function envoyerEnqueteEntreprise(sessionId: string): Promise<void>
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const dk = dateKey(session.dateFin);
 
-  await enqueueEmail(
+  const envoi = await enqueueEmail(
     "qualiopi-enquete-entreprise",
     client.contactEmail,
     "fr",
@@ -774,6 +869,16 @@ export async function envoyerEnqueteEntreprise(sessionId: string): Promise<void>
     },
     { jobId: `qualiopi-enquete-entreprise-${sessionId}-${dk}` },
   );
+  if (!envoi.enqueued) {
+    console.error(
+      `[enquete-entreprise] NON ENVOYÉ — session ${sessionId} laissée candidate au rattrapage` +
+        (envoi.garePourValidation === true
+          ? " (e-mail garé en corbeille de validation)"
+          : " (file de messages indisponible)"),
+    );
+    return false;
+  }
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
