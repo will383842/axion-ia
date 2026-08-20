@@ -1,5 +1,7 @@
 import * as React from "react";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 interface TeamMember {
@@ -9,6 +11,17 @@ interface TeamMember {
   bio?: string;
   /** Optional photo URL. If absent, a neutral placeholder fills the avatar. */
   photoUrl?: string;
+  /**
+   * Fiche dédiée du membre, si elle existe. Rend un lien sous la bio.
+   *
+   * Ajouté le 2026-08-19 : la carte du fondateur décrivait sa fonction sans
+   * mener nulle part, alors qu'une page d'autorité d'entité l'attend sous
+   * `/fr/equipe/williams`. Une page d'entité ne se renforce pas seule — elle
+   * a besoin des liens des pages qui parlent d'elle.
+   */
+  href?: string;
+  /** Libellé du lien (obligatoire dès que `href` est fourni). */
+  hrefLabel?: string;
 }
 
 interface TeamGridProps {
@@ -50,6 +63,17 @@ export function TeamGrid({ members, className }: TeamGridProps) {
           </div>
           {member.bio ? (
             <p className="text-fg-soft text-base leading-relaxed">{member.bio}</p>
+          ) : null}
+          {member.href && member.hrefLabel ? (
+            <p>
+              <Link
+                href={member.href as never}
+                className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+              >
+                {member.hrefLabel}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </p>
           ) : null}
         </li>
       ))}
