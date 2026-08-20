@@ -28,6 +28,9 @@ import { signerReleveFormateurAction } from "@/server/actions/qualiopi/releve-si
 import { lireEtatSignatureReleve } from "@/server/qualiopi/documents/signature/releve-queries";
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
 import { lireKitFormateur } from "@/server/formateur/kit-queries";
+import { ecranEvaluationsFormateur } from "@/server/formateur/evaluations-formateur";
+import { enregistrerEvaluationFormateurAction } from "@/server/actions/qualiopi/evaluation-formateur";
+import { GrilleEvaluation } from "@/components/espace-formateur/GrilleEvaluation";
 import {
   FORMATEUR_SESSIONS_PATH,
   MODALITE_LABELS,
@@ -67,6 +70,10 @@ export default async function Page({
   const demiJournees = await lireFeuilleGroupe(id, new Date(), identite.raisonSociale, trainerId);
   // Lu APRÈS la garde de propriété, comme tout le reste de cette page.
   const etatReleve = await lireEtatSignatureReleve(id, trainerId);
+  // 🔴 `D4-1-C` — l'évaluation des acquis (ind. 11) est l'acte PROPRE du
+  // formateur, et elle n'existait sur aucun de ses écrans. Lu APRÈS la garde de
+  // propriété, comme tout le reste de cette page.
+  const ecranEval = await ecranEvaluationsFormateur(id, trainerId);
   // Le kit imprime : null s'il n'est pas encore publie pour cette formation.
   const kit = await lireKitFormateur(id, trainerId);
 
@@ -281,6 +288,41 @@ export default async function Page({
             />
           )}
         </section>
+
+        {/* ── Évaluation des acquis (indicateur 11) ─────────────────────────
+            🔴 `D4-1-C`. Le formateur ÉVALUE — il observe et il note.
+            L'organisme ATTESTE, et cela reste un acte habilité : cette section
+            produit la MATIÈRE de l'attestation, jamais l'attestation.
+        */}
+        {ecranEval !== null && ecranEval.stagiaires.length > 0 && (
+          <section className="mt-10 space-y-3">
+            <h2 className="text-espresso font-serif text-xl">Évaluation des acquis</h2>
+            <p className="text-mocha text-sm">
+              Notez ce que chaque stagiaire a acquis, en cours de formation et à la fin. C&apos;est
+              cette grille qui fonde l&apos;attestation — sans elle, l&apos;organisme atteste sans
+              preuve.
+            </p>
+            {ecranEval.competencesProposees.length > 0 && (
+              <p className="text-fg-muted text-xs">
+                Les compétences proposées reprennent les objectifs pédagogiques de «&nbsp;
+                {ecranEval.formationIntitule}&nbsp;». Vous pouvez en ajouter.
+              </p>
+            )}
+            <div className="space-y-2">
+              {ecranEval.stagiaires.map((st) => (
+                <GrilleEvaluation
+                  key={st.enrollmentId}
+                  sessionId={ecranEval.sessionId}
+                  enrollmentId={st.enrollmentId}
+                  nomComplet={st.nomComplet}
+                  competencesProposees={ecranEval.competencesProposees}
+                  typesDejaSaisis={st.typesDejaSaisis}
+                  enregistrerAction={enregistrerEvaluationFormateurAction}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/*
         Relevé de connexion FOAD — la pièce du distanciel.

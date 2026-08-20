@@ -24,10 +24,9 @@
 import { createHash } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { headers } from "next/headers";
-import { prisma } from "@/lib/prisma";
+import { estMembreDeSession } from "@/server/formateur/membre-de-session";
 import { hashIp } from "@/lib/security/ip-hash";
 import { requireFormateurAction } from "@/server/formateur/guard";
-import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
 import { signerCreneau, type RefusSignature } from "@/server/qualiopi/emargement/signature-service";
 import {
   contresignerDemiJournee,
@@ -64,28 +63,6 @@ const signerPourStagiaireSchema = z.object({
   imageDataUrl: z.string().max(3_000_000).optional(),
   nomConfirme: z.string().max(200).optional(),
 });
-
-/**
- * Appartenance du formateur à la session — source de vérité unique de l'étape B.
- *
- * Extraite pour valoir à l'identique sur les DEUX écritures du formateur (faire
- * signer un stagiaire ET contresigner) : une garde d'autorisation dupliquée est
- * l'endroit où les deux copies divergent en silence.
- */
-async function estMembreDeSession(sessionId: string, trainerId: string): Promise<boolean> {
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      formateurPrincipalId: true,
-      sessionFormateurs: { where: { trainerId }, select: { role: true } },
-    },
-  });
-  if (session === null) return false;
-  return resoudreAppartenance({
-    estPrincipalFk: session.formateurPrincipalId === trainerId,
-    roleSessionFormateur: (session.sessionFormateurs[0]?.role as RoleFormateur | undefined) ?? null,
-  }).estMembre;
-}
 
 /**
  * Fait signer un stagiaire sur le poste du formateur.

@@ -6,18 +6,20 @@
  * genererAttestationAction : génère (ou renvoie) l'attestation d'un stagiaire
  *   via l'AGENT A (attestation-service). Idempotent si force=false.
  *
- * Pattern : requireAdminWrite + Zod + ActionResult + logQualiopiActivity.
+ * Pattern : garde d'habilitation + Zod + ActionResult + logQualiopiActivity.
+ *
+ * ⚠️ « garde d'habilitation », et non `requireAdminWrite` comme l'annonçait
+ * cette ligne jusqu'au 2026-08-20 : les deux actions de ce module posent des
+ * actes ENGAGEANTS — valider une évaluation finale fonde l'attestation, émettre
+ * l'attestation engage l'organisme sur la réalisation. `requireAdminWrite`
+ * autorise `editor`, et c'était faux pour les deux (`D6-1-C1`).
  * Voir src/server/actions/qualiopi/enrollments.ts comme référence.
  */
 
 "use server";
 
 import { z } from "zod";
-import {
-  requireAdminWrite,
-  requireHabilitation,
-  logQualiopiActivity,
-} from "@/server/actions/qualiopi/_guards";
+import { requireHabilitation, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
 
@@ -81,7 +83,25 @@ export async function createEvaluationAcquisAction(input: {
   }>;
   recommandations?: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // 🔴 `D6-1-C1` (2026-08-20) — c'était `requireAdminWrite()`, qui autorise
+  // `editor` et `secretaire`. Or l'acte `valider_evaluation` EXISTE dans la
+  // matrice depuis sa création, il est TESTÉ… et il n'était appelé NULLE PART.
+  //
+  // Ce que cela permettait : un `editor` saisit une évaluation finale, le moteur
+  // en calcule `reussite`, et `attestation-service.ts` l'imprime tel quel sur
+  // l'attestation — « Réussite : oui », score à l'appui. Le responsable qualité
+  // qui émet ensuite la pièce est, lui, correctement gardé par `attester` : il
+  // n'a aucun moyen de savoir que la donnée sous-jacente n'a été validée par
+  // personne d'habilité.
+  //
+  // 🔑 Un acte déclaré que rien n'appelle est une garde qui n'existe pas. Sa
+  // présence dans la matrice, et le test vert qui l'accompagne, faisaient
+  // précisément croire l'inverse.
+  //
+  // ⚠️ La SAISIE par le formateur, elle, passe par
+  // `evaluation-formateur.ts` : il évalue, l'organisme atteste. Les deux portes
+  // sont distinctes et le restent.
+  const session = await requireHabilitation("valider_evaluation");
   const parsed = createEvaluationAcquisSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;

@@ -45,7 +45,11 @@ vi.mock("@/server/qualiopi/evaluations/attestation-service", () => ({
 // Imports (après mocks)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
 import {
@@ -58,6 +62,7 @@ import {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const mockRequireAdminWrite = requireAdminWrite as ReturnType<typeof vi.fn>;
+const mockRequireHabilitation = requireHabilitation as ReturnType<typeof vi.fn>;
 const mockLogActivity = logQualiopiActivity as ReturnType<typeof vi.fn>;
 const mockCreateEvaluation = createEvaluation as ReturnType<typeof vi.fn>;
 const mockGenererAttestation = genererAttestationPourEnrollment as ReturnType<typeof vi.fn>;
@@ -96,6 +101,26 @@ describe("createEvaluationAcquisAction", () => {
     expect(result.data.id).toBe("eval-new-id");
   });
 
+  it("🔴 `D6-1-C1` — valider une évaluation exige l'acte `valider_evaluation`", async () => {
+    // L'acte existait dans la matrice, il était testé… et appelé NULLE PART.
+    // `requireAdminWrite` autorise `editor` : un compte de saisie pouvait donc
+    // poser une réussite que l'attestation imprimait ensuite telle quelle.
+    //
+    // 🔑 Un acte déclaré que rien n'appelle est une garde qui n'existe pas — et
+    // sa présence dans la matrice faisait croire l'inverse.
+    await createEvaluationAcquisAction({
+      enrollmentId: ENROLLMENT_UUID,
+      type: "finale",
+      dateEvaluation: "2026-06-15",
+      competences: COMPETENCES_BASE,
+    });
+    expect(mockRequireHabilitation).toHaveBeenCalledWith("valider_evaluation");
+    expect(
+      mockRequireAdminWrite,
+      "`requireAdminWrite` autoriserait `editor` : il ne doit plus garder cet acte",
+    ).not.toHaveBeenCalled();
+  });
+
   it("trace l'auteur de l'évaluation (evalueParId ← session admin)", async () => {
     await createEvaluationAcquisAction({
       enrollmentId: ENROLLMENT_UUID,
@@ -108,7 +133,12 @@ describe("createEvaluationAcquisAction", () => {
     // cette traçabilité, impossible de démontrer qui a évalué — sans effet avec
     // un formateur unique, déterminant dès qu'ils sont plusieurs.
     const call = mockCall<{ evalueParId?: string }>(mockCreateEvaluation);
-    expect(call.evalueParId).toBe("admin-test-id");
+    // 🔴 `admin-uuid` et non `admin-test-id` depuis le 2026-08-20 (`D6-1-C1`) :
+    // la garde est passée de `requireAdminWrite` à
+    // `requireHabilitation("valider_evaluation")`. Ce test a rougi à ce
+    // changement, et c'était son travail — l'auteur tracé vient désormais d'une
+    // session HABILITÉE, pas d'un simple compte en écriture.
+    expect(call.evalueParId).toBe("admin-uuid");
   });
 
   it("appelle createEvaluation avec les bons paramètres", async () => {

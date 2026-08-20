@@ -36,9 +36,9 @@ import * as Sentry from "@sentry/nextjs";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { estMembreDeSession } from "@/server/formateur/membre-de-session";
 import { hashIp } from "@/lib/security/ip-hash";
 import { requireFormateurAction } from "@/server/formateur/guard";
-import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 import {
   signerDocument,
@@ -253,24 +253,4 @@ export async function viserReleveResponsablePedagogiqueAction(input: {
     Sentry.captureException(err, { tags: { action: "viserReleveResponsablePedagogiqueAction" } });
     throw err;
   }
-}
-
-/**
- * Appartenance du formateur à la session — même source de vérité que
- * l'émargement (`resoudreAppartenance`). Une garde d'autorisation dupliquée est
- * l'endroit où les deux copies divergent en silence.
- */
-async function estMembreDeSession(sessionId: string, trainerId: string): Promise<boolean> {
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      formateurPrincipalId: true,
-      sessionFormateurs: { where: { trainerId }, select: { role: true } },
-    },
-  });
-  if (session === null) return false;
-  return resoudreAppartenance({
-    estPrincipalFk: session.formateurPrincipalId === trainerId,
-    roleSessionFormateur: (session.sessionFormateurs[0]?.role as RoleFormateur | undefined) ?? null,
-  }).estMembre;
 }
