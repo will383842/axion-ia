@@ -236,24 +236,62 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
             n° de TVA intracommunautaire dès 150 € (art. 242 nonies A CGI).
             Elles manquaient : la facture n'était pas régulière.
 
-            Chaque bloc est conditionnel — tant que `legal_overrides` n'est pas
-            complété, on omet plutôt que d'imprimer un libellé vide, qui se lirait
-            comme une donnée perdue.
+            🔴 `D9-3-02` (2026-08-20) — CES QUATRE BLOCS ÉTAIENT CONDITIONNELS,
+            ET GARDÉS PAR RIEN.
+
+            Le commentaire d'origine disait : « on omet plutôt que d'imprimer un
+            libellé vide, qui se lirait comme une donnée perdue ». C'est le
+            raisonnement inverse de celui que ce dépôt applique partout ailleurs,
+            et l'ASYMÉTRIE le prouve : trente lignes plus bas, l'adresse de
+            l'ACHETEUR — imposée par le même corpus — est `required`, avec dix
+            lignes expliquant que « Non renseigné » vaut avertissement.
+
+            L'en-tête de `documents/conformite.ts` énonce d'ailleurs la doctrine
+            sans ambiguïté : les templates « signalent visuellement l'absence via
+            `FieldRow required` plutôt que de la masquer ».
+
+            Une mention absente d'une facture n'est pas une donnée perdue : c'est
+            une IRRÉGULARITÉ. Omise, elle est invisible à l'émetteur comme au
+            client ; affichée « Non renseigné », elle se corrige avant l'envoi.
+
+            ⚠️ On ne BLOQUE pas l'émission — `capitalSocial`, `rcsVille` et
+            `tvaIntracom` valent `null` en configuration aujourd'hui : les rendre
+            bloquants arrêterait toute facturation à l'instant du déploiement.
+            C'est exactement l'impasse pour laquelle `nda` et `qualiopi` ont déjà
+            été RETIRÉS de `CHAMPS_OBLIGATOIRES` deux fois dans ce dépôt. On rend
+            l'absence visible, et l'alerte console dit le geste.
           */}
-          {identite.formeJuridique ? (
-            <FieldRow label="Forme juridique" value={identite.formeJuridique} />
-          ) : null}
-          {identite.capitalSocial ? (
-            <FieldRow label="Capital social" value={identite.capitalSocial} />
-          ) : null}
-          {identite.rcsVille ? (
+          <FieldRow label="Forme juridique" value={identite.formeJuridique ?? ""} required />
+          <FieldRow label="Capital social" value={identite.capitalSocial ?? ""} required />
+          <FieldRow
+            label="RCS"
+            value={
+              identite.rcsVille
+                ? identite.siren
+                  ? `${identite.rcsVille} ${identite.siren}`
+                  : identite.rcsVille
+                : ""
+            }
+            required
+          />
+          {/*
+            ⚠️ La TVA est le seul des quatre à dépendre du RÉGIME.
+
+            Sous exonération 261-4-4° ou franchise 293 B, l'organisme n'a pas de
+            numéro à porter : la mention légale du régime le remplace, et elle est
+            imprimée plus bas. Exiger le numéro afficherait « Non renseigné » sur
+            une facture parfaitement régulière — une fausse alerte sur une pièce
+            comptable, ce qui apprend à ignorer les vraies.
+
+            Assujetti : le numéro est obligatoire (art. 242 nonies A CGI), et son
+            omission au-delà de 150 € est sanctionnée (art. 1737 CGI).
+          */}
+          {data.regimeTva === "assujetti" ? (
             <FieldRow
-              label="RCS"
-              value={identite.siren ? `${identite.rcsVille} ${identite.siren}` : identite.rcsVille}
+              label="N° TVA intracommunautaire"
+              value={identite.tvaIntracom ?? ""}
+              required
             />
-          ) : null}
-          {identite.tvaIntracom ? (
-            <FieldRow label="N° TVA intracommunautaire" value={identite.tvaIntracom} />
           ) : null}
           <NdaFieldRow label="N° déclaration activité (NDA)" nda={identite.nda} />
           {identite.qualiopi ? (
