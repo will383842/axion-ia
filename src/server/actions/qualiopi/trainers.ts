@@ -24,7 +24,7 @@ import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
-import { getTrainerConformite } from "@/server/qualiopi/trainers/documents";
+import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
 import { getTrainerConflicts } from "@/features/admin-planning/queries";
 import type { PlanningStatut } from "@/features/admin-planning/types";
 import { getAllRegionSlugs } from "@/content/regions";
@@ -730,25 +730,12 @@ export async function assignTrainerToSessionAction(
   //
   // Une conformité illisible (formateur introuvable, base en erreur) ne bloque ni
   // n'invente : `getTrainerConformite` rend `null`, on n'avertit de rien.
-  const avertissements: string[] = [];
-  if (trainerId !== null) {
-    const maintenant = new Date();
-    try {
-      const conformite = await getTrainerConformite(
-        trainerId,
-        maintenant.getFullYear(),
-        maintenant,
-      );
-      if (conformite !== null) {
-        for (const m of conformite.manquements) {
-          if (m.gravite === "bloquant") avertissements.push(m.message);
-        }
-      }
-    } catch {
-      // Ne jamais faire échouer une affectation déjà écrite en base pour un
-      // avertissement qu'on n'a pas su calculer.
-    }
-  }
+  //
+  // 🔑 `D2-5-06` (2026-08-20) — le calcul est EXTRAIT dans
+  // `avertissementsAffectation`. Il vivait ici, en ligne, et c'est pour ça que
+  // l'autre voie d'affectation — la création de session — ne l'a jamais eu. Une
+  // règle qui ne vit qu'à l'endroit où on l'a écrite ne protège que cet endroit.
+  const avertissements = await avertissementsAffectation(trainerId);
 
   await logQualiopiActivity({
     action: "qualiopi.session.assign_formateur",
