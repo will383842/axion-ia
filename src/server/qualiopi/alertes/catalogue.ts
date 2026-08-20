@@ -84,6 +84,33 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "qualite",
   },
   /**
+   * Session clôturée « réalisée » alors que des inscrits n'ont aucune trace.
+   *
+   * 🔴 `CONF-01` (2026-08-20). La garde de clôture ne refusait que si PAS UNE
+   * SEULE inscription ne portait de trace de présence : une sur douze suffisait
+   * donc à faire passer la session en « réalisée ». Les onze autres pouvaient
+   * se voir délivrer une attestation sans qu'aucune preuve n'existe à leur nom,
+   * et rien ne le disait.
+   *
+   * On n'a PAS durci le refus : le durcissement a déjà été tenté puis retiré
+   * dans ce dépôt, il rendait des sessions définitivement non clôturables
+   * (cf. `presence/trace-cloture.ts`). Le trou réel n'était pas l'absence de
+   * blocage, c'était le SILENCE.
+   *
+   * ⚠️ `resolutionAuto: false` — l'alerte naît d'un ÉVÉNEMENT (la clôture), pas
+   * d'un balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi
+   * les candidates et la résoudrait dès le premier tour, avant que quiconque
+   * l'ait lue. Même motif structurel que `besoin_adaptation_declare`.
+   */
+  cloture_trace_presence_incomplete: {
+    niveau: "important",
+    titre: "Session clôturée sans trace de présence pour tous les inscrits",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte naît de l'ÉVÉNEMENT de clôture, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois la feuille complétée ou les renonçants sortis du dispositif.",
+    guichet: "qualite",
+  },
+  /**
    * Un bénéficiaire a déclaré un besoin d'adaptation depuis son portail.
    *
    * 🔴 Vérification en production du 2026-08-04 : la déclaration n'atteignait
