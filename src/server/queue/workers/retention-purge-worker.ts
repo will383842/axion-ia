@@ -39,7 +39,6 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { deleteCv } from "@/server/careers/cv-storage";
-import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -301,133 +300,64 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   counts.chatIdempotency = chatIdemResult.count;
 
-  // Prospection & Base Entreprises — purge par `retentionUntil` (3 ans après
-  // dernière action, entreprise ET personne) + journal d'accès ancien (RGPD).
+  // ── 🛑 PROSPECTION — AUCUNE SUPPRESSION AUTOMATIQUE. DÉCISION DE WILL. ────
+  //
+  // **Ordre explicite de Will, 2026-08-20** : « je veux tout garder et ne jamais
+  // les supprimer […] j'effacerai manuellement quand je le souhaiterai, sans que
+  // tu me le rappelles. »
+  //
+  // Portée : `ProspectionCompany` (~4,29 M), `ProspectionPerson` (~1,32 M) et
+  // `ProspectionHealthPractitioner`. Les trois `deleteMany` qui vivaient ici ont
+  // été RETIRÉS — pas désactivés par un drapeau, retirés.
+  //
+  // ## Pourquoi retirer plutôt que laisser dormir
+  //
+  // Ils filtraient sur `retentionUntil`, colonne qu'aucun code de ce dépôt
+  // n'écrit : ils ne supprimaient donc rien AUJOURD'HUI. Mais les tables sont
+  // alimentées par Axion CRM Pro, un dépôt séparé. Le jour où le CRM se mettrait
+  // à renseigner cette colonne — ce qui est son rôle naturel — la suppression
+  // s'activerait toute seule, ici, sans que personne ne l'ait décidé. Un
+  // effacement de masse qui s'arme par un changement fait AILLEURS n'est pas un
+  // effacement décidé.
+  //
+  // ## Ce que cela signifie, et qui est assumé
+  //
+  // Conservation sans limite de données personnelles : non-conformité RGPD
+  // art. 5.1.e, opposable en contrôle. Le responsable de traitement l'a
+  // arbitrée en connaissance de cause. Ce commentaire est la trace de la
+  // décision — pas un rappel : **ne pas reproposer de purge, ne pas rétablir
+  // d'alerte sur ce sujet.**
+  //
+  // ⚠️ Garde : `prospection-aucune-purge-automatique.spec.ts` échoue si un
+  // `deleteMany` réapparaît sur l'un de ces trois modèles.
+  //
+  // ⚠️ Le journal d'accès (`ProspectionAccessLog`) reste purgé ci-dessous : ce
+  // n'est pas une fiche, c'est la trace technique de qui a consulté quoi, avec
+  // sa propre durée (12 mois). La décision de Will porte sur les FICHES.
   const now = new Date();
-  const prospCompanies = await prisma.prospectionCompany.deleteMany({
-    where: { retentionUntil: { not: null, lt: now } },
-  });
-  const prospPersons = await prisma.prospectionPerson.deleteMany({
-    where: { retentionUntil: { not: null, lt: now } },
-  });
-  // Prospection Santé V2 — praticiens (données NOMINATIVES de pro de santé) :
-  // même horizon de conservation, sinon rétention illimitée (art. 5.1.e).
-  const prospPractitioners = await prisma.prospectionHealthPractitioner.deleteMany({
-    where: { retentionUntil: { not: null, lt: now } },
-  });
   const accessLogMonths = readMonths("RETENTION_PROSPECTION_ACCESS_MONTHS", 12);
   const prospAccess = await prisma.prospectionAccessLog.deleteMany({
     where: { createdAt: { lt: monthsAgo(accessLogMonths) } },
   });
 
   // Parcours vente — brouillons du wizard « Nouvelle vente » : le payload
-  // contient des PII (contact saisi avant création du Client). Même pattern
-  // `retentionUntil` que la prospection ci-dessus. Les brouillons convertis
-  // sont supprimés dès la création de la SESSION (côté wizard) ; ici on
-  // ramasse les abandonnés. Jamais de purge des pièces émises (Devis,
+  // contient des PII (contact saisi avant création du Client). Les brouillons
+  // convertis sont supprimés dès la création de la SESSION (côté wizard) ; ici
+  // on ramasse les abandonnés. Jamais de purge des pièces émises (Devis,
   // factures, DocumentGenere : obligation comptable).
+  //
+  // ⚠️ Hors décision Will du 2026-08-20 : ce sont des BROUILLONS abandonnés du
+  // tunnel de vente, pas des fiches de prospection. Et `retentionUntil` y est
+  // réellement écrit à la création (`vente-brouillon.ts`), donc cette purge-là
+  // fonctionne vraiment.
   const venteBrouillons = await prisma.venteBrouillon.deleteMany({
     where: { retentionUntil: { not: null, lt: now } },
   });
   console.log(`[retention-purge][vente] brouillons=${venteBrouillons.count}`);
   console.log(
-    `[retention-purge][prospection] companies=${prospCompanies.count} ` +
-      `persons=${prospPersons.count} practitioners=${prospPractitioners.count} ` +
+    `[retention-purge][prospection] fiches=CONSERVÉES (décision Will 2026-08-20) ` +
       `accessLogs=${prospAccess.count}`,
   );
-
-  // ── 🔴 `D5-5-01` — LA PURGE CI-DESSUS NE SUPPRIME RIEN ─────────────
-  //
-  // Les trois `deleteMany` de prospection filtrent sur
-  // `retentionUntil: { not: null }`. Or **aucune ligne de ce dépôt n'écrit
-  // cette colonne** pour ces trois modèles : recherche exhaustive sur `src/`
-  // le 2026-08-20, le SEUL code qui touche ces tables est le `deleteMany`
-  // ci-dessus. Ni lecteur, ni écrivain — elles sont alimentées par Axion CRM
-  // Pro, un dépôt séparé.
-  //
-  // Conséquence : le prédicat ne peut matcher aucune ligne, la purge
-  // supprime zéro enregistrement, pour toujours. **Rétention illimitée de
-  // données nominatives** (RGPD art. 5.1.e) sur les tables qui portent les
-  // millions de fiches entreprises et personnes.
-  //
-  // 🔑 C'est la famille de défaut la plus coûteuse de cet audit : une
-  // garde qui a l'air de garder. Le worker tourne, journalise
-  // « companies=0 persons=0 », et ce zéro se lit comme « rien à purger »
-  // alors qu'il signifie « la requête ne peut rien trouver ».
-  //
-  // ## Pourquoi on MESURE au lieu de supprimer
-  //
-  // Réparer, ici, consiste à faire supprimer des lignes à un `deleteMany`
-  // qui n'en a jamais supprimé aucune, sur des millions d'enregistrements,
-  // sans qu'aucun code de ce dépôt ne connaisse la distribution des dates.
-  // Une erreur d'horizon efface l'actif principal du CRM, et c'est
-  // irréversible. Supprimer des données de production est une décision
-  // humaine, pas une conséquence d'audit.
-  //
-  // On rend donc le problème MESURABLE d'abord : aujourd'hui, personne ne
-  // peut savoir combien de fiches sont sur-conservées. L'alerte porte le
-  // nombre ; la suppression reste derrière un drapeau explicitement posé.
-  //
-  // ⚠️ Le comptage retient `retentionUntil: null` ET une inactivité
-  // supérieure à l'horizon. Il ne double donc JAMAIS la purge nominale
-  // ci-dessus, qui ne voit que les lignes où `retentionUntil` est renseigné.
-  const moisProspection = readMonths("RETENTION_PROSPECTION_MONTHS", 36);
-  const seuilProspection = monthsAgo(moisProspection);
-  const sansHorizon = {
-    retentionUntil: null,
-    updatedAt: { lt: seuilProspection },
-  } as const;
-
-  const [compSans, persSans, pratSans] = await Promise.all([
-    prisma.prospectionCompany.count({ where: sansHorizon }),
-    prisma.prospectionPerson.count({ where: sansHorizon }),
-    prisma.prospectionHealthPractitioner.count({ where: sansHorizon }),
-  ]);
-  const totalSansHorizon = compSans + persSans + pratSans;
-
-  console.log(
-    `[retention-purge][prospection] SANS retentionUntil et inactives depuis ` +
-      `>${moisProspection} mois : companies=${compSans} persons=${persSans} ` +
-      `practitioners=${pratSans}`,
-  );
-
-  if (totalSansHorizon > 0) {
-    // Le message porte le NOMBRE : une alerte qui dirait seulement « des
-    // fiches sont sur-conservées » n'aiderait pas à décider. Il dit aussi
-    // le geste exact, parce que l'activation est une décision et qu'une
-    // décision sans son geste se reporte indéfiniment.
-    await creerOuDedup({
-      code: "retention_prospection_sans_horizon",
-      niveau: "important",
-      titre: "Fiches de prospection sans horizon de conservation",
-      message:
-        `${totalSansHorizon} fiches (${compSans} entreprises, ${persSans} personnes, ` +
-        `${pratSans} praticiens) n'ont AUCUN horizon de conservation et sont inactives ` +
-        `depuis plus de ${moisProspection} mois. La purge automatique ne peut pas les ` +
-        `voir : elle ne filtre que sur une colonne qu'aucun code n'écrit. ` +
-        `Pour autoriser leur suppression : poser RETENTION_PROSPECTION_PURGE_ENABLED=true ` +
-        `(scope RUN) après avoir vérifié ce nombre.`,
-    }).catch(() => {});
-  }
-
-  // Suppression effective — DÉSACTIVÉE PAR DÉFAUT, et c'est le point.
-  // Le drapeau n'est pas une précaution rituelle : il matérialise le fait
-  // qu'un humain a lu le nombre ci-dessus avant d'autoriser l'effacement.
-  let purgeSansHorizon = 0;
-  if (process.env["RETENTION_PROSPECTION_PURGE_ENABLED"] === "true" && totalSansHorizon > 0) {
-    // Les personnes et praticiens d'abord : ce sont les données NOMINATIVES,
-    // et `onDelete: Cascade` depuis l'entreprise les emporterait de toute
-    // façon — les compter séparément garde le journal lisible.
-    const p = await prisma.prospectionPerson.deleteMany({ where: sansHorizon });
-    const h = await prisma.prospectionHealthPractitioner.deleteMany({ where: sansHorizon });
-    const c = await prisma.prospectionCompany.deleteMany({ where: sansHorizon });
-    purgeSansHorizon = p.count + h.count + c.count;
-    console.log(
-      `[retention-purge][prospection] purge SANS horizon ACTIVÉE : ` +
-        `persons=${p.count} practitioners=${h.count} companies=${c.count}`,
-    );
-  }
-  void purgeSansHorizon;
 
   // ── Chaîne d'envoi d'e-mails (audit du 2026-08-16) ────────────────────
   //
