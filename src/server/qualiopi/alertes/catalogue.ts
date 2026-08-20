@@ -102,6 +102,29 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * les candidates et la résoudrait dès le premier tour, avant que quiconque
    * l'ait lue. Même motif structurel que `besoin_adaptation_declare`.
    */
+  /**
+   * Le dossier de financement ne suit pas un report — il faut le refaire.
+   *
+   * 🔴 `D2-5-01` (2026-08-20). `financementType` est recopié sur la session de
+   * remplacement, mais l'ACCORD ne l'est pas : il portait sur les dates
+   * d'origine, et un financeur n'accorde pas des dates qu'il n'a pas vues.
+   *
+   * C'est le bon comportement. Ce qui ne l'était pas, c'est son SILENCE :
+   * `validateOpcoAccord` classe l'absence d'accord en `critique`, donc la
+   * session de remplacement refuse de démarrer — et l'admin le découvrait le
+   * jour où il cliquait, sans savoir que le report en était la cause.
+   *
+   * ⚠️ `resolutionAuto: false` — l'alerte naît de l'ÉVÉNEMENT de report. Le
+   * balayage quotidien ne l'émet pas et la résoudrait au premier tour.
+   */
+  report_accord_financement_a_refaire: {
+    niveau: "important",
+    titre: "Accord de financement à refaire après report",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte naît de l'ÉVÉNEMENT de report, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois le nouvel accord enregistré.",
+    guichet: "direction",
+  },
   cloture_trace_presence_incomplete: {
     niveau: "important",
     titre: "Session clôturée sans trace de présence pour tous les inscrits",
