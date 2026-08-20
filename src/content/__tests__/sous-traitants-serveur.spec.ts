@@ -75,6 +75,10 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   SMTP_PORT: { tiers: "Zoho" },
   SMTP_USER: { tiers: "Zoho" },
   SMTP_PASS: { tiers: "Zoho" },
+  // 🔴 2026-08-20 — clé du webhook de rebonds (`D5-3-02`). MÊME tiers : c'est
+  // l'agent ZeptoMail qui poste, et il nous renvoie le destinataire et le sujet
+  // des messages rebondis. Le flux est entrant, le sous-traitant est le même.
+  ZEPTOMAIL_WEBHOOK_KEY: { tiers: "Zoho" },
   SMTP_FROM_ADDRESS: { exempt: "Adresse d'expédition d'Axion-IA, pas un tiers." },
   SMTP_FROM_NAME: { exempt: "Nom d'expéditeur affiché, pas un tiers." },
   SMTP_FROM_MARKETING: { exempt: "Seconde adresse d'expédition d'Axion-IA." },
