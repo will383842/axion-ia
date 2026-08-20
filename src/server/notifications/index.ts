@@ -25,7 +25,7 @@ import {
   telegramGroupFor,
   resolveTelegramTarget,
 } from "./routing";
-import { formatNotification, markdownV2ToPlain } from "./format";
+import { formatNotification, formatNotificationWhatsApp } from "./format";
 import { sendTelegramRaw } from "./channels/telegram";
 import { sendSentryBreadcrumb } from "./channels/sentry";
 import { sendEmailNotification } from "./channels/email";
@@ -102,9 +102,18 @@ async function dispatchChannels(
           }),
       );
     } else if (ch === "whatsapp") {
-      // Même contenu que Telegram, en texte plain (WhatsApp rend `*gras*`).
+      // 🔴 `D6-5-C1` (2026-08-20) — WhatsApp ne reçoit PLUS le même contenu que
+      // Telegram. Il portait nom, e-mail, téléphone et le message entier vers
+      // CallMeBot : un prestataire qui ne publie AUCUNE entité légale (donc
+      // indéclarable sur `/sous-processeurs`), sans contrat de sous-traitance,
+      // et dont les conditions interdisent explicitement de s'en servir pour
+      // « collect or track the personal information of others ».
+      //
+      // 🔑 Le canal reste — il prévient vite, et c'est son seul rôle. Le détail
+      // qui permet de rappeler vit sur Telegram, qui est déclaré et couvert par
+      // des clauses contractuelles types. Voir `formatNotificationWhatsApp`.
       tasks.push(
-        sendWhatsAppRaw({ text: markdownV2ToPlain(formattedText) })
+        sendWhatsAppRaw({ text: formatNotificationWhatsApp(category, severity).text })
           .then((status) => {
             results.whatsapp = status;
           })

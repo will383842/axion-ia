@@ -208,12 +208,28 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     location: "Dubaï, Émirats Arabes Unis (hors UE)",
     serversLocation: "Émirats Arabes Unis + edge global",
     purposeFr:
-      "Notifications administratives via Bot API à destination du gérant (alertes opérations).",
+      "Notifications administratives via Bot API à destination du gérant : alertes d'exploitation, et remontée immédiate des demandes entrantes pour permettre un rappel rapide.",
     purposeEn: "Admin notifications via Bot API to the manager (operations alerts).",
+    // 🔴 `D6-5-C2` (2026-08-20) — cette ligne affirmait « PII minimisée : email
+    // partiel, initiales, téléphone partiel ». C'était FAUX pour l'essentiel du
+    // trafic, et c'est une page LÉGALE : elle est ce qu'un contrôle lit en
+    // premier, et ce sur quoi une personne concernée fonde ses droits.
+    //
+    // La minimisation ne s'applique qu'à la demande RGPD (`redactName` /
+    // `redactEmail`, corrigé le 2026-08-20). Pour les formulaires de contact,
+    // devis, candidatures et rendez-vous — soit une quinzaine de catégories —
+    // `notifications/format.ts` transmet nom, e-mail, téléphone et le message
+    // ENTIER, en clair.
+    //
+    // 🔑 Ce n'est pas un défaut de comportement : `notifications/types.ts` le
+    // documente comme délibéré (« l'équipe doit pouvoir rappeler »), et c'est
+    // une décision légitime du responsable de traitement. Le défaut était de ne
+    // pas le DIRE. La transparence (art. 13-14 RGPD) n'exige pas de minimiser
+    // ici — elle exige de déclarer ce qui part réellement.
     dataCategoriesFr:
-      "PII minimisée (cf. ADR 0010) : email partiel `j****@acme.com`, initiales `J. D.`, téléphone partiel, sociétés en clair, dates/prix/IDs UUID.",
+      "Deux régimes selon la nature de l'alerte. **Demandes RGPD** : données minimisées (e-mail partiel `j****@acme.com`, initiales `J. D.`) — la référence du dossier suffit à la traiter. **Alertes commerciales et de recrutement** (formulaire de contact, demande de devis, d'audit ou d'intervention, candidature, invitation, rendez-vous) : nom, adresse e-mail, téléphone et contenu du message transmis EN CLAIR, afin que l'organisme puisse rappeler la personne. S'y ajoutent sociétés, villes, dates, montants et identifiants techniques.",
     dataCategoriesEn:
-      "Minimised PII (ADR 0010): partial email `j****@acme.com`, initials `J. D.`, partial phone, company names in clear, dates/prices/UUIDs.",
+      "Two regimes depending on the alert. **GDPR requests**: minimised data (partial email `j****@acme.com`, initials `J. D.`) — the case reference is enough to handle them. **Sales and recruitment alerts** (contact form, quote/audit/intervention request, job application, invitation, booking): full name, email address, phone number and message body sent IN CLEAR, so that the organisation can call the person back. Plus company names, cities, dates, amounts and technical identifiers.",
     legalBasis: "6.1.f_legitimate_interest",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "scc",

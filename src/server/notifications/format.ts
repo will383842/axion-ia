@@ -553,9 +553,66 @@ export function formatNotification(
 }
 
 /**
- * Variante plain-text pour WhatsApp (CallMeBot). Dérivée de `formatNotification`
- * (même corps/mêmes champs) puis « déMarkdownisée » : on retire l'échappement
- * MarkdownV2, on garde les `*gras*` que WhatsApp rend nativement.
+ * Le message WhatsApp — SANS aucune donnée personnelle.
+ *
+ * ## Pourquoi WhatsApp ne reçoit pas le même message que Telegram
+ *
+ * 🔴 `D6-5-C1` (2026-08-20). WhatsApp passe par CallMeBot, et trois faits,
+ * vérifiés le 2026-08-20 sur leurs propres pages :
+ *
+ * 1. **Aucune entité légale n'est publiée** — ni nom, ni adresse, ni juridiction,
+ *    ni dans les conditions d'utilisation ni dans la politique de
+ *    confidentialité. La page publique `/sous-processeurs` ne PEUT donc pas le
+ *    déclarer : il n'y a personne à nommer. Pas de contrat de sous-traitance,
+ *    pas de durée de conservation annoncée, transferts hors UE reconnus sans
+ *    garantie détaillée.
+ * 2. **Leurs conditions INTERDISENT** l'usage du service pour « collect or track
+ *    the personal information of others » — soit exactement ce que faisait
+ *    l'envoi du nom et du téléphone d'un prospect.
+ * 3. Le message part dans l'**URL** (requête GET), donc journalisé par chaque
+ *    intermédiaire qu'il traverse, avec la clé d'API.
+ *
+ * ## Ce que ce message contient, et ce qu'il suffit à faire
+ *
+ * L'en-tête (thème + nature de l'alerte), l'heure, et la catégorie technique.
+ * Rien d'autre.
+ *
+ * 🔑 C'est ce que l'écran verrouillé affiche de toute façon : les ~20 premiers
+ * caractères. Le rôle de WhatsApp est de PRÉVENIR vite ; celui de Telegram — un
+ * canal déclaré, sous clauses contractuelles types — est de porter le détail
+ * qui permet de rappeler. Le canal rapide n'a jamais eu besoin de la donnée.
+ *
+ * ⚠️ Ne PAS y réintroduire le corps du message. Ce serait remettre nom,
+ * téléphone et contenu chez un prestataire qu'on ne peut pas nommer.
+ */
+export function formatNotificationWhatsApp(
+  // 🔑 La CATÉGORIE, pas l'événement. Ce message ne porte aucune donnée : lui
+  // passer le payload complet serait rouvrir la porte qu'on vient de fermer,
+  // au premier « juste une ligne de plus ».
+  category: NotificationCategory,
+  severity: NotificationSeverity,
+): FormattedMessage {
+  const emoji = SEVERITY_EMOJI[severity];
+  const title = TITLES[category];
+  const theme = THEME[telegramGroupFor(category)];
+  return {
+    text: [
+      `${theme.emoji} ${theme.label} · ${emoji} ${title}`,
+      "",
+      `🕐 ${formatParisDateTime(new Date())} · 🏷️ ${category}`,
+      "",
+      "Détail sur Telegram ou dans la console.",
+    ].join("\n"),
+  };
+}
+
+/**
+ * Variante plain-text dérivée de `formatNotification` (même corps, mêmes
+ * champs), « déMarkdownisée ».
+ *
+ * ⚠️ N'est PLUS le message WhatsApp : voir `formatNotificationWhatsApp`.
+ * Conservée parce qu'elle rend le message COMPLET en texte brut, ce dont
+ * d'autres canaux pourraient avoir besoin.
  */
 export function formatNotificationPlain(
   event: NotificationEvent,
