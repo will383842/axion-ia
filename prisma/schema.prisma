@@ -7020,6 +7020,14 @@ model DocumentGenere {
   @@index([trainerId, type])
   @@index([suppressionPrevueAt])
   @@index([annuleeAt])
+  /// 🔴 `D5-4-04` (2026-08-20) — la pastille de la console scannait TOUTE la
+  /// table. `compterPiecesEnAttente()` filtre sur
+  /// `statutSignature IN (partielle, en_attente) AND annuleeAt = null` sans
+  /// borne, depuis chaque page admin, et aucun index ne portait
+  /// `statutSignature`. L'ordre des colonnes suit celui du prédicat ;
+  /// `annuleeAt` seul, déjà indexé, ne servait pas cette requête (la colonne
+  /// est NULL pour presque toutes les lignes, donc peu sélective).
+  @@index([statutSignature, annuleeAt])
   @@map("documents_generes")
 }
 
