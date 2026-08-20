@@ -21,8 +21,14 @@
 //   - generation_logs / cost_ledger / web_vital_samples / content_gen_jobs
 //     (logs techniques sans PII visiteur — voir politique-confidentialite).
 //   - ActivityLog : conservé (immuable, art. 30 RGPD register).
+//     🔴 `D5-5-05` (2026-08-20) — cette affirmation était FAUSSE jusqu'à cette
+//     date : `retention-purge-worker.ts` effaçait tout `activity_logs` de plus
+//     de 12 mois, SANS filtre d'action, traces `gdpr.*` comprises. Deux textes
+//     du dépôt se contredisaient, et c'est le silencieux qui gagnait. La purge
+//     exclut désormais le préfixe `gdpr.` et lui applique la durée des pièces.
 
 import { NextResponse, type NextRequest } from "next/server";
+import { effacerCandidaturesPour } from "@/server/careers/candidature-rgpd";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
@@ -84,10 +90,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const chatResult = await eraseChatDataForEmail(email);
 
   // Exécution des effacements
-  const [submissionsResult, newsletterResult, kbResult] = await Promise.all([
+  const [submissionsResult, newsletterResult, kbResult, candidaturesResult] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
     eraseKbDataForEmail(email),
+    // 🔴 `D5-5-03` (2026-08-20) — LES CANDIDATURES ÉTAIENT HORS DE PORTÉE.
+    //
+    // Ni exportées, ni effacées — alors qu'une candidature porte le **CV**, la
+    // **photo** et le **téléphone**, c'est-à-dire les données les plus
+    // sensibles que ce site détienne sur une personne. Et le courriel de
+    // confirmation ÉNUMÉRAIT ce qui avait été effacé : une liste qui se donne
+    // pour exhaustive et qui omet le CV est pire qu'une absence de liste.
+    //
+    // Le défaut était plus profond qu'un oubli de branchement : `email` est
+    // chiffré avec un IV aléatoire, donc la candidature était INTROUVABLE par
+    // son adresse. Cf. `careers/candidature-rgpd.ts`.
+    effacerCandidaturesPour(email),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -112,7 +130,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       targetType: "self_service",
       targetId: v.jti,
       changes: {
-        email,
+        // 🔴 `D5-5-05` (2026-08-20) — c'était `email`, EN CLAIR. Sur le journal
+        // qui trace l'effacement de cette même personne, et que la purge
+        // conserve désormais cinq ans. Conserver la preuve plus longtemps
+        // n'avait de sens qu'à condition de ne pas conserver l'identifiant
+        // avec : le hachage est déterministe, donc re-hacher l'adresse fournie
+        // suffit à retrouver la trace le jour où quelqu'un conteste.
+        emailHash: hashEmailForLookup(email),
         submissionsAnonymized: submissionsResult.anonymized,
         newsletterDeleted: newsletterResult.deleted,
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
@@ -149,6 +173,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       demandes: submissionsResult.anonymized,
       newsletter: newsletterResult.deleted,
       conversations: chatResult.conversationsDeleted,
+      // 🔴 `D5-5-03` — la candidature ENTRE dans l'énumération. Le courriel
+      // dressait la liste de ce qui avait été effacé sans jamais mentionner le
+      // CV : la personne pouvait croire son dossier parti alors qu'il restait
+      // en base, avec sa photo et son numéro.
+      candidatures: candidaturesResult.supprimees,
     });
   } catch (err) {
     console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);

@@ -13,6 +13,7 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { hashIp } from "@/lib/security/ip-hash";
 import { getClientIp } from "@/lib/client-ip";
 import { parseLocale } from "@/lib/schemas/locale";
@@ -249,6 +250,12 @@ export async function submitJobApplicationAction(
         firstName: encryptPii(d.firstName),
         lastName: encryptPii(d.lastName),
         email: encryptPii(d.email),
+        // 🔴 `D5-5-03` (2026-08-20) — empreinte de recherche RGPD.
+        // `encryptPii` utilise un IV aléatoire : sans cette empreinte, la
+        // candidature est INTROUVABLE par son adresse, donc ni exportable
+        // (art. 15) ni effaçable (art. 17). Même remède que
+        // `contactEmailHash` sur les `Submission`.
+        emailHash: hashEmailForLookup(d.email),
         phone: encryptPii(d.phone),
         city: d.city ?? null,
         motivation: d.motivation ?? null,
