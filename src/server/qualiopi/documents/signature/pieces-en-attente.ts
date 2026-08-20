@@ -27,6 +27,7 @@
  * rien ne permettrait d'affirmer qu'elle est remplacée.
  */
 
+import { cache } from "react";
 import { prisma } from "@/lib/prisma";
 import type { DocumentType, DocumentStatutSignature } from "../../../../../prisma/generated/client";
 
@@ -92,21 +93,34 @@ export async function retirerPiecesRemplacees<
 }
 
 /**
- * Liste détaillée pour la page « À traiter » (30 lignes au plus).
+ * L'ensemble des pièces en attente, lu UNE FOIS par requête.
  *
- * `partielle` d'abord (quelqu'un a DÉJÀ signé — souvent le client : c'est le
- * contreseing de l'organisme qui bloque, donc TOI), puis `en_attente` (le lien
- * est émis, personne n'a signé — c'est le client qu'on relance).
+ * 🔴 `D5-4-04` (2026-08-20). La page « À traiter » produisait **quatre**
+ * lectures de `documents_generes` pour un seul rendu : `compterPiecesEnAttente`
+ * (non bornée) et `listerPiecesEnAttente` faisaient chacune leur `findMany`,
+ * puis chacune un second `findMany` dans `retirerPiecesRemplacees`. Deux
+ * questions sur le même ensemble, quatre allers-retours.
  *
- * Stub-safe → [].
+ * `cache()` (React) mémoïse à l'échelle d'un rendu — le patron est déjà celui de
+ * `config/public-identity.ts`. Les deux appelants passent désormais par ici, et
+ * la page ne paie plus qu'une lecture et son filtrage.
+ *
+ * ⚠️ **Pas de `take` en base**, et c'est délibéré. La lecture non bornée n'est
+ * pas une régression : c'est ce que le compteur faisait DÉJÀ, depuis chaque page
+ * admin — la pastille doit dire le total, pas « 30 au plus ». Le volume est
+ * borné par nature, ce sont les pièces qu'un humain doit traiter, et il est
+ * désormais servi par un index (`statutSignature, annuleeAt`) au lieu d'un Seq
+ * Scan complet.
+ *
+ * Le tri reste en base : la troncature à 30 de la liste est donc un `slice` sur
+ * un ensemble déjà ordonné, pas un échantillon arbitraire.
  */
-export async function listerPiecesEnAttente() {
+const lireEnAttente = cache(async () => {
   let brutes;
   try {
     brutes = await prisma.documentGenere.findMany({
       where: enAttente(),
       orderBy: [{ statutSignature: "desc" }, { updatedAt: "asc" }],
-      take: 30,
       select: {
         id: true,
         type: true,
@@ -125,6 +139,22 @@ export async function listerPiecesEnAttente() {
     return [];
   }
   return retirerPiecesRemplacees(brutes);
+});
+
+/** Nombre de lignes affichées par la page « À traiter ». */
+const PLAFOND_AFFICHAGE = 30;
+
+/**
+ * Liste détaillée pour la page « À traiter » (30 lignes au plus).
+ *
+ * `partielle` d'abord (quelqu'un a DÉJÀ signé — souvent le client : c'est le
+ * contreseing de l'organisme qui bloque, donc TOI), puis `en_attente` (le lien
+ * est émis, personne n'a signé — c'est le client qu'on relance).
+ *
+ * Stub-safe → [].
+ */
+export async function listerPiecesEnAttente() {
+  return (await lireEnAttente()).slice(0, PLAFOND_AFFICHAGE);
 }
 
 /**
@@ -132,21 +162,13 @@ export async function listerPiecesEnAttente() {
  *
  * 🔴 Ne pas remplacer par un `prisma.count` : c'est exactement ce qui mentait.
  * Le filtre « pièce remplacée » ne s'exprime pas dans un `where` (il compare
- * deux lignes entre elles), il faut donc lire puis filtrer. Le volume est
- * borné par nature — ce sont les pièces qu'un humain doit traiter.
+ * deux lignes entre elles), il faut donc lire puis filtrer.
  *
- * Pas de `take` ici, contrairement à la liste : la pastille doit dire le
- * total, pas « 30 au plus ». Stub-safe → 0.
+ * 🔑 Et surtout : le compte NE PASSE PAS par la liste tronquée. Compter
+ * `listerPiecesEnAttente().length` plafonnerait la pastille à 30 — un badge qui
+ * dit « 30 » quand il y en a 47 ment, et un badge qui ment une fois n'est plus
+ * jamais regardé. Stub-safe → 0.
  */
 export async function compterPiecesEnAttente(): Promise<number> {
-  let brutes;
-  try {
-    brutes = await prisma.documentGenere.findMany({
-      where: enAttente(),
-      select: { sessionId: true, type: true },
-    });
-  } catch {
-    return 0;
-  }
-  return (await retirerPiecesRemplacees(brutes)).length;
+  return (await lireEnAttente()).length;
 }
