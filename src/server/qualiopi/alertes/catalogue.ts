@@ -233,6 +233,23 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
 
   // ── Pilotage qualité ────────────────────────────────────────────────────────
+  /**
+   * Mentions obligatoires absentes des factures.
+   *
+   * 🔴 `D9-3-02` (2026-08-20). `critique` et non `important` : toute facture
+   * émise est irrégulière tant que la configuration est incomplète, et
+   * l'omission du n° de TVA au-delà de 150 € est **sanctionnée** (art. 1737
+   * CGI). C'est un risque fiscal immédiat, pas un écart de présentation.
+   *
+   * Guichet `direction` : compléter l'identité légale de la société engage
+   * l'entreprise, ce n'est ni un acte pédagogique ni de la saisie courante.
+   */
+  facture_mentions_legales_absentes: {
+    niveau: "critique",
+    titre: "Mentions obligatoires absentes des factures",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   responsable_qualite_absent: {
     niveau: "important",
     titre: "Responsable qualité non désigné",

@@ -151,4 +151,79 @@ describe("FacturePdf — identifiants vendeur manquants signalés (jamais masqu�
     // Le libellé reste présent (la ligne n'est pas masquée).
     expect(text).toContain("SIRET de l'organisme");
   });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // `D9-3-02` (2026-08-20) — les quatre mentions de l'art. R123-238 C. com.
+  //
+  // 🔴 Elles étaient imprimées CONDITIONNELLEMENT : absentes de la
+  // configuration, elles disparaissaient de la facture sans laisser de trace.
+  // Une facture ainsi amputée est irrégulière, et rien — ni test, ni alerte —
+  // ne le disait. Le passage en `required` a d'abord été fait SANS garde : la
+  // mutation qui remettait la condition n'a rougi nulle part.
+  //
+  // 🔑 Ces quatre tests sont ce qui empêche le retour en arrière silencieux.
+  // ───────────────────────────────────────────────────────────────────────────
+
+  it("🔴 forme juridique absente → le libellé RESTE et porte « Non renseigné »", () => {
+    const text = factureText(makeFacture({ identite: { ...IDENTITE, formeJuridique: null } }));
+    expect(text).toContain("Forme juridique");
+    expect(text).toContain("Non renseigné");
+  });
+
+  it("🔴 capital social absent → le libellé RESTE (art. R123-238 C. com.)", () => {
+    const text = factureText(makeFacture({ identite: { ...IDENTITE, capitalSocial: null } }));
+    expect(text).toContain("Capital social");
+    expect(text).toContain("Non renseigné");
+  });
+
+  it("🔴 RCS absent → le libellé RESTE", () => {
+    const text = factureText(
+      makeFacture({ identite: { ...IDENTITE, rcsVille: null, siren: null } }),
+    );
+    expect(text).toContain("RCS");
+    expect(text).toContain("Non renseigné");
+  });
+
+  it("🔴 n° de TVA absent SOUS RÉGIME ASSUJETTI → le libellé RESTE (art. 1737 CGI)", () => {
+    const text = factureText(
+      makeFacture({ identite: { ...IDENTITE, tvaIntracom: null }, regimeTva: "assujetti" }),
+    );
+    expect(text).toContain("N° TVA intracommunautaire");
+    expect(text).toContain("Non renseigné");
+  });
+
+  it("les quatre mentions renseignées s'impriment, et « Non renseigné » disparaît", () => {
+    // 🔑 Témoin négatif du bloc : sans lui, un gabarit qui écrirait
+    // « Non renseigné » EN PERMANENCE passerait les cinq tests ci-dessus.
+    const text = factureText(
+      makeFacture({
+        identite: {
+          ...IDENTITE,
+          formeJuridique: "Société par actions simplifiée (SAS)",
+          capitalSocial: "1 000 €",
+          rcsVille: "Grenoble",
+          siren: "938123456",
+          tvaIntracom: "FR12938123456",
+        },
+      }),
+    );
+    expect(text).toContain("Société par actions simplifiée (SAS)");
+    expect(text).toContain("1 000 €");
+    expect(text).toContain("Grenoble 938123456");
+    expect(text).toContain("FR12938123456");
+    expect(text).not.toContain("Non renseigné");
+  });
+
+  it("🔴 sous EXONÉRATION, la ligne « N° TVA » n'est pas réclamée du tout", () => {
+    // ⚠️ Le cas qui rendrait la mention nuisible : un organisme exonéré n'a pas
+    // de numéro. Imprimer « N° TVA intracommunautaire : Non renseigné » sur sa
+    // facture ferait douter le client d'une facture pourtant régulière.
+    const text = factureText(
+      makeFacture({
+        identite: { ...IDENTITE, tvaIntracom: null },
+        regimeTva: "exoneration_261",
+      }),
+    );
+    expect(text).not.toContain("N° TVA intracommunautaire");
+  });
 });

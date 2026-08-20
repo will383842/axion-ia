@@ -41,6 +41,7 @@ const CODES_ATTENDUS: string[] = [
   "vigilance_urssaf_expire_j30",
   "kit_sorties_non_pretes",
   "responsable_qualite_absent",
+  "facture_mentions_legales_absentes",
   // SPEC_PART5 §A.2, écrite le 2026-08-05 : la colonne `derniereVerifCoherenceAt`
   // existait depuis T1 sans qu'aucune règle ne surveille son ancienneté.
   "offres_site_non_verifiees",

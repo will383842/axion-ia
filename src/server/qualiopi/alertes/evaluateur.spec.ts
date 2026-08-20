@@ -47,6 +47,15 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 }));
 
 // Référentiel OPCO versionné (Lot 5) — mock de la lecture (estBaremePerime reste réel).
+// 🔴 2026-08-20 (`D9-3-02`) — `getOrganismeIdentite` est mocké EXPRÈS.
+// Sans ce mock, la règle des mentions de facture tomberait dans le `fail-soft`
+// par règle : elle ne rougirait jamais, et son alerte ne partirait jamais non
+// plus. Une règle qui échoue en silence est indiscernable d'une règle qui n'a
+// rien à signaler — c'est le défaut que cet audit poursuit depuis le début.
+vi.mock("@/server/qualiopi/documents/organisme", () => ({
+  getOrganismeIdentite: vi.fn(),
+}));
+
 vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
   listBaremesEnVigueur: vi.fn(),
 }));
@@ -66,6 +75,7 @@ vi.mock("@/server/qualiopi/trainers/documents", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import {
   cumulAnnuelFormateurCents,
@@ -105,6 +115,7 @@ const mp = prisma as unknown as {
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
+const mockIdentite = getOrganismeIdentite as ReturnType<typeof vi.fn>;
 const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
 const mockListTrainerDocs = listTrainerDocuments as ReturnType<typeof vi.fn>;
 const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
@@ -141,6 +152,16 @@ function setupEmptyMocks() {
   mp.interventionDocument.findMany.mockResolvedValue([]);
   // Idem pour moteur_assemble_a_publier (formations assemblées en attente).
   mp.formation.findMany.mockResolvedValue([]);
+  // Idem pour facture_mentions_legales_absentes : identité légale COMPLÈTE par
+  // défaut → pas d'alerte. Sans ce mock, la règle lirait `undefined.formeJuridique`,
+  // lèverait, et le fail-soft l'avalerait : elle serait INERTE partout ailleurs.
+  mockIdentite.mockResolvedValue({
+    formeJuridique: "Société par actions simplifiée (SAS)",
+    capitalSocial: "1 000 €",
+    rcsVille: "Grenoble",
+    siren: "938123456",
+    tvaIntracom: "FR12938123456",
+  });
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -150,6 +171,11 @@ function setupEmptyMocks() {
     if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
     // BPF de l'année N-1 considéré déposé (marqueur config) → pas d'alerte BPF par défaut.
     if (key === "bpf_annee_deposee") return Promise.resolve(now.getFullYear());
+    // Régime par défaut = assujetti : c'est le régime SOUS LEQUEL le n° de TVA
+    // intracommunautaire est exigible. Le défaut d'un test doit être le cas le
+    // plus contraignant, sinon la garde se relâche sans que personne ne l'ait
+    // décidé.
+    if (key === "regime_tva") return Promise.resolve("assujetti");
     return Promise.resolve("");
   });
 }
@@ -2383,5 +2409,106 @@ describe("🔴 evaluerAlertes — suivi_froid_manquant (indicateur 30)", () => {
       appel?.session?.dateFin?.gte,
       "Une fenêtre sans borne arrière ne se solde jamais.",
     ).toBeInstanceOf(Date);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// facture_mentions_legales_absentes (`D9-3-02`, 2026-08-20)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — mentions légales de facture", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("ne crée AUCUNE alerte quand les quatre mentions sont renseignées", async () => {
+    const alertes = await evaluerAlertes();
+    // 🔑 Le témoin négatif du bloc. Sans lui, les trois tests suivants
+    // passeraient même avec une règle qui alerte TOUJOURS.
+    expect(alertes.find((a) => a.code === "facture_mentions_legales_absentes")).toBeUndefined();
+  });
+
+  it("🔴 alerte quand le capital social manque — la facture part avec « Non renseigné »", async () => {
+    mockIdentite.mockResolvedValue({
+      formeJuridique: "Société par actions simplifiée (SAS)",
+      capitalSocial: null,
+      rcsVille: "Grenoble",
+      siren: "938123456",
+      tvaIntracom: "FR12938123456",
+    });
+    const alerte = (await evaluerAlertes()).find(
+      (a) => a.code === "facture_mentions_legales_absentes",
+    );
+    expect(alerte, "une mention obligatoire absente doit être signalée").toBeDefined();
+    expect(alerte?.niveau).toBe("critique");
+    expect(alerte?.message).toContain("capital social");
+    // Au singulier : une seule mention manque. Un message qui accorde mal
+    // n'est pas un détail — il fait douter du décompte.
+    expect(alerte?.message).toContain("1 mention obligatoire de facture est absente");
+  });
+
+  it("🔴 alerte au PLURIEL et énumère les quatre quand rien n'est renseigné", async () => {
+    mockIdentite.mockResolvedValue({
+      formeJuridique: null,
+      capitalSocial: null,
+      rcsVille: null,
+      siren: null,
+      tvaIntracom: null,
+    });
+    const alerte = (await evaluerAlertes()).find(
+      (a) => a.code === "facture_mentions_legales_absentes",
+    );
+    expect(alerte?.message).toContain("4 mentions obligatoires de facture sont absentes");
+    for (const attendu of [
+      "forme juridique",
+      "capital social",
+      "RCS",
+      "n° de TVA intracommunautaire",
+    ]) {
+      expect(alerte?.message, `« ${attendu} » doit être nommée`).toContain(attendu);
+    }
+  });
+
+  it("🔴 n'exige PAS le n° de TVA sous le régime d'exonération 261-4-4°", async () => {
+    // ⚠️ Le cas qui rendrait la règle nuisible : sous exonération, l'organisme
+    // n'a pas de numéro à porter. Alerter quand même produirait un critique
+    // permanent et impossible à résoudre — c'est ainsi qu'on apprend à ignorer
+    // une catégorie d'alertes.
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "regime_tva") return Promise.resolve("exoneration_261");
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "responsable_qualite_nom") return Promise.resolve("Williams Jullin");
+      if (key === "bpf_annee_deposee") return Promise.resolve(new Date().getFullYear());
+      if (key === "qualiopi_validite") {
+        return Promise.resolve(new Date(Date.now() + 200 * 86_400_000).toISOString().slice(0, 10));
+      }
+      return Promise.resolve("");
+    });
+    mockIdentite.mockResolvedValue({
+      formeJuridique: "Société par actions simplifiée (SAS)",
+      capitalSocial: "1 000 €",
+      rcsVille: "Grenoble",
+      siren: "938123456",
+      tvaIntracom: null,
+    });
+    expect(
+      (await evaluerAlertes()).find((a) => a.code === "facture_mentions_legales_absentes"),
+      "un organisme exonéré n'a pas de n° de TVA à porter",
+    ).toBeUndefined();
+  });
+
+  it("🔴 une chaîne d'espaces ne vaut pas une mention renseignée", async () => {
+    mockIdentite.mockResolvedValue({
+      formeJuridique: "   ",
+      capitalSocial: "1 000 €",
+      rcsVille: "Grenoble",
+      siren: "938123456",
+      tvaIntracom: "FR12938123456",
+    });
+    const alerte = (await evaluerAlertes()).find(
+      (a) => a.code === "facture_mentions_legales_absentes",
+    );
+    expect(alerte?.message).toContain("forme juridique");
   });
 });
