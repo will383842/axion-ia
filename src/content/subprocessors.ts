@@ -289,6 +289,31 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     documentationUrl:
       "https://www.microsoft.com/licensing/docs/view/Microsoft-Products-and-Services-Data-Protection-Addendum-DPA",
   },
+  // ───────────────────────────── LinkedIn Insight Tag (2026-08-20)
+  // Intégré (`src/components/analytics/LinkedInInsight.tsx`) mais INACTIF :
+  // `NEXT_PUBLIC_LINKEDIN_PARTNER_ID` n'est pas défini en production, aucun
+  // compte LinkedIn Campaign Manager n'existe. Le composant rend `null` →
+  // aucune requête, aucun cookie. Passera à `active` le jour où l'ID est posé
+  // dans Coolify — et pas avant.
+  {
+    name: "LinkedIn Ireland Unlimited Company (Microsoft)",
+    location: "Dublin, Irlande",
+    serversLocation: "Irlande (UE) + USA (infrastructure Microsoft)",
+    purposeFr:
+      "Insight Tag — constitution d'audiences de reciblage publicitaire LinkedIn à partir des visiteurs du site, et mesure des conversions des campagnes payantes. Ne sert PAS à la mesure d'audience (Plausible auto-hébergé, sans cookie) ni à l'attribution des réservations (UTM lus côté serveur sur `/appel`). Gating consentement CMP obligatoire ; le pixel `<noscript>` du snippet officiel est délibérément omis car il contournerait ce consentement.",
+    purposeEn:
+      "Insight Tag — building LinkedIn advertising retargeting audiences from site visitors, and measuring paid campaign conversions. NOT used for audience measurement (self-hosted cookie-less Plausible) nor booking attribution (server-side UTM parsing on `/appel`). Mandatory CMP consent gating; the official snippet's `<noscript>` pixel is deliberately omitted as it would bypass that consent.",
+    dataCategoriesFr:
+      "Cookies `li_sugr`, `bcookie`, `bscookie`, `lidc`, `UserMatchHistory` (durées de 1 jour à 12 mois selon le cookie). Adresse IP, user-agent, URL visitées, horodatage. Appariement possible avec un compte LinkedIn connecté — c'est la finalité même du reciblage.",
+    dataCategoriesEn:
+      "Cookies `li_sugr`, `bcookie`, `bscookie`, `lidc`, `UserMatchHistory` (lifetimes from 1 day to 12 months depending on the cookie). IP address, user-agent, URLs visited, timestamps. Matching against a logged-in LinkedIn account is possible — that is the very purpose of retargeting.",
+    legalBasis: "6.1.a_consent",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "analytics_obs",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://www.linkedin.com/legal/l/dpa",
+  },
   // ───────────────────────────── content-gen IA (audit B5 2026-05-15)
   // Code intégré (`src/server/content-gen/providers/*.ts`) — clés API non
   // encore présentes dans Coolify env → `pending_activation` jusqu'à

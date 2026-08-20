@@ -404,6 +404,15 @@ export const env = createEnv({
     // donc cookies déposés uniquement post-accept visiteur. No-op si non défini.
     // DPA Microsoft à signer côté Will + entry dans `subprocessors.ts` (déclarée).
     NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
+    /**
+     * LinkedIn Insight Tag — « Partner ID » numérique fourni par LinkedIn
+     * Campaign Manager (Paramètres du compte → Insight Tag). Absent tant
+     * qu'aucun compte publicitaire n'existe : le composant rend alors `null`
+     * et AUCUNE requête n'est émise. Ne sert QU'au retargeting publicitaire —
+     * la mesure d'audience passe par Plausible, et l'attribution des
+     * réservations par les UTM lus dans `/appel`.
+     */
+    NEXT_PUBLIC_LINKEDIN_PARTNER_ID: z.string().optional(),
     // Kill-switch PUBLIC du widget chatbot (T-08). "true" → la bulle se monte
     // côté client (île idle). Tant que non défini / != "true", le widget ne
     // monte rien et n'émet aucune requête. Pendant client de la garde serveur
@@ -517,6 +526,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_API_URL: process.env.NEXT_PUBLIC_PLAUSIBLE_API_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
+    NEXT_PUBLIC_LINKEDIN_PARTNER_ID: process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID,
     NEXT_PUBLIC_CHATBOT_ENABLED: process.env.NEXT_PUBLIC_CHATBOT_ENABLED,
     NEXT_PUBLIC_CHATBOT_PAGES: process.env.NEXT_PUBLIC_CHATBOT_PAGES,
   },

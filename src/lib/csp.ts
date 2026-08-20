@@ -105,6 +105,13 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
   // Calendly inline widget (`/appel` Sprint A correctif 2026-05-25) charge
   // `assets.calendly.com/assets/external/widget.js` via next/script lazyOnload.
   // Connect + frame ajoutés plus bas pour l'iframe `calendly.com/{user}/{event}`.
+  //
+  // LinkedIn Insight Tag (2026-08-20) — `snap.licdn.com/li.lms-analytics/insight.min.js`,
+  // injecté par `<LinkedInInsight />` UNIQUEMENT après consentement explicite.
+  // Le collecteur est `px.ads.linkedin.com` (connect-src plus bas). Le domaine
+  // reste whitelisté même quand `NEXT_PUBLIC_LINKEDIN_PARTNER_ID` est absent :
+  // sans l'ID le composant rend `null`, donc aucune requête n'est émise, et une
+  // CSP conditionnelle rendrait le diagnostic illisible le jour de l'activation.
   const scriptSrc = strict
     ? [
         "script-src",
@@ -116,6 +123,7 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
         "https://plausible.axion-ia.com",
         "https://www.clarity.ms",
         "https://*.clarity.ms",
+        "https://snap.licdn.com",
       ].join(" ")
     : [
         "script-src",
@@ -126,6 +134,7 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
         "https://plausible.axion-ia.com",
         "https://www.clarity.ms",
         "https://*.clarity.ms",
+        "https://snap.licdn.com",
         "https://assets.calendly.com",
       ].join(" ");
 
@@ -153,7 +162,7 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data: https://fonts.gstatic.com",
-    `connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io${stripeConnect} https://www.clarity.ms https://*.clarity.ms https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com`,
+    `connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io${stripeConnect} https://www.clarity.ms https://*.clarity.ms https://snap.licdn.com https://px.ads.linkedin.com https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com`,
     // `*.r2.cloudflarestorage.com` : upload présigné direct navigateur→R2
     // (import de kit + uploads admin documents-interventions). Sans ça, la CSP
     // bloque le PUT du fichier vers le stockage (fix 2026-06-13).
