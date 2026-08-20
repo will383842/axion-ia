@@ -9,7 +9,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { siteRouteInspectorQueue, siteRouteDiscoveryQueue } from "@/server/queue/queues";
-import { requireAdminWrite } from "./_guards";
+import { requireAdminRead, requireAdminWrite } from "./_guards";
 import type {
   SiteRouteType,
   SiteRouteStatus,
@@ -128,6 +128,7 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
   page: number;
   pageSize: number;
 }> {
+  await requireAdminRead();
   const page = Math.max(1, filters.page ?? 1);
   const pageSize = Math.min(100, Math.max(10, filters.pageSize ?? 50));
   const skip = (page - 1) * pageSize;
@@ -186,6 +187,9 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
 // ─── getSiteRouteDetail ────────────────────────────────────────────────────────
 
 export async function getSiteRouteDetail(id: string): Promise<SiteRouteDetail | null> {
+  // 🔴 `D6-1-C3` (2026-08-20) — cette fonction n'avait AUCUNE garde, et elle rend
+  // `adminNotes` : des notes internes. Voir l'en-tête du fichier.
+  await requireAdminRead();
   const route = await prisma.siteRoute.findUnique({
     where: { id, visibility: "public" },
     include: {
@@ -258,6 +262,7 @@ export async function getSiteRouteDetail(id: string): Promise<SiteRouteDetail | 
 // ─── getSiteRouteStats ─────────────────────────────────────────────────────────
 
 export async function getSiteRouteStats(): Promise<SiteRouteStats> {
+  await requireAdminRead();
   // Toutes les stats portent sur les URLs vivantes (removedAt null).
   const live = { visibility: "public" as const, removedAt: null };
   const [
@@ -336,6 +341,7 @@ const TriggerInspectionSchema = z.object({
 export async function triggerInspection(
   siteRouteId: string,
 ): Promise<{ success: boolean; error?: string }> {
+  await requireAdminWrite();
   const input = TriggerInspectionSchema.safeParse({ siteRouteId });
   if (!input.success) return { success: false, error: "ID route invalide" };
 
@@ -363,6 +369,7 @@ export async function triggerInspection(
 // ─── triggerScanAll ────────────────────────────────────────────────────────────
 
 export async function triggerScanAll(): Promise<{ success: boolean; error?: string }> {
+  await requireAdminWrite();
   if (!siteRouteInspectorQueue) {
     return { success: false, error: "Queue BullMQ non disponible" };
   }
@@ -503,6 +510,7 @@ export async function bulkToggleGsc(
 export async function resolveAnomaly(
   anomalyId: string,
 ): Promise<{ success: boolean; error?: string }> {
+  await requireAdminWrite();
   if (!z.string().cuid().safeParse(anomalyId).success) {
     return { success: false, error: "ID anomalie invalide" };
   }
@@ -546,6 +554,8 @@ export async function listAnomalies(filters: {
   }>;
   total: number;
 }> {
+  // 🔴 `D6-1-C3` — cette fonction rend le détail des anomalies internes du site.
+  await requireAdminRead();
   const page = Math.max(1, filters.page ?? 1);
   const pageSize = Math.min(100, Math.max(10, filters.pageSize ?? 50));
   const skip = (page - 1) * pageSize;
