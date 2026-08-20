@@ -31,6 +31,46 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 14  | DocuSeal (self-hosted)     | Signature électronique contrats      | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
 | 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | online | SCC                        | 🟡 à accepter   |
+| 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
+
+> 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
+> ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
+> dans ce registre, NI dans `/sous-processeurs` qui se déclare « liste
+> exhaustive » (art. 13.1.e). Ce n'est pas un tiers accessoire : c'est le relais
+> qui achemine **la totalité** des e-mails du site, et chaque envoi lui confie
+> l'adresse du destinataire **et le corps complet du message** — convocations,
+> conventions, attestations, liens personnels d'émargement, accusés de demande
+> RGPD. Aucune minimisation n'est possible : c'est le message lui-même qui
+> transite.
+>
+> 🔑 **Cause racine — et ce n'est PAS « on a oublié ».** La garde posée le
+> 2026-07-26 après l'omission de Calendly est adossée à `src/lib/csp.ts`, décrite
+> comme « le seul goulot qu'un tiers ne peut pas contourner pour charger ».
+> L'affirmation est vraie des tiers qui chargent **dans le navigateur**, et
+> fausse de tous les autres : un relais SMTP appelé depuis le worker BullMQ ne
+> traverse aucune CSP. La garde couvrait donc une moitié de la surface en
+> paraissant la couvrir entière — et rien ne le disait. C'est exactement le
+> défaut que l'omission de Calendly avait censément fermé, reproduit un étage
+> plus bas.
+>
+> Une seconde garde couvre désormais l'autre moitié :
+> `src/content/__tests__/sous-traitants-serveur.spec.ts`, adossée aux **variables
+> d'environnement serveur** de `src/env.ts` — tout tiers appelé depuis le serveur
+> a besoin d'une URL ou d'un secret déclaré là. Chaque variable doit être
+> rattachée à un sous-traitant OU porter une exemption écrite.
+>
+> ⛔ **ACTION WILL** — reporter ici l'**entité contractante exacte** telle qu'elle
+> figure sur le DPA signé (le groupe Zoho contracte selon les régions via des
+> entités distinctes). Le code ne prouve que la région de service
+> (`smtp.zeptomail.eu` = datacentre UE) ; l'entité, elle, ne se lit que sur le
+> contrat, et c'est elle qui détermine le cadre de transfert opposable.
+>
+> ⚠️ Zoho héberge par ailleurs la **boîte humaine** `contact@axion-ia.com`. Elle
+> n'est pas listée sur la page publique, dont le périmètre déclaré est
+> « l'app Axion-IA » : la boîte relève du registre art. 30 de l'organisme, pas
+> des sous-traitants de l'application. Si le périmètre de la page devait être
+> élargi, ce serait une décision à écrire — pas un oubli à corriger.
+
 
 > 🆕 **Ligne 16 ajoutée 2026-07-26** (lot L10 / constat X2). Calendly était en
 > production depuis le 2026-05-26 — onze jours après le gel de la SSOT publique

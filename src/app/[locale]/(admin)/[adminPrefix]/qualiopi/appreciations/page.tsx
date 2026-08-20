@@ -17,8 +17,8 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import {
   creerAppreciationAction,
-  listAppreciations,
-  statsAppreciations,
+  listAppreciationsAction,
+  statsAppreciationsAction,
 } from "@/server/actions/qualiopi/appreciations";
 import { AppreciationForm } from "@/components/admin/qualiopi/AppreciationForm";
 import { listerOptionsAppreciation } from "@/server/qualiopi/appreciations/options";
@@ -50,8 +50,8 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
   }
 
   const [appreciations, stats, options] = await Promise.all([
-    listAppreciations({ limit: 100 }),
-    statsAppreciations(),
+    listAppreciationsAction({ limit: 100 }),
+    statsAppreciationsAction(),
     // Listes de rattachement — remplacent la saisie d'UUID à la main.
     listerOptionsAppreciation(),
   ]);

@@ -240,8 +240,30 @@ export type NotificationEvent =
         demandeId: string;
         /** `export` (art. 15) ou `suppression` (art. 17). */
         type: string;
-        traineeNom: string;
-        traineeEmail: string;
+        /**
+         * 🔴 2026-08-20 — champs RENOMMÉS `…Masque` (constat `D5-5-06`).
+         *
+         * Ils portaient l'identité EN CLAIR, et cette catégorie est routée vers
+         * **Telegram**, hors UE — c'est-à-dire qu'exercer un droit RGPD
+         * expédiait l'identité du demandeur hors de l'Union **à l'occasion même
+         * de la demande**. `redactName`/`redactEmail` existaient et n'étaient
+         * pas appelés.
+         *
+         * Le nom porte le CONTRAT parce qu'un `traineeNom: string` n'apprend
+         * rien à celui qui écrit le prochain appel, alors qu'un
+         * `traineeNomMasque` ne se remplit pas par distraction avec une valeur
+         * brute. La rédaction se fait **à la source** (`rgpd-service.ts`) et non
+         * dans le formateur : `dispatchChannels` passe le payload BRUT à
+         * `sendSentryBreadcrumb`, hors UE lui aussi — rédiger au rendu n'aurait
+         * fermé qu'un canal sur deux.
+         *
+         * ⚠️ Ceci ne se généralise PAS au hub : `CONTACT_FORM_SUBMITTED`,
+         * `JOB_APPLICATION_RECEIVED` et consorts portent nom et e-mail **à
+         * dessein** — l'équipe doit pouvoir rappeler. Ce qui distingue la
+         * demande RGPD, c'est que la référence suffit à la traiter.
+         */
+        traineeNomMasque: string;
+        traineeEmailMasque: string;
         /** Échéance légale, déjà formatée. */
         echeance: string;
       };

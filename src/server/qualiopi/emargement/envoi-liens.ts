@@ -90,7 +90,7 @@ export async function envoyerLiensPourSession(input: {
         enrollmentId: inscription.id,
         dateFinSession: formation.dateFin,
       });
-      await enqueueEmail(
+      const envoi = await enqueueEmail(
         "qualiopi-emargement-lien",
         inscription.trainee.email,
         "fr",
@@ -114,6 +114,26 @@ export async function envoyerLiensPourSession(input: {
           entityId: inscription.id,
         },
       );
+      // 🔴 2026-08-19 (constat `D5-3-01`, même famille que la convocation) —
+      // `envoyes++` était inconditionnel. `enqueueEmail` ne lève pas : elle rend
+      // `{ enqueued: false }` si la file est absente, et
+      // `{ enqueued: false, garePourValidation: true }` si l'envoi part en
+      // corbeille de validation.
+      //
+      // L'admin lisait donc « 8 liens envoyés » alors que rien n'était parti —
+      // et ce compteur est la SEULE chose qui lui dit si ses stagiaires peuvent
+      // émarger le jour J. Le mécanisme d'échec nommé existait déjà juste en
+      // dessous (`echecs.push`) : il suffisait de s'en servir.
+      if (!envoi.enqueued) {
+        echecs.push({
+          stagiaireNom: nom,
+          motif:
+            envoi.garePourValidation === true
+              ? "E-mail garé en corbeille de validation — le lien ne partira qu'après approbation."
+              : "File de messages indisponible — le lien n'est pas parti, réessayez.",
+        });
+        continue;
+      }
       envoyes++;
     } catch (err) {
       if (err instanceof TokenEmargementError) {

@@ -21,6 +21,10 @@ const CODES_ATTENDUS: string[] = [
   // entrée du catalogue née d'un GESTE et non du balayage quotidien — d'où son
   // `resolutionAuto: false`, verrouillé par `besoin-adaptation.spec.ts`.
   "besoin_adaptation_declare",
+  "categories_certifiees_non_renseignees",
+  "cloture_trace_presence_incomplete",
+  "email_rebond_dur",
+  "report_accord_financement_a_refaire",
   // Ajoutés 2026-08-19 (audit E2E, `D5-4-01`). Ces quatre codes étaient ÉMIS par
   // le balayage depuis leur écriture et ABSENTS de ce catalogue — donc sans
   // guichet (ils n'arrivaient dans AUCUNE boîte, rangés en `sansGuichet` par

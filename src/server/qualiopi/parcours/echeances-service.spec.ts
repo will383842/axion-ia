@@ -35,6 +35,10 @@ function sessionAJ3(patch: Record<string, unknown> = {}) {
     dateFin: d("2026-09-11T17:00:00.000Z"),
     formateurPrincipalId: "f1",
     financementType: "direct",
+    // 🔴 2026-08-20 (`D2-5-01`) — champ AJOUTÉ. Le service lit désormais la
+    // relation inverse pour composer « Session reportée vers … ». Une fixture
+    // est un CONTRAT : elle se recopie sur le `select` de la requête.
+    sessionRemplacement: [] as Array<{ numero: string }>,
     documents: [
       {
         id: "conv",
@@ -263,5 +267,59 @@ describe("🔴 le balayage ciblé — ce qui rend la colonne « Dossier » possi
     await prochainesEcheances({ maintenant: MAINTENANT });
     const where = (sessionFindMany.mock.calls[0]![0] as { where: Record<string, unknown> }).where;
     expect(JSON.stringify(where)).toContain("realisee");
+  });
+});
+
+describe("🔴 D2-5-01 — la filiation d'un report", () => {
+  // ⚠️ Par `sessionIds` : le balayage PAR DÉFAUT exclut les statuts terminaux
+  // (`planifiee`, `en_cours`, `realisee` récentes). Une session `reportee`
+  // n'est chargée que par le balayage CIBLÉ — celui qu'emprunte la colonne
+  // « Dossier » de la liste des sessions, et donc le seul endroit où la
+  // filiation s'affiche.
+  const CIBLE = { maintenant: MAINTENANT, sessionIds: ["s1"] };
+
+  it("🔴 nomme la session VERS laquelle on a reporté", async () => {
+    // `session-parcours.ts` compose « Session reportée vers AXI-SESS-… » à
+    // partir de `sessionReporteeNumero` — un champ qui n'existe dans AUCUN
+    // schéma Prisma, que personne ne remplissait. La branche était morte par
+    // construction : le hub affichait « Session reportée » tout court, sans
+    // dire vers quoi.
+    //
+    // 🔑 Un lecteur sans écrivain ne rougit jamais : le `?? ""` avalait le vide
+    // et le libellé restait grammaticalement correct.
+    sessionFindMany.mockResolvedValue([
+      sessionAJ3({
+        statut: "reportee",
+        sessionRemplacement: [{ numero: "AXI-SESS-2026-042" }],
+      }),
+    ]);
+
+    const { parSession } = await prochainesEcheances(CIBLE);
+    expect(parSession.get("s1")?.repliee?.motif).toContain("AXI-SESS-2026-042");
+  });
+
+  it("ne prétend à aucune filiation quand il n'y a pas de remplacement", async () => {
+    // Témoin de non-vacuité : sans lui, un service qui écrirait toujours un
+    // numéro ferait passer le cas ci-dessus sans rien prouver.
+    sessionFindMany.mockResolvedValue([
+      sessionAJ3({ statut: "reportee", sessionRemplacement: [] }),
+    ]);
+
+    const { parSession } = await prochainesEcheances(CIBLE);
+    const motif = parSession.get("s1")?.repliee?.motif;
+    expect(motif, "le repli doit exister — c'est son CONTENU qui ne doit rien inventer").toBe(
+      "Session reportee",
+    );
+  });
+
+  it("ne lit QU'UN remplacement — un report double n'en fabrique pas deux", async () => {
+    sessionFindMany.mockResolvedValue([sessionAJ3()]);
+    await prochainesEcheances(CIBLE);
+    const select = (
+      sessionFindMany.mock.calls[0]![0] as {
+        select: { sessionRemplacement: { take: number } };
+      }
+    ).select;
+    expect(select.sessionRemplacement.take).toBe(1);
   });
 });

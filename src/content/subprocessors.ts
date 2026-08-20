@@ -35,7 +35,7 @@
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-07-26" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-08-20" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -170,6 +170,39 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     documentationUrl: "https://www.docuseal.com",
   },
   // ───────────────────────────── communications & géo
+  {
+    // 🔴 `D9-5-10` — OMIS de cette liste jusqu'au 2026-08-20, pendant que la page
+    // se déclarait « liste exhaustive » (RGPD art. 13.1.e). Et pas n'importe
+    // lequel : le relais qui achemine **TOUS** les e-mails du site — convocations,
+    // attestations, liens d'émargement, accusés RGPD. Chaque envoi lui confie
+    // l'adresse du destinataire et le corps complet du message.
+    //
+    // 🔑 POURQUOI LA GARDE EXISTANTE NE POUVAIT PAS LE VOIR.
+    // `subprocessors-coherence.spec.ts` est adossé à `src/lib/csp.ts` — décrit
+    // comme « seul goulot qu'un tiers ne peut pas contourner pour charger ».
+    // C'est vrai des tiers qui chargent DANS LE NAVIGATEUR, et faux de tous les
+    // autres : un relais SMTP appelé depuis le worker ne traverse aucune CSP.
+    // La garde ne couvrait donc qu'une moitié de la surface, et rien ne le
+    // disait. `sous-traitants-serveur.spec.ts` couvre désormais l'autre moitié,
+    // adossée aux variables d'environnement serveur de `src/env.ts`.
+    name: "Zoho Corporation (ZeptoMail)",
+    location: "Groupe Zoho — service souscrit sur la région UE",
+    serversLocation: "Union européenne (`smtp.zeptomail.eu`)",
+    purposeFr:
+      "Relais SMTP transactionnel : achemine la totalité des e-mails sortants du site (convocations, conventions, attestations, liens d'émargement, accusés de demande RGPD, notifications internes).",
+    purposeEn:
+      "Transactional SMTP relay: carries every outbound email from the site (invitations, agreements, certificates, attendance links, GDPR acknowledgements, internal notifications).",
+    dataCategoriesFr:
+      "Adresse e-mail du destinataire et CORPS COMPLET du message : nom et prénom, intitulé et dates de formation, numéros de pièces, liens personnels d'accès. Aucune minimisation possible — c'est le message lui-même qui transite.",
+    dataCategoriesEn:
+      "Recipient email address and FULL message body: first and last name, training title and dates, document numbers, personal access links. No minimisation possible — the message itself is what transits.",
+    legalBasis: "6.1.b_contract",
+    dpaStatus: "signed",
+    transferFramework: "intra_eu",
+    category: "communications",
+    activationStatus: "active",
+    documentationUrl: "https://www.zoho.com/privacy.html",
+  },
   {
     name: "Telegram FZ-LLC",
     location: "Dubaï, Émirats Arabes Unis (hors UE)",

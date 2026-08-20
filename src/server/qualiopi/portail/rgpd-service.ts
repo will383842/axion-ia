@@ -21,6 +21,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { notify } from "@/server/notifications";
+import { redactName, redactEmail } from "@/lib/pii-redaction";
 import type { RgpdDemandeType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -419,13 +420,29 @@ async function notifierDemandeRgpd(
   });
 
   // Alerte interne, en `warn` : c'est un délai légal, pas une information.
+  //
+  // 🔴 2026-08-20, constat `D5-5-06`. Ce payload portait `nomComplet` et
+  // `trainee.email` EN CLAIR. La catégorie est routée vers **Telegram**
+  // (`notifications/routing.ts`), hors UE : exercer un droit RGPD expédiait
+  // l'identité du demandeur hors de l'Union **à l'occasion même de la
+  // demande**. `redactName` et `redactEmail` existaient dans le dépôt et
+  // n'étaient simplement pas appelés ici.
+  //
+  // La rédaction est faite ICI, à la source, et non dans le formateur :
+  // `dispatchChannels` passe le payload BRUT à `sendSentryBreadcrumb`, hors UE
+  // lui aussi. Rédiger au rendu n'aurait fermé qu'un canal sur deux.
+  //
+  // Rien n'est perdu côté équipe : `notify()` ne persiste rien en base, l'écran
+  // `qualiopi/rgpd` lit la table `RgpdDemande` en direct, et le message porte
+  // la `Référence` plus un lien console. Traiter une demande n'a jamais
+  // demandé de lire un nom dans Telegram.
   await notify({
     category: "RGPD_REQUEST_SUBMITTED",
     payload: {
       demandeId,
       type,
-      traineeNom: nomComplet,
-      traineeEmail: trainee.email,
+      traineeNomMasque: redactName(nomComplet),
+      traineeEmailMasque: redactEmail(trainee.email),
       echeance: fmt(echeance),
     },
   });

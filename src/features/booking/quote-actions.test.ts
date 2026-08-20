@@ -22,7 +22,14 @@ vi.mock("@/lib/telegram", () => ({
   sendTelegram: vi.fn().mockResolvedValue(true),
 }));
 vi.mock("@/server/queue/queues", () => ({
-  enqueueEmail: vi.fn().mockResolvedValue(undefined),
+  // 🔴 2026-08-20 — la vraie `enqueueEmail` rend `{ enqueued, garePourValidation?,
+  // outboxId? }`, jamais `undefined`. Aucun code `booking` ne lit encore ce
+  // retour, donc ce mock ne casse rien AUJOURD'HUI — mais le même mock incomplet
+  // a déjà rendu deux suites Qualiopi rouges ou vertes pour une mauvaise raison
+  // (`portail-actions.spec.ts` le 19/08, `emargement-envoi.spec.ts` le 20/08),
+  // le jour où le code appelant s'est mis à vérifier l'envoi. On recopie la
+  // signature, pas le minimum qui passe.
+  enqueueEmail: vi.fn().mockResolvedValue({ enqueued: true }),
 }));
 vi.mock("@/lib/docuseal", () => ({
   isDocusealConfigured: vi.fn().mockReturnValue(false),

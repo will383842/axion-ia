@@ -885,7 +885,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     12,
     [
       `${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisée${nbSessionsRealisees > 1 ? "s" : ""}`,
-      `${nbEnrollmentsEmarges} inscription${nbEnrollmentsEmarges > 1 ? "s" : ""} avec émargement réellement signé (présentiel/distanciel)`,
+      // 🔴 2026-08-20 — libellé RECTIFIÉ. Il disait « émargement réellement
+      // signé ». Personne ne signe : `emargementSigneAt` est posé par
+      // l'administrateur qui enregistre la feuille, et il l'était jusqu'ici même
+      // quand la feuille déclarait la personne ABSENTE partout (`CONF-02`).
+      //
+      // 🔑 « Réellement » est un adjectif d'insistance, et l'audit en a trouvé
+      // trois dans ce domaine : deux mentaient. Il signale presque toujours
+      // qu'on a voulu croire une propriété sans la vérifier — le mot fait le
+      // travail que le code n'a pas fait.
+      //
+      // Le libellé dit désormais ce que la colonne mesure vraiment : une
+      // présence constatée sur la feuille. C'est plus modeste, et c'est vrai.
+      `${nbEnrollmentsEmarges} inscription${nbEnrollmentsEmarges > 1 ? "s" : ""} avec présence constatée sur la feuille d'émargement (présentiel/distanciel)`,
       `${nbDocsPresence} preuve${nbDocsPresence > 1 ? "s" : ""} documentaire${nbDocsPresence > 1 ? "s" : ""} de présence générée${nbDocsPresence > 1 ? "s" : ""}`,
     ],
     nbSessionsRealisees > 0 && nbEnrollmentsEmarges > 0,

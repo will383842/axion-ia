@@ -28,7 +28,14 @@ vi.mock("@/lib/prisma", () => ({
 // l'absorbait, et les tests passaient au vert sur un envoi qui n'avait pas lieu
 // — c'est-à-dire exactement le défaut qu'on vient de corriger, reproduit dans
 // la suite de tests.
-vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn() }));
+// ⚠️ Le mock doit rendre la MEME forme que la vraie fonction :
+// `enqueueEmail` ne lève pas quand la mise en file échoue, elle rend
+// `{ enqueued: boolean }`. Un `vi.fn()` nu rendait `undefined`, et l'action
+// qui lit désormais ce drapeau (`D5-3-01`) tombait dans son propre fail-soft :
+// la suite testait un chemin d'ERREUR en croyant tester le chemin nominal.
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: vi.fn().mockResolvedValue({ enqueued: true }),
+}));
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid-1" }),

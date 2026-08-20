@@ -176,7 +176,12 @@ describe("genererDossierSessionZip", () => {
   it("déclare CONFORME une chaîne de signatures intacte", async () => {
     const res = await genererDossierSessionZip("ses-1");
     expect(res?.nbChainesAnormales).toBe(0);
-    expect(res?.avertissements).toEqual([]);
+    // 🔴 2026-08-20 (`D3-3-01`) — n'exige plus AUCUN avertissement. La fixture
+    // par défaut n'a aucune contresignature de formateur, ce qui en lève un
+    // désormais. L'assertion d'origine était exacte sur son objet (l'intégrité
+    // des chaînes) mais elle verrouillait un SILENCE qui n'était pas mérité :
+    // le dossier ne disait rien d'une pièce manquante.
+    expect(res?.avertissements.filter((a) => !a.includes("contresignature"))).toEqual([]);
 
     const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
     expect(JSON.parse(rapport!).signatures[0]).toMatchObject({ integrite: "OK", nbSignatures: 2 });
@@ -396,6 +401,54 @@ describe("genererDossierSessionZip", () => {
     expect(index).toContain("Pièces annulées, non jointes");
     // …sans pour autant faire porter le chapeau au stockage.
     expect(res?.avertissements.join(" ")).not.toContain("AUCUN PDF joint");
+  });
+
+  it("🔴 D3-3-01 — ne dit JAMAIS « 0/0 conformes » : le vide est NOMMÉ", async () => {
+    // Dans un dossier remis au certificateur, un ratio complet est le signe
+    // qu'on cherche. Personne ne s'arrête sur un dénominateur nul : l'absence
+    // TOTALE de contresignature prenait l'apparence d'une conformité parfaite.
+    //
+    // 🔑 Le témoin était même MEILLEUR quand la situation était pire — zéro
+    // anomalie sur zéro chaîne.
+    const res = await genererDossierSessionZip("s-1");
+    const index = await fichierDuZip(res!.base64, "index.txt");
+
+    expect(index, "« 0/0 conformes » est de retour").not.toContain("0/0 conformes");
+    expect(index).toContain("AUCUNE contresignature de formateur au dossier");
+  });
+
+  it("🔴 D3-3-01 — l'absence de contresignature lève un AVERTISSEMENT", async () => {
+    // La nommer dans l'index ne suffit pas : c'est la liste d'avertissements que
+    // l'on relit avant de remettre le dossier. Et la contresignature n'est
+    // exigée par AUCUNE garde en amont — c'est ici, et nulle part ailleurs, que
+    // son absence se voit.
+    const res = await genererDossierSessionZip("s-1");
+    expect(res?.avertissements.join(" ")).toContain("Aucune contresignature de formateur");
+  });
+
+  it("se tait dès qu'une contresignature existe", async () => {
+    // Témoin de non-vacuité : sans lui, un avertissement inconditionnel ferait
+    // passer les deux cas ci-dessus sans rien prouver de leur condition.
+    mockFindUnique.mockResolvedValue(
+      session({
+        emargementContresignatures: [
+          {
+            trainerId: "t-1",
+            formateurNom: "Luc Bernard",
+            selfHash: "h1",
+            prevHash: null,
+            sessionId: "s-1",
+            signeAt: new Date("2026-06-10T17:00:00Z"),
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("s-1");
+    expect(res?.avertissements.join(" ")).not.toContain("Aucune contresignature");
+    const index = await fichierDuZip(res!.base64, "index.txt");
+    expect(index).toContain("Intégrité des chaînes de contresignatures :");
+    expect(index).not.toContain("AUCUNE contresignature");
   });
 
   it("🔴 M2 — signale une IMAGE de signature qui ne correspond plus à son condensat scellé", async () => {

@@ -22,6 +22,19 @@ import { adminSegment } from "@/lib/admin-path";
 
 export type SignInState = { ok: true } | { ok: false; error: string; requires2FA?: boolean };
 
+/**
+ * 🔴 2026-08-19 (`D66-02`) — le compteur de connexion refuse désormais quand
+ * Redis est injoignable, au lieu de laisser passer sans limite. La contrepartie
+ * est de le DIRE : annoncer « trop de tentatives » à un administrateur qui n'en
+ * a fait aucune l'enverrait chercher un verrouillage inexistant, et l'attente
+ * de quinze minutes ne changerait rien à son sort.
+ */
+function messageRefus(panne: boolean): string {
+  return panne
+    ? "Connexion momentanément indisponible : le compteur de tentatives ne répond pas. Réessayez dans quelques minutes."
+    : "Trop de tentatives. Réessayez dans 15 minutes.";
+}
+
 export async function signInAction(_prev: SignInState, formData: FormData): Promise<SignInState> {
   return _signInActionInner(_prev, formData);
 }
@@ -35,9 +48,13 @@ async function _signInActionInner(_prev: SignInState, formData: FormData): Promi
   // /15 min, mais sur SaaS B2B premium avec 1 seul admin (Will), risque de
   // brute-force réel = nul (URL admin secrète + mdp fort + 2FA optionnel).
   // À redurcir si tu ouvres l'admin à plus d'utilisateurs.
-  const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, { limit: 100, windowSec: 900 });
+  const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, {
+    limit: 100,
+    windowSec: 900,
+    surPanne: "refuser",
+  });
   if (!rlIp.allowed) {
-    return { ok: false, error: "Trop de tentatives. Réessayez dans 15 minutes." };
+    return { ok: false, error: messageRefus(rlIp.panne) };
   }
 
   const parsed = signInSchema.safeParse({
@@ -51,9 +68,10 @@ async function _signInActionInner(_prev: SignInState, formData: FormData): Promi
   const rlEmail = await checkRateLimit(`auth:login:email:${parsed.data.email}`, {
     limit: 50,
     windowSec: 900,
+    surPanne: "refuser",
   });
   if (!rlEmail.allowed) {
-    return { ok: false, error: "Trop de tentatives. Réessayez dans 15 minutes." };
+    return { ok: false, error: messageRefus(rlEmail.panne) };
   }
 
   // Pre-check pour distinguer "2FA manquant" de "credentials invalides".
