@@ -175,7 +175,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       targetType: "self_service",
       targetId: v.jti,
       changes: {
-        email,
+        // 🔴 `D5-5-05` — même correctif que sur l'effacement : l'adresse en
+        // clair a disparu du journal, qui est désormais conservé cinq ans.
+        // `lookupHash` est déjà calculé plus haut pour la recherche.
+        emailHash: lookupHash,
         submissionsCount: submissions.length,
         newsletterPresent: !!newsletter,
         kbBookmarksCount: kb.bookmarks.length,
