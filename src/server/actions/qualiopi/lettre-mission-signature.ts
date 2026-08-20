@@ -20,17 +20,23 @@
  * personne nommée produirait une pièce dont le nom imprimé et l'identité scellée
  * divergent : exactement la contradiction qu'un contrôle relève.
  *
- * ## 🔴 Rattachement : indirect, et il faut le dire
+ * ## 🔴 Rattachement : direct depuis le 2026-08-01, indirect avant
  *
- * `DocumentGenere` ne porte AUCUNE clé vers `Trainer` (cf. `documents-service.ts`,
- * `refs` = formationId / sessionId / traineeId / clientId / coachingSessionId).
- * `genererLettreMissionAction` ne pose donc que `refs: { sessionId }`.
+ * ⚠️ Ce paragraphe affirmait jusqu'au 2026-08-20 que « `DocumentGenere` ne porte
+ * AUCUNE clé vers `Trainer` ». C'est FAUX depuis l'ajout de l'ancre `trainerId`,
+ * et c'était le genre d'affirmation qui fait écrire un détour inutile — ou pire,
+ * une seconde règle d'autorisation.
  *
- * Le formateur nommé sur la pièce n'est retrouvable que par le MÊME chemin que
- * celui qui l'a imprimé : `resolvePrincipalTrainerId(session)`. On le réemploie
- * tel quel plutôt que d'écrire un second résolveur — deux résolveurs pour la même
- * question sont l'endroit où le nom imprimé et le nom autorisé divergent en
- * silence.
+ * L'ancre directe `trainerId` PRIME quand elle existe (lettres-CADRE comprises,
+ * qui n'ont aucune session). Le détour par la session ne subsiste que pour les
+ * lettres legacy dépourvues d'ancre, et il emprunte alors le MÊME chemin que
+ * celui qui a imprimé le nom.
+ *
+ * 🔑 La règle vit dans `documents/signature/mandat-lettre-mission.ts`, partagée
+ * avec la route qui remet la pièce au formateur : le droit de LIRE sa lettre est
+ * exactement le droit de la signer (`D4-1-A`). Un seul endroit, parce que deux
+ * résolveurs pour la même question sont l'endroit où le nom imprimé et le nom
+ * autorisé divergent en silence.
  *
  * ⚠️ Conséquence directe : `estMembreDeSession` (l'appartenance de l'émargement,
  * employée par le relevé) NE CONVIENT PAS ici. Un co-formateur ou un assistant
@@ -45,9 +51,9 @@ import * as Sentry from "@sentry/nextjs";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { estMandataireDeLaLettre } from "@/server/qualiopi/documents/signature/mandat-lettre-mission";
 import { hashIp } from "@/lib/security/ip-hash";
 import { requireFormateurAction } from "@/server/formateur/guard";
-import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 import {
   signerDocument,
@@ -169,11 +175,10 @@ export async function signerLettreMissionFormateurAction(input: {
   // depuis le 2026-08-01, lettres-CADRE comprises — qui n'ont AUCUNE session) :
   // c'est le rattachement que le générateur a posé en imprimant le nom. Le
   // détour par la session ne subsiste que pour les lettres legacy sans ancre.
-  const estMandataire =
-    piece.trainerId != null
-      ? piece.trainerId === formateur.trainerId
-      : piece.sessionId != null &&
-        (await estMandataireDeLaLettre(piece.sessionId, formateur.trainerId));
+  const estMandataire = await estMandataireDeLaLettre(
+    { trainerId: piece.trainerId, sessionId: piece.sessionId },
+    formateur.trainerId,
+  );
 
   if (!estMandataire) {
     Sentry.captureException(
@@ -290,32 +295,4 @@ export async function contresignerLettreMissionAction(input: {
     Sentry.captureException(err, { tags: { action: "contresignerLettreMissionAction" } });
     throw err;
   }
-}
-
-/**
- * Ce formateur est-il celui que la lettre NOMME ?
- *
- * 🔴 Même résolveur que le générateur (`genererLettreMissionAction`), et c'est
- * l'invariant de cette fonction : `resolvePrincipalTrainerId` est ce qui a
- * imprimé `data.formateur.nomPrenom` sur la pièce. Toute autre règle
- * d'autorisation — l'appartenance à la session, une lecture directe de la FK
- * sans le repli Json — autoriserait un jour quelqu'un que la lettre ne nomme
- * pas, ou refuserait celui qu'elle nomme sur une session legacy.
- *
- * ⚠️ `null` (aucun formateur résolvable) refuse TOUT LE MONDE, et c'est voulu :
- * dans ce cas le générateur a imprimé la raison sociale de l'organisme à la
- * place d'un nom de formateur. La pièce ne mandate personne d'identifiable —
- * elle doit être régénérée, pas signée.
- */
-async function estMandataireDeLaLettre(sessionId: string, trainerId: string): Promise<boolean> {
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: { formateurPrincipalId: true, coFormateurs: true },
-  });
-  if (session === null) return false;
-  const principal = resolvePrincipalTrainerId({
-    formateurPrincipalId: session.formateurPrincipalId,
-    coFormateurs: session.coFormateurs,
-  });
-  return principal !== null && principal === trainerId;
 }

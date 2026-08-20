@@ -106,6 +106,11 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
                   ? `Lettre-cadre — ${lettre.periodeLisible ?? "période non renseignée"}`
                   : `${lettre.sessionTitre} · ${lettre.sessionNumero}`}
               </p>
+              {/* 🔴 `D4-1-A` (2026-08-20) — `urlPiece` : le formateur signait une
+                  lettre qu'il ne pouvait NI LIRE NI RECEVOIR, en scellant une
+                  mention qui affirme le contraire. La route de lecture vérifie
+                  le MÊME mandat que la signature — `estMandataireDeLaLettre`,
+                  la fonction elle-même, pas une règle qui lui ressemble. */}
               <SignatureDocument
                 documentGenereId={lettre.documentGenereId}
                 titrePiece="Lettre de mission"
@@ -113,6 +118,7 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
                 parties={lettre.parties}
                 peutAgir={lettre.peutAgir}
                 motifBlocage={lettre.motifBlocage}
+                urlPiece={`/api/formateur/lettre-mission/${lettre.documentGenereId}`}
                 mentions={lettre.mentions}
                 plafondProbant={lettre.plafondProbant}
                 libelleBouton="Signer la lettre de mission"
