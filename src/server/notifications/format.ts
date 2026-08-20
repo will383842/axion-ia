@@ -310,10 +310,15 @@ function formatBody(event: NotificationEvent): string {
       const p = event.payload;
       return [
         formatKV("Nature", p.type === "suppression" ? "Effacement (art. 17)" : "Accès (art. 15)"),
-        formatKV("Personne", p.traineeNom),
-        formatKV("Email", p.traineeEmail),
+        // 🔴 `D5-5-06` — identité MASQUÉE : ce message part hors UE. Le lien
+        // console qui suit est ce qui rend le masquage sans coût : l'équipe
+        // clique et voit le dossier complet, au lieu de lire un nom dans
+        // Telegram. Sans lui, la rédaction se paierait en aller-retours.
+        formatKV("Personne", p.traineeNomMasque),
+        formatKV("Email", p.traineeEmailMasque),
         formatKV("À traiter avant le", p.echeance),
         formatKV("Référence", p.demandeId),
+        formatKV("Voir en console", `${SITE_URL}${adminPath("fr", "qualiopi/rgpd")}`),
       ].join("\n");
     }
     case "PODCAST_REQUEST_SUBMITTED": {

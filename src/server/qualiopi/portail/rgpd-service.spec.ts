@@ -540,10 +540,39 @@ describe("creerDemandeRgpd — prévient les deux parties", () => {
       payload: Record<string, unknown>;
     };
     expect(evenement.category).toBe("RGPD_REQUEST_SUBMITTED");
-    expect(evenement.payload.traineeEmail).toBe("jean@exemple.fr");
-    expect(evenement.payload.traineeNom).toBe("Jean Dupont");
     // Dépôt le 13 août + 30 jours = 12 septembre.
     expect(String(evenement.payload.echeance)).toContain("septembre");
+    // La référence est ce qui rend la demande TRAITABLE sans identité.
+    expect(evenement.payload.demandeId).toBe("rgpd-notif-1");
+  });
+
+  it("🔴 l'identité part MASQUÉE — cette alerte sort de l'UE", async () => {
+    // 🔴 Constat `D5-5-06`. Ce test exigeait auparavant
+    // `traineeEmail === "jean@exemple.fr"` et `traineeNom === "Jean Dupont"` :
+    // il **entérinait le défaut**. Corriger le service l'aurait fait rougir,
+    // c'est-à-dire que la garde rendait le correctif douloureux et poussait à
+    // « ajuster » plutôt qu'à relire. Réécrit, pas contourné.
+    //
+    // Ce que le défaut valait : la catégorie est routée vers Telegram, hors UE.
+    // Exercer un droit RGPD expédiait donc l'identité du demandeur hors de
+    // l'Union **à l'occasion même de la demande**.
+    await creerDemandeRgpd("t-1", "suppression");
+
+    const payload = vi.mocked(notify).mock.calls[0]![0]!.payload as Record<string, unknown>;
+    expect(payload["traineeNomMasque"]).toBe("J. D.");
+    expect(payload["traineeEmailMasque"]).toBe("j****@exemple.fr");
+  });
+
+  it("🔴 AUCUNE valeur brute ne subsiste ailleurs dans le payload", async () => {
+    // Témoin de la RÉDACTION, pas des deux champs : masquer `traineeNomMasque`
+    // pendant qu'un autre champ recopierait l'adresse ne protégerait rien, et
+    // les deux assertions ci-dessus passeraient quand même. On regarde donc le
+    // payload ENTIER, sérialisé.
+    await creerDemandeRgpd("t-1", "suppression");
+
+    const brut = JSON.stringify(vi.mocked(notify).mock.calls[0]![0]!.payload);
+    expect(brut, "l'adresse en clair est encore quelque part").not.toContain("jean@exemple.fr");
+    expect(brut, "le nom en clair est encore quelque part").not.toContain("Jean Dupont");
   });
 
   it("rend quand même la demande si une notification échoue", async () => {
