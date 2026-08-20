@@ -33,6 +33,7 @@
 import { createHash } from "node:crypto";
 import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
+import { lignesDeChaine } from "@/server/qualiopi/emargement/lignes-de-chaine";
 import { isR2Configured, getObjectBufferR2, documentPdfKey } from "@/lib/r2-storage";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 import {
@@ -112,22 +113,17 @@ export async function genererDossierSessionZip(
           id: true,
           tauxPresencePct: true,
           trainee: { select: { nom: true, prenom: true, deletedAt: true } },
-          emargementSignatures: {
-            where: { revokedAt: null },
-            // ⚠️ Ordre d'INSERTION, jamais `signeAt` : ce dernier est figé avant
-            // l'écriture de l'image, et trier dessus produirait une rupture de
-            // chaînage FANTÔME — un faux verdict de corruption, dans un dossier
-            // d'audit.
-            orderBy: [{ createdAt: "asc" }, { id: "asc" }],
-          },
+          // ⚠️ Filtre ET ordre viennent de `lignesDeChaine()` : ce sont les deux
+          // conditions pour que `verifierChaine` rende un verdict juste, et
+          // elles étaient recopiées à chaque lecture. Le détail du raisonnement
+          // (pourquoi jamais `signeAt`) vit dans ce module.
+          emargementSignatures: lignesDeChaine(),
         },
       },
       // Contresignatures du formateur — leur chaîne (portée session × formateur)
-      // se vérifie comme celle des stagiaires. Même ordre d'insertion.
-      emargementContresignatures: {
-        where: { revokedAt: null },
-        orderBy: [{ createdAt: "asc" }, { id: "asc" }],
-      },
+      // se vérifie comme celle des stagiaires, donc avec le MÊME filtre et le
+      // même ordre. C'était la seconde recopie.
+      emargementContresignatures: lignesDeChaine(),
     },
   });
 
