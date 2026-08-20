@@ -10,6 +10,7 @@
 import { prisma } from "@/lib/prisma";
 import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
@@ -141,6 +142,57 @@ async function regleCategoriesCertifiees(now: Date): Promise<AlerteCandidate[]> 
         "saisissez la ou les catégories exactes dans la configuration Qualiopi " +
         "(« Catégories d'actions certifiées »). Renseignez au passage le certificateur, " +
         "la date d'obtention et la validité : ce sont les pièces que l'auditeur demande.",
+    },
+  ];
+}
+
+/**
+ * R01d — Mentions légales obligatoires absentes des FACTURES.
+ *
+ * 🔴 `D9-3-02` (2026-08-20). Forme juridique, capital social, RCS et n° de TVA
+ * intracommunautaire sont des mentions obligatoires de facture
+ * (art. R123-238 C. com. ; art. 242 nonies A ann. II CGI). Elles étaient
+ * imprimées **conditionnellement** et gardées par RIEN : absentes de la
+ * configuration, elles disparaissaient du PDF sans que personne ne le sache.
+ *
+ * 🔑 L'omission du n° de TVA sur une facture au-delà de 150 € est
+ * **sanctionnée** (art. 1737 CGI). Ce n'est pas un défaut de présentation.
+ *
+ * ⚠️ Le gabarit affiche désormais « Non renseigné » au lieu d'omettre — mais un
+ * avertissement imprimé sur une facture qui part au client n'est pas une
+ * solution, c'est un signal. Cette règle est ce qui le transforme en geste.
+ *
+ * ⚠️ La TVA n'est exigée QUE sous le régime `assujetti` : sous exonération
+ * 261-4-4° ou franchise 293 B, l'organisme n'a pas de numéro à porter, et
+ * l'exiger produirait une alerte fausse à chaque facture — ce qui apprend à
+ * ignorer la catégorie.
+ */
+async function regleMentionsFacture(now: Date): Promise<AlerteCandidate[]> {
+  void now;
+  const identite = await getOrganismeIdentite();
+  const regime = await getQualiopiConfig("regime_tva");
+
+  const manquantes: string[] = [];
+  if (!identite.formeJuridique?.trim()) manquantes.push("forme juridique");
+  if (!identite.capitalSocial?.trim()) manquantes.push("capital social");
+  if (!identite.rcsVille?.trim()) manquantes.push("RCS et ville d'immatriculation");
+  if (regime === "assujetti" && !identite.tvaIntracom?.trim()) {
+    manquantes.push("n° de TVA intracommunautaire");
+  }
+  if (manquantes.length === 0) return [];
+
+  return [
+    {
+      code: "facture_mentions_legales_absentes",
+      niveau: "critique",
+      titre: "Mentions obligatoires absentes des factures",
+      message:
+        `${manquantes.length} mention${manquantes.length > 1 ? "s" : ""} obligatoire${manquantes.length > 1 ? "s" : ""} ` +
+        `de facture ${manquantes.length > 1 ? "sont absentes" : "est absente"} de la configuration : ` +
+        `${manquantes.join(", ")}. Toute facture émise est irrégulière (art. R123-238 C. com., ` +
+        `art. 242 nonies A CGI) et porte « Non renseigné » en clair. ` +
+        `L'omission du n° de TVA au-delà de 150 € est en outre sanctionnée (art. 1737 CGI). ` +
+        `À compléter dans la configuration de l'identité légale.`,
     },
   ];
 }
@@ -2235,6 +2287,7 @@ async function regleOffresNonVerifiees(now: Date): Promise<AlerteCandidate[]> {
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
+  { nom: "mentions_facture", fn: regleMentionsFacture },
   { nom: "categories_certifiees", fn: regleCategoriesCertifiees },
   { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
