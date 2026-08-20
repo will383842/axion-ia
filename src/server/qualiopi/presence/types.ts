@@ -55,6 +55,22 @@ export interface ParsedParticipant {
   leaveAt: Date | null;
   /** Somme des minutes de connexion effectives. */
   dureeMinutes: number;
+  /**
+   * 🔴 `DIST-01` (2026-08-20) — présence ventilée par JOURNÉE civile (Paris).
+   *
+   * Les trois champs ci-dessus réduisent un participant à un seul triplet. Sur
+   * un export couvrant plusieurs journées, cette réduction détruit
+   * l'information décisive : QUEL JOUR la personne était là. L'import ne créait
+   * alors des créneaux que pour la journée de la première connexion, et un
+   * stagiaire venu 1 jour sur 2 ressortait à **100 %** — le dénominateur ne
+   * couvrait que le jour où il était présent.
+   *
+   * Les trois champs historiques sont CONSERVÉS et dérivés de cette ventilation
+   * (`agregerVentilation`), jamais recalculés en parallèle : deux calculs du
+   * même total finissent par diverger, et l'écart reste plausible des deux
+   * côtés.
+   */
+  parJour: ReadonlyArray<import("./ventilation-jour").PresenceJour>;
 }
 
 /**

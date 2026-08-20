@@ -690,7 +690,9 @@ export async function importReleveConnexionAction(input: {
   // Journée de repli : la première du plan. Elle remplace l'ancien bornage sur
   // `dateDebut..dateFin`, plus faible — une connexion un samedi non planifié
   // créait un créneau sur un jour sans durée prévue, gonflant le dénominateur.
-  const premierJourPlan = creneauxSession[0]?.date ?? parisDateISO(trainingSession.dateDebut);
+  // `premierJourPlan` a disparu avec le repli sur une journée unique : on ne
+  // rabat plus une connexion sur « le premier jour du plan », on traite chaque
+  // journée planifiée pour elle-même.
 
   // 7. Création des créneaux distanciels.
   //
@@ -723,155 +725,176 @@ export async function importReleveConnexionAction(input: {
 
   for (const enrollment of trainingSession.enrollments) {
     const participant = matchedById.get(enrollment.id);
+    const presenceParDate = new Map((participant?.parJour ?? []).map((j) => [j.date, j]));
 
-    // La date doit être une journée RÉELLEMENT PLANIFIÉE : sinon le créneau créé
-    // n'a pas de durée prévue de référence et fausse le dénominateur.
-    const isoBrut = parisDateISO(participant?.joinAt ?? trainingSession.dateDebut);
-    const dateCivile = creneauxParJour.has(isoBrut) ? isoBrut : premierJourPlan;
-    const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
-    const creneauxDuJour = creneauxParJour.get(dateCivile) ?? [];
-
-    // 🔴 (c) UN CRÉNEAU PAR DEMI-JOURNÉE, comme en présentiel.
+    // 🔴 `DIST-01` (2026-08-20) — UNE PASSE PAR JOURNÉE PLANIFIÉE.
     //
-    // On posait ici un unique créneau « journée ». Deux conséquences : sur une
-    // session hybride la même journée portait matin + après-midi + journée, soit
-    // 14 h attendues pour 7 h réelles et un stagiaire assidu à 50 % ; et surtout
-    // la feuille n'était signée qu'UNE fois par jour — exactement la forme que
-    // CAA Nantes 14/06/2022 juge « insuffisamment probante », avec redressement
-    // au prorata. Aligner le grain traite la cause, pas le symptôme.
-    const cibles = creneauxDuJour.map((c) => ({
-      demiJournee: c.demiJournee,
-      dureePrevueMinutes: c.dureePrevueMinutes,
-      ...(c.jourHeureDebut !== undefined && c.jourHeureFin !== undefined
-        ? fenetreDemiJournee(c.jourHeureDebut, c.jourHeureFin, c.demiJournee)
-        : { debutMin: 0, finMin: 0 }),
-    }));
-
-    // Sans horaires déclarés, la fenêtre de chaque demi-journée est inconnue :
-    // on n'invente pas de bornes, on répartit au prorata du prévu.
-    const horairesConnus = creneauxDuJour.every((c) => c.jourHeureDebut !== undefined);
-    const joinMin =
-      horairesConnus && participant?.joinAt != null ? parisMinutesDuJour(participant.joinAt) : null;
-    const leaveMin =
-      horairesConnus && participant?.leaveAt != null
-        ? parisMinutesDuJour(participant.leaveAt)
-        : null;
-
-    const parts = repartirMinutesConnexion({
-      creneaux: cibles,
-      dureeMinutes: participant?.dureeMinutes ?? 0,
-      joinMin,
-      leaveMin,
-    });
-
-    // 🔴 Le créneau « journée » d'un import ANTÉRIEUR doit disparaître, sinon il
-    // s'ajoute aux deux demi-journées : 420 + 210 + 210 = 840 minutes attendues
-    // pour 420 réelles, soit un stagiaire pleinement assidu affiché à 50 %.
-    // C'est la classe de bug de l'étape A, qu'on ne va pas réintroduire par la
-    // porte de derrière.
+    // Ce bloc ne traitait qu'UNE journée : celle de la première connexion, avec
+    // repli sur le premier jour du plan. Sur une session de deux jours, les
+    // créneaux du second n'existaient donc pour PERSONNE.
     //
-    // ⚠️ Mais on n'efface JAMAIS une trace explicite. Un créneau qui porte une
-    // signature, une présence cochée à la main ou une correction manuelle est
-    // une donnée que personne n'a le droit de perdre à l'occasion d'un import —
-    // et une absence émargée est indiscernable d'un créneau vierge une fois la
-    // ligne supprimée. Dans ce cas on ne touche à rien et on le SIGNALE, pour
-    // qu'un humain tranche.
-    const journeeHeritee = await prisma.presenceCreneau.findUnique({
-      where: {
-        enrollmentId_date_demiJournee: {
-          enrollmentId: enrollment.id,
-          date: dateObj,
-          demiJournee: "journee",
-        },
-      },
-      select: {
-        id: true,
-        present: true,
-        source: true,
-        commentaire: true,
-        _count: { select: { emargementSignatures: true } },
-      },
-    });
+    // Conséquence, mesurée : un stagiaire venu 1 jour sur 2 ressortait à
+    // **100 %**, parce que le dénominateur ne couvrait que le jour où il était
+    // là. Attestation complète, et OPCO facturé sur une assiduité qui n'a pas eu
+    // lieu. Surévaluer la présence est ce qu'un contrôle de service fait
+    // sanctionne.
+    //
+    // C'est l'extension de la règle (a) ci-dessus — « créer un créneau pour TOUS
+    // les inscrits, pas seulement les présents » — à sa dimension manquante :
+    // pour tous les inscrits ET TOUTES LES JOURNÉES. Un jour sans connexion
+    // reçoit un créneau à 0 minute : c'est ce qui le fait compter au
+    // dénominateur.
+    //
+    // ⚠️ Session HYBRIDE : une journée présentielle déjà émargée est protégée
+    // plus bas (`protegePresentiel`) et sautée. Une journée présentielle PAS
+    // encore émargée recevra un créneau distanciel à 0 — que la sauvegarde de la
+    // grille corrigera par `upsert` sur la même clé. Mieux vaut un jour affiché
+    // absent jusqu'à sa saisie qu'un jour absent du dénominateur.
+    for (const [dateCivile, creneauxDuJour] of creneauxParJour) {
+      const dateObj = new Date(`${dateCivile}T00:00:00+00:00`);
+      /** Présence du participant CE JOUR-LÀ, ou `null` s'il n'est pas venu. */
+      const jour = presenceParDate.get(dateCivile) ?? null;
 
-    if (journeeHeritee !== null) {
-      const porteUneTrace =
-        journeeHeritee._count.emargementSignatures > 0 ||
-        journeeHeritee.present ||
-        journeeHeritee.source === "manuel" ||
-        journeeHeritee.commentaire !== null;
+      // 🔴 (c) UN CRÉNEAU PAR DEMI-JOURNÉE, comme en présentiel.
+      //
+      // On posait ici un unique créneau « journée ». Deux conséquences : sur une
+      // session hybride la même journée portait matin + après-midi + journée, soit
+      // 14 h attendues pour 7 h réelles et un stagiaire assidu à 50 % ; et surtout
+      // la feuille n'était signée qu'UNE fois par jour — exactement la forme que
+      // CAA Nantes 14/06/2022 juge « insuffisamment probante », avec redressement
+      // au prorata. Aligner le grain traite la cause, pas le symptôme.
+      const cibles = creneauxDuJour.map((c) => ({
+        demiJournee: c.demiJournee,
+        dureePrevueMinutes: c.dureePrevueMinutes,
+        ...(c.jourHeureDebut !== undefined && c.jourHeureFin !== undefined
+          ? fenetreDemiJournee(c.jourHeureDebut, c.jourHeureFin, c.demiJournee)
+          : { debutMin: 0, finMin: 0 }),
+      }));
 
-      if (porteUneTrace) {
-        journeesConflictuelles.push({
-          enrollmentId: enrollment.id,
-          date: dateCivile,
-          motif:
-            journeeHeritee._count.emargementSignatures > 0
-              ? "signature"
-              : journeeHeritee.present
-                ? "presence_cochee"
-                : "saisie_manuelle",
-        });
-      } else {
-        await prisma.presenceCreneau.delete({ where: { id: journeeHeritee.id } });
-        nbJourneesHeriteesRemplacees += 1;
-      }
-    }
+      // Sans horaires déclarés, la fenêtre de chaque demi-journée est inconnue :
+      // on n'invente pas de bornes, on répartit au prorata du prévu.
+      const horairesConnus = creneauxDuJour.every((c) => c.jourHeureDebut !== undefined);
+      const joinMin =
+        horairesConnus && jour?.joinAt != null ? parisMinutesDuJour(jour.joinAt) : null;
+      const leaveMin =
+        horairesConnus && jour?.leaveAt != null ? parisMinutesDuJour(jour.leaveAt) : null;
 
-    for (const [index, creneau] of creneauxDuJour.entries()) {
-      const dj = toDemiJourneeEnum(creneau.demiJournee);
+      const parts = repartirMinutesConnexion({
+        creneaux: cibles,
+        dureeMinutes: jour?.dureeMinutes ?? 0,
+        joinMin,
+        leaveMin,
+      });
 
-      // 🔴 M1 — ne PAS écraser une demi-journée PRÉSENTIELLE déjà émargée.
-      // La protection `journeeHeritee` ci-dessus ne couvrait que le créneau
-      // « journee » ; les demi-journées matin/après-midi étaient upsertées
-      // aveuglément, basculant `present` à false et écrasant une durée SIGNÉE par
-      // la répartition distancielle — une preuve d'émargement présentiel détruite
-      // en silence sur une session hybride. On saute la demi-journée protégée (et
-      // on la signale), sans bloquer l'import de l'autre.
-      const existantDemi = await prisma.presenceCreneau.findUnique({
+      // 🔴 Le créneau « journée » d'un import ANTÉRIEUR doit disparaître, sinon il
+      // s'ajoute aux deux demi-journées : 420 + 210 + 210 = 840 minutes attendues
+      // pour 420 réelles, soit un stagiaire pleinement assidu affiché à 50 %.
+      // C'est la classe de bug de l'étape A, qu'on ne va pas réintroduire par la
+      // porte de derrière.
+      //
+      // ⚠️ Mais on n'efface JAMAIS une trace explicite. Un créneau qui porte une
+      // signature, une présence cochée à la main ou une correction manuelle est
+      // une donnée que personne n'a le droit de perdre à l'occasion d'un import —
+      // et une absence émargée est indiscernable d'un créneau vierge une fois la
+      // ligne supprimée. Dans ce cas on ne touche à rien et on le SIGNALE, pour
+      // qu'un humain tranche.
+      const journeeHeritee = await prisma.presenceCreneau.findUnique({
         where: {
           enrollmentId_date_demiJournee: {
             enrollmentId: enrollment.id,
             date: dateObj,
-            demiJournee: dj,
+            demiJournee: "journee",
           },
         },
         select: {
+          id: true,
           present: true,
-          // Discriminant présentiel/distanciel : `importId` (et non `source`, que
-          // `toPresenceSource("autre")` rend « emargement_presentiel » à tort).
-          importId: true,
+          source: true,
+          commentaire: true,
           _count: { select: { emargementSignatures: true } },
         },
       });
-      const protegePresentiel =
-        existantDemi !== null &&
-        existantDemi.importId === null &&
-        (existantDemi._count.emargementSignatures > 0 || existantDemi.present);
-      if (protegePresentiel) {
-        journeesConflictuelles.push({
-          enrollmentId: enrollment.id,
-          date: dateCivile,
-          motif: existantDemi._count.emargementSignatures > 0 ? "signature" : "presence_cochee",
-        });
-        continue;
+
+      if (journeeHeritee !== null) {
+        const porteUneTrace =
+          journeeHeritee._count.emargementSignatures > 0 ||
+          journeeHeritee.present ||
+          journeeHeritee.source === "manuel" ||
+          journeeHeritee.commentaire !== null;
+
+        if (porteUneTrace) {
+          journeesConflictuelles.push({
+            enrollmentId: enrollment.id,
+            date: dateCivile,
+            motif:
+              journeeHeritee._count.emargementSignatures > 0
+                ? "signature"
+                : journeeHeritee.present
+                  ? "presence_cochee"
+                  : "saisie_manuelle",
+          });
+        } else {
+          await prisma.presenceCreneau.delete({ where: { id: journeeHeritee.id } });
+          nbJourneesHeriteesRemplacees += 1;
+        }
       }
 
-      await upsertCreneau({
-        enrollmentId: enrollment.id,
-        date: dateObj,
-        demiJournee: dj,
-        libelle: creneau.libelle,
-        dureePrevueMinutes: creneau.dureePrevueMinutes,
-        source: toPresenceSource(v.plateforme),
-        present: false, // sera mis à jour par recomputeTauxPresence
-        dureeRealiseeMinutes: parts[index] ?? 0,
-        // Horodatages bruts du relevé, portés sur chaque demi-journée du jour :
-        // c'est l'enveloppe de connexion de la journée, la seule que le relevé
-        // fournisse. Les répartir serait inventer une donnée.
-        ...(participant?.joinAt != null ? { heureConnexion: participant.joinAt } : {}),
-        ...(participant?.leaveAt != null ? { heureDeconnexion: participant.leaveAt } : {}),
-        importId: releveImport.id,
-      });
+      for (const [index, creneau] of creneauxDuJour.entries()) {
+        const dj = toDemiJourneeEnum(creneau.demiJournee);
+
+        // 🔴 M1 — ne PAS écraser une demi-journée PRÉSENTIELLE déjà émargée.
+        // La protection `journeeHeritee` ci-dessus ne couvrait que le créneau
+        // « journee » ; les demi-journées matin/après-midi étaient upsertées
+        // aveuglément, basculant `present` à false et écrasant une durée SIGNÉE par
+        // la répartition distancielle — une preuve d'émargement présentiel détruite
+        // en silence sur une session hybride. On saute la demi-journée protégée (et
+        // on la signale), sans bloquer l'import de l'autre.
+        const existantDemi = await prisma.presenceCreneau.findUnique({
+          where: {
+            enrollmentId_date_demiJournee: {
+              enrollmentId: enrollment.id,
+              date: dateObj,
+              demiJournee: dj,
+            },
+          },
+          select: {
+            present: true,
+            // Discriminant présentiel/distanciel : `importId` (et non `source`, que
+            // `toPresenceSource("autre")` rend « emargement_presentiel » à tort).
+            importId: true,
+            _count: { select: { emargementSignatures: true } },
+          },
+        });
+        const protegePresentiel =
+          existantDemi !== null &&
+          existantDemi.importId === null &&
+          (existantDemi._count.emargementSignatures > 0 || existantDemi.present);
+        if (protegePresentiel) {
+          journeesConflictuelles.push({
+            enrollmentId: enrollment.id,
+            date: dateCivile,
+            motif: existantDemi._count.emargementSignatures > 0 ? "signature" : "presence_cochee",
+          });
+          continue;
+        }
+
+        await upsertCreneau({
+          enrollmentId: enrollment.id,
+          date: dateObj,
+          demiJournee: dj,
+          libelle: creneau.libelle,
+          dureePrevueMinutes: creneau.dureePrevueMinutes,
+          source: toPresenceSource(v.plateforme),
+          present: false, // sera mis à jour par recomputeTauxPresence
+          dureeRealiseeMinutes: parts[index] ?? 0,
+          // Horodatages bruts du relevé, portés sur chaque demi-journée du jour :
+          // c'est l'enveloppe de connexion de la journée, la seule que le relevé
+          // fournisse. Les répartir serait inventer une donnée.
+          ...(jour?.joinAt != null ? { heureConnexion: jour.joinAt } : {}),
+          ...(jour?.leaveAt != null ? { heureDeconnexion: jour.leaveAt } : {}),
+          importId: releveImport.id,
+        });
+      }
     }
     enrollmentIdsTouches.add(enrollment.id);
   }

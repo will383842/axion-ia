@@ -14,6 +14,7 @@
  * Aucun import Prisma / accès DB.
  */
 
+import { ventilerParJour, agregerVentilation, type IntervalleConnexion } from "./ventilation-jour";
 import type { ParsedParticipant, ParsedReleve } from "./types";
 import { parseCsvRows } from "./_csv-utils";
 
@@ -103,7 +104,18 @@ function parseTsvParticipants(text: string): ParsedReleve {
   const idxJoin = findCol(COL_JOIN);
   const idxLeave = findCol(COL_LEAVE);
 
-  const participants: ParsedParticipant[] = [];
+  // 🔴 `DIST-01` (2026-08-20) — REGROUPEMENT PAR PARTICIPANT, puis ventilation
+  // par journée.
+  //
+  // Ce parseur poussait **une ligne = un participant**. Un export couvrant deux
+  // journées produisait donc deux entrées homonymes, et `matchParticipants` n'en
+  // retenait qu'UNE par inscription : la seconde journée disparaissait purement
+  // et simplement. Zoom, lui, regroupait déjà — les trois parseurs partageaient
+  // le défaut sans partager le code.
+  const parCle = new Map<
+    string,
+    { nomBrut: string; email: string | null; intervals: IntervalleConnexion[] }
+  >();
 
   for (const row of rows) {
     const nomBrut = getField(row, idxNom) ?? "";
@@ -121,7 +133,25 @@ function parseTsvParticipants(text: string): ParsedReleve {
     const joinAt = joinRaw ? parseTeamsDate(joinRaw) : null;
     const leaveAt = leaveRaw ? parseTeamsDate(leaveRaw) : null;
 
-    participants.push({ nomBrut, email, joinAt, leaveAt, dureeMinutes });
+    const cle = email ?? nomBrut.toLowerCase().trim();
+    if (!cle) continue;
+    const courant = parCle.get(cle) ?? { nomBrut, email, intervals: [] };
+    courant.intervals.push({ join: joinAt, leave: leaveAt, duree: dureeMinutes });
+    parCle.set(cle, courant);
+  }
+
+  const participants: ParsedParticipant[] = [];
+  for (const entry of parCle.values()) {
+    const { jours, totalOrphelin } = ventilerParJour(entry.intervals);
+    const agg = agregerVentilation(jours, totalOrphelin);
+    participants.push({
+      nomBrut: entry.nomBrut,
+      email: entry.email,
+      joinAt: agg.joinAt,
+      leaveAt: agg.leaveAt,
+      dureeMinutes: agg.dureeMinutes,
+      parJour: jours,
+    });
   }
 
   return {

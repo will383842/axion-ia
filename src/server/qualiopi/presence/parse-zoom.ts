@@ -15,6 +15,7 @@
  * Aucun import Prisma / accès DB.
  */
 
+import { ventilerParJour, agregerVentilation } from "./ventilation-jour";
 import type { ParsedParticipant, ParsedReleve } from "./types";
 import { parseCsvRows } from "./_csv-utils";
 
@@ -78,17 +79,13 @@ export function parseZoomCsv(content: string): ParsedReleve {
 
   const participants: ParsedParticipant[] = [];
   for (const entry of byKey.values()) {
-    // Somme des durées
-    const dureeMinutes = entry.intervals.reduce((s, i) => s + i.duree, 0);
-
-    // min(joinAt) et max(leaveAt) sur tous les intervalles
-    const joinDates = entry.intervals.map((i) => i.join).filter((d): d is Date => d !== null);
-    const leaveDates = entry.intervals.map((i) => i.leave).filter((d): d is Date => d !== null);
-
-    const joinAt =
-      joinDates.length > 0 ? new Date(Math.min(...joinDates.map((d) => d.getTime()))) : null;
-    const leaveAt =
-      leaveDates.length > 0 ? new Date(Math.max(...leaveDates.map((d) => d.getTime()))) : null;
+    // 🔴 `DIST-01` — la ventilation par JOURNÉE d'abord, l'agrégat ensuite.
+    //
+    // Ce bloc calculait directement min(join), max(leave) et la somme : les
+    // intervalles portaient déjà la journée, et on la jetait. Sur un export de
+    // deux jours, l'import ne créait ensuite de créneaux que pour le premier.
+    const { jours, totalOrphelin } = ventilerParJour(entry.intervals);
+    const { joinAt, leaveAt, dureeMinutes } = agregerVentilation(jours, totalOrphelin);
 
     participants.push({
       nomBrut: entry.nomBrut,
@@ -96,6 +93,7 @@ export function parseZoomCsv(content: string): ParsedReleve {
       joinAt,
       leaveAt,
       dureeMinutes,
+      parJour: jours,
     });
   }
 

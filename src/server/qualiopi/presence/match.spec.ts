@@ -30,6 +30,12 @@ function makeParticipant(
     joinAt: null,
     leaveAt: null,
     dureeMinutes: 60,
+    // 🔴 2026-08-20 (`DIST-01`) — champ AJOUTÉ. La présence est désormais
+    // ventilée par journée : `ParsedParticipant` l'exige, et c'est le
+    // compilateur — non la vigilance — qui garde cette fixture alignée sur le
+    // type. Vide par défaut : ce fichier teste l'APPARIEMENT (email, nom), pas
+    // la ventilation, qui a sa propre suite.
+    parJour: [],
     ...overrides,
   };
 }

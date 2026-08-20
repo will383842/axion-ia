@@ -696,6 +696,16 @@ describe("importReleveConnexionAction", () => {
         joinAt: new Date("2026-06-10T07:00:00.000Z"),
         leaveAt: new Date("2026-06-10T15:00:00.000Z"),
         dureeMinutes: 480,
+        // 🔴 2026-08-20 (`DIST-01`) — champ AJOUTÉ. L'import ventile désormais
+        // la présence par JOURNÉE : sans lui, aucune minute n'est attribuée.
+        parJour: [
+          {
+            date: "2026-06-10",
+            joinAt: new Date("2026-06-10T07:00:00.000Z"),
+            leaveAt: new Date("2026-06-10T15:00:00.000Z"),
+            dureeMinutes: 480,
+          },
+        ],
       },
     ],
     nbLignes: 1,
@@ -773,6 +783,15 @@ describe("importReleveConnexionAction", () => {
             dureeMinutes: 400,
             joinAt: new Date("2026-06-10T08:05:00Z"),
             leaveAt: new Date("2026-06-10T15:00:00Z"),
+            // Alice n'est venue QUE le 10. Le 11, elle était absente.
+            parJour: [
+              {
+                date: "2026-06-10",
+                joinAt: new Date("2026-06-10T08:05:00Z"),
+                leaveAt: new Date("2026-06-10T15:00:00Z"),
+                dureeMinutes: 400,
+              },
+            ],
           },
         },
         {
@@ -783,6 +802,15 @@ describe("importReleveConnexionAction", () => {
             dureeMinutes: 380,
             joinAt: new Date("2026-06-11T08:10:00Z"),
             leaveAt: new Date("2026-06-11T15:00:00Z"),
+            // Bob n'est venu QUE le 11.
+            parJour: [
+              {
+                date: "2026-06-11",
+                joinAt: new Date("2026-06-11T08:10:00Z"),
+                leaveAt: new Date("2026-06-11T15:00:00Z"),
+                dureeMinutes: 380,
+              },
+            ],
           },
         },
       ],
@@ -796,11 +824,20 @@ describe("importReleveConnexionAction", () => {
       content: CSV_CONTENT,
     });
 
-    // 2 inscrits × 2 demi-journées : le distanciel pose désormais un créneau par
-    // demi-journée, comme le présentiel. Une feuille signée une seule fois par
-    // jour est précisément ce que CAA Nantes 14/06/2022 juge insuffisamment
-    // probant.
-    expect(mockUpsertCreneau).toHaveBeenCalledTimes(4);
+    // 🔴 2026-08-20 (`DIST-01`) — 8, PAS 4.
+    //
+    // Ce cas exigeait 4 : chaque inscrit sur SA journée, 2 demi-journées chacun.
+    // Il vérifiait donc le bon rattachement au jour de connexion — et manquait
+    // la moitié du problème que son propre commentaire décrit : « sur une
+    // session de 2 jours, le second jour n'avait aucun créneau ».
+    //
+    // Avec 4 créneaux, Alice (venue le 10 seulement) n'a de dénominateur que
+    // pour le 10 : elle sort à **100 %** alors qu'elle a suivi 1 jour sur 2, et
+    // reçoit une attestation complète.
+    //
+    // 2 inscrits × 2 JOURNÉES × 2 demi-journées = 8. Un jour non suivi reçoit un
+    // créneau à 0 minute : c'est ce qui le fait compter au dénominateur.
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(8);
     const dates = mockUpsertCreneau.mock.calls.map((c) =>
       (c[0] as { date: Date }).date.toISOString().slice(0, 10),
     );
@@ -815,11 +852,25 @@ describe("importReleveConnexionAction", () => {
     expect(premier.demiJournee).toBe("matin");
 
     // ⭐ L'invariant qui protège le taux : la somme des durées prévues d'un jour
-    // vaut la journée entière, pas le double.
-    const jour10 = mockUpsertCreneau.mock.calls
-      .map((c) => c[0] as { date: Date; dureePrevueMinutes: number })
-      .filter((a) => a.date.toISOString().startsWith("2026-06-10"));
-    expect(jour10.reduce((s, a) => s + a.dureePrevueMinutes, 0)).toBe(420);
+    // vaut la journée entière, pas le double. Par INSCRIT — sans quoi deux
+    // inscrits doubleraient le total et l'assertion passerait pour de mauvaises
+    // raisons.
+    const jour10Alice = mockUpsertCreneau.mock.calls
+      .map((c) => c[0] as { date: Date; dureePrevueMinutes: number; enrollmentId: string })
+      .filter(
+        (a) => a.enrollmentId === "enroll-1" && a.date.toISOString().startsWith("2026-06-10"),
+      );
+    expect(jour10Alice.reduce((s, a) => s + a.dureePrevueMinutes, 0)).toBe(420);
+
+    // 🔴 LE cas de `DIST-01` : Alice a un créneau le 11 AUSSI, à zéro minute.
+    // C'est lui qui la fait tomber à 50 % au lieu de 100 %.
+    const alice11 = mockUpsertCreneau.mock.calls
+      .map((c) => c[0] as { date: Date; enrollmentId: string; dureeRealiseeMinutes: number })
+      .filter(
+        (a) => a.enrollmentId === "enroll-1" && a.date.toISOString().startsWith("2026-06-11"),
+      );
+    expect(alice11, "Alice n'est pas comptée au dénominateur du 11").toHaveLength(2);
+    expect(alice11.reduce((s, a) => s + a.dureeRealiseeMinutes, 0)).toBe(0);
   });
 
   it("crée un ReleveConnexionImport avec les bons champs", async () => {
@@ -873,8 +924,11 @@ describe("importReleveConnexionAction", () => {
     // les absents du DÉNOMINATEUR du taux. Un stagiaire venu 1 jour sur 2
     // obtenait 100 % au lieu de 50 %, donc une attestation COMPLÈTE au lieu de
     // partielle. Surévaluer la présence est bien plus grave que la sous-évaluer.
-    // 2 inscrits × 2 demi-journées (le distanciel est aligné sur le présentiel).
-    expect(mockUpsertCreneau).toHaveBeenCalledTimes(4);
+    // 🔴 2026-08-20 (`DIST-01`) — 8, PAS 4. Le commentaire ci-dessus énonçait
+    // exactement le défaut (« 1 jour sur 2 → 100 % au lieu de 50 % ») et
+    // l'assertion n'en couvrait que la MOITIÉ : tous les inscrits, mais une
+    // seule journée. 2 inscrits × 2 JOURNÉES × 2 demi-journées = 8.
+    expect(mockUpsertCreneau).toHaveBeenCalledTimes(8);
 
     const calls = mockUpsertCreneau.mock.calls.map(
       (c) => c[0] as { enrollmentId: string; dureeRealiseeMinutes: number; source: string },
