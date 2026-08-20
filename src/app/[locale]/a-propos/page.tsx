@@ -179,7 +179,7 @@ export default async function About({ params }: Props) {
         {
           id: "fondateur",
           question: "Qui est le fondateur d'Axion-IA ?",
-          answer: `Axion-IA a été fondé par ${FOUNDER.displayName}, son fondateur et CEO. Son parcours et son domaine d'expertise — l'IA opérationnelle pour l'entreprise — sont détaillés sur sa fiche fondateur dédiée.`,
+          answer: `Axion-IA a été fondé par ${FOUNDER.fullName}, son fondateur et CEO. Son parcours et son domaine d'expertise — l'IA opérationnelle pour l'entreprise — sont détaillés sur sa fiche fondateur dédiée.`,
         },
         {
           id: "perimetre",
@@ -254,7 +254,7 @@ export default async function About({ params }: Props) {
         {
           id: "fondateur",
           question: "Who founded Axion-IA?",
-          answer: `Axion-IA was founded by ${FOUNDER.displayName}, its founder and CEO. His background and area of expertise — operational AI for businesses — are detailed on his dedicated founder page.`,
+          answer: `Axion-IA was founded by ${FOUNDER.fullName}, its founder and CEO. His background and area of expertise — operational AI for businesses — are detailed on his dedicated founder page.`,
         },
         {
           id: "perimetre",
