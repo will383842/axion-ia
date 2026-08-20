@@ -30,6 +30,13 @@ const mockCoachingFindMany = vi.fn();
 const mockAuditFindMany = vi.fn();
 
 const mockSignatureCount = vi.fn();
+/**
+ * Créneaux de présence issus d'un IMPORT de relevé de connexion (`D2-3-C1`).
+ *
+ * 🔑 C'est la trace du distanciel : elle vaut preuve au même titre qu'une
+ * signature, parce qu'elle est rattachée au fichier archivé avec son empreinte.
+ */
+const mockCreneauImporteCount = vi.fn();
 
 // Annulation d'une pièce au registre (ind. — audit pré-visite 2026-08-04).
 const mockDocumentFindUnique = vi.fn();
@@ -75,6 +82,9 @@ vi.mock("@/lib/prisma", () => ({
     // decrivent un dossier sain, et c'est le cas nominal.
     emargementSignature: {
       count: (...args: unknown[]) => mockSignatureCount(...args),
+    },
+    presenceCreneau: {
+      count: (...args: unknown[]) => mockCreneauImporteCount(...args),
     },
     documentGenere: {
       findUnique: (...args: unknown[]) => mockDocumentFindUnique(...args),
@@ -1311,6 +1321,9 @@ describe("genererCertificatRealisationAction — preuve d'assiduité exigée", (
   beforeEach(() => {
     mockEnrollmentFindUnique.mockResolvedValue(inscription());
     mockSignatureCount.mockResolvedValue(1);
+    // Par défaut : aucun relevé importé. Les tests historiques décrivent un
+    // dossier PRÉSENTIEL, dont la preuve est la signature.
+    mockCreneauImporteCount.mockResolvedValue(0);
   });
 
   it("refuse quand le taux de présence n'a jamais été calculé", async () => {
@@ -1321,13 +1334,68 @@ describe("genererCertificatRealisationAction — preuve d'assiduité exigée", (
     expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 
-  // Le cas exact trouvé en production : un taux existe, aucune signature.
-  it("refuse quand aucune signature d'émargement n'est rattachée", async () => {
+  // Le cas exact trouvé en production : un taux existe, aucune trace.
+  it("refuse quand AUCUNE trace n'est rattachée — ni signature, ni relevé", async () => {
+    // 🔴 Mis à jour le 2026-08-20 (`D2-3-C1`) : le refus ne porte plus sur la
+    // seule signature. Il porte sur l'absence de TOUTE trace vérifiable — c'est
+    // ce que R.6313-3 exige, et c'est ce qui rendait le certificat
+    // structurellement impossible en distanciel.
     mockSignatureCount.mockResolvedValue(0);
+    mockCreneauImporteCount.mockResolvedValue(0);
     const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
     expect("error" in r).toBe(true);
-    if ("error" in r) expect(r.error).toContain("signature");
+    if ("error" in r) expect(r.error).toContain("trace vérifiable");
     expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  // ── `D2-3-C1` — le distanciel ───────────────────────────────────────────────
+
+  it("🔴 une session 100 % DISTANCIELLE obtient son certificat sur le relevé importé", async () => {
+    // Le défaut : la garde n'acceptait qu'une `EmargementSignature`, écrite par
+    // le seul service de signature manuscrite. L'import d'un relevé n'en écrit
+    // aucune — et le PDF du relevé affirme pourtant « ce document remplace la
+    // feuille d'émargement pour les formations dispensées à distance ».
+    //
+    // Une session à distance parfaitement menée n'obtenait donc JAMAIS la pièce
+    // que l'OPCO exige pour financer, et le trou n'apparaissait qu'au moment de
+    // justifier.
+    mockEnrollmentFindUnique.mockResolvedValue(inscription({}));
+    mockSignatureCount.mockResolvedValue(0);
+    mockCreneauImporteCount.mockResolvedValue(3);
+
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r, "le relevé importé vaut preuve").toBe(false);
+    expect(mockGenerateDocument).toHaveBeenCalled();
+  });
+
+  it("🔴 le compteur n'accepte QUE les créneaux rattachés à un fichier archivé", async () => {
+    // 🔑 Ce qui rend la trace vérifiable, c'est `importId` : le rattachement au
+    // CSV d'origine, archivé avec son empreinte. Un créneau `import_*` orphelin
+    // ne prouve rien, et `source: "manuel"` reste une SAISIE.
+    //
+    // Sans ce test, élargir la garde à n'importe quel `PresenceCreneau` l'aurait
+    // vidée de sa substance : elle aurait continué d'exister en ne refusant plus
+    // que les dossiers entièrement vides.
+    mockSignatureCount.mockResolvedValue(0);
+    mockCreneauImporteCount.mockResolvedValue(1);
+    await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const where = (mockCreneauImporteCount.mock.calls[0]?.[0] as { where: Record<string, unknown> })
+      .where;
+    expect(where["importId"]).toEqual({ not: null });
+    expect(where["source"]).toEqual({ in: ["import_zoom", "import_teams", "import_meet"] });
+    expect(
+      (where["source"] as { in: string[] }).in,
+      "une présence saisie à la main n'est pas une trace",
+    ).not.toContain("manuel");
+  });
+
+  it("une signature suffit — le relevé n'est interrogé que si elle manque", async () => {
+    // 🔑 Non-vacuité dans l'autre sens : le présentiel ne doit pas se mettre à
+    // exiger un relevé de connexion, ni payer une requête inutile.
+    mockSignatureCount.mockResolvedValue(1);
+    await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect(mockCreneauImporteCount).not.toHaveBeenCalled();
   });
 
   it("émet le certificat quand le taux est mesuré ET tracé", async () => {
