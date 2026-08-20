@@ -140,7 +140,18 @@ describe("createSessionAction — formateur habilité", () => {
   it("accepte le formateur et écrit les DEUX rattachements dans la même transaction", async () => {
     const r = await createSessionAction(entree());
 
-    expect(r).toEqual({ data: { id: SESSION_ID, numero: "AXI-SESS-2026-001" } });
+    // 🔴 Mis à jour le 2026-08-20 (`D2-5-06`). Le retour porte désormais
+    // `avertissements` : les manquements BLOQUANTS du dossier du formateur.
+    // Ce test a rougi à l'ajout, et c'était son travail — le contrat de retour
+    // a changé.
+    //
+    // 🔑 Il a aussi servi de TÉMOIN INVOLONTAIRE que le câblage fonctionne de
+    // bout en bout : le formateur de ce décor est un salarié sans pièces, et
+    // l'action a bel et bien produit « Le contrat de travail est absent ou non
+    // validé. » On n'assied donc pas l'assertion sur `[]` — on vérifie les
+    // deux champs qui font l'objet de ce test, et le contenu des
+    // avertissements est gardé dans `avertissements-affectation.spec.ts`.
+    expect(r).toMatchObject({ data: { id: SESSION_ID, numero: "AXI-SESS-2026-001" } });
 
     // Écriture 1 — la FK, lue par la fiche session et les documents nominatifs.
     expect(donneesSessionCreee()["formateurPrincipalId"]).toBe(TRAINER_ID);
@@ -294,7 +305,11 @@ describe("createSessionAction — le formateur reste FACULTATIF", () => {
   it("crée la session sans aucun formateur", async () => {
     const r = await createSessionAction(entree({ trainerId: undefined }));
 
-    expect(r).toEqual({ data: { id: SESSION_ID, numero: "AXI-SESS-2026-001" } });
+    // Sans formateur, aucun dossier à interroger : la liste est vide, et on
+    // l'assied explicitement — c'est le cas où `avertissements` DOIT être `[]`.
+    expect(r).toEqual({
+      data: { id: SESSION_ID, numero: "AXI-SESS-2026-001", avertissements: [] },
+    });
     expect(mockSessionCreate).toHaveBeenCalled();
     // La FK n'est même pas posée à `null` : le spread conditionnel laisse la
     // colonne à son défaut, comme pour `clientId` et `devisId`.

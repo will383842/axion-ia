@@ -457,8 +457,16 @@ async function handleRappelJ7(): Promise<void> {
 
   for (const session of sessions) {
     try {
-      await envoyerRappelJ7(session.id);
-      ok++;
+      // 🔴 `D5-1-C1` — le compteur ne compte plus un envoi qui n'est pas parti.
+      // Ce cron n'écrit aucune trace en base (c'est le constat `D5-1-C2`, à
+      // traiter à part) : le journal est donc le SEUL endroit où l'échec peut
+      // se voir. Un « 12 rappels envoyés » qui en compte 3 réellement partis
+      // ferme la seule fenêtre qui restait.
+      if (await envoyerRappelJ7(session.id)) {
+        ok++;
+      } else {
+        ko++;
+      }
     } catch (err) {
       ko++;
       console.error(
@@ -533,7 +541,16 @@ async function handleSatisfactionJ1(): Promise<void> {
 
   for (const enrollment of enrollments) {
     try {
-      await envoyerSatisfactionJ1(enrollment.id);
+      // 🔴 `D5-1-C1` (2026-08-20) — la trace n'est posée QUE si l'envoi est
+      // réellement parti. `enqueueEmail` ne lève pas quand la file est absente
+      // ou qu'une règle gare le message en corbeille : elle rend « non envoyé ».
+      // Poser `envoyeAt` malgré tout écartait DÉFINITIVEMENT le destinataire du
+      // rattrapage — la reconstitution littérale de l'incident « aucune
+      // convocation jamais envoyée ».
+      if (!(await envoyerSatisfactionJ1(enrollment.id))) {
+        ko++;
+        continue;
+      }
       // Marque l'envoi : c'est ce qui rend le rattrapage idempotent, et ce qui
       // permet à la console de distinguer « jamais envoyé » de « sans réponse ».
       await prisma.questionnaire.updateMany({
@@ -602,7 +619,16 @@ async function handleSuiviJ30(): Promise<void> {
 
   for (const enrollment of enrollments) {
     try {
-      await envoyerSuiviJ30(enrollment.id);
+      // 🔴 `D5-1-C1` (2026-08-20) — la trace n'est posée QUE si l'envoi est
+      // réellement parti. `enqueueEmail` ne lève pas quand la file est absente
+      // ou qu'une règle gare le message en corbeille : elle rend « non envoyé ».
+      // Poser `envoyeAt` malgré tout écartait DÉFINITIVEMENT le destinataire du
+      // rattrapage — la reconstitution littérale de l'incident « aucune
+      // convocation jamais envoyée ».
+      if (!(await envoyerSuiviJ30(enrollment.id))) {
+        ko++;
+        continue;
+      }
       await prisma.questionnaire.updateMany({
         where: { enrollmentId: enrollment.id, type: "satisfaction_froid", envoyeAt: null },
         data: { envoyeAt: new Date() },
@@ -828,7 +854,16 @@ async function handlePositionnement(): Promise<void> {
     if (geste === "rien") continue;
 
     try {
-      await envoyerPositionnement(q.id);
+      // 🔴 `D5-1-C1` (2026-08-20) — la trace n'est posée QUE si l'envoi est
+      // réellement parti. `enqueueEmail` ne lève pas quand la file est absente
+      // ou qu'une règle gare le message en corbeille : elle rend « non envoyé ».
+      // Poser `envoyeAt` malgré tout écartait DÉFINITIVEMENT le destinataire du
+      // rattrapage — la reconstitution littérale de l'incident « aucune
+      // convocation jamais envoyée ».
+      if (!(await envoyerPositionnement(q.id))) {
+        ko++;
+        continue;
+      }
       if (geste === "relancer") {
         // 🔴 La trace de la relance EST la preuve. Sans elle, on ne saurait ni
         // combien de fois on a tenté, ni quand — et le plafond ne tiendrait pas.
@@ -1150,8 +1185,15 @@ async function handleRelanceQuestionnaires(): Promise<void> {
   let ko = 0;
   for (const q of questionnaires) {
     try {
-      await envoyerRelanceQuestionnaire(q.id);
-      ok++;
+      // 🔴 `D5-1-C1` — le compteur suit l'envoi RÉEL. La trace `relanceCount`,
+      // elle, est posée dans le service APRÈS vérification : un envoi qui
+      // échoue n'épuise donc plus le plafond de deux relances. Sans cela, la
+      // voie de relance se fermait sans qu'un seul message soit parti.
+      if (await envoyerRelanceQuestionnaire(q.id)) {
+        ok++;
+      } else {
+        ko++;
+      }
     } catch (err) {
       ko++;
       console.error(
@@ -1213,7 +1255,16 @@ async function handleEnqueteEntrepriseJ30(): Promise<void> {
   let ko = 0;
   for (const session of sessions) {
     try {
-      await envoyerEnqueteEntreprise(session.id);
+      // 🔴 `D5-1-C1` (2026-08-20) — la trace n'est posée QUE si l'envoi est
+      // réellement parti. `enqueueEmail` ne lève pas quand la file est absente
+      // ou qu'une règle gare le message en corbeille : elle rend « non envoyé ».
+      // Poser `envoyeAt` malgré tout écartait DÉFINITIVEMENT le destinataire du
+      // rattrapage — la reconstitution littérale de l'incident « aucune
+      // convocation jamais envoyée ».
+      if (!(await envoyerEnqueteEntreprise(session.id))) {
+        ko++;
+        continue;
+      }
       // Marque l'envoi — même contrat d'idempotence que satisfaction-j1.
       await prisma.questionnaire.updateMany({
         where: {

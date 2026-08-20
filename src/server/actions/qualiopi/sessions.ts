@@ -20,6 +20,7 @@
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
 import { revoquerTokensInscription } from "@/server/qualiopi/emargement/token-service";
 import type {
   TrainingSessionStatut,
@@ -143,7 +144,7 @@ const transitionSessionSchema = z.object({
  */
 export async function createSessionAction(
   input: z.infer<typeof createSessionSchema>,
-): Promise<ActionResult<{ id: string; numero: string }>> {
+): Promise<ActionResult<{ id: string; numero: string; avertissements: string[] }>> {
   const session = await requireAdminWrite();
   const parsed = createSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -432,7 +433,23 @@ export async function createSessionAction(
     session,
   });
 
-  return { data: { id: created.id, numero: created.numero } };
+  // 🔴 `D2-5-06` (2026-08-20) — les avertissements de conformité N'EXISTAIENT
+  // PAS sur cette voie. `assignerFormateurAction` les calculait, pas la
+  // création : un sous-traitant sans contrat de sous-traitance — pièce classée
+  // `bloquant` par `trainers/conformite.ts` — pouvait être posé dès la création
+  // et traverser tout le cycle sans qu'un écran ne le signale.
+  //
+  // L'habilitation, elle, était bien contrôlée plus haut : c'est ce qui rendait
+  // le trou invisible. On voyait un contrôle, on en concluait qu'il couvrait le
+  // sujet.
+  //
+  // ⚠️ AVERTISSEMENT, jamais blocage — même arbitrage qu'à l'affectation. La
+  // session EXISTE déjà en base à ce point : la faire échouer pour un Kbis qui
+  // arrive demain empêcherait de planifier, et une garde qui empêche de
+  // travailler finit par être retirée.
+  const avertissements = await avertissementsAffectation(v.trainerId ?? null);
+
+  return { data: { id: created.id, numero: created.numero, avertissements } };
 }
 
 /**

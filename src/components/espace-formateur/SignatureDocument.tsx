@@ -73,6 +73,21 @@ export interface SignatureDocumentProps {
   motifBlocage?: string | null | undefined;
   mentions: string[];
   plafondProbant: string;
+  /**
+   * Où LIRE la pièce avant de la signer.
+   *
+   * 🔴 `D4-1-A` (2026-08-20). Ce composant n'a jamais reçu d'URL de pièce : le
+   * signataire voyait un titre, un numéro, une liste de parties — et signait.
+   * Or la mention qu'il scelle affirme « J'ai pu prendre connaissance de la
+   * pièce dans son intégralité avant de signer, et j'en recevrai un
+   * exemplaire ». Les deux moitiés étaient fausses.
+   *
+   * ⚠️ Optionnel : les autres circuits de signature qui utilisent ce composant
+   * n'ont pas tous une route de lecture. Mais quand l'URL manque, le composant
+   * ne se contente pas de masquer le lien — il DIT que la pièce n'est pas
+   * consultable. Un blanc laisserait croire qu'il n'y avait rien à lire.
+   */
+  urlPiece?: string | null | undefined;
   /** Libellé du bouton, ex. « Signer la lettre de mission ». */
   libelleBouton: string;
   /** Titre du pavé de signature, ex. « Signature du formateur ». */
@@ -93,6 +108,7 @@ export function SignatureDocument({
   parties,
   peutAgir,
   motifBlocage,
+  urlPiece,
   mentions,
   plafondProbant,
   libelleBouton,
@@ -167,6 +183,30 @@ export function SignatureDocument({
       <h3 className="text-mocha text-sm font-semibold">
         {titrePiece} <span className="text-fg-muted font-normal">n° {numero}</span>
       </h3>
+
+      {/* 🔴 `D4-1-A` — LIRE avant de signer. Placé au-dessus de tout le reste
+          parce que c'est le premier geste attendu, et parce qu'un lien posé
+          sous le pavé de signature serait vu après coup. */}
+      {urlPiece != null && urlPiece !== "" ? (
+        <p className="mt-2">
+          <a
+            href={urlPiece}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-mocha text-xs font-medium underline underline-offset-2"
+          >
+            Lire la pièce avant de signer (PDF)
+          </a>
+        </p>
+      ) : (
+        // ⚠️ On l'ÉCRIT plutôt que de laisser un blanc. Une pièce qu'on ne peut
+        // pas ouvrir est un problème que le signataire doit connaître avant
+        // d'attester l'avoir lue — pas une absence de lien qu'il ne remarquera
+        // pas.
+        <p className="text-fg-muted mt-2 text-xs">
+          Cette pièce n&apos;est pas consultable en ligne. Demandez-en une copie avant de signer.
+        </p>
+      )}
 
       <ul className="mt-3 space-y-2">
         {parties.map((p) => (
