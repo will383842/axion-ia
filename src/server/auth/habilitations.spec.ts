@@ -90,10 +90,14 @@ describe("matrice d'habilitation — invariants de structure", () => {
     expect(Object.keys(MOTIF_REFUS).sort()).toEqual(Object.keys(HABILITATIONS).sort());
   });
 
-  it("les sept actes engageants attendus sont présents — un retrait doit rougir", () => {
+  it("les huit actes engageants attendus sont présents — un retrait doit rougir", () => {
     // Verrou d'exhaustivité : retirer un acte de la matrice retire une garde du
     // serveur. Ce test rend ce retrait visible en revue, au lieu de le laisser
     // passer dans un diff de 40 fichiers.
+    //
+    // ✅ Il a ROUGI le 2026-08-20 à l'ajout de `revoquer_signature` (`D3-3-04`),
+    // et c'était son travail : un acte engageant ne s'ajoute pas sans qu'on
+    // décide, explicitement, qui peut le poser.
     const attendus: ActeEngageant[] = [
       "attester",
       "conclure_devis",
@@ -101,9 +105,28 @@ describe("matrice d'habilitation — invariants de structure", () => {
       "deposer_demande_financeur",
       "facturer",
       "habiliter_formateur",
+      "revoquer_signature",
       "valider_evaluation",
     ];
     expect([...ACTES_ENGAGEANTS].sort()).toEqual(attendus.sort());
+  });
+
+  it("🔴 révoquer une signature est réservé à la DIRECTION seule", () => {
+    // `D3-3-04`. Le responsable qualité peut attester et valider — c'est-à-dire
+    // AJOUTER de la preuve. Retirer sa valeur à une preuve déjà recueillie n'est
+    // pas le même geste, et ne relève pas de la même responsabilité.
+    //
+    // 🔑 Le test est écrit en NÉGATIF sur les rôles exclus, pas en positif sur
+    // les rôles admis : ajouter un rôle à la matrice doit rougir ici, alors
+    // qu'une assertion « contient super_admin et admin » resterait verte.
+    for (const role of ["responsable_qualite", "secretaire", "editor", "reader"] as const) {
+      expect(
+        peutEngager(role, "revoquer_signature"),
+        `« ${role} » ne doit pas pouvoir révoquer une signature`,
+      ).toBe(false);
+    }
+    expect(peutEngager("super_admin", "revoquer_signature")).toBe(true);
+    expect(peutEngager("admin", "revoquer_signature")).toBe(true);
   });
 });
 
