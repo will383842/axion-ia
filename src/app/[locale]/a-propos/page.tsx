@@ -558,7 +558,20 @@ export default async function About({ params }: Props) {
             // Photo réelle du fondateur sur la carte Will. Manon = persona
             // éditoriale IA (transparence AI Act art. 50) → aucun portrait
             // humain, avatar initiale conservé pour ne pas induire en erreur.
-            ...(m.id === "will" ? { photoUrl: "/illustrations/home-founder-william.avif" } : {}),
+            ...(m.id === "will"
+              ? {
+                  photoUrl: "/illustrations/home-founder-william.avif",
+                  // La fiche d'entité du fondateur n'est servie qu'en FR
+                  // (`/equipe/[slug]` → `notFound()` hors FR) : pas de lien en EN,
+                  // plutôt qu'un lien vers une page qui n'existe pas.
+                  ...(isFr
+                    ? {
+                        href: FOUNDER.pagePath,
+                        hrefLabel: `Le parcours de ${FOUNDER.displayName}`,
+                      }
+                    : {}),
+                }
+              : {}),
           }))}
         />
       </Section>

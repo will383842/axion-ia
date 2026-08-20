@@ -12,6 +12,7 @@ import {
   getTierById,
 } from "@/content/pricing";
 import { slugify } from "@/lib/slug";
+import { FOUNDER } from "@/lib/brand";
 
 // Helpers locaux pour dériver les phrases FAQ multilingues à partir du SSOT
 // pricing. Aucun prix hardcodé : si Will modifie un tier, ces phrases se
@@ -61,14 +62,26 @@ export const ABOUT_TIMELINE = [
 export const ABOUT_TEAM = [
   {
     id: "will",
+    /**
+     * Identité dérivée du SSOT `FOUNDER` (2026-08-19).
+     *
+     * Cette carte affichait « Will · Fondateur · lead consultant » pendant que
+     * la fiche d'entité `/fr/equipe/williams` et tout le JSON-LD affirmaient
+     * « Williams Jullin · Fondateur & CEO d'Axion-IA ». Deux fonctions
+     * publiques pour un seul homme, sur deux pages du même site : c'est
+     * exactement la divergence que `lib/brand.ts` a été créé pour supprimer
+     * (cf. son commentaire d'en-tête, qui cite ce cas précis), et c'est ce
+     * qu'un moteur doit arbitrer quand il tente de fusionner l'entité.
+     * Seule la bio, qui n'existe nulle part ailleurs, reste littérale ici.
+     */
     fr: {
-      name: "Will",
-      role: "Fondateur · lead consultant",
+      name: FOUNDER.displayName,
+      role: FOUNDER.roleLineFr,
       bio: "10 ans en transformation digitale, opérationnel terrain.",
     },
     en: {
-      name: "Will",
-      role: "Founder · lead consultant",
+      name: FOUNDER.displayName,
+      role: FOUNDER.roleLineEn,
       bio: "10 years in digital transformation, hands-on field practice.",
     },
   },

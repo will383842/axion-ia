@@ -739,11 +739,16 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
   // template `/equipe/[slug]` est exclu du sitemap (slug template) ; on ajoute
   // donc explicitement l'URL réelle pour la rendre découvrable par Google
   // (audit sitelinks 2026-07-06). FR uniquement (doctrine content-gen v1.2).
+  //
+  // Priorité 0.8 (2026-08-19) : c'est la page d'entité du dirigeant, refondue
+  // en fiche d'autorité complète. 0.6 la classait au niveau d'une sous-page de
+  // service, sous les hubs de premier niveau — pour une URL que l'on veut voir
+  // rattachée à l'entité de marque dans le Knowledge Graph.
   entries.push({
     url: `${SITE_URL}/fr/equipe/williams`,
     lastModified: now,
     changeFrequency: "monthly",
-    priority: 0.6,
+    priority: 0.8,
   });
   // GEO-145 (audit GEO/AEO 2026-08-14) — `/fr/equipe/manon` manquait, alors que
   // c'est la page CIBLE du `@id` du noeud `Person` porte par tout le JSON-LD
