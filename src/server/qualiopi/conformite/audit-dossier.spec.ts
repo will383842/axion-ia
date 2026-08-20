@@ -63,7 +63,12 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
 import { getObjectBufferR2, isR2Configured } from "@/lib/r2-storage";
 import { renderRegistrePdfBuffer } from "@/server/qualiopi/registres/registres-pdf";
-import { genererManifesteAudit, genererDossierAuditZip, MAX_PIECES_LISTEES } from "./audit-dossier";
+import {
+  genererManifesteAudit,
+  genererDossierAuditZip,
+  MAX_PIECES_LISTEES,
+  pieceAdmissibleAuDossier,
+} from "./audit-dossier";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
 import JSZip from "jszip";
 // Type réel de l'énumération Prisma : un type de document mal orthographié dans
@@ -693,10 +698,24 @@ describe("Manifeste — une pièce annulée ne se compte nulle part", () => {
   });
 
   it("le comptage passe le MÊME filtre que la constitution du ZIP", async () => {
+    // 🔴 Mis à jour le 2026-08-20 (`D2-5-12`). Ce test comparait le `where` à un
+    // littéral recopié ici. Il a donc ROUGI quand le prédicat a gagné
+    // l'exclusion des sessions annulées et reportées — et c'était son travail.
+    //
+    // 🔑 Mais on ne recopie PAS le nouveau littéral à sa place : ce serait
+    // recréer la divergence qu'on vient de fermer, à un endroit de plus. Le
+    // test compare désormais à `pieceAdmissibleAuDossier()` LUI-MÊME. Ce qu'il
+    // garde n'est plus la valeur du prédicat — d'autres tests s'en chargent —
+    // mais le fait que le comptage et le ZIP passent le MÊME.
     await genererManifesteAudit();
     expect(mockPrisma.documentGenere.groupBy).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { annuleeAt: null } }),
+      expect.objectContaining({ where: pieceAdmissibleAuDossier() }),
     );
+    // ⚠️ Pas d'assertion sur `findMany` ICI : dans ce test le `groupBy` rend un
+    // ensemble vide, donc aucun type n'est interrogé et `findMany` n'est jamais
+    // appelé. Une assertion posée là aurait rougi pour une raison qui n'a rien à
+    // voir avec ce qu'elle prétend garder. Les trois lectures sont couvertes
+    // par le test statique « les TROIS lectures passent par le même prédicat ».
   });
 
   it("off.17 n'annonce pas la seule lettre de mission du registre si elle est annulée", async () => {
@@ -1063,5 +1082,84 @@ describe("Manifeste — les pièces sont DÉSIGNABLES, et le plafond se dit", ()
       (appel) => (appel[0] as { where: { type: string } }).where.type,
     );
     expect(typesInteroges).toEqual(["emargement"]);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// `D2-5-12` (2026-08-20) — le dossier remis au certificateur ne doit pas se
+// contredire lui-même
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * La branche du `OR` qui filtre par statut de session.
+ *
+ * Écrite une fois : trois tests l'interrogent, et la retrouver « à la main »
+ * dans chacun aurait recréé, dans le SPEC, la triple recopie que le correctif
+ * vient de supprimer dans le CODE.
+ */
+function brancheParSession(): { session: { statut: { notIn: readonly string[] } } } {
+  const branche = pieceAdmissibleAuDossier().OR.find((clause) => "session" in clause);
+  expect(branche, "une branche doit filtrer par statut de session").toBeDefined();
+  return branche as { session: { statut: { notIn: readonly string[] } } };
+}
+
+describe("`D2-5-12` — pièces d'une session annulée ou reportée", () => {
+  it("🔴 le prédicat exclut les sessions ANNULÉES et REPORTÉES", () => {
+    const notIn = brancheParSession().session.statut.notIn;
+    expect(notIn).toContain("annulee");
+    // 🔑 `reportee` est le cœur du constat, et le cas le plus insidieux : la
+    // pièce n'est PAS annulée — la convention a bien été signée — mais aucune
+    // formation n'a eu lieu aux dates qu'elle porte. Le certificateur recevait
+    // deux conventions pour la même prestation, dont une pour une période vide.
+    expect(notIn).toContain("reportee");
+  });
+
+  it("🔴 les pièces SANS session restent admises — sinon le dossier se vide", () => {
+    // 🔑 Témoin négatif indispensable. Un filtre naïf `session: { statut: … }`
+    // sans la branche `sessionId: null` écarterait TOUTES les pièces générales
+    // — procédures, registres, lettres-cadres — c'est-à-dire ce que la moitié
+    // des indicateurs réclame. On aurait « corrigé » le dossier en le vidant.
+    const where = pieceAdmissibleAuDossier();
+    expect(where.OR).toContainEqual({ sessionId: null });
+  });
+
+  it("les pièces annulées restent exclues — la correction n'a rien relâché", () => {
+    // Témoin de non-régression : le filtre d'origine survit à l'ajout du
+    // nouveau. Deux exclusions, pas une qui remplace l'autre.
+    expect(pieceAdmissibleAuDossier().annuleeAt).toBeNull();
+  });
+
+  it("🔴 les sessions PLANIFIÉE, EN COURS et RÉALISÉE restent dans le dossier", () => {
+    // 🔑 Le second témoin négatif, et le plus important : un prédicat qui
+    // exclurait tout statut viderait le dossier de ses vraies preuves. Une
+    // session planifiée a déjà sa convention signée, et c'est précisément la
+    // pièce que l'indicateur 10 réclame.
+    const exclus = brancheParSession().session.statut.notIn;
+    for (const statut of ["planifiee", "en_cours", "realisee"]) {
+      expect(exclus, `« ${statut} » ne doit PAS être exclu`).not.toContain(statut);
+    }
+  });
+
+  it("🔴 les TROIS lectures du dossier passent par le même prédicat", async () => {
+    // Le prédicat vivait en littéral à trois endroits — comptage, liste par
+    // type, ZIP — chacun coiffé d'un commentaire priant de les garder
+    // identiques. Une prière n'est pas une garantie : `regleSignatureEnAttente`
+    // a divergé de `enAttente()` exactement ainsi (`D3-4-06`), et une alerte
+    // critique partait chaque nuit sur des pièces annulées.
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const source = readFileSync(
+      join(process.cwd(), "src", "server", "qualiopi", "conformite", "audit-dossier.ts"),
+      "utf-8",
+    )
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/(^|[^:])\/\/.*$/gm, "$1");
+
+    const appels = source.match(/pieceAdmissibleAuDossier\(\)/g) ?? [];
+    // 3 lectures + 1 définition + 1 `return` interne.
+    expect(appels.length, `occurrences trouvées : ${appels.length}`).toBeGreaterThanOrEqual(4);
+    // Et plus aucun littéral `annuleeAt: null` posé à la main dans une requête.
+    const litteraux = source.match(/where:\s*\{[^}]*annuleeAt:\s*null/g) ?? [];
+    expect(litteraux, `littéraux résiduels : ${litteraux.length}`).toHaveLength(0);
   });
 });
