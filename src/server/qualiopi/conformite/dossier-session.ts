@@ -227,12 +227,45 @@ export async function genererDossierSessionZip(
     "verification-integrite.json",
     JSON.stringify({ signatures: rapports, contresignatures: rapportsContresignatures }, null, 2),
   );
+  // 🔴 `D3-3-01` (2026-08-20) — « 0/0 conformes » SE LIT « TOUT VA BIEN ».
+  //
+  // Ces deux lignes rendaient `0/0 conformes` quand il n'y avait aucune
+  // signature ou aucune contresignature. Dans un dossier remis au
+  // certificateur, un ratio complet est le signe qu'on cherche : personne ne
+  // s'arrête sur un dénominateur nul, et l'absence totale de preuve prenait
+  // l'apparence d'une conformité parfaite.
+  //
+  // 🔑 C'est la famille de défaut la plus coûteuse de cet audit — un témoin qui
+  // ne vaut que si on a vérifié qu'il DEVRAIT être positif. Ici le témoin était
+  // même MEILLEUR quand la situation était pire : zéro anomalie sur zéro chaîne.
+  //
+  // Le vide est donc désormais NOMMÉ, et il lève un avertissement — pas une
+  // erreur : produire le dossier reste possible, c'est l'auditeur qui tranche.
+  // Un dossier qu'on ne peut plus générer ferait perdre la pièce ET l'alerte.
   index.push(
-    `Intégrité des chaînes de signatures : ${session.enrollments.length - nbChainesAnormales}/${session.enrollments.length} conformes.`,
+    session.enrollments.length === 0
+      ? "Intégrité des chaînes de signatures : AUCUNE signature d'émargement au dossier."
+      : `Intégrité des chaînes de signatures : ${session.enrollments.length - nbChainesAnormales}/${session.enrollments.length} conformes.`,
   );
   index.push(
-    `Intégrité des chaînes de contresignatures : ${parFormateur.size - nbChainesContresignAnormales}/${parFormateur.size} conformes.`,
+    parFormateur.size === 0
+      ? "Intégrité des chaînes de contresignatures : AUCUNE contresignature de formateur au dossier."
+      : `Intégrité des chaînes de contresignatures : ${parFormateur.size - nbChainesContresignAnormales}/${parFormateur.size} conformes.`,
   );
+  if (session.enrollments.length === 0) {
+    avertissements.push(
+      "⚠️ Aucune signature d'émargement dans ce dossier. La feuille d'émargement est la pièce que le certificateur demande en premier pour établir la réalité de l'action.",
+    );
+  }
+  if (parFormateur.size === 0) {
+    // La contresignature du formateur n'est exigée par aucune garde du dépôt —
+    // c'est l'autre moitié de `D3-3-01`. La rendre bloquante changerait un geste
+    // quotidien et rendrait des dossiers ingénérables ; on la rend VISIBLE là où
+    // elle sera lue, c'est-à-dire dans le dossier lui-même.
+    avertissements.push(
+      "⚠️ Aucune contresignature de formateur dans ce dossier. L'émargement contresigné par l'intervenant est la pièce qui atteste que la séance a bien été animée — son absence n'est signalée par aucune garde en amont.",
+    );
+  }
   if (nbChainesAnormales > 0) {
     avertissements.push(
       `⚠️ ${nbChainesAnormales} chaîne${nbChainesAnormales > 1 ? "s" : ""} de signatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
