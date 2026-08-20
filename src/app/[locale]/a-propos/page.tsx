@@ -179,7 +179,7 @@ export default async function About({ params }: Props) {
         {
           id: "fondateur",
           question: "Qui est le fondateur d'Axion-IA ?",
-          answer: `Axion-IA a été fondé par ${FOUNDER.displayName}, son fondateur et CEO. Son parcours et son domaine d'expertise — l'IA opérationnelle pour l'entreprise — sont détaillés sur sa fiche fondateur dédiée.`,
+          answer: `Axion-IA a été fondé par ${FOUNDER.fullName}, son fondateur et CEO. Son parcours et son domaine d'expertise — l'IA opérationnelle pour l'entreprise — sont détaillés sur sa fiche fondateur dédiée.`,
         },
         {
           id: "perimetre",
@@ -254,7 +254,7 @@ export default async function About({ params }: Props) {
         {
           id: "fondateur",
           question: "Who founded Axion-IA?",
-          answer: `Axion-IA was founded by ${FOUNDER.displayName}, its founder and CEO. His background and area of expertise — operational AI for businesses — are detailed on his dedicated founder page.`,
+          answer: `Axion-IA was founded by ${FOUNDER.fullName}, its founder and CEO. His background and area of expertise — operational AI for businesses — are detailed on his dedicated founder page.`,
         },
         {
           id: "perimetre",
@@ -558,7 +558,20 @@ export default async function About({ params }: Props) {
             // Photo réelle du fondateur sur la carte Will. Manon = persona
             // éditoriale IA (transparence AI Act art. 50) → aucun portrait
             // humain, avatar initiale conservé pour ne pas induire en erreur.
-            ...(m.id === "will" ? { photoUrl: "/illustrations/home-founder-william.avif" } : {}),
+            ...(m.id === "will"
+              ? {
+                  photoUrl: "/illustrations/home-founder-william.avif",
+                  // La fiche d'entité du fondateur n'est servie qu'en FR
+                  // (`/equipe/[slug]` → `notFound()` hors FR) : pas de lien en EN,
+                  // plutôt qu'un lien vers une page qui n'existe pas.
+                  ...(isFr
+                    ? {
+                        href: FOUNDER.pagePath,
+                        hrefLabel: `Le parcours de ${FOUNDER.displayName}`,
+                      }
+                    : {}),
+                }
+              : {}),
           }))}
         />
       </Section>
