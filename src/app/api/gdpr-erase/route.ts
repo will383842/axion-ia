@@ -193,33 +193,40 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Telegram alert non-bloquant
   }
 
-  return NextResponse.json({
-    ok: true,
-    erasedAt: new Date().toISOString(),
-    summary: {
-      submissionsAnonymized: submissionsResult.anonymized,
-      newsletterDeleted: newsletterResult.deleted,
-      kbBookmarksDeleted: kbResult.bookmarksDeleted,
-      chatConversationsDeleted: chatResult.conversationsDeleted,
-      chatEscalationsAnonymized: chatResult.escalationsAnonymized,
-      /** `ok` | `deferred` | `failed` — cf. `notice.retentionExceptions`. */
-      crm: crmResult.status,
+  // `D6-3-m1` — même geste que sur l'export, gravité moindre : cette réponse ne
+  // porte que des compteurs, pas de donnée brute. On l'aligne quand même : deux
+  // routes voisines qui traitent le même sujet ne doivent pas avoir deux
+  // politiques de cache, sinon la prochaine copie prendra la mauvaise.
+  return NextResponse.json(
+    {
+      ok: true,
+      erasedAt: new Date().toISOString(),
+      summary: {
+        submissionsAnonymized: submissionsResult.anonymized,
+        newsletterDeleted: newsletterResult.deleted,
+        kbBookmarksDeleted: kbResult.bookmarksDeleted,
+        chatConversationsDeleted: chatResult.conversationsDeleted,
+        chatEscalationsAnonymized: chatResult.escalationsAnonymized,
+        /** `ok` | `deferred` | `failed` — cf. `notice.retentionExceptions`. */
+        crm: crmResult.status,
+      },
+      notice: {
+        explanation:
+          "Vos données identifiantes ont été effacées ou anonymisées. Les lignes business (factures, audit comptable) sont conservées sous forme anonymisée conformément à l'art. 30 RGPD (legal hold).",
+        retentionExceptions: [
+          "Submissions : anonymisées in-place (audit business + facturation préservés sans PII).",
+          "ActivityLog : conservé (immuable, art. 30 RGPD register).",
+          "generation_logs / cost_ledger / web_vital_samples : logs techniques sans PII visiteur (purgés par retention-purge-worker).",
+          // Conservé au titre de l'art. 17(3)(e) : c'est la preuve exigée par
+          // l'art. 7(1). L'effacer reviendrait à détruire la démonstration que le
+          // traitement passé était licite — y compris celui qu'on vient d'effacer.
+          // Le registre ne contient AUCUNE adresse en clair, seulement une
+          // empreinte : il ne permet pas de retrouver la personne.
+          "consent_events : registre de preuve des consentements, conservé sous forme d'empreinte (art. 7(1) et 17(3)(e) RGPD).",
+        ],
+        contactDpo: "contact@axion-ia.com",
+      },
     },
-    notice: {
-      explanation:
-        "Vos données identifiantes ont été effacées ou anonymisées. Les lignes business (factures, audit comptable) sont conservées sous forme anonymisée conformément à l'art. 30 RGPD (legal hold).",
-      retentionExceptions: [
-        "Submissions : anonymisées in-place (audit business + facturation préservés sans PII).",
-        "ActivityLog : conservé (immuable, art. 30 RGPD register).",
-        "generation_logs / cost_ledger / web_vital_samples : logs techniques sans PII visiteur (purgés par retention-purge-worker).",
-        // Conservé au titre de l'art. 17(3)(e) : c'est la preuve exigée par
-        // l'art. 7(1). L'effacer reviendrait à détruire la démonstration que le
-        // traitement passé était licite — y compris celui qu'on vient d'effacer.
-        // Le registre ne contient AUCUNE adresse en clair, seulement une
-        // empreinte : il ne permet pas de retrouver la personne.
-        "consent_events : registre de preuve des consentements, conservé sous forme d'empreinte (art. 7(1) et 17(3)(e) RGPD).",
-      ],
-      contactDpo: "contact@axion-ia.com",
-    },
-  });
+    { headers: { "Cache-Control": "private, no-store" } },
+  );
 }

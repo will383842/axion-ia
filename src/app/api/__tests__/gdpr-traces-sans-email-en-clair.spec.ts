@@ -85,3 +85,26 @@ describe("`D5-5-05` — les traces RGPD ne portent pas l'e-mail en clair", () =>
     expect(fautif).toMatch(/(^|[\s{,])email\s*[,:]/);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// `D6-3-M1` (2026-08-20) — la réponse la plus sensible du dépôt ne se met en
+// cache nulle part
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("`D6-3-M1` — les réponses RGPD portent `private, no-store`", () => {
+  for (const route of ROUTES) {
+    const brut = sansCommentaires(readFileSync(route.chemin, "utf-8"));
+
+    it(`🔴 ${route.nom} : la réponse porte \`Cache-Control: private, no-store\``, () => {
+      expect(brut).toMatch(/Cache-Control"?\s*:\s*"private, no-store"/);
+    });
+  }
+
+  it("le témoin : la lecture SAIT distinguer une réponse sans en-tête", () => {
+    // 🔑 Non-vacuité. Sans ce témoin, une règle qui matcherait n'importe quoi
+    // rendrait les deux tests ci-dessus verts en permanence.
+    expect("return NextResponse.json({ ok: true });").not.toMatch(
+      /Cache-Control"?\s*:\s*"private, no-store"/,
+    );
+  });
+});

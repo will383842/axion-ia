@@ -13,8 +13,14 @@
  * consommer à la première signature le rendrait inutilisable dès le créneau
  * suivant. `usedAt` n'horodate donc que le PREMIER usage, à titre de trace.
  *
- * ⚠️ Ne PAS copier `PortailAcces`, qui stocke le jeton en clair : c'est de la
- * dette, pas un précédent.
+ * ⚠️ Ce commentaire affirmait jusqu'au 2026-08-20 que `PortailAcces` stockait
+ * son jeton EN CLAIR. C'est FAUX depuis le correctif `D4-4-A` du 2026-08-19 :
+ * ce modèle porte désormais `tokenHash`, comme celui-ci.
+ *
+ * 🔑 La doctrine du dépôt est donc SANS exception sur les jetons rejouables :
+ * on hache. Laisser traîner l'affirmation inverse fabriquait un précédent —
+ * « il en existe bien un en clair » — que le prochain contributeur aurait pu
+ * invoquer de bonne foi.
  *
  * Node runtime (accès Prisma). Stub-aware pour le build SSG.
  */

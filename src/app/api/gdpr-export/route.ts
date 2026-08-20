@@ -213,39 +213,56 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // migration de données.
   const submissionsLisibles = submissions.map((s) => decryptPiiObject(s));
 
-  return NextResponse.json({
-    ok: true,
-    exportedAt: new Date().toISOString(),
-    email,
-    submissions: submissionsLisibles,
-    newsletter,
-    kb,
-    chat,
-    consentEvents,
-    candidatures: candidatures.candidatures,
-    // ⚠️ Une recherche TRONQUÉE qui se présente comme complète est pire qu'une
-    // recherche refusée. Le repli déchiffrant est borné : s'il a mordu son
-    // plafond, la personne doit le savoir.
-    ...(candidatures.tronque
-      ? {
-          candidaturesAvertissement:
-            "La recherche des candidatures anciennes a atteint sa limite d'examen : cette liste peut être incomplète. Écrivez à contact@axion-ia.com pour une vérification manuelle.",
-        }
-      : {}),
-    // Volet CRM : soit son contenu (`status: "ok"`), soit la raison honnête
-    // pour laquelle il est absent. On ne présente JAMAIS un export amputé comme
-    // complet — c'est exactement le défaut qui rendait l'art. 15 muet avant.
-    crm,
-    notice: {
-      excludedTables: [
-        "generation_logs (audit trail technique content-gen, sans PII visiteur)",
-        "cost_ledger (montants USD provider IA, sans PII)",
-        "web_vital_samples (RUM agrégé, sessionId client anonyme)",
-        "content_gen_jobs (pipeline interne éditorial)",
-      ],
-      excludedReason:
-        "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence. Purgés automatiquement (cf. retention-purge-worker).",
-      contactDpo: "contact@axion-ia.com",
+  // 🔴 `D6-3-M1` (2026-08-20) — cette réponse ne portait AUCUN `Cache-Control`.
+  //
+  // C'est la plus sensible du dépôt : PII DÉCHIFFRÉES (nom, e-mail, téléphone,
+  // adresse), candidatures avec CV et photo, conversations, registre de
+  // consentement. Les routes qui servent des données bien moins sensibles —
+  // `admin/invoices/[id]/pdf`, `qualiopi/pieces/[id]/exemplaire-signe`,
+  // `qualiopi/sessions/[id]/emargement` — posent toutes `private, no-store`.
+  //
+  // ⚠️ L'exploitabilité immédiate est FAIBLE, et il faut le dire : une réponse à
+  // un `POST` n'est pas mise en cache par un intermédiaire standard sans opt-in.
+  // Le risque est ailleurs : un proxy d'entreprise mal réglé, le bfcache, ou
+  // une régression future qui passerait cette route en `GET`. Une défense en
+  // profondeur qui coûte une ligne se pose ; on ne la met pas en balance avec la
+  // probabilité du jour.
+  return NextResponse.json(
+    {
+      ok: true,
+      exportedAt: new Date().toISOString(),
+      email,
+      submissions: submissionsLisibles,
+      newsletter,
+      kb,
+      chat,
+      consentEvents,
+      candidatures: candidatures.candidatures,
+      // ⚠️ Une recherche TRONQUÉE qui se présente comme complète est pire qu'une
+      // recherche refusée. Le repli déchiffrant est borné : s'il a mordu son
+      // plafond, la personne doit le savoir.
+      ...(candidatures.tronque
+        ? {
+            candidaturesAvertissement:
+              "La recherche des candidatures anciennes a atteint sa limite d'examen : cette liste peut être incomplète. Écrivez à contact@axion-ia.com pour une vérification manuelle.",
+          }
+        : {}),
+      // Volet CRM : soit son contenu (`status: "ok"`), soit la raison honnête
+      // pour laquelle il est absent. On ne présente JAMAIS un export amputé comme
+      // complet — c'est exactement le défaut qui rendait l'art. 15 muet avant.
+      crm,
+      notice: {
+        excludedTables: [
+          "generation_logs (audit trail technique content-gen, sans PII visiteur)",
+          "cost_ledger (montants USD provider IA, sans PII)",
+          "web_vital_samples (RUM agrégé, sessionId client anonyme)",
+          "content_gen_jobs (pipeline interne éditorial)",
+        ],
+        excludedReason:
+          "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence. Purgés automatiquement (cf. retention-purge-worker).",
+        contactDpo: "contact@axion-ia.com",
+      },
     },
-  });
+    { headers: { "Cache-Control": "private, no-store" } },
+  );
 }
