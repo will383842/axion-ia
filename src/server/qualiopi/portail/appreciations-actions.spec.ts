@@ -24,6 +24,12 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
+  // 🔴 2026-08-20 — `requireAdminRead` MANQUAIT à ce mock, et les lectures
+  // n'etaient testees par personne : `listAppreciationsAction` aurait leve un
+  // `TypeError` des le premier appel. Un mock incomplet ne rougit pas, il rend
+  // `undefined` — c'est le meme piege qui avait rendu `portail-actions.spec.ts`
+  // vert pour une mauvaise raison le 2026-08-19.
+  requireAdminRead: vi.fn().mockResolvedValue({ userId: "admin-uuid-1" }),
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid-1" }),
   requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   // 🔴 F45 — `traiterDemandeRgpdAction` exige désormais `requireAdminPublish`
@@ -59,11 +65,16 @@ vi.mock("@/server/qualiopi/portail/rgpd-service", () => ({
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
+  requireAdminRead,
   requireAdminWrite,
   requireAdminPublish,
   logQualiopiActivity,
 } from "@/server/actions/qualiopi/_guards";
-import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-service";
+import {
+  creerAppreciation,
+  listAppreciations,
+  statsAppreciations,
+} from "@/server/qualiopi/portail/appreciation-service";
 import {
   exporterDonneesStagiaire,
   supprimerStagiaire,
@@ -72,6 +83,8 @@ import { prisma } from "@/lib/prisma";
 import {
   creerAppreciationAction,
   traiterDemandeRgpdAction,
+  listAppreciationsAction,
+  statsAppreciationsAction,
 } from "@/server/actions/qualiopi/appreciations";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -84,6 +97,9 @@ function mockCall<T>(fn: ReturnType<typeof vi.fn>, callIndex = 0): T {
   return call[0] as T;
 }
 
+const mockRequireAdminRead = requireAdminRead as ReturnType<typeof vi.fn>;
+const mockListAppreciations = listAppreciations as ReturnType<typeof vi.fn>;
+const mockStatsAppreciations = statsAppreciations as ReturnType<typeof vi.fn>;
 const mockRequireAdminWrite = requireAdminWrite as ReturnType<typeof vi.fn>;
 const mockRequireAdminPublish = requireAdminPublish as ReturnType<typeof vi.fn>;
 const mockLogActivity = logQualiopiActivity as ReturnType<typeof vi.fn>;
@@ -336,5 +352,94 @@ describe("traiterDemandeRgpdAction", () => {
       expect("error" in result).toBe(true);
       expect(mockPrisma.rgpdDemande.findUnique).not.toHaveBeenCalled();
     });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lectures — listAppreciationsAction / statsAppreciationsAction
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 2026-08-20. Ces deux fonctions etaient un `export { listAppreciations,
+// statsAppreciations }` dans un module `"use server"` — donc deux points
+// d'entree HTTP appelables SANS cookie et SANS session, et `listAppreciations`
+// n'a ni garde ni `limit` obligatoire : l'omettre rendait TOUTE la table
+// (verbatims nominatifs, `traineeId`, `clientId`).
+//
+// `tests/unit/ci/surface-server-actions.spec.ts` interdit desormais la FORME
+// (`export { … }` dans un module `"use server"`). Ces tests-ci gardent le
+// COMPORTEMENT : la garde est reellement appelee, et le plafond mord vraiment.
+// Une regle structurelle seule laisserait reintroduire une action nommee sans
+// garde.
+
+describe("listAppreciationsAction", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockListAppreciations.mockResolvedValue([]);
+  });
+
+  it("appelle requireAdminRead AVANT de lire", async () => {
+    await listAppreciationsAction({});
+
+    expect(mockRequireAdminRead).toHaveBeenCalledTimes(1);
+  });
+
+  it("ne lit RIEN si la garde refuse", async () => {
+    // Cas negatif. Sans lui, le test precedent prouve seulement que la garde
+    // est appelee — pas qu'elle protege quoi que ce soit.
+    mockRequireAdminRead.mockRejectedValueOnce(new Error("unauthorized"));
+
+    await expect(listAppreciationsAction({})).rejects.toThrow("unauthorized");
+    expect(mockListAppreciations).not.toHaveBeenCalled();
+  });
+
+  it("impose un plafond de 100 quand l'appelant omet `limit`", async () => {
+    // 🔴 C'EST LE DEFAUT D'ORIGINE : `limit` optionnelle = table entiere.
+    await listAppreciationsAction({});
+
+    expect(mockCall<{ limit: number }>(mockListAppreciations).limit).toBe(100);
+  });
+
+  it("PLAFONNE a 500 une demande superieure, au lieu de l'honorer", async () => {
+    // Le plafond est IMPOSE, pas « par defaut » : un appelant qui reclame
+    // 100 000 lignes en obtient 500, sans erreur et sans table entiere.
+    await listAppreciationsAction({ limit: 100_000 });
+
+    expect(mockCall<{ limit: number }>(mockListAppreciations).limit).toBe(500);
+  });
+
+  it("respecte une demande INFERIEURE au plafond", async () => {
+    // Temoin de non-vacuite du plafond : s'il ecrasait toujours a 500, les
+    // deux tests precedents passeraient aussi, et la valeur demandee serait
+    // ignoree en silence.
+    await listAppreciationsAction({ limit: 25 });
+
+    expect(mockCall<{ limit: number }>(mockListAppreciations).limit).toBe(25);
+  });
+
+  it("transmet les filtres de l'appelant", async () => {
+    await listAppreciationsAction({ source: "stagiaire", traineeId: TRAINEE_UUID });
+
+    const arg = mockCall<{ source: string; traineeId: string }>(mockListAppreciations);
+    expect(arg.source).toBe("stagiaire");
+    expect(arg.traineeId).toBe(TRAINEE_UUID);
+  });
+});
+
+describe("statsAppreciationsAction", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("appelle requireAdminRead AVANT de lire", async () => {
+    await statsAppreciationsAction();
+
+    expect(mockRequireAdminRead).toHaveBeenCalledTimes(1);
+  });
+
+  it("ne lit RIEN si la garde refuse", async () => {
+    mockRequireAdminRead.mockRejectedValueOnce(new Error("unauthorized"));
+
+    await expect(statsAppreciationsAction()).rejects.toThrow("unauthorized");
+    expect(mockStatsAppreciations).not.toHaveBeenCalled();
   });
 });

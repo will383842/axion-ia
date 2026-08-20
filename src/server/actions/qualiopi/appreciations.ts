@@ -19,6 +19,7 @@
 
 import { z } from "zod";
 import {
+  requireAdminRead,
   requireAdminWrite,
   requireAdminPublish,
   logQualiopiActivity,
@@ -27,6 +28,10 @@ import {
   creerAppreciation,
   listAppreciations,
   statsAppreciations,
+} from "@/server/qualiopi/portail/appreciation-service";
+import type {
+  AppreciationItem,
+  AppreciationListOptions,
 } from "@/server/qualiopi/portail/appreciation-service";
 import {
   exporterDonneesStagiaire,
@@ -177,7 +182,43 @@ export async function traiterDemandeRgpdAction(input: {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Ré-exports des services pour consommation directe par l'UI admin
+// Lectures — GARDÉES
 // ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 2026-08-19. Ces deux fonctions étaient ici en `export { listAppreciations,
+// statsAppreciations }` — un ré-export par spécificateur dans un module
+// `"use server"`.
+//
+// Next.js en fait des points d'entrée HTTP : un `POST` portant
+// `Next-Action: <id>` les appelait **sans cookie et sans session**. Et
+// `listAppreciations` n'a ni garde ni `limit` obligatoire — l'omettre rendait
+// TOUTE la table.
+//
+// Ce que cela livrait n'était pas anodin malgré un `select` d'apparence
+// technique : `commentaire` est composé par `satisfaction-service.ts` et porte
+// le **nom et la fonction du répondant** ainsi que son **verbatim libre**, où
+// figurent régulièrement des jugements nominatifs sur le formateur et des
+// mentions de besoin d'adaptation. Avec `traineeId` et `clientId` en regard.
+//
+// L'identifiant d'action n'est pas un secret : l'image de production est
+// poussée sur GHCR en visibilité publique.
+//
+// Elles deviennent donc des actions NOMMÉES et GARDÉES. La forme importe : une
+// action se relit, un ré-export ne ressemble pas à du code exécutable.
 
-export { listAppreciations, statsAppreciations };
+export async function listAppreciationsAction(
+  options: AppreciationListOptions = {},
+): Promise<AppreciationItem[]> {
+  await requireAdminRead();
+  // ⚠️ Plafond IMPOSÉ, et non « par défaut » : sans lui, un appelant qui omet
+  // `limit` rapatrie la table entière — ce qui était précisément le défaut.
+  const limit = Math.min(options.limit ?? 100, 500);
+  return listAppreciations({ ...options, limit });
+}
+
+export async function statsAppreciationsAction(): Promise<
+  Awaited<ReturnType<typeof statsAppreciations>>
+> {
+  await requireAdminRead();
+  return statsAppreciations();
+}
