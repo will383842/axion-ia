@@ -1,0 +1,15 @@
+-- `D8-1` — index sur `created_at` seul.
+--
+-- Trois requêtes filtrent cette table sur `created_at` uniquement (purge de
+-- rétention, moniteur Web Vitals 24 h, moniteur PSI 7 j). Les deux index
+-- existants commencent par `url` ou `page_type` : aucun ne peut les servir.
+--
+-- ⚠️ PAS de CONCURRENTLY, et c'est une contrainte, pas un choix : Prisma
+-- exécute chaque migration DANS UNE TRANSACTION, et `CREATE INDEX CONCURRENTLY`
+-- y est interdit (P3018 / 25001). Ce dépôt en porte déjà deux cicatrices.
+--
+-- Conséquence assumée : `CREATE INDEX` prend un verrou SHARE — les LECTURES
+-- passent, les INSERT de la balise RUM sont bloqués le temps de la
+-- construction. Sur cette table, un INSERT perdu est un échantillon de mesure
+-- perdu, pas une donnée métier.
+CREATE INDEX "web_vital_samples_createdAt_idx" ON "web_vital_samples"("createdAt");
