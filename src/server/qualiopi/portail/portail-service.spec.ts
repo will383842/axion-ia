@@ -4,6 +4,9 @@
  * Stratégie : mock @/lib/prisma + @/lib/pii-crypto.
  */
 
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -41,6 +44,10 @@ vi.mock("@/lib/r2-storage", () => ({
   isR2Configured: vi.fn().mockReturnValue(false),
   getSignedUrlR2: vi.fn().mockResolvedValue("https://r2.example.com/signed-fresh.pdf"),
   signedDocumentPdfUrl: vi.fn().mockResolvedValue(null),
+  // ⚠️ La constante doit figurer dans la fabrique du mock : un export manquant
+  // laisse la liaison à `undefined`, et le service signait alors pour une durée
+  // indéfinie sans que rien ne le signale.
+  TTL_LECTURE_NOMINATIVE_S: 15 * 60,
 }));
 
 import { prisma } from "@/lib/prisma";
@@ -121,6 +128,78 @@ describe("creerAcces", () => {
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+});
+
+describe("🔴 D4-4-A — le jeton du portail n'est JAMAIS stocké en clair", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  function sha256Hex(v: string): string {
+    return createHash("sha256").update(v, "utf8").digest("hex");
+  }
+
+  it("écrit un HASH en base, jamais le clair", async () => {
+    // Ce jeton EST le mot de passe du portail : il ouvre l'espace stagiaire —
+    // besoins d'adaptation, données de santé, pièces nominatives — et il vit
+    // 90 jours. Le stocker en clair fait d'une lecture de `portail_acces`
+    // (dump, sauvegarde, accès en lecture, injection SQL) une liste de
+    // sésames directement utilisables, pour tous les stagiaires à la fois.
+    //
+    // Les trois autres canaux de jeton du dépôt stockent déjà un SHA-256
+    // (`DocumentSignatureToken.tokenHash`, `EmargementToken`). Celui-ci était
+    // l'exception, et c'est le seul qui vaut une SESSION persistante.
+    mockPrisma.portailAcces.create.mockResolvedValue({
+      id: "acces-h1",
+      expiresAt: new Date(),
+    });
+
+    const { token } = await creerAcces("trainee-h");
+    const data = mockPrisma.portailAcces.create.mock.calls[0]![0].data as Record<string, unknown>;
+
+    expect(JSON.stringify(data)).not.toContain(token);
+    expect(data["tokenHash"]).toBe(sha256Hex(token));
+    expect(data["token"]).toBeUndefined();
+  });
+
+  it("rend le CLAIR à l'appelant — sinon le lien envoyé serait inutilisable", async () => {
+    // Témoin SYMÉTRIQUE, et le seul qui distingue le correctif de la panne.
+    // Hacher partout, retour compris, passerait le test précédent et enverrait
+    // à chaque stagiaire un lien portant un hash : 404 silencieux à l'ouverture,
+    // sans que rien ne le signale côté organisme.
+    mockPrisma.portailAcces.create.mockResolvedValue({
+      id: "acces-h2",
+      expiresAt: new Date(),
+    });
+
+    const { token } = await creerAcces("trainee-h2");
+
+    expect(token).toMatch(/^[0-9a-f]{64}$/);
+    const data = mockPrisma.portailAcces.create.mock.calls[0]![0].data as Record<string, unknown>;
+    expect(token).not.toBe(data["tokenHash"]);
+  });
+
+  it("verifierToken cherche par HASH — le clair ne sert plus de clé", async () => {
+    mockPrisma.portailAcces.findUnique.mockResolvedValue(null);
+    const clair = "d".repeat(64);
+
+    await verifierToken(clair);
+
+    expect(mockPrisma.portailAcces.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { tokenHash: sha256Hex(clair) } }),
+    );
+  });
+
+  it("le schéma Prisma ne déclare AUCUNE colonne de jeton en clair", () => {
+    // Garde de STRUCTURE : le correctif applicatif ne vaut rien si la colonne
+    // survit. Elle porterait les jetons de tous les accès émis avant la
+    // migration — c'est-à-dire exactement ceux qui sont encore valables.
+    const schema = readFileSync(path.join(process.cwd(), "prisma/schema.prisma"), "utf8");
+    const debut = schema.indexOf("model PortailAcces {");
+    expect(debut).toBeGreaterThan(-1);
+    const modele = schema.slice(debut, schema.indexOf("\n}", debut));
+    expect(modele).not.toBe("");
+    expect(modele).toMatch(/tokenHash\s+String\s+@unique/);
+    expect(modele).not.toMatch(/^\s*token\s+String/m);
   });
 });
 
@@ -333,9 +412,9 @@ describe("getEspaceStagiaire", () => {
     }
   });
 
-  // ── S1 : URL signée régénérée (24 h) ──────────────────────────────────────
+  // ── S1 : URL signée régénérée à CHAQUE lecture ────────────────────────────
 
-  it("S1 : régénère une URL signée fraîche (24 h) si R2 configuré", async () => {
+  it("S1 : régénère une URL signée fraîche si R2 configuré", async () => {
     mockSignedDocumentPdfUrl.mockResolvedValue("https://r2.example.com/signed-fresh.pdf");
     mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
 
@@ -374,8 +453,31 @@ describe("getEspaceStagiaire", () => {
         numero: "AXI-ATT-2025-042",
         createdAt: new Date("2025-11-15T09:00:00Z"),
       }),
-      86400,
+      15 * 60,
     );
+  });
+
+  it("🔴 ne signe PAS une pièce nominative pour la journée", async () => {
+    // 🔴 2026-08-19 (`D4-4-C`). Ce test-ci exigeait `86400` — il ENTÉRINAIT le
+    // défaut : la garde figeait la mauvaise valeur, et corriger le service
+    // faisait rougir la suite. Une garde qui rend le correctif douloureux
+    // finit par être « ajustée » plutôt que relue.
+    //
+    // Une URL pré-signée ne traverse aucune session : qui la détient lit la
+    // pièce. Vingt-quatre heures de droit de lecture ANONYME sur un document
+    // nominatif, pour un lien cliqué dans la minute qui suit son affichage.
+    //
+    // Le seuil est posé LARGE (une heure) exprès : il n'impose pas une valeur,
+    // il interdit de dériver vers la journée sans que personne ne le voie.
+    mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
+
+    await getEspaceStagiaire("trainee-s1c");
+
+    const durees = mockSignedDocumentPdfUrl.mock.calls.map((appel) => appel[1] as number);
+    expect(durees.length).toBeGreaterThan(0);
+    for (const duree of durees) {
+      expect(duree).toBeLessThanOrEqual(3600);
+    }
   });
 
   it("S1 : fallback vers pdfUrl DB si R2 non configuré", async () => {
@@ -422,7 +524,7 @@ describe("getEspaceStagiaire", () => {
   //
   // 🔴 En inter-entreprises les inscrits sont des concurrents (même doctrine que
   // `emargement/portail-queries.ts`). La convocation porte le nom et l'employeur
-  // d'UNE personne ; sa `pdfUrl` est re-signée 24 h à chaque lecture, donc ce qui
+  // d'UNE personne ; sa `pdfUrl` est re-signée à chaque lecture, donc ce qui
   // s'affiche se télécharge réellement.
   //
   // ⚠️ Ces tests laissent le MOCK rejouer le `where` que le service passe à

@@ -99,17 +99,15 @@ async function getLienEmargementSiPremier(
 async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promise<string> {
   const fallback = `${baseUrl}/fr/portail/mon-espace`;
   try {
-    // Recherche un accès valide existant (non-révoqué, non-expiré)
-    const acces = await prisma.portailAcces.findFirst({
-      where: {
-        traineeId,
-        revoked: false,
-        expiresAt: { gt: new Date() },
-      },
-      orderBy: { expiresAt: "desc" },
-      select: { token: true },
-    });
-    const token = acces?.token ?? (await creerAcces(traineeId)).token;
+    // 🔴 2026-08-19 (`D4-4-A`) — cette fonction relisait le jeton d'un accès
+    // encore valide pour reconstruire le lien. Ce n'est plus possible, et ce
+    // n'était pas souhaitable : `portail_acces` ne stocke plus qu'un SHA-256.
+    //
+    // Émettre un accès neuf par envoi est d'ailleurs le meilleur des deux
+    // comportements. Avec le recyclage, un SEUL e-mail intercepté valait un
+    // accès permanent, et révoquer cet accès coupait d'un coup tous les liens
+    // déjà envoyés au même stagiaire. Un accès par envoi se révoque isolément.
+    const { token } = await creerAcces(traineeId);
     return `${baseUrl}/fr/portail/acces/${token}`;
   } catch {
     return fallback;
@@ -205,7 +203,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
     );
   }
 
-  await enqueueEmail(
+  const envoi = await enqueueEmail(
     "qualiopi-convocation",
     trainee.email,
     "fr",
@@ -228,9 +226,38 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
   );
 
   // 🔴 ÉTAT, et non fenêtre de date. C'est cette colonne qui rend le cron
-  // rattrapant : tant qu'elle est nulle, l'inscription reste candidate. Posée
-  // APRÈS l'enqueue — poser avant ferait mentir la colonne si la file est
-  // indisponible, et le rattrapage ne reviendrait jamais.
+  // rattrapant : tant qu'elle est nulle, l'inscription reste candidate.
+  //
+  // 🔴 2026-08-19 (constat `D5-3-01`) — la valeur de retour d'`enqueueEmail`
+  // N'ÉTAIT PAS LUE, et la date était posée quoi qu'il arrive.
+  //
+  // Le commentaire d'origine disait l'intention juste — « posée APRÈS l'enqueue,
+  // poser avant ferait mentir la colonne si la file est indisponible » — et se
+  // trompait sur le MÉCANISME : il supposait que l'échec lèverait. Or
+  // `enqueueEmail` ne lève pas, elle RETOURNE `{ enqueued: false }`
+  // (`queues.ts:742`) quand la file est absente, et
+  // `{ enqueued: false, garePourValidation: true }` (`:768`) quand une règle
+  // `EmailAutomationSetting` gare l'envoi en corbeille.
+  //
+  // Dans les deux cas, poser la date écarte l'inscription DÉFINITIVEMENT du
+  // rattrapage : le stagiaire ne reçoit rien, la base affirme le contraire, et
+  // l'indicateur 9 repose sur un horodatage qui atteste d'un geste jamais
+  // accompli. C'est la reconstitution littérale de l'incident « aucune
+  // convocation jamais envoyée en production ».
+  //
+  // ⚠️ `garePourValidation` compte comme NON ENVOYÉ. L'e-mail partira peut-être,
+  // après approbation humaine — mais il n'est pas parti. Le cron doit rester en
+  // mesure de le reprendre.
+  if (!envoi.enqueued) {
+    console.error(
+      `[convocation] NON ENVOYÉE — inscription ${enrollmentId} laissée candidate au rattrapage` +
+        (envoi.garePourValidation === true
+          ? " (e-mail garé en corbeille de validation)"
+          : " (file de messages indisponible)"),
+    );
+    return;
+  }
+
   await prisma.enrollment.update({
     where: { id: enrollmentId },
     data: { convocationEnvoyeeAt: new Date() },

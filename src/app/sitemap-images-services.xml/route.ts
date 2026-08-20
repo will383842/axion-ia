@@ -27,7 +27,30 @@ import { PAGE_IMAGES_MANIFEST } from "@/lib/seo/page-images";
 import { SITEMAP_CACHE_HEADER } from "@/server/image-bank/constants";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
-export const dynamic = "force-static";
+// 🔴 2026-08-19 — était `dynamic = "force-static"` (constat `P3-01`).
+//
+// Ce sitemap gate sur `isQualiopiCertificationObtenue()`, un drapeau
+// d'EXÉCUTION. Figé au build, il retenait la valeur de la variable de dépôt
+// GitHub Actions — `true` depuis le 2026-08-10 — et non celle du conteneur.
+// Le gate posé par la PR n°739 était donc INERTE : le `curl` de recette du
+// 2026-08-19 a montré 19 lignes « Qualiopi » toujours poussées à Google Images,
+// après déploiement.
+//
+// `revalidate = 3600` plutôt que `force-dynamic` : ce module ne touche ni la
+// base ni Redis (il lit un manifeste statique) et la réponse porte déjà
+// `SITEMAP_CACHE_HEADER` (max-age 3600) avec Cloudflare devant — le coût est
+// donc nul en pratique, et le drapeau suit désormais le conteneur, comme les
+// pages `/certification-qualiopi` et `/financement-opco-france-travail`
+// (toutes deux en `revalidate = 3600`).
+//
+// ⚠️ Conséquence à connaître : après un changement de drapeau côté Coolify, ce
+// sitemap suit sous 1 h — pas immédiatement. C'est le même délai que les pages
+// qu'il accompagne, donc cohérent ; ce n'est plus « jamais ».
+//
+// 🔑 Gardé par `tests/unit/ci/drapeau-runtime-jamais-fige-au-build.spec.ts`,
+// qui interdit désormais la combinaison « lit un drapeau d'exécution » +
+// « figé au build » sur TOUTE route, pas seulement celle-ci.
+export const revalidate = 3600;
 
 // 🔴 2026-08-19 — LA FUITE QUI N'APPARAÎT DANS AUCUN `curl` DE PAGE.
 //
@@ -51,11 +74,24 @@ export const dynamic = "force-static";
 // l'indexation. Les libellés restent donc intacts et redeviendront exacts le
 // jour de la certification.
 //
-// ⚠️ Route `force-static` : la valeur est figée AU BUILD. C'est cohérent avec la
-// page `/certification-qualiopi` (SSG, même drapeau) — l'obtention du certificat
-// suppose de toute façon un redéploiement pour renseigner numéro, date et
-// certificateur. Défaut sécurisé côté build GH Actions : le drapeau est absent,
-// donc `false`, donc le bloc n'est pas émis.
+// 🔴 CE COMMENTAIRE ÉTAIT FAUX, et sa fausseté a coûté un déploiement inutile.
+//
+// Il affirmait : « Route `force-static` : la valeur est figée AU BUILD. […]
+// Défaut sécurisé côté build GH Actions : le drapeau est absent, donc `false`,
+// donc le bloc n'est pas émis. »
+//
+// Le drapeau n'était PAS absent. `gh variable list` montre
+// `QUALIOPI_CERTIFICATION_OBTENUE = true`, variable de dépôt GitHub Actions
+// posée le 2026-08-10 et injectée en build-arg par `deploy-coolify.yml`. Le
+// build retenait donc `true`, et ce gate n'a jamais rien filtré — vérifié au
+// `curl` sur la production le 2026-08-19, après déploiement.
+//
+// 🔑 Ce qui rend ce commentaire plus nuisible qu'une absence de commentaire :
+// il présentait le défaut comme une PROTECTION. C'est ce qui a fait valider le
+// correctif sans le mesurer.
+//
+// La route est désormais en `revalidate = 3600` (cf. en-tête) : le drapeau est
+// relu au runtime, donc le geste côté Coolify produit son effet sous 1 h.
 const PAGES_RESERVEES_AUX_CERTIFIES = new Set(["/certification-qualiopi"]);
 
 // GEO-037 (audit GEO/AEO 2026-08-14) — cette licence n'est déclarée QUE sur les

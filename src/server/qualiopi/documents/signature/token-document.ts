@@ -60,6 +60,29 @@ import type { DocumentPartieSignataire } from "../../../../../prisma/generated/c
  */
 export const PLANCHER_VALIDITE_MS = 48 * 60 * 60 * 1000;
 
+/**
+ * Plafond de validité d'un lien, en millisecondes.
+ *
+ * 🔴 2026-08-19, constat `D94-01`. Il n'y en avait AUCUN, et le seul appelant
+ * contractuel passait en borne métier `piece.suppressionPrevueAt` — la
+ * RÉTENTION de la pièce, `maintenant + DOCUMENT_RETENTION_YEARS`, soit CINQ
+ * ANS. Un lien de signature de convention vivait donc cinq ans.
+ *
+ * ⚠️ Le code croyait le contraire, et le disait : « `creerTokenDocument`
+ * applique de toute façon le plafond de scope (90 j) via `signMagicToken` ».
+ * Or `TTL_MS.document_signature` est un DÉFAUT (`input.ttlMs ?? TTL_MS[scope]`),
+ * écrasé dès qu'un `ttlMs` est fourni — ce que `creerTokenDocument` fait
+ * toujours. Le garde-fou nommé dans le commentaire n'a jamais été atteint.
+ *
+ * Une durée de vie de lien est une durée d'EXPOSITION, pas une durée de
+ * conservation : l'URL vaut signature, et elle survit dans une boîte revendue,
+ * un transfert, une sauvegarde, un poste d'ancien salarié. On retient 90 j —
+ * la valeur que le code croyait déjà appliquer, donc sans surprise pour
+ * personne. Au-delà, on ré-émet : c'est un geste d'une seconde, et il produit
+ * une trace.
+ */
+export const PLAFOND_VALIDITE_MS = 90 * 24 * 60 * 60 * 1000;
+
 /** Motifs de refus à l'ÉMISSION — tous devant l'admin, qui peut corriger. */
 export type MotifRefusEmissionDocument =
   /** Identité du signataire absente de la fiche : la signature serait anonyme. */
@@ -117,9 +140,15 @@ async function sha256Hex(input: string): Promise<string> {
  * n'aurait aucun sens commercial, et laisser le lien vivre au-delà reviendrait à
  * tenir une offre ferme indéfiniment. Le plancher garantit qu'un lien émis reste
  * utilisable même si cette borne est déjà proche ou dépassée.
+ *
+ * ⚠️ L'ordre des deux bornes n'est pas indifférent : le plancher s'applique
+ * D'ABORD, le plafond ENSUITE. Un devis périmé rend donc 48 h — et non 90 j,
+ * ce qui rallongerait la vie du lien au motif qu'il est trop court.
  */
 export function calculerExpirationDocument(borneMetier: Date, maintenant: Date): Date {
-  return new Date(Math.max(borneMetier.getTime(), maintenant.getTime() + PLANCHER_VALIDITE_MS));
+  const plancher = maintenant.getTime() + PLANCHER_VALIDITE_MS;
+  const plafond = maintenant.getTime() + PLAFOND_VALIDITE_MS;
+  return new Date(Math.min(Math.max(borneMetier.getTime(), plancher), plafond));
 }
 
 function nettoyer(valeur: string | null | undefined): string | null {

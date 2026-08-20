@@ -355,8 +355,15 @@ export async function emettreLienSignatureAction(
       signataireQualite: resolution.identite.qualite,
       // ⚠️ Borne métier : la rétention de la pièce. Une pièce contractuelle n'a
       // pas de « date de validité » comme un devis — mais un lien éternel sur un
-      // engagement n'a pas de sens non plus. `creerTokenDocument` applique de
-      // toute façon le plafond de scope (90 j) via `signMagicToken`.
+      // engagement n'a pas de sens non plus.
+      //
+      // 🔴 2026-08-19 (`D94-01`) — ces lignes affirmaient que « `creerTokenDocument`
+      // applique de toute façon le plafond de scope (90 j) via `signMagicToken` ».
+      // C'était FAUX : ce 90 j est un DÉFAUT, écrasé par le `ttlMs` que
+      // `creerTokenDocument` passe TOUJOURS. `suppressionPrevueAt` valant
+      // `maintenant + 5 ans`, le lien vivait CINQ ANS. Le plafond existe
+      // désormais pour de bon dans `calculerExpirationDocument` — mais on ne
+      // compte plus dessus en silence : il est nommé ici.
       borneMetier: piece.suppressionPrevueAt,
       createdIpHash: hashIp(ipBrute),
     });

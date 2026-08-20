@@ -1110,4 +1110,7 @@ export async function genererReleveConnexionDocumentAction(input: {
 }
 
 // Export utilitaire exposé pour les tests.
-export { formatMinutesToHHhMM };
+// 🔴 2026-08-19 — ré-export RETIRÉ. `formatMinutesToHHhMM` est SYNCHRONE :
+// dans un module `"use server"`, Turbopack la transforme en Server Reference et
+// produit le `ReferenceError` déjà documenté dans `_guards.ts`. Elle n'avait
+// aucun consommateur — importer depuis `@/server/qualiopi/presence/time`.

@@ -127,13 +127,24 @@ export async function uploadToR2(
 
 /**
  * Génère une URL signée temporaire (download direct par le client) pour un
- * objet R2. Par défaut TTL 90 jours — adapté pour les factures qui restent
- * accessibles ~3 mois après émission, puis signature renouvelée à la demande
- * via /api/admin/invoices/[id]/pdf qui retourne une nouvelle URL signed.
+ * objet R2.
+ *
+ * 🔴 2026-08-19 (`D4-4-C`) — la durée de vie était OPTIONNELLE, et son défaut
+ * valait **90 jours**. Une URL pré-signée ne traverse aucune session, aucun
+ * jeton, aucun contrôle de rôle : qui la détient lit le fichier. Un appelant
+ * qui omettait la durée publiait donc un droit de lecture anonyme d'un
+ * trimestre, sans rien voir passer.
+ *
+ * Ce n'est pas resté théorique : `api/admin/invoices/[id]/pdf` omettait
+ * l'argument et PERSISTE le résultat dans `Invoice.pdfUrl` — un lien porteur de
+ * 90 jours rangé dans une colonne.
+ *
+ * Le paramètre est donc obligatoire. Une durée d'URL pré-signée est une durée
+ * d'EXPOSITION : elle se décide, elle ne s'hérite pas.
  */
 export async function getSignedUrlR2(
   key: string,
-  expiresInSeconds: number = 90 * 24 * 3600,
+  expiresInSeconds: number,
   options?: {
     /**
      * Comment le navigateur doit traiter l'objet, et sous quel nom.
@@ -228,6 +239,19 @@ export function invoicePdfKey(invoiceNumber: string, issuedAt: Date): string {
   const year = issuedAt.getUTCFullYear();
   return `invoices/${year}/${invoiceNumber}.pdf`;
 }
+
+/**
+ * Durée de vie d'une URL de lecture sur une pièce NOMINATIVE.
+ *
+ * Ces URL sont rendues au moment où quelqu'un regarde déjà la page : elles
+ * n'ont besoin que de survivre au clic. Elles atterrissent ensuite dans
+ * l'historique du navigateur, les en-têtes `Referer`, les journaux de proxy
+ * d'entreprise, et les transferts que fait le destinataire lui-même.
+ *
+ * ⚠️ Constante partagée — et non recopiée sur chaque surface. Une valeur
+ * dupliquée avec la meilleure intention ne signale jamais qu'elle a divergé.
+ */
+export const TTL_LECTURE_NOMINATIVE_S = 15 * 60;
 
 /**
  * Construit la clé canonique du PDF d'un `DocumentGenere` :

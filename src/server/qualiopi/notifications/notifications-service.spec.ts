@@ -181,6 +181,69 @@ describe("envoyerConvocation", () => {
     mockPrisma.enrollment.update.mockResolvedValue({});
   });
 
+  it("🔴 file INDISPONIBLE : `convocationEnvoyeeAt` n'est PAS posée", async () => {
+    // Constat `D5-3-01`. C'est la reconstitution littérale de l'incident
+    // « aucune convocation jamais envoyée en production ».
+    //
+    // `enqueueEmail` ne LÈVE pas quand la file est absente : elle RETOURNE
+    // `{ enqueued: false }` (queues.ts:742). Cette valeur n'était pas lue, et
+    // `convocationEnvoyeeAt` était posée quoi qu'il arrive.
+    //
+    // Or c'est précisément cette colonne qui rend le cron rattrapant : tant
+    // qu'elle est nulle, l'inscription reste candidate. La poser sans envoi
+    // écarte donc l'inscription DÉFINITIVEMENT — le stagiaire ne reçoit rien,
+    // la base affirme le contraire, et l'indicateur 9 repose sur un horodatage
+    // qui atteste d'un geste jamais accompli.
+    //
+    // ⚠️ Le commentaire du code disait l'intention JUSTE — « posée APRÈS
+    // l'enqueue, poser avant ferait mentir la colonne si la file est
+    // indisponible » — et se trompait sur le MÉCANISME : il supposait que
+    // l'échec lèverait.
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    mockEnqueueEmail.mockResolvedValueOnce({ enqueued: false });
+
+    await envoyerConvocation(ENROLLMENT_ID);
+
+    expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
+  });
+
+  it("🔴 e-mail GARÉ en validation : `convocationEnvoyeeAt` n'est PAS posée non plus", async () => {
+    // Second chemin, plus insidieux : si une règle `EmailAutomationSetting`
+    // nomme `qualiopi-convocation` en mode validation, l'e-mail part en
+    // corbeille et `enqueueEmail` rend `{ enqueued: false,
+    // garePourValidation: true }` (queues.ts:768).
+    //
+    // Il PARTIRA peut-être — après approbation humaine. Mais il n'est pas parti.
+    // Poser la date maintenant ferait exactement la même chose : écarter
+    // l'inscription du rattrapage sur la foi d'un envoi qui n'a pas eu lieu.
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    mockEnqueueEmail.mockResolvedValueOnce({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "outbox-1",
+    });
+
+    await envoyerConvocation(ENROLLMENT_ID);
+
+    expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
+  });
+
+  it("mise en file RÉUSSIE : la date est bien posée", async () => {
+    // Témoin discriminant. Sans lui, une fonction qui ne poserait JAMAIS la date
+    // passerait les deux tests ci-dessus — et le cron réenverrait la convocation
+    // tous les jours, ce qui est le défaut symétrique.
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    mockEnqueueEmail.mockResolvedValueOnce({ enqueued: true });
+
+    await envoyerConvocation(ENROLLMENT_ID);
+
+    expect(mockPrisma.enrollment.update).toHaveBeenCalledOnce();
+    const arg = mockPrisma.enrollment.update.mock.calls[0]![0] as {
+      data: { convocationEnvoyeeAt?: Date };
+    };
+    expect(arg.data.convocationEnvoyeeAt).toBeInstanceOf(Date);
+  });
+
   it("enqueue le bon template avec jobId stable", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
     await envoyerConvocation(ENROLLMENT_ID);

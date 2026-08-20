@@ -173,7 +173,15 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
           hashSha256: result.hashSha256,
         });
       }
-      pdfStorageUrl = await getSignedUrlR2(key);
+      // ⚠️ 90 jours, et c'est DÉLIBÉRÉ ici — contrairement au portail stagiaire
+      // (`D4-4-C`). Cette URL est persistée dans `Invoice.pdfUrl` et sert de
+      // lien de facture au client pendant le trimestre qui suit l'émission.
+      //
+      // La durée était auparavant HÉRITÉE d'un défaut de signature, ce qui
+      // revenait au même sans que personne l'ait décidé. Elle est désormais
+      // écrite : une facture n'est pas une pièce nominative de stagiaire, et
+      // ce choix se relit.
+      pdfStorageUrl = await getSignedUrlR2(key, 90 * 24 * 3600);
     } catch (err) {
       console.warn("[invoice-pdf] R2 upload/sign failed (fail-soft)", err);
     }

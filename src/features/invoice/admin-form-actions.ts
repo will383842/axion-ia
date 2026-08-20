@@ -12,8 +12,6 @@ export interface InvoiceFormState {
   message?: string;
 }
 
-const INITIAL: InvoiceFormState = { ok: false };
-
 export async function markPaidManualFormAction(
   _prev: InvoiceFormState,
   formData: FormData,
@@ -73,4 +71,12 @@ export async function issueCreditNoteFormAction(
   return { ok: false, error: result.error };
 }
 
-export { INITIAL as INVOICE_FORM_INITIAL };
+// 🔴 2026-08-19 — `export { INITIAL as INVOICE_FORM_INITIAL }` RETIRÉ, et la
+// constante `INITIAL` avec lui.
+//
+// Une CONSTANTE exportée d'un module `"use server"` n'est pas une action, et
+// Next.js la traite pourtant comme un point d'entrée HTTP. Aucun consommateur
+// ne l'importait — le formulaire client écrit son propre état initial —, si
+// bien que `INITIAL` n'existait plus que pour être ré-exportée : la déclarer
+// non exportée aurait juste déplacé le code mort. C'est `eslint` qui l'a dit,
+// pas la relecture.

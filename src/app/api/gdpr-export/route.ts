@@ -55,7 +55,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { email, token } = parsed.data;
 
   // Rate limit 3/jour/email pour empêcher abus token re-use
-  const rl = await checkRateLimit(`gdpr:export:${email}`, { limit: 3, windowSec: 86_400 });
+  const rl = await checkRateLimit(`gdpr:export:${email}`, {
+    limit: 3,
+    windowSec: 86_400,
+    surPanne: "refuser",
+  });
   if (!rl.allowed) {
     return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
   }

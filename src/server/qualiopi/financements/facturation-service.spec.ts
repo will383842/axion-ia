@@ -85,6 +85,11 @@ function makeSession(overrides: Record<string, unknown> = {}) {
     dureeReelleHeures: 7,
     nbParticipantsReels: 5,
     nbParticipantsPrevus: 6,
+    // ⚠️ Défaut VIDE, et c'est délibéré : la fabrique pose `nbParticipantsReels`,
+    // qui prime — les inscriptions ne servent qu'au repli. Les tests qui veulent
+    // éprouver le repli (constat `CONF-03`) posent explicitement
+    // `nbParticipantsReels: null` ET leurs inscriptions.
+    enrollments: [] as Array<{ statut: string; tauxPresencePct: number | null }>,
     modalite: "presentiel" as const,
     // Barème prise en charge (T18) : barème valide par défaut pour les tests horaire
     priseEnChargeMontantCents: 4000, // 40 €/h
@@ -407,6 +412,98 @@ describe("genererFactureFormation", () => {
     expect(createArg.data["tvaExoneree"]).toBe(false); // régime assujetti par défaut
     expect(createArg.data["montantTvaCents"]).toBe(28_000); // 20 % de 140 000
     expect(createArg.data["statut"]).toBe("emise");
+  });
+
+  it("🔴 ventilation horaire : facture les PRÉSENTS, pas les PRÉVUS (l'état réel de la prod)", async () => {
+    // Constat `CONF-03` / `D9-3-01` (audit E2E 2026-08-19). Le calcul faisait
+    // `nbParticipantsReels ?? nbParticipantsPrevus`. Or `nbParticipantsReels`
+    // n'a AUCUN écrivain dans le code applicatif : la colonne est toujours
+    // `null` en production, donc la facture adressée à l'OPCO portait
+    // TOUJOURS le nombre de participants PRÉVUS.
+    //
+    // Session prévue à 6, trois personnes viennent → la demande de prise en
+    // charge réclamait le montant de 6. C'est un indu au contrôle de service
+    // fait, sur une pièce comptable numérotée et adressée à un financeur.
+    //
+    // ⚠️ La fabrique de cette suite pose `nbParticipantsReels: 5` : toute la
+    // suite testait un état que la production n'atteint jamais.
+    mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue(
+      makeSession({
+        nbParticipantsReels: null,
+        nbParticipantsPrevus: 6,
+        enrollments: [
+          { statut: "presente", tauxPresencePct: 100 },
+          { statut: "presente", tauxPresencePct: 85 },
+          { statut: "presente", tauxPresencePct: 40 },
+          // Ces deux-là ne sont jamais venus : ils ne se facturent pas.
+          { statut: "abandon", tauxPresencePct: null },
+          { statut: "planifiee", tauxPresencePct: null },
+        ],
+      }),
+    );
+
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "horaire",
+    });
+
+    const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    // 7 h × 4000 cts/h = 28 000 par participant × 3 PRÉSENTS = 84 000
+    // (et non × 6 prévus = 168 000, ce que la facture réclamait avant.)
+    expect(createArg.data["montantHtCents"]).toBe(84_000);
+  });
+
+  it("ventilation horaire : `nbParticipantsReels` renseigné PRIME sur les inscriptions", async () => {
+    // Témoin discriminant. Une constatation humaine explicite fait foi contre le
+    // décompte automatique — sans quoi le correctif écraserait une saisie
+    // délibérée, et la garde au-dessus passerait pour de mauvaises raisons.
+    mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue(
+      makeSession({
+        nbParticipantsReels: 2,
+        nbParticipantsPrevus: 6,
+        enrollments: [
+          { statut: "presente", tauxPresencePct: 100 },
+          { statut: "presente", tauxPresencePct: 100 },
+          { statut: "presente", tauxPresencePct: 100 },
+        ],
+      }),
+    );
+
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "horaire",
+    });
+
+    const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(createArg.data["montantHtCents"]).toBe(56_000); // 2 constatés, pas 3 présents
+  });
+
+  it("🔴 ventilation horaire : REFUSE de facturer quand personne n'est venu", async () => {
+    // Sans ce refus, l'effectif retomberait à 0 et la facture partirait à 0 € —
+    // ou pire, le repli sur les prévus reviendrait par une autre porte. Une
+    // session que personne n'a suivie n'est pas une session à facturer à
+    // l'heure : c'est un dossier à instruire.
+    mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue(
+      makeSession({
+        nbParticipantsReels: null,
+        nbParticipantsPrevus: 6,
+        enrollments: [{ statut: "abandon", tauxPresencePct: null }],
+      }),
+    );
+
+    await expect(
+      genererFactureFormation({
+        sessionId: "sess-uuid-1",
+        destinataire: "entreprise",
+        ventilation: "horaire",
+      }),
+    ).rejects.toThrow(/présence/i);
   });
 
   it("ventilation horaire : lève si priseEnChargeMontantCents=null (barème absent)", async () => {

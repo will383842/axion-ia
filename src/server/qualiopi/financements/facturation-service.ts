@@ -95,6 +95,11 @@ export async function genererFactureFormation(
     include: {
       formation: true,
       client: true,
+      // 🔴 Ajouté le 2026-08-19 (constat `CONF-03` / `D9-3-01`). Sans les
+      // inscriptions, la ventilation horaire n'avait aucun moyen de connaître
+      // l'effectif RÉEL et retombait sur `nbParticipantsPrevus` — c'est-à-dire
+      // qu'elle facturait au financeur des personnes qui n'étaient jamais venues.
+      enrollments: { select: { statut: true, tauxPresencePct: true } },
     },
   });
 
@@ -110,7 +115,30 @@ export async function genererFactureFormation(
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const dureeHeures =
     session.dureeReelleHeures ?? formationDoc.dureeHeures ?? session.formation.dureeHeures;
-  const nbParticipants = session.nbParticipantsReels ?? session.nbParticipantsPrevus;
+  // 🔴 `CONF-03` / `D9-3-01` (2026-08-19) — le repli était `nbParticipantsPrevus`.
+  // Or `nbParticipantsReels` n'a AUCUN écrivain dans le code applicatif : la
+  // colonne est toujours `null` en production, donc la facture adressée à l'OPCO
+  // portait TOUJOURS les participants PRÉVUS. Session prévue à 8, trois présents :
+  // la demande de prise en charge réclamait le montant de 8. C'est un indu au
+  // contrôle de service fait, sur une pièce comptable numérotée.
+  //
+  // Le repli est désormais l'effectif CONSTATÉ. « Constaté » = statut `presente`
+  // OU un taux de présence non nul : les deux témoignent d'une venue, et se
+  // contenter du statut manquerait les dossiers où seul le taux a été calculé.
+  //
+  // ⚠️ Une constatation humaine explicite (`nbParticipantsReels`) garde la
+  // priorité : le repli ne l'écrase jamais.
+  //
+  // ⚠️ APPROXIMATION ASSUMÉE, et il faut la connaître : la formule facture
+  // `durée × participants`, donc un stagiaire venu à 40 % est compté comme un
+  // participant PLEIN. On cesse de facturer des absents — on ne facture pas
+  // encore les heures réellement suivies stagiaire par stagiaire. Passer à ce
+  // modèle est un changement de méthode de facturation, pas une correction de
+  // défaut : à trancher avec Will, pas au détour d'un correctif.
+  const participantsConstates = session.enrollments.filter(
+    (e) => e.statut === "presente" || (e.tauxPresencePct ?? 0) > 0,
+  ).length;
+  const nbParticipants = session.nbParticipantsReels ?? participantsConstates;
 
   let lignes: Array<{ designation: string; quantite: number; prixUnitaireHtCents: number }>;
   let totalHtCents: number;
@@ -121,6 +149,20 @@ export async function genererFactureFormation(
     if (session.priseEnChargeMontantCents == null || session.priseEnChargeUnite == null) {
       throw new Error(
         "Barème de prise en charge non renseigné sur le dossier — à relever sur le portail OPCO de la branche du client.",
+      );
+    }
+    // 🔴 Refus DUR quand personne n'est venu (`CONF-03`). Sans lui, l'effectif
+    // constaté tombe à 0 et la facture partirait à 0 € — ou pire, quelqu'un
+    // rétablirait le repli sur les prévus « pour que ça marche », ramenant
+    // exactement le défaut qu'on ferme ici.
+    //
+    // Une session que personne n'a suivie n'est pas une session à facturer à
+    // l'heure : c'est un dossier à instruire. Le message dit quoi faire plutôt
+    // que ce qui manque — un refus qui n'indique pas la sortie se contourne.
+    if (nbParticipants === 0) {
+      throw new Error(
+        "Ventilation horaire impossible : aucune présence constatée sur cette session. " +
+          "Renseignez l'émargement (ou le relevé de connexion), ou facturez au forfait si la prestation est due malgré l'absence.",
       );
     }
     const result = computeVentilationDossier({
