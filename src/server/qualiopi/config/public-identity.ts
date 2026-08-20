@@ -29,6 +29,7 @@ import {
   isQualiopiCertificationObtenue,
 } from "@/server/qualiopi/config/flag";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { CATEGORIES_CERTIFIEES_REPLI } from "@/server/qualiopi/config/registry";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 /**
@@ -132,7 +133,16 @@ export async function computeQualiopiPublicIdentity(): Promise<QualiopiPublicIde
     qualiopiOrganisme,
     qualiopiDateObtention,
     qualiopiValidite,
-    categoriesCertifiees: categories.trim() || "Actions de formation",
+    // 🔴 2026-08-20 — le littéral vivait AUSSI comme défaut du registre. Il n'a
+    // plus qu'un domicile (`CATEGORIES_CERTIFIEES_REPLI`), et le registre rend
+    // désormais `""` : c'est ce vide qui permet à l'alerte console de rougir
+    // tant que personne n'a lu la catégorie sur le certificat.
+    //
+    // On garde un repli d'affichage plutôt qu'un trou : la mention « au titre de
+    // la ou des catégories d'actions suivantes » est OBLIGATOIRE quand on
+    // affiche la marque. Retirer une mention obligatoire pour punir une
+    // configuration vide serait pire que le défaut qu'on corrige.
+    categoriesCertifiees: categories.trim() || CATEGORIES_CERTIFIEES_REPLI,
     logoPath,
     siret: org.siret,
     adresseSiege: org.adresseSiege,

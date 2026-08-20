@@ -7,7 +7,7 @@
  * bpf, veille_inactive, factures impayées, OPCO, fail-soft par règle.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mocks
@@ -199,6 +199,70 @@ describe("evaluerAlertes — referent_handicap_absent", () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "referent_handicap_absent");
     expect(a).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle categories_certifiees_non_renseignees
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 2026-08-20. La page publique affiche « La certification qualité a été
+// délivrée au titre de la ou des catégories d'actions suivantes : … » — mention
+// obligatoire de la marque Qualiopi. Sa valeur venait d'un DÉFAUT CODÉ EN DUR,
+// à deux endroits : le site affirmait au titre du certificat une catégorie que
+// personne n'avait lue dessus.
+//
+// Aucun `curl` ne pouvait le voir : « la config porte cette valeur » et « la
+// config est vide et le défaut a parlé » rendent exactement la même page. Seule
+// une alerte console peut le dire.
+
+describe("evaluerAlertes — categories_certifiees_non_renseignees", () => {
+  const CERT_ORIGINE = process.env["QUALIOPI_CERTIFICATION_OBTENUE"];
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    process.env["QUALIOPI_CERTIFICATION_OBTENUE"] = "true";
+  });
+
+  afterEach(() => {
+    if (CERT_ORIGINE === undefined) delete process.env["QUALIOPI_CERTIFICATION_OBTENUE"];
+    else process.env["QUALIOPI_CERTIFICATION_OBTENUE"] = CERT_ORIGINE;
+  });
+
+  it("🔴 alerte quand la catégorie est vide — le site sert alors un repli", async () => {
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "qualiopi_categories_certifiees") return Promise.resolve("");
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "categories_certifiees_non_renseignees");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+  });
+
+  it("se tait dès que la catégorie est renseignée", async () => {
+    // Témoin de non-vacuité : sans lui, une règle qui alerterait TOUJOURS
+    // passerait le cas précédent sans rien prouver de sa condition.
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "qualiopi_categories_certifiees") return Promise.resolve("Bilans de compétences");
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "categories_certifiees_non_renseignees")).toBeUndefined();
+  });
+
+  it("🔴 se tait tant que la certification n'est PAS affirmée", async () => {
+    // Sans revendication publique, il n'y a aucune mention à accompagner :
+    // alerter là-dessus polluerait /qualiopi/a-traiter d'un devoir qui n'existe
+    // pas encore — et une console qui crie pour rien apprend à être ignorée.
+    process.env["QUALIOPI_CERTIFICATION_OBTENUE"] = "false";
+    mockGetConfig.mockImplementation(() => Promise.resolve(""));
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "categories_certifiees_non_renseignees")).toBeUndefined();
   });
 });
 

@@ -231,9 +231,27 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   // dans la mention qui accompagne la marque Qualiopi (règles d'usage officielles
   // du Ministère du Travail). Valeurs possibles : « Actions de formation »,
   // « Bilans de compétences », « VAE », « Actions de formation par apprentissage »
-  // (séparées par « , » si plusieurs). Défaut = la catégorie visée par Axion-IA.
+  // (séparées par « , » si plusieurs).
+  //
+  // 🔴 2026-08-20 — DÉFAUT VIDÉ, DÉLIBÉRÉMENT.
+  //
+  // Il valait « Actions de formation », et c'est une mention LÉGALE : la page
+  // publique affirmait donc, au titre du certificat, une catégorie que personne
+  // n'avait lue sur le certificat. Le défaut est servi dans TROIS cas silencieux
+  // par `getQualiopiConfig` — ligne absente, parse en échec, et **panne de base**
+  // (le `catch` rend le défaut) — et aucun `curl` ne permet de distinguer « la
+  // configuration porte cette valeur » de « la configuration est vide et le
+  // défaut a parlé » : les deux rendent exactement la même page.
+  //
+  // Le vide n'est pas une régression d'affichage : `public-identity.ts` porte le
+  // repli d'affichage, en un SEUL endroit désormais. Le vide est ce qui rend la
+  // règle d'alerte POSSIBLE — une règle qui lirait par ce chemin avec un défaut
+  // non vide ne pourrait jamais rougir.
+  //
+  // ⚠️ Ne pas y remettre de valeur : ce serait rendre la garde muette.
+  // Garde : `alertes/evaluateur.ts` → `categories_certifiees_non_renseignees`.
   qualiopi_categories_certifiees: {
-    ...str("Actions de formation"),
+    ...str(""),
     description: "Catégorie(s) d'actions certifiées (mention obligatoire de la marque Qualiopi).",
   },
   // Chemin/URL du fichier LOGO OFFICIEL Qualiopi (≠ logo Axion-IA `logo_url`).
@@ -511,3 +529,21 @@ export type QualiopiConfigValue<K extends QualiopiConfigKey> =
 
 /** Préfixe des clés SiteSetting du module. */
 export const QUALIOPI_CONFIG_KEY_PREFIX = "qualiopi." as const;
+
+/**
+ * Repli d'AFFICHAGE de la catégorie d'actions certifiées — SSOT.
+ *
+ * 🔴 2026-08-20. Cette chaîne existait à DEUX endroits : le défaut du registre
+ * ci-dessus et un second repli dans `public-identity.ts`. Une valeur dupliquée
+ * avec la meilleure intention ne signale jamais qu'elle a divergé — et celle-ci
+ * alimente une mention légale.
+ *
+ * Elle ne vit plus qu'ici, et elle a changé de STATUT : ce n'est plus un défaut
+ * de configuration (qui rendrait la règle d'alerte incapable de rougir), c'est
+ * le dernier recours d'affichage. La distinction compte : le registre rend `""`
+ * tant que personne n'a lu le certificat, l'alerte le dit dans la console, et
+ * la page publique continue d'afficher une mention plutôt qu'un trou — retirer
+ * une mention obligatoire pour punir une configuration vide serait pire que le
+ * défaut qu'on corrige.
+ */
+export const CATEGORIES_CERTIFIEES_REPLI = "Actions de formation" as const;

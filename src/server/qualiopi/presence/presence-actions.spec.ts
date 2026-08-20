@@ -587,6 +587,48 @@ describe("saveEmargementAction", () => {
     );
   });
 
+  it("🔴 NE pose PAS emargementSigneAt quand la grille dit « absent partout »", async () => {
+    // `CONF-02`. La colonne était posée pour chaque inscription touchée, sans
+    // regarder ce que la grille disait. `conformite-service.ts` la compte pour
+    // l'indicateur off.12 et l'annonçait « émargement réellement signé » : un
+    // stagiaire jamais venu — donc qui n'a rien signé — gonflait un indicateur
+    // de conformité présenté à l'auditeur.
+    //
+    // Le taux recalculé est le discriminant : 0 = absent à tout, donc aucune
+    // présence à attester.
+    mockRecompute.mockResolvedValueOnce(0);
+
+    const result = await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false }],
+    });
+
+    expect("data" in result, "la sauvegarde doit réussir : l'absence se consigne").toBe(true);
+    const signatures = mockPrisma.enrollment.updateMany.mock.calls.filter(
+      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
+    );
+    expect(signatures, "une absence totale a été comptée comme un émargement signé").toHaveLength(
+      0,
+    );
+  });
+
+  it("pose emargementSigneAt dès qu'UNE présence est constatée", async () => {
+    // Témoin inverse. Sans lui, un correctif qui cesserait complètement de poser
+    // la colonne ferait passer le cas ci-dessus — on prouverait l'absence de
+    // faux positif par l'absence de fonctionnalité.
+    mockRecompute.mockResolvedValueOnce(50);
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [validEntry],
+    });
+
+    const signatures = mockPrisma.enrollment.updateMany.mock.calls.filter(
+      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
+    );
+    expect(signatures).toHaveLength(1);
+  });
+
   it("n'écrase pas la date sur ré-enregistrement (déjà signé → count:0)", async () => {
     // Simule un enrollment déjà signé : le where exclut la ligne → 0 mise à jour.
     mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 0 });

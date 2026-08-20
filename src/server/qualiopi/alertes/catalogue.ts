@@ -66,6 +66,53 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "qualite",
   },
   /**
+   * La mention légale de la marque Qualiopi est servie par un REPLI.
+   *
+   * 🔴 2026-08-20. « La certification qualité a été délivrée au titre de la ou
+   * des catégories d'actions suivantes : … » est une mention obligatoire. Sa
+   * valeur venait d'un défaut codé en dur : le site affirmait une catégorie que
+   * personne n'avait lue sur le certificat, et aucun `curl` ne distinguait ce
+   * cas d'une valeur réellement configurée.
+   *
+   * `resolutionAuto` : la règle se relit à chaque passe et disparaît d'elle-même
+   * dès que la catégorie est saisie — il n'y a rien à cliquer.
+   */
+  categories_certifiees_non_renseignees: {
+    niveau: "important",
+    titre: "Catégorie d'actions certifiées non renseignée",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  /**
+   * Des fiches de prospection n'ont AUCUN horizon de conservation.
+   *
+   * 🔴 2026-08-20, constat `D5-5-01`. La purge des trois tables de prospection
+   * filtre sur `retentionUntil: { not: null }` — colonne qu'**aucun code du
+   * dépôt n'écrit** pour ces modèles. Le prédicat ne peut matcher aucune ligne :
+   * la purge supprimait zéro enregistrement, pour toujours, et journalisait
+   * « companies=0 » — un zéro qui se lit « rien à purger » alors qu'il signifie
+   * « la requête ne peut rien trouver ». Rétention illimitée de données
+   * nominatives, RGPD art. 5.1.e.
+   *
+   * ⚠️ `resolutionAuto: false` — DÉLIBÉRÉ, contrairement au reste du guichet.
+   * Cette alerte ne doit pas disparaître toute seule : elle appelle une décision
+   * humaine (autoriser une suppression de masse irréversible), et une alerte qui
+   * s'efface d'elle-même laisserait croire que la décision a été prise.
+   */
+  retention_prospection_sans_horizon: {
+    niveau: "important",
+    titre: "Fiches de prospection sans horizon de conservation",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Elle appelle une DÉCISION humaine — autoriser un effacement de masse " +
+      "irréversible sur des millions de fiches — et non un geste. Une alerte qui " +
+      "se refermerait toute seule dès que le compteur retombe à zéro laisserait " +
+      "croire que la décision a été prise, alors que le compteur peut retomber " +
+      "parce que la purge a été activée AILLEURS, ou parce que la requête a " +
+      "cessé de trouver — ce qui est précisément le défaut d'origine.",
+    guichet: "qualite",
+  },
+  /**
    * Un bénéficiaire a déclaré un besoin d'adaptation depuis son portail.
    *
    * 🔴 Vérification en production du 2026-08-04 : la déclaration n'atteignait
