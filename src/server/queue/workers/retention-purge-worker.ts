@@ -27,7 +27,8 @@
 //   RETENTION_GENERATION_LOGS_MONTHS=12   (audit B5)
 //   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — obligation comptable française)
 //   RETENTION_WEB_VITALS_MONTHS=6         (audit B5)
-//   RETENTION_EMAIL_LOGS_MONTHS=36        (audit e-mail 2026-08-16 — cycle Qualiopi)
+//   RETENTION_EMAIL_LOGS_MONTHS=60        (`D5-5-04` — meme duree que la piece)
+//   RETENTION_GDPR_TRACES_MONTHS=60       (`D5-5-05` — preuve qu'un droit a ete honore)
 //   RETENTION_EMAIL_LOGS_MARKETING_MONTHS=13 (audit e-mail — norme CNIL prospection)
 //   RETENTION_EMAIL_OUTBOX_MONTHS=36      (audit e-mail — etats terminaux seuls)
 //   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
@@ -39,6 +40,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -53,13 +55,33 @@ const DEFAULTS = {
   chat: 12,
   funnelEvents: 12,
   candidatures: 24,
-  // Chaine d'envoi (audit 2026-08-16). 36 mois = cycle de certification
-  // Qualiopi ; 13 mois = norme CNIL de prospection. Voir le bloc commente
-  // dans le handler pour le raisonnement.
-  emailLogsTransac: 36,
+  // Chaine d'envoi (audit 2026-08-16). 13 mois = norme CNIL de prospection.
+  // Voir le bloc commente dans le handler pour le raisonnement.
+  //
+  // 🔴 `D5-5-04` (2026-08-20) — le transactionnel valait 36 mois, soit DEUX ANS
+  // DE MOINS que la piece dont il est la preuve d'envoi. Une convocation est
+  // conservee `DOCUMENT_RETENTION_YEARS` = 5 ans ; passe 3 ans,
+  // `convocationEnvoyeeAt` continuait d'affirmer « envoyee » et plus rien ne le
+  // prouvait. C'est exactement ce qu'un auditeur demande a voir.
+  //
+  // 🔑 La valeur est DERIVEE de `DOCUMENT_RETENTION_YEARS`, jamais recopiee :
+  // deux durees qui doivent rester egales ne doivent exister qu'une fois.
+  emailLogsTransac: DOCUMENT_RETENTION_YEARS * 12,
   emailLogsMarketing: 13,
   emailOutbox: 36,
+  // 🔴 `D5-5-05` — voir le bloc « activity_logs » du handler.
+  tracesRgpd: DOCUMENT_RETENTION_YEARS * 12,
 } as const;
+
+/**
+ * Prefixe des actions dont la trace PROUVE qu'un droit a ete honore.
+ *
+ * 🔑 Un prefixe, et pas une liste : une action `gdpr.*` ajoutee demain herite
+ * de la protection sans que personne n'ait a y penser. Une enumeration se
+ * serait desynchronisee au premier ajout — c'est la forme de defaut que cet
+ * audit rencontre le plus souvent.
+ */
+const PREFIXE_TRACE_RGPD = "gdpr." as const;
 
 function monthsAgo(months: number): Date {
   const d = new Date();
@@ -118,11 +140,40 @@ export async function executerPurgeRetention(): Promise<void> {
   };
 
   // 1) activity_logs ancients
+  //
+  // 🔴 `D5-5-05` (2026-08-20) — cette purge n'avait AUCUN filtre d'action, et
+  // emportait donc les traces `gdpr.erase.completed` / `gdpr.export.delivered`
+  // a 12 mois. Or `api/gdpr-erase/route.ts` declare en tete, noir sur blanc :
+  // « ActivityLog : conserve (immuable, art. 30 RGPD register) ». Deux
+  // affirmations contradictoires dans le meme depot — et c'est la purge qui
+  // gagnait, en silence.
+  //
+  // 🔑 Ce qu'on garde n'est pas le journal « pour le principe » : c'est LA
+  // PREUVE qu'une demande d'effacement a ete honoree. Elle ne doit pas mourir
+  // avant la fin du delai pendant lequel la reclamation peut naitre — d'ou le
+  // meme horizon que les pieces (`DOCUMENT_RETENTION_YEARS`).
+  //
+  // ⚠️ Ces traces ne portent PLUS l'e-mail en clair (meme correctif) : les
+  // conserver plus longtemps n'allonge donc pas la duree de vie d'une donnee
+  // directement identifiante.
   const logsMonths = readMonths("RETENTION_LOGS_MONTHS", DEFAULTS.logs);
   const logsResult = await prisma.activityLog.deleteMany({
-    where: { createdAt: { lt: monthsAgo(logsMonths) } },
+    where: {
+      createdAt: { lt: monthsAgo(logsMonths) },
+      NOT: { action: { startsWith: PREFIXE_TRACE_RGPD } },
+    },
   });
   counts.logs = logsResult.count;
+
+  // Les traces RGPD, elles, tombent a leur propre echeance.
+  const gdprMonths = readMonths("RETENTION_GDPR_TRACES_MONTHS", DEFAULTS.tracesRgpd);
+  const gdprResult = await prisma.activityLog.deleteMany({
+    where: {
+      createdAt: { lt: monthsAgo(gdprMonths) },
+      action: { startsWith: PREFIXE_TRACE_RGPD },
+    },
+  });
+  counts.logs += gdprResult.count;
 
   // 2) submissions archivées anciennes
   const subsMonths = readMonths("RETENTION_SUBS_ARCHIVE_MONTHS", DEFAULTS.submissionsArchived);

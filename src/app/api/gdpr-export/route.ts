@@ -24,6 +24,7 @@
 // le lien par email (cf. request/route.ts).
 
 import { NextResponse, type NextRequest } from "next/server";
+import { exporterCandidaturesPour } from "@/server/careers/candidature-rgpd";
 import { decryptPiiObject } from "@/lib/pii-crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -127,6 +128,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     },
   });
 
+  // 🔴 `D5-5-03` (2026-08-20) — LES CANDIDATURES ÉTAIENT ABSENTES DE L'EXPORT.
+  //
+  // Même cause que pour l'effacement : `JobApplication.email` est chiffré avec
+  // un IV aléatoire, donc la candidature était INTROUVABLE par son adresse.
+  // Elle porte pourtant le CV, la photo et le téléphone — les données les plus
+  // sensibles que ce site détienne sur une personne.
+  //
+  // Le `notice.excludedTables` plus bas énumère ce qui est volontairement hors
+  // export, et les candidatures n'y figuraient pas : elles n'étaient donc ni
+  // incluses, ni déclarées exclues. Un export qui omet sans le dire se présente
+  // comme complet.
+  const candidatures = await exporterCandidaturesPour(email);
+
   // Sprint Correctif S+1 (P0-S1-2) : KB data RGPD art. 15 (bookmarks).
   const kb = await exportKbDataForEmail(email);
 
@@ -161,7 +175,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       targetType: "self_service",
       targetId: v.jti,
       changes: {
-        email,
+        // 🔴 `D5-5-05` — même correctif que sur l'effacement : l'adresse en
+        // clair a disparu du journal, qui est désormais conservé cinq ans.
+        // `lookupHash` est déjà calculé plus haut pour la recherche.
+        emailHash: lookupHash,
         submissionsCount: submissions.length,
         newsletterPresent: !!newsletter,
         kbBookmarksCount: kb.bookmarks.length,
@@ -205,6 +222,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     kb,
     chat,
     consentEvents,
+    candidatures: candidatures.candidatures,
+    // ⚠️ Une recherche TRONQUÉE qui se présente comme complète est pire qu'une
+    // recherche refusée. Le repli déchiffrant est borné : s'il a mordu son
+    // plafond, la personne doit le savoir.
+    ...(candidatures.tronque
+      ? {
+          candidaturesAvertissement:
+            "La recherche des candidatures anciennes a atteint sa limite d'examen : cette liste peut être incomplète. Écrivez à contact@axion-ia.com pour une vérification manuelle.",
+        }
+      : {}),
     // Volet CRM : soit son contenu (`status: "ok"`), soit la raison honnête
     // pour laquelle il est absent. On ne présente JAMAIS un export amputé comme
     // complet — c'est exactement le défaut qui rendait l'art. 15 muet avant.
