@@ -23,6 +23,11 @@ const ligne = (patch: Partial<LigneSessionParcours> = {}): LigneSessionParcours 
   dateFin: new Date("2026-09-02T17:00:00Z"),
   formateurPrincipalId: "f1",
   financementType: null,
+  // 🔴 2026-08-20 (`D2-5-01`) — champ AJOUTÉ. La traduction lit désormais la
+  // relation inverse pour nommer la session VERS laquelle on a reporté. Le type
+  // `LigneSessionParcours` l'exige : c'est le compilateur, et non la vigilance,
+  // qui garde la fixture alignée sur le `select`.
+  sessionRemplacement: [],
   documents: [],
   enrollments: [],
   ...patch,

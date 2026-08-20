@@ -43,6 +43,7 @@ import {
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 import type { LieuTypeValue } from "@/server/qualiopi/lieu/format-lieu";
 import { isTrainerHabilite, HABILITATION_ACTIVE_WHERE } from "@/server/qualiopi/trainers/trainers";
+import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import {
   parseCoFormateurs,
   type SessionFormateurRoleValue,
@@ -357,6 +358,8 @@ export async function reportSessionAction(
     formationSnapshot: unknown;
     clientId: string | null;
     financementType: string | null;
+    opcoStatut: string | null;
+    conventionTripartiteSigneeAt: Date | null;
     sessionParentId: string | null;
     // 🔴 Lieu de déroulement (off.9 + L.6353-1) — cf. bloc du `select`.
     lieuType: LieuTypeValue | null;
@@ -396,6 +399,14 @@ export async function reportSessionAction(
         formationSnapshot: true,
         clientId: true,
         financementType: true,
+        // 🔴 `D2-5-01` (2026-08-20) — l'ACCORD de financement ne suit PAS le
+        // report, et c'est délibéré : il portait sur les ANCIENNES dates. Le
+        // recopier réinstallerait un accord que le financeur n'a jamais donné
+        // pour les nouvelles — exactement la famille de défaut que cet audit
+        // poursuit. On les lit uniquement pour SAVOIR s'il y en avait un, et le
+        // dire.
+        opcoStatut: true,
+        conventionTripartiteSigneeAt: true,
         sessionParentId: true,
         // 🔴 Vérification du plan 2026-08-19 — LE REPORT PERDAIT LE LIEU.
         //
@@ -693,6 +704,41 @@ export async function reportSessionAction(
       tags: { action: "reporterSessionAction:revocation_jetons" },
       extra: { ancienneSessionId: ancienne.id, nouvelleSessionId },
     });
+  }
+
+  // 🔴 `D2-5-01` — LE DOSSIER DE FINANCEMENT NE SUIT PAS, ET IL FAUT LE DIRE.
+  //
+  // `financementType` est recopié sur la session de remplacement, mais l'ACCORD
+  // ne l'est pas : `opcoStatut` repart à `non_demande`, la convention
+  // tripartite à `null`. C'est le bon comportement — l'accord portait sur les
+  // anciennes dates, et un OPCO n'accorde pas des dates qu'il n'a pas vues.
+  //
+  // Mais la conséquence était MUETTE : `validateOpcoAccord` classe l'absence
+  // d'accord en `critique`, donc la session de remplacement refuse de démarrer,
+  // et l'admin le découvre le jour où il clique — sans savoir que le report en
+  // est la cause. C'est ce que le constat décrivait par « la session de
+  // remplacement ne peut plus démarrer du tout » : elle le peut, une fois le
+  // dossier refait, et personne ne le disait.
+  //
+  // L'alerte cible la NOUVELLE session : c'est sur elle qu'il y a un acte à
+  // poser, et c'est sa fiche qu'on ouvrira.
+  const avaitAccord =
+    ancienne.opcoStatut === "accord_recu" ||
+    ancienne.opcoStatut === "paiement_recu" ||
+    ancienne.conventionTripartiteSigneeAt !== null;
+  if (avaitAccord) {
+    void creerOuDedup({
+      code: "report_accord_financement_a_refaire",
+      niveau: "important",
+      titre: "Accord de financement à refaire après report",
+      message:
+        `La session ${ancienne.numero} portait un accord de financement obtenu pour ses dates ` +
+        `d'origine. Il n'a PAS été reporté sur ${nouvelleSessionNumero} : un financeur n'accorde ` +
+        `pas des dates qu'il n'a pas vues. Tant que le nouvel accord n'est pas enregistré, la ` +
+        `session de remplacement refusera de démarrer.`,
+      cibleType: "TrainingSession",
+      cibleId: nouvelleSessionId,
+    }).catch(() => {});
   }
 
   await logQualiopiActivity({

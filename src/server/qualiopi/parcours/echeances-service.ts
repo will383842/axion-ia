@@ -68,6 +68,18 @@ export interface LigneSessionParcours {
   readonly dateFin: Date;
   readonly formateurPrincipalId: string | null;
   readonly financementType: SessionParcoursInput["session"]["financementType"];
+  /**
+   * 🔴 `D2-5-01` (2026-08-20) — la session de REMPLACEMENT, s'il y a eu report.
+   *
+   * Relation inverse de `sessionReporteeId` : c'est la nouvelle session qui
+   * pointe vers l'ancienne, pas l'inverse. Sert à composer « Session reportée
+   * vers AXI-SESS-… ».
+   *
+   * Champ REQUIS, et c'est l'intérêt du contrat explicité au-dessus : une
+   * fixture ou un `select` qui l'oublierait ne compile pas. C'est le type, et
+   * non la vigilance, qui garde les deux alignés.
+   */
+  readonly sessionRemplacement: ReadonlyArray<{ readonly numero: string }>;
   readonly documents: SessionParcoursInput["documents"];
   readonly enrollments: ReadonlyArray<{
     readonly id: string;
@@ -104,6 +116,7 @@ export function entreeParcours(
       dateFin: s.dateFin,
       formateurPrincipalId: s.formateurPrincipalId,
       financementType: s.financementType,
+      sessionReporteeNumero: s.sessionRemplacement[0]?.numero ?? null,
     },
     documents: s.documents,
     signaturesParPiece,
@@ -149,6 +162,19 @@ export interface ResultatEcheances {
       readonly fait: number;
       readonly total: number;
       readonly etapes: ReadonlyArray<EtapeParcours>;
+      /**
+       * 🔴 `D2-5-01` (2026-08-20) — motif de repli d'un statut terminal.
+       *
+       * `construireParcours` le produisait depuis toujours ; ce service le
+       * JETAIT. Résultat : la colonne « Dossier » d'une session reportée
+       * affichait « **0/0 étapes** » — le même « tout va bien » que le « 0/0
+       * conformes » du dossier d'audit, au lieu de dire vers quelle session on
+       * avait reporté.
+       *
+       * La chaîne était morte des DEUX bouts : `sessionReporteeNumero` n'avait
+       * aucun écrivain, et `repliee` aucun lecteur hors de son propre spec.
+       */
+      readonly repliee: { readonly motif: string } | null;
     }
   >;
   /**
@@ -215,6 +241,29 @@ export async function prochainesEcheances(options?: {
       dateFin: true,
       formateurPrincipalId: true,
       financementType: true,
+      // 🔴 `D2-5-01` (2026-08-20) — la FILIATION D'UN REPORT n'était jamais lue.
+      //
+      // `session-parcours.ts` compose « Session reportée **vers AXI-SESS-…** »
+      // à partir d'un champ `sessionReporteeNumero` qui n'existe dans AUCUN
+      // schéma Prisma : c'est un champ optionnel d'interface TypeScript que
+      // personne ne remplissait. La branche était donc morte par construction,
+      // et le hub affichait « Session reportée » tout court — sans dire vers
+      // quoi, c'est-à-dire sans le seul renseignement qui rend l'information
+      // utile.
+      //
+      // 🔑 Un lecteur sans écrivain ne rougit jamais : `?? ""` avale le vide, et
+      // le libellé reste grammaticalement correct. C'est la même famille que la
+      // purge filtrant une colonne que personne n'écrit.
+      //
+      // La donnée existait pourtant : la session de remplacement porte
+      // `sessionReporteeId` vers l'ancienne. On lit donc la relation INVERSE.
+      // `take: 1` — reporter deux fois la même session créerait deux
+      // remplacements, et c'est le premier qui porte la filiation.
+      sessionRemplacement: {
+        select: { numero: true },
+        orderBy: { createdAt: "asc" },
+        take: 1,
+      },
       documents: {
         select: {
           id: true,
@@ -284,7 +333,13 @@ export async function prochainesEcheances(options?: {
   const echeances: EcheanceSession[] = [];
   const parSession = new Map<
     string,
-    { pire: EtatEtape; fait: number; total: number; etapes: ReadonlyArray<EtapeParcours> }
+    {
+      pire: EtatEtape;
+      fait: number;
+      total: number;
+      etapes: ReadonlyArray<EtapeParcours>;
+      repliee: { readonly motif: string } | null;
+    }
   >();
 
   for (const s of retenues) {
@@ -294,6 +349,7 @@ export async function prochainesEcheances(options?: {
       fait: parcours.avancement.fait,
       total: parcours.avancement.total,
       etapes: parcours.etapes,
+      repliee: parcours.repliee,
     });
 
     for (const etape of parcours.etapes) {
