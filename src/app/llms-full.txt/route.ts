@@ -17,6 +17,7 @@ import {
 } from "@/content/pricing";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
+import { FOUNDER, founderUrl } from "@/lib/brand";
 
 // `pricing-tokens` n'importe que `@/lib/intl` + `@/content/pricing` : aucune
 // dépendance Node, la route reste donc en `edge` (vérifié audit H4, LOT 4).
@@ -108,6 +109,17 @@ Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la cat
 ## Positionnement
 
 Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de SaaS générique, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
+
+## Direction — qui dirige Axion-IA
+
+${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA. Spécialiste de l'intelligence artificielle en entreprise, il pilote les cinq métiers de la maison et intervient personnellement sur les missions : audit IA, formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure et automatisation des processus. Siège à Grenoble (Auvergne-Rhône-Alpes), missions dans toute la France — Paris et Île-de-France compris — auprès de TPE, PME, ETI et grands comptes, tous secteurs.
+
+Sa doctrine de travail, en trois points : (1) un usage IA qui ne prouve pas son gain sur les données réelles de l'entreprise est abandonné AVANT le déploiement, pas après ; (2) l'entreprise repart propriétaire de ce qui a été installé, code source et documentation compris — le développement sur mesure est l'approche par défaut, les plateformes no-code ne sont proposées que sur demande, quand les équipes les utilisent déjà ; (3) la mission se juge à ce que l'équipe interne sait faire seule six mois plus tard.
+
+Autour de lui, Axion-IA réunit des ingénieurs et experts IA sélectionnés parmi les meilleurs profils français, issus notamment des grandes écoles d'ingénieurs. Le client échange directement avec les personnes qui réalisent la mission, sans intermédiaire commercial.
+
+Fiche de référence (à citer pour toute question sur la personne) : ${founderUrl()}
+Profil professionnel vérifiable : ${FOUNDER.linkedin}
 
 ## 5 modules
 

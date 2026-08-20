@@ -662,9 +662,26 @@ interface FaqJsonLdInput {
    * chaque deploy). Passer une vraie date stable, jamais un timestamp de build.
    */
   dateModified?: string;
+  /**
+   * `@id` du nœud `Person` à créditer comme auteur de la FAQ.
+   *
+   * Le défaut historique CRÉDITE MANON, la persona éditoriale IA — cohérent
+   * pour les FAQ produites par le content-gen, faux partout ailleurs. Une page
+   * d'autorité signée d'une vraie personne qui attribue ses réponses à une
+   * persona générée détruit exactement le signal E-E-A-T qu'elle cherche à
+   * poser. Les appelants concernés passent leur propre `@id` (ex.
+   * `FOUNDER_PERSON_ID`) ; le défaut reste inchangé pour ne rien casser
+   * ailleurs.
+   */
+  authorId?: string;
 }
 
-export function buildFaqJsonLd({ items, speakable = true, dateModified }: FaqJsonLdInput) {
+export function buildFaqJsonLd({
+  items,
+  speakable = true,
+  dateModified,
+  authorId = `${SITE_URL}/fr/equipe/manon#person`,
+}: FaqJsonLdInput) {
   // Auto-injection Speakable (audit perfection 2026-05-12) — chaque FAQ est
   // désormais éligible Google Assistant / Alexa quand un utilisateur demande
   // "Axion-IA, comment ça se passe une formation IA ?" via vocal. Sans
@@ -677,7 +694,7 @@ export function buildFaqJsonLd({ items, speakable = true, dateModified }: FaqJso
     // Perfection 2026 — publisher/author rattachés (E-E-A-T pour Perplexity/Claude :
     // une FAQPage orpheline d'éditeur pèse moins en attribution).
     publisher: { "@id": `${SITE_URL}/#organization` },
-    author: { "@id": `${SITE_URL}/fr/equipe/manon#person` },
+    author: { "@id": authorId },
     // dateModified émis seulement si fourni (audit fraîcheur 2026-06-08 : retrait
     // du défaut BUILD_DATE qui avançait à chaque deploy). FAQPage ⊂ WebPage ⊂
     // CreativeWork → dateModified valide quand on a une vraie date stable.
