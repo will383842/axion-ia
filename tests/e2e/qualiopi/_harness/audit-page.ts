@@ -34,7 +34,20 @@ export interface ResultatAudit {
   statut: number | null;
   erreursConsole: string[];
   requetesEnEchec: string[];
-  axeBloquant: { id: string; help: string; noeuds: number }[];
+  /**
+   * Violations bloquantes, AVEC de quoi les corriger.
+   *
+   * `exemples` porte le sélecteur et le résumé d'échec d'axe pour les trois
+   * premiers nœuds : sur `color-contrast`, un compte de nœuds ne dit ni quel
+   * texte, ni quel rapport, ni sur quel fond — et deviner un contraste a déjà
+   * coûté une correction inutile sur neuf pages.
+   */
+  axeBloquant: {
+    id: string;
+    help: string;
+    noeuds: number;
+    exemples: { cible: string; detail: string }[];
+  }[];
   textesInterdits: string[];
   debordementA: number[];
   /**
@@ -280,9 +293,28 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
     const axe = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag22aa"])
       .analyze();
+    // 🔴 2026-08-21 — COMPTER LES VIOLATIONS NE SUFFIT PAS À LES CORRIGER.
+    //
+    // Ce relevé rendait `{ id, help, noeuds: 3 }` et rien d'autre. Pour une
+    // règle structurelle (`definition-list`), le code suffit à retrouver le
+    // coupable ; pour `color-contrast`, non : « 3 nœuds » ne dit ni quel texte,
+    // ni quel rapport, ni sur quel fond. Il a fallu deviner — et deviner un
+    // contraste a déjà coûté une correction inutile sur neuf pages, ce même jour.
+    //
+    // axe fournit le sélecteur et un résumé lisible de chaque nœud. On les
+    // emporte : trois par violation suffisent à nommer le motif sans noyer le
+    // journal.
     axeBloquant = axe.violations
       .filter((v) => v.impact === "serious" || v.impact === "critical")
-      .map((v) => ({ id: v.id, help: v.help, noeuds: v.nodes.length }));
+      .map((v) => ({
+        id: v.id,
+        help: v.help,
+        noeuds: v.nodes.length,
+        exemples: v.nodes.slice(0, 3).map((n) => ({
+          cible: n.target.join(" "),
+          detail: (n.failureSummary ?? "").replace(/\s+/g, " ").slice(0, 220),
+        })),
+      }));
   } catch {
     // axe peut échouer sur une page en erreur : on ne masque pas le reste.
   }
