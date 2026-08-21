@@ -31,10 +31,23 @@ test.describe("@parcours-qualiopi 6 — le stagiaire sur téléphone", () => {
 
     const id = await ouvrirSessionDemo(page);
     expect(id, "session de démonstration introuvable — `pnpm qualiopi:seed-demo`").not.toBeNull();
-    await page.waitForLoadState("networkidle");
+
+    // 🔴 2026-08-21 — `waitForLoadState("networkidle")` NE REVENAIT JAMAIS ICI.
+    //
+    // Sans délai explicite, l'attente hérite du budget du test : elle a donc
+    // consommé les 300 000 ms entières, puis rendu « Test timeout exceeded » —
+    // un message qui ne nomme rien. La fiche de session admin ne devient jamais
+    // silencieuse côté réseau (revalidations, compteurs), et c'est normal.
+    //
+    // 🔑 On attend un CONTENU, pas un état de réseau. Le bouton porte sa propre
+    // attente, et son absence dit quelque chose d'utile ; le silence du réseau
+    // ne dit rien du tout.
 
     // ── Côté organisme : produire le lien, comme le ferait l'assistante ──────
     const bouton = page.getByRole("button", { name: /Générer un accès portail/i }).first();
+    await bouton.waitFor({ state: "visible", timeout: 60_000 }).catch(() => {
+      /* Le compte ci-dessous porte le message utile. */
+    });
     expect(
       await bouton.count(),
       "aucun bouton de génération d'accès portail sur la fiche de session — " +

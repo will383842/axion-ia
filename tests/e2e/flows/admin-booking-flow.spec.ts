@@ -14,6 +14,12 @@ import { test, expect } from "@playwright/test";
 import { ADMIN_PREFIX, loginAsAdmin, baseSemeeAttendue } from "../fixtures/admin-auth";
 
 test.describe("Legacy booking — redirections vers les modules réels", () => {
+  // Budget explicite : cette suite ouvre une session admin (Argon2id, quatre
+  // workers concurrents en CI). Le défaut de 30 s de `playwright.config.ts`
+  // ne suffit pas — cf. `tests/unit/e2e-harness/budget-des-specs-admin.spec.ts`,
+  // qui a trouvé cette suite en même temps que `vente-parcours`.
+  test.describe.configure({ timeout: 180_000 });
+
   const cases = [
     { from: "calendrier", to: "/planning" },
     { from: "calendrier/heatmap", to: "/planning" },

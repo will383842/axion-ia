@@ -455,6 +455,27 @@ jobs:
           # de connexion ne répond pas et `signInAction` refuse toute connexion
           # admin par sécurité : voir le commentaire du service `redis`.
           REDIS_URL: "redis://localhost:6379"
+          # 🔴 2026-08-22 — SANS CE DRAPEAU, QUATRE ÉCRANS N'ÉTAIENT PAS COUVERTS.
+          #
+          # `admin-nav-clic` rendait « 4 entrée(s) de navigation en panne »,
+          # toutes sous `/qualiopi/facturation`, toutes en « locator.waitFor:
+          # Timeout 15000ms ». Ce n'était pas une panne : le hub facturation est
+          # derrière `FACTURATION_HUB_ENABLED` (rollout progressif, cf.
+          # `src/server/qualiopi/config/flag.ts`), et les pages appellent
+          # `notFound()`.
+          #
+          # 🔑 POURQUOI ÇA RESSEMBLAIT À UN DÉLAI ET PAS À UN 404 : le dossier
+          # porte un `loading.tsx`. La réponse commence donc à être diffusée —
+          # statut 200 déjà parti — et `notFound()` ne fait que remplacer la
+          # suite du flux. Le test voyait 200, puis attendait un `<h1>` qui ne
+          # viendrait jamais. C'est exactement le cas que son propre commentaire
+          # anticipait ; il lui manquait de le NOMMER.
+          #
+          # La nav liste ces entrées même drapeau baissé — décision de rollout
+          # explicite et documentée (« c'est la PAGE qui gate »). On ne la touche
+          # pas : on lève le drapeau EN CI, pour que les quatre écrans soient
+          # réellement traversés au lieu d'être comptés en panne.
+          FACTURATION_HUB_ENABLED: "true"
         # continue-on-error MAINTENU pour CE passage seulement : la suite n'a
         # jamais tourné contre un vrai serveur, on ne sait donc pas encore
         # combien de tests passent. Le chiffre de ce run est la mesure. Le retrait

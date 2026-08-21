@@ -234,11 +234,46 @@
     --color-admin-rail-hover: rgb(255 255 255 / 0.06); /* fond hover lien */
     --color-admin-rail-active-bg: rgb(237 124 77 / 0.18); /* tuile active (terracotta tint) */
     --color-admin-rail-active-fg: #fdf5ee; /* texte lien actif */
-    --color-admin-rail-accent: #ed7c4d; /* terracotta éclaircie d'un cran (~5.2:1 sur mocha) */
-    --color-admin-rail-ring: rgb(237 124 77 / 0.5); /* focus ring sur fond sombre */
-    --color-admin-rail-badge-danger: #e5484d; /* badge rouge (jobs, anomalies, contacts) */
-    --color-admin-rail-badge-warn: #f5a623; /* badge ambre (alertes ops) */
-    --color-admin-rail-avatar-bg: #ed7c4d; /* pastille avatar footer */
+
+    /* =====================================================================
+     * 🔴 2026-08-21 — LA CONSOLE N'AVAIT JAMAIS ÉTÉ PASSÉE À axe-core.
+     *
+     * `tests/e2e/a11y-admin.spec.ts` couvrait quatre pages depuis sa création,
+     * mais son canari visait `nav[aria-label="Navigation admin"]` — libellé qui
+     * existe, porté par un `<aside>`. Les quatre tests mouraient sur
+     * « element(s) not found » avant la moindre analyse. Canari corrigé, axe a
+     * tourné pour la première fois et a rendu TROIS familles de violations
+     * `serious`, toutes dans ce rail, donc sur CHAQUE page de la console :
+     *
+     *   #ffffff sur #e5484d (badge danger, 10 px gras)   = 3,91   < 4,5
+     *   #ffffff sur #ed7c4d (pastille avatar, 10 px gras) = 2,77   < 4,5
+     *   #ed7c4d sur #4d3528 (texte de la tuile active)    = 4,09   < 4,5
+     *
+     * 🔑 LA TROISIÈME EST LA PLUS INSTRUCTIVE. Le commentaire de l'accent
+     * annonçait « ~5,2:1 sur mocha » — et c'est VRAI sur `--color-admin-rail-bg`
+     * (#2a2520). Mais la tuile active pose un voile terracotta à 18 % par-dessus,
+     * ce qui donne #4d3528 : le même texte y tombe à 4,09. Un ratio mesuré dans
+     * un contexte ne se transporte pas dans un autre. C'est la même erreur que
+     * mesurer une rangée contre le viewport au lieu de sa boîte de contenu.
+     *
+     * ⚠️ QUATRIÈME FAMILLE, LATENTE ET NON MESURÉE : `badge-warn` (#f5a623)
+     * portait lui aussi `text-white` — soit 2,03:1. Elle n'est pas apparue au
+     * relevé parce qu'aucune alerte ops n'était en base ce jour-là. La corriger
+     * maintenant, c'est refuser qu'un gate passe au vert par manque de données.
+     * ===================================================================== */
+
+    /* Éclairci pour tenir 4,5:1 SUR LA TUILE ACTIVE (#4d3528 → 4,95) et non
+       seulement sur le fond du rail (#2a2520 → 6,64). */
+    --color-admin-rail-accent: #f3936a;
+    /* Encre sombre pour les surfaces VIVES (accent, avatar, badge ambre), où le
+       blanc ne peut pas tenir : 5,9:1 sur terracotta, 8,1:1 sur ambre. */
+    --color-admin-rail-on-bright: #241f1a;
+    --color-admin-rail-ring: rgb(243 147 106 / 0.5); /* focus ring sur fond sombre */
+    /* Rouge assombri : le blanc y passe de 3,91 à 4,93. On garde l'idiome
+       « badge rouge, chiffre blanc », qui est ce qu'un opérateur reconnaît. */
+    --color-admin-rail-badge-danger: #d13438;
+    --color-admin-rail-badge-warn: #f5a623; /* badge ambre — encre SOMBRE obligatoire */
+    --color-admin-rail-avatar-bg: #ed7c4d; /* pastille avatar footer — encre sombre */
     --color-admin-rail-text: var(--color-admin-rail-fg); /* alias — cf. bloc « jetons fantômes » */
 
     /* =====================================================================

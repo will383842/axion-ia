@@ -60,8 +60,26 @@ test.describe("Journey 2 — Navigation hub ville to page service @sprint-a", ()
     await expect(hubH1).toBeVisible();
     await expect(hubH1).toContainText(/Paris/i);
 
-    const auditLink = page.locator('a[href="/fr/audit"]').first();
-    await expect(auditLink).toBeVisible();
+    // 🔴 2026-08-21 — `.first()` NE DÉSIGNAIT PAS LA CARTE, MAIS LE MENU.
+    //
+    // Le titre du test dit « Click on Audit IA module card ». Le sélecteur, lui,
+    // prenait le PREMIER `a[href="/fr/audit"]` du document — c'est-à-dire
+    // l'entrée de navigation du header, masquée à cette largeur (`hidden` sous
+    // le point de rupture `nav`). Playwright résolvait bien un élément, treize
+    // fois de suite, et le déclarait invisible : « 13 × locator resolved to <a
+    // href="/fr/audit" class="relative text-[17px] … after:absolute …" ».
+    //
+    // 🔑 Le parcours ne mesurait donc pas ce que son titre annonce. Un
+    // `.first()` sur un site où le même lien vit dans le menu, la carte et le
+    // pied de page ne choisit rien : il prend l'ordre du DOM. On borne au
+    // contenu — c'est la carte du hub qu'on veut cliquer, et c'est elle qui
+    // doit exister.
+    const auditLink = page.locator("main").locator('a[href="/fr/audit"]').first();
+    await expect(
+      auditLink,
+      "aucune carte « Audit IA » dans le contenu du hub Paris — le maillage " +
+        "interne ville → service est ce que ce parcours mesure",
+    ).toBeVisible();
     await auditLink.click();
 
     await expect(page).toHaveURL(/\/fr\/audit($|\/|\?|#)/);
@@ -84,15 +102,33 @@ test.describe("Journey 3 — Mobile 375px Paris hub @sprint-a", () => {
     const viewportWidth = await page.evaluate(() => window.innerWidth);
     expect(bodyScrollWidth).toBeLessThanOrEqual(viewportWidth + 2);
 
-    const ctaLink = page.locator('a[href*="/contact"], a[href*="/appel"]').first();
-    await expect(ctaLink).toBeVisible();
+    // 🔴 2026-08-21 — MÊME DÉFAUT QUE LE PARCOURS 2, UN CRAN PLUS BAS.
+    //
+    // `.first()` prenait le CTA du header — masqué à 375 px, où la navigation
+    // est dans le tiroir. Playwright résolvait l'élément treize fois et le
+    // déclarait `hidden`. Le test prétend vérifier qu'un visiteur mobile a un
+    // moyen de contact À PORTÉE ; il mesurait la présence d'un lien invisible.
+    //
+    // 🔑 Un prédicat recopié diverge : les deux parcours portaient la même
+    // faute, et corriger l'un sans balayer l'autre l'aurait laissée dormir.
+    const ctaLink = page.locator("main").locator('a[href*="/contact"], a[href*="/appel"]').first();
+    await expect(
+      ctaLink,
+      "aucun lien de contact atteignable dans le contenu à 375 px — le visiteur " +
+        "mobile n'a aucun moyen d'agir sans ouvrir le tiroir de navigation",
+    ).toBeVisible();
   });
 });
 
 test.describe("Journey 4 — A11y keyboard navigation @sprint-a @a11y", () => {
   test("Paris hub — 0 serious/critical WCAG 2.2 AA violations", async ({ page }) => {
     await page.goto("/fr/implantations/ile-de-france/paris");
-    await page.waitForLoadState("networkidle");
+    // Délai explicite : sans lui, l'attente hérite du budget du test et le
+    // consomme en entier avant de rendre un message qui ne nomme rien. La page
+    // reste analysable même si le réseau ne se tait pas (cf. parcours 6).
+    await page
+      .waitForLoadState("networkidle", { timeout: 20_000 })
+      .catch(() => console.warn("[sprint-a] hub Paris — networkidle non atteint en 20 s"));
 
     const results = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])

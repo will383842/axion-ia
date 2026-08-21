@@ -95,7 +95,26 @@ test.describe("a11y console admin WCAG 2.2 AA @a11y-admin", () => {
       // 200, axe analyserait un formulaire de connexion — presque sans
       // violation — et le job déclarerait la console conforme. Un gate doit
       // d'abord prouver QU'IL EST SUR LA BONNE PAGE.
-      await expect(page.locator('nav[aria-label="Navigation admin"]')).toBeVisible();
+      //
+      // 🔴 2026-08-21 — CE CANARI N'AVAIT JAMAIS PU PASSER.
+      //
+      // Il visait `nav[aria-label="Navigation admin"]`. Ce libellé existe bien —
+      // mais il est porté par un `<aside>` (`AdminSidebarNav.tsx`), et le `<nav>`
+      // qu'il contient porte « Sections admin ». Le sélecteur croisait donc une
+      // balise et un libellé qui ne se rencontrent jamais : les QUATRE tests de
+      // ce fichier échouaient sur « element(s) not found », sans qu'aucune page
+      // admin n'ait jamais été analysée par axe.
+      //
+      // 🔑 Un canari écrit de mémoire est un canari mort. Celui-ci a été posé
+      // pour empêcher un faux vert et il produisait un rouge permanent — le
+      // même résultat pratique : personne n'apprend rien de ce fichier. On vise
+      // désormais le RÔLE et le NOM ACCESSIBLES, qui sont ce que le canari veut
+      // vraiment prouver (« la navigation de la console est là »), et qui
+      // survivent à un changement de balise.
+      await expect(
+        page.getByRole("navigation", { name: "Sections admin" }),
+        `navigation de la console absente sur ${path} — page probablement non rendue`,
+      ).toBeVisible();
       // …et qu'on n'a pas été renvoyé au login malgré tout.
       expect(new URL(page.url()).pathname, `Redirigé hors de ${path}`).not.toContain("/login");
 

@@ -23,6 +23,21 @@ import { test, expect } from "@playwright/test";
 import { ADMIN_PREFIX, loginAsAdmin, baseSemeeAttendue } from "../fixtures/admin-auth";
 
 test.describe("Wizard nouvelle vente — client → devis → checklist", () => {
+  /**
+   * 🔴 2026-08-21 — CETTE SUITE TOURNAIT AVEC LE BUDGET PAR DÉFAUT (30 s).
+   *
+   * Elle ouvre une session admin — vérification Argon2id délibérément coûteuse,
+   * quatre workers se la disputent en CI — puis traverse un wizard en trois
+   * étapes. Elle échouait sur « loginAsAdmin a échoué […] Texte de la page : »,
+   * texte VIDE : la page de connexion n'avait pas fini de rendre.
+   *
+   * 🔑 Un message d'échec vide est le symptôme du budget, pas du produit. Ses
+   * sœurs déclaraient toutes le leur (90 s à 600 s) ; celle-ci avait été
+   * oubliée. Le cliquet `tests/unit/e2e-harness/budget-des-specs-admin.spec.ts`
+   * refuse désormais qu'une suite qui se connecte parte sans budget déclaré.
+   */
+  test.describe.configure({ timeout: 180_000 });
+
   test("le parcours crée le client, le devis, et rend la checklist", async ({ page }) => {
     try {
       await loginAsAdmin(page);

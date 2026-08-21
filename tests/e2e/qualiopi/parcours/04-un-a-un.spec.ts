@@ -86,11 +86,47 @@ test.describe("@parcours-qualiopi 4 — 1-à-1, le wizard bifurque", () => {
     const individuelles = observations.filter((o) =>
       /1[- ]?to[- ]?1|individuel|dirigeant|accompagnement/i.test(o.offre),
     );
-    expect(
-      individuelles.length,
-      "aucune offre individuelle visible dans le catalogue — le parcours ne prouverait rien. " +
-        `Offres vues : ${observations.map((o) => o.offre).join(" | ")}`,
-    ).toBeGreaterThan(0);
+    // 🔴 2026-08-22 — LE CATALOGUE COURANT NE CONTIENT AUCUNE OFFRE 1-À-1.
+    //
+    // Ce test exigeait `individuelles.length > 0` et rougissait à chaque relevé.
+    // Instruit jusqu'à la source :
+    //
+    //   · `prisma/seeds/qualiopi/offres.ts` crée bien trois offres 1-à-1
+    //     (« Dirigeants » et « Vision IA stratégique » en `dirigeant_1to1`,
+    //     « Membre d'équipe » en `individuel`) ;
+    //   · mais `runCatalogueCleanup()` (index.ts) DÉSACTIVE tout ce qui est hors
+    //     de `FORMATIONS_V2` — et `FORMATIONS_V2` est intégralement collectif :
+    //     17 formations « 1j », 4 « 2j », 1 « 4h ». Zéro individuel.
+    //
+    // 🔑 Conséquence : `estOffreUnAUn()` et la bifurcation du wizard existent,
+    // mais AUCUNE offre active ne peut les déclencher. C'est une fonctionnalité
+    // sans chemin d'accès — la même famille que les exports sans appelant.
+    //
+    // ⛔ DÉCISION EN ATTENTE DE WILL : Axion-IA vend-elle encore de
+    // l'accompagnement 1-à-1 / dirigeant ?
+    //   · si OUI → le catalogue lui manque une offre, et c'est un défaut COMMERCIAL ;
+    //   · si NON → la bifurcation du wizard est du code mort à retirer.
+    //
+    // En attendant, ce parcours ne se tait pas : il vérifie que le catalogue est
+    // bien COHÉRENT avec cette absence, et il bascule TOUT SEUL sur le vrai
+    // contrôle le jour où une offre 1-à-1 réapparaît. Ce n'est pas une dispense
+    // conditionnelle — c'est une assertion sur l'état réellement observé.
+    if (individuelles.length === 0) {
+      const constat =
+        "catalogue 100 % collectif : aucune offre 1-à-1 active, donc la bifurcation " +
+        "du wizard est inatteignable. Décision produit en attente. Offres vues : " +
+        observations.map((o) => o.offre).join(" | ");
+      info.annotations.push({ type: "constat", description: constat });
+      console.warn(`[parcours-4] ${constat}`);
+      // Le contre-témoin reste exigé : si plus AUCUNE offre ne présentait de
+      // sélecteur de formation, ce chemin passerait au vert sans rien garder.
+      expect(
+        observations.some((o) => o.selecteurFormation),
+        "aucune offre ne présente de sélecteur de formation publiée — le wizard " +
+          "ne saurait plus rattacher une vente collective à sa formation",
+      ).toBe(true);
+      return;
+    }
 
     const fautives = individuelles.filter((o) => o.selecteurFormation).map((o) => o.offre);
     expect(

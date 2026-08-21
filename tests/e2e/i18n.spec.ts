@@ -91,21 +91,69 @@ test.describe("i18n + layout", () => {
 });
 
 test.describe("SEO endpoints", () => {
-  test("sitemap.xml has hreflang alternates", async ({ request }) => {
-    const res = await request.get("/sitemap.xml");
-    expect(res.status()).toBe(200);
-    const body = await res.text();
-    expect(body).toContain('hreflang="fr"');
-    expect(body).toContain('hreflang="en"');
-    expect(body).toContain('hreflang="x-default"');
+  /**
+   * 🔴 2026-08-21 — CES DEUX TESTS DÉCRIVAIENT UNE ARCHITECTURE DISPARUE.
+   *
+   * Ils interrogeaient `/sitemap.xml` et y exigeaient des `hreflang`, plus une
+   * directive `Sitemap: /sitemap.xml` dans `robots.txt`. Mesuré en production :
+   *
+   *   · `robots.txt` déclare `Sitemap: https://axion-ia.com/sitemap-index.xml`.
+   *     Next 16 RÉSERVE `/sitemap.xml` à la convention `app/sitemap.ts`, qui
+   *     n'émet que des sous-sitemaps `/sitemap/<id>.xml` sans index. L'index
+   *     racine vit donc à `/sitemap-index.xml` — cf. l'en-tête de
+   *     `app/sitemap-index.xml/route.ts`, qui explique pourquoi.
+   *   · `/sitemap.xml` est un `<sitemapindex>`. Un index ne porte PAS
+   *     d'alternates : le protocole ne le prévoit pas. Les `xhtml:link` vivent
+   *     dans les sous-sitemaps. Le test cherchait donc, dans le seul document
+   *     du site qui ne peut pas en contenir, exactement ce qu'il n'y trouvera
+   *     jamais.
+   *   · `hreflang="en"` ne peut plus exister : EN est éteint depuis le
+   *     2026-05-16. Annoncer un alternate vers une redirection est le signal
+   *     contradictoire que `routing.ts` a supprimé de l'en-tête HTTP.
+   *
+   * 🔑 Un test qui échoue sur une DESCRIPTION périmée coûte plus qu'un test
+   * absent : il occupe la place de celui qui aurait mesuré la vraie chose.
+   */
+  test("le sitemap racine est atteignable et déclaré dans robots.txt", async ({ request }) => {
+    const robots = await request.get("/robots.txt");
+    expect(robots.status()).toBe(200);
+    const texte = await robots.text();
+    const ligne = texte.split(/\r?\n/).find((l) => l.toLowerCase().startsWith("sitemap:"));
+    expect(
+      ligne,
+      "robots.txt doit déclarer un sitemap — sans quoi Googlebot ne " +
+        "découvre que ce qu'il atteint par les liens",
+    ).toBeTruthy();
+    const cible = (ligne ?? "").slice("sitemap:".length).trim();
+    expect(cible, "l'index racine vit à /sitemap-index.xml (Next réserve /sitemap.xml)").toContain(
+      "/sitemap-index.xml",
+    );
+
+    // Contre-témoin de la déclaration : une directive qui pointe un 404 est
+    // pire qu'aucune directive.
+    const index = await request.get(new URL(cible).pathname);
+    expect(index.status(), `${cible} déclaré dans robots.txt mais injoignable`).toBe(200);
+    expect(await index.text()).toContain("<sitemapindex");
   });
 
-  test("robots.txt references the sitemap", async ({ request }) => {
-    const res = await request.get("/robots.txt");
+  test("les sous-sitemaps portent les alternates hreflang", async ({ request }) => {
+    // Les alternates vivent dans les sous-sitemaps, jamais dans l'index.
+    const res = await request.get("/sitemap/pages.xml");
     expect(res.status()).toBe(200);
     const body = await res.text();
-    expect(body).toContain("Sitemap:");
-    expect(body).toContain("/sitemap.xml");
+    expect(body, "chaque URL doit déclarer sa variante FR").toContain('hreflang="fr"');
+    expect(body, "et un x-default").toContain('hreflang="x-default"');
+
+    const enActif = process.env["EN_LOCALE_ENABLED"] === "true";
+    if (enActif) {
+      expect(body, "EN réactivé : les alternates EN doivent revenir").toContain('hreflang="en"');
+    } else {
+      expect(
+        body,
+        "EN est éteint : déclarer un alternate `en` annoncerait à Google une URL " +
+          "qui redirige — le signal contradictoire retiré de l'en-tête HTTP",
+      ).not.toContain('hreflang="en"');
+    }
   });
 
   test("llms.txt is served as plain text", async ({ request }) => {
