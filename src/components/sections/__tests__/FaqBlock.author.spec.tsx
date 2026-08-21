@@ -2,7 +2,7 @@
  * Signature du `FAQPage` — qui l'HTML dit avoir répondu.
  *
  * `buildFaqJsonLd` crédite Manon par défaut, la persona éditoriale IA. C'est
- * le bon crédit pour une FAQ produite par le content-gen (AI Act art. 50), et
+ * le bon crédit pour une FAQ produite par le générateur éditorial, et
  * le mauvais partout où la page est rédigée à la main : une page d'autorité
  * qui attribue ses réponses à une persona générée détruit le signal E-E-A-T
  * qu'elle existe pour poser.

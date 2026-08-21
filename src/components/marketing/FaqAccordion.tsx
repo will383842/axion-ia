@@ -15,8 +15,8 @@ interface FaqAccordionProps {
   /**
    * `@id` du nœud `Person` crédité comme auteur du `FAQPage`. Non fourni, la
    * factory retombe sur son défaut historique — Manon, la persona éditoriale
-   * IA. Cohérent pour une FAQ produite par le content-gen, faux sur une page
-   * rédigée à la main : passer l'`@id` de la personne qui signe réellement.
+   * IA. Cohérent pour une FAQ produite par le générateur éditorial, faux sur
+   * une page rédigée à la main : passer l'`@id` de la personne qui signe.
    */
   faqAuthorId?: string;
   className?: string;
