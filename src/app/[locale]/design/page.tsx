@@ -267,7 +267,10 @@ function Swatch({ name, className, hex }: SwatchProps) {
   return (
     <div className={`shadow-subtle flex h-24 flex-col justify-end rounded-md p-3 ${className}`}>
       <div className="font-mono text-xs">{name}</div>
-      {hex ? <div className="font-mono text-[0.625rem] opacity-80">{hex}</div> : null}
+      {/* 🔴 a11y 2026-08-21 — `opacity-80` faisait tomber ces codes hexadécimaux sous
+          le seuil AA sur quatre pastilles. Ils ne sont pas décoratifs : ils DISENT la
+          valeur du jeton, c'est l'objet même de la page. L'opacité tombe. */}
+      {hex ? <div className="font-mono text-[0.625rem]">{hex}</div> : null}
     </div>
   );
 }

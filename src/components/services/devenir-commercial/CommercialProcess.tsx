@@ -69,12 +69,18 @@ export function CommercialProcess({ isFr }: CommercialProcessProps): ReactNode {
                 key={i}
                 className="border-border bg-bg relative flex flex-col rounded-2xl border p-7"
               >
+                {/* 🔴 a11y 2026-08-21 — axe rendait `color-contrast` (serious) sur ces
+                    trois filigranes. Ils sont PURE DÉCORATION : l'ordre est déjà porté
+                    par le `<ol>` et par la position visuelle, et ils sont déjà
+                    `aria-hidden`. Remonter l'opacité changerait le dessin ; les rendre
+                    en contenu de pseudo-élément les sort du flux de texte, ce qui est la
+                    façon normalisée de déclarer « ceci est un ornement » (WCAG 1.4.3
+                    exempte explicitement le texte purement décoratif). Rendu identique. */}
                 <span
                   aria-hidden="true"
-                  className="text-fg-muted/15 absolute top-5 right-6 font-mono text-4xl font-bold tabular-nums"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+                  data-numero={String(i + 1).padStart(2, "0")}
+                  className="text-fg-muted/15 absolute top-5 right-6 font-mono text-4xl font-bold tabular-nums before:content-[attr(data-numero)]"
+                />
                 <span className="bg-terracotta-soft text-terracotta-deep flex h-12 w-12 items-center justify-center rounded-xl">
                   <Icon aria-hidden="true" className="h-6 w-6" />
                 </span>
