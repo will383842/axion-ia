@@ -119,7 +119,7 @@ export default async function IdeesPage({ params, searchParams }: PageProps) {
               rows={4}
               maxLength={5000}
               placeholder="Ce que vous en feriez, un angle, une source…"
-              className="admin-input mt-2 w-full"
+              className="admin-input mt-2"
             />
           </details>
         </form>

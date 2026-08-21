@@ -65,7 +65,7 @@ export function PremierLancement({ base, etat }: Props): React.ReactElement | nu
       faite: etat.comptes > 0,
       explication:
         "Les deux marques, les onze comptes, les familles d'assets, les douze règles de conformité et les onze règles d'alerte. Rien n'est écrasé : la commande est idempotente.",
-      geste: <code className="admin-code">pnpm editorial:seed</code>,
+      geste: <code className="admin-code-inline">pnpm editorial:seed</code>,
     },
     {
       numero: 2,
@@ -73,7 +73,9 @@ export function PremierLancement({ base, etat }: Props): React.ReactElement | nu
       faite: etat.importFait,
       explication:
         "Les 61 publications du trimestre et leurs 13 échos de page. L'import est transactionnel et ne se rejoue pas tout seul. Cette étape est SAUTABLE : on peut très bien commencer à vide.",
-      geste: <code className="admin-code">pnpm editorial:import --source &lt;dossier&gt;</code>,
+      geste: (
+        <code className="admin-code-inline">pnpm editorial:import --source &lt;dossier&gt;</code>
+      ),
     },
     {
       numero: 3,
@@ -125,7 +127,7 @@ export function PremierLancement({ base, etat }: Props): React.ReactElement | nu
                     : "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[color:var(--color-admin-border)] text-[length:var(--text-admin-xs)] font-bold"
                 }
               >
-                {etape.faite ? "✓" : etape.numero}
+                {etape.numero}
               </span>
               <strong className={etape.faite ? "text-[color:var(--color-admin-fg-muted)]" : ""}>
                 {etape.titre}

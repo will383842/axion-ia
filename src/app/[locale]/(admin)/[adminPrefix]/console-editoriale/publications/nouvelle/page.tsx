@@ -86,7 +86,7 @@ export default async function NouvellePublicationPage({ params, searchParams }: 
               <label htmlFor="compteId" className="admin-label">
                 Compte
               </label>
-              <select id="compteId" name="compteId" required className="admin-input w-full">
+              <select id="compteId" name="compteId" required className="admin-input">
                 {comptes.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.libelle}
@@ -107,7 +107,7 @@ export default async function NouvellePublicationPage({ params, searchParams }: 
                   type="date"
                   required
                   defaultValue={demainIso}
-                  className="admin-input w-full"
+                  className="admin-input"
                 />
               </div>
 
@@ -124,7 +124,7 @@ export default async function NouvellePublicationPage({ params, searchParams }: 
                   // 07:45 est l'heure la plus fréquente du dossier importé :
                   // un défaut qui vient des données, pas d'une préférence.
                   defaultValue="07:45"
-                  className="admin-input w-full"
+                  className="admin-input"
                 />
               </div>
             </div>
@@ -142,7 +142,7 @@ export default async function NouvellePublicationPage({ params, searchParams }: 
                 maxLength={200}
                 autoFocus
                 placeholder="Pour la retrouver dans une liste — pas le titre du post"
-                className="admin-input w-full"
+                className="admin-input"
               />
             </div>
 
@@ -157,7 +157,7 @@ export default async function NouvellePublicationPage({ params, searchParams }: 
                 rows={8}
                 maxLength={20_000}
                 placeholder="Le texte du post. Vous pourrez l'écrire plus tard."
-                className="admin-input w-full"
+                className="admin-input"
               />
               <p className="mt-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                 Une publication qui naît avec un corps est déjà « rédigée ». Sans corps, elle naît «
