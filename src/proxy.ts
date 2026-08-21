@@ -468,6 +468,19 @@ export const config = {
     // carte de visite. Route racine, aucune variante localisée. Sans
     // l'exclusion, la règle 0bis 301 vers `/fr/williams-jullin.vcf` → 404, et
     // les cartes déjà distribuées ne mènent plus nulle part.
-    "/((?!api/|widget/|qr/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    //
+    // 🔴 `maintenance` exclu (2026-08-21) — NEUVIÈME occurrence du même défaut,
+    // et la liste ci-dessus en est le procès-verbal. `src/app/maintenance/page.tsx`
+    // est la SEULE route de page hors segment `[locale]` du projet. Sans cette
+    // exclusion, la règle 0bis 301 `/maintenance` → `/fr/maintenance`, qui n'existe
+    // pas : mesuré en production le 2026-08-21,
+    //     GET /maintenance → 301 → https://axion-ia.com/fr/maintenance → 404.
+    // La page de maintenance était donc INATTEIGNABLE — et elle ne sert qu'au
+    // moment précis où l'on n'a ni le temps ni les moyens de la déboguer.
+    //
+    // Trouvée par le harnais E2E, qui l'a signalée comme « requête en échec » sur
+    // une route de sa propre liste. Personne ne l'ouvre en temps normal : c'est
+    // exactement le genre de page qu'aucune relecture ne va vérifier.
+    "/((?!api/|widget/|qr/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };
