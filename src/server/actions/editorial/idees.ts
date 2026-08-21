@@ -1,0 +1,232 @@
+/**
+ * Console éditoriale — Server Actions de la banque d'idées (lot 1).
+ *
+ * > **Noter une idée : 10 secondes, 1 champ.** (§1 ter, test de simplicité)
+ *
+ * Ce n'est pas une préférence d'ergonomie, c'est la condition de survie de la
+ * fonction : une idée se note debout, entre deux rendez-vous. Un formulaire
+ * qui en demande six ne sera pas rempli, et la matière sera perdue. Le schéma
+ * de capture n'a donc **qu'un champ obligatoire**, et tout le reste est
+ * facultatif — y compris le compte et la famille.
+ *
+ * C'est aussi pourquoi `idee.capturer` est ouverte à TOUS les rôles, `lecture`
+ * comprise (§4) : brider la capture coûterait plus que ça ne protège.
+ */
+
+"use server";
+
+import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { prisma } from "@/lib/prisma";
+import { requirePermission, journaliser } from "@/server/actions/editorial/_guards";
+import type { ActionResult } from "@/server/actions/editorial/publications";
+
+/** 🔴 UN seul champ requis. Tout ajout ici doit être combattu. */
+const captureSchema = z.object({
+  titre: z.string().trim().min(1, "Une idée, même en trois mots").max(240),
+  detail: z.string().max(5_000).optional(),
+  lien: z.string().max(1024).optional(),
+  compteId: z.string().uuid().optional(),
+  familleId: z.string().uuid().optional(),
+  interet: z.number().int().min(1).max(5).optional(),
+  origine: z.string().max(120).optional(),
+});
+
+const promotionSchema = z.object({
+  id: z.string().uuid(),
+  compteId: z.string().uuid(),
+  datePrevue: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date attendue au format AAAA-MM-JJ"),
+  heurePrevue: z
+    .string()
+    .regex(/^\d{2}:\d{2}$/)
+    .optional(),
+});
+
+const archivageSchema = z.object({
+  id: z.string().uuid(),
+  motif: z.string().trim().min(1, "Dire POURQUOI on écarte une idée").max(1_000),
+});
+
+function dateUtc(iso: string): Date {
+  const [a, m, j] = iso.split("-").map(Number);
+  return new Date(Date.UTC(a as number, (m as number) - 1, j as number));
+}
+
+function messageErreur(e: unknown): string {
+  return e instanceof Error ? e.message : "Erreur inattendue";
+}
+
+// ── Capturer ──────────────────────────────────────────────────────────────
+
+export async function capturerIdeeAction(
+  input: z.input<typeof captureSchema>,
+): Promise<ActionResult<{ id: string }>> {
+  try {
+    const membre = await requirePermission("idee.capturer");
+    const parsed = captureSchema.safeParse(input);
+    if (!parsed.success) {
+      return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
+    }
+    const v = parsed.data;
+
+    const idee = await prisma.edIdee.create({
+      data: {
+        titre: v.titre,
+        detail: v.detail ?? null,
+        lien: v.lien ?? null,
+        compteId: v.compteId ?? null,
+        familleId: v.familleId ?? null,
+        interet: v.interet ?? null,
+        origine: v.origine ?? null,
+        statut: "capturee",
+      },
+      select: { id: true },
+    });
+
+    await journaliser({
+      entite: "EdIdee",
+      entiteId: idee.id,
+      action: "capture",
+      membreId: membre.membreId,
+      apres: { titre: v.titre },
+    });
+
+    revalidatePath("/[locale]/(admin)/[adminPrefix]/console-editoriale", "page");
+    return { data: { id: idee.id } };
+  } catch (e) {
+    return { error: messageErreur(e) };
+  }
+}
+
+// ── Promouvoir ────────────────────────────────────────────────────────────
+
+/**
+ * Promeut une idée en publication — critère 17 du lot 1.
+ *
+ * L'idée n'est **pas** consommée : elle passe à `promue` et garde le lien
+ * vers la publication née d'elle (`promueVersId`). On doit pouvoir remonter
+ * de la publication à l'idée qui l'a déclenchée, six mois plus tard.
+ *
+ * Transactionnel : une idée marquée « promue » sans publication en face
+ * serait une idée perdue pour tout le monde.
+ */
+export async function promouvoirIdeeAction(
+  input: z.input<typeof promotionSchema>,
+): Promise<ActionResult<{ ideeId: string; publicationId: string }>> {
+  try {
+    const membre = await requirePermission("idee.promouvoir");
+    const parsed = promotionSchema.safeParse(input);
+    if (!parsed.success) {
+      return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
+    }
+    const { id, compteId, datePrevue, heurePrevue } = parsed.data;
+
+    const idee = await prisma.edIdee.findUnique({
+      where: { id },
+      select: { id: true, titre: true, detail: true, lien: true, statut: true, promueVersId: true },
+    });
+    if (!idee) return { error: "Idée introuvable" };
+    if (idee.statut === "promue" && idee.promueVersId) {
+      // Rejouer la promotion créerait une seconde publication pour la même
+      // idée, sans que rien ne le signale.
+      return { error: "Cette idée a déjà été promue en publication." };
+    }
+    if (idee.statut === "archivee") {
+      return { error: "Cette idée est archivée. Réactivez-la avant de la promouvoir." };
+    }
+
+    const compte = await prisma.edCompte.findUnique({ where: { id: compteId } });
+    if (!compte) return { error: "Compte introuvable" };
+
+    const { publicationId } = await prisma.$transaction(async (tx) => {
+      const publication = await tx.edPublication.create({
+        data: {
+          compteId,
+          datePrevue: dateUtc(datePrevue),
+          heurePrevue: heurePrevue ?? "09:00",
+          titreInterne: idee.titre.slice(0, 200),
+          // Le détail de l'idée devient le premier jet du corps : le sens de
+          // la promotion est de NE PAS retaper ce qui est déjà écrit.
+          corps: idee.detail ?? null,
+          lienUrl: idee.lien ?? null,
+          statutRedaction: idee.detail ? "redige" : "idee",
+          responsableId: membre.membreId,
+        },
+        select: { id: true },
+      });
+
+      await tx.edIdee.update({
+        where: { id },
+        data: { statut: "promue", promueVersId: publication.id },
+      });
+
+      return { publicationId: publication.id };
+    });
+
+    await journaliser({
+      entite: "EdIdee",
+      entiteId: id,
+      action: "promotion",
+      membreId: membre.membreId,
+      avant: { statut: idee.statut },
+      apres: { statut: "promue", promueVersId: publicationId },
+    });
+    await journaliser({
+      entite: "EdPublication",
+      entiteId: publicationId,
+      action: "creation_par_promotion",
+      membreId: membre.membreId,
+      apres: { ideeId: id },
+    });
+
+    revalidatePath("/[locale]/(admin)/[adminPrefix]/console-editoriale", "page");
+    return { data: { ideeId: id, publicationId } };
+  } catch (e) {
+    return { error: messageErreur(e) };
+  }
+}
+
+// ── Archiver ──────────────────────────────────────────────────────────────
+
+/**
+ * Écarte une idée — sans la supprimer.
+ *
+ * Le modèle porte `motifArchivage` et le commentaire du schéma est explicite :
+ * « une idée écartée n'est jamais supprimée ». Le motif est donc OBLIGATOIRE :
+ * une idée écartée sans raison ressort six mois plus tard, et on refait le
+ * même débat.
+ */
+export async function archiverIdeeAction(
+  input: z.input<typeof archivageSchema>,
+): Promise<ActionResult<{ id: string }>> {
+  try {
+    const membre = await requirePermission("idee.promouvoir");
+    const parsed = archivageSchema.safeParse(input);
+    if (!parsed.success) {
+      return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
+    }
+    const { id, motif } = parsed.data;
+
+    const idee = await prisma.edIdee.findUnique({ where: { id }, select: { statut: true } });
+    if (!idee) return { error: "Idée introuvable" };
+
+    await prisma.edIdee.update({
+      where: { id },
+      data: { statut: "archivee", motifArchivage: motif },
+    });
+
+    await journaliser({
+      entite: "EdIdee",
+      entiteId: id,
+      action: "archivage",
+      membreId: membre.membreId,
+      avant: { statut: idee.statut },
+      apres: { statut: "archivee", motif },
+    });
+
+    revalidatePath("/[locale]/(admin)/[adminPrefix]/console-editoriale", "page");
+    return { data: { id } };
+  } catch (e) {
+    return { error: messageErreur(e) };
+  }
+}
