@@ -67,6 +67,34 @@ describe("Gate B dispose de ses services", () => {
     );
   });
 
+  it("la base E2E reçoit le dossier de démonstration Qualiopi", () => {
+    // 🔴 `qualiopi:seed` pose les données de RÉFÉRENCE (grille, indicateurs,
+    // barèmes) et aucun dossier. Les sept parcours de la phase 6 ont besoin d'un
+    // client, d'une session réalisée, d'une attestation — c'est
+    // `qualiopi:seed-demo` qui les crée.
+    //
+    // Dès qu'ils ont pu s'exécuter en CI, les parcours l'ont dit eux-mêmes :
+    // « session AXI-SES-DEMO-001 introuvable », « aucun client en base ».
+    // 🔑 C'est ce qu'on attend d'un parcours : qu'il NOMME ce qui lui manque,
+    // au lieu de se sauter en silence.
+    // 🔴 CE TEST S'EST TROUVÉ LUI-MÊME. Un premier jet cherchait
+    // `/pnpm qualiopi:seed-demo/` n'importe où dans le bloc — or le COMMENTAIRE
+    // qui explique pourquoi la commande est là contient ces mots. Le témoin
+    // négatif l'a démasqué : commande retirée, test toujours vert.
+    //
+    // 🔑 Une garde statique doit chercher la FORME de l'instruction, pas son
+    // vocabulaire. On exige une ligne de commande, pas une mention.
+    const commandes = bloc
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => !l.startsWith("#"));
+    expect(
+      commandes,
+      "sans `qualiopi:seed-demo`, les parcours de la phase 6 n'ont aucun dossier " +
+        "à parcourir et rougissent sur une absence de données",
+    ).toContain("pnpm qualiopi:seed-demo");
+  });
+
   it("le JOB garde bien le stub — le build en dépend", () => {
     // Contre-témoin : si quelqu'un remplaçait le stub au niveau du job « pour
     // simplifier », le build tenterait d'ouvrir une connexion Redis au SSG.
