@@ -108,14 +108,31 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
       const deborde = racine.scrollWidth > racine.clientWidth + 1;
       if (!deborde) return null;
       const limite = racine.clientWidth + 1;
+
+      // 🔴 CORRECTION 2026-08-21, second tour — la première version disait qu'elle
+      // écartait les éléments clippés, et ne le faisait PAS. Elle triait par bord
+      // droit décroissant : sur `/fr`, le bandeau défilant des logos (`w-max`,
+      // 7 172 px, découpé par un `overflow-hidden`) occupait les cinq places et
+      // enterrait le vrai coupable, qui n'excède la limite que de 5 px. Un
+      // diagnostic qui remonte toujours le même innocent ne vaut pas mieux que
+      // pas de diagnostic. On remonte donc réellement les ancêtres.
+      const estDecoupe = (el: Element): boolean => {
+        let p = el.parentElement;
+        while (p !== null && p !== racine) {
+          const ox = getComputedStyle(p).overflowX;
+          if (ox === "hidden" || ox === "clip" || ox === "auto" || ox === "scroll") return true;
+          p = p.parentElement;
+        }
+        return false;
+      };
+
       const fautifs: { tag: string; classe: string; gauche: number; droite: number }[] = [];
       for (const el of Array.from(document.querySelectorAll("*"))) {
         const r = el.getBoundingClientRect();
-        // Un élément CLIPPÉ par un ancêtre `overflow-hidden` dépasse ses bornes
-        // sans faire déborder le document : c'est le cas des bandeaux défilants.
-        // On ne retient que ce qui pousse réellement `scrollWidth`.
         if (r.width === 0 || r.height === 0) continue;
         if (r.right <= limite && r.left >= -1) continue;
+        // Ce qu'un ancêtre découpe ne pousse pas `scrollWidth`.
+        if (estDecoupe(el)) continue;
         fautifs.push({
           tag: el.tagName.toLowerCase(),
           classe: String((el as HTMLElement).className || "").slice(0, 120),
