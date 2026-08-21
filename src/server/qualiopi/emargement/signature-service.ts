@@ -30,6 +30,7 @@
  */
 
 import { randomUUID } from "node:crypto";
+import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import * as Sentry from "@sentry/nextjs";
 import { Prisma } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
@@ -271,7 +272,7 @@ export async function signerCreneau(input: EntreeSignature): Promise<ResultatSig
   // ⚠️ Cela n'invalide RIEN de ce qui a déjà été signé : ces heures ont été
   // réellement suivies et restent facturables (oubli O3). On empêche seulement
   // d'en ajouter de nouvelles.
-  if (ctx.enrollment.statut === "abandon" || ctx.enrollment.statut === "exclu") {
+  if (!estInscriptionActive(ctx.enrollment.statut)) {
     return {
       ok: false,
       raison: "inscription_inactive",

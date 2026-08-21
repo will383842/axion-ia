@@ -16,6 +16,7 @@
 "use server";
 
 import { createHash } from "node:crypto";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import React from "react";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
@@ -173,7 +174,7 @@ export async function generateSessionCreneauxAction(input: {
         // masquer en grille les créneaux DÉJÀ signés d'un abandon revenait à se
         // priver d'heures réellement suivies et facturables à l'OPCO.
         where: {
-          statut: { notIn: ["abandon", "exclu"] },
+          ...inscriptionsActives(),
         },
         select: { id: true },
       },
@@ -560,7 +561,7 @@ export async function importReleveConnexionAction(input: {
         orderBy: { date: "asc" },
       },
       enrollments: {
-        where: { statut: { notIn: ["abandon", "exclu"] } },
+        where: { ...inscriptionsActives() },
         select: {
           id: true,
           trainee: {

@@ -27,9 +27,12 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 
-/** Inscriptions sorties du dispositif : leur absence de trace est normale. */
-const STATUTS_SORTIS = ["abandon", "exclu"] as const;
+// 🔴 2026-08-21 — ce module portait SA PROPRE liste de statuts sortis, quinzième
+// copie du même prédicat. Elle vit désormais dans
+// `qualiopi/inscriptions/inscriptions-actives.ts`, avec le raisonnement complet
+// (renoncer n'est pas être absent).
 
 export interface TraceClotureSession {
   /** Inscriptions actives (hors abandon/exclu). */
@@ -98,7 +101,7 @@ export function sansAucuneTraceDePresence(): {
 }
 
 export async function mesurerTraceCloture(sessionId: string): Promise<TraceClotureSession> {
-  const actifs = { sessionId, statut: { notIn: [...STATUTS_SORTIS] } };
+  const actifs = { sessionId, ...inscriptionsActives() };
 
   const [totalActifs, avecTrace] = await Promise.all([
     prisma.enrollment.count({ where: actifs }),

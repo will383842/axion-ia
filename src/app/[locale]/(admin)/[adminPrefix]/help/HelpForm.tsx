@@ -215,8 +215,9 @@ function HelpTranslationFields({
       </div>
 
       <div className="admin-field">
-        <label className="admin-label">Corps</label>
+        <span className="admin-label">Corps</span>
         <TiptapEditor
+          label="Corps"
           name={`${prefix}_body`}
           initialHtml={initial?.body ?? ""}
           placeholder={prefix === "fr" ? "Rédigez l'article…" : "Rédigez l'article…"}
