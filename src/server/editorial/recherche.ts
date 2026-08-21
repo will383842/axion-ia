@@ -22,7 +22,6 @@
 
 import "server-only";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "../../../prisma/generated/client";
 
 export type ModeRecherche = "plein-texte" | "repli-contains";
 
@@ -55,6 +54,28 @@ export interface Recherche {
  */
 let indexDisponible: boolean | null = null;
 
+/**
+ * La dernière requête plein texte a échoué, alors que l'index EXISTE.
+ *
+ * 🔴 Défaut trouvé par la passe 2 du protocole, et il était pire que la
+ * panne qu'il masquait.
+ *
+ * Le `catch` du repli écrivait `indexDisponible = false` — c'est-à-dire
+ * qu'il rangeait « la requête a échoué » sous « l'index n'est pas posé ».
+ * L'écran affichait alors, sur une base qui a pourtant ses quatre colonnes
+ * `search_vector` :
+ *
+ *   « l'index plein texte n'est pas posé sur cette base — appliquez
+ *     prisma/migrations_fts/editorial_fts.sql »
+ *
+ * Un diagnostic FAUX envoie chercher pendant une heure du côté d'une
+ * migration déjà appliquée. C'est exactement le §1 du protocole : « une
+ * gate qui mesurait un fichier de configuration pendant que le conteneur
+ * tournait avec une autre valeur ». Le repli, lui, était bon — c'est ce
+ * qu'il RACONTAIT qui ne l'était pas.
+ */
+let echecRequete: string | null = null;
+
 export async function indexPleinTexteDisponible(): Promise<boolean> {
   if (indexDisponible !== null) return indexDisponible;
   try {
@@ -77,6 +98,17 @@ export async function indexPleinTexteDisponible(): Promise<boolean> {
 /** Remet le cache à zéro — pour les tests, et après application de la migration. */
 export function oublierEtatIndex(): void {
   indexDisponible = null;
+  echecRequete = null;
+}
+
+/**
+ * Pourquoi la recherche est retombée en mode simplifié, si elle l'a fait.
+ *
+ * `null` quand l'index est simplement absent — c'est un cas différent, et
+ * l'écran ne doit pas les confondre.
+ */
+export function raisonDuRepli(): string | null {
+  return echecRequete;
 }
 
 /** Coupe un texte pour l'affichage, sans couper un mot en deux. */
@@ -102,37 +134,52 @@ async function chercherPleinTexte(terme: string, limite: number): Promise<Result
   // `plainto_tsquery` plutôt que `to_tsquery` : il accepte une saisie humaine
   // (« processus client ») sans exiger d'opérateurs, et ne lève jamais sur une
   // ponctuation malheureuse. `to_tsquery` aurait planté sur un « & » tapé.
-  const requete = Prisma.sql`plainto_tsquery('fr_unaccent', ${terme})`;
+  //
+  // 🔴 L'appel est ÉCRIT DANS CHAQUE GABARIT, et surtout pas extrait dans un
+  // fragment `Prisma.sql` réutilisé.
+  //
+  // Défaut trouvé par la passe 2 du protocole. Le fragment marchait hors
+  // bundle — je l'ai revérifié : 44 résultats — et échouait sous Turbopack,
+  // où l'instance `Sql` traverse une frontière de module et perd son
+  // identité de classe. Le sérialiseur ne la reconnaissait plus comme du
+  // SQL et la passait en PARAMÈTRE jsonb :
+  //
+  //     ERROR: function ts_rank(tsvector, jsonb) does not exist
+  //
+  // Le mode pondéré et désaccentué promis au §2 bis B n'a donc jamais
+  // tourné en développement — sans que rien ne le dise, puisque le repli
+  // rendait des résultats plausibles. Le terme reste un paramètre lié : on
+  // duplique trois lignes de SQL, pas une faille d'injection.
 
   const [publications, idees, assets, invites] = await Promise.all([
     prisma.$queryRaw<LigneBrute[]>`
       SELECT id::text AS id, titre_interne AS titre,
              coalesce(accroche, left(corps, 200)) AS extrait,
-             ts_rank(search_vector, ${requete}) AS rang
+             ts_rank(search_vector, plainto_tsquery('fr_unaccent', ${terme})) AS rang
       FROM ed_publications
-      WHERE search_vector @@ ${requete} AND archivee_a IS NULL
+      WHERE search_vector @@ plainto_tsquery('fr_unaccent', ${terme}) AND archivee_a IS NULL
       ORDER BY rang DESC LIMIT ${limite}
     `,
     prisma.$queryRaw<LigneBrute[]>`
       SELECT id::text AS id, titre, detail AS extrait,
-             ts_rank(search_vector, ${requete}) AS rang
+             ts_rank(search_vector, plainto_tsquery('fr_unaccent', ${terme})) AS rang
       FROM ed_idees
-      WHERE search_vector @@ ${requete} AND statut <> 'archivee'
+      WHERE search_vector @@ plainto_tsquery('fr_unaccent', ${terme}) AND statut <> 'archivee'
       ORDER BY rang DESC LIMIT ${limite}
     `,
     prisma.$queryRaw<LigneBrute[]>`
       SELECT id::text AS id, libelle AS titre,
              left(transcription, 200) AS extrait,
-             ts_rank(search_vector, ${requete}) AS rang
+             ts_rank(search_vector, plainto_tsquery('fr_unaccent', ${terme})) AS rang
       FROM ed_assets
-      WHERE search_vector @@ ${requete}
+      WHERE search_vector @@ plainto_tsquery('fr_unaccent', ${terme})
       ORDER BY rang DESC LIMIT ${limite}
     `,
     prisma.$queryRaw<LigneBrute[]>`
       SELECT id::text AS id, nom AS titre, entreprise AS extrait,
-             ts_rank(search_vector, ${requete}) AS rang
+             ts_rank(search_vector, plainto_tsquery('fr_unaccent', ${terme})) AS rang
       FROM ed_invites
-      WHERE search_vector @@ ${requete}
+      WHERE search_vector @@ plainto_tsquery('fr_unaccent', ${terme})
       ORDER BY rang DESC LIMIT ${limite}
     `,
   ]);
@@ -239,10 +286,12 @@ export async function chercher(terme: string, limite = 25): Promise<Recherche> {
         resultats: await chercherPleinTexte(propre, limite),
         complete: true,
       };
-    } catch {
-      // L'index existe mais la requête a échoué (configuration `fr_unaccent`
-      // absente, par exemple) : on retombe plutôt que de rendre une erreur.
-      indexDisponible = false;
+    } catch (e) {
+      // L'index existe mais la requête a échoué. On retombe — mais on garde
+      // `indexDisponible` à `true` : le confondre avec « index absent »
+      // faisait afficher un diagnostic faux. Voir `echecRequete`.
+      echecRequete =
+        e instanceof Error ? (e.message.split("\n")[0] ?? "erreur inconnue") : "erreur inconnue";
     }
   }
 

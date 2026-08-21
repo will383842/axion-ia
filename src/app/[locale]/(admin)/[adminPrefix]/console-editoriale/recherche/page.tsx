@@ -17,7 +17,7 @@ import {
   AdminBadge,
   AdminEmptyState,
 } from "@/components/admin/ui";
-import { chercher, type ResultatRecherche } from "@/server/editorial/recherche";
+import { chercher, type ResultatRecherche, raisonDuRepli } from "@/server/editorial/recherche";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +42,9 @@ export default async function RecherchePage({ params, searchParams }: PageProps)
   const base = `/fr/${adminPrefix}/console-editoriale`;
   const terme = (sp.q ?? "").trim();
   const recherche = terme ? await chercher(terme) : null;
+
+  // ⚠️ APRÈS `chercher` : c'est l'appel lui-même qui renseigne la raison.
+  const raison = raisonDuRepli();
 
   /** Où mène un résultat. Un asset n'a pas encore d'écran : on l'annonce. */
   function lienDe(r: ResultatRecherche): string | null {
@@ -87,9 +90,33 @@ export default async function RecherchePage({ params, searchParams }: PageProps)
               // mensonge par omission.
               <>
                 {" — "}
-                <strong>recherche simplifiée</strong> : l&apos;index plein texte n&apos;est pas posé
-                sur cette base. Les accents et la pertinence ne sont pas pris en compte. Appliquez{" "}
-                <code className="admin-code-inline">prisma/migrations_fts/editorial_fts.sql</code>.
+                <strong>recherche simplifiée</strong> :{" "}
+                {/*
+                  🔴 Deux causes DIFFÉRENTES, deux messages.
+
+                  Défaut trouvé par la passe 2 du protocole : ce bandeau
+                  affirmait « l'index n'est pas posé » y compris quand il
+                  l'était, parce que le repli rangeait « la requête a
+                  échoué » sous « l'index est absent ». Envoyer quelqu'un
+                  appliquer une migration déjà appliquée lui coûte une
+                  heure — un diagnostic faux est pire qu'un silence.
+                */}
+                {raison ? (
+                  <>
+                    l&apos;index est bien posé, mais la requête plein texte a échoué. Les accents et
+                    la pertinence ne sont pas pris en compte. Erreur remontée par la base :{" "}
+                    <code className="admin-code-inline">{raison}</code>
+                  </>
+                ) : (
+                  <>
+                    l&apos;index plein texte n&apos;est pas posé sur cette base. Les accents et la
+                    pertinence ne sont pas pris en compte. Appliquez{" "}
+                    <code className="admin-code-inline">
+                      prisma/migrations_fts/editorial_fts.sql
+                    </code>
+                    .
+                  </>
+                )}
               </>
             )}
           </p>

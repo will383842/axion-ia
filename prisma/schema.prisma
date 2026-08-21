@@ -11681,6 +11681,27 @@ model EdJournal {
   id       String    @id @default(uuid()) @db.Uuid
   membreId String?   @map("membre_id") @db.Uuid
   membre   EdMembre? @relation(fields: [membreId], references: [id], onDelete: SetNull)
+
+  /// L'identite AUTHENTIFIEE de qui a agi, independamment de l'equipe.
+  ///
+  /// Defaut trouve par les passes 2 et 5 du protocole, qui l'ont vu
+  /// separement : toutes les entrees du journal portaient membre_id = NULL,
+  /// parce que `membreId` est une cle etrangere vers `ed_membres` et qu'une
+  /// console a « un seul utilisateur au depart » n'a aucun membre declare.
+  /// Le critere 3 du lot 4 dit « toute mutation au journal AVEC SON AUTEUR »
+  /// — il ne l'etait donc jamais.
+  ///
+  /// La parade evidente aurait ete de creer un EdMembre a la volee. Elle est
+  /// mauvaise : une fois la ligne ecrite, c'est ELLE qui fait foi pour les
+  /// permissions (regle 1 de `requireMembreEditorial`), et le role fige ne
+  /// suivrait plus une retrogradation cote administration. On aurait corrige
+  /// une trace manquante en creant un trou de securite.
+  ///
+  /// Ces deux colonnes enregistrent donc l'acteur reel. Pas de cle etrangere
+  /// vers AdminUser : un journal doit survivre a la suppression du compte
+  /// qu'il incrimine, sinon il s'efface au moment ou il servirait.
+  auteurUserId String? @map("auteur_user_id")
+  auteurNom    String? @map("auteur_nom") @db.VarChar(160)
   entite   String    @db.VarChar(60)
   entiteId String    @map("entite_id") @db.Uuid
   action   String    @db.VarChar(40)

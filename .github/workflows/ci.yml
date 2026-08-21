@@ -611,13 +611,31 @@ jobs:
             | grep -E "[0-9]+\.[0-9]+" || (echo "::error::pgvector not available"; exit 1)
       - name: Apply all Prisma migrations (fresh DB)
         run: pnpm prisma migrate deploy
+      # La gate applique TOUS les fichiers du dossier, par boucle — comme le
+      # fait `scripts/docker-entrypoint.sh` au boot de production.
+      #
+      # Avant, deux fichiers etaient nommes en dur. Un troisieme est arrive
+      # (`editorial_fts.sql`) sans que la gate le voie : elle validait donc un
+      # schema FTS qui n'etait PAS celui que la prod applique. C'est le §1 du
+      # protocole — « une gate qui mesurait un fichier de configuration pendant
+      # que le conteneur tournait avec une autre valeur ». Signale par la passe
+      # 2 de la verification de la console editoriale.
+      #
+      # La boucle est volontairement identique a celle de l'entrypoint : le
+      # prochain fichier FTS sera couvert sans que personne ait a y penser.
       - name: Apply FTS raw migrations post Prisma
         run: |
           set -e
-          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
-            -f prisma/migrations_fts/0002_fts_setup.sql
-          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
-            -f prisma/migrations_fts/kb_fts_setup.sql
+          shopt -s nullglob
+          fichiers=(prisma/migrations_fts/*.sql)
+          if [ ${#fichiers[@]} -eq 0 ]; then
+            echo "::error::aucun fichier dans prisma/migrations_fts/"; exit 1
+          fi
+          for sql in "${fichiers[@]}"; do
+            echo "[fts] $sql"
+            PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+              -v ON_ERROR_STOP=1 -f "$sql"
+          done
       - name: Verify _prisma_migrations table healthy
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \

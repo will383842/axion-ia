@@ -243,17 +243,42 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
 
       <div className="mt-[var(--space-admin-6)]">
         <AdminCard>
-          <h2 className="admin-h2 mb-[var(--space-admin-3)]">Ce que ce lot ne fait pas encore</h2>
-          {/* Dire ce qui manque vaut mieux que laisser croire à une panne :
-              un écran muet sur ses limites se lit comme un bug. */}
+          <h2 className="admin-h2 mb-[var(--space-admin-3)]">
+            Ce que la console ne fait pas encore
+          </h2>
+          {/*
+            Dire ce qui manque vaut mieux que laisser croire à une panne :
+            un écran muet sur ses limites se lit comme un bug.
+
+            🔴 Mais un écran qui décrit un état PÉRIMÉ est pire encore.
+
+            Défaut trouvé par la passe 2 du protocole : ce bloc annonçait
+            encore « la rédaction, le kit de publication et la médiathèque
+            arrivent au lot 1 » alors que les lots 1 à 6 étaient commités et
+            que les trois existaient. Un utilisateur qui lit ça cherche
+            ailleurs une fonction qui est devant lui.
+
+            Ce qui reste ici doit être vrai AUJOURD'HUI, ou disparaître.
+          */}
           <ul className="list-disc space-y-1 pl-5 text-[color:var(--color-admin-fg-muted)]">
             <li>
-              La rédaction, le kit de publication et la médiathèque arrivent au lot 1 — le lot 0
-              montre les quatre mois, il ne les modifie pas.
+              <strong>La publication automatique n&apos;existe pas.</strong> Le kit prépare, vous
+              collez, puis vous marquez la publication comme publiée avec son URL réelle. Les accès
+              aux plateformes (lot 5) se demandent, ils ne se codent pas — et sans l&apos;audit
+              TikTok, une vidéo envoyée par l&apos;API partirait <strong>en privé</strong> sans que
+              rien ne le signale.
             </li>
             <li>
-              Les règles de conformité et d&apos;alerte sont <strong>en base</strong> et testées,
-              mais leur évaluateur se branche au lot 1, avec la validation.
+              <strong>La durée d&apos;une vidéo déposée n&apos;est pas extraite</strong> — il
+              faudrait
+              <code className="admin-code-inline">ffprobe</code> dans l&apos;image. La règle de
+              spécification de plateforme rend donc « non évaluée » sur ces assets, plutôt que de
+              les déclarer conformes sans avoir rien mesuré.
+            </li>
+            <li>
+              Il n&apos;y a <strong>pas d&apos;écran de réglages</strong> : les seuils et les règles
+              vivent en base et s&apos;y corrigent, mais avec un accès à la base — pas depuis la
+              console.
             </li>
             <li>
               Le calendrier du site reste vide : le branchement <code>content-gen</code> se décidera

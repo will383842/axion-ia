@@ -19,8 +19,27 @@
 import type { Page } from "@playwright/test";
 
 export const ADMIN_PREFIX = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
-export const ADMIN_EMAIL = process.env["ADMIN_SEED_EMAIL"] ?? "admin@axion-ia.local";
-export const ADMIN_PASSWORD = process.env["ADMIN_SEED_PASSWORD"] ?? "ChangeMe!2026Axion";
+/**
+ * 🔴 Les valeurs par défaut sont celles que `prisma/seed.ts` sème VRAIMENT.
+ *
+ * Défaut trouvé par la passe 2 du protocole de la console éditoriale.
+ *
+ * Elles disaient `admin@axion-ia.local` / `ChangeMe!2026Axion`, alors que
+ * `prisma/seed.ts:36` code en dur `admin@axion-ia.com` / `AdminAxion2026!`
+ * — sans lire aucune variable d'environnement. Le compte cherché n'a donc
+ * jamais existé, et `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD` ne sont pas
+ * dans `.env`.
+ *
+ * Conséquence, mesurée : **3 tests passés, 14 sautés** — un vert trompeur
+ * sur TOUTE suite E2E authentifiée du dépôt, pas seulement la console
+ * éditoriale. Avec les bons identifiants : 10 passés, 1 échoué, 6 non
+ * exécutés (mode `serial`).
+ *
+ * Les variables restent prioritaires : un environnement qui sème
+ * autrement peut toujours les poser.
+ */
+export const ADMIN_EMAIL = process.env["ADMIN_SEED_EMAIL"] ?? "admin@axion-ia.com";
+export const ADMIN_PASSWORD = process.env["ADMIN_SEED_PASSWORD"] ?? "AdminAxion2026!";
 
 export interface LoginOptions {
   /** Override email pour ce login précis. */
@@ -92,7 +111,23 @@ export async function isAdminLoginConfigured(page: Page): Promise<boolean> {
   try {
     await loginAsAdmin(page);
     return true;
-  } catch {
+  } catch (e) {
+    // 🔴 On DIT pourquoi on saute.
+    //
+    // Un `catch` muet transforme n'importe quelle panne — mauvais
+    // identifiants, limite de débit sur le login, serveur absent — en un
+    // test « sauté », donc en une suite verte. C'est ce qui a masqué les
+    // identifiants faux ci-dessus pendant tout ce temps.
+    //
+    // Le saut reste un saut : le rendre bloquant relèverait d'une décision
+    // sur toute la suite E2E du dépôt, pas d'un correctif de fixture. Mais
+    // il laisse désormais une trace lisible dans le rapport.
+    const pourquoi = e instanceof Error ? e.message.split("\n")[0] : String(e);
+    console.warn(
+      `[admin-auth] Connexion impossible avec ${ADMIN_EMAIL} — les tests ` +
+        `authentifiés vont se SAUTER (et la suite paraîtra verte). ` +
+        `Cause : ${pourquoi}`,
+    );
     return false;
   }
 }

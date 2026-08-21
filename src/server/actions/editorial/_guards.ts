@@ -27,7 +27,11 @@ import type { Prisma } from "../../../../prisma/generated/client";
 export interface MembreEditorial {
   /** `AdminUser.id` — toujours présent, c'est l'identité authentifiée. */
   readonly userId: string;
-  /** `EdMembre.id` — `null` tant que l'écran d'équipe n'existe pas (lot 4). */
+  /**
+   * `EdMembre.id` — `null` tant qu'aucun membre n'est déclaré pour ce
+   * compte. C'est le cas NORMAL d'une console à un seul utilisateur, pas
+   * une anomalie : voir `auteurUserId` sur `EdJournal` pour la trace.
+   */
   readonly membreId: string | null;
   readonly role: RoleEditorial;
   readonly nom: string;
@@ -112,6 +116,30 @@ export async function journaliser(
   tx?: Prisma.TransactionClient,
 ): Promise<void> {
   const client = tx ?? prisma;
+
+  // 🔴 L'auteur est résolu ICI, et pas passé par l'appelant.
+  //
+  // Défaut trouvé par les passes 2 et 5 du protocole, séparément : toutes
+  // les entrées portaient `membre_id = NULL`, parce que la clé étrangère
+  // vise `ed_membres` et qu'une console « à un seul utilisateur au départ »
+  // n'a aucun membre déclaré. Le critère 3 du lot 4 — « toute mutation au
+  // journal AVEC SON AUTEUR » — n'était donc jamais tenu, y compris pour
+  // les 74 entrées de l'import.
+  //
+  // Résoudre ici plutôt qu'à l'appel garantit qu'aucun chemin ne l'oublie :
+  // 26 appels à `journaliser` existent, et il suffisait d'en manquer un.
+  let auteur: { userId: string; nom: string } | null = null;
+  try {
+    const session = await auth();
+    const uid = session?.user?.id;
+    if (uid) {
+      auteur = { userId: uid, nom: session?.user?.name ?? session?.user?.email ?? uid };
+    }
+  } catch {
+    // Hors requête — un script d'amorçage, un import en ligne de commande.
+    // L'absence d'auteur est alors la VÉRITÉ, et l'inventer serait pire.
+  }
+
   try {
     // Les clés `avant`/`apres` ne sont posées QUE si elles ont une valeur :
     // sous `exactOptionalPropertyTypes`, une clé présente valant `undefined`
@@ -122,6 +150,8 @@ export async function journaliser(
         entiteId: input.entiteId,
         action: input.action,
         membreId: input.membreId ?? null,
+        auteurUserId: auteur?.userId ?? null,
+        auteurNom: auteur?.nom ?? null,
         ...(input.avant !== undefined ? { avant: input.avant as Prisma.InputJsonValue } : {}),
         ...(input.apres !== undefined ? { apres: input.apres as Prisma.InputJsonValue } : {}),
       },
