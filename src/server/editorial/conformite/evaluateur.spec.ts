@@ -17,6 +17,7 @@ import {
   evaluerConformite,
   type RegleEvaluable,
   type PublicationAControler,
+  motifRisque,
 } from "./evaluateur";
 import { ED_REGLES_CONFORMITE } from "@/server/editorial/referentiels/conformite";
 
@@ -407,5 +408,142 @@ describe("evaluerConformite — la synthèse", () => {
       expect(c.message, `règle ${c.code}`).not.toMatch(/\{[a-z]+\}/i);
       expect(c.message.length, `règle ${c.code}`).toBeGreaterThan(10);
     }
+  });
+});
+
+describe("motifRisque — le motif vient de la base, pas d'une revue de code", () => {
+  it("🔴 refuse les quantificateurs imbriqués mesurés par la passe 4", () => {
+    // `(a+)+$` sur 40 caractères : plus de deux minutes. JavaScript n'offre
+    // aucun délai d'expiration sur une expression régulière — la seule
+    // parade est de refuser AVANT de compiler.
+    for (const m of ["(a+)+$", "(a*)*", "([a-z]+)*x", "(\d+){2,}", "(\w+)+@"]) {
+      expect(motifRisque(m), m).toBe(true);
+    }
+  });
+
+  it("🔴 ne rejette AUCUNE des 12 règles réelles", () => {
+    // Le vrai risque d'une garde comme celle-ci n'est pas qu'elle laisse
+    // passer un piège : c'est qu'elle rende les vraies règles muettes. Une
+    // règle « non évaluée » est une règle qui ne garde plus rien, et elle
+    // s'affiche verte.
+    const avecMotif = ED_REGLES_CONFORMITE.filter((r) => r.motifRegex);
+    expect(avecMotif.length).toBeGreaterThan(0);
+    for (const r of avecMotif) {
+      expect(motifRisque(r.motifRegex as string), r.code).toBe(false);
+    }
+  });
+
+  it("laisse passer les formes courantes et sûres", () => {
+    for (const m of ["(?:grenoble|isère)", "^https?://", "[A-Za-z]+", "(?<!\p{L})(?:ia)"]) {
+      expect(motifRisque(m), m).toBe(false);
+    }
+  });
+
+  it("🔴 rend « non évaluée » — jamais « conforme » — sur un motif refusé", () => {
+    // Le piège du §1 : une garde verte qui ne garde rien. Un motif refusé
+    // ne doit surtout pas se lire comme un succès.
+    const constat = evaluerRegle(
+      {
+        code: "piege",
+        libelle: "Motif explosif",
+        motif: "piege",
+        message: "{extrait}",
+        actif: true,
+        gravite: "bloquant",
+        motifRegex: "(a+)+$",
+        interdit: true,
+        bloquant: true,
+        parametres: null,
+      } as never,
+      { corps: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!" } as never,
+    );
+    expect(constat.etat).toBe("non_evaluee");
+    expect(constat.raisonNonEvaluee).toContain("quantificateur");
+  });
+
+  it("🔴 répond VITE là où le moteur gelait — la garde se mesure", () => {
+    // Sans elle : plus de deux minutes sur cette entrée exacte.
+    const debut = performance.now();
+    evaluerRegle(
+      {
+        code: "piege",
+        libelle: "Motif explosif",
+        actif: true,
+        gravite: "bloquant",
+        motifRegex: "(a+)+$",
+        interdit: true,
+        bloquant: true,
+        parametres: null,
+      } as never,
+      { corps: "a".repeat(40) + "!" } as never,
+    );
+    expect(performance.now() - debut).toBeLessThan(100);
+  });
+});
+
+describe("champs mal configurés — la gate verte qui ne garde rien", () => {
+  const regleGeo = {
+    code: "geo",
+    libelle: "Mention géographique",
+    motif: "toponyme",
+    message: "Toponyme interdit : {extrait}",
+    actif: true,
+    gravite: "bloquant",
+    interdit: true,
+    motifRegex: "(?:grenoble|isère)",
+    parametres: { champs: ["inexistant"] },
+  };
+
+  it("🔴 rend « non évaluée » — jamais « conforme » — sur un champ inconnu", () => {
+    // Le piège du §1 dans sa forme la plus pure. `parametres.champs` était
+    // transtypé sans contrôle : une faute de frappe dans un paramètre
+    // ÉDITABLE DEPUIS LA CONSOLE désarmait un interdit réglementaire, en
+    // silence, et l'écran affichait un succès.
+    const constat = evaluerRegle(
+      regleGeo as never,
+      {
+        corps: "Nos ateliers à Grenoble et en Isère.",
+        tags: [],
+      } as never,
+    );
+
+    expect(constat.etat).not.toBe("conforme");
+    expect(constat.etat).toBe("non_evaluee");
+    expect(constat.raisonNonEvaluee).toContain("inexistant");
+    // Le message doit dire les champs POSSIBLES : signaler la faute sans
+    // donner la bonne orthographe oblige à ouvrir le code.
+    expect(constat.raisonNonEvaluee).toContain("corps");
+  });
+
+  it("évalue normalement quand les champs sont bons", () => {
+    const constat = evaluerRegle(
+      { ...regleGeo, parametres: { champs: ["corps"] } } as never,
+      {
+        corps: "Nos ateliers à Grenoble.",
+        tags: [],
+      } as never,
+    );
+    expect(constat.etat).toBe("enfreinte");
+  });
+
+  it("🔴 garde aussi le plafond de mentions, où le trou était pire", () => {
+    // Sans champ inspecté, `trouve` restait à 0 : le plafond passait même
+    // sur une publication qui compte trente mentions.
+    const constat = evaluerRegle(
+      {
+        code: "mentions",
+        libelle: "Plafond de mentions",
+        motif: "mentions",
+        message: "{trouve} mentions pour un plafond de {max}",
+        actif: true,
+        gravite: "avertissement",
+        interdit: true,
+        motifRegex: null,
+        parametres: { max: 3, champs: ["corp"] },
+      } as never,
+      { corps: "@a @b @c @d @e @f @g @h", tags: [] } as never,
+    );
+    expect(constat.etat).toBe("non_evaluee");
+    expect(constat.raisonNonEvaluee).toContain("corp");
   });
 });

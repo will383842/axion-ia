@@ -94,10 +94,43 @@ const REGLES_CONTEXTUELLES: Record<string, "autorisation" | "specs"> = {
   "spec-plateforme": "specs",
 };
 
-function lireChamps(regle: RegleEvaluable): ChampConformite[] {
+/** Les seuls champs qu'une règle peut désigner. Le `as` d'avant mentait. */
+const CHAMPS_CONNUS: readonly string[] = ["corps", "premierCommentaire", "tags", "lienUrl"];
+
+/**
+ * Les champs qu'une règle inspecte, ou la liste des champs INCONNUS.
+ *
+ * 🔴 Défaut trouvé par la passe 4 du protocole (adversaire).
+ *
+ * `parametres.champs` était transtypé (`as ChampConformite[]`) sans le
+ * moindre contrôle. Une règle configurée sur `["inexistant"]` n'inspectait
+ * donc AUCUN texte — et une règle `interdit: true` qui ne trouve rien est
+ * déclarée CONFORME. La règle `geo` ainsi mal configurée rendait vert un
+ * corps citant « Grenoble ».
+ *
+ * C'est le piège du §1 du protocole dans sa forme la plus pure : la gate
+ * verte qui ne garde rien. Une faute de frappe dans un paramètre éditable
+ * depuis la console désarmait un interdit réglementaire, en silence, et
+ * l'écran affichait un succès.
+ *
+ * L'absence de bornes rendait déjà `non_evaluee` ; un champ inconnu doit
+ * faire de même. Les deux disent la même chose — « je n'ai rien pu
+ * vérifier » — et c'est l'inverse de « tout va bien ».
+ */
+function lireChamps(regle: RegleEvaluable): {
+  champs: ChampConformite[];
+  inconnus: string[];
+} {
   const brut = regle.parametres?.["champs"];
-  if (Array.isArray(brut) && brut.length > 0) return brut as ChampConformite[];
-  return CHAMPS_PAR_DEFAUT;
+  if (!Array.isArray(brut) || brut.length === 0) {
+    return { champs: [...CHAMPS_PAR_DEFAUT], inconnus: [] };
+  }
+  const demandes = brut.map(String);
+  const inconnus = demandes.filter((c) => !CHAMPS_CONNUS.includes(c));
+  return {
+    champs: demandes.filter((c) => CHAMPS_CONNUS.includes(c)) as ChampConformite[],
+    inconnus,
+  };
 }
 
 function nombre(regle: RegleEvaluable, cle: string): number | null {
@@ -217,8 +250,20 @@ function evaluerTagsListe(regle: RegleEvaluable, pub: PublicationAControler): Co
 function evaluerMentions(regle: RegleEvaluable, pub: PublicationAControler): Constat {
   const max = nombre(regle, "max");
   if (max === null) return nonEvaluee(regle, "Plafond `max` absent des paramètres de la règle.");
+  // 🔴 Même trou que dans l'évaluateur par motif : un champ inconnu ne
+  // faisait inspecter AUCUN texte, donc `trouve` restait à 0, donc la règle
+  // était déclarée conforme. Ici le défaut est pire : le plafond de
+  // mentions passait même sur une publication qui en compte trente.
+  const { champs, inconnus } = lireChamps(regle);
+  if (inconnus.length > 0) {
+    return nonEvaluee(
+      regle,
+      `Champ(s) inconnu(s) dans la configuration : ${inconnus.join(", ")}. ` +
+        `Cette règle n'inspecte donc rien.`,
+    );
+  }
   let trouve = 0;
-  for (const { valeur } of textesDe(pub, lireChamps(regle))) {
+  for (const { valeur } of textesDe(pub, champs)) {
     // Une mention est un `@` suivi d'au moins un caractère de nom. Un `@`
     // isolé, ou une adresse e-mail, n'en est pas une.
     trouve += (valeur.match(/(?<![\w.])@[A-Za-z0-9][\w.-]*/g) ?? []).length;
@@ -329,6 +374,18 @@ export function evaluerRegle(
     );
   }
 
+  // 🔴 Le motif vient de la BASE, donc d'une saisie que personne n'a
+  // relue. On le refuse AVANT de le compiler : voir `motifRisque`.
+  if (motifRisque(regle.motifRegex)) {
+    return nonEvaluee(
+      regle,
+      `Motif refusé : il contient un quantificateur dans un groupe lui-même ` +
+        `quantifié (« ${regle.motifRegex} »), ce qui peut geler l'évaluation ` +
+        `pendant plusieurs minutes sur un texte court. Réécrivez-le sans ` +
+        `imbriquer les répétitions.`,
+    );
+  }
+
   let motif: RegExp;
   try {
     // `g` pour parcourir, `i` par convention du registre. Jamais `u`.
@@ -337,10 +394,26 @@ export function evaluerRegle(
     return nonEvaluee(regle, `Motif illisible : ${regle.motifRegex}`);
   }
 
-  const textes = textesDe(publication, lireChamps(regle));
+  const { champs, inconnus } = lireChamps(regle);
+  if (inconnus.length > 0) {
+    // 🔴 Surtout pas `conforme` : voir `lireChamps`.
+    return nonEvaluee(
+      regle,
+      `Champ(s) inconnu(s) dans la configuration : ${inconnus.join(", ")}. ` +
+        `Cette règle n'inspecte donc rien. Champs possibles : ` +
+        `${CHAMPS_CONNUS.join(", ")}.`,
+    );
+  }
+  if (champs.length === 0) {
+    return nonEvaluee(regle, "Aucun champ à inspecter : la règle ne garde rien en l'état.");
+  }
+
+  const textes = textesDe(publication, champs);
   for (const { valeur } of textes) {
     motif.lastIndex = 0;
-    const trouve = motif.exec(valeur);
+    // Seconde ceinture : même un motif sain ne reçoit pas un texte sans
+    // borne. L'extrait fautif reste correct — il est borné bien avant.
+    const trouve = motif.exec(valeur.slice(0, LONGUEUR_MAX_INSPECTEE));
     if (trouve) {
       if (regle.interdit) {
         return enfreinte(regle, extraitAutour(valeur, trouve.index, trouve[0].length));
@@ -387,4 +460,49 @@ export function evaluerConformite(
     nonEvaluees: constats.filter((c) => c.etat === "non_evaluee"),
     validable: bloquantes.length === 0,
   };
+}
+
+// ── Le motif vient de la BASE : il n'est pas de confiance ─────────────────
+
+/**
+ * Longueur maximale d'un texte soumis à un motif.
+ *
+ * Un corps de 108 000 caractères s'évalue en 1 ms contre les 12 règles
+ * réelles — la borne n'est donc pas là pour elles. Elle est là pour qu'un
+ * motif mal écrit ne dispose pas d'un texte arbitrairement long.
+ */
+const LONGUEUR_MAX_INSPECTEE = 200_000;
+
+/**
+ * Motifs à explosion combinatoire — un quantificateur DANS un groupe
+ * lui-même quantifié.
+ *
+ * 🔴 Défaut trouvé par la passe 4 du protocole (adversaire).
+ *
+ * `motifRegex` est lu en base et compilé tel quel. Le §8 fait de cette
+ * modifiabilité une promesse centrale — « corriger un seuil un dimanche soir
+ * sans pull request » — ce qui veut dire, en creux, qu'un motif arrive dans
+ * le moteur sans passer par une revue de code. Mesuré sur `(a+)+$` :
+ *
+ * | Longueur du texte | Temps         |
+ * | ----------------- | ------------- |
+ * | 18 caractères     | 39 ms         |
+ * | 24 caractères     | 273 ms        |
+ * | 26 caractères     | 989 ms        |
+ * | 40 caractères     | **> 2 min**   |
+ *
+ * JavaScript n'offre aucun délai d'expiration sur une expression régulière :
+ * la seule parade est de REFUSER le motif avant de le compiler.
+ *
+ * ⚠️ Cette détection est une heuristique, et elle le reste. Elle attrape la
+ * forme de loin la plus fréquente — `(a+)+`, `(a*)*`, `(\d+){2,}` — mais pas
+ * les alternances qui se recouvrent, `(a|a)*`. Un motif qui passe ici n'est
+ * donc pas prouvé sûr ; il est seulement débarrassé du piège courant. Le dire
+ * vaut mieux que laisser croire à une garantie.
+ */
+const QUANTIFICATEUR_IMBRIQUE = /\([^()]*[+*][^()]*\)\s*[+*{]/;
+
+/** Vrai si le motif est refusé avant même d'être compilé. */
+export function motifRisque(source: string): boolean {
+  return QUANTIFICATEUR_IMBRIQUE.test(source);
 }
