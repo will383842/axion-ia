@@ -73,42 +73,60 @@ export function PressContact({ labels }: PressContactProps) {
             <p className="text-mocha-fg/70 mt-4 text-sm">{labels.email}</p>
           </div>
 
+          {/* 🔴 2026-08-21 — STRUCTURE DE LISTE DE DÉFINITIONS INVALIDE (WCAG A).
+              axe rendait `definition-list` (1 nœud) + `dlitem` (6 nœuds) sur
+              `/fr/presse` : chaque `<div>` enfant du `<dl>` contenait une icône
+              ET un `<div>` imbriqué portant le `<dt>`/`<dd>`. La règle est
+              stricte — un `<dl>` n'accepte que des `<dt>`, `<dd>`, ou des `<div>`
+              qui ne contiennent QUE des `<dt>`/`<dd>`.
+
+              Pour un lecteur d'écran, la conséquence n'est pas cosmétique : les
+              paires terme/définition ne sont plus reconnues comme telles, et le
+              bloc de contact presse se lit comme six fragments sans relation.
+
+              L'icône passe DANS le `<dt>`, en position absolue : elle est
+              décorative (`aria-hidden`), donc sa place dans l'arbre importe peu,
+              et le rendu ne bouge pas.
+
+              ⚠️ Ce défaut est le JUMEAU de celui corrigé le matin même dans
+              `AuditDetailPage.tsx` (PR 770). Je n'avais pas balayé les voisins.
+              Avant d'ajouter un `<dl>` ailleurs : `grep -rn "<dl" src`. */}
           <dl className="border-border-on-mocha grid gap-6 border-t pt-8 sm:grid-cols-3 lg:grid-cols-1 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
-            <div className="flex items-start gap-4">
-              <Mail className="text-terracotta-soft mt-1 h-5 w-5 shrink-0" aria-hidden="true" />
-              <div>
-                <dt className="text-mocha-fg/70 text-[11px] font-semibold tracking-[0.18em] uppercase">
-                  Email
-                </dt>
-                <dd className="text-mocha-fg mt-1.5 text-sm font-semibold break-all">
-                  {labels.email}
-                </dd>
-              </div>
+            <div className="relative pl-9">
+              <dt className="text-mocha-fg/70 text-[11px] font-semibold tracking-[0.18em] uppercase">
+                <Mail
+                  className="text-terracotta-soft absolute top-1 left-0 h-5 w-5 shrink-0"
+                  aria-hidden="true"
+                />
+                Email
+              </dt>
+              <dd className="text-mocha-fg mt-1.5 text-sm font-semibold break-all">
+                {labels.email}
+              </dd>
             </div>
-            <div className="flex items-start gap-4">
-              <Clock className="text-terracotta-soft mt-1 h-5 w-5 shrink-0" aria-hidden="true" />
-              <div>
-                <dt className="text-mocha-fg/70 text-[11px] font-semibold tracking-[0.18em] uppercase">
-                  {labels.responseTimeLabel}
-                </dt>
-                <dd className="text-mocha-fg mt-1.5 text-sm font-semibold">
-                  {labels.responseTimeValue}
-                </dd>
-              </div>
+            <div className="relative pl-9">
+              <dt className="text-mocha-fg/70 text-[11px] font-semibold tracking-[0.18em] uppercase">
+                <Clock
+                  className="text-terracotta-soft absolute top-1 left-0 h-5 w-5 shrink-0"
+                  aria-hidden="true"
+                />
+                {labels.responseTimeLabel}
+              </dt>
+              <dd className="text-mocha-fg mt-1.5 text-sm font-semibold">
+                {labels.responseTimeValue}
+              </dd>
             </div>
-            <div className="flex items-start gap-4">
-              <Languages
-                className="text-terracotta-soft mt-1 h-5 w-5 shrink-0"
-                aria-hidden="true"
-              />
-              <div>
-                <dt className="text-mocha-fg/70 text-[11px] font-semibold tracking-[0.18em] uppercase">
-                  {labels.languagesLabel}
-                </dt>
-                <dd className="text-mocha-fg mt-1.5 text-sm font-semibold">
-                  {labels.languagesValue}
-                </dd>
-              </div>
+            <div className="relative pl-9">
+              <dt className="text-mocha-fg/70 text-[11px] font-semibold tracking-[0.18em] uppercase">
+                <Languages
+                  className="text-terracotta-soft absolute top-1 left-0 h-5 w-5 shrink-0"
+                  aria-hidden="true"
+                />
+                {labels.languagesLabel}
+              </dt>
+              <dd className="text-mocha-fg mt-1.5 text-sm font-semibold">
+                {labels.languagesValue}
+              </dd>
             </div>
           </dl>
         </div>

@@ -83,7 +83,16 @@ export default async function CookiePreferencesPage({ params }: Props) {
             {isFr
               ? "Pour exercer vos droits RGPD ou demander un journal complet des cookies déposés, écrivez à"
               : "To exercise your GDPR rights or request a complete log of deposited cookies, email"}{" "}
-            <a className="text-primary hover:underline" href="mailto:contact@axion-ia.com">
+            {/* 🔴 `underline` et non `hover:underline` — WCAG 1.4.1 « Use of
+                Color », niveau A. axe le rendait en `link-in-text-block` : un
+                lien PLACÉ DANS UN BLOC DE TEXTE ne peut pas se distinguer par la
+                seule couleur — une personne daltonienne ne voit rien tant qu'elle
+                ne survole pas, et au doigt il n'y a pas de survol.
+
+                ⚠️ Ne s'applique PAS aux liens seuls dans un `<li>` : la position
+                y tient lieu de distinction, et axe ne les signale pas. Le
+                balayage a donc laissé `confirmation` et `recherche` tels quels. */}
+            <a className="text-primary underline" href="mailto:contact@axion-ia.com">
               contact@axion-ia.com
             </a>
             .

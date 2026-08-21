@@ -217,16 +217,31 @@ function formatLastUpdated(iso: string, isFr: boolean): string {
 
 // ─────────────────────────────────────────── petits composants présentationnels
 
+/**
+ * 🔴 2026-08-21 — CETTE CARTE VIVAIT DANS UN `<dl>` SANS ÊTRE UNE PAIRE.
+ *
+ * Elle rendait deux `<p>` dans un `<div>`, et le `<div>` est enfant direct d'un
+ * `<dl>`. axe rendait `definition-list` sur `/fr/sous-processeurs` : un `<dl>`
+ * n'accepte que des `<dt>`, `<dd>`, ou des `<div>` qui ne contiennent QUE des
+ * `<dt>`/`<dd>`.
+ *
+ * Le `<dl>` n'était pas un mauvais choix — ces cartes SONT des paires
+ * terme/valeur. C'est le balisage interne qui manquait. Le libellé devient le
+ * terme, le nombre sa définition.
+ *
+ * `flex-col-reverse` préserve l'ordre VISUEL (le nombre au-dessus) sans toucher
+ * à l'ordre du DOM, que `<dt>` avant `<dd>` impose.
+ */
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
-    <div className="bg-paper border-border shadow-subtle rounded-2xl border p-5 sm:p-6">
-      <p
-        className="text-terracotta-deep text-4xl leading-none font-semibold tracking-tight"
+    <div className="bg-paper border-border shadow-subtle flex flex-col-reverse rounded-2xl border p-5 sm:p-6">
+      <dt className="text-fg-soft mt-2 text-sm leading-snug">{label}</dt>
+      <dd
+        className="text-terracotta-deep m-0 text-4xl leading-none font-semibold tracking-tight"
         data-answer
       >
         {value}
-      </p>
-      <p className="text-fg-soft mt-2 text-sm leading-snug">{label}</p>
+      </dd>
     </div>
   );
 }
