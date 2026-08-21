@@ -42,8 +42,15 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
   const password = opts.password ?? ADMIN_PASSWORD;
 
   await page.goto(`/fr/${ADMIN_PREFIX}/login`);
-  await page.getByLabel(/email/i).fill(email);
-  await page.getByLabel(/mot de passe/i).fill(password);
+  // 🔴 Ciblage par identifiant, et non par libellé.
+  //
+  // `getByLabel(/mot de passe/i)` résolvait DEUX éléments : le champ, et le
+  // bouton afficher/masquer dont l'`aria-label` vaut « Afficher le mot de
+  // passe ». En mode strict, Playwright refuse d'agir sur un locator ambigu —
+  // donc `loginAsAdmin` ne pouvait PAS aboutir, et tout test qui l'appelle
+  // se sautait en silence. Le formulaire est correct ; c'était le sélecteur.
+  await page.locator("#email").fill(email);
+  await page.locator("#password").fill(password);
   await page
     .getByRole("button", { name: /continuer|connexion/i })
     .first()
@@ -57,11 +64,18 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
   //   - rester sur /login avec erreur si credentials invalides
   await page.waitForURL(
     (url) => {
-      const pathname = new URL(url).pathname;
+      // 🔴 Le préfixe de langue est FACULTATIF dans l’URL d’arrivée.
+      //
+      // Ce prédicat n’acceptait que `/fr/${ADMIN_PREFIX}`. Or l’application
+      // atterrit sur `/${ADMIN_PREFIX}` — sans `/fr`. La vérification
+      // échouait donc TOUJOURS, `loginAsAdmin` levait, et tout test qui
+      // l’appelle se sautait en silence : une couverture qui n’en était pas
+      // une, et qui ne rougissait jamais.
+      const pathname = new URL(url).pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "");
       return (
-        pathname === `/fr/${ADMIN_PREFIX}` ||
-        pathname === `/fr/${ADMIN_PREFIX}/` ||
-        pathname.startsWith(`/fr/${ADMIN_PREFIX}/2fa`)
+        pathname === `/${ADMIN_PREFIX}` ||
+        pathname === `/${ADMIN_PREFIX}/` ||
+        pathname.startsWith(`/${ADMIN_PREFIX}/2fa`)
       );
     },
     { timeout: 15_000 },
