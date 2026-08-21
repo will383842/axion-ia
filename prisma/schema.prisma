@@ -4666,21 +4666,21 @@ model SiteRoute {
   // C'est tout l'objet du recensement du 2026-08-17 : les 1 667 pages
   // déclaraient 1200×630 pour des fichiers qui faisaient 1200×675 ou 1080×607.
   // Une colonne qui recopierait la balise reproduirait le mensonge en base.
-  ogImage       String? @map("og_image") @db.VarChar(1000)
-  ogTitle       String? @map("og_title") @db.VarChar(500)
-  ogDescription String? @map("og_description") @db.Text
-  ogType        String? @map("og_type") @db.VarChar(30)
+  ogImage          String?   @map("og_image") @db.VarChar(1000)
+  ogTitle          String?   @map("og_title") @db.VarChar(500)
+  ogDescription    String?   @map("og_description") @db.Text
+  ogType           String?   @map("og_type") @db.VarChar(30)
   /// Dimensions ANNONCÉES par les balises `og:image:width` / `height`.
-  ogDeclaredWidth  Int? @map("og_declared_width")
-  ogDeclaredHeight Int? @map("og_declared_height")
+  ogDeclaredWidth  Int?      @map("og_declared_width")
+  ogDeclaredHeight Int?      @map("og_declared_height")
   /// Dimensions RÉELLES du fichier. L'écart avec les précédentes est un défaut.
-  ogImageWidth  Int? @map("og_image_width")
-  ogImageHeight Int? @map("og_image_height")
+  ogImageWidth     Int?      @map("og_image_width")
+  ogImageHeight    Int?      @map("og_image_height")
   /// Code HTTP renvoyé par l'image elle-même : une image en 404 = aperçu vide.
-  ogImageStatus Int?    @map("og_image_status")
-  ogImageBytes  Int?    @map("og_image_bytes")
-  ogImageType   String? @map("og_image_type") @db.VarChar(60)
-  ogInspectedAt DateTime? @map("og_inspected_at")
+  ogImageStatus    Int?      @map("og_image_status")
+  ogImageBytes     Int?      @map("og_image_bytes")
+  ogImageType      String?   @map("og_image_type") @db.VarChar(60)
+  ogInspectedAt    DateTime? @map("og_inspected_at")
 
   // ─── Cycle de vie « vivant » (découverte automatique) ───
   // lastSeenAt = dernier passage de l'énumérateur ; removedAt = soft-tombstone
@@ -7364,8 +7364,20 @@ model Questionnaire {
   enrollmentId      String            @map("enrollment_id") @db.Uuid
   enrollment        Enrollment        @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   type              QuestionnaireType
-  /// Token d'accès portail (non-guessable). timingSafeEqual à la lecture.
-  token             String            @unique @db.VarChar(64)
+  /// SHA-256 hex du jeton d'accès. Le clair ne vit que dans l'URL envoyée.
+  ///
+  /// 🔴 `D4-5-S1` (2026-08-20) — cette colonne portait le jeton EN CLAIR, et ce
+  /// commentaire affirmait « timingSafeEqual à la lecture ». C'était faux : les
+  /// quatre lectures faisaient `findUnique({ where: { token } })`, une égalité
+  /// SQL sur la valeur en clair. `verifyQrToken`, la comparaison timing-safe
+  /// que la phrase invoquait, n'était appelée NULLE PART en production — elle
+  /// n'existait que dans son propre test.
+  ///
+  /// ⚠️ Une précaution décrite mais absente est pire qu'une absence de
+  /// précaution : elle dispense d'aller regarder. C'est le mot pour mot ce que
+  /// `portail_acces` a corrigé la veille (`D4-4-A`) — le correctif avait traité
+  /// une table et laissé sa voisine.
+  tokenHash         String            @unique @map("token_hash") @db.VarChar(64)
   /// Réponses structurées : { questionId: valeur }.
   reponses          Json              @default("{}")
   /// Note globale /5 (satisfaction). Null tant que non répondu.

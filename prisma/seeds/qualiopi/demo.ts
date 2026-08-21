@@ -23,6 +23,7 @@
  */
 
 import type { PrismaClient } from "../../generated/client";
+import { hacherToken } from "../../../src/server/qualiopi/tokens/hacher-token";
 import { seedGrilleV2 } from "./grille-v2";
 
 // ─── Types d'identification stables ─────────────────────────────────────────
@@ -1416,12 +1417,17 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
   for (const q of data.questionnaires) {
     const enrollmentId = enrollmentIds[q.stagiaireIndex]!;
     await prisma.questionnaire.upsert({
-      where: { token: q.token },
+      // 🔴 `D4-5-S1` — la table ne stocke plus le jeton en clair. Le jeu de
+      // démonstration garde ses jetons LISIBLES dans `DEMO.QUESTIONNAIRE_TOKENS`
+      // (c'est leur intérêt : on ouvre le lien à la main pour montrer le
+      // parcours), et c'est leur EMPREINTE qui va en base — exactement comme un
+      // jeton réel.
+      where: { tokenHash: hacherToken(q.token) },
       update: {},
       create: {
         enrollmentId,
         type: q.type,
-        token: q.token,
+        tokenHash: hacherToken(q.token),
         reponses: q.reponses as never,
         ...(q.noteGlobale !== null ? { noteGlobale: q.noteGlobale } : {}),
         ...(q.reponduAt !== null ? { reponduAt: q.reponduAt } : {}),

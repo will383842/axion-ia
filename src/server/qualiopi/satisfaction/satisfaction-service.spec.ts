@@ -81,37 +81,48 @@ describe("creerQuestionnaire", () => {
     );
   });
 
-  it("crée un questionnaire si inexistant et retourne id+token", async () => {
+  it("🔴 crée le questionnaire et ne rend PAS de jeton en clair", async () => {
+    // 🔴 `D4-5-S1` — ce test attendait `{ id, token }`. La création ne peut plus
+    // rendre de jeton : la base n'en détient que l'EMPREINTE, et le clair
+    // n'existe qu'un instant, dans `emettreLienQuestionnaire`, au moment
+    // d'écrire un lien dans un e-mail.
+    //
+    // ⚠️ Le test n'a pas été « réparé » : c'est le CONTRAT qui a changé, et la
+    // nouvelle assertion dit exactement cela — rien qui ressemble à un sésame
+    // ne sort d'ici.
     mockPrisma.questionnaire.findUnique.mockResolvedValue(null);
-    mockPrisma.questionnaire.create.mockResolvedValue({
-      id: "q-uuid-1",
-      token: "tok-nouveau-token-hexadecimal-64-chars-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    });
+    mockPrisma.questionnaire.create.mockResolvedValue({ id: "q-uuid-1" });
 
     const result = await creerQuestionnaire({
       enrollmentId: "enroll-1",
       type: "satisfaction_chaud",
     });
 
-    expect(result).toEqual({
-      id: "q-uuid-1",
-      token: "tok-nouveau-token-hexadecimal-64-chars-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    });
+    expect(result).toEqual({ id: "q-uuid-1" });
+    expect(result).not.toHaveProperty("token");
     expect(mockPrisma.questionnaire.create).toHaveBeenCalledOnce();
+
+    // Et ce qui PART en base est bien une empreinte de 64 hexadécimaux, jamais
+    // le jeton lui-même.
+    const arg = mockPrisma.questionnaire.create.mock.calls[0]?.[0] as {
+      data: { tokenHash?: string; token?: string };
+    };
+    expect(arg.data.token).toBeUndefined();
+    expect(arg.data.tokenHash).toMatch(/^[0-9a-f]{64}$/);
   });
 
   it("retourne l'existant (idempotent) si déjà créé", async () => {
-    mockPrisma.questionnaire.findUnique.mockResolvedValue({
-      id: "q-existant",
-      token: "tok-existant",
-    });
+    // La création reste strictement idempotente — et c'est ce qui a imposé de
+    // séparer « créer » de « émettre un lien » : un second clic sur « Générer
+    // les questionnaires » ne doit invalider aucun lien déjà envoyé.
+    mockPrisma.questionnaire.findUnique.mockResolvedValue({ id: "q-existant" });
 
     const result = await creerQuestionnaire({
       enrollmentId: "enroll-2",
       type: "satisfaction_froid",
     });
 
-    expect(result).toEqual({ id: "q-existant", token: "tok-existant" });
+    expect(result).toEqual({ id: "q-existant" });
     expect(mockPrisma.questionnaire.create).not.toHaveBeenCalled();
   });
 

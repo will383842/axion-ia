@@ -94,6 +94,9 @@ const SESSION_UUID = "550e8400-e29b-41d4-a716-446655440010";
 const ENROLLMENT_UUID_1 = "550e8400-e29b-41d4-a716-446655440001";
 const ENROLLMENT_UUID_2 = "550e8400-e29b-41d4-a716-446655440002";
 const TOKEN = "a".repeat(64);
+// 🔴 `D4-5-S1` — la saisie admin désigne le questionnaire par son identifiant :
+// la console n'expédie plus le jeton porteur au navigateur.
+const QUEST_ID = "11111111-2222-4333-8444-555555555555";
 const FORMATION_UUID = "550e8400-e29b-41d4-a716-446655440020";
 
 const INDICATEURS_FIXTURE = {
@@ -236,7 +239,7 @@ describe("saisirReponsesQuestionnaireAction", () => {
 
   it("retourne { data: { id } } pour des réponses valides", async () => {
     const result = await saisirReponsesQuestionnaireAction({
-      token: TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui", q2: "non" },
     });
 
@@ -247,7 +250,7 @@ describe("saisirReponsesQuestionnaireAction", () => {
 
   it("invalide le cache indicateurs de l'année de la session", async () => {
     await saisirReponsesQuestionnaireAction({
-      token: TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui" },
     });
 
@@ -258,7 +261,7 @@ describe("saisirReponsesQuestionnaireAction", () => {
 
   it("transmet noteGlobale à soumettreReponses", async () => {
     await saisirReponsesQuestionnaireAction({
-      token: TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "satisfait" },
       noteGlobale: 4,
     });
@@ -274,7 +277,7 @@ describe("saisirReponsesQuestionnaireAction", () => {
 
   it("ne passe pas noteGlobale si absent (exactOptionalPropertyTypes)", async () => {
     await saisirReponsesQuestionnaireAction({
-      token: TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "neutre" },
     });
 
@@ -286,7 +289,7 @@ describe("saisirReponsesQuestionnaireAction", () => {
     mockSoumettreReponses.mockResolvedValue(null);
 
     const result = await saisirReponsesQuestionnaireAction({
-      token: TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui" },
     });
 
@@ -297,7 +300,7 @@ describe("saisirReponsesQuestionnaireAction", () => {
 
   it("retourne { error } si noteGlobale est hors plage", async () => {
     const result = await saisirReponsesQuestionnaireAction({
-      token: TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: {},
       noteGlobale: 6,
     });
@@ -307,9 +310,12 @@ describe("saisirReponsesQuestionnaireAction", () => {
     expect(result.error).toBe("Données invalides");
   });
 
-  it("retourne { error } si token est vide", async () => {
+  it("retourne { error } si l'identifiant n'est pas un UUID", async () => {
+    // 🔴 `D4-5-S1` — le test vérifiait « jeton vide ». Il vérifie désormais que
+    // l'identifiant est bien un UUID : c'est ce que le schéma exige, et une
+    // chaîne quelconque ne doit pas atteindre la base.
     const result = await saisirReponsesQuestionnaireAction({
-      token: "",
+      questionnaireId: "pas-un-uuid",
       reponses: {},
     });
 
@@ -320,7 +326,7 @@ describe("saisirReponsesQuestionnaireAction", () => {
 
   it("appelle logQualiopiActivity avec l'action correcte", async () => {
     await saisirReponsesQuestionnaireAction({
-      token: TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui" },
       noteGlobale: 5,
     });
@@ -335,7 +341,7 @@ describe("saisirReponsesQuestionnaireAction", () => {
   });
 
   it("ne logge pas si la validation Zod échoue", async () => {
-    await saisirReponsesQuestionnaireAction({ token: "", reponses: {} });
+    await saisirReponsesQuestionnaireAction({ questionnaireId: "pas-un-uuid", reponses: {} });
 
     expect(mockSoumettreReponses).not.toHaveBeenCalled();
     expect(mockLogActivity).not.toHaveBeenCalled();

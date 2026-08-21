@@ -10,6 +10,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { hacherToken } from "@/server/qualiopi/tokens/hacher-token";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { makeQrToken } from "@/server/qualiopi/documents/qr";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
@@ -28,7 +29,26 @@ export interface CreerQuestionnaireInput {
 }
 
 export interface SoumettreReponsesInput {
-  token: string;
+  /**
+   * Jeton du lien reçu par le répondant — chemin PUBLIC, non authentifié.
+   *
+   * ⚠️ Il n'est plus stocké en clair : la base n'en détient que l'empreinte, et
+   * la recherche hache ce qui arrive.
+   */
+  token?: string;
+  /**
+   * Identifiant direct — chemin ADMIN, authentifié.
+   *
+   * 🔴 `D4-5-S1` (2026-08-21) — la console saisissait les réponses à la place du
+   * stagiaire en passant par le JETON. Elle expédiait donc, dans le HTML de la
+   * fiche session, le jeton porteur de CHAQUE questionnaire de la session :
+   * lisible dans la source de la page, conservé dans le cache du navigateur,
+   * recopiable par quiconque a l'écran sous les yeux.
+   *
+   * Un administrateur est authentifié. Il n'a aucun besoin d'un sésame pour
+   * désigner un enregistrement — son identifiant suffit, et il n'ouvre rien.
+   */
+  questionnaireId?: string;
   reponses: Record<string, unknown>;
   noteGlobale?: number;
 }
@@ -45,17 +65,11 @@ export interface SoumettreReponsesInput {
  *
  * Stub-aware : lève si DATABASE_URL contient "stub.invalid".
  */
-export async function creerQuestionnaire(
-  input: CreerQuestionnaireInput,
-): Promise<{ id: string; token: string }> {
+export async function creerQuestionnaire(input: CreerQuestionnaireInput): Promise<{ id: string }> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     throw new Error("creerQuestionnaire: stub DB — non disponible au build");
   }
 
-  const token = makeQrToken();
-
-  // upsert idempotent : si déjà existant, on ne touche PAS au token existant.
-  // On utilise create/findUnique pour préserver le token original (upsert écrase).
   const existing = await prisma.questionnaire.findUnique({
     where: {
       enrollmentId_type: {
@@ -63,23 +77,64 @@ export async function creerQuestionnaire(
         type: input.type,
       },
     },
-    select: { id: true, token: true },
+    select: { id: true },
   });
 
   if (existing !== null) {
-    return { id: existing.id, token: existing.token };
+    return { id: existing.id };
   }
 
   const created = await prisma.questionnaire.create({
     data: {
       enrollmentId: input.enrollmentId,
       type: input.type,
-      token,
+      tokenHash: hacherToken(makeQrToken()),
     },
-    select: { id: true, token: true },
+    select: { id: true },
   });
 
-  return { id: created.id, token: created.token };
+  return { id: created.id };
+}
+
+/**
+ * Émet un lien d'accès NEUF pour un questionnaire, et retourne le jeton en clair.
+ *
+ * ## Pourquoi cette fonction est séparée de la création
+ *
+ * 🔴 `D4-5-S1` — `creerQuestionnaire` retournait le jeton en clair, y compris
+ * quand le questionnaire existait DÉJÀ : elle relisait la colonne. Ce n'est plus
+ * possible, et ce n'était pas souhaitable — la base ne détient plus de secret
+ * utilisable, elle n'en détient que l'empreinte.
+ *
+ * ⚠️ Créer et ÉMETTRE sont deux actes distincts, et il fallait les séparer pour
+ * une raison très concrète : `genererQuestionnairesSessionAction` appelle la
+ * création pour chaque inscription × type, et un administrateur peut cliquer
+ * « Générer » deux fois. Si la création faisait tourner le jeton, ce second clic
+ * invaliderait EN SILENCE tous les liens déjà envoyés aux entreprises clientes.
+ * La création est donc restée strictement idempotente ; seule l'émission tourne.
+ *
+ * ## Ce que la rotation coûte, et pourquoi elle est acceptée
+ *
+ * Le jeton précédent meurt. C'est inévitable : la colonne n'en porte qu'un, et
+ * son clair n'est plus récupérable. C'est aussi le meilleur des deux
+ * comportements, et le dépôt l'a déjà tranché pour le portail (`D4-4-A`) : avec
+ * le recyclage, un SEUL e-mail intercepté valait un accès permanent.
+ *
+ * ⚠️ Seuls DEUX flux ont besoin du clair — l'enquête entreprise et sa relance.
+ * Les envois stagiaire (satisfaction J+1, suivi J+30, positionnement) passent
+ * par le portail authentifié et n'ont jamais touché ce jeton.
+ */
+export async function emettreLienQuestionnaire(questionnaireId: string): Promise<string> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    throw new Error("emettreLienQuestionnaire: stub DB — non disponible au build");
+  }
+
+  const token = makeQrToken();
+  await prisma.questionnaire.update({
+    where: { id: questionnaireId },
+    data: { tokenHash: hacherToken(token) },
+  });
+  return token;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -111,8 +166,13 @@ export async function soumettreReponses(
     );
   }
 
+  // Le chemin admin désigne la ligne ; le chemin public la retrouve par
+  // l'empreinte de son jeton. Aucun des deux ne lit un secret en base.
   const questionnaire = await prisma.questionnaire.findUnique({
-    where: { token: input.token },
+    where:
+      input.questionnaireId !== undefined
+        ? { id: input.questionnaireId }
+        : { tokenHash: hacherToken(input.token ?? "") },
     select: {
       id: true,
       type: true,
