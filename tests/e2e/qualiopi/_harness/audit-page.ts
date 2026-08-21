@@ -44,6 +44,20 @@ export interface ResultatAudit {
    * Sans ce détail, l'échec dit « ça déborde » et rien d'autre — on ne peut ni
    * le corriger ni le réfuter.
    */
+  /**
+   * Police RÉELLEMENT appliquée au moment de la mesure.
+   *
+   * Un débordement de quelques pour cent n'a pas le même sens selon que la page
+   * est rendue avec sa fonte ou avec le repli `local("Arial")` que `next/font`
+   * génère : `size-adjust` y corrige les métriques verticales, jamais les
+   * chasses. Sans ce relevé, on ne peut pas distinguer un défaut de mise en page
+   * d'un artefact d'environnement — et on perd des heures à supposer.
+   */
+  fonte: {
+    familleCorps: string;
+    manropeAppliquee: boolean | null;
+    fontesDeclarees: string[];
+  };
   debordementCoupables: {
     largeur: number;
     scrollWidth: number;
@@ -89,6 +103,52 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
       .catch(() => "")
   ).slice(0, 200_000);
   const textesInterdits = INTERDITS.filter(([, re]) => re.test(corps)).map(([label]) => label);
+
+  // 🔴 2026-08-21 — RELEVER LA POLICE EFFECTIVEMENT APPLIQUÉE.
+  //
+  // Toute cette session a buté sur des débordements horizontaux de quelques
+  // pixels qui n'existent QU'EN CI : la production, mesurée en direct à 768
+  // comme à 1440, sous chargement direct comme sous la séquence exacte de ce
+  // harnais, est propre. Trois explications ont été avancées et réfutées.
+  //
+  // La quatrième est la seule qui colle aux ordres de grandeur, et elle se
+  // MESURE au lieu de se supposer. `next/font` génère pour Manrope un repli :
+  //
+  //     @font-face { font-family: manrope Fallback;
+  //                  src: local("Arial"); size-adjust: 100.14% }
+  //
+  // `size-adjust` corrige les métriques VERTICALES — d'où une capture d'écran
+  // qui paraît normale — mais PAS les chasses horizontales. Une page rendue
+  // avec ce repli occupe quelques pour cent de plus en largeur. Or les écarts
+  // relevés valent exactement cela : ~37 px sur ~1130 px de rangée de nav
+  // (3 %), 27 px sur ~700 px (4 %).
+  //
+  // Si `manropeAppliquee` vaut `false` en CI et `true` en production, tous les
+  // débordements de cette session s'expliquent d'un coup et cessent d'être des
+  // défauts de produit. Si elle vaut `true` des deux côtés, l'hypothèse tombe
+  // et il faut chercher ailleurs. Dans les deux cas, on saura — c'est tout
+  // l'objet de cet ajout.
+  const fonte = await page.evaluate(() => {
+    const declarees: string[] = [];
+    try {
+      for (const f of Array.from(document.fonts)) {
+        declarees.push(`${f.family}/${f.weight}:${f.status}`);
+      }
+    } catch {
+      /* `document.fonts` peut manquer sur une page en erreur. */
+    }
+    let manropeAppliquee: boolean | null = null;
+    try {
+      manropeAppliquee = document.fonts.check("1em manrope");
+    } catch {
+      /* idem — on rend `null` plutôt qu'un faux négatif. */
+    }
+    return {
+      familleCorps: getComputedStyle(document.body).fontFamily.slice(0, 90),
+      manropeAppliquee,
+      fontesDeclarees: declarees.slice(0, 8),
+    };
+  });
 
   // 🔴 2026-08-21 — CE CONTRÔLE DISAIT « ça déborde » SANS DIRE DE QUOI.
   //
@@ -219,6 +279,7 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
     requetesEnEchec,
     axeBloquant,
     textesInterdits,
+    fonte,
     debordementA,
     debordementCoupables,
     msChargement,

@@ -80,8 +80,16 @@ test.describe("@qualiopi-public routes publiques", () => {
       expect
         .soft(
           r.debordementA,
-          "débordement horizontal — éléments les plus à droite : " +
-            JSON.stringify(r.debordementCoupables),
+          "débordement horizontal — ce qui POUSSE : " +
+            JSON.stringify(r.debordementCoupables) +
+            // La police va DANS le message d'échec, pas seulement dans le JSON
+            // attaché : un débordement de quelques pour cent ne se lit pas
+            // pareil selon que la page est rendue avec sa fonte ou avec le
+            // repli `local("Arial")`, dont `size-adjust` ne corrige que les
+            // métriques verticales. C'est l'information qui manquait pendant
+            // toute la session du 2026-08-21.
+            " · police : " +
+            JSON.stringify(r.fonte),
         )
         .toEqual([]);
     });
