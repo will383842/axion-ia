@@ -16,6 +16,7 @@ import {
   AdminCard,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { urlPublique } from "@/server/editorial/stockage";
@@ -28,11 +29,21 @@ import {
   formaterSeconde,
   type AssetDerivable,
 } from "@/server/editorial/derivation";
+import {
+  soumettreAssetRevueFormAction,
+  passerAssetPretFormAction,
+  appliquerRecetteFormAction,
+  rattacherAssetFormAction,
+  assignerAssetFormAction,
+  detacherAssetFormAction,
+} from "@/server/actions/editorial/formulaires";
+import { refuserAssetFormAction } from "@/server/actions/editorial/equipe";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string; id: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
 /**
@@ -74,8 +85,9 @@ async function chargerVoisinage(id: string): Promise<AssetDerivable[]> {
   `;
 }
 
-export default async function FicheAssetPage({ params }: PageProps) {
+export default async function FicheAssetPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
@@ -89,6 +101,10 @@ export default async function FicheAssetPage({ params }: PageProps) {
       type: true,
       nature: true,
       statut: true,
+      familleId: true,
+      parentId: true,
+      offsetSourceSec: true,
+      responsableId: true,
       cheminObjet: true,
       cheminVignette: true,
       emplacementExterne: true,
@@ -111,12 +127,40 @@ export default async function FicheAssetPage({ params }: PageProps) {
   });
   if (!asset) notFound();
 
+  // Les recettes APPLICABLES : celles dont la famille source est celle de
+  // cet asset. En proposer d'autres produirait des derives sans rapport.
+  const recettes = asset.familleId
+    ? await prisma.edRecette.findMany({
+        where: { actif: true, familleSourceId: asset.familleId },
+        select: { id: true, nom: true },
+        orderBy: { nom: "asc" },
+      })
+    : [];
+
   const voisinage = await chargerVoisinage(id);
   const cycle = detecterCycle(voisinage);
   const chemin = cycle ? null : remonterALaSource(voisinage, id);
   const racineId = chemin?.racine.id ?? id;
   const arbre = cycle ? null : construireArbre(voisinage, racineId);
   const noeuds = arbre ? aplatir(arbre) : [];
+
+  // Les parents proposables : tout sauf cet asset et sa DESCENDANCE.
+  // L'écran écarte ainsi la moitié des cycles avant le clic — mais il ne
+  // remplace pas la garde de l'action, qui reste seule à faire foi.
+  const interdits = new Set([id, ...noeuds.map((n) => n.asset.id)]);
+  const [parentsPossibles, membres] = await Promise.all([
+    prisma.edAsset.findMany({
+      where: { id: { notIn: [...interdits] } },
+      select: { id: true, libelle: true },
+      orderBy: { libelle: "asc" },
+      take: 200,
+    }),
+    prisma.edMembre.findMany({
+      where: { actif: true },
+      select: { id: true, nom: true },
+      orderBy: { nom: "asc" },
+    }),
+  ]);
 
   return (
     <AdminPageShell>
@@ -151,6 +195,207 @@ export default async function FicheAssetPage({ params }: PageProps) {
           défait.
         </div>
       )}
+
+      {/* ── Les gestes ──────────────────────────────────────────────────── */}
+      {/*
+        🔴 Ajouté après la passe 5 du protocole.
+
+        `soumettreAssetRevue`, `passerAssetPret`, `refuserAsset` et
+        `appliquerRecette` existaient depuis le lot 2 et n'étaient appelées
+        par aucun écran. Le critère 5 du lot 2 — « un asset dont la durée
+        dépasse la spec ne passe pas à `pret` » — se vérifie en CLIQUANT ; il
+        n'était donc pas vérifiable.
+
+        ⚠️ La séparation des rôles du §4 se lit dans cette carte : le rôle
+        `montage` peut SOUMETTRE, pas VALIDER. Les deux boutons sont côte à
+        côte, mais l'action `passerAssetPret` exige `asset.valider`, et
+        refusera en nommant le rôle. La passe 5 avait trouvé un contournement
+        par le téléversement — fermé depuis.
+      */}
+      <div className="mt-[var(--space-admin-4)]">
+        <AdminCard>
+          <h2 className="admin-h2 mb-[var(--space-admin-3)]">Les gestes</h2>
+
+          {sp.erreur && (
+            <p role="alert" className="admin-alert admin-alert-error">
+              {sp.erreur}
+            </p>
+          )}
+          {sp.soumis && (
+            <p role="status" className="admin-alert admin-alert-success">
+              Asset soumis à la revue.
+            </p>
+          )}
+          {sp.pret && (
+            <p role="status" className="admin-alert admin-alert-success">
+              Asset validé — il est prêt à partir.
+            </p>
+          )}
+          {sp.avertissement && (
+            <p role="status" className="admin-alert admin-alert-warning">
+              {sp.avertissement}
+            </p>
+          )}
+          {sp.refuse && (
+            <p role="status" className="admin-alert admin-alert-info">
+              Asset refusé — le commentaire est visible ci-dessus.
+            </p>
+          )}
+          {sp.derives && (
+            <p role="status" className="admin-alert admin-alert-success">
+              {sp.derives} dérivé(s) créé(s) en « à produire ».
+            </p>
+          )}
+
+          <div className="admin-actions-row">
+            {asset.statut === "en_cours" && (
+              <form action={soumettreAssetRevueFormAction}>
+                <input type="hidden" name="assetId" value={id} />
+                <input type="hidden" name="retour" value={`${base}/mediatheque/${id}`} />
+                <AdminButton type="submit" variant="secondary" size="sm">
+                  Soumettre à la revue
+                </AdminButton>
+              </form>
+            )}
+
+            {asset.statut === "a_valider" && (
+              <form action={passerAssetPretFormAction}>
+                <input type="hidden" name="assetId" value={id} />
+                <input type="hidden" name="retour" value={`${base}/mediatheque/${id}`} />
+                <AdminButton type="submit" variant="primary" size="sm">
+                  Valider — passer à prêt
+                </AdminButton>
+              </form>
+            )}
+          </div>
+
+          {asset.statut === "a_valider" && (
+            <form action={refuserAssetFormAction} className="admin-form-refuse">
+              <input type="hidden" name="assetId" value={id} />
+              <input type="hidden" name="retour" value={`${base}/mediatheque/${id}`} />
+              <label htmlFor="commentaire" className="admin-label">
+                Refuser — en disant quoi refaire
+              </label>
+              <textarea
+                id="commentaire"
+                name="commentaire"
+                rows={2}
+                required
+                className="admin-textarea"
+                placeholder="Le sous-titrage déborde sur les trois dernières secondes."
+              />
+              <p className="admin-help">
+                Le commentaire est obligatoire : un refus sans consigne renvoie le monteur à un
+                aller-retour de plus.
+              </p>
+              <div className="admin-form-actions">
+                <AdminButton type="submit" variant="danger" size="sm">
+                  Refuser
+                </AdminButton>
+              </div>
+            </form>
+          )}
+
+          {recettes.length > 0 && (
+            <form action={appliquerRecetteFormAction} className="admin-inline-form">
+              <input type="hidden" name="assetId" value={id} />
+              <input type="hidden" name="retour" value={`${base}/mediatheque/${id}`} />
+              <label htmlFor="recetteId" className="admin-label">
+                Appliquer une recette de dérivation
+              </label>
+              <select id="recetteId" name="recetteId" className="admin-select" required>
+                <option value="">Choisir…</option>
+                {recettes.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.nom}
+                  </option>
+                ))}
+              </select>
+              <AdminButton type="submit" variant="secondary" size="sm">
+                Créer les dérivés
+              </AdminButton>
+            </form>
+          )}
+
+          {/* ── Rattacher / détacher — critère 2 du lot 2 ─────────────────── */}
+          {/*
+            🔴 Ce geste porte la garde anti-cycle corrigée par la passe 4.
+            Tant qu'aucun écran ne l'appelait, la garde n'était pas
+            vérifiable : le §1 du protocole veut qu'une garde rougisse « sur
+            l'objet qui casse », et un objet qu'on ne peut pas soumettre ne
+            casse jamais rien.
+
+            Le sélecteur ne propose que des assets qui NE SONT PAS dans la
+            descendance de celui-ci — la moitié des cycles est donc écartée
+            avant même le clic. Mais l'écran ne remplace pas la garde : il
+            reste possible de forger une requête, et c'est l'action qui
+            refuse pour de bon.
+          */}
+          <form action={rattacherAssetFormAction} className="admin-inline-form">
+            <input type="hidden" name="assetId" value={id} />
+            <input type="hidden" name="retour" value={`${base}/mediatheque/${id}`} />
+            <label htmlFor="parentId" className="admin-label">
+              Dérivé de
+            </label>
+            <select
+              id="parentId"
+              name="parentId"
+              defaultValue={asset.parentId ?? ""}
+              className="admin-select"
+            >
+              <option value="">— autonome (détacher) —</option>
+              {parentsPossibles.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.libelle}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="offsetSourceSec" className="admin-label">
+              Position dans la source (secondes)
+            </label>
+            <input
+              id="offsetSourceSec"
+              name="offsetSourceSec"
+              type="number"
+              min={0}
+              defaultValue={asset.offsetSourceSec ?? ""}
+              className="admin-input admin-input-w-sm"
+            />
+            <AdminButton type="submit" variant="secondary" size="sm">
+              Enregistrer le rattachement
+            </AdminButton>
+          </form>
+
+          {/* ── Qui s'en occupe — critère 1 du lot 4 ─────────────────────── */}
+          {membres.length > 0 && (
+            <form action={assignerAssetFormAction} className="admin-inline-form">
+              <input type="hidden" name="assetId" value={id} />
+              <input type="hidden" name="retour" value={`${base}/mediatheque/${id}`} />
+              <label htmlFor="membreId" className="admin-label">
+                Responsable
+              </label>
+              <select
+                id="membreId"
+                name="membreId"
+                defaultValue={asset.responsableId ?? ""}
+                className="admin-select"
+              >
+                {/* Reprendre un asset à quelqu'un est un geste aussi
+                    légitime que le lui confier. */}
+                <option value="">— personne —</option>
+                {membres.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.nom}
+                  </option>
+                ))}
+              </select>
+              <AdminButton type="submit" variant="secondary" size="sm">
+                Assigner
+              </AdminButton>
+            </form>
+          )}
+        </AdminCard>
+      </div>
 
       {/* ── D'où vient cet asset — critère 3 ─────────────────────────────── */}
       {chemin && chemin.chaine.length > 1 && (
@@ -353,13 +598,32 @@ export default async function FicheAssetPage({ params }: PageProps) {
             <h2 className="admin-h2 mb-[var(--space-admin-3)]">Utilisé par</h2>
             <ul className="space-y-1">
               {asset.publications.map((p) => (
-                <li key={p.publication.id}>
+                <li key={p.publication.id} className="admin-actions-row">
                   <Link
                     href={`${base}/publications/${p.publication.id}`}
                     className="hover:underline"
                   >
                     {p.publication.titreInterne}
                   </Link>
+                  {/*
+                    ⚠️ Détacher retire le LIEN, pas l'asset — le fichier et
+                    son arbre survivent. Le §4 réserve « supprimer quoi que
+                    ce soit » à l'admin, alors que l'action n'exige que
+                    `asset.ecrire`, que le rôle `montage` possède. La passe 4
+                    a signalé l'écart sans trancher, et il reste ouvert :
+                    « modifier un asset » et « supprimer un lien » se
+                    défendent l'un comme l'autre. Le geste est branché tel
+                    quel et la question posée à Will — pas résolue en douce
+                    par un choix d'écran.
+                  */}
+                  <form action={detacherAssetFormAction}>
+                    <input type="hidden" name="assetId" value={id} />
+                    <input type="hidden" name="publicationId" value={p.publication.id} />
+                    <input type="hidden" name="retour" value={`${base}/mediatheque/${id}`} />
+                    <AdminButton type="submit" variant="ghost-danger" size="sm">
+                      Détacher
+                    </AdminButton>
+                  </form>
                 </li>
               ))}
             </ul>

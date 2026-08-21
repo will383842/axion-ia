@@ -26,6 +26,12 @@ import { televerserAssetAction } from "@/server/actions/editorial/assets";
 import { urlPublique } from "@/server/editorial/stockage";
 import { DepotFichier } from "./DepotFichier";
 import { saisirReleveFormAction } from "@/server/actions/editorial/metriques";
+import {
+  validerPublicationFormAction,
+  programmerPublicationFormAction,
+  marquerPublieeFormAction,
+  modifierPublicationFormAction,
+} from "@/server/actions/editorial/formulaires";
 import { formaterAgregat, LIBELLES, type CleMetrique } from "@/server/editorial/analyse";
 
 export const dynamic = "force-dynamic";
@@ -139,6 +145,221 @@ export default async function FichePublicationPage({ params, searchParams }: Pag
           </p>
         )}
       </AdminCard>
+
+      {/* ── Les gestes ──────────────────────────────────────────────────── */}
+      {/*
+        🔴 Ajouté après la passe 5 du protocole.
+
+        Ces boutons appellent des actions qui existaient depuis le lot 1 et
+        que N'APPELAIT AUCUN ÉCRAN. Le §7 s'ouvre sur « en gestes
+        observables » : tant qu'aucun écran ne permettait de valider, de
+        programmer ou de marquer publié, ces critères n'étaient pas tenus —
+        quelle que soit la qualité du code dessous.
+
+        Chaque geste est un formulaire HTML nu qui redirige : aucun
+        JavaScript client, aucun octet ajouté au budget de la route.
+      */}
+      <div className="mt-[var(--space-admin-4)]">
+        <AdminCard>
+          <h2 className="admin-h2 mb-[var(--space-admin-3)]">Les gestes</h2>
+
+          {sp.valide && (
+            <p role="status" className="admin-alert admin-alert-success">
+              Publication validée — la conformité est passée.
+            </p>
+          )}
+          {sp.programme && (
+            <p role="status" className="admin-alert admin-alert-success">
+              Publication programmée.
+            </p>
+          )}
+          {sp.publie && (
+            <p role="status" className="admin-alert admin-alert-success">
+              Marquée publiée. Rejouer ce geste ne republiera pas.
+            </p>
+          )}
+          {sp.version && (
+            <p role="status" className="admin-alert admin-alert-success">
+              Contenu enregistré — version {sp.version} archivée.
+            </p>
+          )}
+          {sp.enregistre && (
+            <p role="status" className="admin-alert admin-alert-info">
+              Enregistré. Aucun champ versionné n&apos;a bougé : pas de nouvelle version.
+            </p>
+          )}
+
+          <div className="admin-actions-row">
+            {publication.statutRedaction !== "valide" && (
+              <form action={validerPublicationFormAction}>
+                <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="retour" value={`${base}/publications/${id}`} />
+                <AdminButton type="submit" variant="primary" size="sm">
+                  Valider la publication
+                </AdminButton>
+              </form>
+            )}
+
+            {publication.statutDiffusion === "non_programme" && (
+              <form action={programmerPublicationFormAction} className="admin-inline-form">
+                <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="retour" value={`${base}/publications/${id}`} />
+                <label htmlFor="outil" className="admin-label">
+                  Outil de programmation
+                </label>
+                <input
+                  id="outil"
+                  name="outil"
+                  className="admin-input admin-input-w-sm"
+                  placeholder="Buffer, natif…"
+                />
+                <AdminButton type="submit" variant="secondary" size="sm">
+                  Programmer
+                </AdminButton>
+              </form>
+            )}
+
+            {publication.statutDiffusion === "programme" && (
+              <form action={marquerPublieeFormAction} className="admin-inline-form">
+                <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="retour" value={`${base}/publications/${id}`} />
+                <label htmlFor="urlPubliee" className="admin-label">
+                  URL réelle de la publication
+                </label>
+                <input
+                  id="urlPubliee"
+                  name="urlPubliee"
+                  type="url"
+                  required
+                  className="admin-input admin-input-w-md"
+                  placeholder="https://www.linkedin.com/posts/…"
+                />
+                <AdminButton type="submit" variant="primary" size="sm">
+                  Marquer publiée
+                </AdminButton>
+              </form>
+            )}
+
+            {publication.statutDiffusion === "publie" && publication.urlPubliee && (
+              <p className="admin-meta">
+                Publiée —{" "}
+                <a className="admin-link" href={publication.urlPubliee}>
+                  voir en ligne
+                </a>
+              </p>
+            )}
+          </div>
+        </AdminCard>
+      </div>
+
+      {/* ── La rédaction en ligne ───────────────────────────────────────── */}
+      <div className="mt-[var(--space-admin-4)]">
+        <AdminCard>
+          <h2 className="admin-h2 mb-[var(--space-admin-3)]">Rédiger</h2>
+
+          <form action={modifierPublicationFormAction} className="admin-form">
+            <input type="hidden" name="id" value={id} />
+            <input type="hidden" name="retour" value={`${base}/publications/${id}`} />
+            {/*
+              🔴 La moitié de la garde anti-écrasement posée par la passe 4 :
+              le formulaire annonce la version qu'il AFFICHAIT. Si quelqu'un
+              enregistre entre-temps, l'action refuse au lieu d'effacer son
+              travail — et le refus dit de recharger.
+            */}
+            <input type="hidden" name="versionAttendue" value={publication.versionCourante} />
+
+            <div className="admin-form-field">
+              <label htmlFor="accroche" className="admin-label">
+                Accroche
+              </label>
+              <textarea
+                id="accroche"
+                name="accroche"
+                rows={2}
+                className="admin-textarea"
+                defaultValue={publication.accroche ?? ""}
+              />
+            </div>
+
+            <div className="admin-form-field">
+              <label htmlFor="corps" className="admin-label">
+                Corps
+              </label>
+              <textarea
+                id="corps"
+                name="corps"
+                rows={10}
+                className="admin-textarea"
+                defaultValue={publication.corps ?? ""}
+              />
+            </div>
+
+            <div className="admin-form-field">
+              <label htmlFor="premierCommentaire" className="admin-label">
+                Premier commentaire
+              </label>
+              <textarea
+                id="premierCommentaire"
+                name="premierCommentaire"
+                rows={3}
+                className="admin-textarea"
+                defaultValue={publication.premierCommentaire ?? ""}
+              />
+            </div>
+
+            <div className="admin-form-row">
+              <div className="admin-form-field">
+                <label htmlFor="tags" className="admin-label">
+                  Tags
+                </label>
+                <input
+                  id="tags"
+                  name="tags"
+                  className="admin-input"
+                  defaultValue={publication.tags.join(" ")}
+                />
+                <p className="admin-help">
+                  Séparés par un espace. La liste des tags autorisés est une règle de conformité —
+                  elle se corrige depuis la base, pas ici.
+                </p>
+              </div>
+
+              <div className="admin-form-field">
+                <label htmlFor="lienUrl" className="admin-label">
+                  Lien
+                </label>
+                <input
+                  id="lienUrl"
+                  name="lienUrl"
+                  type="url"
+                  className="admin-input"
+                  defaultValue={publication.lienUrl ?? ""}
+                />
+                <p className="admin-help">
+                  Vidé, il efface le lien. Les marqueurs UTM sont contrôlés à la validation.
+                </p>
+              </div>
+            </div>
+
+            <div className="admin-form-field">
+              <label htmlFor="motif" className="admin-label">
+                Pourquoi cette version
+              </label>
+              <input id="motif" name="motif" className="admin-input" />
+              <p className="admin-help">
+                Facultatif, fortement encouragé — c&apos;est ce qu&apos;on cherche en relisant
+                l&apos;historique six mois plus tard.
+              </p>
+            </div>
+
+            <div className="admin-form-actions">
+              <AdminButton type="submit" variant="primary">
+                Enregistrer
+              </AdminButton>
+            </div>
+          </form>
+        </AdminCard>
+      </div>
 
       {/* ── Le contenu ──────────────────────────────────────────────────── */}
       <div className="mt-[var(--space-admin-4)]">

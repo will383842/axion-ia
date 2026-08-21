@@ -24,6 +24,7 @@ import { listerIdees, listerComptesActifs } from "@/server/editorial/publication
 import {
   capturerIdeeFormAction,
   promouvoirIdeeFormAction,
+  archiverIdeeFormAction,
 } from "@/server/actions/editorial/formulaires";
 
 export const dynamic = "force-dynamic";
@@ -205,6 +206,49 @@ export default async function IdeesPage({ params, searchParams }: PageProps) {
                       </div>
                       <button type="submit" className="admin-button-secondary admin-button-sm">
                         Promouvoir
+                      </button>
+                    </form>
+                  </details>
+
+                  {/* ── Écarter — critère 18 ────────────────────────────── */}
+                  {/*
+                    🔴 Ajouté après la passe 5 du protocole. `archiverIdeeAction`
+                    existait et n'était appelée par aucun écran.
+
+                    Le motif est OBLIGATOIRE, côté formulaire comme côté action :
+                    écarter sans dire pourquoi, c'est perdre la raison six mois
+                    plus tard, quand l'idée revient et que personne ne sait plus
+                    si elle avait été jugée mauvaise ou seulement prématurée.
+                  */}
+                  <details className="mt-2">
+                    <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium">
+                      Écarter
+                    </summary>
+                    <form
+                      action={archiverIdeeFormAction}
+                      className="mt-2 flex flex-wrap items-end gap-2"
+                    >
+                      <input type="hidden" name="id" value={idee.id} />
+                      <input type="hidden" name="retour" value={retour} />
+                      <div className="min-w-0 flex-1">
+                        <label
+                          htmlFor={`motif-${idee.id}`}
+                          className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                        >
+                          Pourquoi on l&apos;écarte
+                        </label>
+                        <input
+                          id={`motif-${idee.id}`}
+                          name="motif"
+                          type="text"
+                          required
+                          maxLength={1000}
+                          className="admin-input"
+                          placeholder="Déjà traité en mars, angle trop proche."
+                        />
+                      </div>
+                      <button type="submit" className="admin-button-ghost admin-button-sm">
+                        Écarter
                       </button>
                     </form>
                   </details>

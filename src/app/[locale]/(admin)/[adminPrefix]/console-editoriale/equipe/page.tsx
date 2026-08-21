@@ -17,10 +17,12 @@ import {
   AdminCard,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { requireMembreEditorial } from "@/server/actions/editorial/_guards";
 import { creerMembreFormAction } from "@/server/actions/editorial/equipe";
+import { changerRoleMembreFormAction } from "@/server/actions/editorial/formulaires";
 import { ROLES_EDITORIAUX, peut, actionsDe } from "@/server/editorial/permissions";
 
 export const dynamic = "force-dynamic";
@@ -121,6 +123,12 @@ export default async function EquipePage({ params, searchParams }: PageProps) {
       )}
 
       {/* ── L'équipe ─────────────────────────────────────────────────────── */}
+      {sp.role && (
+        <p role="status" className="admin-alert admin-alert-success">
+          Rôle changé — la nouvelle permission vaut dès la prochaine action.
+        </p>
+      )}
+
       <AdminCard>
         <h2 className="admin-h2 mb-[var(--space-admin-3)]">L&apos;équipe</h2>
 
@@ -150,7 +158,46 @@ export default async function EquipePage({ params, searchParams }: PageProps) {
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
                   {!m.actif && <AdminBadge tone="neutral">désactivé</AdminBadge>}
-                  <AdminBadge tone={m.role === "admin" ? "info" : "neutral"}>{m.role}</AdminBadge>
+                  {/*
+                    🔴 Ajouté après la passe 5 du protocole.
+
+                    `changerRoleMembreAction` existait depuis le lot 4 et
+                    n'était appelée par aucun écran : le critère 2 — « le
+                    rôle d'un membre se change » — n'était donc pas
+                    vérifiable, seulement codé.
+
+                    Le sélecteur n'apparaît que pour qui a `equipe.gerer` ;
+                    les autres gardent le badge en lecture. Et l'action
+                    refuse l'auto-rétrogradation d'un admin, avec son
+                    explication : se retirer soi-même le dernier droit
+                    d'administration ferme la porte de l'intérieur.
+                  */}
+                  {jePeuxGerer ? (
+                    <form action={changerRoleMembreFormAction} className="admin-inline-form">
+                      <input type="hidden" name="membreId" value={m.id} />
+                      <input type="hidden" name="retour" value={retour} />
+                      <label htmlFor={`role-${m.id}`} className="admin-label">
+                        Rôle de {m.nom}
+                      </label>
+                      <select
+                        id={`role-${m.id}`}
+                        name="role"
+                        defaultValue={m.role}
+                        className="admin-select"
+                      >
+                        {ROLES_EDITORIAUX.map((r) => (
+                          <option key={r} value={r}>
+                            {r}
+                          </option>
+                        ))}
+                      </select>
+                      <AdminButton type="submit" variant="secondary" size="sm">
+                        Changer
+                      </AdminButton>
+                    </form>
+                  ) : (
+                    <AdminBadge tone={m.role === "admin" ? "info" : "neutral"}>{m.role}</AdminBadge>
+                  )}
                 </span>
               </li>
             ))}
