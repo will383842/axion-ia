@@ -18,6 +18,8 @@ import {
 } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { urlPublique } from "@/server/editorial/stockage";
+import { requireMembreEditorial } from "@/server/actions/editorial/_guards";
+import { filtreParDefaut } from "@/server/editorial/permissions";
 
 export const dynamic = "force-dynamic";
 
@@ -38,10 +40,25 @@ export default async function MediathequePage({ params, searchParams }: PageProp
   const nature = NATURES.includes(sp.nature as (typeof NATURES)[number]) ? sp.nature : undefined;
   const statut = sp.statut;
 
+  // 🔴 Critère 1 du lot 4 : « un montage ne voit que SES assets ».
+  //
+  // Le §4 le pose en NOTE de la matrice, pas en permission : le monteur a
+  // bien le droit de voir, mais le filtre par défaut de son écran est
+  // « responsable = moi ». Sans cela il ouvre un dossier de 200 assets dont
+  // trois le concernent, et il s’y perd.
+  //
+  // C’est un DÉFAUT, pas une prison : un paramètre le lève, et l’écran le
+  // dit. Une restriction qu’on ne peut pas comprendre ressemble à un bug.
+  const moi = await requireMembreEditorial();
+  const filtre = filtreParDefaut(moi.role);
+  const voirTout = sp.tous === "1";
+  const limiteAMoi = filtre.responsableMoi && !voirTout && moi.membreId !== null;
+
   const assets = await prisma.edAsset.findMany({
     where: {
       ...(nature ? { nature: nature as never } : {}),
       ...(statut ? { statut: statut as never } : {}),
+      ...(limiteAMoi ? { responsableId: moi.membreId } : {}),
     },
     select: {
       id: true,
@@ -81,6 +98,19 @@ export default async function MediathequePage({ params, searchParams }: PageProp
           racines.length > 0 ? ` · ${racines.length} sans parent` : ""
         }.`}
       />
+
+      {limiteAMoi && (
+        <div
+          role="status"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-hover)] p-3 text-[length:var(--text-admin-sm)]"
+        >
+          Votre file : seuls les assets dont vous êtes responsable sont affichés.{" "}
+          <Link href={`${base}/mediatheque?tous=1`} className="underline">
+            Voir tout le dossier
+          </Link>
+          .
+        </div>
+      )}
 
       <AdminCard>
         <nav
