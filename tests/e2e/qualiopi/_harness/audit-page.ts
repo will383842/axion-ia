@@ -222,13 +222,28 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
       for (const el of Array.from(document.querySelectorAll("*"))) {
         const r = el.getBoundingClientRect();
         if (r.width === 0 || r.height === 0) continue;
-        if (r.right <= limite && r.left >= -1) continue;
+        // 🔴 QUATRIÈME TOUR — `r.left >= -1` produisait de FAUX COUPABLES.
+        //
+        // Le relevé de CI a désigné, sur `/fr/demande-devis`, `/fr/audit/demande`
+        // et `/fr/devenir-commercial-ia/candidature`, un `<input>` « dépassant de
+        // 10 827 px ». Sa géométrie : `gauche -9999 · droite -9804`. C'est le pot
+        // de miel anti-spam, placé hors écran par la gauche — motif standard.
+        //
+        // 🔑 En écriture de gauche à droite, ce qui déborde par la GAUCHE
+        // n'allonge pas `scrollWidth` : le navigateur ne rend pas cette zone
+        // atteignable. Seul le bord DROIT crée du défilement horizontal. Un
+        // instrument qui compte les deux accuse un motif d'accessibilité
+        // légitime, et enterre les vrais coupables sous 10 000 px de bruit.
+        if (r.right <= limite) continue;
         // Ce qu'un ancêtre découpe ne pousse pas `scrollWidth`.
         if (estDecoupe(el)) continue;
 
         const p = el.parentElement;
         const pr = p === null ? null : p.getBoundingClientRect();
-        const debord = pr === null ? 0 : Math.round(Math.max(r.right - pr.right, pr.left - r.left));
+        // Même raison qu'au-dessus : on ne mesure que le dépassement par la
+        // DROITE. Prendre le maximum des deux bords faisait remonter 10 827 px
+        // pour un élément posé à `left: -9999px`, qui ne déborde de rien.
+        const debord = pr === null ? 0 : Math.round(r.right - pr.right);
         const commun = {
           tag: el.tagName.toLowerCase(),
           classe: String((el as HTMLElement).className || "").slice(0, 120),

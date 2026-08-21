@@ -24,7 +24,7 @@ export function AuditContactBand({ isFr }: AuditContactBandProps): ReactNode {
     <section className="bg-terracotta py-16 sm:py-20">
       <Container>
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl min-w-0">
             <p className="text-mocha-fg mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
               {isFr ? "Pas sûr·e du bon niveau d'audit IA ?" : "Not sure which AI audit level?"}
             </p>
@@ -43,7 +43,7 @@ export function AuditContactBand({ isFr }: AuditContactBandProps): ReactNode {
                 : "A call to understand your context, tell you which AI audit fits — from a focused diagnosis to a company-wide deep dive — and how the engagement unfolds. No commitment."}
             </p>
           </div>
-          <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
+          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <Cta
               href="/appel"
               size="lg"

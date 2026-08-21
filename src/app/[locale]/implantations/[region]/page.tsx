@@ -433,7 +433,7 @@ export default async function RegionPage({ params }: Props) {
       <section className="bg-terracotta py-16 sm:py-20">
         <Container>
           <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl min-w-0">
               <h2
                 className="text-paper text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
                 style={{ fontFamily: "var(--font-serif)" }}
@@ -448,7 +448,7 @@ export default async function RegionPage({ params }: Props) {
                   : "Describe your project in 2 minutes. We reply within 48h — no commitment."}
               </p>
             </div>
-            <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
+            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
               <Link
                 href="/appel"
                 data-cta-tracking="region_orange_banner_book"
