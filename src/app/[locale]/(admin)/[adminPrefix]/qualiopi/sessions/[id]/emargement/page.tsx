@@ -31,6 +31,7 @@ import {
   generateSessionCreneauxAction,
   saveEmargementAction,
   importReleveConnexionAction,
+  genererReleveConnexionDocumentAction,
 } from "@/server/actions/qualiopi/presence";
 import { saveSessionJoursAction } from "@/server/actions/qualiopi/session-jours";
 import {
@@ -265,7 +266,11 @@ export default async function EmargementPage({ params }: PageProps) {
             Importez le rapport d&apos;export de votre plateforme de visioconférence. Le
             rapprochement automatique est effectué par email puis par nom.
           </p>
-          <ImportReleveForm sessionId={id} importAction={importReleveConnexionAction} />
+          <ImportReleveForm
+            sessionId={id}
+            importAction={importReleveConnexionAction}
+            genererReleveAction={genererReleveConnexionDocumentAction}
+          />
         </section>
       )}
 

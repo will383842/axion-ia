@@ -235,7 +235,12 @@ export function SetFinancementForm({
         {/* OPCO — subrogation */}
         {showOpco && (
           <div className={fieldCls}>
-            <label className={labelCls}>Subrogation de paiement</label>
+            {/* 🔴 `D7-2-A1` — c'est un INTITULÉ DE GROUPE, pas une étiquette : il
+                surplombe la case à cocher qui suit, laquelle porte déjà son
+                propre `<label>`. Écrit en `<label>`, il promettait une
+                association qu'il n'avait pas, et un lecteur d'écran annonçait
+                deux étiquettes pour un seul contrôle. */}
+            <span className={labelCls}>Subrogation de paiement</span>
             <label className="flex cursor-pointer items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               <input
                 type="checkbox"

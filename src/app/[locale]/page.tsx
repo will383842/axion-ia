@@ -1274,7 +1274,7 @@ export default async function Home({ params }: HomeProps) {
         <Container>
           <FadeInOnView>
             <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
-              <div className="max-w-2xl">
+              <div className="max-w-2xl min-w-0">
                 <h2
                   className="text-paper text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}

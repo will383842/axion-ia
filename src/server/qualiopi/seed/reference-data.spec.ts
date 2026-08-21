@@ -9,14 +9,28 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-const { seedOffresSite, seedGrilleQualite, seedGrilleV2, seedGrilleV3 } = vi.hoisted(() => ({
+const {
+  seedOffresSite,
+  reconcileOffresFromSkeleton,
+  seedGrilleQualite,
+  seedGrilleV2,
+  seedGrilleV3,
+} = vi.hoisted(() => ({
   seedOffresSite: vi.fn(async () => {}),
+  // 🔴 `D9-4-01` — ce double MANQUAIT, parce que la fonction n'était pas
+  // appelée. Un mock qui ne porte que ce dont le code se sert aujourd'hui casse
+  // le jour où le code s'en sert de plus — c'est ce qui vient d'arriver, et
+  // c'est bien : le test a rougi sur un contrat qui a changé.
+  reconcileOffresFromSkeleton: vi.fn(async () => {}),
   seedGrilleQualite: vi.fn(async () => {}),
   seedGrilleV2: vi.fn(async () => {}),
   seedGrilleV3: vi.fn(async () => {}),
 }));
 
-vi.mock("../../../../prisma/seeds/qualiopi/offres", () => ({ seedOffresSite }));
+vi.mock("../../../../prisma/seeds/qualiopi/offres", () => ({
+  seedOffresSite,
+  reconcileOffresFromSkeleton,
+}));
 vi.mock("../../../../prisma/seeds/qualiopi/grille", () => ({ seedGrilleQualite }));
 vi.mock("../../../../prisma/seeds/qualiopi/grille-v2", () => ({ seedGrilleV2 }));
 vi.mock("../../../../prisma/seeds/qualiopi/grille-v3", () => ({ seedGrilleV3 }));
@@ -65,6 +79,7 @@ const ORIGINAL_DB_URL = process.env["DATABASE_URL"];
 
 beforeEach(() => {
   seedOffresSite.mockClear();
+  reconcileOffresFromSkeleton.mockClear();
   seedGrilleQualite.mockClear();
   seedGrilleV2.mockClear();
   seedGrilleV3.mockClear();
@@ -88,6 +103,11 @@ describe("seedQualiopiReferenceData", () => {
     expect(report.grilleActiveCle).toBe("grille_qualite_v2");
     expect(prisma.$transaction).toHaveBeenCalledOnce();
     expect(seedOffresSite).toHaveBeenCalledOnce();
+    // 🔴 `D9-4-01` — la réconciliation ne tournait QUE via le CLI
+    // `pnpm qualiopi:seed`, donc jamais en production. Durée, public visé et
+    // modalités d'une offre pouvaient dériver du squelette sans que rien ne les
+    // réaligne — sur des informations publiées au public.
+    expect(reconcileOffresFromSkeleton).toHaveBeenCalledOnce();
     expect(seedGrilleQualite).toHaveBeenCalledOnce();
     expect(seedGrilleV2).toHaveBeenCalledOnce();
     // grille déjà active → pas d'auto-réparation, seedGrilleV3 appelé une seule fois (dans la tx)

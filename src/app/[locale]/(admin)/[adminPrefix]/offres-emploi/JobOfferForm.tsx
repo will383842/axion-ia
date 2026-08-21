@@ -215,14 +215,24 @@ export function JobOfferForm({ initial }: Props) {
 
       <h3 className="admin-section-title">Descriptif</h3>
       <div className="admin-field">
-        <label className="admin-label">Corps de l&apos;offre (FR)</label>
-        <TiptapEditor name="bodyFr" initialHtml={initial?.bodyFrHtml ?? ""} />
+        <span className="admin-label">Corps de l&apos;offre (FR)</span>
+        <TiptapEditor
+          label="Corps de l'offre (FR)"
+          name="bodyFr"
+          initialHtml={initial?.bodyFrHtml ?? ""}
+        />
       </div>
       <div className="admin-field">
-        <label className="admin-label">
+        <span className="admin-label">
           Corps de l&apos;offre (EN) — optionnel (vide = recopie le FR)
-        </label>
-        <TiptapEditor name="bodyEn" initialHtml={initial?.bodyEnHtml ?? ""} />
+        </span>
+        <TiptapEditor
+          label="
+          Corps de l'offre (EN) — optionnel (vide = recopie le FR)
+        "
+          name="bodyEn"
+          initialHtml={initial?.bodyEnHtml ?? ""}
+        />
       </div>
 
       <h3 className="admin-section-title">Contrat &amp; lieu</h3>

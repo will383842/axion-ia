@@ -56,6 +56,7 @@ import {
 } from "@/server/qualiopi/documents/signature/token-document";
 import { enqueueEmail } from "@/server/queue/queues";
 import { requireAdminWrite, requireHabilitation, logQualiopiActivity } from "./_guards";
+import { peutEngager, MOTIF_REFUS } from "@/server/auth/habilitations";
 
 type Resultat<T> = { data: T } | { error: string };
 
@@ -402,8 +403,12 @@ export async function revoquerLiensSignatureAction(input: {
   motif: string;
 }): Promise<Resultat<{ revoques: number }>> {
   const session = await requireAdminWrite();
-  if (session.role !== "super_admin" && session.role !== "admin") {
-    return { error: "Seuls un administrateur ou le dirigeant peuvent révoquer un lien." };
+  // 🔴 2026-08-21 — neuvième recopie de la paire `super_admin | admin` trouvée
+  // dans cet audit. La matrice porte l'acte `revoquer_signature` : les deux
+  // listes coïncidaient, et c'est exactement ainsi qu'une recopie survit
+  // jusqu'au jour où la matrice bouge sans elle.
+  if (!peutEngager(session.role, "revoquer_signature")) {
+    return { error: MOTIF_REFUS.revoquer_signature };
   }
   const motif = input.motif.trim();
   if (motif === "") {

@@ -168,7 +168,11 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
                 {isFr
                   ? "Pour exercer vos droits RGPD ou demander un retrait manuel, écrivez-nous à"
                   : "To exercise your GDPR rights or request a manual removal, email us at"}{" "}
-                <a className="text-primary hover:underline" href="mailto:contact@axion-ia.com">
+                {/* 🔴 a11y 2026-08-21 — `link-in-text-block` (serious). Au milieu d'un
+                    paragraphe, ce lien n'était distingué QUE par sa couleur jusqu'au
+                    survol : WCAG 1.4.1 l'interdit, et c'est l'adresse par laquelle on
+                    exerce ses droits RGPD. Le soulignement devient permanent. */}
+                <a className="text-primary underline" href="mailto:contact@axion-ia.com">
                   contact@axion-ia.com
                 </a>
                 .

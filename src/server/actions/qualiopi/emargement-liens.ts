@@ -21,6 +21,7 @@
 "use server";
 
 import * as Sentry from "@sentry/nextjs";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { qrDataUrl } from "@/server/qualiopi/documents/qr";
@@ -84,7 +85,7 @@ export async function emettreLiensSessionAction(input: {
     select: {
       dateFin: true,
       enrollments: {
-        where: { statut: { notIn: ["abandon", "exclu"] }, trainee: { deletedAt: null } },
+        where: { ...inscriptionsActives(), trainee: { deletedAt: null } },
         select: { id: true, trainee: { select: { nom: true, prenom: true } } },
         orderBy: { trainee: { nom: "asc" } },
       },

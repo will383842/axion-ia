@@ -12,7 +12,12 @@ const badgeVariants = cva(
         accent: "bg-primary/10 text-primary",
         success: "bg-accent-green/15 text-fg",
         warning: "bg-accent-yellow/20 text-fg",
-        danger: "bg-accent-red/10 text-accent-red",
+        // 🔴 a11y 2026-08-21 — `text-accent-red` plafonne à 4,07:1 sur le fond du
+        // site : sous le seuil AA de 4,50 pour du texte normal, et ce badge est en
+        // `text-[0.8rem]`. `--color-error` rend 5,58:1 et c'est le jeton prévu pour
+        // ça — `accent-red` est un accent décoratif, pas une couleur de texte.
+        // Mesuré, pas estimé.
+        danger: "bg-error/10 text-error",
       },
     },
     defaultVariants: { variant: "neutral" },

@@ -90,7 +90,12 @@ export default async function MyDataPage({ params }: Props) {
           <div className="text-fg-soft mt-10 space-y-4 text-base leading-relaxed">
             <p>
               {isFr ? "Pour exercer un droit, écrivez à" : "To exercise a right, email"}{" "}
-              <a className="text-primary hover:underline" href="mailto:contact@axion-ia.com">
+              {/* 🔴 a11y 2026-08-21 — même défaut qu'à `/fr/desabonnement` :
+                  `link-in-text-block`. Celui-ci n'était PAS dans la liste rendue par la
+                  CI — ce run avait été tronqué par son plafond de temps. Il a été trouvé
+                  en allant voir les voisins de même nature après le premier correctif.
+                  C'est aussi, ici, l'adresse d'exercice des droits RGPD (art. 12). */}
+              <a className="text-primary underline" href="mailto:contact@axion-ia.com">
                 contact@axion-ia.com
               </a>{" "}
               {isFr

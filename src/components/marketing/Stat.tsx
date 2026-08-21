@@ -14,7 +14,11 @@ const variantClasses: Record<NonNullable<StatProps["variant"]>, string> = {
   default: "text-fg [.bg-mocha-rich_&]:text-mocha-fg",
   primary: "text-primary",
   purple: "text-accent-purple",
-  orange: "text-accent-orange",
+  // 🔴 a11y 2026-08-21 — `text-accent-orange` rend 2,69:1 sur le fond du site : il
+  // échoue AA même au seuil « texte large » (3,00), alors que ce composant affiche
+  // justement de très grands nombres. `--color-warning` rend 4,61:1, garde la
+  // famille orangée, et passe le seuil du texte NORMAL.
+  orange: "text-warning",
   green: "text-sage",
   terracotta: "text-terracotta [.bg-mocha-rich_&]:text-terracotta-soft",
 };

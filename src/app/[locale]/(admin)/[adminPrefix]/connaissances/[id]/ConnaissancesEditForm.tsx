@@ -309,8 +309,8 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
           />
         </div>
         <div className="admin-field">
-          <label className="admin-label">Corps</label>
-          <TiptapEditor name="body_fr" initialHtml={entry.fr?.body ?? ""} />
+          <span className="admin-label">Corps</span>
+          <TiptapEditor label="Corps" name="body_fr" initialHtml={entry.fr?.body ?? ""} />
         </div>
         <div className="admin-form-actions">
           <button type="submit" disabled={bodyPending} className="admin-button">

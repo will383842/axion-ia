@@ -28,6 +28,8 @@
 "use server";
 
 import React from "react";
+import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -1291,9 +1293,15 @@ export async function genererCertificatRealisationAction(input: {
   if (!enrollment) return { error: "Inscription introuvable" };
 
   // Conformité R.6313-3 : un certificat de réalisation atteste d'heures réellement
-  // suivies. Un stagiaire en abandon ou exclu ne peut PAS recevoir de certificat
-  // (cohérent avec l'attestation, cf. attestation-service.ts). Garde bloquante.
-  if (enrollment.statut === "abandon" || enrollment.statut === "exclu") {
+  // suivies. Un stagiaire sorti du dispositif ne peut PAS recevoir de certificat.
+  //
+  // 🔴 2026-08-21 — ce commentaire disait « cohérent avec l'attestation, cf.
+  // attestation-service.ts ». Une prière en commentaire pour que deux gardes
+  // restent identiques est l'aveu qu'on sait qu'elles vont diverger : les deux
+  // écrivaient bien la même règle, mais dans un ORDRE différent, chacune de son
+  // côté. Elles appellent maintenant le même prédicat, et la cohérence n'est
+  // plus une intention mais un fait.
+  if (!estInscriptionActive(enrollment.statut)) {
     return {
       error:
         "Certificat refusé : le stagiaire est en abandon/exclu. Aucun certificat de réalisation ne peut être émis (R.6313-3).",
@@ -1501,7 +1509,7 @@ export async function genererKitOpcoAction(input: {
       priseEnChargeUnite: true,
       numeroDossierOpco: true,
       enrollments: {
-        where: { statut: { notIn: ["exclu", "abandon"] } },
+        where: { ...inscriptionsActives() },
         select: {
           trainee: { select: { nom: true, prenom: true } },
           session: {

@@ -36,7 +36,7 @@ export function ContactBand({
     <section className="bg-terracotta py-16 sm:py-20">
       <Container>
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl min-w-0">
             {/* ⚠️ PAS D'OPACITÉ sur le surtitre ci-dessous. `text-mocha-fg/75`
                 sur le fond terracotta plein ne donnait que 3,63:1, sous le seuil
                 AA de 4,5 — relevé par axe-core en production le 2026-07-31. À
@@ -82,6 +82,27 @@ export function ContactBand({
               </p>
             ) : null}
           </div>
+          {/* 🔴 2026-08-21 — DÉBORDEMENT HORIZONTAL À 768 px, ET SA FAUSSE RÉPARATION.
+              Cette rangée voisine un bloc de texte, et la rangée EXTÉRIEURE passe en
+              `md:flex-row` à 768 px précisément. Le texte porte `max-w-2xl` (672 px)
+              sans `min-w-0` : en flex, il refuse alors de descendre sous sa largeur
+              de contenu. Il ne reste plus rien pour les boutons, et le DOCUMENT
+              s'élargit — barre de défilement horizontale sur toute la page.
+
+              Premier correctif (PR 772) : `shrink-0` → `min-w-0` ICI. Il a rendu la
+              rangée compressible, donc déplacé le débordement d'un cran : le
+              conteneur tombait à 121 px et les boutons, eux, en sortaient de 132 px.
+              Mesuré après coup sur `/fr/audit` : `scrollWidth` 876 pour 768. Le
+              document débordait toujours. **Un défaut qui change de coupable n'est
+              pas réparé** — et la mesure qui l'aurait dit portait
+              `continue-on-error`.
+
+              Correctif réel : c'est au TEXTE de céder (`min-w-0` sur le bloc voisin)
+              et aux boutons de garder leur largeur (`shrink-0` ici). Vérifié sur
+              `/fr/audit` à 1440, 768, 640 et 390 px : plus aucun débordement.
+
+              ⚠️ HUIT jumeaux portent la même rangée — voir le commentaire
+              ci-dessus. Les neuf ont été corrigés ensemble. */}
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <Cta
               href="/appel"

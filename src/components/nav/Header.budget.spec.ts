@@ -77,13 +77,35 @@ describe("budget d'espace du header", () => {
     const navcta = lire("navcta");
     const navair = lire("navair");
 
-    // Largeurs de rangée mesurées + 17 px de barre de défilement verticale.
-    // Valeurs relevées sur DEUX pages (accueil et /tarifs) ; on garde la pire
-    // des deux — l'onglet actif est en gras, ce qui élargit la rangée de ~8 px
-    // selon la page consultée.
-    expect(nav).toBeGreaterThanOrEqual(1397 + 17);
-    expect(navcta).toBeGreaterThanOrEqual(1547 + 17);
-    expect(navair).toBeGreaterThanOrEqual(1651 + 17);
+    // 🔴 2026-08-21 — CETTE COMPARAISON OUBLIAIT LE REMBOURRAGE, ET C'EST
+    // EXACTEMENT LE DÉFAUT QU'ELLE CROYAIT GARDER.
+    //
+    // Elle exigeait `nav >= 1397 + 17` : la largeur de rangée mesurée, plus une
+    // barre de défilement. Or la rangée ne dispose pas de la largeur de l'écran :
+    // le conteneur porte `xl:px-16`, soit **128 px** pris des deux côtés. À
+    // 1440 px la place réelle est 1312, pas 1440. Le budget était donc validé
+    // contre une largeur que la rangée n'a jamais eue, et le header débordait sa
+    // boîte de contenu dans les TROIS bandes — de 50 à 60 px, pour ne survivre
+    // qu'à 4 px du bord du document. Le Chromium Linux de la CI, dont les
+    // chasses diffèrent d'environ 0,8 %, franchissait ces 4 px sur 90 des
+    // 117 routes publiques.
+    //
+    // Le terme manquant est ajouté ici. Les largeurs de rangée sont celles
+    // relevées APRÈS resserrement des écarts internes (`nav:gap-4` / `nav:gap-5`),
+    // au point le plus serré de chaque bande :
+    //
+    //     bande nav      (1440–1699)   contenu 1286 px
+    //     bande navcta   (1700–1799)   contenu 1476 px   (+ CTA « Nous écrire »)
+    //     bande navair   (≥ 1800)      contenu 1548 px   (onglets aérés)
+    //
+    // ⚠️ Ces trois nombres sont des ENTRÉES de calcul, pas une mesure vivante.
+    // La mesure vivante est `tests/e2e/qualiopi/header-tient-dans-sa-boite.spec.ts`,
+    // qui ouvre réellement la page à treize largeurs et exige une réserve de
+    // 16 px. Ce test-ci garde le raisonnement ; celui-là garde le résultat.
+    const REMBOURRAGE = 128;
+    expect(nav).toBeGreaterThanOrEqual(1286 + REMBOURRAGE);
+    expect(navcta).toBeGreaterThanOrEqual(1476 + REMBOURRAGE);
+    expect(navair).toBeGreaterThanOrEqual(1548 + REMBOURRAGE);
     // Un seuil qui doublerait l'autre ferait apparaître les deux états en même
     // temps — donc le débordement qu'on vient de retirer.
     expect(nav).toBeLessThan(navcta);
@@ -100,6 +122,13 @@ describe("budget d'espace du header", () => {
     expect(src).toContain("nav:flex");
     expect(src).toContain("nav:hidden");
     expect(src).toContain("navcta:inline-flex");
-    expect(src).toContain("navair:gap-12");
+    // 🔴 `navair:gap-12` → `navair:gap-8` le 2026-08-21. L'écart aéré de 48 px
+    // coûtait ~150 px à la rangée, dont seulement une centaine était disponible
+    // une fois le rembourrage compté. Ce qu'il faut garder ici, ce n'est pas une
+    // valeur d'écart mais le FAIT que l'aération dépende du seuil `navair` — un
+    // `gap-12` sans variante, ou une aération accrochée à `2xl`, ramènerait le
+    // défaut d'origine.
+    expect(src).toContain("navair:gap-8");
+    expect(src).not.toMatch(/(?:^|[^:])\bgap-12\b/);
   });
 });
