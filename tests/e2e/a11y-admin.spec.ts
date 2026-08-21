@@ -71,8 +71,8 @@ test.describe("a11y console admin WCAG 2.2 AA @a11y-admin", () => {
 
   test.skip(
     !cibleLocale() || !identifiantsFournis(),
-    "Cible locale ET identifiants de seed requis. Le nightly mesure la prod en " +
-      "lecture seule, sans authentification ; la CI n'a pas de base seedee.",
+    "Cible locale ET identifiants de seed requis : le nightly mesure la prod en " +
+      "lecture seule, sans authentification.",
   );
 
   for (const { path, label } of PAGES_ADMIN) {

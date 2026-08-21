@@ -1204,6 +1204,25 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
   const formation = await prisma.formation.upsert({
     where: { numero: data.formation.numero },
     update: {
+      // 🔴 2026-08-21 — CES DEUX CHAMPS MANQUAIENT, ET LE DOSSIER DE
+      // DÉMONSTRATION DEVENAIT INVISIBLE.
+      //
+      // Le wizard de vente ne liste que les formations `statut: "actif"` +
+      // `statutGeneration: "publie"` — comme le compteur de conformité et le
+      // catalogue. Or la formation de démonstration peut dériver vers
+      // `statut: "publie"` (le moteur de génération l'y met), et la branche
+      // `update` ne la ramenait pas : relancer `pnpm qualiopi:seed-demo`
+      // laissait le dossier en place mais introuvable depuis l'écran de vente.
+      //
+      // Constaté en base : `AXI-FOR-DEMO-001` en `statut=publie` APRÈS un seed
+      // réussi. Le parcours e2e de vente s'en tirait par un `test.skip`
+      // silencieux (« Aucune formation publiée — seed incomplet »), donc
+      // personne ne l'a jamais vu.
+      //
+      // 🔑 Un seed idempotent doit ramener À L'ÉTAT VOULU, pas seulement
+      // « ne pas échouer ». Ce qu'il omet, il le laisse dériver.
+      statut: data.formation.statut,
+      statutGeneration: data.formation.statutGeneration,
       indicateursPublies: data.formation.indicateursPublies,
       methodeCalculIndicateurs: data.formation.methodeCalculIndicateurs,
       indicateursPubliesAt: data.formation.indicateursPubliesAt,

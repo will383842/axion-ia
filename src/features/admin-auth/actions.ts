@@ -14,7 +14,7 @@ import { verifyPasswordSafe } from "@/lib/auth-password";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/client-ip";
 import { signInSchema, setup2FASchema, disable2FASchema } from "@/lib/schemas/auth";
-import { adminSegment } from "@/lib/admin-path";
+import { adminPath } from "@/lib/admin-path";
 
 // ============================================================
 // signInAction — login email + password + (optionnel) TOTP
@@ -134,7 +134,18 @@ async function _signInActionInner(_prev: SignInState, formData: FormData): Promi
     return { ok: false, error: "Email, mot de passe ou code 2FA invalide." };
   }
 
-  redirect(`/${adminSegment()}`);
+  // 🔴 2026-08-21 — CES DEUX REDIRECTIONS OUBLIAIENT LA LANGUE.
+  //
+  // Elles visaient `/<prefixe-admin>`, sans `/fr`. Le proxy rattrapait par un
+  // 301, donc « ça marchait » — au prix d'un aller-retour supplémentaire à
+  // chaque connexion et à chaque déconnexion, et d'une URL intermédiaire que
+  // tout code attendant l'arrivée voit passer. Le fixture e2e `loginAsAdmin`
+  // s'y est arrêté.
+  //
+  // 🔑 `adminPath()` existait DÉJÀ, à côté, et fait exactement ça. La sœur de
+  // cette fonction (`login/page.tsx`) écrivait `/fr/${adminPrefix}` à la main.
+  // Trois écritures pour un seul chemin : elles ont divergé, comme toujours.
+  redirect(adminPath("fr"));
 }
 
 // ============================================================
@@ -143,7 +154,7 @@ async function _signInActionInner(_prev: SignInState, formData: FormData): Promi
 
 export async function signOutAction(): Promise<void> {
   await signOut({ redirect: false });
-  redirect(`/${adminSegment()}/login`);
+  redirect(adminPath("fr", "login"));
 }
 
 // ============================================================
