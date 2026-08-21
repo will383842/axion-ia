@@ -174,12 +174,22 @@ export function WidgetBuilder({ locale, baseUrl, cities }: WidgetBuilderProps) {
 
         {/* Count */}
         <fieldset className="mt-5">
-          <legend className="text-fg-muted text-xs font-semibold tracking-wide uppercase">
+          {/* 🔴 a11y 2026-08-21 — axe rendait `label` (CRITICAL) sur ce curseur.
+              Un `<legend>` nomme le GROUPE, pas la commande : le champ n'avait donc
+              aucun nom accessible, et un lecteur d'écran annonçait « curseur, 5 » sans
+              dire de quoi. On référence le légende par `aria-labelledby` plutôt que de
+              recopier le libellé dans un `aria-label` — une seule écriture, donc pas de
+              divergence possible entre les deux. */}
+          <legend
+            id={`${countId}-legende`}
+            className="text-fg-muted text-xs font-semibold tracking-wide uppercase"
+          >
             {isFr ? "Nombre d'offres" : "Number of roles"}
           </legend>
           <div className="mt-2 flex items-center gap-3">
             <input
               id={countId}
+              aria-labelledby={`${countId}-legende`}
               type="range"
               min={1}
               max={12}
@@ -268,7 +278,17 @@ function FormatCard({ label, help, code, copied, onCopy, previewSrc, isFr }: For
           >
             {copied ? (isFr ? "Copié ✓" : "Copied ✓") : isFr ? "Copier" : "Copy"}
           </button>
-          <pre className="bg-mocha-rich text-mocha-fg max-h-72 overflow-auto rounded-xl p-4 text-xs leading-relaxed">
+          {/* 🔴 a11y 2026-08-21 — `scrollable-region-focusable` (serious). Ce bloc
+              défile (`max-h-72 overflow-auto`) mais n'était pas atteignable au clavier :
+              impossible d'en lire la fin sans souris. `tabIndex={0}` le rend focusable,
+              et il lui faut alors un nom et un rôle — sinon on gagne un arrêt de
+              tabulation muet, ce qui n'est pas un progrès. */}
+          <pre
+            tabIndex={0}
+            role="region"
+            aria-label={isFr ? "Code d'intégration du widget" : "Widget embed code"}
+            className="bg-mocha-rich text-mocha-fg focus-visible:ring-terracotta max-h-72 overflow-auto rounded-xl p-4 text-xs leading-relaxed focus-visible:ring-2 focus-visible:outline-none"
+          >
             <code style={{ fontFamily: "var(--font-mono, var(--font-inconsolata))" }}>{code}</code>
           </pre>
         </div>

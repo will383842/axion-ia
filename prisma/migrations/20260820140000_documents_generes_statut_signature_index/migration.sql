@@ -1,0 +1,24 @@
+-- D5-4-04 (2026-08-20) — la pastille de la console scannait toute la table.
+--
+-- `compterPiecesEnAttente()` lit `documents_generes` sur
+-- `statut_signature IN ('partielle','en_attente') AND annulee_at IS NULL`,
+-- SANS `take` — et cette lecture est faite par la pastille de navigation, donc
+-- sur CHAQUE page admin. Aucun index ne portait `statut_signature` : Postgres
+-- n'avait d'autre choix qu'un Seq Scan complet, sur une table qui grossit d'une
+-- ligne a chaque piece generee et ne se purge qu'a cinq ans.
+--
+-- Index COMPOSE, dans cet ordre : `statut_signature` est le predicat d'egalite
+-- (sur un ensemble de valeurs), `annulee_at` le filtre qui suit. Un index sur
+-- `annulee_at` seul existait deja et ne servait PAS cette requete -- la colonne
+-- est NULL pour l'ecrasante majorite des lignes, donc peu selective a elle
+-- seule.
+--
+-- Pas de CONCURRENTLY : `prisma migrate deploy` execute la migration dans une
+-- transaction, ce qui l'interdit (P3018 / E25001). Le depot a deja paye ce
+-- piege deux fois (cf. 20260521150200 et 20260625120300). Si ce fichier devait
+-- etre rejoue un jour sur une table volumineuse, le sortir de la transaction et
+-- passer en CREATE INDEX CONCURRENTLY.
+--
+-- Additif : aucune ligne n'est touchee.
+CREATE INDEX IF NOT EXISTS "documents_generes_statut_signature_annulee_at_idx"
+  ON "documents_generes" ("statut_signature", "annulee_at");

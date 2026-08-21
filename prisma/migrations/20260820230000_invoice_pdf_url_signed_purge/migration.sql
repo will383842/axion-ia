@@ -1,0 +1,17 @@
+-- 🔴 `D4-5 1.1` — effacer les URL signées 90 jours DÉJÀ persistées.
+--
+-- Retirer le code qui les frappait ne suffit pas : celles qui sont en base
+-- restent des droits d'accès anonymes VALIDES, jusqu'à 90 jours après leur
+-- émission. Un correctif qui ferme le robinet sans vider le seau laisse
+-- exactement le risque qu'il prétend traiter.
+--
+-- ⚠️ On ne vide PAS la colonne entière. Son commentaire de schéma déclare
+-- qu'elle peut aussi porter une `hosted_invoice_url` Stripe — un lien de
+-- paiement, qui n'est pas un secret et qui n'a rien à voir. On ne supprime que
+-- ce qui porte une signature AWS/R2, c'est-à-dire précisément le sésame.
+--
+-- Rien à restaurer : aucun code du dépôt ne lit cette colonne (vérifié sur le
+-- dépôt entier le 2026-08-20 — la route était le seul écrivain, et il n'y avait
+-- aucun lecteur). Le PDF, lui, reste archivé dans R2 et se sert par la route
+-- authentifiée `/api/admin/invoices/[id]/pdf`.
+UPDATE "invoices" SET "pdf_url" = NULL WHERE "pdf_url" LIKE '%X-Amz-Signature%';

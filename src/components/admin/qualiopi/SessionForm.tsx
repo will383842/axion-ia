@@ -135,6 +135,14 @@ export function SessionForm({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  /**
+   * Manquements BLOQUANTS du dossier du formateur affecté (`D2-5-06`).
+   *
+   * 🔴 La session est CRÉÉE quand ceci s'affiche : ce n'est pas un refus, c'est
+   * ce qu'il reste à faire. Un sous-traitant sans contrat de sous-traitance
+   * pouvait jusqu'ici être posé à la création sans qu'un seul écran ne le dise.
+   */
+  const [avertissements, setAvertissements] = useState<string[]>([]);
 
   // Champs communs
   const [formationId, setFormationId] = useState("");
@@ -296,6 +304,15 @@ export function SessionForm({
         }
 
         setSuccessMsg(`Session ${result.data.numero} créée avec succès.`);
+        setAvertissements(result.data.avertissements);
+
+        // 🔴 `D2-5-06` — on ne redirige PAS quand il y a un manquement à lire.
+        // Une redirection efface le message avant qu'il n'ait été vu, et un
+        // avertissement qu'on n'a pas le temps de lire ne vaut pas mieux que
+        // pas d'avertissement. La session est créée ; le lien reste accessible
+        // depuis la liste.
+        if (result.data.avertissements.length > 0) return;
+
         if (onSuccess) {
           onSuccess(result.data.id);
         } else if (redirectAfterCreate) {
@@ -741,6 +758,22 @@ export function SessionForm({
         >
           {successMsg}
         </p>
+      )}
+      {avertissements.length > 0 && (
+        <div
+          role="status"
+          className="mb-[var(--space-admin-4)] rounded border border-[color:var(--color-admin-warning)] p-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
+        >
+          <p className="font-semibold">
+            Le dossier de ce formateur est incomplet — la session est créée, ces pièces restent à
+            fournir :
+          </p>
+          <ul className="mt-[var(--space-admin-2)] list-disc pl-[var(--space-admin-4)]">
+            {avertissements.map((a) => (
+              <li key={a}>{a}</li>
+            ))}
+          </ul>
+        </div>
       )}
 
       {/* ── Bouton submit ─────────────────────────────────────────────────── */}

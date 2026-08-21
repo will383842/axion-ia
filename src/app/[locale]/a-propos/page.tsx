@@ -31,7 +31,7 @@ import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
 import { formatAmount, getTierById, INTERVENTION_TIERS } from "@/content/pricing";
 // Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
-import { FOUNDER } from "@/lib/brand";
+import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 // Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
 // sont émises QUE si la Phase B est active (elles apparaîtront automatiquement
 // dès le passage du flag, sans retoucher le code). Doctrine financement respectée.
@@ -179,7 +179,7 @@ export default async function About({ params }: Props) {
         {
           id: "fondateur",
           question: "Qui est le fondateur d'Axion-IA ?",
-          answer: `Axion-IA a été fondé par ${FOUNDER.displayName}, son fondateur et CEO. Son parcours et son domaine d'expertise — l'IA opérationnelle pour l'entreprise — sont détaillés sur sa fiche fondateur dédiée.`,
+          answer: `Axion-IA a été fondé par ${FOUNDER.fullName}, son fondateur et CEO. Son parcours et son domaine d'expertise — l'IA opérationnelle pour l'entreprise — sont détaillés sur sa fiche fondateur dédiée.`,
         },
         {
           id: "perimetre",
@@ -254,7 +254,7 @@ export default async function About({ params }: Props) {
         {
           id: "fondateur",
           question: "Who founded Axion-IA?",
-          answer: `Axion-IA was founded by ${FOUNDER.displayName}, its founder and CEO. His background and area of expertise — operational AI for businesses — are detailed on his dedicated founder page.`,
+          answer: `Axion-IA was founded by ${FOUNDER.fullName}, its founder and CEO. His background and area of expertise — operational AI for businesses — are detailed on his dedicated founder page.`,
         },
         {
           id: "perimetre",
@@ -558,7 +558,20 @@ export default async function About({ params }: Props) {
             // Photo réelle du fondateur sur la carte Will. Manon = persona
             // éditoriale IA (transparence AI Act art. 50) → aucun portrait
             // humain, avatar initiale conservé pour ne pas induire en erreur.
-            ...(m.id === "will" ? { photoUrl: "/illustrations/home-founder-william.avif" } : {}),
+            ...(m.id === "will"
+              ? {
+                  photoUrl: "/illustrations/home-founder-william.avif",
+                  // La fiche d'entité du fondateur n'est servie qu'en FR
+                  // (`/equipe/[slug]` → `notFound()` hors FR) : pas de lien en EN,
+                  // plutôt qu'un lien vers une page qui n'existe pas.
+                  ...(isFr
+                    ? {
+                        href: FOUNDER.pagePath,
+                        hrefLabel: `Le parcours de ${FOUNDER.displayName}`,
+                      }
+                    : {}),
+                }
+              : {}),
           }))}
         />
       </Section>
@@ -659,9 +672,16 @@ export default async function About({ params }: Props) {
       </Section>
 
       {/* FAQ AEO — entité Axion-IA (siège, ancienneté, périmètre) + FAQPage
-         JSON-LD auto via FaqAccordion */}
+         JSON-LD auto via FaqAccordion.
+
+         `faqAuthorId` : sans lui, la factory `buildFaqJsonLd` crédite Manon,
+         la persona éditoriale IA. Ces réponses parlent du siège, de
+         l'ancienneté et du périmètre du cabinet, signées par son fondateur —
+         les attribuer à une persona générée détruit exactement le signal
+         E-E-A-T que la page « À propos » existe pour poser. */}
       <FaqBlock
         tone="canvas"
+        faqAuthorId={FOUNDER_PERSON_ID}
         eyebrow="FAQ"
         title={isFr ? "Questions sur" : "Questions about"}
         titleEm="Axion-IA"

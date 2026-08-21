@@ -93,9 +93,20 @@ describe("Câblage du gate a11y — workflows", () => {
     const nightly = lire(".github/workflows/nightly.yml");
     expect(nightly).toContain("E2E_BASE_URL: https://axion-ia.com");
     expect(nightly).toContain("playwright test tests/e2e/a11y.spec.ts");
-    expect(nightly, "l'échec du gate a11y doit rester visible dans l'alerte nocturne").toMatch(
-      /needs:\s*\[a11y-prod,/,
-    );
+    // ⚠️ 2026-08-21 — cette assertion cherchait littéralement `needs: [a11y-prod,`.
+    // Ajouter un job à la liste et la passer sur plusieurs lignes suffisait à la
+    // faire rougir, alors que l'invariant qu'elle protège — `a11y-prod` DOIT
+    // figurer dans les `needs` de l'alerte — était toujours tenu. Une garde qui
+    // rougit sur une MISE EN FORME finit par être « corrigée » en l'affaiblissant,
+    // et celle-ci existe parce qu'un job nocturne a un jour soumis le formulaire
+    // de contact en production. On lit donc la liste, pas sa typographie.
+    const alerte = effectif(nightly).slice(effectif(nightly).indexOf("notify-failure:"));
+    const besoins = alerte.match(/needs:\s*\[([^\]]*)\]/);
+    expect(besoins, "`notify-failure` n'a plus de liste `needs`").not.toBeNull();
+    expect(
+      besoins![1]!.split(",").map((s) => s.trim()),
+      "l'échec du gate a11y doit rester visible dans l'alerte nocturne",
+    ).toContain("a11y-prod");
   });
 });
 

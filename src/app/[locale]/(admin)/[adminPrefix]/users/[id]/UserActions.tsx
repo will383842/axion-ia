@@ -10,6 +10,7 @@ import {
   type Reset2FAState,
   type ResetPasswordState,
 } from "@/features/admin-users/actions";
+import { ROLES_ADMIN, LIBELLES_ROLE } from "@/features/admin-users/roles";
 
 const initU: UpdateUserState = { ok: false, error: "" };
 const init2FA: Reset2FAState = { ok: false, error: "" };
@@ -69,10 +70,14 @@ export function UserActions({
                 className="admin-input"
                 disabled={uPending}
               >
-                <option value="reader">Lecteur</option>
-                <option value="editor">Éditeur</option>
-                <option value="admin">Admin</option>
-                <option value="super_admin">Super Admin</option>
+                {/* 🔴 `D6-2-M1` — cf. `CreateUserForm`. Deux surfaces distinctes :
+                    pouvoir créer un compte « secrétaire » sans pouvoir promouvoir
+                    un compte existant laisserait la moitié du geste impossible. */}
+                {ROLES_ADMIN.map((role) => (
+                  <option key={role} value={role}>
+                    {LIBELLES_ROLE[role]}
+                  </option>
+                ))}
               </select>
             </div>
           )}

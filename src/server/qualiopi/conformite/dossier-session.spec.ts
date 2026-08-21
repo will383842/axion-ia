@@ -14,7 +14,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import JSZip from "jszip";
 
 vi.mock("@/lib/prisma", () => ({
-  prisma: { trainingSession: { findUnique: vi.fn() } },
+  prisma: {
+    trainingSession: { findUnique: vi.fn() },
+    // Les pièces ANNULÉES sont lues à part : elles ne doivent pas entrer dans la
+    // relation qui alimente le ZIP, mais le dossier doit quand même les NOMMER.
+    documentGenere: { findMany: vi.fn() },
+  },
 }));
 
 // `documentPdfKey` reste RÉEL — cf. audit-dossier.spec.ts : la clé est ce que
@@ -38,6 +43,9 @@ import { calculerSelfHash, type TupleSignatureV1 } from "@/server/qualiopi/emarg
 const mockFindUnique = (
   prisma as unknown as { trainingSession: { findUnique: ReturnType<typeof vi.fn> } }
 ).trainingSession.findUnique;
+const mockDocsAnnulees = (
+  prisma as unknown as { documentGenere: { findMany: ReturnType<typeof vi.fn> } }
+).documentGenere.findMany;
 const mockR2Ok = isR2Configured as unknown as ReturnType<typeof vi.fn>;
 const mockGetBuffer = getObjectBufferR2 as unknown as ReturnType<typeof vi.fn>;
 const mockFeuille = construireFeuillePdf as unknown as ReturnType<typeof vi.fn>;
@@ -142,6 +150,7 @@ beforeEach(() => {
   // ⚠️ `clearAllMocks` efface les appels, pas les valeurs de retour : toute
   // valeur par défaut se repose ici, sinon elle fuit d'un test à l'autre.
   mockFindUnique.mockResolvedValue(session());
+  mockDocsAnnulees.mockResolvedValue([]);
   mockR2Ok.mockReturnValue(true);
   mockGetBuffer.mockResolvedValue(Buffer.from("%PDF-"));
   mockFeuille.mockResolvedValue({
@@ -167,7 +176,12 @@ describe("genererDossierSessionZip", () => {
   it("déclare CONFORME une chaîne de signatures intacte", async () => {
     const res = await genererDossierSessionZip("ses-1");
     expect(res?.nbChainesAnormales).toBe(0);
-    expect(res?.avertissements).toEqual([]);
+    // 🔴 2026-08-20 (`D3-3-01`) — n'exige plus AUCUN avertissement. La fixture
+    // par défaut n'a aucune contresignature de formateur, ce qui en lève un
+    // désormais. L'assertion d'origine était exacte sur son objet (l'intégrité
+    // des chaînes) mais elle verrouillait un SILENCE qui n'était pas mérité :
+    // le dossier ne disait rien d'une pièce manquante.
+    expect(res?.avertissements.filter((a) => !a.includes("contresignature"))).toEqual([]);
 
     const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
     expect(JSON.parse(rapport!).signatures[0]).toMatchObject({ integrite: "OK", nbSignatures: 2 });
@@ -324,6 +338,117 @@ describe("genererDossierSessionZip", () => {
     expect(parsed.signatures[0].integrite).toBe("OK");
     // Aucune PII fuitée (nom déjà anonymisé), mais l'inscription est bien comptée.
     expect(parsed.signatures[0].stagiaire).toContain("effacement");
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Pièces ANNULÉES — « une pièce annulée ne se compte NULLE PART »
+  //
+  // Doctrine posée par `audit-dossier.ts` : glisser dans un dossier d'audit,
+  // sans marquage, une pièce que l'organisme a lui-même annulée revient à la
+  // présenter comme preuve. Ce ZIP-ci l'annonçait « [OK] » et la comptait.
+  // ───────────────────────────────────────────────────────────────────────────
+
+  it("🔴 la relation `documents` EXCLUT les pièces annulées", async () => {
+    await genererDossierSessionZip("ses-1");
+    const arg = mockFindUnique.mock.calls[0]![0] as {
+      select: { documents: { where?: unknown } };
+    };
+    expect(arg.select.documents.where).toEqual({ annuleeAt: null });
+  });
+
+  it("🔴 une pièce annulée n'est ni jointe ni comptée, et le dossier la NOMME", async () => {
+    // Le retrait doit rester VISIBLE : sans la section dédiée, on remplacerait
+    // un mensonge (« [OK] ») par un silence, qui n'est pas plus honnête.
+    mockDocsAnnulees.mockResolvedValue([
+      {
+        numero: "AXI-DOC-2026-003",
+        type: "convention",
+        annuleeAt: new Date("2026-08-12T09:00:00Z"),
+        annuleeMotif: "Destinataire erroné, convention réémise",
+      },
+    ]);
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    expect(res?.nbDocuments).toBe(0);
+    expect(res?.nbDocumentsAnnulees).toBe(1);
+    const index = await fichierDuZip(res!.base64, "index.txt");
+    expect(index).toContain("Pièces annulées, non jointes");
+    expect(index).toContain("AXI-DOC-2026-003");
+    expect(index).toContain("Destinataire erroné, convention réémise");
+    // Et surtout : aucun PDF de cette pièce dans le ZIP.
+    const zip = await JSZip.loadAsync(res!.base64, { base64: true });
+    expect(zip.file(/AXI-DOC-2026-003/)).toHaveLength(0);
+  });
+
+  it("🔴 une session dont TOUTES les pièces sont annulées n'accuse pas le stockage R2", async () => {
+    // L'avertissement « X documents en base mais AUCUN PDF joint » vise une
+    // panne de stockage. Le déclencher ici enverrait chercher une panne qui
+    // n'existe pas : il n'y a simplement plus rien à joindre.
+    mockDocsAnnulees.mockResolvedValue([
+      {
+        numero: "AXI-DOC-2026-003",
+        type: "convention",
+        annuleeAt: new Date("2026-08-12T09:00:00Z"),
+        annuleeMotif: "Destinataire erroné, convention réémise",
+      },
+    ]);
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    // Le dossier dit bien qu'il y avait une pièce…
+    const index = await fichierDuZip(res!.base64, "index.txt");
+    expect(index).toContain("Pièces annulées, non jointes");
+    // …sans pour autant faire porter le chapeau au stockage.
+    expect(res?.avertissements.join(" ")).not.toContain("AUCUN PDF joint");
+  });
+
+  it("🔴 D3-3-01 — ne dit JAMAIS « 0/0 conformes » : le vide est NOMMÉ", async () => {
+    // Dans un dossier remis au certificateur, un ratio complet est le signe
+    // qu'on cherche. Personne ne s'arrête sur un dénominateur nul : l'absence
+    // TOTALE de contresignature prenait l'apparence d'une conformité parfaite.
+    //
+    // 🔑 Le témoin était même MEILLEUR quand la situation était pire — zéro
+    // anomalie sur zéro chaîne.
+    const res = await genererDossierSessionZip("s-1");
+    const index = await fichierDuZip(res!.base64, "index.txt");
+
+    expect(index, "« 0/0 conformes » est de retour").not.toContain("0/0 conformes");
+    expect(index).toContain("AUCUNE contresignature de formateur au dossier");
+  });
+
+  it("🔴 D3-3-01 — l'absence de contresignature lève un AVERTISSEMENT", async () => {
+    // La nommer dans l'index ne suffit pas : c'est la liste d'avertissements que
+    // l'on relit avant de remettre le dossier. Et la contresignature n'est
+    // exigée par AUCUNE garde en amont — c'est ici, et nulle part ailleurs, que
+    // son absence se voit.
+    const res = await genererDossierSessionZip("s-1");
+    expect(res?.avertissements.join(" ")).toContain("Aucune contresignature de formateur");
+  });
+
+  it("se tait dès qu'une contresignature existe", async () => {
+    // Témoin de non-vacuité : sans lui, un avertissement inconditionnel ferait
+    // passer les deux cas ci-dessus sans rien prouver de leur condition.
+    mockFindUnique.mockResolvedValue(
+      session({
+        emargementContresignatures: [
+          {
+            trainerId: "t-1",
+            formateurNom: "Luc Bernard",
+            selfHash: "h1",
+            prevHash: null,
+            sessionId: "s-1",
+            signeAt: new Date("2026-06-10T17:00:00Z"),
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("s-1");
+    expect(res?.avertissements.join(" ")).not.toContain("Aucune contresignature");
+    const index = await fichierDuZip(res!.base64, "index.txt");
+    expect(index).toContain("Intégrité des chaînes de contresignatures :");
+    expect(index).not.toContain("AUCUNE contresignature");
   });
 
   it("🔴 M2 — signale une IMAGE de signature qui ne correspond plus à son condensat scellé", async () => {

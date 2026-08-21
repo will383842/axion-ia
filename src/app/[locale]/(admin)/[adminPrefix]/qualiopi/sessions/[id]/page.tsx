@@ -65,6 +65,7 @@ import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requi
 import {
   envoyerLienSignatureParEmailAction,
   emettreLienSignatureAction,
+  revoquerLiensSignatureAction,
 } from "@/server/actions/qualiopi/piece-lien-signature";
 import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
@@ -307,7 +308,11 @@ export default async function SessionHubPage({ params }: PageProps) {
         questionnaires: {
           select: {
             id: true,
-            token: true,
+            // 🔴 `D4-5-S1` — `token: true` était ici. La page sérialisait le
+            // jeton porteur de chaque questionnaire vers le navigateur, pour
+            // que la console puisse saisir les réponses. L'identifiant suffit :
+            // il désigne, il n'ouvre pas.
+
             type: true,
             reponduAt: true,
             // « jamais envoyé » ≠ « envoyé, sans réponse » : la colonne existait
@@ -480,7 +485,6 @@ export default async function SessionHubPage({ params }: PageProps) {
   const questionnairesSerialized = enrollmentsRaw.flatMap((e) =>
     e.questionnaires.map((q) => ({
       id: q.id,
-      token: q.token,
       traineeNom: `${e.trainee.prenom} ${e.trainee.nom}`,
       type: q.type,
       reponduAt: q.reponduAt ? q.reponduAt.toISOString() : null,
@@ -941,6 +945,7 @@ export default async function SessionHubPage({ params }: PageProps) {
                   parties={circuit.parties}
                   signatures={signaturesParPiece.get(d.id) ?? []}
                   emettreAction={emettreLienSignatureAction}
+                  revoquerLiensAction={revoquerLiensSignatureAction}
                   contresignerAction={contresignerPieceAction}
                   envoyerParEmailAction={envoyerLienSignatureParEmailAction}
                 />

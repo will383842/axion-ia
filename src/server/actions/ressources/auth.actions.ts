@@ -47,10 +47,15 @@ export async function sendRessourcesMagicLinkAction(
   const email = parsed.data;
   const ip = await getClientIp();
 
-  const rlIp = await checkRateLimit(`ressources:magic:ip:${ip}`, { limit: 10, windowSec: 900 });
+  const rlIp = await checkRateLimit(`ressources:magic:ip:${ip}`, {
+    limit: 10,
+    windowSec: 900,
+    surPanne: "refuser",
+  });
   const rlEmail = await checkRateLimit(`ressources:magic:email:${email}`, {
     limit: 5,
     windowSec: 900,
+    surPanne: "refuser",
   });
   if (!rlIp.allowed || !rlEmail.allowed) return { ok: true, message: GENERIC_MESSAGE };
 

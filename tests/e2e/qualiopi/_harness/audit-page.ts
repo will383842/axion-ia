@@ -34,9 +34,57 @@ export interface ResultatAudit {
   statut: number | null;
   erreursConsole: string[];
   requetesEnEchec: string[];
-  axeBloquant: { id: string; help: string; noeuds: number }[];
+  /**
+   * Violations bloquantes, AVEC de quoi les corriger.
+   *
+   * `exemples` porte le sélecteur et le résumé d'échec d'axe pour les trois
+   * premiers nœuds : sur `color-contrast`, un compte de nœuds ne dit ni quel
+   * texte, ni quel rapport, ni sur quel fond — et deviner un contraste a déjà
+   * coûté une correction inutile sur neuf pages.
+   */
+  axeBloquant: {
+    id: string;
+    help: string;
+    noeuds: number;
+    exemples: { cible: string; detail: string }[];
+  }[];
   textesInterdits: string[];
   debordementA: number[];
+  /**
+   * Détail du débordement, par largeur fautive : les cinq éléments les plus à
+   * droite, avec leur classe et leurs bornes. Vide quand rien ne déborde.
+   *
+   * Sans ce détail, l'échec dit « ça déborde » et rien d'autre — on ne peut ni
+   * le corriger ni le réfuter.
+   */
+  /**
+   * Police RÉELLEMENT appliquée au moment de la mesure.
+   *
+   * Un débordement de quelques pour cent n'a pas le même sens selon que la page
+   * est rendue avec sa fonte ou avec le repli `local("Arial")` que `next/font`
+   * génère : `size-adjust` y corrige les métriques verticales, jamais les
+   * chasses. Sans ce relevé, on ne peut pas distinguer un défaut de mise en page
+   * d'un artefact d'environnement — et on perd des heures à supposer.
+   */
+  fonte: {
+    familleCorps: string;
+    manropeAppliquee: boolean | null;
+    fontesDeclarees: string[];
+  };
+  debordementCoupables: {
+    largeur: number;
+    scrollWidth: number;
+    clientWidth: number;
+    fautifs: {
+      tag: string;
+      classe: string;
+      gauche: number;
+      droite: number;
+      /** `pousse` = ne tient pas dans son parent. `suit` = son parent a grandi. */
+      role: "pousse" | "suit";
+      depasseSonParentDe: number;
+    }[];
+  }[];
   msChargement: number;
 }
 
@@ -69,14 +117,174 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
   ).slice(0, 200_000);
   const textesInterdits = INTERDITS.filter(([, re]) => re.test(corps)).map(([label]) => label);
 
+  // 🔴 2026-08-21 — RELEVER LA POLICE EFFECTIVEMENT APPLIQUÉE.
+  //
+  // Toute cette session a buté sur des débordements horizontaux de quelques
+  // pixels qui n'existent QU'EN CI : la production, mesurée en direct à 768
+  // comme à 1440, sous chargement direct comme sous la séquence exacte de ce
+  // harnais, est propre. Trois explications ont été avancées et réfutées.
+  //
+  // La quatrième est la seule qui colle aux ordres de grandeur, et elle se
+  // MESURE au lieu de se supposer. `next/font` génère pour Manrope un repli :
+  //
+  //     @font-face { font-family: manrope Fallback;
+  //                  src: local("Arial"); size-adjust: 100.14% }
+  //
+  // `size-adjust` corrige les métriques VERTICALES — d'où une capture d'écran
+  // qui paraît normale — mais PAS les chasses horizontales. Une page rendue
+  // avec ce repli occupe quelques pour cent de plus en largeur. Or les écarts
+  // relevés valent exactement cela : ~37 px sur ~1130 px de rangée de nav
+  // (3 %), 27 px sur ~700 px (4 %).
+  //
+  // Si `manropeAppliquee` vaut `false` en CI et `true` en production, tous les
+  // débordements de cette session s'expliquent d'un coup et cessent d'être des
+  // défauts de produit. Si elle vaut `true` des deux côtés, l'hypothèse tombe
+  // et il faut chercher ailleurs. Dans les deux cas, on saura — c'est tout
+  // l'objet de cet ajout.
+  const fonte = await page.evaluate(() => {
+    const declarees: string[] = [];
+    try {
+      for (const f of Array.from(document.fonts)) {
+        declarees.push(`${f.family}/${f.weight}:${f.status}`);
+      }
+    } catch {
+      /* `document.fonts` peut manquer sur une page en erreur. */
+    }
+    let manropeAppliquee: boolean | null = null;
+    try {
+      manropeAppliquee = document.fonts.check("1em manrope");
+    } catch {
+      /* idem — on rend `null` plutôt qu'un faux négatif. */
+    }
+    return {
+      familleCorps: getComputedStyle(document.body).fontFamily.slice(0, 90),
+      manropeAppliquee,
+      fontesDeclarees: declarees.slice(0, 8),
+    };
+  });
+
+  // 🔴 2026-08-21 — CE CONTRÔLE DISAIT « ça déborde » SANS DIRE DE QUOI.
+  //
+  // La première exécution réelle de la suite (run 32447074166, après réparation
+  // de l'ordre des étapes de Gate B) a rendu 167 échecs de débordement, tous au
+  // seul viewport 1440 px, sur ~56 routes. Impossible d'en faire quoi que ce
+  // soit : le contrôle rend un booléen. Rejoué en local sous `next dev
+  // --webpack` sur `/fr`, `/fr/a-propos`, `/fr/audit` et
+  // `/fr/formations/entreprise`, aux TROIS protocoles (chargement direct en
+  // 1440, protocole exact du harnais, puis après stabilisation) : aucun
+  // débordement. Le constat n'est donc pas reproductible hors du build de
+  // production, et déclarer 56 pages en défaut sur cette base serait
+  // sur-déclarer — la faute que cet audit s'est déjà faite une fois.
+  //
+  // On ne touche donc PAS au seuil : on rend la mesure DIAGNOSTIQUABLE. Le
+  // prochain run nommera les éléments fautifs, leurs classes et leurs bornes,
+  // et la question se tranchera sur des faits plutôt que sur des hypothèses.
   const debordementA: number[] = [];
+  const debordementCoupables: ResultatAudit["debordementCoupables"] = [];
   for (const w of [1440, 1024, 768, 390]) {
     await page.setViewportSize({ width: w, height: 900 });
     await page.waitForTimeout(150);
-    const deborde = await page.evaluate(
-      () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-    );
-    if (deborde) debordementA.push(w);
+    const mesure = await page.evaluate(() => {
+      const racine = document.documentElement;
+      const deborde = racine.scrollWidth > racine.clientWidth + 1;
+      if (!deborde) return null;
+      const limite = racine.clientWidth + 1;
+
+      // 🔴 CORRECTION 2026-08-21, second tour — la première version disait qu'elle
+      // écartait les éléments clippés, et ne le faisait PAS. Elle triait par bord
+      // droit décroissant : sur `/fr`, le bandeau défilant des logos (`w-max`,
+      // 7 172 px, découpé par un `overflow-hidden`) occupait les cinq places et
+      // enterrait le vrai coupable, qui n'excède la limite que de 5 px. Un
+      // diagnostic qui remonte toujours le même innocent ne vaut pas mieux que
+      // pas de diagnostic. On remonte donc réellement les ancêtres.
+      const estDecoupe = (el: Element): boolean => {
+        let p = el.parentElement;
+        while (p !== null && p !== racine) {
+          const ox = getComputedStyle(p).overflowX;
+          if (ox === "hidden" || ox === "clip" || ox === "auto" || ox === "scroll") return true;
+          p = p.parentElement;
+        }
+        return false;
+      };
+
+      // 🔴 TROISIÈME TOUR — « le plus à droite » n'est pas « le coupable ».
+      //
+      // Les deux versions précédentes triaient par bord droit décroissant. Sur les
+      // 454 mesures du premier relevé complet, elles ont invariablement désigné le
+      // groupe de CTA du header — qui porte `ml-auto` et se colle donc au bord droit
+      // de son conteneur, QUEL QU'IL SOIT. Sa position ne mesure pas une marge :
+      // elle rapporte la largeur du document. Le header n'était pas la cause du
+      // débordement mais son symptôme, et sur cette lecture j'ai failli remonter
+      // `--breakpoint-nav` — c'est-à-dire faire basculer le site en menu tiroir sur
+      // les portables les plus répandus, pour un défaut dont il n'est pas l'auteur.
+      //
+      // Un élément POUSSE quand il ne tient pas dans SON PROPRE PARENT. Il SUIT
+      // quand il y tient et que c'est le parent qui a grandi. Seule cette
+      // distinction remonte à l'origine.
+      type Fautif = {
+        tag: string;
+        classe: string;
+        gauche: number;
+        droite: number;
+        role: "pousse" | "suit";
+        depasseSonParentDe: number;
+      };
+      const pousseurs: Fautif[] = [];
+      const suiveurs: Fautif[] = [];
+
+      for (const el of Array.from(document.querySelectorAll("*"))) {
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) continue;
+        // 🔴 QUATRIÈME TOUR — `r.left >= -1` produisait de FAUX COUPABLES.
+        //
+        // Le relevé de CI a désigné, sur `/fr/demande-devis`, `/fr/audit/demande`
+        // et `/fr/devenir-commercial-ia/candidature`, un `<input>` « dépassant de
+        // 10 827 px ». Sa géométrie : `gauche -9999 · droite -9804`. C'est le pot
+        // de miel anti-spam, placé hors écran par la gauche — motif standard.
+        //
+        // 🔑 En écriture de gauche à droite, ce qui déborde par la GAUCHE
+        // n'allonge pas `scrollWidth` : le navigateur ne rend pas cette zone
+        // atteignable. Seul le bord DROIT crée du défilement horizontal. Un
+        // instrument qui compte les deux accuse un motif d'accessibilité
+        // légitime, et enterre les vrais coupables sous 10 000 px de bruit.
+        if (r.right <= limite) continue;
+        // Ce qu'un ancêtre découpe ne pousse pas `scrollWidth`.
+        if (estDecoupe(el)) continue;
+
+        const p = el.parentElement;
+        const pr = p === null ? null : p.getBoundingClientRect();
+        // Même raison qu'au-dessus : on ne mesure que le dépassement par la
+        // DROITE. Prendre le maximum des deux bords faisait remonter 10 827 px
+        // pour un élément posé à `left: -9999px`, qui ne déborde de rien.
+        const debord = pr === null ? 0 : Math.round(r.right - pr.right);
+        const commun = {
+          tag: el.tagName.toLowerCase(),
+          classe: String((el as HTMLElement).className || "").slice(0, 120),
+          gauche: Math.round(r.left),
+          droite: Math.round(r.right),
+          depasseSonParentDe: debord,
+        };
+        if (debord > 1) pousseurs.push({ ...commun, role: "pousse" });
+        else suiveurs.push({ ...commun, role: "suit" });
+      }
+
+      return {
+        scrollWidth: racine.scrollWidth,
+        clientWidth: racine.clientWidth,
+        // Les POUSSEURS d'abord — ce sont eux qui expliquent. Les suiveurs ne sont
+        // rendus qu'en repli : si rien ne déborde de son parent, la cause est
+        // ailleurs (largeur minimale héritée, table, image intrinsèque) et mieux
+        // vaut un contexte que le silence.
+        fautifs: (pousseurs.length > 0
+          ? pousseurs.sort((a, b) => b.depasseSonParentDe - a.depasseSonParentDe)
+          : suiveurs.sort((a, b) => b.droite - a.droite)
+        ).slice(0, 5),
+      };
+    });
+    if (mesure !== null) {
+      debordementA.push(w);
+      debordementCoupables.push({ largeur: w, ...mesure });
+    }
   }
   await page.setViewportSize({ width: 1440, height: 900 });
 
@@ -85,9 +293,28 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
     const axe = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag22aa"])
       .analyze();
+    // 🔴 2026-08-21 — COMPTER LES VIOLATIONS NE SUFFIT PAS À LES CORRIGER.
+    //
+    // Ce relevé rendait `{ id, help, noeuds: 3 }` et rien d'autre. Pour une
+    // règle structurelle (`definition-list`), le code suffit à retrouver le
+    // coupable ; pour `color-contrast`, non : « 3 nœuds » ne dit ni quel texte,
+    // ni quel rapport, ni sur quel fond. Il a fallu deviner — et deviner un
+    // contraste a déjà coûté une correction inutile sur neuf pages, ce même jour.
+    //
+    // axe fournit le sélecteur et un résumé lisible de chaque nœud. On les
+    // emporte : trois par violation suffisent à nommer le motif sans noyer le
+    // journal.
     axeBloquant = axe.violations
       .filter((v) => v.impact === "serious" || v.impact === "critical")
-      .map((v) => ({ id: v.id, help: v.help, noeuds: v.nodes.length }));
+      .map((v) => ({
+        id: v.id,
+        help: v.help,
+        noeuds: v.nodes.length,
+        exemples: v.nodes.slice(0, 3).map((n) => ({
+          cible: n.target.join(" "),
+          detail: (n.failureSummary ?? "").replace(/\s+/g, " ").slice(0, 220),
+        })),
+      }));
   } catch {
     // axe peut échouer sur une page en erreur : on ne masque pas le reste.
   }
@@ -99,7 +326,9 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
     requetesEnEchec,
     axeBloquant,
     textesInterdits,
+    fonte,
     debordementA,
+    debordementCoupables,
     msChargement,
   };
 }

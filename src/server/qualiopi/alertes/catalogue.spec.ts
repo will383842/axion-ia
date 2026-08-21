@@ -21,7 +21,27 @@ const CODES_ATTENDUS: string[] = [
   // entrée du catalogue née d'un GESTE et non du balayage quotidien — d'où son
   // `resolutionAuto: false`, verrouillé par `besoin-adaptation.spec.ts`.
   "besoin_adaptation_declare",
+  "categories_certifiees_non_renseignees",
+  "cloture_trace_presence_incomplete",
+  "email_rebond_dur",
+  "report_accord_financement_a_refaire",
+  // Ajoutés 2026-08-19 (audit E2E, `D5-4-01`). Ces quatre codes étaient ÉMIS par
+  // le balayage depuis leur écriture et ABSENTS de ce catalogue — donc sans
+  // guichet (ils n'arrivaient dans AUCUNE boîte, rangés en `sansGuichet` par
+  // `envoi-groupe.ts`) et sans résolution automatique (ouverts pour toujours,
+  // même après régularisation).
+  //
+  // 🔑 Ils ne pouvaient pas être détectés : la garde de `routage.spec.ts`
+  // construisait son ensemble EN FILTRANT sur l'appartenance à ce catalogue,
+  // puis testait l'appartenance à ce catalogue. Vide par construction. Corrigée
+  // dans le même commit — l'extraction part désormais de la position syntaxique
+  // `code:` et couvre le ternaire des deux codes URSSAF.
+  "vigilance_urssaf_absente",
+  "vigilance_urssaf_perimee",
+  "vigilance_urssaf_expire_j30",
+  "kit_sorties_non_pretes",
   "responsable_qualite_absent",
+  "facture_mentions_legales_absentes",
   // SPEC_PART5 §A.2, écrite le 2026-08-05 : la colonne `derniereVerifCoherenceAt`
   // existait depuis T1 sans qu'aucune règle ne surveille son ancienneté.
   "offres_site_non_verifiees",

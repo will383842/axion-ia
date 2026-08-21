@@ -11,15 +11,17 @@
  *
  * Règles non négociables :
  * - Token via randomBytes 32 (64 hex) — même primitives que makeQrToken.
- * - Comparaison token via timingSafeEqual (node:crypto).
+ * - Le jeton est stocké HACHÉ (SHA-256 hex) : la base ne détient aucun secret
+ *   rejouable. Le clair ne vit que dans le lien envoyé et le cookie (`D4-4-A`).
  * - Handicap décrit via decryptPii — JAMAIS en clair dans les retours.
  * - exactOptionalPropertyTypes respecté.
  */
 
-import { randomBytes, timingSafeEqual } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import { hacherToken } from "@/server/qualiopi/tokens/hacher-token";
 import { decryptPii } from "@/lib/pii-crypto";
-import { signedDocumentPdfUrl } from "@/lib/r2-storage";
+import { signedDocumentPdfUrl, TTL_LECTURE_NOMINATIVE_S } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
@@ -107,7 +109,7 @@ export interface AttestationResume {
 /** Résumé d'un questionnaire visible dans l'espace stagiaire. */
 export interface QuestionnaireResume {
   type: QuestionnaireType;
-  token: string;
+  id: string;
   reponduAt: Date | null;
   /** Titre de la session rattachée — affiché en tête du questionnaire. */
   sessionTitre: string;
@@ -201,15 +203,22 @@ function genererTokenPortail(): string {
   return randomBytes(32).toString("hex");
 }
 
-/** Comparaison timing-safe de deux tokens portail (même longueur attendue : 64). */
-function comparerTokenPortail(candidat: string, reference: string): boolean {
-  if (candidat.length !== reference.length) return false;
-  try {
-    return timingSafeEqual(Buffer.from(candidat, "utf8"), Buffer.from(reference, "utf8"));
-  } catch {
-    return false;
-  }
-}
+/**
+ * SHA-256 hex du jeton — ce qui est stocké, jamais le clair.
+ *
+ * 🔴 2026-08-19 (`D4-4-A`). Ce module comparait auparavant le clair reçu au
+ * clair stocké avec `timingSafeEqual`. Cette comparaison était DÉCORATIVE : la
+ * ligne venait d'être retrouvée par `findUnique({ where: { token } })`, donc
+ * par égalité exacte du jeton — elle ne pouvait que réussir. Une précaution
+ * contre les attaques temporelles posée APRÈS une recherche par égalité ne
+ * protège de rien, et sa présence donnait à lire une table de jetons en clair
+ * comme si elle était défendue.
+ *
+ * La vraie défense est ici : la base ne détient plus de secret utilisable.
+ */
+// 🔴 2026-08-20 — la fonction vivait ICI, privée. `questionnaires.token` est
+// resté en clair un jour de plus faute de pouvoir la réutiliser. Elle est
+// désormais dans `qualiopi/tokens/hacher-token.ts` — cf. l'import en tête.
 
 // ─────────────────────────────────────────────────────────────────────────────
 // creerAcces
@@ -235,13 +244,17 @@ export async function creerAcces(traineeId: string, joursValidite = 90): Promise
   const acces = await prisma.portailAcces.create({
     data: {
       traineeId,
-      token,
+      tokenHash: hacherToken(token),
       expiresAt,
     },
-    select: { id: true, token: true, expiresAt: true },
+    select: { id: true, expiresAt: true },
   });
 
-  return { id: acces.id, token: acces.token, expiresAt: acces.expiresAt };
+  // ⚠️ Le CLAIR est rendu ici, et nulle part ailleurs : c'est la seule et
+  // dernière occasion de le connaître. Rendre le hachage ferait partir des
+  // liens qui rendraient 404 à l'ouverture, sans que rien ne l'indique côté
+  // organisme — la panne serait entièrement chez le stagiaire.
+  return { id: acces.id, token, expiresAt: acces.expiresAt };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -297,19 +310,14 @@ export async function verifierToken(token: string): Promise<{ traineeId: string 
     return null;
   }
 
-  // On ne peut pas filtrer par token directement en DB (champ unique) sans
-  // exposer un oracle de timing — on récupère par token (index unique) puis
-  // comparaison timing-safe en mémoire. La requête DB est par token (hachage
-  // interne B-tree, pas de timing attaque côté DB significatif).
+  // La recherche se fait par le HASH : la base ne contient plus le secret, et
+  // un porteur de dump n'y trouve rien de rejouable.
   const acces = await prisma.portailAcces.findUnique({
-    where: { token },
-    select: { id: true, traineeId: true, token: true, expiresAt: true, revoked: true },
+    where: { tokenHash: hacherToken(token) },
+    select: { id: true, traineeId: true, expiresAt: true, revoked: true },
   });
 
   if (acces === null) return null;
-
-  // Comparaison timing-safe (défense en profondeur contre cache-timing)
-  if (!comparerTokenPortail(token, acces.token)) return null;
   if (acces.revoked) return null;
   if (acces.expiresAt < new Date()) return null;
 
@@ -389,7 +397,10 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
           questionnaires: {
             select: {
               type: true,
-              token: true,
+              // 🔴 `D4-5-S1` — `token: true` était ici : le portail envoyait au
+              // navigateur le jeton porteur de chaque questionnaire du
+              // stagiaire. L'identifiant suffit, et il n'ouvre rien.
+              id: true,
               reponduAt: true,
             },
           },
@@ -475,11 +486,18 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     trainee.enrollments
       .flatMap((e) => (e.attestationDocument ? [e.attestationDocument] : []))
       .map(async (doc) => {
-        // S1 : régénère une URL signée fraîche (24 h) à la lecture pour éviter
-        // les liens expirés (pdfUrl stockée en DB expire après 900 s).
+        // 🔴 URL signée FRAÎCHE à la lecture : la `pdfUrl` stockée a été signée
+        // à la génération, elle est donc morte 900 s plus tard.
+        //
+        // ⚠️ 2026-08-19 (`D4-4-C`) — cette signature durait 24 h, au motif
+        // d'« éviter les liens expirés ». Le motif confondait deux choses : le
+        // lien STOCKÉ est périmé parce qu'il est vieux, celui-ci est signé à
+        // l'instant du rendu et n'a qu'à survivre au clic. Vingt-quatre heures
+        // de droit de lecture ANONYME sur une pièce nominative, pour un lien
+        // cliqué dans la minute.
         let pdfUrl: string | null = doc.pdfUrl ?? null;
         try {
-          pdfUrl = (await signedDocumentPdfUrl(doc, 86400)) ?? pdfUrl;
+          pdfUrl = (await signedDocumentPdfUrl(doc, TTL_LECTURE_NOMINATIVE_S)) ?? pdfUrl;
         } catch {
           // Fail-soft : on garde pdfUrl DB (peut être expirée mais vaut mieux
           // qu'une erreur bloquante).
@@ -500,7 +518,10 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     const objectifs = normaliserObjectifs(e.session?.formation?.objectifsPedagogiques);
     return e.questionnaires.map((q) => ({
       type: q.type,
-      token: q.token,
+      // 🔴 `D4-5-S1` — c'était `token`. Le portail transportait le jeton porteur
+      // de chaque questionnaire jusqu'au navigateur, alors qu'il authentifie
+      // déjà le stagiaire par cookie et vérifie l'appartenance à la soumission.
+      id: q.id,
       reponduAt: q.reponduAt ?? null,
       sessionTitre: e.session?.titreSession ?? "",
       sessionDateDebut: e.session?.dateDebut ?? null,
@@ -574,10 +595,11 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     piecesRemises.map(async ({ doc, sessionId, sessionTitre }) => {
       // Même règle que les attestations : URL re-signée 24 h à CHAQUE lecture.
       // La `pdfUrl` stockée expire en 900 s — la servir telle quelle donnerait
-      // un lien mort au stagiaire.
+      // un lien mort au stagiaire. On re-signe donc, pour la durée du clic et
+      // pas pour la journée (`D4-4-C`).
       let pdfUrl: string | null = doc.pdfUrl ?? null;
       try {
-        pdfUrl = (await signedDocumentPdfUrl(doc, 86400)) ?? pdfUrl;
+        pdfUrl = (await signedDocumentPdfUrl(doc, TTL_LECTURE_NOMINATIVE_S)) ?? pdfUrl;
       } catch {
         // Fail-soft : mieux vaut un lien peut-être expiré qu'un espace en erreur.
       }

@@ -1,12 +1,18 @@
 /**
- * Route publique équipe — fiche auteur (Sprint 6 audit correctif).
+ * Route publique équipe — fiche auteur / fiche fondateur.
  *
- * Lit `AuthorProfile` depuis Prisma (slug=manon en V1). Render bio markdown,
- * photo 1024 + sources alternatives 256/80 pour srcset, JSON-LD Person via
- * `buildPersonManonJsonLd()` (doctrine v2.1 — IA disclosed + zéro réseau social).
+ * Deux régimes derrière une seule route :
+ *
+ *  - `slug === "williams"` → fiche d'AUTORITÉ D'ENTITÉ du fondateur, servie
+ *    depuis des définitions statiques (`content/equipe/williams.ts` +
+ *    `lib/seo/williams-person.ts`), rendue par `<FounderProfile>`. Elle ne
+ *    dépend d'aucun seed : la page et l'entité `Person` fonctionnent dès le
+ *    déploiement, y compris quand le build tourne sur la base stub.
+ *  - tout autre slug → `AuthorProfile` en DB (ex. Manon, persona éditoriale IA),
+ *    rendu par le gabarit minimal historique.
  *
  * Anti-doorway HCU 2024 : la page n'agrège pas de listes — chaque slug = page
- * dédiée avec contenu unique (bio Markdown édité depuis admin /content-gen/author/manon).
+ * dédiée avec contenu unique.
  *
  * FR uniquement (doctrine content-gen v1.2). Si locale != fr → 404.
  */
@@ -21,14 +27,29 @@ import { prisma } from "@/lib/prisma";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, buildFaqJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
-import { WILLIAMS_PROFILE, buildPersonWilliamsJsonLd } from "@/lib/seo/williams-person";
+import {
+  buildPersonWilliamsJsonLd,
+  buildProfilePageWilliamsJsonLd,
+} from "@/lib/seo/williams-person";
+import { FounderProfile } from "@/components/sections/FounderProfile";
+import { buildWilliamsFaq, WILLIAMS_REVISION_DATE } from "@/content/equipe/williams";
+import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
+// Doctrine financement : les Q/R OPCO / France Travail ne sont émises que si la
+// certification Qualiopi est RÉELLEMENT obtenue. Le drapeau est la garde
+// primaire — cf. `server/qualiopi/config/flag.ts`.
+import {
+  isQualiopiCertificationObtenue,
+  isQualiopiPublicDisclosureEnabled,
+} from "@/server/qualiopi/config/flag";
 
-// ISR 24h : bio Manon ne change quasiment jamais (édition via admin
-// /content-gen/author/manon) → cache CDN agressif justifié. `force-dynamic`
-// retiré (audit Web Vitals 2026-05-15 — annulait silencieusement le cache).
+// ISR 24h : la fiche fondateur est statique et la bio Manon ne change quasiment
+// jamais (édition via admin /content-gen/author/manon) → cache CDN agressif
+// justifié. `force-dynamic` retiré (audit Web Vitals 2026-05-15 — annulait
+// silencieusement le cache).
 export const revalidate = 86400;
 export const dynamicParams = true;
 
@@ -46,9 +67,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return buildProductMetadata({
       locale,
       path: `/equipe/williams`,
-      title: `${WILLIAMS_PROFILE.displayName} · ${WILLIAMS_PROFILE.jobTitle} · Axion-IA`,
-      description: `${WILLIAMS_PROFILE.displayName}, fondateur et CEO d'Axion-IA — cabinet de conseil en intelligence artificielle pour les TPE, PME et ETI françaises.`,
+      // Le titre porte la marque : `buildProductMetadata` bascule alors en
+      // `{ absolute }` et n'appose pas une seconde fois « · Axion-IA ».
+      title: `${FOUNDER.fullName} — fondateur d'Axion-IA, expert IA en entreprise`,
+      description:
+        "Williams Jullin, fondateur et CEO d'Axion-IA, agence IA opérationnelle basée à Grenoble : audit, formation, coaching et implémentation IA partout en France.",
       alternates: { fr: `/equipe/williams` },
+      ogEyebrow: "Fondateur & CEO",
     });
   }
 
@@ -84,19 +109,69 @@ export default async function PublicAuthorPage({ params }: Props) {
   if (locale !== "fr") notFound();
   setRequestLocale(locale as Locale);
 
-  // Williams = fiche fondateur statique (vraie personne) ; les autres slugs
-  // viennent de la DB (AuthorProfile, ex. Manon persona IA).
-  const isWilliams = slug === "williams";
-  const dbProfile = isWilliams ? null : await prisma.authorProfile.findUnique({ where: { slug } });
-  const profile = isWilliams ? WILLIAMS_PROFILE : dbProfile;
+  // ── Fiche fondateur ────────────────────────────────────────────────────
+  //
+  // Séparée du chemin DB dès le début : elle n'a aucune requête à faire, et
+  // mélanger les deux gabarits obligeait à traiter `WILLIAMS_PROFILE` comme un
+  // `AuthorProfile` dégradé — c'est ce qui avait fini par lui donner la même
+  // page pauvre qu'une persona.
+  if (slug === "williams") {
+    // Les deux drapeaux, pas un seul : `/financement-opco-france-travail`
+    // exige la visibilité des pages OF **et** la certification réelle pour
+    // répondre autre chose qu'un 404.
+    const financementPublic =
+      isQualiopiPublicDisclosureEnabled() && isQualiopiCertificationObtenue();
+    const faq = buildWilliamsFaq({ certificationObtenue: financementPublic });
+
+    return (
+      <>
+        {/*
+          Un seul `<script>` `@graph` plutôt que quatre balises : Person
+          (l'entité), ProfilePage (le type qui dit « cette URL EST la page de
+          cette personne »), FAQPage et BreadcrumbList — `<Breadcrumbs>` reçoit
+          donc `emitJsonLd={false}` plus bas. Rendu `inline` volontairement :
+          les crawlers de LLM n'exécutent pas tous le JS, et c'est précisément
+          eux qu'on vise ici.
+        */}
+        <JsonLdGraph
+          schemas={[
+            buildPersonWilliamsJsonLd(locale),
+            buildProfilePageWilliamsJsonLd(),
+            buildFaqJsonLd({
+              items: faq.map((item) => ({ question: item.question, answer: item.answer })),
+              // La FAQ d'une fiche fondateur est signée du fondateur — pas de
+              // la persona éditoriale IA, qui est le défaut du helper.
+              authorId: FOUNDER_PERSON_ID,
+              dateModified: WILLIAMS_REVISION_DATE,
+            }) as unknown as Record<string, unknown>,
+            buildBreadcrumbJsonLd({
+              locale: "fr",
+              items: [
+                { name: "Accueil", href: "/" },
+                { name: FOUNDER.fullName, href: FOUNDER.pagePath },
+              ],
+            }) as unknown as Record<string, unknown>,
+          ]}
+        />
+        <Container className="border-border border-b py-3">
+          {/* `emitJsonLd={false}` : le BreadcrumbList est déjà dans le `@graph`
+              unique ci-dessus — deux fois le même fil d'Ariane ne le rend pas
+              plus vrai, seulement plus lourd à parser. */}
+          <Breadcrumbs
+            emitJsonLd={false}
+            items={[{ href: `/equipe/williams`, label: FOUNDER.fullName }]}
+          />
+        </Container>
+        <FounderProfile faq={faq} financementPublic={financementPublic} />
+      </>
+    );
+  }
+
+  // ── Fiches persona / auteurs en base ───────────────────────────────────
+  const profile = await prisma.authorProfile.findUnique({ where: { slug } });
   if (!profile || !profile.isActive) notFound();
 
-  // JSON-LD Person : Williams (statique) ou Manon (factory DB). Autres slugs : omis.
-  const personJsonLd = isWilliams
-    ? buildPersonWilliamsJsonLd(locale)
-    : dbProfile && dbProfile.slug === "manon"
-      ? buildPersonManonJsonLd(dbProfile)
-      : null;
+  const personJsonLd = profile.slug === "manon" ? buildPersonManonJsonLd(profile) : null;
 
   return (
     <>

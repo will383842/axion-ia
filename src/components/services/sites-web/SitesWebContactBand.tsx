@@ -50,7 +50,7 @@ export function SitesWebContactBand({
     <section className="bg-terracotta py-16 sm:py-20">
       <Container>
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl min-w-0">
             <p className="text-mocha-fg mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
               {copy.eyebrow}
             </p>

@@ -25,10 +25,37 @@ export function resolveNextStatutAfterApproval(
       // Contenu approuvé → contenu_valide (pipeline reprend vers assemble)
       return "contenu_valide";
     case "assemblage":
-      // Assemblage approuvé → publie (validation finale humaine — AI Act)
-      // Note : la publication finale reste gatée par publishFormationAction (T3)
-      // qui requiert validatedBy. Ici on marque seulement l'avancement.
-      return "publie";
+      // 🔴 `D2-1-02` (2026-08-20) — RENDAIT `publie`, ET LE COMMENTAIRE DISAIT
+      // L'INVERSE.
+      //
+      // Le commentaire d'origine affirmait : « la publication finale reste gatée
+      // par publishFormationAction (T3) qui requiert validatedBy. Ici on marque
+      // seulement l'avancement. » C'était faux, et c'est ce qui rendait le
+      // défaut invisible : `statutGeneration = "publie"` EST la publication.
+      // C'est exactement le prédicat que lisent le créateur de sessions
+      // (`sessions/new/page.tsx`) et le tunnel de vente (`vente/new/page.tsx`) :
+      // `{ statut: "actif", statutGeneration: "publie" }`.
+      //
+      // Approuver un assemblage rendait donc la formation **publique et
+      // vendable** :
+      //   · sans `validatedBy` — la validation humaine qu'impose l'AI Act
+      //     art. 50, et que `publishFormationAction` exige explicitement ;
+      //   · sans le plancher de ratio pratique (Qualiopi) ;
+      //   · sous `requireAdminWrite`, donc accessible au rôle `editor`, alors
+      //     que publier exige `requireAdminPublish`.
+      //
+      // Trois gardes contournées par une porte latérale, pendant qu'un
+      // commentaire rassurait le lecteur.
+      //
+      // Le statut `assemble` existe dans l'enum Prisma et n'était utilisé par
+      // AUCUN chemin : c'est précisément l'état « assemblé, pas encore publié »
+      // que ce cas aurait dû rendre. Le pipeline s'y arrête désormais, et la
+      // publication redevient l'acte séparé et gardé qu'elle prétendait être.
+      //
+      // ⚠️ Aucun cul-de-sac : `validateFormationAction` pose `validatedBy`,
+      // puis `publishFormationAction` publie. Le chemin Valider → Publier est
+      // complet — vérifié avant d'écrire ceci.
+      return "assemble";
     case "structure":
       // Validation structure → avance vers structure_validee si ce statut existe,
       // sinon reste sur structure_generee (le pipeline continue vers contenu_evalue)

@@ -22,6 +22,7 @@ import {
   cleIdempotenceLot,
   estImmediat,
   guichetPourCode,
+  peutLireLesAlertes,
   regrouperAlertes,
   type AlerteARouter,
   type GuichetAlerte,
@@ -328,10 +329,46 @@ describe("🔴 une alerte dont la cause a disparu doit pouvoir se refermer", () 
   // (`code: p.statutSignature === "partielle" ? "a" : "b"`), et la forme étroite
   // les manquait : le test accusait alors deux codes parfaitement corrects.
   // Un test qui se trompe sur le code qu'il lit est pire qu'un test absent.
+  /**
+   * 🔴 2026-08-19 — CETTE EXTRACTION A ÉTÉ RÉÉCRITE, et c'est tout l'objet du
+   * correctif.
+   *
+   * Elle était : `matchAll(/"([a-z0-9_]+)"/g).filter((c) => c in ALERTE_CATALOGUE)`.
+   * Autrement dit, l'ensemble était construit **en filtrant sur la propriété que
+   * le test suivant allait vérifier** — `inconnus` était donc vide PAR
+   * CONSTRUCTION, et « tout code émis par le balayage est au catalogue » passait
+   * au vert quoi qu'il arrive.
+   *
+   * Ce n'était pas un excès de prudence : le filtre était NÉCESSAIRE avec cette
+   * regex, qui attrape toutes les chaînes minuscules du fichier — `"realisee"`,
+   * `"convention"`, `"en_attente"`… Sans lui, le test aurait crié sur des
+   * centaines de faux positifs. Le défaut est d'avoir rendu la garde vaine pour
+   * la rendre silencieuse, au lieu de rendre l'extraction PRÉCISE.
+   *
+   * Ce qu'elle laissait passer, mesuré le 2026-08-19 : **quatre codes émis par le
+   * balayage et absents du catalogue** — `kit_sorties_non_pretes`,
+   * `vigilance_urssaf_absente`, `vigilance_urssaf_perimee`,
+   * `vigilance_urssaf_expire_j30`. Sans entrée au catalogue, ils n'ont ni guichet
+   * (donc n'arrivent dans aucune boîte, `envoi-groupe.ts` les range en
+   * `sansGuichet`) ni résolution automatique (donc restent ouverts pour
+   * toujours). La vigilance URSSAF engage la responsabilité solidaire de
+   * l'organisme sur les cotisations du sous-traitant — art. L.8222-1.
+   *
+   * Le message d'échec de la garde citait pourtant nommément « le défaut du
+   * 2026-08-05, qui laissait des alertes ouvertes pour toujours ». C'est ce
+   * défaut-là qui était présent, sous la garde qui prétendait l'interdire.
+   *
+   * ## L'extraction précise
+   *
+   * On part de la POSITION SYNTAXIQUE `code:` plutôt que de la forme du littéral,
+   * et on prend la fin de ligne — ce qui couvre les deux écritures réellement
+   * présentes : `code: "x"` et le ternaire `code: c ? "a" : "b"` (les deux codes
+   * URSSAF, qu'une regex sur `code:\s*"…"` aurait manqués).
+   */
   const EMIS_PAR_LE_BALAYAGE = new Set(
-    [...sourceEvaluateur.matchAll(/"([a-z0-9_]+)"/g)]
-      .map((m) => m[1]!)
-      .filter((c) => c in ALERTE_CATALOGUE),
+    [...sourceEvaluateur.matchAll(/\bcode:\s*([^\n]*)/g)].flatMap((m) =>
+      [...(m[1] ?? "").matchAll(/"([a-z0-9_]+)"/g)].map((q) => q[1]!),
+    ),
   );
 
   /**
@@ -356,6 +393,44 @@ describe("🔴 une alerte dont la cause a disparu doit pouvoir se refermer", () 
     // TOUS les tests ci-dessous passeraient au vert en ne vérifiant plus rien.
     // Une garde qui ne garde rien est pire qu'une garde absente : elle rassure.
     expect(EMIS_PAR_LE_BALAYAGE.size).toBeGreaterThan(20);
+  });
+
+  it("🔴 tout rôle destinataire d'un guichet peut OUVRIR l'écran des alertes", () => {
+    // Constat `D5-4-02`. `responsable_qualite` et `secretaire` recevaient les
+    // alertes de leur guichet par e-mail, puis étaient redirigés vers l'écran de
+    // connexion en cliquant sur le lien du message. Le Lot 10 a créé les rôles,
+    // le Lot 14 leur a routé les alertes, et les deux surfaces de lecture sont
+    // restées sur la garde d'avant (`admin` / `super_admin` seulement).
+    for (const roles of Object.values(ROLES_PAR_GUICHET)) {
+      for (const role of roles) {
+        expect(
+          peutLireLesAlertes(role),
+          `« ${role} » reçoit des alertes mais ne pourrait pas ouvrir l'écran.`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("un rôle qui ne reçoit AUCUNE alerte n'entre pas — et l'absence de rôle non plus", () => {
+    // Témoin discriminant : sans lui, `peutLireLesAlertes` pourrait rendre `true`
+    // pour tout le monde et le test au-dessus passerait.
+    expect(peutLireLesAlertes("reader")).toBe(false);
+    expect(peutLireLesAlertes("editor")).toBe(false);
+    expect(peutLireLesAlertes(null)).toBe(false);
+    expect(peutLireLesAlertes(undefined)).toBe(false);
+  });
+
+  it("l'extraction attrape les DEUX écritures de `code:` — littéral ET ternaire", () => {
+    // 🔴 Témoin de précision, pas de volume. Le test au-dessus vérifie que
+    // l'ensemble n'est pas vide ; celui-ci vérifie qu'il n'est pas AMPUTÉ.
+    //
+    // Les deux codes de vigilance URSSAF sont émis par un ternaire
+    // (`code: doc === null ? "…absente" : "…perimee"`). Une extraction sur
+    // `code:\s*"…"` les manquerait en silence — et c'est précisément le genre de
+    // trou qui a laissé passer le défaut que cette suite existe pour attraper.
+    expect(EMIS_PAR_LE_BALAYAGE).toContain("emargement_manquant"); // littéral
+    expect(EMIS_PAR_LE_BALAYAGE).toContain("vigilance_urssaf_absente"); // ternaire
+    expect(EMIS_PAR_LE_BALAYAGE).toContain("vigilance_urssaf_perimee"); // ternaire
   });
 
   it("tout code émis par le balayage est au catalogue", () => {

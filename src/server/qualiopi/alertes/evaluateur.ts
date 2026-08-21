@@ -8,8 +8,15 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import {
+  porteUneTraceDePresence,
+  sansAucuneTraceDePresence,
+} from "@/server/qualiopi/presence/trace-cloture";
 import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
@@ -26,6 +33,9 @@ import {
   listTrainerDocuments,
 } from "@/server/qualiopi/trainers/documents";
 import { resolveInterventionSlugForFormation } from "@/server/qualiopi/vente/kit-formation";
+// SSOT du prédicat « pièce en attente de signature ». À n'appeler, jamais à
+// recopier — la recopie est ce qui a produit la divergence du constat `D3-4-06`.
+import { enAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import {
   ATTENTE_JOURS,
@@ -97,6 +107,101 @@ async function regleResponsableQualite(now: Date): Promise<AlerteCandidate[]> {
   ];
 }
 
+/**
+ * R01c — Catégorie(s) d'actions certifiées non renseignées.
+ *
+ * 🔴 2026-08-20. La page publique affiche « La certification qualité a été
+ * délivrée au titre de la ou des catégories d'actions suivantes : … ». C'est une
+ * mention LÉGALE, imposée par les règles d'usage de la marque Qualiopi.
+ *
+ * Elle était produite par un DÉFAUT CODÉ EN DUR (« Actions de formation »),
+ * présent à deux endroits. Autrement dit : le site affirmait au titre du
+ * certificat une catégorie que personne n'avait lue sur le certificat. Et le
+ * défaut est servi dans trois cas silencieux par `getQualiopiConfig` — ligne
+ * absente, parse en échec, **panne de base** — qu'aucun `curl` ne distingue
+ * d'une valeur réellement configurée : les deux rendent la même page.
+ *
+ * Le certificat peut couvrir « Bilans de compétences », « VAE » ou « Actions de
+ * formation par apprentissage ». Sur-déclarer est une affirmation fausse ;
+ * sous-déclarer est une perte commerciale. Les deux se réparent en lisant le
+ * certificat — ce que le code ne peut pas faire à la place de quelqu'un.
+ *
+ * ⚠️ Cette règle n'existe QUE parce que le défaut du registre a été vidé. Y
+ * remettre une valeur la rendrait définitivement muette.
+ */
+async function regleCategoriesCertifiees(now: Date): Promise<AlerteCandidate[]> {
+  void now;
+  // Ne se déclenche pas tant que la certification n'est pas affirmée : sans
+  // revendication publique, il n'y a aucune mention à accompagner.
+  if (!isQualiopiCertificationObtenue()) return [];
+  const categories = await getQualiopiConfig("qualiopi_categories_certifiees");
+  if (categories.trim().length > 0) return [];
+  return [
+    {
+      code: "categories_certifiees_non_renseignees",
+      niveau: "important",
+      titre: "Catégorie d'actions certifiées non renseignée",
+      message:
+        "La page publique affiche la mention obligatoire de la marque Qualiopi avec une " +
+        "catégorie de repli, qu'aucun certificat n'a confirmée. Ouvrez le certificat et " +
+        "saisissez la ou les catégories exactes dans la configuration Qualiopi " +
+        "(« Catégories d'actions certifiées »). Renseignez au passage le certificateur, " +
+        "la date d'obtention et la validité : ce sont les pièces que l'auditeur demande.",
+    },
+  ];
+}
+
+/**
+ * R01d — Mentions légales obligatoires absentes des FACTURES.
+ *
+ * 🔴 `D9-3-02` (2026-08-20). Forme juridique, capital social, RCS et n° de TVA
+ * intracommunautaire sont des mentions obligatoires de facture
+ * (art. R123-238 C. com. ; art. 242 nonies A ann. II CGI). Elles étaient
+ * imprimées **conditionnellement** et gardées par RIEN : absentes de la
+ * configuration, elles disparaissaient du PDF sans que personne ne le sache.
+ *
+ * 🔑 L'omission du n° de TVA sur une facture au-delà de 150 € est
+ * **sanctionnée** (art. 1737 CGI). Ce n'est pas un défaut de présentation.
+ *
+ * ⚠️ Le gabarit affiche désormais « Non renseigné » au lieu d'omettre — mais un
+ * avertissement imprimé sur une facture qui part au client n'est pas une
+ * solution, c'est un signal. Cette règle est ce qui le transforme en geste.
+ *
+ * ⚠️ La TVA n'est exigée QUE sous le régime `assujetti` : sous exonération
+ * 261-4-4° ou franchise 293 B, l'organisme n'a pas de numéro à porter, et
+ * l'exiger produirait une alerte fausse à chaque facture — ce qui apprend à
+ * ignorer la catégorie.
+ */
+async function regleMentionsFacture(now: Date): Promise<AlerteCandidate[]> {
+  void now;
+  const identite = await getOrganismeIdentite();
+  const regime = await getQualiopiConfig("regime_tva");
+
+  const manquantes: string[] = [];
+  if (!identite.formeJuridique?.trim()) manquantes.push("forme juridique");
+  if (!identite.capitalSocial?.trim()) manquantes.push("capital social");
+  if (!identite.rcsVille?.trim()) manquantes.push("RCS et ville d'immatriculation");
+  if (regime === "assujetti" && !identite.tvaIntracom?.trim()) {
+    manquantes.push("n° de TVA intracommunautaire");
+  }
+  if (manquantes.length === 0) return [];
+
+  return [
+    {
+      code: "facture_mentions_legales_absentes",
+      niveau: "critique",
+      titre: "Mentions obligatoires absentes des factures",
+      message:
+        `${manquantes.length} mention${manquantes.length > 1 ? "s" : ""} obligatoire${manquantes.length > 1 ? "s" : ""} ` +
+        `de facture ${manquantes.length > 1 ? "sont absentes" : "est absente"} de la configuration : ` +
+        `${manquantes.join(", ")}. Toute facture émise est irrégulière (art. R123-238 C. com., ` +
+        `art. 242 nonies A CGI) et porte « Non renseigné » en clair. ` +
+        `L'omission du n° de TVA au-delà de 150 € est en outre sanctionnée (art. 1737 CGI). ` +
+        `À compléter dans la configuration de l'identité légale.`,
+    },
+  ];
+}
+
 /** R02 — Réclamations sans réponse depuis > N jours (N = seuil_reclamation_jours, défaut 15). */
 async function regleReclamationsSansReponse(now: Date): Promise<AlerteCandidate[]> {
   const joursCfg = await getQualiopiConfig("seuil_reclamation_jours").catch(() => 15);
@@ -120,14 +225,28 @@ async function regleReclamationsSansReponse(now: Date): Promise<AlerteCandidate[
   }));
 }
 
-/** R03 — Émargements manquants : session realisee + enrollment sans emargement > 48h. */
+/**
+ * R03 — Émargements manquants : session realisee + enrollment sans trace > 48h.
+ *
+ * 🔴 `D2-3-C2` (2026-08-20). Cette règle filtrait sur `emargementSigneAt: null`
+ * seul. Or ce champ n'est posé QUE par la grille présentielle : l'import d'un
+ * relevé de connexion ne l'écrit jamais (`actions/qualiopi/presence.ts`, il
+ * appelle `recomputeTauxPresence` et s'arrête là).
+ *
+ * Toute session 100 % distancielle correctement menée levait donc une alerte
+ * CRITIQUE **par stagiaire**, chacune partant par e-mail, alors que le relevé
+ * était importé, le taux calculé et le fichier archivé avec son empreinte.
+ *
+ * Le prédicat vient maintenant de `trace-cloture.ts`, qui portait déjà la bonne
+ * définition — et qui l'appliquait, lui, depuis le début.
+ */
 async function regleEmargementManquant(now: Date): Promise<AlerteCandidate[]> {
   const threshold = daysAgo(2, now); // 48h
   const enrollments = await prisma.enrollment.findMany({
     where: {
       session: { statut: "realisee", dateFin: { lte: threshold } },
       statut: { in: ["planifiee", "presente"] },
-      emargementSigneAt: null,
+      ...sansAucuneTraceDePresence(),
     },
     select: {
       id: true,
@@ -282,7 +401,7 @@ async function regleEmargementAucuneSignature(now: Date): Promise<AlerteCandidat
       dateFin: { gte: finJetons },
       AND: [
         // Il y a bien quelqu'un à faire signer.
-        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        { enrollments: { some: { ...inscriptionsActives() } } },
         // Le dispositif EST en place — c'est ce qui distingue cette règle de
         // `session_sans_dispositif_emargement`, sa jumelle en négatif.
         {
@@ -290,9 +409,20 @@ async function regleEmargementAucuneSignature(now: Date): Promise<AlerteCandidat
             some: { emargementTokens: { some: { revokedAt: null, expiresAt: { gt: now } } } },
           },
         },
-        // Et personne n'a signé. `emargementSigneAt` est posé à la PREMIÈRE
-        // signature, quel que soit le canal (portail ou grille présentielle).
-        { enrollments: { none: { emargementSigneAt: { not: null } } } },
+        // Et personne ne porte la moindre trace de présence.
+        //
+        // 🔴 `D2-3-C2` — on lisait ici `emargementSigneAt` SEUL. Ce champ n'est
+        // posé que par la grille présentielle ; l'import d'un relevé de connexion
+        // ne l'écrit pas. Une session distancielle dont le relevé était importé
+        // restait donc « sans aucune signature » aux yeux de cette règle, et
+        // criait en critique jusqu'à l'expiration des jetons.
+        //
+        // ⚠️ Fenêtre résiduelle ASSUMÉE : entre la fin d'une session distancielle
+        // et l'import de son relevé, aucune trace n'existe encore — l'alerte se
+        // lève, et elle a raison de le faire : à cet instant, rien ne prouve que
+        // la session a eu lieu. Elle s'éteint d'elle-même dès l'import
+        // (`resolutionAuto`).
+        { enrollments: { none: porteUneTraceDePresence() } },
       ],
     },
     select: { id: true, numero: true, titreSession: true, dateDebut: true, dateFin: true },
@@ -323,7 +453,7 @@ async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCa
       dateDebut: { lte: now, gte: daysAgo(7, now) },
       AND: [
         // Il y a bien quelqu'un à faire signer.
-        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        { enrollments: { some: { ...inscriptionsActives() } } },
         // Et personne n'a de lien vivant.
         {
           enrollments: {
@@ -1706,7 +1836,15 @@ async function regleSignatureEnAttente(now: Date): Promise<AlerteCandidate[]> {
   // seraient plus surveillés du tout — un défaut silencieux, donc pire.
   const pieces = await prisma.documentGenere.findMany({
     where: {
-      statutSignature: { in: ["en_attente", "partielle"] },
+      // 🔴 SSOT, pas une recopie (constat `D3-4-06`, 2026-08-19). Ce prédicat
+      // portait `statutSignature` SANS `annuleeAt: null`, alors que
+      // `pieces-en-attente.ts` le portait déjà — le correctif de 2026 avait été
+      // appliqué à la liste « À traiter » de la console et jamais ici. Chaque
+      // nuit, une pièce annulée ressortait en CRITIQUE et déclenchait un e-mail,
+      // sur un document déclaré sans valeur. Le risque n'est pas l'e-mail :
+      // c'est que l'administrateur apprenne à ignorer les alertes critiques de
+      // signature, c'est-à-dire l'unique fonction du dispositif.
+      ...enAttente(),
       OR: [
         { updatedAt: { lte: daysAgo(ATTENTE_JOURS, now) } },
         {
@@ -2179,6 +2317,8 @@ async function regleOffresNonVerifiees(now: Date): Promise<AlerteCandidate[]> {
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
+  { nom: "mentions_facture", fn: regleMentionsFacture },
+  { nom: "categories_certifiees", fn: regleCategoriesCertifiees },
   { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },

@@ -28,6 +28,9 @@
 "use server";
 
 import React from "react";
+import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { ecartEffectif, mentionStagiaires } from "@/server/qualiopi/documents/stagiaires-nommes";
@@ -136,6 +139,9 @@ import {
   montantPrisEnChargeCents,
   resteAChargeCents,
 } from "@/server/qualiopi/financements/prise-en-charge-montant";
+// Annulation d'une pièce : les liens de signature en circulation meurent avec
+// la valeur de la pièce (§ 24).
+import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -1287,9 +1293,15 @@ export async function genererCertificatRealisationAction(input: {
   if (!enrollment) return { error: "Inscription introuvable" };
 
   // Conformité R.6313-3 : un certificat de réalisation atteste d'heures réellement
-  // suivies. Un stagiaire en abandon ou exclu ne peut PAS recevoir de certificat
-  // (cohérent avec l'attestation, cf. attestation-service.ts). Garde bloquante.
-  if (enrollment.statut === "abandon" || enrollment.statut === "exclu") {
+  // suivies. Un stagiaire sorti du dispositif ne peut PAS recevoir de certificat.
+  //
+  // 🔴 2026-08-21 — ce commentaire disait « cohérent avec l'attestation, cf.
+  // attestation-service.ts ». Une prière en commentaire pour que deux gardes
+  // restent identiques est l'aveu qu'on sait qu'elles vont diverger : les deux
+  // écrivaient bien la même règle, mais dans un ORDRE différent, chacune de son
+  // côté. Elles appellent maintenant le même prédicat, et la cohérence n'est
+  // plus une intention mais un fait.
+  if (!estInscriptionActive(enrollment.statut)) {
     return {
       error:
         "Certificat refusé : le stagiaire est en abandon/exclu. Aucun certificat de réalisation ne peut être émis (R.6313-3).",
@@ -1326,13 +1338,54 @@ export async function genererCertificatRealisationAction(input: {
     };
   }
 
+  // 🔴 `D2-3-C1` (2026-08-20) — le certificat était STRUCTURELLEMENT impossible
+  // pour une session 100 % distancielle.
+  //
+  // La garde n'acceptait qu'une `EmargementSignature`, écrite par le seul
+  // service de signature manuscrite/canvas. L'import d'un relevé de connexion
+  // n'en écrit aucune — et le PDF du relevé affirme pourtant, en toutes lettres :
+  // « Ce document remplace la feuille d'émargement pour les formations
+  // dispensées à distance. »
+  //
+  // Une session à distance parfaitement menée — CSV de la plateforme importé,
+  // taux calculé, relevé archivé avec son empreinte — n'obtenait donc JAMAIS la
+  // pièce que l'OPCO exige pour financer. Et le trou n'apparaissait qu'au moment
+  // de justifier.
+  //
+  // ## Ce que la garde exige VRAIMENT, et qui ne change pas
+  //
+  // 🔑 Une trace VÉRIFIABLE, pas une saisie. C'est le sens de R.6313-3 et des
+  // indicateurs 9 et 11 : le taux ne doit pas reposer sur ce qu'un humain a tapé
+  // dans une grille.
+  //
+  // Le relevé de connexion satisfait cette exigence : ses créneaux portent
+  // `importId`, c'est-à-dire le rattachement au fichier d'origine, archivé avec
+  // son empreinte SHA-256. On peut le rejouer, le recompter, le confronter.
+  //
+  // ⚠️ `source: "manuel"` reste EXCLU, et c'est tout le propos : une présence
+  // saisie à la main n'est pas une trace, quelle que soit la modalité. Accepter
+  // n'importe quel `PresenceCreneau` aurait vidé la garde de sa substance —
+  // elle aurait continué d'exister en refusant seulement les dossiers vides.
   const signatures = await prisma.emargementSignature.count({
     where: { enrollmentId: enrollment.id },
   });
-  if (signatures === 0) {
+  const creneauxImportes =
+    signatures > 0
+      ? 0
+      : await prisma.presenceCreneau.count({
+          where: {
+            enrollmentId: enrollment.id,
+            source: { in: ["import_zoom", "import_teams", "import_meet"] },
+            // Le rattachement au fichier archivé : c'est LUI qui rend la trace
+            // vérifiable. Un créneau `import_*` orphelin ne prouverait rien.
+            importId: { not: null },
+          },
+        });
+
+  if (signatures === 0 && creneauxImportes === 0) {
     return {
       error:
-        "Certificat refusé : aucune signature d'émargement n'est rattachée à cette inscription. Le taux de présence doit reposer sur une trace vérifiable, pas sur une saisie (R.6313-3, indicateurs 9 et 11).",
+        "Certificat refusé : aucune trace vérifiable n'est rattachée à cette inscription — ni signature d'émargement, ni relevé de connexion importé. Le taux de présence doit reposer sur une preuve, pas sur une saisie (R.6313-3, indicateurs 9 et 11).",
     };
   }
 
@@ -1456,7 +1509,7 @@ export async function genererKitOpcoAction(input: {
       priseEnChargeUnite: true,
       numeroDossierOpco: true,
       enrollments: {
-        where: { statut: { notIn: ["exclu", "abandon"] } },
+        where: { ...inscriptionsActives() },
         select: {
           trainee: { select: { nom: true, prenom: true } },
           session: {
@@ -3564,6 +3617,15 @@ const annulerDocumentSchema = z.object({
  * ⚠️ N'annule PAS les signatures portées par la pièce. Elles restent au registre
  * des signatures : la personne a signé, ce fait ne se réécrit pas. C'est la
  * VALEUR de la pièce qui tombe, pas l'historique.
+ *
+ * ⚠️ En revanche elle RÉVOQUE les liens de signature encore en circulation. Ils
+ * survivaient à l'annulation : le tiers qui avait reçu le sien par e-mail
+ * pouvait encore signer, des jours après. Rien d'une faille — le lien et son
+ * porteur étaient légitimes — mais la signature déclenche des CONSÉQUENCES
+ * AUTOMATIQUES (envoi des questionnaires de positionnement à des stagiaires
+ * réels, bascule d'un devis en `accepte`), sans qu'aucun écran humain
+ * s'interpose. `signerDocument` refuse désormais de fond ; couper le lien évite
+ * en plus au signataire un geste inutile.
  */
 export async function annulerDocumentAction(input: {
   documentId: string;
@@ -3606,6 +3668,25 @@ export async function annulerDocumentAction(input: {
     where: { id: documentId },
     data: { annuleeAt: new Date(), annuleeMotif: motif, annuleePar },
   });
+
+  // Les liens de signature encore vivants meurent avec la valeur de la pièce.
+  //
+  // ⚠️ APRÈS l'écriture, et FAIL-SOFT : l'annulation est l'acte que l'auditeur
+  // lira, la révocation en découle. La perdre parce que la seconde a échoué
+  // inverserait l'ordre d'importance — et `signerDocument` refuse de toute façon
+  // une pièce annulée, quel que soit l'état du jeton.
+  try {
+    await revoquerTokensDocument({
+      documentGenereId: documentId,
+      motif: `Pièce annulée au registre : ${motif}`,
+      parAdminId: adminSession.userId,
+    });
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "annulerDocumentAction:revocation_liens" },
+      extra: { documentId, numero: doc.numero },
+    });
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.document.annulee",

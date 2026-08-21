@@ -14,7 +14,27 @@
  * (RGPD art. 30 + preuve d'audit Qualiopi). targetType préfixé `qualiopi.`.
  */
 
-"use server";
+// 🔴 2026-08-19 — CE MODULE N'EST PLUS `"use server"`, ET C'EST DELIBERE.
+//
+// Next.js expose TOUT export d'un module `"use server"` comme point d'entree
+// HTTP : un POST portant `Next-Action: <id>` l'appelle, sans cookie, sans
+// session. `logQualiopiActivity` ci-dessous recoit sa session EN PARAMETRE et
+// ne la reverifie jamais — un anonyme pouvait donc ecrire des entrees
+// `ActivityLog` arbitraires en imputant l'acte a l'identifiant
+// d'administrateur de son choix, et le `catch` best-effort rendait l'attaque
+// muette. C'est la preuve d'audit RGPD art. 30 et Qualiopi : le registre cense
+// etablir qui a fait quoi etait inscriptible par n'importe qui.
+//
+// L'identifiant d'action n'est pas un secret : l'image de production est
+// poussee sur GHCR en visibilite PUBLIQUE, et `server-reference-manifest.json`
+// donne l'identifiant exact de chaque action.
+//
+// Le remede n'est pas d'ajouter une garde a un utilitaire interne : c'est
+// qu'il cesse d'etre un point d'entree. Aucun des 110 importeurs n'est un
+// composant client — verifie. Les gardes et le journal restent appelables
+// depuis les Server Actions, qui, elles, portent la directive.
+//
+// ⚠️ NE PAS reintroduire `"use server"` ici. Garde : `tests/unit/ci/surface-server-actions.spec.ts`.
 
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";

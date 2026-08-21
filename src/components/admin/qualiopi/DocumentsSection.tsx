@@ -44,6 +44,7 @@ import {
   genererCertificatRealisationAction,
   genererKitCpfAction,
   genererKitFranceTravailAction,
+  genererAutorisationCaptationAction,
   annulerDocumentAction,
 } from "@/server/actions/qualiopi/documents";
 import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations";
@@ -1393,6 +1394,26 @@ export function DocumentsSection({
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
                   dejaGenereLe={genereStagiaireLe("contrat")}
+                />
+                {/* 🔴 `D5-6-C1` (2026-08-21) — CE BOUTON N'EXISTAIT PAS.
+                    `genererAutorisationCaptationAction` était écrite, testée et
+                    complète — et n'était appelée de NULLE PART. Or tout le reste
+                    de la chaîne était en place : le libellé (plus haut dans ce
+                    fichier même), les parties signataires, la remise au portail,
+                    le gabarit PDF, le nom de fichier, la règle de relance.
+                    Seul le déclencheur manquait, et la pièce était donc
+                    impossible à produire.
+                    ⚠️ Elle est SÉPARÉE des contrats à dessein : un consentement
+                    doit être libre, et enfoui dans la convention le refus serait
+                    indissociable du refus de la formation. Sans ce bouton,
+                    filmer ou photographier une session ne reposait sur aucun
+                    consentement écrit (art. 9 C. civ. + RGPD). */}
+                <EnrollmentDocButton
+                  label="Autorisation de captation (image et voix)"
+                  action={genererAutorisationCaptationAction}
+                  enrollmentId={selectedEnrollmentId}
+                  onDone={handleDone}
+                  dejaGenereLe={genereStagiaireLe("autorisation_captation")}
                 />
                 {/* Export d'état (pas un document officiel numéroté) : fiche
                     d'adaptation individuelle (A16/A9), téléchargée en PDF. */}

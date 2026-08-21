@@ -902,6 +902,12 @@ enum EmailLogStatus {
   pending
   sent
   failed
+  /// 🔴 `D5-3-02` (2026-08-20) — un REBOND. Ajouté avec le webhook ZeptoMail.
+  /// Jusqu'ici, un rebond dur était indiscernable d'une remise réussie : le
+  /// relais acceptait le message (`sent`), le serveur destinataire le refusait
+  /// ensuite, et rien ne revenait. Une convocation « envoyée » pouvait n'être
+  /// jamais arrivée.
+  bounced
 
   @@map("email_log_status")
 }
@@ -926,6 +932,15 @@ model EmailLog {
   error             String?        @db.Text
   sentAt            DateTime?      @map("sent_at")
   failedAt          DateTime?      @map("failed_at")
+  /// 🔴 `D5-3-02` — rebond signalé par le relais (webhook ZeptoMail).
+  /// `hard` = adresse morte, à ne plus solliciter. `soft` = échec temporaire
+  /// (boîte pleine, serveur indisponible) : la distinction commande le geste,
+  /// et les confondre ferait soit renoncer trop tôt, soit s'acharner en vain.
+  bounceType        String?        @map("bounce_type") @db.VarChar(10)
+  /// Motif rendu par le relais, tel quel. Non normalisé : c'est une chaîne du
+  /// fournisseur, la réécrire lui ferait dire ce qu'on aurait supposé.
+  bounceReason      String?        @map("bounce_reason") @db.Text
+  bouncedAt         DateTime?      @map("bounced_at")
   createdAt         DateTime       @default(now()) @map("created_at")
   updatedAt         DateTime       @updatedAt @map("updated_at")
 
@@ -3859,6 +3874,20 @@ model WebVitalSample {
 
   @@index([url, metric, createdAt(sort: Desc)])
   @@index([pageType, metric, createdAt(sort: Desc)])
+  /// 🔴 `D8-1` (2026-08-20) — TROIS requêtes filtrent sur `createdAt` SEUL, et
+  /// aucun des deux index ci-dessus ne peut les servir : tous deux commencent
+  /// par `url` ou `pageType`, jamais interrogés par ces trois-là.
+  ///
+  ///   · `retention-purge-worker`  — deleteMany({ createdAt: { lt } })
+  ///   · `content-web-vitals-monitor-worker` — findMany({ createdAt: { gte } }), 24 h, take 50 000
+  ///   · `content-psi-monitor-worker`        — findMany({ createdAt: { gte } }),  7 j, take 100 000
+  ///
+  /// ⚠️ Les deux lectures prennent une TRANCHE RÉCENTE d'une table qui, elle,
+  /// grossit sans borne avec le trafic (un échantillon RUM par métrique et par
+  /// visite, conservé 6 mois). C'est le cas d'école où l'absence d'index ne se
+  /// voit pas au lancement et devient une lecture complète de table quelques
+  /// mois plus tard, sur un cron qui ne se plaint jamais.
+  @@index([createdAt])
   @@map("web_vital_samples")
 }
 
@@ -4645,21 +4674,21 @@ model SiteRoute {
   // C'est tout l'objet du recensement du 2026-08-17 : les 1 667 pages
   // déclaraient 1200×630 pour des fichiers qui faisaient 1200×675 ou 1080×607.
   // Une colonne qui recopierait la balise reproduirait le mensonge en base.
-  ogImage       String? @map("og_image") @db.VarChar(1000)
-  ogTitle       String? @map("og_title") @db.VarChar(500)
-  ogDescription String? @map("og_description") @db.Text
-  ogType        String? @map("og_type") @db.VarChar(30)
+  ogImage          String?   @map("og_image") @db.VarChar(1000)
+  ogTitle          String?   @map("og_title") @db.VarChar(500)
+  ogDescription    String?   @map("og_description") @db.Text
+  ogType           String?   @map("og_type") @db.VarChar(30)
   /// Dimensions ANNONCÉES par les balises `og:image:width` / `height`.
-  ogDeclaredWidth  Int? @map("og_declared_width")
-  ogDeclaredHeight Int? @map("og_declared_height")
+  ogDeclaredWidth  Int?      @map("og_declared_width")
+  ogDeclaredHeight Int?      @map("og_declared_height")
   /// Dimensions RÉELLES du fichier. L'écart avec les précédentes est un défaut.
-  ogImageWidth  Int? @map("og_image_width")
-  ogImageHeight Int? @map("og_image_height")
+  ogImageWidth     Int?      @map("og_image_width")
+  ogImageHeight    Int?      @map("og_image_height")
   /// Code HTTP renvoyé par l'image elle-même : une image en 404 = aperçu vide.
-  ogImageStatus Int?    @map("og_image_status")
-  ogImageBytes  Int?    @map("og_image_bytes")
-  ogImageType   String? @map("og_image_type") @db.VarChar(60)
-  ogInspectedAt DateTime? @map("og_inspected_at")
+  ogImageStatus    Int?      @map("og_image_status")
+  ogImageBytes     Int?      @map("og_image_bytes")
+  ogImageType      String?   @map("og_image_type") @db.VarChar(60)
+  ogInspectedAt    DateTime? @map("og_inspected_at")
 
   // ─── Cycle de vie « vivant » (découverte automatique) ───
   // lastSeenAt = dernier passage de l'énumérateur ; removedAt = soft-tombstone
@@ -5054,6 +5083,18 @@ enum BackupComponent {
   postgres_pitr // WAL / pgBackRest
   redis // snapshot RDB
   files_image_bank // originaux + variants banque d'images
+  // 🔴 Ajouté le 2026-08-19 (audit Qualiopi E2E, constat D66-01). Le bucket
+  // applicatif — pièces légales, supports, images de signature — n'était couvert
+  // par AUCUN composant, donc par aucun run, donc par aucun retard : le tableau
+  // de bord des sauvegardes était vert parce qu'il ne savait pas qu'il devait
+  // regarder. `scripts/backup-documents-r2.sh` le copie vers le bucket immuable.
+  files_documents // documents/ + supports/ + emargement/ du bucket applicatif
+  // 🔴 Ajouté le 2026-08-19 (constat D66-05). `scripts/vps/run-files-backup.sh`
+  // rapportait sous `files_image_bank` alors qu'il sauvegarde autre chose (CV,
+  // console-docs, reviews-media). Deux crons sous un même composant : si l'un
+  // meurt, l'autre garde le tableau vert — un témoin positif qui masque un
+  // témoin négatif.
+  files_utilisateurs // CV candidats + console-docs + reviews-media (volumes VPS)
   docuseal // DB + PDF signés
   plausible_pg // Postgres interne Plausible
   plausible_clickhouse // events ClickHouse Plausible
@@ -7001,6 +7042,14 @@ model DocumentGenere {
   @@index([trainerId, type])
   @@index([suppressionPrevueAt])
   @@index([annuleeAt])
+  /// 🔴 `D5-4-04` (2026-08-20) — la pastille de la console scannait TOUTE la
+  /// table. `compterPiecesEnAttente()` filtre sur
+  /// `statutSignature IN (partielle, en_attente) AND annuleeAt = null` sans
+  /// borne, depuis chaque page admin, et aucun index ne portait
+  /// `statutSignature`. L'ordre des colonnes suit celui du prédicat ;
+  /// `annuleeAt` seul, déjà indexé, ne servait pas cette requête (la colonne
+  /// est NULL pour presque toutes les lignes, donc peu sélective).
+  @@index([statutSignature, annuleeAt])
   @@map("documents_generes")
 }
 
@@ -7323,8 +7372,20 @@ model Questionnaire {
   enrollmentId      String            @map("enrollment_id") @db.Uuid
   enrollment        Enrollment        @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   type              QuestionnaireType
-  /// Token d'accès portail (non-guessable). timingSafeEqual à la lecture.
-  token             String            @unique @db.VarChar(64)
+  /// SHA-256 hex du jeton d'accès. Le clair ne vit que dans l'URL envoyée.
+  ///
+  /// 🔴 `D4-5-S1` (2026-08-20) — cette colonne portait le jeton EN CLAIR, et ce
+  /// commentaire affirmait « timingSafeEqual à la lecture ». C'était faux : les
+  /// quatre lectures faisaient `findUnique({ where: { token } })`, une égalité
+  /// SQL sur la valeur en clair. `verifyQrToken`, la comparaison timing-safe
+  /// que la phrase invoquait, n'était appelée NULLE PART en production — elle
+  /// n'existait que dans son propre test.
+  ///
+  /// ⚠️ Une précaution décrite mais absente est pire qu'une absence de
+  /// précaution : elle dispense d'aller regarder. C'est le mot pour mot ce que
+  /// `portail_acces` a corrigé la veille (`D4-4-A`) — le correctif avait traité
+  /// une table et laissé sa voisine.
+  tokenHash         String            @unique @map("token_hash") @db.VarChar(64)
   /// Réponses structurées : { questionId: valeur }.
   reponses          Json              @default("{}")
   /// Note globale /5 (satisfaction). Null tant que non répondu.
@@ -8257,7 +8318,9 @@ model PortailAcces {
   id         String    @id @default(uuid()) @db.Uuid
   traineeId  String    @map("trainee_id") @db.Uuid
   trainee    Trainee   @relation(fields: [traineeId], references: [id], onDelete: Cascade)
-  token      String    @unique @db.VarChar(64)
+  /// 🔴 SHA-256 hex du jeton, JAMAIS le clair (`D4-4-A`, 2026-08-19).
+  /// Le clair ne vit que dans le lien envoyé et dans le cookie du stagiaire.
+  tokenHash  String    @unique @map("token_hash") @db.VarChar(64)
   expiresAt  DateTime  @map("expires_at")
   revoked    Boolean   @default(false)
   lastUsedAt DateTime? @map("last_used_at")
@@ -8922,6 +8985,21 @@ model JobApplication {
   firstName  String  @map("first_name") @db.Text
   lastName   String  @map("last_name") @db.Text
   email      String  @db.Text
+  /// 🔴 `D5-5-03` (2026-08-20) — empreinte de RECHERCHE RGPD.
+  ///
+  /// `email` est chiffré par `encryptPii` avec un IV ALÉATOIRE : deux
+  /// chiffrements de la même adresse donnent deux valeurs différentes. Une
+  /// égalité SQL sur cette colonne ne peut donc JAMAIS correspondre — c'est
+  /// exactement le défaut qui rendait l'export art. 15 des `Submission` vide,
+  /// corrigé là-bas par `contact_email_hash`.
+  ///
+  /// Conséquence ici : une candidature était **introuvable** par son adresse,
+  /// donc ni exportable (art. 15) ni effaçable (art. 17) — alors que le CV, la
+  /// photo et le téléphone sont les données les plus sensibles du dépôt.
+  ///
+  /// Nullable : les candidatures antérieures n'en ont pas. Le service de
+  /// recherche retombe alors sur un balayage déchiffrant, borné.
+  emailHash  String? @map("email_hash") @db.VarChar(64)
   phone      String  @db.Text
   city       String? @db.VarChar(120)
   motivation String? @db.Text

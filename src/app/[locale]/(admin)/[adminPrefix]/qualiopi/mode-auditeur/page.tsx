@@ -78,9 +78,21 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
         tient-elle ? ». Sans ce lien, la page existe sans être trouvable — et
         une page qu'on ne trouve pas ne sert à personne le jour du contrôle.
       */}
-      <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)]">
+      <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
         <Link href={`${self}/signatures`} className="underline">
-          Registre des signatures — qui a signé quoi, et si la preuve tient
+          Registre des signatures de pièces — qui a signé quoi, et si la preuve tient
+        </Link>
+      </p>
+      {/*
+        🔴 `D3-3-05` — ce second registre n'existait pas, et la remarque
+        ci-dessus s'appliquait à lui plus encore : la preuve de PRÉSENCE est la
+        première pièce qu'un contrôle demande, et elle n'avait aucune surface.
+        Une page qu'on ne trouve pas ne sert à personne le jour du contrôle ; une
+        page qui n'existe pas laisse une signature erronée définitive.
+      */}
+      <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)]">
+        <Link href={`${self}/emargement`} className="underline">
+          Registre des signatures d&apos;émargement — la preuve de présence, chaîne par chaîne
         </Link>
       </p>
 

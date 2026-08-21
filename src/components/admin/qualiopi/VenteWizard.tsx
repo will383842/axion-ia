@@ -746,6 +746,22 @@ export function VenteWizard({
           </h2>
 
           <div className="flex flex-col gap-[var(--space-admin-3,6px)]">
+            {/* 🔴 2026-08-21 — `aria-label="Offre"` écrasait le libellé VISIBLE
+                « Offre du catalogue », et `aria-label="Formation"` écrasait
+                « Formation publiée ». Le nom accessible ne contenait donc pas le
+                texte visible : c'est l'écart que WCAG 2.5.3 « Label in Name »
+                (niveau A) interdit — une personne qui pilote à la voix dit ce
+                qu'elle LIT, et rien ne répond.
+
+                Le `<label>` enveloppe déjà le `<select>` : sans l'attribut, le
+                nom accessible devient le libellé visible. L'attribut n'ajoutait
+                rien et retirait quelque chose.
+
+                Corollaire : le parcours e2e visait `getByLabel("Offre du
+                catalogue")` — le bon libellé — et ne trouvait rien. Il se
+                `test.skip`ait en annonçant « seed incomplet », ce qui a envoyé
+                chercher un défaut de données là où il y avait un défaut
+                d'accessibilité. */}
             <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
               Offre du catalogue
               <select
@@ -755,7 +771,6 @@ export function VenteWizard({
                   setFormationId("");
                   setSale(true);
                 }}
-                aria-label="Offre"
                 className="admin-input"
               >
                 <option value="">— Choisir une offre —</option>
@@ -833,7 +848,6 @@ export function VenteWizard({
                         setDureeHeures(String(f.dureeHeures));
                       setSale(true);
                     }}
-                    aria-label="Formation"
                     className="admin-input"
                   >
                     <option value="">— Choisir une formation —</option>

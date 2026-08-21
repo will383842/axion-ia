@@ -10,17 +10,35 @@ interface JsonLdNode {
   [key: string]: unknown;
 }
 
+/**
+ * 🔴 2026-08-21 — CE LECTEUR NE DESCENDAIT PAS DANS `@graph`.
+ *
+ * Il rendait les objets RACINE de chaque bloc `application/ld+json`. Or le site
+ * émet un `@graph` unique : la racine porte `@context` et `@graph`, et son
+ * `@type` est `undefined`. Le test cherchait donc `Organization` et `WebSite`
+ * dans une liste de `undefined`, et échouait — alors que les deux types sont
+ * bel et bien présents en production (vérifié).
+ *
+ * 🔑 Un lecteur qui ne comprend pas la forme du document ne mesure rien. Il
+ * échouait ici, ce qui est le cas heureux ; s'il avait cherché l'ABSENCE d'un
+ * type, il aurait passé au vert sur n'importe quoi.
+ */
 async function getJsonLd(page: import("@playwright/test").Page): Promise<JsonLdNode[]> {
   return page.$$eval('script[type="application/ld+json"]', (nodes) =>
     nodes
       .map((n) => {
         try {
-          return JSON.parse(n.textContent ?? "");
+          return JSON.parse(n.textContent ?? "") as unknown;
         } catch {
           return null;
         }
       })
-      .filter(Boolean),
+      .filter((v): v is Record<string, unknown> => v !== null && typeof v === "object")
+      .flatMap((racine) => {
+        const graphe = (racine as { "@graph"?: unknown })["@graph"];
+        // Un `@graph` remplace la racine ; sans graphe, la racine EST le nœud.
+        return Array.isArray(graphe) ? (graphe as Record<string, unknown>[]) : [racine];
+      }),
   );
 }
 

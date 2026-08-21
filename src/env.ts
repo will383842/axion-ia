@@ -127,6 +127,16 @@ export const env = createEnv({
     // n'a pas droit aux abonnements webhook.
     // Obtenue UNE SEULE FOIS via `pnpm calendly:webhook:subscribe`.
     CALENDLY_WEBHOOK_SIGNING_KEY: z.string().optional(),
+    /**
+     * 🔴 `D5-3-02` — clé d'authentification du webhook de rebonds ZeptoMail
+     * (Agent > Webhooks > « Authentication Key »).
+     *
+     * `optional()` DÉLIBÉRÉMENT : tant qu'elle n'est pas posée, la route répond
+     * 200 muet plutôt que d'échouer. ZeptoMail désabonne un webhook qui échoue
+     * plusieurs fois de suite — la rendre obligatoire ferait détruire
+     * l'abonnement par le déploiement qui précède sa configuration.
+     */
+    ZEPTOMAIL_WEBHOOK_KEY: z.string().optional(),
 
     // ────────────────────────────────────────────────────────────────
     // Stripe Checkout V1 (Sprint X.2 — Booking V1) + ADR 0013.
@@ -459,6 +469,7 @@ export const env = createEnv({
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
+    ZEPTOMAIL_WEBHOOK_KEY: process.env.ZEPTOMAIL_WEBHOOK_KEY,
     // Stripe Checkout V1 (Booking V1 — ADR 0013)
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,

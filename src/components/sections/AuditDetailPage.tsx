@@ -258,18 +258,22 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
                   {isFr ? info.scopeFr : info.scopeEn}
                 </p>
               </div>
+              {/* 🔴 a11y 2026-08-21 — un `<div>` enfant d'un `<dl>` ne doit contenir
+                  QUE le couple `<dt>`/`<dd>`. Ici l'icône était un `<span>` frère, et
+                  le couple vivait un `<div>` plus bas : axe rendait `definition-list`
+                  (serious) + `dlitem` sur les quatre pages `/fr/audit/*`.
+                  L'icône passe DANS le `<dt>`, en position absolue par rapport à la
+                  ligne : le rendu ne bouge pas, la structure redevient valide. */}
               <dl className="divide-border flex flex-col divide-y">
                 {factRows.map((row) => (
-                  <div key={row.label} className="flex items-start gap-3 py-3">
-                    <span className="bg-terracotta/10 text-terracotta mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
-                      <row.icon aria-hidden="true" className="h-4 w-4" />
-                    </span>
-                    <div className="flex min-w-0 flex-col">
-                      <dt className="text-fg-muted text-[11.5px] font-semibold tracking-wide uppercase">
-                        {row.label}
-                      </dt>
-                      <dd className="text-fg text-[14px] leading-snug font-medium">{row.value}</dd>
-                    </div>
+                  <div key={row.label} className="relative py-3 pl-11">
+                    <dt className="text-fg-muted text-[11.5px] font-semibold tracking-wide uppercase">
+                      <span className="bg-terracotta/10 text-terracotta absolute top-3 left-0 mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-lg">
+                        <row.icon aria-hidden="true" className="h-4 w-4" />
+                      </span>
+                      {row.label}
+                    </dt>
+                    <dd className="text-fg text-[14px] leading-snug font-medium">{row.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -384,17 +388,23 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         title={isFr ? "Toutes les informations" : "All the"}
         titleEm={isFr ? "pratiques" : "practical details"}
       >
+        {/* Même correction qu'au bloc « faits » ci-dessus : le `<span>` de l'icône
+            était FRÈRE du couple `<dt>`/`<dd>` à l'intérieur du `<div>`, ce qui
+            suffit à rompre le groupe attendu par la spec. Il passe dans le `<dt>`,
+            en bloc au-dessus du libellé — rendu inchangé, `gap-3` remplacé par la
+            marge basse de l'icône puisque le conteneur ne compte plus que deux
+            enfants. */}
         <dl className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3">
           {modalitesRows.map((row) => (
             <div
               key={row.label}
               className="border-border bg-bg shadow-card hover:shadow-elevated group flex flex-col gap-3 rounded-2xl border p-5 transition hover:-translate-y-1"
             >
-              <span className="bg-terracotta text-mocha-fg shadow-cta-terracotta inline-flex h-11 w-11 items-center justify-center rounded-xl transition group-hover:scale-110">
-                <row.icon aria-hidden="true" className="h-5 w-5" />
-              </span>
               <dt className="text-terracotta-deep text-[11.5px] font-bold tracking-[0.1em] uppercase">
-                {row.label}
+                <span className="bg-terracotta text-mocha-fg shadow-cta-terracotta mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl transition group-hover:scale-110">
+                  <row.icon aria-hidden="true" className="h-5 w-5" />
+                </span>
+                <span className="block">{row.label}</span>
               </dt>
               <dd className="text-fg text-sm leading-snug font-medium">{row.value}</dd>
             </div>

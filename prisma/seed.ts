@@ -21,6 +21,7 @@ import { hashPassword } from "../src/lib/auth-password";
 import { seedAuthorProfile } from "./seeds/content-gen/author-profile";
 import { seedKbFacts } from "./seeds/content-gen/seed-kb-facts";
 import { seedChatbotTenant } from "./seeds/chatbot";
+import { ADMIN_DEV_EMAIL, ADMIN_DEV_PASSWORD } from "./seeds/identifiants-admin-dev";
 
 const prisma = new PrismaClient();
 
@@ -31,9 +32,12 @@ const prisma = new PrismaClient();
 async function seedAdmin() {
   // Sprint 15 fix Fork 3 N8-3 : utilise SSOT lib/auth-password (Argon2id
   // params OWASP 2024 centralises au lieu de duplicates).
-  const passwordHash = await hashPassword("AdminAxion2026!");
+  // 🔴 Ces deux valeurs vivaient ici ET dans le fixture Playwright, différentes.
+  // Voir `./seeds/identifiants-admin-dev` : la divergence a maintenu quatre
+  // specs E2E hors d'exécution pendant toute leur existence.
+  const passwordHash = await hashPassword(ADMIN_DEV_PASSWORD);
 
-  const email = "admin@axion-ia.com";
+  const email = ADMIN_DEV_EMAIL;
   await prisma.adminUser.upsert({
     where: { email },
     update: {},
@@ -46,7 +50,7 @@ async function seedAdmin() {
       twoFactorEnabled: false,
     },
   });
-  console.log("✓ Admin user seeded (admin@axion-ia.com / AdminAxion2026!)");
+  console.log(`✓ Admin user seeded (${ADMIN_DEV_EMAIL} / ${ADMIN_DEV_PASSWORD})`);
 }
 
 // ============================================================

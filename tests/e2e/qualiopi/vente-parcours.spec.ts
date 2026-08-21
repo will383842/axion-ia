@@ -20,14 +20,16 @@
  */
 
 import { test, expect } from "@playwright/test";
-import { ADMIN_PREFIX, loginAsAdmin } from "../fixtures/admin-auth";
+import { ADMIN_PREFIX, loginAsAdmin, baseSemeeAttendue } from "../fixtures/admin-auth";
 
 test.describe("Wizard nouvelle vente — client → devis → checklist", () => {
   test("le parcours crée le client, le devis, et rend la checklist", async ({ page }) => {
     try {
       await loginAsAdmin(page);
-    } catch {
-      test.skip(true, "DB non seedée (ADMIN_SEED_EMAIL/PASSWORD) — e2e local uniquement");
+    } catch (e) {
+      // En CI la base est semée : un échec ici est un défaut, pas une dispense.
+      if (baseSemeeAttendue()) throw e;
+      test.skip(true, `connexion admin impossible en local : ${String(e).slice(0, 300)}`);
       return;
     }
 
@@ -49,15 +51,46 @@ test.describe("Wizard nouvelle vente — client → devis → checklist", () => 
     const selectOffre = page.getByLabel("Offre du catalogue");
     const nbOffres = await selectOffre.locator("option").count();
     if (nbOffres < 2) {
-      test.skip(true, "Aucune offre active en base de dev — seed incomplet");
+      // En CI la base est semée : une fixture manquante est un défaut du seed,
+      // pas une dispense. Un skip muet ici a masqué pendant des mois le fait
+      // que ce parcours ne se jouait jamais.
+      if (baseSemeeAttendue())
+        throw new Error("Aucune offre active en base — `pnpm qualiopi:seed-demo` incomplet");
+      test.skip(true, "Aucune offre active en base — `pnpm qualiopi:seed-demo` incomplet");
       return;
     }
-    await selectOffre.selectOption({ index: 1 });
-
+    // 🔴 2026-08-21 — la spec retenait l'offre d'INDEX 1, c'est-à-dire la
+    // première du catalogue par ordre alphabétique de code, puis exigeait des
+    // formations. Or une formation est rattachée à UNE offre : le sélecteur ne
+    // se remplit que si l'offre choisie est la bonne. Sur onze offres actives,
+    // la spec en tirait une au hasard — et concluait « seed incomplet ».
+    //
+    // 🔑 Un parcours doit chercher ce qu'un humain chercherait : l'offre qui
+    // porte une formation. On parcourt donc les offres jusqu'à ce que le
+    // sélecteur de formation se remplisse, et on ne déclare le seed en défaut
+    // que si AUCUNE n'en a.
     const selectFormation = page.getByLabel("Formation publiée");
-    const nbFormations = await selectFormation.locator("option").count();
-    if (nbFormations < 2) {
-      test.skip(true, "Aucune formation publiée en base de dev — seed incomplet");
+    let offreRetenue: string | null = null;
+    for (let i = 1; i < nbOffres; i += 1) {
+      await selectOffre.selectOption({ index: i });
+      // Le sélecteur de formation disparaît pour une offre de type « un à un » :
+      // c'est une bifurcation métier, pas une absence de données.
+      if ((await selectFormation.count()) === 0) continue;
+      if ((await selectFormation.locator("option").count()) >= 2) {
+        offreRetenue = await selectOffre.inputValue();
+        break;
+      }
+    }
+
+    if (offreRetenue === null) {
+      const message =
+        "Aucune offre active ne porte de formation `statut=actif` + " +
+        "`statutGeneration=publie` — `pnpm qualiopi:seed-demo` incomplet";
+      // En CI la base est semée : une fixture manquante est un défaut du seed,
+      // pas une dispense. Un skip muet ici a masqué pendant des mois le fait
+      // que ce parcours ne se jouait jamais.
+      if (baseSemeeAttendue()) throw new Error(message);
+      test.skip(true, message);
       return;
     }
     await selectFormation.selectOption({ index: 1 });

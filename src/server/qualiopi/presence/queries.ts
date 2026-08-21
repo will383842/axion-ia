@@ -6,6 +6,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { arrondirTauxMoyen, bornesPagination, debutFenetreSessions } from "./sessions-liste";
 import type {
   EnrollmentStatut,
@@ -90,7 +91,7 @@ export async function getSessionEmargement(
           // quel que soit son statut. Le filtre d'écriture, lui, reste : on ne
           // crée pas de nouveaux créneaux pour quelqu'un qui a abandonné.
           where: {
-            OR: [{ statut: { notIn: ["abandon", "exclu"] } }, { presences: { some: {} } }],
+            OR: [{ ...inscriptionsActives() }, { presences: { some: {} } }],
           },
           include: {
             trainee: {

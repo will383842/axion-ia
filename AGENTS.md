@@ -36,8 +36,16 @@ et l'a toujours été :
   rougira.** Conséquence directe : toute revue qui écrit « le risque bundle est couvert par
   la gate » raisonne sur une fausse sécurité. Un patch susceptible d'alourdir une route se
   mesure **à la main**, avant/après.
-- Le Lighthouse CI **PR-time** ne doit pas être repassé bloquant tant que le bind loopback
-  de la CI n'est pas réparé (`next start` ne bind pas sur 127.0.0.1 en CI).
+- ⚠️ **Le « bind loopback » n'a jamais existé** (mesuré le 2026-08-21). Ce paragraphe a
+  affirmé que `next start` ne bindait pas sur 127.0.0.1 en CI. Il ne bindait rien parce
+  qu'il n'avait **rien à servir** : l'étape `Bundle delta vs main` relançait `pnpm run build`
+  dans le même répertoire juste avant, vidait `.next`, puis mourait en OOM — laissant le
+  dossier sans `BUILD_ID`. Les 237 tests Playwright et les 5 URLs Lighthouse de Gate B
+  mesuraient donc le vide (run 32443013208 : 209 failed, 0 passed). L'ordre des étapes est
+  corrigé et verrouillé par `tests/unit/ci/harnais-e2e-mesure-vraiment.spec.ts`.
+- Le Lighthouse CI **PR-time** reste néanmoins non bloquant tant qu'on n'a pas **lu** ce
+  qu'il rapporte une fois qu'il rapporte quelque chose. Aligner les seuils d'abord, bloquer
+  ensuite — la règle du paragraphe précédent ne change pas.
 
 Ne repassez pas ces gates en bloquant « au passage » : un ratchet posé sur un seuil déjà
 dépassé (le bucket « Shell partagé » mesure 134,87 kB réels pour une limite affichée à

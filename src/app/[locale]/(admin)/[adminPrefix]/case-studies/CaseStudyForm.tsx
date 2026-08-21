@@ -301,8 +301,9 @@ function CSTranslationFields({
       </div>
 
       <div className="admin-field">
-        <label className="admin-label">Problème (contexte initial)</label>
+        <span className="admin-label">Problème (contexte initial)</span>
         <TiptapEditor
+          label="Problème (contexte initial)"
           name={`${prefix}_problem`}
           initialHtml={initial?.problem ?? ""}
           placeholder={
@@ -312,8 +313,9 @@ function CSTranslationFields({
       </div>
 
       <div className="admin-field">
-        <label className="admin-label">Solution mise en œuvre</label>
+        <span className="admin-label">Solution mise en œuvre</span>
         <TiptapEditor
+          label="Solution mise en œuvre"
           name={`${prefix}_solution`}
           initialHtml={initial?.solution ?? ""}
           placeholder={prefix === "fr" ? "Décrivez la solution…" : "Décrivez la solution…"}

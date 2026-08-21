@@ -13,6 +13,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { opcoLabel } from "./opco-referentiel";
 import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
 import { sessionExigeUnDossier } from "./dossier-auto";
@@ -53,7 +54,7 @@ const SELECT_SESSION_PAYEURS = {
   // abandons et exclusions sont hors périmètre : on ne réclame pas le siège de
   // quelqu'un qui n'a pas suivi l'action.
   enrollments: {
-    where: { statut: { notIn: ["abandon", "exclu"] } },
+    where: { ...inscriptionsActives() },
     select: {
       financementType: true,
       clientId: true,

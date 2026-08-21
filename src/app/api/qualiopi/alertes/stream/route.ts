@@ -18,6 +18,7 @@
  * Pas de lib SSE tierce — ReadableStream natif.
  */
 
+import { peutLireLesAlertes } from "@/server/qualiopi/alertes/routage";
 import type { NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { countNonLues, listAlertes } from "@/server/qualiopi/alertes/alertes-service";
@@ -40,7 +41,11 @@ export async function GET(req: NextRequest): Promise<Response> {
     return new Response("unauthorized", { status: 401 });
   }
   const role = (session.user as { role?: string }).role ?? "reader";
-  if (role !== "super_admin" && role !== "admin") {
+  // 🔴 2026-08-19 (constat `D5-4-02`) — même correctif que la page « À traiter » :
+  // les rôles destinataires des alertes (`responsable_qualite`, `secretaire`)
+  // recevaient un 401 sur le flux temps réel, donc un compteur figé sans qu'aucun
+  // message ne le dise. Droit d'accès DÉRIVÉ de `ROLES_PAR_GUICHET`, jamais recopié.
+  if (!peutLireLesAlertes(role)) {
     return new Response("forbidden", { status: 401 });
   }
 

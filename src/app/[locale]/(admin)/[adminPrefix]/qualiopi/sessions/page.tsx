@@ -336,6 +336,18 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
                         // On ne fabrique pas un « à jour » rassurant.
                         return <span className="text-[color:var(--color-admin-fg-muted)]">—</span>;
                       }
+                      // 🔴 `D2-5-01` — une session annulée ou reportée n'a pas
+                      // « 0/0 étapes », elle a un MOTIF. Le « 0/0 » se lisait
+                      // comme un dossier vide à remplir, là où il n'y a rien à
+                      // faire — et il taisait vers quelle session on avait
+                      // reporté, seul renseignement utile de la ligne.
+                      if (p.repliee !== null) {
+                        return (
+                          <span className="whitespace-nowrap text-[color:var(--color-admin-fg-muted)]">
+                            {p.repliee.motif}
+                          </span>
+                        );
+                      }
                       return (
                         <>
                           <div className="font-medium whitespace-nowrap">

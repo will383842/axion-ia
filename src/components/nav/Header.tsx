@@ -138,7 +138,39 @@ export async function Header() {
           hauteur littérale : la barre latérale des espaces connectés se cale
           dessus (`EspaceShell`). Deux valeurs séparées divergeraient un jour,
           et la barre repasserait sous le pli sans que rien ne le signale. */}
-      <div className="relative mx-auto flex h-[var(--header-h)] w-full max-w-[1920px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
+      {/* 🔴 2026-08-21 — LES TROIS SEUILS COMPARAIENT LA RANGÉE AU VIEWPORT,
+          PAS À SA BOÎTE DE CONTENU. Ils oubliaient les 128 px de rembourrage.
+
+          Le commentaire du CTA « Nous écrire », plus bas, garde la mesure
+          d'origine : « la rangée réclame 1397 px sans ce CTA et 1547 px avec ».
+          Ces largeurs ont été comparées à 1440 et 1600 — les largeurs d'ÉCRAN.
+          Or à 1440 px le conteneur porte `xl:px-16`, soit 64 px de chaque côté :
+          la place réellement disponible n'est pas 1440 mais **1312**.
+
+          Mesuré avant correctif, à `/fr` :
+
+              1440 px   rangée 64 → 1436   (1372 px)   boîte de contenu 1312   → dépasse de 60, reste 4 px avant le bord
+              1600 px   rangée 64 → 1586   (1522 px)   boîte de contenu 1472   → dépasse de 50, reste 14 px
+              1700 px   rangée 64 → 1690   (1626 px)   boîte de contenu 1572   → dépasse de 54, reste 10 px
+
+          La rangée ne tenait donc dans AUCUNE des trois bandes : elle mangeait
+          son rembourrage et frôlait le bord. Windows et macOS passaient à 4 px
+          près ; le Chromium Linux de la CI, dont les chasses diffèrent d'environ
+          0,8 %, débordait de 5 px — sur 90 des 117 routes publiques, à chaque
+          exécution. Un défaut invisible sur le poste du développeur et
+          systématique ailleurs.
+
+          🔑 On ne relève PAS `--breakpoint-nav` : cela ferait basculer en tiroir
+          les portables 1440–1520 px, très répandus, pour un défaut dont la nav
+          n'est pas responsable. C'est l'espacement INTERNE qui cède
+          (`nav:gap-4` ici, `nav:gap-5` sur la nav), et seul `--breakpoint-navcta`
+          monte — le CTA « Nous écrire » est un bonus, pas de la navigation.
+
+          Après correctif, espace libre entre la nav et le groupe CTA, mesuré sur
+          treize largeurs de 1439 à 2560 px : **26 px au pire point** (1440), 96
+          à 1700, 244 à 1920. Aucun débordement nulle part, tiroir intact à 1439.
+          Garde : `tests/e2e/qualiopi/header-tient-dans-sa-boite.spec.ts`. */}
+      <div className="nav:gap-4 navcta:gap-6 navair:gap-8 relative mx-auto flex h-[var(--header-h)] w-full max-w-[1920px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
         {/* Bloc identité : logo serif badge ivoire + tagline B2B EN DESSOUS.
             Layout colonne → libère l'espace horizontal pour la nav (vs ancien
             layout row qui occupait ~200px de plus). Visibilité de la tagline :
@@ -205,7 +237,7 @@ export async function Header() {
           // d'air entre le logo et le 1er onglet (« Formations IA ») UNIQUEMENT
           // — s'ajoute au gap-8 du flex parent (→ ~48/56 px logo↔nav) sans
           // toucher l'espacement entre onglets ni la position du dual-CTA.
-          className="navair:ml-6 navair:gap-12 nav:ml-4 nav:flex hidden items-center gap-8"
+          className="navair:ml-6 nav:ml-4 nav:flex nav:gap-5 navcta:gap-6 navair:gap-8 hidden items-center gap-8"
         >
           {navItems.map((item) =>
             item.href === "/formations" ? (

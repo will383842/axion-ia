@@ -20,6 +20,11 @@ interface FaqBlockProps {
   items: ReadonlyArray<FaqEntry>;
   /** Disable JSON-LD if the page already emits its own FAQPage schema. */
   emitJsonLd?: boolean;
+  /**
+   * Pass-through to FaqAccordion — `@id` du `Person` crédité comme auteur du
+   * `FAQPage`. Sans lui, la factory crédite Manon, la persona éditoriale IA.
+   */
+  faqAuthorId?: string;
   tone?: FaqTone;
   /** Pass-through to FaqAccordion — adds a permalink CTA per question. */
   permalinkBase?: string;
@@ -48,6 +53,7 @@ export function FaqBlock({
   description,
   items,
   emitJsonLd = true,
+  faqAuthorId,
   tone = "canvas",
   permalinkBase,
   permalinkLabel,
@@ -88,6 +94,7 @@ export function FaqBlock({
           <FaqAccordion
             items={items}
             emitJsonLd={emitJsonLd}
+            {...(faqAuthorId !== undefined ? { faqAuthorId } : {})}
             {...(permalinkBase !== undefined ? { permalinkBase } : {})}
             {...(permalinkLabel !== undefined ? { permalinkLabel } : {})}
           />

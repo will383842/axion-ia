@@ -35,7 +35,7 @@
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-07-26" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-08-20" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -171,16 +171,65 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
   },
   // ───────────────────────────── communications & géo
   {
+    // 🔴 `D9-5-10` — OMIS de cette liste jusqu'au 2026-08-20, pendant que la page
+    // se déclarait « liste exhaustive » (RGPD art. 13.1.e). Et pas n'importe
+    // lequel : le relais qui achemine **TOUS** les e-mails du site — convocations,
+    // attestations, liens d'émargement, accusés RGPD. Chaque envoi lui confie
+    // l'adresse du destinataire et le corps complet du message.
+    //
+    // 🔑 POURQUOI LA GARDE EXISTANTE NE POUVAIT PAS LE VOIR.
+    // `subprocessors-coherence.spec.ts` est adossé à `src/lib/csp.ts` — décrit
+    // comme « seul goulot qu'un tiers ne peut pas contourner pour charger ».
+    // C'est vrai des tiers qui chargent DANS LE NAVIGATEUR, et faux de tous les
+    // autres : un relais SMTP appelé depuis le worker ne traverse aucune CSP.
+    // La garde ne couvrait donc qu'une moitié de la surface, et rien ne le
+    // disait. `sous-traitants-serveur.spec.ts` couvre désormais l'autre moitié,
+    // adossée aux variables d'environnement serveur de `src/env.ts`.
+    name: "Zoho Corporation (ZeptoMail)",
+    location: "Groupe Zoho — service souscrit sur la région UE",
+    serversLocation: "Union européenne (`smtp.zeptomail.eu`)",
+    purposeFr:
+      "Relais SMTP transactionnel : achemine la totalité des e-mails sortants du site (convocations, conventions, attestations, liens d'émargement, accusés de demande RGPD, notifications internes).",
+    purposeEn:
+      "Transactional SMTP relay: carries every outbound email from the site (invitations, agreements, certificates, attendance links, GDPR acknowledgements, internal notifications).",
+    dataCategoriesFr:
+      "Adresse e-mail du destinataire et CORPS COMPLET du message : nom et prénom, intitulé et dates de formation, numéros de pièces, liens personnels d'accès. Aucune minimisation possible — c'est le message lui-même qui transite.",
+    dataCategoriesEn:
+      "Recipient email address and FULL message body: first and last name, training title and dates, document numbers, personal access links. No minimisation possible — the message itself is what transits.",
+    legalBasis: "6.1.b_contract",
+    dpaStatus: "signed",
+    transferFramework: "intra_eu",
+    category: "communications",
+    activationStatus: "active",
+    documentationUrl: "https://www.zoho.com/privacy.html",
+  },
+  {
     name: "Telegram FZ-LLC",
     location: "Dubaï, Émirats Arabes Unis (hors UE)",
     serversLocation: "Émirats Arabes Unis + edge global",
     purposeFr:
-      "Notifications administratives via Bot API à destination du gérant (alertes opérations).",
+      "Notifications administratives via Bot API à destination du gérant : alertes d'exploitation, et remontée immédiate des demandes entrantes pour permettre un rappel rapide.",
     purposeEn: "Admin notifications via Bot API to the manager (operations alerts).",
+    // 🔴 `D6-5-C2` (2026-08-20) — cette ligne affirmait « PII minimisée : email
+    // partiel, initiales, téléphone partiel ». C'était FAUX pour l'essentiel du
+    // trafic, et c'est une page LÉGALE : elle est ce qu'un contrôle lit en
+    // premier, et ce sur quoi une personne concernée fonde ses droits.
+    //
+    // La minimisation ne s'applique qu'à la demande RGPD (`redactName` /
+    // `redactEmail`, corrigé le 2026-08-20). Pour les formulaires de contact,
+    // devis, candidatures et rendez-vous — soit une quinzaine de catégories —
+    // `notifications/format.ts` transmet nom, e-mail, téléphone et le message
+    // ENTIER, en clair.
+    //
+    // 🔑 Ce n'est pas un défaut de comportement : `notifications/types.ts` le
+    // documente comme délibéré (« l'équipe doit pouvoir rappeler »), et c'est
+    // une décision légitime du responsable de traitement. Le défaut était de ne
+    // pas le DIRE. La transparence (art. 13-14 RGPD) n'exige pas de minimiser
+    // ici — elle exige de déclarer ce qui part réellement.
     dataCategoriesFr:
-      "PII minimisée (cf. ADR 0010) : email partiel `j****@acme.com`, initiales `J. D.`, téléphone partiel, sociétés en clair, dates/prix/IDs UUID.",
+      "Deux régimes selon la nature de l'alerte. **Demandes RGPD** : données minimisées (e-mail partiel `j****@acme.com`, initiales `J. D.`) — la référence du dossier suffit à la traiter. **Alertes commerciales et de recrutement** (formulaire de contact, demande de devis, d'audit ou d'intervention, candidature, invitation, rendez-vous) : nom, adresse e-mail, téléphone et contenu du message transmis EN CLAIR, afin que l'organisme puisse rappeler la personne. S'y ajoutent sociétés, villes, dates, montants et identifiants techniques.",
     dataCategoriesEn:
-      "Minimised PII (ADR 0010): partial email `j****@acme.com`, initials `J. D.`, partial phone, company names in clear, dates/prices/UUIDs.",
+      "Two regimes depending on the alert. **GDPR requests**: minimised data (partial email `j****@acme.com`, initials `J. D.`) — the case reference is enough to handle them. **Sales and recruitment alerts** (contact form, quote/audit/intervention request, job application, invitation, booking): full name, email address, phone number and message body sent IN CLEAR, so that the organisation can call the person back. Plus company names, cities, dates, amounts and technical identifiers.",
     legalBasis: "6.1.f_legitimate_interest",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "scc",

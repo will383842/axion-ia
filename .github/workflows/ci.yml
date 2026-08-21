@@ -137,7 +137,67 @@ jobs:
     runs-on: ubuntu-latest
     # 45 → 75 (2026-05-29) : une fois l'ENOSPC résolu (free-disk ci-dessous), le
     # build SSG (17 928 pages) + bundle + E2E + Lighthouse dépassait de peu 45 min.
-    timeout-minutes: 75
+    #
+    # 75 → 90 (2026-08-21) : le plafond de l'étape Playwright passe de 15 à 30 min
+    # (voir son commentaire — les deux premiers runs réels ont été coupés). La
+    # somme des plafonds d'étapes atteindrait sinon ~74 min sur un job à 75, et un
+    # job tué en « cancelled » ne rend AUCUN résultat — c'est déjà arrivé le
+    # 2026-05-30 (run 26674394530), Lighthouse jamais lancé.
+    timeout-minutes: 90
+    # 🔴 BASE DE DONNÉES E2E (2026-08-21) — LE HARNAIS DOIT AVOIR UNE BASE.
+    #
+    # Quatre specs Playwright (`a11y-admin`, `admin-nav-clic`, `admin-booking-flow`,
+    # `qualiopi/vente-parcours`) commencent par un `loginAsAdmin`. Sans base semée,
+    # elles se `test.skip` — et un skip n'est pas un vert, c'est une absence de preuve.
+    # Pire : `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD`, qui les activent, n'étaient
+    # définis DANS AUCUN FICHIER du dépôt. Ces quatre specs n'avaient donc jamais
+    # exécuté une seule assertion, nulle part.
+    #
+    # Image alignée sur Gate D : `CREATE EXTENSION vector` est requise par la
+    # migration `20260514020000_kb_v4_pgvector_embeddings`.
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: axion_ia_e2e
+          POSTGRES_PASSWORD: ci_password_dummy
+          POSTGRES_DB: axion_ia_e2e
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U axion_ia_e2e"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+      # 🔴 2026-08-21 — SANS REDIS, LA CONNEXION ADMIN EST REFUSÉE, PAS LENTE.
+      #
+      # `REDIS_URL` vaut `redis://stub.invalid` au niveau du job (ADR 0026, le
+      # build ne peut joindre aucun service). `src/lib/redis.ts` rend alors un
+      # Proxy qui répond `null` à tout. `checkRateLimit` y voit une PANNE du
+      # compteur de tentatives, et `signInAction` applique `surPanne: "refuser"` :
+      #
+      #     Connexion momentanément indisponible : le compteur de tentatives ne
+      #     répond pas. Réessayez dans quelques minutes.
+      #
+      # C'est la bonne posture — un limiteur de tentatives qui ne compte plus
+      # doit fermer, pas ouvrir. Mais en CI, cela refusait **toutes** les
+      # connexions admin : 84 échecs sur le run 32506915097, tous lus comme des
+      # délais dépassés. J'ai d'abord cru à de la lenteur et porté l'attente de
+      # 15 s à 60 s — un cataplasme sur une jambe de bois. C'est le TEXTE DE
+      # L'ÉCRAN, que le fixture emporte désormais dans son message d'échec, qui a
+      # nommé la cause.
+      #
+      # 🔑 Un délai dépassé ne dit pas POURQUOI. Sans le texte visible, on
+      # allonge des timeouts indéfiniment devant un refus catégorique.
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
     # Job-level env vars : héritées par TOUS les steps (Build + Playwright
     # webServer + Lighthouse CI). Évite de dupliquer les dummy values dans
     # chaque step et fix le ECONNREFUSED Playwright (le dev server pour
@@ -148,6 +208,21 @@ jobs:
       DATABASE_URL: "postgresql://stub:stub@stub.invalid:5432/stub"
       REDIS_URL: "redis://stub.invalid:6379"
       AUTH_SECRET: "ci-dummy-auth-secret-not-used-in-build-32chars-min"
+      # 🔴 NextAuth v5 refuse l'hôte tant que ni `AUTH_URL` ni `AUTH_TRUST_HOST`
+      # ne sont posés. Le premier run où le serveur a réellement démarré
+      # (32447074166) porte **14 136** lignes
+      # `UntrustedHost: Host must be trusted. URL was: http://localhost:3000/api/auth/session`.
+      #
+      # Sans ce drapeau, semer la base ne sert à rien : `loginAsAdmin` échoue
+      # quand même, et les quatre specs de console retombent dans le silence du
+      # `test.skip` — c'est-à-dire exactement l'état qu'on vient de corriger.
+      #
+      # Posé au niveau JOB parce que deux étapes démarrent un serveur (Playwright
+      # et Lighthouse) et que les deux en ont besoin. `AUTH_URL` n'est
+      # volontairement PAS posé : `AUTH_TRUST_HOST` suffit à faire confiance à
+      # l'en-tête d'hôte, et une URL codée en dur au niveau du job traverserait
+      # aussi l'étape `Build`.
+      AUTH_TRUST_HOST: "true"
       ADMIN_URL_PREFIX: "admin-ci-build"
       STRIPE_SECRET_KEY: "sk_test_ci_dummy_not_used_in_build"
       STRIPE_PUBLISHABLE_KEY: "pk_test_ci_dummy_not_used_in_build"
@@ -171,20 +246,30 @@ jobs:
       # steps that import @prisma/client / generated types.
       - name: Generate Prisma client
         run: pnpm prisma:generate
-      # Sprint E2E gates re-activation 2026-05-17 — ordre nouveau :
-      #   1. Install Playwright browsers EN PREMIER (résout chrome dep
-      #      requise par puppeteer-core de size-limit pour mesurer DevTools).
-      #   2. Build (utilise env vars job-level + stubs DATABASE/REDIS).
-      #   3. Bundle size + delta (chrome est dispo, plus de timeout systemic).
-      #   4. Playwright suite (continue-on-error true tant que bugs UI réels
-      #      pas fixés — strict mode getByLabel password, hreflang fr-FR
-      #      landing ville, admin prefix 404 attendu. P1-2 Sprint dédié).
-      #   5. Lighthouse CI (continue-on-error vs prod via lhci config).
+      # ORDRE DES ÉTAPES — RÉVISÉ LE 2026-08-21, ET L'ORDRE EST LA CORRECTION.
       #
-      # `continue-on-error: true` = step tourne + logue les fails dans PR
-      # sans bloquer le merge. Stratégie de re-activation progressive :
-      # on voit les régressions, on les fixe progressivement, puis on retire
-      # continue-on-error gate par gate quand stable.
+      #   1. Install Playwright browsers EN PREMIER (résout la dépendance chrome
+      #      exigée par puppeteer-core de size-limit pour mesurer DevTools).
+      #   2. Build — `next build --webpack`, sur les stubs DATABASE/REDIS du job.
+      #   3. Bundle size (`size-limit` seul : il LIT `.next/static`, il n'y touche pas).
+      #   4. Garde : `.next/BUILD_ID` existe encore. BLOQUANTE.
+      #   5. Playwright suite — `pnpm start`, donc a besoin du build de l'étape 2.
+      #   6. Lighthouse CI — `next start`, même dépendance.
+      #   7. Bundle delta vs main — EN DERNIER : cette action relance un build
+      #      complet dans le répertoire de travail et DÉTRUIT `.next`.
+      #
+      # L'ordre précédent plaçait le 7 en position 3. Conséquence mesurée sur le
+      # run 32443013208 : `.next` détruit à 03:31:24, et les 237 tests Playwright
+      # partis à 03:34:52 contre un serveur qui n'a jamais démarré — 209 échecs,
+      # 17 skipped, 11 non joués, ZÉRO passé. Idem pour Lighthouse à 03:40.
+      # Reproduit à l'identique sur le run 32440227474.
+      #
+      # ⚠️ Les commentaires qui accompagnaient ces deux étapes attribuaient l'échec
+      # à des causes qui n'existaient pas — « bugs UI réels pas fixés » d'un côté,
+      # « le serveur ne bind pas sur loopback en CI » de l'autre. Un gate
+      # `continue-on-error` ne dit pas seulement « je ne bloque pas » : il dit
+      # « personne ne lit mon résultat », et c'est ainsi qu'un motif inventé tient
+      # des mois. Avant de rendre un de ces steps strict, LIRE SON COMPTE DE TESTS.
       # Free disk space avant le build SSG — le runner ubuntu-latest démarre à
       # ~14 GB free, insuffisant depuis les données villes (build + copie
       # standalone .next saturait le disque → « ENOSPC: no space left on device »).
@@ -281,12 +366,11 @@ jobs:
           # Lighthouse (pages HUB /implantations/<region>/<ville>) restent construites.
           BUILD_SSG_VILLES_INDEXABLE_ONLY: "true"
         run: pnpm exec next build --webpack
-      # Sprint Final P1-8 (audit final 2026-05-22) — Bundle delta + LHCI passés
-      # en STRICT (continue-on-error retiré) pour enforcer le contrat AGENTS.md :
-      # « Bundle delta gate (size-limit) bloque les PR avec > +5 KB gz vs main »
-      # et « Lighthouse CI (pnpm lhci) gate les PR ».
-      # Playwright et Gate C Docker restent continue-on-error: true tant que les
-      # bugs UI (P1-2 dédié) + env fixture Gate C ne sont pas livrés.
+      # ⚠️ Le paragraphe qui suit décrit une intention de 2026-05-22 (« Bundle delta
+      # + LHCI passés en STRICT ») que le fichier CONTREDIT depuis : les deux portent
+      # `continue-on-error: true`. AGENTS.md a d'ailleurs été corrigé le 2026-08-17
+      # sur ce point précis — aucun gate de budget ne bloque une PR. On garde le
+      # texte pour la traçabilité, pas comme description de l'état.
       # NON-BLOQUANT (2026-05-29) : le gate size-limit est mal calibré et
       # pré-existant-cassé — il SOMME tous les `page-*.js` du glob vs une limite
       # « par route » (ex 275 KB vs 75 KB), et nécessitait Chrome (timeout CI).
@@ -297,35 +381,121 @@ jobs:
       - name: Bundle size (reporting — gate per-route = Lighthouse)
         run: pnpm bundle:check
         continue-on-error: true
-      - name: Bundle delta vs main (reporting)
-        uses: andresz1/size-limit-action@v1
-        # Cap dur : cette action rebuild `main` pour calculer le delta — sur les
-        # ~17,9k pages SSG elle peut hang ~50 min et, MALGRE continue-on-error,
-        # un hang epuise le timeout du job (Gate B tue en « cancelled », run
-        # 26674394530 le 2026-05-30, Lighthouse jamais lance). Le cap fait
-        # echouer le step vite -> continue-on-error joue -> Lighthouse (strict)
-        # tourne. (Fix 2026-05-30.)
-        timeout-minutes: 6
-        continue-on-error: true
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          skip_step: install
-      - name: Playwright suite (continue-on-error tant que P1-2 bugs UI non fixés)
-        run: pnpm test:e2e --project=chromium
-        timeout-minutes: 15
+      # ⚠️ `DATABASE_URL` reste `stub.invalid` AU NIVEAU DU JOB, et ce n'est pas un
+      # oubli : le contrat d'ADR 0026 veut que le BUILD tourne sur les stubs Prisma
+      # (cf. AGENTS.md, « magic string stub.invalid »). Seules les étapes d'exécution
+      # ci-dessous reçoivent la vraie URL, en `env:` de step. Le build reste identique
+      # à celui de la production ; c'est le SERVEUR qui gagne une base.
+      - name: Migrer et semer la base E2E (runtime uniquement, jamais le build)
+        env:
+          DATABASE_URL: "postgresql://axion_ia_e2e:ci_password_dummy@localhost:5432/axion_ia_e2e?schema=public"
+          DIRECT_URL: "postgresql://axion_ia_e2e:ci_password_dummy@localhost:5432/axion_ia_e2e?schema=public"
+        run: |
+          set -e
+          pnpm prisma migrate deploy
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_e2e -d axion_ia_e2e             -f prisma/migrations_fts/0002_fts_setup.sql
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_e2e -d axion_ia_e2e             -f prisma/migrations_fts/kb_fts_setup.sql
+          pnpm db:seed
+          pnpm qualiopi:seed
+      # 🔴 GARDE (2026-08-21) — LE BUILD DE PRODUCTION DOIT SURVIVRE JUSQU'ICI.
+      #
+      # Playwright (`pnpm start`) et Lighthouse (`next start -H 0.0.0.0`) démarrent
+      # tous deux un serveur de PRODUCTION : sans `.next/BUILD_ID`, Next refuse de
+      # démarrer et TOUT ce qui suit échoue — ERR_CONNECTION_REFUSED côté Playwright,
+      # CHROME_INTERSTITIAL_ERROR côté Lighthouse.
+      #
+      # C'est exactement ce qui se passait : `andresz1/size-limit-action` relançait
+      # `pnpm run build` DANS LE MÊME RÉPERTOIRE, sans `NODE_OPTIONS` — donc vidait
+      # `.next` puis mourait en « JavaScript heap out of memory » (4 Go par défaut,
+      # là où le step Build en réclame 8). Mesuré sur le run 32443013208 :
+      # `.next` complet à 03:31:22, détruit à 03:31:24, OOM à 03:33:55, et à 03:34:52
+      # les 237 tests Playwright partaient sur un serveur mort — 209 échecs,
+      # 17 skipped, 11 non joués, ZÉRO passé. L'étape a été déplacée en fin de job.
+      #
+      # Cette assertion rougit à l'endroit où le build disparaît, pas trois étapes
+      # plus loin sous un diagnostic inventé. Elle est VOLONTAIREMENT bloquante :
+      # une garde qui ne peut pas rougir ne garde rien.
+      - name: Prouver que le build de production a survécu
+        run: |
+          if [ ! -f .next/BUILD_ID ]; then
+            echo "::error::.next/BUILD_ID absent — une étape précédente a détruit le build de production. Playwright et Lighthouse ne mesureraient rien."
+            ls -la .next || true
+            exit 1
+          fi
+          echo "BUILD_ID présent :"
+          cat .next/BUILD_ID
+      - name: Playwright suite
+        # 🔑 Les identifiants sont ceux que `prisma/seed.ts` crée réellement
+        # (`admin@axion-ia.com` / `AdminAxion2026!`). Les valeurs par défaut du
+        # fixture — `admin@axion-ia.local` / `ChangeMe!2026Axion` — ne
+        # correspondaient à AUCUN compte semé : les recopier n'aurait pas suffi.
+        env:
+          DATABASE_URL: "postgresql://axion_ia_e2e:ci_password_dummy@localhost:5432/axion_ia_e2e?schema=public"
+          DIRECT_URL: "postgresql://axion_ia_e2e:ci_password_dummy@localhost:5432/axion_ia_e2e?schema=public"
+          ADMIN_SEED_EMAIL: "admin@axion-ia.com"
+          ADMIN_SEED_PASSWORD: "AdminAxion2026!"
+          # Redis RÉEL pour ce step seulement — le job garde `stub.invalid`,
+          # que le BUILD exige (ADR 0026). Sans lui, le compteur de tentatives
+          # de connexion ne répond pas et `signInAction` refuse toute connexion
+          # admin par sécurité : voir le commentaire du service `redis`.
+          REDIS_URL: "redis://localhost:6379"
+        # continue-on-error MAINTENU pour CE passage seulement : la suite n'a
+        # jamais tourné contre un vrai serveur, on ne sait donc pas encore
+        # combien de tests passent. Le chiffre de ce run est la mesure. Le retrait
+        # du continue-on-error suit, une fois la suite verte — sans quoi ce gate
+        # reste une garde incapable de rougir.
+        # 🔴 `--grep-invert @baseline` — la suite `admin-baseline-screenshots`
+        # se déclare OPT-IN dans son propre en-tête :
+        #
+        #     Tag `@baseline` : opt-in. Les suites smoke par défaut ne lancent
+        #     pas ces tests. Pour exécuter :
+        #       pnpm exec playwright test --grep "@baseline" --update-snapshots
+        #
+        # L'intention était écrite ; le câblage manquait. Gate B l'exécutait, et
+        # ses douze tests échouaient tous sur « A snapshot doesn't exist » —
+        # aucune capture de référence n'étant versionnée, et pour cause : elles
+        # seraient prises sur le poste d'un développeur, avec ses polices, pour
+        # être comparées sur un runner Linux.
+        #
+        # 🔑 Douze rouges permanents sans rapport avec un défaut, c'est douze
+        # bonnes raisons de ne jamais rendre ce gate bloquant. La règle est
+        # générale : une suite qui se déclare facultative doit l'ÊTRE, ou cesser
+        # de le dire.
+        #
+        # Garde : `tests/unit/ci/suite-facultative-non-executee.spec.ts`.
+        run: pnpm test:e2e --project=chromium --grep-invert "@baseline"
+        # 🔴 15 → 30 (2026-08-21). Les DEUX premiers runs où la suite a réellement
+        # tourné ont été COUPÉS par ce plafond, pas terminés :
+        #   run 32447074166 — 04:39:06 → 04:54:30 = 15 min 24 s
+        #   run 32449266900 — 05:19:04 → 05:34:17 = 15 min 13 s
+        # Un plafond atteint à la seconde près sur deux runs consécutifs n'est pas
+        # une coïncidence. Les 15 min tenaient tant que les 237 tests échouaient
+        # en quelques secondes sur un serveur mort ; ils ne tiennent plus dès que
+        # les tests s'exécutent — `auditerPage` fait un `networkidle`, une passe
+        # axe-core et quatre mesures de viewport par route, sur 119 routes.
+        #
+        # ⚠️ Conséquence à retenir : les comptes d'échecs lus sur ces deux runs
+        # sont PARTIELS. Un `continue-on-error` transforme un dépassement de délai
+        # en « success », et un relevé fait sur une suite tronquée ressemble
+        # exactement à un relevé complet.
+        timeout-minutes: 30
         continue-on-error: true
       - name: Lighthouse CI
-        # NON-BLOQUANT (2026-07-01). Le gate lhci PR-time est cassé de façon
-        # chronique sur l'environnement CI : le serveur `next start` démarré par
-        # lhci ne bind PAS sur loopback en CI (« Ready » mais `curl 127.0.0.1:3000`
-        # → Connection refused, prouvé par diagnostic curl) → CHROME_INTERSTITIAL_ERROR
-        # sur TOUTES les PRs (échec historique, mergé par-dessus depuis #173).
-        # Les configs corrigent la cause diagnostiquée (startServerCommand
-        # `next start -H 0.0.0.0` + URLs 127.0.0.1 dans lighthouserc + heap) mais
-        # l'env CI résiste encore. Plutôt que bloquer toutes les PRs sur un faux
-        # rouge, on passe le step en REPORTING. ⚠️ Le VRAI contrôle Web Vitals reste
-        # le lhci POST-DEPLOY sur l'URL prod LIVE (`deploy-coolify.yml`, job `lhci`).
-        # À re-durcir si l'env PR-time lhci est réparé (sprint infra dédié).
+        # NON-BLOQUANT (2026-07-01), MAIS LE MOTIF ÉCRIT ICI ÉTAIT FAUX.
+        #
+        # Ce commentaire a affirmé pendant sept semaines que « le serveur `next start`
+        # démarré par lhci ne bind PAS sur loopback en CI ». C'est inexact : le serveur
+        # ne bindait rien parce qu'il n'avait RIEN À SERVIR — `.next` venait d'être
+        # détruit par `andresz1/size-limit-action` (voir la garde BUILD_ID ci-dessus).
+        # Le `curl 127.0.0.1:3000 → Connection refused` du diagnostic d'époque est la
+        # conséquence, pas la cause. Les rustines posées sur cette fausse piste
+        # (`-H 0.0.0.0`, URLs 127.0.0.1, HOSTNAME) sont inoffensives : on les garde,
+        # mais elles n'ont jamais été le levier.
+        #
+        # On laisse le step en REPORTING pour CE passage : il faut d'abord voir ce
+        # qu'il mesure une fois qu'il mesure vraiment quelque chose. ⚠️ Le contrôle
+        # Web Vitals qui fait foi reste le lhci POST-DEPLOY sur l'URL prod LIVE
+        # (`deploy-coolify.yml`, job `lhci`).
         continue-on-error: true
         env:
           # `next start` bind sur l'hôte auto-détecté en CI (IP réseau, pas loopback).
@@ -336,6 +506,24 @@ jobs:
           NODE_OPTIONS: --max-old-space-size=6144
         run: pnpm lhci:autorun
         timeout-minutes: 20
+      # ⚠️ EN DERNIER, ET C'EST STRUCTUREL — CETTE ÉTAPE DÉTRUIT `.next`.
+      #
+      # `size-limit-action` relance `pnpm run build` dans le répertoire de travail
+      # pour comparer à `main`. Elle vide donc `.next` avant toute chose, et n'a
+      # même pas la marge de heap du step Build (elle meurt en OOM à ~4 Go). Tant
+      # qu'elle tournait AVANT Playwright et Lighthouse, ces deux étapes mesuraient
+      # le vide. Elle doit rester la DERNIÈRE étape utile du job.
+      #
+      # Cap dur : sur les ~17,9k pages SSG l'action peut hang ~50 min et, MALGRE
+      # continue-on-error, un hang epuise le timeout du job (Gate B tue en
+      # « cancelled », run 26674394530 le 2026-05-30). Le cap la fait echouer vite.
+      - name: Bundle delta vs main (reporting — DÉTRUIT .next, doit rester en dernier)
+        uses: andresz1/size-limit-action@v1
+        timeout-minutes: 6
+        continue-on-error: true
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip_step: install
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v7

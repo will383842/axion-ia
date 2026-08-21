@@ -66,6 +66,97 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "qualite",
   },
   /**
+   * La mention légale de la marque Qualiopi est servie par un REPLI.
+   *
+   * 🔴 2026-08-20. « La certification qualité a été délivrée au titre de la ou
+   * des catégories d'actions suivantes : … » est une mention obligatoire. Sa
+   * valeur venait d'un défaut codé en dur : le site affirmait une catégorie que
+   * personne n'avait lue sur le certificat, et aucun `curl` ne distinguait ce
+   * cas d'une valeur réellement configurée.
+   *
+   * `resolutionAuto` : la règle se relit à chaque passe et disparaît d'elle-même
+   * dès que la catégorie est saisie — il n'y a rien à cliquer.
+   */
+  categories_certifiees_non_renseignees: {
+    niveau: "important",
+    titre: "Catégorie d'actions certifiées non renseignée",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  /**
+   * Session clôturée « réalisée » alors que des inscrits n'ont aucune trace.
+   *
+   * 🔴 `CONF-01` (2026-08-20). La garde de clôture ne refusait que si PAS UNE
+   * SEULE inscription ne portait de trace de présence : une sur douze suffisait
+   * donc à faire passer la session en « réalisée ». Les onze autres pouvaient
+   * se voir délivrer une attestation sans qu'aucune preuve n'existe à leur nom,
+   * et rien ne le disait.
+   *
+   * On n'a PAS durci le refus : le durcissement a déjà été tenté puis retiré
+   * dans ce dépôt, il rendait des sessions définitivement non clôturables
+   * (cf. `presence/trace-cloture.ts`). Le trou réel n'était pas l'absence de
+   * blocage, c'était le SILENCE.
+   *
+   * ⚠️ `resolutionAuto: false` — l'alerte naît d'un ÉVÉNEMENT (la clôture), pas
+   * d'un balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi
+   * les candidates et la résoudrait dès le premier tour, avant que quiconque
+   * l'ait lue. Même motif structurel que `besoin_adaptation_declare`.
+   */
+  /**
+   * Le dossier de financement ne suit pas un report — il faut le refaire.
+   *
+   * 🔴 `D2-5-01` (2026-08-20). `financementType` est recopié sur la session de
+   * remplacement, mais l'ACCORD ne l'est pas : il portait sur les dates
+   * d'origine, et un financeur n'accorde pas des dates qu'il n'a pas vues.
+   *
+   * C'est le bon comportement. Ce qui ne l'était pas, c'est son SILENCE :
+   * `validateOpcoAccord` classe l'absence d'accord en `critique`, donc la
+   * session de remplacement refuse de démarrer — et l'admin le découvrait le
+   * jour où il cliquait, sans savoir que le report en était la cause.
+   *
+   * ⚠️ `resolutionAuto: false` — l'alerte naît de l'ÉVÉNEMENT de report. Le
+   * balayage quotidien ne l'émet pas et la résoudrait au premier tour.
+   */
+  report_accord_financement_a_refaire: {
+    niveau: "important",
+    titre: "Accord de financement à refaire après report",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte naît de l'ÉVÉNEMENT de report, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois le nouvel accord enregistré.",
+    guichet: "direction",
+  },
+  /**
+   * Un e-mail a DÉFINITIVEMENT rebondi.
+   *
+   * 🔴 `D5-3-02` (2026-08-20). Un rebond dur était indiscernable d'une remise
+   * réussie : le relais acceptait le message (`sent`), le serveur destinataire
+   * le refusait ensuite, et rien ne revenait. Une convocation « envoyée »
+   * pouvait n'être jamais arrivée.
+   *
+   * Le guichet est `administratif` : corriger une adresse est un geste
+   * d'administration, pas une décision de direction ni un acte pédagogique.
+   *
+   * ⚠️ `resolutionAuto: false` — l'alerte naît d'un ÉVÉNEMENT reçu du relais,
+   * pas d'un balayage. Elle ne serait jamais réémise, donc `synchroniserAlertes`
+   * la résoudrait au premier tour, avant que quiconque l'ait lue.
+   */
+  email_rebond_dur: {
+    niveau: "important",
+    titre: "Un e-mail a définitivement rebondi",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte naît d'un ÉVÉNEMENT reçu du relais (webhook), pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois l'adresse corrigée.",
+    guichet: "administratif",
+  },
+  cloture_trace_presence_incomplete: {
+    niveau: "important",
+    titre: "Session clôturée sans trace de présence pour tous les inscrits",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte naît de l'ÉVÉNEMENT de clôture, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois la feuille complétée ou les renonçants sortis du dispositif.",
+    guichet: "qualite",
+  },
+  /**
    * Un bénéficiaire a déclaré un besoin d'adaptation depuis son portail.
    *
    * 🔴 Vérification en production du 2026-08-04 : la déclaration n'atteignait
@@ -96,7 +187,69 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "qualite",
   },
 
+  // ── Vigilance URSSAF des sous-traitants (audit E2E 2026-08-19, `D5-4-01`) ──
+  //
+  // 🔴 Ces trois codes étaient ÉMIS par le balayage et ABSENTS de ce catalogue.
+  // Conséquence en chaîne, mesurée : `guichetPourCode` rendait `undefined`,
+  // `regrouperAlertes` les rangeait dans `sansGuichet`, et `envoi-groupe.ts`
+  // écrivait un `console.error` sans rien envoyer — elles n'arrivaient donc dans
+  // AUCUNE boîte. Et `codesAutoResolution` étant dérivé de ce catalogue, elles ne
+  // se refermaient JAMAIS, même après régularisation.
+  //
+  // Enjeu : art. L.8222-1 du code du travail — l'organisme est solidairement
+  // responsable des cotisations de son sous-traitant s'il ne s'est pas assuré de
+  // sa vigilance. D'où le guichet `direction` : c'est un risque financier qui
+  // engage l'entreprise, pas un sujet de conformité pédagogique.
+  //
+  // `resolutionAuto: true` pour les trois : le balayage quotidien les réémet tant
+  // que la cause dure, donc leur fermeture automatique est exacte — et c'est ce
+  // qui manquait le plus, puisqu'une alerte qui ne se referme pas finit acquittée
+  // à la main pour faire taire l'écran, y compris le jour où le manquement est réel.
+  vigilance_urssaf_absente: {
+    niveau: "critique",
+    titre: "Attestation de vigilance URSSAF absente (responsabilité solidaire)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  vigilance_urssaf_perimee: {
+    niveau: "critique",
+    titre: "Attestation de vigilance URSSAF périmée (responsabilité solidaire)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  vigilance_urssaf_expire_j30: {
+    niveau: "important",
+    titre: "Attestation de vigilance URSSAF expire dans 30 jours",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  // Même défaut, même correctif (`D5-4-01`). Guichet `formateur` : ce sont les
+  // sorties de démonstration du kit d'animation, préparées par celui qui anime.
+  kit_sorties_non_pretes: {
+    niveau: "important",
+    titre: "Sorties de démonstration non produites",
+    resolutionAuto: true,
+    guichet: "formateur",
+  },
+
   // ── Pilotage qualité ────────────────────────────────────────────────────────
+  /**
+   * Mentions obligatoires absentes des factures.
+   *
+   * 🔴 `D9-3-02` (2026-08-20). `critique` et non `important` : toute facture
+   * émise est irrégulière tant que la configuration est incomplète, et
+   * l'omission du n° de TVA au-delà de 150 € est **sanctionnée** (art. 1737
+   * CGI). C'est un risque fiscal immédiat, pas un écart de présentation.
+   *
+   * Guichet `direction` : compléter l'identité légale de la société engage
+   * l'entreprise, ce n'est ni un acte pédagogique ni de la saisie courante.
+   */
+  facture_mentions_legales_absentes: {
+    niveau: "critique",
+    titre: "Mentions obligatoires absentes des factures",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   responsable_qualite_absent: {
     niveau: "important",
     titre: "Responsable qualité non désigné",

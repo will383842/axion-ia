@@ -19,6 +19,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { hacherToken } from "@/server/qualiopi/tokens/hacher-token";
 import { EnqueteEntrepriseForm } from "@/components/portail/EnqueteEntrepriseForm";
 
 export const dynamic = "force-dynamic";
@@ -40,7 +41,7 @@ export default async function EnqueteEntreprisePage({ params }: PageProps) {
   // Jeton inconnu ou d'un AUTRE type de questionnaire → 404, sans détail :
   // un jeton stagiaire ne doit jamais ouvrir le formulaire entreprise.
   const questionnaire = await prisma.questionnaire.findUnique({
-    where: { token },
+    where: { tokenHash: hacherToken(token) },
     select: {
       type: true,
       reponduAt: true,

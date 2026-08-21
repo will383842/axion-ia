@@ -22,11 +22,16 @@
 //   Décision T6 : aucun stub ni mock — les handlers email seront réels à T15.
 
 import { Worker } from "bullmq";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
 import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-reelle";
+import {
+  mesurerTraceCloture,
+  clotureSansAucuneTrace,
+} from "@/server/qualiopi/presence/trace-cloture";
 import {
   decideSessionTransitions,
   type SessionCronSnapshot,
@@ -276,31 +281,18 @@ async function handleClotureAuto(): Promise<void> {
       // Une session sans émargement reste `en_cours` et sera signalée par l'alerte
       // R03 pour traitement manuel — au lieu d'alimenter BPF/certificats/attestations
       // avec une session non prouvée. (Symétrie avec la garde manuelle sessions.ts.)
-      const totalInscrits = await prisma.enrollment.count({
-        where: { sessionId: decision.sessionId },
-      });
-      if (totalInscrits > 0) {
-        // ⚠️ `not: null` et NON `> 0`. Le durcissement en `> 0` a été tenté puis
-        // RETIRÉ : `emargementSigneAt` n'est posé que par la grille présentielle
-        // (`saveEmargementAction`), jamais par l'import distanciel ni par la
-        // correction manuelle. Une session 100 % distancielle où personne ne se
-        // connecte — annulation de fait, panne, désistement collectif — devenait
-        // alors DÉFINITIVEMENT non clôturable, ni ici ni manuellement, et
-        // alimentait une alerte critique non résorbable.
-        // Un verrou sans porte de sortie est pire que le trou qu'il ferme.
-        // Le durcissement reste souhaitable, mais suppose d'abord que tous les
-        // chemins de saisie de présence posent une trace, et qu'un administrateur
-        // dispose d'une clôture explicite motivée. À reprendre comme un lot dédié.
-        const avecEmargement = await prisma.enrollment.count({
-          where: {
-            sessionId: decision.sessionId,
-            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
-          },
-        });
-        if (avecEmargement === 0) {
-          skippedSansEmargement++;
-          continue;
-        }
+      // 🔴 `CONF-01` (2026-08-20) — la mesure était DUPLIQUÉE avec la clôture
+      // manuelle (`actions/qualiopi/sessions.ts`), sous un commentaire disant
+      // que « les deux DOIVENT rester alignées ». Elles ne peuvent plus
+      // diverger : il n'y a qu'une mesure, dans `presence/trace-cloture.ts`,
+      // et c'est là que vit la mise en garde sur le durcissement.
+      //
+      // Elle exclut désormais les `abandon` et `exclu` : renoncer n'est pas une
+      // absence de preuve, c'est une sortie du dispositif.
+      const trace = await mesurerTraceCloture(decision.sessionId);
+      if (clotureSansAucuneTrace(trace)) {
+        skippedSansEmargement++;
+        continue;
       }
 
       const dureeReelleHeures = await resoudreDureeReelleACloture(decision.sessionId);
@@ -466,8 +458,16 @@ async function handleRappelJ7(): Promise<void> {
 
   for (const session of sessions) {
     try {
-      await envoyerRappelJ7(session.id);
-      ok++;
+      // 🔴 `D5-1-C1` — le compteur ne compte plus un envoi qui n'est pas parti.
+      // Ce cron n'écrit aucune trace en base (c'est le constat `D5-1-C2`, à
+      // traiter à part) : le journal est donc le SEUL endroit où l'échec peut
+      // se voir. Un « 12 rappels envoyés » qui en compte 3 réellement partis
+      // ferme la seule fenêtre qui restait.
+      if (await envoyerRappelJ7(session.id)) {
+        ok++;
+      } else {
+        ko++;
+      }
     } catch (err) {
       ko++;
       console.error(
@@ -542,7 +542,16 @@ async function handleSatisfactionJ1(): Promise<void> {
 
   for (const enrollment of enrollments) {
     try {
-      await envoyerSatisfactionJ1(enrollment.id);
+      // 🔴 `D5-1-C1` (2026-08-20) — la trace n'est posée QUE si l'envoi est
+      // réellement parti. `enqueueEmail` ne lève pas quand la file est absente
+      // ou qu'une règle gare le message en corbeille : elle rend « non envoyé ».
+      // Poser `envoyeAt` malgré tout écartait DÉFINITIVEMENT le destinataire du
+      // rattrapage — la reconstitution littérale de l'incident « aucune
+      // convocation jamais envoyée ».
+      if (!(await envoyerSatisfactionJ1(enrollment.id))) {
+        ko++;
+        continue;
+      }
       // Marque l'envoi : c'est ce qui rend le rattrapage idempotent, et ce qui
       // permet à la console de distinguer « jamais envoyé » de « sans réponse ».
       await prisma.questionnaire.updateMany({
@@ -611,7 +620,16 @@ async function handleSuiviJ30(): Promise<void> {
 
   for (const enrollment of enrollments) {
     try {
-      await envoyerSuiviJ30(enrollment.id);
+      // 🔴 `D5-1-C1` (2026-08-20) — la trace n'est posée QUE si l'envoi est
+      // réellement parti. `enqueueEmail` ne lève pas quand la file est absente
+      // ou qu'une règle gare le message en corbeille : elle rend « non envoyé ».
+      // Poser `envoyeAt` malgré tout écartait DÉFINITIVEMENT le destinataire du
+      // rattrapage — la reconstitution littérale de l'incident « aucune
+      // convocation jamais envoyée ».
+      if (!(await envoyerSuiviJ30(enrollment.id))) {
+        ko++;
+        continue;
+      }
       await prisma.questionnaire.updateMany({
         where: { enrollmentId: enrollment.id, type: "satisfaction_froid", envoyeAt: null },
         data: { envoyeAt: new Date() },
@@ -736,8 +754,23 @@ async function handleConvocationJ5(): Promise<void> {
 
   for (const enrollment of enrollments) {
     try {
-      await envoyerConvocation(enrollment.id);
-      ok++;
+      // 🔴 `D5-1-C2` (2026-08-21) — la valeur de retour était JETÉE, et `ok++`
+      // s'incrémentait quoi qu'il arrive. Les DONNÉES étaient saines (la trace
+      // `convocationEnvoyeeAt` s'écrit dans la fonction, et seulement en cas de
+      // succès : l'inscription restait candidate au rattrapage). Mais le
+      // journal annonçait « N convocation(s) envoyée(s) » en comptant celles
+      // qui n'étaient pas parties.
+      //
+      // ⚠️ C'est le dernier membre non aligné de la famille corrigée le
+      // 2026-08-20 : six fonctions d'envoi rendent un booléen et leurs six
+      // appels le lisent. Celle-ci rendait `void` parce que sa trace était déjà
+      // juste — mais son APPELANT ne pouvait toujours pas distinguer un envoi
+      // d'un échec, et c'est ce qu'un opérateur lit le matin.
+      if (await envoyerConvocation(enrollment.id)) {
+        ok++;
+      } else {
+        ko++;
+      }
     } catch (err) {
       ko++;
       console.error(
@@ -837,7 +870,16 @@ async function handlePositionnement(): Promise<void> {
     if (geste === "rien") continue;
 
     try {
-      await envoyerPositionnement(q.id);
+      // 🔴 `D5-1-C1` (2026-08-20) — la trace n'est posée QUE si l'envoi est
+      // réellement parti. `enqueueEmail` ne lève pas quand la file est absente
+      // ou qu'une règle gare le message en corbeille : elle rend « non envoyé ».
+      // Poser `envoyeAt` malgré tout écartait DÉFINITIVEMENT le destinataire du
+      // rattrapage — la reconstitution littérale de l'incident « aucune
+      // convocation jamais envoyée ».
+      if (!(await envoyerPositionnement(q.id))) {
+        ko++;
+        continue;
+      }
       if (geste === "relancer") {
         // 🔴 La trace de la relance EST la preuve. Sans elle, on ne saurait ni
         // combien de fois on a tenté, ni quand — et le plafond ne tiendrait pas.
@@ -1159,8 +1201,15 @@ async function handleRelanceQuestionnaires(): Promise<void> {
   let ko = 0;
   for (const q of questionnaires) {
     try {
-      await envoyerRelanceQuestionnaire(q.id);
-      ok++;
+      // 🔴 `D5-1-C1` — le compteur suit l'envoi RÉEL. La trace `relanceCount`,
+      // elle, est posée dans le service APRÈS vérification : un envoi qui
+      // échoue n'épuise donc plus le plafond de deux relances. Sans cela, la
+      // voie de relance se fermait sans qu'un seul message soit parti.
+      if (await envoyerRelanceQuestionnaire(q.id)) {
+        ok++;
+      } else {
+        ko++;
+      }
     } catch (err) {
       ko++;
       console.error(
@@ -1222,7 +1271,16 @@ async function handleEnqueteEntrepriseJ30(): Promise<void> {
   let ko = 0;
   for (const session of sessions) {
     try {
-      await envoyerEnqueteEntreprise(session.id);
+      // 🔴 `D5-1-C1` (2026-08-20) — la trace n'est posée QUE si l'envoi est
+      // réellement parti. `enqueueEmail` ne lève pas quand la file est absente
+      // ou qu'une règle gare le message en corbeille : elle rend « non envoyé ».
+      // Poser `envoyeAt` malgré tout écartait DÉFINITIVEMENT le destinataire du
+      // rattrapage — la reconstitution littérale de l'incident « aucune
+      // convocation jamais envoyée ».
+      if (!(await envoyerEnqueteEntreprise(session.id))) {
+        ko++;
+        continue;
+      }
       // Marque l'envoi — même contrat d'idempotence que satisfaction-j1.
       await prisma.questionnaire.updateMany({
         where: {
@@ -1399,7 +1457,7 @@ async function handleLiensEmargementJ0(): Promise<void> {
       statut: { in: ["planifiee", "en_cours"] },
       dateDebut: { gte: debutJour, lt: finJour },
       AND: [
-        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        { enrollments: { some: { ...inscriptionsActives() } } },
         // La garde anti-réémission : personne n'a de lien vivant.
         {
           enrollments: {

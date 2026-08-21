@@ -7,7 +7,7 @@
  * bpf, veille_inactive, factures impayées, OPCO, fail-soft par règle.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mocks
@@ -47,6 +47,15 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 }));
 
 // Référentiel OPCO versionné (Lot 5) — mock de la lecture (estBaremePerime reste réel).
+// 🔴 2026-08-20 (`D9-3-02`) — `getOrganismeIdentite` est mocké EXPRÈS.
+// Sans ce mock, la règle des mentions de facture tomberait dans le `fail-soft`
+// par règle : elle ne rougirait jamais, et son alerte ne partirait jamais non
+// plus. Une règle qui échoue en silence est indiscernable d'une règle qui n'a
+// rien à signaler — c'est le défaut que cet audit poursuit depuis le début.
+vi.mock("@/server/qualiopi/documents/organisme", () => ({
+  getOrganismeIdentite: vi.fn(),
+}));
+
 vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
   listBaremesEnVigueur: vi.fn(),
 }));
@@ -66,6 +75,7 @@ vi.mock("@/server/qualiopi/trainers/documents", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import {
   cumulAnnuelFormateurCents,
@@ -105,6 +115,7 @@ const mp = prisma as unknown as {
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
+const mockIdentite = getOrganismeIdentite as ReturnType<typeof vi.fn>;
 const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
 const mockListTrainerDocs = listTrainerDocuments as ReturnType<typeof vi.fn>;
 const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
@@ -141,6 +152,16 @@ function setupEmptyMocks() {
   mp.interventionDocument.findMany.mockResolvedValue([]);
   // Idem pour moteur_assemble_a_publier (formations assemblées en attente).
   mp.formation.findMany.mockResolvedValue([]);
+  // Idem pour facture_mentions_legales_absentes : identité légale COMPLÈTE par
+  // défaut → pas d'alerte. Sans ce mock, la règle lirait `undefined.formeJuridique`,
+  // lèverait, et le fail-soft l'avalerait : elle serait INERTE partout ailleurs.
+  mockIdentite.mockResolvedValue({
+    formeJuridique: "Société par actions simplifiée (SAS)",
+    capitalSocial: "1 000 €",
+    rcsVille: "Grenoble",
+    siren: "938123456",
+    tvaIntracom: "FR12938123456",
+  });
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -150,6 +171,11 @@ function setupEmptyMocks() {
     if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
     // BPF de l'année N-1 considéré déposé (marqueur config) → pas d'alerte BPF par défaut.
     if (key === "bpf_annee_deposee") return Promise.resolve(now.getFullYear());
+    // Régime par défaut = assujetti : c'est le régime SOUS LEQUEL le n° de TVA
+    // intracommunautaire est exigible. Le défaut d'un test doit être le cas le
+    // plus contraignant, sinon la garde se relâche sans que personne ne l'ait
+    // décidé.
+    if (key === "regime_tva") return Promise.resolve("assujetti");
     return Promise.resolve("");
   });
 }
@@ -199,6 +225,70 @@ describe("evaluerAlertes — referent_handicap_absent", () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "referent_handicap_absent");
     expect(a).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle categories_certifiees_non_renseignees
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 2026-08-20. La page publique affiche « La certification qualité a été
+// délivrée au titre de la ou des catégories d'actions suivantes : … » — mention
+// obligatoire de la marque Qualiopi. Sa valeur venait d'un DÉFAUT CODÉ EN DUR,
+// à deux endroits : le site affirmait au titre du certificat une catégorie que
+// personne n'avait lue dessus.
+//
+// Aucun `curl` ne pouvait le voir : « la config porte cette valeur » et « la
+// config est vide et le défaut a parlé » rendent exactement la même page. Seule
+// une alerte console peut le dire.
+
+describe("evaluerAlertes — categories_certifiees_non_renseignees", () => {
+  const CERT_ORIGINE = process.env["QUALIOPI_CERTIFICATION_OBTENUE"];
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    process.env["QUALIOPI_CERTIFICATION_OBTENUE"] = "true";
+  });
+
+  afterEach(() => {
+    if (CERT_ORIGINE === undefined) delete process.env["QUALIOPI_CERTIFICATION_OBTENUE"];
+    else process.env["QUALIOPI_CERTIFICATION_OBTENUE"] = CERT_ORIGINE;
+  });
+
+  it("🔴 alerte quand la catégorie est vide — le site sert alors un repli", async () => {
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "qualiopi_categories_certifiees") return Promise.resolve("");
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "categories_certifiees_non_renseignees");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+  });
+
+  it("se tait dès que la catégorie est renseignée", async () => {
+    // Témoin de non-vacuité : sans lui, une règle qui alerterait TOUJOURS
+    // passerait le cas précédent sans rien prouver de sa condition.
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "qualiopi_categories_certifiees") return Promise.resolve("Bilans de compétences");
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "categories_certifiees_non_renseignees")).toBeUndefined();
+  });
+
+  it("🔴 se tait tant que la certification n'est PAS affirmée", async () => {
+    // Sans revendication publique, il n'y a aucune mention à accompagner :
+    // alerter là-dessus polluerait /qualiopi/a-traiter d'un devoir qui n'existe
+    // pas encore — et une console qui crie pour rien apprend à être ignorée.
+    process.env["QUALIOPI_CERTIFICATION_OBTENUE"] = "false";
+    mockGetConfig.mockImplementation(() => Promise.resolve(""));
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "categories_certifiees_non_renseignees")).toBeUndefined();
   });
 });
 
@@ -1576,6 +1666,40 @@ describe("evaluerAlertes — signatures_en_attente", () => {
     setupEmptyMocks();
   });
 
+  it("🔴 la requête ÉCARTE les pièces annulées — elles ne se signent plus", async () => {
+    // Constat `D3-4-06` (audit E2E 2026-08-19). La requête de cette règle
+    // filtrait `statutSignature` SANS `annuleeAt: null`, alors que le SSOT
+    // `pieces-en-attente.ts:47` le porte — avec, en commentaire, la description
+    // exacte du défaut : « annuler une pièce erronée la laissait […] à réclamer
+    // indéfiniment la signature d'un document qu'on vient précisément de
+    // déclarer sans valeur ».
+    //
+    // Le correctif avait été appliqué à la liste « À traiter » de la console et
+    // JAMAIS au moteur d'alertes. Conséquence : chaque nuit, une pièce annulée
+    // ressortait en CRITIQUE (« Pièce sans aucune signature — la session a DÉJÀ
+    // commencé ») et déclenchait un e-mail. Tous les jours, sur une pièce sans
+    // valeur — jusqu'à ce que l'administrateur apprenne à ignorer les alertes
+    // critiques de signature, c'est-à-dire le pire résultat possible.
+    //
+    // ⚠️ On assertionne la REQUÊTE, pas le résultat : le mock rend ce qu'on lui
+    // dit, donc filtrer en mémoire passerait un test sur les alertes rendues.
+    // C'est le `where` envoyé à la base qui décide, et lui seul.
+    await evaluerAlertes();
+    const appels = mp.documentGenere.findMany.mock.calls as Array<
+      [{ where?: { statutSignature?: unknown; annuleeAt?: unknown } }]
+    >;
+    const requetesSignature = appels
+      .map((c) => c[0]?.where)
+      .filter((w) => w?.statutSignature !== undefined);
+
+    // Témoin de non-vacuité : si la règle cessait d'interroger `documentGenere`
+    // sur `statutSignature`, ce test passerait en ne vérifiant plus rien.
+    expect(requetesSignature.length).toBeGreaterThan(0);
+    for (const where of requetesSignature) {
+      expect(where?.annuleeAt).toBeNull();
+    }
+  });
+
   it("🔴 pièce signée d'UN SEUL côté depuis +7 jours → contreseing dû", async () => {
     // Le cas INVEST SUN : le client signe, puis la pièce attend le contreseing
     // de l'organisme — invisible sans ouvrir la fiche session.
@@ -1631,7 +1755,15 @@ describe("evaluerAlertes — signatures_en_attente", () => {
         }>;
       };
     };
-    expect(arg.where.statutSignature.in).toStrictEqual(["en_attente", "partielle"]);
+    // ⚠️ Comparaison TRIÉE depuis le 2026-08-19. Le prédicat vient désormais du
+    // SSOT `enAttente()` (constat `D3-4-06`), qui déclare `["partielle",
+    // "en_attente"]` — l'ordre inverse. Or l'ordre d'un `IN` SQL n'a aucune
+    // signification : verrouiller l'ordre ferait rougir la garde sur un
+    // changement qui ne change rien, et pousserait à recopier le filtre plutôt
+    // qu'à l'importer. C'est exactement la recopie qui a produit le défaut.
+    expect([...arg.where.statutSignature.in].sort()).toStrictEqual(
+      ["en_attente", "partielle"].sort(),
+    );
     expect(arg.where.OR).toHaveLength(2);
 
     const parAttente = arg.where.OR.find((c) => c.updatedAt !== undefined);
@@ -2277,5 +2409,106 @@ describe("🔴 evaluerAlertes — suivi_froid_manquant (indicateur 30)", () => {
       appel?.session?.dateFin?.gte,
       "Une fenêtre sans borne arrière ne se solde jamais.",
     ).toBeInstanceOf(Date);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// facture_mentions_legales_absentes (`D9-3-02`, 2026-08-20)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — mentions légales de facture", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("ne crée AUCUNE alerte quand les quatre mentions sont renseignées", async () => {
+    const alertes = await evaluerAlertes();
+    // 🔑 Le témoin négatif du bloc. Sans lui, les trois tests suivants
+    // passeraient même avec une règle qui alerte TOUJOURS.
+    expect(alertes.find((a) => a.code === "facture_mentions_legales_absentes")).toBeUndefined();
+  });
+
+  it("🔴 alerte quand le capital social manque — la facture part avec « Non renseigné »", async () => {
+    mockIdentite.mockResolvedValue({
+      formeJuridique: "Société par actions simplifiée (SAS)",
+      capitalSocial: null,
+      rcsVille: "Grenoble",
+      siren: "938123456",
+      tvaIntracom: "FR12938123456",
+    });
+    const alerte = (await evaluerAlertes()).find(
+      (a) => a.code === "facture_mentions_legales_absentes",
+    );
+    expect(alerte, "une mention obligatoire absente doit être signalée").toBeDefined();
+    expect(alerte?.niveau).toBe("critique");
+    expect(alerte?.message).toContain("capital social");
+    // Au singulier : une seule mention manque. Un message qui accorde mal
+    // n'est pas un détail — il fait douter du décompte.
+    expect(alerte?.message).toContain("1 mention obligatoire de facture est absente");
+  });
+
+  it("🔴 alerte au PLURIEL et énumère les quatre quand rien n'est renseigné", async () => {
+    mockIdentite.mockResolvedValue({
+      formeJuridique: null,
+      capitalSocial: null,
+      rcsVille: null,
+      siren: null,
+      tvaIntracom: null,
+    });
+    const alerte = (await evaluerAlertes()).find(
+      (a) => a.code === "facture_mentions_legales_absentes",
+    );
+    expect(alerte?.message).toContain("4 mentions obligatoires de facture sont absentes");
+    for (const attendu of [
+      "forme juridique",
+      "capital social",
+      "RCS",
+      "n° de TVA intracommunautaire",
+    ]) {
+      expect(alerte?.message, `« ${attendu} » doit être nommée`).toContain(attendu);
+    }
+  });
+
+  it("🔴 n'exige PAS le n° de TVA sous le régime d'exonération 261-4-4°", async () => {
+    // ⚠️ Le cas qui rendrait la règle nuisible : sous exonération, l'organisme
+    // n'a pas de numéro à porter. Alerter quand même produirait un critique
+    // permanent et impossible à résoudre — c'est ainsi qu'on apprend à ignorer
+    // une catégorie d'alertes.
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "regime_tva") return Promise.resolve("exoneration_261");
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "responsable_qualite_nom") return Promise.resolve("Williams Jullin");
+      if (key === "bpf_annee_deposee") return Promise.resolve(new Date().getFullYear());
+      if (key === "qualiopi_validite") {
+        return Promise.resolve(new Date(Date.now() + 200 * 86_400_000).toISOString().slice(0, 10));
+      }
+      return Promise.resolve("");
+    });
+    mockIdentite.mockResolvedValue({
+      formeJuridique: "Société par actions simplifiée (SAS)",
+      capitalSocial: "1 000 €",
+      rcsVille: "Grenoble",
+      siren: "938123456",
+      tvaIntracom: null,
+    });
+    expect(
+      (await evaluerAlertes()).find((a) => a.code === "facture_mentions_legales_absentes"),
+      "un organisme exonéré n'a pas de n° de TVA à porter",
+    ).toBeUndefined();
+  });
+
+  it("🔴 une chaîne d'espaces ne vaut pas une mention renseignée", async () => {
+    mockIdentite.mockResolvedValue({
+      formeJuridique: "   ",
+      capitalSocial: "1 000 €",
+      rcsVille: "Grenoble",
+      siren: "938123456",
+      tvaIntracom: "FR12938123456",
+    });
+    const alerte = (await evaluerAlertes()).find(
+      (a) => a.code === "facture_mentions_legales_absentes",
+    );
+    expect(alerte?.message).toContain("forme juridique");
   });
 });

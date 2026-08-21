@@ -120,6 +120,58 @@ describe("calculerExpirationDocument — logique pure", () => {
   });
 });
 
+const QUATRE_VINGT_DIX_JOURS_MS = 90 * 24 * 60 * 60 * 1000;
+
+describe("🔴 plafond — un lien de signature ne vit pas des ANNÉES", () => {
+  it("plafonne à 90 jours une borne métier lointaine", () => {
+    // Cas RÉEL, pas théorique : `piece-lien-signature.ts` passe en borne métier
+    // `piece.suppressionPrevueAt`, c'est-à-dire la RÉTENTION de la pièce —
+    // `maintenant + DOCUMENT_RETENTION_YEARS`, soit CINQ ANS.
+    //
+    // Sans plafond, l'URL contenue dans un e-mail de demande de signature
+    // permet d'engager le client sur une convention pendant cinq ans : dans une
+    // boîte revendue, un transfert, une sauvegarde, un poste d'ancien salarié.
+    // Un lien de signature vaut la signature ; sa durée de vie est une durée
+    // d'exposition, pas une durée de conservation.
+    const dansCinqAns = new Date(MAINTENANT);
+    dansCinqAns.setFullYear(dansCinqAns.getFullYear() + 5);
+    expect(calculerExpirationDocument(dansCinqAns, MAINTENANT).getTime()).toBe(
+      MAINTENANT.getTime() + QUATRE_VINGT_DIX_JOURS_MS,
+    );
+  });
+
+  it("le plafond n'écrase PAS le plancher : une borne passée rend 48 h, pas 90 j", () => {
+    // Témoin d'ORDRE. Un `Math.min(plafond, Math.max(...))` écrit à l'envers —
+    // ou un `Math.min` appliqué après coup à une borne déjà plancherisée —
+    // passerait le test précédent et ramènerait tous les liens à 90 j, y
+    // compris ceux d'un devis périmé qui doivent rester à 48 h.
+    const borne = new Date("2026-01-01T00:00:00.000Z");
+    expect(calculerExpirationDocument(borne, MAINTENANT).getTime()).toBe(
+      MAINTENANT.getTime() + PLANCHER_VALIDITE_MS,
+    );
+  });
+
+  it("🔴 le plafond atteint le JETON, pas seulement la ligne en base", async () => {
+    // Le témoin DISCRIMINANT, et la raison d'être du chantier.
+    //
+    // `piece-lien-signature.ts` affirmait en commentaire que « `creerTokenDocument`
+    // applique de toute façon le plafond de scope (90 j) via `signMagicToken` ».
+    // C'était FAUX : `TTL_MS.document_signature` est un DÉFAUT
+    // (`input.ttlMs ?? TTL_MS[scope]`), écrasé dès qu'un `ttlMs` est passé — ce
+    // que `creerTokenDocument` fait TOUJOURS.
+    //
+    // Plafonner la seule colonne `expiresAt` laisserait donc le HMAC valable
+    // cinq ans. Une base restaurée à une date antérieure, ou une ligne
+    // ressuscitée, redonnerait un lien signable.
+    const dansCinqAns = new Date(MAINTENANT);
+    dansCinqAns.setFullYear(dansCinqAns.getFullYear() + 5);
+    await creerTokenDocument(entree({ borneMetier: dansCinqAns }));
+    expect(mockSign).toHaveBeenCalledWith(
+      expect.objectContaining({ ttlMs: QUATRE_VINGT_DIX_JOURS_MS }),
+    );
+  });
+});
+
 describe("🔴 émission — le refus tombe devant l'ADMIN", () => {
   it("refuse un signataire sans nom", async () => {
     await expect(creerTokenDocument(entree({ signataireNom: "   " }))).rejects.toThrow(

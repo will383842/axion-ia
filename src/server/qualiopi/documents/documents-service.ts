@@ -273,12 +273,32 @@ function filtreMemePiece(input: GenerateDocumentInput): Prisma.DocumentGenereWhe
   if (input.type === "lettre_mission" && input.refs?.sessionId == null) return null;
 
   const refs = input.refs;
+  // 🔴 `D2-5-07` (2026-08-20) — `sousTraitantId` MANQUAIT à cette liste.
+  //
+  // Un contrat de sous-traitance ne porte AUCUNE des cinq autres références :
+  // `identifiants.every(v => v == null)` était donc vrai, la fonction rendait
+  // `null`, et la question « est-ce la même pièce ? » n'était jamais posée.
+  //
+  // Conséquence : régénérer le contrat d'un sous-traitant produisait un SECOND
+  // ORIGINAL. Pas de filigrane « COPIE », pas de `rectifie`, pas de
+  // `remplaceeParNumero` — deux contrats concurrents au registre, aucun des deux
+  // ne disant lequel fait foi. C'est la situation que tout ce mécanisme existe
+  // pour empêcher, et elle était ouverte sur le seul type de pièce dont
+  // l'identité ne passe par rien d'autre.
+  //
+  // ⚠️ Le renouvellement annuel d'un contrat-cadre est un ORIGINAL, pas une
+  // copie. L'échappement est celui qui existe déjà partout ailleurs :
+  // `estCopie: false` explicite court-circuite l'heuristique (cf. la résolution
+  // de `estCopie` plus bas). Mieux vaut un appelant qui déclare son intention
+  // qu'une identité aveugle — le dépôt a tranché dans ce sens pour les factures
+  // et les lettres-cadres, pour la même raison.
   const identifiants = [
     refs?.formationId,
     refs?.sessionId,
     refs?.traineeId,
     refs?.clientId,
     refs?.coachingSessionId,
+    refs?.sousTraitantId,
   ];
   if (identifiants.every((v) => v == null)) return null;
 
@@ -289,6 +309,7 @@ function filtreMemePiece(input: GenerateDocumentInput): Prisma.DocumentGenereWhe
     traineeId: refs?.traineeId ?? null,
     clientId: refs?.clientId ?? null,
     coachingSessionId: refs?.coachingSessionId ?? null,
+    sousTraitantId: refs?.sousTraitantId ?? null,
   };
 }
 

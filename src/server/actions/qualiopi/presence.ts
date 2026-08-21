@@ -16,6 +16,7 @@
 "use server";
 
 import { createHash } from "node:crypto";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import React from "react";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
@@ -39,6 +40,7 @@ import {
   fenetreDemiJournee,
 } from "@/server/qualiopi/presence/repartition-distanciel";
 import { upsertCreneau, recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
+import { agregerReleveParStagiaire } from "@/server/qualiopi/presence/releve-agregation";
 import { storeAndSignCsv } from "@/server/qualiopi/documents/render";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -172,7 +174,7 @@ export async function generateSessionCreneauxAction(input: {
         // masquer en grille les créneaux DÉJÀ signés d'un abandon revenait à se
         // priver d'heures réellement suivies et facturables à l'OPCO.
         where: {
-          statut: { notIn: ["abandon", "exclu"] },
+          ...inscriptionsActives(),
         },
         select: { id: true },
       },
@@ -464,11 +466,31 @@ export async function saveEmargementAction(input: {
   // (correction de présence) n'affectent 0 ligne → preuve horodatée immuable.
   const now = new Date();
   for (const enrollmentId of enrollmentIds) {
-    await recomputeTauxPresence(enrollmentId);
-    await prisma.enrollment.updateMany({
-      where: { id: enrollmentId, emargementSigneAt: null },
-      data: { emargementSigneAt: now },
-    });
+    const taux = await recomputeTauxPresence(enrollmentId);
+    // 🔴 `CONF-02` (2026-08-20). `emargementSigneAt` était posé pour CHAQUE
+    // inscription touchée par la sauvegarde, sans regarder ce que la grille
+    // disait — **y compris quand elle déclarait la personne absente partout**.
+    //
+    // Ce que cela produisait n'est pas cosmétique : `conformite-service.ts`
+    // compte cette colonne pour l'indicateur `off.12` (suivi de l'assiduité) et
+    // l'annonce « inscription avec émargement réellement signé ». Un stagiaire
+    // qui n'est jamais venu — donc qui n'a rien signé — gonflait donc un
+    // indicateur de conformité présenté à l'auditeur.
+    //
+    // Le taux est le bon discriminant, et il vient d'être recalculé sur les
+    // créneaux réellement enregistrés : `0` signifie « absent à tout », et il
+    // n'y a alors aucune présence à attester.
+    //
+    // ⚠️ Le verrou write-once est CONSERVÉ, et il s'entend mieux ainsi : si une
+    // grille est d'abord enregistrée « absent partout » puis corrigée, la date
+    // posée est celle de la PREMIÈRE présence constatée — pas celle du premier
+    // clic sur « Enregistrer ».
+    if (taux > 0) {
+      await prisma.enrollment.updateMany({
+        where: { id: enrollmentId, emargementSigneAt: null },
+        data: { emargementSigneAt: now },
+      });
+    }
   }
 
   // UN SEUL appel, APRÈS la boucle : `invalidateIndicateursCache` fait un
@@ -539,7 +561,7 @@ export async function importReleveConnexionAction(input: {
         orderBy: { date: "asc" },
       },
       enrollments: {
-        where: { statut: { notIn: ["abandon", "exclu"] } },
+        where: { ...inscriptionsActives() },
         select: {
           id: true,
           trainee: {
@@ -1022,6 +1044,11 @@ export async function genererReleveConnexionDocumentAction(input: {
       },
       presences: {
         select: {
+          // `enrollmentId` et `dureePrevueMinutes` ajoutés le 2026-08-20
+          // (`DIST-03`) : sans eux, impossible de regrouper par PERSONNE ni de
+          // comparer au seuil annoncé sur le document.
+          enrollmentId: true,
+          dureePrevueMinutes: true,
           dureeRealiseeMinutes: true,
           present: true,
           heureConnexion: true,
@@ -1062,13 +1089,22 @@ export async function genererReleveConnexionDocumentAction(input: {
     if (trainer) nomFormateur = `${trainer.prenom} ${trainer.nom}`.trim();
   }
 
-  const participants = releveImport.presences.map((p) => ({
-    nomPrenom: `${p.enrollment.trainee.prenom} ${p.enrollment.trainee.nom}`.trim(),
-    heureConnexion: p.heureConnexion ? formatHeureParis(p.heureConnexion) : "—",
-    heureDeconnexion: p.heureDeconnexion ? formatHeureParis(p.heureDeconnexion) : "—",
-    dureeEffective: formatMinutesToHHhMM(p.dureeRealiseeMinutes),
-    presenceValidee: p.present,
-  }));
+  // 🔴 `DIST-03` — une ligne par STAGIAIRE, pas par créneau. La règle
+  // d'agrégation vit dans un module PUR (`presence/releve-agregation.ts`) :
+  // elle est testable sans monter la chaîne PDF, et c'est là que sont écrites
+  // les raisons de chaque choix (bornes, somme, seuil).
+  const participants = agregerReleveParStagiaire(
+    releveImport.presences.map((p) => ({
+      enrollmentId: p.enrollmentId,
+      nomPrenom: `${p.enrollment.trainee.prenom} ${p.enrollment.trainee.nom}`.trim(),
+      heureConnexion: p.heureConnexion,
+      heureDeconnexion: p.heureDeconnexion,
+      dureeRealiseeMinutes: p.dureeRealiseeMinutes,
+      dureePrevueMinutes: p.dureePrevueMinutes,
+    })),
+    seuilPct,
+    { formatHeure: formatHeureParis, formatDuree: formatMinutesToHHhMM },
+  );
 
   // buildElement reçoit le numéro alloué → l'en-tête PDF affiche le vrai N°.
   const doc = await generateDocument({
@@ -1110,4 +1146,7 @@ export async function genererReleveConnexionDocumentAction(input: {
 }
 
 // Export utilitaire exposé pour les tests.
-export { formatMinutesToHHhMM };
+// 🔴 2026-08-19 — ré-export RETIRÉ. `formatMinutesToHHhMM` est SYNCHRONE :
+// dans un module `"use server"`, Turbopack la transforme en Server Reference et
+// produit le `ReferenceError` déjà documenté dans `_guards.ts`. Elle n'avait
+// aucun consommateur — importer depuis `@/server/qualiopi/presence/time`.

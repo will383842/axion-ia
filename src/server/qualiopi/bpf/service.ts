@@ -48,8 +48,26 @@ export interface BpfResult {
   };
   nbSessions: number;
   nbStagiairesDistincts: number;
-  /** Heures stagiaires des sessions collectives (dureeReelle × participants). */
+  /**
+   * Heures stagiaires des sessions collectives (durée réelle × participants).
+   *
+   * ⚠️ « participants » = `nbParticipantsReels` **s'il est renseigné**, sinon le
+   * nombre d'inscrits. Le repli n'est pas un raffinement : `nbParticipantsReels`
+   * n'a AUCUN écrivain dans le code applicatif (constat `CONF-04` / `D9-3-01` de
+   * l'audit du 2026-08-19), donc la colonne est toujours `null` en production et
+   * ce total valait invariablement 0. Le BPF déposé à la DREETS annonçait un
+   * chiffre d'affaires complet en face de « 0 heure stagiaire ».
+   */
   nbHeuresStagiaires: number;
+  /**
+   * Sessions réalisées qu'on n'a PAS su chiffrer, par identifiant.
+   *
+   * 🔴 Le silence était le défaut d'origine : une session sans durée réelle était
+   * absorbée dans le total sans laisser de trace, et le BPF affirmait une
+   * exhaustivité qu'il n'avait pas. Les nommer permet à celui qui dépose de voir
+   * ce qui manque avant de signer.
+   */
+  sessionsNonChiffrables: string[];
   caTotalHtCents: number;
   caParFinanceur: BpfFinanceurDetail;
   nbFormateursInternes: number;
@@ -97,11 +115,27 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
   }
   const nbStagiairesDistincts = traineeIds.size;
 
+  // 🔴 `nbParticipantsReels ?? enrollments.length` — cf. le commentaire de
+  // `BpfResult.nbHeuresStagiaires`. La colonne n'a aucun écrivain applicatif ;
+  // exiger qu'elle soit non nulle rendait ce total invariablement égal à 0.
+  //
+  // ⚠️ L'ordre compte : une constatation humaine explicite (`nbParticipantsReels`)
+  // fait foi CONTRE le nombre d'inscrits. Le repli ne l'écrase jamais — il ne
+  // sert que lorsque personne n'a constaté l'effectif.
+  //
+  // ⚠️ La durée, elle, n'a PAS de repli. Substituer la durée catalogue à une
+  // durée réelle absente inventerait des heures ; c'est exactement ce que
+  // `duree-reelle.ts` refuse de faire, et pour la même raison. La session est
+  // alors NOMMÉE plutôt que comptée pour zéro.
   let nbHeuresStagiaires = 0;
+  const sessionsNonChiffrables: string[] = [];
   for (const session of sessions) {
-    if (session.dureeReelleHeures !== null && session.nbParticipantsReels !== null) {
-      nbHeuresStagiaires += session.dureeReelleHeures * session.nbParticipantsReels;
+    const participants = session.nbParticipantsReels ?? session.enrollments.length;
+    if (session.dureeReelleHeures === null || participants === 0) {
+      sessionsNonChiffrables.push(session.id);
+      continue;
     }
+    nbHeuresStagiaires += session.dureeReelleHeures * participants;
   }
 
   const caTotalHtCents = sessions.reduce((acc, s) => acc + s.montantHtCents, 0);
@@ -141,6 +175,7 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     nbSessions,
     nbStagiairesDistincts,
     nbHeuresStagiaires,
+    sessionsNonChiffrables,
     caTotalHtCents,
     caParFinanceur,
     nbFormateursInternes,
@@ -164,6 +199,15 @@ export function bpfToCsv(bpf: BpfResult): string {
   lignes.push(`Nombre de stagiaires distincts;${bpf.nbStagiairesDistincts}`);
   lignes.push(`Nombre d'heures stagiaires;${bpf.nbHeuresStagiaires}`);
   lignes.push(`Chiffre d'affaires total HT (€);${centimesEnEuros(bpf.caTotalHtCents)}`);
+  // 🔴 La ligne n'apparaît QUE s'il y a quelque chose à dire. Une ligne
+  // « 0 session non chiffrable » sur tous les bilans deviendrait du décor et
+  // cesserait d'être lue le jour où elle compte. Mais quand elle apparaît, elle
+  // est juste sous le total d'heures qu'elle nuance — pas reléguée en annexe.
+  if (bpf.sessionsNonChiffrables.length > 0) {
+    lignes.push(
+      `⚠️ Sessions réalisées non chiffrables (durée réelle ou effectif absent);${bpf.sessionsNonChiffrables.length}`,
+    );
+  }
   lignes.push("");
   lignes.push("Financeur;CA HT (€)");
   lignes.push(`OPCO;${centimesEnEuros(bpf.caParFinanceur.opco)}`);
@@ -214,6 +258,7 @@ function buildEmptyBpf(
     nbSessions: 0,
     nbStagiairesDistincts: 0,
     nbHeuresStagiaires: 0,
+    sessionsNonChiffrables: [],
     caTotalHtCents: 0,
     caParFinanceur: { opco: 0, cpf: 0, france_travail: 0, direct: 0, mixte: 0 },
     nbFormateursInternes: 0,

@@ -247,5 +247,17 @@ export function formatHeuresCentiemes(heures: number): string {
   return heures.toFixed(2).replace(".", ",");
 }
 
-/** Préfixes de numérotation séquentielle officielle (cf. numbering/formats.ts). */
+/**
+ * Durée de conservation des pièces de formation, en ANNÉES.
+ *
+ * Art. L.6353-9 du Code du travail et conditions particulières applicables aux
+ * organismes de formation. Imprimée telle quelle sur les émargements, les
+ * relevés de connexion et le livret d'accueil.
+ *
+ * 🔴 Le commentaire qui coiffait cette ligne jusqu'au 2026-08-20 annonçait des
+ * « préfixes de numérotation séquentielle » — l'en-tête orphelin d'une
+ * constante disparue. Corrigé en même temps que `D5-5-04`, qui fait désormais
+ * DÉRIVER de cette valeur la rétention des preuves d'envoi : une constante qui
+ * pilote une suppression de masse ne peut pas se présenter sous un faux nom.
+ */
 export const DOCUMENT_RETENTION_YEARS = 5 as const;

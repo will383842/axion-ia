@@ -142,11 +142,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const rlIp = await checkRateLimit(`auth:login:ip:${ip}`, {
           limit: 100,
           windowSec: 900,
+          surPanne: "refuser",
         });
         if (!rlIp.allowed) return null;
         const rlEmail = await checkRateLimit(`auth:login:email:${email}`, {
           limit: 50,
           windowSec: 900,
+          surPanne: "refuser",
         });
         if (!rlEmail.allowed) return null;
 

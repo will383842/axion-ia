@@ -18,28 +18,30 @@
 
 import type { Page } from "@playwright/test";
 
+import { ADMIN_DEV_EMAIL, ADMIN_DEV_PASSWORD } from "../../../prisma/seeds/identifiants-admin-dev";
+
 export const ADMIN_PREFIX = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
+// 🔴 Le repli était écrit en dur, et ne correspondait à AUCUN compte semé :
+// `prisma/seed.ts` crée une autre adresse. Comme `ADMIN_SEED_EMAIL` n'était
+// défini nulle part dans le dépôt, ce repli était le chemin EMPRUNTÉ, toujours —
+// donc `loginAsAdmin` échouait, donc les specs se `test.skip`aient, donc
+// personne ne voyait rien. Le repli pointe désormais sur la source unique.
+export const ADMIN_EMAIL = process.env["ADMIN_SEED_EMAIL"] ?? ADMIN_DEV_EMAIL;
+export const ADMIN_PASSWORD = process.env["ADMIN_SEED_PASSWORD"] ?? ADMIN_DEV_PASSWORD;
+
 /**
- * 🔴 Les valeurs par défaut sont celles que `prisma/seed.ts` sème VRAIMENT.
+ * Vrai quand la base EST semée par le pipeline — c'est-à-dire quand un échec de
+ * connexion admin est un DÉFAUT et non une dispense.
  *
- * Défaut trouvé par la passe 2 du protocole de la console éditoriale.
- *
- * Elles disaient `admin@axion-ia.local` / `ChangeMe!2026Axion`, alors que
- * `prisma/seed.ts:36` code en dur `admin@axion-ia.com` / `AdminAxion2026!`
- * — sans lire aucune variable d'environnement. Le compte cherché n'a donc
- * jamais existé, et `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD` ne sont pas
- * dans `.env`.
- *
- * Conséquence, mesurée : **3 tests passés, 14 sautés** — un vert trompeur
- * sur TOUTE suite E2E authentifiée du dépôt, pas seulement la console
- * éditoriale. Avec les bons identifiants : 10 passés, 1 échoué, 6 non
- * exécutés (mode `serial`).
- *
- * Les variables restent prioritaires : un environnement qui sème
- * autrement peut toujours les poser.
+ * 🔴 Les quatre specs qui appellent `loginAsAdmin` attrapaient toute erreur pour
+ * se `test.skip`. Le fixture est resté cassé des mois sous ce couvercle : six
+ * tests verts qui n'ouvraient aucune page. Depuis que Gate B démarre un Postgres
+ * et joue le seed, le skip n'a plus de justification en CI — il n'en garde une
+ * qu'en local, sur une base vide.
  */
-export const ADMIN_EMAIL = process.env["ADMIN_SEED_EMAIL"] ?? "admin@axion-ia.com";
-export const ADMIN_PASSWORD = process.env["ADMIN_SEED_PASSWORD"] ?? "AdminAxion2026!";
+export function baseSemeeAttendue(): boolean {
+  return process.env["CI"] === "true";
+}
 
 export interface LoginOptions {
   /** Override email pour ce login précis. */
@@ -61,15 +63,21 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
   const password = opts.password ?? ADMIN_PASSWORD;
 
   await page.goto(`/fr/${ADMIN_PREFIX}/login`);
-  // 🔴 Ciblage par identifiant, et non par libellé.
+  // 🔴 2026-08-21 — `getByLabel(/mot de passe/i)` résolvait DEUX éléments :
+  // le champ, et le bouton `aria-label="Afficher le mot de passe"` ajouté
+  // depuis. Playwright lève alors une strict mode violation, `loginAsAdmin`
+  // échoue, et les quatre specs appelantes l'attrapaient en `test.skip`.
   //
-  // `getByLabel(/mot de passe/i)` résolvait DEUX éléments : le champ, et le
-  // bouton afficher/masquer dont l'`aria-label` vaut « Afficher le mot de
-  // passe ». En mode strict, Playwright refuse d'agir sur un locator ambigu —
-  // donc `loginAsAdmin` ne pouvait PAS aboutir, et tout test qui l'appelle
-  // se sautait en silence. Le formulaire est correct ; c'était le sélecteur.
-  await page.locator("#email").fill(email);
-  await page.locator("#password").fill(password);
+  // 🔑 Résultat : la TOTALITÉ de la couverture E2E de la console admin —
+  // accessibilité WCAG, ouverture des 50+ entrées de navigation, parcours de
+  // vente, parcours de réservation — se skippait en silence, y compris après
+  // que la base de CI a été semée. Six tests verts qui n'ouvraient rien.
+  //
+  // On cible le RÔLE, pas le texte : un bouton n'est pas une zone de saisie,
+  // et aucun libellé décoratif ajouté demain ne pourra plus rendre ce
+  // sélecteur ambigu.
+  await page.getByRole("textbox", { name: /email/i }).fill(email);
+  await page.getByRole("textbox", { name: /mot de passe/i }).fill(password);
   await page
     .getByRole("button", { name: /continuer|connexion/i })
     .first()
@@ -81,24 +89,85 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
   //   - / (dashboard) si pas de 2FA configuré
   //   - /2fa si 2FA requis
   //   - rester sur /login avec erreur si credentials invalides
-  await page.waitForURL(
-    (url) => {
-      // 🔴 Le préfixe de langue est FACULTATIF dans l’URL d’arrivée.
+  try {
+    await page.waitForURL(
+      (url) => {
+        const pathname = new URL(url).pathname;
+        return (
+          pathname === `/fr/${ADMIN_PREFIX}` ||
+          pathname === `/fr/${ADMIN_PREFIX}/` ||
+          pathname.startsWith(`/fr/${ADMIN_PREFIX}/2fa`)
+        );
+      },
+      // 🔴 15 s NE SUFFISENT PAS EN CI — mesuré, pas supposé.
       //
-      // Ce prédicat n’acceptait que `/fr/${ADMIN_PREFIX}`. Or l’application
-      // atterrit sur `/${ADMIN_PREFIX}` — sans `/fr`. La vérification
-      // échouait donc TOUJOURS, `loginAsAdmin` levait, et tout test qui
-      // l’appelle se sautait en silence : une couverture qui n’en était pas
-      // une, et qui ne rougissait jamais.
-      const pathname = new URL(url).pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "");
-      return (
-        pathname === `/${ADMIN_PREFIX}` ||
-        pathname === `/${ADMIN_PREFIX}/` ||
-        pathname.startsWith(`/${ADMIN_PREFIX}/2fa`)
-      );
-    },
-    { timeout: 15_000 },
-  );
+      // Sur le run 32498161324, 42 connexions ont échoué, toutes avec la même
+      // cause (`Timeout 15000ms exceeded`) et le même texte d'écran : le bouton
+      // figé sur « Connexion… ». Autrement dit l'action tournait encore.
+      //
+      // La raison est structurelle et souhaitable : la vérification du mot de
+      // passe est DÉLIBÉRÉMENT coûteuse, et Gate B lance quatre workers qui se
+      // connectent en même temps. Quatre hachages concurrents sur un runner
+      // partagé dépassent 15 s sans que rien ne soit cassé.
+      //
+      // 🔑 Un délai d'attente n'est pas une assertion : le raccourcir ne rend
+      // pas le produit meilleur, il rend le journal faux. On mesure ce que la
+      // connexion coûte réellement sous charge, et on laisse de la marge.
+      //
+      // Sous `next dev`, la première soumission compile l'action serveur à la
+      // demande et coûte davantage encore.
+      { timeout: baseSemeeAttendue() ? 60_000 : 180_000 },
+    );
+  } catch (cause) {
+    // 🔴 L'appelant attrape cette erreur pour se `test.skip`. Si elle ne dit pas
+    // CE QUI a échoué, le skip devient un trou noir : c'est précisément par là
+    // que la couverture admin a disparu pendant des mois. Le message porte donc
+    // l'URL atteinte et le texte visible — de quoi distinguer « base non semée »
+    // de « sélecteur cassé », qui n'appellent pas la même réaction.
+    const visible = await page
+      .locator("body")
+      .innerText()
+      .catch(() => "");
+    throw new Error(
+      `loginAsAdmin a échoué pour ${email} — URL atteinte : ${page.url()}\n` +
+        `Texte de la page : ${visible.replace(/\s+/g, " ").slice(0, 400)}`,
+      { cause },
+    );
+  }
+
+  // La bannière de consentement recouvre les boutons d'action de la console :
+  // toute spec admin la rencontrerait. On l'écarte une fois, ici, en refusant.
+  await refuserLesCookies(page);
+}
+
+/**
+ * Écarte la bannière de consentement en REFUSANT les cookies non essentiels.
+ *
+ * 🔴 2026-08-21 — `src/app/[locale]/layout.tsx` monte `CookieConsent` pour TOUT
+ * ce qui vit sous `[locale]`, groupe `(admin)` compris. La bannière est un
+ * `role="dialog"` posé en bas de page : dans la console, elle recouvre les
+ * boutons d'action. Mesuré sur le wizard de vente — le clic sur « Créer le
+ * client » a été intercepté indéfiniment :
+ *
+ *     <div class="mx-auto flex max-w-5xl …"> from <div role="dialog"
+ *     aria-labelledby="cookie-consent-…"> intercepts pointer events
+ *
+ * On refuse (jamais « Accepter ») : c'est le choix qui préserve la vie privée,
+ * et c'est aussi celui qui n'active pas de traceur pendant les tests.
+ *
+ * Silencieux si la bannière est absente — elle ne s'affiche qu'une fois par
+ * navigateur, et le contexte Playwright est neuf à chaque test.
+ */
+export async function refuserLesCookies(page: Page): Promise<void> {
+  const refuser = page.getByRole("button", { name: /^(refuser|decline)$/i });
+  if ((await refuser.count()) === 0) return;
+  await refuser
+    .first()
+    .click({ timeout: 5_000 })
+    .catch(() => {
+      /* bannière disparue entre le comptage et le clic : rien à faire. */
+    });
+  await page.waitForTimeout(200);
 }
 
 /**
@@ -111,23 +180,7 @@ export async function isAdminLoginConfigured(page: Page): Promise<boolean> {
   try {
     await loginAsAdmin(page);
     return true;
-  } catch (e) {
-    // 🔴 On DIT pourquoi on saute.
-    //
-    // Un `catch` muet transforme n'importe quelle panne — mauvais
-    // identifiants, limite de débit sur le login, serveur absent — en un
-    // test « sauté », donc en une suite verte. C'est ce qui a masqué les
-    // identifiants faux ci-dessus pendant tout ce temps.
-    //
-    // Le saut reste un saut : le rendre bloquant relèverait d'une décision
-    // sur toute la suite E2E du dépôt, pas d'un correctif de fixture. Mais
-    // il laisse désormais une trace lisible dans le rapport.
-    const pourquoi = e instanceof Error ? e.message.split("\n")[0] : String(e);
-    console.warn(
-      `[admin-auth] Connexion impossible avec ${ADMIN_EMAIL} — les tests ` +
-        `authentifiés vont se SAUTER (et la suite paraîtra verte). ` +
-        `Cause : ${pourquoi}`,
-    );
+  } catch {
     return false;
   }
 }

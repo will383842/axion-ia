@@ -21,7 +21,7 @@ export function CommercialContactBand({
     <section className="bg-terracotta py-16 sm:py-20">
       <Container>
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl min-w-0">
             <p className="text-mocha-fg mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
               {isFr ? "Prêt·e à vous lancer ?" : "Ready to get started?"}
             </p>
@@ -40,6 +40,14 @@ export function CommercialContactBand({
                 : "A few details are enough to apply. Self-employed status, easy-to-sell funded products, uncapped income — and getting started costs you nothing."}
             </p>
           </div>
+          {/* 🔴 2026-08-21 — `shrink-0` faisait déborder la page de 39 px à 768 px.
+              L'intitulé de ce bouton fait une soixantaine de caractères ; à
+              l'instant précis où `md:flex-row` s'applique — c'est-à-dire À 768 px —
+              la rangée devient « bloc de texte + bouton », et `shrink-0` interdit
+              au bouton de se rétrécir sous sa largeur de contenu. `min-w-0` le lui
+              permet, et l'intitulé passe alors sur deux lignes au lieu de pousser
+              le document. Rien ne change au-delà : là où il y a la place, le
+              bouton reste sur une ligne. */}
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <Cta
               href="/devenir-commercial-ia/candidature"

@@ -68,8 +68,19 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: vi.fn().mockResolvedValue({ enqueued: true }),
 }));
 
+// 🔴 `D4-5-S1` — le double ne portait que `creerQuestionnaire`, et celle-ci
+// rendait un JETON. Les deux ont changé : la création est idempotente et ne
+// rend plus que l'identifiant (la base ne détient qu'une empreinte), et c'est
+// `emettreLienQuestionnaire` qui frappe un jeton neuf au moment d'écrire le
+// lien dans l'e-mail.
+//
+// ⚠️ Ce mock a rougi parce qu'il était INCOMPLET : la fonction manquante était
+// `undefined`, l'appel levait, et les deux tests d'enquête entreprise
+// tombaient. C'est le bon comportement — un double doit porter le contrat
+// entier du module, pas le minimum qui passait hier.
 vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
-  creerQuestionnaire: vi.fn().mockResolvedValue({ id: "quest-uuid-1", token: "c".repeat(48) }),
+  creerQuestionnaire: vi.fn().mockResolvedValue({ id: "quest-uuid-1" }),
+  emettreLienQuestionnaire: vi.fn().mockResolvedValue("c".repeat(48)),
 }));
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -80,7 +91,10 @@ import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
-import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
+import {
+  creerQuestionnaire,
+  emettreLienQuestionnaire,
+} from "@/server/qualiopi/satisfaction/satisfaction-service";
 import {
   envoyerConvocation,
   envoyerRappelJ7,
@@ -114,6 +128,7 @@ const mockPrisma = prisma as unknown as {
 const mockEnqueueEmail = enqueueEmail as ReturnType<typeof vi.fn>;
 const mockCreerAcces = creerAcces as ReturnType<typeof vi.fn>;
 const mockCreerQuestionnaire = creerQuestionnaire as ReturnType<typeof vi.fn>;
+const mockEmettreLien = emettreLienQuestionnaire as ReturnType<typeof vi.fn>;
 const mockCreerTokenInscription = creerTokenInscription as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -179,6 +194,69 @@ describe("envoyerConvocation", () => {
     // Par défaut : accès portail existant (idempotent)
     mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
     mockPrisma.enrollment.update.mockResolvedValue({});
+  });
+
+  it("🔴 file INDISPONIBLE : `convocationEnvoyeeAt` n'est PAS posée", async () => {
+    // Constat `D5-3-01`. C'est la reconstitution littérale de l'incident
+    // « aucune convocation jamais envoyée en production ».
+    //
+    // `enqueueEmail` ne LÈVE pas quand la file est absente : elle RETOURNE
+    // `{ enqueued: false }` (queues.ts:742). Cette valeur n'était pas lue, et
+    // `convocationEnvoyeeAt` était posée quoi qu'il arrive.
+    //
+    // Or c'est précisément cette colonne qui rend le cron rattrapant : tant
+    // qu'elle est nulle, l'inscription reste candidate. La poser sans envoi
+    // écarte donc l'inscription DÉFINITIVEMENT — le stagiaire ne reçoit rien,
+    // la base affirme le contraire, et l'indicateur 9 repose sur un horodatage
+    // qui atteste d'un geste jamais accompli.
+    //
+    // ⚠️ Le commentaire du code disait l'intention JUSTE — « posée APRÈS
+    // l'enqueue, poser avant ferait mentir la colonne si la file est
+    // indisponible » — et se trompait sur le MÉCANISME : il supposait que
+    // l'échec lèverait.
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    mockEnqueueEmail.mockResolvedValueOnce({ enqueued: false });
+
+    await envoyerConvocation(ENROLLMENT_ID);
+
+    expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
+  });
+
+  it("🔴 e-mail GARÉ en validation : `convocationEnvoyeeAt` n'est PAS posée non plus", async () => {
+    // Second chemin, plus insidieux : si une règle `EmailAutomationSetting`
+    // nomme `qualiopi-convocation` en mode validation, l'e-mail part en
+    // corbeille et `enqueueEmail` rend `{ enqueued: false,
+    // garePourValidation: true }` (queues.ts:768).
+    //
+    // Il PARTIRA peut-être — après approbation humaine. Mais il n'est pas parti.
+    // Poser la date maintenant ferait exactement la même chose : écarter
+    // l'inscription du rattrapage sur la foi d'un envoi qui n'a pas eu lieu.
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    mockEnqueueEmail.mockResolvedValueOnce({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "outbox-1",
+    });
+
+    await envoyerConvocation(ENROLLMENT_ID);
+
+    expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
+  });
+
+  it("mise en file RÉUSSIE : la date est bien posée", async () => {
+    // Témoin discriminant. Sans lui, une fonction qui ne poserait JAMAIS la date
+    // passerait les deux tests ci-dessus — et le cron réenverrait la convocation
+    // tous les jours, ce qui est le défaut symétrique.
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    mockEnqueueEmail.mockResolvedValueOnce({ enqueued: true });
+
+    await envoyerConvocation(ENROLLMENT_ID);
+
+    expect(mockPrisma.enrollment.update).toHaveBeenCalledOnce();
+    const arg = mockPrisma.enrollment.update.mock.calls[0]![0] as {
+      data: { convocationEnvoyeeAt?: Date };
+    };
+    expect(arg.data.convocationEnvoyeeAt).toBeInstanceOf(Date);
   });
 
   it("enqueue le bon template avec jobId stable", async () => {
@@ -735,7 +813,10 @@ describe("envoyerEnqueteEntreprise", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockEnqueueEmail.mockResolvedValue({ enqueued: true });
-    mockCreerQuestionnaire.mockResolvedValue({ id: "quest-uuid-e1", token: "d".repeat(48) });
+    // 🔴 `D4-5-S1` — la création ne rend plus de jeton. Le lien de l'e-mail
+    // vient de l'ÉMISSION, qui en frappe un neuf et n'en garde que l'empreinte.
+    mockCreerQuestionnaire.mockResolvedValue({ id: "quest-uuid-e1" });
+    mockEmettreLien.mockResolvedValue("d".repeat(48));
   });
 
   it("crée (upsert) le questionnaire entreprise et écrit au contact client", async () => {
@@ -766,7 +847,10 @@ describe("envoyerEnqueteEntreprise", () => {
     ];
     expect(template).toBe("qualiopi-enquete-entreprise");
     expect(to).toBe("simone@investsun.example");
+    // 🔑 Le lien vient de l'ÉMISSION, plus de la création : c'est elle qui
+    // frappe un jeton neuf et n'en garde que l'empreinte.
     expect(String(payload["lienEnquete"])).toContain(`/fr/portail/enquete/${"d".repeat(48)}`);
+    expect(mockEmettreLien).toHaveBeenCalled();
   });
 
   it("sans inscription active → THROW (le cron doit journaliser, pas croire l'envoi fait)", async () => {

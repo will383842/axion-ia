@@ -56,6 +56,7 @@ import {
 } from "@/server/qualiopi/documents/signature/token-document";
 import { enqueueEmail } from "@/server/queue/queues";
 import { requireAdminWrite, requireHabilitation, logQualiopiActivity } from "./_guards";
+import { peutEngager, MOTIF_REFUS } from "@/server/auth/habilitations";
 
 type Resultat<T> = { data: T } | { error: string };
 
@@ -277,6 +278,7 @@ export async function emettreLienSignatureAction(
       numero: true,
       hashSha256: true,
       metadata: true,
+      annuleeAt: true,
       clientId: true,
       traineeId: true,
       sousTraitantId: true,
@@ -297,6 +299,16 @@ export async function emettreLienSignatureAction(
   // Sans elles, on adresse à un tiers une invitation à signer une pièce que le
   // service refusera au moment du clic — c'est-à-dire qu'on lui fait perdre son
   // temps sur un défaut que l'organisme pouvait voir.
+  // Une pièce annulée ne fait plus foi : `signerDocument` la refuse. Émettre
+  // quand même le lien ferait parcourir tout le geste au signataire — ouvrir la
+  // page, lire la pièce, tracer sa signature — pour un défaut que l'organisme
+  // voyait avant d'envoyer.
+  if (piece.annuleeAt !== null) {
+    return {
+      error: `La pièce ${piece.numero} a été annulée : elle ne fait plus foi et ne peut plus être signée. Émettez le lien sur la pièce qui la remplace.`,
+    };
+  }
+
   const meta = piece.metadata;
   const estSpecimen =
     typeof meta === "object" && meta !== null && !Array.isArray(meta)
@@ -344,8 +356,15 @@ export async function emettreLienSignatureAction(
       signataireQualite: resolution.identite.qualite,
       // ⚠️ Borne métier : la rétention de la pièce. Une pièce contractuelle n'a
       // pas de « date de validité » comme un devis — mais un lien éternel sur un
-      // engagement n'a pas de sens non plus. `creerTokenDocument` applique de
-      // toute façon le plafond de scope (90 j) via `signMagicToken`.
+      // engagement n'a pas de sens non plus.
+      //
+      // 🔴 2026-08-19 (`D94-01`) — ces lignes affirmaient que « `creerTokenDocument`
+      // applique de toute façon le plafond de scope (90 j) via `signMagicToken` ».
+      // C'était FAUX : ce 90 j est un DÉFAUT, écrasé par le `ttlMs` que
+      // `creerTokenDocument` passe TOUJOURS. `suppressionPrevueAt` valant
+      // `maintenant + 5 ans`, le lien vivait CINQ ANS. Le plafond existe
+      // désormais pour de bon dans `calculerExpirationDocument` — mais on ne
+      // compte plus dessus en silence : il est nommé ici.
       borneMetier: piece.suppressionPrevueAt,
       createdIpHash: hashIp(ipBrute),
     });
@@ -384,8 +403,12 @@ export async function revoquerLiensSignatureAction(input: {
   motif: string;
 }): Promise<Resultat<{ revoques: number }>> {
   const session = await requireAdminWrite();
-  if (session.role !== "super_admin" && session.role !== "admin") {
-    return { error: "Seuls un administrateur ou le dirigeant peuvent révoquer un lien." };
+  // 🔴 2026-08-21 — neuvième recopie de la paire `super_admin | admin` trouvée
+  // dans cet audit. La matrice porte l'acte `revoquer_signature` : les deux
+  // listes coïncidaient, et c'est exactement ainsi qu'une recopie survit
+  // jusqu'au jour où la matrice bouge sans elle.
+  if (!peutEngager(session.role, "revoquer_signature")) {
+    return { error: MOTIF_REFUS.revoquer_signature };
   }
   const motif = input.motif.trim();
   if (motif === "") {

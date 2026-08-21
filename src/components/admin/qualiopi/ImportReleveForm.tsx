@@ -38,6 +38,24 @@ export interface ImportReleveFormProps {
       }
     | { error: string }
   >;
+  /**
+   * 🔴 `D2-3-C3` (2026-08-21) — CETTE ACTION N'ÉTAIT APPELÉE DE NULLE PART.
+   *
+   * `genererReleveConnexionDocumentAction` était écrite et testée. Ce formulaire
+   * affichait la référence d'import en police mono… et n'offrait aucun moyen
+   * d'en produire le relevé. Le document était donc **impossible à obtenir**.
+   *
+   * ⚠️ Ce n'est pas un PDF de confort. Le relevé de connexion porte, en toutes
+   * lettres, la phrase « Ce document remplace la feuille d'émargement pour les
+   * formations dispensées à distance » : c'est LA pièce qu'un OPCO réclame pour
+   * financer une action distancielle, et celle que le dossier d'audit attend.
+   *
+   * Sans ce bouton, la chaîne distancielle s'arrêtait une marche avant la fin :
+   * l'import calculait bien le taux, mais la preuve archivée n'existait pas.
+   */
+  genererReleveAction: (input: {
+    importId: string;
+  }) => Promise<{ data: { documentId: string; numero: string } } | { error: string }>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -58,9 +76,16 @@ const PLATEFORMES: Array<{ value: PlateformeLabel; label: string }> = [
 export function ImportReleveForm({
   sessionId,
   importAction,
+  genererReleveAction,
 }: ImportReleveFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  // ⚠️ Transition SÉPARÉE de celle de l'import : sans elle, générer le relevé
+  // remettrait le formulaire d'import en « Import en cours… » et redonnerait à
+  // penser qu'on ré-importe le fichier.
+  const [enCoursReleve, demarrerReleve] = useTransition();
+  const [numeroReleve, setNumeroReleve] = useState("");
+  const [erreurReleve, setErreurReleve] = useState("");
   const [plateforme, setPlateforme] = useState<PlateformeLabel>("zoom");
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -234,6 +259,42 @@ export function ImportReleveForm({
           <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             Référence import : <span className="font-mono">{rapport.importId}</span>
           </p>
+
+          <div className="mt-[var(--space-admin-3)]">
+            <button
+              type="button"
+              disabled={enCoursReleve}
+              onClick={() => {
+                setErreurReleve("");
+                demarrerReleve(() => {
+                  void genererReleveAction({ importId: rapport.importId }).then((res) => {
+                    if ("error" in res) {
+                      setErreurReleve(res.error);
+                      return;
+                    }
+                    setNumeroReleve(res.data.numero);
+                    router.refresh();
+                  });
+                });
+              }}
+              className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] disabled:opacity-50"
+            >
+              {enCoursReleve ? "Génération…" : "Générer le relevé de connexion (PDF)"}
+            </button>
+            {numeroReleve !== "" && (
+              <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]">
+                {/* Le NUMÉRO, pas « c'est fait » : c'est lui qu'on cite dans un
+                    dossier de financement, et le voir confirme que la pièce est
+                    numérotée au registre. */}
+                {`Relevé ${numeroReleve} généré — il remplace la feuille d'émargement pour cette session à distance.`}
+              </p>
+            )}
+            {erreurReleve !== "" && (
+              <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
+                {erreurReleve}
+              </p>
+            )}
+          </div>
         </div>
       )}
     </div>

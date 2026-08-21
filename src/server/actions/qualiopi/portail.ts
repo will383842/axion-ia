@@ -23,6 +23,7 @@
 "use server";
 
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import {
@@ -74,7 +75,11 @@ const revoquerPortailAccesSchema = z.object({
 });
 
 const soumettreSatisfactionPortailSchema = z.object({
-  token: z.string().min(1),
+  // 🔴 `D4-5-S1` — c'était le jeton du questionnaire. Le portail authentifie
+  // pourtant le stagiaire par cookie ET vérifie l'appartenance juste en
+  // dessous : le jeton n'était qu'un identifiant redondant, expédié au
+  // navigateur et conservé dans la page. L'identifiant n'ouvre rien.
+  questionnaireId: z.string().uuid(),
   reponses: z.record(z.unknown()),
   noteGlobale: z.number().int().min(1).max(5).optional(),
 });
@@ -183,7 +188,7 @@ export async function quitterPortailAction(): Promise<ActionResult<{ ok: boolean
  * S'authentifie via le cookie portail (PAS requireAdminWrite).
  */
 export async function soumettreSatisfactionPortailAction(input: {
-  token: string;
+  questionnaireId: string;
   reponses: Record<string, unknown>;
   noteGlobale?: number;
 }): Promise<ActionResult<{ id: string }>> {
@@ -197,22 +202,133 @@ export async function soumettreSatisfactionPortailAction(input: {
 
   // A-01 (IDOR) : vérifier que le questionnaire appartient bien au stagiaire authentifié.
   const questionnaire = await prisma.questionnaire.findUnique({
-    where: { token: v.token },
+    where: { id: v.questionnaireId },
     select: { enrollment: { select: { traineeId: true } } },
   });
   if (!questionnaire || questionnaire.enrollment.traineeId !== authResult.traineeId) {
     return { error: "Questionnaire introuvable ou non autorisé" };
   }
 
+  // ── 🔴 Besoin d'adaptation : le SORTIR du JSON avant de l'écrire ──────────
+  //
+  // Constats `D46-01` et `D46-02`. Le questionnaire de positionnement porte une
+  // case « J'ai un besoin d'adaptation » et un champ libre dont le texte
+  // d'invite promet : « transmis au référent handicap ».
+  //
+  // Or, avant ce correctif :
+  //   · PERSONNE ne le lisait. `besoinAdaptation` et `detailAdaptation`
+  //     n'apparaissaient QUE dans le composant de saisie — 8 occurrences dans
+  //     un seul fichier, aucun lecteur serveur, aucun écran, aucun export. La
+  //     promesse faite au bénéficiaire n'était tenue par aucune ligne de code.
+  //   · Le détail atterrissait EN CLAIR dans `Questionnaire.reponses`, colonne
+  //     `Json @default("{}")`, sans chiffrement, sans habilitation, sans
+  //     journal d'accès.
+  //
+  // Le second point n'est pas un oubli de précaution : c'est une contradiction
+  // avec une décision déjà prise et écrite. `declarerHandicapAction`, quinze
+  // lignes plus bas, chiffre la MÊME donnée (`encryptPii`), en réserve la
+  // lecture au super-administrateur et journalise chaque révélation. Le dépôt
+  // avait donc jugé que cette information l'exigeait — et le second chemin
+  // l'ignorait. Donnée de santé, RGPD art. 9.
+  //
+  // 🔑 Et c'est le chemin AMONT : le positionnement arrive avant la formation,
+  // donc c'est le seul moment où l'adaptation peut encore être organisée. Le
+  // même défaut avait été fermé le 2026-08-04 sur l'autre chemin, et laissé
+  // ouvert sur celui-ci.
+  //
+  // L'extraction se fait AVANT `soumettreReponses` : une fois la valeur écrite
+  // dans la colonne JSON, elle y est en clair, et l'en retirer après coup
+  // laisserait une trace dans les sauvegardes.
+  const besoinAdaptation = v.reponses["besoinAdaptation"] === true;
+  const detailBrut = v.reponses["detailAdaptation"];
+  const detailAdaptation = typeof detailBrut === "string" ? detailBrut.trim() : "";
+  // Le booléen RESTE dans les réponses : il dit ce qui a été répondu, et le
+  // dépôt stocke déjà `Trainee.situationHandicap` en clair. Seul le DÉTAIL —
+  // le texte libre, celui qui décrit la situation — est retiré et chiffré.
+  const { detailAdaptation: _retire, ...reponsesSansDetail } = v.reponses;
+
   const result = await soumettreReponses({
-    token: v.token,
-    reponses: v.reponses,
+    questionnaireId: v.questionnaireId,
+    reponses: reponsesSansDetail,
     ...(v.noteGlobale !== undefined ? { noteGlobale: v.noteGlobale } : {}),
   });
 
   if (!result) return { error: "Questionnaire introuvable ou déjà soumis" };
 
+  if (besoinAdaptation) {
+    // Après la soumission seulement : une déclaration qui n'a pas été
+    // enregistrée ne doit pas lever d'alerte.
+    //
+    // ⚠️ ATTENDU, contrairement à `declarerHandicapAction` qui détache tout.
+    // Écrire le détail chiffré n'est pas une notification, c'est la
+    // PERSISTANCE de la déclaration : c'est précisément ce que ce correctif
+    // rétablit, et le perdre en silence reproduirait le défaut. Ce sont deux
+    // écritures locales, pas un appel tiers — l'appel tiers (Telegram) reste
+    // détaché à l'intérieur.
+    //
+    // Fail-soft quand même : les réponses SONT déjà enregistrées. Rendre une
+    // erreur ferait croire au bénéficiaire qu'il doit tout refaire, alors que
+    // seul le signalement a échoué. Mais on ne se tait pas : Sentry le voit.
+    try {
+      await signalerBesoinAdaptation(authResult.traineeId, detailAdaptation);
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { service: "soumettreSatisfactionPortailAction", etape: "besoin_adaptation" },
+        extra: { traineeId: authResult.traineeId, questionnaireId: result.id },
+      });
+    }
+  }
+
   return { data: { id: result.id } };
+}
+
+/**
+ * Enregistre un besoin d'adaptation déclaré au POSITIONNEMENT et prévient.
+ *
+ * Même destination et même régime que `declarerHandicapAction` : détail chiffré
+ * sur la fiche stagiaire, alerte console, message Telegram. C'est délibérément
+ * la même écriture — deux chemins de déclaration qui rangeraient la donnée à
+ * deux endroits différents produiraient exactement la divergence que ces
+ * constats décrivent.
+ */
+async function signalerBesoinAdaptation(traineeId: string, detail: string): Promise<void> {
+  const trainee = await prisma.trainee.update({
+    where: { id: traineeId },
+    data: {
+      situationHandicap: true,
+      // ⚠️ Un détail VIDE n'écrase pas un détail existant. Le bénéficiaire peut
+      // cocher la case sans rien préciser au positionnement alors qu'il a déjà
+      // décrit sa situation ailleurs : recopier `null` par symétrie détruirait
+      // cette déclaration-là, sans que rien ne le signale.
+      ...(detail.length > 0 ? { handicapDetailsChiffre: encryptPii(detail) } : {}),
+    },
+    select: { id: true, prenom: true, nom: true },
+  });
+
+  // ⚠️ Aucun de ces deux messages ne porte le besoin : le texte d'une alerte est
+  // FIGÉ en base à sa création et se recopie en pastille et en notification.
+  // `construireAlerteBesoinAdaptation` ne reçoit d'ailleurs PAS le détail en
+  // paramètre — la fuite est hors de portée, pas seulement évitée.
+  const alerte = construireAlerteBesoinAdaptation(trainee);
+  await creerOuDedup({
+    code: "besoin_adaptation_declare",
+    niveau: "important",
+    titre: alerte.titre,
+    message: alerte.message,
+    cibleType: "Trainee",
+    cibleId: trainee.id,
+  });
+
+  // Seul appel TIERS du lot : détaché, pour ne pas tenir la réponse du
+  // bénéficiaire sur la latence de Telegram. Il ne remplace pas l'alerte —
+  // Will peut ne pas le lire, et rien ne l'y ramène.
+  void sendTelegram({
+    tag: "ADAPTATION_DECLAREE",
+    body:
+      `♿ ${trainee.prenom} ${trainee.nom} a déclaré un besoin d'adaptation ` +
+      `dans son questionnaire de positionnement.\n` +
+      `Le détail est chiffré : le lire depuis sa fiche stagiaire dans la console.`,
+  }).catch(() => {});
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -449,7 +565,7 @@ export async function genererPortailAccesAction(input: {
       select: { email: true, nom: true, prenom: true },
     });
     if (stagiaire !== null && stagiaire.email !== "") {
-      await enqueueEmail(
+      const envoi = await enqueueEmail(
         "qualiopi-portail-acces",
         stagiaire.email,
         "fr",
@@ -464,7 +580,18 @@ export async function genererPortailAccesAction(input: {
           entityId: acces.id,
         },
       );
-      envoyeAuStagiaire = true;
+      // 🔴 2026-08-19 (constat `D5-3-01`, même famille que la convocation et les
+      // liens d'émargement) — ce drapeau était posé inconditionnellement.
+      // `enqueueEmail` ne lève pas : elle rend `{ enqueued: false }`. L'écran
+      // annonçait donc « accès envoyé au stagiaire » alors que rien n'était
+      // parti, et personne n'avait de raison de renvoyer.
+      envoyeAuStagiaire = envoi.enqueued;
+      if (!envoi.enqueued) {
+        console.error(
+          `[portail] accès créé mais e-mail NON mis en file (accès ${acces.id})` +
+            (envoi.garePourValidation === true ? " — garé en corbeille de validation" : ""),
+        );
+      }
     }
   } catch (err) {
     console.error(

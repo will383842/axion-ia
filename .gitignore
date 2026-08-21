@@ -91,3 +91,9 @@ Thumbs.db
 # Planches-contact Unsplash (curation) — intermédiaires, jamais versionnées.
 # Le choix retenu est tracé dans les SSOT de crédits (src/content/**/*-photos.ts).
 _contact/
+
+# Sorties de `pnpm e2e:qualiopi` — une trentaine de PDF + un résumé JSON, produits
+# à chaque exécution sur une base jetable. Ce sont des ARTEFACTS DE RUN, pas des
+# pièces d'audit : `_AUDIT/` étant suivi, sans cette ligne un `git add -A` les
+# ferait entrer dans le dépôt. En CI, le job nocturne les publie en artifact.
+_AUDIT/VERIF-QUALIOPI-CHAINE-COMPLETE/

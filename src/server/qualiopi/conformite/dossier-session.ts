@@ -22,12 +22,18 @@
  * ⚠️ Un dossier incomplet est signalé comme tel. Livrer un ZIP silencieusement
  * amputé à un auditeur est pire que de ne rien livrer : il aurait l'air complet.
  *
+ * ⚠️ Les pièces ANNULÉES n'y sont pas jointes — elles ne font plus foi — mais
+ * elles y sont NOMMÉES, avec leur motif et leur date. Les taire laisserait un
+ * trou inexpliqué dans la série des numéros ; les joindre sans marquage
+ * reviendrait à présenter comme preuve un document qu'on a soi-même annulé.
+ *
  * Stub-safe.
  */
 
 import { createHash } from "node:crypto";
 import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
+import { lignesDeChaine } from "@/server/qualiopi/emargement/lignes-de-chaine";
 import { isR2Configured, getObjectBufferR2, documentPdfKey } from "@/lib/r2-storage";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 import {
@@ -44,6 +50,13 @@ export interface DossierSessionResult {
   incomplet: boolean;
   nbDocuments: number;
   nbDocumentsJoints: number;
+  /**
+   * Pièces ANNULÉES de la session, écartées du ZIP mais NOMMÉES dans l'index.
+   *
+   * Exposé pour que l'écran qui déclenche le dossier puisse le dire lui aussi :
+   * un compteur de documents qui baisse sans explication ressemble à une perte.
+   */
+  nbDocumentsAnnulees: number;
   /** Chaînes de signatures stagiaires dont la vérification a relevé une anomalie. */
   nbChainesAnormales: number;
   /**
@@ -74,6 +87,16 @@ export async function genererDossierSessionZip(
       dateDebut: true,
       dateFin: true,
       documents: {
+        // 🔴 Doctrine d'`audit-dossier.ts` : « une pièce annulée ne se compte
+        // NULLE PART ». Sans ce filtre, le ZIP téléchargeait le PDF d'une pièce
+        // que l'organisme a lui-même déclarée sans valeur, l'annonçait `[OK]`
+        // dans l'index et la comptait dans `nbDocuments` — le dossier affirmait
+        // donc qu'elle était valable.
+        //
+        // ⚠️ Le filtre est posé sur la REQUÊTE, pas dans la boucle : rien
+        // d'écrit plus bas ne peut alors atteindre une pièce annulée, même par
+        // inadvertance.
+        where: { annuleeAt: null },
         select: { id: true, type: true, numero: true, createdAt: true },
         orderBy: { createdAt: "asc" },
       },
@@ -90,22 +113,17 @@ export async function genererDossierSessionZip(
           id: true,
           tauxPresencePct: true,
           trainee: { select: { nom: true, prenom: true, deletedAt: true } },
-          emargementSignatures: {
-            where: { revokedAt: null },
-            // ⚠️ Ordre d'INSERTION, jamais `signeAt` : ce dernier est figé avant
-            // l'écriture de l'image, et trier dessus produirait une rupture de
-            // chaînage FANTÔME — un faux verdict de corruption, dans un dossier
-            // d'audit.
-            orderBy: [{ createdAt: "asc" }, { id: "asc" }],
-          },
+          // ⚠️ Filtre ET ordre viennent de `lignesDeChaine()` : ce sont les deux
+          // conditions pour que `verifierChaine` rende un verdict juste, et
+          // elles étaient recopiées à chaque lecture. Le détail du raisonnement
+          // (pourquoi jamais `signeAt`) vit dans ce module.
+          emargementSignatures: lignesDeChaine(),
         },
       },
       // Contresignatures du formateur — leur chaîne (portée session × formateur)
-      // se vérifie comme celle des stagiaires. Même ordre d'insertion.
-      emargementContresignatures: {
-        where: { revokedAt: null },
-        orderBy: [{ createdAt: "asc" }, { id: "asc" }],
-      },
+      // se vérifie comme celle des stagiaires, donc avec le MÊME filtre et le
+      // même ordre. C'était la seconde recopie.
+      emargementContresignatures: lignesDeChaine(),
     },
   });
 
@@ -205,12 +223,45 @@ export async function genererDossierSessionZip(
     "verification-integrite.json",
     JSON.stringify({ signatures: rapports, contresignatures: rapportsContresignatures }, null, 2),
   );
+  // 🔴 `D3-3-01` (2026-08-20) — « 0/0 conformes » SE LIT « TOUT VA BIEN ».
+  //
+  // Ces deux lignes rendaient `0/0 conformes` quand il n'y avait aucune
+  // signature ou aucune contresignature. Dans un dossier remis au
+  // certificateur, un ratio complet est le signe qu'on cherche : personne ne
+  // s'arrête sur un dénominateur nul, et l'absence totale de preuve prenait
+  // l'apparence d'une conformité parfaite.
+  //
+  // 🔑 C'est la famille de défaut la plus coûteuse de cet audit — un témoin qui
+  // ne vaut que si on a vérifié qu'il DEVRAIT être positif. Ici le témoin était
+  // même MEILLEUR quand la situation était pire : zéro anomalie sur zéro chaîne.
+  //
+  // Le vide est donc désormais NOMMÉ, et il lève un avertissement — pas une
+  // erreur : produire le dossier reste possible, c'est l'auditeur qui tranche.
+  // Un dossier qu'on ne peut plus générer ferait perdre la pièce ET l'alerte.
   index.push(
-    `Intégrité des chaînes de signatures : ${session.enrollments.length - nbChainesAnormales}/${session.enrollments.length} conformes.`,
+    session.enrollments.length === 0
+      ? "Intégrité des chaînes de signatures : AUCUNE signature d'émargement au dossier."
+      : `Intégrité des chaînes de signatures : ${session.enrollments.length - nbChainesAnormales}/${session.enrollments.length} conformes.`,
   );
   index.push(
-    `Intégrité des chaînes de contresignatures : ${parFormateur.size - nbChainesContresignAnormales}/${parFormateur.size} conformes.`,
+    parFormateur.size === 0
+      ? "Intégrité des chaînes de contresignatures : AUCUNE contresignature de formateur au dossier."
+      : `Intégrité des chaînes de contresignatures : ${parFormateur.size - nbChainesContresignAnormales}/${parFormateur.size} conformes.`,
   );
+  if (session.enrollments.length === 0) {
+    avertissements.push(
+      "⚠️ Aucune signature d'émargement dans ce dossier. La feuille d'émargement est la pièce que le certificateur demande en premier pour établir la réalité de l'action.",
+    );
+  }
+  if (parFormateur.size === 0) {
+    // La contresignature du formateur n'est exigée par aucune garde du dépôt —
+    // c'est l'autre moitié de `D3-3-01`. La rendre bloquante changerait un geste
+    // quotidien et rendrait des dossiers ingénérables ; on la rend VISIBLE là où
+    // elle sera lue, c'est-à-dire dans le dossier lui-même.
+    avertissements.push(
+      "⚠️ Aucune contresignature de formateur dans ce dossier. L'émargement contresigné par l'intervenant est la pièce qui atteste que la séance a bien été animée — son absence n'est signalée par aucune garde en amont.",
+    );
+  }
   if (nbChainesAnormales > 0) {
     avertissements.push(
       `⚠️ ${nbChainesAnormales} chaîne${nbChainesAnormales > 1 ? "s" : ""} de signatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
@@ -273,10 +324,39 @@ export async function genererDossierSessionZip(
     joints += 1;
   }
 
+  // ⚠️ La condition porte sur les pièces EN VIGUEUR, et c'est le point : une
+  // session dont toutes les pièces sont annulées n'a plus rien à joindre. Faire
+  // porter le chapeau au stockage enverrait chercher une panne qui n'existe pas.
   if (session.documents.length > 0 && joints === 0) {
     avertissements.push(
       `⚠️ ${session.documents.length} document${session.documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
     );
+  }
+
+  // ── 3 bis. Pièces ANNULÉES — retirées, mais JAMAIS tues ──
+  //
+  // 🔴 Le retrait doit rester VISIBLE. Écarter la pièce sans le dire remplacerait
+  // un mensonge (« [OK] ») par un silence : l'auditeur qui suit la série des
+  // numéros trouverait un trou et n'aurait aucun moyen de savoir s'il s'agit
+  // d'une annulation motivée ou d'une pièce escamotée. La trace la disculpe.
+  //
+  // ⚠️ Le PDF lui-même ne peut PAS porter le signal : il n'existe aucun filigrane
+  // « ANNULÉ » dans le dépôt (`base-layout.tsx` ne connaît que COPIE et
+  // SPÉCIMEN). Cette section de l'index — et le suffixe du nom de fichier au
+  // téléchargement — sont les seuls marquages disponibles.
+  const annulees = await prisma.documentGenere.findMany({
+    where: { sessionId, annuleeAt: { not: null } },
+    select: { numero: true, type: true, annuleeAt: true, annuleeMotif: true },
+    orderBy: { annuleeAt: "asc" },
+  });
+  if (annulees.length > 0) {
+    index.push("", `Pièces annulées, non jointes (${annulees.length}) :`);
+    for (const a of annulees) {
+      const quand = a.annuleeAt === null ? "date inconnue" : a.annuleeAt.toISOString().slice(0, 10);
+      index.push(
+        `  ${a.numero} (${a.type}) — ${a.annuleeMotif ?? "motif non renseigné"} — ${quand}`,
+      );
+    }
   }
 
   const incomplet = avertissements.length > 0;
@@ -294,6 +374,7 @@ export async function genererDossierSessionZip(
     incomplet,
     nbDocuments: session.documents.length,
     nbDocumentsJoints: joints,
+    nbDocumentsAnnulees: annulees.length,
     nbChainesAnormales,
     nbChainesContresignAnormales,
     avertissements,

@@ -11,7 +11,8 @@
 //   4. Update Invoice.hashSha256 si pas encore set
 //   5. Return PDF stream — inline par defaut, ?dl=1 pour enregistrer
 //
-// V1.5+ : upload Hetzner Storage Box + URL signée 90j stockée dans pdfUrl.
+// V1.5+ : archivage du PDF dans R2. L'URL signée 90 j autrefois stockée dans
+// `pdfUrl` a été retirée le 2026-08-20 (`D4-5 1.1`) : personne ne la lisait.
 
 import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
@@ -22,7 +23,6 @@ import {
   isR2Configured,
   uploadToR2,
   existsInR2,
-  getSignedUrlR2,
   getObjectBufferR2,
   invoicePdfKey,
 } from "@/lib/r2-storage";
@@ -158,9 +158,34 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     locale: invoice.locale === "en" ? "en" : "fr",
   });
 
-  // Upload R2 si configuré + persist URL signée 90j dans Invoice.pdfUrl.
+  // Archivage R2, si configuré.
   // Idempotent : si key déjà présente avec même hash → skip upload (économie API call).
-  let pdfStorageUrl: string | null = null;
+  //
+  // 🔴 `D4-5 1.1` (2026-08-20) — CE QUI A ÉTÉ RETIRÉ ICI, ET POURQUOI.
+  //
+  // Cette route frappait, à CHAQUE affichage d'une facture, une URL R2 signée
+  // **90 jours** — un droit d'accès anonyme, porteur, valable un trimestre. Elle
+  // la persistait en clair dans `Invoice.pdfUrl` et la renvoyait en outre dans un
+  // en-tête de réponse, `X-Invoice-R2-Signed-Url`.
+  //
+  // ⚠️ Vérifié dépôt entier : **rien ne lisait ni l'un ni l'autre**. Ni l'en-tête
+  // (une seule occurrence dans tout le dépôt : son émission), ni la colonne
+  // (seule cette route l'écrit ; aucun lecteur). Le commentaire qui justifiait
+  // les 90 jours — « sert de lien de facture au client pendant le trimestre » —
+  // décrivait une INTENTION, pas un câblage. C'est le motif déjà rencontré cinq
+  // fois dans cet audit : *l'outil est écrit, le raccordement manque* — sauf
+  // qu'ici l'outil non raccordé produisait un secret à longue vie.
+  //
+  // Ce qui reste, et qui est le vrai besoin : le PDF est **archivé** dans R2. La
+  // clé se REDÉRIVE (`invoicePdfKey(number, issuedAt)`, déterministe) — stocker
+  // l'URL n'apportait donc même pas d'information. Le jour où un lien client
+  // sera nécessaire, il se signera AU MOMENT DE L'USAGE, comme le font déjà
+  // `/api/qualiopi/documents/[id]` et `/api/qualiopi/supports/[id]`.
+  //
+  // 🔑 La doctrine du dépôt le dit déjà, dans `formateur/kit-queries.spec.ts` :
+  // « Jamais `pdfUrl` : une URL signée stockée est un lien mort au bout de
+  // 900 s. » Une URL signée stockée 90 jours n'est pas un lien mort : c'est pire,
+  // c'est un lien VIVANT que personne ne surveille.
   if (isR2Configured()) {
     const key = invoicePdfKey(invoice.number, invoice.issuedAt);
     try {
@@ -173,19 +198,15 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
           hashSha256: result.hashSha256,
         });
       }
-      pdfStorageUrl = await getSignedUrlR2(key);
     } catch (err) {
-      console.warn("[invoice-pdf] R2 upload/sign failed (fail-soft)", err);
+      console.warn("[invoice-pdf] R2 upload failed (fail-soft)", err);
     }
   }
 
-  // Persist hash + pdfUrl si changement (idempotent)
-  const updateData: { hashSha256?: string; pdfUrl?: string } = {};
+  // Persist hash si changement (idempotent).
+  const updateData: { hashSha256?: string } = {};
   if (!invoice.hashSha256 || invoice.hashSha256 !== result.hashSha256) {
     updateData.hashSha256 = result.hashSha256;
-  }
-  if (pdfStorageUrl) {
-    updateData.pdfUrl = pdfStorageUrl;
   }
   if (Object.keys(updateData).length > 0) {
     await prisma.invoice.update({ where: { id: invoice.id }, data: updateData }).catch((err) => {
@@ -209,8 +230,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       ),
       "Content-Length": String(result.sizeBytes),
       "Cache-Control": "private, no-store",
+      // `X-Invoice-Hash-Sha256` reste : c'est une EMPREINTE, elle n'ouvre rien.
+      // `X-Invoice-R2-Signed-Url` a été retiré — cf. le bloc R2 ci-dessus.
       "X-Invoice-Hash-Sha256": result.hashSha256,
-      ...(pdfStorageUrl ? { "X-Invoice-R2-Signed-Url": pdfStorageUrl } : {}),
     },
   });
 }

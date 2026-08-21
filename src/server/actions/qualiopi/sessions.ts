@@ -20,6 +20,7 @@
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { avertissementsAffectation } from "@/server/qualiopi/trainers/avertissements-affectation";
 import { revoquerTokensInscription } from "@/server/qualiopi/emargement/token-service";
 import type {
   TrainingSessionStatut,
@@ -45,6 +46,12 @@ import {
   verdictDates,
 } from "@/server/qualiopi/sessions/requalification-dates";
 import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-reelle";
+import {
+  mesurerTraceCloture,
+  clotureSansAucuneTrace,
+  traceClotureIncomplete,
+} from "@/server/qualiopi/presence/trace-cloture";
+import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { refusMotif } from "@/server/qualiopi/formations/transition-motif";
 import {
   isTrainerHabilite,
@@ -137,7 +144,7 @@ const transitionSessionSchema = z.object({
  */
 export async function createSessionAction(
   input: z.infer<typeof createSessionSchema>,
-): Promise<ActionResult<{ id: string; numero: string }>> {
+): Promise<ActionResult<{ id: string; numero: string; avertissements: string[] }>> {
   const session = await requireAdminWrite();
   const parsed = createSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -426,7 +433,23 @@ export async function createSessionAction(
     session,
   });
 
-  return { data: { id: created.id, numero: created.numero } };
+  // 🔴 `D2-5-06` (2026-08-20) — les avertissements de conformité N'EXISTAIENT
+  // PAS sur cette voie. `assignerFormateurAction` les calculait, pas la
+  // création : un sous-traitant sans contrat de sous-traitance — pièce classée
+  // `bloquant` par `trainers/conformite.ts` — pouvait être posé dès la création
+  // et traverser tout le cycle sans qu'un écran ne le signale.
+  //
+  // L'habilitation, elle, était bien contrôlée plus haut : c'est ce qui rendait
+  // le trou invisible. On voyait un contrôle, on en concluait qu'il couvrait le
+  // sujet.
+  //
+  // ⚠️ AVERTISSEMENT, jamais blocage — même arbitrage qu'à l'affectation. La
+  // session EXISTE déjà en base à ce point : la faire échouer pour un Kbis qui
+  // arrive demain empêcherait de planifier, et une garde qui empêche de
+  // travailler finit par être retirée.
+  const avertissements = await avertissementsAffectation(v.trainerId ?? null);
+
+  return { data: { id: created.id, numero: created.numero, avertissements } };
 }
 
 /**
@@ -751,33 +774,37 @@ export async function transitionSessionAction(input: {
   }
 
   // Garde émargement (R1 audit) : on ne marque pas une session « réalisée »
-  // manuellement sans aucune trace de présence/émargement (ind. 12). S'il existe
-  // des inscrits mais aucun émargement/taux saisi → bloquer. (L'auto-clôture cron
-  // J+1 reste un filet de sécurité signalé par l'alerte R03 a posteriori.)
+  // sans AUCUNE trace de présence (ind. 12).
+  //
+  // 🔴 `CONF-01` (2026-08-20) — deux corrections ici.
+  //
+  // 1. La mesure était DUPLIQUÉE avec le cron de clôture automatique, sous un
+  //    commentaire disant « les deux DOIVENT rester alignées » — l'aveu qu'une
+  //    duplication tenait par la vigilance. Elle vit désormais dans
+  //    `presence/trace-cloture.ts`, en un seul exemplaire.
+  //
+  // 2. Elle comptait TOUTES les inscriptions, y compris les `abandon` et les
+  //    `exclu`. Renoncer n'est pas une absence de preuve, c'est une sortie du
+  //    dispositif : les compter faussait le dénominateur dans les deux sens.
+  //
+  // ⚠️ Le blocage reste sur « pas UNE seule trace », et ce n'est pas un oubli :
+  // le durcissement en « tous les inscrits » a déjà été tenté puis RETIRÉ dans
+  // ce dépôt (cf. `trace-cloture.ts`). Il rendait des sessions définitivement
+  // non clôturables. Ce qui change, c'est que le cas PARTIEL cesse d'être muet.
+  let traceCloture: Awaited<ReturnType<typeof mesurerTraceCloture>> | null = null;
   if (toStatus === "realisee") {
     try {
-      const totalInscrits = await prisma.enrollment.count({ where: { sessionId: v.id } });
-      if (totalInscrits > 0) {
-        // Symétrique de la garde du cron (`qualiopi-formation-crons-worker.ts`),
-        // qui porte le commentaire détaillé. Les deux DOIVENT rester alignées,
-        // sinon clôture automatique et clôture manuelle divergent.
-        // `not: null` volontairement : le durcissement en `> 0` rendait certaines
-        // sessions définitivement non clôturables (cf. commentaire du worker).
-        const avecEmargement = await prisma.enrollment.count({
-          where: {
-            sessionId: v.id,
-            OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
-          },
-        });
-        if (avecEmargement === 0) {
-          return {
-            error:
-              "Clôture bloquée : aucun émargement/relevé de présence saisi. Renseigner la présence avant de marquer la session réalisée.",
-          };
-        }
+      traceCloture = await mesurerTraceCloture(v.id);
+      if (clotureSansAucuneTrace(traceCloture)) {
+        return {
+          error:
+            "Clôture bloquée : aucun émargement/relevé de présence saisi. Renseigner la présence avant de marquer la session réalisée.",
+        };
       }
     } catch {
-      // En cas d'erreur de lecture, ne pas bloquer la transition (fail-soft).
+      // Fail-soft : une panne de lecture ne doit pas empêcher de clôturer une
+      // session réellement tenue.
+      traceCloture = null;
     }
   }
 
@@ -863,6 +890,33 @@ export async function transitionSessionAction(input: {
         extra: { sessionId: v.id, toStatus },
       });
     }
+  }
+
+  // 🔴 `CONF-01` — LE CAS PARTIEL CESSE D'ÊTRE MUET.
+  //
+  // La session est clôturée « réalisée » alors que des inscrits ACTIFS n'ont
+  // aucune trace de présence. Une seule inscription renseignée suffisait à
+  // franchir la garde, et onze personnes pouvaient se voir délivrer une
+  // attestation sans qu'aucune preuve n'existe à leur nom — silencieusement.
+  //
+  // On n'a pas refusé la clôture : le durcissement rendrait des sessions
+  // définitivement non clôturables (cf. `trace-cloture.ts`). On la SIGNALE, et
+  // l'alerte dit les deux gestes qui la résolvent — compléter la feuille, ou
+  // sortir du dispositif ceux qui ont renoncé.
+  if (traceCloture !== null && traceClotureIncomplete(traceCloture)) {
+    void creerOuDedup({
+      code: "cloture_trace_presence_incomplete",
+      niveau: "important",
+      titre: "Session clôturée sans trace de présence pour tous les inscrits",
+      message:
+        `${traceCloture.sansTrace} inscrit(s) actif(s) sur ${traceCloture.totalActifs} ` +
+        `n'ont aucune trace de présence, alors que la session est passée en « réalisée ». ` +
+        `Une attestation délivrée à ces personnes ne serait adossée à aucune preuve. ` +
+        `Deux gestes possibles : compléter la feuille d'émargement ou le relevé de ` +
+        `connexion, ou passer en « abandon » ceux qui ont renoncé.`,
+      cibleType: "TrainingSession",
+      cibleId: v.id,
+    }).catch(() => {});
   }
 
   await logQualiopiActivity({

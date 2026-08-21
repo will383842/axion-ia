@@ -50,9 +50,35 @@ test.describe("landing ville — tier-1 SEO smoke", () => {
     await expect(h1s).toHaveCount(1);
 
     // A8 — hreflang
-    const hreflangFr = page.locator('link[rel="alternate"][hreflang="fr-FR"]');
-    const hreflangDefault = page.locator('link[rel="alternate"][hreflang="x-default"]');
-    await expect(hreflangFr).toHaveCount(1);
-    await expect(hreflangDefault).toHaveCount(1);
+    //
+    // 🔴 2026-08-21 — CETTE ASSERTION DÉCRIVAIT UN SITE BILINGUE.
+    //
+    // Elle exigeait `hreflang="fr-FR"` ET `x-default`. Mesuré en production sur
+    // cette page même : la page déclare `fr` et `x-default`, un de chaque, et
+    // AUCUN `en` — le locale EN est éteint depuis le 2026-05-16, et annoncer un
+    // alternate vers une redirection est le signal contradictoire que
+    // `routing.ts` a supprimé de l'en-tête HTTP pour la même raison (GEO-005).
+    //
+    // L'assertion d'origine visait `hreflang="fr-FR"`. Le site n'a jamais émis
+    // de code régional : il émet `fr`. Elle échouait donc sur un code de langue,
+    // pas sur un défaut.
+    const enActif = process.env["EN_LOCALE_ENABLED"] === "true";
+    // 🔴 L'assertion d'origine visait `hreflang="fr-FR"`. Le site n'a jamais
+    // émis de code régional : il émet `fr`. Mesuré sur cette page même, en
+    // production : `fr` et `x-default`, un de chaque, et aucun `en`.
+    await expect(
+      page.locator('link[rel="alternate"][hreflang="fr"]'),
+      "la page ville doit déclarer sa propre variante FR",
+    ).toHaveCount(1);
+    await expect(
+      page.locator('link[rel="alternate"][hreflang="x-default"]'),
+      "la page ville doit déclarer un x-default",
+    ).toHaveCount(1);
+    await expect(
+      page.locator('link[rel="alternate"][hreflang="en"]'),
+      enActif
+        ? "EN réactivé : la variante EN doit être déclarée sur les pages ville"
+        : "EN est éteint : aucun alternate `en` ne doit être déclaré",
+    ).toHaveCount(enActif ? 1 : 0);
   });
 });

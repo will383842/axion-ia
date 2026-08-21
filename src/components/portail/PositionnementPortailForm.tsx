@@ -57,18 +57,18 @@ const FREQUENCES = [
 ] as const;
 
 interface PositionnementPortailFormProps {
-  questionnaireToken: string;
+  questionnaireId: string;
   /** Objectifs pédagogiques de la formation — auto-évaluation objectif par objectif. */
   objectifs: string[];
   soumettreAction: (input: {
-    token: string;
+    questionnaireId: string;
     reponses: Record<string, unknown>;
     noteGlobale?: number;
   }) => Promise<ActionResult<{ id: string }>>;
 }
 
 export function PositionnementPortailForm({
-  questionnaireToken,
+  questionnaireId,
   objectifs,
   soumettreAction,
 }: PositionnementPortailFormProps): React.ReactElement {
@@ -94,7 +94,7 @@ export function PositionnementPortailForm({
     // C'est ce qui distingue cette réponse d'une satisfaction dans les indicateurs.
     startTransition(async () => {
       const result = await soumettreAction({
-        token: questionnaireToken,
+        questionnaireId: questionnaireId,
         reponses: {
           fonction: fonction.trim(),
           secteur: secteur.trim(),
