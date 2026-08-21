@@ -173,6 +173,21 @@ jobs:
       DATABASE_URL: "postgresql://stub:stub@stub.invalid:5432/stub"
       REDIS_URL: "redis://stub.invalid:6379"
       AUTH_SECRET: "ci-dummy-auth-secret-not-used-in-build-32chars-min"
+      # 🔴 NextAuth v5 refuse l'hôte tant que ni `AUTH_URL` ni `AUTH_TRUST_HOST`
+      # ne sont posés. Le premier run où le serveur a réellement démarré
+      # (32447074166) porte **14 136** lignes
+      # `UntrustedHost: Host must be trusted. URL was: http://localhost:3000/api/auth/session`.
+      #
+      # Sans ce drapeau, semer la base ne sert à rien : `loginAsAdmin` échoue
+      # quand même, et les quatre specs de console retombent dans le silence du
+      # `test.skip` — c'est-à-dire exactement l'état qu'on vient de corriger.
+      #
+      # Posé au niveau JOB parce que deux étapes démarrent un serveur (Playwright
+      # et Lighthouse) et que les deux en ont besoin. `AUTH_URL` n'est
+      # volontairement PAS posé : `AUTH_TRUST_HOST` suffit à faire confiance à
+      # l'en-tête d'hôte, et une URL codée en dur au niveau du job traverserait
+      # aussi l'étape `Build`.
+      AUTH_TRUST_HOST: "true"
       ADMIN_URL_PREFIX: "admin-ci-build"
       STRIPE_SECRET_KEY: "sk_test_ci_dummy_not_used_in_build"
       STRIPE_PUBLISHABLE_KEY: "pk_test_ci_dummy_not_used_in_build"
