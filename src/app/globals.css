@@ -277,8 +277,8 @@
      ⚠️ Ces seuils sont un BUDGET, pas un goût. Ajouter un onglet ou rallonger
      un libellé les invalide — `Header.budget.spec.ts` rougit dans ce cas. */
   --breakpoint-nav: 1440px; /* tiroir → nav horizontale */
-  --breakpoint-navcta: 1600px; /* « Nous écrire » rentre à côté de la nav */
-  --breakpoint-navair: 1700px; /* onglets aérés (gap-12) */
+  --breakpoint-navcta: 1700px; /* « Nous écrire » rentre à côté de la nav */
+  --breakpoint-navair: 1800px; /* onglets aérés */
 
   /* ----- Hauteur du header public collant -----
      🔴 Vérification en production du 2026-08-04 : la barre latérale des espaces

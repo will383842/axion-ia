@@ -26,7 +26,7 @@ export function ImplementationContactBand({
     <section className="bg-terracotta py-16 sm:py-20">
       <Container>
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl min-w-0">
             <p className="text-mocha-fg mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
               {isFr ? "Une idée d'automatisation en tête ?" : "An automation idea in mind?"}
             </p>
@@ -45,7 +45,7 @@ export function ImplementationContactBand({
                 : "A call to understand your need, tell you what's feasible — from a chatbot to an AI agent wired into your tools — and how we go about it. No commitment."}
             </p>
           </div>
-          <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
+          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <Cta
               href="/appel"
               size="lg"
