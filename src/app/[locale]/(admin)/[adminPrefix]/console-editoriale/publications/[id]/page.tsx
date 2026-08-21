@@ -25,15 +25,19 @@ import { evaluerConformite, type RegleEvaluable } from "@/server/editorial/confo
 import { televerserAssetAction } from "@/server/actions/editorial/assets";
 import { urlPublique } from "@/server/editorial/stockage";
 import { DepotFichier } from "./DepotFichier";
+import { saisirReleveFormAction } from "@/server/actions/editorial/metriques";
+import { formaterAgregat, LIBELLES, type CleMetrique } from "@/server/editorial/analyse";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string; id: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function FichePublicationPage({ params }: PageProps) {
+export default async function FichePublicationPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
@@ -46,6 +50,12 @@ export default async function FichePublicationPage({ params }: PageProps) {
     where: { actif: true },
     orderBy: { code: "asc" },
   })) as unknown as RegleEvaluable[];
+
+  const releves = await prisma.edMetrique.findMany({
+    where: { publicationId: id },
+    orderBy: { releveA: "desc" },
+    take: 10,
+  });
 
   const conformite = evaluerConformite(regles, {
     accroche: publication.accroche,
@@ -225,6 +235,166 @@ export default async function FichePublicationPage({ params }: PageProps) {
           )}
 
           <DepotFichier publicationId={id} televerser={televerserAssetAction} />
+        </AdminCard>
+      </div>
+
+      {/* ── La mesure — lot 3 ───────────────────────────────────────────── */}
+      <div className="mt-[var(--space-admin-4)]">
+        <AdminCard>
+          <h2 className="admin-h2 mb-[var(--space-admin-3)]">Relevés</h2>
+
+          {sp.erreur && (
+            <p
+              role="alert"
+              className="mb-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-3 text-[color:var(--color-admin-destructive-fg)]"
+            >
+              {sp.erreur}
+            </p>
+          )}
+          {sp.releve && (
+            <p
+              role="status"
+              className="mb-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-success)] bg-[color:var(--color-admin-success-soft)] p-3 text-[color:var(--color-admin-success-fg)]"
+            >
+              Relevé enregistré — le précédent est conservé.
+            </p>
+          )}
+
+          <form action={saisirReleveFormAction} className="mb-[var(--space-admin-4)]">
+            <input type="hidden" name="publicationId" value={id} />
+            <input type="hidden" name="retour" value={`${base}/publications/${id}`} />
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div key="impressions">
+                <label
+                  htmlFor="impressions"
+                  className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                >
+                  {LIBELLES["impressions" as CleMetrique]}
+                </label>
+                <input
+                  id="impressions"
+                  name="impressions"
+                  type="number"
+                  min={0}
+                  className="admin-input"
+                />
+              </div>
+              <div key="reactions">
+                <label
+                  htmlFor="reactions"
+                  className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                >
+                  {LIBELLES["reactions" as CleMetrique]}
+                </label>
+                <input
+                  id="reactions"
+                  name="reactions"
+                  type="number"
+                  min={0}
+                  className="admin-input"
+                />
+              </div>
+              <div key="commentaires">
+                <label
+                  htmlFor="commentaires"
+                  className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                >
+                  {LIBELLES["commentaires" as CleMetrique]}
+                </label>
+                <input
+                  id="commentaires"
+                  name="commentaires"
+                  type="number"
+                  min={0}
+                  className="admin-input"
+                />
+              </div>
+              <div key="partages">
+                <label
+                  htmlFor="partages"
+                  className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                >
+                  {LIBELLES["partages" as CleMetrique]}
+                </label>
+                <input
+                  id="partages"
+                  name="partages"
+                  type="number"
+                  min={0}
+                  className="admin-input"
+                />
+              </div>
+              <div key="clics">
+                <label
+                  htmlFor="clics"
+                  className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                >
+                  {LIBELLES["clics" as CleMetrique]}
+                </label>
+                <input id="clics" name="clics" type="number" min={0} className="admin-input" />
+              </div>
+              <div key="rdvAttribues">
+                <label
+                  htmlFor="rdvAttribues"
+                  className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                >
+                  {LIBELLES["rdvAttribues" as CleMetrique]}
+                </label>
+                <input
+                  id="rdvAttribues"
+                  name="rdvAttribues"
+                  type="number"
+                  min={0}
+                  className="admin-input"
+                />
+              </div>
+            </div>
+            <p className="mt-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Laissez vide ce que vous n&apos;avez pas relevé. Un champ vide vaut « non disponible
+              », pas zéro — et la différence change les décisions qu&apos;on prend.
+            </p>
+            <button type="submit" className="admin-button admin-button-sm mt-2">
+              Enregistrer le relevé
+            </button>
+          </form>
+
+          {releves.length === 0 ? (
+            <AdminEmptyState
+              variant="inline"
+              title="Aucun relevé"
+              description="Saisissez le premier ci-dessus. Chaque relevé crée une ligne : le précédent n'est jamais écrasé."
+            />
+          ) : (
+            <table className="w-full text-[length:var(--text-admin-sm)]">
+              <caption className="sr-only">Historique des relevés de cette publication</caption>
+              <thead>
+                <tr className="text-left text-[color:var(--color-admin-fg-muted)]">
+                  <th scope="col" className="pb-1">
+                    Relevé le
+                  </th>
+                  <th scope="col" className="pb-1">
+                    Impressions
+                  </th>
+                  <th scope="col" className="pb-1">
+                    Rendez-vous
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {releves.map((r) => (
+                  <tr key={r.id} className="border-t border-[color:var(--color-admin-border)]">
+                    <td className="py-1">{r.releveA.toLocaleString("fr-FR")}</td>
+                    <td className="py-1">
+                      {formaterAgregat({ valeur: r.impressions, nbReleves: 1, nbAttendus: 1 })}
+                    </td>
+                    <td className="py-1">
+                      {formaterAgregat({ valeur: r.rdvAttribues, nbReleves: 1, nbAttendus: 1 })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </AdminCard>
       </div>
 
