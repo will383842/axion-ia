@@ -99,11 +99,24 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
           pathname.startsWith(`/fr/${ADMIN_PREFIX}/2fa`)
         );
       },
-      // 15 s suffisent largement contre un build de production (la CI sert
-      // `pnpm start`). Sous `next dev`, la première soumission compile l'action
-      // serveur à la demande et dépasse régulièrement ce délai — un échec qui
-      // ressemble à s'y méprendre à « mauvais identifiants ».
-      { timeout: baseSemeeAttendue() ? 15_000 : 90_000 },
+      // 🔴 15 s NE SUFFISENT PAS EN CI — mesuré, pas supposé.
+      //
+      // Sur le run 32498161324, 42 connexions ont échoué, toutes avec la même
+      // cause (`Timeout 15000ms exceeded`) et le même texte d'écran : le bouton
+      // figé sur « Connexion… ». Autrement dit l'action tournait encore.
+      //
+      // La raison est structurelle et souhaitable : la vérification du mot de
+      // passe est DÉLIBÉRÉMENT coûteuse, et Gate B lance quatre workers qui se
+      // connectent en même temps. Quatre hachages concurrents sur un runner
+      // partagé dépassent 15 s sans que rien ne soit cassé.
+      //
+      // 🔑 Un délai d'attente n'est pas une assertion : le raccourcir ne rend
+      // pas le produit meilleur, il rend le journal faux. On mesure ce que la
+      // connexion coûte réellement sous charge, et on laisse de la marge.
+      //
+      // Sous `next dev`, la première soumission compile l'action serveur à la
+      // demande et coûte davantage encore.
+      { timeout: baseSemeeAttendue() ? 60_000 : 180_000 },
     );
   } catch (cause) {
     // 🔴 L'appelant attrape cette erreur pour se `test.skip`. Si elle ne dit pas
