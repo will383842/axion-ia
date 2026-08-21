@@ -74,7 +74,7 @@ test.describe("navigation admin — chaque entrée s'OUVRE @admin-nav", () => {
 
   test.skip(
     !cibleLocale() || !identifiantsFournis(),
-    "Cible locale ET identifiants de seed requis (la CI n'a pas de base seedée).",
+    "Cible locale ET identifiants de seed requis.",
   );
 
   test("le SSOT n'est pas vide — sinon le parcours ci-dessous ne prouve rien", () => {

@@ -11,7 +11,7 @@
 // 2FA désactivé. Si non seedé → test.skip explicite (pas un fail).
 
 import { test, expect } from "@playwright/test";
-import { ADMIN_PREFIX, loginAsAdmin } from "../fixtures/admin-auth";
+import { ADMIN_PREFIX, loginAsAdmin, baseSemeeAttendue } from "../fixtures/admin-auth";
 
 test.describe("Legacy booking — redirections vers les modules réels", () => {
   const cases = [
@@ -29,8 +29,10 @@ test.describe("Legacy booking — redirections vers les modules réels", () => {
   test("chaque ancienne URL booking atterrit sur son module réel", async ({ page }) => {
     try {
       await loginAsAdmin(page);
-    } catch {
-      test.skip(true, "AdminUser pas seedé dans la DB locale — skip");
+    } catch (e) {
+      // En CI la base est semée : un échec ici est un défaut, pas une dispense.
+      if (baseSemeeAttendue()) throw e;
+      test.skip(true, `connexion admin impossible en local : ${String(e).slice(0, 300)}`);
       return;
     }
 
