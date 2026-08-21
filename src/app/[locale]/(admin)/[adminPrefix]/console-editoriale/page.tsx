@@ -189,6 +189,31 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
         </AdminCard>
       </div>
 
+      {/* ── Sortir ses données — critères 9 et 10 ───────────────────────── */}
+      <div className="mt-[var(--space-admin-6)]">
+        <AdminCard>
+          <h2 className="admin-h2 mb-[var(--space-admin-3)]">Sortir ses données</h2>
+          <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
+            Un outil dont on ne peut pas sortir est un piège. La sauvegarde complète est une
+            exigence du plan, pas un confort.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {resume.moisCouverts.map((m) => (
+              <a
+                key={`csv-${m.annee}-${m.mois}`}
+                href={`${base}/export?type=csv&year=${m.annee}&month=${m.mois}`}
+                className="admin-button-secondary admin-button-sm"
+              >
+                CSV — {MOIS[m.mois - 1]} {m.annee}
+              </a>
+            ))}
+            <a href={`${base}/export?type=sauvegarde`} className="admin-button admin-button-sm">
+              Sauvegarde complète (JSON)
+            </a>
+          </div>
+        </AdminCard>
+      </div>
+
       <div className="mt-[var(--space-admin-6)]">
         <AdminCard>
           <h2 className="admin-h2 mb-[var(--space-admin-3)]">Ce que ce lot ne fait pas encore</h2>
