@@ -54,26 +54,31 @@ test.describe("landing ville — tier-1 SEO smoke", () => {
     // 🔴 2026-08-21 — CETTE ASSERTION DÉCRIVAIT UN SITE BILINGUE.
     //
     // Elle exigeait `hreflang="fr-FR"` ET `x-default`. Mesuré en production sur
-    // cette page même : **aucune** balise `hreflang`, et c'est cohérent — le
-    // locale EN est éteint depuis le 2026-05-16, et le hreflang ne sert qu'à
-    // relier des variantes de langue. `routing.ts` a coupé l'en-tête HTTP pour
-    // la même raison (GEO-005) : on annonçait un alternate vers une redirection.
+    // cette page même : la page déclare `fr` et `x-default`, un de chaque, et
+    // AUCUN `en` — le locale EN est éteint depuis le 2026-05-16, et annoncer un
+    // alternate vers une redirection est le signal contradictoire que
+    // `routing.ts` a supprimé de l'en-tête HTTP pour la même raison (GEO-005).
     //
-    // Doublement périmée, d'ailleurs : le code régional `fr-FR` n'a jamais été
-    // celui qu'émet le site, qui utilise `fr`.
+    // L'assertion d'origine visait `hreflang="fr-FR"`. Le site n'a jamais émis
+    // de code régional : il émet `fr`. Elle échouait donc sur un code de langue,
+    // pas sur un défaut.
     const enActif = process.env["EN_LOCALE_ENABLED"] === "true";
-    const hreflangs = page.locator('link[rel="alternate"][hreflang]');
-    if (enActif) {
-      await expect(
-        page.locator('link[rel="alternate"][hreflang="en"]'),
-        "EN réactivé : la variante EN doit être déclarée sur les pages ville",
-      ).toHaveCount(1);
-    } else {
-      await expect(
-        hreflangs,
-        "EN est éteint : aucune balise hreflang ne doit être déclarée — en annoncer " +
-          "une pointerait le moteur vers une redirection",
-      ).toHaveCount(0);
-    }
+    // 🔴 L'assertion d'origine visait `hreflang="fr-FR"`. Le site n'a jamais
+    // émis de code régional : il émet `fr`. Mesuré sur cette page même, en
+    // production : `fr` et `x-default`, un de chaque, et aucun `en`.
+    await expect(
+      page.locator('link[rel="alternate"][hreflang="fr"]'),
+      "la page ville doit déclarer sa propre variante FR",
+    ).toHaveCount(1);
+    await expect(
+      page.locator('link[rel="alternate"][hreflang="x-default"]'),
+      "la page ville doit déclarer un x-default",
+    ).toHaveCount(1);
+    await expect(
+      page.locator('link[rel="alternate"][hreflang="en"]'),
+      enActif
+        ? "EN réactivé : la variante EN doit être déclarée sur les pages ville"
+        : "EN est éteint : aucun alternate `en` ne doit être déclaré",
+    ).toHaveCount(enActif ? 1 : 0);
   });
 });

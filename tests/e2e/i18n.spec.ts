@@ -43,12 +43,22 @@ test.describe("i18n + layout", () => {
       return;
     }
 
+    // 🔴 RECTIFICATION, LE JOUR MÊME. Un premier jet exigeait ZÉRO balise, sur
+    // la foi d'un `grep hreflang` en minuscules contre la production. Or React
+    // rend l'attribut en camelCase — `hrefLang` — et le grep ne voyait rien.
+    // Remesuré sans casse : la page porte bien DEUX alternates, `fr` et
+    // `x-default`, et aucun `en`. Exactement ce que rend la CI.
+    //
+    // 🔑 Une mesure qui ne trouve rien doit d'abord faire douter de la mesure.
+    // C'est la quatrième fois de la journée qu'une lecture trop pressée a failli
+    // produire un faux constat.
     expect(
       { fr, en, xDefault },
-      "EN est éteint : aucun `hreflang` ne doit être déclaré. En annoncer un " +
-        "pointerait Google vers une redirection — le signal contradictoire que " +
-        "GEO-005 a supprimé de l'en-tête HTTP pour la même raison",
-    ).toEqual({ fr: 0, en: 0, xDefault: 0 });
+      "EN est éteint : la page doit déclarer sa propre variante FR et un " +
+        "x-default, mais AUCUN alternate `en` — en annoncer un pointerait Google " +
+        "vers une redirection, le signal contradictoire que GEO-005 a supprimé " +
+        "de l'en-tête HTTP pour la même raison",
+    ).toEqual({ fr: 1, en: 0, xDefault: 1 });
   });
 
   test("skip-to-content is the first focusable element", async ({ page }) => {
