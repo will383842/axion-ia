@@ -105,12 +105,38 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
   // Calendly inline widget (`/appel` Sprint A correctif 2026-05-25) charge
   // `assets.calendly.com/assets/external/widget.js` via next/script lazyOnload.
   // Connect + frame ajoutés plus bas pour l'iframe `calendly.com/{user}/{event}`.
+  // 🔴 2026-08-21 — LA CONSOLE ADMIN N'ÉTAIT PAS UTILISABLE EN DÉVELOPPEMENT.
+  //
+  // `next dev` compile avec `devtool: eval-source-map` : chaque module client
+  // est livré dans un `eval()`. La CSP stricte, qui n'autorise pas
+  // `'unsafe-eval'`, bloquait donc le bundle client de TOUT l'espace admin. La
+  // page se rendait (le HTML est serveur), mais React n'hydratait jamais.
+  //
+  // Le symptôme est perfide : rien n'a l'air cassé. Les boutons existent, les
+  // champs se remplissent, une case à cocher bascule même — c'est le navigateur
+  // qui le fait, pas React. Seul l'ÉTAT ne suit pas. C'est ainsi que le parcours
+  // de vente e2e cochait « Nouveau client » et se voyait resservir le panneau
+  // « Client existant » : la console rendait
+  //
+  //   EvalError: Evaluating a string as JavaScript violates the following
+  //   Content Security Policy directive ... 'unsafe-eval' is not an allowed source
+  //
+  // et personne ne la lisait, parce que la seule suite qui aurait pu la lire se
+  // `test.skip`ait sur un sélecteur cassé.
+  //
+  // ⚠️ L'exemption est STRICTEMENT limitée au hors-production, et
+  // `src/lib/__tests__/csp-unsafe-eval-hors-production.spec.ts` la verrouille :
+  // aucune CSP de production ne peut porter `'unsafe-eval'`, en mode strict
+  // comme en mode souple.
+  const evalDeDeveloppement = process.env.NODE_ENV === "production" ? [] : ["'unsafe-eval'"];
+
   const scriptSrc = strict
     ? [
         "script-src",
         "'self'",
         `'nonce-${nonce}'`,
         "'strict-dynamic'",
+        ...evalDeDeveloppement,
         SPECULATION_RULES_HASH,
         "https://challenges.cloudflare.com",
         "https://plausible.axion-ia.com",
