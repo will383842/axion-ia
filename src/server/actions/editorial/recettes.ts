@@ -1,0 +1,426 @@
+/**
+ * Console éditoriale — recettes, dérivation et les deux gardes du lot 2.
+ *
+ * Ce fichier ORCHESTRE ; toutes les décisions vivent dans
+ * `@/server/editorial/derivation`, module pur couvert par 40 tests. Ici on ne
+ * fait que charger, appliquer, journaliser.
+ */
+
+"use server";
+
+import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { prisma } from "@/lib/prisma";
+import { requirePermission, journaliser } from "@/server/actions/editorial/_guards";
+import {
+  derivesDeRecette,
+  creeraitUnCycle,
+  peutProgrammer,
+  peutPasserPret,
+  type AssetDerivable,
+} from "@/server/editorial/derivation";
+import { transitionDiffusion, type StatutDiffusion } from "@/server/editorial/publication-edition";
+import type { ActionResult } from "@/server/actions/editorial/publications";
+
+/** Charge les assets d'un arbre — la racine et toute sa descendance. */
+async function chargerLot(racineId: string): Promise<AssetDerivable[]> {
+  // Une descendance à profondeur inconnue se remonte par une récursive SQL :
+  // quatre allers-retours Prisma pour quatre niveaux coûteraient plus cher,
+  // et ne borneraient toujours pas la profondeur.
+  const lignes = await prisma.$queryRaw<AssetDerivable[]>`
+    WITH RECURSIVE arbre AS (
+      SELECT id, libelle, type::text, nature::text, statut::text, parent_id,
+             offset_source_sec, famille_id, duree_sec, 0 AS niveau
+      FROM ed_assets WHERE id = ${racineId}::uuid
+      UNION ALL
+      SELECT a.id, a.libelle, a.type::text, a.nature::text, a.statut::text, a.parent_id,
+             a.offset_source_sec, a.famille_id, a.duree_sec, arbre.niveau + 1
+      FROM ed_assets a
+      JOIN arbre ON a.parent_id = arbre.id
+      -- Borne DURE : sans elle, un cycle en base ferait boucler Postgres
+      -- lui-même, et la garde applicative n'aurait jamais la main.
+      WHERE arbre.niveau < 10
+    )
+    SELECT id::text AS id, libelle, type, nature, statut,
+           parent_id::text AS "parentId",
+           offset_source_sec AS "offsetSourceSec",
+           famille_id::text AS "familleId",
+           duree_sec AS "dureeSec"
+    FROM arbre
+  `;
+  return lignes;
+}
+
+/**
+ * Applique une recette à un asset source — critère 1 du lot 2.
+ *
+ * > « Un asset enregistré avec une recette crée automatiquement ses dérivés
+ * >   en `a_produire`. »
+ *
+ * Transactionnel : une recette à moitié appliquée laisserait un épisode avec
+ * douze shorts sur trente-deux, sans que rien ne dise lesquels manquent.
+ */
+export async function appliquerRecetteAction(input: {
+  assetId: string;
+  recetteId: string;
+}): Promise<ActionResult<{ crees: number }>> {
+  try {
+    const membre = await requirePermission("asset.ecrire");
+    const parsed = z
+      .object({ assetId: z.string().uuid(), recetteId: z.string().uuid() })
+      .safeParse(input);
+    if (!parsed.success) return { error: "Données invalides" };
+    const { assetId, recetteId } = parsed.data;
+
+    const [source, recette] = await Promise.all([
+      prisma.edAsset.findUnique({ where: { id: assetId }, select: { id: true, libelle: true } }),
+      prisma.edRecette.findUnique({
+        where: { id: recetteId },
+        select: {
+          nom: true,
+          actif: true,
+          lignes: {
+            select: {
+              familleId: true,
+              quantite: true,
+              compteId: true,
+              note: true,
+              famille: { select: { nom: true, type: true } },
+            },
+          },
+        },
+      }),
+    ]);
+
+    if (!source) return { error: "Asset source introuvable" };
+    if (!recette) return { error: "Recette introuvable" };
+    if (!recette.actif) return { error: `La recette « ${recette.nom} » est désactivée.` };
+    if (recette.lignes.length === 0) {
+      return { error: `La recette « ${recette.nom} » ne produit rien : elle n'a aucune ligne.` };
+    }
+
+    const aCreer = derivesDeRecette(
+      source.libelle,
+      recette.lignes.map((l) => ({
+        familleId: l.familleId,
+        familleNom: l.famille.nom,
+        quantite: l.quantite,
+        compteId: l.compteId,
+        note: l.note,
+      })),
+    );
+
+    const typeParFamille = new Map(
+      recette.lignes.map((l) => [l.familleId, l.famille.type as string]),
+    );
+
+    await prisma.$transaction(async (tx) => {
+      for (const d of aCreer) {
+        await tx.edAsset.create({
+          data: {
+            type: (typeParFamille.get(d.familleId) ?? "video") as never,
+            familleId: d.familleId,
+            nature: "derive",
+            usage: "organique",
+            libelle: d.libelle,
+            parentId: assetId,
+            statut: "a_produire",
+          },
+        });
+      }
+    });
+
+    await journaliser({
+      entite: "EdAsset",
+      entiteId: assetId,
+      action: "recette_appliquee",
+      membreId: membre.membreId,
+      apres: { recette: recette.nom, crees: aCreer.length },
+    });
+
+    revalidatePath("/[locale]/(admin)/[adminPrefix]/console-editoriale", "page");
+    return { data: { crees: aCreer.length } };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Erreur inattendue" };
+  }
+}
+
+/**
+ * Rattache un asset à un parent — en refusant les cycles.
+ *
+ * Le contrôle a lieu AVANT l'écriture : refuser après demanderait de défaire
+ * ce qui vient d'être fait.
+ */
+export async function rattacherAssetAction(input: {
+  assetId: string;
+  parentId: string | null;
+  offsetSourceSec?: number | null;
+}): Promise<ActionResult<{ ok: true }>> {
+  try {
+    const membre = await requirePermission("asset.ecrire");
+    const parsed = z
+      .object({
+        assetId: z.string().uuid(),
+        parentId: z.string().uuid().nullable(),
+        offsetSourceSec: z.number().int().min(0).nullable().optional(),
+      })
+      .safeParse(input);
+    if (!parsed.success) return { error: "Données invalides" };
+    const { assetId, parentId, offsetSourceSec } = parsed.data;
+
+    if (parentId) {
+      // On charge l'arbre du parent proposé : le cycle ne peut naître que là.
+      const lot = await chargerLot(parentId);
+      const tous = await prisma.edAsset.findMany({
+        where: { id: { in: [assetId, parentId] } },
+        select: { id: true, parentId: true },
+      });
+      const complet: AssetDerivable[] = [
+        ...lot,
+        ...tous
+          .filter((t) => !lot.some((l) => l.id === t.id))
+          .map((t) => ({
+            id: t.id,
+            libelle: "",
+            type: "",
+            nature: "",
+            statut: "",
+            parentId: t.parentId,
+            offsetSourceSec: null,
+            familleId: null,
+            dureeSec: null,
+          })),
+      ];
+
+      if (creeraitUnCycle(complet, assetId, parentId)) {
+        return {
+          error:
+            "Rattachement refusé : il créerait un cycle de dérivation. " +
+            "Un asset ne peut pas descendre de lui-même, même indirectement.",
+        };
+      }
+    }
+
+    await prisma.edAsset.update({
+      where: { id: assetId },
+      data: {
+        parentId,
+        ...(offsetSourceSec !== undefined ? { offsetSourceSec } : {}),
+        nature: parentId ? "derive" : "autonome",
+      },
+    });
+
+    await journaliser({
+      entite: "EdAsset",
+      entiteId: assetId,
+      action: "rattachement",
+      membreId: membre.membreId,
+      apres: { parentId, offsetSourceSec },
+    });
+
+    revalidatePath("/[locale]/(admin)/[adminPrefix]/console-editoriale", "page");
+    return { data: { ok: true } };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Erreur inattendue" };
+  }
+}
+
+/**
+ * Passe un asset à `pret` — critère 5 du lot 2.
+ *
+ * La spec est lue EN BASE (`ed_specs_plateforme`), croisée avec la plateforme
+ * du compte visé par les publications de cet asset. Pas de spec applicable ⇒
+ * pas de blocage : on ne refuse que sur une contradiction ÉTABLIE.
+ */
+export async function passerAssetPretAction(input: {
+  assetId: string;
+}): Promise<ActionResult<{ ok: true; avertissement: string | null }>> {
+  try {
+    const membre = await requirePermission("asset.valider");
+    const parsed = z.object({ assetId: z.string().uuid() }).safeParse(input);
+    if (!parsed.success) return { error: "Données invalides" };
+
+    const asset = await prisma.edAsset.findUnique({
+      where: { id: parsed.data.assetId },
+      select: {
+        libelle: true,
+        dureeSec: true,
+        familleId: true,
+        statut: true,
+        publications: {
+          select: { publication: { select: { compte: { select: { plateforme: true } } } } },
+        },
+      },
+    });
+    if (!asset) return { error: "Asset introuvable" };
+
+    // La spec dépend du couple (plateforme, famille). Un asset non rattaché à
+    // une publication n'a pas de plateforme visée : rien à vérifier.
+    let verdict = { autorise: true, message: "", indetermine: false as boolean | undefined };
+    if (asset.familleId && asset.publications.length > 0) {
+      const plateformes = [
+        ...new Set(asset.publications.map((p) => p.publication.compte.plateforme)),
+      ];
+      const specs = await prisma.edSpecPlateforme.findMany({
+        where: { familleId: asset.familleId, plateforme: { in: plateformes } },
+        select: { dureeMinSec: true, dureeMaxSec: true, plateforme: true },
+      });
+      for (const spec of specs) {
+        const v = peutPasserPret(
+          { libelle: asset.libelle, dureeSec: asset.dureeSec },
+          {
+            dureeMinSec: spec.dureeMinSec,
+            dureeMaxSec: spec.dureeMaxSec,
+            plateforme: spec.plateforme,
+          },
+        );
+        if (!v.autorise) return { error: v.message };
+        if (v.indetermine) verdict = { ...v, indetermine: true };
+      }
+    }
+
+    await prisma.edAsset.update({
+      where: { id: parsed.data.assetId },
+      data: { statut: "pret" },
+    });
+
+    await journaliser({
+      entite: "EdAsset",
+      entiteId: parsed.data.assetId,
+      action: "validation",
+      membreId: membre.membreId,
+      avant: { statut: asset.statut },
+      apres: { statut: "pret", specNonVerifiee: verdict.indetermine ?? false },
+    });
+
+    revalidatePath("/[locale]/(admin)/[adminPrefix]/console-editoriale", "page");
+    return { data: { ok: true, avertissement: verdict.indetermine ? verdict.message : null } };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Erreur inattendue" };
+  }
+}
+
+/**
+ * Programme une publication — critère 4 du lot 2.
+ *
+ * > « Un épisode dont l'autorisation n'est pas `signee` NE PEUT PAS passer
+ * >   une publication à `programme`. »
+ *
+ * On remonte des assets liés vers leurs invités : c'est `EdEpisodeInvite` qui
+ * porte le statut d'autorisation, et un short hérite du droit de l'épisode
+ * dont il est tiré — d'où la remontée par l'arbre de dérivation.
+ */
+export async function programmerPublicationAction(input: {
+  id: string;
+  outil?: string;
+  refExterne?: string;
+}): Promise<ActionResult<{ ok: true }>> {
+  try {
+    const membre = await requirePermission("publication.ecrire");
+    const parsed = z
+      .object({
+        id: z.string().uuid(),
+        outil: z.string().max(60).optional(),
+        refExterne: z.string().max(160).optional(),
+      })
+      .safeParse(input);
+    if (!parsed.success) return { error: "Données invalides" };
+    const { id, outil, refExterne } = parsed.data;
+
+    const publication = await prisma.edPublication.findUnique({
+      where: { id },
+      select: {
+        statutDiffusion: true,
+        datePrevue: true,
+        assets: { select: { assetId: true } },
+      },
+    });
+    if (!publication) return { error: "Publication introuvable" };
+
+    const verdictTransition = transitionDiffusion(
+      publication.statutDiffusion as StatutDiffusion,
+      "programme",
+    );
+    if (!verdictTransition.autorisee) return { error: verdictTransition.message };
+
+    // ── La garde de droit à l'image ──────────────────────────────────────
+    if (publication.assets.length > 0) {
+      // Un short hérite du droit de son épisode : on remonte l'arbre.
+      const racines = new Set<string>();
+      for (const { assetId } of publication.assets) {
+        const lot = await chargerLot(assetId);
+        for (const a of lot) racines.add(a.id);
+        // …et vers le haut aussi.
+        let courant = await prisma.edAsset.findUnique({
+          where: { id: assetId },
+          select: { parentId: true },
+        });
+        let garde = 0;
+        while (courant?.parentId && garde < 10) {
+          racines.add(courant.parentId);
+          courant = await prisma.edAsset.findUnique({
+            where: { id: courant.parentId },
+            select: { parentId: true },
+          });
+          garde += 1;
+        }
+      }
+
+      const autorisations = await prisma.edEpisodeInvite.findMany({
+        where: { assetId: { in: [...racines] } },
+        select: {
+          autorisationStatut: true,
+          valableJusquA: true,
+          invite: { select: { nom: true } },
+        },
+      });
+
+      const verdict = peutProgrammer(
+        autorisations.map((a) => ({
+          inviteNom: a.invite.nom,
+          statut: a.autorisationStatut,
+          valableJusquA: a.valableJusquA,
+        })),
+        publication.datePrevue,
+      );
+      if (!verdict.autorise) return { error: verdict.message };
+    }
+
+    await prisma.edPublication.update({
+      where: { id },
+      data: {
+        statutDiffusion: "programme",
+        ...(outil ? { outilProgrammation: outil } : {}),
+        ...(refExterne ? { refExterne } : {}),
+      },
+    });
+
+    await journaliser({
+      entite: "EdPublication",
+      entiteId: id,
+      action: "programmation",
+      membreId: membre.membreId,
+      avant: { statutDiffusion: publication.statutDiffusion },
+      apres: { statutDiffusion: "programme", outil, refExterne },
+    });
+
+    revalidatePath("/[locale]/(admin)/[adminPrefix]/console-editoriale", "page");
+    return { data: { ok: true } };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Erreur inattendue" };
+  }
+}
+
+/** L'arbre complet d'un asset — pour l'écran de médiathèque. */
+export async function chargerArbreAction(
+  racineId: string,
+): Promise<ActionResult<AssetDerivable[]>> {
+  try {
+    await requirePermission("voir");
+    const parsed = z.string().uuid().safeParse(racineId);
+    if (!parsed.success) return { error: "Identifiant invalide" };
+    return { data: await chargerLot(parsed.data) };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Erreur inattendue" };
+  }
+}
