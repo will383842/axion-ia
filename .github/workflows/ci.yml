@@ -169,6 +169,35 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
+      # 🔴 2026-08-21 — SANS REDIS, LA CONNEXION ADMIN EST REFUSÉE, PAS LENTE.
+      #
+      # `REDIS_URL` vaut `redis://stub.invalid` au niveau du job (ADR 0026, le
+      # build ne peut joindre aucun service). `src/lib/redis.ts` rend alors un
+      # Proxy qui répond `null` à tout. `checkRateLimit` y voit une PANNE du
+      # compteur de tentatives, et `signInAction` applique `surPanne: "refuser"` :
+      #
+      #     Connexion momentanément indisponible : le compteur de tentatives ne
+      #     répond pas. Réessayez dans quelques minutes.
+      #
+      # C'est la bonne posture — un limiteur de tentatives qui ne compte plus
+      # doit fermer, pas ouvrir. Mais en CI, cela refusait **toutes** les
+      # connexions admin : 84 échecs sur le run 32506915097, tous lus comme des
+      # délais dépassés. J'ai d'abord cru à de la lenteur et porté l'attente de
+      # 15 s à 60 s — un cataplasme sur une jambe de bois. C'est le TEXTE DE
+      # L'ÉCRAN, que le fixture emporte désormais dans son message d'échec, qui a
+      # nommé la cause.
+      #
+      # 🔑 Un délai dépassé ne dit pas POURQUOI. Sans le texte visible, on
+      # allonge des timeouts indéfiniment devant un refus catégorique.
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
     # Job-level env vars : héritées par TOUS les steps (Build + Playwright
     # webServer + Lighthouse CI). Évite de dupliquer les dummy values dans
     # chaque step et fix le ECONNREFUSED Playwright (le dev server pour
@@ -405,6 +434,11 @@ jobs:
           DIRECT_URL: "postgresql://axion_ia_e2e:ci_password_dummy@localhost:5432/axion_ia_e2e?schema=public"
           ADMIN_SEED_EMAIL: "admin@axion-ia.com"
           ADMIN_SEED_PASSWORD: "AdminAxion2026!"
+          # Redis RÉEL pour ce step seulement — le job garde `stub.invalid`,
+          # que le BUILD exige (ADR 0026). Sans lui, le compteur de tentatives
+          # de connexion ne répond pas et `signInAction` refuse toute connexion
+          # admin par sécurité : voir le commentaire du service `redis`.
+          REDIS_URL: "redis://localhost:6379"
         # continue-on-error MAINTENU pour CE passage seulement : la suite n'a
         # jamais tourné contre un vrai serveur, on ne sait donc pas encore
         # combien de tests passent. Le chiffre de ce run est la mesure. Le retrait
