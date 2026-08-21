@@ -8,6 +8,10 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  porteUneTraceDePresence,
+  sansAucuneTraceDePresence,
+} from "@/server/qualiopi/presence/trace-cloture";
 import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -220,14 +224,28 @@ async function regleReclamationsSansReponse(now: Date): Promise<AlerteCandidate[
   }));
 }
 
-/** R03 — Émargements manquants : session realisee + enrollment sans emargement > 48h. */
+/**
+ * R03 — Émargements manquants : session realisee + enrollment sans trace > 48h.
+ *
+ * 🔴 `D2-3-C2` (2026-08-20). Cette règle filtrait sur `emargementSigneAt: null`
+ * seul. Or ce champ n'est posé QUE par la grille présentielle : l'import d'un
+ * relevé de connexion ne l'écrit jamais (`actions/qualiopi/presence.ts`, il
+ * appelle `recomputeTauxPresence` et s'arrête là).
+ *
+ * Toute session 100 % distancielle correctement menée levait donc une alerte
+ * CRITIQUE **par stagiaire**, chacune partant par e-mail, alors que le relevé
+ * était importé, le taux calculé et le fichier archivé avec son empreinte.
+ *
+ * Le prédicat vient maintenant de `trace-cloture.ts`, qui portait déjà la bonne
+ * définition — et qui l'appliquait, lui, depuis le début.
+ */
 async function regleEmargementManquant(now: Date): Promise<AlerteCandidate[]> {
   const threshold = daysAgo(2, now); // 48h
   const enrollments = await prisma.enrollment.findMany({
     where: {
       session: { statut: "realisee", dateFin: { lte: threshold } },
       statut: { in: ["planifiee", "presente"] },
-      emargementSigneAt: null,
+      ...sansAucuneTraceDePresence(),
     },
     select: {
       id: true,
@@ -390,9 +408,20 @@ async function regleEmargementAucuneSignature(now: Date): Promise<AlerteCandidat
             some: { emargementTokens: { some: { revokedAt: null, expiresAt: { gt: now } } } },
           },
         },
-        // Et personne n'a signé. `emargementSigneAt` est posé à la PREMIÈRE
-        // signature, quel que soit le canal (portail ou grille présentielle).
-        { enrollments: { none: { emargementSigneAt: { not: null } } } },
+        // Et personne ne porte la moindre trace de présence.
+        //
+        // 🔴 `D2-3-C2` — on lisait ici `emargementSigneAt` SEUL. Ce champ n'est
+        // posé que par la grille présentielle ; l'import d'un relevé de connexion
+        // ne l'écrit pas. Une session distancielle dont le relevé était importé
+        // restait donc « sans aucune signature » aux yeux de cette règle, et
+        // criait en critique jusqu'à l'expiration des jetons.
+        //
+        // ⚠️ Fenêtre résiduelle ASSUMÉE : entre la fin d'une session distancielle
+        // et l'import de son relevé, aucune trace n'existe encore — l'alerte se
+        // lève, et elle a raison de le faire : à cet instant, rien ne prouve que
+        // la session a eu lieu. Elle s'éteint d'elle-même dès l'import
+        // (`resolutionAuto`).
+        { enrollments: { none: porteUneTraceDePresence() } },
       ],
     },
     select: { id: true, numero: true, titreSession: true, dateDebut: true, dateFin: true },

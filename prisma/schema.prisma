@@ -3866,6 +3866,20 @@ model WebVitalSample {
 
   @@index([url, metric, createdAt(sort: Desc)])
   @@index([pageType, metric, createdAt(sort: Desc)])
+  /// 🔴 `D8-1` (2026-08-20) — TROIS requêtes filtrent sur `createdAt` SEUL, et
+  /// aucun des deux index ci-dessus ne peut les servir : tous deux commencent
+  /// par `url` ou `pageType`, jamais interrogés par ces trois-là.
+  ///
+  ///   · `retention-purge-worker`  — deleteMany({ createdAt: { lt } })
+  ///   · `content-web-vitals-monitor-worker` — findMany({ createdAt: { gte } }), 24 h, take 50 000
+  ///   · `content-psi-monitor-worker`        — findMany({ createdAt: { gte } }),  7 j, take 100 000
+  ///
+  /// ⚠️ Les deux lectures prennent une TRANCHE RÉCENTE d'une table qui, elle,
+  /// grossit sans borne avec le trafic (un échantillon RUM par métrique et par
+  /// visite, conservé 6 mois). C'est le cas d'école où l'absence d'index ne se
+  /// voit pas au lancement et devient une lecture complète de table quelques
+  /// mois plus tard, sur un cron qui ne se plaint jamais.
+  @@index([createdAt])
   @@map("web_vital_samples")
 }
 

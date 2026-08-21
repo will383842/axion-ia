@@ -196,8 +196,12 @@ export const MOTIF_REFUS: Readonly<Record<ActeEngageant, string>> = {
     "Habiliter un formateur engage la qualité de l'action (ind. 21/22) : acte réservé à la direction ou au responsable qualité.",
   deposer_demande_financeur:
     "Déposer une demande de prise en charge engage l'organisme au nom du client (mandat) : acte réservé à la direction.",
+  // ⚠️ Le libellé disait « une signature d'émargement » — il avait été écrit pour
+  // ce seul canal. L'acte couvre aussi la révocation d'une signature de PIÈCE
+  // depuis le registre auditeur : un message qui nomme le mauvais objet envoie
+  // chercher au mauvais endroit.
   revoquer_signature:
-    "Priver d'effet une signature d'émargement retire sa valeur à une preuve légale : acte réservé à la direction.",
+    "Priver d'effet une signature — d'émargement ou de pièce — retire sa valeur à une preuve légale : acte réservé à la direction.",
 };
 
 /**

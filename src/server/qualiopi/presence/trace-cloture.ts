@@ -45,17 +45,64 @@ export interface TraceClotureSession {
  * bloquent pas la transition — une panne de base ne doit pas empêcher de
  * clôturer une session réellement tenue.
  */
+/**
+ * 🔴 CE QUI COMPTE COMME UNE TRACE DE PRÉSENCE — la définition, à un seul endroit.
+ *
+ * ## Pourquoi elle est sortie d'ici
+ *
+ * Ce module savait, et le disait dans son en-tête : *« `emargementSigneAt` n'est
+ * posé que par la grille présentielle, jamais par l'import distanciel »*. Il en
+ * tirait la bonne conséquence — une trace, c'est une signature **ou** un taux de
+ * présence calculé.
+ *
+ * Les règles d'alerte, elles, portaient leur propre version du prédicat, réduite
+ * à `emargementSigneAt`. Sur une session 100 % distancielle parfaitement menée —
+ * relevé de connexion importé, taux calculé, fichier archivé avec son empreinte —
+ * elles levaient donc :
+ *
+ *   · `emargement_manquant`, **critique, une par stagiaire**, après la clôture ;
+ *   · `emargement_aucune_signature`, **critique**, tant que les jetons vivent.
+ *
+ * Chaque alerte critique part par e-mail. Une modalité entière du catalogue
+ * produisait ainsi une salve de fausses alertes à chaque session bien tenue — et
+ * *une alerte qui crie à tort cesse d'être lue*, y compris quand elle a raison.
+ *
+ * 🔑 C'est le même motif que `pieceAdmissibleAuDossier` et `estMembreDeSession` :
+ * un prédicat recopié diverge, et c'est toujours la copie la plus permissive ou
+ * la plus étroite qui sert. Ici la copie était plus ÉTROITE — elle ne laissait
+ * pas passer trop de monde, elle accusait trop de monde.
+ *
+ * ⚠️ `tauxPresencePct: { not: null }` et non `> 0`, délibérément — un taux à 0 %
+ * EST une trace : le relevé existe et dit que personne ne s'est connecté. Le
+ * durcissement en `> 0` a déjà été tenté puis retiré dans ce module (cf. en-tête).
+ */
+export function porteUneTraceDePresence(): {
+  OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }];
+} {
+  return { OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }] };
+}
+
+/**
+ * L'inverse exact : aucune trace, d'aucune sorte.
+ *
+ * ⚠️ Les deux champs étant nullables, `emargementSigneAt: null` ET
+ * `tauxPresencePct: null` est la négation stricte de `porteUneTraceDePresence`.
+ * Elle est écrite ici, sous les yeux de sa jumelle, pour qu'aucune des deux ne
+ * puisse bouger sans qu'on voie l'autre.
+ */
+export function sansAucuneTraceDePresence(): {
+  emargementSigneAt: null;
+  tauxPresencePct: null;
+} {
+  return { emargementSigneAt: null, tauxPresencePct: null };
+}
+
 export async function mesurerTraceCloture(sessionId: string): Promise<TraceClotureSession> {
   const actifs = { sessionId, statut: { notIn: [...STATUTS_SORTIS] } };
 
   const [totalActifs, avecTrace] = await Promise.all([
     prisma.enrollment.count({ where: actifs }),
-    prisma.enrollment.count({
-      where: {
-        ...actifs,
-        OR: [{ emargementSigneAt: { not: null } }, { tauxPresencePct: { not: null } }],
-      },
-    }),
+    prisma.enrollment.count({ where: { ...actifs, ...porteUneTraceDePresence() } }),
   ]);
 
   return { totalActifs, sansTrace: totalActifs - avecTrace };
