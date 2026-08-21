@@ -112,7 +112,7 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
           aria-invalid={!!errors.email}
         />
         {errors.email ? (
-          <p role="alert" className="text-accent-red text-xs">
+          <p role="alert" className="text-error text-xs">
             {errors.email.message}
           </p>
         ) : null}
@@ -135,7 +135,7 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
         </Label>
       </div>
       {errors.consent ? (
-        <p role="alert" className="text-accent-red text-xs sm:basis-full">
+        <p role="alert" className="text-error text-xs sm:basis-full">
           {errors.consent.message}
         </p>
       ) : null}

@@ -512,10 +512,24 @@ export default async function FormationsEntreprise({ params }: Props) {
       {/* ── HÉRO ─────────────────────────────────────────────────────────── */}
       <Section
         titleAs="h1"
+        // 🔴 SEUL emplacement de cette page qui affirmait la certification SANS
+        // consulter le drapeau. Trouvé le 2026-08-21 par
+        // `tests/e2e/qualiopi/public-routes.spec.ts`, à sa toute première
+        // exécution réelle — la suite ne tournait pas jusque-là (cf.
+        // `tests/unit/ci/harnais-e2e-mesure-vraiment.spec.ts`).
+        //
+        // Le fichier applique pourtant `ofPublic` SIX fois autour : description de
+        // metadata (l. 102), badge filtré par `.filter((c) => c.on)` (l. 210),
+        // réponse FAQ « définition » (l. 416), les deux entrées FAQ dédiées
+        // enveloppées par `...(ofPublic ? [ … ] : [])`, et jusqu'au visuel du héros
+        // qui bascule sur la photo d'équipe. Aucune relecture ne pouvait voir
+        // celui-ci : il fallait rendre la page drapeau baissé et lire la sortie.
+        //
+        // Aucun changement visible en production : le drapeau y vaut `true`.
         eyebrow={
           isFr
-            ? "Formations IA en entreprise · Certifié Qualiopi · Toute la France"
-            : "Corporate AI training · Qualiopi-certified · Across France"
+            ? `Formations IA en entreprise${ofPublic ? " · Certifié Qualiopi" : ""} · Toute la France`
+            : `Corporate AI training${ofPublic ? " · Qualiopi-certified" : ""} · Across France`
         }
         title={isFr ? "Formations IA" : "Corporate AI"}
         titleEm={isFr ? "en entreprise" : "training"}

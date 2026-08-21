@@ -628,7 +628,7 @@ function UnifiedContactFormBody({
           )}
 
           {errors.type ? (
-            <p role="alert" className="text-accent-red text-xs">
+            <p role="alert" className="text-error text-xs">
               {errors.type.message ?? t.typeRequired}
             </p>
           ) : null}
@@ -653,7 +653,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.nom ? "unified-nom-err" : undefined}
           />
           {errors.nom ? (
-            <p id="unified-nom-err" role="alert" className="text-accent-red text-xs">
+            <p id="unified-nom-err" role="alert" className="text-error text-xs">
               {errors.nom.message}
             </p>
           ) : null}
@@ -673,7 +673,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.email ? "unified-email-err" : undefined}
           />
           {errors.email ? (
-            <p id="unified-email-err" role="alert" className="text-accent-red text-xs">
+            <p id="unified-email-err" role="alert" className="text-error text-xs">
               {errors.email.message}
             </p>
           ) : null}
@@ -698,7 +698,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.telephone ? "unified-tel-err" : undefined}
           />
           {errors.telephone ? (
-            <p id="unified-tel-err" role="alert" className="text-accent-red text-xs">
+            <p id="unified-tel-err" role="alert" className="text-error text-xs">
               {errors.telephone.message}
             </p>
           ) : null}
@@ -717,7 +717,7 @@ function UnifiedContactFormBody({
             aria-describedby={errors.ville ? "unified-ville-err" : undefined}
           />
           {errors.ville ? (
-            <p id="unified-ville-err" role="alert" className="text-accent-red text-xs">
+            <p id="unified-ville-err" role="alert" className="text-error text-xs">
               {errors.ville.message}
             </p>
           ) : null}
@@ -750,7 +750,7 @@ function UnifiedContactFormBody({
           aria-describedby={errors.message ? "unified-msg-err" : undefined}
         />
         {errors.message ? (
-          <p id="unified-msg-err" role="alert" className="text-accent-red text-xs">
+          <p id="unified-msg-err" role="alert" className="text-error text-xs">
             {errors.message.message}
           </p>
         ) : null}
@@ -861,7 +861,7 @@ function UnifiedContactFormBody({
         </Label>
       </div>
       {errors.consent ? (
-        <p role="alert" className="text-accent-red text-xs">
+        <p role="alert" className="text-error text-xs">
           {errors.consent.message}
         </p>
       ) : null}
