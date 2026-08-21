@@ -40,6 +40,12 @@ import {
   type RegleEvaluable,
   type Constat,
 } from "@/server/editorial/conformite/evaluateur";
+import {
+  dateIsoValide,
+  dateUtcStricte,
+  heureValide,
+  verifierDateIso,
+} from "@/server/editorial/calendrier-pur";
 
 export type ActionResult<T> = { data: T } | { error: string; constats?: Constat[] };
 
@@ -52,8 +58,14 @@ export type ActionResult<T> = { data: T } | { error: string; constats?: Constat[
  */
 const creationSchema = z.object({
   compteId: z.string().uuid(),
-  datePrevue: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date attendue au format AAAA-MM-JJ"),
-  heurePrevue: z.string().regex(/^\d{2}:\d{2}$/, "Heure attendue au format HH:MM"),
+  datePrevue: z.string().refine(dateIsoValide, (v) => ({
+    // Le message CITE la valeur fautive et dit ce qui cloche : « 30 février »
+    // et « année hors calendrier » ne se corrigent pas de la même façon.
+    message: verifierDateIso(v).ok ? "" : (verifierDateIso(v) as { erreur: string }).erreur,
+  })),
+  heurePrevue: z
+    .string()
+    .refine(heureValide, "Heure attendue au format HH:MM, entre 00:00 et 23:59"),
   titreInterne: z.string().trim().min(1, "Un titre interne est requis").max(200),
   corps: z.string().max(20_000).optional(),
 });
@@ -67,14 +79,33 @@ const modificationSchema = z.object({
   lienUrl: z.string().max(1024).nullable().optional(),
   /** Pourquoi cette version. Facultatif, fortement encouragé. */
   motif: z.string().max(500).optional(),
+  /**
+   * La version que le formulaire AFFICHAIT au moment de l'ouverture.
+   *
+   * 🔴 Défaut trouvé par la passe 4 du protocole (adversaire) : sans elle,
+   * deux personnes sur la même fiche se marchent dessus EN SILENCE. B ouvre,
+   * A réécrit le corps et enregistre, B enregistre — et le texte de A
+   * disparaît sans trace, parce que le patch de B porte le contenu périmé
+   * qu'il avait sous les yeux. La seule version archivée est celle d'AVANT A.
+   * Perte irréversible, réponse `{ ok: true }`.
+   *
+   * Facultative pour ne pas casser les appels qui ne modifient qu'un champ
+   * non versionné ; dès qu'un écran d'édition de contenu existe, il DOIT
+   * l'envoyer.
+   */
+  versionAttendue: z.number().int().min(1).optional(),
 });
 
 const deplacementSchema = z.object({
   id: z.string().uuid(),
-  datePrevue: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  datePrevue: z.string().refine(dateIsoValide, (v) => ({
+    // Le message CITE la valeur fautive et dit ce qui cloche : « 30 février »
+    // et « année hors calendrier » ne se corrigent pas de la même façon.
+    message: verifierDateIso(v).ok ? "" : (verifierDateIso(v) as { erreur: string }).erreur,
+  })),
   heurePrevue: z
     .string()
-    .regex(/^\d{2}:\d{2}$/)
+    .refine(heureValide, "Heure attendue au format HH:MM, entre 00:00 et 23:59")
     .optional(),
 });
 
@@ -82,12 +113,6 @@ const marquagePublieSchema = z.object({
   id: z.string().uuid(),
   urlPubliee: z.string().url("Une URL valide est attendue").max(1024),
 });
-
-/** `AAAA-MM-JJ` → `Date` à minuit UTC. Jamais `new Date(a, m, j)`. */
-function dateUtc(iso: string): Date {
-  const [a, m, j] = iso.split("-").map(Number);
-  return new Date(Date.UTC(a as number, (m as number) - 1, j as number));
-}
 
 function messageErreur(e: unknown): string {
   return e instanceof Error ? e.message : "Erreur inattendue";
@@ -112,7 +137,7 @@ export async function creerPublicationAction(
     const publication = await prisma.edPublication.create({
       data: {
         compteId: v.compteId,
-        datePrevue: dateUtc(v.datePrevue),
+        datePrevue: dateUtcStricte(v.datePrevue),
         heurePrevue: v.heurePrevue,
         titreInterne: v.titreInterne,
         corps: v.corps ?? null,
@@ -150,7 +175,7 @@ export async function modifierPublicationAction(
     if (!parsed.success) {
       return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
     }
-    const { id, motif, lienUrl, ...patchBrut } = parsed.data;
+    const { id, motif, lienUrl, versionAttendue, ...patchBrut } = parsed.data;
 
     const existante = await prisma.edPublication.findUnique({
       where: { id },
@@ -162,9 +187,24 @@ export async function modifierPublicationAction(
         tags: true,
         lienUrl: true,
         versionCourante: true,
+        updatedAt: true,
       },
     });
     if (!existante) return { error: "Publication introuvable" };
+
+    // 🔴 Garde optimiste, premier temps : le formulaire annonce ce qu'il
+    // affichait. Si la fiche a bougé depuis, on REFUSE au lieu d'écraser, et
+    // le message dit quoi faire — « recharger » est actionnable, « conflit »
+    // ne l'est pas.
+    if (versionAttendue !== undefined && versionAttendue !== existante.versionCourante) {
+      return {
+        error:
+          `Quelqu'un a modifié cette publication pendant que vous l'éditiez ` +
+          `(vous partiez de la version ${versionAttendue}, elle en est à la ` +
+          `${existante.versionCourante}). Rechargez la fiche pour repartir du ` +
+          `texte à jour : enregistrer maintenant effacerait leur travail.`,
+      };
+    }
 
     const avant: ContenuPublication = {
       accroche: existante.accroche,
@@ -196,8 +236,18 @@ export async function modifierPublicationAction(
         });
       }
 
-      return tx.edPublication.update({
-        where: { id },
+      // 🔴 Garde optimiste, second temps : `updateMany` avec la version ET
+      // l'horodatage LUS dans le `where`. Postgres réévalue cette clause
+      // contre la ligne réellement validée ; si un autre commit s'est
+      // intercalé entre la lecture et l'écriture, `count` vaut 0 et rien
+      // n'est écrasé. `versionCourante` seule ne suffit PAS : deux
+      // modifications sans versionnement la laissent identique.
+      const touchees = await tx.edPublication.updateMany({
+        where: {
+          id,
+          versionCourante: existante.versionCourante,
+          updatedAt: existante.updatedAt,
+        },
         data: {
           accroche: apres.accroche,
           corps: apres.corps,
@@ -207,8 +257,24 @@ export async function modifierPublicationAction(
           // Incrémentée SEULEMENT si le contenu a bougé — critère 8.
           ...(versionCreee ? { versionCourante: { increment: 1 } } : {}),
         },
+      });
+
+      if (touchees.count === 0) {
+        // Lever DANS la transaction annule aussi la version qu'on venait
+        // d'archiver — sinon on laisserait un instantané orphelin qui
+        // prétend documenter une modification qui n'a pas eu lieu.
+        throw new Error(
+          "Quelqu'un a enregistré cette publication pendant votre saisie. " +
+            "Rien n'a été écrasé : rechargez la fiche et refaites votre " +
+            "modification sur le texte à jour.",
+        );
+      }
+
+      const apresEcriture = await tx.edPublication.findUniqueOrThrow({
+        where: { id },
         select: { id: true, versionCourante: true },
       });
+      return apresEcriture;
     });
 
     await journaliser({
@@ -373,7 +439,7 @@ export async function deplacerPublicationAction(
     await prisma.edPublication.update({
       where: { id },
       data: {
-        datePrevue: dateUtc(datePrevue),
+        datePrevue: dateUtcStricte(datePrevue),
         ...(heurePrevue ? { heurePrevue } : {}),
       },
     });
@@ -412,9 +478,39 @@ export async function marquerPublieeAction(
 
     const publication = await prisma.edPublication.findUnique({
       where: { id },
-      select: { statutDiffusion: true, compteId: true },
+      select: {
+        statutDiffusion: true,
+        compteId: true,
+        urlPubliee: true,
+        publieeA: true,
+      },
     });
     if (!publication) return { error: "Publication introuvable" };
+
+    // 🔴 IDEMPOTENCE — la clause la plus importante du §10 : « rejouer ne
+    // publie JAMAIS deux fois ». Défaut trouvé par la passe 4 du protocole.
+    //
+    // `transitionDiffusion` autorise `publie → publie` par son raccourci
+    // `de === vers`, qui est le bon choix pour un enregistrement sans
+    // changement — mais pas ici. Un second appel réécrivait `urlPubliee`,
+    // `publieeA` ET `EdCompte.derniereParutionA`, qui arme l'alerte « canal
+    // muet » : un double clic repoussait donc la date de dernière parution
+    // d'un compte, et désarmait une alerte qui aurait dû sonner.
+    //
+    // On court-circuite AVANT la transition, et on le dit — un succès muet
+    // laisserait croire que la nouvelle URL a été prise en compte.
+    if (publication.statutDiffusion === "publie") {
+      if (publication.urlPubliee && publication.urlPubliee !== urlPubliee) {
+        return {
+          error:
+            `Cette publication est déjà marquée publiée, avec une AUTRE URL ` +
+            `(${publication.urlPubliee}). Rien n'a été modifié. Corrigez l'URL ` +
+            `depuis la fiche si celle-ci est la bonne.`,
+        };
+      }
+      // Même URL : c'est un rejeu. On rend le succès sans rien réécrire.
+      return { data: { id } };
+    }
 
     const verdict = transitionDiffusion(publication.statutDiffusion as StatutDiffusion, "publie");
     if (!verdict.autorisee) return { error: verdict.message };

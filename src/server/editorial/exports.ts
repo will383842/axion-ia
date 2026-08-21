@@ -72,7 +72,39 @@ export const COLONNES_CSV = [
  *    même sa forme normale sur LinkedIn. Sans citation, une seule publication
  *    produirait quinze lignes de CSV.
  */
+/**
+ * Les amorces de formule d'un tableur.
+ *
+ * 🔴 Défaut trouvé par la passe 4 du protocole (adversaire).
+ *
+ * Cet export est explicitement destiné à Excel — BOM UTF-8 et CRLF assumés,
+ * juste en dessous. Une cellule qui commence par `=`, `+`, `-` ou `@` y est
+ * interprétée comme une FORMULE, pas comme du texte. Un titre interne saisi
+ * par un coéquipier `production` —
+ *
+ *     =cmd|' /C calc'!A0
+ *
+ * — s'exécutait donc chez celui qui ouvre l'export. La surface est
+ * interne, mais « interne » n'est pas « de confiance » : le §4 prévoit
+ * précisément des rôles qui écrivent sans pouvoir valider.
+ *
+ * On préfixe d'une apostrophe plutôt que de retirer le caractère : le texte
+ * reste LISIBLE et intégral — mutiler la donnée d'un export serait remplacer
+ * un problème de sécurité par un problème de fidélité.
+ */
+const AMORCES_FORMULE = ["=", "+", "-", "@", "\t", "\r"];
+
+/** Neutralise une amorce de formule sans altérer le texte affiché. */
+export function neutraliserFormule(valeur: string): string {
+  if (valeur.length === 0) return valeur;
+  const premier = valeur[0] as string;
+  return AMORCES_FORMULE.includes(premier) ? "'" + valeur : valeur;
+}
+
 export function echapperCellule(valeur: string): string {
+  // La neutralisation vient AVANT la citation : sinon le `"` ouvrant
+  // masquerait l'amorce à l'inspection, et le tableur la verrait quand même.
+  valeur = neutraliserFormule(valeur);
   const doitCiter =
     valeur.includes(";") || valeur.includes('"') || valeur.includes("\n") || valeur.includes("\r");
   if (!doitCiter) return valeur;

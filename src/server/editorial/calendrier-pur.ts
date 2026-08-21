@@ -57,9 +57,20 @@ export function lireMois(v: string | undefined, defaut: number): number {
 }
 
 /** Borne une année lue dans l'URL, sur une fenêtre raisonnable. */
+/**
+ * Bornes du calendrier navigable.
+ *
+ * ⚠️ Elles servent DEUX fois : ici pour borner la navigation, et dans
+ * `verifierDateIso` pour refuser une saisie hors fenetre. Les deux doivent
+ * rester la meme valeur — une date acceptee que le calendrier ne sait pas
+ * afficher produit une publication reelle et invisible.
+ */
+export const ANNEE_MIN = 2020;
+export const ANNEE_MAX = 2100;
+
 export function lireAnnee(v: string | undefined, defaut: number): number {
   const n = Number.parseInt(v ?? "", 10);
-  return Number.isFinite(n) && n >= 2020 && n <= 2100 ? n : defaut;
+  return Number.isFinite(n) && n >= ANNEE_MIN && n <= ANNEE_MAX ? n : defaut;
 }
 
 /** Vrai si la chaîne est une clé de jour « AAAA-MM-JJ » plausible. */
@@ -79,4 +90,103 @@ export function compterParJour(publications: readonly AvecCleJour[]): Map<string
     parJour.set(p.dayKey, (parJour.get(p.dayKey) ?? 0) + 1);
   }
   return parJour;
+}
+
+// ── Dates et heures saisies : la forme ne suffit pas ───────────────────────
+
+/**
+ * 🔴 Défaut trouvé par la passe 4 du protocole (adversaire).
+ *
+ * Les Server Actions ne validaient que la FORME (`^\d{4}-\d{2}-\d{2}$`), puis
+ * confiaient la valeur à `Date.UTC`, qui reporte silencieusement :
+ *
+ * | Envoyé       | Stocké          |
+ * | ------------ | --------------- |
+ * | `2026-02-30` | 2026-03-02      |
+ * | `2026-13-45` | 2027-02-14      |
+ * | `0000-00-00` | 1899-11-30      |
+ * | `9999-99-99` | **+010007-06-07** |
+ *
+ * Aucun refus, aucun message. Deux aggravations : `deplacerPublicationAction`
+ * est branchée sur le glisser-déposer du calendrier, et `lireAnnee` borne la
+ * navigation à 2020-2100 — une publication datée 1999 ou 10007 devenait donc
+ * **inatteignable dans le calendrier**, sans que rien ne le dise.
+ *
+ * La garde équivalente existait déjà côté import (`convertirDate` refuse
+ * « 30/02/2026 » par « Date inexistante au calendrier ») ; elle n'était
+ * simplement branchée sur aucune action. Le §1 du protocole : une garde ne
+ * vaut que si elle est posée là où l'objet casse.
+ */
+export function verifierDateIso(
+  iso: string,
+): { ok: true; date: Date } | { ok: false; erreur: string } {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return { ok: false, erreur: `Date « ${iso} » : format attendu AAAA-MM-JJ.` };
+
+  const annee = Number(m[1]);
+  const mois = Number(m[2]);
+  const jour = Number(m[3]);
+
+  if (mois < 1 || mois > 12) {
+    return { ok: false, erreur: `Date « ${iso} » : le mois ${mois} n'existe pas.` };
+  }
+  if (jour < 1 || jour > 31) {
+    return { ok: false, erreur: `Date « ${iso} » : le jour ${jour} n'existe pas.` };
+  }
+
+  const date = new Date(Date.UTC(annee, mois - 1, jour));
+
+  // Le report est le seul moyen fiable de rejeter le 30 février : c'est
+  // `Date` elle-même qui connaît les années bissextiles.
+  if (
+    date.getUTCFullYear() !== annee ||
+    date.getUTCMonth() !== mois - 1 ||
+    date.getUTCDate() !== jour
+  ) {
+    return { ok: false, erreur: `Date « ${iso} » : ce jour n'existe pas au calendrier.` };
+  }
+
+  // ⚠️ Bornes ALIGNÉES sur celles de `lireAnnee`. Sans elles, on accepterait
+  // une date que le calendrier ne sait pas afficher — la publication existe,
+  // mais aucun écran ne la montre. Une donnée invisible est pire qu'un refus.
+  if (annee < ANNEE_MIN || annee > ANNEE_MAX) {
+    return {
+      ok: false,
+      erreur:
+        `Date « ${iso} » : l'année ${annee} sort du calendrier, qui va de ` +
+        `${ANNEE_MIN} à ${ANNEE_MAX}. La publication serait enregistrée mais ` +
+        `introuvable à l'écran.`,
+    };
+  }
+
+  return { ok: true, date };
+}
+
+/** `AAAA-MM-JJ` valide ? Le prédicat, pour brancher sur un `.refine()` Zod. */
+export function dateIsoValide(iso: string): boolean {
+  return verifierDateIso(iso).ok;
+}
+
+/**
+ * 🔴 Même défaut, même cause : `^\d{2}:\d{2}$` acceptait `99:99`.
+ *
+ * L'import refusait déjà « heures hors bornes » / « minutes hors bornes ».
+ */
+export function heureValide(heure: string): boolean {
+  const m = /^(\d{2}):(\d{2})$/.exec(heure);
+  if (!m) return false;
+  const h = Number(m[1]);
+  const min = Number(m[2]);
+  return h >= 0 && h <= 23 && min >= 0 && min <= 59;
+}
+
+/**
+ * `AAAA-MM-JJ` → `Date` à minuit UTC, en REFUSANT l'impossible.
+ *
+ * Jamais `new Date(a, m, j)` — le fuseau local décalerait le jour.
+ */
+export function dateUtcStricte(iso: string): Date {
+  const r = verifierDateIso(iso);
+  if (!r.ok) throw new Error(r.erreur);
+  return r.date;
 }

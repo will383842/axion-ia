@@ -275,77 +275,95 @@ async function main(): Promise<void> {
   await prisma.$transaction(async (tx) => {
     for (const p of pretes) {
       const existante = await tx.edPublication.findUnique({ where: { refImport: p.ref } });
+
+      // 🔴 Défaut trouvé par la passe 5 du protocole.
+      //
+      // Ce bloc faisait un `continue` quand la publication existait déjà —
+      // ce qui sautait AUSSI la création de son écho de page, plus bas. Une
+      // publication importée sans son écho (import interrompu, écho supprimé
+      // à la main) ne le retrouvait donc JAMAIS : chaque rejeu la comptait en
+      // « ignorée » et passait au suivant.
+      //
+      // On garde désormais l'identifiant de l'existante et on descend
+      // jusqu'au bloc de l'écho, qui a sa propre garde d'idempotence.
+      let publicationId: string;
+
       if (existante) {
         rapport.ignorees += 1;
-        continue;
-      }
-
-      const publication = await tx.edPublication.create({
-        data: {
-          compteId: profil.id,
-          refImport: p.ref,
-          datePrevue: p.datePrevue,
-          heurePrevue: p.heurePrevue,
-          titreInterne: p.titreInterne,
-          accroche: p.accroche,
-          corps: p.corps,
-          premierCommentaire: p.premierCommentaire,
-          tags: p.tags,
-          lienUrl: p.lienUrl,
-          statutRedaction: p.corps ? "redige" : "idee",
-          statutAsset: p.statutAsset,
-          statutDiffusion: "non_programme",
-          campagne: CAMPAGNE,
-        },
-      });
-      rapport.publicationsCreees += 1;
-
-      // Les assets annoncés par les colonnes `production` et `photo_will`.
-      const aCreer: { type: "video" | "photo"; familleId: string | null; libelle: string }[] = [];
-      if (p.production) {
-        aCreer.push({
-          type: "video",
-          familleId: p.familleId,
-          libelle: `Production — ${p.titreInterne}`.slice(0, 200),
-        });
-      }
-      if (p.photoWill) {
-        aCreer.push({
-          type: "photo",
-          familleId: familleParSlug.get("photo-williams") ?? null,
-          libelle: `Photo Williams — ${p.titreInterne}`.slice(0, 200),
-        });
-      }
-      for (let k = 0; k < aCreer.length; k += 1) {
-        const a = aCreer[k];
-        if (!a) continue;
-        const asset = await tx.edAsset.create({
+        publicationId = existante.id;
+      } else {
+        const publication = await tx.edPublication.create({
           data: {
-            type: a.type,
-            familleId: a.familleId,
-            nature: "autonome",
-            usage: "organique",
-            libelle: a.libelle,
-            statut: "a_produire",
+            compteId: profil.id,
+            refImport: p.ref,
+            datePrevue: p.datePrevue,
+            heurePrevue: p.heurePrevue,
+            titreInterne: p.titreInterne,
+            accroche: p.accroche,
+            corps: p.corps,
+            premierCommentaire: p.premierCommentaire,
+            tags: p.tags,
+            lienUrl: p.lienUrl,
+            statutRedaction: p.corps ? "redige" : "idee",
+            statutAsset: p.statutAsset,
+            statutDiffusion: "non_programme",
+            campagne: CAMPAGNE,
           },
         });
-        await tx.edAssetPublication.create({
-          data: { assetId: asset.id, publicationId: publication.id, ordre: k },
-        });
-        rapport.assetsCrees += 1;
-      }
+        rapport.publicationsCreees += 1;
 
-      await tx.edJournal.create({
-        data: {
-          entite: "EdPublication",
-          entiteId: publication.id,
-          action: "import",
-          apres: { refImport: p.ref, source: NOM_CSV } as Prisma.InputJsonValue,
-        },
-      });
+        // Les assets annoncés par les colonnes `production` et `photo_will`.
+        const aCreer: { type: "video" | "photo"; familleId: string | null; libelle: string }[] = [];
+        if (p.production) {
+          aCreer.push({
+            type: "video",
+            familleId: p.familleId,
+            libelle: `Production — ${p.titreInterne}`.slice(0, 200),
+          });
+        }
+        if (p.photoWill) {
+          aCreer.push({
+            type: "photo",
+            familleId: familleParSlug.get("photo-williams") ?? null,
+            libelle: `Photo Williams — ${p.titreInterne}`.slice(0, 200),
+          });
+        }
+        for (let k = 0; k < aCreer.length; k += 1) {
+          const a = aCreer[k];
+          if (!a) continue;
+          const asset = await tx.edAsset.create({
+            data: {
+              type: a.type,
+              familleId: a.familleId,
+              nature: "autonome",
+              usage: "organique",
+              libelle: a.libelle,
+              statut: "a_produire",
+            },
+          });
+          await tx.edAssetPublication.create({
+            data: { assetId: asset.id, publicationId: publication.id, ordre: k },
+          });
+          rapport.assetsCrees += 1;
+        }
+
+        await tx.edJournal.create({
+          data: {
+            entite: "EdPublication",
+            entiteId: publication.id,
+            action: "import",
+            apres: { refImport: p.ref, source: NOM_CSV } as Prisma.InputJsonValue,
+          },
+        });
+
+        publicationId = publication.id;
+      } // fin de la branche « la publication n'existait pas »
 
       // L'écho de page : une SECONDE diffusion, liée à la première par
       // `sourceId`. Ce n'est pas une copie — les deux ont leurs métriques.
+      //
+      // ⚠️ Atteint MÊME quand la publication existait déjà : c'est tout
+      // l'objet du correctif ci-dessus.
       if (p.refEcho) {
         const dejaEcho = await tx.edPublication.findUnique({ where: { refImport: p.refEcho } });
         if (dejaEcho) {
@@ -368,7 +386,7 @@ async function main(): Promise<void> {
             statutAsset: p.statutAsset,
             statutDiffusion: "non_programme",
             campagne: CAMPAGNE,
-            sourceId: publication.id,
+            sourceId: publicationId,
           },
         });
         rapport.reprisesCreees += 1;

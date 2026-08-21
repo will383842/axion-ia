@@ -195,7 +195,23 @@ export async function televerserAssetAction(
         poidsOctets: BigInt(contenu.length),
         largeurPx,
         hauteurPx,
-        statut: "pret",
+        // 🔴 `en_cours`, et SURTOUT PAS `pret`.
+        //
+        // Défaut trouvé par la passe 5 du protocole : écrire `pret` ici
+        // contournait DEUX règles d'un coup.
+        //
+        //  - Le critère 5 du lot 2 — « un asset dont la durée dépasse la spec
+        //    ne passe pas à `pret` ». Aucune spec n'est consultée au dépôt,
+        //    et pour cause : on ne connaît pas encore la plateforme visée.
+        //  - Le §4 — le rôle `montage` a `asset.ecrire` mais PAS
+        //    `asset.valider`. Il pouvait donc produire un asset `pret` par
+        //    la porte du téléversement, en contournant celle qui lui est
+        //    fermée.
+        //
+        // Déposer un fichier n'est pas le valider. Le passage à `pret` vit
+        // dans `passerAssetPretAction`, qui exige `asset.valider` ET vérifie
+        // la spec de plateforme.
+        statut: "en_cours",
         responsableId: membre.membreId,
       },
       select: { id: true },
@@ -206,12 +222,13 @@ export async function televerserAssetAction(
       await prisma.edAssetPublication.create({
         data: { assetId: asset.id, publicationId, ordre: dejaLies },
       });
-      // Un asset prêt fait passer la publication de « à produire » à « prêt » :
-      // sans cela, l'alerte `asset-retard` continuerait de crier alors que le
-      // fichier est là.
+      // La publication suit l'asset : le travail a commencé, il n'est pas
+      // validé. La faire passer à « prêt » ici ferait taire l'alerte
+      // `asset-retard` sur un asset que personne n'a encore relu — l'alerte
+      // se tairait précisément quand elle devient utile.
       await prisma.edPublication.update({
         where: { id: publicationId },
-        data: { statutAsset: "pret" },
+        data: { statutAsset: "en_cours" },
       });
     }
 

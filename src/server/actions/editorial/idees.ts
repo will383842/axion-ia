@@ -20,6 +20,12 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requirePermission, journaliser } from "@/server/actions/editorial/_guards";
 import type { ActionResult } from "@/server/actions/editorial/publications";
+import {
+  dateIsoValide,
+  dateUtcStricte,
+  heureValide,
+  verifierDateIso,
+} from "@/server/editorial/calendrier-pur";
 
 /** 🔴 UN seul champ requis. Tout ajout ici doit être combattu. */
 const captureSchema = z.object({
@@ -35,10 +41,14 @@ const captureSchema = z.object({
 const promotionSchema = z.object({
   id: z.string().uuid(),
   compteId: z.string().uuid(),
-  datePrevue: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date attendue au format AAAA-MM-JJ"),
+  datePrevue: z.string().refine(dateIsoValide, (v) => ({
+    // Le message CITE la valeur fautive et dit ce qui cloche : « 30 février »
+    // et « année hors calendrier » ne se corrigent pas de la même façon.
+    message: verifierDateIso(v).ok ? "" : (verifierDateIso(v) as { erreur: string }).erreur,
+  })),
   heurePrevue: z
     .string()
-    .regex(/^\d{2}:\d{2}$/)
+    .refine(heureValide, "Heure attendue au format HH:MM, entre 00:00 et 23:59")
     .optional(),
 });
 
@@ -46,11 +56,6 @@ const archivageSchema = z.object({
   id: z.string().uuid(),
   motif: z.string().trim().min(1, "Dire POURQUOI on écarte une idée").max(1_000),
 });
-
-function dateUtc(iso: string): Date {
-  const [a, m, j] = iso.split("-").map(Number);
-  return new Date(Date.UTC(a as number, (m as number) - 1, j as number));
-}
 
 function messageErreur(e: unknown): string {
   return e instanceof Error ? e.message : "Erreur inattendue";
@@ -142,7 +147,7 @@ export async function promouvoirIdeeAction(
       const publication = await tx.edPublication.create({
         data: {
           compteId,
-          datePrevue: dateUtc(datePrevue),
+          datePrevue: dateUtcStricte(datePrevue),
           heurePrevue: heurePrevue ?? "09:00",
           titreInterne: idee.titre.slice(0, 200),
           // Le détail de l'idée devient le premier jet du corps : le sens de

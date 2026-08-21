@@ -22,6 +22,59 @@ import {
 import { transitionDiffusion, type StatutDiffusion } from "@/server/editorial/publication-edition";
 import type { ActionResult } from "@/server/actions/editorial/publications";
 
+/**
+ * Charge la CHAÎNE D'ANCÊTRES d'un asset — lui, son parent, son grand-parent…
+ *
+ * 🔴 Défaut trouvé par la passe 4 du protocole (adversaire).
+ *
+ * `rattacherAssetAction` appelait `chargerLot(parentId)` pour alimenter
+ * `creeraitUnCycle`. Or `chargerLot` DESCEND (`JOIN arbre ON a.parent_id =
+ * arbre.id`) alors que `creeraitUnCycle` REMONTE (`parents.get(courant)`).
+ * La carte des parents s'arrêtait donc au premier maillon, et la garde ne
+ * gardait qu'un seul niveau :
+ *
+ *     base : r → x → y   (on rattache r sous y ⇒ cycle r→y→x→r)
+ *     lot descendant     : [y, x] … mais la LIGNE de x manquait
+ *     creeraitUnCycle    → false ⇒ le cycle s'écrivait en base
+ *
+ * La fonction pure était juste ; on lui donnait le mauvais objet. C'est
+ * exactement le §1 du protocole — « une gate qui mesurait un fichier de
+ * configuration pendant que le conteneur tournait avec une autre valeur ».
+ *
+ * ⚠️ La borne `niveau < 64` n'est pas une commodité : si un cycle est DÉJÀ en
+ * base (écrit par la version fautive de cette garde), Postgres boucle
+ * lui-même et l'applicatif n'a jamais la main. Elle est plus large que la
+ * borne de `chargerLot` parce qu'une chaîne d'ancêtres légitime peut être
+ * longue, là où une descendance de dérivés reste plate.
+ */
+async function chargerAncetres(departId: string): Promise<AssetDerivable[]> {
+  const lignes = await prisma.$queryRaw<{ id: string; parentId: string | null }[]>`
+    WITH RECURSIVE ancetres AS (
+      SELECT id, parent_id, 0 AS niveau
+      FROM ed_assets WHERE id = ${departId}::uuid
+      UNION ALL
+      SELECT a.id, a.parent_id, ancetres.niveau + 1
+      FROM ed_assets a
+      JOIN ancetres ON ancetres.parent_id = a.id
+      WHERE ancetres.niveau < 64
+    )
+    SELECT id::text AS id, parent_id::text AS "parentId" FROM ancetres
+  `;
+  // `creeraitUnCycle` ne lit que `id` et `parentId` ; le reste n'est là que
+  // pour satisfaire le type.
+  return lignes.map((l) => ({
+    id: l.id,
+    libelle: "",
+    type: "",
+    nature: "",
+    statut: "",
+    parentId: l.parentId,
+    offsetSourceSec: null,
+    familleId: null,
+    dureeSec: null,
+  }));
+}
+
 /** Charge les assets d'un arbre — la racine et toute sa descendance. */
 async function chargerLot(racineId: string): Promise<AssetDerivable[]> {
   // Une descendance à profondeur inconnue se remonte par une récursive SQL :
@@ -169,28 +222,11 @@ export async function rattacherAssetAction(input: {
     const { assetId, parentId, offsetSourceSec } = parsed.data;
 
     if (parentId) {
-      // On charge l'arbre du parent proposé : le cycle ne peut naître que là.
-      const lot = await chargerLot(parentId);
-      const tous = await prisma.edAsset.findMany({
-        where: { id: { in: [assetId, parentId] } },
-        select: { id: true, parentId: true },
-      });
-      const complet: AssetDerivable[] = [
-        ...lot,
-        ...tous
-          .filter((t) => !lot.some((l) => l.id === t.id))
-          .map((t) => ({
-            id: t.id,
-            libelle: "",
-            type: "",
-            nature: "",
-            statut: "",
-            parentId: t.parentId,
-            offsetSourceSec: null,
-            familleId: null,
-            dureeSec: null,
-          })),
-      ];
+      // 🔴 Les ANCÊTRES du parent proposé — surtout pas sa descendance.
+      // Voir `chargerAncetres` pour le défaut que cette ligne corrige : un
+      // cycle naît quand l'asset qu'on rattache se trouve déjà quelque part
+      // AU-DESSUS du parent qu'on lui donne, et seule la remontée le voit.
+      const complet = await chargerAncetres(parentId);
 
       if (creeraitUnCycle(complet, assetId, parentId)) {
         return {

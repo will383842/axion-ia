@@ -23,6 +23,7 @@ import {
   COLONNES_CSV,
   VERSION_SAUVEGARDE,
   type PublicationExportable,
+  neutraliserFormule,
 } from "./exports";
 
 function publication(patch: Partial<PublicationExportable> = {}): PublicationExportable {
@@ -240,5 +241,63 @@ describe("la sauvegarde complète", () => {
 
   it("nomme le fichier par sa date, pour qu'il se range seul", () => {
     expect(nomFichierSauvegarde(horodatage)).toBe("sauvegarde-console-editoriale-2026-08-21.json");
+  });
+});
+
+describe("neutraliserFormule — l'export Excel n'exécute pas ce qu'on y a écrit", () => {
+  it("🔴 neutralise l'injection de formule signalée par la passe 4", () => {
+    // L'export porte un BOM UTF-8 et des CRLF : il est FAIT pour Excel, qui
+    // interprète une cellule commençant par « = » comme une formule.
+    const attaque = "=cmd|' /C calc'!A0";
+    expect(neutraliserFormule(attaque)).toBe("'" + attaque);
+    // Le texte reste intégral — on préfixe, on ne mutile pas.
+    expect(neutraliserFormule(attaque)).toContain(attaque);
+  });
+
+  it("neutralise les quatre amorces, plus la tabulation et le retour chariot", () => {
+    for (const c of ["=", "+", "-", "@", "\t", "\r"]) {
+      expect(neutraliserFormule(c + "SUM(A1)"), c).toBe("'" + c + "SUM(A1)");
+    }
+  });
+
+  it("🔴 ne touche PAS un texte ordinaire — un export mutilé serait un autre bug", () => {
+    for (const v of ["Automatiser une relance", "2026-09-15", "#RGPD", "", "Œuvre"]) {
+      expect(neutraliserFormule(v), v).toBe(v);
+    }
+  });
+
+  it("neutralise AVANT de citer, pour que le tableur ne voie pas l'amorce", () => {
+    // Une cellule qui contient un « ; » est citée. Si on citait d'abord, la
+    // cellule commencerait par un guillemet et l'amorce passerait inaperçue
+    // à l'inspection — mais le tableur, lui, la verrait après décitation.
+    const sortie = echapperCellule("=1+1;puis");
+    expect(sortie.startsWith("\"'=")).toBe(true);
+  });
+
+  it("neutralise dans le CSV COMPLET, pas seulement dans la fonction", () => {
+    // 🔴 Le §1 du protocole : « une garde ne vaut que si elle rougit sur
+    // l'objet qui casse ». On vérifie donc la sortie réelle de l'export.
+    const csv = construireCsv([
+      {
+        refImport: null,
+        datePrevue: "2026-09-15",
+        heurePrevue: "09:00",
+        compteLibelle: "Profil",
+        identite: "perso",
+        titreInterne: "=cmd|' /C calc'!A0",
+        accroche: null,
+        corps: null,
+        premierCommentaire: null,
+        tags: [],
+        lienUrl: null,
+        statutRedaction: "idee",
+        statutAsset: "aucun",
+        statutDiffusion: "non_programme",
+        urlPubliee: null,
+        cheminsMedias: [],
+      },
+    ]);
+    expect(csv).not.toContain(";=cmd");
+    expect(csv).toContain(";'=cmd");
   });
 });
