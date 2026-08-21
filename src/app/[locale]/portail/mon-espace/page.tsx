@@ -81,7 +81,7 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
 
                 {aFaire.map((q) => (
                   <CarteEspace
-                    key={q.token}
+                    key={q.id}
                     ton="action"
                     icone={ClipboardList}
                     titre={TITRES_QUESTIONNAIRE[q.type] ?? "Questionnaire"}
@@ -98,13 +98,13 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                     */}
                     {q.type === "positionnement" ? (
                       <PositionnementPortailForm
-                        questionnaireToken={q.token}
+                        questionnaireId={q.id}
                         objectifs={q.objectifs}
                         soumettreAction={soumettreSatisfactionPortailAction}
                       />
                     ) : (
                       <SatisfactionPortailForm
-                        questionnaireToken={q.token}
+                        questionnaireId={q.id}
                         soumettreSatisfactionAction={soumettreSatisfactionPortailAction}
                       />
                     )}

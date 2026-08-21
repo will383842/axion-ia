@@ -75,7 +75,11 @@ const revoquerPortailAccesSchema = z.object({
 });
 
 const soumettreSatisfactionPortailSchema = z.object({
-  token: z.string().min(1),
+  // 🔴 `D4-5-S1` — c'était le jeton du questionnaire. Le portail authentifie
+  // pourtant le stagiaire par cookie ET vérifie l'appartenance juste en
+  // dessous : le jeton n'était qu'un identifiant redondant, expédié au
+  // navigateur et conservé dans la page. L'identifiant n'ouvre rien.
+  questionnaireId: z.string().uuid(),
   reponses: z.record(z.unknown()),
   noteGlobale: z.number().int().min(1).max(5).optional(),
 });
@@ -184,7 +188,7 @@ export async function quitterPortailAction(): Promise<ActionResult<{ ok: boolean
  * S'authentifie via le cookie portail (PAS requireAdminWrite).
  */
 export async function soumettreSatisfactionPortailAction(input: {
-  token: string;
+  questionnaireId: string;
   reponses: Record<string, unknown>;
   noteGlobale?: number;
 }): Promise<ActionResult<{ id: string }>> {
@@ -198,7 +202,7 @@ export async function soumettreSatisfactionPortailAction(input: {
 
   // A-01 (IDOR) : vérifier que le questionnaire appartient bien au stagiaire authentifié.
   const questionnaire = await prisma.questionnaire.findUnique({
-    where: { token: v.token },
+    where: { id: v.questionnaireId },
     select: { enrollment: { select: { traineeId: true } } },
   });
   if (!questionnaire || questionnaire.enrollment.traineeId !== authResult.traineeId) {
@@ -244,7 +248,7 @@ export async function soumettreSatisfactionPortailAction(input: {
   const { detailAdaptation: _retire, ...reponsesSansDetail } = v.reponses;
 
   const result = await soumettreReponses({
-    token: v.token,
+    questionnaireId: v.questionnaireId,
     reponses: reponsesSansDetail,
     ...(v.noteGlobale !== undefined ? { noteGlobale: v.noteGlobale } : {}),
   });

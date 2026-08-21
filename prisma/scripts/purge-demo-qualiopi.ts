@@ -29,6 +29,7 @@
  */
 
 import { PrismaClient } from "../generated/client";
+import { hacherToken } from "../../src/server/qualiopi/tokens/hacher-token";
 
 const prisma = new PrismaClient();
 
@@ -154,11 +155,16 @@ async function main(): Promise<void> {
     {
       libelle: "Questionnaires (positionnement + satisfaction)",
       compter: () =>
-        prisma.questionnaire.count({ where: { token: { in: [...DEMO.QUESTIONNAIRE_TOKENS] } } }),
+        prisma.questionnaire.count({
+          where: { tokenHash: { in: DEMO.QUESTIONNAIRE_TOKENS.map(hacherToken) } },
+        }),
       supprimer: async () =>
         (
           await prisma.questionnaire.deleteMany({
-            where: { token: { in: [...DEMO.QUESTIONNAIRE_TOKENS] } },
+            // ⚠️ On cible les EMPREINTES des jetons de démonstration, jamais un
+            // motif de nom : une purge qui ratisserait large effacerait des
+            // questionnaires réels.
+            where: { tokenHash: { in: DEMO.QUESTIONNAIRE_TOKENS.map(hacherToken) } },
           })
         ).count,
     },

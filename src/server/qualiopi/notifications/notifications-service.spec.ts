@@ -68,8 +68,19 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: vi.fn().mockResolvedValue({ enqueued: true }),
 }));
 
+// 🔴 `D4-5-S1` — le double ne portait que `creerQuestionnaire`, et celle-ci
+// rendait un JETON. Les deux ont changé : la création est idempotente et ne
+// rend plus que l'identifiant (la base ne détient qu'une empreinte), et c'est
+// `emettreLienQuestionnaire` qui frappe un jeton neuf au moment d'écrire le
+// lien dans l'e-mail.
+//
+// ⚠️ Ce mock a rougi parce qu'il était INCOMPLET : la fonction manquante était
+// `undefined`, l'appel levait, et les deux tests d'enquête entreprise
+// tombaient. C'est le bon comportement — un double doit porter le contrat
+// entier du module, pas le minimum qui passait hier.
 vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
-  creerQuestionnaire: vi.fn().mockResolvedValue({ id: "quest-uuid-1", token: "c".repeat(48) }),
+  creerQuestionnaire: vi.fn().mockResolvedValue({ id: "quest-uuid-1" }),
+  emettreLienQuestionnaire: vi.fn().mockResolvedValue("c".repeat(48)),
 }));
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -80,7 +91,10 @@ import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
-import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
+import {
+  creerQuestionnaire,
+  emettreLienQuestionnaire,
+} from "@/server/qualiopi/satisfaction/satisfaction-service";
 import {
   envoyerConvocation,
   envoyerRappelJ7,
@@ -114,6 +128,7 @@ const mockPrisma = prisma as unknown as {
 const mockEnqueueEmail = enqueueEmail as ReturnType<typeof vi.fn>;
 const mockCreerAcces = creerAcces as ReturnType<typeof vi.fn>;
 const mockCreerQuestionnaire = creerQuestionnaire as ReturnType<typeof vi.fn>;
+const mockEmettreLien = emettreLienQuestionnaire as ReturnType<typeof vi.fn>;
 const mockCreerTokenInscription = creerTokenInscription as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -798,7 +813,10 @@ describe("envoyerEnqueteEntreprise", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockEnqueueEmail.mockResolvedValue({ enqueued: true });
-    mockCreerQuestionnaire.mockResolvedValue({ id: "quest-uuid-e1", token: "d".repeat(48) });
+    // 🔴 `D4-5-S1` — la création ne rend plus de jeton. Le lien de l'e-mail
+    // vient de l'ÉMISSION, qui en frappe un neuf et n'en garde que l'empreinte.
+    mockCreerQuestionnaire.mockResolvedValue({ id: "quest-uuid-e1" });
+    mockEmettreLien.mockResolvedValue("d".repeat(48));
   });
 
   it("crée (upsert) le questionnaire entreprise et écrit au contact client", async () => {
@@ -829,7 +847,10 @@ describe("envoyerEnqueteEntreprise", () => {
     ];
     expect(template).toBe("qualiopi-enquete-entreprise");
     expect(to).toBe("simone@investsun.example");
+    // 🔑 Le lien vient de l'ÉMISSION, plus de la création : c'est elle qui
+    // frappe un jeton neuf et n'en garde que l'empreinte.
     expect(String(payload["lienEnquete"])).toContain(`/fr/portail/enquete/${"d".repeat(48)}`);
+    expect(mockEmettreLien).toHaveBeenCalled();
   });
 
   it("sans inscription active → THROW (le cron doit journaliser, pas croire l'envoi fait)", async () => {

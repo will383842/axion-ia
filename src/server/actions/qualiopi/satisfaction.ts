@@ -44,7 +44,11 @@ const genererQuestionnairesSessionSchema = z.object({
 });
 
 const saisirReponsesQuestionnaireSchema = z.object({
-  token: z.string().min(1).max(64),
+  // 🔴 `D4-5-S1` — c'était `token`. La console envoyait au navigateur le jeton
+  // porteur de chaque questionnaire pour pouvoir saisir les réponses à la place
+  // du stagiaire. Un administrateur authentifié désigne la ligne par son
+  // identifiant : celui-ci n'ouvre rien.
+  questionnaireId: z.string().uuid(),
   reponses: z.record(z.unknown()),
   noteGlobale: z.number().int().min(1).max(5).optional(),
 });
@@ -128,19 +132,19 @@ export async function genererQuestionnairesSessionAction(input: {
  * Retourne { error: "Questionnaire introuvable" } si le token n'existe pas.
  */
 export async function saisirReponsesQuestionnaireAction(input: {
-  token: string;
+  questionnaireId: string;
   reponses: Record<string, unknown>;
   noteGlobale?: number;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = saisirReponsesQuestionnaireSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { token, reponses, noteGlobale } = parsed.data;
+  const { questionnaireId, reponses, noteGlobale } = parsed.data;
 
   let result: { id: string } | null;
   try {
     result = await soumettreReponses({
-      token,
+      questionnaireId,
       reponses,
       ...(noteGlobale !== undefined ? { noteGlobale } : {}),
     });
@@ -155,7 +159,7 @@ export async function saisirReponsesQuestionnaireAction(input: {
   // Invalide le cache indicateurs de l'année de la session
   try {
     const questionnaire = await prisma.questionnaire.findUnique({
-      where: { token },
+      where: { id: questionnaireId },
       select: {
         enrollment: {
           select: {
@@ -177,7 +181,10 @@ export async function saisirReponsesQuestionnaireAction(input: {
     targetType: "Questionnaire",
     targetId: result.id,
     changes: {
-      token: token.slice(0, 8) + "…",
+      // 🔴 `D4-5-S1` — le journal inscrivait les huit premiers caractères du
+      // JETON. Tronqué ou non, un fragment de sésame n'a rien à faire dans un
+      // registre d'activité que l'on relit à froid ; et il n'identifiait rien
+      // de plus que `targetId`, qui porte déjà l'identifiant du questionnaire.
       ...(noteGlobale !== undefined ? { noteGlobale } : {}),
     },
     session,

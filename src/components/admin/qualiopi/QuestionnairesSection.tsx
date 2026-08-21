@@ -29,7 +29,7 @@ type QuestionnaireType = QuestionnaireTypeStagiaire | "satisfaction_entreprise";
 export interface QuestionnaireRow {
   id: string;
   /** Token d'accès (utilisé pour la saisie admin). */
-  token: string;
+  // 🔴 `D4-5-S1` — le jeton porteur ne descend plus jusqu'au navigateur.
   /** Nom complet du stagiaire (enrollment.trainee.nom + prenom). */
   traineeNom: string;
   type: QuestionnaireType;
@@ -57,7 +57,9 @@ export interface QuestionnairesSectionProps {
     types?: QuestionnaireTypeStagiaire[];
   }) => Promise<ActionResult<{ crees: number; total: number }>>;
   saisirReponsesAction: (input: {
-    token: string;
+    // 🔴 `D4-5-S1` — c'était `token: string`. Le jeton porteur ne descend plus
+    // jusqu'au navigateur : un administrateur authentifié désigne la ligne.
+    questionnaireId: string;
     reponses: Record<string, unknown>;
     noteGlobale?: number;
   }) => Promise<ActionResult<{ id: string }>>;
@@ -148,7 +150,7 @@ function SaisieForm({ questionnaire, saisirReponsesAction, onDone }: SaisieFormP
 
     startTransition(async () => {
       const result = await saisirReponsesAction({
-        token: questionnaire.token,
+        questionnaireId: questionnaire.id,
         reponses,
         ...(noteInt !== undefined ? { noteGlobale: noteInt } : {}),
       });

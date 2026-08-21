@@ -202,7 +202,10 @@ describe("lecture — réservée, et tracée", () => {
 //   révélation. Ce n'était pas un oubli de précaution : une contradiction avec
 //   une décision déjà prise. Donnée de santé, RGPD art. 9.
 
-const QUEST_TOKEN = "jeton-questionnaire";
+// 🔴 `D4-5-S1` — c'était un JETON. La soumission désigne désormais le
+// questionnaire par son identifiant : le portail authentifie le stagiaire
+// par cookie et vérifie l'appartenance, le jeton n'y ajoutait rien.
+const QUEST_ID = "11111111-2222-4333-8444-555555555555";
 
 describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régime", () => {
   beforeEach(() => {
@@ -217,7 +220,7 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     // une fois la valeur dans la colonne, elle y est en clair, et l'en retirer
     // après coup en laisserait une trace dans les sauvegardes.
     await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: {
         attentes: "monter en compétence",
         besoinAdaptation: true,
@@ -242,7 +245,7 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     // Deux chemins qui rangeraient la donnée à deux endroits produiraient
     // exactement la divergence que ces constats décrivent.
     await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { besoinAdaptation: true, detailAdaptation: "Salle accessible en fauteuil" },
     });
 
@@ -259,7 +262,7 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     // `D46-01`. Sans alerte, la donnée est bien rangée et toujours lue par
     // personne : on aurait fermé la fuite sans tenir la promesse.
     await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { besoinAdaptation: true, detailAdaptation: "Salle accessible en fauteuil" },
     });
 
@@ -275,7 +278,7 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     // décrite par l'autre chemin. Recopier `null` par symétrie détruirait cette
     // déclaration-là, et rien ne le signalerait.
     await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { besoinAdaptation: true },
     });
 
@@ -290,7 +293,7 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     // Témoin de non-vacuité des quatre cas ci-dessus : si l'action écrivait à
     // chaque soumission, ils passeraient tous sans rien prouver du déclencheur.
     await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { attentes: "monter en compétence" },
     });
 
@@ -305,7 +308,7 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     traineeUpdate.mockRejectedValueOnce(new Error("base indisponible"));
 
     const r = await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { besoinAdaptation: true, detailAdaptation: "Salle accessible" },
     });
 

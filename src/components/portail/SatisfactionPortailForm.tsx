@@ -15,16 +15,16 @@ import { useState, useTransition } from "react";
 type ActionResult<T> = { data: T } | { error: string };
 
 interface SatisfactionPortailFormProps {
-  questionnaireToken: string;
+  questionnaireId: string;
   soumettreSatisfactionAction: (input: {
-    token: string;
+    questionnaireId: string;
     reponses: Record<string, unknown>;
     noteGlobale?: number;
   }) => Promise<ActionResult<{ id: string }>>;
 }
 
 export function SatisfactionPortailForm({
-  questionnaireToken,
+  questionnaireId,
   soumettreSatisfactionAction,
 }: SatisfactionPortailFormProps): React.ReactElement {
   const [note, setNote] = useState<number | null>(null);
@@ -39,7 +39,7 @@ export function SatisfactionPortailForm({
 
     startTransition(async () => {
       const result = await soumettreSatisfactionAction({
-        token: questionnaireToken,
+        questionnaireId: questionnaireId,
         reponses: commentaire.trim() ? { commentaire: commentaire.trim() } : {},
         ...(note !== null ? { noteGlobale: note } : {}),
       });
@@ -87,13 +87,13 @@ export function SatisfactionPortailForm({
       {/* Commentaire */}
       <div>
         <label
-          htmlFor={`commentaire-${questionnaireToken}`}
+          htmlFor={`commentaire-${questionnaireId}`}
           className="mb-1 block text-sm text-gray-700"
         >
           Commentaire (facultatif)
         </label>
         <textarea
-          id={`commentaire-${questionnaireToken}`}
+          id={`commentaire-${questionnaireId}`}
           value={commentaire}
           onChange={(e) => setCommentaire(e.target.value)}
           disabled={isPending}

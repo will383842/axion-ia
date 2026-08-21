@@ -26,7 +26,10 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
-import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
+import {
+  creerQuestionnaire,
+  emettreLienQuestionnaire,
+} from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { AttestationResultat } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -691,7 +694,6 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
     select: {
       id: true,
       type: true,
-      token: true,
       envoyeAt: true,
       reponduAt: true,
       relanceCount: true,
@@ -724,6 +726,10 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
     // Sans email de contact, la relance n'a pas de destinataire — on sort SANS
     // toucher la trace : le compteur ne compte que de VRAIS envois.
     if (!client?.contactEmail) return false;
+    // Cf. `envoyerEnqueteEntreprise` : la relance émet un lien NEUF. Elle le
+    // doit — le clair du précédent n'est plus récupérable — et elle a raison de
+    // le faire : une relance remplace l'invitation, elle ne la double pas.
+    const token = await emettreLienQuestionnaire(q.id);
     const envoi = await enqueueEmail(
       "qualiopi-enquete-entreprise",
       client.contactEmail,
@@ -733,7 +739,7 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
         raisonSociale: client.raisonSociale,
         titreFormation: session.titreSession,
         dateFinFormation: fmtDate(session.dateFin),
-        lienEnquete: `${baseUrl}/fr/portail/enquete/${q.token}`,
+        lienEnquete: `${baseUrl}/fr/portail/enquete/${token}`,
         numeroSession: session.numero,
       },
       { jobId: `qualiopi-enquete-entreprise-relance-${q.id}-${numeroRelance}` },
@@ -743,7 +749,11 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
         `[relance-questionnaire] NON ENVOYÉ — questionnaire ${questionnaireId} laissé candidat au rattrapage` +
           (envoi.garePourValidation === true
             ? " (e-mail garé en corbeille de validation)"
-            : " (file de messages indisponible)"),
+            : " (file de messages indisponible)") +
+          // ⚠️ À dire explicitement : le jeton a DÉJÀ tourné quand on arrive ici.
+          // Le lien précédemment envoyé au client ne fonctionne plus, et aucun
+          // nouveau n'est parti. Le prochain passage du cron en émettra un.
+          " — ATTENTION : le lien précédent a été invalidé par la rotation du jeton",
       );
       return false;
     }
@@ -847,10 +857,20 @@ export async function envoyerEnqueteEntreprise(sessionId: string): Promise<boole
     );
   }
 
-  const { token } = await creerQuestionnaire({
+  // 🔴 `D4-5-S1` — `creerQuestionnaire` ne retourne plus de jeton en clair : la
+  // base n'en détient que l'empreinte. Créer reste idempotent ; ÉMETTRE un lien
+  // est un acte distinct, qui fait tourner le jeton.
+  //
+  // ⚠️ Conséquence assumée : le lien envoyé précédemment à ce client meurt ici.
+  // C'est inévitable (la colonne n'en porte qu'un, son clair n'est plus
+  // récupérable) et c'est le meilleur des deux comportements — le dépôt l'a déjà
+  // tranché pour le portail : avec le recyclage, un SEUL e-mail intercepté
+  // valait un accès permanent.
+  const { id: idQuestionnaire } = await creerQuestionnaire({
     enrollmentId: enrollment.id,
     type: "satisfaction_entreprise",
   });
+  const token = await emettreLienQuestionnaire(idQuestionnaire);
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const dk = dateKey(session.dateFin);
