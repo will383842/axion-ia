@@ -31,7 +31,7 @@ import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
 import { formatAmount, getTierById, INTERVENTION_TIERS } from "@/content/pricing";
 // Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
-import { FOUNDER } from "@/lib/brand";
+import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 // Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
 // sont émises QUE si la Phase B est active (elles apparaîtront automatiquement
 // dès le passage du flag, sans retoucher le code). Doctrine financement respectée.
@@ -672,9 +672,16 @@ export default async function About({ params }: Props) {
       </Section>
 
       {/* FAQ AEO — entité Axion-IA (siège, ancienneté, périmètre) + FAQPage
-         JSON-LD auto via FaqAccordion */}
+         JSON-LD auto via FaqAccordion.
+
+         `faqAuthorId` : sans lui, la factory `buildFaqJsonLd` crédite Manon,
+         la persona éditoriale IA. Ces réponses parlent du siège, de
+         l'ancienneté et du périmètre du cabinet, signées par son fondateur —
+         les attribuer à une persona générée détruit exactement le signal
+         E-E-A-T que la page « À propos » existe pour poser. */}
       <FaqBlock
         tone="canvas"
+        faqAuthorId={FOUNDER_PERSON_ID}
         eyebrow="FAQ"
         title={isFr ? "Questions sur" : "Questions about"}
         titleEm="Axion-IA"

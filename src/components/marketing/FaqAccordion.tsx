@@ -12,6 +12,13 @@ interface FaqAccordionProps {
   items: ReadonlyArray<FaqEntry>;
   /** Set to false on a page that already emits its own FAQPage JSON-LD. */
   emitJsonLd?: boolean;
+  /**
+   * `@id` du nœud `Person` crédité comme auteur du `FAQPage`. Non fourni, la
+   * factory retombe sur son défaut historique — Manon, la persona éditoriale
+   * IA. Cohérent pour une FAQ produite par le content-gen, faux sur une page
+   * rédigée à la main : passer l'`@id` de la personne qui signe réellement.
+   */
+  faqAuthorId?: string;
   className?: string;
   /**
    * If provided, each open answer renders a "permalink" CTA pointing to
@@ -33,11 +40,14 @@ interface FaqAccordionProps {
 export function FaqAccordion({
   items,
   emitJsonLd = true,
+  faqAuthorId,
   className,
   permalinkBase,
   permalinkLabel = "Page dédiée",
 }: FaqAccordionProps) {
-  const jsonLd = emitJsonLd ? buildFaqJsonLd({ items }) : null;
+  const jsonLd = emitJsonLd
+    ? buildFaqJsonLd(faqAuthorId ? { items, authorId: faqAuthorId } : { items })
+    : null;
 
   return (
     <>
