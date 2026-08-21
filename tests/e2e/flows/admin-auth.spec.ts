@@ -10,16 +10,24 @@ test.describe("Admin auth flow", () => {
   test("login page renders form fields", async ({ page }) => {
     await page.goto(`/fr/${ADMIN_PREFIX}/login`);
     await expect(page).toHaveTitle(/.+/);
-    await expect(page.getByLabel(/email/i)).toBeVisible({ timeout: 10000 });
-    await expect(page.getByLabel(/mot de passe/i)).toBeVisible();
+    // 🔴 `getByLabel(/mot de passe/i)` résout DEUX éléments depuis l'ajout du
+    // bouton « Afficher le mot de passe » : le champ et le bouton. Le fixture
+    // partagé a été corrigé le 2026-08-21 (PR 775) ; ce fichier, qui recopie le
+    // même sélecteur au lieu de l'appeler, ne l'a pas été — et il a continué à
+    // rougir seul dans le journal de Gate B.
+    //
+    // 🔑 Après un correctif de sélecteur, balayer les USAGES du sélecteur, pas
+    // seulement les appelants du helper. Un prédicat recopié diverge toujours.
+    await expect(page.getByRole("textbox", { name: /email/i })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole("textbox", { name: /mot de passe/i })).toBeVisible();
     const submit = page.getByRole("button", { name: /continuer|connexion/i }).first();
     await expect(submit).toBeVisible();
   });
 
   test("login with invalid credentials shows error", async ({ page }) => {
     await page.goto(`/fr/${ADMIN_PREFIX}/login`);
-    await page.getByLabel(/email/i).fill("invalid@example.com");
-    await page.getByLabel(/mot de passe/i).fill("wrongpassword123");
+    await page.getByRole("textbox", { name: /email/i }).fill("invalid@example.com");
+    await page.getByRole("textbox", { name: /mot de passe/i }).fill("wrongpassword123");
     await page
       .getByRole("button", { name: /continuer|connexion/i })
       .first()
