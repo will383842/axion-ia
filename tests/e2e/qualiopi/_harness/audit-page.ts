@@ -48,7 +48,15 @@ export interface ResultatAudit {
     largeur: number;
     scrollWidth: number;
     clientWidth: number;
-    fautifs: { tag: string; classe: string; gauche: number; droite: number }[];
+    fautifs: {
+      tag: string;
+      classe: string;
+      gauche: number;
+      droite: number;
+      /** `pousse` = ne tient pas dans son parent. `suit` = son parent a grandi. */
+      role: "pousse" | "suit";
+      depasseSonParentDe: number;
+    }[];
   }[];
   msChargement: number;
 }
@@ -126,26 +134,63 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
         return false;
       };
 
-      const fautifs: { tag: string; classe: string; gauche: number; droite: number }[] = [];
+      // 🔴 TROISIÈME TOUR — « le plus à droite » n'est pas « le coupable ».
+      //
+      // Les deux versions précédentes triaient par bord droit décroissant. Sur les
+      // 454 mesures du premier relevé complet, elles ont invariablement désigné le
+      // groupe de CTA du header — qui porte `ml-auto` et se colle donc au bord droit
+      // de son conteneur, QUEL QU'IL SOIT. Sa position ne mesure pas une marge :
+      // elle rapporte la largeur du document. Le header n'était pas la cause du
+      // débordement mais son symptôme, et sur cette lecture j'ai failli remonter
+      // `--breakpoint-nav` — c'est-à-dire faire basculer le site en menu tiroir sur
+      // les portables les plus répandus, pour un défaut dont il n'est pas l'auteur.
+      //
+      // Un élément POUSSE quand il ne tient pas dans SON PROPRE PARENT. Il SUIT
+      // quand il y tient et que c'est le parent qui a grandi. Seule cette
+      // distinction remonte à l'origine.
+      type Fautif = {
+        tag: string;
+        classe: string;
+        gauche: number;
+        droite: number;
+        role: "pousse" | "suit";
+        depasseSonParentDe: number;
+      };
+      const pousseurs: Fautif[] = [];
+      const suiveurs: Fautif[] = [];
+
       for (const el of Array.from(document.querySelectorAll("*"))) {
         const r = el.getBoundingClientRect();
         if (r.width === 0 || r.height === 0) continue;
         if (r.right <= limite && r.left >= -1) continue;
         // Ce qu'un ancêtre découpe ne pousse pas `scrollWidth`.
         if (estDecoupe(el)) continue;
-        fautifs.push({
+
+        const p = el.parentElement;
+        const pr = p === null ? null : p.getBoundingClientRect();
+        const debord = pr === null ? 0 : Math.round(Math.max(r.right - pr.right, pr.left - r.left));
+        const commun = {
           tag: el.tagName.toLowerCase(),
           classe: String((el as HTMLElement).className || "").slice(0, 120),
           gauche: Math.round(r.left),
           droite: Math.round(r.right),
-        });
+          depasseSonParentDe: debord,
+        };
+        if (debord > 1) pousseurs.push({ ...commun, role: "pousse" });
+        else suiveurs.push({ ...commun, role: "suit" });
       }
+
       return {
         scrollWidth: racine.scrollWidth,
         clientWidth: racine.clientWidth,
-        // Les plus à droite d'abord : le vrai coupable est presque toujours le
-        // conteneur le plus large, pas le premier trouvé dans l'ordre du DOM.
-        fautifs: fautifs.sort((a, b) => b.droite - a.droite).slice(0, 5),
+        // Les POUSSEURS d'abord — ce sont eux qui expliquent. Les suiveurs ne sont
+        // rendus qu'en repli : si rien ne déborde de son parent, la cause est
+        // ailleurs (largeur minimale héritée, table, image intrinsèque) et mieux
+        // vaut un contexte que le silence.
+        fautifs: (pousseurs.length > 0
+          ? pousseurs.sort((a, b) => b.depasseSonParentDe - a.depasseSonParentDe)
+          : suiveurs.sort((a, b) => b.droite - a.droite)
+        ).slice(0, 5),
       };
     });
     if (mesure !== null) {
