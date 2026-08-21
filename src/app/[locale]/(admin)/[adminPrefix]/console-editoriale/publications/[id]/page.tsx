@@ -22,6 +22,9 @@ import {
 import { prisma } from "@/lib/prisma";
 import { chargerPublication } from "@/server/editorial/publication-queries";
 import { evaluerConformite, type RegleEvaluable } from "@/server/editorial/conformite/evaluateur";
+import { televerserAssetAction } from "@/server/actions/editorial/assets";
+import { urlPublique } from "@/server/editorial/stockage";
+import { DepotFichier } from "./DepotFichier";
 
 export const dynamic = "force-dynamic";
 
@@ -172,6 +175,56 @@ export default async function FichePublicationPage({ params }: PageProps) {
               ))}
             </div>
           )}
+        </AdminCard>
+      </div>
+
+      {/* ── Les médias — critères 4 et 5 ────────────────────────────────── */}
+      <div className="mt-[var(--space-admin-4)]">
+        <AdminCard>
+          <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-2">
+            <h2 className="admin-h2">Les médias</h2>
+            {publication.assets.some((a) => a.cheminObjet) && (
+              <a
+                href={`${base}/export?type=archive&publication=${id}`}
+                className="admin-button-secondary admin-button-sm"
+              >
+                Télécharger l&apos;archive
+              </a>
+            )}
+          </div>
+
+          {publication.assets.length > 0 && (
+            <ul className="mb-[var(--space-admin-3)] space-y-2">
+              {publication.assets.map((a) => (
+                <li
+                  key={a.id}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-2"
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    {a.cheminObjet && a.type === "image" ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={urlPublique(a.cheminObjet)}
+                        alt=""
+                        width={40}
+                        height={40}
+                        className="h-10 w-10 shrink-0 rounded-[var(--radius-admin-sm)] object-cover"
+                      />
+                    ) : null}
+                    <span className="min-w-0 truncate">{a.libelle}</span>
+                  </span>
+                  <span className="flex shrink-0 items-center gap-2">
+                    <AdminBadge tone="neutral">{a.type}</AdminBadge>
+                    <AdminBadge tone={a.statut === "pret" ? "success" : "warning"}>
+                      {a.statut}
+                    </AdminBadge>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <DepotFichier publicationId={id} televerser={televerserAssetAction} />
         </AdminCard>
       </div>
 

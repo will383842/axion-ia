@@ -11,6 +11,8 @@
  */
 
 import { NextResponse, type NextRequest } from "next/server";
+import fsp from "node:fs/promises";
+import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { requirePermission } from "@/server/actions/editorial/_guards";
 import { dayKeyOfGridDate } from "@/lib/calendar-grid";
@@ -23,6 +25,7 @@ import {
   nomFichierSauvegarde,
   type PublicationExportable,
 } from "@/server/editorial/exports";
+import { cheminAbsolu, nomArchive, nomDansArchive } from "@/server/editorial/stockage";
 
 export const dynamic = "force-dynamic";
 
@@ -181,6 +184,84 @@ async function exporterSauvegarde(): Promise<NextResponse> {
   });
 }
 
+/**
+ * L'archive des médias d'une publication — critère 3 du lot 1.
+ *
+ * > « Une publication portant trois images télécharge une archive `.zip`
+ * >   NOMMÉE LISIBLEMENT. »
+ *
+ * Deux refus explicites plutôt qu'une archive vide :
+ *   - aucune publication → 404 ;
+ *   - aucun média déposé → 409 avec un message qui dit quoi faire.
+ *
+ * Une archive vide se télécharge sans erreur, s'ouvre sur rien, et laisse
+ * croire à une perte de données. Mieux vaut refuser en le disant.
+ */
+async function exporterArchive(publicationId: string): Promise<NextResponse> {
+  const publication = await prisma.edPublication.findUnique({
+    where: { id: publicationId },
+    select: {
+      refImport: true,
+      titreInterne: true,
+      assets: {
+        orderBy: { ordre: "asc" },
+        select: { ordre: true, asset: { select: { libelle: true, cheminObjet: true } } },
+      },
+    },
+  });
+  if (!publication) {
+    return NextResponse.json({ error: "Publication introuvable" }, { status: 404 });
+  }
+
+  const medias = publication.assets.filter((a) => a.asset.cheminObjet);
+  if (medias.length === 0) {
+    return NextResponse.json(
+      {
+        error:
+          "Cette publication ne porte aucun média déposé. Déposez un fichier " +
+          "depuis sa fiche avant de demander une archive.",
+      },
+      { status: 409 },
+    );
+  }
+
+  const zip = new JSZip();
+  let ajoutes = 0;
+
+  for (const lien of medias) {
+    const chemin = lien.asset.cheminObjet as string;
+    try {
+      const contenu = await fsp.readFile(cheminAbsolu(chemin));
+      const extension = chemin.split(".").pop() ?? "bin";
+      zip.file(nomDansArchive(lien.ordre, lien.asset.libelle, extension), contenu);
+      ajoutes += 1;
+    } catch {
+      // Un fichier référencé mais absent du disque ne doit pas faire échouer
+      // toute l'archive : on le NOTE dedans, pour que celui qui décompresse
+      // sache ce qui manque au lieu de compter les fichiers à la main.
+      zip.file(
+        `MANQUANT-${nomDansArchive(lien.ordre, lien.asset.libelle, "txt")}`,
+        `Le fichier « ${chemin} » est référencé en base mais introuvable sur le disque.`,
+      );
+    }
+  }
+
+  if (ajoutes === 0) {
+    return NextResponse.json(
+      { error: "Tous les fichiers de cette publication sont introuvables sur le disque." },
+      { status: 409 },
+    );
+  }
+
+  const contenu = await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" });
+  return new NextResponse(new Uint8Array(contenu), {
+    headers: enTetes(
+      nomArchive(publication.refImport, publication.titreInterne),
+      "application/zip",
+    ),
+  });
+}
+
 export async function GET(requete: NextRequest): Promise<NextResponse> {
   try {
     // Exporter, c'est SORTIR des données : le §4 réserve ce geste à
@@ -197,6 +278,17 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
 
   if (type === "sauvegarde") return exporterSauvegarde();
 
+  if (type === "archive") {
+    const id = params.get("publication");
+    if (!id) {
+      return NextResponse.json(
+        { error: "Paramètre « publication » attendu pour une archive." },
+        { status: 400 },
+      );
+    }
+    return exporterArchive(id);
+  }
+
   if (type === "csv") {
     const maintenant = new Date();
     const annee = lireAnnee(params.get("year") ?? undefined, maintenant.getUTCFullYear());
@@ -205,7 +297,7 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json(
-    { error: `Type d'export inconnu : « ${type} ». Attendu : csv ou sauvegarde.` },
+    { error: `Type d'export inconnu : « ${type} ». Attendu : csv, archive ou sauvegarde.` },
     { status: 400 },
   );
 }

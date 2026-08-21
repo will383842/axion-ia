@@ -228,6 +228,16 @@ export default async function KitPublicationPage({ params }: PageProps) {
                   </li>
                 ))}
               </ul>
+              {mediasTelechargeables.length > 0 && (
+                <div className="mt-[var(--space-admin-3)]">
+                  <a
+                    href={`${base}/export?type=archive&publication=${id}`}
+                    className="admin-button admin-button-sm"
+                  >
+                    Télécharger {mediasTelechargeables.length > 1 ? "l'archive" : "le média"}
+                  </a>
+                </div>
+              )}
               {mediasTelechargeables.length === 0 && (
                 // Dire pourquoi le téléchargement n'est pas là vaut mieux que
                 // d'afficher un bouton qui rendrait une archive vide.
