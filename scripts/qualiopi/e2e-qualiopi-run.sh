@@ -41,4 +41,7 @@ pnpm exec prisma migrate deploy
 echo "[e2e:qualiopi] 4/4 — e2e FORMATIONS COLLECTIVES (14 docs + attestations + factures + conformité 22 + BPF)…"
 pnpm exec tsx scripts/qualiopi/e2e-formations-verif.ts
 
-echo "[e2e:qualiopi] ✅ Système complet vert. Résultats : _AUDIT/VERIF-QUALIOPI-1TO1-AFEST-2026-06-14/{e2e-formations-results.json,pdf/}"
+# Le chemin annoncé ici et celui qu'écrit le script DIVERGEAIENT : le script
+# écrivait en dur dans le worktree `qualiopi-1to1`, disparu depuis. Les deux
+# pointent désormais sur le même dossier, dans le dépôt courant.
+echo "[e2e:qualiopi] ✅ Système complet vert. Résultats : _AUDIT/VERIF-QUALIOPI-CHAINE-COMPLETE/{e2e-formations-results.json,pdf/}"
