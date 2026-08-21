@@ -20,6 +20,7 @@
  */
 
 import * as Sentry from "@sentry/nextjs";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import {
@@ -58,7 +59,7 @@ export async function envoyerLiensPourSession(input: {
       dateFin: true,
       enrollments: {
         where: {
-          statut: { notIn: ["abandon", "exclu"] },
+          ...inscriptionsActives(),
           trainee: { deletedAt: null },
           ...(input.enrollmentId !== undefined ? { id: input.enrollmentId } : {}),
         },

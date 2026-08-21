@@ -31,6 +31,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { redis } from "@/lib/redis";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -283,7 +284,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     prisma.enrollment.count({
       where: {
         session: sessionWhere,
-        statut: { notIn: ["abandon", "exclu"] },
+        ...inscriptionsActives(),
       },
     }),
     // M7 (LOT 4) — incidents RÉELS du registre sur la période. Si un type
@@ -541,7 +542,7 @@ async function computeTaux(
     }),
     prisma.enrollment.findMany({
       where: {
-        statut: { notIn: ["abandon", "exclu"] },
+        ...inscriptionsActives(),
         session: sessionWhere,
       },
       select: { tauxPresencePct: true },

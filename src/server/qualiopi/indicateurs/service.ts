@@ -10,6 +10,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { redis } from "@/lib/redis";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
@@ -137,7 +138,7 @@ export async function getIndicateurs(
 
   const enrollments = await prisma.enrollment.findMany({
     where: {
-      statut: { notIn: ["abandon", "exclu"] },
+      ...inscriptionsActives(),
       session: {
         statut: "realisee",
         dateDebut: plage,

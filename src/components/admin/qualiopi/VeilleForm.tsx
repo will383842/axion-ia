@@ -189,11 +189,20 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
 
         {/* Action décidée */}
         <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-          <label className={labelCls}>
+          {/* 🔴 `D7-2-A1` — ce `<label>` n'était associé à rien, et le
+              `aria-label` du champ disait AUTRE CHOSE que le texte affiché.
+              Conséquence : le nom accessible ne contenait pas le libellé
+              visible, donc une personne pilotant la console à la voix pouvait
+              dire « Action décidée » sans que rien ne réponde (WCAG 2.5.3,
+              « Label in Name »).
+              ⚠️ On associe le libellé et on RETIRE le `aria-label` divergent :
+              en garder un qui contredit l'écran, c'est fabriquer deux vérités
+              pour le même champ. */}
+          <label className={labelCls} htmlFor="veille-action-decidee">
             Action décidée suite à la veille (preuve d&apos;exploitation)
           </label>
           <textarea
-            aria-label="Mesure prise ou planifiée en réponse à cette veille"
+            id="veille-action-decidee"
             value={actionDecidee}
             onChange={(e) => setActionDecidee(e.target.value)}
             disabled={isPending}
