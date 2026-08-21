@@ -12,6 +12,7 @@
 
 import type { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import Link from "next/link";
 
 import { auth } from "@/auth";
@@ -95,7 +96,7 @@ export default async function EvaluationsPage({ params }: PageProps) {
         },
       },
       enrollments: {
-        where: { statut: { notIn: ["abandon", "exclu"] } },
+        where: { ...inscriptionsActives() },
         include: {
           trainee: { select: { nom: true, prenom: true, email: true } },
           evaluations: {

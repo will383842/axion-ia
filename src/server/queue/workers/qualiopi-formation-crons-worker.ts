@@ -22,6 +22,7 @@
 //   Décision T6 : aucun stub ni mock — les handlers email seront réels à T15.
 
 import { Worker } from "bullmq";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
@@ -1441,7 +1442,7 @@ async function handleLiensEmargementJ0(): Promise<void> {
       statut: { in: ["planifiee", "en_cours"] },
       dateDebut: { gte: debutJour, lt: finJour },
       AND: [
-        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        { enrollments: { some: { ...inscriptionsActives() } } },
         // La garde anti-réémission : personne n'a de lien vivant.
         {
           enrollments: {

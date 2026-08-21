@@ -21,6 +21,24 @@ interface Props {
   initialHtml?: string;
   /** Placeholder pour quand vide. */
   placeholder?: string;
+  /**
+   * Le libellé VISIBLE du champ, tel qu'il est écrit au-dessus de l'éditeur.
+   *
+   * 🔴 `D7-2-A1` (2026-08-21) — sans lui, la zone d'édition s'annonçait aux
+   * lecteurs d'écran par son PLACEHOLDER : « Rédigez l'article… » au lieu de
+   * « Corps ». Un placeholder dit ce qu'il faut FAIRE, pas ce qu'on est en
+   * train de remplir — et il disparaît dès la première frappe, y compris de la
+   * restitution vocale. Quand il n'y en avait pas, le champ s'annonçait
+   * « Editeur de contenu », ce qui ne distingue pas deux éditeurs d'un même
+   * formulaire.
+   *
+   * ⚠️ Les `<label>` posés au-dessus de ces éditeurs n'étaient associés à RIEN :
+   * un éditeur riche n'est pas un contrôle étiquetable, `htmlFor` ne s'y
+   * accroche pas. Ils avaient l'apparence d'une étiquette sans en avoir
+   * l'effet — c'est « une protection décrite mais absente », appliqué à
+   * l'accessibilité.
+   */
+  label?: string;
 }
 
 /**
@@ -33,7 +51,7 @@ interface Props {
  * SSR-safe : Tiptap v3 avec immediatelyRender:false ne touche pas au DOM
  * jusqu'au commit phase, evite mismatch hydration sans `mounted` state.
  */
-export function TiptapEditor({ name, initialHtml = "", placeholder }: Props) {
+export function TiptapEditor({ name, initialHtml = "", placeholder, label }: Props) {
   const [html, setHtml] = useState(initialHtml);
   const [json, setJson] = useState<string>("");
   const [text, setText] = useState<string>("");
@@ -49,7 +67,15 @@ export function TiptapEditor({ name, initialHtml = "", placeholder }: Props) {
     editorProps: {
       attributes: {
         class: "tiptap-content",
-        "aria-label": placeholder ?? "Editeur de contenu",
+        // Le libellé d'abord, le placeholder ensuite : l'un dit CE QUE C'EST,
+        // l'autre ce qu'il faut y écrire. Le repli générique reste en dernier
+        // recours plutôt qu'une zone d'édition sans nom du tout.
+        "aria-label": label ?? placeholder ?? "Éditeur de contenu",
+        // ⚠️ Un `contenteditable` nu n'a pas de rôle de formulaire : sans ces
+        // deux attributs, un lecteur d'écran annonce un groupe de texte et non
+        // un champ de saisie multiligne.
+        role: "textbox",
+        "aria-multiline": "true",
       },
     },
   });

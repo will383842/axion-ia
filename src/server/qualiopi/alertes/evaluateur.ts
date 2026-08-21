@@ -8,6 +8,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -382,7 +383,7 @@ async function regleEmargementAucuneSignature(now: Date): Promise<AlerteCandidat
       dateFin: { gte: finJetons },
       AND: [
         // Il y a bien quelqu'un à faire signer.
-        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        { enrollments: { some: { ...inscriptionsActives() } } },
         // Le dispositif EST en place — c'est ce qui distingue cette règle de
         // `session_sans_dispositif_emargement`, sa jumelle en négatif.
         {
@@ -423,7 +424,7 @@ async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCa
       dateDebut: { lte: now, gte: daysAgo(7, now) },
       AND: [
         // Il y a bien quelqu'un à faire signer.
-        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        { enrollments: { some: { ...inscriptionsActives() } } },
         // Et personne n'a de lien vivant.
         {
           enrollments: {

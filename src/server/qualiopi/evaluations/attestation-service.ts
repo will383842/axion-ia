@@ -20,6 +20,7 @@
  */
 
 import React from "react";
+import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
@@ -142,7 +143,7 @@ export async function genererAttestationPourEnrollment(
   // 2b. Invariant métier S2 : un stagiaire exclu ou en abandon ne peut pas
   //     recevoir d'attestation, même via l'action manuelle admin.
   //     (Le cron filtre déjà ces statuts, mais l'action manuelle ne le faisait pas.)
-  if (enrollment.statut === "exclu" || enrollment.statut === "abandon") {
+  if (!estInscriptionActive(enrollment.statut)) {
     try {
       await prisma.activityLog.create({
         data: {

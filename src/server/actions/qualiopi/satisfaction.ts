@@ -13,6 +13,7 @@
 "use server";
 
 import { z } from "zod";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
@@ -85,7 +86,7 @@ export async function genererQuestionnairesSessionAction(input: {
     enrollments = await prisma.enrollment.findMany({
       where: {
         sessionId,
-        statut: { notIn: ["abandon", "exclu"] },
+        ...inscriptionsActives(),
       },
       select: { id: true },
     });
