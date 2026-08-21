@@ -23,7 +23,8 @@ import {
   AdminBadge,
 } from "@/components/admin/ui";
 import { chargerResumeConsole } from "@/server/editorial/queries";
-import { publicationsSansAssetPret } from "@/server/editorial/publication-queries";
+import { publicationsSansAssetPret, listerIdees } from "@/server/editorial/publication-queries";
+import { PremierLancement } from "./_composants/PremierLancement";
 
 export const dynamic = "force-dynamic";
 
@@ -53,9 +54,10 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
 
   const base = `/fr/${adminPrefix}/console-editoriale`;
   const maintenant = new Date();
-  const [resume, presse] = await Promise.all([
+  const [resume, presse, idees] = await Promise.all([
     chargerResumeConsole(maintenant),
     publicationsSansAssetPret(maintenant),
+    listerIdees(),
   ]);
 
   return (
@@ -65,6 +67,9 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
         description="Piloter la publication sur tous les canaux, depuis un seul endroit."
         actions={
           <div className="flex flex-wrap gap-2">
+            <AdminButton href={`${base}/idees`} variant="ghost" size="sm">
+              Idées
+            </AdminButton>
             <AdminButton href={`${base}/publications`} variant="secondary" size="sm">
               Les publications
             </AdminButton>
@@ -75,7 +80,17 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
         }
       />
 
-      <div className="grid gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
+      <PremierLancement
+        base={base}
+        etat={{
+          comptes: resume.comptesTotal,
+          publications: resume.publicationsTotal,
+          idees: idees.length,
+          importFait: resume.importFait,
+        }}
+      />
+
+      <div className="mt-[var(--space-admin-4)] grid gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
         <AdminStatCard
           label="Publications au calendrier"
           value={resume.publicationsTotal}
