@@ -15,14 +15,40 @@ test.describe("i18n + layout", () => {
     await expect(page.locator('[data-testid="locale-switcher"]')).toHaveCount(0);
   });
 
-  test("hreflang alternates exposed in <head>", async ({ page }) => {
+  // 🔴 2026-08-21 — CE TEST DÉCRIVAIT LE MONDE D'AVANT L'EXTINCTION D'EN.
+  //
+  // Il exigeait `hreflang` fr, en ET x-default. Mesuré en production : la page
+  // d'accueil n'en porte AUCUN — et c'est cohérent. Le hreflang sert à relier
+  // des variantes de langue ; sur un site devenu monolingue il n'a plus d'objet,
+  // et `routing.ts` a coupé l'en-tête HTTP pour la même raison (GEO-005) : on
+  // annonçait à Google un alternate `en` pointant sur une redirection.
+  //
+  // Le fichier contenait déjà, deux tests plus haut, une assertion qui SAIT
+  // qu'EN est éteint. Deux tests voisins, deux mondes — c'est ainsi qu'une suite
+  // se met à mentir par morceaux.
+  //
+  // On garde la couverture du jour où EN reviendra : la branche `enActif`
+  // rétablit l'exigence d'origine.
+  test("hreflang cohérent avec l'état du locale EN", async ({ page }) => {
+    const enActif = process.env["EN_LOCALE_ENABLED"] === "true";
     await page.goto("/fr");
     const fr = await page.locator('link[rel="alternate"][hreflang="fr"]').count();
     const en = await page.locator('link[rel="alternate"][hreflang="en"]').count();
     const xDefault = await page.locator('link[rel="alternate"][hreflang="x-default"]').count();
-    expect(fr).toBeGreaterThan(0);
-    expect(en).toBeGreaterThan(0);
-    expect(xDefault).toBeGreaterThan(0);
+
+    if (enActif) {
+      expect(fr, "EN réactivé : la variante FR doit être déclarée").toBeGreaterThan(0);
+      expect(en, "EN réactivé : la variante EN doit être déclarée").toBeGreaterThan(0);
+      expect(xDefault, "EN réactivé : x-default doit être déclaré").toBeGreaterThan(0);
+      return;
+    }
+
+    expect(
+      { fr, en, xDefault },
+      "EN est éteint : aucun `hreflang` ne doit être déclaré. En annoncer un " +
+        "pointerait Google vers une redirection — le signal contradictoire que " +
+        "GEO-005 a supprimé de l'en-tête HTTP pour la même raison",
+    ).toEqual({ fr: 0, en: 0, xDefault: 0 });
   });
 
   test("skip-to-content is the first focusable element", async ({ page }) => {
@@ -37,9 +63,20 @@ test.describe("i18n + layout", () => {
     expect(fr?.status()).toBe(404);
     await expect(page.locator("h1")).toContainText("introuvable");
 
-    const en = await page.goto("/en/missing-route");
-    expect(en?.status()).toBe(404);
-    await expect(page.locator("h1")).toContainText("not found");
+    // 🔴 EN est éteint : `/en/missing-route` ne rend pas un 404 anglais, il est
+    // redirigé en 301 vers `/fr/missing-route`, qui rend le 404 FRANÇAIS. C'est
+    // le contrat voulu — une URL EN indexée doit transmettre son link juice à la
+    // canonique FR, y compris quand elle n'existe pas.
+    const enVersFr = await page.request.get("/en/missing-route", { maxRedirects: 0 });
+    expect(
+      enVersFr.status(),
+      "une URL EN inexistante doit être redirigée en permanence, pas rendue en 404 anglais",
+    ).toBe(301);
+    expect(enVersFr.headers()["location"] ?? "").toContain("/fr/missing-route");
+
+    const enSuivi = await page.goto("/en/missing-route");
+    expect(enSuivi?.status(), "la destination FR doit bien rendre un 404").toBe(404);
+    await expect(page.locator("h1")).toContainText("introuvable");
   });
 });
 
