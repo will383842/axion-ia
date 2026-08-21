@@ -153,8 +153,8 @@ async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promi
  * deux fichiers concernés sont hors du périmètre de ce correctif : ne pas
  * câbler à l'aveugle depuis ici.
  */
-export async function envoyerConvocation(enrollmentId: string): Promise<void> {
-  if (isStub()) return;
+export async function envoyerConvocation(enrollmentId: string): Promise<boolean> {
+  if (isStub()) return false;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -180,7 +180,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
     },
   });
 
-  if (!enrollment) return;
+  if (!enrollment) return false;
 
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -255,13 +255,14 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
           ? " (e-mail garé en corbeille de validation)"
           : " (file de messages indisponible)"),
     );
-    return;
+    return false;
   }
 
   await prisma.enrollment.update({
     where: { id: enrollmentId },
     data: { convocationEnvoyeeAt: new Date() },
   });
+  return true;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

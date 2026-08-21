@@ -754,8 +754,23 @@ async function handleConvocationJ5(): Promise<void> {
 
   for (const enrollment of enrollments) {
     try {
-      await envoyerConvocation(enrollment.id);
-      ok++;
+      // 🔴 `D5-1-C2` (2026-08-21) — la valeur de retour était JETÉE, et `ok++`
+      // s'incrémentait quoi qu'il arrive. Les DONNÉES étaient saines (la trace
+      // `convocationEnvoyeeAt` s'écrit dans la fonction, et seulement en cas de
+      // succès : l'inscription restait candidate au rattrapage). Mais le
+      // journal annonçait « N convocation(s) envoyée(s) » en comptant celles
+      // qui n'étaient pas parties.
+      //
+      // ⚠️ C'est le dernier membre non aligné de la famille corrigée le
+      // 2026-08-20 : six fonctions d'envoi rendent un booléen et leurs six
+      // appels le lisent. Celle-ci rendait `void` parce que sa trace était déjà
+      // juste — mais son APPELANT ne pouvait toujours pas distinguer un envoi
+      // d'un échec, et c'est ce qu'un opérateur lit le matin.
+      if (await envoyerConvocation(enrollment.id)) {
+        ok++;
+      } else {
+        ko++;
+      }
     } catch (err) {
       ko++;
       console.error(
