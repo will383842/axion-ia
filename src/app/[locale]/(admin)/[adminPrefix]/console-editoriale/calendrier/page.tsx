@@ -17,6 +17,8 @@ import {
   AdminBadge,
 } from "@/components/admin/ui";
 import { MonthGridCalendar, type MonthGridDay } from "@/components/admin/ui/MonthGridCalendar";
+import { deplacerPublicationAction } from "@/server/actions/editorial/publications";
+import { GrilleDeplacable } from "./GrilleDeplacable";
 import { dayKeyOfGridDate } from "@/lib/calendar-grid";
 import {
   listerPublicationsDuMois,
@@ -89,6 +91,10 @@ export default async function CalendrierEditorialPage({ params, searchParams }: 
   const parJour = compterParJour(publications);
 
   const jourSelectionne = sp.jour && /^\d{4}-\d{2}-\d{2}$/.test(sp.jour) ? sp.jour : null;
+  // Le mode « replanifier » charge la grille déplaçable — et son JavaScript.
+  // Consulter reste gratuit : c’est l’usage le plus fréquent, et il ne doit
+  // pas payer le coût d’une fonctionnalité qu’il n’utilise pas.
+  const modeDeplacement = sp.mode === "replanifier";
   const duJour = jourSelectionne ? publications.filter((p) => p.dayKey === jourSelectionne) : [];
 
   const jours: MonthGridDay[] = [...parJour.entries()].map(([dayKey, count]) => ({
@@ -140,6 +146,13 @@ export default async function CalendrierEditorialPage({ params, searchParams }: 
             >
               {MOIS[suivant.mois - 1]} →
             </AdminButton>
+            <AdminButton
+              href={`${lien(base, annee, mois, identite)}${modeDeplacement ? "" : "&mode=replanifier"}`}
+              variant={modeDeplacement ? "primary" : "ghost"}
+              size="sm"
+            >
+              {modeDeplacement ? "Terminer" : "Replanifier"}
+            </AdminButton>
           </div>
 
           {/* Le filtre d'identité — critère 5 du lot 0. */}
@@ -164,7 +177,29 @@ export default async function CalendrierEditorialPage({ params, searchParams }: 
           </nav>
         </div>
 
-        {publications.length === 0 ? (
+        {modeDeplacement && publications.length > 0 ? (
+          <GrilleDeplacable
+            annee={annee}
+            mois={mois}
+            aujourdhui={dayKeyOfGridDate(
+              new Date(
+                Date.UTC(
+                  maintenant.getUTCFullYear(),
+                  maintenant.getUTCMonth(),
+                  maintenant.getUTCDate(),
+                ),
+              ),
+            )}
+            publications={publications.map((p) => ({
+              id: p.id,
+              dayKey: p.dayKey,
+              heurePrevue: p.heurePrevue,
+              titreInterne: p.titreInterne,
+              compteLibelle: p.compteLibelle,
+            }))}
+            deplacer={deplacerPublicationAction}
+          />
+        ) : publications.length === 0 ? (
           <AdminEmptyState
             title={`Aucune publication en ${MOIS[mois - 1]} ${annee}`}
             description={
