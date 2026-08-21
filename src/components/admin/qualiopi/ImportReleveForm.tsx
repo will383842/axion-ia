@@ -290,7 +290,7 @@ export function ImportReleveForm({
               </p>
             )}
             {erreurReleve !== "" && (
-              <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-red-700">
+              <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
                 {erreurReleve}
               </p>
             )}
