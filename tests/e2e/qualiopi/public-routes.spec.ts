@@ -38,7 +38,16 @@ test.describe("@qualiopi-public routes publiques", () => {
       expect.soft(r.requetesEnEchec, "requêtes en échec").toEqual([]);
       expect.soft(r.axeBloquant, "a11y serious/critical").toEqual([]);
       expect.soft(r.textesInterdits, "texte interdit").toEqual([]);
-      expect.soft(r.debordementA, "débordement horizontal").toEqual([]);
+      // Le message porte le DÉTAIL : sans lui, l'échec dit « ça déborde » et
+      // rien d'autre, et 56 routes rouges ne se distinguent pas d'un artefact
+      // de mesure. Le JSON attaché ci-dessus garde la trace complète.
+      expect
+        .soft(
+          r.debordementA,
+          "débordement horizontal — éléments les plus à droite : " +
+            JSON.stringify(r.debordementCoupables),
+        )
+        .toEqual([]);
     });
   }
 });

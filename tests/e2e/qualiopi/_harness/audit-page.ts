@@ -37,6 +37,19 @@ export interface ResultatAudit {
   axeBloquant: { id: string; help: string; noeuds: number }[];
   textesInterdits: string[];
   debordementA: number[];
+  /**
+   * Détail du débordement, par largeur fautive : les cinq éléments les plus à
+   * droite, avec leur classe et leurs bornes. Vide quand rien ne déborde.
+   *
+   * Sans ce détail, l'échec dit « ça déborde » et rien d'autre — on ne peut ni
+   * le corriger ni le réfuter.
+   */
+  debordementCoupables: {
+    largeur: number;
+    scrollWidth: number;
+    clientWidth: number;
+    fautifs: { tag: string; classe: string; gauche: number; droite: number }[];
+  }[];
   msChargement: number;
 }
 
@@ -69,14 +82,76 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
   ).slice(0, 200_000);
   const textesInterdits = INTERDITS.filter(([, re]) => re.test(corps)).map(([label]) => label);
 
+  // 🔴 2026-08-21 — CE CONTRÔLE DISAIT « ça déborde » SANS DIRE DE QUOI.
+  //
+  // La première exécution réelle de la suite (run 32447074166, après réparation
+  // de l'ordre des étapes de Gate B) a rendu 167 échecs de débordement, tous au
+  // seul viewport 1440 px, sur ~56 routes. Impossible d'en faire quoi que ce
+  // soit : le contrôle rend un booléen. Rejoué en local sous `next dev
+  // --webpack` sur `/fr`, `/fr/a-propos`, `/fr/audit` et
+  // `/fr/formations/entreprise`, aux TROIS protocoles (chargement direct en
+  // 1440, protocole exact du harnais, puis après stabilisation) : aucun
+  // débordement. Le constat n'est donc pas reproductible hors du build de
+  // production, et déclarer 56 pages en défaut sur cette base serait
+  // sur-déclarer — la faute que cet audit s'est déjà faite une fois.
+  //
+  // On ne touche donc PAS au seuil : on rend la mesure DIAGNOSTIQUABLE. Le
+  // prochain run nommera les éléments fautifs, leurs classes et leurs bornes,
+  // et la question se tranchera sur des faits plutôt que sur des hypothèses.
   const debordementA: number[] = [];
+  const debordementCoupables: ResultatAudit["debordementCoupables"] = [];
   for (const w of [1440, 1024, 768, 390]) {
     await page.setViewportSize({ width: w, height: 900 });
     await page.waitForTimeout(150);
-    const deborde = await page.evaluate(
-      () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-    );
-    if (deborde) debordementA.push(w);
+    const mesure = await page.evaluate(() => {
+      const racine = document.documentElement;
+      const deborde = racine.scrollWidth > racine.clientWidth + 1;
+      if (!deborde) return null;
+      const limite = racine.clientWidth + 1;
+
+      // 🔴 CORRECTION 2026-08-21, second tour — la première version disait qu'elle
+      // écartait les éléments clippés, et ne le faisait PAS. Elle triait par bord
+      // droit décroissant : sur `/fr`, le bandeau défilant des logos (`w-max`,
+      // 7 172 px, découpé par un `overflow-hidden`) occupait les cinq places et
+      // enterrait le vrai coupable, qui n'excède la limite que de 5 px. Un
+      // diagnostic qui remonte toujours le même innocent ne vaut pas mieux que
+      // pas de diagnostic. On remonte donc réellement les ancêtres.
+      const estDecoupe = (el: Element): boolean => {
+        let p = el.parentElement;
+        while (p !== null && p !== racine) {
+          const ox = getComputedStyle(p).overflowX;
+          if (ox === "hidden" || ox === "clip" || ox === "auto" || ox === "scroll") return true;
+          p = p.parentElement;
+        }
+        return false;
+      };
+
+      const fautifs: { tag: string; classe: string; gauche: number; droite: number }[] = [];
+      for (const el of Array.from(document.querySelectorAll("*"))) {
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) continue;
+        if (r.right <= limite && r.left >= -1) continue;
+        // Ce qu'un ancêtre découpe ne pousse pas `scrollWidth`.
+        if (estDecoupe(el)) continue;
+        fautifs.push({
+          tag: el.tagName.toLowerCase(),
+          classe: String((el as HTMLElement).className || "").slice(0, 120),
+          gauche: Math.round(r.left),
+          droite: Math.round(r.right),
+        });
+      }
+      return {
+        scrollWidth: racine.scrollWidth,
+        clientWidth: racine.clientWidth,
+        // Les plus à droite d'abord : le vrai coupable est presque toujours le
+        // conteneur le plus large, pas le premier trouvé dans l'ordre du DOM.
+        fautifs: fautifs.sort((a, b) => b.droite - a.droite).slice(0, 5),
+      };
+    });
+    if (mesure !== null) {
+      debordementA.push(w);
+      debordementCoupables.push({ largeur: w, ...mesure });
+    }
   }
   await page.setViewportSize({ width: 1440, height: 900 });
 
@@ -100,6 +175,7 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
     axeBloquant,
     textesInterdits,
     debordementA,
+    debordementCoupables,
     msChargement,
   };
 }

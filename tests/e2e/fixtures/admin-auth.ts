@@ -18,9 +18,16 @@
 
 import type { Page } from "@playwright/test";
 
+import { ADMIN_DEV_EMAIL, ADMIN_DEV_PASSWORD } from "../../../prisma/seeds/identifiants-admin-dev";
+
 export const ADMIN_PREFIX = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
-export const ADMIN_EMAIL = process.env["ADMIN_SEED_EMAIL"] ?? "admin@axion-ia.local";
-export const ADMIN_PASSWORD = process.env["ADMIN_SEED_PASSWORD"] ?? "ChangeMe!2026Axion";
+// 🔴 Le repli était écrit en dur, et ne correspondait à AUCUN compte semé :
+// `prisma/seed.ts` crée une autre adresse. Comme `ADMIN_SEED_EMAIL` n'était
+// défini nulle part dans le dépôt, ce repli était le chemin EMPRUNTÉ, toujours —
+// donc `loginAsAdmin` échouait, donc les specs se `test.skip`aient, donc
+// personne ne voyait rien. Le repli pointe désormais sur la source unique.
+export const ADMIN_EMAIL = process.env["ADMIN_SEED_EMAIL"] ?? ADMIN_DEV_EMAIL;
+export const ADMIN_PASSWORD = process.env["ADMIN_SEED_PASSWORD"] ?? ADMIN_DEV_PASSWORD;
 
 export interface LoginOptions {
   /** Override email pour ce login précis. */
