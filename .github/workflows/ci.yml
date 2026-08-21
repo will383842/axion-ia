@@ -137,7 +137,13 @@ jobs:
     runs-on: ubuntu-latest
     # 45 → 75 (2026-05-29) : une fois l'ENOSPC résolu (free-disk ci-dessous), le
     # build SSG (17 928 pages) + bundle + E2E + Lighthouse dépassait de peu 45 min.
-    timeout-minutes: 75
+    #
+    # 75 → 90 (2026-08-21) : le plafond de l'étape Playwright passe de 15 à 30 min
+    # (voir son commentaire — les deux premiers runs réels ont été coupés). La
+    # somme des plafonds d'étapes atteindrait sinon ~74 min sur un job à 75, et un
+    # job tué en « cancelled » ne rend AUCUN résultat — c'est déjà arrivé le
+    # 2026-05-30 (run 26674394530), Lighthouse jamais lancé.
+    timeout-minutes: 90
     # 🔴 BASE DE DONNÉES E2E (2026-08-21) — LE HARNAIS DOIT AVOIR UNE BASE.
     #
     # Quatre specs Playwright (`a11y-admin`, `admin-nav-clic`, `admin-booking-flow`,
@@ -405,7 +411,21 @@ jobs:
         # du continue-on-error suit, une fois la suite verte — sans quoi ce gate
         # reste une garde incapable de rougir.
         run: pnpm test:e2e --project=chromium
-        timeout-minutes: 15
+        # 🔴 15 → 30 (2026-08-21). Les DEUX premiers runs où la suite a réellement
+        # tourné ont été COUPÉS par ce plafond, pas terminés :
+        #   run 32447074166 — 04:39:06 → 04:54:30 = 15 min 24 s
+        #   run 32449266900 — 05:19:04 → 05:34:17 = 15 min 13 s
+        # Un plafond atteint à la seconde près sur deux runs consécutifs n'est pas
+        # une coïncidence. Les 15 min tenaient tant que les 237 tests échouaient
+        # en quelques secondes sur un serveur mort ; ils ne tiennent plus dès que
+        # les tests s'exécutent — `auditerPage` fait un `networkidle`, une passe
+        # axe-core et quatre mesures de viewport par route, sur 119 routes.
+        #
+        # ⚠️ Conséquence à retenir : les comptes d'échecs lus sur ces deux runs
+        # sont PARTIELS. Un `continue-on-error` transforme un dépassement de délai
+        # en « success », et un relevé fait sur une suite tronquée ressemble
+        # exactement à un relevé complet.
+        timeout-minutes: 30
         continue-on-error: true
       - name: Lighthouse CI
         # NON-BLOQUANT (2026-07-01), MAIS LE MOTIF ÉCRIT ICI ÉTAIT FAUX.
