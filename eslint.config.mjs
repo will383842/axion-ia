@@ -2,9 +2,14 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 
-// eslint-config-next already wires `eslint-plugin-jsx-a11y`. We sharpen 3
-// rules from the recommended preset to "error" — this works because flat
-// config inherits plugin namespaces from earlier blocks in the same array.
+// eslint-config-next already wires `eslint-plugin-jsx-a11y`. We sharpen 4
+// rules to "error" — this works because flat config inherits plugin namespaces
+// from earlier blocks in the same array.
+//
+// ⚠️ `eslint-config-next` n'active que SIX règles jsx-a11y : `alt-text`,
+// `aria-props`, `aria-proptypes`, `aria-unsupported-elements`,
+// `role-has-required-aria-props`, `role-supports-aria-props`. Tout le reste du
+// plugin est INACTIF, et l'association libellé ↔ champ en faisait partie.
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -14,6 +19,21 @@ const eslintConfig = defineConfig([
       "jsx-a11y/anchor-is-valid": "error",
       "jsx-a11y/click-events-have-key-events": "error",
       "jsx-a11y/no-static-element-interactions": "error",
+      // 🔴 `D7-2-A1` (2026-08-21) — un champ sans libellé associé n'est pas
+      // remplissable au lecteur d'écran. La règle était INACTIVE.
+      //
+      // Elle a été MESURÉE avant d'être posée : zéro violation sur le site
+      // public et sur le portail stagiaire, huit dans la console admin, toutes
+      // du même motif (un `<label>` au-dessus d'un éditeur riche, qui
+      // n'étiquette rien). Les huit sont corrigées dans le même commit — la
+      // règle démarre donc à zéro, sans rouge permanent.
+      //
+      // ⚠️ `depth: 3` et non le défaut 2 : le dépôt écrit ses libellés de case
+      // à cocher en `<label><input/><span><strong>Texte</strong>…</span></label>`.
+      // Le texte y est à la profondeur 3 ; au défaut, la règle réclamerait un
+      // `aria-label` sur des libellés parfaitement corrects, et c'est ainsi
+      // qu'une règle juste finit désactivée.
+      "jsx-a11y/label-has-associated-control": ["error", { depth: 3 }],
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "@typescript-eslint/no-unused-vars": [
         "error",

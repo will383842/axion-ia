@@ -180,8 +180,8 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
       </div>
 
       <div className="admin-field">
-        <label className="admin-label">Corps (FR)</label>
-        <TiptapEditor name="body_fr" />
+        <span className="admin-label">Corps (FR)</span>
+        <TiptapEditor label="Corps (FR)" name="body_fr" />
       </div>
 
       <div className="admin-field">

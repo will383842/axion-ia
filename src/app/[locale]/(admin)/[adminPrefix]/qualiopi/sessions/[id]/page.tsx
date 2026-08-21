@@ -65,6 +65,7 @@ import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requi
 import {
   envoyerLienSignatureParEmailAction,
   emettreLienSignatureAction,
+  revoquerLiensSignatureAction,
 } from "@/server/actions/qualiopi/piece-lien-signature";
 import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
@@ -944,6 +945,7 @@ export default async function SessionHubPage({ params }: PageProps) {
                   parties={circuit.parties}
                   signatures={signaturesParPiece.get(d.id) ?? []}
                   emettreAction={emettreLienSignatureAction}
+                  revoquerLiensAction={revoquerLiensSignatureAction}
                   contresignerAction={contresignerPieceAction}
                   envoyerParEmailAction={envoyerLienSignatureParEmailAction}
                 />
