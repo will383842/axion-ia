@@ -6,6 +6,7 @@ import { getAdminUserDetailAction } from "@/features/admin-users/actions";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { UserActions } from "./UserActions";
 import { formatDateFr, formatDateFrShort } from "@/lib/format-date-fr";
+import { libelleRole } from "@/features/admin-users/roles";
 
 export const dynamic = "force-dynamic";
 
@@ -13,12 +14,6 @@ interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
 }
 
-const ROLE_LABELS: Record<string, string> = {
-  super_admin: "Super Admin",
-  admin: "Admin",
-  editor: "Éditeur",
-  reader: "Lecteur",
-};
 const STATUS_LABELS: Record<string, string> = {
   active: "Actif",
   suspended: "Suspendu",
@@ -49,9 +44,7 @@ export default async function UserDetailPage({ params }: PageProps) {
         }
         meta={
           <>
-            <span className={`admin-badge admin-badge-${user.role}`}>
-              {ROLE_LABELS[user.role] ?? user.role}
-            </span>
+            <span className={`admin-badge admin-badge-${user.role}`}>{libelleRole(user.role)}</span>
             <span className={`admin-badge admin-badge-${user.status}`}>
               {STATUS_LABELS[user.status] ?? user.status}
             </span>
@@ -69,7 +62,7 @@ export default async function UserDetailPage({ params }: PageProps) {
             <dt className="admin-dt">Rôle</dt>
             <dd className="admin-dd">
               <span className={`admin-badge admin-badge-${user.role}`}>
-                {ROLE_LABELS[user.role] ?? user.role}
+                {libelleRole(user.role)}
               </span>
             </dd>
             <dt className="admin-dt">Statut</dt>

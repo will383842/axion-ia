@@ -3,6 +3,7 @@
 
 import { useActionState } from "react";
 import { createAdminUserAction, type CreateUserState } from "@/features/admin-users/actions";
+import { ROLES_ADMIN, LIBELLES_ROLE, DESCRIPTIONS_ROLE } from "@/features/admin-users/roles";
 
 const init: CreateUserState = { ok: false, error: "" };
 
@@ -64,10 +65,16 @@ export function CreateUserForm() {
             Rôle
           </label>
           <select id="role" name="role" required className="admin-input" disabled={pending}>
-            <option value="reader">Lecteur (read-only)</option>
-            <option value="editor">Éditeur (CRUD contenu)</option>
-            <option value="admin">Admin (CMS + ops)</option>
-            <option value="super_admin">Super Admin (full)</option>
+            {/* 🔴 `D6-2-M1` — ce menu offrait quatre rôles, écrits un à un, alors
+                que l&apos;enum en portait six depuis le 2026-08-15 : personne ne
+                pouvait attribuer « secrétaire » ou « responsable qualité »
+                autrement qu&apos;en SQL. Il se dérive du SSOT, comme le schéma
+                `zod` qui valide sa réponse — les deux ne peuvent plus diverger. */}
+            {ROLES_ADMIN.map((role) => (
+              <option key={role} value={role}>
+                {LIBELLES_ROLE[role]} ({DESCRIPTIONS_ROLE[role]})
+              </option>
+            ))}
           </select>
         </div>
       </div>

@@ -31,6 +31,8 @@ import { redirect } from "next/navigation";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
+import { peutEngager } from "@/server/auth/habilitations";
+import { retourValide } from "./_retour-formulaire";
 import { revoquerSignatureDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 
 const schema = z.object({
@@ -62,14 +64,19 @@ export async function revoquerSignatureAction(donneesFormulaire: FormData): Prom
   const session = await requireAdminWrite();
   // Retirer une preuve du dossier engage l'organisme autant que l'y verser :
   // même exigence de rôle que la signature elle-même. Le service revérifie.
-  const retourBrut = donneesFormulaire.get("retour");
-  const retour =
-    typeof retourBrut === "string" && retourBrut.startsWith("/") && retourBrut.length <= 300
-      ? retourBrut
-      : // Repli sûr : jamais une redirection vers une valeur non validée.
-        "/";
+  // 🔴 2026-08-21 — la validation vivait ici, en trois conditions recopiables.
+  // Elle acceptait `//ailleurs.example` : une URL absolue en protocole relatif,
+  // qui commence bien par `/` et emmène pourtant hors du site. Corrigé dans
+  // `retourValide`, à un seul endroit.
+  const retour = retourValide(donneesFormulaire);
 
-  if (session.role !== "super_admin" && session.role !== "admin") {
+  // 🔴 2026-08-21 — cette garde recopiait la paire `super_admin | admin` en dur,
+  // alors que la matrice porte l'acte `revoquer_signature` depuis le 2026-08-20.
+  // Les deux listes coïncidaient ce jour-là ; c'est précisément ainsi qu'une
+  // recopie survit — elle a raison jusqu'au jour où la matrice bouge, et ce
+  // jour-là elle autorise ou refuse toute seule, sans que personne le voie.
+  // Huitième occurrence du motif dans cet audit.
+  if (!peutEngager(session.role, "revoquer_signature")) {
     redirect(`${retour}?revocation=role_insuffisant`);
   }
 
