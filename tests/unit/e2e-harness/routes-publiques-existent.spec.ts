@@ -14,8 +14,7 @@
  * de se tromper.
  */
 
-import { existsSync } from "node:fs";
-import { readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { routing } from "@/i18n/routing";
@@ -46,6 +45,36 @@ function fichierDePageExiste(base: string, chemin: string): boolean {
 const APP = join(RACINE, "src", "app");
 const APP_LOCALE = join(APP, "[locale]");
 
+/**
+ * Pages statiques volontairement HORS de l'audit public, avec leur raison.
+ *
+ * Ce ne sont pas des oublis : ces écrans exigent une session et répondent 307 à
+ * un visiteur. Les auditer avec `page.goto` mesurerait la page de refus sous un
+ * faux nom — le piège que `portail-garde-acces.spec.ts` documente déjà, et qui a
+ * valu à `/fr/portail/mon-espace` d'être retirée de la liste.
+ */
+const HORS_AUDIT = ["/portail/mon-espace", "/espace-formateur"];
+
+/** Chemins des pages statiques rendues sous `[locale]` (segments dynamiques exclus). */
+function pagesStatiques(): string[] {
+  const trouvees: string[] = [];
+  const parcourir = (dossier: string, segments: string[]): void => {
+    for (const entree of readdirSync(dossier, { withFileTypes: true })) {
+      if (!entree.isDirectory()) continue;
+      // Un segment dynamique n'a pas d'URL fixe : on ne peut pas l'auditer ainsi.
+      if (entree.name.startsWith("[")) continue;
+      // Les groupes de route `(admin)` ne produisent pas de segment d'URL.
+      const suite = entree.name.startsWith("(") ? segments : [...segments, entree.name];
+      parcourir(join(dossier, entree.name), suite);
+    }
+    if (existsSync(join(dossier, "page.tsx"))) {
+      trouvees.push(segments.length === 0 ? "/" : `/${segments.join("/")}`);
+    }
+  };
+  parcourir(APP_LOCALE, []);
+  return trouvees;
+}
+
 function resolue(route: string): boolean {
   // Route NON localisée (`/maintenance` est la seule à ce jour) : elle vit
   // directement sous `src/app/`, hors du segment `[locale]`.
@@ -71,6 +100,30 @@ describe("routes-publiques.json ne décrit que des routes qui existent", () => {
     const vus = new Set<string>();
     const doublons = routes.filter((r) => (vus.has(r) ? true : (vus.add(r), false)));
     expect(doublons).toEqual([]);
+  });
+
+  it("aucune page publique statique n'échappe à l'audit", () => {
+    // 🔴 2026-08-21 — LE CLIQUET NE REGARDAIT QUE DANS UN SENS.
+    //
+    // Il vérifiait que chaque entrée de la liste correspond à une route ; il ne
+    // vérifiait pas que chaque route figure dans la liste. Mesuré : **onze**
+    // pages statiques y manquaient, dont SIX qui répondent 200 en production —
+    // `/fr/catalogue`, `/fr/diagnostic`, `/fr/livres`, `/fr/memo-isere`,
+    // `/fr/simulateur`, `/fr/vivier-opposition`. Aucune n'avait jamais été
+    // auditée, et l'une d'elles portait un défaut d'accessibilité réel.
+    //
+    // 🔑 Une liste de couverture se garde dans les DEUX sens. Sans quoi elle
+    // mesure ce qu'on a pensé à y mettre, et le rapport dit « 117 routes »
+    // comme s'il disait « toutes ».
+    const manquantes = pagesStatiques().filter((chemin) => {
+      const attendue = chemin === "/" ? "/fr" : `/fr${chemin}`;
+      return !routes.includes(attendue) && !HORS_AUDIT.some((h) => chemin.startsWith(h));
+    });
+    expect(
+      manquantes,
+      "pages publiques absentes de `routes-publiques.json` — soit les ajouter, " +
+        "soit les inscrire dans HORS_AUDIT avec la raison",
+    ).toEqual([]);
   });
 
   it("la liste n'est pas vide et reste du bon ordre de grandeur", () => {

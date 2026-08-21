@@ -137,7 +137,7 @@ export default async function VivierOppositionPage({ params, searchParams }: Pro
               </p>
               <p>
                 Pour demander la suppression complète de vos données, écrivez-nous à{" "}
-                <a className="text-primary hover:underline" href="mailto:contact@axion-ia.com">
+                <a className="text-primary underline" href="mailto:contact@axion-ia.com">
                   contact@axion-ia.com
                 </a>
                 .
@@ -146,7 +146,7 @@ export default async function VivierOppositionPage({ params, searchParams }: Pro
           ) : (
             <p>
               Écrivez-nous à{" "}
-              <a className="text-primary hover:underline" href="mailto:contact@axion-ia.com">
+              <a className="text-primary underline" href="mailto:contact@axion-ia.com">
                 contact@axion-ia.com
               </a>{" "}
               : votre demande sera traitée, lien valide ou non.
