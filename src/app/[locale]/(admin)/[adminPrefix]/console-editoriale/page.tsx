@@ -67,6 +67,9 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
         description="Piloter la publication sur tous les canaux, depuis un seul endroit."
         actions={
           <div className="flex flex-wrap gap-2">
+            <AdminButton href={`${base}/recherche`} variant="ghost" size="sm">
+              Rechercher
+            </AdminButton>
             <AdminButton href={`${base}/idees`} variant="ghost" size="sm">
               Idées
             </AdminButton>
