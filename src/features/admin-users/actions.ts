@@ -1,6 +1,10 @@
 // Server Actions admin /utilisateurs (M9 Tier 3 section 3 — ordre §14).
 //
-// 4 roles CLAUDE.md §14 : super_admin / admin / editor / reader.
+// 🔴 `D6-2-M1` (2026-08-20) — ce commentaire annonçait « 4 roles » alors que
+// l'enum en portait SIX depuis le 2026-08-15, et c'est en le lisant qu'on
+// oubliait `responsable_qualite` et `secretaire`. La liste vit désormais dans
+// `ROLES_ADMIN` (`server/auth/habilitations.ts`) et ne se recopie plus nulle
+// part : les schémas ci-dessous s'en déduisent.
 // Doctrine §15 : super_admin gère les comptes (creation, role-change, reset
 // 2FA cross-user, suspension). admin peut suspendre mais pas changer roles.
 //
@@ -11,6 +15,7 @@
 "use server";
 
 import { z } from "zod";
+import { ROLES_ADMIN } from "@/server/auth/habilitations";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -38,7 +43,10 @@ async function requireAdminRead() {
 // ============================================================
 
 const listSchema = z.object({
-  role: z.enum(["super_admin", "admin", "editor", "reader", "all"]).default("all"),
+  // ⚠️ `parse` (et non `safeParse`) : un rôle absent de cette liste ferait LEVER
+  // la liste des comptes. Elle dérive donc du SSOT — un rôle attribuable est
+  // toujours filtrable.
+  role: z.enum([...ROLES_ADMIN, "all"]).default("all"),
   status: z.enum(["active", "suspended", "all"]).default("all"),
   search: z.string().optional(),
   page: z.coerce.number().int().min(1).default(1),
@@ -127,7 +135,19 @@ const createSchema = z.object({
   name: z.string().min(2).max(255),
   email: z.string().email(),
   password: z.string().min(12, "Mot de passe min 12 chars (CLAUDE.md §15)."),
-  role: z.enum(["super_admin", "admin", "editor", "reader"]),
+  // 🔴 `D6-2-M1` (2026-08-20) — `responsable_qualite` et `secretaire`
+  // MANQUAIENT à cette liste depuis leur création (migration du 2026-08-15).
+  //
+  // Les deux rôles existent dans l'enum Prisma, la matrice d'habilitation les
+  // reconnaît, leurs tests passent — mais AUCUN chemin du produit ne permettait
+  // de les attribuer. Le seul moyen de créer un tel compte était une commande
+  // SQL à la main.
+  //
+  // 🔑 C'est la seconde moitié, jamais traitée, du défaut du 15-17/08 : la
+  // première (les gardes qui ne les reconnaissaient pas) a été corrigée, celle
+  // -ci est restée. Un rôle qu'on ne peut pas attribuer est un rôle qui
+  // n'existe pas.
+  role: z.enum(ROLES_ADMIN),
 });
 export type CreateUserState = { ok: true; id: string } | { ok: false; error: string };
 
@@ -194,7 +214,7 @@ export async function createAdminUserAction(
 const updateSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(2).max(255).optional(),
-  role: z.enum(["super_admin", "admin", "editor", "reader"]).optional(),
+  role: z.enum(ROLES_ADMIN).optional(),
   status: z.enum(["active", "suspended"]).optional(),
 });
 export type UpdateUserState = { ok: true } | { ok: false; error: string };

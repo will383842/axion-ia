@@ -80,9 +80,29 @@ export type ActeEngageant =
    */
   | "revoquer_signature";
 
+/**
+ * Les rôles du produit, du plus au moins étendu.
+ *
+ * 🔴 Ce tuple est la SOURCE, et `RoleAdmin` s'en déduit — pas l'inverse. Un type
+ * seul ne survit pas à la compilation : il ne peut ni peupler un `<select>`, ni
+ * construire un `z.enum`, ni se parcourir dans un test. Faute de tuple, six
+ * endroits du produit portaient chacun leur recopie de la liste (`D6-2-M1`), et
+ * les six étaient restées à quatre rôles pendant que l'enum en portait six.
+ *
+ * ⚠️ L'ordre est SIGNIFIANT : il est repris tel quel dans les menus de choix de
+ * rôle, du plus étendu au plus restreint.
+ */
+export const ROLES_ADMIN = [
+  "super_admin",
+  "admin",
+  "responsable_qualite",
+  "secretaire",
+  "editor",
+  "reader",
+] as const;
+
 /** Les rôles NextAuth existants, plus les deux rôles métier ajoutés en 2026-08. */
-export type RoleAdmin =
-  "super_admin" | "admin" | "responsable_qualite" | "secretaire" | "editor" | "reader";
+export type RoleAdmin = (typeof ROLES_ADMIN)[number];
 
 /**
  * Qui peut poser quel acte.
