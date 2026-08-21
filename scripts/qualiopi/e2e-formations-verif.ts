@@ -14,6 +14,7 @@
  */
 
 import { writeFileSync, mkdirSync } from "node:fs";
+import path from "node:path";
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -42,30 +43,84 @@ import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-m
 import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
 import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
 
-const OUT_DIR =
-  "C:/Users/willi/Documents/Projets/Axion-IA/axionia/.claude/worktrees/qualiopi-1to1/_AUDIT/VERIF-QUALIOPI-1TO1-AFEST-2026-06-14";
-const PDF_DIR = `${OUT_DIR}/pdf`;
+// 🔴 `OUT_DIR` pointait en dur sur
+// `…/axionia/.claude/worktrees/qualiopi-1to1/_AUDIT/VERIF-QUALIOPI-1TO1-AFEST-2026-06-14`,
+// un worktree qui n'existe plus. Le script recréait donc l'arborescence sous le
+// répertoire PRIVÉ d'une autre session, pendant que le runner annonçait un
+// chemin relatif différent : les pièces de la vérification système atterrissaient
+// là où personne ne va les chercher. Le nom parlait en outre encore du 1-to-1,
+// retiré du périmètre Qualiopi le 2026-08-10.
+const OUT_DIR = path.join(process.cwd(), "_AUDIT", "VERIF-QUALIOPI-CHAINE-COMPLETE");
+const PDF_DIR = path.join(OUT_DIR, "pdf");
 const fmt = (d: Date) =>
   d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
 
+/**
+ * Identifiants légaux de la fixture.
+ *
+ * 🔴 Ils valaient `"SIRET-TEST-PLACEHOLDER"` et `"NDA-TEST-PLACEHOLDER"`. Le
+ * 2026-08-17, le registre a DURCI ces deux champs — 14 chiffres et clé de Luhn
+ * pour le SIRET, 11 chiffres pour le NDA. Les placeholders restaient donc écrits
+ * en base, puis `getQualiopiConfig` les ÉCARTAIT à la lecture, en silence, au
+ * profit du défaut vide. La chaîne mourait plusieurs étapes plus loin, à la
+ * facture, sur un message parlant d'un champ « manquant » — alors qu'il était
+ * REFUSÉ. Personne ne l'a vu : ce script n'a aucun appelant.
+ *
+ * `00000000000000` satisfait la clé de Luhn (somme nulle) et n'est attribuable à
+ * aucune entreprise : il franchit le contrôle sans usurper le numéro d'un tiers.
+ * Même raisonnement pour le NDA.
+ */
+const SIRET_FIXTURE = "00000000000000";
+const NDA_FIXTURE = "00000000000";
+
 async function seedConfig() {
+  // ⚠️ PAS de `catch` silencieux ici. La version précédente avalait l'erreur avec
+  // le commentaire « defaults si échec » : un semis raté devenait indiscernable
+  // d'un semis réussi, et l'échec ressortait des centaines de lignes plus loin
+  // sous un autre nom.
   const set = async (key: string, value: string) => {
-    try {
-      await prisma.siteSetting.upsert({
-        where: { key: `qualiopi.${key}` },
-        create: { key: `qualiopi.${key}`, value: value as never, category: "qualiopi" },
-        update: { value: value as never },
-      });
-    } catch {
-      /* defaults si échec */
-    }
+    await prisma.siteSetting.upsert({
+      where: { key: `qualiopi.${key}` },
+      create: { key: `qualiopi.${key}`, value: value as never, category: "qualiopi" },
+      update: { value: value as never },
+    });
   };
   await set("raison_sociale", "Axion-IA SAS");
   await set("site_url", "https://axion-ia.com");
   await set("adresse_siege", "Saint-Lattier (Isère)");
-  await set("nda_numero", "NDA-TEST-PLACEHOLDER");
+  await set("nda_numero", NDA_FIXTURE);
   await set("qualiopi_numero", "QUALIOPI-TEST-PLACEHOLDER");
-  await set("siret", "SIRET-TEST-PLACEHOLDER");
+  await set("siret", SIRET_FIXTURE);
+}
+
+/**
+ * Vérifie que ce qui a été semé est bien ce qui est RELU.
+ *
+ * 🔑 Écrire une valeur et la relire ne sont pas la même opération : entre les
+ * deux il y a un schéma qui peut la refuser sans rien dire. Cette garde rougit
+ * à l'endroit du semis, pas quatre cents lignes plus loin à l'étape facture.
+ */
+function assertIdentiteSemee(identite: {
+  siret: string;
+  nda: string;
+  raisonSociale: string;
+}): void {
+  const manquants = (
+    [
+      ["siret", identite.siret],
+      ["nda", identite.nda],
+      ["raisonSociale", identite.raisonSociale],
+    ] as const
+  )
+    .filter(([, v]) => v === "")
+    .map(([k]) => k);
+  if (manquants.length > 0) {
+    throw new Error(
+      `[e2e:qualiopi] la configuration semée n'est pas relue : ${manquants.join(", ")}. ` +
+        `La valeur est en base, mais son schéma la refuse (cf. QUALIOPI_CONFIG_REGISTRY). ` +
+        `Corriger la FIXTURE, pas le schéma.`,
+    );
+  }
 }
 
 async function main() {
@@ -73,6 +128,7 @@ async function main() {
   const report: Record<string, unknown> = {};
   await seedConfig();
   const identite = await getOrganismeIdentite();
+  assertIdentiteSemee(identite);
   const stamp = Date.now();
 
   // ── Fixture : session collective réalisée, financée OPCO ───────────────────

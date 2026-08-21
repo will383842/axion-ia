@@ -278,10 +278,69 @@ jobs:
           # (les hard fails se font dans deploy-coolify.yml).
           pnpm exec lhci assert || echo "::warning::LHCI assertions failed (history mode)"
 
+  qualiopi-chaine-complete:
+    # 🔴 `pnpm e2e:qualiopi` existait depuis des mois et N'AVAIT AUCUN APPELANT.
+    #
+    # Le script provisionne une base pgvector jetable et fait tourner TOUTE la
+    # chaîne Qualiopi — 14 documents réglementaires, attestations calculées sur
+    # les heures réelles, factures OPCO / entreprise / France Travail, les 22
+    # indicateurs, le manifeste du mode auditeur, le BPF — et rend les PDF.
+    # C'est la seule preuve de bout en bout que le dépôt possède sur cette
+    # chaîne, et personne ne la jouait.
+    #
+    # Lancée à la main le 2026-08-21, elle mourait à l'étape facture : le script
+    # semait `qualiopi.siret = "SIRET-TEST-PLACEHOLDER"`, valeur que le registre
+    # refuse depuis son durcissement du 2026-08-17 — et que `getQualiopiConfig`
+    # écartait EN SILENCE au profit du défaut vide. Corrigé dans la même PR.
+    #
+    # En nocturne et pas en PR : le script démarre un conteneur Postgres et rend
+    # une trentaine de PDF. C'est trop lent pour le temps de PR, et ce qu'il
+    # protège — la conformité des pièces opposables — ne régresse pas à l'heure.
+    name: Chaîne Qualiopi complète (14 documents, factures, 22 indicateurs, BPF)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ vars.NIGHTLY_QUALIOPI_CHAINE_ENABLED != 'false' }}
+    env:
+      SKIP_ENV_VALIDATION: "true"
+      BULLMQ_DISABLED: "true"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+      - name: Chaîne complète sur base jetable
+        run: pnpm e2e:qualiopi
+      - name: Pièces produites (PDF + résumé JSON)
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: qualiopi-chaine-${{ github.run_id }}
+          path: _AUDIT/VERIF-QUALIOPI-CHAINE-COMPLETE/
+          retention-days: 14
+
   notify-failure:
     name: Notify nightly failure
     runs-on: ubuntu-latest
-    needs: [a11y-prod, pnpm-audit, zap-baseline, mail-tester, backup-drill, lighthouse-history]
+    # ⚠️ Un job absent de cette liste échoue SANS PRÉVENIR : la notification ne
+    # se déclenche que sur les `needs`. Ajouter tout job nocturne ici, sinon il
+    # rougit dans une interface que personne n'ouvre.
+    needs:
+      [
+        a11y-prod,
+        pnpm-audit,
+        zap-baseline,
+        mail-tester,
+        backup-drill,
+        lighthouse-history,
+        qualiopi-chaine-complete,
+      ]
     if: failure()
     steps:
       - name: Post Telegram alert
