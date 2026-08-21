@@ -410,7 +410,26 @@ jobs:
         # combien de tests passent. Le chiffre de ce run est la mesure. Le retrait
         # du continue-on-error suit, une fois la suite verte — sans quoi ce gate
         # reste une garde incapable de rougir.
-        run: pnpm test:e2e --project=chromium
+        # 🔴 `--grep-invert @baseline` — la suite `admin-baseline-screenshots`
+        # se déclare OPT-IN dans son propre en-tête :
+        #
+        #     Tag `@baseline` : opt-in. Les suites smoke par défaut ne lancent
+        #     pas ces tests. Pour exécuter :
+        #       pnpm exec playwright test --grep "@baseline" --update-snapshots
+        #
+        # L'intention était écrite ; le câblage manquait. Gate B l'exécutait, et
+        # ses douze tests échouaient tous sur « A snapshot doesn't exist » —
+        # aucune capture de référence n'étant versionnée, et pour cause : elles
+        # seraient prises sur le poste d'un développeur, avec ses polices, pour
+        # être comparées sur un runner Linux.
+        #
+        # 🔑 Douze rouges permanents sans rapport avec un défaut, c'est douze
+        # bonnes raisons de ne jamais rendre ce gate bloquant. La règle est
+        # générale : une suite qui se déclare facultative doit l'ÊTRE, ou cesser
+        # de le dire.
+        #
+        # Garde : `tests/unit/ci/suite-facultative-non-executee.spec.ts`.
+        run: pnpm test:e2e --project=chromium --grep-invert "@baseline"
         # 🔴 15 → 30 (2026-08-21). Les DEUX premiers runs où la suite a réellement
         # tourné ont été COUPÉS par ce plafond, pas terminés :
         #   run 32447074166 — 04:39:06 → 04:54:30 = 15 min 24 s
