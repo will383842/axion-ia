@@ -20,8 +20,10 @@ import {
   AdminStatCard,
   AdminEmptyState,
   AdminButton,
+  AdminBadge,
 } from "@/components/admin/ui";
 import { chargerResumeConsole } from "@/server/editorial/queries";
+import { publicationsSansAssetPret } from "@/server/editorial/publication-queries";
 
 export const dynamic = "force-dynamic";
 
@@ -50,7 +52,11 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const base = `/fr/${adminPrefix}/console-editoriale`;
-  const resume = await chargerResumeConsole(new Date());
+  const maintenant = new Date();
+  const [resume, presse] = await Promise.all([
+    chargerResumeConsole(maintenant),
+    publicationsSansAssetPret(maintenant),
+  ]);
 
   return (
     <AdminPageShell>
@@ -58,9 +64,14 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
         title="Console éditoriale"
         description="Piloter la publication sur tous les canaux, depuis un seul endroit."
         actions={
-          <AdminButton href={`${base}/calendrier`} variant="primary" size="sm">
-            Ouvrir le calendrier
-          </AdminButton>
+          <div className="flex flex-wrap gap-2">
+            <AdminButton href={`${base}/publications`} variant="secondary" size="sm">
+              Les publications
+            </AdminButton>
+            <AdminButton href={`${base}/calendrier`} variant="primary" size="sm">
+              Ouvrir le calendrier
+            </AdminButton>
+          </div>
         }
       />
 
@@ -93,6 +104,52 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
           icon={BellRing}
           tone="info"
         />
+      </div>
+
+      {/* ── Ce qui presse — critère 18 du lot 1 ─────────────────────────── */}
+      <div className="mt-[var(--space-admin-6)]">
+        <AdminCard>
+          <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-2">
+            <h2 className="admin-h2">Ce qui presse</h2>
+            <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              à J-{presse.jours}, asset non prêt
+            </span>
+          </div>
+          {presse.lignes.length === 0 ? (
+            <AdminEmptyState
+              variant="inline"
+              title="Rien ne presse"
+              description={`Aucune publication dans les ${presse.jours} prochains jours n'attend un asset. Le seuil se règle depuis la règle d'alerte « asset-retard ».`}
+            />
+          ) : (
+            <ul className="space-y-2">
+              {presse.lignes.map((p) => (
+                <li
+                  key={p.id}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3"
+                >
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <span className="font-mono text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                        {p.dayKey.split("-").reverse().join("/")}
+                      </span>
+                      <a
+                        href={`${base}/publications/${p.id}`}
+                        className="truncate font-medium hover:underline"
+                      >
+                        {p.titreInterne}
+                      </a>
+                    </div>
+                    <div className="mt-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                      {p.compteLibelle}
+                    </div>
+                  </div>
+                  <AdminBadge tone="warning">{p.statutAsset}</AdminBadge>
+                </li>
+              ))}
+            </ul>
+          )}
+        </AdminCard>
       </div>
 
       <div className="mt-[var(--space-admin-6)]">

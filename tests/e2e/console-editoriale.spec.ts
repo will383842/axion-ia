@@ -14,6 +14,26 @@
  *   amorcée. Ils se SAUTENT proprement si le login échoue, plutôt que de
  *   rougir sur une machine sans seed : un faux rouge apprend à ignorer le
  *   rouge, et le protocole en fait un principe.
+ * ⚠️ **INSTABILITÉ CONNUE EN LOCAL — et ce n'est pas le produit.**
+ *
+ * En local, `playwright.config.ts` lance `pnpm dev`. Next compile chaque
+ * route à sa première requête et, pendant qu'il reconstruit son arbre, il
+ * répond **404** sur des routes pourtant valides. Résultat : à chaque
+ * exécution, un test DIFFÉRENT rougit — le tableau de bord, puis le
+ * calendrier, puis le kit — avec une capture montrant le 404 du site public.
+ *
+ * Mesuré sur six exécutions : une passe à 15/17 avait TOUS les écrans du lot 1
+ * au vert. Les routes ont par ailleurs été sondées directement (302 vers
+ * `/login` sans session, 200 avec), donc elles existent et répondent.
+ *
+ * Un préchauffage des routes (`test.beforeAll`) réduit le phénomène sans le
+ * supprimer. **En CI, rien de tout cela ne s'applique** : `pnpm start` sert un
+ * build déjà fait, où aucune compilation n'a lieu.
+ *
+ * 🔑 À retenir : un rouge de ce fichier en LOCAL doit d'abord être vérifié en
+ * regardant la capture. Si elle montre « Erreur d'aiguillage », c'est le
+ * serveur de dev, pas le code. Relancer suffit.
+ *
  * - **L'état de chargement n'est pas asserté** : les deux écrans sont rendus
  *   d'un bloc côté serveur, sans squelette ni frontière `Suspense`. Il n'y a
  *   donc pas d'état de chargement à vérifier — et en inventer un
@@ -21,8 +41,17 @@
  *   À reprendre au lot 1, quand les écrans deviendront interactifs.
  */
 
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect as expectBase, type Page } from "@playwright/test";
 import { loginAsAdmin, ADMIN_PREFIX } from "./fixtures/admin-auth";
+
+// 🔴 Le délai d’assertion passe de 5 s à 15 s, pour TOUT le fichier.
+//
+// En local, Playwright lance `pnpm dev` : chaque route est compilée à la
+// première requête, et le rendu d’un écran froid dépasse régulièrement les
+// 5 s par défaut. Corriger assertion par assertion aurait masqué le vrai
+// motif ; ce réglage le nomme. En CI, `pnpm start` sert un build déjà fait
+// et rien de tout cela ne s’applique — le délai est une marge, pas un aveu.
+const expect = expectBase.configure({ timeout: 15_000 });
 
 const BASE = `/fr/${ADMIN_PREFIX}/console-editoriale`;
 
@@ -38,6 +67,48 @@ test.beforeEach(({}, testInfo) => {
   testInfo.setTimeout(120_000);
 });
 
+/**
+ * 🔴 Préchauffage des routes, une fois pour toute la série.
+ *
+ * En local, Playwright lance `pnpm dev`, qui compile CHAQUE route à sa
+ * première requête. Sans ce préchauffage, la suite est franchement instable :
+ * à chaque exécution, c'est le test qui tombe sur une route encore froide qui
+ * rougit — un test différent à chaque fois, alors que le produit va bien.
+ *
+ * Trois exécutions l'ont montré : d'abord le tableau de bord, puis le
+ * calendrier, puis le kit. Traiter cela assertion par assertion aurait
+ * indéfiniment déplacé le problème.
+ *
+ * En CI, `playwright.config.ts` sert `pnpm start` — un build déjà fait, où
+ * rien ne se compile. Ce préchauffage y coûte alors quelques secondes, et rien
+ * d'autre.
+ */
+async function prechaufferRoutes(page: Page): Promise<void> {
+  for (const url of [BASE, `${BASE}/calendrier`, `${BASE}/publications`]) {
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 180_000 });
+  }
+
+  // Les routes DYNAMIQUES ne se compilent qu'avec un identifiant réel — et
+  // seulement une fois connecté. Sans cette seconde passe, `/publications/[id]`
+  // et son `/kit` restaient froids, et c'est exactement là que la suite
+  // rougissait, à un endroit différent à chaque exécution.
+  try {
+    await loginAsAdmin(page);
+  } catch {
+    return; // Base non amorcée : les tests concernés se sauteront d'eux-mêmes.
+  }
+  await page.goto(`${BASE}/publications`, { waitUntil: "domcontentloaded", timeout: 180_000 });
+  const premierKit = page.getByRole("link", { name: "Kit" }).first();
+  if ((await premierKit.count()) === 0) return;
+  const href = await premierKit.getAttribute("href");
+  if (!href) return;
+  await page.goto(href, { waitUntil: "domcontentloaded", timeout: 180_000 });
+  await page.goto(href.replace(/\/kit$/, ""), {
+    waitUntil: "domcontentloaded",
+    timeout: 180_000,
+  });
+}
+
 /** Tente le login ; rend `false` si l'environnement n'est pas amorcé. */
 async function connecte(page: Page): Promise<boolean> {
   try {
@@ -47,6 +118,15 @@ async function connecte(page: Page): Promise<boolean> {
     return false;
   }
 }
+
+test.beforeAll(async ({ browser }) => {
+  const page = await browser.newPage();
+  try {
+    await prechaufferRoutes(page);
+  } finally {
+    await page.close();
+  }
+});
 
 test.describe("console éditoriale — gardes (sans session)", () => {
   test("le tableau de bord renvoie vers le login", async ({ page }) => {
@@ -85,7 +165,7 @@ test.describe("console éditoriale — autorisé", () => {
     await expect(page.getByText("Règles d'alerte", { exact: true })).toBeVisible();
 
     await page.getByRole("link", { name: /ouvrir le calendrier/i }).click();
-    await expect(page).toHaveURL(/console-editoriale\/calendrier/);
+    await page.waitForURL(/console-editoriale\/calendrier/, { timeout: 60_000 });
   });
 
   test("le calendrier de septembre 2026 montre les 15 publications du profil", async ({ page }) => {
@@ -133,7 +213,103 @@ test.describe("console éditoriale — autorisé", () => {
     await cible.focus();
     await expect(cible).toBeFocused();
     await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/identite=pro/);
+    await page.waitForURL(/identite=pro/, { timeout: 60_000 });
+  });
+
+  // ── Lot 1 : la liste, la fiche, et LE KIT ───────────────────────────────
+
+  test("la liste des publications répond et affiche le dossier", async ({ page }) => {
+    test.skip(!(await connecte(page)), "Base non amorcée : login impossible.");
+
+    await page.goto(`${BASE}/publications`);
+    await expect(page.getByRole("heading", { name: /^Publications$/ })).toBeVisible();
+    // Le dossier importé compte 74 publications ; la liste en montre au plus 100.
+    await expect(page.locator("li").filter({ hasText: /Kit/ }).first()).toBeVisible();
+  });
+
+  test("la recherche filtre, et son état vide EXPLIQUE quoi faire", async ({ page }) => {
+    test.skip(!(await connecte(page)), "Base non amorcée : login impossible.");
+
+    await page.goto(`${BASE}/publications?q=zzzintrouvablezzz`);
+    await expect(page.getByText(/aucun résultat pour/i)).toBeVisible();
+    await expect(page.getByText(/effacez la recherche|essayez un autre mot/i)).toBeVisible();
+  });
+
+  test("🔴 le kit s'ouvre en UN clic depuis la liste — le test des deux clics", async ({
+    page,
+  }) => {
+    test.skip(!(await connecte(page)), "Base non amorcée : login impossible.");
+
+    // Le §2 bis pose : « entre l'ouverture de la publication et le collage
+    // dans LinkedIn, DEUX clics maximum ». Premier clic : ouvrir le kit.
+    await page.goto(`${BASE}/publications`);
+    await page.getByRole("link", { name: "Kit" }).first().click();
+    await page.waitForURL(/\/kit$/, { timeout: 60_000 });
+    await expect(page.getByRole("heading", { name: /kit de publication/i })).toBeVisible();
+  });
+
+  test("🔴 le kit porte des boutons DISTINCTS corps / premier commentaire — critère 2", async ({
+    page,
+  }) => {
+    test.skip(!(await connecte(page)), "Base non amorcée : login impossible.");
+
+    await page.goto(`${BASE}/publications`);
+    await page.getByRole("link", { name: "Kit" }).first().click();
+
+    // Deux boutons séparés, pas un seul qui ferait tout : ce sont deux
+    // gestes distincts dans LinkedIn.
+    await expect(page.getByRole("button", { name: "Copier le corps" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Copier le premier commentaire" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Tout copier" })).toBeVisible();
+  });
+
+  test("le kit affiche le récapitulatif de programmation", async ({ page }) => {
+    test.skip(!(await connecte(page)), "Base non amorcée : login impossible.");
+
+    await page.goto(`${BASE}/publications`);
+    await page.getByRole("link", { name: "Kit" }).first().click();
+    for (const libelle of ["Compte", "Date", "Heure", "Plateforme"]) {
+      await expect(page.getByText(libelle, { exact: true })).toBeVisible();
+    }
+  });
+
+  test("la fiche montre l'état de conformité et l'historique", async ({ page }) => {
+    test.skip(!(await connecte(page)), "Base non amorcée : login impossible.");
+
+    await page.goto(`${BASE}/publications`);
+    await page.getByRole("link", { name: "Kit" }).first().click();
+    await page.getByRole("link", { name: /ouvrir la fiche/i }).click();
+
+    await expect(page.getByRole("heading", { name: "Conformité" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Historique" })).toBeVisible();
+  });
+
+  test("le tableau de bord liste ce qui presse — critère 18", async ({ page }) => {
+    test.skip(!(await connecte(page)), "Base non amorcée : login impossible.");
+
+    await page.goto(BASE);
+    await expect(page.getByRole("heading", { name: "Ce qui presse" })).toBeVisible();
+    // Le seuil vient de la règle d'alerte, pas d'une constante du code.
+    await expect(page.getByText(/à J-\d+, asset non prêt/)).toBeVisible();
+  });
+
+  test("une publication inexistante DIT qu'elle est introuvable, sans blanchir", async ({
+    page,
+  }) => {
+    test.skip(!(await connecte(page)), "Base non amorcée : login impossible.");
+
+    // 🔴 On vérifie ce que l'utilisateur VOIT, pas le code de statut.
+    //
+    // Next diffuse la réponse en flux : quand `notFound()` est appelé, les
+    // en-têtes sont déjà parties, et le statut reste 200 alors que l'interface
+    // affichée est bien celle d'une ressource introuvable. Asserter 404 ici
+    // ferait rougir un comportement CORRECT — et c'est le genre de faux rouge
+    // qui apprend à ignorer le rouge.
+    await page.goto(`${BASE}/publications/00000000-0000-0000-0000-000000000000`);
+    await expect(page.getByText(/introuvable|n'existe (pas|plus)/i).first()).toBeVisible();
+    // Et surtout : la page n'est pas vide.
+    const texte = await page.locator("body").innerText();
+    expect(texte.trim().length).toBeGreaterThan(50);
   });
 
   test("le filtre actif se signale aux technologies d'assistance", async ({ page }) => {
