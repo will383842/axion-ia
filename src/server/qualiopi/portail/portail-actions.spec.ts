@@ -128,7 +128,10 @@ const mockPrisma = prisma as unknown as {
 const TRAINEE_UUID = "550e8400-e29b-41d4-a716-446655440001";
 const ACCES_UUID = "550e8400-e29b-41d4-a716-446655440002";
 const VALID_TOKEN = "a".repeat(64);
-const QUEST_TOKEN = "b".repeat(64);
+// 🔴 `D4-5-S1` — le questionnaire se désigne par son identifiant.
+// ⚠️ `VALID_TOKEN` reste un JETON : c'est celui de l'ACCÈS au portail
+// (`accederPortailAction`), qui lui est bien un sésame et le reste.
+const QUEST_ID = "11111111-2222-4333-8444-555555555555";
 const EXPIRES_FUTURE = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -218,7 +221,7 @@ describe("soumettreSatisfactionPortailAction", () => {
 
   it("retourne { data: { id } } pour des reponses valides", async () => {
     const result = await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui" },
     });
 
@@ -229,7 +232,7 @@ describe("soumettreSatisfactionPortailAction", () => {
 
   it("transmet noteGlobale a soumettreReponses si fourni", async () => {
     await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "satisfait" },
       noteGlobale: 5,
     });
@@ -241,7 +244,7 @@ describe("soumettreSatisfactionPortailAction", () => {
 
   it("ne transmet pas noteGlobale si absent (exactOptionalPropertyTypes)", async () => {
     await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui" },
     });
 
@@ -253,7 +256,7 @@ describe("soumettreSatisfactionPortailAction", () => {
     mockGetPortailToken.mockResolvedValue(null);
 
     const result = await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: {},
     });
 
@@ -265,7 +268,7 @@ describe("soumettreSatisfactionPortailAction", () => {
     mockVerifierToken.mockResolvedValue(null);
 
     const result = await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: {},
     });
 
@@ -276,7 +279,7 @@ describe("soumettreSatisfactionPortailAction", () => {
     mockSoumettreReponses.mockResolvedValue(null);
 
     const result = await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui" },
     });
 
@@ -285,7 +288,7 @@ describe("soumettreSatisfactionPortailAction", () => {
 
   it("retourne { error } si noteGlobale hors plage (6)", async () => {
     const result = await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: {},
       noteGlobale: 6,
     });
@@ -303,7 +306,7 @@ describe("soumettreSatisfactionPortailAction", () => {
     });
 
     const result = await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui" },
     });
 
@@ -317,7 +320,7 @@ describe("soumettreSatisfactionPortailAction", () => {
     mockPrisma.questionnaire.findUnique.mockResolvedValue(null);
 
     const result = await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "oui" },
     });
 
@@ -328,7 +331,7 @@ describe("soumettreSatisfactionPortailAction", () => {
   it("A-01 : appelle soumettreReponses si le questionnaire appartient bien au stagiaire connecté", async () => {
     // Le beforeEach configure questionnaire.traineeId === TRAINEE_UUID
     await soumettreSatisfactionPortailAction({
-      token: QUEST_TOKEN,
+      questionnaireId: QUEST_ID,
       reponses: { q1: "ok" },
     });
 

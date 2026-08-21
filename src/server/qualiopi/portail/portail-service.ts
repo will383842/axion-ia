@@ -17,8 +17,9 @@
  * - exactOptionalPropertyTypes respecté.
  */
 
-import { randomBytes, createHash } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import { hacherToken } from "@/server/qualiopi/tokens/hacher-token";
 import { decryptPii } from "@/lib/pii-crypto";
 import { signedDocumentPdfUrl, TTL_LECTURE_NOMINATIVE_S } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -108,7 +109,7 @@ export interface AttestationResume {
 /** Résumé d'un questionnaire visible dans l'espace stagiaire. */
 export interface QuestionnaireResume {
   type: QuestionnaireType;
-  token: string;
+  id: string;
   reponduAt: Date | null;
   /** Titre de la session rattachée — affiché en tête du questionnaire. */
   sessionTitre: string;
@@ -215,9 +216,9 @@ function genererTokenPortail(): string {
  *
  * La vraie défense est ici : la base ne détient plus de secret utilisable.
  */
-function hacherToken(token: string): string {
-  return createHash("sha256").update(token, "utf8").digest("hex");
-}
+// 🔴 2026-08-20 — la fonction vivait ICI, privée. `questionnaires.token` est
+// resté en clair un jour de plus faute de pouvoir la réutiliser. Elle est
+// désormais dans `qualiopi/tokens/hacher-token.ts` — cf. l'import en tête.
 
 // ─────────────────────────────────────────────────────────────────────────────
 // creerAcces
@@ -396,7 +397,10 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
           questionnaires: {
             select: {
               type: true,
-              token: true,
+              // 🔴 `D4-5-S1` — `token: true` était ici : le portail envoyait au
+              // navigateur le jeton porteur de chaque questionnaire du
+              // stagiaire. L'identifiant suffit, et il n'ouvre rien.
+              id: true,
               reponduAt: true,
             },
           },
@@ -514,7 +518,10 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     const objectifs = normaliserObjectifs(e.session?.formation?.objectifsPedagogiques);
     return e.questionnaires.map((q) => ({
       type: q.type,
-      token: q.token,
+      // 🔴 `D4-5-S1` — c'était `token`. Le portail transportait le jeton porteur
+      // de chaque questionnaire jusqu'au navigateur, alors qu'il authentifie
+      // déjà le stagiaire par cookie et vérifie l'appartenance à la soumission.
+      id: q.id,
       reponduAt: q.reponduAt ?? null,
       sessionTitre: e.session?.titreSession ?? "",
       sessionDateDebut: e.session?.dateDebut ?? null,

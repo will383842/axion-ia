@@ -24,6 +24,7 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { hacherToken } from "@/server/qualiopi/tokens/hacher-token";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
 
@@ -63,7 +64,7 @@ export async function soumettreEnqueteEntrepriseAction(input: {
   }
 
   const questionnaire = await prisma.questionnaire.findUnique({
-    where: { token: v.token },
+    where: { tokenHash: hacherToken(v.token) },
     select: { type: true, reponduAt: true },
   });
   if (questionnaire === null) {
