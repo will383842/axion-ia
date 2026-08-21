@@ -33,7 +33,28 @@ export async function getQualiopiConfig<K extends QualiopiConfigKey>(
     });
     if (row == null) return entry.default as QualiopiConfigValue<K>;
     const parsed = entry.schema.safeParse(row.value);
-    return (parsed.success ? parsed.data : entry.default) as QualiopiConfigValue<K>;
+    if (!parsed.success) {
+      // 🔴 La ligne EXISTE en base, et on la jette. Sans cette trace, la valeur
+      // saisie disparaît sans un mot : `getOrganismeIdentite` rend un SIRET vide,
+      // et la chaîne documentaire déclasse tout en SPÉCIMEN — ou refuse la
+      // facture — plusieurs étapes plus loin, sur un message qui parle d'un champ
+      // « manquant ». Or il n'était pas manquant : il était REFUSÉ. Une valeur
+      // absente et une valeur refusée ne se diagnostiquent pas pareil, et les
+      // confondre fait chercher une saisie qui a déjà été faite.
+      //
+      // Le chemin d'écriture de la console valide déjà (`setQualiopiConfig`
+      // lève) : ce cas ne peut venir que d'une écriture hors console, ou d'une
+      // valeur écrite AVANT que le schéma ne soit durci. Les identifiants légaux
+      // l'ont été le 2026-08-17 — ce second cas est donc rétroactif et
+      // silencieux, et c'est lui qui justifie cet avertissement.
+      console.warn(
+        `[qualiopi:config] valeur REFUSÉE pour « ${QUALIOPI_CONFIG_KEY_PREFIX}${key} » : ` +
+          `elle est en base mais ne passe pas son schéma — le défaut est utilisé à sa place. ` +
+          parsed.error.issues.map((i) => i.message).join(" · "),
+      );
+      return entry.default as QualiopiConfigValue<K>;
+    }
+    return parsed.data as QualiopiConfigValue<K>;
   } catch {
     return entry.default as QualiopiConfigValue<K>;
   }
