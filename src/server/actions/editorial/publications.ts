@@ -21,6 +21,8 @@
 "use server";
 
 import { z } from "zod";
+import { champ, avecErreur, avecSucces } from "@/server/actions/editorial/_form-outils";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requirePermission, journaliser } from "@/server/actions/editorial/_guards";
@@ -545,4 +547,144 @@ export async function marquerPublieeAction(
   } catch (e) {
     return { error: messageErreur(e) };
   }
+}
+
+// ── Les adaptateurs de formulaire ─────────────────────────────────────────
+//
+// Un `<form action={…}>` HTML nu ne sait pas lire une valeur de retour : ces
+// adaptateurs prennent un `FormData` et REDIRIGENT, le seul protocole qu'il
+// comprenne nativement. C'est ce qui permet aux écrans de saisie de rester
+// des Server Components — consommer un `{ data } | { error }` demanderait
+// `useActionState`, donc du JavaScript client sur chaque écran.
+//
+// 🔑 Ils vivent ICI, à côté des actions qu'ils adaptent, et non dans un
+// module central. Voir `_form-outils.ts` : la garde `D3-3-05` du dépôt
+// raisonne au grain du fichier, et un module dont aucune action n'est nommée
+// par un écran est signalé — à juste titre, car un lecteur qui cherche les
+// appelants ne trouve rien non plus.
+
+/**
+ * Crée une publication — critère 12 : **cinq champs, moins de 30 secondes**.
+ *
+ * Compte, date, heure, titre, corps. Rien d'autre n'est demandé, et rien
+ * d'autre ne doit l'être : « un outil qui demande douze champs pour noter une
+ * idée ne sera pas ouvert deux fois ».
+ */
+export async function creerPublicationFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const compteId = champ(donnees, "compteId");
+  const datePrevue = champ(donnees, "datePrevue");
+  const heurePrevue = champ(donnees, "heurePrevue");
+  const titreInterne = champ(donnees, "titreInterne");
+  const corps = champ(donnees, "corps");
+
+  if (!compteId || !datePrevue || !heurePrevue || !titreInterne) {
+    redirect(avecErreur(retour, "Compte, date, heure et titre sont requis."));
+  }
+
+  const resultat = await creerPublicationAction({
+    compteId,
+    datePrevue,
+    heurePrevue,
+    titreInterne,
+    ...(corps ? { corps } : {}),
+  });
+
+  if ("error" in resultat) {
+    redirect(avecErreur(retour, resultat.error));
+  }
+  // On atterrit sur la fiche créée : le geste suivant est d'y écrire.
+  redirect(`${champ(donnees, "basePublications") ?? retour}/${resultat.data.id}`);
+}
+
+/**
+ * Valide une publication — critère 7 du lot 1.
+ *
+ * Le refus de conformité remonte tel quel dans la querystring : il cite déjà
+ * la règle, le motif et l'extrait fautif. Le réécrire ici le dégraderait.
+ */
+export async function validerPublicationFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const id = champ(donnees, "id");
+  if (!id) redirect(avecErreur(retour, "Publication introuvable."));
+
+  const resultat = await validerPublicationAction({ id });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "valide"));
+}
+
+/**
+ * Marque une publication publiée, avec son URL réelle.
+ *
+ * ⚠️ L'action est idempotente depuis la passe 4 : rejouer ne republie pas et
+ * ne repousse pas `derniereParutionA`, qui arme l'alerte « canal muet ».
+ */
+export async function marquerPublieeFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const id = champ(donnees, "id");
+  const urlPubliee = champ(donnees, "urlPubliee");
+  if (!id) redirect(avecErreur(retour, "Publication introuvable."));
+  if (!urlPubliee) {
+    redirect(avecErreur(retour, "L'URL réelle de la publication est requise."));
+  }
+
+  const resultat = await marquerPublieeAction({ id, urlPubliee });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "publie"));
+}
+
+/**
+ * Modifie le contenu d'une publication — critère 8 du lot 1.
+ *
+ * 🔴 `versionAttendue` est transmise depuis le formulaire, et ce n'est pas
+ * une formalité : c'est la moitié de la garde anti-écrasement posée par la
+ * passe 4. Sans elle, deux personnes sur la même fiche se marchent dessus en
+ * silence, et le texte perdu n'existe nulle part.
+ */
+export async function modifierPublicationFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const id = champ(donnees, "id");
+  if (!id) redirect(avecErreur(retour, "Publication introuvable."));
+
+  const versionBrute = champ(donnees, "versionAttendue");
+  const versionAttendue = versionBrute ? Number(versionBrute) : undefined;
+
+  // Un champ vidé volontairement doit pouvoir EFFACER la valeur : on
+  // distingue donc « absent du formulaire » (undefined) de « présent et vide »
+  // (null). `champ()` rend `undefined` dans les deux cas, d'où la lecture
+  // brute ici — sans quoi on ne pourrait jamais retirer une accroche.
+  const texte = (nom: string): string | null | undefined => {
+    const v = donnees.get(nom);
+    if (typeof v !== "string") return undefined;
+    const propre = v.trim();
+    return propre.length > 0 ? propre : null;
+  };
+
+  const accroche = texte("accroche");
+  const corps = texte("corps");
+  const premierCommentaire = texte("premierCommentaire");
+  const lienUrl = texte("lienUrl");
+  const tagsBruts = champ(donnees, "tags");
+  const motif = champ(donnees, "motif");
+
+  const resultat = await modifierPublicationAction({
+    id,
+    ...(accroche !== undefined ? { accroche } : {}),
+    ...(corps !== undefined ? { corps } : {}),
+    ...(premierCommentaire !== undefined ? { premierCommentaire } : {}),
+    ...(lienUrl !== undefined ? { lienUrl } : {}),
+    ...(tagsBruts !== undefined
+      ? { tags: tagsBruts.split(/[\s,]+/).filter((t) => t.length > 0) }
+      : {}),
+    ...(motif ? { motif } : {}),
+    ...(versionAttendue !== undefined && Number.isFinite(versionAttendue)
+      ? { versionAttendue }
+      : {}),
+  });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(
+    resultat.data.versionCreee
+      ? avecSucces(retour, "version", String(resultat.data.version))
+      : avecSucces(retour, "enregistre"),
+  );
 }

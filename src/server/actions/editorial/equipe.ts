@@ -16,6 +16,8 @@
 "use server";
 
 import { z } from "zod";
+import { champ, avecErreur, avecSucces } from "@/server/actions/editorial/_form-outils";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requirePermission, journaliser } from "@/server/actions/editorial/_guards";
@@ -314,4 +316,65 @@ export async function refuserAssetFormAction(donnees: FormData): Promise<void> {
     redirect(`${retour}${separateur}erreur=${encodeURIComponent(resultat.error)}`);
   }
   redirect(`${retour}${separateur}refuse=1`);
+}
+
+// ── Les adaptateurs de formulaire ─────────────────────────────────────────
+//
+// Un `<form action={…}>` HTML nu ne sait pas lire une valeur de retour : ces
+// adaptateurs prennent un `FormData` et REDIRIGENT, le seul protocole qu'il
+// comprenne nativement. C'est ce qui permet aux écrans de saisie de rester
+// des Server Components — consommer un `{ data } | { error }` demanderait
+// `useActionState`, donc du JavaScript client sur chaque écran.
+//
+// 🔑 Ils vivent ICI, à côté des actions qu'ils adaptent, et non dans un
+// module central. Voir `_form-outils.ts` : la garde `D3-3-05` du dépôt
+// raisonne au grain du fichier, et un module dont aucune action n'est nommée
+// par un écran est signalé — à juste titre, car un lecteur qui cherche les
+// appelants ne trouve rien non plus.
+
+/** Soumet un asset à la revue — le geste que le rôle `montage` A le droit de faire. */
+export async function soumettreAssetRevueFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const assetId = champ(donnees, "assetId");
+  if (!assetId) redirect(avecErreur(retour, "Asset introuvable."));
+
+  const resultat = await soumettreAssetRevueAction({ assetId });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "soumis"));
+}
+
+/**
+ * Change le rôle d'un membre — critère 2 du lot 4.
+ *
+ * L'auto-rétrogradation d'un admin est refusée par l'action, avec son
+ * explication : se retirer soi-même le dernier droit d'administration ferme
+ * la porte de l'intérieur.
+ */
+export async function changerRoleMembreFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const membreId = champ(donnees, "membreId");
+  const role = champ(donnees, "role");
+  if (!membreId || !role) redirect(avecErreur(retour, "Membre ou rôle manquant."));
+
+  const resultat = await changerRoleMembreAction({
+    membreId,
+    role: role as Parameters<typeof changerRoleMembreAction>[0]["role"],
+  });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "role"));
+}
+
+/** Assigne un asset à un membre — critère 1 du lot 4, « qui fait quoi ». */
+export async function assignerAssetFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const assetId = champ(donnees, "assetId");
+  if (!assetId) redirect(avecErreur(retour, "Asset introuvable."));
+
+  // Un responsable vide DÉSASSIGNE : reprendre un asset à quelqu'un est un
+  // geste aussi légitime que le lui confier.
+  const membreId = champ(donnees, "membreId") ?? null;
+
+  const resultat = await assignerAssetAction({ assetId, membreId });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "assigne"));
 }

@@ -16,6 +16,8 @@
 "use server";
 
 import { z } from "zod";
+import { champ, avecErreur, avecSucces } from "@/server/actions/editorial/_form-outils";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requirePermission, journaliser } from "@/server/actions/editorial/_guards";
@@ -234,4 +236,90 @@ export async function archiverIdeeAction(
   } catch (e) {
     return { error: messageErreur(e) };
   }
+}
+
+// ── Les adaptateurs de formulaire ─────────────────────────────────────────
+//
+// Un `<form action={…}>` HTML nu ne sait pas lire une valeur de retour : ces
+// adaptateurs prennent un `FormData` et REDIRIGENT, le seul protocole qu'il
+// comprenne nativement. C'est ce qui permet aux écrans de saisie de rester
+// des Server Components — consommer un `{ data } | { error }` demanderait
+// `useActionState`, donc du JavaScript client sur chaque écran.
+//
+// 🔑 Ils vivent ICI, à côté des actions qu'ils adaptent, et non dans un
+// module central. Voir `_form-outils.ts` : la garde `D3-3-05` du dépôt
+// raisonne au grain du fichier, et un module dont aucune action n'est nommée
+// par un écran est signalé — à juste titre, car un lecteur qui cherche les
+// appelants ne trouve rien non plus.
+
+/**
+ * Capture une idée — critère 16 : **un seul champ**.
+ *
+ * Le formulaire n'en porte qu'un, et cette action n'en exige qu'un. Le §1 ter
+ * fixe la barre à « 10 secondes, 1 champ » : tout ajout ici doit être combattu.
+ */
+export async function capturerIdeeFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const titre = champ(donnees, "titre");
+
+  if (!titre) {
+    redirect(avecErreur(retour, "Une idée, même en trois mots."));
+  }
+
+  const detail = champ(donnees, "detail");
+  const resultat = await capturerIdeeAction({
+    titre,
+    ...(detail ? { detail } : {}),
+  });
+
+  if ("error" in resultat) {
+    redirect(avecErreur(retour, resultat.error));
+  }
+  redirect(`${retour}${retour.includes("?") ? "&" : "?"}capturee=1`);
+}
+
+/**
+ * Promeut une idée en publication — critère 17.
+ *
+ * L'idée n'est pas consommée : elle garde le lien vers ce qu'elle a produit.
+ */
+export async function promouvoirIdeeFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const id = champ(donnees, "id");
+  const compteId = champ(donnees, "compteId");
+  const datePrevue = champ(donnees, "datePrevue");
+
+  if (!id || !compteId || !datePrevue) {
+    redirect(avecErreur(retour, "Idée, compte et date sont requis pour promouvoir."));
+  }
+
+  const heurePrevue = champ(donnees, "heurePrevue");
+  const resultat = await promouvoirIdeeAction({
+    id,
+    compteId,
+    datePrevue,
+    ...(heurePrevue ? { heurePrevue } : {}),
+  });
+
+  if ("error" in resultat) {
+    redirect(avecErreur(retour, resultat.error));
+  }
+  redirect(`${champ(donnees, "basePublications") ?? retour}/${resultat.data.publicationId}`);
+}
+
+/** Écarte une idée — en DISANT pourquoi, le motif est obligatoire. */
+export async function archiverIdeeFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const id = champ(donnees, "id");
+  const motif = champ(donnees, "motif");
+  if (!id) redirect(avecErreur(retour, "Idée introuvable."));
+  if (!motif) {
+    // Le critère l'exige : écarter sans motif, c'est perdre la raison six
+    // mois plus tard, quand l'idée revient et qu'on ne sait plus.
+    redirect(avecErreur(retour, "Dire POURQUOI on écarte une idée."));
+  }
+
+  const resultat = await archiverIdeeAction({ id, motif });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "archivee"));
 }

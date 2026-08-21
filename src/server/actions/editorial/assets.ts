@@ -23,6 +23,8 @@
 "use server";
 
 import fs from "node:fs/promises";
+import { champ, avecErreur, avecSucces } from "@/server/actions/editorial/_form-outils";
+import { redirect } from "next/navigation";
 import path from "node:path";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
@@ -293,4 +295,39 @@ export async function detacherAssetAction(input: {
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Erreur inattendue" };
   }
+}
+
+// ── Les adaptateurs de formulaire ─────────────────────────────────────────
+//
+// Un `<form action={…}>` HTML nu ne sait pas lire une valeur de retour : ces
+// adaptateurs prennent un `FormData` et REDIRIGENT, le seul protocole qu'il
+// comprenne nativement. C'est ce qui permet aux écrans de saisie de rester
+// des Server Components — consommer un `{ data } | { error }` demanderait
+// `useActionState`, donc du JavaScript client sur chaque écran.
+//
+// 🔑 Ils vivent ICI, à côté des actions qu'ils adaptent, et non dans un
+// module central. Voir `_form-outils.ts` : la garde `D3-3-05` du dépôt
+// raisonne au grain du fichier, et un module dont aucune action n'est nommée
+// par un écran est signalé — à juste titre, car un lecteur qui cherche les
+// appelants ne trouve rien non plus.
+
+/**
+ * Détache un asset d'une publication — le lien, pas l'asset.
+ *
+ * ⚠️ Le §4 réserve « supprimer quoi que ce soit » à l'admin, et l'action
+ * n'exige aujourd'hui que `asset.ecrire`, que le rôle `montage` possède. La
+ * passe 4 a signalé l'écart sans trancher, et il reste ouvert : « modifier un
+ * asset » et « supprimer un lien » sont défendables l'un comme l'autre. Le
+ * geste est donc branché tel quel, et la question posée à Will — pas résolue
+ * en douce par un choix d'écran.
+ */
+export async function detacherAssetFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const assetId = champ(donnees, "assetId");
+  const publicationId = champ(donnees, "publicationId");
+  if (!assetId || !publicationId) redirect(avecErreur(retour, "Lien introuvable."));
+
+  const resultat = await detacherAssetAction({ assetId, publicationId });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "detacheLien"));
 }

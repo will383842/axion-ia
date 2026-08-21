@@ -30,14 +30,16 @@ import {
   type AssetDerivable,
 } from "@/server/editorial/derivation";
 import {
-  soumettreAssetRevueFormAction,
   passerAssetPretFormAction,
   appliquerRecetteFormAction,
   rattacherAssetFormAction,
+} from "@/server/actions/editorial/recettes";
+import { detacherAssetFormAction } from "@/server/actions/editorial/assets";
+import {
+  refuserAssetFormAction,
+  soumettreAssetRevueFormAction,
   assignerAssetFormAction,
-  detacherAssetFormAction,
-} from "@/server/actions/editorial/formulaires";
-import { refuserAssetFormAction } from "@/server/actions/editorial/equipe";
+} from "@/server/actions/editorial/equipe";
 
 export const dynamic = "force-dynamic";
 

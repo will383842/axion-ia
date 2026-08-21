@@ -28,10 +28,10 @@ import { DepotFichier } from "./DepotFichier";
 import { saisirReleveFormAction } from "@/server/actions/editorial/metriques";
 import {
   validerPublicationFormAction,
-  programmerPublicationFormAction,
   marquerPublieeFormAction,
   modifierPublicationFormAction,
-} from "@/server/actions/editorial/formulaires";
+} from "@/server/actions/editorial/publications";
+import { programmerPublicationFormAction } from "@/server/actions/editorial/recettes";
 import { formaterAgregat, LIBELLES, type CleMetrique } from "@/server/editorial/analyse";
 
 export const dynamic = "force-dynamic";

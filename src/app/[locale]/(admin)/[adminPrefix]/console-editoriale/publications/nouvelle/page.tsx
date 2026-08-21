@@ -25,7 +25,7 @@ import {
   AdminButton,
 } from "@/components/admin/ui";
 import { listerComptesActifs } from "@/server/editorial/publication-queries";
-import { creerPublicationFormAction } from "@/server/actions/editorial/formulaires";
+import { creerPublicationFormAction } from "@/server/actions/editorial/publications";
 
 export const dynamic = "force-dynamic";
 

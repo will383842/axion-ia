@@ -9,6 +9,8 @@
 "use server";
 
 import { z } from "zod";
+import { champ, avecErreur, avecSucces } from "@/server/actions/editorial/_form-outils";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requirePermission, journaliser } from "@/server/actions/editorial/_guards";
@@ -459,4 +461,104 @@ export async function chargerArbreAction(
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Erreur inattendue" };
   }
+}
+
+// ── Les adaptateurs de formulaire ─────────────────────────────────────────
+//
+// Un `<form action={…}>` HTML nu ne sait pas lire une valeur de retour : ces
+// adaptateurs prennent un `FormData` et REDIRIGENT, le seul protocole qu'il
+// comprenne nativement. C'est ce qui permet aux écrans de saisie de rester
+// des Server Components — consommer un `{ data } | { error }` demanderait
+// `useActionState`, donc du JavaScript client sur chaque écran.
+//
+// 🔑 Ils vivent ICI, à côté des actions qu'ils adaptent, et non dans un
+// module central. Voir `_form-outils.ts` : la garde `D3-3-05` du dépôt
+// raisonne au grain du fichier, et un module dont aucune action n'est nommée
+// par un écran est signalé — à juste titre, car un lecteur qui cherche les
+// appelants ne trouve rien non plus.
+
+/** Programme une publication — le contrôle des assets se fait dans l'action. */
+export async function programmerPublicationFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const id = champ(donnees, "id");
+  if (!id) redirect(avecErreur(retour, "Publication introuvable."));
+
+  const outil = champ(donnees, "outil");
+  const refExterne = champ(donnees, "refExterne");
+  const resultat = await programmerPublicationAction({
+    id,
+    ...(outil ? { outil } : {}),
+    ...(refExterne ? { refExterne } : {}),
+  });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "programme"));
+}
+
+/** Applique une recette de dérivation — critère 1 du lot 2. */
+export async function appliquerRecetteFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const assetId = champ(donnees, "assetId");
+  const recetteId = champ(donnees, "recetteId");
+  if (!assetId || !recetteId) {
+    redirect(avecErreur(retour, "Choisissez une recette à appliquer."));
+  }
+
+  const resultat = await appliquerRecetteAction({ assetId, recetteId });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, "derives", String(resultat.data.crees)));
+}
+
+/**
+ * Passe un asset à `pret` — critère 5 du lot 2.
+ *
+ * 🔴 C'est LA porte de validation, et elle exige `asset.valider`, que le rôle
+ * `montage` n'a pas. La passe 5 avait trouvé qu'on pouvait la contourner par
+ * le téléversement ; ce chemin est fermé depuis, et celui-ci est le seul.
+ *
+ * L'avertissement (durée indéterminée) remonte à l'écran : passer sans
+ * pouvoir vérifier la spec n'est pas la même chose que passer en la
+ * vérifiant, et l'écran doit le dire.
+ */
+export async function passerAssetPretFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const assetId = champ(donnees, "assetId");
+  if (!assetId) redirect(avecErreur(retour, "Asset introuvable."));
+
+  const resultat = await passerAssetPretAction({ assetId });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  const base = avecSucces(retour, "pret");
+  redirect(
+    resultat.data.avertissement
+      ? `${base}&avertissement=${encodeURIComponent(resultat.data.avertissement)}`
+      : base,
+  );
+}
+
+/**
+ * Rattache un asset à un parent — critère 2 du lot 2.
+ *
+ * 🔴 Ce geste porte la garde anti-cycle corrigée par la passe 4. Tant
+ * qu'aucun écran ne l'appelait, la garde n'était pas vérifiable : le §1 du
+ * protocole demande qu'une garde rougisse « sur l'objet qui casse », et un
+ * objet qu'on ne peut pas soumettre ne casse jamais rien.
+ *
+ * Un parent vide DÉTACHE — l'asset redevient `autonome`. C'est le même
+ * geste, dans l'autre sens, et un second bouton l'aurait dédoublé.
+ */
+export async function rattacherAssetFormAction(donnees: FormData): Promise<void> {
+  const retour = champ(donnees, "retour") ?? "";
+  const assetId = champ(donnees, "assetId");
+  if (!assetId) redirect(avecErreur(retour, "Asset introuvable."));
+
+  const parentId = champ(donnees, "parentId") ?? null;
+  const offsetBrut = champ(donnees, "offsetSourceSec");
+  const offset = offsetBrut ? Number(offsetBrut) : undefined;
+
+  const resultat = await rattacherAssetAction({
+    assetId,
+    parentId,
+    ...(offset !== undefined && Number.isFinite(offset) ? { offsetSourceSec: offset } : {}),
+  });
+  if ("error" in resultat) redirect(avecErreur(retour, resultat.error));
+  redirect(avecSucces(retour, parentId ? "rattache" : "detache"));
 }

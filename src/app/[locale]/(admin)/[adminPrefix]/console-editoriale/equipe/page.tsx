@@ -21,8 +21,10 @@ import {
 } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { requireMembreEditorial } from "@/server/actions/editorial/_guards";
-import { creerMembreFormAction } from "@/server/actions/editorial/equipe";
-import { changerRoleMembreFormAction } from "@/server/actions/editorial/formulaires";
+import {
+  creerMembreFormAction,
+  changerRoleMembreFormAction,
+} from "@/server/actions/editorial/equipe";
 import { ROLES_EDITORIAUX, peut, actionsDe } from "@/server/editorial/permissions";
 
 export const dynamic = "force-dynamic";

@@ -25,7 +25,7 @@ import {
   capturerIdeeFormAction,
   promouvoirIdeeFormAction,
   archiverIdeeFormAction,
-} from "@/server/actions/editorial/formulaires";
+} from "@/server/actions/editorial/idees";
 
 export const dynamic = "force-dynamic";
 
