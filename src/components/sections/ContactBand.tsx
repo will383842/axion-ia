@@ -82,7 +82,18 @@ export function ContactBand({
               </p>
             ) : null}
           </div>
-          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+          {/* 🔴 2026-08-21 — `shrink-0` ici était un débordement latent, et il s'est
+              réalisé. Ce conteneur voisine un bloc de texte flexible : dès que la
+              rangée passe en `flex-row` et que la place manque, `shrink-0` interdit
+              au bouton de descendre sous sa largeur de contenu, et c'est le DOCUMENT
+              qui s'élargit — barre de défilement horizontale sur toute la page.
+              Mesuré sur `/fr/devenir-commercial-ia` : 39 px de débordement à 768 px
+              en CI, 22 px reproduits en local. Et le harnais E2E a trouvé le même
+              motif sur les 14 routes `/fr/sites-web-augmentes/*` (27 à 41 px).
+              Ce fichier et ses HUIT jumeaux portaient la même classe.
+              `min-w-0` ne change RIEN là où il y a la place — il n'agit que quand
+              l'alternative serait de pousser la page. */}
+          <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
             <Cta
               href="/appel"
               size="lg"

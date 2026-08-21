@@ -67,7 +67,7 @@ export function SitesWebContactBand({
               {copy.desc}
             </p>
           </div>
-          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+          <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
             <Cta
               href="/contact"
               size="lg"

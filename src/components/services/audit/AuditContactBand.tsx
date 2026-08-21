@@ -43,7 +43,7 @@ export function AuditContactBand({ isFr }: AuditContactBandProps): ReactNode {
                 : "A call to understand your context, tell you which AI audit fits — from a focused diagnosis to a company-wide deep dive — and how the engagement unfolds. No commitment."}
             </p>
           </div>
-          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+          <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
             <Cta
               href="/appel"
               size="lg"

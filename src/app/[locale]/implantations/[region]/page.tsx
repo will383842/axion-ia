@@ -448,7 +448,7 @@ export default async function RegionPage({ params }: Props) {
                   : "Describe your project in 2 minutes. We reply within 48h — no commitment."}
               </p>
             </div>
-            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+            <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
               <Link
                 href="/appel"
                 data-cta-tracking="region_orange_banner_book"
