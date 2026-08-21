@@ -1331,7 +1331,7 @@ export default async function FormationsHub({ params }: Props) {
                   : "A call to understand your context, advise the duration that fits your stakes, and explain how the training unfolds. No commitment."}
               </p>
             </div>
-            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+            <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
               <Cta
                 href="/appel"
                 size="lg"

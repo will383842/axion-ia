@@ -1289,7 +1289,7 @@ export default async function Home({ params }: HomeProps) {
                     : "Describe your project in 2 minutes. We reply within 48h — no commitment."}
                 </p>
               </div>
-              <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+              <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
                 <Link
                   href="/appel"
                   className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"

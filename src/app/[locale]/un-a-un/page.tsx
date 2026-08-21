@@ -814,7 +814,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                   : "A call to understand your context, tell you whether executive or team-member coaching fits, and explain how the day unfolds. No commitment."}
               </p>
             </div>
-            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+            <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
               <Cta
                 href="/appel"
                 size="lg"

@@ -47,7 +47,7 @@ export function FormationContactBand({
                 : "A call to understand your context, advise the format that best fits your teams, and explain how the training unfolds. No commitment."}
             </p>
           </div>
-          <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+          <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
             <Cta
               href="/appel"
               size="lg"
