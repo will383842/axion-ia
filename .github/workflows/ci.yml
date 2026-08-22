@@ -799,6 +799,31 @@ jobs:
             | grep -E "[0-9]+\.[0-9]+" || (echo "::error::pgvector not available"; exit 1)
       - name: Apply all Prisma migrations (fresh DB)
         run: pnpm prisma migrate deploy
+      # 🔴 `fr_unaccent` AVANT les fichiers FTS, sinon rien ne s'applique.
+      #
+      # `0002_fts_setup.sql` dit lui-meme d'ou vient cette configuration :
+      # « creee par docker/postgres/init.sql a l'init du conteneur ». Vrai en
+      # local et en production ; FAUX ici, ou le journal du service affiche
+      # `ignoring /docker-entrypoint-initdb.d/*`.
+      #
+      # Consequence, restee invisible jusqu'au 2026-08-22 : chaque instruction
+      # citant `fr_unaccent` echouait, et `psql` SANS `ON_ERROR_STOP` sort en 0
+      # meme apres une erreur. La gate etait donc verte en n'appliquant rien.
+      # C'est `ON_ERROR_STOP=1`, ajoute juste en dessous, qui l'a revele.
+      #
+      # On rejoue donc l'init du conteneur, pour que la gate mesure la MEME
+      # base que la production — et non une base a laquelle il manque la
+      # moitie de sa configuration.
+      - name: Apply container init (extensions + fr_unaccent)
+        run: |
+          set -e
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f docker/postgres/init.sql
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -tAc "SELECT cfgname FROM pg_ts_config WHERE cfgname = 'fr_unaccent';" \
+            | grep -q fr_unaccent \
+            || (echo "::error::fr_unaccent absente apres init"; exit 1)
+
       # La gate applique TOUS les fichiers du dossier, par boucle — comme le
       # fait `scripts/docker-entrypoint.sh` au boot de production.
       #
