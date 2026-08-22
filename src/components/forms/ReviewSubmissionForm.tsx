@@ -23,7 +23,7 @@ const SECTION = "font-serif text-xl font-semibold border-l-4 border-terracotta p
 function RatingInput({ disabled }: { disabled: boolean }) {
   const [value, setValue] = React.useState(0);
   return (
-    <fieldset className="space-y-1.5">
+    <fieldset className="min-w-0 space-y-1.5">
       <legend className={LABEL}>Votre note *</legend>
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((n) => (
@@ -136,7 +136,7 @@ export function ReviewSubmissionForm() {
       <HoneypotField />
 
       {/* 1. Votre note + votre avis */}
-      <fieldset className="space-y-4">
+      <fieldset className="min-w-0 space-y-4">
         <legend className={SECTION}>⭐ Votre avis</legend>
         <RatingInput disabled={submitting} />
         <div>
@@ -180,7 +180,7 @@ export function ReviewSubmissionForm() {
       </fieldset>
 
       {/* 2. Vous & votre entreprise */}
-      <fieldset className="space-y-4">
+      <fieldset className="min-w-0 space-y-4">
         <legend className={SECTION}>👤 Vous</legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
@@ -275,7 +275,7 @@ export function ReviewSubmissionForm() {
       </fieldset>
 
       {/* 3. Photo optionnelle */}
-      <fieldset className="space-y-4">
+      <fieldset className="min-w-0 space-y-4">
         <legend className={SECTION}>📷 Photo (facultative)</legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
