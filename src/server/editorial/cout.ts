@@ -203,3 +203,61 @@ export function depensesSansResultat(
 export function budgetTotal(publications: readonly PublicationCoutee[]): number {
   return publications.reduce((s, p) => s + p.coutCentimes, 0);
 }
+
+// ── La saisie ─────────────────────────────────────────────────────────────
+
+/**
+ * Euros saisis → centimes stockés.
+ *
+ * 🔴 Cette fonction vit ICI, dans le module pur, et non à côté de la Server
+ * Action qui l'utilise. Un module `"use server"` ne peut exporter QUE des
+ * fonctions asynchrones — je l'avais écrit dans l'en-tête de
+ * `_form-outils.ts`, puis violé deux fichiers plus loin :
+ *
+ *     Error: x Server Actions must be async functions.
+ *
+ * ⚠️ Ni `tsc` ni Vitest ne voient cette contrainte : elle est appliquée par
+ * le compilateur de Next, donc seul le BUILD la signale. C'est le gate C
+ * (Docker) qui l'a attrapée, après un typecheck vert et 23 tests verts.
+ *
+ * Accepte « 300 », « 300,50 », « 300.50 », « 1 200,00 ». Refuse tout le
+ * reste — un budget mal lu vaut mieux qu'un budget mal deviné.
+ */
+export function eurosVersCentimes(
+  saisie: string,
+): { ok: true; centimes: number } | { ok: false; erreur: string } {
+  const propre = saisie.trim().replace(/\s/g, "").replace(",", ".").replace(/€/g, "");
+  if (propre.length === 0) return { ok: true, centimes: 0 };
+
+  if (!/^\d+(\.\d{1,2})?$/.test(propre)) {
+    return {
+      ok: false,
+      erreur:
+        `Montant « ${saisie} » illisible. Attendu : un nombre d'euros, ` +
+        `au plus deux décimales — « 300 », « 300,50 », « 1 200 ».`,
+    };
+  }
+
+  // ⚠️ `Math.round` APRÈS multiplication. La virgule flottante trahit sur
+  // des montants ordinaires : `1.15 * 100` vaut 114.99999999999999,
+  // `0.29 * 100` vaut 28.999999999999996. Une troncature perdrait un
+  // centime à chaque fois — invisible à l'unité, et qui décale toutes les
+  // moyennes une fois cumulé.
+  const centimes = Math.round(Number(propre) * 100);
+
+  // Un budget publicitaire au-delà du million d'euros sur UNE publication
+  // est une faute de frappe, pas une campagne. On refuse plutôt que
+  // d'afficher un coût par rendez-vous absurde qui contaminerait toutes les
+  // moyennes du groupe payant.
+  if (centimes > 100_000_000) {
+    return {
+      ok: false,
+      erreur:
+        `Montant « ${saisie} » refusé : au-delà d'un million d'euros sur une ` +
+        `seule publication, c'est une faute de frappe plus probablement qu'une ` +
+        `campagne. Corrigez, ou saisissez le budget par publication.`,
+    };
+  }
+
+  return { ok: true, centimes };
+}

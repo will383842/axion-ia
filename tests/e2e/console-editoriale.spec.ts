@@ -62,7 +62,18 @@ const BASE = `/fr/${ADMIN_PREFIX}/console-editoriale`;
 // disputent cette première compilation dépassent tous les 30 s par défaut :
 // neuf tests au rouge, aucun défaut de code. Un faux rouge apprend à ignorer
 // le rouge — le protocole en fait un principe.
-test.describe.configure({ mode: "serial" });
+// 🔴 Le BUDGET, exige par `tests/unit/e2e-harness/budget-des-specs-admin.spec.ts`.
+//
+// Cette suite ouvre une session admin, et la verification de mot de passe est
+// deliberement couteuse (Argon2id) : quatre workers se la disputent en CI. Le
+// defaut de `playwright.config.ts` est de 30 s — jamais suffisant.
+//
+// ⚠️ 300 s et non 90 s : cette suite porte des `page.goto` a 180 s, parce que
+// la premiere visite d une route admin la fait COMPILER. Un delai interne plus
+// long que le budget qui le contient ne peut jamais expirer — c est le budget
+// qui rend le verdict, et son message ne nomme rien. La garde
+// `delai-interne-sous-le-budget.spec.ts` verrouille exactement ca.
+test.describe.configure({ mode: "serial", timeout: 300_000 });
 test.beforeEach(({}, testInfo) => {
   testInfo.setTimeout(120_000);
 });

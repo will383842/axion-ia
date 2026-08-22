@@ -21,9 +21,14 @@
  * ## ⚠️ Les centimes
  *
  * Tout est en CENTIMES en base, et la saisie se fait en EUROS. La conversion
- * vit ici, à un seul endroit. L'erreur d'un facteur 100 sur un coût
- * d'acquisition ne se voit pas : « 4,50 » et « 450 » sont tous deux
- * plausibles pour un rendez-vous.
+ * vit dans `cout.ts`, le module PUR — pas ici : un module `"use server"` ne
+ * peut exporter QUE des fonctions asynchrones, et `eurosVersCentimes` est
+ * synchrone. Je l'avais d'abord écrite ici, et le BUILD l'a refusée :
+ *
+ *     Error: x Server Actions must be async functions.
+ *
+ * ⚠️ Ni `tsc` ni Vitest ne voient cette contrainte — seul le compilateur de
+ * Next. Typecheck vert et 23 tests verts n'ont rien signalé.
  */
 
 "use server";
@@ -35,49 +40,11 @@ import { prisma } from "@/lib/prisma";
 import { requirePermission, journaliser } from "@/server/actions/editorial/_guards";
 import { champ, avecErreur, avecSucces } from "@/server/actions/editorial/_form-outils";
 import type { ActionResult } from "@/server/actions/editorial/publications";
+// 🔴 La conversion vit dans le module PUR : un module `"use server"` ne
+// peut exporter que des fonctions asynchrones. Voir `eurosVersCentimes`.
+import { eurosVersCentimes } from "@/server/editorial/cout";
 
 const USAGES = ["organique", "payant", "mixte"] as const;
-
-/**
- * Euros saisis → centimes stockés.
- *
- * Accepte « 300 », « 300,50 », « 300.50 », « 1 200,00 ». Refuse tout le
- * reste — un budget mal lu vaut mieux qu'un budget mal deviné.
- */
-export function eurosVersCentimes(
-  saisie: string,
-): { ok: true; centimes: number } | { ok: false; erreur: string } {
-  const propre = saisie.trim().replace(/\s/g, "").replace(",", ".").replace(/€/g, "");
-  if (propre.length === 0) return { ok: true, centimes: 0 };
-
-  if (!/^\d+(\.\d{1,2})?$/.test(propre)) {
-    return {
-      ok: false,
-      erreur:
-        `Montant « ${saisie} » illisible. Attendu : un nombre d'euros, ` +
-        `au plus deux décimales — « 300 », « 300,50 », « 1 200 ».`,
-    };
-  }
-
-  // ⚠️ `Math.round` APRÈS multiplication : `300.5 * 100` vaut 30049.999… en
-  // virgule flottante, et une troncature donnerait 30049 centimes.
-  const centimes = Math.round(Number(propre) * 100);
-
-  // Un budget publicitaire au-delà du million d'euros sur UNE publication est
-  // une faute de frappe, pas une campagne. On refuse plutôt que d'afficher un
-  // coût par rendez-vous absurde qui contaminerait toutes les moyennes.
-  if (centimes > 100_000_000) {
-    return {
-      ok: false,
-      erreur:
-        `Montant « ${saisie} » refusé : au-delà d'un million d'euros sur une ` +
-        `seule publication, c'est une faute de frappe plus probablement qu'une ` +
-        `campagne. Corrigez, ou saisissez le budget par publication.`,
-    };
-  }
-
-  return { ok: true, centimes };
-}
 
 const coutSchema = z.object({
   publicationId: z.string().uuid(),

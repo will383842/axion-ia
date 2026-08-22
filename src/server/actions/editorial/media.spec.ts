@@ -53,7 +53,8 @@ vi.mock("@/server/actions/editorial/_guards", () => ({
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("next/navigation", () => ({ redirect: vi.fn() }));
 
-const { eurosVersCentimes, saisirCoutAction, changerUsageAssetAction } = await import("./media");
+const { saisirCoutAction, changerUsageAssetAction } = await import("./media");
+const { eurosVersCentimes } = await import("@/server/editorial/cout");
 
 const MEMBRE = { userId: "u1", membreId: "m1", role: "production" as const, nom: "Will" };
 const PUB = "ffffffff-0000-4000-8000-000000000001";
