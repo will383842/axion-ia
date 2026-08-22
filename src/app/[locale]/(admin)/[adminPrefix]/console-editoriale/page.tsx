@@ -75,6 +75,9 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
             <AdminButton href={`${base}/equipe`} variant="ghost" size="sm">
               Équipe
             </AdminButton>
+            <AdminButton href={`${base}/achat-media`} variant="ghost" size="sm">
+              Achat média
+            </AdminButton>
             <AdminButton href={`${base}/analyse`} variant="ghost" size="sm">
               Analyse
             </AdminButton>

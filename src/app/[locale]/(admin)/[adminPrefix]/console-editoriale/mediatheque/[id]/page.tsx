@@ -40,6 +40,7 @@ import {
   soumettreAssetRevueFormAction,
   assignerAssetFormAction,
 } from "@/server/actions/editorial/equipe";
+import { changerUsageAssetFormAction } from "@/server/actions/editorial/media";
 
 export const dynamic = "force-dynamic";
 
@@ -104,6 +105,7 @@ export default async function FicheAssetPage({ params, searchParams }: PageProps
       nature: true,
       statut: true,
       familleId: true,
+      usage: true,
       parentId: true,
       offsetSourceSec: true,
       responsableId: true,
@@ -243,6 +245,11 @@ export default async function FicheAssetPage({ params, searchParams }: PageProps
               Asset refusé — le commentaire est visible ci-dessus.
             </p>
           )}
+          {sp.usage && (
+            <p role="status" className="admin-alert admin-alert-success">
+              Diffusion enregistrée. L&apos;achat média en tient compte au prochain affichage.
+            </p>
+          )}
           {sp.derives && (
             <p role="status" className="admin-alert admin-alert-success">
               {sp.derives} dérivé(s) créé(s) en « à produire ».
@@ -365,6 +372,33 @@ export default async function FicheAssetPage({ params, searchParams }: PageProps
             />
             <AdminButton type="submit" variant="secondary" size="sm">
               Enregistrer le rattachement
+            </AdminButton>
+          </form>
+
+          {/* ── Comment il est diffusé — lot 6 ────────────────────────────── */}
+          {/*
+            🔴 `EdAssetUsage` existait depuis le lot 0 et RIEN ne l'écrivait :
+            les 31 assets valaient tous `organique`, donc la comparaison
+            organique/payant de l'achat média n'avait qu'un seul côté.
+
+            ⚠️ `mixte` n'est pas une commodité. Un asset poussé ET repris
+            organiquement est le cas le plus fréquent d'une campagne réussie ;
+            le confondre avec `payant` fausserait le coût par résultat dans
+            les DEUX groupes à la fois.
+          */}
+          <form action={changerUsageAssetFormAction} className="admin-inline-form">
+            <input type="hidden" name="assetId" value={id} />
+            <input type="hidden" name="retour" value={`${base}/mediatheque/${id}`} />
+            <label htmlFor="usage" className="admin-label">
+              Diffusion
+            </label>
+            <select id="usage" name="usage" defaultValue={asset.usage} className="admin-select">
+              <option value="organique">organique — aucun budget</option>
+              <option value="payant">payant — poussé par un budget</option>
+              <option value="mixte">mixte — poussé ET repris organiquement</option>
+            </select>
+            <AdminButton type="submit" variant="secondary" size="sm">
+              Enregistrer
             </AdminButton>
           </form>
 
