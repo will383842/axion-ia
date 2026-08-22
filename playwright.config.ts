@@ -13,6 +13,28 @@ export default defineConfig({
   reporter: isCI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {
     baseURL: process.env["E2E_BASE_URL"] ?? "http://localhost:3000",
+    // 🔴 2026-08-22 — CAUSE RACINE : SANS CES DEUX LIGNES, LA VALEUR EST « AUCUNE
+    // LIMITE », PAS UNE LIMITE PAR DÉFAUT.
+    //
+    // Playwright met `actionTimeout` et `navigationTimeout` à **0** quand on ne
+    // les déclare pas, et 0 signifie « attends indéfiniment ». Les ~70
+    // `page.goto()` de `tests/e2e/` n'avaient donc AUCUNE borne propre : chacun
+    // pouvait consommer le budget entier de son test, puis rendre
+    // « Test timeout of Nms exceeded » — un message qui ne nomme ni l'URL, ni
+    // l'étape, ni la cause.
+    //
+    // 🔑 Toute la famille de défauts de cette session tient là-dedans : trois
+    // rouges distincts (parcours 6, `/fr/implantations`, `vente-parcours`) se
+    // présentaient comme « délai dépassé » sans jamais dire de quoi. On borne à
+    // la SOURCE, pour que l'échec nomme l'action qui n'a pas abouti plutôt que
+    // le test qui l'englobe.
+    //
+    // Valeurs : une navigation légitime la plus lente mesurée dans ce dépôt est
+    // `/fr/implantations` (8,7 Mo, ~6 s en froid). 30 s laisse une marge de 5×
+    // sous quatre workers concurrents, tout en restant très en dessous des
+    // budgets de suite (90 s à 600 s) — un dépassement reste donc lisible.
+    actionTimeout: 15_000,
+    navigationTimeout: 30_000,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",

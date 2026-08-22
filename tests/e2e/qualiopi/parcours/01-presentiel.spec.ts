@@ -89,10 +89,15 @@ test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", ()
         pannes.push(`${chemin} : HTTP ${statut}`);
         continue;
       }
-      // 🔴 `main` n'est PAS un repère fiable ici : le layout public rend son
-      // propre `<main id="main">` autour de la console (il est masqué en CSS,
-      // pas retiré du DOM), et la console rend le sien. Deux points de repère
-      // imbriqués, et `.last()` désignait le mauvais. On lit donc le document.
+      // 🔴 `main` n'est PAS un repère fiable ici, et la raison a CHANGÉ le
+      // 2026-08-22. Avant ce lot, la console ouvrait son propre `<main>` à
+      // l'intérieur du `<main id="main">` du layout public : deux repères
+      // imbriqués, et `.last()` désignait le mauvais. La console n'ouvre plus
+      // de `<main>` du tout — c'est désormais celui du SITE qui enveloppe la
+      // console, rail et topbar compris.
+      //
+      // 🔑 Le repère reste donc `body` : viser `main` ramènerait exactement le
+      // même bruit qu'avant, par le chemin inverse.
       const zone = page.locator("body");
       const titres = await zone.locator("h1, h2").allInnerTexts();
       releve[chemin] = titres.map((t) => t.replace(/\s+/g, " ").trim()).filter(Boolean);

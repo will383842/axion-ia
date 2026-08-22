@@ -40,16 +40,26 @@ const PORTEUR_LEGITIME = "layout.tsx";
  * leur propre `<main>`.
  *
  * 🔴 Ce ne sont PAS des cas sains : elles sont imbriquées dans le `<main>` du
- * layout `[locale]` comme les autres. Elles sont exclues de CE lot parce que
- * leur correction touche des interfaces `noindex` (console d'administration,
- * espace ressources) sans effet GEO, et que le lot 15 de l'audit vise
- * explicitement la surface publique. Les retirer de cette liste sans corriger
- * les fichiers fera rougir la garde — c'est voulu : la dette reste visible.
+ * layout `[locale]` comme les autres. Elles sont exclues parce que leur
+ * correction touche des interfaces `noindex` sans effet GEO. Les retirer de
+ * cette liste sans corriger les fichiers fera rougir la garde — c'est voulu :
+ * la dette reste visible.
+ *
+ * ✅ 2026-08-22 — LA CONSOLE D'ADMINISTRATION EST SOLDÉE. Ce n'était pas une
+ * dette théorique : axe-core, lancé pour la première fois sur les quatre pages
+ * Qualiopi de la console, rendait trois violations `moderate` PAR PAGE —
+ * `landmark-main-is-top-level`, `landmark-no-duplicate-main`,
+ * `landmark-unique`. Le groupe de routes `(admin)` n'ayant aucun `layout.tsx`
+ * propre, il hérite de la coquille publique : le `<main>` de la console était
+ * donc bel et bien imbriqué dans celui du site. Les deux `<main>` de
+ * `(admin)/[adminPrefix]/layout.tsx` sont devenus des `<div>`, `.admin-main`
+ * inchangé. L'exemption est retirée : ce que la garde protégeait n'existe plus.
+ *
+ * 🔑 La dette était visible depuis longtemps dans ce commentaire. Ce qui a
+ * manqué, c'est qu'AUCUN outil ne la mesurait : le canari du test
+ * d'accessibilité admin ne pouvait pas matcher, donc axe n'y était jamais passé.
  */
-const COQUILLES_NON_PUBLIQUES = [
-  "(admin)/[adminPrefix]/layout.tsx",
-  "espace-ressources/layout.tsx",
-];
+const COQUILLES_NON_PUBLIQUES = ["espace-ressources/layout.tsx"];
 
 function fichiersTsx(racine: string): string[] {
   const out: string[] = [];

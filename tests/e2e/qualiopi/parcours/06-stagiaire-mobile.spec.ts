@@ -57,7 +57,22 @@ test.describe("@parcours-qualiopi 6 — le stagiaire sur téléphone", () => {
 
     // Le lien s'affiche à l'écran, qu'il soit parti par e-mail ou non — c'est
     // le repli assumé du composant, et c'est lui qu'on suit ici.
-    const zoneLien = page.locator("code, a[href*='/portail/']").first();
+    // 🔴 2026-08-22 — L'UNION PRENAIT LE PREMIER DANS L'ORDRE DU DOM.
+    //
+    // `code, a[href*='/portail/']` ne classe pas par pertinence : il prend le
+    // premier des deux qui apparaît. Or `PreparationKitSession` est rendu AVANT
+    // `EnrollmentsSection` (sessions/[id]/page.tsx:798 vs :850) et affiche
+    // `<code>pnpm tsx scripts/kit-formateur/publier-vers-r2.ts</code>` quand le
+    // kit est absent. `toBeVisible()` passait donc sur CE bloc, et l'échec
+    // tombait deux lignes plus bas en accusant la génération d'accès.
+    //
+    // 🔑 C'est le CONTENU qui identifie la cible, pas la balise. Le lien généré
+    // est affiché en `<code>{result.url}</code>` (GenererPortailAccesButton.tsx:114) ;
+    // la branche `a[href]` n'est qu'un repli théorique.
+    const zoneLien = page
+      .locator("a[href*='/portail/'], code")
+      .filter({ hasText: /\/portail\// })
+      .first();
     await expect(
       zoneLien,
       "le lien d'accès n'apparaît pas après génération — impossible de le transmettre",

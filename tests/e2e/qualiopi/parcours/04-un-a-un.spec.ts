@@ -102,19 +102,31 @@ test.describe("@parcours-qualiopi 4 — 1-à-1, le wizard bifurque", () => {
     // mais AUCUNE offre active ne peut les déclencher. C'est une fonctionnalité
     // sans chemin d'accès — la même famille que les exports sans appelant.
     //
-    // ⛔ DÉCISION EN ATTENTE DE WILL : Axion-IA vend-elle encore de
-    // l'accompagnement 1-à-1 / dirigeant ?
-    //   · si OUI → le catalogue lui manque une offre, et c'est un défaut COMMERCIAL ;
-    //   · si NON → la bifurcation du wizard est du code mort à retirer.
+    // 🔴 TRANCHÉ PAR WILL LE 2026-08-22 : LE 1-À-1 EST BIEN VENDU.
     //
-    // En attendant, ce parcours ne se tait pas : il vérifie que le catalogue est
-    // bien COHÉRENT avec cette absence, et il bascule TOUT SEUL sur le vrai
-    // contrôle le jour où une offre 1-à-1 réapparaît. Ce n'est pas une dispense
-    // conditionnelle — c'est une assertion sur l'état réellement observé.
+    // `https://axion-ia.com/fr/un-a-un` rend 200, affiche ses tarifs
+    // (200 / 390 / 600 / 790 / 900 / 990 € HT) et porte 88 occurrences de
+    // « dirigeant ». La page est même auditée et verte dans notre propre
+    // couverture publique (`routes-publiques.json`).
+    //
+    // Le constat n'est donc PAS « faut-il retirer du code mort ». Il est bien
+    // plus sérieux : **une prestation vendue publiquement n'existe pas au
+    // catalogue de vente**. Un commercial qui ouvre le wizard ne peut pas la
+    // facturer. L'écart n'est pas entre du code et un test — il est entre ce
+    // que le site promet et ce que l'outil sait faire.
+    //
+    // 🔑 C'est exactement le motif « écart contenu servi vs. base » : la
+    // vérification ne se fait qu'en OUVRANT l'écran, jamais en relisant le code.
+    //
+    // Tant que le catalogue n'a pas son offre, ce parcours ne se tait pas : il
+    // affirme l'état réellement observé et bascule TOUT SEUL sur le vrai
+    // contrôle dès qu'une offre 1-à-1 redevient active. Ce n'est pas une
+    // dispense conditionnelle.
     if (individuelles.length === 0) {
       const constat =
-        "catalogue 100 % collectif : aucune offre 1-à-1 active, donc la bifurcation " +
-        "du wizard est inatteignable. Décision produit en attente. Offres vues : " +
+        "DÉFAUT COMMERCIAL : /fr/un-a-un est en ligne et affiche ses tarifs, mais " +
+        "aucune offre 1-à-1 n'est active au catalogue — le wizard ne peut pas la " +
+        "vendre. Offres vues : " +
         observations.map((o) => o.offre).join(" | ");
       info.annotations.push({ type: "constat", description: constat });
       console.warn(`[parcours-4] ${constat}`);

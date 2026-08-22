@@ -740,8 +740,8 @@
 /* =============================================================
  * Refonte largeur juin 2026 (P0 audit design console 2026-06-20).
  *
- * PROBLÈME : le <main> du shell V2 (layout.tsx) porte `.admin-main`, défini
- * dans globals.css avec `max-width: 960px` + `padding: 32px 24px`. Ce cap
+ * PROBLÈME : le conteneur du shell V2 (layout.tsx) porte `.admin-main`, défini
+ * à admin.css:894 avec `max-width: 960px` + `padding: 32px 24px`. Ce cap
  * 960px écrasait silencieusement le `max-w-[1440px]` d'AdminPageShell → tout
  * le contenu admin était bridé à 960px centrés, d'où d'énormes marges vides
  * sur grand écran (« pas assez de largeur »).
@@ -749,14 +749,15 @@
  * FIX cloisonné `.admin-layout-v2` (le login V1 `.admin-layout` garde son
  * cadrage 960px centré, voulu pour un formulaire étroit) :
  *  1. On lève le cap : le shell redevient la SSOT de largeur.
- *  2. On annule le padding legacy du <main> UNIQUEMENT quand la page passe
+ *  2. On annule le padding legacy du conteneur UNIQUEMENT quand la page passe
  *     par AdminPageShell (`:has(.admin-page-shell)`, ~95 % des pages) — le
  *     shell porte déjà gouttières + largeur, sinon on doublait le padding.
  *     Les rares pages SANS shell (ex. /coaching) conservent le padding du
- *     <main> et ne se collent donc pas au rail.
+ *     conteneur et ne se collent donc pas au rail.
  *
- * ⚠️ Règle NON-LAYERED volontairement : `.admin-main` est défini dans
- * globals.css SANS @layer. En cascade CSS, une règle non-layered l'emporte
+ * ⚠️ Règle NON-LAYERED volontairement : `.admin-main` est défini plus bas dans
+ * CE fichier (admin.css:894) SANS @layer — et NON dans globals.css, où il
+ * n'apparaît pas (vérifié le 2026-08-22 : zéro occurrence). En cascade CSS, une règle non-layered l'emporte
  * sur toute règle layered indépendamment de la spécificité — un override
  * placé dans `@layer admin-fixes` serait donc inopérant ici. On reste donc
  * hors layer (même choix que le bloc font-family ci-dessus), la spécificité

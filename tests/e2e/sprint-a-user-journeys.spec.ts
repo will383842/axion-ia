@@ -44,10 +44,24 @@ test.describe("Journey 1 — Discovery via SEO Paris hub @sprint-a", () => {
     );
     expect(hasSpeakable, "Expected SpeakableSpecification in JSON-LD on Paris hub").toBe(true);
 
-    const ctaBanner = page
-      .locator("[data-testid='orange-banner'], .bg-terracotta, [class*='terracotta']")
-      .first();
-    await expect(ctaBanner).toBeVisible();
+    // 🔴 2026-08-22 — TROISIÈME INSTANCE DU MÊME DÉFAUT, DANS CE FICHIER.
+    //
+    // Le sélecteur visait d'abord `[data-testid='orange-banner']` — un testid
+    // qui n'existe NULLE PART dans `src/` (une seule occurrence dans tout le
+    // dépôt : cette ligne même). Le repli `.bg-terracotta, [class*='terracotta']`
+    // résolvait alors 166 éléments sur le hub Paris, et `.first()` prenait le
+    // PREMIER dans l'ordre du DOM : le `<header data-tone="terracotta">` du
+    // site, hors du contenu.
+    //
+    // 🔑 Le test s'appelle « bannière CTA » et validait l'en-tête du site. Il
+    // aurait continué à passer si la bannière disparaissait complètement.
+    // On vise l'ancre réelle, bornée au contenu.
+    const ctaBanner = page.locator('main [data-cta="orange_banner_contact"]');
+    await expect(
+      ctaBanner,
+      "aucune bannière CTA orange dans le contenu du hub Paris — le visiteur " +
+        "arrive au bout de la page sans moyen d'agir",
+    ).toBeVisible();
 
     expect(consoleErrors).toEqual([]);
   });

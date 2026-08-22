@@ -67,7 +67,22 @@ function cibleLocale(): boolean {
 }
 
 test.describe("a11y console admin WCAG 2.2 AA @a11y-admin", () => {
-  test.describe.configure({ timeout: 90_000 });
+  // 🔴 2026-08-22 — UN DÉLAI PLUS LONG QUE SON BUDGET NE PEUT JAMAIS EXPIRER.
+  //
+  // Famille de défauts symétrique de celle corrigée la veille. Un `timeout:`
+  // soigneusement choisi, avec un message qui nomme la cause, est INATTEIGNABLE
+  // si le budget du test qui l'englobe est plus court : c'est le budget qui
+  // rend le verdict, et son message ne nomme rien.
+  //
+  // 🔑 Règle : le budget d'une suite doit être STRICTEMENT supérieur au plus
+  // grand délai qui vit dedans — helpers importés compris. Verrouillé par
+  // `tests/unit/e2e-harness/delai-interne-sous-le-budget.spec.ts`.
+  //
+  // Ici : 90 s était INFÉRIEUR au délai de connexion hors CI — `loginAsAdmin`
+  // attend `baseSemeeAttendue() ? 60_000 : 180_000`. En local, le budget tuait
+  // le test AVANT que le diagnostic (URL atteinte + texte de l'écran) puisse
+  // être rendu. C'est précisément là où l'on débogue que la cause disparaissait.
+  test.describe.configure({ timeout: 300_000 });
 
   test.skip(
     !cibleLocale() || !identifiantsFournis(),

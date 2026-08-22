@@ -62,7 +62,29 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
   const email = opts.email ?? ADMIN_EMAIL;
   const password = opts.password ?? ADMIN_PASSWORD;
 
-  await page.goto(`/fr/${ADMIN_PREFIX}/login`);
+  // 🔴 2026-08-22 — CONSÉQUENCE DIRECTE DU CORRECTIF DE CAUSE RACINE.
+  //
+  // `playwright.config.ts` borne désormais toute navigation à 30 s
+  // (`navigationTimeout`) — avant, elle était ILLIMITÉE. Or c'est la SEULE
+  // navigation du dépôt qui peut tomber sur une compilation à la demande :
+  // sous `next dev`, l'écran de connexion admin se compile au premier appel, ce
+  // qui dépasse 30 s sur un poste chargé. Sans borne propre, la connexion
+  // échouerait désormais AVANT d'avoir saisi le moindre identifiant, et le
+  // message d'échec accuserait la connexion au lieu de la compilation.
+  //
+  // 🔑 Poser une borne globale déplace le point de rupture. On nomme donc ce
+  // cas ici, avec sa cause probable, plutôt que de relever la borne globale —
+  // ce qui redonnerait à toutes les autres navigations un délai trop long.
+  await page
+    .goto(`/fr/${ADMIN_PREFIX}/login`, { waitUntil: "domcontentloaded", timeout: 120_000 })
+    .catch((cause: unknown) => {
+      throw new Error(
+        `l'écran de connexion admin (/fr/${ADMIN_PREFIX}/login) n'a pas répondu en 120 s — ` +
+          "sous `next dev` cette route se compile à la demande au premier appel. " +
+          `Aucun identifiant n'a été saisi. Cause : ${String(cause)}`,
+        { cause },
+      );
+    });
   // 🔴 2026-08-21 — `getByLabel(/mot de passe/i)` résolvait DEUX éléments :
   // le champ, et le bouton `aria-label="Afficher le mot de passe"` ajouté
   // depuis. Playwright lève alors une strict mode violation, `loginAsAdmin`

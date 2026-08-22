@@ -79,7 +79,24 @@ const BUDGET_PAR_ROUTE: Record<string, number> = {
 };
 
 test.describe("@qualiopi-public routes publiques", () => {
-  test.describe.configure({ mode: "parallel" });
+  // 🔴 2026-08-22 — UN DÉLAI PLUS LONG QUE SON BUDGET NE PEUT JAMAIS EXPIRER.
+  //
+  // Famille de défauts symétrique de celle corrigée la veille. Un `timeout:`
+  // soigneusement choisi, avec un message qui nomme la cause, est INATTEIGNABLE
+  // si le budget du test qui l'englobe est plus court : c'est le budget qui
+  // rend le verdict, et son message ne nomme rien.
+  //
+  // 🔑 Règle : le budget d'une suite doit être STRICTEMENT supérieur au plus
+  // grand délai qui vit dedans — helpers importés compris. Verrouillé par
+  // `tests/unit/e2e-harness/delai-interne-sous-le-budget.spec.ts`.
+  //
+  // Ici : `auditerPage` navigue avec `timeout: 45_000` (_harness/audit-page.ts,
+  // `waitUntil: "networkidle"`), attend 400 ms d'hydratation, puis fait tourner
+  // axe — pire cas ~60 s. Sous les 30 s par défaut de `playwright.config.ts`,
+  // ce délai de 45 s ne pouvait PAS expirer : une route lente mourait sur
+  // « Test timeout of 30000ms exceeded », sans jamais nommer la route.
+  // `BUDGET_PAR_ROUTE` reste au-dessus pour `/fr/implantations` (240 s).
+  test.describe.configure({ mode: "parallel", timeout: 90_000 });
 
   for (const route of routes) {
     test(`page ${route}`, async ({ page }, info) => {
