@@ -397,6 +397,22 @@ jobs:
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_e2e -d axion_ia_e2e             -f prisma/migrations_fts/kb_fts_setup.sql
           pnpm db:seed
           pnpm qualiopi:seed
+          # 🔴 2026-08-21 — LE DOSSIER DE DÉMONSTRATION MANQUAIT, ET LES PARCOURS
+          # LE DISAIENT.
+          #
+          # `qualiopi:seed` pose les données de RÉFÉRENCE (grille, indicateurs,
+          # barèmes). Il ne crée aucun dossier : ni client, ni session réalisée,
+          # ni attestation. Les sept parcours de la phase 6 en ont besoin — et
+          # dès qu'ils ont pu s'exécuter en CI, ils l'ont nommé sans ambiguïté :
+          #
+          #     session AXI-SES-DEMO-001 introuvable dans la liste
+          #     aucun client en base — `pnpm qualiopi:seed-demo` incomplet
+          #
+          # 🔑 C'est exactement ce qu'on attend d'un parcours : qu'il dise ce qui
+          # lui manque, au lieu de se sauter en silence. Les quatre écrans de
+          # facturation qui expiraient dans `admin-nav-clic` relevaient
+          # probablement de la même cause — aucune facture à afficher.
+          pnpm qualiopi:seed-demo
       # 🔴 GARDE (2026-08-21) — LE BUILD DE PRODUCTION DOIT SURVIVRE JUSQU'ICI.
       #
       # Playwright (`pnpm start`) et Lighthouse (`next start -H 0.0.0.0`) démarrent
