@@ -67,6 +67,11 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
         description="Piloter la publication sur tous les canaux, depuis un seul endroit."
         actions={
           <div className="flex flex-wrap gap-2">
+            {/* Les réglages en premier de la rangée discrète : on y va
+                rarement, mais quand on y va c'est qu'une règle bloque. */}
+            <AdminButton href={`${base}/reglages`} variant="ghost" size="sm">
+              Réglages
+            </AdminButton>
             <AdminButton href={`${base}/equipe`} variant="ghost" size="sm">
               Équipe
             </AdminButton>
@@ -274,11 +279,6 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
               <code className="admin-code-inline">ffprobe</code> dans l&apos;image. La règle de
               spécification de plateforme rend donc « non évaluée » sur ces assets, plutôt que de
               les déclarer conformes sans avoir rien mesuré.
-            </li>
-            <li>
-              Il n&apos;y a <strong>pas d&apos;écran de réglages</strong> : les seuils et les règles
-              vivent en base et s&apos;y corrigent, mais avec un accès à la base — pas depuis la
-              console.
             </li>
             <li>
               Le calendrier du site reste vide : le branchement <code>content-gen</code> se décidera
