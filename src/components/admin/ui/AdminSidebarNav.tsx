@@ -185,6 +185,27 @@ interface AdminSidebarNavProps {
   logoutAction?: () => void | Promise<void>;
 }
 
+/**
+ * Encre d'un badge de compteur, selon son ton.
+ *
+ * 🔴 2026-08-21. Les trois badges du rail portaient `text-white` en dur, quel
+ * que soit leur fond. Mesuré par axe-core sur la console :
+ *
+ *   blanc sur « e5484d » (danger) = 3,91  < 4,5   → violation `serious`, chaque page
+ *   blanc sur « f5a623 » (warn)   = 2,03  < 4,5   → latente : aucune alerte ops en base ce jour-là
+ *
+ * 🔑 La seconde n'était pas rouge parce qu'il n'y avait rien à afficher. Un
+ * gate qui passe faute de données ne prouve rien — on corrige les deux.
+ *
+ * Le rouge a été assombri (« d13438 ») pour garder l'idiome « badge rouge, chiffre
+ * blanc », que tout opérateur reconnaît. L'ambre, lui, ne peut PAS porter du
+ * blanc : aucune nuance encore ambre ne tient 4,5:1 sous du blanc. Il prend donc
+ * l'encre sombre du rail — 8,1:1.
+ */
+function encreDeBadge(tone: "danger" | "warn"): string {
+  return tone === "danger" ? "text-white" : "text-[color:var(--color-admin-rail-on-bright)]";
+}
+
 export function AdminSidebarNav({
   items,
   defaultCollapsed = false,
@@ -583,7 +604,8 @@ export function AdminSidebarNav({
                 <span
                   className={cn(
                     "ml-auto rounded-full px-[6px] py-[1px]",
-                    "text-[10px] font-bold text-white tabular-nums",
+                    "text-[10px] font-bold tabular-nums",
+                    encreDeBadge(badge.tone),
                   )}
                   style={{
                     backgroundColor:
@@ -675,7 +697,8 @@ export function AdminSidebarNav({
               className={cn(
                 "flex h-[30px] w-[30px] shrink-0 items-center justify-center",
                 "rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-rail-accent)]",
-                "text-[length:var(--text-admin-base)] font-bold text-white",
+                "text-[length:var(--text-admin-base)] font-bold",
+                "text-[color:var(--color-admin-rail-on-bright)]",
                 "shadow-[var(--shadow-admin-2)]",
               )}
             >
@@ -851,7 +874,10 @@ export function AdminSidebarNav({
                       {/* Bulle-somme si onglet fermé contenant des badges */}
                       {closedBadge ? (
                         <span
-                          className="rounded-full px-[6px] py-[1px] text-[10px] font-bold text-white tabular-nums"
+                          className={cn(
+                            "rounded-full px-[6px] py-[1px] text-[10px] font-bold tabular-nums",
+                            encreDeBadge(closedBadge.tone),
+                          )}
                           style={{
                             backgroundColor:
                               closedBadge.tone === "danger"
@@ -927,7 +953,10 @@ export function AdminSidebarNav({
                                   const b = poleClosed ? badgeRollup(poleItems) : null;
                                   return b ? (
                                     <span
-                                      className="rounded-full px-[6px] py-[1px] text-[10px] font-bold text-white tabular-nums"
+                                      className={cn(
+                                        "rounded-full px-[6px] py-[1px] text-[10px] font-bold tabular-nums",
+                                        encreDeBadge(b.tone),
+                                      )}
                                       style={{
                                         backgroundColor:
                                           b.tone === "danger"
@@ -1013,7 +1042,8 @@ export function AdminSidebarNav({
                   className={cn(
                     "flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-full",
                     "bg-[color:var(--color-admin-rail-avatar-bg)]",
-                    "text-[10px] font-bold text-white",
+                    "text-[10px] font-bold",
+                    "text-[color:var(--color-admin-rail-on-bright)]",
                   )}
                 >
                   {initials}

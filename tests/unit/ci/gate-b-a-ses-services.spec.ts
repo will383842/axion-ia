@@ -95,6 +95,28 @@ describe("Gate B dispose de ses services", () => {
     ).toContain("pnpm qualiopi:seed-demo");
   });
 
+  it("l'étape Playwright lève le drapeau du hub facturation", () => {
+    // 🔴 2026-08-22 — QUATRE ÉCRANS N'ÉTAIENT PAS COUVERTS, ET ÇA SE LISAIT
+    // « 4 entrée(s) de navigation en panne … Timeout 15000ms ».
+    //
+    // Le hub facturation est derrière `FACTURATION_HUB_ENABLED` (rollout
+    // progressif). Drapeau baissé, les pages appellent `notFound()` — mais le
+    // dossier porte un `loading.tsx`, donc le statut 200 est DÉJÀ PARTI quand
+    // `notFound()` s'exécute. Le test voyait 200, puis attendait un `<h1>` qui
+    // ne viendrait pas.
+    //
+    // 🔑 Un module derrière un drapeau que la CI ne lève pas n'est pas
+    // « couvert » : il est compté en panne. Lever le drapeau ici, c'est la
+    // différence entre traverser quatre écrans et les déclarer cassés.
+    const etape = bloc.slice(bloc.indexOf("- name: Playwright suite"));
+    const env = etape.slice(0, etape.indexOf("run:"));
+    expect(
+      env,
+      "sans ce drapeau, les quatre écrans `/qualiopi/facturation` rendent une " +
+        "page introuvable et `admin-nav-clic` les compte en panne",
+    ).toMatch(/FACTURATION_HUB_ENABLED:\s*"true"/);
+  });
+
   it("le JOB garde bien le stub — le build en dépend", () => {
     // Contre-témoin : si quelqu'un remplaçait le stub au niveau du job « pour
     // simplifier », le build tenterait d'ouvrir une connexion Redis au SSG.
