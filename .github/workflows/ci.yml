@@ -397,6 +397,25 @@ jobs:
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_e2e -d axion_ia_e2e             -f prisma/migrations_fts/kb_fts_setup.sql
           pnpm db:seed
           pnpm qualiopi:seed
+          # 🔴 2026-08-22 — LE DOSSIER EDITORIAL MANQUAIT AUSSI, exactement
+          # comme le dossier Qualiopi la veille (#782).
+          #
+          # `console-editoriale.spec.ts` affirme « le calendrier de septembre
+          # 2026 montre les 15 publications du profil ». Ce chiffre vient de
+          # l'import du dossier LinkedIn du T4 — que rien ne jouait ici. Le
+          # test mesurait donc une base editoriale VIDE, et le disait :
+          #
+          #     expected /15 publications/i to be visible
+          #
+          # 🔑 Le semis est ajoute plutot que le test affaibli. Un `skip` sur
+          # base vide aurait rendu le critere invérifiable en CI — c'est-a-dire
+          # vert sans rien prouver, ce que ce depot passe son temps a corriger.
+          #
+          # Effet de bord VOULU : la chaine d'amorcage editorial (referentiels
+          # + import + idempotence) s'execute a chaque PR. Elle n'avait jamais
+          # tourne ailleurs que sur une machine de developpement.
+          pnpm editorial:seed
+          pnpm editorial:import --source tests/fixtures/editorial/linkedin-q4
           # 🔴 2026-08-21 — LE DOSSIER DE DÉMONSTRATION MANQUAIT, ET LES PARCOURS
           # LE DISAIENT.
           #
