@@ -41,6 +41,7 @@ import {
   ED_FAMILLES,
   ED_SPECS_PLATEFORME,
 } from "../../../src/server/editorial/referentiels/familles";
+import { ED_RECETTES, totalDerives } from "../../../src/server/editorial/referentiels/recettes";
 
 const prisma = new PrismaClient();
 
@@ -168,6 +169,83 @@ async function seedSpecs(): Promise<Bilan> {
   return bilan;
 }
 
+/**
+ * Les recettes de dérivation.
+ *
+ * 🔴 `ed_recettes` était VIDE, et les deux vérificateurs à l'aveugle du
+ * protocole l'ont constaté séparément. Le critère 1 du lot 2 — « un asset
+ * enregistré avec une recette crée automatiquement ses dérivés » — ne
+ * pouvait donc pas être exercé : `appliquerRecetteAction` était écrite et
+ * testée, et le sélecteur de la médiathèque n'avait rien à proposer.
+ *
+ * Une fonctionnalité correcte dont la donnée de référence manque est aussi
+ * inutilisable qu'une fonctionnalité absente — et plus trompeuse, parce que
+ * le code laisse croire qu'elle marche.
+ *
+ * ⚠️ Les lignes sont créées MÊME si la recette existait déjà, quand elle
+ * n'en a aucune. Un semis interrompu entre la recette et ses lignes
+ * laisserait sinon une recette qui ne produit rien, et chaque rejeu la
+ * compterait « préservée » sans jamais la réparer. C'est exactement le
+ * piège de l'écho manquant, trouvé dans l'import par la passe 5.
+ */
+async function seedRecettes(): Promise<Bilan> {
+  const bilan: Bilan = { cree: 0, preserve: 0 };
+  for (const r of ED_RECETTES) {
+    const source = await prisma.edFamille.findUnique({
+      where: { slug: r.familleSourceSlug },
+    });
+    if (!source) {
+      throw new Error(
+        `[editorial:seed] recette ${r.slug} : famille source « ${r.familleSourceSlug} » ` +
+          `absente. Les familles doivent être semées avant les recettes.`,
+      );
+    }
+
+    const trouvee = await prisma.edRecette.findFirst({
+      where: { nom: r.nom, familleSourceId: source.id },
+      select: { id: true, _count: { select: { lignes: true } } },
+    });
+
+    let recetteId: string;
+    let nbLignes: number;
+
+    if (trouvee) {
+      recetteId = trouvee.id;
+      nbLignes = trouvee._count.lignes;
+      bilan.preserve += 1;
+    } else {
+      const creee = await prisma.edRecette.create({
+        data: { nom: r.nom, familleSourceId: source.id, actif: true },
+        select: { id: true },
+      });
+      recetteId = creee.id;
+      nbLignes = 0;
+      bilan.cree += 1;
+    }
+
+    // ⚠️ Atteint MÊME quand la recette existait déjà — voir l'en-tête.
+    if (nbLignes === 0) {
+      for (const l of r.lignes) {
+        const cible = await prisma.edFamille.findUnique({ where: { slug: l.familleSlug } });
+        if (!cible) {
+          throw new Error(
+            `[editorial:seed] recette ${r.slug} : famille « ${l.familleSlug} » absente.`,
+          );
+        }
+        await prisma.edRecetteLigne.create({
+          data: {
+            recetteId,
+            familleId: cible.id,
+            quantite: l.quantite,
+            note: l.note,
+          },
+        });
+      }
+    }
+  }
+  return bilan;
+}
+
 async function seedReglesConformite(): Promise<Bilan> {
   const bilan: Bilan = { cree: 0, preserve: 0 };
   for (const r of ED_REGLES_CONFORMITE) {
@@ -264,6 +342,12 @@ async function main(): Promise<void> {
 
   const specs = await seedSpecs();
   console.warn(ligne("specs de plateforme", specs, ED_SPECS_PLATEFORME.length));
+
+  const recettes = await seedRecettes();
+  console.warn(
+    ligne("recettes de dérivation", recettes, ED_RECETTES.length) +
+      ` (${ED_RECETTES.reduce((n, r) => n + totalDerives(r), 0)} dérivés au total)`,
+  );
 
   const conformite = await seedReglesConformite();
   console.warn(ligne("règles de conformité", conformite, ED_REGLES_CONFORMITE.length));
