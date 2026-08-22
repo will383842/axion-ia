@@ -113,6 +113,112 @@ const SECTEURS = [
   { emoji: "🖥️", label: "Agences & ESN" },
 ] as const;
 
+// ── Tailles d'entreprise ────────────────────────────────────────────────────
+//
+// Retour Will 2026-08-22 : la page nommait « PME, ETI et grands groupes » sans
+// jamais parler des TPE autrement qu'en fin de phrase, et sans jamais dire À
+// QUOI ressemble une entreprise de chaque taille. Un lecteur d'annonce locale
+// ne se projette pas sur un sigle : il se projette sur « le cabinet d'avocats
+// de la place » ou « l'atelier de mécanique de la zone ».
+//
+// Les seuils d'effectif sont ceux de la nomenclature officielle française
+// (décret n° 2008-1354 d'application de la LME, catégories INSEE : micro-
+// entreprise/TPE, PME, ETI, grande entreprise). On ne cite QUE l'effectif :
+// les seuils de chiffre d'affaires ajouteraient des montants en euros sans
+// rien apprendre à un commercial qui prospecte au téléphone.
+//
+// ⚠️ Aucune entreprise réelle n'est nommée : ce sont des TYPES d'entreprises
+// présentes sur le corridor Grenoble ↔ Valence ↔ Die ↔ Lyon. Citer un nom
+// serait laisser croire que c'est déjà un client.
+interface TailleCible {
+  readonly emoji: string;
+  /** Sigle affiché en tête de carte. */
+  readonly sigle: string;
+  /** Effectif, nomenclature INSEE. */
+  readonly effectif: string;
+  /**
+   * Types d'entreprises que le commercial croisera réellement sur sa zone.
+   * ⚠️ Liste d'EXEMPLES, ni limitative ni exclusive — c'est dit deux fois à
+   * l'écran (chapô + encadré sous les cartes) et une troisième dans la FAQ.
+   */
+  readonly exemples: readonly string[];
+  /** Ce que cette taille change pour LUI : cycle de vente et volume de journées. */
+  readonly ceQueCaVaut: string;
+  /** Taille mise en avant (bordure terracotta) — le cœur de cible. */
+  readonly fort?: boolean;
+}
+
+const TAILLES_CIBLES: readonly TailleCible[] = [
+  {
+    emoji: "🧑‍💼",
+    sigle: "TPE",
+    effectif: "moins de 10 salariés",
+    exemples: [
+      "Cabinet d’avocats, notaire, huissier",
+      "Expert-comptable, paie, conseil",
+      "Cabinet infirmier, dentaire, kiné, vétérinaire",
+      "Agence immobilière, courtier, assureur",
+      "Garage, carrosserie, artisan du bâtiment",
+      "Restaurant, boulangerie, commerce de centre-ville",
+      "Agence web, studio de com’, photographe",
+      "Domaine viticole, exploitation agricole",
+    ],
+    ceQueCaVaut:
+      "Le dirigeant décide seul, souvent dans le rendez-vous. Une seule journée forme toute l’équipe : c’est la vente la plus rapide à signer, et le meilleur terrain pour tes premières références.",
+  },
+  {
+    emoji: "🏢",
+    sigle: "PME",
+    effectif: "10 à 249 salariés",
+    exemples: [
+      "Mécanique, plasturgie, électronique, usinage",
+      "Entreprise de BTP, bureau d’études, promoteur",
+      "Transporteur régional, logistique, messagerie",
+      "Laboratoire d’analyses, clinique, centre de soins",
+      "Cabinet comptable ou juridique à plusieurs associés",
+      "ESN, éditeur logiciel, agence digitale",
+      "Négoce, grossiste, distribution spécialisée",
+      "Site agroalimentaire, cave coopérative, conserverie",
+      "Hôtel-restaurant, camping, résidence de tourisme",
+    ],
+    ceQueCaVaut:
+      "Le cœur de cible. Un ou deux services à former, 10 à 15 personnes par groupe, financement OPCO quasi systématique. En général 1 à 3 journées — et l’année suivante, le service d’à côté.",
+    fort: true,
+  },
+  {
+    emoji: "🏭",
+    sigle: "ETI",
+    effectif: "250 à 4 999 salariés",
+    exemples: [
+      "Groupe industriel multi-sites, équipementier auto",
+      "Chimie fine, packaging, matériaux, énergie",
+      "Groupe de cliniques, d’EHPAD, de laboratoires",
+      "Coopérative agricole ou viticole régionale",
+      "Groupe de transport et logistique",
+      "Enseigne de distribution régionale, centrale d’achat",
+      "Cabinet d’avocats ou d’audit à plusieurs bureaux",
+      "Bailleur social, promoteur, gestionnaire de patrimoine",
+    ],
+    ceQueCaVaut:
+      "Plusieurs sites, plusieurs métiers, plusieurs vagues. 40 personnes à former, c’est déjà 3 groupes — multiplié par trois services, ce sont des dizaines de journées chez un seul client. Le cycle est plus long : on entre par un service pilote, on élargit ensuite.",
+  },
+  {
+    emoji: "🏙️",
+    sigle: "Grands groupes",
+    effectif: "5 000 salariés et plus",
+    exemples: [
+      "Sites industriels de la vallée du Rhône : chimie, énergie",
+      "Microélectronique et recherche grenobloises",
+      "Sièges régionaux de banque, assurance, mutuelle",
+      "Centre hospitalier, groupe de santé, pharma",
+      "Opérateur télécom, énergéticien, utilities",
+      "Plateforme logistique, grande enseigne, retail",
+    ],
+    ceQueCaVaut:
+      "On ne démarche pas le siège parisien : on entre par l’établissement local — responsable de site, RH ou référent formation. Souvent une conférence plénière d’abord, puis un déploiement équipe par équipe.",
+  },
+] as const;
+
 // ── Rémunération ────────────────────────────────────────────────────────────
 //
 // 🔑 AUCUNE valeur en dur sur cette page : la commission par JOURNÉE vient de
@@ -558,7 +664,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "quelles-entreprises",
       question: "Quelles entreprises est-ce que je démarche ?",
       answer:
-        "Les PME, ETI et grands groupes de ta zone d'abord — plus il y a d'équipes à former, plus la vente rapporte : une seule ETI peut représenter des dizaines de journées. Les TPE, artisans et professions libérales restent d'excellentes premières ventes. Quel que soit le secteur d'activité : industrie, BTP, comptabilité, santé, hôtellerie-restauration, transport, agriculture, immobilier, commerce… L'obligation de formation de l'AI Act et le financement OPCO concernent tout le monde.",
+        "Les quatre tailles, sans exception. Les TPE de moins de 10 salariés — cabinet d'avocats, expert-comptable, cabinet infirmier ou dentaire, agence immobilière, garage, restaurant, artisan du bâtiment, agence de com' : le dirigeant décide seul et une seule journée forme toute l'équipe, ce sont tes ventes les plus rapides. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille : l'obligation de formation de l'AI Act et le financement OPCO concernent tout le monde.",
     },
     {
       id: "pourquoi-ca-se-vend",
@@ -609,7 +715,7 @@ export default async function MemoIserePage({ params }: Props) {
     qualifications:
       "Aisance relationnelle et motivation. Débutants acceptés : formation complète à l'offre IA fournie.",
     responsibilities:
-      "Prospecter les PME, ETI et grands groupes de sa zone (TPE et artisans compris) (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
+      "Prospecter les TPE, PME, ETI et grands groupes de sa zone (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité — cabinets d'avocats et d'expertise comptable, santé et laboratoires, sites industriels, BTP, transport, agroalimentaire, commerce, hôtellerie ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
     jobBenefits:
       "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, activité évolutive (responsable de secteur).",
     incentiveCompensation: `Rémunération 100 % à la commission, comptée en journées de formation vendues : ${commission(1)} par journée, sans plafond. Une formation de 2 journées rapporte ${commission(2)}, un programme de 3 journées ${commission(3)}. Pourcentage de la facture en plus sur les audits et intégrations IA.`,
@@ -682,7 +788,7 @@ export default async function MemoIserePage({ params }: Props) {
                   chiffres-clés — la répéter ici coûtait deux lignes et
                   repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Tu proposes aux <strong>PME, ETI et grands groupes</strong> de ta zone des
+                Tu proposes aux <strong>TPE, PME, ETI et grands groupes</strong> de ta zone des
                 formations IA — l’AI Act les rend incontournables, l’OPCO les finance. Toi, tu
                 touches <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à
                 Lyon, tu choisis ton secteur.
@@ -878,7 +984,7 @@ export default async function MemoIserePage({ params }: Props) {
                 Icon: TrendingUp,
                 title: "La demande explose",
                 description:
-                  "PME, ETI, grands groupes : tout le monde parle d'IA — et personne n'est venu les voir sur ta zone. Tu arrives premier.",
+                  "Du cabinet d'avocats de trois personnes au site industriel de mille : tout le monde parle d'IA — et personne n'est venu les voir sur ta zone. Tu arrives premier.",
                 stat: { figure: "1er", label: "sur ta zone" },
               },
               {
@@ -1027,8 +1133,8 @@ export default async function MemoIserePage({ params }: Props) {
         eyebrow="Tes futurs clients"
         title="Ton prochain client ? Le site industriel"
         titleEm="d'à côté"
-        titleTail=" — ou le siège régional"
-        description="PME, ETI et grands groupes d'abord : plus l'équipe est grande, plus la vente est grosse — une ETI qui forme 40 personnes, c'est des dizaines de journées facturées. L'AI Act ne fait pas de tri entre les secteurs, l'OPCO non plus."
+        titleTail=" — ou le cabinet d'avocats d'en face"
+        description="De la TPE de trois personnes au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs, l'OPCO non plus. Les petites structures signent vite, les grandes rapportent gros — les quatre se prospectent, et voici à quoi elles ressemblent sur ta zone."
       >
         <>
           {/* Triptyque : trois tuiles VERTICALES sur mobile (une bande d'un seul
@@ -1083,6 +1189,95 @@ export default async function MemoIserePage({ params }: Props) {
             slots={["secteur-industrie", "secteur-tertiaire", "secteur-commerce"]}
             className="mb-7 text-right"
           />
+
+          {/* ── Les quatre tailles, avec des exemples concrets ────────────────
+              Une carte par taille, listée de la plus petite à la plus grande :
+              un lecteur d'annonce locale se reconnaît d'abord dans la TPE
+              qu'il connaît, pas dans le sigle « ETI ». Chaque carte dit trois
+              choses — combien de salariés, à quoi ça ressemble chez lui, et ce
+              que ça change POUR LUI (cycle de vente, volume de journées).
+              Une grille de cartes, pas un carrousel : les listes d'exemples
+              doivent rester lisibles au clavier et par un lecteur d'écran. */}
+          <h3 className="text-fg mt-2 text-center font-serif text-xl font-semibold sm:text-2xl">
+            Les quatre tailles que tu vas démarcher
+          </h3>
+          <p className="text-fg-muted mx-auto mt-2 max-w-2xl text-center text-sm">
+            Effectifs selon la nomenclature officielle (INSEE / décret LME).{" "}
+            <strong className="text-fg-soft font-semibold">
+              Ce qui suit n’est qu’une liste d’exemples
+            </strong>{" "}
+            — des types d’entreprises que tu croiseras sur ta zone, ni des clients existants ni une
+            liste fermée.
+          </p>
+          <ul
+            className="mx-auto mt-6 grid max-w-5xl gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4"
+            role="list"
+          >
+            {TAILLES_CIBLES.map((t) => (
+              <li
+                key={t.sigle}
+                className={cn(
+                  "flex h-full flex-col rounded-2xl border p-5",
+                  t.fort
+                    ? "border-terracotta bg-terracotta/5 shadow-card"
+                    : "border-border bg-paper shadow-subtle",
+                )}
+              >
+                <p className="flex items-center gap-2">
+                  <span aria-hidden="true" className="text-2xl">
+                    {t.emoji}
+                  </span>
+                  <span className="text-fg font-serif text-xl leading-none font-semibold">
+                    {t.sigle}
+                  </span>
+                </p>
+                <p className="text-terracotta mt-2 text-xs font-bold tracking-wide uppercase">
+                  {t.effectif}
+                </p>
+                <ul className="text-fg-soft mt-4 space-y-1.5 text-[13px] leading-snug" role="list">
+                  {t.exemples.map((ex) => (
+                    <li key={ex} className="flex gap-2">
+                      <span aria-hidden="true" className="text-terracotta/70 shrink-0">
+                        ·
+                      </span>
+                      <span>{ex}</span>
+                    </li>
+                  ))}
+                </ul>
+                {/* `mt-auto` : les cartes d'une même rangée n'ont pas le même
+                    nombre d'exemples — sans ça, la ligne « ce que ça vaut »
+                    flottait à quatre hauteurs différentes. */}
+                <p className="border-border/70 text-fg-muted mt-auto border-t pt-4 text-[13px] leading-relaxed">
+                  <span className="text-fg-soft font-semibold">
+                    Ce que ça vaut pour toi&nbsp;:{" "}
+                  </span>
+                  {t.ceQueCaVaut}
+                </p>
+              </li>
+            ))}
+          </ul>
+
+          {/* Rappel explicite (Will 2026-08-22) : une liste d'exemples se lit
+              vite comme une liste de CIBLES AUTORISÉES. Un commercial qui
+              tombe sur un magasin ou un hôtel absent de la carte doit savoir
+              qu'il est concerné — la règle est l'effectif et l'AI Act, pas le
+              métier. */}
+          <p className="border-border bg-paper text-fg-soft shadow-subtle mx-auto mt-5 max-w-3xl rounded-2xl border p-4 text-center text-sm leading-relaxed sm:p-5">
+            ⚠️ <strong className="text-fg font-semibold">Ce ne sont que des exemples.</strong> La
+            liste n’est ni limitative ni exclusive : ça peut tout aussi bien être un magasin, une
+            entreprise du bâtiment, un établissement de santé, un hôtel ou un restaurant, une
+            exploitation agricole, une collectivité, un grand groupe… Dès qu’une organisation de ta
+            zone a des salariés qui utilisent l’IA, elle est concernée par l’AI Act — donc par ton
+            offre.
+          </p>
+
+          <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
+            Et dans quels secteurs ?
+          </h3>
+          <p className="text-fg-muted mx-auto mt-2 mb-6 max-w-2xl text-center text-sm">
+            Tous, à toutes les tailles. Là encore, les cases ci-dessous sont des exemples : seul le
+            nombre de groupes à former change d’une TPE à un grand groupe.
+          </p>
 
           <ul
             className="mx-auto grid max-w-4xl grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"
