@@ -41,8 +41,38 @@ test.describe("a11y WCAG 2.2 AA @a11y", () => {
   // qualifier finit ignoré. C'est comme ça qu'un gate meurt.
   test.describe.configure({ timeout: 90_000 });
 
+  /**
+   * Pages dont le COÛT D'ANALYSE dépasse le budget commun — mesuré, pas supposé.
+   *
+   * 🔴 2026-08-21. `/fr/implantations` échouait sur « Test timeout of 90000ms
+   * exceeded ». Un délai dépassé ne dit pas POURQUOI : il a la même forme
+   * qu'une page cassée, qu'un sélecteur mort ou qu'un refus. Mesuré contre la
+   * production, sur une machine rapide et sans concurrence :
+   *
+   *     HTML          8 693 723 octets   (5× la page d'accueil)
+   *     nœuds DOM     22 558
+   *     liens         2 279
+   *     axe-core      62 210 ms          ← le budget entier passait là
+   *     violations    0 serious/critical
+   *
+   * 🔑 La page est CONFORME. Le gate ne mesurait pas son accessibilité, il
+   * mesurait sa taille — et rendait le verdict le plus inutile qui soit :
+   * rouge, sans cause.
+   *
+   * ⚠️ Le poids de cette page est un vrai constat de performance, remonté à
+   * Will séparément. Ce n'est PAS ce test qui doit en décider : lui doit dire
+   * si la page est accessible, et le dire vite. L'exception porte donc un
+   * chiffre et une date — si le coût d'analyse double encore, elle redeviendra
+   * insuffisante et le rouge reviendra, avec ce commentaire pour le qualifier.
+   */
+  const BUDGET_PAR_PAGE: Record<string, number> = {
+    "/fr/implantations": 240_000,
+  };
+
   for (const { path, label } of STRATEGIC_PATHS) {
     test(`${label} (${path}) — 0 serious/critical violations @a11y`, async ({ page }) => {
+      const budget = BUDGET_PAR_PAGE[path];
+      if (budget !== undefined) test.setTimeout(budget);
       // 🔴 Audit certification 2026-07-26 (X5) — CANARI OBLIGATOIRE.
       // Sans lui, ce gate peut virer au FAUX VERT : si Cloudflare sert une
       // interstitielle (challenge, rate-limit) ou si l'origine renvoie une page

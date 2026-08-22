@@ -119,7 +119,36 @@ test.describe("navigation admin — chaque entrée s'OUVRE @admin-nav", () => {
         const texte = (await titre.textContent())?.trim() ?? "";
         if (texte === "") pannes.push(`${entree.href} — <h1> vide`);
       } catch (e) {
-        pannes.push(`${entree.href} — ${(e as Error).message.split("\n")[0]}`);
+        // 🔴 2026-08-22 — UN DÉLAI DÉPASSÉ NE DIT PAS POURQUOI.
+        //
+        // Quatre entrées sous `/qualiopi/facturation` rendaient
+        // « locator.waitFor: Timeout 15000ms exceeded », trois relevés de suite.
+        // Ce n'était pas une panne de rendu : le hub est derrière
+        // `FACTURATION_HUB_ENABLED` et les pages appellent `notFound()`.
+        //
+        // 🔑 Le statut restait 200 parce que le dossier porte un `loading.tsx` :
+        // la diffusion avait commencé, l'en-tête était parti, et `notFound()` n'a
+        // fait que remplacer la suite du flux. Le contrôle `statut >= 400`
+        // ci-dessus ne pouvait donc rien voir — c'est exactement le scénario que
+        // le commentaire du `<h1>` anticipait, sans que rien ne le NOMME.
+        //
+        // On LIT la page avant de conclure. Une entrée qui mène à une page
+        // introuvable reste une panne — mais une panne QUALIFIÉE, rattachable à
+        // un drapeau au lieu d'envoyer chercher dans le rendu.
+        const corps = (
+          await page
+            .locator("body")
+            .innerText()
+            .catch(() => "")
+        )
+          .replace(/\s+/g, " ")
+          .slice(0, 160);
+        const introuvable = /introuvable|not found|404/i.test(corps);
+        const cause = introuvable
+          ? "page introuvable rendue APRÈS le premier flush (statut 200 déjà parti) — " +
+            `module derrière un drapeau ? corps : « ${corps} »`
+          : (e as Error).message.split("\n")[0];
+        pannes.push(`${entree.href} — ${cause}`);
       }
     }
 

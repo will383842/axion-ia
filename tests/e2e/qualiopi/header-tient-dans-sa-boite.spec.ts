@@ -34,7 +34,22 @@ const RESERVE_MINIMALE = 16;
 const LARGEURS = [1440, 1441, 1512, 1536, 1700, 1701, 1800, 1920];
 
 test.describe("@qualiopi-public le header tient dans sa boîte de contenu", () => {
-  test.describe.configure({ mode: "serial" });
+  // 🔴 2026-08-22 — UN DÉLAI PLUS LONG QUE SON BUDGET NE PEUT JAMAIS EXPIRER.
+  //
+  // Famille de défauts symétrique de celle corrigée la veille. Un `timeout:`
+  // soigneusement choisi, avec un message qui nomme la cause, est INATTEIGNABLE
+  // si le budget du test qui l'englobe est plus court : c'est le budget qui
+  // rend le verdict, et son message ne nomme rien.
+  //
+  // 🔑 Règle : le budget d'une suite doit être STRICTEMENT supérieur au plus
+  // grand délai qui vit dedans — helpers importés compris. Verrouillé par
+  // `tests/unit/e2e-harness/delai-interne-sous-le-budget.spec.ts`.
+  //
+  // Ici : les deux tests naviguent avec `timeout: 90_000` sous un budget de
+  // 30 s — le délai déclaré était mort-né. Arithmétique : 90 000 (goto) +
+  // 8 × 250 ms de bascules de viewport + les mesures `page.evaluate` < 150 000.
+  // Si l'un des deux nombres bouge, bouger l'autre.
+  test.describe.configure({ mode: "serial", timeout: 150_000 });
 
   test("réserve suffisante à chaque bande de bascule", async ({ page }, info) => {
     test.skip(info.project.name !== "chromium", "Géométrie : un moteur suffit.");

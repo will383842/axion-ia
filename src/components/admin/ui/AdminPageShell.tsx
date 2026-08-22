@@ -19,8 +19,9 @@ interface AdminPageShellProps {
   /**
    * Largeur du contenu :
    * - "full" (default) : max-width 1440px (refonte largeur juin 2026 — était
-   *   1280px, mais le cap réel était 960px car le <main> portait `.admin-main`
-   *   (globals.css max-width:960px). Cap levé côté layout V2 ; le shell
+   *   1280px, mais le cap réel était 960px car le conteneur portait
+   *   `.admin-main` (admin.css:894, max-width:960px). Cap levé côté layout V2 ;
+   *   le shell
    *   redevient la SSOT de largeur. 1440px = densité dashboard 2026 sans
    *   lignes de tableau trop longues).
    * - "narrow" : max-width 720px (formulaires longs, settings).

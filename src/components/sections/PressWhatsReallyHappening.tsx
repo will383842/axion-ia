@@ -65,7 +65,24 @@ export function PressWhatsReallyHappening({ intro, links }: PressWhatsReallyHapp
                   <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-paper inline-flex h-12 w-12 items-center justify-center rounded-xl transition-colors">
                     <Icon className="h-6 w-6" aria-hidden="true" />
                   </span>
-                  <span className="text-fg-muted font-serif text-2xl leading-none font-semibold tabular-nums opacity-30 select-none">
+                  {/*
+                    🔴 2026-08-21 — `opacity-30` mettait ce numéro à 1,62:1.
+                    Mesuré par axe-core : « cecac7 » sur « ffffff », 19,5 pt — donc du
+                    « grand texte », seuil WCAG 1.4.3 = 3:1. Trois nœuds en
+                    violation `serious` sur /fr/presse, le seul défaut
+                    d'accessibilité restant des 123 routes publiques auditées.
+
+                    `--color-fg-muted` (« 5a4f44 ») composé sur blanc donne :
+                    30 % → 1,63   ·   60 % → 2,95   ·   65 % → 3,28   ·   70 % → 3,68.
+                    On prend 70 % : la marge absorbe un futur ajustement du
+                    jeton sans replonger sous le seuil.
+
+                    ⚠️ Le numéro reste visiblement plus discret que le titre,
+                    mais il n'est plus fantomatique. C'est un changement VISIBLE
+                    sur une page publique — assumé : un texte qu'on ne peut pas
+                    lire n'est pas une décoration discrète, c'est un défaut.
+                  */}
+                  <span className="text-fg-muted font-serif text-2xl leading-none font-semibold tabular-nums opacity-70 select-none">
                     {String(idx + 1).padStart(2, "0")}
                   </span>
                 </span>
