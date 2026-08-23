@@ -102,12 +102,12 @@
 import { test, expect } from "@playwright/test";
 import { loginAsAdmin } from "../../fixtures/admin-auth";
 import {
-  admin,
   CONTENU,
   creerSession,
   ENREGISTREMENT,
   horodatageZoom,
   inscrire,
+  ouvrir,
   STAGIAIRES_DEMO,
 } from "./_communs";
 
@@ -323,14 +323,11 @@ test.describe("@parcours-qualiopi 2 — distanciel, relevé de connexion", () =>
 
     // ── 3. L'écran d'émargement, et ce qu'il propose en distanciel ──────────
     //
-    // 120 s de borne propre : sous `next dev` cette route se compile à la
-    // demande, et la borne globale de navigation (30 s, playwright.config.ts:37)
-    // la ferait échouer sur un message qui accuserait la page au lieu de la
-    // compilation.
-    const reponse = await page.goto(admin(`qualiopi/sessions/${id}/emargement`), {
-      waitUntil: "domcontentloaded",
-      timeout: 120_000,
-    });
+    // `ouvrir` (et non `page.goto`) : la borne qui couvre la compilation à la
+    // demande de `next dev` est tranchée UNE fois dans le socle. Trois fichiers
+    // portaient chacun la leur — 90 s, 120 s, 45 s — et les trois ont été
+    // dépassées le 2026-08-23 sur un cache neuf.
+    const reponse = await ouvrir(page, `qualiopi/sessions/${id}/emargement`);
     expect(reponse?.status(), "l'écran d'émargement doit répondre").toBe(200);
 
     // 🔴 LA MODALITÉ RÉELLE N'EST ÉCRITE QU'À UN SEUL ENDROIT DE CET ÉCRAN.

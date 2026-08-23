@@ -142,7 +142,7 @@
 
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { loginAsAdmin } from "../../fixtures/admin-auth";
-import { admin, creerSession, ouvrirSessionDemo, CONTENU, ENREGISTREMENT } from "./_communs";
+import { CONTENU, creerSession, ENREGISTREMENT, ouvrir, ouvrirSessionDemo } from "./_communs";
 
 test.use(ENREGISTREMENT);
 
@@ -383,7 +383,7 @@ test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", ()
     // 🔑 Une assertion posée juste après la soumission peut lire un état
     // optimiste. On relit la fiche PAR SON URL, dans une requête neuve : ce
     // qui survit là a été écrit.
-    await page.goto(admin(`qualiopi/sessions/${id}`), { timeout: 90_000 });
+    await ouvrir(page, `qualiopi/sessions/${id}`);
     await expect(
       page.locator(CONTENU).getByRole("heading", { level: 1, name: titre }),
       `le titre « ${titre} » n'a pas survécu au rechargement de la fiche : il n'a donc pas ` +
@@ -418,7 +418,7 @@ test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", ()
     // vert, la page a rendu » — c'était faux.
     //
     // 🔑 DEUX TÉMOINS, DEUX RÔLES DISTINCTS, et il faut les deux.
-    await page.goto(admin(`qualiopi/sessions/${id}/emargement`), { timeout: 90_000 });
+    await ouvrir(page, `qualiopi/sessions/${id}/emargement`);
 
     // TÉMOIN 1 — la page a COMMENCÉ à rendre, ET elle porte la modalité RÉELLE
     // de la session. Il atteste la modalité, pas l'achèvement du rendu.
@@ -662,7 +662,7 @@ test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", ()
     //
     // 🔑 C'est la moitié qui manquait à ce fichier : le titre annonçait « du
     // devis à la facture » et aucune des trois pièces n'y était nommée.
-    await page.goto(admin("qualiopi/devis"), { timeout: 90_000 });
+    await ouvrir(page, "qualiopi/devis");
     await texteDuContenu(page, "liste des devis");
 
     // La liste n'est PAS paginée : `listDevis()`
@@ -719,8 +719,22 @@ test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", ()
     // ne mène nulle part est un défaut que ce dépôt a déjà trouvé trois fois.
     // Le bouton est un `AdminButton` avec `href` (devis/page.tsx:201-209), donc
     // un vrai `<a>` (AdminButton.tsx:117-121) : `getByRole("link")` le voit.
-    await ligneDevis.getByRole("link", { name: "Ouvrir" }).click();
-    await page.waitForURL(/\/qualiopi\/devis\/[0-9a-f-]{36}/, { timeout: 90_000 });
+    // ⚠️ BUDGET EXPLICITE — un clic qui navigue ATTEND sa navigation.
+    //
+    // 🔴 2026-08-23 — Ce clic était le seul de ce fichier sans délai déclaré :
+    // il héritait donc de `playwright.config.ts:36 actionTimeout: 15_000`,
+    // alors que la ligne suivante accorde 90 s à la MÊME navigation. Mesuré :
+    // « click action done / waiting for scheduled navigations to finish »
+    // puis `Timeout 15000ms exceeded` — le clic avait abouti, et il mourait en
+    // attendant ce que sa propre ligne suivante avait le droit d'attendre.
+    //
+    // 🔑 Ce n'est pas un budget gonflé, c'est un budget ALIGNÉ sur son voisin :
+    // au-delà, c'est bien `waitForURL` qui rend le verdict, et lui nomme l'URL.
+    await ligneDevis.getByRole("link", { name: "Ouvrir" }).click({ timeout: 90_000 });
+    await page.waitForURL(/\/qualiopi\/devis\/[0-9a-f-]{36}/, {
+      waitUntil: "domcontentloaded", // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
+      timeout: 90_000,
+    });
     await expect(
       page.locator(CONTENU).getByRole("heading", { level: 1, name: `Devis ${DEVIS_DEMO}` }),
       `la fiche ouverte depuis la ligne ${DEVIS_DEMO} ne porte pas le titre « Devis ` +
@@ -794,8 +808,9 @@ test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", ()
       "le lien « Financement » a disparu de `#sous-pages` (sessions/[id]/page.tsx:823-825) : " +
         "l'écran qui porte les factures de la session n'est plus atteignable depuis son hub",
     ).toHaveCount(1, { timeout: 60_000 });
-    await lienFinancement.click();
+    await lienFinancement.click({ timeout: 90_000 }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
     await page.waitForURL(/\/qualiopi\/sessions\/[0-9a-f-]{36}\/financement$/, {
+      waitUntil: "domcontentloaded", // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
       timeout: 90_000,
     });
     const texteFinancement = await texteDuContenu(page, "écran de financement de la session");

@@ -115,7 +115,7 @@ import { readFile } from "node:fs/promises";
 import { test, expect, type Download, type Page } from "@playwright/test";
 
 import { loginAsAdmin } from "../../fixtures/admin-auth";
-import { admin, CONTENU, ENREGISTREMENT } from "./_communs";
+import { CONTENU, ENREGISTREMENT, ouvrir } from "./_communs";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Le dossier de démonstration, tel que le seed l'écrit — jamais deviné
@@ -231,7 +231,10 @@ function titreEcran(page: Page) {
  */
 async function arriverSur(page: Page, motif: RegExp, ceQuOnAttendait: string): Promise<void> {
   try {
-    await page.waitForURL(motif, { timeout: ARRIVEE });
+    await page.waitForURL(motif, {
+      waitUntil: "domcontentloaded", // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
+      timeout: ARRIVEE,
+    });
   } catch (cause) {
     const titre = await titreEcran(page)
       .first()
@@ -424,10 +427,7 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
     await loginAsAdmin(page);
 
     // ── 1. La liste des formations ─────────────────────────────────────────
-    await page.goto(admin("qualiopi/formations"), {
-      waitUntil: "domcontentloaded",
-      timeout: ARRIVEE,
-    });
+    await ouvrir(page, "qualiopi/formations");
 
     // 🔴 `waitForLoadState("networkidle")` a été RETIRÉ d'ici. Il ne dit rien
     // d'utile d'une page de console — elle ne se tait jamais côté réseau — et
@@ -449,7 +449,7 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
     // URL, c'est tester sa propre construction, pas la navigation du produit.
     // « Éditer » est la première des trois actions de la ligne, et la seule qui
     // ouvre la fiche (formations/page.tsx:260-265).
-    await ligne.getByRole("link", { name: "Éditer" }).click();
+    await ligne.getByRole("link", { name: "Éditer" }).click({ timeout: ARRIVEE }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
     await arriverSur(
       page,
       /\/qualiopi\/formations\/[0-9a-f-]{36}$/,
@@ -476,7 +476,7 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
     await page
       .locator(CONTENU)
       .getByRole("link", { name: /^Tout pour animer/ })
-      .click();
+      .click({ timeout: ARRIVEE }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
     await arriverSur(
       page,
       /\/qualiopi\/formations\/[0-9a-f-]{36}\/animer$/,
@@ -652,10 +652,7 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
     // qu'elle s'ouvre au clic est déjà faite ailleurs, sur toutes les entrées à
     // la fois (`tests/e2e/flows/admin-nav-clic.spec.ts`). Ce parcours dépense son
     // budget sur ce que lui seul peut prouver.
-    await page.goto(admin("qualiopi/mode-auditeur"), {
-      waitUntil: "domcontentloaded",
-      timeout: ARRIVEE,
-    });
+    await ouvrir(page, "qualiopi/mode-auditeur");
 
     await expect(
       titreEcran(page),
@@ -816,7 +813,7 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
     await page
       .locator(CONTENU)
       .getByRole("link", { name: /^Registre des signatures d'émargement/ })
-      .click();
+      .click({ timeout: ARRIVEE }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
     await arriverSur(
       page,
       /\/qualiopi\/mode-auditeur\/emargement$/,
@@ -856,14 +853,11 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
     // Retour au point de départ pour atteindre l'autre registre. La page a déjà
     // été prouvée atteignable ET rendue plus haut dans ce même test : y revenir
     // par l'URL ne masque rien.
-    await page.goto(admin("qualiopi/mode-auditeur"), {
-      waitUntil: "domcontentloaded",
-      timeout: ARRIVEE,
-    });
+    await ouvrir(page, "qualiopi/mode-auditeur");
     await page
       .locator(CONTENU)
       .getByRole("link", { name: /^Registre des signatures de pièces/ })
-      .click();
+      .click({ timeout: ARRIVEE }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
     await arriverSur(
       page,
       /\/qualiopi\/mode-auditeur\/signatures$/,

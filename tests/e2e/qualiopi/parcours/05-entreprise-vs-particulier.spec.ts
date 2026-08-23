@@ -117,7 +117,7 @@
 
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { loginAsAdmin } from "../../fixtures/admin-auth";
-import { admin, champEtiquete, CONTENU, ENREGISTREMENT } from "./_communs";
+import { admin, champEtiquete, CONTENU, ENREGISTREMENT, ouvrir } from "./_communs";
 
 type TypeClient = "entreprise" | "particulier";
 
@@ -223,21 +223,56 @@ async function choisirLeType(page: Page, type: TypeClient): Promise<void> {
       "formulaire — dans les deux cas, TOUTES les mesures qui suivent sont sans valeur.",
   ).toHaveCount(1, { timeout: 30_000 });
 
-  // Aller : la barrière d'hydratation proprement dite.
-  await selecteur.selectOption("particulier");
-  await expect(
-    page.locator("#c-siret"),
-    "le formulaire n'a jamais réagi au passage en « Particulier » : « #c-siret » " +
-      "(ClientForm.tsx:174) est toujours là. Aucun rendu SERVEUR ne peut produire ce champ " +
-      "absent — c'est donc React qui n'a pas hydraté la page, le `change` n'a atteint aucun " +
-      "état, et tout ce qui suivrait (remplir le nom, cliquer « Créer le client ») serait tout " +
-      "aussi inerte, SANS le dire. Autre cause possible : la garde `{!isParticulier && …}` " +
-      "(ClientForm.tsx:160) a sauté.",
-  ).toHaveCount(0, { timeout: 60_000 });
+  // 🔴 2026-08-23 — ON FRANCHIT LA BARRIÈRE D'HYDRATATION, ON NE LA CONSTATE PAS.
+  //
+  // La version précédente posait le `change` UNE fois, puis attendait soixante
+  // secondes que `#c-siret` disparaisse. Mesuré ce jour sous `next dev --webpack`,
+  // cache CHAUD (deux exécutions consécutives, même verdict) : elle échouait
+  // toujours, et le sondage voyait « 118 × locator resolved to 1 element ».
+  //
+  // Contre-épreuve décisive : la MÊME page, le MÊME sélecteur, avec pour seule
+  // différence vingt-cinq secondes d'attente AVANT le geste — `#c-siret` passe
+  // à 0 et le `<select>` vaut « particulier ». Ce n'est donc ni le sélecteur,
+  // ni la garde `{!isParticulier && …}`, ni la CSP (`'unsafe-eval'` est bien
+  // servi en dev, en-tête vérifié ; aucune violation, aucun `pageerror`).
+  //
+  // 🔑 Un `change` émis avant l'attache du gestionnaire racine de React ne pose
+  // aucun état ET N'EST JAMAIS REJOUÉ. Pire ici : `<select value={type}>` est
+  // CONTRÔLÉ (ClientForm.tsx:136-137), donc l'hydratation REMET la valeur à
+  // « entreprise ». Le geste n'est pas seulement perdu, il est annulé — et
+  // attendre plus longtemps ne fait que mesurer plus longuement la panne.
+  //
+  // C'est exactement la doctrine déjà écrite pour `inscrire` (_communs.ts) :
+  // « Sélectionner UNE fois puis attendre ne répare rien. » Deux copies de la
+  // même barrière avaient divergé, et c'est la mauvaise qui vivait ici.
+  await expect
+    .poll(
+      async () => {
+        await selecteur.selectOption("particulier").catch(() => {
+          /* champ momentanément indisponible pendant une transition : on retentera. */
+        });
+        return page.locator("#c-siret").count();
+      },
+      {
+        timeout: 90_000,
+        intervals: [500, 1_000, 2_000],
+        message:
+          "le formulaire n'a jamais réagi au passage en « Particulier » : « #c-siret » " +
+          "(ClientForm.tsx:174) est toujours là, alors que le `change` a été REPOSÉ à chaque " +
+          "tour — l'explication « React n'avait pas encore hydraté » ne tient donc plus. " +
+          "Chercher du côté de la garde `{!isParticulier && …}` (ClientForm.tsx:160), de " +
+          "l'identifiant du champ (:174), ou d'une erreur d'hydratation qui aurait tué la " +
+          "racine React pour de bon.",
+      },
+    )
+    .toBe(0);
 
   // Retour (ou maintien) : le type réellement demandé. Appelé sans condition —
   // une garde `if (type !== "particulier")` ne garderait rien et cacherait le
   // fait que le geste final est TOUJOURS le même.
+  //
+  // Ici un geste unique SUFFIT, et pour une raison mesurable : l'aller ci-dessus
+  // n'a pu aboutir que parce que React répondait déjà. L'hydratation est acquise.
   await selecteur.selectOption(type);
 
   const attendu = type === "particulier" ? 0 : 1;
@@ -308,10 +343,7 @@ async function creerClient(page: Page, type: TypeClient, marqueur: string): Prom
   // réseau consomme le budget du test avant de nommer quoi que ce soit.
   // Le délai propre couvre la compilation à la demande de `next dev` : la borne
   // globale de navigation est à trente secondes (playwright.config.ts:37).
-  await page.goto(admin("qualiopi/clients/new"), {
-    waitUntil: "domcontentloaded",
-    timeout: 45_000,
-  });
+  await ouvrir(page, "qualiopi/clients/new");
 
   await choisirLeType(page, type);
   const libelle = await libelleChampPrincipal(page);
@@ -423,10 +455,7 @@ async function idDuClient(ligne: Locator, marqueur: string): Promise<string> {
  * une preuve que l'état du bouton donne déjà.
  */
 async function leTunnelDeVenteAccepte(page: Page, id: string, marqueur: string): Promise<void> {
-  await page.goto(`${admin("qualiopi/vente/new")}?clientId=${id}`, {
-    waitUntil: "domcontentloaded",
-    timeout: 45_000,
-  });
+  await ouvrir(page, "qualiopi/vente/new", `?clientId=${id}`);
 
   // `<select>` ⇒ rôle `combobox`. Nom accessible « Client » EXACT
   // (VenteWizard.tsx:665). ⚠️ La raison n'est PAS celle qu'un premier jet
@@ -602,10 +631,7 @@ test.describe("@parcours-qualiopi 5 — entreprise et particulier, côte à côt
     // crm/clients.ts:74-91, sans `take` quand aucune limite n'est passée) : on
     // lit donc exactement les deux fiches qu'on vient de créer, quelle que soit
     // la taille de la base.
-    await page.goto(`${admin("qualiopi/clients")}?q=${marque}`, {
-      waitUntil: "domcontentloaded",
-      timeout: 45_000,
-    });
+    await ouvrir(page, "qualiopi/clients", `?q=${marque}`);
 
     // Contre-témoin du filtre lui-même : si `?q=` était ignoré, ce compteur
     // afficherait la table entière et l'assertion rougirait. Il décrit le

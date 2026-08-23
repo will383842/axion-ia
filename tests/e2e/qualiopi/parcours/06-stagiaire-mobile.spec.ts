@@ -971,12 +971,13 @@ test.describe("@parcours-qualiopi 6 — le stagiaire sur téléphone", () => {
 
     // ── Jusqu'à l'attestation, en cliquant ──────────────────────────────────
     const versDocuments = onglets.nth(ONGLETS.indexOf("Documents"));
-    await versDocuments.click();
+    await versDocuments.click({ timeout: 60_000 }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
     // 🔑 Après un clic de navigation, on attend l'URL — pas un état de charge.
     // `waitForLoadState` rend la main avant même qu'une navigation douce ait
     // commencé : une sonde bâtie ainsi mesure l'écran PRÉCÉDENT et le déclare
     // conforme. Le dépôt l'a payé quatre fois dans la même journée.
     await page.waitForURL((u) => u.pathname === "/fr/portail/mon-espace/documents", {
+      waitUntil: "domcontentloaded", // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
       timeout: 60_000,
     });
 

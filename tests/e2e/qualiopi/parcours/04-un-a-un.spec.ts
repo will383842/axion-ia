@@ -121,7 +121,7 @@
 
 import { test, expect, type Locator, type Page, type TestInfo } from "@playwright/test";
 import { loginAsAdmin } from "../../fixtures/admin-auth";
-import { admin, CONTENU, ENREGISTREMENT } from "./_communs";
+import { admin, CONTENU, ENREGISTREMENT, ouvrir } from "./_communs";
 
 test.use(ENREGISTREMENT);
 
@@ -278,10 +278,7 @@ async function lireLesOptions(selecteur: Locator): Promise<OptionLue[]> {
  * désactivée est aujourd'hui invisible, donc non réactivable, au clic.
  */
 async function releverLesOffres(page: Page, info: TestInfo): Promise<LigneOffre[]> {
-  await page.goto(`${admin("qualiopi/offres")}?vue=toutes`, {
-    waitUntil: "domcontentloaded",
-    timeout: DELAI_ECRAN,
-  });
+  await ouvrir(page, "qualiopi/offres", `?vue=toutes`);
 
   // 🔑 On attend un CONTENU, jamais un état de réseau. La console admin ne se
   // tait pas côté réseau : `networkidle` y consomme le budget entier puis rend
@@ -396,10 +393,7 @@ async function releverLesOffres(page: Page, info: TestInfo): Promise<LigneOffre[
  * test : il est remonté tel quel plutôt que contourné.
  */
 async function ouvrirEtape2(page: Page): Promise<string> {
-  await page.goto(admin("qualiopi/vente/new"), {
-    waitUntil: "domcontentloaded",
-    timeout: DELAI_ECRAN,
-  });
+  await ouvrir(page, "qualiopi/vente/new");
   try {
     await expect(page.getByRole("heading", { name: /Étape 1 — Pour quel client/ })).toBeVisible({
       timeout: DELAI_ECRAN,
@@ -428,7 +422,7 @@ async function ouvrirEtape2(page: Page): Promise<string> {
 
   // Le champ de recherche filtre EN MÉMOIRE la liste déjà chargée
   // (`clientsFiltres`, VenteWizard.tsx:246-252) : il ne va pas rechercher en base.
-  await page.getByLabel("Rechercher un client").fill(CLIENT_DEMO);
+  const recherche = page.getByLabel("Rechercher un client");
 
   // 🔴 DEUX DÉFAUTS DE LA MÊME FAMILLE, REFERMÉS ENSEMBLE ICI.
   //
@@ -464,6 +458,48 @@ async function ouvrirEtape2(page: Page): Promise<string> {
     await expect
       .poll(
         async () => {
+          // 🔴 2026-08-23 — LE VIDE PUIS LA VALEUR, ET NON LA VALEUR SEULE.
+          //
+          // Ces deux lignes ont l'air d'un bégaiement. Elles sont la seule forme
+          // qui fonctionne, et la raison ne se devine pas.
+          //
+          // ## Ce qui a été mesuré, dans cet ordre
+          //
+          // 1. Le parcours posait `fill(CLIENT_DEMO)` UNE fois, juste après
+          //    l'apparition du titre d'étape 1, puis sondait. La liste restait
+          //    ENTIÈRE — trente options, aucune filtrée — et le message ci-dessous
+          //    accusait ses trois causes. Les trois sont réfutées : la fiche
+          //    `AXI-CLI-DEMO-001` EST dans la liste (lue à la trentième option,
+          //    « [DEMO] Innovatech Solutions SAS »), le CRM compte trente clients
+          //    et non cinq cents, et la page est bel et bien hydratée.
+          // 2. Le même `fill`, précédé de vingt-cinq secondes d'attente, filtre :
+          //    trente options deviennent deux. Ce n'est donc PAS le geste qui est
+          //    faux, c'est son INSTANT.
+          // 3. Reposer le MÊME `fill` à chaque tour du sondage — la doctrine de
+          //    `inscrire` (_communs.ts) — ne répare RIEN ici : trois re-poses
+          //    identiques, largement après l'hydratation, laissent les trente
+          //    options. Mesuré.
+          // 4. `fill("")` puis `fill(CLIENT_DEMO)` : deux options. Mesuré.
+          //
+          // ## 🔑 La règle que cela dégage, et qui vaut au-delà de ce fichier
+          //
+          // `fill` ne réémet rien quand la valeur du DOM est DÉJÀ celle demandée.
+          // Or un `fill` posé avant l'hydratation écrit précisément cette valeur
+          // dans le DOM sans qu'aucun état React ne la reçoive : le DOM et l'état
+          // sont désynchronisés, et TOUTE re-pose à l'identique est un no-op. Le
+          // champ affiche le bon texte, la liste ignore tout — et rien ne rougit.
+          //
+          // ⚠️ La doctrine « reposer le geste à chaque tour » ne suffit donc PAS :
+          // elle n'est vraie que pour un geste qui émet inconditionnellement.
+          // `selectOption` (inscrire, et `choisirLeType` du parcours 05) en est un.
+          // `fill` n'en est pas un. Repasser par le vide rend le changement RÉEL
+          // dans les deux sens, et resynchronise l'état sur le DOM.
+          await recherche.fill("").catch(() => {
+            /* champ momentanément indisponible pendant un repeint : on retentera. */
+          });
+          await recherche.fill(CLIENT_DEMO).catch(() => {
+            /* idem. */
+          });
           options = await lireLesOptions(client);
           const reels = options.filter((o) => o.valeur !== "");
           return reels.length > 0 && reels.every((o) => o.texte.includes(CLIENT_DEMO));
@@ -1089,14 +1125,18 @@ test.describe("@parcours-qualiopi 4 — 1-à-1, le wizard bifurque", () => {
         "(VenteWizard.tsx:819-829) : le wizard dit à l'admin que cette offre ne se vend " +
         "pas ici, sans lui dire où elle se vend — une impasse nommée reste une impasse",
     ).toBeVisible();
-    await versParcours.click();
+    await versParcours.click({ timeout: DELAI_ECRAN }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
 
     try {
       await page.waitForURL(
         (url) =>
           url.pathname === admin("coaching/parcours/new") &&
           url.searchParams.get("clientId") === clientId,
-        { timeout: DELAI_ECRAN },
+        {
+          waitUntil: "domcontentloaded",
+          // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
+          timeout: DELAI_ECRAN,
+        },
       );
     } catch (cause) {
       throw new Error(

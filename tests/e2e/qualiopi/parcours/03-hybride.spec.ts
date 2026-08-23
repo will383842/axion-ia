@@ -383,8 +383,11 @@ test.describe("@parcours-qualiopi 3 — hybride, la salle et la visio le même j
         "« Émargement » (sessions/[id]/page.tsx:814-818) — la fiche est restée en cours " +
         `de rendu. URL : ${urlEmargement}`,
     ).toBeVisible({ timeout: 120_000 });
-    await lienEmargement.click();
-    await page.waitForURL(new RegExp(`/sessions/${id}/emargement$`), { timeout: 90_000 });
+    await lienEmargement.click({ timeout: 90_000 }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
+    await page.waitForURL(new RegExp(`/sessions/${id}/emargement$`), {
+      waitUntil: "domcontentloaded", // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
+      timeout: 90_000,
+    });
 
     // ── 3. L'écran dit-il HYBRIDE ? ─────────────────────────────────────────
     //

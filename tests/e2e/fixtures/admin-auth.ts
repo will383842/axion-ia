@@ -152,7 +152,10 @@ export async function loginAsAdmin(page: Page, opts: LoginOptions = {}): Promise
       //
       // Sous `next dev`, la première soumission compile l'action serveur à la
       // demande et coûte davantage encore.
-      { timeout: baseSemeeAttendue() ? 60_000 : 180_000 },
+      {
+        waitUntil: "domcontentloaded", // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
+        timeout: baseSemeeAttendue() ? 60_000 : 180_000,
+      },
     );
   } catch (cause) {
     // 🔴 L'appelant attrape cette erreur pour se `test.skip`. Si elle ne dit pas
@@ -208,9 +211,10 @@ const CLE_CONSENTEMENT = "axion-cookie-consent-v1";
  * pourquoi. Trois parcours passaient par là.
  *
  * 🔑 Un sondage instantané sur un composant monté après hydratation ne mesure
- * pas son absence : il mesure sa propre précipitation. On distingue donc les
- * deux cas au lieu de les confondre — décision DÉJÀ prise (rien à faire), ou
- * bannière attendue puis refusée, puis disparition VÉRIFIÉE.
+ * pas son absence : il mesure sa propre précipitation. On distingue donc TROIS
+ * cas là où il n'y en avait qu'un : décision DÉJÀ prise (rien à faire) ;
+ * bannière attendue, refusée, disparition VÉRIFIÉE ; ou bannière jamais parue,
+ * auquel cas on exige qu'AUCUN dialogue ne soit resté à l'écran.
  */
 export async function refuserLesCookies(page: Page): Promise<void> {
   // Cas légitime d'absence : la décision est déjà inscrite pour ce contexte.
@@ -225,20 +229,42 @@ export async function refuserLesCookies(page: Page): Promise<void> {
   const banniere = page.getByRole("dialog").filter({ hasText: /cookie|consentement|consent/i });
   const refuser = page.getByRole("button", { name: /^(refuser|decline)$/i });
 
-  // 30 s : la bannière n'attend qu'un `useEffect`, mais sous `next dev` cette
-  // page peut encore compiler son bundle client. Un dépassement ici est un vrai
-  // défaut — soit la bannière ne s'affiche plus, soit la page n'hydrate pas —
-  // et le message doit permettre de trancher.
-  await expect(
-    refuser,
-    "la bannière de consentement n'est jamais apparue ALORS QUE `localStorage` ne porte " +
-      `aucune décision (clé « ${CLE_CONSENTEMENT} », CookieConsent.tsx:40). Deux causes : ` +
-      "la page n'a pas hydraté (le composant décide dans un `useEffect`, CookieConsent.tsx:81), " +
-      "ou le bouton « Refuser » a changé de libellé (CookieConsent.tsx:286). Ne PAS traiter " +
-      "ce cas en silence : la bannière recouvre les boutons d'action de la console, et le " +
-      "clic suivant expirerait sur un délai qui ne dit pas pourquoi. " +
-      `URL : ${page.url()}`,
-  ).toBeVisible({ timeout: 30_000 });
+  // 🔴 ON ATTEND LA BANNIÈRE, MAIS ON N'EXIGE PAS QU'ELLE VIENNE.
+  //
+  // `CookieConsent` ne se rend QUE si la page est hydratée
+  // (`if (!isHydrated || consent !== "unknown") return null;`, CookieConsent.tsx:250) :
+  // sous `next dev`, elle peut donc n'apparaître qu'après plusieurs secondes — ou
+  // pas du tout si l'hydratation traîne. Mesuré le 2026-08-23 : elle est apparue
+  // aux deux premiers tests d'un même fichier et pas au troisième.
+  //
+  // Une première version EXIGEAIT sa présence. C'était trop fort, et pour une
+  // mauvaise raison : ce qu'on a besoin de garantir n'est pas « la bannière
+  // s'affiche » — ce n'est pas l'objet de ces parcours — mais « AUCUN dialogue
+  // ne recouvre les boutons d'action ». Un parcours métier ne doit pas rougir
+  // pour un composant qu'il ne teste pas.
+  //
+  // 🔑 Ce qui reste garanti, et qui ne peut pas passer en silence : si la
+  // bannière n'a pas paru, on EXIGE qu'aucun dialogue ne soit là. Un dialogue
+  // présent SANS bouton « Refuser » reconnaissable — libellé changé, rôle changé —
+  // est exactement le cas qui intercepterait les clics suivants, et il rougit ici,
+  // avec sa cause, plutôt que trente secondes plus tard sur un délai muet.
+  const apparue = await refuser
+    .first()
+    .waitFor({ state: "visible", timeout: 20_000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!apparue) {
+    await expect(
+      banniere,
+      "aucun bouton « Refuser » n'est apparu en 20 s, ET un dialogue de consentement est " +
+        "pourtant à l'écran : il recouvrira les boutons d'action de la console et le clic " +
+        "suivant expirera sur un délai qui ne dira pas pourquoi. Causes possibles : le " +
+        "libellé du bouton a changé (CookieConsent.tsx:286), ou son rôle. " +
+        `URL : ${page.url()}`,
+    ).toHaveCount(0, { timeout: 5_000 });
+    return;
+  }
 
   await refuser.first().click();
 

@@ -20,7 +20,7 @@
  * IP.) Contre un build de production — la CI — le parallélisme passe.
  */
 
-import { expect, type Locator, type Page } from "@playwright/test";
+import { expect, type Locator, type Page, type Response } from "@playwright/test";
 import { ADMIN_PREFIX } from "../../fixtures/admin-auth";
 
 export type Modalite = "presentiel" | "distanciel" | "hybride";
@@ -76,6 +76,36 @@ export type Modalite = "presentiel" | "distanciel" | "hybride";
  * commentaire avec elle — pas l'un sans l'autre.
  */
 export const CONTENU = ".admin-main";
+
+/**
+ * Budget d'une navigation de console, CLIC COMPRIS.
+ *
+ * 🔴 2026-08-23 — CAUSE RACINE D'UNE FAMILLE ENTIÈRE DE ROUGES : PLAYWRIGHT
+ * FACTURE L'ATTENTE DE NAVIGATION AU BUDGET D'ACTION, PAS AU BUDGET DE
+ * NAVIGATION.
+ *
+ * Un `.click()` qui déclenche une navigation ne rend la main qu'une fois celle-ci
+ * partie — « waiting for scheduled navigations to finish » dans son journal. Cette
+ * attente est comptée sur `actionTimeout` (`playwright.config.ts:36`, 15 s), et
+ * PAS sur `navigationTimeout` (30 s). Un clic sans délai déclaré meurt donc à 15 s
+ * alors que le `waitForURL` de la ligne SUIVANTE lui accordait 60 à 300 s.
+ *
+ * Mesuré : sur les 8 clics de ces parcours suivis d'une navigation attendue,
+ * 7 n'avaient aucun budget. Deux en sont morts dans le lot du 2026-08-23 —
+ * `01:722` (« click action done / waiting for scheduled navigations to finish »,
+ * Timeout 15000ms) et `07:452` — sur des écrans que le produit avait pourtant
+ * bien rendus.
+ *
+ * 🔑 Le clic et l'attente qui le suit forment UN seul geste : leurs budgets
+ * doivent être écrits ensemble, sinon le plus serré des deux décide en silence.
+ *
+ * ⚠️ La valeur ne relâche RIEN en CI : 60 s là-bas, comme avant, contre un build
+ * de production où les routes sont déjà bâties. Les 300 s ne valent qu'en local,
+ * où `next dev` compile la route au premier appel — mesuré le 2026-08-23 :
+ * `GET /qualiopi/sessions/<id>` a rendu 200 **en 63 s** (dont 54 s de
+ * framework), soit trois secondes au-dessus de l'ancien budget de 60 s.
+ */
+export const ARRIVEE_ECRAN = process.env["CI"] === "true" ? 60_000 : 300_000;
 
 /**
  * Les deux stagiaires du dossier de démonstration, tels que le seed les écrit.
@@ -254,16 +284,31 @@ export async function champEtiquete(page: Page, id: string, libelle: RegExp): Pr
  * redonnerait un délai trop long à toutes les autres navigations, et un
  * dépassement cesserait d'être lisible.
  */
-export async function ouvrir(page: Page, sousChemin: string): Promise<void> {
-  const cible = admin(sousChemin);
-  await page.goto(cible, { timeout: 180_000 }).catch((cause: unknown) => {
-    throw new Error(
-      `l'écran ${cible} n'a pas répondu en 180 s. Sous \`next dev\` cette route se compile ` +
-        "à la demande au premier appel, et toute modification de `src/` la refroidit ; " +
-        `contre un build de production, un tel délai est une panne. Cause : ${String(cause)}`,
-      { cause },
-    );
-  });
+export async function ouvrir(
+  page: Page,
+  sousChemin: string,
+  requete = "",
+): Promise<Response | null> {
+  const cible = admin(sousChemin) + requete;
+  // `domcontentloaded` et non `load` : ces parcours attendent tous un CONTENU
+  // juste après (un titre, une ligne, un champ). Attendre en plus toutes les
+  // sous-ressources ne prouverait rien de plus et ferait payer, sous `next dev`,
+  // le chargement d'images et de polices que personne n'assert.
+  // On REND la réponse : le statut HTTP est une preuve que certains parcours
+  // vérifient, et la leur retirer les obligerait à refaire une navigation.
+  return await page
+    .goto(cible, { waitUntil: "domcontentloaded", timeout: 180_000 })
+    .catch((cause: unknown) => {
+      throw new Error(
+        `l'écran ${cible} n'a pas répondu en 180 s. Sous \`next dev\` cette route se compile ` +
+          "à la demande au premier appel, et toute modification de `src/` — ou un `.next` " +
+          "purgé — la refroidit. Mesuré le 2026-08-23 : `/qualiopi/vente/new` a dépassé " +
+          "120 s et `/qualiopi/clients/new` 45 s, dans les DEUX cas au premier appel après " +
+          "un cache neuf. Contre un build de production, un tel délai est une panne. " +
+          `Cause : ${String(cause)}`,
+        { cause },
+      );
+    });
 }
 
 /**
@@ -299,7 +344,63 @@ export async function creerSession(
     "aucune formation disponible — `pnpm qualiopi:seed-demo` n'a pas produit de formation " +
       "`statut=actif` + `statutGeneration=publie`",
   ).toBeGreaterThanOrEqual(2);
-  await formation.selectOption({ index: 1 });
+
+  // 🔴 2026-08-23 — LE CHOIX DE LA FORMATION EST LA BARRIÈRE D'HYDRATATION DE
+  // CET ÉCRAN, ET ON LA FRANCHIT AU LIEU DE LA SUPPOSER FRANCHIE.
+  //
+  // `<select value={formationId}>` est CONTRÔLÉ, et son état naît vide
+  // (SessionForm.tsx:148 et :345). Un `change` émis avant l'attache du
+  // gestionnaire racine de React ne pose aucun état ET N'EST JAMAIS REJOUÉ :
+  // pire, l'hydratation REMET ensuite la valeur du DOM à « » puisque c'est ce
+  // que dit l'état. Le geste n'est pas seulement perdu, il est ANNULÉ.
+  //
+  // Le symptôme ne ressemble pas à sa cause : tout le reste du formulaire se
+  // remplit, le clic part, et c'est le NAVIGATEUR qui refuse — « session-formation:
+  // Please select an item in the list. » — sur un champ que le parcours croit
+  // avoir renseigné trois gestes plus tôt.
+  //
+  // ⚠️ CE DÉFAUT EST UNE COURSE, DONC INTERMITTENT. Ce même fichier a rendu
+  // « 3 passed » le 2026-08-23 à 09:14, puis « 3 failed » le même jour sur le
+  // même code : entre les deux, la base était passée de 1 à 23 formations
+  // publiées, et l'écran mettait plus longtemps à s'hydrater. Un parcours qui
+  // dépend d'une course ne prouve son titre que les jours où il gagne.
+  //
+  // 🔑 LE TÉMOIN EST PUREMENT REACT, et c'est ce qui en fait un témoin. La
+  // phrase « Choisissez d'abord une formation… » n'est rendue QUE tant que
+  // `formationId === ""` (SessionForm.tsx:419-420). Aucun rendu serveur ne peut
+  // produire sa disparition ; seul un état React qui a reçu le `change` le peut.
+  // On ne peut donc pas se contenter de relire la valeur du `<select>` : le DOM
+  // la porte même non hydraté — c'est exactement ce qui rend ce défaut muet.
+  //
+  // ⚠️ `selectOption` convient à une re-pose, à la différence de `fill` : il
+  // émet ses événements INCONDITIONNELLEMENT, là où `fill` ne réémet rien quand
+  // la valeur du DOM est déjà celle demandée (mesuré le 2026-08-23 sur le champ
+  // de recherche client du parcours 04 : trois re-poses identiques, zéro effet).
+  const invitePremierChoix = page.getByText(
+    "Choisissez d'abord une formation pour voir ses formateurs habilités.",
+  );
+  await expect
+    .poll(
+      async () => {
+        await formation.selectOption({ index: 1 }).catch(() => {
+          /* champ momentanément désactivé pendant une transition : on retentera. */
+        });
+        return invitePremierChoix.count();
+      },
+      {
+        timeout: 90_000,
+        intervals: [500, 1_000, 2_000],
+        message:
+          "le formulaire de session n'a jamais pris en compte le choix de la formation : " +
+          "l'invite « Choisissez d'abord une formation… » (SessionForm.tsx:419-420) est " +
+          "toujours affichée alors que le `change` a été REPOSÉ à chaque tour. " +
+          "`SessionForm` n'a donc pas hydraté du tout, ou l'invite a changé de libellé. " +
+          "⚠️ Ne PAS traiter ce cas en silence : sans formation, le navigateur refusera la " +
+          "soumission (« Please select an item in the list. ») et le parcours mourra plus " +
+          "loin, sur un message qui accusera la création de session.",
+      },
+    )
+    .toBe(0);
 
   await (await champEtiquete(page, "session-titre", /^Titre de la session/)).fill(titre);
   await (await champEtiquete(page, "session-modalite", /^Modalité/)).selectOption(modalite);
@@ -343,7 +444,23 @@ export async function creerSession(
     // 🔑 On ne double pas un délai avant d'avoir lu l'écran. Ici l'écran a été
     // lu : il porte le message de succès. C'est pourquoi la borne est relevée ET
     // que le message d'échec ci-dessous va CHERCHER ce message avant de conclure.
+    // ⚠️ `waitUntil` EXPLICITE — le défaut de `waitForURL` est `"load"`.
+    //
+    // 🔴 2026-08-23 — Mesuré : trois rouges du lot des sept (`06:356`,
+    // `07:415`, et l'attente voisine du `01:722`) ont expiré sur
+    // « waiting for navigation until "load" ». Aucun ne portait de défaut
+    // métier ; tous attendaient les SOUS-RESSOURCES d'un écran de console
+    // dont le contenu était déjà là.
+    //
+    // 🔑 L'incohérence était interne à ce fichier : `ouvrir()` a été passée à
+    // `domcontentloaded` avec ce motif écrit noir sur blanc, et le commentaire
+    // de `ouvrirSessionDemo()` dit même « attendre l'URL — pas un état de
+    // charge » — alors que l'option par défaut EST un état de charge, le plus
+    // tardif. Ce qui suit chaque `waitForURL` est une attente de CONTENU, qui
+    // reste la vraie garde : avancer l'état d'attente ne rend rien plus vert,
+    // il rend l'échec lisible.
     await page.waitForURL(/\/qualiopi\/sessions\/[0-9a-f-]{36}/, {
+      waitUntil: "domcontentloaded",
       timeout: process.env["CI"] === "true" ? 60_000 : 300_000,
     });
   } catch (cause) {
@@ -689,9 +806,12 @@ export async function ouvrirSessionDemo(page: Page): Promise<string | null> {
       //
       // 🔑 Après un clic de navigation, attendre l'URL — pas un état de charge.
       const cible = await suivant.getAttribute("href");
-      await suivant.click();
+      await suivant.click({ timeout: ARRIVEE_ECRAN }); // cf. `ARRIVEE_ECRAN` : le clic paie l'attente de SA navigation sur le budget d'action.
       if (cible !== null) {
-        await page.waitForURL((u) => u.pathname + u.search === cible, { timeout: 60_000 });
+        await page.waitForURL((u) => u.pathname + u.search === cible, {
+          waitUntil: "domcontentloaded", // cf. la note de `creerSession` : le défaut est `"load"`.
+          timeout: ARRIVEE_ECRAN,
+        });
       }
       await attendreLaListe();
     }
@@ -703,13 +823,16 @@ export async function ouvrirSessionDemo(page: Page): Promise<string | null> {
     // `FENETRE_SESSIONS_MOIS`). On suit le lien plutôt que de deviner l'URL.
     const archives = page.getByRole("link", { name: /archives?/i }).first();
     if ((await archives.count()) === 0) return null;
-    await archives.click();
+    await archives.click({ timeout: ARRIVEE_ECRAN }); // cf. `ARRIVEE_ECRAN` : le clic paie l'attente de SA navigation sur le budget d'action.
     await page.waitForLoadState("domcontentloaded");
     if (!(await chercherEnTournantLesPages())) return null;
   }
 
-  await trouverLigne().getByRole("link", { name: "Ouvrir" }).click();
-  await page.waitForURL(/\/qualiopi\/sessions\/[0-9a-f-]{36}/, { timeout: 60_000 });
+  await trouverLigne().getByRole("link", { name: "Ouvrir" }).click({ timeout: ARRIVEE_ECRAN }); // cf. `ARRIVEE_ECRAN` : le clic paie l'attente de SA navigation sur le budget d'action.
+  await page.waitForURL(/\/qualiopi\/sessions\/[0-9a-f-]{36}/, {
+    waitUntil: "domcontentloaded", // cf. la note de `creerSession` : le défaut est `"load"`.
+    timeout: ARRIVEE_ECRAN,
+  });
 
   // 🔴 `networkidle` NE SUFFIT PAS sur la fiche de session : elle est rendue en
   // flux, et la zone utile arrive après. Sondée à ce moment-là, la page ne
