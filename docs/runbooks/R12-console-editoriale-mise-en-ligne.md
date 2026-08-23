@@ -65,10 +65,37 @@ Puis → **Environment Variables** → _New_ :
 > pose quand même : une configuration explicite se lit, un défaut implicite se
 > découvre.
 
+### 🔴 Le propriétaire du dossier — l'étape que ce runbook avait oubliée
+
+> Trouvé le 2026-08-23, en appliquant ce runbook pour de vrai. Il n'y était
+> pas, et sans lui les deux premières étapes ne servent à rien.
+
+Docker crée un volume neuf appartenant à **root**. Le conteneur, lui, tourne
+sous un utilisateur non privilégié. Le dossier existe donc, il est monté, il
+survit aux redéploiements — **et l'application ne peut pas y écrire.**
+
+⚠️ **En SSH sur l'hôte, pas dans le terminal Coolify.** Celui-ci s'ouvre DANS
+le conteneur, sous l'utilisateur qui n'a justement pas le droit de faire un
+`chown`. La commande y échouera.
+
+Deux valeurs sont nécessaires, à relever avant :
+
+```bash
+# 1. Le chemin RÉEL du volume sur l'hôte (pas /var/data/... qui est la vue
+#    de l'intérieur du conteneur) :
+docker inspect <conteneur> --format '{{range .Mounts}}{{.Source}} -> {{.Destination}}{{"\n"}}{{end}}'
+
+# 2. L'UID sous lequel tourne l'application :
+docker exec <conteneur> id
+
+# 3. Puis, en root sur l'hôte :
+chown -R <uid>:<gid> <chemin hôte du volume>
+```
+
 ### Vérifier
 
 ```bash
-# Depuis le conteneur applicatif :
+# Depuis le conteneur applicatif — le `touch` échoue si le chown manque :
 ls -la /var/data/editorial-media && touch /var/data/editorial-media/.probe
 # Puis redéployer et vérifier que .probe a SURVÉCU :
 ls -la /var/data/editorial-media/.probe   # doit exister
@@ -89,10 +116,38 @@ plateforme, **12 règles de conformité**, **11 règles d'alerte** et
 Sans lui, aucune validation ne bloquera jamais rien : les règles vivent en
 base, et une base vide ne refuse rien.
 
+🔴 **CE RUNBOOK DISAIT DE LE LANCER DANS LE CONTENEUR. C'ÉTAIT FAUX.**
+
+> Trouvé le 2026-08-23, en essayant. `editorial:seed` est
+> `tsx prisma/seeds/editorial/index.ts`, et **`tsx` est une devDependency** :
+> l'image de production est un standalone allégé qui ne la contient pas, et
+> qui ne porte pas non plus les sources TypeScript à compiler.
+>
+> Je l'avais supposé parce que la commande marche en local. Elle ne peut pas
+> marcher là-bas.
+
+**Ni `npx tsx` ni l'ajout de `tsx` à l'image.** Le premier télécharge du code
+non vérifié dans un conteneur en production ; le second embarque un
+compilateur TypeScript à demeure pour une commande jouée une fois — dans un
+Dockerfile qui porte déjà l'historique de plusieurs OOM à l'export des
+layers.
+
+**Le seed se lance depuis une machine qui a le dépôt, en pointant sur la base
+de production :**
+
 ```bash
-# Coolify → application → Terminal (ou docker exec sur le VPS)
-pnpm editorial:seed
+DATABASE_URL="<url de la base de production>" pnpm editorial:seed
 ```
+
+L'URL se lit dans Coolify → application → Environment Variables →
+`DATABASE_URL`.
+
+⚠️ **Cette commande écrit dans la production depuis un poste de travail.** Une
+erreur de copier-coller dans l'URL et c'est une autre base qui reçoit les
+écritures. La relire avant de valider est le seul garde-fou.
+
+🔑 Ce qui rassure : le seed n'écrit que des lignes NEUVES, dans des tables
+créées le jour même et vides. Il ne modifie ni ne supprime rien d'existant.
 
 ### Ce que la sortie doit dire
 
