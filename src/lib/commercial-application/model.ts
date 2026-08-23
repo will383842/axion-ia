@@ -14,6 +14,23 @@ import { z } from "zod";
 export const COMMERCIAL_APPLICATION_STORAGE_KEY = "axionia-candidature-commercial-v1";
 
 /**
+ * Valeur de `Submission.details.subType` pour une candidature commerciale.
+ *
+ * SSOT : elle est ÉCRITE par `features/commercial-application/actions.ts` et
+ * LUE par deux écrans d'administration (le listing et l'agrégation par
+ * annonce). Les trois doivent filtrer sur la même chaîne, sinon ils
+ * décriraient des populations différentes en prétendant parler de la même.
+ *
+ * 🔴 Elle vit ICI et non dans un fichier d'actions, pour une raison de
+ * compilation autant que de conception : un module `"use server"` ne peut
+ * exporter QUE des fonctions asynchrones. Y exporter une constante casse le
+ * build — c'est le défaut déjà corrigé par le commit 950101098 (« une fonction
+ * synchrone dans un module "use server" »), et je l'ai reproduit le
+ * 2026-08-23 avant que le serveur de dev ne me le rappelle.
+ */
+export const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
+
+/**
  * Version du consentement RGPD affiché par le formulaire.
  *
  * v2 (lot L4) — valeur FERME décidée au plan §2.3. Elle recouvre les DEUX
