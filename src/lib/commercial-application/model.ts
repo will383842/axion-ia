@@ -139,18 +139,18 @@ export const STATUT_OPTIONS = [
  */
 export const SOURCE_OPTIONS = [
   { id: "memorial-isere", label: "Le Mémorial de l’Isère" },
-  /** Annonce nationale Le Bon Coin → landing `/partenaire/leboncoin`. */
+  /** Annonce nationale Le Bon Coin → landing `/leboncoin`. */
   { id: "leboncoin", label: "Le Bon Coin" },
   /**
-   * Annonce Indeed → landing `/partenaire/indeed`.
+   * Annonce Indeed → landing `/indeed`.
    * ⚠️ Indeed ne moissonne pas le `JobPosting` du site : le dépôt y est manuel.
    */
   { id: "indeed", label: "Indeed" },
   /**
    * Annonce jemepropose.com → page SEO
    * `/apporteur-affaires-independant-formation-ia-entreprise`, et non une
-   * landing `/partenaire/*` : ce canal a sa page indexable propre, parce que
-   * son intitulé vise un cluster de requêtes distinct.
+   * landing de réception : ce canal a sa page indexable propre, parce que son
+   * intitulé vise un cluster de requêtes distinct.
    */
   { id: "jemepropose", label: "jemepropose.com" },
   { id: "site-web", label: "Site web Axion-IA.com" },

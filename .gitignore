@@ -27,7 +27,14 @@ package-lock.json
 # Sans cette ligne, les agents qui créent des git worktrees sous
 # `.claude/worktrees/` polluent `git status` et déclenchent 4370 faux
 # positifs ESLint. Cf. `_AUDIT/LINT-AUDIT-2026-05-18/`.
-.claude/
+.claude/*
+
+# …sauf les skills : ce sont des documents d’ÉQUIPE, pas de l’état local.
+# Le protocole de la console éditoriale en fait un critère de livraison
+# (« le skill est à jour des pièges rencontrés ») — ignoré, il resterait
+# sur la machine de celui qui l’a écrit, et le piège se repaierait.
+!.claude/skills/
+!.claude/skills/**
 
 # next.js
 /.next/

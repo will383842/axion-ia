@@ -1,10 +1,10 @@
 // Page SEO/AEO/GEO — « apporteur d'affaires indépendant · formations IA en
 // entreprise ». Cible de l'annonce jemepropose.com (2026-08-23).
 //
-// 🔴 POURQUOI CETTE PAGE EST INDEXABLE, alors que `/partenaire/[source]` ne
+// 🔴 POURQUOI CETTE PAGE EST INDEXABLE, alors que les landings de réception (`/leboncoin`, `/indeed`) ne
 // l'est pas. La distinction n'est pas cosmétique :
 //
-//   · `/partenaire/leboncoin` est une page de RÉCEPTION d'annonce. 100 % de son
+//   · `/leboncoin` est une page de RÉCEPTION d'annonce. 100 % de son
 //     trafic vient du lien de l'annonce, elle ne vise aucune requête, et son
 //     contenu est un quasi-doublon de `/devenir-commercial-ia`. L'indexer
 //     cannibaliserait la page qui porte le JobPosting Google for Jobs, pour un

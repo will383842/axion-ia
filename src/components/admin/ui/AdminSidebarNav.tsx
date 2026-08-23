@@ -28,6 +28,7 @@ import {
   Images,
   FolderOpen,
   ScanSearch,
+  CalendarRange,
   Activity,
   ChevronRight,
   Menu,
@@ -815,6 +816,28 @@ export function AdminSidebarNav({
               </>
             )}
           </a>
+
+          {/* Console éditoriale — épinglée sous Prospection, et pour la même
+              raison : c'est un poste de travail quotidien, pas une section
+              qu'on visite. On l'ouvre le matin et on y reste.
+
+              ⚠️ Lien INTERNE, contrairement à Prospection : la console vit
+              dans cette application. Pas de `target="_blank"`, pas de flèche
+              sortante — les deux annonceraient un départ qui n'a pas lieu. */}
+          <Link
+            href={`${accountHref ?? ""}/console-editoriale`}
+            title="Ouvrir la console éditoriale"
+            className={cn(
+              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
+              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
+              "transition-opacity hover:opacity-80",
+              collapsed && "justify-center",
+            )}
+          >
+            <CalendarRange className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
+            {!collapsed && <span className="flex-1 text-sm font-medium">Console éditoriale</span>}
+          </Link>
           {ADMIN_NAV_GROUP_ORDER.map((g, gi) => {
             // Exclut les items `parent != null` : atteignables par URL/palette
             // mais volontairement masqués de la sidebar (placeholders non livrés).

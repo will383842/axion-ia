@@ -1,4 +1,5 @@
-// Landings de RÉCEPTION D'ANNONCE — `/partenaire/[source]`.
+// Landings de RÉCEPTION D'ANNONCE — une route racine par canal (`/leboncoin`,
+// `/indeed`), de la même forme que `/memo-isere`.
 //
 // Une page par canal payant ou partenaire (Le Bon Coin, un journal, un club
 // d'affaires, une école…). Elles ne servent QU'À CONVERTIR le trafic d'une
