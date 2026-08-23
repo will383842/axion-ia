@@ -122,8 +122,32 @@ export const STATUT_OPTIONS = [
   { id: "creation-statut", label: "Je créerai mon statut" },
 ] as const satisfies readonly ChoiceOption[];
 
+/**
+ * Canaux par lesquels un candidat peut avoir connu l'offre.
+ *
+ * 🔴 UNE ENTRÉE PAR ANNONCE, sans exception. Sans son id propre, un canal
+ * arrive indistinguable de tous les autres : l'écran Ops → Annonces
+ * recrutement, qui existe pour dire quelle annonce rapporte, ne peut plus rien
+ * dire, et on paie des annonces à l'aveugle.
+ *
+ * Purement additif : `sourceConnaissance` n'est consommé qu'en affichage
+ * (`optionLabel`) et transmis au CRM comme chaîne libre. Aucun contrat à
+ * propager, aucune migration.
+ *
+ * Cf. `docs/annonce-leboncoin-recrutement.md` et l'entrée mémoire
+ * « réseau apporteurs — ajouter un canal d'annonce ».
+ */
 export const SOURCE_OPTIONS = [
   { id: "memorial-isere", label: "Le Mémorial de l’Isère" },
+  /** Annonce nationale Le Bon Coin → landing `/partenaire/leboncoin`. */
+  { id: "leboncoin", label: "Le Bon Coin" },
+  /**
+   * Annonce jemepropose.com → page SEO
+   * `/apporteur-affaires-independant-formation-ia-entreprise`, et non une
+   * landing `/partenaire/*` : ce canal a sa page indexable propre, parce que
+   * son intitulé vise un cluster de requêtes distinct.
+   */
+  { id: "jemepropose", label: "jemepropose.com" },
   { id: "site-web", label: "Site web Axion-IA.com" },
   { id: "qr-code", label: "QR code" },
   { id: "linkedin", label: "LinkedIn" },

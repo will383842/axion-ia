@@ -25,6 +25,15 @@ export async function GET(): Promise<Response> {
     { path: "/devenir-commercial-ia/candidature", priority: "0.7", freq: "monthly" },
     // Landing presse « Le Mémo de l'Isère » — recrutement Sud-Grésivaudan (2026-08-12).
     { path: "/memo-isere", priority: "0.9", freq: "weekly" },
+    // Page SEO de l'annonce jemepropose.com (2026-08-23). INDEXABLE — contrairement
+    // aux landings `/partenaire/*`, elle vise un cluster de requêtes distinct
+    // (« apporteur d'affaires indépendant ») là où `/devenir-commercial-ia` vise
+    // « devenir commercial IA ». Deux intentions, deux vocabulaires.
+    {
+      path: "/apporteur-affaires-independant-formation-ia-entreprise",
+      priority: "0.8",
+      freq: "weekly",
+    },
   ];
 
   const urls = entries
