@@ -132,6 +132,16 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     why: "argument de financement OPCO conditionné à la certification",
   },
   {
+    // Ajoutée 2026-08-23 avec la landing de réception d'annonce Le Bon Coin.
+    // Le littéral y est déclaré DANS la page, à quelques lignes de l'appel au
+    // drapeau — pas dans son fichier de contenu, qui n'en importe aucun.
+    // C'est la leçon directe de la ligne « bande de réassurance de l'annonce
+    // de recrutement » ci-dessous : une garde qui vit dans un autre fichier
+    // n'est pas une garde, c'est une intention.
+    file: "app/[locale]/partenaire/[source]/page.tsx",
+    why: "bande de réassurance + argument OPCO de la landing d'annonce (`/partenaire/leboncoin`)",
+  },
+  {
     file: "app/[locale]/formations/tarifs/page.tsx",
     why: "suffixe « certifié Qualiopi » sur les prix",
   },

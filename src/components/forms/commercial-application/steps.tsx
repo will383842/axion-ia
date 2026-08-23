@@ -870,6 +870,9 @@ export function StepDetails({ a, set, errors }: StepProps) {
           fieldId="ca-linkedin"
           type="url"
           inputMode="url"
+          // Dernier champ texte du dernier écran : la touche d'action doit
+          // dire « OK », pas « Suivant » — il n'y a plus de champ après.
+          enterKeyHint="done"
           value={a.linkedin}
           onChange={(e) => set({ linkedin: e.target.value })}
           placeholder="linkedin.com/in/…"
