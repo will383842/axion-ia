@@ -301,117 +301,185 @@ export async function createSessionAction(
   // avec retry sur collision de numéro (R7 : numéro ré-alloué à chaque tentative).
   let created: { id: string; numero: string };
   try {
-    created = await withNumberRetry(() =>
-      prisma.$transaction(async (tx) => {
-        const numero = await allocateSessionNumero(
-          v.recurrence !== undefined ? { recurrence: v.recurrence } : undefined,
-        );
-        const newSession = await tx.trainingSession.create({
-          data: {
-            numero,
-            titreSession,
-            formationId: v.formationId,
-            dateDebut: v.dateDebut,
-            dateFin: v.dateFin,
-            modalite: v.modalite,
-            nbParticipantsPrevus: v.nbParticipantsPrevus,
-            montantHtCents: v.montantHtCents,
-            formationSnapshot: formationSnapshot as never,
-            statut: "planifiee",
-            ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
-            ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
-            // Le champ Prisma s'appelle `formateurPrincipalId` : il n'existe pas
-            // de `trainerId` sur `TrainingSession`. Le nom d'entrée reste
-            // `trainerId` pour coller à celui de l'assignation.
-            ...(v.trainerId !== undefined ? { formateurPrincipalId: v.trainerId } : {}),
-            // 🔴 Audit certification 2026-07-26 (F58). `financementType` était
-            // facultatif ET sans valeur par défaut : une session créée sans le
-            // préciser restait à NULL. Le BPF s'en sortait par un repli
-            // silencieux (`?? "direct"`), donc le chiffre d'affaires n'était pas
-            // perdu — mais une session réellement financée par un OPCO et laissée
-            // à NULL était comptée en « financement direct » dans un bilan
-            // déclaré à la DREETS, sans qu'aucun écran ne le signale.
-            //
-            // Le défaut explicite vaut mieux que le repli caché : « direct » est
-            // le cas majoritaire, il est visible en base, et il se corrige d'un
-            // clic si un OPCO entre en jeu.
-            financementType: v.financementType ?? "direct",
-            // Lieu de déroulement. `normaliserLieu` n'émet que les clés
-            // réellement fournies : une création sans bloc lieu laisse les
-            // colonnes à NULL, et les documents retombent alors sur l'adresse de
-            // l'organisme comme avant — aucune régression pour l'existant.
-            ...normaliserLieu(v),
-          },
-          select: { id: true, numero: true },
-        });
-
-        // 🔴 DUAL-WRITE, dans la MÊME transaction que la session.
-        //
-        // Le formateur d'une session est rattaché par DEUX voies concurrentes que
-        // le schéma porte toutes les deux : la FK `formateurPrincipalId` et une
-        // ligne `session_formateurs`. Écrire la FK seule ne serait pas une demi-
-        // mesure, ce serait une INCOHÉRENCE : la fiche session et les documents
-        // liraient bien le formateur (ils lisent la FK), pendant que tout ce qui
-        // AGRÈGE lirait zéro — `fiabilite-service` compte les missions par
-        // `sessionFormateur.count`, `remuneration/marge` ventile par
-        // `sessionFormateur.groupBy`. Un formateur affiché sur ses sessions mais
-        // crédité d'aucune mission et d'aucune marge : l'écart ne se voit qu'en
-        // recoupant deux écrans, donc il ne se voit pas.
-        //
-        // `create` et non `upsert` : la session vient d'être créée dans cette
-        // transaction, aucune ligne ne peut préexister.
-        if (v.trainerId !== undefined) {
-          await tx.sessionFormateur.create({
+    created = await withNumberRetry(async () => {
+      // 🔴 2026-08-23 — L'ALLOCATION SORT DE LA TRANSACTION, ET CE N'EST PAS UN
+      // CHOIX PERSONNEL : C'EST LE PATRON DÉJÀ ÉCRIT DEUX FOIS À CÔTÉ.
+      //
+      // Elle vivait DANS la transaction, et y appelait le client GLOBAL `prisma`
+      // — pas le `tx`. Deux ennuis, cumulés :
+      //
+      //   1. la transaction tenait une connexion pendant que ce `findMany` en
+      //      demandait une AUTRE au pool. Sous charge, c'est le scénario
+      //      d'épuisement du pool : la transaction attend une connexion que la
+      //      transaction empêche de libérer ;
+      //   2. le balayage de tous les `AXI-SESS-<année>-*` était facturé au budget
+      //      de la transaction — 5 000 ms par défaut, jamais déclaré. Mesuré le
+      //      2026-08-23 par le parcours E2E 02 : `P2028` à 5 605 ms, écran rendu
+      //      « Erreur lors de la création de la session ».
+      //
+      // `sessions-recurrentes.ts:200-208` et `:526` allouent tous deux HORS
+      // transaction, et disent pourquoi c'est acceptable : « @unique numéro reste
+      // le garde-fou final — collision P2002 → retry côté action ». C'est
+      // exactement ce que `withNumberRetry` fait ici, et le numéro reste
+      // ré-alloué à chaque tentative puisque l'appel est DANS le rappel du retry.
+      //
+      // 🔑 Ce site était le seul des trois à diverger. Un prédicat recopié
+      // diverge toujours : les trois disent maintenant la même chose.
+      const numero = await allocateSessionNumero(
+        v.recurrence !== undefined ? { recurrence: v.recurrence } : undefined,
+      );
+      return prisma.$transaction(
+        async (tx) => {
+          const newSession = await tx.trainingSession.create({
             data: {
-              sessionId: newSession.id,
-              trainerId: v.trainerId,
-              role: "principal",
-              tarifHtCents: tarifFormateurCents,
+              numero,
+              titreSession,
+              formationId: v.formationId,
+              dateDebut: v.dateDebut,
+              dateFin: v.dateFin,
+              modalite: v.modalite,
+              nbParticipantsPrevus: v.nbParticipantsPrevus,
+              montantHtCents: v.montantHtCents,
+              formationSnapshot: formationSnapshot as never,
+              statut: "planifiee",
+              ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
+              ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
+              // Le champ Prisma s'appelle `formateurPrincipalId` : il n'existe pas
+              // de `trainerId` sur `TrainingSession`. Le nom d'entrée reste
+              // `trainerId` pour coller à celui de l'assignation.
+              ...(v.trainerId !== undefined ? { formateurPrincipalId: v.trainerId } : {}),
+              // 🔴 Audit certification 2026-07-26 (F58). `financementType` était
+              // facultatif ET sans valeur par défaut : une session créée sans le
+              // préciser restait à NULL. Le BPF s'en sortait par un repli
+              // silencieux (`?? "direct"`), donc le chiffre d'affaires n'était pas
+              // perdu — mais une session réellement financée par un OPCO et laissée
+              // à NULL était comptée en « financement direct » dans un bilan
+              // déclaré à la DREETS, sans qu'aucun écran ne le signale.
+              //
+              // Le défaut explicite vaut mieux que le repli caché : « direct » est
+              // le cas majoritaire, il est visible en base, et il se corrige d'un
+              // clic si un OPCO entre en jeu.
+              financementType: v.financementType ?? "direct",
+              // Lieu de déroulement. `normaliserLieu` n'émet que les clés
+              // réellement fournies : une création sans bloc lieu laisse les
+              // colonnes à NULL, et les documents retombent alors sur l'adresse de
+              // l'organisme comme avant — aucune régression pour l'existant.
+              ...normaliserLieu(v),
             },
+            select: { id: true, numero: true },
           });
-        }
 
-        // Journées PROPOSÉES (D14), dérivées de la durée de la formation.
-        //
-        // Volontairement calculées depuis `dateDebut` et `dureeHeures`, SANS
-        // tenir compte de `dateFin` : c'est tout le propos de D14, la plage de
-        // dates ne décrit pas les journées. Une session étalée sur 3 mois pour
-        // 4 journées produirait sinon 66 jours ouvrés. Si le résultat déborde
-        // `dateFin`, l'admin le voit à l'écran et corrige.
-        //
-        // `horairesConfirmes` reste à `false` : ce sont des propositions.
-        const joursProposes = genererJoursParDefaut({
-          dateDebutIso: parisDateISO(v.dateDebut),
-          dureeHeures: formation.dureeHeures,
-        });
-        if (joursProposes.length > 0) {
-          await tx.sessionJour.createMany({
-            data: joursProposes.map((j) => ({
-              sessionId: newSession.id,
-              date: new Date(`${j.date}T00:00:00.000Z`),
-              heureDebut: j.heureDebut,
-              heureFin: j.heureFin,
-            })),
+          // 🔴 DUAL-WRITE, dans la MÊME transaction que la session.
+          //
+          // Le formateur d'une session est rattaché par DEUX voies concurrentes que
+          // le schéma porte toutes les deux : la FK `formateurPrincipalId` et une
+          // ligne `session_formateurs`. Écrire la FK seule ne serait pas une demi-
+          // mesure, ce serait une INCOHÉRENCE : la fiche session et les documents
+          // liraient bien le formateur (ils lisent la FK), pendant que tout ce qui
+          // AGRÈGE lirait zéro — `fiabilite-service` compte les missions par
+          // `sessionFormateur.count`, `remuneration/marge` ventile par
+          // `sessionFormateur.groupBy`. Un formateur affiché sur ses sessions mais
+          // crédité d'aucune mission et d'aucune marge : l'écart ne se voit qu'en
+          // recoupant deux écrans, donc il ne se voit pas.
+          //
+          // `create` et non `upsert` : la session vient d'être créée dans cette
+          // transaction, aucune ligne ne peut préexister.
+          if (v.trainerId !== undefined) {
+            await tx.sessionFormateur.create({
+              data: {
+                sessionId: newSession.id,
+                trainerId: v.trainerId,
+                role: "principal",
+                tarifHtCents: tarifFormateurCents,
+              },
+            });
+          }
+
+          // Journées PROPOSÉES (D14), dérivées de la durée de la formation.
+          //
+          // Volontairement calculées depuis `dateDebut` et `dureeHeures`, SANS
+          // tenir compte de `dateFin` : c'est tout le propos de D14, la plage de
+          // dates ne décrit pas les journées. Une session étalée sur 3 mois pour
+          // 4 journées produirait sinon 66 jours ouvrés. Si le résultat déborde
+          // `dateFin`, l'admin le voit à l'écran et corrige.
+          //
+          // `horairesConfirmes` reste à `false` : ce sont des propositions.
+          const joursProposes = genererJoursParDefaut({
+            dateDebutIso: parisDateISO(v.dateDebut),
+            dureeHeures: formation.dureeHeures,
           });
-        }
+          if (joursProposes.length > 0) {
+            await tx.sessionJour.createMany({
+              data: joursProposes.map((j) => ({
+                sessionId: newSession.id,
+                date: new Date(`${j.date}T00:00:00.000Z`),
+                heureDebut: j.heureDebut,
+                heureFin: j.heureFin,
+              })),
+            });
+          }
 
-        // Transition initiale null → planifiee
-        await writeSessionTransition(tx, {
-          sessionId: newSession.id,
-          from: null,
-          to: "planifiee",
-          trigger: "admin.create",
-          triggeredBy: "admin",
-          triggeredById: session.userId,
-        });
+          // Transition initiale null → planifiee
+          await writeSessionTransition(tx, {
+            sessionId: newSession.id,
+            from: null,
+            to: "planifiee",
+            trigger: "admin.create",
+            triggeredBy: "admin",
+            triggeredById: session.userId,
+          });
 
-        return newSession;
-      }),
-    );
+          return newSession;
+        },
+        {
+          // ⚠️ BUDGET DÉCLARÉ, ET NON HÉRITÉ. Sans ces deux lignes, Prisma applique
+          // `timeout: 5_000` / `maxWait: 2_000` — des valeurs que personne n'a
+          // choisies pour CETTE écriture, et qui ne se lisent nulle part dans le
+          // fichier. Ce qui se passe ici : création de la session, du formateur,
+          // de TOUS les jours de session (`sessionJour.createMany`) et de la
+          // transition initiale.
+          //
+          // 15 s, et pas davantage : au-delà, une transaction qui traîne tient une
+          // connexion et en prive les autres écritures. Mesuré le 2026-08-23 —
+          // dépassement à 5 605 ms sur une machine qui paginait, et 442 ms sur la
+          // même écriture dix minutes plus tôt. Le budget couvre donc largement le
+          // cas nominal tout en restant une borne qui veut dire quelque chose.
+          //
+          // 🔑 Le vrai gain n'est pas là : c'est l'allocation du numéro qui est
+          // sortie de la transaction (voir plus haut). Ce budget est la ceinture,
+          // pas les bretelles.
+          timeout: 15_000,
+          maxWait: 5_000,
+        },
+      );
+    });
   } catch (err) {
     const code = (err as { code?: string })?.code;
     if (code === "P2002")
       return { error: "Un conflit de numéro a été détecté, veuillez réessayer" };
+
+    // 🔴 2026-08-23 — LE MESSAGE EFFAÇAIT SA CAUSE, ET RIEN D'AUTRE NE LA PORTAIT.
+    //
+    // Toute erreur autre que P2002 rendait « Erreur lors de la création de la
+    // session ». Mesuré ce jour-là par le parcours E2E 02 : la transaction
+    // ci-dessus a expiré (`P2028` — budget interactif par défaut de 5 000 ms,
+    // dépassé à 5 605 ms pendant `sessionJour.createMany()`), et l'écran a rendu
+    // ce texte générique. L'opératrice ne pouvait pas savoir que l'écriture avait
+    // été ANNULÉE faute de temps, ni que réessayer avait une chance d'aboutir :
+    // elle voyait la même phrase que pour une panne réseau ou une contrainte.
+    //
+    // 🔑 On ne relâche pas le budget de la transaction ici — ce serait changer la
+    // sémantique d'une écriture Qualiopi sans l'avoir prouvée nécessaire en
+    // production (la mesure a été prise sur une machine qui paginait). On rend
+    // seulement la cause DISCERNABLE, et on la remonte à Sentry, ce que le code
+    // précédent ne faisait pas non plus.
+    Sentry.captureException(err);
+    if (code === "P2028")
+      return {
+        error:
+          "La création a dépassé le temps imparti et a été annulée : rien n'a été enregistré. " +
+          "Réessayez — si cela se reproduit, la base est probablement saturée.",
+      };
     return { error: "Erreur lors de la création de la session" };
   }
 
