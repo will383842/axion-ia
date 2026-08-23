@@ -449,6 +449,20 @@ export async function programmerPublicationAction(input: {
   }
 }
 
+/**
+ * ⚠️ VOLONTAIREMENT branchée à aucun écran — ce n'est pas un oubli.
+ *
+ * `mediatheque/[id]/page.tsx` construit l'arbre lui-même, par une seule
+ * requête récursive qui remonte ET redescend. Passer par cette action
+ * ajouterait un aller-retour pour le même résultat.
+ *
+ * Elle reste ici parce qu'elle est le seul point d'entrée utilisable
+ * depuis un composant client, le jour où l'arbre deviendra dépliable.
+ *
+ * 🔑 La garde `D3-3-05` du dépôt ne rougit pas dessus : elle raisonne au
+ * grain du FICHIER, et les autres actions de ce module atteignent bien
+ * un écran. Le noter ici évite qu'un futur lecteur la croie orpheline.
+ */
 /** L'arbre complet d'un asset — pour l'écran de médiathèque. */
 export async function chargerArbreAction(
   racineId: string,
