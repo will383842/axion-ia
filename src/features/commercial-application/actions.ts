@@ -25,6 +25,7 @@ import { SubmissionType } from "../../../prisma/generated/client";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
@@ -80,6 +81,20 @@ function safeHashIp(ip: string | null | undefined): string | null {
 function internalRecipient(): string {
   return destinataireCandidatures();
 }
+
+/**
+ * Nombre de candidatures commerciales dans une journée au-delà duquel on alerte.
+ *
+ * Calibré sur le volume observé — quelques candidatures par semaine au
+ * lancement. 25 en une journée est donc soit une campagne qui prend, soit un
+ * flux automatisé : dans les deux cas, quelque chose qu'on veut savoir le jour
+ * même et pas le lendemain.
+ *
+ * ⚠️ À relever quand le recrutement montera en régime. Un seuil qui se
+ * déclenche toutes les semaines cesse d'être lu, et une alerte qu'on n'ouvre
+ * plus ne protège de rien.
+ */
+const SEUIL_ALERTE_VOLUME_JOUR = 25;
 
 const oui = (v: boolean) => (v ? "Oui" : "Non");
 
@@ -184,6 +199,39 @@ export async function submitCommercialApplicationAction(
   }
   const d = parsed.data;
   const locale = parseLocale(formData.get("locale") ?? "fr");
+
+  // 3 bis. Second compteur, par ADRESSE cette fois.
+  //
+  // Le rate-limit de l'étape 1 compte par IP. Il arrête une machine, pas une
+  // campagne : mille IP × trois passages font trois mille candidatures. Et il
+  // bloque de vrais candidats — trois collègues du même bureau, ou trois
+  // personnes derrière le même opérateur mobile, partagent une adresse IP.
+  //
+  // Compter aussi par email couvre l'angle mort exact de l'IP : quelqu'un qui
+  // recharge et repostule en boucle. La fenêtre est LARGE (3 sur 24 h) parce
+  // qu'un humain a de bonnes raisons de renvoyer une candidature — une faute
+  // de frappe dans son téléphone, un doute sur l'envoi. Bloquer à la deuxième
+  // punirait la correction d'une erreur.
+  //
+  // 🔴 La clé porte le HASH, jamais l'adresse. Une clé Redis se lit dans
+  // n'importe quel dump, n'importe quel outil d'inspection, n'importe quelle
+  // sauvegarde — y écrire une donnée personnelle en clair la répand partout où
+  // Redis va. `hashEmailForLookup` est déjà la clé de personne partagée avec le
+  // CRM : même valeur, aucun index de plus à tenir.
+  const emailKey = hashEmailForLookup(d.email);
+  if (emailKey) {
+    const rlEmail = await checkRateLimit(`commercial-application:email:${emailKey}`, {
+      limit: 3,
+      windowSec: 86_400,
+    });
+    if (!rlEmail.allowed) {
+      return {
+        ok: false,
+        error:
+          "Nous avons déjà reçu plusieurs candidatures avec cet email. Elle est bien enregistrée — inutile de la renvoyer.",
+      };
+    }
+  }
 
   // 4. UTM funnel + referrerCity (même capture que unified-contact)
   const c = await cookies();
@@ -383,6 +431,50 @@ export async function submitCommercialApplicationAction(
         ip,
         userAgent,
       });
+    }
+
+    // 5 ter. Alerte de VOLUME — elle prévient, elle ne bloque rien.
+    //
+    // Les deux compteurs (IP, email) arrêtent un abus ciblé. Aucun des deux ne
+    // dit qu'il se passe quelque chose d'anormal À L'ÉCHELLE du site : un flux
+    // distribué reste sous les seuils individuels tout en produisant des
+    // centaines de candidatures. On le découvrirait en ouvrant la console, ce
+    // qui peut prendre un jour.
+    //
+    // On alerte EXACTEMENT au franchissement (`===`), jamais au-dessus : sinon
+    // chaque candidature suivante rejouerait l'alerte, et un fil saturé
+    // d'alertes identiques cesse d'être lu — l'alerte deviendrait le bruit
+    // qu'elle est censée signaler.
+    //
+    // Best-effort comme le reste : un comptage en échec ne perd jamais la
+    // candidature, elle est déjà en base.
+    try {
+      const debutJour = new Date();
+      debutJour.setHours(0, 0, 0, 0);
+      const aujourdHui = await prisma.submission.count({
+        where: {
+          details: { path: ["subType"], equals: "candidature-commerciale" },
+          deletedAt: null,
+          submittedAt: { gte: debutJour },
+        },
+      });
+      if (aujourdHui === SEUIL_ALERTE_VOLUME_JOUR) {
+        await notify({
+          category: "MONITORING_ALERT",
+          payload: {
+            kind: "candidatures-commerciales-volume",
+            details: {
+              recuesAujourdhui: aujourdHui,
+              seuil: SEUIL_ALERTE_VOLUME_JOUR,
+              message:
+                "Volume inhabituel de candidatures commerciales aujourd'hui. Vérifier qu'il s'agit bien d'une campagne et non d'un flux automatisé.",
+              console: `${SITE_URL}${adminPath(locale, "annonces")}`,
+            },
+          },
+        });
+      }
+    } catch (err) {
+      Sentry.captureException(err, { tags: { service: "commercial-application-volume" } });
     }
 
     // 6. Telegram + WhatsApp — best-effort, la candidature est déjà en base.
