@@ -28,6 +28,7 @@ import { hashIp } from "@/lib/security/ip-hash";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
+import { scoreCandidature } from "@/lib/commercial-application/scoring";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
@@ -35,6 +36,7 @@ import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
 import {
   B2B_ANNEES_OPTIONS,
+  CARNET_DIRIGEANTS_OPTIONS,
   COMMERCIAL_APPLICATION_CONSENT_VERSION,
   DEPLACEMENT_OPTIONS,
   IA_OUTILS_OPTIONS,
@@ -125,6 +127,14 @@ function buildRecapRows(d: CommercialApplicationInput): Array<{ label: string; v
       label: "Informatique au travail",
       value: d.informatiqueUtilise ? `Oui — ${infoUsages || "usages non précisés"}` : "Non",
     },
+    ...(d.carnetDirigeants
+      ? [
+          {
+            label: "Carnet dirigeants (appelables demain)",
+            value: optionLabel(CARNET_DIRIGEANTS_OPTIONS, d.carnetDirigeants),
+          },
+        ]
+      : []),
     { label: "Zone souhaitée", value: zoneResume(d) },
     ...(d.deplacement
       ? [
@@ -197,6 +207,17 @@ export async function submitCommercialApplicationAction(
   // `new Date()` distincts donneraient deux preuves divergentes du même geste.
   const vivierConsentAt = d.consentVivier ? new Date() : null;
 
+  // Score de tri (chantier C1). Calculé À LA SOUMISSION et FIGÉ dans
+  // `details` : le barème évoluera (il doit être relu tous les mois face à
+  // ceux qui vendent vraiment), et une note recalculée à l'affichage
+  // changerait rétroactivement le classement de candidatures déjà traitées —
+  // on ne saurait plus pourquoi on avait rappelé celle-ci et pas celle-là.
+  //
+  // 🔴 Le score ORIENTE, il ne rejette JAMAIS. Aucune candidature n'est
+  // filtrée, masquée ni refusée ici : il ne sert qu'à décider qui on appelle
+  // en premier. Cf. l'en-tête de `lib/commercial-application/scoring.ts`.
+  const score = scoreCandidature(d);
+
   // 5. Persist Submission — AVANT toute notification (règle du brief).
   try {
     const submission = await prisma.submission.create({
@@ -212,6 +233,12 @@ export async function submitCommercialApplicationAction(
           // Contacts → Commercial (forcedTypes). NE PAS renommer.
           unifiedType: "recrutement",
           subType: "candidature-commerciale",
+          // Tri de la file de rappel — lu par la console. `parts` accompagne le
+          // total pour que la note soit EXPLICABLE : un score nu qu'on ne peut
+          // pas justifier devant le candidat ne se defend pas.
+          score: score.total,
+          scorePriorite: score.priorite,
+          scoreParts: score.parts,
           ville: `${d.ville} (${d.codePostal})`,
           // La carte « Message » générique du détail console affiche ce champ :
           // on y met le pitch (la réponse la plus parlante).

@@ -12,6 +12,7 @@ import { Plus, Trash2, ChevronDown, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   B2B_ANNEES_OPTIONS,
+  CARNET_DIRIGEANTS_OPTIONS,
   DEPARTEMENTS,
   DEPLACEMENT_OPTIONS,
   IA_OUTILS_OPTIONS,
@@ -234,6 +235,35 @@ export function StepB2b({ a, set, errors }: StepProps) {
           </ChipGroup>
         </div>
       ) : null}
+
+      {/* La question la plus prédictive du recrutement — et la seule qui mesure
+          le STOCK plutôt que l'expérience. Posée « demain matin » et non
+          « connais-tu des dirigeants » : la seconde invite à compter les
+          rencontres de salon, la première force à penser à ceux qui
+          décrocheraient vraiment.
+
+          FACULTATIVE à dessein : la rendre bloquante ferait abandonner ceux qui
+          hésitent sur le chiffre, alors qu'une candidature sans carnet déclaré
+          reste parfaitement exploitable — elle passe simplement par l'échange
+          collectif au lieu d'un appel prioritaire. */}
+      <div className="mt-6">
+        <ChipGroup
+          legend="Combien de dirigeants d’entreprise pourrais-tu appeler demain matin ?"
+          optionalHint
+          error={errors.carnetDirigeants}
+        >
+          {CARNET_DIRIGEANTS_OPTIONS.map((o) => (
+            <Chip
+              key={o.id}
+              name="carnet-dirigeants"
+              value={o.id}
+              label={o.label}
+              checked={a.carnetDirigeants === o.id}
+              onToggle={(v) => set({ carnetDirigeants: a.carnetDirigeants === v ? "" : v })}
+            />
+          ))}
+        </ChipGroup>
+      </div>
 
       {a.b2bDejaVendu === false ? (
         <p className="bg-paper border-border text-fg-soft mt-6 rounded-2xl border px-4 py-3.5 text-[15px] leading-relaxed">
