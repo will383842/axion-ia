@@ -30,7 +30,7 @@
  * — c'est-à-dire le jour où l'on a le plus besoin d'un message clair.
  */
 
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -54,14 +54,46 @@ function specs(dossier: string): string[] {
   return trouves;
 }
 
-/** Les aides de `tests/e2e/**` qu'un fichier importe, résolues en chemins. */
+/**
+ * Les aides de `tests/e2e/**` qu'un fichier importe, résolues en chemins.
+ *
+ * 🔴 2026-08-23 — DEUX DES TROIS CHEMINS ÉTAIENT FAUX, ET LE CLIQUET S'EN
+ * ACCOMMODAIT EN SILENCE.
+ *
+ * `audit-page` et `_communs` ont migré sous `tests/e2e/qualiopi/` ; cette liste
+ * les cherchait encore à la racine. `readFileSync` levait, le `catch` en aval
+ * avalait, et le cliquet ne mesurait plus que `admin-auth` — un tiers de ce
+ * qu'il annonce. `_communs.ts` peut attendre 300 s (`ARRIVEE_ECRAN`) : cette
+ * valeur n'a JAMAIS été comparée à un budget de suite.
+ *
+ * 🔑 Une garde qui ne trouve pas son objet doit ROUGIR, pas se taire : le
+ * `catch` a disparu, et `LISTE_DES_AIDES` est vérifiée pour elle-même ci-dessous.
+ */
+const LISTE_DES_AIDES = [
+  "qualiopi/_harness/audit-page",
+  "fixtures/admin-auth",
+  "qualiopi/parcours/_communs",
+] as const;
+
+function cheminAide(nom: string): string {
+  return join(RACINE_E2E, ...nom.split("/")) + ".ts";
+}
+
+/**
+ * ⚠️ On lit l'IMPORT, pas une occurrence du nom. `source.includes("audit-page")`
+ * comptait `portail-garde-acces.spec.ts` comme importateur du harnais alors
+ * qu'il ne fait que le CITER dans un commentaire — et lui prêtait les 45 s de
+ * `page.goto` qu'il n'exécute jamais. Un test statique qui lit les commentaires
+ * finit par accuser de la prose.
+ */
 function aidesImportees(source: string): string[] {
   const aides: string[] = [];
-  for (const nom of ["_harness/audit-page", "fixtures/admin-auth", "parcours/_communs"]) {
+  for (const nom of LISTE_DES_AIDES) {
     const feuille = nom.split("/").pop() ?? "";
-    if (source.includes(feuille)) {
-      aides.push(join(RACINE_E2E, ...nom.split("/")) + ".ts");
-    }
+    // Le SPÉCIFICATEUR d'import se termine par `/<feuille>` suivi du guillemet
+    // fermant. Une mention en prose (« `_harness/audit-page.ts` ») ne le fait pas.
+    const importe = source.includes(`/${feuille}"`) || source.includes(`/${feuille}'`);
+    if (importe) aides.push(cheminAide(nom));
   }
   return aides;
 }
@@ -98,6 +130,17 @@ describe("aucun délai déclaré n'est plus long que son budget", () => {
   const defaut = budgetParDefaut();
   const fichiers = specs(RACINE_E2E);
 
+  it("chaque aide déclarée existe vraiment", () => {
+    // Contre-témoin de la liste elle-même : sans lui, renommer ou déplacer une
+    // aide fait retomber le cliquet à ce qu'il sait encore lire, sans un mot.
+    const introuvables = LISTE_DES_AIDES.filter((nom) => !existsSync(cheminAide(nom)));
+    expect(
+      introuvables,
+      "une aide déclarée ici mais absente du disque n'est pas mesurée : le cliquet " +
+        "rendrait alors un vert sur les délais qu'elle porte",
+    ).toEqual([]);
+  });
+
   it("des specs sont bien analysées", () => {
     // Contre-témoin : une liste vide ferait passer le test suivant au vert
     // sans rien garder. Le dépôt en compte plusieurs dizaines.
@@ -113,11 +156,9 @@ describe("aucun délai déclaré n'est plus long que son budget", () => {
       const sansConfigure = source.replace(/describe\.configure\(\{[^}]*\}\)/g, "");
       let interne = delaiMaximal(sansConfigure);
       for (const aide of aidesImportees(source)) {
-        try {
-          interne = Math.max(interne, delaiMaximal(readFileSync(aide, "utf8")));
-        } catch {
-          // Aide absente : rien à mesurer, et son absence se verrait ailleurs.
-        }
+        // Pas de `catch` : un chemin d'aide faux est un défaut du cliquet
+        // lui-même, et il doit se voir ici plutôt que se traduire par un vert.
+        interne = Math.max(interne, delaiMaximal(readFileSync(aide, "utf8")));
       }
       if (interne >= budget) {
         fautes.push(

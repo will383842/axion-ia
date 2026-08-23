@@ -645,14 +645,24 @@ test.describe("@parcours-qualiopi 4 — 1-à-1, le wizard bifurque", () => {
   // wizard. `loginAsAdmin` seul peut coûter 120 s de compilation de la route de
   // connexion (admin-auth.ts:79) puis 180 s d'attente d'URL hors CI
   // (admin-auth.ts:141) — Argon2id est délibérément coûteux. Le plancher du
-  // cliquet `budget-des-specs-admin.spec.ts` est de 90 s ; le plus grand délai
-  // interne de cette suite, helpers importés compris, est celui d'admin-auth
-  // (180 s). 300 s laisse donc chaque délai expirer avec SON message.
+  // cliquet `budget-des-specs-admin.spec.ts` est de 90 s.
+  //
+  // 🔴 2026-08-23 — CE PAVÉ A AFFIRMÉ 180 s, ET C'ÉTAIT FAUX. Il annonçait que
+  // « le plus grand délai interne de cette suite, helpers importés compris, est
+  // celui d'admin-auth (180 s) ». Le vrai maximum est `ARRIVEE_ECRAN` de
+  // `_communs.ts` : 300 s hors CI. Le budget de 300 s était donc ÉGAL à son plus
+  // grand délai interne — aucune place pour le reste, et le message précis de
+  // `_communs` inatteignable.
+  //
+  // 🔑 La croyance venait de l'outil : `delai-interne-sous-le-budget.spec.ts`
+  // cherchait `_communs.ts` à `tests/e2e/parcours/`, où il n'est plus. Le
+  // `readFileSync` levait, un `catch` avalait, et le cliquet rendait un vert sur
+  // un fichier qu'il n'avait jamais ouvert. Les deux sont corrigés ensemble.
   //
   // ⚠️ `mode: "serial"` est PORTANT ici, pas décoratif : voir le pavé « POURQUOI
   // serial EST PORTANT » de l'en-tête. Un échec des tests 1 ou 2 doit SAUTER le
   // test 3, pas le laisser absorber la cause dans son marquage conditionnel.
-  test.describe.configure({ mode: "serial", timeout: 300_000 });
+  test.describe.configure({ mode: "serial", timeout: 600_000 });
 
   test("le référentiel des offres connaît la famille 1-à-1, et dit son état", async ({
     page,

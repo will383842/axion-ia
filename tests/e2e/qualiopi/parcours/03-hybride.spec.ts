@@ -100,6 +100,7 @@
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { loginAsAdmin } from "../../fixtures/admin-auth";
 import {
+  ARRIVEE_ECRAN,
   ENREGISTREMENT,
   STAGIAIRES_DEMO,
   admin,
@@ -383,11 +384,70 @@ test.describe("@parcours-qualiopi 3 — hybride, la salle et la visio le même j
         "« Émargement » (sessions/[id]/page.tsx:814-818) — la fiche est restée en cours " +
         `de rendu. URL : ${urlEmargement}`,
     ).toBeVisible({ timeout: 120_000 });
-    await lienEmargement.click({ timeout: 90_000 }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
-    await page.waitForURL(new RegExp(`/sessions/${id}/emargement$`), {
-      waitUntil: "domcontentloaded", // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
-      timeout: 90_000,
+    // 🔴 2026-08-23 — CE QUE MESURE VRAIMENT CE `waitForURL`, ET POURQUOI SON
+    // MESSAGE A PRODUIT UN DIAGNOSTIC FAUX.
+    //
+    // L'App Router de Next 16 ne déplace PAS l'URL au clic : il émet une requête
+    // RSC (`…/emargement?_rsc=…`) et n'écrit l'URL qu'une fois la charge reçue.
+    // Mesuré à la sonde : requête partie 100 ms après le clic, URL déplacée
+    // 7,6 s plus tard, à la seconde où la réponse est arrivée. Cette ligne ne
+    // mesure donc pas « le clic a-t-il navigué » mais « en combien de temps le
+    // serveur rend l'écran cible ».
+    //
+    // ⚠️ Et `next dev` COMPILE la route à sa première visite : 29 s mesurées pour
+    // cet écran, 41 à 64 s pour ses voisins, 3 min pour `/login`. 90 s était le
+    // budget le plus serré de la famille — 04 en accorde 120, 07 en accorde 180,
+    // `_communs` 300. On s'aligne sur `ARRIVEE_ECRAN`, seule écriture du couple
+    // (60 s en CI contre un build de production, où rien ne se compile).
+    //
+    // 🔑 LE POINT QUI A COÛTÉ UNE SESSION : `next dev` n'écrit sa ligne
+    // `GET … 200 in Nms` qu'à la FIN de la requête. Une requête encore en vol ne
+    // laisse AUCUNE trace dans le journal du serveur. Le 2026-08-23, cette
+    // absence a été lue comme « aucune requête n'est partie, donc le clic n'a pas
+    // navigué » — conclusion fausse, écrite dans le journal de reprise. On
+    // observe donc ici ce que le serveur ne peut pas dire : la requête est-elle
+    // PARTIE, et a-t-elle RÉPONDU ?
+    const rsc = { partie: 0, repondue: 0, statut: 0 };
+    const versEmargement = (u: string): boolean => u.includes(`/sessions/${id}/emargement`);
+    page.on("request", (r) => {
+      if (rsc.partie === 0 && versEmargement(r.url())) rsc.partie = Date.now();
     });
+    page.on("response", (r) => {
+      if (rsc.repondue === 0 && versEmargement(r.url())) {
+        rsc.repondue = Date.now();
+        rsc.statut = r.status();
+      }
+    });
+
+    await lienEmargement.click({ timeout: ARRIVEE_ECRAN }); // cf. `ARRIVEE_ECRAN` (_communs.ts) : le clic paie l'attente de SA navigation.
+    try {
+      await page.waitForURL(new RegExp(`/sessions/${id}/emargement$`), {
+        waitUntil: "domcontentloaded", // défaut = `"load"` ; cf. la note de `creerSession` dans `_communs.ts`.
+        timeout: ARRIVEE_ECRAN,
+      });
+    } catch (cause) {
+      // Trois états, trois causes qui n'ont RIEN à voir entre elles. Un message
+      // qui ne les distingue pas laisse le lecteur deviner — et il devine mal.
+      const secondes = (ms: number) => `${(ms / 1000).toFixed(1)} s`;
+      const constat =
+        rsc.partie === 0
+          ? "AUCUNE requête n'est partie vers l'émargement : le clic n'a pas atteint le " +
+            "routeur (ancre détachée, ou React non hydraté). C'est le SEUL cas où " +
+            "« le clic n'a pas navigué » est vrai."
+          : rsc.repondue === 0
+            ? `la requête RSC est PARTIE (il y a ${secondes(Date.now() - rsc.partie)}) et n'a ` +
+              "toujours pas répondu : le serveur rend encore l'écran. Sous `next dev` " +
+              "c'est une compilation de route — le journal du serveur est muet tant " +
+              "qu'elle dure, ne pas y lire une absence de requête."
+            : `la requête RSC a répondu ${rsc.statut} en ` +
+              `${secondes(rsc.repondue - rsc.partie)}, et l'URL n'a pourtant pas bougé : ` +
+              "le routeur a reçu la charge et ne l'a pas commitée.";
+      throw new Error(
+        `le clic sur « Émargement » n'a pas mené à ${urlEmargement}. URL atteinte : ` +
+          `${page.url()}. ${constat}`,
+        { cause },
+      );
+    }
 
     // ── 3. L'écran dit-il HYBRIDE ? ─────────────────────────────────────────
     //

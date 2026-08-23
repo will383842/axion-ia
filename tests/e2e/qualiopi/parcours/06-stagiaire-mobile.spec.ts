@@ -351,7 +351,12 @@ test.describe("@parcours-qualiopi 6 — le stagiaire sur téléphone", () => {
   // contrat du jour où un second test s'ajoutera. Sept parcours qui ouvrent sept
   // sessions admin en parallèle dépassent tous la connexion (cf. l'en-tête de
   // `_communs.ts`).
-  test.describe.configure({ mode: "serial", timeout: 300_000 });
+  // 🔴 2026-08-23 — 300 s était ÉGAL au plus grand délai interne atteignable :
+  // `ARRIVEE_ECRAN` de `_communs.ts` vaut 300 s hors CI. Un délai égal à son
+  // budget ne peut jamais expirer, et c'est le budget — muet — qui rend le
+  // verdict. Le cliquet ne le voyait pas : il cherchait `_communs.ts` au mauvais
+  // chemin et se taisait sur l'absence (cf. `delai-interne-sous-le-budget.spec.ts`).
+  test.describe.configure({ mode: "serial", timeout: 600_000 });
 
   test("du lien d'accès à l'attestation, sur un écran de 360 px", async ({ page }, info) => {
     // Dispense assumée, sans zone d'ombre : la CI ne lance QUE chromium
