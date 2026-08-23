@@ -399,6 +399,27 @@ export const env = createEnv({
     IMAGE_BANK_STORAGE_PATH: z.string().min(1).optional(),
     /** Préfixe CDN servant `/image-bank/*`. Vide = servi par la même origine. */
     IMAGE_BANK_CDN_URL: z.string().url().optional(),
+
+    // ─── Console éditoriale — stockage des médias ────────────────────────
+    //
+    // 🔴 Même défaut que GEO-094 ci-dessus, reproduit un an plus tard :
+    // `EDITORIAL_STORAGE_PATH` était lu par `server/editorial/stockage.ts`
+    // sans être déclaré ici ni dans aucun `.env*.example`. La leçon de la
+    // banque d'images était écrite à trois lignes de distance, et je ne
+    // l'ai pas appliquée.
+    //
+    // ⚠️ Volume DÉDIÉ, distinct de celui de la banque d'images. Les deux
+    // stockent des fichiers utilisateur, mais avec des cycles de vie sans
+    // rapport : une variante d'image se régénère, un rush de tournage ne se
+    // régénère pas. Les mélanger ferait qu'un nettoyage de l'un emporterait
+    // l'autre.
+    //
+    // 🔑 Sans volume monté à ce chemin, les fichiers déposés vivent dans la
+    // couche éphémère du conteneur et DISPARAISSENT au redéploiement — sans
+    // erreur, sans trace, et la fiche continuera d'afficher un asset qui
+    // pointe vers un fichier absent.
+    /** Racine du volume des médias éditoriaux. Défaut : `/var/data/editorial-media`. */
+    EDITORIAL_STORAGE_PATH: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
@@ -437,6 +458,7 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     IMAGE_BANK_STORAGE_PATH: process.env.IMAGE_BANK_STORAGE_PATH,
+    EDITORIAL_STORAGE_PATH: process.env.EDITORIAL_STORAGE_PATH,
     IMAGE_BANK_CDN_URL: process.env.IMAGE_BANK_CDN_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
