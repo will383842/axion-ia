@@ -411,7 +411,7 @@ Pas de catalogue de 40 pages à apprendre. Deux choses à retenir :
 ▸ UN AUDIT IA en entreprise
   30 % de la facture, pour toi.
   Le plus petit audit démarre à 1 190 € HT → au moins 357 €.
-  Un audit de PME démarre à 4 900 € HT → au moins 1 470 €.
+  Un audit de PME démarre à 1 900 € HT → au moins 570 €.
 
 Ce sont des exemples de calcul, pas une promesse :
 tes revenus dépendent de tes ventes.
@@ -591,18 +591,22 @@ Beaucoup de plateformes de petites annonces suppriment les URL du corps. Deux re
 
 ### 2.6 Pourquoi cette annonce est construite comme ça
 
-| Choix                                                      | Raison                                                                                                                                               |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Ouvrir sur l'AI Act, pas sur l'argent**                  | Le titre porte déjà les 500 €. Le corps doit répondre à « c'est quoi le piège ? » — et l'obligation légale prouve que le marché est réel.            |
-| **« Deux produits. C'est tout. »**                         | LE message. Le commercial indépendant a peur de la complexité, pas du travail. La simplicité est l'argument de conversion n°1.                       |
-| **« Le B2B, c'est votre métier — l'IA, c'est le nôtre. »** | La meilleure ligne de l'annonce : elle capte le mot-clé métier _et_ désamorce la barrière technique en une phrase.                                   |
-| **« Vous ne closez jamais »**                              | L'objection n°1 du profil apporteur. La lever élimine l'essentiel des hésitations.                                                                   |
-| **Chiffres vérifiables, jamais de « gagnez jusqu'à »**     | 500 €, 357 €, 1 470 € sortent de `pricing.ts` et de la grille publique. Un « jusqu'à 5 000 €/mois » aurait fait fuir les bons et attiré les mauvais. |
-| **« jusqu'à 100 %, selon l'OPCO et la branche »**          | Le plafond assorti de sa condition est exact et défendable. « Pris en charge à 100 % » ne le serait pas.                                             |
-| **Une section « Ce que ce n'est pas »**                    | Contre-intuitif mais décisif : c'est ce qui distingue l'annonce des arnaques MLM du même rayon. Rassure les candidats **et** aide la modération.     |
-| **Mention explicite des retraités et des multicartes**     | Deux segments à fort potentiel que personne ne cible (plan §7.3 et §2.4). Quelques lignes suffisent à les débloquer.                                 |
-| **Ton direct, zéro emoji, zéro majuscule hurlante**        | Le public visé (35-70 ans, commerciaux expérimentés) fuit le ton « startup cool ». Ici, « fun » veut dire _« on ne me prend pas la tête »_.          |
-| **« Vous partez de zéro ? Ce sera juste plus long. »**     | Honnête, n'exclut personne, et prévient la déception à trois semaines.                                                                               |
+| Choix                                                      | Raison                                                                                                                                             |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Ouvrir sur l'AI Act, pas sur l'argent**                  | Le titre porte déjà les 500 €. Le corps doit répondre à « c'est quoi le piège ? » — et l'obligation légale prouve que le marché est réel.          |
+| **« Deux produits. C'est tout. »**                         | LE message. Le commercial indépendant a peur de la complexité, pas du travail. La simplicité est l'argument de conversion n°1.                     |
+| **« Le B2B, c'est votre métier — l'IA, c'est le nôtre. »** | La meilleure ligne de l'annonce : elle capte le mot-clé métier _et_ désamorce la barrière technique en une phrase.                                 |
+| **« Vous ne closez jamais »**                              | L'objection n°1 du profil apporteur. La lever élimine l'essentiel des hésitations.                                                                 |
+| **Chiffres vérifiables, jamais de « gagnez jusqu'à »**     | 500 €, 357 €, 570 € sortent de `pricing.ts` et de la grille publique. Un « jusqu'à 5 000 €/mois » aurait fait fuir les bons et attiré les mauvais. |
+
+> ⚠️ **Corrigé le 2026-08-23, après vérification du rendu réel de la landing.** Ce document annonçait « un audit de PME démarre à **4 900 €** → au moins 1 470 € ». C'est le prix d'un **sous-palier** (`audit-strategique-pme-20-50`), pas celui du tier : `audit-strategique-pme.priceMin` vaut **1 900 €**, l'en-tête uniforme « À partir de 1 900 € · sur devis » décidé le 2026-06-03.
+>
+> La landing, qui dérive du SSOT, affichait donc 1 900 € / 570 € pendant que l'annonce promettait 4 900 € / 1 470 €. Le pire cas possible : le lecteur clique l'annonce et découvre un chiffre **plus petit**. C'est exactement l'incident que `pricing.ts` documente déjà (deux barèmes publics divergents de 150 €/journée) — la leçon étant précisément de ne jamais recopier un montant à la main.
+> | **« jusqu'à 100 %, selon l'OPCO et la branche »** | Le plafond assorti de sa condition est exact et défendable. « Pris en charge à 100 % » ne le serait pas. |
+> | **Une section « Ce que ce n'est pas »** | Contre-intuitif mais décisif : c'est ce qui distingue l'annonce des arnaques MLM du même rayon. Rassure les candidats **et** aide la modération. |
+> | **Mention explicite des retraités et des multicartes** | Deux segments à fort potentiel que personne ne cible (plan §7.3 et §2.4). Quelques lignes suffisent à les débloquer. |
+> | **Ton direct, zéro emoji, zéro majuscule hurlante** | Le public visé (35-70 ans, commerciaux expérimentés) fuit le ton « startup cool ». Ici, « fun » veut dire _« on ne me prend pas la tête »_. |
+> | **« Vous partez de zéro ? Ce sera juste plus long. »** | Honnête, n'exclut personne, et prévient la déception à trois semaines. |
 
 ### 2.7 ⚠️ Règles Le Bon Coin à respecter
 

@@ -1,4 +1,4 @@
-# Prompts DALL·E — 3 images pour la landing `/partenaire/leboncoin`
+# Prompts DALL·E — 3 images pour la landing `/leboncoin`
 
 > **Créé le** 2026-08-23 · **Révisé après examen de la banque d'images existante.**
 > Sources : `public/illustrations/devenir-commercial-comment-ca-marche.webp`, `public/images/` (806 fichiers), palette `src/app/globals.css`.
