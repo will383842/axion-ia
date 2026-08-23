@@ -33,6 +33,7 @@ import {
   optionLabel,
 } from "@/lib/commercial-application/model";
 import { SCORE_SEUIL_HAUTE, SCORE_SEUIL_MOYENNE } from "@/lib/commercial-application/scoring";
+import { coutAnnonce } from "@/content/recrutement/partenaire-landings";
 
 export interface AnnonceStatRow {
   /** Identifiant de source (`leboncoin`, `memorial-isere`…) ou `"—"`. */
@@ -51,6 +52,14 @@ export interface AnnonceStatRow {
   readonly scoreMoyen: number | null;
   /** Dernière candidature reçue pour cette source. */
   readonly derniere: Date | null;
+  /** Dépense enregistrée pour ce canal (€). 0 = gratuit ou non saisi. */
+  readonly coutEur: number;
+  /**
+   * Coût par candidature. `null` quand la dépense est à 0 — et non « 0 € »,
+   * qui laisserait croire à une acquisition gratuite alors qu'on n'a
+   * simplement rien saisi. Une case vide se remarque ; un zéro se croit.
+   */
+  readonly coutParCandidature: number | null;
 }
 
 export interface AnnoncesStats {
@@ -118,6 +127,11 @@ function enLignes(
       sansScore: a.sansScore,
       scoreMoyen: a.nbScores > 0 ? Math.round(a.sommeScores / a.nbScores) : null,
       derniere: a.derniere,
+      coutEur: coutAnnonce(id),
+      coutParCandidature:
+        coutAnnonce(id) > 0 && a.candidatures > 0
+          ? Math.round(coutAnnonce(id) / a.candidatures)
+          : null,
     }))
     .sort((x, y) => y.candidatures - x.candidatures || x.label.localeCompare(y.label, "fr"));
 }

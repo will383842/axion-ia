@@ -79,6 +79,8 @@ function Tableau({
                 <th scope="col">À qualifier</th>
                 <th scope="col">Vivier</th>
                 <th scope="col">Score moyen</th>
+                <th scope="col">Coût</th>
+                <th scope="col">€ / candidature</th>
                 <th scope="col">Dernière</th>
               </tr>
             </thead>
@@ -95,6 +97,18 @@ function Tableau({
                     {l.sansScore > 0 ? (
                       <span className="admin-help"> ({l.sansScore} sans note)</span>
                     ) : null}
+                  </td>
+                  {/* Dépense NON SAISIE → « — », jamais « 0 € ». Un zéro
+                      affirmerait une acquisition gratuite ; un tiret dit
+                      qu'on ne sait pas. Une case vide se remarque, un zéro se
+                      croit. */}
+                  <td>{l.coutEur > 0 ? `${l.coutEur} €` : "—"}</td>
+                  <td>
+                    {l.coutParCandidature !== null ? (
+                      <strong>{l.coutParCandidature} €</strong>
+                    ) : (
+                      "—"
+                    )}
                   </td>
                   <td>{l.derniere ? formatDateFr(l.derniere) : "—"}</td>
                 </tr>
@@ -167,6 +181,15 @@ export default async function AnnoncesStatsPage({ params }: PageProps) {
           dit ce que le candidat <strong>déclare</strong>, le second ce que son lien{" "}
           <strong>prouve</strong>. On clique une annonce, on revient trois jours plus tard par
           Google, et on coche « site web ». Voir l&apos;écart vaut mieux que le subir.
+        </p>
+        <p className="admin-help mt-[var(--space-admin-2)]">
+          <strong>
+            La colonne « € / candidature » ne s&apos;affiche que si la dépense a été saisie.
+          </strong>{" "}
+          Elle se renseigne à la main dans <code>COUTS_ANNONCES</code> (
+          <code>src/content/recrutement/partenaire-landings.ts</code>) — un canal absent y est
+          traité comme gratuit, ce qui est le bon défaut pour Google for Jobs, LinkedIn organique ou
+          le bouche à oreille. Un tiret signifie « non saisi », jamais « gratuit ».
         </p>
         <p className="admin-help mt-[var(--space-admin-2)]">
           Seuils de tri : <strong>≥ {SCORE_SEUIL_HAUTE}</strong> prioritaire ·{" "}

@@ -167,3 +167,46 @@ export const PARTENAIRE_CE_QUE_CE_NEST_PAS: readonly { readonly t: string; reado
       d: "Pas de reporting, pas de hiérarchie. Tu y consacres le temps que tu veux.",
     },
   ];
+
+// ── Coût des annonces ───────────────────────────────────────────────────────
+
+export interface CoutAnnonce {
+  /** Dépense CUMULÉE sur ce canal, en euros TTC. */
+  readonly montantEur: number;
+  /** Ce que couvre ce montant — daté, pour qu'on sache quoi ajouter la fois d'après. */
+  readonly note: string;
+}
+
+/**
+ * Ce que chaque canal a coûté, saisi à la main.
+ *
+ * 🔴 SANS CE CHIFFRE, L'ÉCRAN DE PILOTAGE COMPARE DES VOLUMES, PAS DES
+ * RENTABILITÉS. Un canal gratuit qui produit 200 candidatures et zéro apporteur
+ * actif coûte plus cher qu'un canal à 300 € qui en produit dix — et rien dans
+ * les données ne permet de le voir tant que la dépense n'est pas enregistrée.
+ *
+ * Volontairement un fichier de code et non un réglage en base : une dépense
+ * publicitaire est un événement rare (quelques fois par an et par canal), et la
+ * poser ici la rend **versionnée** — on sait qui a écrit quel montant, quand, et
+ * ce qu'il couvrait. Un champ libre en console aurait perdu cette trace.
+ *
+ * ⚠️ MONTANT CUMULÉ, pas le prix d'un dépôt. Republier une annonce = additionner,
+ * et compléter la note. Un canal absent d'ici est traité comme **gratuit** (0 €),
+ * ce qui est le bon défaut : la plupart le sont vraiment (Google for Jobs,
+ * LinkedIn organique, bouche à oreille).
+ *
+ * Évolution possible si le rythme s'accélère : passer en réglage éditable en
+ * console. Tant que les dépenses se comptent sur les doigts d'une main, ce
+ * fichier suffit et documente mieux.
+ */
+export const COUTS_ANNONCES: Readonly<Record<string, CoutAnnonce>> = {
+  // Exemple à compléter dès la première dépense réelle :
+  // leboncoin: { montantEur: 0, note: "Dépôt initial du JJ/MM/AAAA" },
+  // "memorial-isere": { montantEur: 0, note: "Encart du JJ/MM/AAAA" },
+  // jemepropose: { montantEur: 0, note: "Annonce déposée le JJ/MM/AAAA" },
+};
+
+/** Dépense enregistrée pour un canal. Absent ⇒ 0 € (canal gratuit). */
+export function coutAnnonce(source: string): number {
+  return COUTS_ANNONCES[source]?.montantEur ?? 0;
+}
