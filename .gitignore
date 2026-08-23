@@ -62,6 +62,16 @@ yarn-error.log*
 !.env.production.example
 !.env.ci.example
 
+# Secrets locaux — jetons d'API. Jamais versionnés.
+# ⚠️ Les quatre règles ci-dessus NE SUFFISENT PAS : `.env` et `.env.*` matchent
+# un fichier *nommé* `.env` ou `.env.<suffixe>`, jamais un `<nom>.env`.
+# `.secrets/api-tokens.env` (jeton API Coolify) passait donc au travers et
+# apparaissait en non-suivi dans `git status` — un `git add .` l'aurait publié,
+# le dépôt étant public. Constaté le 2026-08-23 ; le fichier n'a jamais été
+# commité. `*.env` ferme la classe entière, `.secrets/` ferme le dossier.
+.secrets/
+*.env
+
 # vercel (we don't deploy to Vercel but keep ignore)
 .vercel
 
