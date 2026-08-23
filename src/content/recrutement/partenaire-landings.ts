@@ -28,7 +28,7 @@
 /** Sources reconnues. L'`id` DOIT exister dans `SOURCE_OPTIONS`
  *  (`lib/commercial-application/model.ts`) — sans quoi la candidature arrive
  *  sans provenance et l'annonce n'est pas mesurable. */
-export const PARTENAIRE_SOURCES = ["leboncoin"] as const;
+export const PARTENAIRE_SOURCES = ["leboncoin", "indeed"] as const;
 
 export type PartenaireSource = (typeof PARTENAIRE_SOURCES)[number];
 
@@ -63,6 +63,29 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
     h1Em: "Nous formons leurs équipes.",
     chapo:
       "Tu présentes, on s'occupe du reste, tu touches ta commission. Deux produits à retenir, pas un catalogue. Et tu ne closes jamais.",
+  },
+
+  /**
+   * Indeed. ⚠️ Contrairement à Google for Jobs, Indeed ne moissonne PAS le
+   * balisage `JobPosting` du site : la publication y est manuelle (ou par flux
+   * XML). Cette landing est donc la cible du lien déposé À LA MAIN dans
+   * l'annonce Indeed — rien n'y arrive tout seul.
+   *
+   * Le chapô insiste sur « sans CV » : c'est LA différence qui compte face à
+   * l'attente d'un candidat venu d'Indeed, où l'on postule presque toujours en
+   * déposant un CV. La dire tôt évite l'abandon devant un tunnel qui n'en
+   * demande pas.
+   */
+  indeed: {
+    source: "indeed",
+    canal: "Vu sur Indeed",
+    metaTitle: "Apporteur d'affaires IA — indépendant, partout en France",
+    metaDescription:
+      "Poste d'apporteur d'affaires indépendant pour des formations et audits IA en entreprise. Commission par journée vendue, statut libre, aucune connaissance en IA requise. Candidature en 3 minutes, sans CV.",
+    h1: "Apporteur d'affaires IA,",
+    h1Em: "indépendant et sans plafond",
+    chapo:
+      "Candidature en 3 minutes, sans CV et sans lettre de motivation. Tu présentes des entreprises, nous vendons, tu touches ta commission. Deux produits à retenir, et tu ne closes jamais.",
   },
 };
 

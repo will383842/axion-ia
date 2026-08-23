@@ -142,6 +142,11 @@ export const SOURCE_OPTIONS = [
   /** Annonce nationale Le Bon Coin → landing `/partenaire/leboncoin`. */
   { id: "leboncoin", label: "Le Bon Coin" },
   /**
+   * Annonce Indeed → landing `/partenaire/indeed`.
+   * ⚠️ Indeed ne moissonne pas le `JobPosting` du site : le dépôt y est manuel.
+   */
+  { id: "indeed", label: "Indeed" },
+  /**
    * Annonce jemepropose.com → page SEO
    * `/apporteur-affaires-independant-formation-ia-entreprise`, et non une
    * landing `/partenaire/*` : ce canal a sa page indexable propre, parce que
