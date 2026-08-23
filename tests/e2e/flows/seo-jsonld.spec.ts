@@ -77,7 +77,30 @@ test.describe("SEO/AEO JSON-LD", () => {
   test("blog post slug has Article schema", async ({ page }) => {
     // On visite le listing puis on suit le 1er lien article
     await page.goto("/fr/blog");
-    const firstArticleLink = page.locator('a[href*="/fr/blog/"][href$=""]').first();
+    // 🔴 2026-08-22 — CE TEST N'A JAMAIS RIEN VÉRIFIÉ.
+    //
+    // Le sélecteur portait `[href$=""]`. Ce n'est pas un no-op : en CSS, une
+    // valeur VIDE dans `^=`, `$=` ou `*=` ne représente RIEN, et le sélecteur
+    // ne matche jamais. Mesuré en Chromium réel avec le Playwright du dépôt :
+    // 0 élément avec `[href$=""]`, 29 sans.
+    //
+    // Le locator rendait donc toujours 0, la ligne `test.skip(true, "Aucun
+    // article blog publié")` s'exécutait à CHAQUE passage, et le contrôle du
+    // schéma Article n'a jamais tourné — alors que /fr/blog porte 28 articles.
+    //
+    // 🔑 Un test qui se saute pour une raison FAUSSE est pire qu'un test
+    // absent : son « skipped » se lit comme une information sur le produit.
+    //
+    // Les trois `:not()` viennent du HTML de production : le 1er lien
+    // `/fr/blog/` du document est le flux `feed.xml`, suivi de six
+    // `/fr/blog/categorie/*` ; le 1er vrai article n'arrive qu'après. Et
+    // `/fr/blog/page/2` existe (pagination).
+    const firstArticleLink = page
+      .locator("main")
+      .locator(
+        'a[href^="/fr/blog/"]:not([href*="/categorie"]):not([href*="/page/"]):not([href$=".xml"])',
+      )
+      .first();
     if ((await firstArticleLink.count()) === 0) {
       test.skip(true, "Aucun article blog publie");
     }

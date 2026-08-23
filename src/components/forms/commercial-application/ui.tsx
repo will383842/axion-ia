@@ -155,7 +155,7 @@ export function ChipGroup({
   children,
 }: ChipGroupProps) {
   return (
-    <fieldset aria-required={requiredField ? true : undefined}>
+    <fieldset className="min-w-0" aria-required={requiredField ? true : undefined}>
       <legend className={LABEL_CLASS}>
         {legend}
         {requiredField ? <RequiredMark /> : null}

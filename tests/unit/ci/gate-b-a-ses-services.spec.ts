@@ -95,6 +95,74 @@ describe("Gate B dispose de ses services", () => {
     ).toContain("pnpm qualiopi:seed-demo");
   });
 
+  it("l'étape Playwright lève le drapeau du hub facturation", () => {
+    // 🔴 2026-08-22 — QUATRE ÉCRANS N'ÉTAIENT PAS COUVERTS, ET ÇA SE LISAIT
+    // « 4 entrée(s) de navigation en panne … Timeout 15000ms ».
+    //
+    // Le hub facturation est derrière `FACTURATION_HUB_ENABLED` (rollout
+    // progressif). Drapeau baissé, les pages appellent `notFound()` — mais le
+    // dossier porte un `loading.tsx`, donc le statut 200 est DÉJÀ PARTI quand
+    // `notFound()` s'exécute. Le test voyait 200, puis attendait un `<h1>` qui
+    // ne viendrait pas.
+    //
+    // 🔑 Un module derrière un drapeau que la CI ne lève pas n'est pas
+    // « couvert » : il est compté en panne. Lever le drapeau ici, c'est la
+    // différence entre traverser quatre écrans et les déclarer cassés.
+    const etape = bloc.slice(bloc.indexOf("- name: Playwright suite"));
+    const env = etape.slice(0, etape.indexOf("run:"));
+    expect(
+      env,
+      "sans ce drapeau, les quatre écrans `/qualiopi/facturation` rendent une " +
+        "page introuvable et `admin-nav-clic` les compte en panne",
+    ).toMatch(/FACTURATION_HUB_ENABLED:\s*"true"/);
+  });
+
+  it("l'étape Playwright PEUT ROUGIR", () => {
+    // 🔴 2026-08-23 — LE POINT D'ARRIVÉE DE TOUTE LA SESSION.
+    //
+    // Ce harnais a porté `continue-on-error: true` pendant toute sa
+    // construction. C'était justifié tant qu'on ignorait combien de tests
+    // passaient — mais un drapeau posé « le temps de mesurer » se réinstalle
+    // silencieusement, et le dépôt en compte déjà plusieurs qui ont survécu
+    // des semaines à leur raison d'être.
+    //
+    // Trajectoire mesurée :
+    //     avant         0 passés / 237   (le harnais ne mesurait RIEN)
+    //     32520282915 206 / 19
+    //     32525749387 210 / 17
+    //     32598142374 224 /  3
+    //
+    // 🔑 Une garde qui ne peut pas rougir n'est pas une garde. Celle-ci le peut
+    // désormais — et `Gate B` étant un contexte EXIGÉ avec `strict: true`, un
+    // rouge y bloque TOUTES les PR. C'est le prix, et c'est le but.
+    const etape = bloc.slice(bloc.indexOf("- name: Playwright suite"));
+    const suivante = etape.indexOf("- name: ", 10);
+    const bloque = suivante === -1 ? etape : etape.slice(0, suivante);
+    expect(
+      bloque,
+      "`continue-on-error` sur la suite E2E la rend incapable de rougir : le " +
+        "job passe au vert quels que soient les échecs, et un dépassement de " +
+        "délai devient indiscernable d'un relevé complet",
+    ).not.toMatch(/continue-on-error:\s*true/);
+  });
+
+  it("les étapes AVAL survivent à un rouge de la suite", () => {
+    // Contre-témoin du test précédent : retirer le drapeau sans protéger l'aval
+    // ferait disparaître le rapport d'artefacts exactement le jour où il sert.
+    const lighthouse = bloc.slice(bloc.indexOf("- name: Lighthouse CI"));
+    const enTete = lighthouse.slice(0, lighthouse.indexOf("run:"));
+    expect(
+      enTete,
+      "sans `if: !cancelled()`, un échec Playwright saute Lighthouse ET le " +
+        "report qui permettrait de le comprendre",
+    ).toMatch(/if:\s*\$\{\{\s*!cancelled\(\)\s*\}\}/);
+
+    const upload = bloc.slice(bloc.indexOf("- name: Upload artifacts"));
+    expect(upload.slice(0, 400), "l'upload des artefacts doit rester en `always()`").toMatch(
+      /if:\s*always\(\)/,
+    );
+  });
+
   it("le JOB garde bien le stub — le build en dépend", () => {
     // Contre-témoin : si quelqu'un remplaçait le stub au niveau du job « pour
     // simplifier », le build tenterait d'ouvrir une connexion Redis au SSG.

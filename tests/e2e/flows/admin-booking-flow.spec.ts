@@ -14,6 +14,24 @@ import { test, expect } from "@playwright/test";
 import { ADMIN_PREFIX, loginAsAdmin, baseSemeeAttendue } from "../fixtures/admin-auth";
 
 test.describe("Legacy booking — redirections vers les modules réels", () => {
+  // Budget explicite : cette suite ouvre une session admin (Argon2id, quatre
+  // workers concurrents en CI). Le défaut de 30 s de `playwright.config.ts`
+  // ne suffit pas — cf. `tests/unit/e2e-harness/budget-des-specs-admin.spec.ts`,
+  // qui a trouvé cette suite en même temps que `vente-parcours`.
+  // 🔴 2026-08-22 — UN DÉLAI PLUS LONG QUE SON BUDGET NE PEUT JAMAIS EXPIRER.
+  //
+  // Famille de défauts symétrique de celle corrigée la veille. Un `timeout:`
+  // soigneusement choisi, avec un message qui nomme la cause, est INATTEIGNABLE
+  // si le budget du test qui l'englobe est plus court : c'est le budget qui
+  // rend le verdict, et son message ne nomme rien.
+  //
+  // 🔑 Règle : le budget d'une suite doit être STRICTEMENT supérieur au plus
+  // grand délai qui vit dedans — helpers importés compris. Verrouillé par
+  // `tests/unit/e2e-harness/delai-interne-sous-le-budget.spec.ts`.
+  //
+  // Ici : 180 s était ÉGAL au délai de `loginAsAdmin` hors CI (180 000).
+  test.describe.configure({ timeout: 300_000 });
+
   const cases = [
     { from: "calendrier", to: "/planning" },
     { from: "calendrier/heatmap", to: "/planning" },

@@ -98,7 +98,26 @@ export async function auditerPage(page: Page, url: string): Promise<ResultatAudi
   page.on("requestfailed", (r) => {
     const t = r.failure()?.errorText ?? "";
     // ERR_ABORTED = navigation annulée, bruit d'instrumentation, pas un défaut.
-    if (!t.includes("ERR_ABORTED")) requetesEnEchec.push(`${r.url().slice(0, 90)} — ${t}`);
+    if (t.includes("ERR_ABORTED")) return;
+    // 🔴 2026-08-21 — DIRE D'OÙ VIENT LA REQUÊTE, PAS SEULEMENT QU'ELLE ÉCHOUE.
+    //
+    // Trois routes rendaient
+    // `https://localhost:3000/fr/espace-ressources/connexion — net::ERR_SSL_PROTOCOL_ERROR`.
+    // Une URL nue ne dit ni QUI l'a demandée, ni si elle est le fruit d'une
+    // redirection. J'ai passé une heure à reconstituer par déduction ce que
+    // deux appels d'API auraient dit tout de suite. La production, elle, sert
+    // ces trois routes correctement (mesuré) : le défaut est donc propre au
+    // build de production servi en HTTP nu de la CI, et il faut le NOMMER
+    // plutôt que le deviner.
+    //
+    // 🔑 Un message d'échec doit porter de quoi conclure. C'est la même leçon
+    // que le texte de l'écran dans `loginAsAdmin`.
+    const origine = r.redirectedFrom()?.url();
+    const contexte = [
+      `type=${r.resourceType()}`,
+      origine ? `redirigée depuis ${origine.slice(0, 90)}` : "requête directe",
+    ].join(" ");
+    requetesEnEchec.push(`${r.url().slice(0, 90)} — ${t} (${contexte})`);
   });
   page.on("response", (r) => {
     if (r.status() >= 400) requetesEnEchec.push(`${r.status()} ${r.url().slice(0, 90)}`);

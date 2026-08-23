@@ -23,6 +23,34 @@ import { test, expect } from "@playwright/test";
 import { ADMIN_PREFIX, loginAsAdmin, baseSemeeAttendue } from "../fixtures/admin-auth";
 
 test.describe("Wizard nouvelle vente — client → devis → checklist", () => {
+  /**
+   * 🔴 2026-08-21 — CETTE SUITE TOURNAIT AVEC LE BUDGET PAR DÉFAUT (30 s).
+   *
+   * Elle ouvre une session admin — vérification Argon2id délibérément coûteuse,
+   * quatre workers se la disputent en CI — puis traverse un wizard en trois
+   * étapes. Elle échouait sur « loginAsAdmin a échoué […] Texte de la page : »,
+   * texte VIDE : la page de connexion n'avait pas fini de rendre.
+   *
+   * 🔑 Un message d'échec vide est le symptôme du budget, pas du produit. Ses
+   * sœurs déclaraient toutes le leur (90 s à 600 s) ; celle-ci avait été
+   * oubliée. Le cliquet `tests/unit/e2e-harness/budget-des-specs-admin.spec.ts`
+   * refuse désormais qu'une suite qui se connecte parte sans budget déclaré.
+   */
+  // 🔴 2026-08-22 — UN DÉLAI PLUS LONG QUE SON BUDGET NE PEUT JAMAIS EXPIRER.
+  //
+  // Famille de défauts symétrique de celle corrigée la veille. Un `timeout:`
+  // soigneusement choisi, avec un message qui nomme la cause, est INATTEIGNABLE
+  // si le budget du test qui l'englobe est plus court : c'est le budget qui
+  // rend le verdict, et son message ne nomme rien.
+  //
+  // 🔑 Règle : le budget d'une suite doit être STRICTEMENT supérieur au plus
+  // grand délai qui vit dedans — helpers importés compris. Verrouillé par
+  // `tests/unit/e2e-harness/delai-interne-sous-le-budget.spec.ts`.
+  //
+  // Ici : 180 s était ÉGAL au délai de `loginAsAdmin` hors CI (180 000). Un
+  // budget égal à ce qu'il contient ne laisse aucune place au reste du test.
+  test.describe.configure({ timeout: 300_000 });
+
   test("le parcours crée le client, le devis, et rend la checklist", async ({ page }) => {
     try {
       await loginAsAdmin(page);
@@ -108,7 +136,18 @@ test.describe("Wizard nouvelle vente — client → devis → checklist", () => 
     await expect(page.getByRole("heading", { name: /Étape 4 — Checklist/ })).toBeVisible();
     // Le devis existe (lien vers sa fiche) ; la session reste à faire — la
     // checklist DOIT montrer les deux, pas seulement ce qui est fait.
-    await expect(page.getByRole("link", { name: "Devis" })).toBeVisible();
+    // 🔴 2026-08-22 — CE CONTRÔLE POUVAIT PASSER SUR LA BARRE LATÉRALE.
+    //
+    // `getByRole("link", { name: "Devis" })` n'était borné à rien : le rail de
+    // la console porte lui aussi une entrée « Devis ». L'assertion prétend
+    // vérifier que la CHECKLIST de l'étape 4 montre le devis créé ; elle serait
+    // restée verte avec une checklist vide.
+    //
+    // On borne au contenu et on exige le libellé exact.
+    await expect(
+      page.locator(".admin-main").getByRole("link", { name: "Devis", exact: true }),
+      "la checklist de l'étape 4 ne montre pas le devis créé",
+    ).toBeVisible();
     await expect(page.getByText("Session de formation")).toBeVisible();
   });
 });

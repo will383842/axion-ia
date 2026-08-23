@@ -393,7 +393,15 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             accountHref={adminBase}
             logoutAction={logoutAction}
           />
-          <main className="admin-main min-w-0 flex-1">{children}</main>
+          {/* <div> et NON <main> : le layout [locale] porte déjà `<main id="main">`
+              (src/app/[locale]/layout.tsx:370), cible du lien d'évitement. Le groupe
+              de routes `(admin)` n'a AUCUN layout.tsx propre — il hérite donc de la
+              coquille publique, et un <main> ici en produisait un SECOND, imbriqué.
+              Mesuré par axe-core sur les quatre pages de la console, le 2026-08-22 :
+              landmark-main-is-top-level · landmark-no-duplicate-main · landmark-unique,
+              trois violations `moderate` par page. Le nom de classe est inchangé :
+              `.admin-main` (admin.css:894) ne cible pas la balise. */}
+          <div className="admin-main min-w-0 flex-1">{children}</div>
         </div>
         <AdminSessionExpiryWarning />
       </div>
@@ -405,7 +413,9 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     <div className={`admin-layout ${interAdmin.variable}`}>
       {}
       <style dangerouslySetInnerHTML={{ __html: adminHidePublicShellCss }} />
-      <main className="admin-main">{children}</main>
+      {/* <div> et NON <main> : même raison qu'au-dessus — le layout [locale] porte
+          déjà `<main id="main">`, et `(admin)` n'a pas de layout propre. */}
+      <div className="admin-main">{children}</div>
     </div>
   );
 }

@@ -185,9 +185,35 @@ export function EmargementGrid({
       const next = new Map(prev);
       // Valeur courante = override s'il existe, sinon donnée serveur.
       const cur = prev.get(k) ?? initState.get(k) ?? { present: false, dureeMinutes: "0" };
-      next.set(k, { ...cur, present: !cur.present });
+      const devientPresent = !cur.present;
+      // 🔴 2026-08-22 — COCHER LAISSAIT LA DURÉE À ZÉRO, DONC AFFICHAIT UN
+      // ÉTAT QUE LE SERVEUR NE PEUT PAS TENIR.
+      //
+      // Un créneau fraîchement généré porte `dureeRealiseeMinutes: 0`. Cocher
+      // la case ne changeait que `present` : l'écran montrait « présent, 0 min »
+      // — une combinaison que `recomputeTauxPresence` réécrit aussitôt en
+      // ABSENCE. Le serveur retient désormais la durée prévue dans ce cas
+      // (`src/server/actions/qualiopi/presence.ts`) ; on aligne l'AFFICHAGE
+      // pour que l'admin voie la valeur qui sera réellement enregistrée, plutôt
+      // que de découvrir l'écart au rechargement.
+      //
+      // ⚠️ On ne touche RIEN quand la durée porte déjà une valeur : un créneau
+      // importé (connexion partielle) garde sa mesure, qui est sa seule trace.
+      const dureeMinutes =
+        devientPresent && Number(cur.dureeMinutes) === 0
+          ? String(dureePrevuePour(enrollmentId, date, dj))
+          : cur.dureeMinutes;
+      next.set(k, { present: devientPresent, dureeMinutes });
       return next;
     });
+  }
+
+  /** Durée prévue du créneau, telle que le serveur la connaît. */
+  function dureePrevuePour(enrollmentId: string, date: string, dj: DemiJourneeLabel): number {
+    const c = creneaux.find(
+      (x) => x.enrollmentId === enrollmentId && x.date === date && x.demiJournee === dj,
+    );
+    return c?.dureePrevueMinutes ?? 0;
   }
 
   function setDuree(enrollmentId: string, date: string, dj: DemiJourneeLabel, value: string) {

@@ -18,7 +18,13 @@ import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
 import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
-import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./lib/csp";
+import {
+  buildCspHeader,
+  estHoteDeBouclage,
+  generateNonce,
+  isStrictCspPath,
+  isEmbedPath,
+} from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
 import { isNoindexStubRoute } from "./lib/seo-noindex-routes";
@@ -278,7 +284,20 @@ const authPipeline = auth(async (req) => {
     // X-Frame-Options DENY (sinon le navigateur refuse l'iframe quoi qu'en dise
     // la CSP). next.config.ts exclut aussi ce chemin de son X-Frame-Options.
     const embed = isEmbedPath(req.nextUrl.pathname);
-    response.headers.set("Content-Security-Policy", buildCspHeader({ nonce, strict, embed }));
+    // 🔴 2026-08-22 — `upgrade-insecure-requests` casse les prefetch RSC quand le
+    // site est servi en HTTP nu (build de production en CI). Chromium n'upgrade
+    // pas une requête directe vers `http://localhost`, mais il upgrade la CIBLE
+    // D'UNE REDIRECTION — et la garde Edge ci-dessus en émet une. Sur une origine
+    // de bouclage la directive n'a aucune valeur de sécurité : on l'omet là, et
+    // seulement là. Le critère est l'HÔTE, jamais le schéma : derrière Coolify le
+    // dernier saut est en clair, et gater sur le schéma la retirerait EN PROD.
+    const origineBouclage = estHoteDeBouclage(
+      req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? req.nextUrl.hostname,
+    );
+    response.headers.set(
+      "Content-Security-Policy",
+      buildCspHeader({ nonce, strict, embed, origineBouclage }),
+    );
     // COEP `unsafe-none` site-wide (audit Calendly 2026-07-07).
     //
     // Historique : on posait `credentialless` partout, puis `unsafe-none` sur le

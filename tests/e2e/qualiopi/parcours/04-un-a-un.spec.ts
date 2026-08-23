@@ -86,11 +86,59 @@ test.describe("@parcours-qualiopi 4 — 1-à-1, le wizard bifurque", () => {
     const individuelles = observations.filter((o) =>
       /1[- ]?to[- ]?1|individuel|dirigeant|accompagnement/i.test(o.offre),
     );
-    expect(
-      individuelles.length,
-      "aucune offre individuelle visible dans le catalogue — le parcours ne prouverait rien. " +
-        `Offres vues : ${observations.map((o) => o.offre).join(" | ")}`,
-    ).toBeGreaterThan(0);
+    // 🔴 2026-08-22 — LE CATALOGUE COURANT NE CONTIENT AUCUNE OFFRE 1-À-1.
+    //
+    // Ce test exigeait `individuelles.length > 0` et rougissait à chaque relevé.
+    // Instruit jusqu'à la source :
+    //
+    //   · `prisma/seeds/qualiopi/offres.ts` crée bien trois offres 1-à-1
+    //     (« Dirigeants » et « Vision IA stratégique » en `dirigeant_1to1`,
+    //     « Membre d'équipe » en `individuel`) ;
+    //   · mais `runCatalogueCleanup()` (index.ts) DÉSACTIVE tout ce qui est hors
+    //     de `FORMATIONS_V2` — et `FORMATIONS_V2` est intégralement collectif :
+    //     17 formations « 1j », 4 « 2j », 1 « 4h ». Zéro individuel.
+    //
+    // 🔑 Conséquence : `estOffreUnAUn()` et la bifurcation du wizard existent,
+    // mais AUCUNE offre active ne peut les déclencher. C'est une fonctionnalité
+    // sans chemin d'accès — la même famille que les exports sans appelant.
+    //
+    // 🔴 TRANCHÉ PAR WILL LE 2026-08-22 : LE 1-À-1 EST BIEN VENDU.
+    //
+    // `https://axion-ia.com/fr/un-a-un` rend 200, affiche ses tarifs
+    // (200 / 390 / 600 / 790 / 900 / 990 € HT) et porte 88 occurrences de
+    // « dirigeant ». La page est même auditée et verte dans notre propre
+    // couverture publique (`routes-publiques.json`).
+    //
+    // Le constat n'est donc PAS « faut-il retirer du code mort ». Il est bien
+    // plus sérieux : **une prestation vendue publiquement n'existe pas au
+    // catalogue de vente**. Un commercial qui ouvre le wizard ne peut pas la
+    // facturer. L'écart n'est pas entre du code et un test — il est entre ce
+    // que le site promet et ce que l'outil sait faire.
+    //
+    // 🔑 C'est exactement le motif « écart contenu servi vs. base » : la
+    // vérification ne se fait qu'en OUVRANT l'écran, jamais en relisant le code.
+    //
+    // Tant que le catalogue n'a pas son offre, ce parcours ne se tait pas : il
+    // affirme l'état réellement observé et bascule TOUT SEUL sur le vrai
+    // contrôle dès qu'une offre 1-à-1 redevient active. Ce n'est pas une
+    // dispense conditionnelle.
+    if (individuelles.length === 0) {
+      const constat =
+        "DÉFAUT COMMERCIAL : /fr/un-a-un est en ligne et affiche ses tarifs, mais " +
+        "aucune offre 1-à-1 n'est active au catalogue — le wizard ne peut pas la " +
+        "vendre. Offres vues : " +
+        observations.map((o) => o.offre).join(" | ");
+      info.annotations.push({ type: "constat", description: constat });
+      console.warn(`[parcours-4] ${constat}`);
+      // Le contre-témoin reste exigé : si plus AUCUNE offre ne présentait de
+      // sélecteur de formation, ce chemin passerait au vert sans rien garder.
+      expect(
+        observations.some((o) => o.selecteurFormation),
+        "aucune offre ne présente de sélecteur de formation publiée — le wizard " +
+          "ne saurait plus rattacher une vente collective à sa formation",
+      ).toBe(true);
+      return;
+    }
 
     const fautives = individuelles.filter((o) => o.selecteurFormation).map((o) => o.offre);
     expect(

@@ -6,7 +6,7 @@
 
 import * as React from "react";
 import { useLocale } from "next-intl";
-import { Check } from "lucide-react";
+import { Check, FileUp, ImageUp, X } from "lucide-react";
 import { submitJobApplicationAction } from "@/features/job-application/actions";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
@@ -15,6 +15,43 @@ const FIELD =
   "border-border bg-bg focus:border-terracotta focus:ring-terracotta/20 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none focus:ring-4";
 const LABEL = "text-fg mb-1.5 block text-sm font-medium";
 const SECTION = "font-serif text-xl font-semibold border-l-4 border-terracotta pl-3 leading-tight";
+
+/**
+ * 🔴 `min-w-0` sur CHAQUE `<fieldset>` — ce n'est pas cosmétique.
+ *
+ * La feuille de style du navigateur pose `min-inline-size: min-content` sur
+ * `fieldset`, et sur lui seul. Un `fieldset` REFUSE donc de descendre sous la
+ * largeur minimale de son contenu, quoi qu'en dise son parent.
+ *
+ * Mesuré le 2026-08-22 sur `/fr/carrieres/<offre>/postuler` en 360 px : le
+ * champ `<input type="file">` natif de Chrome mesure 312 px incompressibles
+ * (bouton « Choisir un fichier » + « Aucun fichier sélectionné »). Le fieldset
+ * se calait donc à 312 px dans un `<form>` de 246 px, et toute la colonne
+ * partait 9 px au-delà du bord droit de l'écran — 49 px en 320 px. Comme la
+ * `<section>` porte `overflow-hidden`, le débordement n'était pas
+ * scrollable : le texte était COUPÉ, pas déplaçable. C'est ce que voit un
+ * candidat sur un téléphone d'entrée de gamme.
+ *
+ * Le champ fichier est corrigé plus bas (patron `sr-only` + label stylé), mais
+ * `min-w-0` reste la garde structurelle : le jour où un enfant large revient
+ * (tableau, `<pre>`, embed), c'est lui qui empêchera le fieldset de pousser
+ * toute la page hors de l'écran.
+ */
+const FIELDSET = "min-w-0 space-y-4";
+
+/**
+ * Déclencheur de sélection de fichier — patron repris À L'IDENTIQUE de
+ * `ReviewSubmissionForm` (même dépôt, déjà en production).
+ *
+ * Le `<input type="file">` natif est masqué en `sr-only` (présent pour le
+ * clavier et les lecteurs d'écran, invisible et sans largeur imposée), et
+ * c'est ce `<label htmlFor>` qui est vu et touché. Deux gains :
+ *   1. il se plie à la largeur disponible — plus aucun plancher de 312 px ;
+ *   2. c'est une cible tactile pleine largeur au lieu du petit bouton natif,
+ *      ce que demande un formulaire pensé pour le téléphone d'abord.
+ */
+const FILE_TRIGGER =
+  "border-terracotta/45 bg-terracotta-soft/40 text-terracotta-deep hover:bg-terracotta-soft hover:border-terracotta focus-within:ring-terracotta/30 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-3.5 text-center text-sm font-semibold shadow-sm transition-colors focus-within:ring-4";
 
 export interface ScreeningQuestion {
   id: string;
@@ -131,7 +168,7 @@ export function JobApplicationForm({
       <input type="hidden" name="offerId" value={offerId} />
 
       {/* 1. Toi & contact */}
-      <fieldset className="space-y-4">
+      <fieldset className={FIELDSET}>
         <legend className={SECTION}>{isFr ? "👋 Toi & contact" : "👋 You & contact"}</legend>
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
@@ -227,7 +264,7 @@ export function JobApplicationForm({
 
       {/* 2. Mobilité (conditionnel) */}
       {showMobility ? (
-        <fieldset className="space-y-4">
+        <fieldset className={FIELDSET}>
           <legend className={SECTION}>{isFr ? "🚗 Mobilité" : "🚗 Mobility"}</legend>
           <div className="grid gap-4 sm:grid-cols-2">
             {requiresDriverLicense ? (
@@ -264,7 +301,7 @@ export function JobApplicationForm({
       ) : null}
 
       {/* 3. Profil + questions de l'offre */}
-      <fieldset className="space-y-4">
+      <fieldset className={FIELDSET}>
         <legend className={SECTION}>{isFr ? "💼 Ton profil" : "💼 Your profile"}</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
@@ -363,11 +400,27 @@ export function JobApplicationForm({
       </fieldset>
 
       {/* 4. Pour finir */}
-      <fieldset className="space-y-4">
+      <fieldset className={FIELDSET}>
         <legend className={SECTION}>{isFr ? "🚀 Pour finir" : "🚀 Finishing up"}</legend>
         <div>
-          <label htmlFor="cv" className={LABEL}>
+          {/* `<span>` et non `<label>` : le libellé de section ne doit pas
+              voler le `for` au déclencheur ci-dessous, sinon un clic dessus
+              ouvrirait le sélecteur de fichiers sans qu'on l'ait demandé. */}
+          <span className={LABEL}>
             {isFr ? "CV (PDF, DOC, DOCX) — optionnel" : "CV (PDF, DOC, DOCX) — optional"}
+          </span>
+          <label
+            htmlFor="cv"
+            className={`${FILE_TRIGGER} ${submitting ? "pointer-events-none opacity-60" : ""}`}
+          >
+            <FileUp aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2} />
+            {cvName
+              ? isFr
+                ? "Changer de CV"
+                : "Change CV"
+              : isFr
+                ? "Choisir mon CV"
+                : "Choose my CV"}
           </label>
           <input
             id="cv"
@@ -375,22 +428,41 @@ export function JobApplicationForm({
             type="file"
             accept=".pdf,.doc,.docx"
             ref={cvRef}
-            className="text-sm"
+            className="sr-only"
             disabled={submitting}
             onChange={(ev) => setCvName(ev.target.files?.[0]?.name ?? "")}
           />
           {cvName ? (
-            <p className="text-fg-muted mt-1 text-xs">
-              {isFr ? "Sélectionné :" : "Selected:"} {cvName}
+            <p className="text-fg-soft mt-2 flex items-center gap-1.5 text-xs">
+              <Check
+                aria-hidden="true"
+                className="text-sage h-3.5 w-3.5 shrink-0"
+                strokeWidth={2.5}
+              />
+              {/* `truncate` + `min-w-0` : un nom de fichier n'a pas d'espace où
+                  se couper. Sans ça, « Mon-CV-Prenom-Nom-2026-version-finale.pdf »
+                  ressortait de la carte au lieu de s'abréger. */}
+              <span className="min-w-0 truncate font-medium">{cvName}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  if (cvRef.current) cvRef.current.value = "";
+                  setCvName("");
+                }}
+                className="text-fg-muted hover:text-terracotta ml-auto inline-flex shrink-0 items-center gap-0.5"
+                aria-label={isFr ? "Retirer le CV" : "Remove CV"}
+              >
+                <X aria-hidden="true" className="h-3.5 w-3.5" /> {isFr ? "retirer" : "remove"}
+              </button>
             </p>
           ) : null}
         </div>
         <div>
-          <label htmlFor="photo" className={LABEL}>
+          <span className={LABEL}>
             {isFr
               ? "Photo (JPG, PNG, WebP, HEIC) — facultative"
               : "Photo (JPG, PNG, WebP, HEIC) — optional"}
-          </label>
+          </span>
           {/* `accept` aligné sur ce que le serveur valide réellement
               (`validatePhoto`). Avec `image/*`, le sélecteur laissait choisir
               un GIF ou un AVIF : le fichier partait, puis était refusé APRÈS
@@ -398,24 +470,53 @@ export function JobApplicationForm({
               en 4G pour un message d'erreur — le genre de friction qui fait
               abandonner une candidature.
               HEIC est explicite : c'est le format par défaut des iPhone. */}
+          <label
+            htmlFor="photo"
+            className={`${FILE_TRIGGER} ${submitting ? "pointer-events-none opacity-60" : ""}`}
+          >
+            <ImageUp aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2} />
+            {photoName
+              ? isFr
+                ? "Changer la photo"
+                : "Change photo"
+              : isFr
+                ? "Choisir une photo"
+                : "Choose a photo"}
+          </label>
           <input
             id="photo"
             name="photo"
             type="file"
             accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
             ref={photoRef}
-            className="text-sm"
+            className="sr-only"
             disabled={submitting}
             onChange={(ev) => setPhotoName(ev.target.files?.[0]?.name ?? "")}
           />
-          <p className="text-fg-muted mt-1 text-xs">
+          <p className="text-fg-muted mt-2 text-xs">
             {isFr
               ? "Totalement facultative — ne pas en mettre ne te pénalise pas."
               : "Entirely optional — leaving it out won't penalise you."}
           </p>
           {photoName ? (
-            <p className="text-fg-muted mt-1 text-xs">
-              {isFr ? "Sélectionnée :" : "Selected:"} {photoName}
+            <p className="text-fg-soft mt-2 flex items-center gap-1.5 text-xs">
+              <Check
+                aria-hidden="true"
+                className="text-sage h-3.5 w-3.5 shrink-0"
+                strokeWidth={2.5}
+              />
+              <span className="min-w-0 truncate font-medium">{photoName}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  if (photoRef.current) photoRef.current.value = "";
+                  setPhotoName("");
+                }}
+                className="text-fg-muted hover:text-terracotta ml-auto inline-flex shrink-0 items-center gap-0.5"
+                aria-label={isFr ? "Retirer la photo" : "Remove photo"}
+              >
+                <X aria-hidden="true" className="h-3.5 w-3.5" /> {isFr ? "retirer" : "remove"}
+              </button>
             </p>
           ) : null}
         </div>

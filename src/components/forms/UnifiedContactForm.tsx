@@ -495,7 +495,7 @@ function UnifiedContactFormBody({
           pastilles discrètes dessous. Un helper dynamique décrit l'intention
           choisie. Zéro friction, mobile-first, sans état d'ouverture. */}
       {!lockType ? (
-        <fieldset className="space-y-3.5">
+        <fieldset className="min-w-0 space-y-3.5">
           <legend className="text-fg mb-1 block text-base font-bold sm:text-lg">
             {t.typeLabel}
             <span className="text-terracotta-deep ml-1.5 font-bold">*</span>

@@ -153,9 +153,18 @@ export async function creerSession(
       timeout: process.env["CI"] === "true" ? 60_000 : 180_000,
     });
   } catch (cause) {
+    // 🔴 2026-08-22 — `main` N'EST PLUS UN REPÈRE DANS LA CONSOLE.
+    //
+    // Depuis que le layout admin a cessé d'ouvrir son propre `<main>` (il
+    // héritait de celui du site et en produisait un SECOND, imbriqué — trois
+    // violations axe `moderate` par page), `page.locator("main").last()`
+    // résoudrait le `<main>` PUBLIC unique : le texte d'échec emporterait la
+    // barre latérale et la topbar au lieu du formulaire, et noierait la cause.
+    //
+    // 🔑 Un message de diagnostic doit viser la zone qui a échoué, pas le
+    // document. `.admin-main` (admin.css:894) est le conteneur de contenu.
     const visible = await page
-      .locator("main")
-      .last()
+      .locator(".admin-main")
       .innerText()
       .catch(() => "(texte illisible)");
     const invalides = await page.evaluate(() =>

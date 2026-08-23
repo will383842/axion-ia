@@ -31,10 +31,23 @@ test.describe("@parcours-qualiopi 6 — le stagiaire sur téléphone", () => {
 
     const id = await ouvrirSessionDemo(page);
     expect(id, "session de démonstration introuvable — `pnpm qualiopi:seed-demo`").not.toBeNull();
-    await page.waitForLoadState("networkidle");
+
+    // 🔴 2026-08-21 — `waitForLoadState("networkidle")` NE REVENAIT JAMAIS ICI.
+    //
+    // Sans délai explicite, l'attente hérite du budget du test : elle a donc
+    // consommé les 300 000 ms entières, puis rendu « Test timeout exceeded » —
+    // un message qui ne nomme rien. La fiche de session admin ne devient jamais
+    // silencieuse côté réseau (revalidations, compteurs), et c'est normal.
+    //
+    // 🔑 On attend un CONTENU, pas un état de réseau. Le bouton porte sa propre
+    // attente, et son absence dit quelque chose d'utile ; le silence du réseau
+    // ne dit rien du tout.
 
     // ── Côté organisme : produire le lien, comme le ferait l'assistante ──────
     const bouton = page.getByRole("button", { name: /Générer un accès portail/i }).first();
+    await bouton.waitFor({ state: "visible", timeout: 60_000 }).catch(() => {
+      /* Le compte ci-dessous porte le message utile. */
+    });
     expect(
       await bouton.count(),
       "aucun bouton de génération d'accès portail sur la fiche de session — " +
@@ -44,7 +57,22 @@ test.describe("@parcours-qualiopi 6 — le stagiaire sur téléphone", () => {
 
     // Le lien s'affiche à l'écran, qu'il soit parti par e-mail ou non — c'est
     // le repli assumé du composant, et c'est lui qu'on suit ici.
-    const zoneLien = page.locator("code, a[href*='/portail/']").first();
+    // 🔴 2026-08-22 — L'UNION PRENAIT LE PREMIER DANS L'ORDRE DU DOM.
+    //
+    // `code, a[href*='/portail/']` ne classe pas par pertinence : il prend le
+    // premier des deux qui apparaît. Or `PreparationKitSession` est rendu AVANT
+    // `EnrollmentsSection` (sessions/[id]/page.tsx:798 vs :850) et affiche
+    // `<code>pnpm tsx scripts/kit-formateur/publier-vers-r2.ts</code>` quand le
+    // kit est absent. `toBeVisible()` passait donc sur CE bloc, et l'échec
+    // tombait deux lignes plus bas en accusant la génération d'accès.
+    //
+    // 🔑 C'est le CONTENU qui identifie la cible, pas la balise. Le lien généré
+    // est affiché en `<code>{result.url}</code>` (GenererPortailAccesButton.tsx:114) ;
+    // la branche `a[href]` n'est qu'un repli théorique.
+    const zoneLien = page
+      .locator("a[href*='/portail/'], code")
+      .filter({ hasText: /\/portail\// })
+      .first();
     await expect(
       zoneLien,
       "le lien d'accès n'apparaît pas après génération — impossible de le transmettre",

@@ -58,11 +58,50 @@ const routes = certificationRevendicable
   ? toutesLesRoutes
   : toutesLesRoutes.filter((r) => !ROUTES_SI_CERTIFIE.has(r));
 
+/**
+ * Routes dont le COÛT D'AUDIT dépasse le budget commun — mesuré, pas supposé.
+ *
+ * 🔴 2026-08-21. `/fr/implantations` rendait « Test timeout of 30000ms
+ * exceeded », trois fois de suite. Mesuré contre la production, machine rapide,
+ * sans concurrence : 8 693 723 octets de HTML, 22 558 nœuds, 2 279 liens, et
+ * **62 210 ms rien que pour axe-core** — pour **0 violation bloquante**.
+ *
+ * 🔑 Le gate ne mesurait pas la page : il mesurait sa taille, et rendait le
+ * verdict le plus inutile qui soit — rouge, sans cause.
+ *
+ * Le poids de cette page est un constat de PERFORMANCE, remonté séparément.
+ * Ce test-ci doit dire si la page est saine, et le dire. L'exception porte donc
+ * son chiffre et sa date : si le coût double encore, le rouge revient — et ce
+ * commentaire le qualifiera au lieu de laisser chercher pendant des heures.
+ */
+const BUDGET_PAR_ROUTE: Record<string, number> = {
+  "/fr/implantations": 240_000,
+};
+
 test.describe("@qualiopi-public routes publiques", () => {
-  test.describe.configure({ mode: "parallel" });
+  // 🔴 2026-08-22 — UN DÉLAI PLUS LONG QUE SON BUDGET NE PEUT JAMAIS EXPIRER.
+  //
+  // Famille de défauts symétrique de celle corrigée la veille. Un `timeout:`
+  // soigneusement choisi, avec un message qui nomme la cause, est INATTEIGNABLE
+  // si le budget du test qui l'englobe est plus court : c'est le budget qui
+  // rend le verdict, et son message ne nomme rien.
+  //
+  // 🔑 Règle : le budget d'une suite doit être STRICTEMENT supérieur au plus
+  // grand délai qui vit dedans — helpers importés compris. Verrouillé par
+  // `tests/unit/e2e-harness/delai-interne-sous-le-budget.spec.ts`.
+  //
+  // Ici : `auditerPage` navigue avec `timeout: 45_000` (_harness/audit-page.ts,
+  // `waitUntil: "networkidle"`), attend 400 ms d'hydratation, puis fait tourner
+  // axe — pire cas ~60 s. Sous les 30 s par défaut de `playwright.config.ts`,
+  // ce délai de 45 s ne pouvait PAS expirer : une route lente mourait sur
+  // « Test timeout of 30000ms exceeded », sans jamais nommer la route.
+  // `BUDGET_PAR_ROUTE` reste au-dessus pour `/fr/implantations` (240 s).
+  test.describe.configure({ mode: "parallel", timeout: 90_000 });
 
   for (const route of routes) {
     test(`page ${route}`, async ({ page }, info) => {
+      const budget = BUDGET_PAR_ROUTE[route];
+      if (budget !== undefined) test.setTimeout(budget);
       const r = await auditerPage(page, route);
       await info.attach(`${route.replace(/\//g, "_")}.json`, {
         body: JSON.stringify(r, null, 2),
