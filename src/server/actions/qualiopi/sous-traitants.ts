@@ -2,6 +2,7 @@
  * Qualiopi — Server Actions Sous-traitants OF (T12).
  *
  * creerSousTraitantAction      : enregistre un sous-traitant de l'OF.
+ * updateSousTraitantAction     : corrige un sous-traitant existant (NDA, contrat, archivage).
  * verifierSousTraitantOfAction : marque la vérification data.gouv.fr.
  *
  * off.27 : sous-traitants prestataires ≠ formateurs individuels.
@@ -21,6 +22,7 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import {
   creerSousTraitant,
+  updateSousTraitant,
   verifierDataGouv,
   getSousTraitant,
 } from "@/server/qualiopi/registres/sous-traitants-service";
@@ -50,6 +52,38 @@ const creerSousTraitantSchema = z.object({
   contactFonction: z.string().max(200).optional(),
   contratSigneAt: z.coerce.date().optional(),
   actif: z.boolean().default(true),
+});
+
+/**
+ * Correction d'un sous-traitant déjà enregistré.
+ *
+ * 🔴 Ce schéma manquait, et avec lui toute la chaîne : `updateSousTraitant()`
+ * existait au service depuis T12 **sans aucun appelant hors de sa propre spec**.
+ * `nda`, `contratSigneAt` et `actif` n'étaient donc saisissables qu'À LA
+ * CRÉATION — or les deux premiers sont deux des trois conditions du numérateur
+ * de l'indicateur 27 (`conformite-service.ts:332-339`), qui est un
+ * SUPER-indicateur : un organisme créé avant la signature de son contrat restait
+ * définitivement non conforme, et une ligne créée par erreur ne pouvait pas être
+ * archivée — elle polluait le dénominateur à vie.
+ *
+ * `.nullable()` sur les colonnes nullables : `null` efface, `undefined` laisse
+ * en l'état. Même contrat que `sousTraitantPiecesSchema` ci-dessous.
+ *
+ * Garde : `requireAdminWrite`, comme la création et comme `updatePartenariatAction`
+ * — exiger ici davantage qu'à la création rendrait la correction plus difficile
+ * que la saisie initiale, ce qui est exactement le défaut qu'on répare.
+ */
+const updateSousTraitantSchema = z.object({
+  id: z.string().uuid(),
+  nom: z.string().min(1).max(250).optional(),
+  siret: siretField.nullable().optional(),
+  nda: z.string().max(20).nullable().optional(),
+  objetPrestation: z.string().min(1).optional(),
+  contactNom: z.string().max(200).nullable().optional(),
+  contactEmail: z.string().email().max(320).nullable().optional(),
+  contactFonction: z.string().max(200).nullable().optional(),
+  contratSigneAt: z.coerce.date().nullable().optional(),
+  actif: z.boolean().optional(),
 });
 
 const verifierSousTraitantOfSchema = z.object({
@@ -124,6 +158,65 @@ export async function creerSousTraitantAction(input: {
   });
 
   return { data: { id: sousTraitant.id } };
+}
+
+/**
+ * Corrige un sous-traitant déjà enregistré (identité, NDA, contrat, archivage).
+ *
+ * 🔴 Pendant exact de `updatePartenariatAction` : les deux registres partagent
+ * la même forme (service `update*` + action + panneau `*RowActions`), mais la
+ * moitié sous-traitance s'arrêtait au service. Le voisin était complet, celui-ci
+ * tronqué — et personne ne l'a vu, parce qu'aucune garde ne cherche l'APPELANT
+ * d'une fonction de service.
+ *
+ * ⚠️ `siret` suit le contrat documenté de `siretField` : une chaîne vide rend
+ * `undefined` (« ne rien changer »), il faut passer `null` pour effacer.
+ */
+export async function updateSousTraitantAction(input: {
+  id: string;
+  nom?: string;
+  siret?: string | null;
+  nda?: string | null;
+  objetPrestation?: string;
+  contactNom?: string | null;
+  contactEmail?: string | null;
+  contactFonction?: string | null;
+  contratSigneAt?: Date | null;
+  actif?: boolean;
+}): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = updateSousTraitantSchema.safeParse(input);
+  if (!parsed.success) return { error: premierMessageZod(parsed.error) };
+  const { id, ...fields } = parsed.data;
+
+  const existe = await getSousTraitant(id);
+  if (existe === null) return { error: "Sous-traitant introuvable" };
+
+  try {
+    await updateSousTraitant(id, {
+      ...(fields.nom !== undefined ? { nom: fields.nom } : {}),
+      ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
+      ...(fields.nda !== undefined ? { nda: fields.nda } : {}),
+      ...(fields.objetPrestation !== undefined ? { objetPrestation: fields.objetPrestation } : {}),
+      ...(fields.contactNom !== undefined ? { contactNom: fields.contactNom } : {}),
+      ...(fields.contactEmail !== undefined ? { contactEmail: fields.contactEmail } : {}),
+      ...(fields.contactFonction !== undefined ? { contactFonction: fields.contactFonction } : {}),
+      ...(fields.contratSigneAt !== undefined ? { contratSigneAt: fields.contratSigneAt } : {}),
+      ...(fields.actif !== undefined ? { actif: fields.actif } : {}),
+    });
+  } catch {
+    return { error: "Erreur lors de la mise à jour du sous-traitant" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.sous_traitant.update",
+    targetType: "SousTraitant",
+    targetId: id,
+    changes: fields,
+    session,
+  });
+
+  return { data: { id } };
 }
 
 /**

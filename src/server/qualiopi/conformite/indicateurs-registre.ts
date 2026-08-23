@@ -8,8 +8,23 @@
  * Répartition critères : C1:1-3 / C2:4-8 / C3:9-16 / C4:17-20 / C5:21-22
  *                        C6:23-29 / C7:30-32. Total = 32.
  *
- * Super-indicateurs (NC majeure = échec certification) :
- *   1,2,4,5,9,11,12,21,23,26,27,30,31,32 (+7,16 si certifiant).
+ * Super-indicateurs (NC majeure = échec certification) — 17, dont 7 et 16 qui ne
+ * sont applicables que si l'OF est certifiant. La ligne qui suit porte une
+ * balise lisible par machine, et c'est ELLE que la garde relit :
+ *
+ * @superIndicateurs 4,5,6,7,10,11,14,15,16,20,21,22,26,27,29,31,32
+ *
+ * La règle, et non la liste, fait foi : est super TOUT indicateur HORS de la
+ * liste graduable du RNQ V9 (08/01/2024) = {1,2,3,8,9,12,13,17,18,19,23,24,25,
+ * 28,30}. C'est ainsi que `indicateurs-registre.spec.ts` le vérifie, et c'est
+ * `en-tete-super-indicateurs.spec.ts` qui empêche la liste ci-dessus de
+ * diverger à nouveau du code.
+ *
+ * ⚠️ Jusqu'au 2026-08-23 cet en-tête annonçait « 1,2,4,5,9,11,12,21,23,26,27,
+ * 30,31,32 » — une liste de 14 qui se trompait DANS LES DEUX SENS : elle disait
+ * super six indicateurs graduables (1,2,9,12,23,30) et, bien plus grave, elle
+ * passait sous silence SEPT indicateurs (6,10,14,15,20,22,29) dont une seule
+ * non-conformité fait échouer la certification.
  *
  * Conditionnels :
  *   "cert"  → 3, 7, 16 (formations certifiantes RNCP/RS)
