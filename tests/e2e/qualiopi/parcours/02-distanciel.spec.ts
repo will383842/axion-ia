@@ -498,13 +498,54 @@ test.describe("@parcours-qualiopi 2 — distanciel, relevé de connexion", () =>
       // élément qui ne s'activera jamais. Le symptôme (« element is not
       // enabled » pendant quatre minutes) ne ressemble en rien à sa cause.
       //
-      // On exige donc explicitement que le formulaire ait REÇU le fichier. Le
-      // message dit ce que l'échec signifie, plutôt que de laisser lire un délai.
-      await expect(
-        bouton,
-        "le bouton d'import ne s'est pas activé après dépôt du fichier — le formulaire " +
-          "n'a pas reçu l'événement (page non hydratée, ou fichier refusé en amont)",
-      ).toBeEnabled({ timeout: 30_000 });
+      // 🔑 2026-08-23 — LA VERSION PRÉCÉDENTE DIAGNOSTIQUAIT LA COURSE SANS LA
+      // FRANCHIR. Elle attendait passivement que le bouton s'active, et rendait
+      // un très bon message quand il ne s'activait pas — mais un geste perdu
+      // avant l'hydratation n'est JAMAIS rejoué : attendre plus longtemps ne
+      // pouvait rien changer. Mesuré ce jour-là : le parcours a rougi là-dessus
+      // sur un formulaire par ailleurs sain.
+      //
+      // On REPOSE donc le geste à chaque tour, exactement comme `creerSession`
+      // le fait pour le choix de la formation (`_communs.ts`). `setInputFiles`
+      // et `selectOption` réémettent leurs événements inconditionnellement, ils
+      // conviennent tous deux à une re-pose ; les deux champs sont reposés parce
+      // que les deux gestes se perdent de la même façon.
+      //
+      // Le témoin — le bouton devient actif — n'est pas un témoin négatif : le
+      // bouton EXISTE et est `disabled` tant que l'état `file` est nul (:203).
+      // Il ne peut donc pas passer par absence.
+      await expect
+        .poll(
+          async () => {
+            await champFichier
+              .setInputFiles({
+                name: nomFichier,
+                mimeType: "text/csv",
+                buffer: Buffer.from(contenu, "utf8"),
+              })
+              .catch(() => {
+                /* champ désactivé pendant une transition : on retentera. */
+              });
+            await formulaireImport
+              .locator("#import-plateforme")
+              .selectOption("zoom")
+              .catch(() => {
+                /* idem. */
+              });
+            return bouton.isEnabled().catch(() => false);
+          },
+          {
+            timeout: 90_000,
+            intervals: [500, 1_000, 2_000],
+            message:
+              "le bouton d'import ne s'est pas activé après dépôt du fichier, ALORS QUE le " +
+              "fichier a été REPOSÉ à chaque tour — le formulaire n'a donc pas hydraté du " +
+              "tout (`onChange` jamais attaché, ImportReleveForm.tsx), ou le fichier est " +
+              "refusé en amont. Ne PAS relever ce délai : un geste perdu avant hydratation " +
+              "n'est jamais rejoué, attendre davantage ne le rattraperait pas.",
+          },
+        )
+        .toBe(true);
 
       await bouton.click();
     };

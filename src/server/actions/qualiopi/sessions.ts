@@ -412,6 +412,29 @@ export async function createSessionAction(
     const code = (err as { code?: string })?.code;
     if (code === "P2002")
       return { error: "Un conflit de numéro a été détecté, veuillez réessayer" };
+
+    // 🔴 2026-08-23 — LE MESSAGE EFFAÇAIT SA CAUSE, ET RIEN D'AUTRE NE LA PORTAIT.
+    //
+    // Toute erreur autre que P2002 rendait « Erreur lors de la création de la
+    // session ». Mesuré ce jour-là par le parcours E2E 02 : la transaction
+    // ci-dessus a expiré (`P2028` — budget interactif par défaut de 5 000 ms,
+    // dépassé à 5 605 ms pendant `sessionJour.createMany()`), et l'écran a rendu
+    // ce texte générique. L'opératrice ne pouvait pas savoir que l'écriture avait
+    // été ANNULÉE faute de temps, ni que réessayer avait une chance d'aboutir :
+    // elle voyait la même phrase que pour une panne réseau ou une contrainte.
+    //
+    // 🔑 On ne relâche pas le budget de la transaction ici — ce serait changer la
+    // sémantique d'une écriture Qualiopi sans l'avoir prouvée nécessaire en
+    // production (la mesure a été prise sur une machine qui paginait). On rend
+    // seulement la cause DISCERNABLE, et on la remonte à Sentry, ce que le code
+    // précédent ne faisait pas non plus.
+    Sentry.captureException(err);
+    if (code === "P2028")
+      return {
+        error:
+          "La création a dépassé le temps imparti et a été annulée : rien n'a été enregistré. " +
+          "Réessayez — si cela se reproduit, la base est probablement saturée.",
+      };
     return { error: "Erreur lors de la création de la session" };
   }
 

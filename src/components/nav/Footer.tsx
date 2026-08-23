@@ -429,6 +429,11 @@ function CodeTrendyBadge() {
       href="https://codetrendy.com/?utm_source=axion-ia.com&utm_medium=badge"
       target="_blank"
       rel="nofollow noopener noreferrer"
+      // 🔑 `data-tiers="codetrendy"` est un POINT D'ACCROCHE, pas de la décoration :
+      // c'est par lui que `[locale]/portail/layout.tsx` masque ce badge sur
+      // l'espace privé du stagiaire (cf. le commentaire là-bas). Le retirer
+      // rouvrirait un appel tiers depuis une route dont l'URL est un secret.
+      data-tiers="codetrendy"
       className="focus-visible:ring-terracotta focus-visible:ring-offset-mocha mt-6 inline-flex rounded-[10px] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
