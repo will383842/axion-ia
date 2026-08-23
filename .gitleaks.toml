@@ -72,3 +72,16 @@ regexes = [
   # L'allowlist est le seul moyen sans réécrire l'historique.
   '''axionia-candidature-commercial-v\d+''',
 ]
+
+# Token Laravel Sanctum — `<id>|<plaintext>`, la forme du token API Coolify.
+#
+# Mesure le 2026-08-23 : la regle `generic-api-key` par defaut NE LE VOIT PAS.
+# Son jeu de caracteres s'arrete au `|`, donc `COOLIFY_API_TOKEN='2|0Rzg...'`
+# passe le scan, alors que la MEME valeur sans le pipe est detectee. Verifie
+# avec temoin (une cle privee RSA, bien detectee) pour ecarter un test faux.
+# Sans cette regle, le seul secret qui ouvre la prod entiere est le seul que
+# gitleaks laisse passer.
+[[rules]]
+id = "sanctum-token"
+description = "Laravel Sanctum personal access token (Coolify, DocuSeal)"
+regex = '''\b[0-9]{1,6}\|[A-Za-z0-9]{40,64}\b'''
