@@ -117,6 +117,27 @@ describe("Gate B dispose de ses services", () => {
     ).toMatch(/FACTURATION_HUB_ENABLED:\s*"true"/);
   });
 
+  it("l'étape Playwright pointe le serveur LOCAL pour les liens de portail", () => {
+    // 🔴 2026-08-23 — LE PARCOURS DU STAGIAIRE MESURAIT LA PRODUCTION.
+    //
+    // Le lien d'accès au portail est construit sur
+    // `NEXT_PUBLIC_APP_URL ?? "https://axion-ia.com"` — variable qui n'était
+    // déclarée NULLE PART dans le dépôt. Le parcours 6 générait donc un lien
+    // vers la production et y naviguait : il mesurait un autre site que celui
+    // qu'il venait de construire, et un défaut du build n'aurait rien changé
+    // à son verdict.
+    //
+    // 🔑 Un test qui mesure la production depuis la CI est le pire des faux
+    // verts : il passe précisément quand le produit livré est cassé.
+    const etape = bloc.slice(bloc.indexOf("- name: Playwright suite"));
+    const env = etape.slice(0, etape.indexOf("run:"));
+    expect(
+      env,
+      "sans cette variable, le lien de portail généré en CI pointe axion-ia.com " +
+        "et le parcours du stagiaire quitte le serveur sous test",
+    ).toMatch(/NEXT_PUBLIC_APP_URL:\s*"http:\/\/localhost:3000"/);
+  });
+
   it("le JOB garde bien le stub — le build en dépend", () => {
     // Contre-témoin : si quelqu'un remplaçait le stub au niveau du job « pour
     // simplifier », le build tenterait d'ouvrir une connexion Redis au SSG.

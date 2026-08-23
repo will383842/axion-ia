@@ -448,6 +448,21 @@ jobs:
         env:
           DATABASE_URL: "postgresql://axion_ia_e2e:ci_password_dummy@localhost:5432/axion_ia_e2e?schema=public"
           DIRECT_URL: "postgresql://axion_ia_e2e:ci_password_dummy@localhost:5432/axion_ia_e2e?schema=public"
+          # 🔴 2026-08-23 — LE PARCOURS DU STAGIAIRE MESURAIT LA PRODUCTION.
+          #
+          # `portail.ts:558` et `portail/acces/[token]/route.ts:44` construisent
+          # le lien d'accès sur `NEXT_PUBLIC_APP_URL ?? "https://axion-ia.com"`.
+          # La variable n'était déclarée NULLE PART dans le dépôt : le lien
+          # généré en CI pointait donc la production, et le parcours 6 y
+          # naviguait — il mesurait un autre site que celui qu'il venait de
+          # construire.
+          #
+          # ⚠️ Cette variable fait doublon avec `NEXT_PUBLIC_SITE_URL`, qui reste
+          # à `https://axion-ia.com` au niveau du job (le rendu SEO en dépend).
+          # La déclarer ici, pour la seule étape Playwright, rend le lien
+          # local SANS toucher au contrat de build (ADR 0026). La consolidation
+          # des deux lectures sur `SITE_URL` est une décision à part.
+          NEXT_PUBLIC_APP_URL: "http://localhost:3000"
           ADMIN_SEED_EMAIL: "admin@axion-ia.com"
           ADMIN_SEED_PASSWORD: "AdminAxion2026!"
           # Redis RÉEL pour ce step seulement — le job garde `stub.invalid`,
