@@ -476,11 +476,27 @@ jobs:
           # pas : on lève le drapeau EN CI, pour que les quatre écrans soient
           # réellement traversés au lieu d'être comptés en panne.
           FACTURATION_HUB_ENABLED: "true"
-        # continue-on-error MAINTENU pour CE passage seulement : la suite n'a
-        # jamais tourné contre un vrai serveur, on ne sait donc pas encore
-        # combien de tests passent. Le chiffre de ce run est la mesure. Le retrait
-        # du continue-on-error suit, une fois la suite verte — sans quoi ce gate
-        # reste une garde incapable de rougir.
+        # ✅ 2026-08-23 — `continue-on-error` RETIRÉ. CE GATE PEUT ENFIN ROUGIR.
+        #
+        # Trajectoire mesurée, run par run :
+        #
+        #     avant     0 passés / 237 — le harnais ne mesurait RIEN (`.next` détruit)
+        #     32520282915   206 / 19   — 1er relevé avec Redis
+        #     32525749387   210 / 17   — après `qualiopi:seed-demo`
+        #     32598142374   224 /  3   — après instruction des dix-sept
+        #
+        # Les trois derniers étaient un seul et même artefact, et c'est
+        # l'INSTRUMENT qui l'a nommé, pas le raisonnement : une fois que le
+        # message d'échec a porté le type de requête et sa chaîne de
+        # redirection, il a dit `type=fetch, redirigée depuis …?_rsc=…`.
+        # Un prefetch RSC traversant la garde Edge, dont Chromium upgradait la
+        # cible. Corrigé dans `src/lib/csp.ts` (bouclage seulement).
+        #
+        # ⚠️ CE RETRAIT EST IRRÉVERSIBLE EN PRATIQUE : `Gate B · per-PR` est un
+        # contexte EXIGÉ par la protection de `main`, avec `strict: true`. Un
+        # rouge ici bloque 100 % des PR, pas seulement la sienne. C'est
+        # exactement ce qu'on veut d'une garde — et exactement pourquoi il ne
+        # fallait pas le faire avant d'avoir le zéro.
         # 🔴 `--grep-invert @baseline` — la suite `admin-baseline-screenshots`
         # se déclare OPT-IN dans son propre en-tête :
         #
@@ -516,8 +532,14 @@ jobs:
         # en « success », et un relevé fait sur une suite tronquée ressemble
         # exactement à un relevé complet.
         timeout-minutes: 30
-        continue-on-error: true
       - name: Lighthouse CI
+        # 🔴 `!cancelled()` — SANS LUI, CE STEP DISPARAÎT DÈS QUE PLAYWRIGHT ROUGIT.
+        #
+        # Depuis le retrait du `continue-on-error` ci-dessus, un échec Playwright
+        # interrompt le job. Les mesures Lighthouse — et surtout le rapport
+        # d'artefacts plus bas — seraient alors sautées PRÉCISÉMENT le jour où
+        # l'on en a besoin pour comprendre l'échec.
+        if: ${{ !cancelled() }}
         # NON-BLOQUANT (2026-07-01), MAIS LE MOTIF ÉCRIT ICI ÉTAIT FAUX.
         #
         # Ce commentaire a affirmé pendant sept semaines que « le serveur `next start`
@@ -555,6 +577,9 @@ jobs:
       # continue-on-error, un hang epuise le timeout du job (Gate B tue en
       # « cancelled », run 26674394530 le 2026-05-30). Le cap la fait echouer vite.
       - name: Bundle delta vs main (reporting — DÉTRUIT .next, doit rester en dernier)
+        # Même raison que Lighthouse : ce report doit survivre à un rouge de la
+        # suite E2E. Il reste en DERNIER — il détruit `.next`.
+        if: ${{ !cancelled() }}
         uses: andresz1/size-limit-action@v1
         timeout-minutes: 6
         continue-on-error: true
