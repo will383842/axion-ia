@@ -41,7 +41,7 @@
  *   À reprendre au lot 1, quand les écrans deviendront interactifs.
  */
 
-import { test, expect as expectBase, type Page } from "@playwright/test";
+import { test, expect as expectBase, type Page, type BrowserContext } from "@playwright/test";
 import { loginAsAdmin, ADMIN_PREFIX } from "./fixtures/admin-auth";
 
 // 🔴 Le délai d’assertion passe de 5 s à 15 s, pour TOUT le fichier.
@@ -103,9 +103,10 @@ async function prechaufferRoutes(page: Page): Promise<void> {
   // seulement une fois connecté. Sans cette seconde passe, `/publications/[id]`
   // et son `/kit` restaient froids, et c'est exactement là que la suite
   // rougissait, à un endroit différent à chaque exécution.
-  try {
-    await loginAsAdmin(page);
-  } catch {
+  // ⚠️ `connecte()` et NON `loginAsAdmin` : le prechauffage doit partager la
+  // meme session que les tests, sinon il consomme une connexion de plus dans
+  // un quota deja compte par compte.
+  if (!(await connecte(page))) {
     return; // Base non amorcée : les tests concernés se sauteront d'eux-mêmes.
   }
   await page.goto(`${BASE}/publications`, { waitUntil: "domcontentloaded", timeout: 180_000 });
@@ -120,17 +121,66 @@ async function prechaufferRoutes(page: Page): Promise<void> {
   });
 }
 
-/** Tente le login ; rend `false` si l'environnement n'est pas amorcé. */
+/**
+ * La session, ouverte UNE fois et rejouée ensuite.
+ *
+ * 🔴 Défaut mesuré en CI le 2026-08-23, et il ne cassait pas cette suite —
+ * il cassait CELLES DES AUTRES.
+ *
+ * `connecte()` appelait `loginAsAdmin` à chaque test : 14 tests plus le
+ * préchauffage, soit **15 connexions** pour ce seul fichier, là où les
+ * parcours Qualiopi en font 2 ou 3. La vérification de mot de passe est
+ * délibérément coûteuse (Argon2id) et le limiteur compte les tentatives par
+ * compte : `auth:login:email:admin@axion-ia.com`.
+ *
+ * Résultat en CI : cinq specs Qualiopi — 04, 05, 06, 07 et le parcours de
+ * vente — échouaient sur `loginAsAdmin`, pas sur leur logique. Le message
+ * disait « Timeout 60000ms exceeded » sur la redirection ; la cause était le
+ * quota que cette suite venait d'épuiser.
+ *
+ * ⚠️ J'ai d'abord conclu que ces cinq rouges ne m'appartenaient pas, parce
+ * qu'aucune spec ÉDITORIALE ne figurait dans la liste. C'était vrai à la
+ * lettre et faux sur le fond : une suite peut casser les autres sans jamais
+ * rougir elle-même.
+ *
+ * On ouvre donc une session, on garde ses cookies, et on les rejoue dans
+ * chaque contexte de test. Une connexion au lieu de quinze.
+ */
+let cookiesSession: Awaited<ReturnType<BrowserContext["cookies"]>> | null = null;
+let sessionImpossible = false;
+
 async function connecte(page: Page): Promise<boolean> {
+  if (sessionImpossible) return false;
+
+  if (cookiesSession) {
+    await page.context().addCookies(cookiesSession);
+    return true;
+  }
+
   try {
     await loginAsAdmin(page);
+    cookiesSession = await page.context().cookies();
     return true;
   } catch {
+    // Base non amorcée : on le retient, pour ne pas non plus épuiser le
+    // quota en réessayant quatorze fois un login qui ne peut pas aboutir.
+    sessionImpossible = true;
     return false;
   }
 }
 
 test.beforeAll(async ({ browser }) => {
+  // 🔴 Le budget de `describe.configure` s applique aux TESTS, pas aux
+  // crochets : un `beforeAll` garde le defaut de 30 s. Or ce prechauffage
+  // porte des `page.goto` a 180 s, parce que la premiere visite d une route
+  // admin la fait COMPILER.
+  //
+  // Un delai interne plus long que le budget qui le contient ne peut jamais
+  // expirer — c est le budget qui rend le verdict, et son message ne nomme
+  // rien. Ici il disait « beforeAll hook timeout of 30000ms exceeded » et
+  // les dix-sept tests se sautaient, sans qu on sache lequel avait echoue.
+  test.setTimeout(300_000);
+
   const page = await browser.newPage();
   try {
     await prechaufferRoutes(page);
