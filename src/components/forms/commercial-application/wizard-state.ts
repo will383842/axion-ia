@@ -42,6 +42,8 @@ export interface WizardAnswers {
   codePostal: string;
   b2bDejaVendu: boolean | null;
   b2bAnnees: string;
+  /** Facultatif — meilleur signal du scoring, jamais bloquant (cf. `lib/commercial-application/scoring.ts`). */
+  carnetDirigeants: string;
   experiences: ExperienceDraft[];
   iaUtilise: boolean | null;
   iaOutils: string[];
@@ -96,6 +98,7 @@ export function emptyAnswers(): WizardAnswers {
     codePostal: "",
     b2bDejaVendu: null,
     b2bAnnees: "",
+    carnetDirigeants: "",
     experiences: [newExperience()],
     iaUtilise: null,
     iaOutils: [],
@@ -273,6 +276,7 @@ export function buildSubmissionPayload(a: WizardAnswers): CommercialApplicationI
     codePostal: a.codePostal.trim(),
     b2bDejaVendu: a.b2bDejaVendu === true,
     ...(a.b2bDejaVendu === true && a.b2bAnnees ? { b2bAnnees: a.b2bAnnees } : {}),
+    ...(a.carnetDirigeants ? { carnetDirigeants: a.carnetDirigeants } : {}),
     experiences: a.experiences.map((exp) => ({
       entreprise: exp.entreprise.trim(),
       ville: exp.ville.trim(),

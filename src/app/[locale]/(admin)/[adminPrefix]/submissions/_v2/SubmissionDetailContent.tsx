@@ -74,6 +74,13 @@ export async function SubmissionDetailContent({
     details && typeof details.vivierConsentAt === "string" ? details.vivierConsentAt : null;
   const consentVersion =
     details && typeof details.consentVersion === "string" ? details.consentVersion : null;
+  // Score de tri (C1) — vit lui aussi à la RACINE de `details`. Absent sur
+  // toutes les candidatures antérieures au 2026-08-23 : la fiche doit s'en
+  // passer sans broncher, pas afficher « 0 » (une note fausse est pire que
+  // pas de note).
+  const score = details && typeof details.score === "number" ? details.score : null;
+  const scorePriorite =
+    details && typeof details.scorePriorite === "string" ? details.scorePriorite : null;
   const titreSociete =
     submission.companyName && submission.companyName !== "—"
       ? submission.companyName
@@ -116,6 +123,8 @@ export async function SubmissionDetailContent({
             candidature={candidature}
             vivierConsentAt={vivierConsentAt}
             consentVersion={consentVersion}
+            score={score}
+            scorePriorite={scorePriorite}
           />
         ) : null}
         {messageText && !candidature ? (

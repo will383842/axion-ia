@@ -12,6 +12,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
 import type { JobApplicationStatus, Locale } from "../../../prisma/generated/client";
 
@@ -146,10 +147,15 @@ export async function listApplicationsAction(input: Partial<ListApplicationsInpu
 // `JobApplication`. « Toutes » fusionne les deux tables triées par date ;
 // « Mémo Isère » ne liste que le flux commercial.
 
-const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
-
 const unifiedListSchema = z.object({
   scope: z.enum(["toutes", "memo"]),
+  /**
+   * Filtre par canal d'annonce (`leboncoin`, `memorial-isere`…), pour les
+   * sous-onglets de la vue apporteurs. Chaîne LIBRE et non `z.enum` : les
+   * sources sont dérivées des données, pas d'une liste figée — un canal ajouté
+   * à `SOURCE_OPTIONS` doit être filtrable sans qu'on touche ce schéma.
+   */
+  source: z.string().min(1).max(60).optional(),
   onlyAttention: z.coerce.boolean().optional(),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(10).max(100).default(50),
@@ -173,6 +179,8 @@ export interface CandidatureUnifieeItem {
 
 export async function listCandidaturesUnifieesAction(input: {
   scope: "toutes" | "memo";
+  /** Canal d'annonce — n'a de sens qu'avec `scope: "memo"`. */
+  source?: string;
   onlyAttention?: boolean;
   page?: number;
   pageSize?: number;
@@ -181,8 +189,21 @@ export async function listCandidaturesUnifieesAction(input: {
   const parsed = unifiedListSchema.parse(input);
   const skip = (parsed.page - 1) * parsed.pageSize;
 
+  // 🔴 `AND` explicite, et pas deux clés `details` dans le même objet : la
+  // seconde écraserait silencieusement la première, et le filtre par canal
+  // remplacerait le filtre de sous-type. On lirait alors TOUTES les
+  // submissions du site sous l'onglet apporteurs — sans aucune erreur.
   const whereCommerciale = {
-    details: { path: ["subType"], equals: CANDIDATURE_COMMERCIALE_SUBTYPE },
+    AND: [
+      { details: { path: ["subType"], equals: CANDIDATURE_COMMERCIALE_SUBTYPE } },
+      // Le chemin JSON est celui où la Server Action ÉCRIT la source
+      // (`details.candidature.sourceConnaissance`). Un chemin approximatif ne
+      // lèverait aucune erreur : il renverrait zéro résultat, et on conclurait
+      // qu'une annonce ne rapporte rien.
+      ...(parsed.source
+        ? [{ details: { path: ["candidature", "sourceConnaissance"], equals: parsed.source } }]
+        : []),
+    ],
     deletedAt: null,
     ...(parsed.onlyAttention ? { needsAttention: true } : {}),
   };

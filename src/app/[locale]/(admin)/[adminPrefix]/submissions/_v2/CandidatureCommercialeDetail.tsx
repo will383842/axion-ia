@@ -10,6 +10,7 @@ import { AdminBadge } from "@/components/admin/ui";
 import { formatDateFr } from "@/lib/format-date-fr";
 import {
   B2B_ANNEES_OPTIONS,
+  CARNET_DIRIGEANTS_OPTIONS,
   DEPLACEMENT_OPTIONS,
   IA_OUTILS_OPTIONS,
   INFORMATIQUE_USAGES_OPTIONS,
@@ -19,6 +20,9 @@ import {
   formatMoisAnnee,
   optionLabel,
 } from "@/lib/commercial-application/model";
+// SSOT des libellés de priorité : la console dit exactement ce que le barème
+// décide, et une modification du seuil se répercute ici sans recopie.
+import { PRIORITES, type ScorePriorite } from "@/lib/commercial-application/scoring";
 
 // ── Lecture défensive du JSON ───────────────────────────────────────────────
 
@@ -93,6 +97,8 @@ export function CandidatureCommercialeDetail({
   candidature,
   vivierConsentAt,
   consentVersion,
+  score,
+  scorePriorite,
 }: {
   candidature: Record<string, unknown>;
   /**
@@ -104,6 +110,14 @@ export function CandidatureCommercialeDetail({
   vivierConsentAt?: string | null;
   /** Version du texte de consentement accepté — la preuve datée du geste. */
   consentVersion?: string | null;
+  /**
+   * Score de tri figé à la soumission (0-100). `null` sur toute candidature
+   * antérieure au 2026-08-23 : on n'affiche alors RIEN plutôt qu'un « 0 » qui
+   * ferait passer un bon profil pour un mauvais.
+   */
+  score?: number | null;
+  /** `haute` | `moyenne` | `vivier` — voir `PRIORITES`. */
+  scorePriorite?: string | null;
 }) {
   const c = candidature;
   const b2b = asObject(c.b2b);
@@ -146,6 +160,18 @@ export function CandidatureCommercialeDetail({
       <div className="admin-card">
         <h2 className="admin-h2">Profil candidat</h2>
         <dl className="admin-dl">
+          {/* Le score EN PREMIER : c'est lui qui décide si on décroche le
+              téléphone aujourd'hui. Enterré en bas de fiche, il ne servirait à
+              rien. Absent sur les candidatures d'avant le 2026-08-23 — la
+              ligne disparaît alors, elle n'affiche pas « 0 ». */}
+          {typeof score === "number" ? (
+            <Row
+              label="Score de tri"
+              value={`${score}/100 — ${
+                PRIORITES[scorePriorite as ScorePriorite]?.action ?? "à qualifier"
+              }`}
+            />
+          ) : null}
           {asString(c.ville) ? (
             <Row
               label="Ville"
@@ -208,6 +234,12 @@ export function CandidatureCommercialeDetail({
                 </a>
               </dd>
             </>
+          ) : null}
+          {asString(c.carnetDirigeants) ? (
+            <Row
+              label="Carnet dirigeants (appelables demain)"
+              value={optionLabel(CARNET_DIRIGEANTS_OPTIONS, asString(c.carnetDirigeants) as string)}
+            />
           ) : null}
           {asString(c.sourceConnaissance) ? (
             <Row

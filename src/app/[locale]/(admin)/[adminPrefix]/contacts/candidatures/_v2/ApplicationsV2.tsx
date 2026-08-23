@@ -1,7 +1,7 @@
 // Liste admin des candidatures — AdminPageShell + AdminCard + table CSS.
 // Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
 // badge statut → <AdminBadge>.
-// Sous-onglets 2026-08-13 : Toutes / Monteur vidéo / Mémo Isère. Les lignes
+// Sous-onglets 2026-08-13 : Toutes / Monteur vidéo / Apporteurs d’affaires. Les lignes
 // sont des CandidatureUnifieeItem : les candidatures commerciales (Mémo
 // Isère) viennent de la table Submission et pointent vers leur propre détail.
 
@@ -21,6 +21,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { CandidatureUnifieeItem } from "@/features/admin-job-applications/actions";
+import type { SourceCandidatures } from "@/features/admin-job-applications/annonces-stats";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
@@ -70,7 +71,14 @@ const COMMERCIALE_STATUS_TONE: Record<string, "success" | "warning" | "neutral">
 const TITLES: Record<CandidaturesView, string> = {
   all: "Candidatures",
   monteur: "Candidatures — Monteur vidéo",
-  memo: "Candidatures — Mémo Isère",
+  // Libellé SOURCE-NEUTRE (2026-08-23). Il disait « Mémo Isère » alors que le
+  // filtre porte sur `subType = candidature-commerciale` — donc AUSSI sur les
+  // candidatures Le Bon Coin, et sur celles de toute future annonce. Un onglet
+  // qui nomme un canal en en agrégeant plusieurs fait chercher ailleurs des
+  // candidatures qui sont sous les yeux. La ventilation par provenance vit
+  // dans l'écran Ops → Annonces recrutement.
+  // La CLÉ `memo` reste inchangée : les liens `?view=memo` existants marchent.
+  memo: "Candidatures — Apporteurs d'affaires",
   standard: "Candidatures emploi",
 };
 
@@ -78,6 +86,17 @@ interface Props {
   adminPrefix: string;
   searchParams: Record<string, string | undefined>;
   view: CandidaturesView;
+  /**
+   * Canaux d'annonce réellement présents dans les données, avec leur volume —
+   * les sous-onglets de la vue apporteurs. Vide sur les autres vues.
+   *
+   * Dérivés des données et non d'une liste figée : un canal ajouté à
+   * `SOURCE_OPTIONS` apparaît tout seul dès sa première candidature, et aucun
+   * onglet ne propose un filtre qui ne renverrait rien.
+   */
+  sources?: ReadonlyArray<SourceCandidatures>;
+  /** Canal actif, ou `undefined` pour « toutes provenances ». */
+  activeSource?: string | undefined;
   items: ReadonlyArray<CandidatureUnifieeItem>;
   total: number;
   page: number;
@@ -88,6 +107,8 @@ export function ApplicationsV2({
   adminPrefix,
   searchParams: sp,
   view,
+  sources = [],
+  activeSource,
   items,
   total,
   page,
@@ -97,7 +118,7 @@ export function ApplicationsV2({
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
   const viewQuery = view === "all" ? "" : `?view=${view}`;
   // Le filtre statut n'a de sens que sur une vue mono-table : les vues
-  // fusionnée (Toutes) et commerciale (Mémo Isère) mélangent deux enums de
+  // fusionnée (Toutes) et commerciale (Apporteurs d’affaires) mélangent deux enums de
   // statut différents — on n'y garde que « À traiter ».
   const showStatusFilter = view === "monteur" || view === "standard" || Boolean(offerId);
 
@@ -152,9 +173,36 @@ export function ApplicationsV2({
         options={[
           { value: "all", label: "Toutes", href: baseHref },
           { value: "monteur", label: "Monteur vidéo", href: `${baseHref}?view=monteur` },
-          { value: "memo", label: "Mémo Isère", href: `${baseHref}?view=memo` },
+          { value: "memo", label: "Apporteurs d'affaires", href: `${baseHref}?view=memo` },
         ]}
       />
+
+      {/* Sous-onglets par canal d'annonce — uniquement sous « Apporteurs
+          d'affaires », et uniquement s'il y a plus d'un canal. Avec une seule
+          provenance, un sous-onglet « Toutes » face à un unique canal ne
+          propose aucun choix : il n'ajoute qu'une ligne à lire.
+
+          Le compteur est porté par le libellé : sans lui, on clique un onglet
+          pour découvrir qu'il est vide, ce qui est exactement l'information
+          qu'un onglet devrait donner avant le clic. */}
+      {view === "memo" && sources.length > 1 ? (
+        <AdminFilterTabs
+          className="mb-[var(--space-admin-5)]"
+          current={activeSource ?? "__toutes__"}
+          options={[
+            {
+              value: "__toutes__",
+              label: `Toutes provenances (${sources.reduce((n, s) => n + s.count, 0)})`,
+              href: `${baseHref}?view=memo`,
+            },
+            ...sources.map((s) => ({
+              value: s.id,
+              label: `${s.label} (${s.count})`,
+              href: `${baseHref}?view=memo&source=${encodeURIComponent(s.id)}`,
+            })),
+          ]}
+        />
+      ) : null}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">

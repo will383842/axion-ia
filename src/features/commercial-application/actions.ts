@@ -25,9 +25,11 @@ import { SubmissionType } from "../../../prisma/generated/client";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
+import { scoreCandidature } from "@/lib/commercial-application/scoring";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
@@ -35,6 +37,7 @@ import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
 import {
   B2B_ANNEES_OPTIONS,
+  CARNET_DIRIGEANTS_OPTIONS,
   COMMERCIAL_APPLICATION_CONSENT_VERSION,
   DEPLACEMENT_OPTIONS,
   IA_OUTILS_OPTIONS,
@@ -78,6 +81,20 @@ function safeHashIp(ip: string | null | undefined): string | null {
 function internalRecipient(): string {
   return destinataireCandidatures();
 }
+
+/**
+ * Nombre de candidatures commerciales dans une journée au-delà duquel on alerte.
+ *
+ * Calibré sur le volume observé — quelques candidatures par semaine au
+ * lancement. 25 en une journée est donc soit une campagne qui prend, soit un
+ * flux automatisé : dans les deux cas, quelque chose qu'on veut savoir le jour
+ * même et pas le lendemain.
+ *
+ * ⚠️ À relever quand le recrutement montera en régime. Un seuil qui se
+ * déclenche toutes les semaines cesse d'être lu, et une alerte qu'on n'ouvre
+ * plus ne protège de rien.
+ */
+const SEUIL_ALERTE_VOLUME_JOUR = 25;
 
 const oui = (v: boolean) => (v ? "Oui" : "Non");
 
@@ -125,6 +142,14 @@ function buildRecapRows(d: CommercialApplicationInput): Array<{ label: string; v
       label: "Informatique au travail",
       value: d.informatiqueUtilise ? `Oui — ${infoUsages || "usages non précisés"}` : "Non",
     },
+    ...(d.carnetDirigeants
+      ? [
+          {
+            label: "Carnet dirigeants (appelables demain)",
+            value: optionLabel(CARNET_DIRIGEANTS_OPTIONS, d.carnetDirigeants),
+          },
+        ]
+      : []),
     { label: "Zone souhaitée", value: zoneResume(d) },
     ...(d.deplacement
       ? [
@@ -175,6 +200,39 @@ export async function submitCommercialApplicationAction(
   const d = parsed.data;
   const locale = parseLocale(formData.get("locale") ?? "fr");
 
+  // 3 bis. Second compteur, par ADRESSE cette fois.
+  //
+  // Le rate-limit de l'étape 1 compte par IP. Il arrête une machine, pas une
+  // campagne : mille IP × trois passages font trois mille candidatures. Et il
+  // bloque de vrais candidats — trois collègues du même bureau, ou trois
+  // personnes derrière le même opérateur mobile, partagent une adresse IP.
+  //
+  // Compter aussi par email couvre l'angle mort exact de l'IP : quelqu'un qui
+  // recharge et repostule en boucle. La fenêtre est LARGE (3 sur 24 h) parce
+  // qu'un humain a de bonnes raisons de renvoyer une candidature — une faute
+  // de frappe dans son téléphone, un doute sur l'envoi. Bloquer à la deuxième
+  // punirait la correction d'une erreur.
+  //
+  // 🔴 La clé porte le HASH, jamais l'adresse. Une clé Redis se lit dans
+  // n'importe quel dump, n'importe quel outil d'inspection, n'importe quelle
+  // sauvegarde — y écrire une donnée personnelle en clair la répand partout où
+  // Redis va. `hashEmailForLookup` est déjà la clé de personne partagée avec le
+  // CRM : même valeur, aucun index de plus à tenir.
+  const emailKey = hashEmailForLookup(d.email);
+  if (emailKey) {
+    const rlEmail = await checkRateLimit(`commercial-application:email:${emailKey}`, {
+      limit: 3,
+      windowSec: 86_400,
+    });
+    if (!rlEmail.allowed) {
+      return {
+        ok: false,
+        error:
+          "Nous avons déjà reçu plusieurs candidatures avec cet email. Elle est bien enregistrée — inutile de la renvoyer.",
+      };
+    }
+  }
+
   // 4. UTM funnel + referrerCity (même capture que unified-contact)
   const c = await cookies();
   const utm = readUtmCookie(c.get(UTM_COOKIE_NAME)?.value);
@@ -197,6 +255,17 @@ export async function submitCommercialApplicationAction(
   // `new Date()` distincts donneraient deux preuves divergentes du même geste.
   const vivierConsentAt = d.consentVivier ? new Date() : null;
 
+  // Score de tri (chantier C1). Calculé À LA SOUMISSION et FIGÉ dans
+  // `details` : le barème évoluera (il doit être relu tous les mois face à
+  // ceux qui vendent vraiment), et une note recalculée à l'affichage
+  // changerait rétroactivement le classement de candidatures déjà traitées —
+  // on ne saurait plus pourquoi on avait rappelé celle-ci et pas celle-là.
+  //
+  // 🔴 Le score ORIENTE, il ne rejette JAMAIS. Aucune candidature n'est
+  // filtrée, masquée ni refusée ici : il ne sert qu'à décider qui on appelle
+  // en premier. Cf. l'en-tête de `lib/commercial-application/scoring.ts`.
+  const score = scoreCandidature(d);
+
   // 5. Persist Submission — AVANT toute notification (règle du brief).
   try {
     const submission = await prisma.submission.create({
@@ -212,6 +281,12 @@ export async function submitCommercialApplicationAction(
           // Contacts → Commercial (forcedTypes). NE PAS renommer.
           unifiedType: "recrutement",
           subType: "candidature-commerciale",
+          // Tri de la file de rappel — lu par la console. `parts` accompagne le
+          // total pour que la note soit EXPLICABLE : un score nu qu'on ne peut
+          // pas justifier devant le candidat ne se defend pas.
+          score: score.total,
+          scorePriorite: score.priorite,
+          scoreParts: score.parts,
           ville: `${d.ville} (${d.codePostal})`,
           // La carte « Message » générique du détail console affiche ce champ :
           // on y met le pitch (la réponse la plus parlante).
@@ -265,11 +340,26 @@ export async function submitCommercialApplicationAction(
     });
 
     // 5 bis. Synchro CRM — univers VIVIER (lot L2).
-    // Même double verrou que les candidatures aux offres : le CRM REFUSE toute
-    // fiche candidat dont la version de consentement n'est pas v2. Le texte
-    // actuel (`commercial-tunnel-v1-2026-08-12`) ne couvre que l'étude de la
-    // candidature — le refus est donc l'issue ATTENDUE tant que le texte v2
-    // n'est pas servi en production.
+    //
+    // ⚠️ CE COMMENTAIRE A MENTI (rectifié le 2026-08-23). Il affirmait :
+    // « Le texte actuel (`commercial-tunnel-v1-2026-08-12`) ne couvre que
+    // l'étude de la candidature — le refus est donc l'issue ATTENDUE tant que
+    // le texte v2 n'est pas servi en production. »
+    //
+    // C'est faux depuis le lot L4 : `COMMERCIAL_APPLICATION_CONSENT_VERSION`
+    // vaut `memo-v2-2026-08-13` et couvre BIEN les deux textes (étude de la
+    // candidature + conservation en vivier). C'est cette valeur-là qui part.
+    // Le commentaire décrivait un état dépassé, et laissait croire qu'un flux
+    // en échec était normal — le genre de phrase qui fait ignorer une panne
+    // réelle pendant des semaines.
+    //
+    // Ce qui reste vrai : le CRM refuse en 422 toute version de consentement
+    // qu'il ne connaît pas, et un 422 abandonne IMMÉDIATEMENT (pas de retry —
+    // rejouer un message que le contrat refuse ne le rendra jamais valide).
+    // Donc la liste des versions acceptées CÔTÉ CRM doit contenir
+    // `memo-v2-2026-08-13`. Ce dépôt ne peut pas le vérifier : le CRM est une
+    // application distincte. À contrôler sur la page console `/synchro-crm` —
+    // des `gave_up` en masse sur `candidat_commercial` = version non acceptée.
     await syncCandidateToCrm({
       subjectRef: `site:submission:${submission.id}`,
       family: "candidat_commercial",
@@ -300,6 +390,21 @@ export async function submitCommercialApplicationAction(
         disponibilite: d.disponibilite,
         permisVehicule: d.permisVehicule,
         ...(d.zones?.length ? { zones: d.zones } : {}),
+        // 2026-08-23 — L'ACQUISITION traverse désormais, elle aussi.
+        //
+        // Ces deux champs étaient stockés dans `Submission.details` côté site
+        // mais ne partaient PAS au CRM : la fiche candidat y arrivait sans
+        // aucune indication de provenance. Conséquence concrète : impossible,
+        // depuis le CRM, de dire si un candidat vient de l'annonce Le Bon Coin,
+        // du Mémorial de l'Isère ou de LinkedIn — donc impossible d'y arbitrer
+        // un budget d'annonces.
+        //
+        // `sourceConnaissance` = ce que le candidat DÉCLARE (chips du tunnel).
+        // `utm` = ce que le lien PROUVE (cookie posé au premier clic). Les deux,
+        // parce qu'ils divergent souvent : on clique une annonce Le Bon Coin,
+        // on revient trois jours plus tard par Google, et on coche « site web ».
+        ...(d.sourceConnaissance ? { sourceConnaissance: d.sourceConnaissance } : {}),
+        ...(funnel.utm ? { utm: funnel.utm } : {}),
       },
       experiences,
     });
@@ -326,6 +431,50 @@ export async function submitCommercialApplicationAction(
         ip,
         userAgent,
       });
+    }
+
+    // 5 ter. Alerte de VOLUME — elle prévient, elle ne bloque rien.
+    //
+    // Les deux compteurs (IP, email) arrêtent un abus ciblé. Aucun des deux ne
+    // dit qu'il se passe quelque chose d'anormal À L'ÉCHELLE du site : un flux
+    // distribué reste sous les seuils individuels tout en produisant des
+    // centaines de candidatures. On le découvrirait en ouvrant la console, ce
+    // qui peut prendre un jour.
+    //
+    // On alerte EXACTEMENT au franchissement (`===`), jamais au-dessus : sinon
+    // chaque candidature suivante rejouerait l'alerte, et un fil saturé
+    // d'alertes identiques cesse d'être lu — l'alerte deviendrait le bruit
+    // qu'elle est censée signaler.
+    //
+    // Best-effort comme le reste : un comptage en échec ne perd jamais la
+    // candidature, elle est déjà en base.
+    try {
+      const debutJour = new Date();
+      debutJour.setHours(0, 0, 0, 0);
+      const aujourdHui = await prisma.submission.count({
+        where: {
+          details: { path: ["subType"], equals: "candidature-commerciale" },
+          deletedAt: null,
+          submittedAt: { gte: debutJour },
+        },
+      });
+      if (aujourdHui === SEUIL_ALERTE_VOLUME_JOUR) {
+        await notify({
+          category: "MONITORING_ALERT",
+          payload: {
+            kind: "candidatures-commerciales-volume",
+            details: {
+              recuesAujourdhui: aujourdHui,
+              seuil: SEUIL_ALERTE_VOLUME_JOUR,
+              message:
+                "Volume inhabituel de candidatures commerciales aujourd'hui. Vérifier qu'il s'agit bien d'une campagne et non d'un flux automatisé.",
+              console: `${SITE_URL}${adminPath(locale, "annonces")}`,
+            },
+          },
+        });
+      }
+    } catch (err) {
+      Sentry.captureException(err, { tags: { service: "commercial-application-volume" } });
     }
 
     // 6. Telegram + WhatsApp — best-effort, la candidature est déjà en base.

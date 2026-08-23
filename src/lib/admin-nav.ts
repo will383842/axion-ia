@@ -1437,6 +1437,11 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "ops",
     },
     { href: `${base}/alerts`, label: "Alertes ops", icon: "AlertTriangle", group: "ops" },
+    // Provenance des candidatures commerciales (2026-08-23). Rangée en « ops »
+    // et non en « contacts » : c'est un tableau de pilotage d'acquisition, pas
+    // un écran de traitement — on y décide où remettre de l'argent, on n'y
+    // traite aucune candidature.
+    { href: `${base}/annonces`, label: "Annonces recrutement", icon: "Megaphone", group: "ops" },
     // Santé de la synchronisation vers Axion CRM Pro (lot L5, 2026-08-14) :
     // dernier succès, file d'attente, abandons définitifs, écart de
     // réconciliation, lignes en erreur avec rejeu. Rangée en « ops » et non en
