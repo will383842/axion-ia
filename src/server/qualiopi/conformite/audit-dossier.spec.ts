@@ -25,6 +25,9 @@ vi.mock("@/lib/prisma", () => ({
     veille: { count: vi.fn() },
     appreciation: { count: vi.fn() },
     trainer: { findMany: vi.fn() },
+    // off.32 ⭐ : le manifeste lit desormais le CONTENU de la revue de direction
+    // de l'annee courante, pas seulement le nom de son pilote.
+    revueDirection: { findFirst: vi.fn() },
   },
 }));
 
@@ -82,6 +85,7 @@ const mockPrisma = prisma as unknown as {
   veille: { count: ReturnType<typeof vi.fn> };
   appreciation: { count: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
+  revueDirection: { findFirst: ReturnType<typeof vi.fn> };
 };
 const mockEvaluerConformite = evaluerConformite as ReturnType<typeof vi.fn>;
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -168,6 +172,9 @@ describe("genererManifesteAudit", () => {
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
   });
@@ -274,12 +281,38 @@ describe("genererManifesteAudit", () => {
     expect(preuvesText).toMatch(/appr[eé]ciation/i);
   });
 
-  it("off.26 : manifeste expose le nom du référent handicap si renseigné", async () => {
-    mockGetConfig.mockResolvedValue("Williams Jullin");
+  it("off.26 : manifeste expose le référent handicap s'il est nommé ET joignable", async () => {
+    mockGetConfig.mockImplementation((cle: string) => {
+      if (cle === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (cle === "referent_handicap_email") return Promise.resolve("referent@axion-ia.com");
+      return Promise.resolve("");
+    });
     const result = await genererManifesteAudit();
     const ind26 = result.json.indicateurs.find((i) => i.numero === 26);
     const preuvesText = ind26?.preuves.join(" ") ?? "";
     expect(preuvesText).toContain("Williams Jullin");
+    expect(preuvesText).toMatch(/désigné/i);
+  });
+
+  it("🔴 off.26 : un nom SANS e-mail ne vaut pas désignation dans le manifeste", async () => {
+    // C'est le cas réel sur une base vierge : `referent_handicap_nom` porte au
+    // registre le défaut « Williams Jullin », donc le manifeste remis au
+    // certificateur affirmait une désignation que personne n'avait faite.
+    // Le nom reste imprimé — le cacher priverait l'auditeur d'une information —
+    // mais il est explicitement présenté comme insuffisant.
+    mockGetConfig.mockImplementation((cle: string) => {
+      if (cle === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      return Promise.resolve("");
+    });
+    const result = await genererManifesteAudit();
+    const ind26 = result.json.indicateurs.find((i) => i.numero === 26);
+    const preuvesText = ind26?.preuves.join(" ") ?? "";
+    expect(
+      preuvesText,
+      "Le manifeste ne doit pas affirmer une désignation sur la seule foi d'un " +
+        "nom qui a une valeur par défaut.",
+    ).not.toMatch(/désigné/i);
+    expect(preuvesText).toMatch(/aucun e-mail/i);
   });
 
   it("off.26 : manifeste signale référent non renseigné si config vide", async () => {
@@ -312,8 +345,15 @@ describe("genererManifesteAudit", () => {
   // ── off.1 : NDA DREETS requis pour couverture (S5) ────────────────────────
 
   it("off.1 : manifeste affiche le NDA si renseigné", async () => {
-    // getQualiopiConfig : 1er appel = referent_handicap_nom, 2e = nda_numero
-    mockGetConfig.mockResolvedValueOnce("").mockResolvedValueOnce("11075XXXX75");
+    // 🔴 2026-08-23 — ce mock était positionnel (« 1er appel = referent_handicap_nom,
+    // 2e = nda_numero ») et s'est cassé le jour où une lecture de configuration a
+    // été ajoutée en amont, pour une raison sans aucun rapport avec le NDA. Un
+    // mock qui dépend de l'ORDRE des appels transforme tout ajout de lecture en
+    // faux rouge, et le rouge accuse le mauvais coupable.
+    // Il est désormais indexé par CLÉ : il ne peut plus être décalé.
+    mockGetConfig.mockImplementation((cle: string) =>
+      Promise.resolve(cle === "nda_numero" ? "11075XXXX75" : ""),
+    );
     const result = await genererManifesteAudit();
     const ind1 = result.json.indicateurs.find((i) => i.numero === 1);
     const preuvesText = ind1?.preuves.join(" ") ?? "";
@@ -359,6 +399,9 @@ describe("genererDossierAuditZip", () => {
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockRenderRegistrePdfBuffer.mockImplementation((type: string) =>
@@ -686,6 +729,9 @@ describe("Manifeste — une pièce annulée ne se compte nulle part", () => {
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockIsR2Configured.mockReturnValue(true);
@@ -780,6 +826,9 @@ describe("Manifeste — chaque pièce en face de l'exigence qu'elle prouve", () 
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     // Le registre contient une pièce de chaque type utile aux assertions.
@@ -892,6 +941,9 @@ describe("Manifeste — un indicateur non applicable ne présente aucune pièce"
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockPrisma.documentGenere.groupBy.mockImplementation(
@@ -1004,6 +1056,9 @@ describe("Manifeste — les pièces sont DÉSIGNABLES, et le plafond se dit", ()
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockIsR2Configured.mockReturnValue(true);

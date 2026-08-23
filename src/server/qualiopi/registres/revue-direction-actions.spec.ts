@@ -143,6 +143,18 @@ describe("creerRevueDirectionAction", () => {
 // updateRevueDirectionAction
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * 🔴 2026-08-23 — ces quatre tests écrivaient `statut: "finalisee"`.
+ *
+ * Ce statut n'existe NULLE PART ailleurs : l'écran ne propose que
+ * `brouillon` / `validee` / `archivee`, l'export PDF ne le connaît pas, et la
+ * règle de couverture d'off.32 filtre sur `statut: "validee"`. Il passait parce
+ * que le schéma Zod disait `z.string().max(20)` — donc une revue « finalisée »
+ * pouvait exister en base et ne couvrir rien, sans que personne ne soit prévenu.
+ * Le spec de l'action documentait ainsi, à son insu, le trou qu'il aurait dû
+ * garder. Le statut est désormais un enum ; ces tests portent sur `archivee`,
+ * qui est un vrai statut et n'appelle pas la garde de validation.
+ */
 describe("updateRevueDirectionAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -154,7 +166,7 @@ describe("updateRevueDirectionAction", () => {
   it("retourne { data: { id } } pour une mise à jour valide", async () => {
     const result = await updateRevueDirectionAction({
       id: REVUE_UUID,
-      statut: "finalisee",
+      statut: "archivee",
     });
 
     expect("data" in result).toBe(true);
@@ -163,16 +175,16 @@ describe("updateRevueDirectionAction", () => {
   });
 
   it("délègue à updateRevue avec les bons champs", async () => {
-    await updateRevueDirectionAction({ id: REVUE_UUID, statut: "finalisee" });
+    await updateRevueDirectionAction({ id: REVUE_UUID, statut: "archivee" });
 
     expect(mockUpdateRevue).toHaveBeenCalledOnce();
     const [idArg, inputArg] = mockUpdateRevue.mock.calls[0] as [string, { statut?: string }];
     expect(idArg).toBe(REVUE_UUID);
-    expect(inputArg.statut).toBe("finalisee");
+    expect(inputArg.statut).toBe("archivee");
   });
 
   it("retourne { error } si id n'est pas un UUID", async () => {
-    const result = await updateRevueDirectionAction({ id: "pas-uuid", statut: "finalisee" });
+    const result = await updateRevueDirectionAction({ id: "pas-uuid", statut: "archivee" });
 
     expect("error" in result).toBe(true);
     if (!("error" in result)) return;
@@ -180,7 +192,7 @@ describe("updateRevueDirectionAction", () => {
   });
 
   it("logge qualiopi.revue_direction.update", async () => {
-    await updateRevueDirectionAction({ id: REVUE_UUID, statut: "finalisee" });
+    await updateRevueDirectionAction({ id: REVUE_UUID, statut: "archivee" });
 
     const logCall = mockLogActivity.mock.calls[0]?.[0] as { action: string };
     expect(logCall.action).toBe("qualiopi.revue_direction.update");

@@ -18,7 +18,12 @@ import {
   creerRevue,
   updateRevue,
   reporterConstatRevue,
+  getRevueParId,
 } from "@/server/qualiopi/registres/revue-direction-service";
+import {
+  evaluerCouvertureOff32,
+  normaliserPlanActions,
+} from "@/server/qualiopi/revues/plan-actions";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -26,13 +31,27 @@ type ActionResult<T> = { data: T } | { error: string };
 // Schémas Zod
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Les TROIS statuts d'une revue de direction, et rien d'autre.
+ *
+ * 🔴 2026-08-23. C'était `z.string().max(20).optional()` : n'importe quelle
+ * chaîne de vingt caractères passait. L'écran n'a jamais proposé que ces trois
+ * valeurs, mais l'action, elle, ne les imposait pas — et le spec de l'action
+ * écrivait lui-même `statut: "finalisee"`, un statut qui n'existe nulle part
+ * ailleurs : ni à l'écran, ni dans le libellé des exports, ni dans la règle de
+ * couverture (`statut: "validee"`). Une revue « finalisée » ne couvrait rien,
+ * et personne n'était prévenu.
+ */
+const STATUTS_REVUE = ["brouillon", "validee", "archivee"] as const;
+const statutRevueSchema = z.enum(STATUTS_REVUE);
+
 const creerRevueDirectionSchema = z.object({
   annee: z.number().int().min(2020).max(2100),
   dateRevue: z.coerce.date(),
   participants: z.array(z.unknown()).optional(),
   decisions: z.array(z.unknown()).optional(),
   planActions: z.array(z.unknown()).optional(),
-  statut: z.string().max(20).optional(),
+  statut: statutRevueSchema.optional(),
 });
 
 const updateRevueDirectionSchema = z.object({
@@ -41,8 +60,37 @@ const updateRevueDirectionSchema = z.object({
   participants: z.array(z.unknown()).optional(),
   decisions: z.array(z.unknown()).optional(),
   planActions: z.array(z.unknown()).optional(),
-  statut: z.string().max(20).optional(),
+  statut: statutRevueSchema.optional(),
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Garde de validation — « validee » est un acte qui verdit une NC majeure
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Retourne le message de refus si l'état donné ne peut pas être déclaré
+ * « validée », `null` s'il le peut.
+ *
+ * Le verdict est délégué à `evaluerCouvertureOff32` — le SEUL prédicat de
+ * couverture d'off.32. Un prédicat recopié ici diverge : ce dépôt l'a payé
+ * quatre fois. Les preuves rendues par le prédicat servent directement de
+ * message d'erreur, donc l'écran de saisie et la matrice de conformité disent
+ * littéralement la même chose sur la même revue.
+ */
+function refuserValidation(etat: {
+  annee: number;
+  participants: unknown;
+  decisions: unknown;
+  planActions: unknown;
+}): string | null {
+  const verdict = evaluerCouvertureOff32(etat, new Date());
+  if (verdict.couvert) return null;
+  return (
+    "Cette revue ne peut pas être déclarée « validée » : elle ne prouve pas " +
+    "l'indicateur 32 (NC majeure). " +
+    verdict.manques.join(" · ")
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Actions
@@ -66,13 +114,31 @@ export async function creerRevueDirectionAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
 
+  // Même garde qu'à la mise à jour : on ne CRÉE pas non plus une revue déjà
+  // « validée » qui ne prouverait rien. L'écran de création ne propose pas le
+  // statut — mais l'action, elle, l'accepte, et c'est par là qu'un script ou un
+  // seed verdirait un super-indicateur sans que personne ne l'ait décidé.
+  if (v.statut === "validee") {
+    const refus = refuserValidation({
+      annee: v.annee,
+      participants: v.participants ?? [],
+      decisions: v.decisions ?? [],
+      planActions: v.planActions ?? [],
+    });
+    if (refus !== null) return { error: refus };
+  }
+
   let revue: { id: string; annee: number };
   try {
     revue = await creerRevue(v.annee, {
       dateRevue: v.dateRevue,
       ...(v.participants !== undefined ? { participants: v.participants } : {}),
       ...(v.decisions !== undefined ? { decisions: v.decisions } : {}),
-      ...(v.planActions !== undefined ? { planActions: v.planActions } : {}),
+      // Le plan d'actions est NORMALISÉ avant écriture : ce qui entre en base a la
+      // forme que le moteur de conformité relit (responsable · échéance · statut ·
+      // clôture). Sans cela, chaque écran écrirait sa propre forme et le suivi ne
+      // serait mesurable nulle part.
+      ...(v.planActions !== undefined ? { planActions: normaliserPlanActions(v.planActions) } : {}),
       ...(v.statut !== undefined ? { statut: v.statut } : {}),
     });
   } catch (err) {
@@ -94,6 +160,14 @@ export async function creerRevueDirectionAction(input: {
 
 /**
  * Met à jour une revue de direction existante (participants, décisions, plan, statut).
+ *
+ * ⚠️ Passer une revue en « validee » **verdit un super-indicateur** (32, NC
+ * majeure). Ce geste est donc opposé à l'état RÉSULTANT de la revue — ce que la
+ * mise à jour apporte, complété par ce qui est déjà en base pour les champs
+ * qu'elle ne renvoie pas. Une revue sans participants, sans décisions ou dont le
+ * plan d'actions ne porte ni responsable ni échéance ne peut pas être validée :
+ * l'erreur nomme précisément ce qui manque, au moment du clic, plutôt que de
+ * laisser l'écart se découvrir le jour J sur un tableau vert.
  */
 export async function updateRevueDirectionAction(input: {
   id: string;
@@ -108,11 +182,25 @@ export async function updateRevueDirectionAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { id, ...fields } = parsed.data;
 
+  const planActions =
+    fields.planActions !== undefined ? normaliserPlanActions(fields.planActions) : undefined;
+
+  if (fields.statut === "validee") {
+    const stockee = await getRevueParId(id);
+    const refus = refuserValidation({
+      annee: stockee?.annee ?? new Date().getFullYear(),
+      participants: fields.participants ?? stockee?.participants ?? [],
+      decisions: fields.decisions ?? stockee?.decisions ?? [],
+      planActions: planActions ?? stockee?.planActions ?? [],
+    });
+    if (refus !== null) return { error: refus };
+  }
+
   await updateRevue(id, {
     ...(fields.dateRevue !== undefined ? { dateRevue: fields.dateRevue } : {}),
     ...(fields.participants !== undefined ? { participants: fields.participants } : {}),
     ...(fields.decisions !== undefined ? { decisions: fields.decisions } : {}),
-    ...(fields.planActions !== undefined ? { planActions: fields.planActions } : {}),
+    ...(planActions !== undefined ? { planActions } : {}),
     ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
   });
 

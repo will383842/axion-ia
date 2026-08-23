@@ -23,16 +23,41 @@ export interface CreerSousTraitantInput {
   siret?: string;
   nda?: string;
   objetPrestation: string;
+  /**
+   * 🔴 Contact SIGNATAIRE — ces trois champs manquaient à cette interface.
+   *
+   * `creerSousTraitantAction` les collectait, les validait et les passait ici
+   * **par spread** : TypeScript n'applique pas le contrôle de propriété
+   * excédentaire aux propriétés issues d'un spread, donc rien n'a rougi et les
+   * trois valeurs tombaient sur le sol entre l'action et Prisma. Résultat
+   * mesuré : `sous_traitants_of.contact_email` n'avait AUCUN écrivain, alors que
+   * `piece-lien-signature.ts:167` le LIT pour émettre le lien de signature du
+   * contrat de sous-traitance — que l'indicateur 27 exige signé.
+   */
+  contactNom?: string;
+  contactEmail?: string;
+  contactFonction?: string;
   contratSigneAt?: Date;
   actif?: boolean;
 }
 
+/**
+ * Champs modifiables d'un sous-traitant déjà créé.
+ *
+ * `| null` sur les colonnes nullables : vider un champ est un geste distinct de
+ * « ne pas y toucher ». `undefined` laisse en l'état, `null` efface — même
+ * contrat que `updateSousTraitantPiecesAction` et que le panneau formateur.
+ * Sans cette distinction, un NDA saisi par erreur ne pourrait plus être retiré.
+ */
 export interface UpdateSousTraitantInput {
   nom?: string;
-  siret?: string;
-  nda?: string;
+  siret?: string | null;
+  nda?: string | null;
   objetPrestation?: string;
-  contratSigneAt?: Date;
+  contactNom?: string | null;
+  contactEmail?: string | null;
+  contactFonction?: string | null;
+  contratSigneAt?: Date | null;
   actif?: boolean;
 }
 
@@ -58,6 +83,9 @@ export async function creerSousTraitant(input: CreerSousTraitantInput): Promise<
       actif: input.actif ?? true,
       ...(input.siret !== undefined ? { siret: input.siret } : {}),
       ...(input.nda !== undefined ? { nda: input.nda } : {}),
+      ...(input.contactNom !== undefined ? { contactNom: input.contactNom } : {}),
+      ...(input.contactEmail !== undefined ? { contactEmail: input.contactEmail } : {}),
+      ...(input.contactFonction !== undefined ? { contactFonction: input.contactFonction } : {}),
       ...(input.contratSigneAt !== undefined ? { contratSigneAt: input.contratSigneAt } : {}),
     },
   });
@@ -82,6 +110,9 @@ export async function updateSousTraitant(
       ...(input.siret !== undefined ? { siret: input.siret } : {}),
       ...(input.nda !== undefined ? { nda: input.nda } : {}),
       ...(input.objetPrestation !== undefined ? { objetPrestation: input.objetPrestation } : {}),
+      ...(input.contactNom !== undefined ? { contactNom: input.contactNom } : {}),
+      ...(input.contactEmail !== undefined ? { contactEmail: input.contactEmail } : {}),
+      ...(input.contactFonction !== undefined ? { contactFonction: input.contactFonction } : {}),
       ...(input.contratSigneAt !== undefined ? { contratSigneAt: input.contratSigneAt } : {}),
       ...(input.actif !== undefined ? { actif: input.actif } : {}),
     },

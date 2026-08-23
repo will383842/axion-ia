@@ -75,34 +75,66 @@ function daysFromNow(n: number, now = new Date()): Date {
 // Règles individuelles — chacune retourne AlerteCandidate[]
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** R01 — Référent handicap absent si nom vide dans config. */
+/**
+ * R01 — Référent handicap absent (indicateur 26 ⭐).
+ *
+ * 🔴 2026-08-23 — cette règle gardait sur `referent_handicap_nom` et **ne
+ * pouvait JAMAIS se déclencher**. `getQualiopiConfig` rend la valeur par défaut
+ * du registre quand la ligne n'existe pas (`site-settings.ts`, `row == null`),
+ * et le registre donne `str("Williams Jullin")` à cette clé : le nom lu n'est
+ * donc jamais vide, même sur une base entièrement vierge. Une alerte de niveau
+ * CRITIQUE sur un super-indicateur restait muette par construction, et son
+ * silence était indiscernable d'une situation saine.
+ *
+ * Le test ne l'attrapait pas parce qu'il remplaçait `getQualiopiConfig` par un
+ * mock rendant `""` — précisément la couche où le défaut vivait.
+ *
+ * La règle garde désormais sur l'**e-mail**, qui n'a aucune valeur par défaut.
+ * Ce n'est pas un choix arbitraire : c'est déjà le signal que retient
+ * `evaluerConformite` pour off.26, avec le commentaire « le NOM seul (défaut
+ * config) ne prouve pas la désignation ». Les deux lectures disent enfin la
+ * même chose — et l'exigence de l'auditeur est bien « nommé ET joignable ».
+ *
+ * Verrouillé par `alerte-dabsence-ne-peut-pas-etre-morte.spec.ts`, qui garde la
+ * FORME et attrapera donc aussi la prochaine règle écrite sur ce motif.
+ */
 async function regleReferentHandicap(now: Date): Promise<AlerteCandidate[]> {
   void now;
-  const nom = await getQualiopiConfig("referent_handicap_nom");
-  if (nom && nom.trim().length > 0) return [];
+  const email = await getQualiopiConfig("referent_handicap_email");
+  if (email && email.trim().length > 0) return [];
   return [
     {
       code: "referent_handicap_absent",
       niveau: "critique",
       titre: "Référent handicap absent",
       message:
-        "Aucun référent handicap renseigné dans la configuration. Obligatoire Qualiopi (ind.26⭐).",
+        "Aucun e-mail de référent handicap renseigné dans la configuration. " +
+        "L'auditeur attend un référent NOMMÉ ET JOIGNABLE : un nom sans moyen " +
+        "de contact ne prouve pas la désignation. Obligatoire Qualiopi (ind.26⭐).",
     },
   ];
 }
 
-/** R01b — Responsable qualité non désigné si nom vide dans config. */
+/**
+ * R01b — Responsable qualité non désigné (critère 7).
+ *
+ * 🔴 Même défaut, même date, même correction que R01 ci-dessus :
+ * `responsable_qualite_nom` porte aussi le défaut `str("Williams Jullin")`,
+ * donc la règle ne pouvait jamais partir. Elle garde désormais sur l'e-mail.
+ */
 async function regleResponsableQualite(now: Date): Promise<AlerteCandidate[]> {
   void now;
-  const nom = await getQualiopiConfig("responsable_qualite_nom");
-  if (nom && nom.trim().length > 0) return [];
+  const email = await getQualiopiConfig("responsable_qualite_email");
+  if (email && email.trim().length > 0) return [];
   return [
     {
       code: "responsable_qualite_absent",
       niveau: "important",
       titre: "Responsable qualité non désigné",
       message:
-        "Aucun responsable/référent qualité renseigné dans la configuration. L'auditeur COFRAC attend une personne identifiée qui pilote le référentiel et prépare les audits (critère 7).",
+        "Aucun e-mail de responsable/référent qualité renseigné dans la configuration. " +
+        "L'auditeur COFRAC attend une personne identifiée ET joignable qui pilote le " +
+        "référentiel et prépare les audits (critère 7).",
     },
   ];
 }
@@ -147,6 +179,83 @@ async function regleCategoriesCertifiees(now: Date): Promise<AlerteCandidate[]> 
         "saisissez la ou les catégories exactes dans la configuration Qualiopi " +
         "(« Catégories d'actions certifiées »). Renseignez au passage le certificateur, " +
         "la date d'obtention et la validité : ce sont les pièces que l'auditeur demande.",
+    },
+  ];
+}
+
+/**
+ * R01e — Le catalogue se contredit sur « sommes-nous un organisme CERTIFIANT ? »
+ *
+ * 🔴 2026-08-23, observé À L'ÉCRAN sur `/qualiopi/mode-auditeur`, pas déduit du
+ * code. La matrice affichait, dans la même page :
+ *
+ *   • indicateur 1, **Couvert** — « 1 formation certifiante avec code RS/RNCP renseigné »
+ *   • indicateurs 3, 7 ⭐ et 16 ⭐ — « Non applicable · Aucun élément enregistré »
+ *
+ * Les deux ne peuvent pas être vrais ensemble, et un auditeur le voit sans
+ * ouvrir un seul dossier.
+ *
+ * ## Pourquoi c'est possible : deux colonnes indépendantes, un seul sujet
+ *
+ * | question | colonne lue | qui l'écrit |
+ * |---|---|---|
+ * | 3/7/16 sont-ils APPLICABLES ? | `Formation.typesActionQualiopi` | **personne** — aucun écran ne l'expose ; l'import du catalogue y écrit `["classique"]` en dur |
+ * | y a-t-il une preuve de certifiant ? | `certificationType` + `codeRncp`/`codeRs` | l'écran de la formation |
+ *
+ * Une formation peut donc porter un code RNCP parfaitement renseigné tout en
+ * étant déclarée « classique », et le système soutient alors les deux thèses à
+ * la fois.
+ *
+ * ## Ce que cette règle NE fait pas, délibérément
+ *
+ * Elle ne tranche pas. Le périmètre de certification demandé au certificateur
+ * est une **décision**, pas une donnée déductible : Will a confirmé le
+ * 2026-08-23 que le périmètre ne comporte **aucune action certifiante**, mais
+ * cette décision peut changer et elle ne vit pas dans le dépôt. Le code se
+ * contente donc de **signaler la contradiction** et de nommer les deux issues.
+ *
+ * ⚠️ L'enjeu n'est pas cosmétique : si le périmètre devient certifiant, **7 et
+ * 16 sont des super-indicateurs** et n'ont aujourd'hui aucune pièce
+ * (`audit-dossier.ts` leur associe explicitement `[]`, avec sa justification).
+ * Deux NC majeures, donc un refus.
+ */
+async function regleCatalogueCertifiantIncoherent(now: Date): Promise<AlerteCandidate[]> {
+  void now;
+
+  const [nbAvecCodeCertification, formationsTypees] = await Promise.all([
+    prisma.formation.count({
+      where: {
+        certificationType: { not: "aucune" },
+        OR: [{ codeRncp: { not: null } }, { codeRs: { not: null } }],
+      },
+    }),
+    // Même lecture que celle qui pilote `indicateursApplicables` : c'est la
+    // comparaison de CES deux signaux-là qui a un sens, pas d'un équivalent.
+    prisma.formation.findMany({ select: { typesActionQualiopi: true }, take: 200 }),
+  ]);
+
+  if (nbAvecCodeCertification === 0) return [];
+
+  const declareCertifiante = formationsTypees.some((f) => {
+    const types = f.typesActionQualiopi as unknown as string[] | null;
+    return Array.isArray(types) && types.includes("certifiante");
+  });
+
+  if (declareCertifiante) return [];
+
+  return [
+    {
+      code: "catalogue_certifiant_incoherent",
+      niveau: "important",
+      titre: "Le catalogue se contredit sur les actions certifiantes",
+      message:
+        `${nbAvecCodeCertification} formation(s) portent un code RNCP/RS, mais aucune n'est ` +
+        "déclarée comme action certifiante. La console affiche donc « formation certifiante » " +
+        "comme preuve de l'indicateur 1 tout en déclarant les indicateurs 3, 7 et 16 « non " +
+        "applicables » — un auditeur voit la contradiction sans ouvrir un dossier. " +
+        "Deux issues, et c'est une décision : soit le périmètre certifié inclut ces actions " +
+        "(alors 7 et 16 deviennent des NC MAJEURES tant qu'aucune preuve n'existe), soit il " +
+        "ne les inclut pas et il faut retirer le code RNCP/RS de ces formations.",
     },
   ];
 }
@@ -2319,6 +2428,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "responsable_qualite", fn: regleResponsableQualite },
   { nom: "mentions_facture", fn: regleMentionsFacture },
   { nom: "categories_certifiees", fn: regleCategoriesCertifiees },
+  { nom: "catalogue_certifiant_incoherent", fn: regleCatalogueCertifiantIncoherent },
   { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
