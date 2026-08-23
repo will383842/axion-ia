@@ -11,6 +11,7 @@ import {
   listCandidaturesUnifieesAction,
 } from "@/features/admin-job-applications/actions";
 import type { CandidatureUnifieeItem } from "@/features/admin-job-applications/actions";
+import { getSourcesCandidatures } from "@/features/admin-job-applications/annonces-stats";
 import { ApplicationsV2 } from "./_v2/ApplicationsV2";
 import type { CandidaturesView } from "./_v2/ApplicationsV2";
 
@@ -44,9 +45,14 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
     page: number;
     totalPages: number;
   };
+  // Sous-onglets par canal d'annonce — n'ont de sens que dans la vue
+  // apporteurs. Ailleurs le paramètre est ignoré plutôt que rejeté : un lien
+  // partagé qui traîne un `?source=` ne doit pas casser une autre vue.
+  const source = view === "memo" && sp.source ? sp.source : undefined;
   if (view === "memo" || (view === "all" && !sp.offerId)) {
     result = await listCandidaturesUnifieesAction({
       scope: view === "memo" ? "memo" : "toutes",
+      ...(source ? { source } : {}),
       onlyAttention,
       page,
     });
@@ -81,6 +87,8 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
       adminPrefix={adminPrefix}
       searchParams={sp}
       view={view}
+      sources={view === "memo" ? await getSourcesCandidatures() : []}
+      activeSource={source}
       items={result.items}
       total={result.total}
       page={result.page}

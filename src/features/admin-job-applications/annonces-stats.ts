@@ -188,3 +188,56 @@ export async function getAnnoncesStats(joursFenetre = 90): Promise<AnnoncesStats
     depuis,
   };
 }
+
+// ── Sous-onglets par annonce (console Candidatures) ─────────────────────────
+
+export interface SourceCandidatures {
+  /** Id de source (`leboncoin`, `memorial-isere`…) ou `"—"` si non renseignée. */
+  readonly id: string;
+  readonly label: string;
+  readonly count: number;
+}
+
+/**
+ * Sources RÉELLEMENT présentes dans les candidatures commerciales, avec leur
+ * volume — pour construire les sous-onglets de la console.
+ *
+ * 🔴 Dérivé des DONNÉES, jamais d'une liste figée. Trois conséquences voulues :
+ *   · un canal ajouté à `SOURCE_OPTIONS` apparaît tout seul dès sa première
+ *     candidature — aucun écran à modifier ;
+ *   · aucun onglet vide : on ne propose pas un filtre qui ne renverra rien ;
+ *   · aucune liste à maintenir en double, donc aucune divergence possible
+ *     avec la réalité.
+ *
+ * Sans fenêtre temporelle, contrairement à `getAnnoncesStats` : un onglet est
+ * un moyen de RETROUVER une candidature, y compris ancienne. Le pilotage, lui,
+ * se borne à 90 jours parce qu'il compare des annonces entre elles.
+ */
+export async function getSourcesCandidatures(): Promise<readonly SourceCandidatures[]> {
+  const rows = await prisma.submission.findMany({
+    where: {
+      details: { path: ["subType"], equals: CANDIDATURE_COMMERCIALE_SUBTYPE },
+      deletedAt: null,
+    },
+    select: { details: true },
+  });
+
+  const counts = new Map<string, number>();
+  for (const r of rows) {
+    const d = lireDetails(r.details);
+    const candidature = lireDetails(d?.candidature);
+    const id =
+      candidature && typeof candidature.sourceConnaissance === "string"
+        ? candidature.sourceConnaissance
+        : SANS_PROVENANCE;
+    counts.set(id, (counts.get(id) ?? 0) + 1);
+  }
+
+  return [...counts.entries()]
+    .map(([id, count]) => ({
+      id,
+      label: id === SANS_PROVENANCE ? "Non renseignée" : optionLabel(SOURCE_OPTIONS, id),
+      count,
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "fr"));
+}

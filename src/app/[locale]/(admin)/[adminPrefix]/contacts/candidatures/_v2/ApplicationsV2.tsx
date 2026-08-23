@@ -21,6 +21,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { CandidatureUnifieeItem } from "@/features/admin-job-applications/actions";
+import type { SourceCandidatures } from "@/features/admin-job-applications/annonces-stats";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
@@ -85,6 +86,17 @@ interface Props {
   adminPrefix: string;
   searchParams: Record<string, string | undefined>;
   view: CandidaturesView;
+  /**
+   * Canaux d'annonce réellement présents dans les données, avec leur volume —
+   * les sous-onglets de la vue apporteurs. Vide sur les autres vues.
+   *
+   * Dérivés des données et non d'une liste figée : un canal ajouté à
+   * `SOURCE_OPTIONS` apparaît tout seul dès sa première candidature, et aucun
+   * onglet ne propose un filtre qui ne renverrait rien.
+   */
+  sources?: ReadonlyArray<SourceCandidatures>;
+  /** Canal actif, ou `undefined` pour « toutes provenances ». */
+  activeSource?: string | undefined;
   items: ReadonlyArray<CandidatureUnifieeItem>;
   total: number;
   page: number;
@@ -95,6 +107,8 @@ export function ApplicationsV2({
   adminPrefix,
   searchParams: sp,
   view,
+  sources = [],
+  activeSource,
   items,
   total,
   page,
@@ -162,6 +176,33 @@ export function ApplicationsV2({
           { value: "memo", label: "Apporteurs d'affaires", href: `${baseHref}?view=memo` },
         ]}
       />
+
+      {/* Sous-onglets par canal d'annonce — uniquement sous « Apporteurs
+          d'affaires », et uniquement s'il y a plus d'un canal. Avec une seule
+          provenance, un sous-onglet « Toutes » face à un unique canal ne
+          propose aucun choix : il n'ajoute qu'une ligne à lire.
+
+          Le compteur est porté par le libellé : sans lui, on clique un onglet
+          pour découvrir qu'il est vide, ce qui est exactement l'information
+          qu'un onglet devrait donner avant le clic. */}
+      {view === "memo" && sources.length > 1 ? (
+        <AdminFilterTabs
+          className="mb-[var(--space-admin-5)]"
+          current={activeSource ?? "__toutes__"}
+          options={[
+            {
+              value: "__toutes__",
+              label: `Toutes provenances (${sources.reduce((n, s) => n + s.count, 0)})`,
+              href: `${baseHref}?view=memo`,
+            },
+            ...sources.map((s) => ({
+              value: s.id,
+              label: `${s.label} (${s.count})`,
+              href: `${baseHref}?view=memo&source=${encodeURIComponent(s.id)}`,
+            })),
+          ]}
+        />
+      ) : null}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
