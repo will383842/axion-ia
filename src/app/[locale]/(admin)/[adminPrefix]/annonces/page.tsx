@@ -137,7 +137,12 @@ export default async function AnnoncesStatsPage({ params }: PageProps) {
         description={`Provenance des candidatures commerciales depuis le ${formatDateFr(stats.depuis)}. Tout est recalculé à l'affichage depuis les candidatures elles-mêmes.`}
       />
 
-      <div className="admin-stat-grid">
+      {/* `.admin-kpi-grid` — définie dans `admin.css`. J'avais écrit
+          `.admin-stat-grid`, qui n'existe pas : les quatre cartes se seraient
+          empilées sans mise en page, sans qu'aucune erreur ne le dise. C'est
+          `admin-design-tokens.test.ts` qui l'a vu — une classe `admin-*`
+          inconnue de la feuille de style est un style qui ne s'applique pas. */}
+      <div className="admin-kpi-grid">
         <AdminStatCard
           icon={Inbox}
           label="Candidatures"
