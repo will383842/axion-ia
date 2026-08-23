@@ -145,8 +145,8 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     // C'est la leçon directe de la ligne « bande de réassurance de l'annonce
     // de recrutement » ci-dessous : une garde qui vit dans un autre fichier
     // n'est pas une garde, c'est une intention.
-    file: "app/[locale]/partenaire/[source]/page.tsx",
-    why: "bande de réassurance + argument OPCO de la landing d'annonce (`/partenaire/leboncoin`)",
+    file: "components/recrutement/PartenaireLandingPage.tsx",
+    why: "bande de réassurance + argument OPCO du gabarit des landings d’annonce (`/leboncoin`, `/indeed`)",
   },
   {
     file: "app/[locale]/formations/tarifs/page.tsx",

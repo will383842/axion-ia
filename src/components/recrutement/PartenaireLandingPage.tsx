@@ -1,4 +1,5 @@
-// Landing de RÉCEPTION D'ANNONCE — `/partenaire/[source]`.
+// Gabarit des landings de RÉCEPTION D’ANNONCE — servi à la racine, une route
+// par canal (`/leboncoin`, `/indeed`), de la même forme que `/memo-isere`.
 //
 // Première source : `leboncoin` (annonce nationale, cf.
 // `docs/annonce-leboncoin-recrutement.md`). Le gabarit est générique : ajouter
@@ -60,11 +61,8 @@ import {
   PARTENAIRE_OBJECTION_IA,
   PARTENAIRE_PROFILS,
   PARTENAIRE_REASSURANCE_BASE,
-  PARTENAIRE_SOURCES,
-  isPartenaireSource,
+  type PartenaireSource,
 } from "@/content/recrutement/partenaire-landings";
-
-export const revalidate = 3600;
 
 /**
  * Mentions AFFIRMANT la certification — servies UNIQUEMENT sous
@@ -85,12 +83,19 @@ const REASSURANCE_CERTIFIE: readonly string[] = [
 ];
 
 interface Props {
-  params: Promise<{ locale: string; source: string }>;
-}
-
-/** Pré-rend une page par source connue. */
-export function generateStaticParams(): Array<{ source: string }> {
-  return PARTENAIRE_SOURCES.map((source) => ({ source }));
+  params: Promise<{ locale: string }>;
+  /**
+   * Canal servi par cette page. Passé en PROP par la route, jamais lu dans
+   * l'URL.
+   *
+   * 🔴 Pourquoi pas un segment dynamique. Ces pages vivent à la RACINE
+   * (`/leboncoin`, `/indeed`), pour être de la même forme que `/memo-isere`.
+   * Un `[slug]` racine avalerait toutes les routes inconnues du site : une
+   * faute de frappe sur n'importe quelle URL rendrait une landing de
+   * recrutement au lieu d'un 404. Chaque canal a donc son fichier de route —
+   * dix lignes qui délèguent ici.
+   */
+  source: PartenaireSource;
 }
 
 // ── Formatage ───────────────────────────────────────────────────────────────
@@ -109,9 +114,12 @@ function commission(jours: number): string {
   return euros(jours * COMMISSION_FORMATION_PAR_JOURNEE_EUR);
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, source } = await params;
-  if (!hasLocale(routing.locales, locale) || !isPartenaireSource(source)) return {};
+/** Métadonnées d'une landing de réception — appelée par la route de chaque canal. */
+export async function buildPartenaireMetadata(
+  locale: string,
+  source: PartenaireSource,
+): Promise<Metadata> {
+  if (!hasLocale(routing.locales, locale)) return {};
   const l = PARTENAIRE_LANDINGS[source];
 
   // Pas de `buildProductMetadata` ici : ce helper pose les canoniques et les
@@ -230,10 +238,9 @@ function BandeCta({ title, track }: { title: string; track: string }) {
 
 // ── Page ────────────────────────────────────────────────────────────────────
 
-export default async function PartenaireLandingPage({ params }: Props) {
-  const { locale, source } = await params;
+export async function PartenaireLandingPage({ params, source }: Props) {
+  const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  if (!isPartenaireSource(source)) notFound();
   setRequestLocale(locale as Locale);
 
   const l = PARTENAIRE_LANDINGS[source];
