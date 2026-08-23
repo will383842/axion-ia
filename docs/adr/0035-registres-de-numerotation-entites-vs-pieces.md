@@ -64,7 +64,35 @@ Il faut le dire ici plutôt que le découvrir en audit. `documents_generes` port
 
 Autrement dit, cet ADR supprime la **cause** de la collision pour toutes les pièces à venir, mais il ne guérit pas l'état hérité, et cet état produira une collision de plus avant de s'éteindre. Le cas ne se pose ni pour `AXI-FORM` (formations jusqu'à `-057`, documents à `-003`) ni pour `AXI-DEV` (devis à `-002`, documents à `-002`, et le registre documentaire n'émet plus de `AXI-DEV`).
 
-Seule la branche (A) ci-dessous ferme réellement le constat.
+**Mise à jour du 2026-08-23 — la 8e collision N'AURA PAS LIEU, et sans purge.**
+
+Ce paragraphe affirmait que « seule la branche (A) ferme réellement le constat ».
+C'était vrai de l'état des DONNÉES, faux du constat lui-même : une collision
+annoncée comme certaine n'a pas besoin d'attendre une décision de purge, il
+suffit que la borne haute cesse d'être aveugle à l'autre registre.
+
+`allocateSessionNumero()` (`src/server/qualiopi/formations/numbering.ts`) calcule
+désormais sa borne sur `training_sessions` **et** sur `documents_generes`, pour
+le même préfixe. La prochaine session recevra donc `-004`, et non `-003`.
+
+Cette lecture croisée ne contredit pas la décision §1 : depuis le 2026-07-26 le
+registre documentaire n'émet plus que `AXI-DOC`, `AXI-ATT` et `AXI-CERT`.
+Interroger `documents_generes` sur le préfixe `AXI-SESS-<année>-` ne peut donc
+ramener QUE les pièces de l'ancienne numérotation énumérées en §4 — un ensemble
+**figé de 9 lignes, qui ne grandira jamais**. Le jour où la branche (A) est
+jouée, la requête ne ramène plus rien et devient un no-op, sans qu'il faille y
+repenser.
+
+Verrouillé par `src/server/qualiopi/formations/numbering-inter-registres.spec.ts`,
+qui rougit si la lecture croisée disparaît — elle a l'air redondante, puisque
+hors production elle ne ramène jamais rien.
+
+⚠️ Ce correctif supprime la collision ANNONCÉE ; il ne rend pas l'unicité
+inter-registres garantie. Seule la table `numero_registre` de la section
+« ce qui reste ouvert » le ferait.
+
+Seule la branche (A) ci-dessous ferme le constat du côté des DONNÉES — les deux
+séries restant mêlées en base tant qu'elle n'est pas jouée.
 
 ## Décision PENDANTE — sort des 9 tirages antérieurs
 
@@ -72,7 +100,7 @@ Les 9 lignes de `documents_generes` ont toutes `envoye_at IS NULL` et `qr_token 
 
 Deux branches, à trancher par Will :
 
-- **(A) purge — recommandée.** Si aucune n'a été transmise, supprimer les 9 lignes et leurs objets R2. Les deux registres repartent propres, les 7 collisions disparaissent, la 8e (section 5) n'a pas lieu, et le constat est **clos** au lieu d'être « documenté ». La section 4 et la section 5 deviennent caduques ; le reste de l'ADR reste valable.
+- **(A) purge — toujours recommandée, mais elle N'EST PLUS URGENTE depuis le 2026-08-23 : la collision annoncée en §5 est désormais fermée par le code, pas par la suppression des lignes.** Si aucune n'a été transmise, supprimer les 9 lignes et leurs objets R2. Les deux registres repartent propres, les 7 collisions disparaissent, la 8e (section 5) n'a pas lieu, et le constat est **clos** au lieu d'être « documenté ». La section 4 et la section 5 deviennent caduques ; le reste de l'ADR reste valable.
 - **(B) conservation.** Sinon, les 9 lignes restent en base à titre d'archive, la section 4 fait foi devant l'auditeur, et la collision annoncée en section 5 devra être expliquée le jour où elle se produira.
 
 Ne pas trancher à sa place : un registre de pièces **réellement émises** est immuable, mais l'immuabilité de tirages de test internes n'est pas démontrée.
