@@ -41,6 +41,7 @@ const mockSessionFindMany = vi.fn();
 const mockSessionFormateurCreate = vi.fn();
 const mockSessionJourCreateMany = vi.fn();
 const mockTransitionCreate = vi.fn();
+const mockDocumentFindMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => {
   const prismaMock: Record<string, unknown> = {
@@ -50,6 +51,15 @@ vi.mock("@/lib/prisma", () => {
       create: (...a: unknown[]) => mockSessionCreate(...a),
       findMany: (...a: unknown[]) => mockSessionFindMany(...a),
     },
+    // ⚠️ 2026-08-23 — REQUIS, ET CE N'EST PAS UNE FORMALITÉ.
+    // `allocateSessionNumero` calcule sa borne haute sur les DEUX registres
+    // depuis la fermeture d'ADR 0035 §5 : `training_sessions` ET
+    // `documents_generes`. Sans cette entrée, l'appel lève, la création échoue,
+    // et le `catch` de l'action rend « Erreur lors de la création de la
+    // session » — les sept cas de ce fichier rougissent alors sur un message
+    // qui n'a rien à voir avec ce qu'ils testent. C'est exactement le piège que
+    // décrit le commentaire de `formationTransition` ci-dessous.
+    documentGenere: { findMany: (...a: unknown[]) => mockDocumentFindMany(...a) },
     sessionFormateur: { create: (...a: unknown[]) => mockSessionFormateurCreate(...a) },
     sessionJour: { createMany: (...a: unknown[]) => mockSessionJourCreateMany(...a) },
     // ⚠️ `formationTransition`, PAS `sessionTransition` : c'est le modèle
@@ -124,6 +134,9 @@ beforeEach(() => {
   mockTrainerFindUnique.mockResolvedValue(formateurHabilite());
   // Aucun numéro existant → la série démarre à 001 (allocateur MAX+1).
   mockSessionFindMany.mockResolvedValue([]);
+  // Registre documentaire vide : le cas nominal hors production (cf. ADR 0035 §4,
+  // les 9 pièces de l'ancienne numérotation n'existent qu'en base réelle).
+  mockDocumentFindMany.mockResolvedValue([]);
   mockSessionCreate.mockResolvedValue({ id: SESSION_ID, numero: "AXI-SESS-2026-001" });
   mockSessionFormateurCreate.mockResolvedValue({ id: "sf-1" });
   mockSessionJourCreateMany.mockResolvedValue({ count: 1 });
