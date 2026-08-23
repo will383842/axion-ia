@@ -379,6 +379,17 @@ export async function validerPublicationAction(input: {
 }
 
 /**
+ * ⚠️ VOLONTAIREMENT branchée à aucun écran — ce n'est pas un oubli.
+ *
+ * La fiche évalue la conformité À L'AFFICHAGE, en lisant les règles en
+ * base : l'utilisateur voit ce qui bloquera AVANT de tenter de valider,
+ * plutôt que de se le faire refuser après coup. Un appel séparé rendrait
+ * le même verdict, une requête plus tard.
+ *
+ * Elle reste ici pour un contrôle à la demande — une revue en lot, ou un
+ * appel depuis un composant client.
+ */
+/**
  * Contrôle de conformité SANS muter — pour afficher l'état en cours de
  * rédaction, avant que l'utilisateur ne tente de valider.
  */

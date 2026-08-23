@@ -14,6 +14,23 @@ import { z } from "zod";
 export const COMMERCIAL_APPLICATION_STORAGE_KEY = "axionia-candidature-commercial-v1";
 
 /**
+ * Valeur de `Submission.details.subType` pour une candidature commerciale.
+ *
+ * SSOT : elle est ÉCRITE par `features/commercial-application/actions.ts` et
+ * LUE par deux écrans d'administration (le listing et l'agrégation par
+ * annonce). Les trois doivent filtrer sur la même chaîne, sinon ils
+ * décriraient des populations différentes en prétendant parler de la même.
+ *
+ * 🔴 Elle vit ICI et non dans un fichier d'actions, pour une raison de
+ * compilation autant que de conception : un module `"use server"` ne peut
+ * exporter QUE des fonctions asynchrones. Y exporter une constante casse le
+ * build — c'est le défaut déjà corrigé par le commit 950101098 (« une fonction
+ * synchrone dans un module "use server" »), et je l'ai reproduit le
+ * 2026-08-23 avant que le serveur de dev ne me le rappelle.
+ */
+export const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
+
+/**
  * Version du consentement RGPD affiché par le formulaire.
  *
  * v2 (lot L4) — valeur FERME décidée au plan §2.3. Elle recouvre les DEUX
@@ -34,6 +51,28 @@ export interface ChoiceOption {
   readonly id: string;
   readonly label: string;
 }
+
+/**
+ * Taille du carnet d'adresses dirigeants.
+ *
+ * 🔑 C'est la question la PLUS PRÉDICTIVE du recrutement, et elle manquait.
+ * Le reste du tunnel mesure l'EXPÉRIENCE (années de B2B, types de clients,
+ * parcours détaillé) ; aucun champ ne mesurait le STOCK — combien de dirigeants
+ * cette personne peut appeler *demain matin*. Or c'est ce stock qui décide
+ * s'il y aura un contact déposé dans les 30 jours, c'est-à-dire la seule
+ * métrique qui compte pour ce réseau (cf. `docs/plan-recrutement-apporteurs-daffaires.md` §1).
+ *
+ * Formulée « demain matin » et non « connaissez-vous des dirigeants » : la
+ * seconde invite à compter les rencontres de salon, la première force à penser
+ * à ceux qui décrocheraient vraiment.
+ */
+export const CARNET_DIRIGEANTS_OPTIONS = [
+  { id: "0-5", label: "Moins de 5" },
+  { id: "5-20", label: "5 à 20" },
+  { id: "20-50", label: "20 à 50" },
+  { id: "50-150", label: "50 à 150" },
+  { id: "150-plus", label: "Plus de 150" },
+] as const satisfies readonly ChoiceOption[];
 
 export const B2B_ANNEES_OPTIONS = [
   { id: "moins-1", label: "Moins d'1 an" },
@@ -83,16 +122,37 @@ export const STATUT_OPTIONS = [
   { id: "creation-statut", label: "Je créerai mon statut" },
 ] as const satisfies readonly ChoiceOption[];
 
+/**
+ * Canaux par lesquels un candidat peut avoir connu l'offre.
+ *
+ * 🔴 UNE ENTRÉE PAR ANNONCE, sans exception. Sans son id propre, un canal
+ * arrive indistinguable de tous les autres : l'écran Ops → Annonces
+ * recrutement, qui existe pour dire quelle annonce rapporte, ne peut plus rien
+ * dire, et on paie des annonces à l'aveugle.
+ *
+ * Purement additif : `sourceConnaissance` n'est consommé qu'en affichage
+ * (`optionLabel`) et transmis au CRM comme chaîne libre. Aucun contrat à
+ * propager, aucune migration.
+ *
+ * Cf. `docs/annonce-leboncoin-recrutement.md` et l'entrée mémoire
+ * « réseau apporteurs — ajouter un canal d'annonce ».
+ */
 export const SOURCE_OPTIONS = [
   { id: "memorial-isere", label: "Le Mémorial de l’Isère" },
-  // 2026-08-23 — annonce nationale Le Bon Coin (cf.
-  // `docs/annonce-leboncoin-recrutement.md`). Sans cette entrée, une
-  // candidature venue de l'annonce arrive indistinguable de tout le reste :
-  // impossible de mesurer si le canal vaut son coût, donc impossible de
-  // décider d'y remettre de l'argent. Purement additif : `sourceConnaissance`
-  // n'est consommé qu'en affichage (`optionLabel`) et transmis au CRM comme
-  // chaîne libre — aucun contrat à propager.
+  /** Annonce nationale Le Bon Coin → landing `/leboncoin`. */
   { id: "leboncoin", label: "Le Bon Coin" },
+  /**
+   * Annonce Indeed → landing `/indeed`.
+   * ⚠️ Indeed ne moissonne pas le `JobPosting` du site : le dépôt y est manuel.
+   */
+  { id: "indeed", label: "Indeed" },
+  /**
+   * Annonce jemepropose.com → page SEO
+   * `/apporteur-affaires-independant-formation-ia-entreprise`, et non une
+   * landing de réception : ce canal a sa page indexable propre, parce que son
+   * intitulé vise un cluster de requêtes distinct.
+   */
+  { id: "jemepropose", label: "jemepropose.com" },
   { id: "site-web", label: "Site web Axion-IA.com" },
   { id: "qr-code", label: "QR code" },
   { id: "linkedin", label: "LinkedIn" },
@@ -305,6 +365,23 @@ export const commercialApplicationSchema = z
       .regex(/^[0-9A-Za-z][0-9A-Za-z -]{2,9}$/),
     b2bDejaVendu: z.boolean(),
     b2bAnnees: z.enum(B2B_ANNEES_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),
+    /**
+     * FACULTATIF côté schéma, volontairement.
+     *
+     * C'est le meilleur signal de scoring (25 points sur 100), mais le rendre
+     * bloquant ferait abandonner ceux qui ne savent pas quoi répondre — or une
+     * candidature sans carnet déclaré reste exploitable, elle passe simplement
+     * par le webinaire au lieu d'un appel prioritaire. Un champ obligatoire
+     * coûterait plus de candidatures qu'il n'apporterait de précision.
+     *
+     * ⚠️ `.optional()` sur un `z.enum()` rejette la chaîne vide avec un message
+     * générique qui ne désigne pas le champ fautif (défaut constaté sur le
+     * formulaire de contact le 2026-08-17). L'UI est en chips et n'émet jamais
+     * `""` — elle omet la clé. Ne pas relâcher cette garantie côté wizard.
+     */
+    carnetDirigeants: z
+      .enum(CARNET_DIRIGEANTS_OPTIONS.map((o) => o.id) as [string, ...string[]])
+      .optional(),
     experiences: z.array(experienceSchema).min(1).max(8),
     iaUtilise: z.boolean(),
     iaOutils: z

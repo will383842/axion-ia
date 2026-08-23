@@ -134,6 +134,18 @@ export default async function DevenirCommercialHub({ params }: Props) {
       ? `Axion-IA recrute des commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grands groupes. L'AI Act impose à toute entreprise qui utilise l'IA de former ses équipes (article 4, en vigueur) et les formations sont finançables OPCO : la demande est déjà là. ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "fr", { compact: true })} par journée de formation vendue, quel que soit le format. Statut indépendant, revenus non plafonnés, emploi du temps libre.`
       : `Axion-IA is hiring independent sales reps across France to sell its AI trainings, audits, 1-on-1 support and integrations to businesses of every size. The AI Act requires any company using AI to train its staff (article 4, in force) and trainings are OPCO-fundable: the demand is already there. ${formatAmount(COMMISSION_FORMATION_PAR_JOURNEE_EUR, "en", { compact: true })} per training day sold, whatever the format. Self-employed status, uncapped income, flexible schedule.`,
     datePosted: COMMERCIAL_OFFER_DATE_POSTED,
+    // Identifiant STABLE de l'offre — recommandé par Google for Jobs. Il permet
+    // à Google de reconnaître qu'une republication (nouveau `datePosted`) porte
+    // sur LA MÊME offre, au lieu d'en indexer une seconde à côté.
+    //
+    // Valeur figée en dur, et surtout pas dérivée d'un identifiant de base :
+    // l'offre France est déclarée ici, inline, et n'a pas de ligne en base à
+    // laquelle s'accrocher. Ne jamais la changer sans changer d'offre.
+    identifier: {
+      "@type": "PropertyValue",
+      name: "Axion-IA",
+      value: "commercial-ia-france",
+    },
     employmentType: "CONTRACTOR",
     occupationalCategory: isFr
       ? "Commercial · Agent commercial · VRP · Apporteur d'affaires"
