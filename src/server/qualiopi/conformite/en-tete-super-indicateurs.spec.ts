@@ -53,7 +53,18 @@ function lireListeDeclareeDansEnTete(source: string): number[] {
       "l'ancienne liste fausse. La rétablir plutôt que d'assouplir la garde.",
   ).not.toBeNull();
 
-  return (ligne as RegExpMatchArray)[1]
+  // Le groupe capturant existe dès que la balise a été trouvée — mais
+  // `noUncheckedIndexedAccess` l'ignore, et l'affirmer ici documente que la
+  // balise DOIT porter une liste : une balise vide ferait rendre `[]`, et la
+  // garde deviendrait verte par vacuité au lieu de rougir.
+  const liste = (ligne as RegExpMatchArray)[1];
+  expect(
+    liste,
+    "La balise `@superIndicateurs` est présente mais ne porte AUCUNE liste. " +
+      "Une garde qui compare une liste vide à une liste vide est verte par vacuité.",
+  ).toBeDefined();
+
+  return (liste as string)
     .split(",")
     .map((morceau) => morceau.trim())
     .filter((morceau) => morceau.length > 0)

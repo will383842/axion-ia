@@ -156,7 +156,11 @@ describe("référent handicap (ind. 26 ⭐) — un seul prédicat pour trois lec
       .filter((l) => l.length > 0)
       .filter((l) => !SANS_VERDICT.includes(l));
 
-    const connus = new Set(LECTURES.map((l) => l.chemin));
+    // `Set<string>` explicite : `LECTURES` est `as const`, donc l'inférence
+    // fabrique un Set des CINQ chemins littéraux, et `has()` refuse alors toute
+    // chaîne qui n'est pas déjà dans la liste — c'est-à-dire exactement les
+    // fichiers INCONNUS que ce test existe pour trouver.
+    const connus = new Set<string>(LECTURES.map((l) => l.chemin));
     const inconnus = trouves.filter((f) => !connus.has(f));
 
     expect(

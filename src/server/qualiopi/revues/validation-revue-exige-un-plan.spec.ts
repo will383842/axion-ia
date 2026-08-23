@@ -213,6 +213,14 @@ describe("updateRevueDirectionAction — le suivi des actions est STOCKÉ", () =
 
     const [, input] = mockUpdateRevue.mock.calls[0] as [string, { planActions?: unknown[] }];
     const [a] = (input.planActions ?? []) as ActionAmelioration[];
-    expect(a.statut).toBe("a_faire");
+    // Affirmer la PRÉSENCE avant de lire le statut : si la normalisation avalait
+    // l'entrée, `a.statut` lèverait un `TypeError` illisible au lieu de dire que
+    // le plan est reparti vide. Le message doit porter la cause.
+    expect(
+      a,
+      "l'action a disparu du plan : `normaliserPlanActions` a écarté une entrée " +
+        "qui porte pourtant un libellé. C'est un défaut plus grave que le statut testé ici.",
+    ).toBeDefined();
+    expect(a?.statut).toBe("a_faire");
   });
 });

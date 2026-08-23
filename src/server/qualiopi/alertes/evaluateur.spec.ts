@@ -2590,7 +2590,9 @@ describe("evaluerAlertes — catalogue_certifiant_incoherent", () => {
 
   /** Pose les DEUX signaux indépendamment l'un de l'autre. */
   function poserCatalogue(nbAvecCode: number, typesParFormation: unknown[]): void {
-    const mp = prisma as unknown as MockPrisma;
+    // Le double typé du fichier est déclaré une seule fois, en tête (`mp`, l.97).
+    // En redéclarer un ici sur un type `MockPrisma` inexistant ne cassait aucun
+    // test — Vitest ne type-checke pas — mais rougissait `tsc`.
     mp.formation.count.mockResolvedValue(nbAvecCode);
     mp.formation.findMany.mockResolvedValue(
       typesParFormation.map((types) => ({ typesActionQualiopi: types })),
