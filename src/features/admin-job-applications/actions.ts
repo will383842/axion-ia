@@ -12,6 +12,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
 import type { JobApplicationStatus, Locale } from "../../../prisma/generated/client";
 
@@ -145,8 +146,6 @@ export async function listApplicationsAction(input: Partial<ListApplicationsInpu
 // `Submission` avec `details.subType = "candidature-commerciale"`, PAS des
 // `JobApplication`. « Toutes » fusionne les deux tables triées par date ;
 // « Mémo Isère » ne liste que le flux commercial.
-
-const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
 
 const unifiedListSchema = z.object({
   scope: z.enum(["toutes", "memo"]),
