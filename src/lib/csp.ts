@@ -64,8 +64,15 @@ export interface BuildCspOptions {
    * Le harnais rendait, sur `/fr/espace-ressources`, `/fr/mes-ressources` et la
    * page de connexion :
    *
-   *     https://localhost:3000/fr/espace-ressources/connexion
+   *     <schéma TLS>://localhost:3000/fr/espace-ressources/connexion
    *       — net::ERR_SSL_PROTOCOL_ERROR
+   *
+   * ⚠️ Le schéma est écrit ici en clair plutôt qu'en toutes lettres : la garde
+   * RGPD `subprocessors-coherence.spec.ts` balaie CE fichier à la recherche
+   * d'hôtes tiers et ne saute pas les commentaires — une URL citée en exemple y
+   * serait comptée comme un hôte autorisé par la politique, et réclamerait un
+   * sous-traitant au registre DPA. Même famille que l'anti-hex : une garde
+   * statique voit la documentation qui la décrit.
    *       (type=fetch, redirigée depuis http://localhost:3000/fr/espace-ressources?_rsc=…)
    *
    * Le `?_rsc=` est la signature d'un PREFETCH de `next/link`. La page de
