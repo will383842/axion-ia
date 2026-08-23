@@ -419,9 +419,33 @@ export async function saveEmargementAction(input: {
       select: { id: true, dureePrevueMinutes: true, source: true, libelle: true },
     });
 
-    // Durée réalisée : si présent et non fournie → dureePrevue du créneau.
+    // Durée réalisée : si présent et non renseignée → dureePrevue du créneau.
+    //
+    // 🔴 2026-08-22 — COCHER UNE PRÉSENCE ET ENREGISTRER N'ENREGISTRAIT RIEN.
+    //
+    // Ce repli existait déjà, mais il ne testait que `=== undefined` — et il
+    // était donc INATTEIGNABLE depuis l'écran. Chaîne mesurée :
+    //
+    //   1. `generateSessionCreneauxAction` crée le créneau à
+    //      `dureeRealiseeMinutes: 0` (plus haut dans ce fichier) ;
+    //   2. `EmargementGrid` initialise le champ minutes sur cette valeur, et
+    //      `togglePresent` ne la touche pas — cocher ne change que `present` ;
+    //   3. `handleSubmit` envoie TOUJOURS la durée dès qu'elle est un nombre
+    //      ≥ 0 : donc `0`, jamais `undefined` ;
+    //   4. `recomputeTauxPresence`, appelé par la MÊME requête quelques lignes
+    //      plus bas, réécrit `present = (0 >= 0,5 × prévu)` = **false**.
+    //
+    // L'écran annonçait « 1 ligne mise à jour » ; l'admin rechargeait, la case
+    // était décochée. Sur un organisme certifié, l'émargement est LA preuve
+    // centrale de l'assiduité — et l'indicateur `off.12` en dépend.
+    //
+    // 🔑 L'objection « il faut pouvoir enregistrer présent à 0 minute » ne tient
+    // pas : cet état ne SURVIT PAS à la requête qui le crée, puisque le recalcul
+    // le contredit dans la foulée. Ce n'est pas un choix qu'on retire, c'est une
+    // fiction qu'on cesse d'entretenir. Une ABSENCE à zéro reste évidemment une
+    // absence — c'est le contre-témoin du test.
     let dureeRealiseeMinutes = entry.dureeRealiseeMinutes ?? 0;
-    if (entry.present && entry.dureeRealiseeMinutes === undefined) {
+    if (entry.present && dureeRealiseeMinutes === 0) {
       dureeRealiseeMinutes = existingCreneau?.dureePrevueMinutes ?? 0;
     }
 

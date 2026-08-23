@@ -55,6 +55,58 @@ export interface BuildCspOptions {
    * `'none'` pour autoriser l'iframe depuis n'importe quel domaine tiers.
    */
   embed?: boolean;
+  /**
+   * L'origine du document est-elle une adresse de bouclage
+   * (`localhost`, `127.0.0.1`, `[::1]`) ?
+   *
+   * 🔴 2026-08-22 — `upgrade-insecure-requests` CASSAIT TROIS ROUTES EN CI.
+   *
+   * Le harnais rendait, sur `/fr/espace-ressources`, `/fr/mes-ressources` et la
+   * page de connexion :
+   *
+   *     <schéma TLS>://localhost:3000/fr/espace-ressources/connexion
+   *       — net::ERR_SSL_PROTOCOL_ERROR
+   *
+   * ⚠️ Le schéma est écrit ici en clair plutôt qu'en toutes lettres : la garde
+   * RGPD `subprocessors-coherence.spec.ts` balaie CE fichier à la recherche
+   * d'hôtes tiers et ne saute pas les commentaires — une URL citée en exemple y
+   * serait comptée comme un hôte autorisé par la politique, et réclamerait un
+   * sous-traitant au registre DPA. Même famille que l'anti-hex : une garde
+   * statique voit la documentation qui la décrit.
+   *       (type=fetch, redirigée depuis http://localhost:3000/fr/espace-ressources?_rsc=…)
+   *
+   * Le `?_rsc=` est la signature d'un PREFETCH de `next/link`. La page de
+   * connexion porte un lien vers `/fr/espace-ressources`, préfixe gardé par la
+   * garde Edge : le prefetch reçoit une redirection, et Chromium **upgrade la
+   * CIBLE DE LA REDIRECTION** — le schéma est réécrit, le port conservé.
+   *
+   * 🔑 Ce qui a rendu le défaut invisible en local : Chromium n'upgrade PAS une
+   * requête directe vers `http://localhost` (origine réputée sûre), et le
+   * prefetch de `next/link` est éteint sous `next dev`. Il fallait donc un build
+   * de PRODUCTION servi en HTTP nu — c'est-à-dire exactement la CI, et rien
+   * d'autre. Deux reproductions locales ont conclu « rien à signaler ».
+   *
+   * Sur une origine de bouclage, cette directive n'a AUCUNE valeur de sécurité :
+   * le bouclage est déjà une origine sûre au sens de la spécification. Elle n'y
+   * fait donc que casser. On l'omet — et seulement là.
+   *
+   * ⚠️ Le critère est l'HÔTE, jamais le schéma perçu par le serveur : derrière
+   * Coolify puis Cloudflare, le dernier saut interne est en clair, et gater sur
+   * le schéma retirerait silencieusement la directive EN PRODUCTION.
+   */
+  origineBouclage?: boolean;
+}
+
+/**
+ * L'hôte d'une requête est-il une adresse de bouclage ?
+ *
+ * Volontairement strict : un nom d'hôte inconnu n'est PAS du bouclage. Le
+ * défaut sûr est de garder `upgrade-insecure-requests`.
+ */
+export function estHoteDeBouclage(hote: string | null | undefined): boolean {
+  if (!hote) return false;
+  const sansPort = hote.replace(/:\d+$/, "").toLowerCase();
+  return sansPort === "localhost" || sansPort === "127.0.0.1" || sansPort === "[::1]";
 }
 
 /**
@@ -77,7 +129,12 @@ export interface BuildCspOptions {
  * sensible. Migration globale vers strict-dynamic = Sprint 16 PERF (cf.
  * commentaire en tête de fichier).
  */
-export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions): string {
+export function buildCspHeader({
+  nonce,
+  strict,
+  embed = false,
+  origineBouclage = false,
+}: BuildCspOptions): string {
   // Microsoft Clarity (NEXT_PUBLIC_CLARITY_PROJECT_ID + consent CMP gated).
   // Domaines : www.clarity.ms (tag loader) + *.clarity.ms (collecteurs régionaux,
   // c.clarity.ms ingest, b.clarity.ms beacon). Sans whitelist explicite, le script
@@ -204,8 +261,12 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
     "form-action 'self'",
     "base-uri 'self'",
     "object-src 'none'",
-    "upgrade-insecure-requests",
-  ].join("; ");
+    // Omise sur une origine de bouclage : sans valeur de sécurité, et elle y
+    // casse les prefetch RSC qui traversent une redirection (cf. `origineBouclage`).
+    ...(origineBouclage ? [] : ["upgrade-insecure-requests"]),
+  ]
+    .filter(Boolean)
+    .join("; ");
 }
 
 /**

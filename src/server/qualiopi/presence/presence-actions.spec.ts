@@ -471,6 +471,57 @@ describe("saveEmargementAction", () => {
     expect(call.dureeRealiseeMinutes).toBe(210);
   });
 
+  it("🔴 cocher « présent » ne doit PAS être annulé par une durée à zéro", async () => {
+    // 🔴 2026-08-22 — COCHER UNE PRÉSENCE ET ENREGISTRER N'ENREGISTRAIT RIEN.
+    //
+    // Chaîne mesurée de bout en bout :
+    //
+    //   1. `generateSessionCreneauxAction` crée le créneau avec
+    //      `dureeRealiseeMinutes: 0` ;
+    //   2. `EmargementGrid` initialise le champ minutes sur cette valeur, et
+    //      `togglePresent` ne la touche PAS — cocher la case ne change que
+    //      `present` ;
+    //   3. `handleSubmit` envoie TOUJOURS la durée dès qu'elle est un nombre
+    //      ≥ 0, donc `0`, jamais `undefined` — le repli « si présent et durée
+    //      non fournie → durée prévue » de cette action est INATTEIGNABLE ;
+    //   4. `recomputeTauxPresence`, appelé par la MÊME requête, réécrit
+    //      `present = (0 >= 0,5 × prévu)` = **false**.
+    //
+    // L'écran affiche « 1 ligne mise à jour ». L'admin recharge : la case est
+    // décochée. Sur un organisme certifié, l'émargement est LA preuve centrale.
+    //
+    // 🔑 L'objection « il faut pouvoir enregistrer présent à 0 minute » ne
+    // tient pas : cet état ne SURVIT PAS à la requête qui le crée, puisque le
+    // recalcul le contredit immédiatement. Ce n'est pas un choix qu'on retire,
+    // c'est une fiction qu'on cesse d'entretenir.
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: true, dureeRealiseeMinutes: 0 }],
+    });
+
+    const call = mockCall<{ present: boolean; dureeRealiseeMinutes: number }>(mockUpsertCreneau);
+    expect(call.present, "la case cochée doit rester cochée").toBe(true);
+    expect(
+      call.dureeRealiseeMinutes,
+      "une présence à 0 minute est réécrite en absence par `recomputeTauxPresence` " +
+        "dans la même requête : on retient donc la durée PRÉVUE du créneau",
+    ).toBe(210);
+  });
+
+  it("une ABSENCE à zéro minute reste bien une absence", async () => {
+    // Contre-témoin indispensable : si le correctif ci-dessus s'appliquait sans
+    // regarder `present`, décocher une case deviendrait impossible — on
+    // écrirait la durée prévue sur quelqu'un déclaré absent.
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 0 }],
+    });
+
+    const call = mockCall<{ present: boolean; dureeRealiseeMinutes: number }>(mockUpsertCreneau);
+    expect(call.present).toBe(false);
+    expect(call.dureeRealiseeMinutes, "une absence garde ses zéro minute").toBe(0);
+  });
+
   it("rejette une durée aberrante au-delà d'une journée (garde Zod)", async () => {
     const result = await saveEmargementAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",
