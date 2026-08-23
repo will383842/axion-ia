@@ -45,6 +45,15 @@ export const CONSENT_FORM_REFS = {
   commercialApplicationVivier: "commercial-tunnel-vivier",
   newsletter: "newsletter-double-optin",
   unifiedContact: "unified-contact-form",
+  /**
+   * E33-002 — case à cocher du mini-formulaire de la fenêtre de discussion
+   * (`src/components/chatbot/LeadForm.tsx`, libellé i18n `chatbot.leadConsent`).
+   * Elle est REQUISE depuis toujours (`consentement_rgpd: z.literal(true)`),
+   * mais jusqu'au 2026-08-22 le geste n'entrait dans AUCUN registre : son seul
+   * témoin était un `details.consentementRgpd: true` au fond d'un JSON, et le
+   * CRM ne recevait même pas ça.
+   */
+  chatbot: "chatbot-lead-form",
   /** Opposition à la conservation en vivier (un clic, sans login). */
   vivierOpposition: "vivier-opposition",
 } as const;

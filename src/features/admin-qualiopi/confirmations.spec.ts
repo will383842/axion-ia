@@ -45,21 +45,36 @@ const ECRANS = [
   "src/components/admin/console-documents/ConsoleDocDeleteButton.tsx",
 ] as const;
 
-function code(chemin: string): string {
+/**
+ * Dépouille un TEXTE — séparé de la lecture disque à dessein (E34-006).
+ *
+ * La normalisation des fins de ligne ci-dessous était déjà là, mais rien ne la
+ * gardait : elle ne pouvait être vérifiée qu'en lisant un fichier réellement en
+ * CRLF, donc jamais en CI sous Linux. La retirer serait resté VERT partout sauf
+ * sur le poste de Will. En prenant une chaîne en entrée, elle devient
+ * vérifiable sur n'importe quelle plateforme — cf. la garde `E34-006` plus bas.
+ */
+function depouiller(brut: string): string {
   return (
-    readFileSync(join(process.cwd(), chemin), "utf8")
+    brut
       // Normalisation des fins de ligne avant toute recherche de motif.
       // Sans elle, les assertions multi-lignes de ce fichier cherchent un saut de
       // ligne simple alors qu'une copie de travail Windows en contient un double :
       // le test « le crochet referme AVANT d'exécuter le geste » échouait sur
       // toute machine Windows et bloquait le pre-push, tout en passant en CI sous
       // Linux. Le dépôt stocke en LF (.gitattributes) ; c'est la copie de travail
-      // qui diffère.
+      // qui diffère — mesure du 2026-08-22 : 4 555 des 5 632 fichiers de `src/`
+      // portent encore des CRLF. Le verrou du .gitattributes n'a renormalisé que
+      // l'INDEX, jamais la copie de travail (E34-006).
       .replace(/\r\n/g, "\n")
       .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/^[ \t]*\/\/.*$/gm, "")
   );
+}
+
+function code(chemin: string): string {
+  return depouiller(readFileSync(join(process.cwd(), chemin), "utf8"));
 }
 
 describe("le dépouillement des commentaires", () => {
@@ -68,6 +83,26 @@ describe("le dépouillement des commentaires", () => {
     const net = code(chemin);
     expect(net.length).toBeLessThan(brut.length);
     expect(net.length).toBeGreaterThan(brut.length / 3);
+  });
+
+  it("E34-006 : un texte en CRLF est ramené en LF avant toute recherche de motif", () => {
+    // Le motif exact que cherche « le crochet referme AVANT d'exécuter le
+    // geste », mais écrit en CRLF. Sans la normalisation, `indexOf` rend -1 et
+    // la garde d'en dessous rougit — c'est ce qui s'est produit sur toute
+    // machine Windows tant que le verrou LF du .gitattributes n'a existé que
+    // dans l'index.
+    const enCrlf = "  setDemande(null);\r\n          await geste?.();\r\n";
+
+    expect(
+      depouiller(enCrlf).includes("setDemande(null);\n          await geste"),
+      "E34-006 : `depouiller()` ne ramène plus les CRLF en LF. Toutes les assertions " +
+        "multi-lignes de ce fichier redeviennent aveugles sur une copie de travail " +
+        "Windows — vertes en CI sous Linux, rouges chez Will, ou l'inverse. " +
+        'GESTE : rétablir le `.replace(/\\r\\n/g, "\\n")` en TÊTE de depouiller(), ' +
+        "avant les retraits de commentaires.",
+    ).toBe(true);
+
+    expect(depouiller(enCrlf)).not.toContain("\r");
   });
 });
 

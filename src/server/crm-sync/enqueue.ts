@@ -78,7 +78,36 @@ export async function enqueueCrmSyncEvent(
   // Aucune écriture, aucun job, aucun appel réseau tant que le drapeau est à
   // OFF : le comportement est identique à celui d'avant le lot.
   if (!isCrmSyncEnabled()) return null;
-  if (universe === "vivier" && !isCrmSyncCandidatesEnabled()) return null;
+  if (universe === "vivier" && !isCrmSyncCandidatesEnabled()) {
+    // ── E31-003 ────────────────────────────────────────────────────────────
+    // C'était le SEUL chemin d'abandon de ce fichier qui ne disait rien, alors
+    // que les deux autres journalisent (« mise en file best-effort échouée »,
+    // « écriture outbox échouée (événement perdu) »).
+    //
+    // Mesure du 2026-08-22 : drapeau maître ON + `CRM_SYNC_CANDIDATES_ENABLED`
+    // absent est un état NOMINAL et DURABLE — `config.ts` dit que ce second
+    // verrou ne s'ouvre qu'après la mise en production des textes de
+    // consentement v2. Or `syncVivierOppositionToCrm()` force l'univers à
+    // `vivier` : dans cet état, toute OPPOSITION à la conservation en vivier
+    // était perdue en silence, sans ligne d'outbox et sans journal, pendant que
+    // la personne voyait une page de confirmation.
+    //
+    // Ce qu'on NE fait PAS ici, volontairement : laisser passer les `opt_out`
+    // malgré le verrou. Ce serait envoyer au CRM des événements `vivier` que la
+    // séquence de déploiement dit qu'il ne doit pas encore recevoir —
+    // l'arbitrage appartient au contrat d'ingestion du CRM, pas à ce fichier.
+    // On rend donc l'abandon AUDIBLE, rien de plus : la source de vérité de
+    // l'opposition reste `vivierOpposedAt` côté site, et cette trace est ce qui
+    // permettra de rejouer les oppositions au moment de la bascule.
+    if (event.event_type === "opt_out") {
+      console.error(
+        "[crm-sync] opposition vivier NON transmise (CRM_SYNC_CANDIDATES_ENABLED à OFF) — " +
+          "à rejouer après la bascule du flux candidats :",
+        { event_id: event.event_id, subject_ref: event.subject_ref },
+      );
+    }
+    return null;
+  }
 
   try {
     const writer = (options.tx ?? prisma) as unknown as CrmOutboxWriter;

@@ -15,6 +15,25 @@ import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { encryptPii } from "@/lib/pii-crypto";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
+
+/**
+ * Version du texte de consentement affiché dans la fenêtre de discussion
+ * (`chatbot.leadConsent`, cf. `src/components/chatbot/LeadForm.tsx`).
+ *
+ * 🔴 E33-002, mesuré le 2026-08-22 : le texte, lui, existe depuis l'origine —
+ * c'est son IDENTIFIANT DE VERSION qui manquait. Les cinq autres points de
+ * capture en déclarent un (`podcast-v1-2026-07-21`, `newsletter-v1-2026-08-13`,
+ * `reviews-v1-2026-07-06`…), le chatbot était le seul à n'en avoir aucun.
+ *
+ * Ce `v1` s'ouvre donc AUJOURD'HUI et ne vaut que pour l'avenir : les leads
+ * chatbot capturés avant cette date portent un consentement réel mais sans
+ * version. Antidater cette chaîne fabriquerait une preuve fausse, ce qui est
+ * pire que l'absence de preuve. Toute retouche du libellé `chatbot.leadConsent`
+ * DOIT incrémenter cette constante — sinon deux textes différents deviennent
+ * indiscernables dans le registre.
+ */
+export const CHATBOT_CONSENT_VERSION = "chatbot-v1-2026-08-22";
 
 /**
  * Notifie l'équipe d'un NOUVEAU lead chatbot (best-effort, fail-soft — ne fait
@@ -102,6 +121,10 @@ export async function capturerLead(
   //  - course concurrente → le perdant rollback (Submission incluse) → 0 doublon,
   //    puis relit le résultat du gagnant ci-dessous.
   let result: CapturerLeadResult;
+  // E33-002 — l'horodatage du consentement, remonté hors de la transaction :
+  // le registre de preuve s'écrit APRÈS le commit (cf. `@/lib/consents`, parti
+  // pris 3 : best-effort, jamais dans la transaction métier).
+  let consentementDonneA: Date | undefined;
   try {
     result = await prisma.$transaction(async (tx) => {
       // 🔴 PII CHIFFRÉ AU REPOS (2026-08-18). Ces trois champs partaient EN
@@ -132,8 +155,12 @@ export async function capturerLead(
           source: "chatbot",
           ...(ctx.ipHash ? { ipHash: ctx.ipHash } : {}),
         },
-        select: { id: true },
+        // E33-002 — `submittedAt` est relu pour horodater le consentement avec
+        // l'instant que la base a retenu, et non un `new Date()` d'application
+        // qui en différerait de quelques millisecondes.
+        select: { id: true, submittedAt: true },
       });
+      consentementDonneA = submission.submittedAt;
 
       await tx.chatActionIdempotency.create({
         data: { cle: key, resultat: { submissionId: submission.id } },
@@ -160,6 +187,18 @@ export async function capturerLead(
         sourceSlug: "chatbot",
         person: { email: input.email, fullName: input.nom, phone: input.telephone ?? null },
         ...(input.structure ? { company: { name: input.structure } } : {}),
+        // 🔴 E33-002, mesuré le 2026-08-22 : cet appel ne portait AUCUNE
+        // section `consent`. Le chatbot est pourtant le point de capture le
+        // plus exigeant du site — il REFUSE la saisie sans case cochée
+        // (`consentement_rgpd: z.literal(true)`) — et c'était le seul dont le
+        // CRM recevait un lead sans savoir à quel texte, ni quand, la personne
+        // avait dit oui. Une base de prospection qui ne peut pas produire cette
+        // preuve n'est pas prospectable.
+        consent: {
+          version: CHATBOT_CONSENT_VERSION,
+          at: submission.submittedAt,
+          textRef: CONSENT_FORM_REFS.chatbot,
+        },
         payload: { canal: "chatbot" },
       });
 
@@ -179,6 +218,30 @@ export async function capturerLead(
   // Notification équipe sur NOUVEAU lead uniquement (jamais sur un retry
   // idempotent → pas de double-ping). Fail-soft : n'impacte pas le résultat.
   if (!result.idempotent) {
+    // 🔴 E33-002 — REGISTRE DE PREUVE. Le CRM reçoit désormais la section
+    // `consent` ci-dessus, mais un événement d'outbox répond « ce lead-ci
+    // portait un consentement » ; il ne répond pas « prouvez le consentement de
+    // CETTE personne », qui suppose un registre indexé par personne. Les cinq
+    // autres points de capture posent ce geste depuis le lot L4 ; le chemin
+    // chatbot ne le posait ni ne l'avait jamais posé (grep `recordConsentEvent`
+    // sur ce fichier le 2026-08-22 : zéro occurrence).
+    //
+    // Sous la garde `!result.idempotent`, comme la notification : le registre
+    // est APPEND-ONLY, un rejeu y écrirait un second opt-in pour un seul geste.
+    //
+    // `ip` n'est pas transmis : le chemin chatbot ne reçoit que `ctx.ipHash`,
+    // déjà haché, et `recordConsentEvent` hache lui-même ce qu'on lui donne —
+    // lui passer le condensat produirait un hachage de hachage, illisible et
+    // incomparable au reste du registre. Mieux vaut un contexte absent qu'un
+    // contexte faux.
+    await recordConsentEvent({
+      email: input.email,
+      formRef: CONSENT_FORM_REFS.chatbot,
+      consentVersion: CHATBOT_CONSENT_VERSION,
+      action: "optin",
+      ...(consentementDonneA ? { occurredAt: consentementDonneA } : {}),
+    });
+
     await notifyNewLead(input, result.submissionId);
 
     // Confirmation au visiteur (2026-08-13). Il laissait son adresse dans une

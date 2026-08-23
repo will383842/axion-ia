@@ -10,6 +10,11 @@
  *   3. l'opposition est propagée au CRM (univers vivier).
  *
  * IDEMPOTENTE : re-cliquer le même lien ne casse rien et ne ré-émet rien.
+ *
+ * DÉGRADÉE plutôt que muette (E31-010) : si l'adresse ne se déchiffre pas, le
+ * drapeau (1) est posé quand même, mais (2) et (3) sautent — le résultat porte
+ * alors `degraded: true` et le fait est journalisé en erreur. Une opposition à
+ * moitié faite doit se voir ; elle ne doit pas se refuser.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -19,7 +24,10 @@ import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { syncVivierOppositionToCrm } from "@/server/crm-sync";
 
 export type VivierOppositionResult =
-  | { ok: true; alreadyOpposed: boolean; applications: number }
+  // `degraded` n'est présent QUE lorsqu'il vaut `true` (E31-010) : l'ajouter
+  // systématiquement casserait les égalités strictes des appelants et des
+  // gardes, pour un champ qui ne dit rien dans le cas nominal.
+  | { ok: true; alreadyOpposed: boolean; applications: number; degraded?: true }
   | { ok: false; reason: "unknown_application" | "internal" };
 
 export async function recordVivierOpposition(
@@ -52,24 +60,49 @@ export async function recordVivierOpposition(
       return { ok: true, alreadyOpposed: true, applications: siblings.length };
     }
 
-    if (email) {
-      await recordConsentEvent({
-        email,
-        formRef: CONSENT_FORM_REFS.vivierOpposition,
-        consentVersion: application.consentVersion,
-        action: "optout",
-        occurredAt: now,
-        ip: options.ip ?? null,
-        userAgent: options.userAgent ?? null,
+    // 🔴 E31-010 — UNE ADRESSE ILLISIBLE FAISAIT DISPARAÎTRE LA MOITIÉ DE
+    // L'OPPOSITION, EN SILENCE.
+    //
+    // Mesure du 2026-08-22 : `safeDecrypt()` rend `null` sur TOUTE exception
+    // (clé tournée, chiffré corrompu). Le `if (email)` qui enveloppait ici À LA
+    // FOIS le registre de preuve et la propagation au CRM était alors sauté —
+    // et la fonction rendait quand même `ok: true`. La personne lisait « c'est
+    // enregistré » ; il ne restait qu'un drapeau local, sans preuve consignée
+    // et sans que le CRM apprenne jamais l'opposition.
+    //
+    // On NE fait PAS échouer la route pour autant : le drapeau vient d'être
+    // posé au-dessus, et rendre `ok: false` transformerait une opposition
+    // partielle en opposition REFUSÉE aux yeux du visiteur — un droit exercé
+    // qu'on lui présenterait comme un échec. On rend donc un résultat DISTINCT
+    // et on journalise en erreur : c'est ce qui fait cesser le silence, sans
+    // rien retirer à la personne.
+    if (!email) {
+      console.error("[vivier] opposition DÉGRADÉE — adresse non déchiffrable", {
+        applicationId: application.id,
+        applications: siblings.length,
+        manquant: "registre de preuve (optout) + propagation CRM",
+        geste: "réparer le chiffré ou la clé, puis rejouer la propagation à la main",
       });
 
-      await syncVivierOppositionToCrm({
-        subjectRef: `site:job_application:${application.id}`,
-        occurredAt: now,
-        person: { email },
-        consent: { version: application.consentVersion, at: now },
-      });
+      return { ok: true, alreadyOpposed: false, applications: siblings.length, degraded: true };
     }
+
+    await recordConsentEvent({
+      email,
+      formRef: CONSENT_FORM_REFS.vivierOpposition,
+      consentVersion: application.consentVersion,
+      action: "optout",
+      occurredAt: now,
+      ip: options.ip ?? null,
+      userAgent: options.userAgent ?? null,
+    });
+
+    await syncVivierOppositionToCrm({
+      subjectRef: `site:job_application:${application.id}`,
+      occurredAt: now,
+      person: { email },
+      consent: { version: application.consentVersion, at: now },
+    });
 
     return { ok: true, alreadyOpposed: false, applications: siblings.length };
   } catch (error) {
