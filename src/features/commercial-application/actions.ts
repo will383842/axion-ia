@@ -265,11 +265,26 @@ export async function submitCommercialApplicationAction(
     });
 
     // 5 bis. Synchro CRM — univers VIVIER (lot L2).
-    // Même double verrou que les candidatures aux offres : le CRM REFUSE toute
-    // fiche candidat dont la version de consentement n'est pas v2. Le texte
-    // actuel (`commercial-tunnel-v1-2026-08-12`) ne couvre que l'étude de la
-    // candidature — le refus est donc l'issue ATTENDUE tant que le texte v2
-    // n'est pas servi en production.
+    //
+    // ⚠️ CE COMMENTAIRE A MENTI (rectifié le 2026-08-23). Il affirmait :
+    // « Le texte actuel (`commercial-tunnel-v1-2026-08-12`) ne couvre que
+    // l'étude de la candidature — le refus est donc l'issue ATTENDUE tant que
+    // le texte v2 n'est pas servi en production. »
+    //
+    // C'est faux depuis le lot L4 : `COMMERCIAL_APPLICATION_CONSENT_VERSION`
+    // vaut `memo-v2-2026-08-13` et couvre BIEN les deux textes (étude de la
+    // candidature + conservation en vivier). C'est cette valeur-là qui part.
+    // Le commentaire décrivait un état dépassé, et laissait croire qu'un flux
+    // en échec était normal — le genre de phrase qui fait ignorer une panne
+    // réelle pendant des semaines.
+    //
+    // Ce qui reste vrai : le CRM refuse en 422 toute version de consentement
+    // qu'il ne connaît pas, et un 422 abandonne IMMÉDIATEMENT (pas de retry —
+    // rejouer un message que le contrat refuse ne le rendra jamais valide).
+    // Donc la liste des versions acceptées CÔTÉ CRM doit contenir
+    // `memo-v2-2026-08-13`. Ce dépôt ne peut pas le vérifier : le CRM est une
+    // application distincte. À contrôler sur la page console `/synchro-crm` —
+    // des `gave_up` en masse sur `candidat_commercial` = version non acceptée.
     await syncCandidateToCrm({
       subjectRef: `site:submission:${submission.id}`,
       family: "candidat_commercial",
@@ -300,6 +315,21 @@ export async function submitCommercialApplicationAction(
         disponibilite: d.disponibilite,
         permisVehicule: d.permisVehicule,
         ...(d.zones?.length ? { zones: d.zones } : {}),
+        // 2026-08-23 — L'ACQUISITION traverse désormais, elle aussi.
+        //
+        // Ces deux champs étaient stockés dans `Submission.details` côté site
+        // mais ne partaient PAS au CRM : la fiche candidat y arrivait sans
+        // aucune indication de provenance. Conséquence concrète : impossible,
+        // depuis le CRM, de dire si un candidat vient de l'annonce Le Bon Coin,
+        // du Mémorial de l'Isère ou de LinkedIn — donc impossible d'y arbitrer
+        // un budget d'annonces.
+        //
+        // `sourceConnaissance` = ce que le candidat DÉCLARE (chips du tunnel).
+        // `utm` = ce que le lien PROUVE (cookie posé au premier clic). Les deux,
+        // parce qu'ils divergent souvent : on clique une annonce Le Bon Coin,
+        // on revient trois jours plus tard par Google, et on coche « site web ».
+        ...(d.sourceConnaissance ? { sourceConnaissance: d.sourceConnaissance } : {}),
+        ...(funnel.utm ? { utm: funnel.utm } : {}),
       },
       experiences,
     });

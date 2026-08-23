@@ -60,6 +60,15 @@ export function TextField({
         aria-required={requiredField ? true : undefined}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${fieldId}-error` : undefined}
+        // Libellé de la touche d'action du clavier mobile. Défaut « next »
+        // (« Suivant ») et surtout PAS « go »/« send » : dans ce tunnel, Entrée
+        // ne soumet rien — la progression passe par le bouton « Suivant ». Une
+        // touche « Envoyer » promettrait un envoi qui n'arrive pas, sur le
+        // seul écran où le candidat ne peut pas voir ce que fait le bouton.
+        //
+        // Placé AVANT `{...rest}` : un champ qui veut « done » ou « search »
+        // le surcharge simplement en le passant en prop.
+        enterKeyHint="next"
         {...rest}
       />
       {error ? (
