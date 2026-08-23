@@ -250,9 +250,63 @@ export function horodatageZoom(jours: number, heure = "09:00"): string {
  * Les libellés portent un astérisque `aria-hidden`, d'où le motif ancré plutôt
  * qu'une égalité.
  */
+/**
+ * Nomme la frontière d'erreur affichée, s'il y en a une — sinon `null`.
+ *
+ * 🔴 2026-08-23 — POURQUOI CE DÉTOUR : « CHAMP ABSENT » ACCUSAIT LE CHAMP,
+ * ALORS QUE LA PAGE ENTIÈRE AVAIT PLANTÉ.
+ *
+ * Mesuré deux fois pendant le lot des sept : le navigateur n'a pas pu charger un
+ * morceau de JS (`ChunkLoadError: Loading chunk app/[locale]/layout failed`, six
+ * occurrences sur la durée d'un même serveur `next dev` — un rebuild invalide
+ * l'URL d'un chunk que le navigateur demandait). L'application est alors tombée
+ * dans `global-error.tsx`, **le DOM s'est vidé**, et le parcours a rendu
+ * « champ #session-titre absent de l'écran ».
+ *
+ * Un lecteur suivant aurait cherché `#session-titre` dans `SessionForm.tsx` et
+ * n'y aurait rien trouvé d'anormal — le champ existe, c'est la page qui
+ * n'existait plus. 🔑 Un message qui nomme le mauvais coupable coûte plus cher
+ * qu'un message vague : il envoie chercher au mauvais endroit.
+ */
+async function frontiereDErreurAffichee(page: Page): Promise<string | null> {
+  const frontieres: ReadonlyArray<readonly [string, string]> = [
+    // `global-error.tsx:31-35` — le layout racine lui-même a échoué.
+    ["500 · Erreur critique", "`global-error.tsx` — le layout racine a échoué"],
+    // `(admin)/[adminPrefix]/error.tsx:43` — boundary RSC de la console.
+    [
+      "Une erreur est survenue dans la console",
+      "`(admin)/[adminPrefix]/error.tsx` — boundary RSC de la console",
+    ],
+  ];
+  for (const [texte, quoi] of frontieres) {
+    // `count()` et non `isVisible()` : la frontière REMPLACE la page, on cherche
+    // sa présence, pas sa visibilité — et on ne veut pas d'attente ici, la
+    // question ne se pose qu'après un échec déjà constaté.
+    if ((await page.getByText(texte).count()) > 0) return quoi;
+  }
+  return null;
+}
+
 export async function champEtiquete(page: Page, id: string, libelle: RegExp): Promise<Locator> {
   const champ = page.locator(`#${id}`);
-  await expect(champ, `champ #${id} absent de l'écran`).toBeVisible({ timeout: 30_000 });
+  try {
+    await expect(champ, `champ #${id} absent de l'écran`).toBeVisible({ timeout: 30_000 });
+  } catch (cause) {
+    // On ne dit « le champ manque » qu'APRÈS avoir vérifié qu'il reste une page
+    // pour le porter. Cf. `frontiereDErreurAffichee` ci-dessus.
+    const frontiere = await frontiereDErreurAffichee(page);
+    if (frontiere !== null) {
+      throw new Error(
+        `la PAGE a planté avant qu'on cherche le champ #${id} : ${frontiere} est à l'écran. ` +
+          "Ce n'est PAS un défaut du formulaire. Sous `next dev`, la cause la plus fréquente " +
+          "est un `ChunkLoadError` — un rebuild a invalidé l'URL d'un morceau de JS que le " +
+          "navigateur demandait ; chercher `[global:error]` dans le journal du serveur. " +
+          `URL : ${page.url()}`,
+        { cause },
+      );
+    }
+    throw cause;
+  }
   const nom = await champ.evaluate((el) => {
     const etiquette = el.id === "" ? null : document.querySelector(`label[for="${el.id}"]`);
     const texte = etiquette?.textContent ?? "";
