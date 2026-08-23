@@ -16,6 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
+import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
 import type { DocumentType, TrainingSessionStatut } from "../../../../prisma/generated/client";
 
@@ -358,6 +359,23 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   // Lecture APRÈS nda_numero pour ne pas perturber l'ordre des appels mockés en test.
   const responsableQualiteNom = await getQualiopiConfig("responsable_qualite_nom").catch(() => "");
 
+  // off.32 ⭐ : la revue de direction VALIDÉE de l'année courante, avec son CONTENU.
+  //
+  // 🔴 2026-08-23 — le manifeste ne disait d'off.32 que le nom du pilote. Nommer
+  // un responsable de l'amélioration continue n'est PAS la mise en œuvre de
+  // mesures d'amélioration : la pièce remise au certificateur ne portait aucune
+  // trace de ce qui avait été décidé, ni de qui en répondait, ni pour quand.
+  // Même prédicat que la matrice — `evaluerCouvertureOff32` — pour que le dossier
+  // remis et l'écran de l'auditeur ne puissent pas dire deux choses différentes.
+  const maintenantOff32 = new Date();
+  const revueAnnuelleOff32 = await prisma.revueDirection
+    .findFirst({
+      where: { statut: "validee", annee: maintenantOff32.getFullYear() },
+      select: { annee: true, participants: true, decisions: true, planActions: true },
+    })
+    .catch(() => null);
+  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelleOff32, maintenantOff32);
+
   // off.30 : appréciations multi-parties
   const nbAppreciations = await prisma.appreciation.count();
 
@@ -425,9 +443,14 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     ],
     [
       32,
-      responsableQualiteNom.trim().length > 0
-        ? [`Démarche d'amélioration continue pilotée par : ${responsableQualiteNom}`]
-        : ["Responsable qualité : non renseigné en config (pilotage amélioration continue)"],
+      [
+        // Le pilote reste utile à l'auditeur — mais il n'est plus la SEULE chose
+        // dite d'off.32 : il ne prouve pas qu'une mesure a été mise en œuvre.
+        responsableQualiteNom.trim().length > 0
+          ? `Démarche d'amélioration continue pilotée par : ${responsableQualiteNom}`
+          : "Responsable qualité : non renseigné en config (pilotage amélioration continue)",
+        ...couvertureOff32.preuves,
+      ],
     ],
     [
       21,

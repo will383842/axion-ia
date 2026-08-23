@@ -31,7 +31,7 @@ vi.mock("@/lib/prisma", () => ({
     enrollment: { count: vi.fn() },
     client: { findMany: vi.fn() },
     documentGenere: { count: vi.fn() },
-    revueDirection: { count: vi.fn() },
+    revueDirection: { count: vi.fn(), findFirst: vi.fn() },
     supportFormation: { count: vi.fn(), findMany: vi.fn() },
     coachingSession: { findMany: vi.fn() },
     moyenPedagogique: { groupBy: vi.fn() },
@@ -67,7 +67,7 @@ type MockPrisma = {
   enrollment: { count: ReturnType<typeof vi.fn> };
   client: { findMany: ReturnType<typeof vi.fn> };
   documentGenere: { count: ReturnType<typeof vi.fn> };
-  revueDirection: { count: ReturnType<typeof vi.fn> };
+  revueDirection: { count: ReturnType<typeof vi.fn>; findFirst: ReturnType<typeof vi.fn> };
   supportFormation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
   coachingSession: { findMany: ReturnType<typeof vi.fn> };
   moyenPedagogique: { groupBy: ReturnType<typeof vi.fn> };
@@ -114,6 +114,14 @@ function setupEmpty() {
   // vouloir dire quelque chose. Cf. `nbProceduresSousTraitance`.
   mockP.documentGenere.count.mockResolvedValue(0);
   mockP.revueDirection.count.mockResolvedValue(0);
+  // ⚠️ off.32 ⭐ lit desormais le CONTENU de la revue, plus son seul nombre.
+  // Le mock doit porter `findFirst` : sans lui, `evaluerConformite` leve
+  // `prisma.revueDirection.findFirst is not a function` et les 80 tests de ce
+  // fichier rougissent d'un coup en accusant des indicateurs qui n'ont pas bouge.
+  // Recopier la SIGNATURE, pas le minimum qui passe : ce depot a paye quatre
+  // fois un mock incomplet, dont deux fois aujourd'hui.
+  // `null` = aucune revue validee pour l'annee courante, l'etat par defaut.
+  mockP.revueDirection.findFirst.mockResolvedValue(null);
   mockP.supportFormation.count.mockResolvedValue(0);
   // off.19 mesure desormais la COUVERTURE (formations actives dotees), pas le
   // volume de supports — cf. audit 2026-07-26.

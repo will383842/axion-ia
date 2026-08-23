@@ -36,6 +36,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre";
 
 // AFEST retiré le 2026-08-10 — le 1-to-1 est du conseil (décision 2026-07-17) ;
@@ -115,7 +116,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbTraineesHandicap,
     nbEnrollmentsAdaptations,
     nbDocuments,
-    nbRevues,
+    revueAnnuelle,
     referentHandicapNom,
     ndaNumero,
     typesActionResult,
@@ -213,8 +214,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // sans le filtre `annee`, une revue validée en 2024 couvrait l'indicateur
     // indéfiniment — un super-indicateur (NC majeure) satisfait par une preuve
     // périmée. `RevueDirection.annee` est unique par an (schéma), donc au plus 1.
-    prisma.revueDirection.count({
+    //
+    // 🔴 2026-08-23 — C'ÉTAIT UN `count()`, ET C'EST TOUT CE QUE LA RÈGLE REGARDAIT.
+    // `nbRevues > 0` verdissait off.32 ⭐ pour une revue validée dont
+    // `participants`, `decisions` ET `planActions` étaient VIDES : une case cochée
+    // valait une démarche d'amélioration continue, sur un indicateur dont une
+    // seule NC est majeure. On lit désormais le CONTENU de la revue et le verdict
+    // est délégué à `evaluerCouvertureOff32` — le seul prédicat d'off.32.
+    prisma.revueDirection.findFirst({
       where: { statut: "validee", annee: maintenant.getFullYear() },
+      select: { annee: true, participants: true, decisions: true, planActions: true },
     }),
     // off.26 : nom du référent handicap (config Qualiopi)
     getQualiopiConfig("referent_handicap_nom").catch(() => ""),
@@ -1222,14 +1231,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     procedureReclamationsOk && responsableQualiteNom.trim().length > 0,
   );
-  set(
-    32,
-    [
-      `${nbRevues} revue${nbRevues > 1 ? "s" : ""} de direction`,
-      `${nbReclamations} réclamation${nbReclamations > 1 ? "s" : ""} + plan d'actions`,
-    ],
-    nbRevues > 0,
-  );
+  // off.32 ⭐ — verdict et preuves viennent TOUS DEUX du prédicat unique.
+  //
+  // 🔑 L'ancien libellé affirmait « N réclamations + plan d'actions » : le plan
+  // était ÉNONCÉ dans la preuve que lit l'auditeur, alors que rien nulle part ne
+  // le comptait. On n'affiche plus que ce qui a été mesuré — et `preuves` porte
+  // aussi bien ce qui est établi que ce qui manque, action par action, pour que
+  // l'écran dise quoi remplir plutôt que de se contenter de rougir.
+  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelle, maintenant);
+  set(32, couvertureOff32.preuves, couvertureOff32.couvert);
 
   // ── Assemblage du résultat ─────────────────────────────────────────────────
   const indicateurs: IndicateurConformite[] = INDICATEURS_RNQ.map((ind) => {

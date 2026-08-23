@@ -25,6 +25,9 @@ vi.mock("@/lib/prisma", () => ({
     veille: { count: vi.fn() },
     appreciation: { count: vi.fn() },
     trainer: { findMany: vi.fn() },
+    // off.32 ⭐ : le manifeste lit desormais le CONTENU de la revue de direction
+    // de l'annee courante, pas seulement le nom de son pilote.
+    revueDirection: { findFirst: vi.fn() },
   },
 }));
 
@@ -82,6 +85,7 @@ const mockPrisma = prisma as unknown as {
   veille: { count: ReturnType<typeof vi.fn> };
   appreciation: { count: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
+  revueDirection: { findFirst: ReturnType<typeof vi.fn> };
 };
 const mockEvaluerConformite = evaluerConformite as ReturnType<typeof vi.fn>;
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -168,6 +172,9 @@ describe("genererManifesteAudit", () => {
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
   });
@@ -392,6 +399,9 @@ describe("genererDossierAuditZip", () => {
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockRenderRegistrePdfBuffer.mockImplementation((type: string) =>
@@ -719,6 +729,9 @@ describe("Manifeste — une pièce annulée ne se compte nulle part", () => {
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockIsR2Configured.mockReturnValue(true);
@@ -813,6 +826,9 @@ describe("Manifeste — chaque pièce en face de l'exigence qu'elle prouve", () 
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     // Le registre contient une pièce de chaque type utile aux assertions.
@@ -925,6 +941,9 @@ describe("Manifeste — un indicateur non applicable ne présente aucune pièce"
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockPrisma.documentGenere.groupBy.mockImplementation(
@@ -1037,6 +1056,9 @@ describe("Manifeste — les pièces sont DÉSIGNABLES, et le plafond se dit", ()
     mockPrisma.veille.count.mockResolvedValue(0);
     mockPrisma.appreciation.count.mockResolvedValue(0);
     mockPrisma.trainer.findMany.mockResolvedValue([]);
+    // `null` = aucune revue VALIDEE pour l'annee courante : etat par defaut,
+    // sous lequel off.32 ⭐ doit rester NON couvert.
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
     mockGetConfig.mockResolvedValue("");
     mockGetObjectBufferR2.mockResolvedValue(null);
     mockIsR2Configured.mockReturnValue(true);
