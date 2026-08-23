@@ -78,9 +78,8 @@ function recenserReglesDAbsence(source: string): RegleDAbsence[] {
     if (cle === undefined) continue;
 
     // La signature du motif : « si c'est renseigné, je me tais ».
-    const gardeSurLaPresence = /if\s*\(\s*\w+\s*&&\s*\w+\.trim\(\)\.length\s*>\s*0\s*\)\s*return\s*\[\]/.test(
-      bloc,
-    );
+    const gardeSurLaPresence =
+      /if\s*\(\s*\w+\s*&&\s*\w+\.trim\(\)\.length\s*>\s*0\s*\)\s*return\s*\[\]/.test(bloc);
     if (!gardeSurLaPresence) continue;
 
     regles.push({ nomFonction: nom, cleConfig: cle });

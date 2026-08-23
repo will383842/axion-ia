@@ -138,9 +138,7 @@ export async function creerRevueDirectionAction(input: {
       // forme que le moteur de conformité relit (responsable · échéance · statut ·
       // clôture). Sans cela, chaque écran écrirait sa propre forme et le suivi ne
       // serait mesurable nulle part.
-      ...(v.planActions !== undefined
-        ? { planActions: normaliserPlanActions(v.planActions) }
-        : {}),
+      ...(v.planActions !== undefined ? { planActions: normaliserPlanActions(v.planActions) } : {}),
       ...(v.statut !== undefined ? { statut: v.statut } : {}),
     });
   } catch (err) {

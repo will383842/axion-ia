@@ -753,9 +753,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     //
     // Le trio est DÉRIVÉ du registre (`conditionnel === "cert"`), jamais recopié :
     // un prédicat recopié diverge, ce dépôt l'a payé quatre fois.
-    const indicateursCertifiants = INDICATEURS_RNQ.filter(
-      (ind) => ind.conditionnel === "cert",
-    ).map((ind) => ind.numero);
+    const indicateursCertifiants = INDICATEURS_RNQ.filter((ind) => ind.conditionnel === "cert").map(
+      (ind) => ind.numero,
+    );
     const certifiantApplicable = indicateursCertifiants.some((n) => applicablesNums.includes(n));
 
     if (certifiantApplicable) {

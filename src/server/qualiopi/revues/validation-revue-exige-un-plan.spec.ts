@@ -42,10 +42,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));
 
-import {
-  updateRevue,
-  getRevueParId,
-} from "@/server/qualiopi/registres/revue-direction-service";
+import { updateRevue, getRevueParId } from "@/server/qualiopi/registres/revue-direction-service";
 import { logQualiopiActivity, requireAdminWrite } from "@/server/actions/qualiopi/_guards";
 import { updateRevueDirectionAction } from "@/server/actions/qualiopi/revue-direction";
 import type { ActionAmelioration } from "./plan-actions";

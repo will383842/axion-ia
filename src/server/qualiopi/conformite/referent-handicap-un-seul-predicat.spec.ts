@@ -36,6 +36,7 @@
  * est précisément qu'on en ajoute une quatrième sans y penser.
  */
 
+import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -143,8 +144,6 @@ describe("référent handicap (ind. 26 ⭐) — un seul prédicat pour trois lec
   it("aucune lecture oubliée : tout fichier serveur qui lit le nom est dans la liste", () => {
     // Sans ce test, la liste ci-dessus vieillirait en silence — et une garde qui
     // ne regarde plus les bons fichiers passe toujours.
-    const { execSync } = require("node:child_process") as typeof import("node:child_process");
-
     const sortie = execSync(
       `git grep -l --fixed-strings "${CLE_NOM}" -- "src/server/**/*.ts" ":!*.spec.ts"`,
       { cwd: RACINE, encoding: "utf8" },

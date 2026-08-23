@@ -249,10 +249,7 @@ describe("evaluerAlertes — referent_handicap_absent", () => {
 
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "referent_handicap_absent");
-    expect(
-      a,
-      "Le nom seul ne prouve rien : il a une valeur par défaut au registre.",
-    ).toBeDefined();
+    expect(a, "Le nom seul ne prouve rien : il a une valeur par défaut au registre.").toBeDefined();
     expect(a?.niveau).toBe("critique");
   });
 

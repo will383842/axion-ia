@@ -264,7 +264,7 @@ export function RevueDirectionRowActions({
           `min-inline-size: min-content` sur tout `<fieldset>`, ce qui l'empêche de
           rétrécir et pousse la page hors de l'écran (défaut payé le 2026-08-22 sur
           le formulaire de candidature). */}
-      <fieldset className="min-w-0 [min-inline-size:0] border-0 p-0">
+      <fieldset className="min-w-0 border-0 p-0 [min-inline-size:0]">
         <legend className={labelCls}>Plan d&apos;actions d&apos;amélioration</legend>
 
         {actions.length === 0 && (
@@ -407,7 +407,8 @@ export function RevueDirectionRowActions({
         </button>
 
         <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          Les constats reportés depuis un autre écran gardent leur origine et leur date d&apos;ajout.
+          Les constats reportés depuis un autre écran gardent leur origine et leur date
+          d&apos;ajout.
         </p>
       </fieldset>
 

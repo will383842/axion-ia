@@ -61,7 +61,10 @@ export const LIBELLES_STATUT_ACTION: Record<StatutActionAmelioration, string> = 
 };
 
 /** Les statuts qui referment une action : elle ne peut plus être « en retard ». */
-const STATUTS_CLOS: ReadonlySet<string> = new Set<StatutActionAmelioration>(["faite", "abandonnee"]);
+const STATUTS_CLOS: ReadonlySet<string> = new Set<StatutActionAmelioration>([
+  "faite",
+  "abandonnee",
+]);
 
 /**
  * Une action d'amélioration, telle qu'elle est stockée dans
@@ -283,8 +286,9 @@ function pluriel(n: number, singulier: string, plurielMot = `${singulier}s`): st
 
 function compterListe(x: unknown): number {
   if (!Array.isArray(x)) return 0;
-  return x.filter((e) => (typeof e === "string" ? e.trim().length > 0 : e !== null && e !== undefined))
-    .length;
+  return x.filter((e) =>
+    typeof e === "string" ? e.trim().length > 0 : e !== null && e !== undefined,
+  ).length;
 }
 
 /**
