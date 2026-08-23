@@ -66,37 +66,33 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
         title="Console éditoriale"
         description="Piloter la publication sur tous les canaux, depuis un seul endroit."
         actions={
-          <div className="flex flex-wrap gap-2">
-            {/* Les réglages en premier de la rangée discrète : on y va
-                rarement, mais quand on y va c'est qu'une règle bloque. */}
-            <AdminButton href={`${base}/reglages`} variant="ghost" size="sm">
-              Réglages
-            </AdminButton>
-            <AdminButton href={`${base}/equipe`} variant="ghost" size="sm">
-              Équipe
-            </AdminButton>
-            <AdminButton href={`${base}/achat-media`} variant="ghost" size="sm">
-              Achat média
-            </AdminButton>
-            <AdminButton href={`${base}/analyse`} variant="ghost" size="sm">
-              Analyse
-            </AdminButton>
-            <AdminButton href={`${base}/mediatheque`} variant="ghost" size="sm">
-              Médiathèque
-            </AdminButton>
-            <AdminButton href={`${base}/recherche`} variant="ghost" size="sm">
-              Rechercher
-            </AdminButton>
-            <AdminButton href={`${base}/idees`} variant="ghost" size="sm">
-              Idées
-            </AdminButton>
+          // 🔴 DEUX actions, pas neuf.
+          //
+          // Défaut trouvé en testant l'interface pour de vrai — ni le
+          // typecheck, ni les tests, ni l'arbre d'accessibilité ne le
+          // voyaient : le `h1` était bien présent, avec le bon texte, et
+          // Playwright le rendait « hidden ».
+          //
+          // `AdminPageHeader` pose `sm:shrink-0 sm:flex-nowrap` sur sa rangée
+          // d'actions : elle ne cède JAMAIS de place. C'est donc la colonne du
+          // titre, en `min-w-0`, qui s'écrase — jusqu'à zéro pixel avec neuf
+          // boutons. Le titre disparaissait et la description s'affichait un
+          // mot par ligne.
+          //
+          // ⚠️ La limite du composant partagé est réelle et vaut pour toute
+          // page : au-delà de trois ou quatre actions larges, le titre
+          // commence à se faire manger. Je ne le corrige pas ici — c'est
+          // MON en-tête qui en abusait, et neuf boutons ne sont pas un
+          // design. Les autres vivent maintenant dans le corps de la page,
+          // où ils ont la place de s'expliquer.
+          <>
             <AdminButton href={`${base}/publications`} variant="secondary" size="sm">
               Les publications
             </AdminButton>
             <AdminButton href={`${base}/calendrier`} variant="primary" size="sm">
               Ouvrir le calendrier
             </AdminButton>
-          </div>
+          </>
         }
       />
 
@@ -140,6 +136,35 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
           tone="info"
         />
       </div>
+
+      {/* ── Les autres surfaces ─────────────────────────────────────────── */}
+      {/* Sorties de l'en-tête, où elles écrasaient le titre. Ici elles ont
+          la place d'être lisibles, et l'ordre dit la fréquence d'usage. */}
+      <nav aria-label="Surfaces de la console éditoriale" className="admin-actions-row">
+        <AdminButton href={`${base}/idees`} variant="ghost" size="sm">
+          Idées
+        </AdminButton>
+        <AdminButton href={`${base}/mediatheque`} variant="ghost" size="sm">
+          Médiathèque
+        </AdminButton>
+        <AdminButton href={`${base}/recherche`} variant="ghost" size="sm">
+          Rechercher
+        </AdminButton>
+        <AdminButton href={`${base}/analyse`} variant="ghost" size="sm">
+          Analyse
+        </AdminButton>
+        <AdminButton href={`${base}/achat-media`} variant="ghost" size="sm">
+          Achat média
+        </AdminButton>
+        <AdminButton href={`${base}/equipe`} variant="ghost" size="sm">
+          Équipe
+        </AdminButton>
+        {/* Les réglages en dernier : on y va rarement, mais quand on y va
+            c'est qu'une règle bloque. */}
+        <AdminButton href={`${base}/reglages`} variant="ghost" size="sm">
+          Réglages
+        </AdminButton>
+      </nav>
 
       {/* ── Ce qui presse — critère 18 du lot 1 ─────────────────────────── */}
       <div className="mt-[var(--space-admin-6)]">
