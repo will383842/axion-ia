@@ -16,6 +16,7 @@ import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listSousTraitants } from "@/server/qualiopi/registres/sous-traitants-service";
 import {
   creerSousTraitantAction,
+  updateSousTraitantAction,
   verifierSousTraitantOfAction,
   updateSousTraitantPiecesAction,
 } from "@/server/actions/qualiopi/sous-traitants";
@@ -26,6 +27,7 @@ import {
   ProcedureSousTraitanceButton,
 } from "@/components/admin/qualiopi/SousTraitantForm";
 import { SousTraitantPiecesEditor } from "@/components/admin/qualiopi/SousTraitantPiecesEditor";
+import { SousTraitantRowActions } from "@/components/admin/qualiopi/SousTraitantRowActions";
 import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
 import {
   genererContratSousTraitanceAction,
@@ -201,31 +203,55 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    {s.actif && (
-                      <div className="flex flex-col gap-[var(--space-admin-2)]">
-                        <SousTraitantVerifButton
-                          sousTraitantId={s.id}
-                          verifierAction={verifierSousTraitantOfAction}
-                        />
-                        <SousTraitantContratButton
-                          sousTraitantId={s.id}
-                          genererAction={genererContratSousTraitanceAction}
-                        />
-                        {/*
-                          Pièces art. 4 et 8 — repliées : elles se saisissent une
-                          fois par an, les déplier noierait les colonnes lues à
-                          chaque visite.
-                        */}
-                        <SousTraitantPiecesEditor
-                          sousTraitantId={s.id}
-                          action={updateSousTraitantPiecesAction}
-                          prochaineVerifAt={s.prochaineVerifAt}
-                          rcProAttestationUrl={s.rcProAttestationUrl}
-                          rcProEcheanceAt={s.rcProEcheanceAt}
-                          cvUrl={s.cvUrl}
-                        />
-                      </div>
-                    )}
+                    <div className="flex flex-col gap-[var(--space-admin-2)]">
+                      {/*
+                        🔴 HORS du garde `s.actif` — à dessein. Les boutons
+                        ci-dessous n'ont de sens que sur une ligne active, mais
+                        « Modifier » est la SEULE voie de réactivation : le
+                        réserver aux lignes actives rendrait tout archivage
+                        irréversible, et rejouerait le défaut qu'on répare.
+                      */}
+                      <SousTraitantRowActions
+                        sousTraitant={{
+                          id: s.id,
+                          nom: s.nom,
+                          siret: s.siret,
+                          nda: s.nda,
+                          objetPrestation: s.objetPrestation,
+                          contactNom: s.contactNom,
+                          contactEmail: s.contactEmail,
+                          contactFonction: s.contactFonction,
+                          contratSigneAt: s.contratSigneAt,
+                          actif: s.actif,
+                        }}
+                        updateAction={updateSousTraitantAction}
+                      />
+                      {s.actif && (
+                        <>
+                          <SousTraitantVerifButton
+                            sousTraitantId={s.id}
+                            verifierAction={verifierSousTraitantOfAction}
+                          />
+                          <SousTraitantContratButton
+                            sousTraitantId={s.id}
+                            genererAction={genererContratSousTraitanceAction}
+                          />
+                          {/*
+                            Pièces art. 4 et 8 — repliées : elles se saisissent
+                            une fois par an, les déplier noierait les colonnes
+                            lues à chaque visite.
+                          */}
+                          <SousTraitantPiecesEditor
+                            sousTraitantId={s.id}
+                            action={updateSousTraitantPiecesAction}
+                            prochaineVerifAt={s.prochaineVerifAt}
+                            rcProAttestationUrl={s.rcProAttestationUrl}
+                            rcProEcheanceAt={s.rcProEcheanceAt}
+                            cvUrl={s.cvUrl}
+                          />
+                        </>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

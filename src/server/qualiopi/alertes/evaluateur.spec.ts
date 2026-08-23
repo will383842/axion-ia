@@ -38,7 +38,10 @@ vi.mock("@/lib/prisma", () => ({
     // Diaporama du kit non déposé pour une session imminente. [2026-08-05]
     interventionDocument: { findMany: vi.fn() },
     // Déblocage : cycle moteur terminé, publication en attente. [2026-08-05]
-    formation: { findMany: vi.fn() },
+    // `count` sert R01e (catalogue_certifiant_incoherent). ⚠️ Sans lui, la règle
+    // lèverait sur `undefined` et le fail-soft PAR RÈGLE l'avalerait : elle serait
+    // inerte partout, tests verts compris. Même famille que `mockIdentite` ci-dessous.
+    formation: { findMany: vi.fn(), count: vi.fn() },
   },
 }));
 
@@ -111,7 +114,7 @@ const mp = prisma as unknown as {
   relanceProposee: { findMany: ReturnType<typeof vi.fn> };
   offreSite: { findMany: ReturnType<typeof vi.fn> };
   interventionDocument: { findMany: ReturnType<typeof vi.fn> };
-  formation: { findMany: ReturnType<typeof vi.fn> };
+  formation: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -152,6 +155,8 @@ function setupEmptyMocks() {
   mp.interventionDocument.findMany.mockResolvedValue([]);
   // Idem pour moteur_assemble_a_publier (formations assemblées en attente).
   mp.formation.findMany.mockResolvedValue([]);
+  // R01e : aucune formation ne porte de code RNCP/RS par défaut → règle muette.
+  mp.formation.count.mockResolvedValue(0);
   // Idem pour facture_mentions_legales_absentes : identité légale COMPLÈTE par
   // défaut → pas d'alerte. Sans ce mock, la règle lirait `undefined.formeJuridique`,
   // lèverait, et le fail-soft l'avalerait : elle serait INERTE partout ailleurs.
@@ -162,12 +167,22 @@ function setupEmptyMocks() {
     siren: "938123456",
     tvaIntracom: "FR12938123456",
   });
-  // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
+  // Config : référent handicap et responsable qualité JOIGNABLES, qualiopi_validite dans >90j.
+  //
+  // ⚠️ 2026-08-23 — les e-mails ont été ajoutés ici, et ce n'est pas cosmétique.
+  // R01 et R01b gardaient sur les clés `*_nom`, qui portent au registre le
+  // défaut `str("Williams Jullin")` : `getQualiopiConfig` rendant ce défaut
+  // quand la ligne n'existe pas, ces deux alertes ne pouvaient JAMAIS partir en
+  // production. Le mock ci-dessous, en rendant `""` pour tout le reste, était le
+  // seul endroit de l'univers où elles se déclenchaient. Elles gardent
+  // désormais sur les clés `*_email`, qui n'ont aucun défaut.
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
   mockGetConfig.mockImplementation((key: string) => {
     if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+    if (key === "referent_handicap_email") return Promise.resolve("referent@axion-ia.com");
     if (key === "responsable_qualite_nom") return Promise.resolve("Williams Jullin");
+    if (key === "responsable_qualite_email") return Promise.resolve("qualite@axion-ia.com");
     if (key === "qualiopi_validite") return Promise.resolve(futur90.toISOString().slice(0, 10));
     // BPF de l'année N-1 considéré déposé (marqueur config) → pas d'alerte BPF par défaut.
     if (key === "bpf_annee_deposee") return Promise.resolve(now.getFullYear());
@@ -204,9 +219,9 @@ describe("evaluerAlertes — referent_handicap_absent", () => {
     setupEmptyMocks();
   });
 
-  it("crée une alerte critique si referent_handicap_nom est vide", async () => {
+  it("crée une alerte critique si l'e-mail du référent handicap est vide", async () => {
     mockGetConfig.mockImplementation((key: string) => {
-      if (key === "referent_handicap_nom") return Promise.resolve("");
+      if (key === "referent_handicap_email") return Promise.resolve("");
       if (key === "qualiopi_validite") {
         const futur = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
         return Promise.resolve(futur.toISOString().slice(0, 10));
@@ -221,7 +236,27 @@ describe("evaluerAlertes — referent_handicap_absent", () => {
     expect(a?.cibleType).toBeUndefined();
   });
 
-  it("ne crée PAS d'alerte si referent_handicap_nom est renseigné", async () => {
+  it("🔴 alerte MÊME si le nom est renseigné, dès que l'e-mail manque", async () => {
+    // C'est le cas que l'ancienne règle laissait passer, et c'est le cas RÉEL :
+    // sur une base vierge le nom vaut « Williams Jullin » par défaut de registre
+    // alors que personne n'a rien saisi. L'auditeur attend un référent nommé ET
+    // joignable ; un nom sans moyen de contact ne prouve pas la désignation.
+    mockGetConfig.mockImplementation((key: string) => {
+      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
+      if (key === "referent_handicap_email") return Promise.resolve("");
+      return Promise.resolve("");
+    });
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "referent_handicap_absent");
+    expect(
+      a,
+      "Le nom seul ne prouve rien : il a une valeur par défaut au registre.",
+    ).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+  });
+
+  it("ne crée PAS d'alerte si l'e-mail du référent handicap est renseigné", async () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "referent_handicap_absent");
     expect(a).toBeUndefined();
@@ -302,10 +337,11 @@ describe("evaluerAlertes — responsable_qualite_absent", () => {
     setupEmptyMocks();
   });
 
-  it("crée une alerte importante si responsable_qualite_nom est vide", async () => {
+  it("crée une alerte importante si l'e-mail du responsable qualité est vide", async () => {
     mockGetConfig.mockImplementation((key: string) => {
-      if (key === "referent_handicap_nom") return Promise.resolve("Williams Jullin");
-      if (key === "responsable_qualite_nom") return Promise.resolve("");
+      if (key === "referent_handicap_email") return Promise.resolve("referent@axion-ia.com");
+      if (key === "responsable_qualite_nom") return Promise.resolve("Williams Jullin");
+      if (key === "responsable_qualite_email") return Promise.resolve("");
       if (key === "qualiopi_validite") {
         const futur = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
         return Promise.resolve(futur.toISOString().slice(0, 10));
@@ -321,7 +357,7 @@ describe("evaluerAlertes — responsable_qualite_absent", () => {
     expect(a?.cibleType).toBeUndefined();
   });
 
-  it("ne crée PAS d'alerte si responsable_qualite_nom est renseigné", async () => {
+  it("ne crée PAS d'alerte si l'e-mail du responsable qualité est renseigné", async () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "responsable_qualite_absent");
     expect(a).toBeUndefined();
@@ -2125,9 +2161,28 @@ describe("evaluerAlertes — moteur_assemble_a_publier", () => {
 
   it("le filtre SQL ne vise que `assemble`, hors archives", async () => {
     await evaluerAlertes();
-    const arg = mp.formation.findMany.mock.calls[0]?.[0] as {
-      where: { statutGeneration: string; statut: { not: string } };
-    };
+
+    // 🔴 2026-08-23 — ce test lisait `mock.calls[0]`, c'est-à-dire la PREMIÈRE
+    // interrogation de `formation.findMany`, quelle qu'elle soit. Il s'est cassé
+    // le jour où une autre règle (R01e, cohérence du catalogue certifiant) a lu
+    // la même table : elle est simplement passée avant, et le rouge a accusé une
+    // règle qui n'avait pas bougé.
+    //
+    // Un mock positionnel transforme tout ajout voisin en faux rouge. On
+    // sélectionne désormais l'appel par sa FORME — celui qui filtre sur
+    // `statutGeneration` —, ce qui est aussi ce que le test voulait dire.
+    const appels = mp.formation.findMany.mock.calls
+      .map((c) => c[0] as { where?: { statutGeneration?: string; statut?: { not: string } } })
+      .filter((a) => a?.where?.statutGeneration !== undefined);
+
+    expect(
+      appels.length,
+      "Aucune interrogation de `formation` ne filtre sur `statutGeneration` : " +
+        "la règle moteur_assemble_a_publier n'a pas interrogé la base, ou son " +
+        "filtre a changé de forme.",
+    ).toBe(1);
+
+    const arg = appels[0] as { where: { statutGeneration: string; statut: { not: string } } };
     expect(arg.where.statutGeneration).toBe("assemble");
     expect(arg.where.statut).toEqual({ not: "archive" });
   });
@@ -2510,5 +2565,86 @@ describe("evaluerAlertes — mentions légales de facture", () => {
       (a) => a.code === "facture_mentions_legales_absentes",
     );
     expect(alerte?.message).toContain("forme juridique");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle R01e — catalogue_certifiant_incoherent
+//
+// Née d'une observation À L'ÉCRAN le 2026-08-23, pas d'une lecture de code :
+// `/qualiopi/mode-auditeur` affichait « 1 formation certifiante avec code RS/RNCP
+// renseigné » comme preuve de l'indicateur 1, et déclarait dans la MÊME page les
+// indicateurs 3, 7 ⭐ et 16 ⭐ « non applicables ».
+//
+// Les quatre combinaisons des deux signaux sont couvertes, parce que le piège de
+// cette famille n'est pas de rater le cas incohérent — c'est d'alerter à tort sur
+// les trois autres. Une console qui crie pour rien apprend à être ignorée, et le
+// jour J une alerte ignorée vaut une alerte absente.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — catalogue_certifiant_incoherent", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  /** Pose les DEUX signaux indépendamment l'un de l'autre. */
+  function poserCatalogue(nbAvecCode: number, typesParFormation: unknown[]): void {
+    const mp = prisma as unknown as MockPrisma;
+    mp.formation.count.mockResolvedValue(nbAvecCode);
+    mp.formation.findMany.mockResolvedValue(
+      typesParFormation.map((types) => ({ typesActionQualiopi: types })),
+    );
+  }
+
+  it("🔴 alerte quand un code RNCP/RS existe mais qu'aucune formation n'est déclarée certifiante", async () => {
+    // L'état RÉEL mesuré le 2026-08-23 : la formation de démonstration porte
+    // `RS6203-DEMO`, et l'import du catalogue écrit `["classique"]` en dur.
+    poserCatalogue(1, [["classique"], ["classique"]]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "catalogue_certifiant_incoherent");
+    expect(
+      a,
+      "La contradiction que l'auditeur voit à l'écran doit remonter dans la console.",
+    ).toBeDefined();
+    expect(a?.niveau).toBe("important");
+  });
+
+  it("se tait quand le catalogue est cohérent : code RNCP ET type « certifiante » déclaré", async () => {
+    poserCatalogue(1, [["classique"], ["certifiante"]]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "catalogue_certifiant_incoherent")).toBeUndefined();
+  });
+
+  it("se tait quand aucune formation ne porte de code RNCP/RS", async () => {
+    // Le cas nominal d'un organisme non certifiant — celui de Will, confirmé le
+    // 2026-08-23. Rien à signaler.
+    poserCatalogue(0, [["classique"], ["classique"]]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "catalogue_certifiant_incoherent")).toBeUndefined();
+  });
+
+  it("se tait quand le type est déclaré « certifiante » SANS qu'aucun code n'existe", async () => {
+    // Situation inverse, volontairement hors du périmètre de CETTE règle : un
+    // type déclaré sans code est un défaut de complétude, pas une contradiction
+    // entre deux affirmations. Les confondre ferait crier la règle sur un
+    // organisme qui prépare simplement son catalogue.
+    poserCatalogue(0, [["certifiante"]]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "catalogue_certifiant_incoherent")).toBeUndefined();
+  });
+
+  it("survit à un `typesActionQualiopi` nul ou non tableau", async () => {
+    // La colonne est un JSON : elle vaut `null` sur les lignes antérieures au
+    // champ. Une règle qui lève ici serait avalée par le fail-soft et deviendrait
+    // muette sans que rien ne le dise.
+    poserCatalogue(1, [null, "classique"]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "catalogue_certifiant_incoherent")).toBeDefined();
   });
 });

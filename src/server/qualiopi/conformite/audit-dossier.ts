@@ -331,7 +331,25 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   ]);
 
   // off.26 : nom du référent handicap
-  const referentHandicapNom = await getQualiopiConfig("referent_handicap_nom").catch(() => "");
+  // 🔴 2026-08-23 — le manifeste AFFIRMAIT une désignation que personne n'avait
+  // faite. Il ne lisait que `referent_handicap_nom`, clé dont le registre porte
+  // le défaut `str("Williams Jullin")` : sur une base entièrement vierge,
+  // `getQualiopiConfig` rend ce défaut et la pièce remise au certificateur
+  // écrivait « Référent handicap désigné : Williams Jullin ».
+  //
+  // Un manifeste qui se trompe en DÉFAVEUR d'Axion-IA coûte du temps ; un
+  // manifeste qui se trompe en sa FAVEUR met une affirmation inexacte dans les
+  // mains de l'auditeur, sur un super-indicateur (26 ⭐). C'est le pire des deux.
+  //
+  // La désignation exige donc désormais un référent NOMMÉ **et JOIGNABLE** —
+  // le même signal que retient `evaluerConformite` pour off.26, et que
+  // l'alerte R01 retient depuis le même jour. Trois lectures, un seul prédicat.
+  const [referentHandicapNom, referentHandicapEmail] = await Promise.all([
+    getQualiopiConfig("referent_handicap_nom").catch(() => ""),
+    getQualiopiConfig("referent_handicap_email").catch(() => ""),
+  ]);
+  const referentHandicapEstDesigne =
+    referentHandicapNom.trim().length > 0 && referentHandicapEmail.trim().length > 0;
 
   // off.1 : numéro NDA DREETS (obligatoire pour considérer off.1 comme couvert)
   const ndaNumero = await getQualiopiConfig("nda_numero").catch(() => "");
@@ -384,9 +402,13 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     [
       26,
       [
-        ...(referentHandicapNom.trim().length > 0
-          ? [`Référent handicap désigné : ${referentHandicapNom}`]
-          : ["Référent handicap : non renseigné en config"]),
+        ...(referentHandicapEstDesigne
+          ? [`Référent handicap désigné : ${referentHandicapNom} (${referentHandicapEmail})`]
+          : [
+              referentHandicapNom.trim().length > 0
+                ? `Référent handicap : « ${referentHandicapNom} » nommé, mais AUCUN e-mail de contact — désignation non établie`
+                : "Référent handicap : non renseigné en config",
+            ]),
       ],
     ],
     [
