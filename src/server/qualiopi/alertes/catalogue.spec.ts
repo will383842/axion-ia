@@ -22,6 +22,12 @@ const CODES_ATTENDUS: string[] = [
   // `resolutionAuto: false`, verrouillé par `besoin-adaptation.spec.ts`.
   "besoin_adaptation_declare",
   "categories_certifiees_non_renseignees",
+  // Ajouté 2026-08-23 (recette du jour d'audit). Constaté À L'ÉCRAN sur
+  // `/qualiopi/mode-auditeur` : « 1 formation certifiante avec code RS/RNCP »
+  // présentée comme preuve de l'indicateur 1, pendant que 3, 7 ⭐ et 16 ⭐ sont
+  // déclarés « non applicables ». Deux colonnes indépendantes répondent à la
+  // même question, et une seule des deux a une porte d'entrée.
+  "catalogue_certifiant_incoherent",
   "cloture_trace_presence_incomplete",
   "email_rebond_dur",
   "report_accord_financement_a_refaire",

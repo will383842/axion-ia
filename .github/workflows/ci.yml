@@ -397,6 +397,25 @@ jobs:
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_e2e -d axion_ia_e2e             -f prisma/migrations_fts/kb_fts_setup.sql
           pnpm db:seed
           pnpm qualiopi:seed
+          # 🔴 2026-08-22 — LE DOSSIER EDITORIAL MANQUAIT AUSSI, exactement
+          # comme le dossier Qualiopi la veille (#782).
+          #
+          # `console-editoriale.spec.ts` affirme « le calendrier de septembre
+          # 2026 montre les 15 publications du profil ». Ce chiffre vient de
+          # l'import du dossier LinkedIn du T4 — que rien ne jouait ici. Le
+          # test mesurait donc une base editoriale VIDE, et le disait :
+          #
+          #     expected /15 publications/i to be visible
+          #
+          # 🔑 Le semis est ajoute plutot que le test affaibli. Un `skip` sur
+          # base vide aurait rendu le critere invérifiable en CI — c'est-a-dire
+          # vert sans rien prouver, ce que ce depot passe son temps a corriger.
+          #
+          # Effet de bord VOULU : la chaine d'amorcage editorial (referentiels
+          # + import + idempotence) s'execute a chaque PR. Elle n'avait jamais
+          # tourne ailleurs que sur une machine de developpement.
+          pnpm editorial:seed
+          pnpm editorial:import --source tests/fixtures/editorial/linkedin-q4
           # 🔴 2026-08-21 — LE DOSSIER DE DÉMONSTRATION MANQUAIT, ET LES PARCOURS
           # LE DISAIENT.
           #
@@ -861,13 +880,56 @@ jobs:
             | grep -E "[0-9]+\.[0-9]+" || (echo "::error::pgvector not available"; exit 1)
       - name: Apply all Prisma migrations (fresh DB)
         run: pnpm prisma migrate deploy
-      - name: Apply FTS raw migrations post Prisma
+      # 🔴 `fr_unaccent` AVANT les fichiers FTS, sinon rien ne s'applique.
+      #
+      # `0002_fts_setup.sql` dit lui-meme d'ou vient cette configuration :
+      # « creee par docker/postgres/init.sql a l'init du conteneur ». Vrai en
+      # local et en production ; FAUX ici, ou le journal du service affiche
+      # `ignoring /docker-entrypoint-initdb.d/*`.
+      #
+      # Consequence, restee invisible jusqu'au 2026-08-22 : chaque instruction
+      # citant `fr_unaccent` echouait, et `psql` SANS `ON_ERROR_STOP` sort en 0
+      # meme apres une erreur. La gate etait donc verte en n'appliquant rien.
+      # C'est `ON_ERROR_STOP=1`, ajoute juste en dessous, qui l'a revele.
+      #
+      # On rejoue donc l'init du conteneur, pour que la gate mesure la MEME
+      # base que la production — et non une base a laquelle il manque la
+      # moitie de sa configuration.
+      - name: Apply container init (extensions + fr_unaccent)
         run: |
           set -e
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
-            -f prisma/migrations_fts/0002_fts_setup.sql
+            -v ON_ERROR_STOP=1 -f docker/postgres/init.sql
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
-            -f prisma/migrations_fts/kb_fts_setup.sql
+            -tAc "SELECT cfgname FROM pg_ts_config WHERE cfgname = 'fr_unaccent';" \
+            | grep -q fr_unaccent \
+            || (echo "::error::fr_unaccent absente apres init"; exit 1)
+
+      # La gate applique TOUS les fichiers du dossier, par boucle — comme le
+      # fait `scripts/docker-entrypoint.sh` au boot de production.
+      #
+      # Avant, deux fichiers etaient nommes en dur. Un troisieme est arrive
+      # (`editorial_fts.sql`) sans que la gate le voie : elle validait donc un
+      # schema FTS qui n'etait PAS celui que la prod applique. C'est le §1 du
+      # protocole — « une gate qui mesurait un fichier de configuration pendant
+      # que le conteneur tournait avec une autre valeur ». Signale par la passe
+      # 2 de la verification de la console editoriale.
+      #
+      # La boucle est volontairement identique a celle de l'entrypoint : le
+      # prochain fichier FTS sera couvert sans que personne ait a y penser.
+      - name: Apply FTS raw migrations post Prisma
+        run: |
+          set -e
+          shopt -s nullglob
+          fichiers=(prisma/migrations_fts/*.sql)
+          if [ ${#fichiers[@]} -eq 0 ]; then
+            echo "::error::aucun fichier dans prisma/migrations_fts/"; exit 1
+          fi
+          for sql in "${fichiers[@]}"; do
+            echo "[fts] $sql"
+            PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+              -v ON_ERROR_STOP=1 -f "$sql"
+          done
       - name: Verify _prisma_migrations table healthy
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \

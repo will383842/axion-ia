@@ -84,6 +84,30 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "qualite",
   },
   /**
+   * Le catalogue soutient deux thèses opposées sur « sommes-nous certifiants ? ».
+   *
+   * 🔴 2026-08-23, constaté À L'ÉCRAN sur `/qualiopi/mode-auditeur` : la matrice
+   * présentait « 1 formation certifiante avec code RS/RNCP renseigné » comme
+   * preuve de l'indicateur 1, tout en déclarant 3, 7 ⭐ et 16 ⭐ « non
+   * applicables ». Un auditeur voit cette contradiction sans ouvrir un dossier,
+   * et c'est le genre de détail qui déclenche l'approfondissement.
+   *
+   * La cause est structurelle : l'applicabilité se lit sur
+   * `Formation.typesActionQualiopi` — colonne qu'AUCUN écran n'expose — pendant
+   * que la preuve se lit sur `certificationType` + `codeRncp`/`codeRs`, qui sont
+   * saisissables. Les deux ne peuvent pas se contredire par accident : elles se
+   * contredisent parce qu'une seule des deux a une porte d'entrée.
+   *
+   * `resolutionAuto` : la contradiction disparaît d'elle-même dès que l'une des
+   * deux colonnes est alignée sur l'autre — il n'y a rien à cliquer ici.
+   */
+  catalogue_certifiant_incoherent: {
+    niveau: "important",
+    titre: "Le catalogue se contredit sur les actions certifiantes",
+    resolutionAuto: true,
+    guichet: "qualite",
+  },
+  /**
    * Session clôturée « réalisée » alors que des inscrits n'ont aucune trace.
    *
    * 🔴 `CONF-01` (2026-08-20). La garde de clôture ne refusait que si PAS UNE

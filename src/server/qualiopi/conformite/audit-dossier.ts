@@ -16,6 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
+import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
 import type { DocumentType, TrainingSessionStatut } from "../../../../prisma/generated/client";
 
@@ -331,7 +332,25 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   ]);
 
   // off.26 : nom du référent handicap
-  const referentHandicapNom = await getQualiopiConfig("referent_handicap_nom").catch(() => "");
+  // 🔴 2026-08-23 — le manifeste AFFIRMAIT une désignation que personne n'avait
+  // faite. Il ne lisait que `referent_handicap_nom`, clé dont le registre porte
+  // le défaut `str("Williams Jullin")` : sur une base entièrement vierge,
+  // `getQualiopiConfig` rend ce défaut et la pièce remise au certificateur
+  // écrivait « Référent handicap désigné : Williams Jullin ».
+  //
+  // Un manifeste qui se trompe en DÉFAVEUR d'Axion-IA coûte du temps ; un
+  // manifeste qui se trompe en sa FAVEUR met une affirmation inexacte dans les
+  // mains de l'auditeur, sur un super-indicateur (26 ⭐). C'est le pire des deux.
+  //
+  // La désignation exige donc désormais un référent NOMMÉ **et JOIGNABLE** —
+  // le même signal que retient `evaluerConformite` pour off.26, et que
+  // l'alerte R01 retient depuis le même jour. Trois lectures, un seul prédicat.
+  const [referentHandicapNom, referentHandicapEmail] = await Promise.all([
+    getQualiopiConfig("referent_handicap_nom").catch(() => ""),
+    getQualiopiConfig("referent_handicap_email").catch(() => ""),
+  ]);
+  const referentHandicapEstDesigne =
+    referentHandicapNom.trim().length > 0 && referentHandicapEmail.trim().length > 0;
 
   // off.1 : numéro NDA DREETS (obligatoire pour considérer off.1 comme couvert)
   const ndaNumero = await getQualiopiConfig("nda_numero").catch(() => "");
@@ -339,6 +358,23 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   // off.31/32 : responsable qualité (pilote le RNQ + la revue de direction).
   // Lecture APRÈS nda_numero pour ne pas perturber l'ordre des appels mockés en test.
   const responsableQualiteNom = await getQualiopiConfig("responsable_qualite_nom").catch(() => "");
+
+  // off.32 ⭐ : la revue de direction VALIDÉE de l'année courante, avec son CONTENU.
+  //
+  // 🔴 2026-08-23 — le manifeste ne disait d'off.32 que le nom du pilote. Nommer
+  // un responsable de l'amélioration continue n'est PAS la mise en œuvre de
+  // mesures d'amélioration : la pièce remise au certificateur ne portait aucune
+  // trace de ce qui avait été décidé, ni de qui en répondait, ni pour quand.
+  // Même prédicat que la matrice — `evaluerCouvertureOff32` — pour que le dossier
+  // remis et l'écran de l'auditeur ne puissent pas dire deux choses différentes.
+  const maintenantOff32 = new Date();
+  const revueAnnuelleOff32 = await prisma.revueDirection
+    .findFirst({
+      where: { statut: "validee", annee: maintenantOff32.getFullYear() },
+      select: { annee: true, participants: true, decisions: true, planActions: true },
+    })
+    .catch(() => null);
+  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelleOff32, maintenantOff32);
 
   // off.30 : appréciations multi-parties
   const nbAppreciations = await prisma.appreciation.count();
@@ -384,9 +420,13 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     [
       26,
       [
-        ...(referentHandicapNom.trim().length > 0
-          ? [`Référent handicap désigné : ${referentHandicapNom}`]
-          : ["Référent handicap : non renseigné en config"]),
+        ...(referentHandicapEstDesigne
+          ? [`Référent handicap désigné : ${referentHandicapNom} (${referentHandicapEmail})`]
+          : [
+              referentHandicapNom.trim().length > 0
+                ? `Référent handicap : « ${referentHandicapNom} » nommé, mais AUCUN e-mail de contact — désignation non établie`
+                : "Référent handicap : non renseigné en config",
+            ]),
       ],
     ],
     [
@@ -403,9 +443,14 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     ],
     [
       32,
-      responsableQualiteNom.trim().length > 0
-        ? [`Démarche d'amélioration continue pilotée par : ${responsableQualiteNom}`]
-        : ["Responsable qualité : non renseigné en config (pilotage amélioration continue)"],
+      [
+        // Le pilote reste utile à l'auditeur — mais il n'est plus la SEULE chose
+        // dite d'off.32 : il ne prouve pas qu'une mesure a été mise en œuvre.
+        responsableQualiteNom.trim().length > 0
+          ? `Démarche d'amélioration continue pilotée par : ${responsableQualiteNom}`
+          : "Responsable qualité : non renseigné en config (pilotage amélioration continue)",
+        ...couvertureOff32.preuves,
+      ],
     ],
     [
       21,

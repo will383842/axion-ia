@@ -32,6 +32,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | online | SCC                        | 🟡 à accepter   |
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
+| 18  | LinkedIn Ireland Unlimited | Insight Tag — reciblage publicitaire | Irlande (UE) + USA      | online | SCC + EU-US DPF            | ⚪ non activé   |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
 > ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
@@ -71,6 +72,18 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 > des sous-traitants de l'application. Si le périmètre de la page devait être
 > élargi, ce serait une décision à écrire — pas un oubli à corriger.
 
+> 🆕 **Ligne 18 ajoutée 2026-08-20** (renumérotée 17 → 18 à la fusion : la ligne 17 était prise par ZeptoMail, arrivé le même jour par une autre branche). LinkedIn Insight Tag intégré au code
+> (`src/components/analytics/LinkedInInsight.tsx`) mais **non activé** : la
+> variable `NEXT_PUBLIC_LINKEDIN_PARTNER_ID` n'existe pas en production, aucun
+> compte LinkedIn Campaign Manager n'a été créé. Le composant rend `null` →
+> **aucune requête, aucun cookie déposé à ce jour.** Il sert uniquement au
+> reciblage publicitaire : la mesure d'audience reste Plausible (auto-hébergé,
+> sans cookie), et l'attribution des réservations passe par les UTM lus côté
+> serveur sur `/appel`. Gate consentement CMP identique à Clarity ; le pixel
+> `<noscript>` du snippet officiel LinkedIn est **délibérément omis** parce
+> qu'il se déclencherait sans passer par le consentement.
+> ⛔ **Will, avant d'activer** : accepter le DPA LinkedIn, puis poser l'ID dans
+> Coolify. Passer alors le statut de ⚪ à 🟡, puis ✅ une fois le DPA accepté.
 
 > 🆕 **Ligne 16 ajoutée 2026-07-26** (lot L10 / constat X2). Calendly était en
 > production depuis le 2026-05-26 — onze jours après le gel de la SSOT publique

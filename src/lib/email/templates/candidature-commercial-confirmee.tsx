@@ -20,7 +20,19 @@ const COPY = {
     title: "On a bien reçu ta candidature",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     body: "Merci d'avoir pris ces quelques minutes : ta candidature de commercial indépendant Axion-IA est bien arrivée, et elle sera lue avec attention — c'est promis, pas par un robot.",
-    next: "Si ton profil est retenu, on te recontacte par email pour caler un premier échange en visio de 15 à 30 minutes. Compte quelques jours ouvrés pour notre retour.",
+    // 🔴 2026-08-23 — cette phrase disait « Si ton profil est retenu, on te
+    // recontacte […]. Compte quelques jours ouvrés pour notre retour. » Deux
+    // défauts, tous deux corrigés ici :
+    //   1. Elle promettait un DÉLAI CHIFFRÉ (« quelques jours ouvrés »).
+    //      Règle Will du 2026-08-23 : une offre ne s'engage jamais sur un
+    //      délai de réponse — un délai annoncé et non tenu détruit exactement
+    //      la confiance qu'il cherchait à créer, et c'est intenable dès que le
+    //      volume monte.
+    //   2. « Si ton profil est retenu, on te recontacte » impliquait que les
+    //      NON-retenus ne recevraient rien — en contradiction directe avec
+    //      l'annonce Le Bon Coin, qui promet « on répond à TOUTES les
+    //      candidatures » (cf. docs/annonce-leboncoin-recrutement.md §2.5).
+    next: "On répond à toutes les candidatures : la tienne aura une réponse, quoi qu'il arrive. Si ton profil correspond, on te proposera un premier échange en visio de 15 à 30 minutes. On revient vers toi dans les prochaines semaines.",
     spam: "Pense à vérifier tes spams si tu n'as pas de nouvelles : nos emails s'y égarent parfois.",
     cta: "Découvrir Axion-IA",
     refRow: (id: string) => `Référence : ${id}`,
@@ -29,7 +41,7 @@ const COPY = {
     title: "We received your application",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     body: "Thanks for taking a few minutes: your application to become an independent Axion-IA sales rep has arrived, and it will be read carefully — by a human, promise.",
-    next: "If your profile is selected, we will get back to you by email to schedule a first 15-30 minute video call. Allow a few working days for our reply.",
+    next: "We answer every application: yours will get a reply either way. If your profile is a match, we will offer you a first 15-30 minute video call. We will come back to you in the coming weeks.",
     spam: "Check your spam folder if you do not hear from us: our emails sometimes end up there.",
     cta: "Discover Axion-IA",
     refRow: (id: string) => `Reference: ${id}`,

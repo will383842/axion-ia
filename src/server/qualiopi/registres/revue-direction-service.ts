@@ -4,6 +4,7 @@
  * creerRevue          : crée la revue de direction d'une année avec snapshot indicateurs.
  * updateRevue         : met à jour une revue existante (participants, décisions, etc.).
  * getRevue            : lecture unitaire par année.
+ * getRevueParId       : lecture unitaire par identifiant (garde de validation).
  * listRevues          : liste toutes les revues.
  * reporterConstatRevue: ajoute un constat au plan d'actions de la revue de
  *                       l'année (créée en brouillon si absente) — LOT 4.
@@ -102,6 +103,22 @@ export async function getRevue(annee: number): Promise<RevueDirection | null> {
     return null;
   }
   return prisma.revueDirection.findUnique({ where: { annee } });
+}
+
+/**
+ * Lecture unitaire par identifiant.
+ *
+ * Ajoutée le 2026-08-23 pour `updateRevueDirectionAction` : le passage d'une
+ * revue en « validee » verdit un SUPER-indicateur (32, NC majeure), et ce geste
+ * doit être opposé à l'état RÉSULTANT de la revue — donc à ce qui est déjà en
+ * base pour les champs que la mise à jour ne renvoie pas. Sans cette lecture,
+ * un appel `{ id, statut: "validee" }` seul validerait une revue vide.
+ */
+export async function getRevueParId(id: string): Promise<RevueDirection | null> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return null;
+  }
+  return prisma.revueDirection.findUnique({ where: { id } });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

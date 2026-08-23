@@ -494,6 +494,23 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/scripts\/backfill-hero-images\.ts$/,
   /^src\/content\/__tests__\/services-ssot\.spec\.ts$/,
   /^src\/server\/queue\/workers\/keyword-opportunity-detector\.ts$/,
+  // Console editoriale (2026-08-21) — trois fichiers qui NOMMENT `content-gen`
+  // sans en importer une seule ligne. Le marqueur vient de la prose, et la
+  // prose dit precisement pourquoi le branchement N'A PAS ete fait :
+  //
+  //   « le calendrier du site reste vide : le branchement content-gen se
+  //     decidera plus tard, pour ne pas creer de seconde source de verite »
+  //
+  // C'est le cas que cette liste couvre depuis le debut — « reference le
+  // marqueur en commentaire/contexte, pas du code pipeline ». Reformuler pour
+  // esquiver la detection ferait perdre le seul mot qui rend l'avertissement
+  // cherchable le jour ou quelqu'un voudra brancher les deux.
+  //
+  // Verifie : aucun de ces trois fichiers n'importe quoi que ce soit depuis
+  // `src/server/content-gen/`.
+  /^prisma\/seeds\/editorial\/index\.ts$/,
+  /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/console-editoriale\/page\.tsx$/,
+  /^src\/server\/editorial\/referentiels\/comptes\.ts$/,
 ];
 
 /**

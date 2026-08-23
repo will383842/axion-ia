@@ -36,6 +36,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre";
 
 // AFEST retiré le 2026-08-10 — le 1-to-1 est du conseil (décision 2026-07-17) ;
@@ -115,7 +116,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbTraineesHandicap,
     nbEnrollmentsAdaptations,
     nbDocuments,
-    nbRevues,
+    revueAnnuelle,
     referentHandicapNom,
     ndaNumero,
     typesActionResult,
@@ -213,8 +214,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // sans le filtre `annee`, une revue validée en 2024 couvrait l'indicateur
     // indéfiniment — un super-indicateur (NC majeure) satisfait par une preuve
     // périmée. `RevueDirection.annee` est unique par an (schéma), donc au plus 1.
-    prisma.revueDirection.count({
+    //
+    // 🔴 2026-08-23 — C'ÉTAIT UN `count()`, ET C'EST TOUT CE QUE LA RÈGLE REGARDAIT.
+    // `nbRevues > 0` verdissait off.32 ⭐ pour une revue validée dont
+    // `participants`, `decisions` ET `planActions` étaient VIDES : une case cochée
+    // valait une démarche d'amélioration continue, sur un indicateur dont une
+    // seule NC est majeure. On lit désormais le CONTENU de la revue et le verdict
+    // est délégué à `evaluerCouvertureOff32` — le seul prédicat d'off.32.
+    prisma.revueDirection.findFirst({
       where: { statut: "validee", annee: maintenant.getFullYear() },
+      select: { annee: true, participants: true, decisions: true, planActions: true },
     }),
     // off.26 : nom du référent handicap (config Qualiopi)
     getQualiopiConfig("referent_handicap_nom").catch(() => ""),
@@ -716,9 +725,53 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       : "NDA DREETS : non renseigné (requis pour couverture off.1)",
   ];
   if (nbFormationsCertifiantes > 0) {
-    off1Preuves.push(
-      `${nbFormationsCertifiantes} formation${nbFormationsCertifiantes > 1 ? "s" : ""} certifiante${nbFormationsCertifiantes > 1 ? "s" : ""} avec code RS/RNCP renseigné`,
+    // 🔴 2026-08-23 — LA CONTRADICTION LA PLUS VISIBLE DE L'ÉCRAN DE L'AUDITEUR.
+    //
+    // Cette ligne était poussée SANS JAMAIS REGARDER si les indicateurs des
+    // formations certifiantes sont applicables. Résultat, deux affirmations
+    // cohabitaient dans la même page et ne pouvaient pas être vraies ensemble :
+    //
+    //   « Indicateur 1 — Couvert : 1 formation certifiante avec code RS/RNCP »
+    //   « Indicateur 3 — Non applicable » · « 7 ⭐ Non applicable » · « 16 ⭐ Non applicable »
+    //
+    // Le système SAIT qu'il existe une formation certifiante — il l'écrit comme
+    // PREUVE — et déclare dans le même souffle que les trois indicateurs des
+    // formations certifiantes ne le concernent pas.
+    //
+    // Cause racine : DEUX SIGNAUX DISTINCTS répondent à « cet organisme est-il
+    // certifiant ? », et rien ne les confrontait.
+    //   - l'APPLICABILITÉ de 3/7/16 dérive de `Formation.typesActionQualiopi`,
+    //     champ qu'AUCUN écran de la console ne sait écrire (l'import du catalogue
+    //     y met `["classique"]` en dur) ;
+    //   - la PREUVE de l'indicateur 1 dérive du code RNCP/RS, lui saisissable.
+    //
+    // 🔑 Le moteur NE TRANCHE PAS — le périmètre est une décision, pas une donnée
+    // déductible (et Will a tranché le 2026-08-23 : aucune action certifiante,
+    // donc 3/7/16 hors jeu). Ce qu'il doit cesser de faire, c'est de PRÉSENTER
+    // comme preuve un fait qu'il déclare hors sujet trois lignes plus bas. Il
+    // nomme donc la contradiction et ses deux issues, au lieu de l'afficher.
+    //
+    // Le trio est DÉRIVÉ du registre (`conditionnel === "cert"`), jamais recopié :
+    // un prédicat recopié diverge, ce dépôt l'a payé quatre fois.
+    const indicateursCertifiants = INDICATEURS_RNQ.filter((ind) => ind.conditionnel === "cert").map(
+      (ind) => ind.numero,
     );
+    const certifiantApplicable = indicateursCertifiants.some((n) => applicablesNums.includes(n));
+
+    if (certifiantApplicable) {
+      off1Preuves.push(
+        `${nbFormationsCertifiantes} formation${nbFormationsCertifiantes > 1 ? "s" : ""} certifiante${nbFormationsCertifiantes > 1 ? "s" : ""} avec code RS/RNCP renseigné`,
+      );
+    } else {
+      off1Preuves.push(
+        `⚠️ ${nbFormationsCertifiantes} formation${nbFormationsCertifiantes > 1 ? "s" : ""} porte${nbFormationsCertifiantes > 1 ? "nt" : ""} un code RS/RNCP, ` +
+          `mais les indicateurs ${indicateursCertifiants.join(", ")} sont déclarés NON APPLICABLES ` +
+          `(aucune formation ne déclare le type d'action « certifiante »). ` +
+          `Ce code n'est donc PAS présenté comme preuve : les deux affirmations ne peuvent pas être vraies ensemble. ` +
+          `À trancher — soit le périmètre n'est pas certifiant et le code RS/RNCP ne doit pas figurer sur la formation, ` +
+          `soit il l'est et les indicateurs ${indicateursCertifiants.join(", ")} doivent être instruits.`,
+      );
+    }
   }
   set(1, off1Preuves, nbFormations > 0 && ndaNumero.trim().length > 0);
 
@@ -1222,14 +1275,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     procedureReclamationsOk && responsableQualiteNom.trim().length > 0,
   );
-  set(
-    32,
-    [
-      `${nbRevues} revue${nbRevues > 1 ? "s" : ""} de direction`,
-      `${nbReclamations} réclamation${nbReclamations > 1 ? "s" : ""} + plan d'actions`,
-    ],
-    nbRevues > 0,
-  );
+  // off.32 ⭐ — verdict et preuves viennent TOUS DEUX du prédicat unique.
+  //
+  // 🔑 L'ancien libellé affirmait « N réclamations + plan d'actions » : le plan
+  // était ÉNONCÉ dans la preuve que lit l'auditeur, alors que rien nulle part ne
+  // le comptait. On n'affiche plus que ce qui a été mesuré — et `preuves` porte
+  // aussi bien ce qui est établi que ce qui manque, action par action, pour que
+  // l'écran dise quoi remplir plutôt que de se contenter de rougir.
+  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelle, maintenant);
+  set(32, couvertureOff32.preuves, couvertureOff32.couvert);
 
   // ── Assemblage du résultat ─────────────────────────────────────────────────
   const indicateurs: IndicateurConformite[] = INDICATEURS_RNQ.map((ind) => {
