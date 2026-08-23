@@ -97,3 +97,15 @@ _contact/
 # pièces d'audit : `_AUDIT/` étant suivi, sans cette ligne un `git add -A` les
 # ferait entrer dans le dépôt. En CI, le job nocturne les publie en artifact.
 _AUDIT/VERIF-QUALIOPI-CHAINE-COMPLETE/
+
+# Identifiants d'infra (Coolify, Hetzner, Cloudflare…). `coolify-procedures.md`
+# et `deploy/docuseal/README.md` affirment depuis toujours que ce dossier est
+# gitignored — il ne l'etait pas. Constate le 2026-08-23 en installant le token
+# Coolify sur le 2e poste : `git check-ignore .secrets/api-tokens.env` ne
+# renvoyait rien, donc un `git add -A` aurait committe le token Sanctum de prod.
+# Et le filet gitleaks ne rattrapait rien : le hook `.husky/pre-commit` est
+# conditionne a `command -v gitleaks`, donc sur un poste ou le binaire n'est pas
+# installe (c'etait le cas ici) il se saute en silence, sans un mot. Cette ligne
+# est la seule protection locale reelle ; ne la retirez pas en pensant que le
+# hook couvre le cas.
+.secrets/
