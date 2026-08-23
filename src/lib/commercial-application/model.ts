@@ -85,6 +85,14 @@ export const STATUT_OPTIONS = [
 
 export const SOURCE_OPTIONS = [
   { id: "memorial-isere", label: "Le Mémorial de l’Isère" },
+  // 2026-08-23 — annonce nationale Le Bon Coin (cf.
+  // `docs/annonce-leboncoin-recrutement.md`). Sans cette entrée, une
+  // candidature venue de l'annonce arrive indistinguable de tout le reste :
+  // impossible de mesurer si le canal vaut son coût, donc impossible de
+  // décider d'y remettre de l'argent. Purement additif : `sourceConnaissance`
+  // n'est consommé qu'en affichage (`optionLabel`) et transmis au CRM comme
+  // chaîne libre — aucun contrat à propager.
+  { id: "leboncoin", label: "Le Bon Coin" },
   { id: "site-web", label: "Site web Axion-IA.com" },
   { id: "qr-code", label: "QR code" },
   { id: "linkedin", label: "LinkedIn" },
