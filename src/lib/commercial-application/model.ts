@@ -35,6 +35,28 @@ export interface ChoiceOption {
   readonly label: string;
 }
 
+/**
+ * Taille du carnet d'adresses dirigeants.
+ *
+ * 🔑 C'est la question la PLUS PRÉDICTIVE du recrutement, et elle manquait.
+ * Le reste du tunnel mesure l'EXPÉRIENCE (années de B2B, types de clients,
+ * parcours détaillé) ; aucun champ ne mesurait le STOCK — combien de dirigeants
+ * cette personne peut appeler *demain matin*. Or c'est ce stock qui décide
+ * s'il y aura un contact déposé dans les 30 jours, c'est-à-dire la seule
+ * métrique qui compte pour ce réseau (cf. `docs/plan-recrutement-apporteurs-daffaires.md` §1).
+ *
+ * Formulée « demain matin » et non « connaissez-vous des dirigeants » : la
+ * seconde invite à compter les rencontres de salon, la première force à penser
+ * à ceux qui décrocheraient vraiment.
+ */
+export const CARNET_DIRIGEANTS_OPTIONS = [
+  { id: "0-5", label: "Moins de 5" },
+  { id: "5-20", label: "5 à 20" },
+  { id: "20-50", label: "20 à 50" },
+  { id: "50-150", label: "50 à 150" },
+  { id: "150-plus", label: "Plus de 150" },
+] as const satisfies readonly ChoiceOption[];
+
 export const B2B_ANNEES_OPTIONS = [
   { id: "moins-1", label: "Moins d'1 an" },
   { id: "1-3", label: "1 à 3 ans" },
@@ -297,6 +319,23 @@ export const commercialApplicationSchema = z
       .regex(/^[0-9A-Za-z][0-9A-Za-z -]{2,9}$/),
     b2bDejaVendu: z.boolean(),
     b2bAnnees: z.enum(B2B_ANNEES_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),
+    /**
+     * FACULTATIF côté schéma, volontairement.
+     *
+     * C'est le meilleur signal de scoring (25 points sur 100), mais le rendre
+     * bloquant ferait abandonner ceux qui ne savent pas quoi répondre — or une
+     * candidature sans carnet déclaré reste exploitable, elle passe simplement
+     * par le webinaire au lieu d'un appel prioritaire. Un champ obligatoire
+     * coûterait plus de candidatures qu'il n'apporterait de précision.
+     *
+     * ⚠️ `.optional()` sur un `z.enum()` rejette la chaîne vide avec un message
+     * générique qui ne désigne pas le champ fautif (défaut constaté sur le
+     * formulaire de contact le 2026-08-17). L'UI est en chips et n'émet jamais
+     * `""` — elle omet la clé. Ne pas relâcher cette garantie côté wizard.
+     */
+    carnetDirigeants: z
+      .enum(CARNET_DIRIGEANTS_OPTIONS.map((o) => o.id) as [string, ...string[]])
+      .optional(),
     experiences: z.array(experienceSchema).min(1).max(8),
     iaUtilise: z.boolean(),
     iaOutils: z
