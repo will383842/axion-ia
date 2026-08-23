@@ -45,6 +45,9 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
+// Le trio certifiant (3/7/16) est DERIVE de ce registre par la garde off.1,
+// jamais recopie : un predicat recopie diverge, ce depot l'a paye 4 fois.
+import { INDICATEURS_RNQ } from "./indicateurs-registre";
 
 type MockPrisma = {
   formation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
@@ -667,6 +670,111 @@ describe("evaluerConformite", () => {
     expect(ind3?.statut, "off.3 doit être couvert").toBe("couvert");
     expect(ind7?.statut, "off.7 doit être couvert").toBe("couvert");
     expect(ind16?.statut, "off.16 doit être couvert").toBe("couvert");
+  });
+
+  // ── off.1 : la contradiction certifiante, la plus visible de l'écran ───────
+  //
+  // 🔴 2026-08-23. Observée à l'œil nu sur `/qualiopi/mode-auditeur` :
+  //
+  //   « Indicateur 1 — Couvert : 1 formation certifiante avec code RS/RNCP »
+  //   « Indicateur 3 — Non applicable » · « 7 ⭐ Non applicable » · « 16 ⭐ Non applicable »
+  //
+  // Le système présentait comme PREUVE un fait qu'il déclarait hors sujet trois
+  // lignes plus bas. Deux signaux distincts répondent à « cet organisme est-il
+  // certifiant ? » et rien ne les confrontait : l'applicabilité vient de
+  // `typesActionQualiopi` (qu'aucun écran ne sait écrire), la preuve vient du
+  // code RNCP/RS (saisissable).
+  //
+  // 🔑 Les deux tests vont PAR PAIRE, et c'est le second qui compte le plus :
+  // sans lui, on « corrigerait » le défaut en supprimant purement la ligne, et
+  // le moteur cesserait de dire à l'auditeur ce qu'il sait.
+
+  /** Pilote les DEUX signaux séparément, en discriminant sur le `select`. */
+  function setupSignauxCertifiants(typesAction: string[]): void {
+    mockP.formation.count.mockResolvedValue(1);
+    mockP.formation.findMany.mockImplementation((args?: { select?: Record<string, unknown> }) => {
+      if (args?.select?.["typesActionQualiopi"] !== undefined) {
+        return Promise.resolve([{ typesActionQualiopi: typesAction }]);
+      }
+      if (args?.select?.["certificationType"] !== undefined) {
+        return Promise.resolve([
+          { certificationType: "rncp", codeRncp: "RNCP37274", codeRs: null, blocsCompetences: [] },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  /** Les indicateurs conditionnés au caractère certifiant, DÉRIVÉS du registre. */
+  function indicateursCertifiantsAttendus(): number[] {
+    return INDICATEURS_RNQ.filter((ind) => ind.conditionnel === "cert").map((ind) => ind.numero);
+  }
+
+  it("🔴 off.1 ne présente PAS un code RS/RNCP comme preuve quand 3/7/16 sont non applicables", async () => {
+    setupSignauxCertifiants(["classique"]); // ← aucune action certifiante déclarée
+    mockGetConfig.mockImplementation((cle: string) =>
+      Promise.resolve(cle === "nda_numero" ? "84381100438" : ""),
+    );
+
+    const result = await evaluerConformite();
+    const ind1 = result.indicateurs.find((i) => i.numero === 1);
+    const certifiants = indicateursCertifiantsAttendus();
+
+    // Les trois indicateurs certifiants sont bien hors jeu — c'est le contexte
+    // du défaut, pas ce qu'on corrige. S'ils devenaient applicables, ce test
+    // deviendrait vert par vacuité : on l'affirme donc explicitement.
+    for (const n of certifiants) {
+      expect(
+        result.indicateurs.find((i) => i.numero === n)?.statut,
+        `off.${n} doit être non applicable dans ce scénario (sinon le test ne prouve plus rien)`,
+      ).toBe("non_applicable");
+    }
+
+    const preuves = (ind1?.preuves ?? []).join(" | ");
+
+    expect(
+      /formations? certifiantes? avec code RS\/RNCP renseigné/.test(preuves),
+      "🔴 off.1 affirme « N formation certifiante avec code RS/RNCP renseigné » comme PREUVE\n" +
+        `   alors que les indicateurs ${certifiants.join(", ")} sont déclarés NON APPLICABLES.\n` +
+        "   Le système présente comme preuve un fait qu'il déclare hors sujet dans la même page.\n" +
+        `   Preuves rendues : ${preuves}`,
+    ).toBe(false);
+
+    // Ne pas se contenter de TAIRE : l'auditeur doit voir la contradiction.
+    expect(
+      preuves.includes("RS/RNCP"),
+      "off.1 doit continuer à SIGNALER le code RS/RNCP — le cacher priverait\n" +
+        "   l'auditeur d'une information qu'il découvrirait seul.",
+    ).toBe(true);
+    for (const n of certifiants) {
+      expect(
+        preuves.includes(String(n)),
+        `le signalement doit NOMMER l'indicateur ${n} : une contradiction qu'on ne\n` +
+          "   sait pas où instruire n'est pas actionnable.",
+      ).toBe(true);
+    }
+  });
+
+  it("témoin négatif — quand le périmètre EST certifiant, off.1 énonce bien la preuve", async () => {
+    setupSignauxCertifiants(["certifiante"]); // ← action certifiante déclarée
+    mockGetConfig.mockImplementation((cle: string) =>
+      Promise.resolve(cle === "nda_numero" ? "84381100438" : ""),
+    );
+
+    const result = await evaluerConformite();
+    const ind1 = result.indicateurs.find((i) => i.numero === 1);
+    const preuves = (ind1?.preuves ?? []).join(" | ");
+
+    expect(
+      /formations? certifiantes? avec code RS\/RNCP renseigné/.test(preuves),
+      "🔴 la preuve légitime a disparu : le correctif du cas contradictoire a\n" +
+        "   supprimé la ligne au lieu de la conditionner. Le moteur ne dit plus à\n" +
+        "   l'auditeur ce qu'il sait, dans le cas où il a le droit de le dire.\n" +
+        `   Preuves rendues : ${preuves}`,
+    ).toBe(true);
+    expect(preuves.includes("NON APPLICABLES"), "aucun avertissement ne doit apparaître ici").toBe(
+      false,
+    );
   });
 
   // ── off.28 = AFEST (déclaratif SEULEMENT depuis 2026-08-10) ; off.13/14/15 = APPRENTISSAGE ──
