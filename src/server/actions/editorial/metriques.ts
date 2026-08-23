@@ -139,6 +139,17 @@ export async function saisirReleveAction(
   }
 }
 
+/**
+ * ⚠️ VOLONTAIREMENT branchée à aucun écran — ce n'est pas un oubli.
+ *
+ * La fiche affiche déjà l'historique : elle lit `ed_metriques` triée par
+ * `releveA` décroissant et la rend en tableau. C'est ce qui rend le
+ * critère du lot 3 — « un relevé n'écrase pas le précédent » —
+ * OBSERVABLE, et pas seulement vrai.
+ *
+ * Elle reste ici pour une pagination au-delà des 50 derniers relevés, ou
+ * un appel depuis un composant client.
+ */
 /** L'historique d'une publication, du plus récent au plus ancien. */
 export async function historiqueRelevesAction(input: {
   publicationId: string;
