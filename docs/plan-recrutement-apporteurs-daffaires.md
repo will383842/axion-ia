@@ -267,16 +267,16 @@ C'est une **fonction pure** : elle prend les réponses du formulaire, elle rend 
 
 ## 5. La table de charge — vue d'ensemble
 
-| #   | Chantier                                                    | Charge    | Ce qui existe déjà et qu'on réutilise                                                                                                      |
-| --- | ----------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| C1  | Scoring automatique                                         | **0,5 j** | Tous les champs sont déjà collectés                                                                                                        |
-| C2  | Code de parrainage                                          | **1 j**   | `SOURCE_OPTIONS`, cookie UTM, `Submission.details` (JSON → pas de migration)                                                               |
-| C3  | Onboarding auto J0/J2/J7                                    | **1 j**   | `enqueueEmail({delayMs})`, `_layout.tsx`, template J0 déjà écrit                                                                           |
-| C4  | Dépôt de contact + registre d'attribution SIREN             | **~6 j**  | Server Action de candidature, `Client.siren`/`siret`, chaîne `Devis→Client`, rate-limit, honeypot, chiffrement PII, Telegram, crons BullMQ |
-| C5  | Landing `/partenaire/[source]`                              | **1,5 j** | Page `memo-isere` à généraliser, cookie UTM déjà en place                                                                                  |
-| C6  | Espace apporteur connecté (lien magique, 6 écrans mobile)   | **4 j**   | `espace-formateur`, `formateur-magic-link.tsx`                                                                                             |
-| C7  | Moteur de commissions (prorata, reprises, relevés mensuels) | **4 j**   | `Payment` (SSOT encaissements), `Invoice`, `Refund`                                                                                        |
-| C8  | Console de pilotage (6 écrans + alertes)                    | **3 j**   | Design system admin (ADR 0028), notifications                                                                                              |
+| #   | Chantier                                                     | Charge    | Ce qui existe déjà et qu'on réutilise                                                                                                      |
+| --- | ------------------------------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| C1  | Scoring automatique                                          | **0,5 j** | Tous les champs sont déjà collectés                                                                                                        |
+| C2  | Code de parrainage                                           | **1 j**   | `SOURCE_OPTIONS`, cookie UTM, `Submission.details` (JSON → pas de migration)                                                               |
+| C3  | Onboarding auto J0/J2/J7                                     | **1 j**   | `enqueueEmail({delayMs})`, `_layout.tsx`, template J0 déjà écrit                                                                           |
+| C4  | Dépôt de contact + registre d'attribution SIREN              | **~6 j**  | Server Action de candidature, `Client.siren`/`siret`, chaîne `Devis→Client`, rate-limit, honeypot, chiffrement PII, Telegram, crons BullMQ |
+| C5  | Landing `/leboncoin`, `/indeed` (une route racine par canal) | **1,5 j** | Page `memo-isere` à généraliser, cookie UTM déjà en place                                                                                  |
+| C6  | Espace apporteur connecté (lien magique, 6 écrans mobile)    | **4 j**   | `espace-formateur`, `formateur-magic-link.tsx`                                                                                             |
+| C7  | Moteur de commissions (prorata, reprises, relevés mensuels)  | **4 j**   | `Payment` (SSOT encaissements), `Invoice`, `Refund`                                                                                        |
+| C8  | Console de pilotage (6 écrans + alertes)                     | **3 j**   | Design system admin (ADR 0028), notifications                                                                                              |
 
 **Total pour rendre le réseau opérationnel (C1 → C5) : ~10 jours de développement.**
 
@@ -341,7 +341,7 @@ _Avant C3, parce que l'email J7 pointe vers cette page — elle doit exister d'a
 - [ ] Compléter le J0 existant : kit de vente, grille de commissions, code de parrainage, lien webinaire
 - [ ] Vérifier le marquage `marketing` et le respect de la désinscription
 
-### Étape 5 — C5 · Landing `/partenaire/[source]` · 1,5 j
+### Étape 5 — C5 · Landing `/leboncoin`, `/indeed` (une route racine par canal) · 1,5 j
 
 - [ ] Généraliser la page `memo-isere` en gabarit paramétrable
 - [ ] Une URL par canal : journal, club d'affaires, école, association, salon

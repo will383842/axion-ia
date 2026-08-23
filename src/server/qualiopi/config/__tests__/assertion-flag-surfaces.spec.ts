@@ -132,6 +132,23 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     why: "argument de financement OPCO conditionné à la certification",
   },
   {
+    // Ajoutée 2026-08-23 avec la page SEO de l'annonce jemepropose.com. Le
+    // littéral y est déclaré DANS la page, à côté de l'appel au drapeau — pas
+    // dans un fichier de contenu qui n'en importe aucun.
+    file: "app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
+    why: "bande de réassurance + argument OPCO de la page apporteur d'affaires",
+  },
+  {
+    // Ajoutée 2026-08-23 avec la landing de réception d'annonce Le Bon Coin.
+    // Le littéral y est déclaré DANS la page, à quelques lignes de l'appel au
+    // drapeau — pas dans son fichier de contenu, qui n'en importe aucun.
+    // C'est la leçon directe de la ligne « bande de réassurance de l'annonce
+    // de recrutement » ci-dessous : une garde qui vit dans un autre fichier
+    // n'est pas une garde, c'est une intention.
+    file: "components/recrutement/PartenaireLandingPage.tsx",
+    why: "bande de réassurance + argument OPCO du gabarit des landings d’annonce (`/leboncoin`, `/indeed`)",
+  },
+  {
     file: "app/[locale]/formations/tarifs/page.tsx",
     why: "suffixe « certifié Qualiopi » sur les prix",
   },
