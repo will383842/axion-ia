@@ -563,6 +563,10 @@ enum SiteSettingCategory {
   /// Module Prospection & Base Entreprises (T2) — quotas, rate-limits, seuils,
   /// fenêtres de fraîcheur, budgets de crawl, poids de score, rétention RGPD.
   prospection
+
+  /// Console éditoriale (lot 0) — marqueurs d’amorçage et d’import, réglages
+  /// de la console. Même réutilisation de `SiteSetting` que `qualiopi`.
+  editorial
 }
 
 /// Sprint X.1 — classification INSEE 4 tailles (snapshot Booking + filtres).
@@ -1857,6 +1861,10 @@ model AdminUser {
   documentSignaturesRecueillies   DocumentSignature[]      @relation("DocumentSignatureRecueillie")
   documentSignaturesRevoquees     DocumentSignature[]      @relation("DocumentSignatureRevoquee")
   documentSignatureTokensRevoques DocumentSignatureToken[] @relation("DocumentSignatureTokenRevoque")
+
+  // Console éditoriale (lot 0) — relation inverse de `EdMembre.userId`.
+  // Aucune colonne n'est ajoutée ici : la clé étrangère vit sur `ed_membres`.
+  edMembre EdMembre?
 
   @@index([role])
   @@index([status])
@@ -11069,4 +11077,789 @@ model CrmInboundEvent {
   @@index([emailHash])
   @@index([createdAt(sort: Desc)])
   @@map("crm_inbound_events")
+}
+
+// ============================================================
+// CONSOLE ÉDITORIALE ET DE PILOTAGE MULTI-CANAL — lot 0
+//
+// Source : _PLANS/PLAN-CONSOLE-EDITORIALE-2026-08.md §2 et §2 ter.
+// Préfixe `Ed` sur TOUS les modèles et énumérations : le schéma existant
+// compte 227 modèles et 222 énumérations, la collision de noms est un
+// risque réel (vérifié le 2026-08-20 : aucun `Ed*` préexistant).
+//
+// 🔑 Principe du §1 ter : le modèle porte TOUT dès le lot 0 — arbre de
+// dérivation, recettes, rôles, revue, achat média — même si l'interface
+// n'en montre qu'une fraction. Rétro-ajouter un arbre de dérivation coûte
+// une réécriture ; afficher un écran de plus ne coûte rien.
+//
+// Écarts assumés au plan, tous documentés dans le rapport de lot 0 :
+//   1. Les identifiants étrangers que le plan laissait « nus » (sans
+//      `@relation`) portent une vraie clé étrangère. Un identifiant qui
+//      pointe dans le vide est un bug silencieux, et le lot 0 est le seul
+//      moment où l'ajouter ne coûte pas une migration destructrice.
+//   2. `motif_regex` devient `motifRegex @map("motif_regex")` — même
+//      colonne SQL, nommage aligné sur les 227 autres modèles.
+//   3. `EdMembre.email` est en `Citext` comme `AdminUser.email` : un
+//      `@unique` sur du VarChar laisse passer `Will@x` ET `will@x`.
+// ============================================================
+
+// ─────────────────────────────────────────────────────────────
+// CONSOLE ÉDITORIALE — énumérations
+// ─────────────────────────────────────────────────────────────
+
+enum EdPlateforme {
+  linkedin
+  youtube
+  facebook
+  instagram
+  tiktok
+  email
+  site
+}
+
+/// Un compte sert à publier, ou à acheter de la publicité. Ce n'est pas
+/// la même chose : un compte Meta Ads n'est pas une page Facebook.
+enum EdCompteType {
+  publication
+  publicitaire
+}
+
+enum EdIdentite {
+  perso
+  pro
+}
+
+enum EdStatutRedaction {
+  idee
+  redige
+  valide
+}
+
+/// `a_valider` n'existe que si une équipe existe. Sans elle, on passe
+/// directement de `en_cours` à `pret`.
+enum EdStatutAsset {
+  non_requis
+  a_produire
+  en_cours
+  a_valider
+  pret
+}
+
+enum EdStatutDiffusion {
+  non_programme
+  programme
+  publie
+  annule
+}
+
+enum EdAssetType {
+  video
+  carrousel
+  image
+  photo
+  audio
+  document
+}
+
+/// La typologie vidéo. Extensible depuis la console : la valeur est une
+/// clé vers EdFamille, pas une énumération figée. Cette énumération ne
+/// sert qu'aux familles structurelles non-vidéo.
+enum EdAssetNature {
+  source
+  derive
+  variante_plateforme
+  autonome
+}
+
+enum EdAssetUsage {
+  organique
+  payant
+  mixte
+}
+
+enum EdRole {
+  admin
+  stratege
+  production
+  montage
+  lecture
+}
+
+enum EdAutorisationStatut {
+  non_demandee
+  envoyee
+  signee
+  refusee
+}
+
+enum EdGravite {
+  info
+  avertissement
+  bloquant
+}
+
+enum EdIdeeStatut {
+  capturee
+  qualifiee
+  promue
+  archivee
+}
+
+// ─────────────────────────────────────────────────────────────
+// Référentiels — tous modifiables depuis la console
+// ─────────────────────────────────────────────────────────────
+
+/// Une marque éditoriale. « L'Étoffe » appartient à Axion-IA mais porte
+/// sa propre promesse : un entretien qui ne vend rien. La marque n'est
+/// PAS l'identité perso/pro — un compte L'Étoffe est `pro`.
+model EdMarque {
+  id          String     @id @default(uuid()) @db.Uuid
+  nom         String     @db.VarChar(120)
+  slug        String     @unique @db.VarChar(120)
+  description String?    @db.Text
+  actif       Boolean    @default(true)
+  comptes     EdCompte[]
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  @@map("ed_marques")
+}
+
+model EdCompte {
+  id         String       @id @default(uuid()) @db.Uuid
+
+  /// Clé naturelle stable. Comme EdMarque, EdPilier, EdFamille et EdSerie :
+  /// c’est elle qui rend l’amorçage idempotent et l’import référençable,
+  /// sans jamais dépendre d’un libellé que la console peut renommer.
+  slug String @unique @db.VarChar(120)
+
+  plateforme EdPlateforme
+  type       EdCompteType @default(publication)
+  libelle    String       @db.VarChar(160)
+  identite   EdIdentite
+  marqueId   String?      @map("marque_id") @db.Uuid
+  marque     EdMarque?    @relation(fields: [marqueId], references: [id], onDelete: SetNull)
+
+  urlPublique String? @map("url_publique") @db.VarChar(512)
+
+  /// Nombre de publications visé sur 30 jours. Arme l'alerte « canal muet ».
+  cadenceCible Int? @map("cadence_cible")
+
+  /// Recalculé à chaque publication. Évite un agrégat coûteux au rendu.
+  derniereParutionA DateTime? @map("derniere_parution_a")
+
+  actif         Boolean              @default(true)
+  publications  EdPublication[]
+  objectifs     EdObjectif[]
+  series        EdSerie[]
+  recetteLignes EdRecetteLigne[]
+  gabarits      EdGabarit[]
+  idees         EdIdee[]
+  alertes       EdAlerteDeclenchee[]
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @updatedAt @map("updated_at")
+
+  @@index([plateforme, actif])
+  @@index([identite])
+  @@map("ed_comptes")
+}
+
+/// Veine éditoriale : vision, preuve, recrutement, décryptage…
+model EdPilier {
+  id String @id @default(uuid()) @db.Uuid
+
+  nom  String @db.VarChar(120)
+  slug String @unique @db.VarChar(120)
+
+  /// Part visée dans le mix, en pourcentage. Arme l'alerte de dérive.
+  partCible Int? @map("part_cible")
+
+  couleur      String?         @db.VarChar(9)
+  actif        Boolean         @default(true)
+  publications EdPublication[]
+  gabarits     EdGabarit[]
+  idees        EdIdee[]
+
+  @@map("ed_piliers")
+}
+
+/// Famille d'asset — surtout la typologie vidéo. En base, pas en dur :
+/// elle changera plus vite que le code.
+model EdFamille {
+  id          String      @id @default(uuid()) @db.Uuid
+  nom         String      @db.VarChar(120)
+  slug        String      @unique @db.VarChar(120)
+  type        EdAssetType
+  dureeMinSec Int?        @map("duree_min_sec")
+  dureeMaxSec Int?        @map("duree_max_sec")
+  description String?     @db.Text
+  actif       Boolean     @default(true)
+
+  assets         EdAsset[]
+  specs          EdSpecPlateforme[]
+  recetteLignes  EdRecetteLigne[]
+  recettesSource EdRecette[]        @relation("RecetteFamilleSource")
+  objectifs      EdObjectif[]
+  gabarits       EdGabarit[]
+  idees          EdIdee[]
+
+  @@map("ed_familles")
+}
+
+/// Contraintes d'export par plateforme et par famille. Ces limites
+/// changent souvent : jamais en dur.
+model EdSpecPlateforme {
+  id                String       @id @default(uuid()) @db.Uuid
+  plateforme        EdPlateforme
+  familleId         String       @map("famille_id") @db.Uuid
+  famille           EdFamille    @relation(fields: [familleId], references: [id], onDelete: Cascade)
+  ratio             String       @db.VarChar(12)
+  dureeMinSec       Int?         @map("duree_min_sec")
+  dureeMaxSec       Int?         @map("duree_max_sec")
+  poidsMaxMo        Int?         @map("poids_max_mo")
+  sousTitresIncrust Boolean      @default(false) @map("sous_titres_incrustes")
+  zoneSecuriteHaut  Int?         @map("zone_securite_haut_px")
+  zoneSecuriteBas   Int?         @map("zone_securite_bas_px")
+  note              String?      @db.Text
+
+  @@unique([plateforme, familleId])
+  @@map("ed_specs_plateforme")
+}
+
+/// Rendez-vous récurrent : « Sous le capot » le dimanche à 18 h 30.
+model EdSerie {
+  id       String    @id @default(uuid()) @db.Uuid
+  nom      String    @db.VarChar(160)
+  slug     String    @unique @db.VarChar(160)
+  compteId String?   @map("compte_id") @db.Uuid
+  compte   EdCompte? @relation(fields: [compteId], references: [id], onDelete: SetNull)
+
+  /// 0 = lundi. Null si la série n'a pas de jour fixe.
+  jourSemaine Int? @map("jour_semaine")
+
+  heure String? @db.VarChar(5)
+
+  /// En jours. 14 pour « un dimanche sur deux ».
+  periodeJours Int? @map("periode_jours")
+
+  actif        Boolean         @default(true)
+  publications EdPublication[]
+  gabarits     EdGabarit[]
+
+  @@map("ed_series")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Le cœur — publications et assets
+// ─────────────────────────────────────────────────────────────
+
+model EdPublication {
+  id       String    @id @default(uuid()) @db.Uuid
+  compteId String    @map("compte_id") @db.Uuid
+  compte   EdCompte  @relation(fields: [compteId], references: [id], onDelete: Restrict)
+  pilierId String?   @map("pilier_id") @db.Uuid
+  pilier   EdPilier? @relation(fields: [pilierId], references: [id], onDelete: SetNull)
+  serieId  String?   @map("serie_id") @db.Uuid
+  serie    EdSerie?  @relation(fields: [serieId], references: [id], onDelete: SetNull)
+
+  /// Numéro d'origine dans le dossier importé. Sert UNIQUEMENT à la
+  /// traçabilité de l'amorçage — jamais comme identifiant métier.
+  refImport String? @unique @map("ref_import") @db.VarChar(40)
+
+  datePrevue         DateTime @map("date_prevue") @db.Date
+  heurePrevue        String   @map("heure_prevue") @db.VarChar(5)
+  titreInterne       String   @map("titre_interne") @db.VarChar(200)
+  accroche           String?  @db.Text
+  corps              String?  @db.Text
+  premierCommentaire String?  @map("premier_commentaire") @db.Text
+
+  /// Tableau de tags SANS le croisillon ni accent.
+  tags String[]
+
+  lienUrl String? @map("lien_url") @db.VarChar(1024)
+
+  statutRedaction EdStatutRedaction @default(idee) @map("statut_redaction")
+  statutAsset     EdStatutAsset     @default(non_requis) @map("statut_asset")
+  statutDiffusion EdStatutDiffusion @default(non_programme) @map("statut_diffusion")
+
+  /// Outil externe de programmation et son identifiant, quand programmé.
+  outilProgrammation String?   @map("outil_programmation") @db.VarChar(60)
+  refExterne         String?   @map("ref_externe") @db.VarChar(160)
+  urlPubliee         String?   @map("url_publiee") @db.VarChar(1024)
+  publieeA           DateTime? @map("publiee_a")
+
+  /// Coût en centimes. 0 en organique. Rend comparable un post gratuit
+  /// et une campagne payante.
+  coutCentimes Int @default(0) @map("cout_centimes")
+
+  /// Publication source en cas de reprise (écho page, relais LinkedIn
+  /// d'une édition e-mail). Ce n'est PAS une copie : deux diffusions.
+  sourceId String?         @map("source_id") @db.Uuid
+  source   EdPublication?  @relation("Reprise", fields: [sourceId], references: [id], onDelete: SetNull)
+  reprises EdPublication[] @relation("Reprise")
+
+  responsableId String?   @map("responsable_id") @db.Uuid
+  responsable   EdMembre? @relation(fields: [responsableId], references: [id], onDelete: SetNull)
+
+  assets    EdAssetPublication[]
+  metriques EdMetrique[]
+  alertes   EdAlerteDeclenchee[]
+
+  /// Version courante. Incrémentée à chaque modification du corps,
+  /// de l'accroche, du premier commentaire ou des tags.
+  versionCourante Int                    @default(1) @map("version_courante")
+  versions        EdPublicationVersion[]
+
+  /// Sort du calendrier actif sans disparaître. Une publication passée
+  /// reste consultable et mesurable, mais n'encombre plus les vues.
+  archiveeA DateTime? @map("archivee_a")
+
+  /// Campagne, pour le marquage UTM et le regroupement pluriannuel.
+  /// « q4-2026 » aujourd'hui, « q1-2027 » en janvier. Sans ce champ,
+  /// les trimestres se mélangent et l'historique devient illisible.
+  campagne String? @default("q4-2026") @db.VarChar(60)
+
+  /// Idées promues vers cette publication. Voir `EdIdee.promueVersId`.
+  ideesPromues EdIdee[] @relation("IdeePromue")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([datePrevue, compteId])
+  @@index([statutDiffusion, datePrevue])
+  @@index([statutAsset])
+  @@map("ed_publications")
+}
+
+/// 🔴 L'ARBRE DE DÉRIVATION. Un podcast porte ses extraits, qui portent
+/// leurs shorts, qui portent leurs variantes par plateforme. Sans cet
+/// arbre, impossible de savoir ce qu'un tournage a produit.
+model EdAsset {
+  id        String        @id @default(uuid()) @db.Uuid
+  type      EdAssetType
+  familleId String?       @map("famille_id") @db.Uuid
+  famille   EdFamille?    @relation(fields: [familleId], references: [id], onDelete: SetNull)
+  nature    EdAssetNature @default(autonome)
+  usage     EdAssetUsage  @default(organique)
+  libelle   String        @db.VarChar(200)
+
+  parentId String?   @map("parent_id") @db.Uuid
+  parent   EdAsset?  @relation("Derivation", fields: [parentId], references: [id], onDelete: SetNull)
+  enfants  EdAsset[] @relation("Derivation")
+
+  /// Position dans la source, en secondes. Répond à « ce short vient de
+  /// quelle minute de l'épisode ».
+  offsetSourceSec Int? @map("offset_source_sec")
+
+  /// 🔴 Les rushes NE SONT PAS stockés ici. `emplacementExterne` désigne
+  /// le volume de montage ; `cheminObjet` ne porte que le livré, le
+  /// proxy, la vignette. Voir §5.
+  emplacementExterne String? @map("emplacement_externe") @db.VarChar(512)
+  cheminObjet        String? @map("chemin_objet") @db.VarChar(512)
+  cheminProxy        String? @map("chemin_proxy") @db.VarChar(512)
+  cheminVignette     String? @map("chemin_vignette") @db.VarChar(512)
+
+  dureeSec    Int?    @map("duree_sec")
+  largeurPx   Int?    @map("largeur_px")
+  hauteurPx   Int?    @map("hauteur_px")
+  poidsOctets BigInt? @map("poids_octets")
+  empreinte   String? @db.VarChar(64)
+  version     Int     @default(1)
+
+  transcription String? @db.Text
+  chapitres     Json?
+
+  statut           EdStatutAsset @default(a_produire)
+  responsableId    String?       @map("responsable_id") @db.Uuid
+  responsable      EdMembre?     @relation(fields: [responsableId], references: [id], onDelete: SetNull)
+  revueCommentaire String?       @map("revue_commentaire") @db.Text
+
+  invitesLies  EdEpisodeInvite[]
+  publications EdAssetPublication[]
+  alertes      EdAlerteDeclenchee[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([parentId])
+  @@index([statut])
+  @@index([type, familleId])
+  @@map("ed_assets")
+}
+
+/// Un même short part sur quatre comptes. Table de liaison explicite
+/// pour porter l'ordre d'affichage dans un carrousel multi-images.
+model EdAssetPublication {
+  assetId       String        @map("asset_id") @db.Uuid
+  asset         EdAsset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  publicationId String        @map("publication_id") @db.Uuid
+  publication   EdPublication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  ordre         Int           @default(0)
+
+  @@id([assetId, publicationId])
+  @@map("ed_assets_publications")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Podcast — invités et droit à l'image
+// ─────────────────────────────────────────────────────────────
+
+model EdInvite {
+  id         String            @id @default(uuid()) @db.Uuid
+  nom        String            @db.VarChar(160)
+  entreprise String?           @db.VarChar(200)
+  email      String?           @db.VarChar(255)
+  telephone  String?           @db.VarChar(40)
+  note       String?           @db.Text
+  episodes   EdEpisodeInvite[]
+  createdAt  DateTime          @default(now()) @map("created_at")
+  updatedAt  DateTime          @updatedAt @map("updated_at")
+
+  @@map("ed_invites")
+}
+
+/// 🔴 BLOQUANT. Aucun épisode ni dérivé ne se publie si l'autorisation
+/// n'est pas `signee`. Signature via DocuSeal, déjà en place.
+model EdEpisodeInvite {
+  id       String   @id @default(uuid()) @db.Uuid
+  assetId  String   @map("asset_id") @db.Uuid
+  asset    EdAsset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  inviteId String   @map("invite_id") @db.Uuid
+  invite   EdInvite @relation(fields: [inviteId], references: [id], onDelete: Restrict)
+
+  autorisationStatut   EdAutorisationStatut @default(non_demandee) @map("autorisation_statut")
+  docusealSubmissionId String?              @map("docuseal_submission_id") @db.VarChar(120)
+  documentChemin       String?              @map("document_chemin") @db.VarChar(512)
+  signeeA              DateTime?            @map("signee_a")
+
+  /// Fin de la cession de droits. Null = sans limite de durée.
+  valableJusquA DateTime? @map("valable_jusqu_a") @db.Date
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([assetId, inviteId])
+  @@index([autorisationStatut])
+  @@map("ed_episodes_invites")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Recyclage
+// ─────────────────────────────────────────────────────────────
+
+/// « Un podcast produit 1 épisode, 2 extraits, 8 shorts, 1 carrousel,
+/// 1 article, 1 newsletter. » Appliquée à l'enregistrement d'une source,
+/// elle crée les dérivés attendus au statut `a_produire`.
+model EdRecette {
+  id              String    @id @default(uuid()) @db.Uuid
+  nom             String    @db.VarChar(160)
+  familleSourceId String    @map("famille_source_id") @db.Uuid
+  familleSource   EdFamille @relation("RecetteFamilleSource", fields: [familleSourceId], references: [id], onDelete: Restrict)
+  actif           Boolean   @default(true)
+
+  lignes EdRecetteLigne[]
+
+  @@map("ed_recettes")
+}
+
+model EdRecetteLigne {
+  id        String    @id @default(uuid()) @db.Uuid
+  recetteId String    @map("recette_id") @db.Uuid
+  recette   EdRecette @relation(fields: [recetteId], references: [id], onDelete: Cascade)
+  familleId String    @map("famille_id") @db.Uuid
+  famille   EdFamille @relation(fields: [familleId], references: [id], onDelete: Restrict)
+  quantite  Int       @default(1)
+  compteId  String?   @map("compte_id") @db.Uuid
+  compte    EdCompte? @relation(fields: [compteId], references: [id], onDelete: SetNull)
+  note      String?   @db.Text
+
+  @@map("ed_recettes_lignes")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Idées
+// ─────────────────────────────────────────────────────────────
+
+/// Un champ obligatoire, un seul : le titre. Une idée qui demande un
+/// formulaire n'est jamais saisie.
+model EdIdee {
+  id        String     @id @default(uuid()) @db.Uuid
+  titre     String     @db.VarChar(240)
+  detail    String?    @db.Text
+  lien      String?    @db.VarChar(1024)
+  familleId String?    @map("famille_id") @db.Uuid
+  famille   EdFamille? @relation(fields: [familleId], references: [id], onDelete: SetNull)
+  compteId  String?    @map("compte_id") @db.Uuid
+  compte    EdCompte?  @relation(fields: [compteId], references: [id], onDelete: SetNull)
+  pilierId  String?    @map("pilier_id") @db.Uuid
+  pilier    EdPilier?  @relation(fields: [pilierId], references: [id], onDelete: SetNull)
+
+  /// 1 à 5. Sert au tri, pas à un calcul.
+  interet Int?
+
+  origine String?      @db.VarChar(120)
+  statut  EdIdeeStatut @default(capturee)
+
+  /// Publication créée par promotion. Trace le lien.
+  promueVersId String?        @map("promue_vers_id") @db.Uuid
+  promueVers   EdPublication? @relation("IdeePromue", fields: [promueVersId], references: [id], onDelete: SetNull)
+
+  /// Motif d'archivage. Une idée écartée n'est jamais supprimée.
+  motifArchivage String? @map("motif_archivage") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([statut, interet])
+  @@map("ed_idees")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Mesure
+// ─────────────────────────────────────────────────────────────
+
+/// Historisé, jamais écrasé : une publication a plusieurs relevés dans
+/// le temps. Un écrasement rendrait toute courbe impossible.
+model EdMetrique {
+  id            String        @id @default(uuid()) @db.Uuid
+  publicationId String        @map("publication_id") @db.Uuid
+  publication   EdPublication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  releveA       DateTime      @map("releve_a")
+
+  impressions     Int?
+  reactions       Int?
+  commentaires    Int?
+  partages        Int?
+  clics           Int?
+  abonnesGagnes   Int? @map("abonnes_gagnes")
+  vuesCompletes   Int? @map("vues_completes")
+  dureeMoyenneSec Int? @map("duree_moyenne_sec")
+
+  /// Ouvertures et clics d'une édition e-mail.
+  ouvertures Int?
+
+  /// Rendez-vous attribués via utm_content. C'est LA métrique qui compte.
+  rdvAttribues   Int? @map("rdv_attribues")
+  devisAttribues Int? @map("devis_attribues")
+
+  source String @default("manuel") @db.VarChar(40)
+
+  @@unique([publicationId, releveA])
+  @@index([releveA])
+  @@map("ed_metriques")
+}
+
+model EdObjectif {
+  id String @id @default(uuid()) @db.Uuid
+
+  /// Premier jour du mois visé.
+  mois DateTime @db.Date
+
+  compteId  String?    @map("compte_id") @db.Uuid
+  compte    EdCompte?  @relation(fields: [compteId], references: [id], onDelete: Cascade)
+  familleId String?    @map("famille_id") @db.Uuid
+  famille   EdFamille? @relation(fields: [familleId], references: [id], onDelete: SetNull)
+  cible     Int
+  note      String?    @db.Text
+
+  @@unique([mois, compteId, familleId])
+  @@map("ed_objectifs")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Règles, alertes, équipe, journal
+// ─────────────────────────────────────────────────────────────
+
+/// 🔑 Les règles vivent en base, jamais en dur. Sinon un responsable de
+/// production ne peut pas ajuster sans ouvrir une pull request.
+model EdRegleConformite {
+  id      String @id @default(uuid()) @db.Uuid
+  code    String @unique @db.VarChar(60)
+  libelle String @db.VarChar(200)
+  motif   String @db.Text
+
+  /// Expression régulière testée sur corps + premier commentaire + tags.
+  motifRegex String @map("motif_regex") @db.Text
+
+  /// Seuils et listes fermées, quand un motif ne suffit pas :
+  /// {"min":3,"max":4} pour le nombre de tags, {"valeurs":[…]} pour la
+  /// liste fermée, {"utm":[…]} pour le marquage. Les bornes vivent en
+  /// base — le code ne porte que l’évaluateur, jamais le seuil.
+  parametres Json?
+
+  /// true = déclenche si TROUVÉ ; false = déclenche si ABSENT.
+  interdit Boolean @default(true)
+
+  gravite EdGravite @default(bloquant)
+  message String    @db.Text
+  actif   Boolean   @default(true)
+
+  @@map("ed_regles_conformite")
+}
+
+model EdRegleAlerte {
+  id          String @id @default(uuid()) @db.Uuid
+  code        String @unique @db.VarChar(60)
+  libelle     String @db.VarChar(200)
+  description String @db.Text
+
+  /// Paramètres du seuil : {"jours": 3}, {"minParMois": 4}…
+  parametres Json
+
+  gravite     EdGravite            @default(avertissement)
+  actif       Boolean              @default(true)
+  declenchees EdAlerteDeclenchee[]
+
+  @@map("ed_regles_alerte")
+}
+
+model EdAlerteDeclenchee {
+  id      String        @id @default(uuid()) @db.Uuid
+  regleId String        @map("regle_id") @db.Uuid
+  regle   EdRegleAlerte @relation(fields: [regleId], references: [id], onDelete: Cascade)
+
+  publicationId String?        @map("publication_id") @db.Uuid
+  publication   EdPublication? @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  assetId       String?        @map("asset_id") @db.Uuid
+  asset         EdAsset?       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  compteId      String?        @map("compte_id") @db.Uuid
+  compte        EdCompte?      @relation(fields: [compteId], references: [id], onDelete: Cascade)
+
+  detail      String?   @db.Text
+  declencheeA DateTime  @default(now()) @map("declenchee_a")
+  resolueA    DateTime? @map("resolue_a")
+
+  @@index([resolueA, declencheeA])
+  @@map("ed_alertes_declenchees")
+}
+
+model EdMembre {
+  id String @id @default(uuid()) @db.Uuid
+
+  /// Rattachement au compte d'authentification existant.
+  userId    String?    @unique @map("user_id") @db.Uuid
+  adminUser AdminUser? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  nom   String  @db.VarChar(160)
+  email String  @unique @db.Citext
+  role  EdRole  @default(lecture)
+  actif Boolean @default(true)
+
+  publications     EdPublication[]
+  assets           EdAsset[]
+  versionsRedigees EdPublicationVersion[]
+  ecritures        EdJournal[]
+
+  @@map("ed_membres")
+}
+
+/// Qui a changé quoi, quand. Une console d'équipe sans journal devient
+/// ingouvernable dès la deuxième personne.
+model EdJournal {
+  id       String    @id @default(uuid()) @db.Uuid
+  membreId String?   @map("membre_id") @db.Uuid
+  membre   EdMembre? @relation(fields: [membreId], references: [id], onDelete: SetNull)
+
+  /// L'identite AUTHENTIFIEE de qui a agi, independamment de l'equipe.
+  ///
+  /// Defaut trouve par les passes 2 et 5 du protocole, qui l'ont vu
+  /// separement : toutes les entrees du journal portaient membre_id = NULL,
+  /// parce que `membreId` est une cle etrangere vers `ed_membres` et qu'une
+  /// console a « un seul utilisateur au depart » n'a aucun membre declare.
+  /// Le critere 3 du lot 4 dit « toute mutation au journal AVEC SON AUTEUR »
+  /// — il ne l'etait donc jamais.
+  ///
+  /// La parade evidente aurait ete de creer un EdMembre a la volee. Elle est
+  /// mauvaise : une fois la ligne ecrite, c'est ELLE qui fait foi pour les
+  /// permissions (regle 1 de `requireMembreEditorial`), et le role fige ne
+  /// suivrait plus une retrogradation cote administration. On aurait corrige
+  /// une trace manquante en creant un trou de securite.
+  ///
+  /// Ces deux colonnes enregistrent donc l'acteur reel. Pas de cle etrangere
+  /// vers AdminUser : un journal doit survivre a la suppression du compte
+  /// qu'il incrimine, sinon il s'efface au moment ou il servirait.
+  auteurUserId String? @map("auteur_user_id")
+  auteurNom    String? @map("auteur_nom") @db.VarChar(160)
+  entite   String    @db.VarChar(60)
+  entiteId String    @map("entite_id") @db.Uuid
+  action   String    @db.VarChar(40)
+  avant    Json?
+  apres    Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([entite, entiteId])
+  @@index([createdAt])
+  @@map("ed_journal")
+}
+
+// ─────────────────────────────────────────────────────────────
+// Compléments au schéma — §2 ter
+// ─────────────────────────────────────────────────────────────
+
+/// 🔴 L'historique des textes. Le dossier importé contenait 16 posts
+/// réécrits : une publication VIT, elle est retravaillée. Sans versions,
+/// on perd la trace de ce qui a été changé et pourquoi — et on ne peut
+/// pas revenir en arrière après une mauvaise réécriture.
+///
+/// ⚠️ Une version est créée à chaque modification de contenu, jamais à
+/// chaque changement de statut. Sinon le journal se remplit de bruit.
+model EdPublicationVersion {
+  id            String        @id @default(uuid()) @db.Uuid
+  publicationId String        @map("publication_id") @db.Uuid
+  publication   EdPublication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  version       Int
+
+  accroche           String?  @db.Text
+  corps              String?  @db.Text
+  premierCommentaire String?  @map("premier_commentaire") @db.Text
+  tags               String[]
+
+  /// Pourquoi cette version. Facultatif mais fortement encouragé.
+  motif String? @db.Text
+
+  auteurId String?   @map("auteur_id") @db.Uuid
+  auteur   EdMembre? @relation(fields: [auteurId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([publicationId, version])
+  @@map("ed_publications_versions")
+}
+
+/// Gabarit — une série récurrente ne se ressaisit pas. « Sous le capot »
+/// a sa structure, ses tags, son compte, son heure.
+model EdGabarit {
+  id        String     @id @default(uuid()) @db.Uuid
+  nom       String     @db.VarChar(160)
+  compteId  String?    @map("compte_id") @db.Uuid
+  compte    EdCompte?  @relation(fields: [compteId], references: [id], onDelete: SetNull)
+  serieId   String?    @map("serie_id") @db.Uuid
+  serie     EdSerie?   @relation(fields: [serieId], references: [id], onDelete: SetNull)
+  pilierId  String?    @map("pilier_id") @db.Uuid
+  pilier    EdPilier?  @relation(fields: [pilierId], references: [id], onDelete: SetNull)
+  familleId String?    @map("famille_id") @db.Uuid
+  famille   EdFamille? @relation(fields: [familleId], references: [id], onDelete: SetNull)
+
+  heurePrevue        String?  @map("heure_prevue") @db.VarChar(5)
+  corpsSquelette     String?  @map("corps_squelette") @db.Text
+  premierCommentaire String?  @map("premier_commentaire") @db.Text
+  tags               String[]
+  actif              Boolean  @default(true)
+
+  @@map("ed_gabarits")
+}
+
+/// Où partent les alertes. Telegram est déjà branché dans le dépôt.
+model EdCanalNotification {
+  id          String @id @default(uuid()) @db.Uuid
+  type        String @db.VarChar(30)
+  destination String @db.VarChar(255)
+
+  /// Gravité minimale relayée : info | avertissement | bloquant
+  graviteMin EdGravite @default(avertissement) @map("gravite_min")
+
+  actif Boolean @default(true)
+
+  @@map("ed_canaux_notification")
 }

@@ -399,6 +399,27 @@ export const env = createEnv({
     IMAGE_BANK_STORAGE_PATH: z.string().min(1).optional(),
     /** Préfixe CDN servant `/image-bank/*`. Vide = servi par la même origine. */
     IMAGE_BANK_CDN_URL: z.string().url().optional(),
+
+    // ─── Console éditoriale — stockage des médias ────────────────────────
+    //
+    // 🔴 Même défaut que GEO-094 ci-dessus, reproduit un an plus tard :
+    // `EDITORIAL_STORAGE_PATH` était lu par `server/editorial/stockage.ts`
+    // sans être déclaré ici ni dans aucun `.env*.example`. La leçon de la
+    // banque d'images était écrite à trois lignes de distance, et je ne
+    // l'ai pas appliquée.
+    //
+    // ⚠️ Volume DÉDIÉ, distinct de celui de la banque d'images. Les deux
+    // stockent des fichiers utilisateur, mais avec des cycles de vie sans
+    // rapport : une variante d'image se régénère, un rush de tournage ne se
+    // régénère pas. Les mélanger ferait qu'un nettoyage de l'un emporterait
+    // l'autre.
+    //
+    // 🔑 Sans volume monté à ce chemin, les fichiers déposés vivent dans la
+    // couche éphémère du conteneur et DISPARAISSENT au redéploiement — sans
+    // erreur, sans trace, et la fiche continuera d'afficher un asset qui
+    // pointe vers un fichier absent.
+    /** Racine du volume des médias éditoriaux. Défaut : `/var/data/editorial-media`. */
+    EDITORIAL_STORAGE_PATH: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
@@ -414,6 +435,15 @@ export const env = createEnv({
     // donc cookies déposés uniquement post-accept visiteur. No-op si non défini.
     // DPA Microsoft à signer côté Will + entry dans `subprocessors.ts` (déclarée).
     NEXT_PUBLIC_CLARITY_PROJECT_ID: z.string().optional(),
+    /**
+     * LinkedIn Insight Tag — « Partner ID » numérique fourni par LinkedIn
+     * Campaign Manager (Paramètres du compte → Insight Tag). Absent tant
+     * qu'aucun compte publicitaire n'existe : le composant rend alors `null`
+     * et AUCUNE requête n'est émise. Ne sert QU'au retargeting publicitaire —
+     * la mesure d'audience passe par Plausible, et l'attribution des
+     * réservations par les UTM lus dans `/appel`.
+     */
+    NEXT_PUBLIC_LINKEDIN_PARTNER_ID: z.string().optional(),
     // Kill-switch PUBLIC du widget chatbot (T-08). "true" → la bulle se monte
     // côté client (île idle). Tant que non défini / != "true", le widget ne
     // monte rien et n'émet aucune requête. Pendant client de la garde serveur
@@ -428,6 +458,7 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     IMAGE_BANK_STORAGE_PATH: process.env.IMAGE_BANK_STORAGE_PATH,
+    EDITORIAL_STORAGE_PATH: process.env.EDITORIAL_STORAGE_PATH,
     IMAGE_BANK_CDN_URL: process.env.IMAGE_BANK_CDN_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
@@ -528,6 +559,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PLAUSIBLE_API_URL: process.env.NEXT_PUBLIC_PLAUSIBLE_API_URL,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
+    NEXT_PUBLIC_LINKEDIN_PARTNER_ID: process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID,
     NEXT_PUBLIC_CHATBOT_ENABLED: process.env.NEXT_PUBLIC_CHATBOT_ENABLED,
     NEXT_PUBLIC_CHATBOT_PAGES: process.env.NEXT_PUBLIC_CHATBOT_PAGES,
   },

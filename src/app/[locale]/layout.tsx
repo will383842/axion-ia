@@ -15,6 +15,7 @@ import { Plausible } from "@/components/analytics/Plausible";
 import { RefererTracker } from "@/components/analytics/RefererTracker";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import { Clarity } from "@/components/analytics/Clarity";
+import { LinkedInInsight } from "@/components/analytics/LinkedInInsight";
 import { ChatWidgetMount } from "@/components/chatbot/ChatWidgetMount";
 import { SITE_URL, buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { buildSiteNavigationJsonLd } from "@/lib/seo/extended-schemas";
@@ -393,6 +394,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               Plausible (anonyme, EU, cookie-less) reste toujours actif. */}
           <CookieConsent />
           <Clarity />
+          {/* LinkedIn Insight Tag (2026-08-20) — retargeting publicitaire UNIQUEMENT.
+              Rend `null` tant que `NEXT_PUBLIC_LINKEDIN_PARTNER_ID` est absent :
+              aucun compte LinkedIn Campaign Manager n'existe à ce jour, donc zéro
+              requête et zéro cookie en production. Mêmes gates que Clarity
+              (consentement, route publicitaire, URL portant un secret). */}
+          <LinkedInInsight />
           {/* V-04 P3 (Sprint Correctif suite 2026-05-22) — Speculation Rules
               client-side avec gating route publique uniquement (skip /admin/*).
               Reactive le bloc désactivé 2026-05-18 sans rallumer le crash RSC

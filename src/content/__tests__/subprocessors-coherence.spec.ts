@@ -55,6 +55,8 @@ const CSP_HOST_OWNER: Record<string, string> = {
   "challenges.cloudflare.com": "Cloudflare",
   "*.r2.cloudflarestorage.com": "Cloudflare",
   "plausible.axion-ia.com": "Plausible",
+  "snap.licdn.com": "LinkedIn",
+  "px.ads.linkedin.com": "LinkedIn",
 };
 
 /**

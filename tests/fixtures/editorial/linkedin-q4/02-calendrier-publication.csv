@@ -1,0 +1,62 @@
+﻿numero;date;heure;format;accroche;production;photo_will;lien;echo_page;tags;note
+1;01/09/2026;8h30;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;reservation;oui;#ProcessusMetier #ProductivitePME #GainDeTemps;
+2;02/09/2026;12h15;video;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";oui;;;;#ServiceClient #FormationIA #AIAct;
+3;03/09/2026;7h45;image;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;;candidature;;#ConformiteIA #RGPD #SousLeCapot #MaisonTemoin;
+4;04/09/2026;18h00;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#MaisonTemoin #Recrutement #CommercialIndependant;
+5;07/09/2026;7h45;photo;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;oui;newsletter;oui;#Entrepreneuriat #TransformationNumerique #IAPourPME;à revoir avant publication
+6;08/09/2026;8h30;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#DirigeantPME #AutomatisationPME #ProcessusMetier #ProductivitePME;
+7;09/09/2026;12h15;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;;;#ProductivitePME #GainDeTemps #ServiceClient;
+8;10/09/2026;7h45;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;reservation;;#FormationIA #AIAct #ConformiteIA;
+9;11/09/2026;18h00;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;;oui;#RGPD #SousLeCapot #MaisonTemoin #Recrutement;
+10;14/09/2026;7h45;video;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";oui;;candidature;;#Recrutement #CommercialIndependant #Entrepreneuriat;à revoir avant publication
+11;15/09/2026;8h30;image;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;;;;#TransformationNumerique #IAPourPME #DirigeantPME;
+12;16/09/2026;12h15;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;newsletter;;#AutomatisationPME #ProcessusMetier #ProductivitePME #GainDeTemps;
+13;17/09/2026;7h45;photo;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;oui;;oui;#GainDeTemps #ServiceClient #FormationIA;
+14;18/09/2026;18h00;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#AIAct #ConformiteIA #RGPD;
+15;21/09/2026;7h45;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;reservation;;#SousLeCapot #MaisonTemoin #Recrutement #CommercialIndependant;à revoir avant publication
+16;01/10/2026;8h30;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#CommercialIndependant #Entrepreneuriat #TransformationNumerique;
+17;02/10/2026;12h15;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;candidature;oui;#IAPourPME #DirigeantPME #AutomatisationPME;
+18;05/10/2026;7h45;video;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";oui;;;;#ProcessusMetier #ProductivitePME #GainDeTemps #ServiceClient;
+19;06/10/2026;18h00;image;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;;newsletter;;#ServiceClient #FormationIA #AIAct;
+20;07/10/2026;7h45;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#ConformiteIA #RGPD #SousLeCapot;à revoir avant publication
+21;08/10/2026;8h30;photo;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;oui;;oui;#MaisonTemoin #Recrutement #CommercialIndependant #Entrepreneuriat;
+22;09/10/2026;12h15;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;reservation;;#Entrepreneuriat #TransformationNumerique #IAPourPME;
+23;12/10/2026;7h45;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;;;#DirigeantPME #AutomatisationPME #ProcessusMetier;
+24;13/10/2026;18h00;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;candidature;;#ProductivitePME #GainDeTemps #ServiceClient #FormationIA;
+25;14/10/2026;7h45;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;;oui;#FormationIA #AIAct #ConformiteIA;à revoir avant publication
+26;15/10/2026;8h30;video;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";oui;;newsletter;;#RGPD #SousLeCapot #MaisonTemoin;
+27;16/10/2026;12h15;image;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;;;;#Recrutement #CommercialIndependant #Entrepreneuriat #TransformationNumerique;
+28;19/10/2026;7h45;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#TransformationNumerique #IAPourPME #DirigeantPME;
+29;20/10/2026;18h00;photo;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;oui;reservation;oui;#AutomatisationPME #ProcessusMetier #ProductivitePME;
+30;21/10/2026;7h45;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#GainDeTemps #ServiceClient #FormationIA #AIAct;à revoir avant publication
+31;22/10/2026;8h30;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;candidature;;#AIAct #ConformiteIA #RGPD;
+32;02/11/2026;12h15;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#SousLeCapot #MaisonTemoin #Recrutement;
+33;03/11/2026;7h45;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;newsletter;oui;#CommercialIndependant #Entrepreneuriat #TransformationNumerique #IAPourPME;
+34;04/11/2026;18h00;video;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";oui;;;;#IAPourPME #DirigeantPME #AutomatisationPME;
+35;05/11/2026;7h45;image;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;;;;#ProcessusMetier #ProductivitePME #GainDeTemps;à revoir avant publication
+36;06/11/2026;8h30;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;reservation;;#ServiceClient #FormationIA #AIAct #ConformiteIA;
+37;09/11/2026;12h15;photo;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;oui;;oui;#ConformiteIA #RGPD #SousLeCapot;
+38;10/11/2026;7h45;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;candidature;;#MaisonTemoin #Recrutement #CommercialIndependant;
+39;11/11/2026;18h00;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;;;#Entrepreneuriat #TransformationNumerique #IAPourPME #DirigeantPME;
+40;12/11/2026;7h45;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;newsletter;;#DirigeantPME #AutomatisationPME #ProcessusMetier;à revoir avant publication
+41;13/11/2026;8h30;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;;oui;#ProductivitePME #GainDeTemps #ServiceClient;
+42;16/11/2026;12h15;video;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";oui;;;;#FormationIA #AIAct #ConformiteIA #RGPD;
+43;17/11/2026;7h45;image;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;;reservation;;#RGPD #SousLeCapot #MaisonTemoin;
+44;18/11/2026;18h00;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#Recrutement #CommercialIndependant #Entrepreneuriat;
+45;19/11/2026;7h45;photo;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;oui;candidature;oui;#TransformationNumerique #IAPourPME #DirigeantPME #AutomatisationPME;à revoir avant publication
+46;20/11/2026;8h30;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#AutomatisationPME #ProcessusMetier #ProductivitePME;
+47;01/12/2026;12h15;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;newsletter;;#GainDeTemps #ServiceClient #FormationIA;
+48;02/12/2026;7h45;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#AIAct #ConformiteIA #RGPD #SousLeCapot;
+49;03/12/2026;18h00;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;;oui;#SousLeCapot #MaisonTemoin #Recrutement;
+50;04/12/2026;7h45;video;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";oui;;reservation;;#CommercialIndependant #Entrepreneuriat #TransformationNumerique;à revoir avant publication
+51;07/12/2026;8h30;image;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;;;;#IAPourPME #DirigeantPME #AutomatisationPME #ProcessusMetier;
+52;08/12/2026;12h15;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;candidature;;#ProcessusMetier #ProductivitePME #GainDeTemps;
+53;09/12/2026;7h45;photo;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;oui;;;#ServiceClient #FormationIA #AIAct;
+54;10/12/2026;18h00;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;newsletter;;#ConformiteIA #RGPD #SousLeCapot #MaisonTemoin;
+55;11/12/2026;7h45;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;;;#MaisonTemoin #Recrutement #CommercialIndependant;à revoir avant publication
+56;14/12/2026;8h30;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#Entrepreneuriat #TransformationNumerique #IAPourPME;
+57;15/12/2026;12h15;carrousel;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;oui;;reservation;;#DirigeantPME #AutomatisationPME #ProcessusMetier #ProductivitePME;
+58;16/12/2026;7h45;video;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";oui;;;;#ProductivitePME #GainDeTemps #ServiceClient;
+59;17/12/2026;18h00;image;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;;candidature;;#FormationIA #AIAct #ConformiteIA;
+60;18/12/2026;7h45;texte;"Ce que personne ne dit sur l'IA en PME ; et pourquoi c'est ""gênant""";;;;;#RGPD #SousLeCapot #MaisonTemoin #Recrutement;à revoir avant publication
+61;21/12/2026;8h30;photo;Trois signaux qu'un processus vous coûte plus qu'il ne rapporte;;oui;newsletter;;#Recrutement #CommercialIndependant #Entrepreneuriat;

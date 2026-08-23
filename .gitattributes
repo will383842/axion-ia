@@ -60,6 +60,25 @@
 # En texte, ces 14 SVG sont inchangés (l'index est déjà en LF).
 *.svg text eol=lf
 
+# ── Exception ÉTROITE : la fixture d’import de la console éditoriale ────────
+#
+# Ce CSV n’est pas du code : c’est la REPRODUCTION d’un export tableur Windows,
+# tel que le §6 du plan le décrit — BOM UTF-8 **et CRLF**. C’est précisément le
+# format que l’importeur doit savoir lire.
+#
+# Normalisé en LF, deux choses cassent :
+#   1. `scripts/editorial/generer-fixture-linkedin.ts` réécrit du CRLF à chaque
+#      exécution → l’arbre est sale en permanence, et la fixture n’est plus
+#      « déterministe au bit près » comme elle le promet ;
+#   2. le fichier ne ressemble plus à ce qu’il est censé imiter.
+#
+# Le danger que la politique LF écarte ne s’applique PAS ici : aucun test
+# statique ne cherche un saut de ligne littéral dans ce fichier, et prettier
+# ne le formate pas. Le cas CRLF reste par ailleurs couvert par un test
+# unitaire dont la chaîne est écrite INLINE dans le code, que rien ne peut
+# normaliser.
+tests/fixtures/editorial/linkedin-q4/02-calendrier-publication.csv -text
+
 # Binaires : aucune conversion EOL (évite la corruption).
 *.png binary
 *.jpg binary

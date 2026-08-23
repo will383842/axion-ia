@@ -46,10 +46,20 @@ const ECRANS = [
 ] as const;
 
 function code(chemin: string): string {
-  return readFileSync(join(process.cwd(), chemin), "utf8")
-    .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/^[ \t]*\/\/.*$/gm, "");
+  return (
+    readFileSync(join(process.cwd(), chemin), "utf8")
+      // Normalisation des fins de ligne avant toute recherche de motif.
+      // Sans elle, les assertions multi-lignes de ce fichier cherchent un saut de
+      // ligne simple alors qu'une copie de travail Windows en contient un double :
+      // le test « le crochet referme AVANT d'exécuter le geste » échouait sur
+      // toute machine Windows et bloquait le pre-push, tout en passant en CI sous
+      // Linux. Le dépôt stocke en LF (.gitattributes) ; c'est la copie de travail
+      // qui diffère.
+      .replace(/\r\n/g, "\n")
+      .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^[ \t]*\/\/.*$/gm, "")
+  );
 }
 
 describe("le dépouillement des commentaires", () => {
