@@ -39,7 +39,12 @@ import {
   type LigneContresignature,
 } from "./contresignature-hash";
 import { verifierChaine } from "./hash";
-import { MENTION_VERSION } from "./mentions";
+// 🔴 2026-08-24 — la contresignature scelle désormais SA PROPRE version, et non
+//    celle du texte du stagiaire : le formateur lit un texte différent, et deux
+//    textes ne peuvent pas partager une `mention_version`.
+//    On importe la constante plutôt que d'écrire « cs-v1 » en dur : un littéral
+//    redeviendrait faux au premier incrément, sans que rien ne le signale.
+import { MENTION_VERSION_CONTRESIGNATURE } from "./mentions";
 import { Prisma } from "../../../../prisma/generated/client";
 
 const mockPrisma = prisma as unknown as {
@@ -231,7 +236,7 @@ describe("contresignerDemiJournee — écriture conforme", () => {
       formationIntitule: "Bien démarrer avec l'IA",
       formateurNom: "Williams Jullin",
       methode: "canvas",
-      mentionVersion: MENTION_VERSION,
+      mentionVersion: MENTION_VERSION_CONTRESIGNATURE,
     });
     expect(d["modulesSnapshot"]).toEqual(["Module 1 — Cadrage"]);
     // Date scellée à minuit UTC, comme une colonne @db.Date.
