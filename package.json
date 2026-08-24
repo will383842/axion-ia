@@ -57,6 +57,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
+    "qualiopi:retention-dry-run": "tsx scripts/qualiopi-retention-dry-run.ts",
     "barometer:seed": "tsx prisma/seeds/barometer/index.ts",
     "content-gen:seed": "tsx prisma/seeds/content-gen/index.ts",
     "content-gen:seed-templates": "tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts",
