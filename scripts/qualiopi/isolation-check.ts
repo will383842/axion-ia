@@ -18,10 +18,24 @@
  *  - scripts/qualiopi/**  ·  tests/qualiopi/**  ·  tests/e2e/qualiopi/**
  *  - docs/qualiopi/**  ·  src/types/qualiopi*
  *
- * + exceptions explicites (SSOT transverses qui RÉFÉRENCENT qualiopi).
- * Exit 1 si un fichier hors zone utilise un symbole exporté du module.
+ * + exceptions explicites (SSOT transverses qui RÉFÉRENCENT qualiopi)
+ * + `CONSOMMATEURS_ASSUMES` : les surfaces qui importent le domaine, nommées
+ *   une par une (voir le commentaire de cette constante).
+ * Exit 1 si un fichier hors zone IMPORTE le module, ou si une exception est périmée.
  *
- * Usage : `pnpm qualiopi:isolation-check` (câblé dans verify:all + pre-push).
+ * Usage : `pnpm qualiopi:isolation-check`.
+ *
+ * 🔴 2026-08-24 — cette ligne affirmait « câblé dans verify:all + pre-push ».
+ * C'était FAUX pour `pre-push` (le hook ne l'a jamais appelé), et sans effet pour
+ * `verify:all`, qui n'a lui-même aucun appelant : ni CI, ni hook, ni workflow.
+ * Personne n'exécutait donc cette garde — et elle est passée de 24 violations le
+ * 2026-07-30 à 58 le 2026-08-24 sans que rien ne rougisse. Le commentaire qui
+ * décrit un câblage inexistant est pire que pas de commentaire : il fait croire
+ * que la dérive serait détectée.
+ * Elle est désormais appelée par le job `gate-a` de `.github/workflows/ci.yml`,
+ * à côté de `content-gen:isolation-check` — le seul des trois qui était câblé,
+ * et le seul qui était vert. `gate-a` est un contexte EXIGÉ par la protection
+ * de `main` : à partir d'ici, la dérive rougit avant d'entrer.
  */
 
 import { execSync } from "node:child_process";
@@ -48,6 +62,11 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/app\/\[locale\]\/verifier-attestation\//,
   /^src\/app\/api\/qualiopi\//,
   /^src\/components\/admin\/qualiopi\//,
+  // Zone dédiée OUBLIÉE de cette liste jusqu'au 2026-08-24 : le hub de session
+  // admin vit sous `features/`, pas sous `components/admin/`. Son unique fichier
+  // signalé (`session-hub/ChecklistSession.tsx`) n'était pas une fuite — c'est
+  // du code Qualiopi, dans un répertoire Qualiopi, que le motif ne couvrait pas.
+  /^src\/features\/admin-qualiopi\//,
   // Composants PUBLICS Qualiopi (badge, bandeau, section mentions légales) —
   // surfaces de divulgation Phase B, flag-gated. Importés par le layout/footer/
   // mentions-légales QUI n'importent QUE depuis `@/components/qualiopi/`.
@@ -92,6 +111,100 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
 ];
 
 /**
+ * Les surfaces qui CONSOMMENT le domaine, fichier par fichier — un CLIQUET.
+ *
+ * ## Pourquoi cette liste existe, et pourquoi elle est nominative
+ *
+ * Cette garde a rougi sans discontinuer pendant des mois : 24 fichiers le
+ * 2026-07-30, **58** le 2026-08-24. Elle n'était branchée nulle part — ni CI,
+ * ni hook — et `verify:all`, la seule chose qui l'appelait, n'a elle-même aucun
+ * appelant. Une garde que personne n'exécute ne garde rien : elle enregistre
+ * la dérive au lieu de l'arrêter. Le contraste est net dans ce dépôt même —
+ * `content-gen:isolation-check`, le seul des trois câblé en CI, est à **0
+ * violation sur 11 268 fichiers**.
+ *
+ * Les 49 imports réels mesurés ne sont PAS des fuites : le domaine expose une
+ * API transverse assumée (l'identité de certification s'affiche sur le site
+ * public — c'est le critère 1 du RNQ ; les mentions légales alimentent contrats
+ * et factures ; le planning lit formateurs, financements et lieux). Prétendre
+ * rétablir un cloisonnement que l'architecture a dépassé depuis un an
+ * demanderait de déplacer 49 fichiers, pour un gain nul.
+ *
+ * On acte donc l'état réel — mais **nominativement, pas par répertoire**. Une
+ * exception par dossier serait un blanc-seing : le 50ᵉ consommateur entrerait
+ * sans que personne ne le voie. Ici, tout NOUVEAU fichier qui importe le
+ * domaine fait rougir la garde, y compris dans un dossier déjà représenté.
+ * C'est ce que cette garde peut honnêtement promettre : pas « le domaine est
+ * cloisonné », mais « aucune surface ne se met à le consommer sans décision ».
+ *
+ * ⚠️ Cette liste doit RÉTRÉCIR, jamais grandir. `main()` échoue si une entrée
+ * n'importe plus rien : une exception périmée est une garde qu'on a desserrée
+ * pour rien.
+ */
+const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // ── Surfaces PUBLIQUES : affichage de la certification et de l'identité
+  //    légale. Obligation réglementaire (RNQ critère 1 — information du public).
+  "src/app/[locale]/a-propos/page.tsx",
+  "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
+  "src/app/[locale]/avis/page.tsx",
+  "src/app/[locale]/certification-qualiopi/page.tsx",
+  "src/app/[locale]/equipe/[slug]/page.tsx",
+  "src/app/[locale]/financement-opco-france-travail/page.tsx",
+  "src/app/[locale]/memo-isere/page.tsx",
+  "src/app/[locale]/page.tsx",
+  "src/app/[locale]/secteurs/[secteur]/[activite]/page.tsx",
+  "src/app/api/zeptomail/webhook/route.ts",
+  "src/app/sitemap-images-services.xml/route.ts",
+  "src/app/sitemap.ts",
+  "src/components/formations/FormationDetailPage.tsx",
+  "src/components/nav/Footer.tsx",
+  "src/components/recrutement/PartenaireLandingPage.tsx",
+  "src/server/content-gen/generators/blog-article.ts",
+  // ── Planning & pilotage admin : lisent formateurs, financements, lieux,
+  //    prévisionnel. Surfaces métier assumées, comme `coaching/` au-dessus.
+  "src/app/[locale]/(admin)/[adminPrefix]/planning/[type]/[id]/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/planning/ics/route.ts",
+  "src/app/[locale]/(admin)/[adminPrefix]/planning/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/planning/previsionnel/page.tsx",
+  "src/app/[locale]/(admin)/[adminPrefix]/planning/timeline/page.tsx",
+  "src/features/admin-planning/charge-queries.ts",
+  "src/features/admin-planning/detail.ts",
+  "src/features/admin-planning/hub-queries.ts",
+  "src/features/admin-planning/pipeline.ts",
+  "src/features/admin-planning/queries.ts",
+  "src/server/admin/dossiers-pipeline.ts",
+  "src/server/admin/pilotage-dashboard.ts",
+  "src/server/admin/qualiopi-nav-counts.ts",
+  // ── Espace formateur & portail stagiaire : consommateurs assumés du domaine,
+  //    au même titre que `[locale]/portail/` déjà autorisé plus haut.
+  "src/app/[locale]/espace-formateur/page.tsx",
+  "src/app/api/formateur/lettre-mission/[id]/route.ts",
+  "src/components/portail/DemanderAccesForm.tsx",
+  "src/components/portail/EnqueteEntrepriseForm.tsx",
+  "src/server/formateur/echeances-formateur.ts",
+  "src/server/formateur/etapes-formateur.ts",
+  // ── Contrats, factures, e-mails : portent les mentions légales, qui sont
+  //    la SSOT du domaine (`qualiopi/legal`).
+  "src/features/contract/admin-actions.ts",
+  "src/features/invoice/admin-actions.ts",
+  "src/lib/email/templates/_layout.tsx",
+  // ── Workers & santé : rétention de preuve d'envoi, alertes.
+  "src/server/email/health.ts",
+  "src/server/queue/workers/retention-purge-worker.ts",
+  // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
+  "src/server/actions/admin-recherche.ts",
+  // ── Tests des surfaces ci-dessus. Un test qui ne peut pas importer ce qu'il
+  //    teste ne teste rien.
+  "src/content/formations/catalog-v2-minutage.test.ts",
+  "src/content/formations/modules/enrichissements.test.ts",
+  "src/server/admin/dossiers-pipeline.spec.ts",
+  "src/server/formateur/echeances-formateur.spec.ts",
+  "src/server/formateur/etapes-formateur.spec.ts",
+  "src/server/queue/workers/__tests__/envoi-non-parti-aucune-trace.spec.ts",
+  "src/server/queue/workers/__tests__/retention-preuve-envoi.spec.ts",
+]);
+
+/**
  * Marqueurs = symboles exportés UNIQUES du module qualiopi. S'ils apparaissent
  * hors zone, c'est une vraie fuite (pas un faux positif sur le mot « formation »
  * qui est omniprésent dans le repo). On NE marque PAS sur "qualiopi"/"formation"
@@ -110,6 +223,17 @@ const QUALIOPI_MARKERS: ReadonlyArray<string> = [
   "@/server/actions/qualiopi/",
 ];
 
+/**
+ * Une ligne qui crée une ARÊTE DE DÉPENDANCE — la seule chose que cette garde
+ * ait à surveiller.
+ *
+ * ⚠️ Ne PAS tester `^\s*import` : un import multi-lignes porte son chemin sur
+ * la ligne `} from "…"`, qui ne commence pas par `import`. Ce raccourci fait
+ * passer de VRAIS imports pour de simples mentions — vérifié le 2026-08-24 sur
+ * `src/app/sitemap.ts`, `equipe/[slug]/page.tsx` et `echeances-formateur.ts`.
+ */
+const EST_ARETE = /\bfrom\s*["']|\brequire\s*\(|\bimport\s*\(/;
+
 function isPathAllowed(filePath: string): boolean {
   const normalized = filePath.replace(/\\/g, "/");
   return ALLOWED_PATTERNS.some((re) => re.test(normalized));
@@ -125,7 +249,17 @@ function looksLikeQualiopi(filePath: string, content: string): boolean {
   // Modèles qualiopi attendus dans le schéma ; env vars qualiopi gérées à part.
   if (normalized === "prisma/schema.prisma") return false;
   if (normalized === "src/env.ts") return false;
-  return QUALIOPI_MARKERS.some((m) => content.includes(m));
+
+  // 🔴 2026-08-24 — c'était `QUALIOPI_MARKERS.some((m) => content.includes(m))`.
+  // La garde marquait donc sur une simple MENTION : un workflow YAML qui cite un
+  // symbole en commentaire, une migration SQL, des specs qui passent un chemin à
+  // `path.join()` pour LIRE le fichier — 9 des 58 signalements du jour. Une garde
+  // qui interdit de CITER un symbole interdit de le documenter, et ce dépôt
+  // documente ses correctifs en nommant ce qu'ils corrigent.
+  // Ce qu'on surveille est l'arête de dépendance, pas le vocabulaire.
+  return content
+    .split("\n")
+    .some((ligne) => EST_ARETE.test(ligne) && QUALIOPI_MARKERS.some((m) => ligne.includes(m)));
 }
 
 function listFiles(mode: "staged" | "all"): string[] {
@@ -146,31 +280,73 @@ async function main(): Promise<void> {
   const files = listFiles(mode);
   const violations: Array<{ file: string; reason: string }> = [];
 
+  // Exceptions effectivement utilisées pendant ce passage — sert à détecter
+  // celles qui ne servent plus (voir plus bas).
+  const exceptionsUtilisees = new Set<string>();
+
   for (const f of files) {
     if (isPathAllowed(f)) continue;
     try {
       const content = await import("node:fs").then((m) =>
         m.promises.readFile(path.join(process.cwd(), f), "utf8"),
       );
-      if (looksLikeQualiopi(f, content)) {
-        violations.push({
-          file: f,
-          reason: "Utilise un symbole qualiopi hors des zones dédiées (cloisonnement).",
-        });
+      if (!looksLikeQualiopi(f, content)) continue;
+
+      const normalized = f.replace(/\\/g, "/");
+      if (CONSOMMATEURS_ASSUMES.has(normalized)) {
+        exceptionsUtilisees.add(normalized);
+        continue;
       }
+      violations.push({
+        file: f,
+        reason: "Importe le domaine qualiopi hors des zones dédiées (cloisonnement).",
+      });
     } catch {
       // binaire / illisible → skip
     }
   }
 
-  if (violations.length === 0) {
+  // ── La liste d'exceptions doit RÉTRÉCIR ──────────────────────────────────
+  // Une exception qui ne correspond plus à rien est une garde desserrée pour
+  // rien : elle laisserait rentrer, sans un mot, un futur fichier portant le
+  // même chemin. On ne peut le vérifier qu'en mode « all » : en `--staged`, la
+  // plupart des fichiers ne sont simplement pas dans le lot examiné.
+  const perimees =
+    mode === "all" ? [...CONSOMMATEURS_ASSUMES].filter((f) => !exceptionsUtilisees.has(f)) : [];
+
+  if (violations.length === 0 && perimees.length === 0) {
     console.log(
-      `✅ [qualiopi:isolation-check] OK — ${files.length} fichiers scannés, 0 violation.`,
+      `✅ [qualiopi:isolation-check] OK — ${files.length} fichiers scannés, ` +
+        `0 violation, ${exceptionsUtilisees.size} consommateurs assumés (tous encore actifs).`,
     );
     process.exit(0);
   }
-  console.error(`❌ [qualiopi:isolation-check] ${violations.length} violation(s) :`);
-  for (const v of violations) console.error(`  - ${v.file} : ${v.reason}`);
+
+  if (violations.length > 0) {
+    console.error(`❌ [qualiopi:isolation-check] ${violations.length} violation(s) :`);
+    for (const v of violations) console.error(`  - ${v.file} : ${v.reason}`);
+    console.error(
+      "\n  Ce fichier importe le domaine Qualiopi depuis une surface qui ne le faisait pas.\n" +
+        "  Deux issues, et une seule est un choix :\n" +
+        "    · le code appartient au domaine  → le déplacer dans une zone dédiée ;\n" +
+        "    · la surface le consomme vraiment → l'ajouter à CONSOMMATEURS_ASSUMES\n" +
+        "      dans ce fichier, AVEC sa raison. Ce n'est pas une formalité : c'est la\n" +
+        "      trace qu'on a décidé d'élargir la surface qui dépend du domaine.",
+    );
+  }
+
+  if (perimees.length > 0) {
+    console.error(
+      `\n❌ [qualiopi:isolation-check] ${perimees.length} exception(s) PÉRIMÉE(S) — ` +
+        "ces fichiers n'importent plus le domaine (ou n'existent plus) :",
+    );
+    for (const f of perimees) console.error(`  - ${f}`);
+    console.error(
+      "\n  Les retirer de CONSOMMATEURS_ASSUMES. Une exception qu'on garde « au cas où »\n" +
+        "  rouvre la porte en silence au prochain fichier qui portera ce chemin.",
+    );
+  }
+
   process.exit(1);
 }
 
