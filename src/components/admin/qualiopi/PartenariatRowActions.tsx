@@ -30,6 +30,10 @@ export interface PartenariatRowActionsProps {
     dateDebut: Date;
     dateFin: Date | null;
     actif: boolean;
+    interlocuteurNom: string | null;
+    interlocuteurEmail: string | null;
+    dernierEchangeAt: Date | null;
+    preuveUrl: string | null;
   };
   updateAction: typeof updatePartenariatAction;
 }
@@ -53,6 +57,16 @@ export function PartenariatRowActions({
     partenariat.dateFin != null ? partenariat.dateFin.toISOString().slice(0, 10) : "",
   );
   const [actif, setActif] = useState(partenariat.actif);
+  const [interlocuteurNom, setInterlocuteurNom] = useState(partenariat.interlocuteurNom ?? "");
+  const [interlocuteurEmail, setInterlocuteurEmail] = useState(
+    partenariat.interlocuteurEmail ?? "",
+  );
+  const [dernierEchangeAt, setDernierEchangeAt] = useState(() =>
+    partenariat.dernierEchangeAt != null
+      ? partenariat.dernierEchangeAt.toISOString().slice(0, 10)
+      : "",
+  );
+  const [preuveUrl, setPreuveUrl] = useState(partenariat.preuveUrl ?? "");
 
   function handleUpdate(e: React.FormEvent) {
     e.preventDefault();
@@ -66,6 +80,13 @@ export function PartenariatRowActions({
         dateDebut: new Date(dateDebut),
         ...(dateFin ? { dateFin: new Date(dateFin) } : {}),
         actif,
+        // Un champ vidé à l'écran doit EFFACER la valeur en base : on envoie
+        // `null`, jamais `undefined` — `undefined` laisserait l'ancienne trace
+        // en place et l'écran mentirait sur ce qu'il affiche.
+        interlocuteurNom: interlocuteurNom.trim() === "" ? null : interlocuteurNom.trim(),
+        interlocuteurEmail: interlocuteurEmail.trim() === "" ? null : interlocuteurEmail.trim(),
+        dernierEchangeAt: dernierEchangeAt === "" ? null : new Date(dernierEchangeAt),
+        preuveUrl: preuveUrl.trim() === "" ? null : preuveUrl.trim(),
       });
       if ("error" in result) {
         setError(result.error);
@@ -186,6 +207,70 @@ export function PartenariatRowActions({
           Partenariat actif
         </label>
       </div>
+      <fieldset className="min-w-0 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)] [min-inline-size:0]">
+        <legend className={labelCls}>Trace de l&apos;échange</legend>
+        <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          L&apos;objet ci-dessus est ce que vous déclarez ; ces champs sont ce que vous pouvez
+          montrer. L&apos;auditeur demande qui, quand, et où est la pièce.
+        </p>
+        <div className="grid grid-cols-2 gap-[var(--space-admin-3)]">
+          <div>
+            <label htmlFor={`partenariat-interlocuteur-${partenariat.id}`} className={labelCls}>
+              Interlocuteur
+            </label>
+            <input
+              id={`partenariat-interlocuteur-${partenariat.id}`}
+              type="text"
+              value={interlocuteurNom}
+              onChange={(e) => setInterlocuteurNom(e.target.value)}
+              disabled={isPending}
+              placeholder="Prénom Nom — fonction"
+              className={inputCls}
+            />
+          </div>
+          <div>
+            <label htmlFor={`partenariat-echange-${partenariat.id}`} className={labelCls}>
+              Dernier échange
+            </label>
+            <input
+              id={`partenariat-echange-${partenariat.id}`}
+              type="date"
+              value={dernierEchangeAt}
+              onChange={(e) => setDernierEchangeAt(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
+        </div>
+        <div className="mt-[var(--space-admin-3)]">
+          <label htmlFor={`partenariat-email-${partenariat.id}`} className={labelCls}>
+            E-mail de l&apos;interlocuteur
+          </label>
+          <input
+            id={`partenariat-email-${partenariat.id}`}
+            type="email"
+            value={interlocuteurEmail}
+            onChange={(e) => setInterlocuteurEmail(e.target.value)}
+            disabled={isPending}
+            placeholder="prenom.nom@organisme.fr"
+            className={inputCls}
+          />
+        </div>
+        <div className="mt-[var(--space-admin-3)]">
+          <label htmlFor={`partenariat-preuve-${partenariat.id}`} className={labelCls}>
+            Pièce justificative (lien)
+          </label>
+          <input
+            id={`partenariat-preuve-${partenariat.id}`}
+            type="url"
+            value={preuveUrl}
+            onChange={(e) => setPreuveUrl(e.target.value)}
+            disabled={isPending}
+            placeholder="https://… (pièce déposée dans Documents)"
+            className={inputCls}
+          />
+        </div>
+      </fieldset>
       {error && (
         <p
           role="alert"
