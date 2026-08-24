@@ -225,7 +225,13 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
     // seul a porter une obligation reglementaire (ind. 9). Sans elle, la
     // deduplication BullMQ expire au min(7 jours, 1 000 jobs) et un second
     // envoi redevient possible sans que rien ne le dise.
-    { jobId: `qualiopi-convocation-${enrollmentId}-${dateKey(session.dateDebut)}` },
+    {
+      jobId: `qualiopi-convocation-${enrollmentId}-${dateKey(session.dateDebut)}`,
+      // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+      // atterrit dans `email_logs` sans dire QUI il concerne.
+      entityType: "Enrollment",
+      entityId: enrollmentId,
+    },
   );
 
   // 🔴 ÉTAT, et non fenêtre de date. C'est cette colonne qui rend le cron
@@ -382,7 +388,13 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
           lienPortail,
           ...(lienEmargement !== null ? { lienEmargement } : {}),
         },
-        { jobId: `qualiopi-rappel-j7-${enrollment.id}-${dk}` },
+        {
+          jobId: `qualiopi-rappel-j7-${enrollment.id}-${dk}`,
+          // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+          // atterrit dans `email_logs` sans dire QUI il concerne.
+          entityType: "Enrollment",
+          entityId: enrollment.id,
+        },
       );
       if (!envoi.enqueued) {
         console.error(
@@ -486,7 +498,13 @@ export async function envoyerSatisfactionJ1(enrollmentId: string): Promise<boole
       lienQuestionnaire,
       numeroSession: session.numero,
     },
-    { jobId: `qualiopi-satisfaction-j1-${enrollmentId}-${dk}` },
+    {
+      jobId: `qualiopi-satisfaction-j1-${enrollmentId}-${dk}`,
+      // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+      // atterrit dans `email_logs` sans dire QUI il concerne.
+      entityType: "Enrollment",
+      entityId: enrollmentId,
+    },
   );
   if (!envoi.enqueued) {
     console.error(
@@ -547,7 +565,13 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<boolean> {
       lienPortail,
       numeroSession: session.numero,
     },
-    { jobId: `qualiopi-suivi-j30-${enrollmentId}-${dk}` },
+    {
+      jobId: `qualiopi-suivi-j30-${enrollmentId}-${dk}`,
+      // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+      // atterrit dans `email_logs` sans dire QUI il concerne.
+      entityType: "Enrollment",
+      entityId: enrollmentId,
+    },
   );
   if (!envoi.enqueued) {
     console.error(
@@ -626,7 +650,13 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
       numeroSession: session.numero,
       questionnaireEnAttente: questionnairesEnAttente > 0,
     },
-    { jobId: `qualiopi-attestation-disponible-${enrollmentId}` },
+    {
+      jobId: `qualiopi-attestation-disponible-${enrollmentId}`,
+      // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+      // atterrit dans `email_logs` sans dire QUI il concerne.
+      entityType: "Enrollment",
+      entityId: enrollmentId,
+    },
   );
   if (!envoi.enqueued) {
     console.error(
@@ -723,7 +753,13 @@ export async function envoyerPositionnement(questionnaireId: string): Promise<bo
     // 🔴 `jobId` horodaté, PAS `qualiopi-positionnement-${q.id}` : la
     // déduplication BullMQ rendrait tout renvoi silencieusement inopérant, et
     // c'est exactement le renvoi qu'on vient de rendre nécessaire.
-    { jobId: `qualiopi-positionnement-${q.id}-${Date.now()}` },
+    {
+      jobId: `qualiopi-positionnement-${q.id}-${Date.now()}`,
+      // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+      // atterrit dans `email_logs` sans dire QUI il concerne.
+      entityType: "Questionnaire",
+      entityId: q.id,
+    },
   );
   if (!envoi.enqueued) {
     console.error(
@@ -793,7 +829,13 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
         lienEnquete: `${baseUrl}/fr/portail/enquete/${token}`,
         numeroSession: session.numero,
       },
-      { jobId: `qualiopi-enquete-entreprise-relance-${q.id}-${numeroRelance}` },
+      {
+        jobId: `qualiopi-enquete-entreprise-relance-${q.id}-${numeroRelance}`,
+        // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+        // atterrit dans `email_logs` sans dire QUI il concerne.
+        entityType: "Questionnaire",
+        entityId: q.id,
+      },
     );
     if (!envoi.enqueued) {
       console.error(
@@ -858,7 +900,13 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
         lienQuestionnaire,
         numeroSession: session.numero,
       },
-      { jobId: `qualiopi-questionnaire-relance-${q.id}-${numeroRelance}` },
+      {
+        jobId: `qualiopi-questionnaire-relance-${q.id}-${numeroRelance}`,
+        // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+        // atterrit dans `email_logs` sans dire QUI il concerne.
+        entityType: "Questionnaire",
+        entityId: q.id,
+      },
     );
     if (!envoi.enqueued) {
       console.error(
@@ -958,7 +1006,13 @@ export async function envoyerEnqueteEntreprise(sessionId: string): Promise<boole
       lienEnquete: `${baseUrl}/fr/portail/enquete/${token}`,
       numeroSession: session.numero,
     },
-    { jobId: `qualiopi-enquete-entreprise-${sessionId}-${dk}` },
+    {
+      jobId: `qualiopi-enquete-entreprise-${sessionId}-${dk}`,
+      // Rattachement du JOURNAL a son objet metier : sans lui, un rebond
+      // atterrit dans `email_logs` sans dire QUI il concerne.
+      entityType: "TrainingSession",
+      entityId: sessionId,
+    },
   );
   if (!envoi.enqueued) {
     console.error(

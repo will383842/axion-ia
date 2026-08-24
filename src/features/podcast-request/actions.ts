@@ -18,6 +18,7 @@ import { syncFormSubmissionToCrm } from "@/server/crm-sync";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { hashIp } from "@/lib/security/ip-hash";
 import { getClientIp } from "@/lib/client-ip";
 import { parseLocale } from "@/lib/schemas/locale";
@@ -94,6 +95,13 @@ export async function submitPodcastRequestAction(
         companyName: d.companyName,
         leaderName: encryptPii(d.leaderName),
         email: encryptPii(d.email),
+        // D5-5-04 — sans cette empreinte, la ligne est INTROUVABLE par son
+        // adresse : `email` est chiffre a IV aleatoire, donc aucune egalite SQL
+        // ne peut l'atteindre. L'export art. 15 rendrait une liste vide et
+        // l'effacement art. 17 toucherait zero ligne, tous deux en repondant
+        // « succes ». Ecrite ICI, a la creation, sinon la colonne reste vide et
+        // le correctif est decoratif.
+        emailHash: hashEmailForLookup(d.email),
         phone: encryptPii(d.phone),
         city: d.city,
         postalCode: d.postalCode,
