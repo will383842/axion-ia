@@ -16,7 +16,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo";
-import { escapeXml } from "@/server/image-bank/utils/xml";
+import { escapeXml } from "@/lib/xml";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;

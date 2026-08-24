@@ -8,7 +8,7 @@
 // Google Images domination locale (audit image-bank-complet 2026-05-20).
 
 import type { VilleData } from "@/content/villes/data/types";
-import { escapeXml } from "./xml";
+import { escapeXml } from "@/lib/xml";
 
 export const VILLES_LICENSE_URL = "https://creativecommons.org/licenses/by/4.0/";
 export const SITE_BASE = "https://axion-ia.com";
