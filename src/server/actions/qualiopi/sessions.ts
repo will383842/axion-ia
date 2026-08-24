@@ -49,10 +49,9 @@ import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-re
 import {
   mesurerTraceCloture,
   clotureSansAucuneTrace,
-  traceClotureIncomplete,
 } from "@/server/qualiopi/presence/trace-cloture";
-import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { refusMotif } from "@/server/qualiopi/formations/transition-motif";
+import { signalerClotureIncomplete } from "@/server/qualiopi/alertes/signal-cloture";
 import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
@@ -971,21 +970,14 @@ export async function transitionSessionAction(input: {
   // définitivement non clôturables (cf. `trace-cloture.ts`). On la SIGNALE, et
   // l'alerte dit les deux gestes qui la résolvent — compléter la feuille, ou
   // sortir du dispositif ceux qui ont renoncé.
-  if (traceCloture !== null && traceClotureIncomplete(traceCloture)) {
-    void creerOuDedup({
-      code: "cloture_trace_presence_incomplete",
-      niveau: "important",
-      titre: "Session clôturée sans trace de présence pour tous les inscrits",
-      message:
-        `${traceCloture.sansTrace} inscrit(s) actif(s) sur ${traceCloture.totalActifs} ` +
-        `n'ont aucune trace de présence, alors que la session est passée en « réalisée ». ` +
-        `Une attestation délivrée à ces personnes ne serait adossée à aucune preuve. ` +
-        `Deux gestes possibles : compléter la feuille d'émargement ou le relevé de ` +
-        `connexion, ou passer en « abandon » ceux qui ont renoncé.`,
-      cibleType: "TrainingSession",
-      cibleId: v.id,
-    }).catch(() => {});
-  }
+  // 🔑 UN SEUL emetteur pour les deux chemins de cloture.
+  //
+  // 🔴 2026-08-24, cahier D2 — ce bloc vivait ICI et NULLE PART AILLEURS : la
+  // cloture AUTOMATIQUE (le cron J+24 h, chemin dominant) ne signalait rien.
+  // Recopier le bloc la-bas aurait recree la divergence que `CONF-01` venait de
+  // fermer sur la MESURE, un cran plus loin. L'emission a donc rejoint la
+  // mesure dans `trace-cloture.ts`.
+  signalerClotureIncomplete(v.id, traceCloture);
 
   await logQualiopiActivity({
     action: `qualiopi.session.transition.${toStatus}`,
