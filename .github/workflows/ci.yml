@@ -120,6 +120,26 @@ jobs:
       # le rollback chirurgical V1 → V2 sans casser le reste du frontend.
       - name: Content-gen isolation check
         run: pnpm content-gen:isolation-check
+      # 🔴 2026-08-24 — `qualiopi:isolation-check` existait depuis des mois et
+      # n'était appelé PAR RIEN : ni ce workflow, ni un hook. Son en-tête se
+      # disait pourtant « câblé dans verify:all + pre-push » — faux pour le hook,
+      # et sans effet pour `verify:all`, qui n'a lui-même aucun appelant.
+      # Résultat mesurable : 24 violations le 2026-07-30, 58 le 2026-08-24. La
+      # garde enregistrait la dérive au lieu de l'arrêter, pendant que
+      # `content-gen:isolation-check` juste au-dessus — le seul des trois câblé —
+      # tenait 0 violation sur 11 268 fichiers. Une garde qu'on n'exécute pas ne
+      # garde rien.
+      - name: Qualiopi isolation check
+        run: pnpm qualiopi:isolation-check
+      # Même histoire, même jour : 31 fichiers signalés, dont 3 seulement
+      # portaient un import. Les 28 autres ne faisaient que MENTIONNER le mot —
+      # `.env.example` pour une ligne de config, `admin.css` pour des
+      # commentaires. La garde promettait de vérifier que le module reste
+      # « arrachable » d'un bloc (rollback V1 → V2) ; Will a tranché le
+      # 2026-08-24 que ce scénario n'est plus prévu, donc elle surveille
+      # désormais les dépendances, comme ses deux voisines.
+      - name: Image-bank isolation check
+        run: pnpm image-bank:isolation-check
       - name: Zod schemas have tests
         run: pnpm zod:check
       - name: gitleaks
