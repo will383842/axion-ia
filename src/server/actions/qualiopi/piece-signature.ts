@@ -270,11 +270,31 @@ async function declencherPositionnement(documentGenereId: string): Promise<void>
 
   for (const q of questionnaires) {
     try {
-      await envoyerPositionnement(q.id);
+      // 🔴 2026-08-24 — LE COMMENTAIRE CI-DESSOUS ÉTAIT JUSTE, ET L'APPEL FAUX.
+      //
       // `envoyerPositionnement` n'écrit pas la trace — l'appelant la pose, comme
       // le fait l'envoi manuel. Sans elle, impossible de distinguer « jamais
       // envoyé » de « envoyé, sans réponse », et la relance J+3 ne partirait
-      // jamais.
+      // jamais. Tout cela reste vrai.
+      //
+      // Mais l'appel jetait son booléen. `envoyerPositionnement` rend `false`
+      // sans lever sur cinq chemins (stub, déjà répondu, stagiaire sans adresse,
+      // file indisponible, garage en corbeille de validation) : le `catch` ne
+      // voit aucun d'eux, et la trace était posée pour un courrier jamais parti.
+      // Ce qui suit la signature d'une convention est précisément le document
+      // qu'un certificateur demandera — poser sa date sans l'envoi produit une
+      // preuve fausse.
+      //
+      // 🔑 Ne rien écrire est le bon comportement : le cron du positionnement
+      // sélectionne sur `envoyeAt: null` et reprendra ce questionnaire.
+      // Cliquet : `notifications/__tests__/appelant-ne-jette-pas-le-booleen-denvoi.spec.ts`.
+      if (!(await envoyerPositionnement(q.id))) {
+        console.error(
+          `[declencherPositionnement] NON ENVOYÉ — questionnaire ${q.id} laissé ` +
+            "sans trace, candidat au rattrapage par le cron `positionnement`",
+        );
+        continue;
+      }
       await prisma.questionnaire.update({
         where: { id: q.id },
         data: { envoyeAt: new Date() },

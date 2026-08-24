@@ -774,7 +774,27 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
     //
     // On relance avec le template de positionnement, qui dit « avant le début
     // de la formation » — la phrase juste dans les deux cas.
-    await envoyerPositionnement(q.id);
+    //
+    // 🔴 2026-08-24 — CETTE BRANCHE ÉTAIT LA SEULE DES TROIS À JETER SON RETOUR.
+    // Ses deux sœurs, vingt lignes plus haut et vingt plus bas, testent
+    // `envoi.enqueued` et rendent `false`. Ici l'appel était nu, et l'`update`
+    // de `relanceCount` / `derniereRelanceAt` en fin de fonction était donc
+    // atteint même quand rien n'était parti. Conséquence : deux relances
+    // fantômes suffisaient à consommer `RELANCES_MAX = 2` et à fermer le
+    // rattrapage définitivement, sur un stagiaire qui n'avait jamais rien reçu.
+    //
+    // 🔑 Trois branches, trois décisions indépendantes de lire ou non le
+    // booléen : c'est la signature d'un prédicat recopié. Le cliquet
+    // `__tests__/appelant-ne-jette-pas-le-booleen-denvoi.spec.ts` refuse
+    // désormais la forme, pas le cas.
+    if (!(await envoyerPositionnement(q.id))) {
+      console.error(
+        `[relance-questionnaire] NON ENVOYÉ — questionnaire ${questionnaireId} ` +
+          "laissé candidat au rattrapage (positionnement : message garé en " +
+          "corbeille de validation, ou file de messages indisponible)",
+      );
+      return false;
+    }
   } else {
     const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
     const envoi = await enqueueEmail(
