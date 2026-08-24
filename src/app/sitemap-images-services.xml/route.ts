@@ -22,7 +22,7 @@
 // Référencé dans `app/sitemap-index.xml/route.ts` (CUSTOM_SITEMAPS).
 
 import { SITE_URL } from "@/lib/seo";
-import { escapeXml } from "@/server/image-bank/utils/xml";
+import { escapeXml } from "@/lib/xml";
 import { PAGE_IMAGES_MANIFEST } from "@/lib/seo/page-images";
 import { SITEMAP_CACHE_HEADER } from "@/server/image-bank/constants";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";

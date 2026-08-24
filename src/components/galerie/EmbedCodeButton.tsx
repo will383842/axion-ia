@@ -12,6 +12,13 @@
 
 import { useState } from "react";
 
+// 2026-08-24 — ce fichier portait sa PROPRE copie de `escapeHtmlAttr`, identique
+// au caractère près à celle qu'exportait `server/image-bank/utils/xml.ts` (qui,
+// elle, n'avait aucun appelant). Deux exemplaires du même échappement, dont un
+// mort. La SSOT vit désormais dans `@/lib/xml` — voir son en-tête : 27 copies de
+// cette fonction coexistent encore dans le dépôt, sous six noms différents.
+import { escapeHtmlAttr } from "@/lib/xml";
+
 interface EmbedCodeButtonProps {
   /** Absolute CDN URL of the image (lg variant recommended). */
   imageUrl: string;
@@ -55,12 +62,4 @@ export function EmbedCodeButton({ imageUrl, pageUrl, alt, label }: EmbedCodeButt
       {copied ? `${label} ✓` : label}
     </button>
   );
-}
-
-function escapeHtmlAttr(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
 }
