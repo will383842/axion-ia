@@ -654,7 +654,46 @@ export async function reportSessionAction(
         try {
           await tx.enrollment.update({
             where: { id: enrollment.id },
-            data: { sessionId: nouvelle.id },
+            // 🔴 2026-08-24 — CE `data:` NE PORTAIT QUE `sessionId`, ET C'ÉTAIT
+            // UN BLOQUANT.
+            //
+            // L'inscription migrait en gardant `convocationEnvoyeeAt`. Or le
+            // cron de convocation ne sélectionne QUE les inscriptions dont la
+            // colonne est nulle (`qualiopi-formation-crons-worker.ts`, clause
+            // `convocationEnvoyeeAt: null`), et le parcours compte
+            // `e.convocationEnvoyeeAt !== null` comme « convoquée »
+            // (`session-parcours.ts`). Conséquence en chaîne :
+            //
+            //   1. aucune convocation ne partait JAMAIS aux nouvelles dates ;
+            //   2. le compteur d'écart, qui exige la même clause, ne la
+            //      rattrapait pas non plus ;
+            //   3. l'écran « À traiter » affichait l'étape comme FAITE.
+            //
+            // Un auditeur aurait vu une session tenue aux nouvelles dates, une
+            // convocation datée aux anciennes, et une console affirmant que la
+            // convocation était partie — l'indicateur 9 contredit par la pièce.
+            //
+            // 🔑 La règle existait pourtant à côté : changer les dates d'une
+            // session COMPTE les convocations déjà parties pour exiger un motif
+            // écrit (`sessions.ts`, `convocationEnvoyeeAt: { not: null }`).
+            // Reporter la session change aussi les dates, et ne s'en occupait
+            // pas. Une règle appliquée sur un site, oubliée sur son jumeau.
+            //
+            // Ce qui est remis à zéro, et pourquoi : TOUT ce qui se rapporte au
+            // déroulé de l'ancienne session. Un report est un acte de
+            // continuité ADMINISTRATIVE — l'inscription suit, l'exécution non.
+            // Laisser passer un taux de présence ou une attestation
+            // reviendrait à déclarer, sur les nouvelles dates, une assiduité
+            // constatée aux anciennes.
+            data: {
+              sessionId: nouvelle.id,
+              convocationEnvoyeeAt: null,
+              emargementSigneAt: null,
+              tauxPresencePct: null,
+              attestationResultat: null,
+              attestationDocumentId: null,
+              attestationGenereeAt: null,
+            },
           });
         } catch (enrollErr) {
           const code = (enrollErr as { code?: string })?.code;
