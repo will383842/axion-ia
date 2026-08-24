@@ -29,23 +29,49 @@ et l'a toujours été :
 - **Le seul gate réellement bloquant est le `lhci` _post-deploy_** (job `lhci` de
   `.github/workflows/deploy-coolify.yml`), qui mesure 5 URLs de la **prod live** après
   l'atterrissage. Il échoue le workflow, donc il alerte — mais **après** la mise en ligne.
-- **Les gates PR de budget sont en reporting, pas en blocage** : dans
-  `.github/workflows/ci.yml`, les steps « Bundle size » (`pnpm bundle:check`, size-limit),
-  « Bundle delta vs main » (`size-limit-action`) et « Lighthouse CI » (`pnpm lhci:autorun`)
-  portent tous les trois `continue-on-error: true`. **Aucune PR qui alourdit le bundle ne
-  rougira.** Conséquence directe : toute revue qui écrit « le risque bundle est couvert par
-  la gate » raisonne sur une fausse sécurité. Un patch susceptible d'alourdir une route se
-  mesure **à la main**, avant/après.
+- **🔴 2026-08-24 — LES DEUX GATES PR QUI NE MESURAIENT RIEN ONT ÉTÉ RETIRÉES.** On les
+  gardait « le temps de lire ce qu'elles rapportent une fois qu'elles rapportent quelque
+  chose ». C'est lu, et voici ce qu'elles rapportaient (run `32666732630`) :
+  - **`Lighthouse CI` (PR-time, 13 min) mesurait le RUNNER.** Elle échouait sur **11 URL
+    sur 11**, toujours pareil : FCP 7,2 s, LCP 11,5 s, TBT 357 ms, performance 0,50. Au
+    même moment, le `lhci` **post-deploy sur la prod live** (run `32668725236`) ne rendait
+    **aucun** échec — un seul avertissement `interaction-to-next-paint / auditRan`, qui ne
+    se mesure pas en laboratoire. Une gate qui déclare toutes ses cibles en faute pendant
+    que la prod passe propre ne mesure pas ses cibles : elle mesurait un runner à 2 cœurs,
+    chauffé par les 8 min de Playwright qui la précédaient.
+  - **`Bundle delta vs main` (3 min) ne pouvait PAS aboutir.** `size-limit-action` relance
+    un build complet pour comparer à `main` ; le step `Build` du même job prend **8 min**,
+    et l'action portait `timeout-minutes: 6`. Un cap de 6 min sur un travail de 8 min n'est
+    pas un garde-fou, c'est une garantie d'échec — et elle détruisait `.next` en partant.
+  - Gain : **16 min sur les 37** de Gate B, et le risque de destruction de `.next` disparaît
+    avec l'étape. Verrouillé par `tests/unit/ci/harnais-e2e-mesure-vraiment.spec.ts`, qui
+    refuse désormais le RETOUR de `size-limit-action`, et par
+    `tests/unit/ci/gate-b-a-ses-services.spec.ts`, qui exige que toute étape placée après la
+    suite E2E déclare `always()` ou `!cancelled()`.
+- **Ce qui reste en reporting** : `pnpm bundle:check` (étape « Poids du bundle », 0 min)
+  porte `continue-on-error: true`. **Aucune PR qui alourdit le bundle ne rougira.** Toute
+  revue qui écrit « le risque bundle est couvert par la gate » raisonne sur une fausse
+  sécurité.
+- **⛔ CE QUI N'EST MESURÉ PAR AUCUNE GATE : le First Load JS PAR ROUTE** (la cible ≤ 75 KB
+  gz ci-dessus). `size-limit` ne sait pas exprimer un budget par route sur un glob — il
+  **SOMME**. Le bucket qui prétendait le faire s'appelait « page chunks individuels » et
+  comparait 654 KB de somme à 75 KB par route : impossible à passer, et muet sur chaque
+  route. Il est renommé en **cliquet anti-croissance** (limite 700 KB, calée sur la mesure).
+  La doctrine renvoyait la question à Lighthouse ; Lighthouse n'y a jamais répondu. **Se
+  mesure à la main** : `next build --experimental-build-mode compile` (~2 min) puis lecture
+  de `.next/static/chunks/app/`.
+- **⚠️ DETTE OUVERTE, CHIFFRÉE : le shell partagé pèse 135,78 KB pour un budget de 100 KB**
+  (framework + main + main-app + webpack + polyfills, brotli, run `32666732630`). Ce
+  bucket-là est honnête — cumulatif comme son nom l'annonce — et réellement dépassé de
+  **35,78 KB**. Il est resté invisible parce que l'étape entière est en `continue-on-error`.
+  Le jour où le shell repasse sous 100 KB, retirer ce `continue-on-error` est la dernière
+  chose à faire : l'étape gardera enfin.
 - ⚠️ **Le « bind loopback » n'a jamais existé** (mesuré le 2026-08-21). Ce paragraphe a
   affirmé que `next start` ne bindait pas sur 127.0.0.1 en CI. Il ne bindait rien parce
   qu'il n'avait **rien à servir** : l'étape `Bundle delta vs main` relançait `pnpm run build`
   dans le même répertoire juste avant, vidait `.next`, puis mourait en OOM — laissant le
   dossier sans `BUILD_ID`. Les 237 tests Playwright et les 5 URLs Lighthouse de Gate B
-  mesuraient donc le vide (run 32443013208 : 209 failed, 0 passed). L'ordre des étapes est
-  corrigé et verrouillé par `tests/unit/ci/harnais-e2e-mesure-vraiment.spec.ts`.
-- Le Lighthouse CI **PR-time** reste néanmoins non bloquant tant qu'on n'a pas **lu** ce
-  qu'il rapporte une fois qu'il rapporte quelque chose. Aligner les seuils d'abord, bloquer
-  ensuite — la règle du paragraphe précédent ne change pas.
+  mesuraient donc le vide (run 32443013208 : 209 failed, 0 passed).
 
 Ne repassez pas ces gates en bloquant « au passage » : un ratchet posé sur un seuil déjà
 dépassé (le bucket « Shell partagé » mesure 134,87 kB réels pour une limite affichée à
