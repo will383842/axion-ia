@@ -15,7 +15,7 @@ import {
   SITEMAP_CACHE_HEADER,
   SITEMAP_CHUNK_SIZE,
 } from "@/server/image-bank/constants";
-import { escapeXml } from "@/server/image-bank/utils/xml";
+import { escapeXml } from "@/lib/xml";
 import { absoluteUrl, pageUrlFor } from "@/server/image-bank/utils/paths";
 
 const LANG = "en" as const;

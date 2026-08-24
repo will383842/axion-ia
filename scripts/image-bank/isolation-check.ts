@@ -164,6 +164,44 @@ function isPathAllowed(filePath: string): boolean {
   return ALLOWED_PATTERNS.some((re) => re.test(normalized));
 }
 
+/**
+ * Une ligne qui crée une ARÊTE DE DÉPENDANCE — la seule chose à surveiller.
+ *
+ * ⚠️ Ne PAS tester `^\s*import` : un import multi-lignes porte son chemin sur la
+ * ligne `} from "…"`, qui ne commence pas par `import`. Même piège que dans
+ * `scripts/qualiopi/isolation-check.ts`.
+ */
+const EST_ARETE = /\bfrom\s*["']|\brequire\s*\(|\bimport\s*\(/;
+
+/**
+ * Les fichiers hors zone qui IMPORTENT vraiment quelque chose — un CLIQUET.
+ *
+ * Mesuré le 2026-08-24 : sur les 31 fichiers que cette garde signalait,
+ * **3 seulement** portaient un import ; les 28 autres ne faisaient que
+ * MENTIONNER le mot. Le cloisonnement du code était donc déjà sain — c'est
+ * l'instrument qui criait.
+ *
+ * ⚠️ Cette liste doit RÉTRÉCIR, jamais grandir : `main()` échoue si une entrée
+ * n'importe plus rien.
+ */
+const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // ✅ 2026-08-24, quelques heures plus tard — `sitemap-news-evergreen.xml` est
+  // SORTI de cette liste. Il n'y était que pour `escapeXml`, un utilitaire XML
+  // générique qui se trouvait rangé sous `server/image-bank/utils/` ; le helper
+  // vit désormais dans `@/lib/xml`, où il n'appartient à aucun domaine.
+  // 🔑 C'est le contrôle d'exception périmée qui l'a signalé, tout seul, dès que
+  // l'import a disparu — et il a nommé le fichier à retirer. Une liste
+  // d'exceptions qui ne sait pas rétrécir se serait tue.
+  //
+  // Ces deux-là importent `ImageAsset` / `ImageAssetTranslation` depuis
+  // `prisma/generated/client` : ce sont les TYPES DE LA BASE, générés par
+  // Prisma, pas du code du module image-bank. La salle de presse affiche des
+  // images de la banque, donc elle en manipule les types — c'est le schéma
+  // partagé qui les relie, pas une dépendance de module.
+  "src/components/sections/PressImageCarousel.tsx",
+  "src/server/press/queries.ts",
+]);
+
 function looksLikeImageBank(filePath: string, content: string): boolean {
   const normalized = filePath.replace(/\\/g, "/");
   if (isPathAllowed(normalized)) return false;
@@ -178,7 +216,25 @@ function looksLikeImageBank(filePath: string, content: string): boolean {
   ) {
     return false;
   }
-  return IMAGE_BANK_MARKERS.some((m) => content.includes(m));
+
+  // 🔴 2026-08-24 — c'était `IMAGE_BANK_MARKERS.some((m) => content.includes(m))`.
+  // La garde marquait donc sur une simple MENTION du mot, et signalait :
+  //   · `.env.example` — pour la ligne de config `IMAGE_BANK_STORAGE_PATH` ;
+  //   · `src/app/admin.css` — pour des COMMENTAIRES CSS ;
+  //   · `cv-storage.ts`, `console-documents/storage.ts`, `editorial/stockage.ts`
+  //     — du stockage qui écrit À CÔTÉ, sur le même volume, sans rien importer ;
+  //   · une dizaine de tests qui parlent de la banque d'images.
+  // 28 des 31 signalements, pour 3 imports réels. Ce qu'on surveille est l'arête
+  // de dépendance, pas le vocabulaire.
+  //
+  // Ce choix ABANDONNE une promesse : la garde ne vérifie plus que le module
+  // pourrait être « arraché » d'un bloc (rollback modulaire V1 → V2). Décision
+  // de Will, 2026-08-24 : ce rollback n'est plus un scénario prévu. Si un jour
+  // il le redevient, c'est cette ligne qu'il faut rouvrir — pas une liste
+  // d'exceptions qu'il faudrait deviner.
+  return content
+    .split("\n")
+    .some((ligne) => EST_ARETE.test(ligne) && IMAGE_BANK_MARKERS.some((m) => ligne.includes(m)));
 }
 
 function listStagedFiles(): string[] {
@@ -212,6 +268,7 @@ async function main(): Promise<void> {
   const files = mode === "staged" ? listStagedFiles() : listAllTrackedFiles();
 
   const violations: Array<{ file: string; reason: string }> = [];
+  const exceptionsUtilisees = new Set<string>();
 
   for (const f of files) {
     if (isPathAllowed(f)) continue;
@@ -219,28 +276,59 @@ async function main(): Promise<void> {
       const content = await import("node:fs").then((m) =>
         m.promises.readFile(path.join(process.cwd(), f), "utf8"),
       );
-      if (looksLikeImageBank(f, content)) {
-        violations.push({
-          file: f,
-          reason: "Contient marqueur image-bank mais hors zones dédiées (§ 7.1)",
-        });
+      if (!looksLikeImageBank(f, content)) continue;
+
+      const normalized = f.replace(/\\/g, "/");
+      if (CONSOMMATEURS_ASSUMES.has(normalized)) {
+        exceptionsUtilisees.add(normalized);
+        continue;
       }
+      violations.push({
+        file: f,
+        reason: "Importe le module image-bank hors des zones dédiées (§ 7.1)",
+      });
     } catch {
       // unreadable / binary → skip
     }
   }
 
-  if (violations.length === 0) {
+  // Une exception qui ne correspond plus à rien est une garde desserrée pour
+  // rien. Vérifiable seulement en mode « all » : en `--staged`, la plupart des
+  // fichiers ne sont pas dans le lot examiné.
+  const perimees =
+    mode === "all" ? [...CONSOMMATEURS_ASSUMES].filter((f) => !exceptionsUtilisees.has(f)) : [];
+
+  if (violations.length === 0 && perimees.length === 0) {
     console.log(
-      `✅ [image-bank:isolation-check] OK — ${files.length} fichiers scannés, 0 violation.`,
+      `✅ [image-bank:isolation-check] OK — ${files.length} fichiers scannés, ` +
+        `0 violation, ${exceptionsUtilisees.size} consommateurs assumés (tous encore actifs).`,
     );
     process.exit(0);
   }
 
-  console.error(`❌ [image-bank:isolation-check] ${violations.length} violations détectées :`);
-  for (const v of violations) {
-    console.error(`  - ${v.file} : ${v.reason}`);
+  if (violations.length > 0) {
+    console.error(`❌ [image-bank:isolation-check] ${violations.length} violation(s) :`);
+    for (const v of violations) {
+      console.error(`  - ${v.file} : ${v.reason}`);
+    }
+    console.error(
+      "\n  Ce fichier importe le module image-bank depuis une surface qui ne le faisait pas.\n" +
+        "  Deux issues, et une seule est un choix :\n" +
+        "    · le code appartient au module → le déplacer dans une zone dédiée ;\n" +
+        "    · la surface le consomme vraiment → l'ajouter à CONSOMMATEURS_ASSUMES,\n" +
+        "      AVEC sa raison.",
+    );
   }
+
+  if (perimees.length > 0) {
+    console.error(
+      `\n❌ [image-bank:isolation-check] ${perimees.length} exception(s) PÉRIMÉE(S) — ` +
+        "ces fichiers n'importent plus le module (ou n'existent plus) :",
+    );
+    for (const f of perimees) console.error(`  - ${f}`);
+    console.error("\n  Les retirer de CONSOMMATEURS_ASSUMES.");
+  }
+
   process.exit(1);
 }
 

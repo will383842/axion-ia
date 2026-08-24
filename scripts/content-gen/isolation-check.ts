@@ -75,6 +75,16 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/server\/queue\/worker\.ts$/,
   // package.json — npm scripts content-gen:seed / content-gen:isolation-check
   /^package\.json$/,
+  // Les deux fichiers qui PARLENT des gardes d'isolation elles-mêmes (2026-08-24).
+  // Ils citent `content-gen:isolation-check` parce que c'est la seule des trois
+  // gardes qui était câblée en CI — et donc la seule à 0 violation, quand les
+  // deux autres en cumulaient 88. C'est exactement l'argument qui a justifié de
+  // câbler celle de qualiopi ; l'effacer viderait la démonstration.
+  // Aucun code de pipeline : uniquement le nom du script, en commentaire et dans
+  // une liste de gardes attendues. Même nature d'exception que `admin-nav.ts`
+  // et `AdminBreadcrumbs.tsx` ci-dessous — le marqueur est cité, pas importé.
+  /^scripts\/qualiopi\/isolation-check\.ts$/,
+  /^tests\/unit\/ci\/gardes-isolation-sont-appelees\.spec\.ts$/,
   // AdminCommandPalette ⌘K — référence des routes /content-gen pour navigation
   // rapide admin (Audit final P0-4, commit `24e050e`).
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/AdminCommandPalette\.tsx$/,
