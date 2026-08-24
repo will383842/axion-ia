@@ -115,38 +115,6 @@ export async function genererFactureCoaching(
       }),
     );
 
-    const factureData: FactureData = {
-      numero,
-      dateEmission: fmt(now),
-      dateEcheance: fmt(echeance),
-      identite,
-      regimeTva,
-      tauxTvaStandardPercent: tauxStandard,
-      client: {
-        raisonSociale: destinataireNom,
-        ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
-        ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
-      },
-      lignes,
-      ...(rib !== null ? { rib } : {}),
-    };
-
-    let docResult: { id: string } | null = null;
-    try {
-      docResult = await generateDocument({
-        type: "facture",
-        identite,
-        // 🔴 Le numéro de facture est déjà alloué sur la séquence FactureFormation
-        // (ligne `numero` ci-dessus). NE PAS le remplacer par le numéro de Document
-        // générique renvoyé par generateDocument — sinon le PDF affiche un numéro
-        // différent de celui enregistré en base (facture ↔ PDF désynchronisés).
-        buildElement: () => React.createElement(FacturePdf, { data: factureData }),
-      });
-    } catch {
-      // fail-soft : facture créée sans PDF si le renderer échoue
-    }
-    documentId = docResult?.id ?? null;
-
     try {
       const facture = await prisma.factureFormation.create({
         data: {
@@ -171,7 +139,6 @@ export async function genererFactureCoaching(
           statut: "emise",
           emiseAt: now,
           echeanceAt: echeance,
-          ...(documentId !== null ? { documentId } : {}),
         },
         select: { id: true, numero: true },
       });
@@ -192,6 +159,48 @@ export async function genererFactureCoaching(
     throw new Error(
       `[genererFactureCoaching] Impossible d'allouer un numéro unique après ${MAX_ATTEMPTS} tentatives.`,
     );
+  }
+
+  const factureData: FactureData = {
+    // Le numéro que la base a ACCEPTÉ, jamais celui d'un tour de reprise perdu.
+    numero: factureCreee.numero,
+    dateEmission: fmt(now),
+    dateEcheance: fmt(echeance),
+    identite,
+    regimeTva,
+    tauxTvaStandardPercent: tauxStandard,
+    client: {
+      raisonSociale: destinataireNom,
+      ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
+      ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
+    },
+    lignes,
+    ...(rib !== null ? { rib } : {}),
+  };
+
+  // 🔴 2026-08-24, cahier D9-2 — PDF APRÈS le create réussi (revue C2).
+  //
+  // Il était généré AVANT, dans la boucle de reprise. Sur collision de numéro,
+  // le tour suivant en générait un SECOND, laissant le premier ORPHELIN au
+  // registre des pièces — avec un numéro de facture attribué à une AUTRE
+  // facture. Le patron correct existait déjà dans `plan-recurrent.ts` et
+  // `facture-libre.ts` ; il avait été oublié ici et dans `facturation-service.ts`.
+  try {
+    const docResult = await generateDocument({
+      type: "facture",
+      identite,
+      // 🔴 Le numéro affiché est celui de la séquence FactureFormation, jamais
+      // celui du DocumentGenere : sinon le PDF remis au client porte un numéro
+      // absent du registre comptable (facture ↔ PDF désynchronisés).
+      buildElement: () => React.createElement(FacturePdf, { data: factureData }),
+    });
+    documentId = docResult.id;
+    await prisma.factureFormation.update({
+      where: { id: factureCreee.id },
+      data: { documentId },
+    });
+  } catch {
+    // Fail-soft assumé : la facture reste ÉMISE sans PDF si le renderer échoue.
   }
 
   return { factureId: factureCreee.id, numero: factureCreee.numero, documentId };
