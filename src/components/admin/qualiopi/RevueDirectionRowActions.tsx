@@ -124,6 +124,7 @@ export interface RevueDirectionRowActionsProps {
     id: string;
     dateRevue: Date;
     statut: string;
+    participants: readonly unknown[];
     decisions: readonly unknown[];
     planActions: readonly unknown[];
   };
@@ -141,6 +142,7 @@ export function RevueDirectionRowActions({
 
   const [dateRevue, setDateRevue] = useState(() => revue.dateRevue.toISOString().slice(0, 10));
   const [statut, setStatut] = useState(revue.statut);
+  const [participantsRaw, setParticipantsRaw] = useState(() => versTexte(revue.participants));
   const [decisionsRaw, setDecisionsRaw] = useState(() => versTexte(revue.decisions));
   const [actions, setActions] = useState<ActionAmelioration[]>(() =>
     normaliserPlanActions(revue.planActions as unknown[]),
@@ -153,6 +155,21 @@ export function RevueDirectionRowActions({
   function retirerAction(index: number): void {
     setActions((prev) => prev.filter((_, i) => i !== index));
   }
+
+  /**
+   * Les participants sont des CHAÎNES NUES, exactement comme les écrit
+   * `RevueDirectionForm` à la création : c'est la seule forme que cette colonne
+   * ait jamais portée. Écrire ici une forme objet ferait diverger la création et
+   * l'édition sur la même donnée — ce dépôt a payé quatre fois un prédicat
+   * recopié qui diverge, et `resumeJsonListe` (PDF) comme `compterListe`
+   * (moteur) ne compteraient plus les mêmes lignes.
+   */
+  const participants = participantsRaw
+    .split("\n")
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0);
+
+  const sansParticipant = participants.length === 0;
 
   const sansResponsable = actions.filter(
     (a) => a.action.trim().length > 0 && a.responsable.trim().length === 0,
@@ -169,6 +186,7 @@ export function RevueDirectionRowActions({
         id: revue.id,
         dateRevue: new Date(dateRevue),
         statut,
+        participants,
         decisions: versListe(decisionsRaw, revue.decisions),
         // Les lignes sans libellé sont écartées ici comme côté serveur : une
         // ligne qu'on vient d'ajouter et qu'on n'a pas remplie n'est pas une action.
@@ -235,6 +253,12 @@ export function RevueDirectionRowActions({
             marque les autres comme non couvrantes.
           </p>
         )}
+        {statut === "validee" && sansParticipant && (
+          <p className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+            La validation sera refusée tant qu&apos;aucun participant n&apos;est nommé : une revue
+            de direction sans participants n&apos;est pas opposable.
+          </p>
+        )}
         {statut === "validee" && (sansResponsable > 0 || sansEcheance > 0) && (
           <p className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
             La validation sera refusée tant qu&apos;une action reste sans responsable
@@ -243,6 +267,20 @@ export function RevueDirectionRowActions({
             n&apos;est pas une mesure mise en œuvre.
           </p>
         )}
+      </div>
+      <div>
+        <label htmlFor="revuedirectionrowactions-participants" className={labelCls}>
+          Participants (un par ligne)
+        </label>
+        <textarea
+          id="revuedirectionrowactions-participants"
+          value={participantsRaw}
+          onChange={(e) => setParticipantsRaw(e.target.value)}
+          disabled={isPending}
+          rows={3}
+          placeholder={"Williams Jullin — Président\nAutre participant — fonction"}
+          className={inputCls}
+        />
       </div>
       <div>
         <label htmlFor="revuedirectionrowactions-decisions" className={labelCls}>

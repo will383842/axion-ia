@@ -198,6 +198,9 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                           id: r.id,
                           dateRevue: r.dateRevue,
                           statut: r.statut,
+                          participants: Array.isArray(r.participants)
+                            ? (r.participants as unknown[])
+                            : [],
                           decisions: Array.isArray(r.decisions) ? (r.decisions as unknown[]) : [],
                           planActions: Array.isArray(r.planActions)
                             ? (r.planActions as unknown[])
