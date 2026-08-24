@@ -21,6 +21,9 @@
 
 import { prisma } from "@/lib/prisma";
 import type { EmailLogStatus } from "../../../prisma/generated/client";
+// ⚠️ Import de VALEUR, pas de type : `STATUTS` est dérivé de l'énum à
+// l'exécution. Un `import type` seul ne donnerait rien à énumérer.
+import { EmailLogStatus as EmailLogStatusEnum } from "../../../prisma/generated/client";
 
 /** Fenêtres proposées dans l'entête. */
 export const FENETRES_EMAILS = [
@@ -35,7 +38,27 @@ export const FENETRE_EMAILS_DEFAUT = 30;
 /** Lignes par page. Au-delà, la lecture n'a plus de valeur d'inspection. */
 export const PAR_PAGE = 50;
 
-const STATUTS: readonly EmailLogStatus[] = ["sent", "failed", "pending"];
+/**
+ * 🔴 2026-08-24 — `bounced` MANQUAIT, ET C'EST LE SEUL STATUT QUI COMPTE VRAIMENT.
+ *
+ * `EmailLogStatus` porte quatre valeurs. Cette liste en déclarait trois. Le
+ * statut `bounced` a été ajouté le 2026-08-20 avec le webhook ZeptoMail —
+ * l'énum le documente mot pour mot : « un rebond dur était indiscernable d'une
+ * remise réussie : le relais acceptait le message (`sent`), le serveur
+ * destinataire le refusait ensuite, et rien ne revenait. Une convocation
+ * "envoyée" pouvait n'être jamais arrivée. »
+ *
+ * Le webhook écrit bien `bounced`. La console, elle, ne le proposait dans aucun
+ * filtre et ne le comptait dans aucun compteur : un rebond DISPARAISSAIT de
+ * l'écran censé le montrer. Le défaut a donc été corrigé à moitié — la donnée
+ * arrive, personne ne la voit.
+ *
+ * 🔑 Cette liste est désormais DÉRIVÉE de l'énum, pas énumérée : le jour où une
+ * cinquième valeur apparaît, elle est couverte sans que personne y pense. Une
+ * liste écrite à la main vieillit toujours mal — ce dépôt l'a payé le matin même
+ * sur un autre cliquet.
+ */
+const STATUTS: readonly EmailLogStatus[] = Object.values(EmailLogStatusEnum);
 
 export type FiltresEmails = {
   jours: number;
@@ -66,7 +89,7 @@ export type ChargementEmails = {
   page: number;
   pages: number;
   /** Répartition par statut sur la fenêtre, tous filtres de statut ignorés. */
-  parStatut: { envoyes: number; echecs: number; enAttente: number };
+  parStatut: { envoyes: number; echecs: number; enAttente: number; rebonds: number };
   /** Gabarits présents sur la fenêtre, pour alimenter le filtre. */
   gabarits: Array<{ nom: string; envois: number }>;
 };
@@ -100,7 +123,7 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
     total: 0,
     page: 1,
     pages: 1,
-    parStatut: { envoyes: 0, echecs: 0, enAttente: 0 },
+    parStatut: { envoyes: 0, echecs: 0, enAttente: 0, rebonds: 0 },
     gabarits: [],
   };
 
@@ -170,6 +193,11 @@ export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementE
         envoyes: compte("sent"),
         echecs: compte("failed"),
         enAttente: compte("pending"),
+        // Remis au relais PUIS refusé par le serveur destinataire. Ni un envoi
+        // réussi, ni un échec technique : le message est parti et n'arrivera
+        // jamais. C'est le seul statut qui exige un geste humain — corriger
+        // l'adresse — et il n'était affiché nulle part.
+        rebonds: compte("bounced"),
       },
       gabarits: gabaritsBruts.map((g) => ({ nom: g.template, envois: g._count._all })),
     };

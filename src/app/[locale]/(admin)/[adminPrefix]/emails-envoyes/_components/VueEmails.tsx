@@ -194,6 +194,19 @@ export function VueEmails({
           value={nb(donnees.parStatut.enAttente)}
           meta="Encore en file"
         />
+        {/* 🔴 2026-08-24 — LE REBOND N'ÉTAIT AFFICHÉ NULLE PART.
+            Le webhook ZeptoMail écrit `bounced` depuis le 2026-08-20, mais la
+            console ne le comptait ni ne le filtrait : le message est parti,
+            le serveur destinataire l'a refusé, et l'écran censé le montrer
+            n'en disait rien. C'est le SEUL statut qui exige un geste humain —
+            corriger l'adresse — d'où le ton d'alerte et le lien de filtre. */}
+        <AdminStatCard
+          label="Rebonds"
+          value={nb(donnees.parStatut.rebonds)}
+          meta="Refusés par le serveur destinataire — adresse à corriger"
+          tone={donnees.parStatut.rebonds > 0 ? "destructive" : "default"}
+          {...(donnees.parStatut.rebonds > 0 ? { href: lien({ statut: "bounced", page: 1 }) } : {})}
+        />
         <AdminStatCard
           label="Gabarits utilisés"
           value={nb(donnees.gabarits.length)}

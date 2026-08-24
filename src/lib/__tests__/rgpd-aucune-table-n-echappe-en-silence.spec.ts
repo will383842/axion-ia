@@ -104,10 +104,22 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
   //    contre-témoin ci-dessous qui l'a dit. Il ne porte que
   //    `destinataireEmailSha256` : une empreinte, jamais l'adresse. C'est
   //    exactement le traitement qu'on cherche ailleurs, pas un manque. ────────
+  // 🔴 2026-08-24, VÉRIFIÉ APRÈS COUP — CETTE ENTRÉE ÉTAIT FAUSSE.
+  // Je l'avais classée `a-instruire` en la présentant comme « la première à
+  // reprendre ». Le stagiaire a en réalité SA PROPRE chaîne RGPD, complète et
+  // câblée : `qualiopi/portail/rgpd-service.ts` anonymise nom, prénom, e-mail,
+  // téléphone, entreprise, fonction, handicap et consentements, pose `deletedAt`,
+  // et RÉVOQUE tous les accès portail — un jeton de 90 j resterait sinon
+  // exploitable sur un stagiaire « supprimé ». Un export art. 15 dédié existe
+  // aussi. Appelée depuis `actions/qualiopi/appreciations.ts`.
+  //
+  // 🔑 Un inventaire qui déclare « non vérifié » ce qui est TRAITÉ n'est pas
+  // prudent : il est faux, et il envoie le prochain lecteur refaire un travail
+  // déjà fait. La prudence n'excuse pas l'inexactitude.
   {
     modele: "Trainee",
-    statut: "a-instruire",
-    note: "⚠️ LE STAGIAIRE LUI-MÊME. Preuve Qualiopi probable, mais NON instruit — c'est la première à reprendre.",
+    statut: "traite",
+    note: "chaîne DÉDIÉE `portail/rgpd-service.ts` : anonymisation PII + `deletedAt` + révocation des accès portail (jamais de DELETE physique — intégrité comptable). Export art. 15 dédié.",
   },
   {
     modele: "Client",
@@ -272,6 +284,12 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
       "src/lib/rgpd-erase.ts",
       "src/app/api/gdpr-erase/route.ts",
       "src/server/careers/candidature-rgpd.ts",
+      // 🔴 2026-08-24 — LE STAGIAIRE A SA PROPRE CHAÎNE, ET CE CLIQUET NE LA
+      // VOYAIT PAS. Il a donc refusé un `traite` pourtant EXACT, en exigeant
+      // une déclaration fausse. Une garde dont le périmètre est plus étroit que
+      // la règle qu'elle garde pousse à mentir pour la satisfaire — c'est un
+      // défaut de garde, pas un défaut de code.
+      "src/server/qualiopi/portail/rgpd-service.ts",
     ]
       .map((f) => readFileSync(join(process.cwd(), f), "utf8"))
       .join("\n");
