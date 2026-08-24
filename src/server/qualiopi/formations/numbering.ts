@@ -74,19 +74,54 @@ export async function allocateSessionNumero(opts?: AllocateSessionNumeroOpts): P
   // de BASE (cf. `parseSequence`) : N lignes insérées ne consomment qu'un seul
   // rang de série, ce qui est le comportement voulu.
   //
-  // ⚠️ ATTENTION, DETTE CONNUE ET NON FERMÉE PAR CE LOT : `documents_generes`
-  // porte déjà `AXI-SESS-2026-003` (ancienne numérotation, cf. ADR 0035) alors
-  // que `training_sessions` s'arrête à -002. La prochaine session créée recevra
-  // donc -003 et entrera en collision inter-registres avec cette pièce. Seule la
-  // purge des 9 tirages antérieurs (branche A de l'ADR 0035) ferme le cas.
+  // 🔴 2026-08-23 — LA COLLISION ANNONCÉE PAR L'ADR 0035 §5 EST FERMÉE ICI,
+  // SANS TOUCHER À UNE SEULE LIGNE DE PRODUCTION.
+  //
+  // Ce commentaire disait, jusqu'à aujourd'hui : « dette connue et non fermée
+  // par ce lot — `documents_generes` porte déjà `AXI-SESS-2026-003` alors que
+  // `training_sessions` s'arrête à -002 ; la prochaine session créée entrera en
+  // collision ; seule la purge des 9 tirages antérieurs ferme le cas. »
+  //
+  // Une collision annoncée comme CERTAINE n'a pas à attendre une décision de
+  // purge : il suffit que la borne haute cesse d'être aveugle à l'autre
+  // registre. La purge (branche A de l'ADR) reste possible et souhaitable pour
+  // la propreté des deux séries, mais elle n'est plus le seul remède, et elle
+  // n'est plus urgente.
+  //
+  // ## Pourquoi cette lecture croisée ne contredit PAS la décision §1 de l'ADR
+  //
+  // §1 pose que les deux registres ont des espaces de noms DISJOINTS — et c'est
+  // vrai pour tout ce qui est émis depuis le 2026-07-26 : le registre
+  // documentaire n'émet plus que `AXI-DOC`, `AXI-ATT`, `AXI-CERT`. Interroger
+  // `documents_generes` sur le préfixe `AXI-SESS-<année>-` ne peut donc ramener
+  // QUE les pièces de l'ancienne numérotation, énumérées une à une par §4 :
+  // un ensemble FIGÉ de 9 lignes, qui ne grandira jamais.
+  //
+  // Autrement dit, cette lecture n'ouvre pas un couplage permanent entre les
+  // deux registres : elle rend la borne haute consciente d'un héritage clos.
+  // Le jour où la branche A est jouée, elle ne ramènera plus rien et deviendra
+  // un no-op — sans qu'il faille y repenser.
+  //
+  // ⚠️ Ce que ce correctif NE fait PAS : il ne rend pas l'unicité
+  // inter-registres GARANTIE (cf. « ce qui reste ouvert » de l'ADR : seule une
+  // table `numero_registre` alimentée par tous les allocateurs le ferait). Il
+  // supprime la collision annoncée, pas la classe entière de défauts.
   return nextNumero(
     "session",
     year,
-    (prefixe) =>
-      db.trainingSession.findMany({
-        where: { numero: { startsWith: prefixe } },
-        select: { numero: true },
-      }),
+    async (prefixe) => {
+      const [sessions, pieces] = await Promise.all([
+        db.trainingSession.findMany({
+          where: { numero: { startsWith: prefixe } },
+          select: { numero: true },
+        }),
+        db.documentGenere.findMany({
+          where: { numero: { startsWith: prefixe } },
+          select: { numero: true },
+        }),
+      ]);
+      return [...sessions, ...pieces];
+    },
     opts?.recurrence,
   );
 }

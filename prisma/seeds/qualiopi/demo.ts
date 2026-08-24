@@ -1687,6 +1687,57 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
     });
   }
 
+  // ── L'offre 1-à-1 du dossier de démonstration ───────────────────────────────
+  //
+  // 🔴 SANS CE BLOC, LE PARCOURS 04 NE MESURE RIEN — et il le déclare en vert.
+  //
+  // Chaîne mesurée le 2026-08-23. `seedOffresSite` crée les dix offres legacy
+  // sans champ `actif`, donc toutes naissent actives (schema.prisma:5426,
+  // `@default(true)`). Puis `main()` appelle `runCatalogueCleanup()`
+  // (seeds/qualiopi/index.ts:97 pour l'invocation, l'appel à `cleanupCatalogue`
+  // étant en :63-64), SANS `includeLegacyOffres`, donc `includeLegacy` vaut
+  // `true` (catalogue-cleanup.ts:118) et la garde qui aurait pu les épargner est
+  // court-circuitée (:159). Toute offre active dont le slug est hors de
+  // `FORMATIONS_V2` — lequel ne contient QUE des formats collectifs
+  // (catalog-v2.ts:6949-6976) — et qu'aucune formation vivante ne porte est
+  // désactivée (:156-165).
+  //
+  // Résultat : `pnpm qualiopi:seed` crée les trois offres 1-à-1 puis les éteint
+  // dans la même commande. En CI, le tunnel de vente n'en propose donc AUCUNE,
+  // et le parcours 04 — « une offre 1-à-1 retire le sélecteur de formation et
+  // renvoie vers le parcours de coaching » — s'annonce « non couvert » à chaque
+  // exécution. Ses quatre assertions n'ont jamais tourné.
+  //
+  // 🔑 On répare par la DONNÉE DE DÉMONSTRATION, pas par le nettoyage. Rendre le
+  // cleanup indulgent envers les offres legacy en épargnerait DIX — `conference`,
+  // `sur-demande` et six collectives redeviendraient vendables au wizard. Ce
+  // serait une décision produit, pas un correctif de test.
+  //
+  // ⚠️ ON NE TOUCHE PAS À `intervention-dirigeants` (AXI-OFF-006) : son extinction
+  // est VOULUE, décidée le 2026-06-11 (migration
+  // `20260611170000_deactivate_orphan_dirigeants_offre`).
+  //
+  // ⚠️ On cible par `tierId`, JAMAIS par code `AXI-OFF-NNN` : `offreCode()` alloue
+  // par index de tableau (offres.ts:191-193) et `seedOffresSite` ne met jamais à
+  // jour une ligne existante (:205-209). Retirer une entrée du milieu décale donc
+  // tous les codes suivants d'une base fraîche, sans renuméroter les bases déjà
+  // semées — `AXI-OFF-010` ne désigne pas la même offre partout.
+  //
+  // Ce bloc ne s'exécute QUE dans `qualiopi:seed-demo`, jamais en production :
+  // la production ne sème pas.
+  const offreUnAUn = await prisma.offreSite.findUnique({
+    where: { tierId: "intervention-membre-equipe" },
+    select: { id: true, actif: true },
+  });
+  if (offreUnAUn === null) {
+    console.warn(
+      "[qualiopi:seed-demo] ⚠️ offre `intervention-membre-equipe` introuvable : " +
+        "jouer `pnpm qualiopi:seed` avant. Le parcours 04 se déclarera non couvert.",
+    );
+  } else if (!offreUnAUn.actif) {
+    await prisma.offreSite.update({ where: { id: offreUnAUn.id }, data: { actif: true } });
+  }
+
   console.log(
     "✅ [qualiopi:seed-demo] Cycle complet persité avec succès. " +
       `Client=${DEMO.CLIENT} (IDCC=${data.client.idcc}) | Devis=${DEMO.DEVIS} | ` +
@@ -1694,7 +1745,8 @@ export async function persistDemo(prisma: PrismaClient): Promise<void> {
       `Session=${DEMO.SESSION} (Barème dossier=${data.session.priseEnChargeMontantCents / 100}€/${data.session.priseEnChargeUnite}) | ` +
       `Stagiaires=2 | Attestation=${DEMO.ATTESTATION} | ` +
       `Facture=${DEMO.FACTURE} | Réclamation=${DEMO.RECLAMATION} | ` +
-      `Trainer=${DEMO.TRAINER_EMAIL} | SiteSettings=3 | Moyens=${data.moyens.length} | BpfDepense=1 | Appréciations=4`,
+      `Trainer=${DEMO.TRAINER_EMAIL} | SiteSettings=3 | Moyens=${data.moyens.length} | BpfDepense=1 | Appréciations=4 | ` +
+      `Offre1a1=${offreUnAUn === null ? "ABSENTE" : "active"}`,
   );
 }
 

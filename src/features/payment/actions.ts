@@ -28,6 +28,7 @@ import { getStripe, isStripeConfigured } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getClientIp } from "@/lib/client-ip";
+import { SITE_URL } from "@/lib/site-url";
 
 // ============================================================
 // Helpers
@@ -148,7 +149,27 @@ export async function createStripeCheckoutSessionAction(
 
   // -- 3. Création Stripe Checkout Session -------------------------------
   const stripe = getStripe();
-  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://axion-ia.com";
+  // 🔴 2026-08-23 — ORIGINE CANONIQUE, ET NON UNE VARIABLE FANTÔME.
+  //
+  // Cette ligne lisait `process.env["NEXT_PUBLIC_APP_URL"] ?? "https://axion-ia.com"`.
+  // Or `NEXT_PUBLIC_APP_URL` n'était déclarée NULLE PART dans le dépôt — ni dans
+  // les trois `.env*.example`, ni dans `ci.yml`, ni dans le schéma `env.ts` — et
+  // trois modules la lisaient avec le MÊME repli codé en dur. Partout où elle
+  // n'était pas posée à la main, l'URL produite pointait donc la PRODUCTION.
+  //
+  // Conséquence mesurée : le lien d'accès envoyé au stagiaire pointait
+  // `https://axion-ia.com` quel que soit l'environnement. Correct en production,
+  // faux partout ailleurs — et le parcours E2E du portail mesurait la production
+  // au lieu du serveur sous test. En local il ne passait que parce qu'un
+  // `.env.local` non versionné posait la variable ; en CI, non.
+  //
+  // 🔑 On ne DÉCLARE pas la variable manquante, on supprime le doublon :
+  // `SITE_URL` (`@/lib/site-url`) est déjà l'origine canonique, validée par le
+  // schéma (`env.ts:404`, défaut `http://localhost:3000`), déclarée dans les
+  // trois `.env*.example` ET dans `ci.yml`, et munie de son propre filet de
+  // sécurité en production. Un prédicat recopié diverge toujours : il n'y en a
+  // plus qu'un.
+  const baseUrl = SITE_URL;
   const defaultSuccess = `${baseUrl}/fr/paiement/succes?invoice=${invoice.id}`;
   const defaultCancel = `${baseUrl}/fr/paiement/annule?invoice=${invoice.id}`;
 
