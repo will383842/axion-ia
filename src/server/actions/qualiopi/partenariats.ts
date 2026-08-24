@@ -31,6 +31,17 @@ const creerPartenariatSchema = z.object({
   dateDebut: z.coerce.date(),
   dateFin: z.coerce.date().optional(),
   actif: z.boolean().default(true),
+  /**
+   * Trace de l'échange (off.26 ⭐). `null` efface, absent ne touche à rien.
+   *
+   * L'e-mail est VALIDÉ comme e-mail : la configuration Qualiopi a déjà porté
+   * un NOM (« Williams Jullin ») dans un champ e-mail pendant des semaines, et
+   * un champ de contact qui accepte n'importe quoi ne contacte personne.
+   */
+  interlocuteurNom: z.string().trim().max(200).nullable().optional(),
+  interlocuteurEmail: z.string().trim().email().max(320).nullable().optional(),
+  dernierEchangeAt: z.coerce.date().nullable().optional(),
+  preuveUrl: z.string().trim().url().max(2000).nullable().optional(),
 });
 
 const updatePartenariatSchema = z.object({
@@ -41,6 +52,17 @@ const updatePartenariatSchema = z.object({
   dateDebut: z.coerce.date().optional(),
   dateFin: z.coerce.date().optional(),
   actif: z.boolean().optional(),
+  /**
+   * Trace de l'échange (off.26 ⭐). `null` efface, absent ne touche à rien.
+   *
+   * L'e-mail est VALIDÉ comme e-mail : la configuration Qualiopi a déjà porté
+   * un NOM (« Williams Jullin ») dans un champ e-mail pendant des semaines, et
+   * un champ de contact qui accepte n'importe quoi ne contacte personne.
+   */
+  interlocuteurNom: z.string().trim().max(200).nullable().optional(),
+  interlocuteurEmail: z.string().trim().email().max(320).nullable().optional(),
+  dernierEchangeAt: z.coerce.date().nullable().optional(),
+  preuveUrl: z.string().trim().url().max(2000).nullable().optional(),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -57,6 +79,10 @@ export async function creerPartenariatAction(input: {
   dateDebut: Date;
   dateFin?: Date;
   actif?: boolean;
+  interlocuteurNom?: string | null;
+  interlocuteurEmail?: string | null;
+  dernierEchangeAt?: Date | null;
+  preuveUrl?: string | null;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = creerPartenariatSchema.safeParse(input);
@@ -72,6 +98,10 @@ export async function creerPartenariatAction(input: {
       dateDebut: v.dateDebut,
       ...(v.dateFin !== undefined ? { dateFin: v.dateFin } : {}),
       actif: v.actif,
+      ...(v.interlocuteurNom !== undefined ? { interlocuteurNom: v.interlocuteurNom } : {}),
+      ...(v.interlocuteurEmail !== undefined ? { interlocuteurEmail: v.interlocuteurEmail } : {}),
+      ...(v.dernierEchangeAt !== undefined ? { dernierEchangeAt: v.dernierEchangeAt } : {}),
+      ...(v.preuveUrl !== undefined ? { preuveUrl: v.preuveUrl } : {}),
     });
   } catch {
     return { error: "Erreur lors de l'enregistrement du partenariat" };
@@ -99,6 +129,10 @@ export async function updatePartenariatAction(input: {
   dateDebut?: Date;
   dateFin?: Date;
   actif?: boolean;
+  interlocuteurNom?: string | null;
+  interlocuteurEmail?: string | null;
+  dernierEchangeAt?: Date | null;
+  preuveUrl?: string | null;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = updatePartenariatSchema.safeParse(input);
@@ -116,6 +150,16 @@ export async function updatePartenariatAction(input: {
       ...(fields.dateDebut !== undefined ? { dateDebut: fields.dateDebut } : {}),
       ...(fields.dateFin !== undefined ? { dateFin: fields.dateFin } : {}),
       ...(fields.actif !== undefined ? { actif: fields.actif } : {}),
+      ...(fields.interlocuteurNom !== undefined
+        ? { interlocuteurNom: fields.interlocuteurNom }
+        : {}),
+      ...(fields.interlocuteurEmail !== undefined
+        ? { interlocuteurEmail: fields.interlocuteurEmail }
+        : {}),
+      ...(fields.dernierEchangeAt !== undefined
+        ? { dernierEchangeAt: fields.dernierEchangeAt }
+        : {}),
+      ...(fields.preuveUrl !== undefined ? { preuveUrl: fields.preuveUrl } : {}),
     });
   } catch {
     return { error: "Partenariat introuvable ou erreur de mise à jour" };

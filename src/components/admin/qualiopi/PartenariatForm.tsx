@@ -35,6 +35,13 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
   const [dateDebut, setDateDebut] = useState(() => new Date().toISOString().slice(0, 10));
   const [dateFin, setDateFin] = useState("");
   const [actif, setActif] = useState(true);
+  // Mêmes champs de trace qu'à l'édition (PartenariatRowActions). Les deux
+  // chemins écrivent la même donnée : les faire diverger ferait qu'une fiche
+  // créée après un échange réel naîtrait sans sa preuve.
+  const [interlocuteurNom, setInterlocuteurNom] = useState("");
+  const [interlocuteurEmail, setInterlocuteurEmail] = useState("");
+  const [dernierEchangeAt, setDernierEchangeAt] = useState("");
+  const [preuveUrl, setPreuveUrl] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,6 +56,10 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
         dateDebut: new Date(dateDebut),
         ...(dateFin ? { dateFin: new Date(dateFin) } : {}),
         actif,
+        interlocuteurNom: interlocuteurNom.trim() === "" ? null : interlocuteurNom.trim(),
+        interlocuteurEmail: interlocuteurEmail.trim() === "" ? null : interlocuteurEmail.trim(),
+        dernierEchangeAt: dernierEchangeAt === "" ? null : new Date(dernierEchangeAt),
+        preuveUrl: preuveUrl.trim() === "" ? null : preuveUrl.trim(),
       });
 
       if ("error" in result) {
@@ -60,6 +71,10 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
         setObjet("");
         setDateFin("");
         setActif(true);
+        setInterlocuteurNom("");
+        setInterlocuteurEmail("");
+        setDernierEchangeAt("");
+        setPreuveUrl("");
         router.refresh();
       }
     });
@@ -163,6 +178,71 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
           className={inputCls}
         />
       </div>
+
+      {/* Trace de l'échange — mêmes champs qu'au panneau d'édition. */}
+      <fieldset className="mt-[var(--space-admin-4)] min-w-0 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)] [min-inline-size:0]">
+        <legend className={labelCls}>Trace de l&apos;échange (facultatif)</legend>
+        <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          L&apos;objet est ce que vous déclarez ; ceci est ce que vous pouvez montrer.
+        </p>
+        <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2">
+          <div>
+            <label htmlFor="partenariatform-interlocuteur" className={labelCls}>
+              Interlocuteur
+            </label>
+            <input
+              id="partenariatform-interlocuteur"
+              type="text"
+              value={interlocuteurNom}
+              onChange={(e) => setInterlocuteurNom(e.target.value)}
+              disabled={isPending}
+              placeholder="Prénom Nom — fonction"
+              className={inputCls}
+            />
+          </div>
+          <div>
+            <label htmlFor="partenariatform-echange" className={labelCls}>
+              Dernier échange
+            </label>
+            <input
+              id="partenariatform-echange"
+              type="date"
+              value={dernierEchangeAt}
+              onChange={(e) => setDernierEchangeAt(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
+          <div>
+            <label htmlFor="partenariatform-email" className={labelCls}>
+              E-mail de l&apos;interlocuteur
+            </label>
+            <input
+              id="partenariatform-email"
+              type="email"
+              value={interlocuteurEmail}
+              onChange={(e) => setInterlocuteurEmail(e.target.value)}
+              disabled={isPending}
+              placeholder="prenom.nom@organisme.fr"
+              className={inputCls}
+            />
+          </div>
+          <div>
+            <label htmlFor="partenariatform-preuve" className={labelCls}>
+              Pièce justificative (lien)
+            </label>
+            <input
+              id="partenariatform-preuve"
+              type="url"
+              value={preuveUrl}
+              onChange={(e) => setPreuveUrl(e.target.value)}
+              disabled={isPending}
+              placeholder="https://… (pièce déposée dans Documents)"
+              className={inputCls}
+            />
+          </div>
+        </div>
+      </fieldset>
 
       {/* Actif */}
       <div className="mt-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-2)]">
