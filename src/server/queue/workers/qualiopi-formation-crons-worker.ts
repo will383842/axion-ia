@@ -32,6 +32,10 @@ import {
   mesurerTraceCloture,
   clotureSansAucuneTrace,
 } from "@/server/qualiopi/presence/trace-cloture";
+// 🔴 2026-08-24, cahier D2 — CE SIGNAL MANQUAIT ICI, et c'est tout le défaut :
+// la mesure était faite, le cas PARTIEL simplement jamais lu. La clôture
+// manuelle le signalait ; celle-ci — le chemin dominant — non.
+import { signalerClotureIncomplete } from "@/server/qualiopi/alertes/signal-cloture";
 import {
   decideSessionTransitions,
   type SessionCronSnapshot,
@@ -294,6 +298,12 @@ async function handleClotureAuto(): Promise<void> {
         skippedSansEmargement++;
         continue;
       }
+
+      // La session est cloturable — mais si des inscrits actifs n'ont AUCUNE
+      // trace, il faut le dire. On ne bloque pas (arbitrage ecrit dans
+      // `trace-cloture.ts` : le durcissement rendrait des sessions
+      // definitivement non cloturables), on SIGNALE.
+      signalerClotureIncomplete(decision.sessionId, trace);
 
       const dureeReelleHeures = await resoudreDureeReelleACloture(decision.sessionId);
 
