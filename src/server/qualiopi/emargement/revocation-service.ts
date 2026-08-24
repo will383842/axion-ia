@@ -39,12 +39,19 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { recomputeTauxPresence } from "@/server/qualiopi/presence/presence-service";
 
 /** Longueur minimale d'un motif. Un mot ne dit pas ce qui s'est passé. */
 export const MOTIF_MIN = 10;
 
 export type ResultatRevocation =
-  | { ok: true; enrollmentId: string | null; emargementRetombe: boolean }
+  | {
+      ok: true;
+      enrollmentId: string | null;
+      emargementRetombe: boolean;
+      /** La durée réalisée du créneau a été remise à 0 — cf. le bloc « la présence ». */
+      presenceRetombee: boolean;
+    }
   | {
       ok: false;
       raison: "introuvable" | "deja_revoquee" | "motif_insuffisant" | "maillon_interne";
@@ -85,7 +92,15 @@ export async function revoquerSignature(
     where: { id: signatureId },
     // `selfHash` sert à chercher un successeur : c'est lui que le maillon suivant
     // scelle dans son `prevHash`.
-    select: { id: true, revokedAt: true, enrollmentId: true, selfHash: true },
+    // `creneauId` : la signature sait quel créneau elle couvrait — c'est lui dont
+    // il faut défaire l'effet, cf. le bloc « la présence » plus bas.
+    select: {
+      id: true,
+      revokedAt: true,
+      enrollmentId: true,
+      creneauId: true,
+      selfHash: true,
+    },
   });
   if (signature === null) {
     return { ok: false, raison: "introuvable", message: MESSAGES.introuvable };
@@ -129,6 +144,7 @@ export async function revoquerSignature(
 
   const enrollmentId = signature.enrollmentId;
   let emargementRetombe = false;
+  let presenceRetombee = false;
 
   await prisma.$transaction(async (tx) => {
     await tx.emargementSignature.update({
@@ -136,6 +152,55 @@ export async function revoquerSignature(
       // Ni `selfHash` ni `prevHash` ne sont touchés : voir l'en-tête.
       data: { revokedAt: now, revokedById, revokedMotif: motifPropre },
     });
+
+    // 🔴 2026-08-24 — LA RÉVOCATION RETIRAIT LA PREUVE ET GARDAIT SON EFFET.
+    //
+    // `signerCreneau` écrit, dans SA transaction :
+    // `presenceCreneau.update({ dureeRealiseeMinutes: dureePrevueMinutes,
+    // present: true })` (signature-service.ts:484). Défaire la signature sans
+    // défaire cela laissait la chaîne entière intacte derrière une preuve
+    // retirée :
+    //
+    //   `dureeRealiseeMinutes` → `recomputeTauxPresence` → `tauxPresencePct`
+    //   → `classifierPresence` (attestation-service.ts:209) → RÉSULTAT de
+    //   l'attestation, et heures du certificat de réalisation.
+    //
+    // Une inscription dont TOUTES les signatures étaient révoquées gardait donc
+    // un taux au-dessus du seuil, une attestation « totale », et un certificat
+    // déclarant des heures que plus rien ne prouvait. Le geste est offert à
+    // l'auditrice elle-même (`mode-auditeur/emargement/page.tsx:154`) : elle
+    // révoquait, et le document continuait de lui affirmer le contraire.
+    //
+    // 🔑 C'est le MÊME raisonnement que celui appliqué à l'inscription vingt
+    // lignes plus bas — « plus aucune signature vivante ⇒ retomber » — oublié un
+    // niveau plus bas. Le même travers que l'en-tête de ce fichier confesse déjà
+    // pour la garde du maillon interne : traiter un cas sans regarder la classe.
+    if (signature.creneauId !== null) {
+      const restantesSurCreneau = await tx.emargementSignature.count({
+        where: { creneauId: signature.creneauId, revokedAt: null },
+      });
+      if (restantesSurCreneau === 0) {
+        const creneau = await tx.presenceCreneau.findUnique({
+          where: { id: signature.creneauId },
+          select: { importId: true },
+        });
+        // ⚠️ EXCEPTION SYMÉTRIQUE DE CELLE DE LA SIGNATURE. Un créneau issu d'un
+        // relevé de connexion tient sa vérité de l'import (D.6313-3-1), et
+        // `signerCreneau` refuse déjà d'y toucher (`if (ctx.importId === null)`).
+        // La révocation refuse de même : écraser cette durée détruirait une
+        // mesure que rien ne peut reconstituer.
+        if (creneau !== null && creneau.importId === null) {
+          // On ne remet PAS `present: false` ici : `recomputeTauxPresence` le
+          // re-dérive de la durée (seuil 50 % du prévu, presence-service.ts:144).
+          // Écrire les deux ferait diverger deux sources pour un même fait.
+          await tx.presenceCreneau.update({
+            where: { id: signature.creneauId },
+            data: { dureeRealiseeMinutes: 0 },
+          });
+          presenceRetombee = true;
+        }
+      }
+    }
 
     if (enrollmentId === null) return;
 
@@ -154,5 +219,26 @@ export async function revoquerSignature(
     }
   });
 
-  return { ok: true, enrollmentId, emargementRetombe };
+  // 🔑 POST-COMMIT, comme `signerCreneau` le fait pour l'effet inverse. Sans ce
+  // recalcul, `dureeRealiseeMinutes` retombe mais `tauxPresencePct` — que lit
+  // `classifierPresence` — garde sa valeur d'avant : la moitié du correctif
+  // laisserait l'attestation fausse.
+  //
+  // Best-effort et tracé, jamais fatal : la révocation EST déjà persistée et
+  // c'est elle qui compte. Un taux est recalculable ; une révocation annulée par
+  // une exception de recalcul ne le serait pas.
+  if (presenceRetombee && enrollmentId !== null) {
+    try {
+      await recomputeTauxPresence(enrollmentId);
+    } catch (err) {
+      console.error(
+        `[revocation-emargement] taux de présence NON recalculé pour ${enrollmentId} — ` +
+          "la durée réalisée est bien retombée à 0, mais `tauxPresencePct` garde sa " +
+          "valeur d'avant et l'attestation en dépend :",
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  return { ok: true, enrollmentId, emargementRetombe, presenceRetombee };
 }

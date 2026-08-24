@@ -439,6 +439,14 @@ describe("saveEmargementAction", () => {
       id: "c1",
       dureePrevueMinutes: 210,
       enrollmentId: "enr-1",
+      // 🔴 2026-08-24 — `importId` ET `_count` MANQUAIENT À CE DOUBLE.
+      // La requête réelle les sélectionne (garde des créneaux signés, posée sur
+      // le chemin manuel comme elle l'était déjà sur l'import). Un double qui
+      // rend moins que la requête n'est pas « un mock allégé » : c'est un contrat
+      // rompu, et le code échoue sur `undefined` au lieu d'être mesuré. On
+      // recopie la SIGNATURE, pas le minimum qui passe.
+      importId: null,
+      _count: { emargementSignatures: 0 },
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
     mockUpsertCreneau.mockResolvedValue("upserted-id");
@@ -455,6 +463,84 @@ describe("saveEmargementAction", () => {
     expect("data" in result).toBe(true);
     if (!("data" in result)) return;
     expect(result.data.updated).toBe(1);
+  });
+
+  /**
+   * 🔴 2026-08-24 — LA GRILLE ÉCRASAIT UNE PREUVE SIGNÉE, ET LA GARDE EXISTAIT
+   * DÉJÀ VINGT LIGNES PLUS LOIN.
+   *
+   * `importReleveConnexionAction`, dans CE MÊME FICHIER, porte `protegePresentiel`
+   * (`presence.ts:867`) : elle refuse d'écraser une demi-journée qui porte une
+   * signature vivante, et le commentaire qui l'accompagne dit pourquoi — « une
+   * preuve d'émargement présentiel détruite en silence sur une session hybride ».
+   *
+   * Le chemin d'enregistrement MANUEL de la grille n'avait aucun équivalent. Un
+   * clic « Enregistrer » avec la case décochée écrivait `present: false` et
+   * `dureeRealiseeMinutes: 0` sur un créneau que le stagiaire avait signé
+   * électroniquement — la signature reste en base, intacte et vivante, et la
+   * présence qu'elle prouve disparaît. Deux sources de vérité, dont l'une
+   * contredit l'autre en silence.
+   *
+   * 🔑 Le bon geste existe et il est désormais complet : RÉVOQUER la signature
+   * (`revocation-service.ts`), ce qui retire la preuve ET la présence qu'elle
+   * avait créée. La grille doit donc refuser, pas écraser.
+   */
+  it("🔴 refuse d'écraser un créneau qui porte une signature vivante", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      enrollmentId: "enr-1",
+      importId: null,
+      _count: { emargementSignatures: 1 },
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
+    });
+
+    const result = await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 0 }],
+    });
+
+    expect(
+      mockUpsertCreneau,
+      "la grille a écrasé un créneau signé électroniquement : la signature reste " +
+        "vivante en base et affirme la présence, pendant que le créneau la nie. " +
+        "Le geste correct est de RÉVOQUER la signature, ce qui retire aussi la " +
+        "présence — la grille ne doit pas court-circuiter cette chaîne",
+    ).not.toHaveBeenCalled();
+
+    // Et l'admin doit le SAVOIR : un refus silencieux ferait croire à un
+    // enregistrement réussi, ce qui est le défaut d'à côté sous une autre forme.
+    expect("data" in result).toBe(true);
+    if (!("data" in result)) return;
+    expect(
+      (result.data as { signaturesProtegees?: number }).signaturesProtegees,
+      "le refus n'est pas remonté : l'écran annoncerait « mis à jour » sur une " +
+        "ligne qu'il a délibérément sautée",
+    ).toBe(1);
+  });
+
+  it("un créneau SANS signature reste modifiable — la garde ne bloque pas la correction", async () => {
+    // Contre-témoin indispensable : une garde qui refuserait TOUT rendrait la
+    // grille inutilisable, et le test précédent vert en permanence.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      enrollmentId: "enr-1",
+      importId: null,
+      _count: { emargementSignatures: 0 },
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 0 }],
+    });
+
+    expect(
+      mockUpsertCreneau,
+      "un créneau sans signature n'est plus modifiable : la garde est trop large " +
+        "et la grille ne sert plus à rien",
+    ).toHaveBeenCalled();
   });
 
   it("plafonne le réalisé au prévu du créneau — un taux > 100 % est impossible", async () => {
@@ -543,6 +629,11 @@ describe("saveEmargementAction", () => {
       source: "import_zoom",
       libelle: "2026-06-10 journée",
       enrollmentId: "enr-1",
+      // Créneau ISSU D'UN IMPORT, et sans signature : la garde des créneaux
+      // signés ne doit pas le saisir — c'est bien la protection de la DURÉE
+      // importée qui est mesurée ici, pas celle des signatures.
+      importId: "imp-1",
+      _count: { emargementSignatures: 0 },
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
 
@@ -562,6 +653,14 @@ describe("saveEmargementAction", () => {
       id: "c1",
       dureePrevueMinutes: 210,
       enrollmentId: "enr-1",
+      // 🔴 2026-08-24 — `importId` ET `_count` MANQUAIENT À CE DOUBLE.
+      // La requête réelle les sélectionne (garde des créneaux signés, posée sur
+      // le chemin manuel comme elle l'était déjà sur l'import). Un double qui
+      // rend moins que la requête n'est pas « un mock allégé » : c'est un contrat
+      // rompu, et le code échoue sur `undefined` au lieu d'être mesuré. On
+      // recopie la SIGNATURE, pas le minimum qui passe.
+      importId: null,
+      _count: { emargementSignatures: 0 },
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
 
@@ -1343,12 +1442,44 @@ describe("setPresenceCreneauManualAction", () => {
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "550e8400-e29b-41d4-a716-446655440010",
       enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
+      // Recopie la SIGNATURE de la requête réelle : elle lit aussi le compte de
+      // signatures, pour refuser d'écraser une preuve d'émargement.
+      _count: { emargementSignatures: 0 },
       // Remonté jusqu'à la session pour invalider le cache indicateurs de la
       // bonne année après correction manuelle d'un créneau.
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
     mockPrisma.presenceCreneau.update.mockResolvedValue({});
     mockRecompute.mockResolvedValue(75);
+  });
+
+  it("🔴 refuse de corriger un créneau qui porte une signature vivante", async () => {
+    // Même règle que la grille et que l'import : cette action force
+    // `source: "manuel"` et réécrit `present`. Sans garde, elle contredit une
+    // signature qui reste vivante en base.
+    //
+    // ⚠️ Au 2026-08-24 cette action n'a AUCUN appelant de production : la garde
+    // est prophylactique. Elle est posée parce que laisser le dernier écrivain
+    // de la présence sans protection, à côté de ses jumeaux protégés, recrée
+    // l'asymétrie que ce lot ferme.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "550e8400-e29b-41d4-a716-446655440010",
+      enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
+      _count: { emargementSignatures: 1 },
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
+    });
+
+    const result = await setPresenceCreneauManualAction({
+      creneauId: "550e8400-e29b-41d4-a716-446655440010",
+      present: false,
+      dureeRealiseeMinutes: 0,
+    });
+
+    expect("error" in result, "la correction a été acceptée sur un créneau signé").toBe(true);
+    expect(
+      mockPrisma.presenceCreneau.update,
+      "le créneau a été écrit malgré la signature vivante",
+    ).not.toHaveBeenCalled();
   });
 
   it("retourne { data: { id } } pour un créneau valide", async () => {
