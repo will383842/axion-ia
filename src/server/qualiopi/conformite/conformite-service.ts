@@ -36,6 +36,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { pieceAdmissibleAuDossier } from "@/server/qualiopi/conformite/piece-admissible";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre";
 
@@ -206,9 +207,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.trainer.count({ where: { actif: true, cvUrl: { not: null } } }),
     prisma.trainee.count({ where: { situationHandicap: true } }),
     prisma.enrollment.count({ where: { adaptationsRealisees: { not: null } } }),
-    // Les pièces ANNULÉES ne comptent pas : une pièce déclarée sans valeur ne
-    // peut pas servir de preuve à un indicateur.
-    prisma.documentGenere.count({ where: { annuleeAt: null } }),
+    // 🔴 2026-08-24 — ce compte portait `annuleeAt: null` en littéral, donc SANS
+    // le filtre de statut de session. Les pièces d'une session ANNULÉE ou
+    // REPORTÉE comptaient comme preuves. Le prédicat partagé exclut les deux, et
+    // admet toujours les pièces générales de l'organisme (`sessionId: null`).
+    prisma.documentGenere.count({ where: pieceAdmissibleAuDossier() }),
     // R5 (audit) : off.32 n'est couvert QUE par une revue de direction VALIDÉE
     // ET de l'ANNÉE COURANTE. L'amélioration continue est une exigence annuelle :
     // sans le filtre `annee`, une revue validée en 2024 couvrait l'indicateur
@@ -273,12 +276,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.documentGenere.count({
       where: {
         type: { in: ["convocation", "livret_accueil", "reglement_interieur"] },
-        annuleeAt: null,
+        // 🔴 Le cas le plus visible du défaut : une convocation émise pour une
+        // session ensuite ANNULÉE couvrait l'indicateur 9 devant le certificateur.
+        ...pieceAdmissibleAuDossier(),
       },
     }),
     // off.12 : preuves de suivi/présence (émargement, relevé de connexion) — pas tous types confondus
     prisma.documentGenere.count({
-      where: { type: { in: ["emargement", "releve_connexion"] }, annuleeAt: null },
+      where: { type: { in: ["emargement", "releve_connexion"] }, ...pieceAdmissibleAuDossier() },
     }),
     // off.31 : responsable qualité = propriétaire du process réclamations/amélioration (config)
     getQualiopiConfig("responsable_qualite_nom").catch(() => ""),
@@ -440,9 +445,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     //
     // ⚠️ Ajouté EN FIN de liste, comme les deux précédents : des specs mockent
     // ces compteurs par POSITION.
-    // ⚠️ `annuleeAt: null` — une procédure annulée ne couvre rien.
+    // Le prédicat partagé — une procédure annulée ne couvre rien.
     prisma.documentGenere.count({
-      where: { type: "procedure_sous_traitance", annuleeAt: null },
+      where: { type: "procedure_sous_traitance", ...pieceAdmissibleAuDossier() },
     }),
     // ── Audit blanc 2026-08-15 — 5 règles durcies. Ajouts EN FIN de liste. ───
     //
@@ -479,11 +484,12 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       .then((r) => r.length),
     // off.18 — pièces écrites décrivant l'organisation et les moyens mobilisés.
     // Seconde voie de preuve de la coordination, à côté de la config.
-    // `annuleeAt: null` : une pièce annulée ne prouve rien.
+    // Le prédicat partagé : une pièce annulée ne prouve rien, et une pièce
+    // d'une session annulée ou reportée non plus.
     prisma.documentGenere.count({
       where: {
         type: { in: ["inventaire_moyens", "organisation_action"] },
-        annuleeAt: null,
+        ...pieceAdmissibleAuDossier(),
       },
     }),
     // off.18 — modalités de coordination des intervenants, écrites en
