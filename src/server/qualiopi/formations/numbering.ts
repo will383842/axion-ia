@@ -44,9 +44,36 @@ export async function allocateFormationNumero(tx?: Prisma.TransactionClient): Pr
   // La table est écrite ici, pas déduite du type : la série est le couple
   // (PRÉFIXE, TABLE), et `AXI-FORM` était aussi frappé — pour d'autres pièces —
   // dans `documents_generes` jusqu'au correctif V19.
-  return nextNumero("formation", year, (prefixe) =>
-    db.formation.findMany({ where: { numero: { startsWith: prefixe } }, select: { numero: true } }),
-  );
+  // 🔴 2026-08-24, cahier D9-2 — LECTURE CROISÉE, comme pour les sessions.
+  //
+  // Le commentaire ci-dessus constate l'héritage et s'arrête là : `AXI-FORM`
+  // était « aussi frappé — pour d'autres pièces — dans `documents_generes` ».
+  // `formats.ts` chiffre le reste : « AXI-FORM-2026-001 désigne à la fois une
+  // formation du catalogue et un livret d'accueil — vérifié en production le
+  // 2026-07-26 : 7 numéros dans ce cas ».
+  //
+  // Les sessions ont reçu la borne croisée (V19/V20). Les formations, non —
+  // alors que l'héritage est le même. Deux artefacts distincts sous la même
+  // référence, c'est un point d'audit, pas un incident technique : rien ne
+  // plante, chaque index `@unique` de table est satisfait.
+  //
+  // ⚠️ Comme pour les sessions, ceci ne GARANTIT pas l'unicité inter-registres :
+  // seule une table `numero_registre` alimentée par tous les allocateurs le
+  // ferait (cf. « ce qui reste ouvert » de l'ADR 0035). On supprime la collision
+  // constatée, pas la classe entière.
+  return nextNumero("formation", year, async (prefixe) => {
+    const [formations, pieces] = await Promise.all([
+      db.formation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+      db.documentGenere.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    ]);
+    return [...formations, ...pieces];
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
