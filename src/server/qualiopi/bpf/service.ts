@@ -15,6 +15,9 @@
 
 import { prisma } from "@/lib/prisma";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+// SSOT des statuts de facture — l'en-tête de ce module liste les trois endroits
+// où la recopie de cette liste a déjà produit un filtre vide.
+import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
 export interface BpfFinanceurDetail {
   opco: number;
@@ -68,6 +71,31 @@ export interface BpfResult {
    * ce qui manque avant de signer.
    */
   sessionsNonChiffrables: string[];
+  /**
+   * Sessions réalisées dont le CA DÉCLARÉ ne correspond pas à ce qui a été
+   * FACTURÉ.
+   *
+   * 🔴 2026-08-24, cahier D9 — le BPF déclare `Σ session.montantHtCents` ;
+   * l'assiette de TVA et le FEC déclarent `Σ facture.montantHtCents`. Un
+   * contrôle croisé DREETS/DGFiP compare les deux, et **rien ne les rapprochait**
+   * dans l'outil : le module BPF ne lisait aucune facture.
+   *
+   * ⚠️ « à RAPPROCHER », jamais « facturation manquante ». Un écart peut être
+   * parfaitement légitime — acompte non encore soldé, prise en charge partielle
+   * révisée par le financeur, facture OPCO émise avant le reste à charge. Aucun
+   * champ ne distingue ces cas d'un oubli. Nommer l'écart « manquant » ferait
+   * crier l'outil sur des dossiers sains, ce qui est PIRE que ne rien dire :
+   * une alerte qu'on apprend à ignorer ne protège plus rien.
+   */
+  sessionsEcartFacturation: ReadonlyArray<{
+    readonly sessionId: string;
+    readonly montantSessionHtCents: number;
+    readonly montantFactureHtCents: number;
+    /** Session moins facturé. Positif = déclaré au BPF au-delà du facturé. */
+    readonly ecartHtCents: number;
+  }>;
+  /** Somme des écarts ci-dessus. Sans total, la ligne du CSV ne dit rien. */
+  ecartFacturationTotalHtCents: number;
   caTotalHtCents: number;
   caParFinanceur: BpfFinanceurDetail;
   nbFormateursInternes: number;
@@ -99,6 +127,11 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
       nbParticipantsReels: true,
       montantHtCents: true,
       financementType: true,
+      // 🔴 Requis par le rapprochement de facturation : en INTER, le montant de
+      // la session est un PRIX DE SIÈGE, pas un total — la facturation s'y fait
+      // par inscription. Comparer les deux ferait crier +300 % sur chaque
+      // session inter.
+      interEntreprises: true,
       enrollments: {
         select: { traineeId: true },
       },
@@ -138,6 +171,80 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     nbHeuresStagiaires += session.dureeReelleHeures * participants;
   }
 
+  // ── Rapprochement BPF ↔ factures ────────────────────────────────────────
+  //
+  // 🔴 2026-08-24, cahier D9 — le module BPF ne lisait AUCUNE facture. Il
+  // déclarait `Σ session.montantHtCents` pendant que le FEC déclarait
+  // `Σ facture.montantHtCents`, et rien ne rapprochait les deux.
+  //
+  // ⚠️ Le piège de ce rapprochement, c'est le FAUX POSITIF. Cinq situations
+  // produisent un écart parfaitement normal, et chacune est exclue ci-dessous
+  // pour une raison distincte. Un écart qui crie sur des dossiers sains est
+  // pire que pas d'écart du tout : on apprend à l'ignorer, et il cesse de
+  // protéger le jour où il compte.
+  const facturesDesSessions =
+    sessions.length === 0
+      ? []
+      : await prisma.factureFormation.findMany({
+          where: {
+            sessionId: { in: sessions.map((s) => s.id) },
+            // Un avoir porte des montants NÉGATIFS : l'additionner au facturé
+            // fabriquerait un écart de toutes pièces.
+            avoirDeId: null,
+            // Reprise d'historique : hors séquence AXI-FACT, et hors périmètre
+            // du rapprochement.
+            estImportee: false,
+          },
+          select: { sessionId: true, statut: true, montantHtCents: true },
+        });
+
+  const factureParSession = new Map<string, number>();
+  for (const f of facturesDesSessions) {
+    if (f.sessionId === null) continue;
+    // SSOT `statuts-facture.ts`, jamais recopié : un brouillon ou une facture
+    // annulée ne facture rien ; une facture en retard ou partiellement payée,
+    // SI — sans quoi la même session serait comptée deux fois.
+    if (!estFactureOuverte(f.statut) && f.statut !== "payee") continue;
+    factureParSession.set(
+      f.sessionId,
+      (factureParSession.get(f.sessionId) ?? 0) + f.montantHtCents,
+    );
+  }
+
+  const sessionsEcartFacturation: Array<{
+    sessionId: string;
+    montantSessionHtCents: number;
+    montantFactureHtCents: number;
+    ecartHtCents: number;
+  }> = [];
+  for (const session of sessions) {
+    // ① INTER — `montantHtCents` est un prix de SIÈGE, pas un total : la
+    //    facturation se fait par inscription. L'écart serait de +300 % sur
+    //    chaque session inter, systématiquement.
+    if (session.interEntreprises) continue;
+    // ② GRATUIT — 0 € facturé pour 0 € déclaré. L'écart est nul, mais une
+    //    session gratuite n'a pas à figurer dans une liste d'anomalies.
+    if (session.montantHtCents === 0) continue;
+    // ③ CPF — la Caisse des Dépôts règle l'organisme APRÈS service fait, sur
+    //    pièces déposées dans EDOF. Le titulaire ne verse rien : une session
+    //    CPF réalisée peut légitimement n'avoir aucune facture dans l'outil.
+    if (session.financementType === "cpf") continue;
+
+    const facture = factureParSession.get(session.id) ?? 0;
+    const ecart = session.montantHtCents - facture;
+    if (ecart === 0) continue;
+    sessionsEcartFacturation.push({
+      sessionId: session.id,
+      montantSessionHtCents: session.montantHtCents,
+      montantFactureHtCents: facture,
+      ecartHtCents: ecart,
+    });
+  }
+  const ecartFacturationTotalHtCents = sessionsEcartFacturation.reduce(
+    (acc, e) => acc + e.ecartHtCents,
+    0,
+  );
+
   const caTotalHtCents = sessions.reduce((acc, s) => acc + s.montantHtCents, 0);
 
   const caParFinanceur: BpfFinanceurDetail = {
@@ -176,6 +283,8 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     nbStagiairesDistincts,
     nbHeuresStagiaires,
     sessionsNonChiffrables,
+    sessionsEcartFacturation,
+    ecartFacturationTotalHtCents,
     caTotalHtCents,
     caParFinanceur,
     nbFormateursInternes,
@@ -207,6 +316,19 @@ export function bpfToCsv(bpf: BpfResult): string {
     lignes.push(
       `⚠️ Sessions réalisées non chiffrables (durée réelle ou effectif absent);${bpf.sessionsNonChiffrables.length}`,
     );
+  }
+  // 🔴 2026-08-24 — même doctrine que la ligne ci-dessus : elle n'apparaît QUE
+  // s'il y a quelque chose à dire. Une ligne « 0 écart » sur tous les bilans
+  // deviendrait du décor et cesserait d'être lue le jour où elle compte.
+  //
+  // ⚠️ Le libellé dit « À RAPPROCHER », jamais « manquante » : un acompte non
+  // soldé, une prise en charge révisée ou une facture OPCO émise avant le reste
+  // à charge produisent un écart parfaitement légitime.
+  if (bpf.sessionsEcartFacturation.length > 0) {
+    lignes.push(
+      `⚠️ Sessions dont le CA déclaré diffère du facturé — À RAPPROCHER (acompte, prise en charge partielle, solde non émis);${bpf.sessionsEcartFacturation.length}`,
+    );
+    lignes.push(`⚠️ Écart total HT (€);${centimesEnEuros(bpf.ecartFacturationTotalHtCents)}`);
   }
   lignes.push("");
   lignes.push("Financeur;CA HT (€)");
@@ -259,6 +381,8 @@ function buildEmptyBpf(
     nbStagiairesDistincts: 0,
     nbHeuresStagiaires: 0,
     sessionsNonChiffrables: [],
+    sessionsEcartFacturation: [],
+    ecartFacturationTotalHtCents: 0,
     caTotalHtCents: 0,
     caParFinanceur: { opco: 0, cpf: 0, france_travail: 0, direct: 0, mixte: 0 },
     nbFormateursInternes: 0,
