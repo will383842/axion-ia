@@ -209,7 +209,14 @@ export function TurnstileWidget({
   // En dev ça permet aux forms de soumettre quand même.
   if (!siteKey) return null;
 
-  return <div ref={containerRef} aria-hidden="true" className="turnstile-widget" />;
+  // 🔴 PAS de `aria-hidden` ici. Le conteneur était marqué caché aux lecteurs
+  // d'écran, ce qui n'était juste que dans le cas silencieux. Dès que
+  // Cloudflare décide de servir un défi INTERACTIF, c'est une case à cocher
+  // obligatoire qui atterrit dans ce div : `aria-hidden` la retirait de l'arbre
+  // d'accessibilité, donc un utilisateur au lecteur d'écran ne pouvait pas
+  // savoir qu'elle existait — ni, par conséquent, envoyer le formulaire.
+  // Quand rien n'est rendu, le div est vide : il n'y a rien à annoncer.
+  return <div ref={containerRef} className="turnstile-widget" />;
 }
 
 /**

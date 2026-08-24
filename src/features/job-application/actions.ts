@@ -123,12 +123,30 @@ export async function submitJobApplicationAction(
 ): Promise<JobApplicationState> {
   const ip = await getClientIp();
 
-  // 1. Rate-limit
-  const rl = await checkRateLimit(`job-application:${ip}`, {
-    limit: 3,
+  // 1. Anti-martèlement — compteur de TENTATIVES, volontairement large.
+  //
+  // 🔴 Il était à 3 par 10 minutes, et il était consommé ICI, AVANT le captcha
+  // et avant la validation. Autrement dit : le seul compteur du formulaire
+  // punissait les gens qui échouaient déjà. Un candidat à qui Cloudflare sert
+  // un défi interactif voit « Captcha échoué », réessaie deux fois, et bascule
+  // au 4e essai sur « Trop de tentatives » — un second message d'erreur, qui
+  // ressemble au premier, et qui verrouille 10 minutes. Deux personnes derrière
+  // la même box partagent ce compteur : changer d'ordinateur ne débloque rien.
+  // C'est exactement le récit d'un candidat le 2026-08-19.
+  //
+  // Ce compteur-ci ne sert donc plus qu'à borner le coût d'un flood (un appel
+  // Turnstile par essai). Ce qui protège du spam de VRAIES candidatures, c'est
+  // le compteur d'envois aboutis, plus bas — celui qu'un échec ne touche pas.
+  const attempts = await checkRateLimit(`job-application:attempt:${ip}`, {
+    limit: 20,
     windowSec: 600,
   });
-  if (!rl.allowed) return { ok: false, error: "Trop de tentatives. Réessayez plus tard." };
+  if (!attempts.allowed)
+    return {
+      ok: false,
+      error:
+        "Trop d'essais depuis cette connexion. Patientez quelques minutes, puis réessayez — ou écrivez-nous à contact@axion-ia.com.",
+    };
 
   // 2. Honeypot
   if (formData.get("website")) return { ok: true, applicationId: "" };
@@ -195,8 +213,15 @@ export async function submitJobApplicationAction(
     };
   }
 
-  // 7. CV (optionnel)
-  let cvStoragePath: string | null = null;
+  // 7. CV (optionnel) — VALIDATION seulement. L'écriture disque est reportée
+  // après le compteur d'envois aboutis (§7ter) : un refus ne doit jamais
+  // laisser un fichier orphelin hors web-root que plus rien ne référence.
+  let cvBuffer: Buffer | null = null;
+  // Nom BRUT, tel que reçu : c'est lui que `storeCv` assainit pour nommer le
+  // fichier sur disque. La version tronquée à 255 (`cvOriginalName`) ne sert
+  // qu'à la colonne — la passer à `storeCv` amputerait l'extension d'un nom
+  // très long, et le CV cesserait d'être reconnu comme un PDF.
+  let cvRawName = "cv";
   let cvOriginalName: string | null = null;
   let cvMimeType: string | null = null;
   let cvSizeBytes: number | null = null;
@@ -207,14 +232,16 @@ export async function submitJobApplicationAction(
     const buf = Buffer.from(await cv.arrayBuffer());
     const cvError = validateCv(cv, buf);
     if (cvError) return { ok: false, error: cvError };
-    cvStoragePath = await storeCv(buf, cv.name);
+    cvBuffer = buf;
+    cvRawName = cv.name;
     cvOriginalName = cv.name.slice(0, 255);
     cvMimeType = cv.type || null;
     cvSizeBytes = cv.size;
   }
 
   // 7bis. Photo (OPTIONNELLE — réutilise le stockage CV, hors web-root, admin-only)
-  let photoStoragePath: string | null = null;
+  let photoBuffer: Buffer | null = null;
+  let photoRawName = "photo";
   let photoOriginalName: string | null = null;
   let photoMimeType: string | null = null;
   const photo = formData.get("photo");
@@ -224,10 +251,38 @@ export async function submitJobApplicationAction(
     const pbuf = Buffer.from(await photo.arrayBuffer());
     const photoError = validatePhoto(photo, pbuf);
     if (photoError) return { ok: false, error: photoError };
-    photoStoragePath = await storeCv(pbuf, photo.name);
+    photoBuffer = pbuf;
+    photoRawName = photo.name;
     photoOriginalName = photo.name.slice(0, 255);
     photoMimeType = photo.type || null;
   }
+
+  // 7ter. Anti-spam — compteur d'envois ABOUTIS.
+  //
+  // C'est LE verrou qui protège du spam de candidatures, et il est atteint
+  // seulement quand tout le reste a déjà passé : captcha, champs valides, offre
+  // ouverte, pièces jointes lisibles. Un candidat qui bute sur le captcha ou
+  // sur un format de CV n'en consomme donc AUCUNE unité — c'est toute la
+  // différence avec le compteur unique d'avant, qui comptait les échecs.
+  //
+  // 8 par heure : très au-dessus d'un usage humain (postuler à plusieurs offres
+  // d'affilée reste confortable), très en dessous de ce qui rendrait le spam
+  // rentable une fois le captcha franchi.
+  const accepted = await checkRateLimit(`job-application:accepted:${ip}`, {
+    limit: 8,
+    windowSec: 3600,
+  });
+  if (!accepted.allowed)
+    return {
+      ok: false,
+      error:
+        "Vous avez déjà envoyé plusieurs candidatures dans l'heure. Réessayez plus tard — ou écrivez-nous à contact@axion-ia.com.",
+    };
+
+  // 7quater. Écriture disque, maintenant qu'aucun refus ne peut plus survenir
+  // avant la création de la ligne.
+  const cvStoragePath = cvBuffer ? await storeCv(cvBuffer, cvRawName) : null;
+  const photoStoragePath = photoBuffer ? await storeCv(photoBuffer, photoRawName) : null;
 
   // 8. Réponses aux questions de l'offre (champs answer_<id>)
   const answers: Record<string, string> = {};

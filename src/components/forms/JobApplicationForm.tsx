@@ -10,11 +10,26 @@ import { Check, FileUp, ImageUp, X } from "lucide-react";
 import { submitJobApplicationAction } from "@/features/job-application/actions";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { isStaleServerActionError } from "@/lib/forms/form-errors";
 
 const FIELD =
   "border-border bg-bg focus:border-terracotta focus:ring-terracotta/20 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none focus:ring-4";
 const LABEL = "text-fg mb-1.5 block text-sm font-medium";
 const SECTION = "font-serif text-xl font-semibold border-l-4 border-terracotta pl-3 leading-tight";
+
+// Message servi quand l'envoi échoue SANS jeton anti-spam. C'est le seul cas où
+// le candidat peut agir : sans ce texte il ne voit que « Captcha échoué », et
+// n'a aucune idée de ce qu'on attend de lui — il réessaie à l'identique, change
+// de navigateur, essaie l'ordinateur d'un proche, et échoue partout, parce que
+// Cloudflare juge la CONNEXION, pas le navigateur.
+const CAPTCHA_HELP_FR =
+  "La vérification anti-spam (Cloudflare) n'a pas abouti. Si une case « Vérifiez que vous êtes humain » s'affiche au-dessus du bouton, cochez-la puis renvoyez. Si elle n'apparaît pas, autorisez « challenges.cloudflare.com » (bloqueur de pub, VPN, navigateur intégré à une appli mail) — ou envoyez-nous votre candidature à contact@axion-ia.com.";
+const CAPTCHA_HELP_EN =
+  "The anti-spam check (Cloudflare) did not complete. If a « Verify you are human » box appears above the button, tick it and send again. If it never appears, allow « challenges.cloudflare.com » (ad blocker, VPN, in-app browser) — or email your application to contact@axion-ia.com.";
+const STALE_FR =
+  "Cette page a expiré à la suite d'une mise à jour du site. Rechargez-la (Ctrl+R / ⌘+R), puis renvoyez votre candidature.";
+const STALE_EN =
+  "This page expired after a site update. Reload it (Ctrl+R / ⌘+R), then send your application again.";
 
 /**
  * 🔴 `min-w-0` sur CHAQUE `<fieldset>` — ce n'est pas cosmétique.
@@ -91,6 +106,7 @@ export function JobApplicationForm({
     token: turnstileToken,
     widget: turnstileWidget,
     reset: resetTurnstile,
+    blocked: turnstileBlocked,
   } = useTurnstileToken("job-application");
 
   const showMobility = requiresDriverLicense || requiresVehicle;
@@ -126,14 +142,37 @@ export function JobApplicationForm({
 
       const result = await submitJobApplicationAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
+        // Sans jeton, le refus vient forcément de l'anti-spam : on sert la
+        // consigne actionnable plutôt que le « Captcha échoué. » du serveur,
+        // qui n'apprend rien au candidat. Avec un jeton, l'erreur serveur est
+        // la bonne (offre fermée, champ invalide, cadence dépassée).
+        const antiSpamFailure = !turnstileToken || turnstileBlocked;
         resetTurnstile();
-        setError(result.error || (isFr ? "Une erreur est survenue." : "Something went wrong."));
+        setError(
+          antiSpamFailure
+            ? isFr
+              ? CAPTCHA_HELP_FR
+              : CAPTCHA_HELP_EN
+            : result.error || (isFr ? "Une erreur est survenue." : "Something went wrong."),
+        );
         return;
       }
       setDone(result.applicationId || "");
-    } catch {
+    } catch (err) {
+      // Décalage de déploiement : la page a été chargée avant une mise en
+      // ligne, la Server Action visée n'existe plus. Remplir ce formulaire
+      // prend de longues minutes (CV, lettre) et le site se déploie plusieurs
+      // fois par jour — le cas n'a rien de théorique. « Une erreur est
+      // survenue » y était une impasse : recharger est la SEULE issue, et rien
+      // ne le disait.
       setError(
-        isFr ? "Une erreur est survenue. Réessayez." : "Something went wrong. Please retry.",
+        isStaleServerActionError(err)
+          ? isFr
+            ? STALE_FR
+            : STALE_EN
+          : isFr
+            ? "Une erreur est survenue. Réessayez."
+            : "Something went wrong. Please retry.",
       );
     } finally {
       setSubmitting(false);
@@ -591,7 +630,20 @@ export function JobApplicationForm({
         </label>
       </fieldset>
 
-      {turnstileWidget}
+      {/* Anti-spam Cloudflare. La plupart du temps rien ne s'affiche ici : le
+          jeton arrive en silence. Mais quand Cloudflare juge la connexion
+          douteuse (VPN, IP partagée, navigateur intégré à une appli mail), une
+          case « Vérifiez que vous êtes humain » apparaît À CET ENDROIT, quelques
+          secondes après le chargement — et tant qu'elle n'est pas cochée, tout
+          envoi est refusé. Le libellé ci-dessous la nomme, pour qu'elle ne
+          passe pas pour un élément décoratif entre les consentements et le
+          bouton. */}
+      <div className="space-y-2">
+        {turnstileWidget}
+        {turnstileBlocked ? (
+          <p className="text-sm text-amber-700">{isFr ? CAPTCHA_HELP_FR : CAPTCHA_HELP_EN}</p>
+        ) : null}
+      </div>
 
       {error ? (
         <p role="alert" className="text-sm text-red-600">
