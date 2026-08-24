@@ -131,6 +131,15 @@ jobs:
       # garde rien.
       - name: Qualiopi isolation check
         run: pnpm qualiopi:isolation-check
+      # Même histoire, même jour : 31 fichiers signalés, dont 3 seulement
+      # portaient un import. Les 28 autres ne faisaient que MENTIONNER le mot —
+      # `.env.example` pour une ligne de config, `admin.css` pour des
+      # commentaires. La garde promettait de vérifier que le module reste
+      # « arrachable » d'un bloc (rollback V1 → V2) ; Will a tranché le
+      # 2026-08-24 que ce scénario n'est plus prévu, donc elle surveille
+      # désormais les dépendances, comme ses deux voisines.
+      - name: Image-bank isolation check
+        run: pnpm image-bank:isolation-check
       - name: Zod schemas have tests
         run: pnpm zod:check
       - name: gitleaks

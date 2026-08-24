@@ -27,16 +27,20 @@
  * contrôle qui confond une explication avec le fait qu'elle explique est faux.
  * Même piège que `test-statique-trouve-ses-propres-commentaires`.
  *
- * ## `image-bank` n'est PAS exigé ici, et c'est délibéré
+ * ## Les trois sont désormais exigées — dont `image-bank`, après arbitrage
  *
- * Ses 30 violations ne relèvent pas du même remède : contrairement aux deux
- * autres, il marque VOLONTAIREMENT sur la simple mention du terme (« Contient
- * marqueur image-bank »), pour protéger la possibilité d'un rollback modulaire
- * V1 → V2. Le rendre vert demande de trancher si ce rollback est encore un
- * objectif — une décision produit, pas une correction d'instrument. Le câbler en
- * l'état ouvrirait un rouge permanent sur toutes les PR, ce que ce dépôt
- * interdit explicitement (AGENTS.md : « seuil aligné d'abord, blocage ensuite »).
- * La dette est donc nommée ici plutôt que masquée.
+ * `image-bank` posait une question qui n'était pas technique. Il marquait
+ * VOLONTAIREMENT sur la simple mention du terme, pour garantir non pas
+ * l'absence d'imports, mais la possibilité d'ARRACHER le module d'un bloc
+ * (rollback V1 → V2). D'où ses 31 signalements — dont `.env.example` pour une
+ * ligne de config et `admin.css` pour des commentaires : **3 seulement**
+ * portaient un import.
+ *
+ * Will a tranché le 2026-08-24 : ce rollback n'est plus un scénario prévu. La
+ * garde surveille donc les dépendances, comme ses deux voisines, et les 3
+ * imports réels sont actés nominativement. C'est une promesse abandonnée, pas
+ * un bug corrigé — si le rollback redevenait un objectif, c'est la détection
+ * qu'il faudrait rouvrir, et non deviner une liste d'exceptions.
  */
 
 import { readFileSync } from "node:fs";
@@ -56,10 +60,14 @@ function codeYaml(chemin: string): string {
 }
 
 /**
- * Les gardes dont l'absence de câblage a été mesurée comme coûteuse.
- * `image-bank` est absent volontairement — voir l'en-tête.
+ * Les trois gardes d'isolation du dépôt. Aucune ne doit sortir de la CI sans
+ * que la décision soit visible ici.
  */
-const GARDES_EXIGEES = ["content-gen:isolation-check", "qualiopi:isolation-check"] as const;
+const GARDES_EXIGEES = [
+  "content-gen:isolation-check",
+  "qualiopi:isolation-check",
+  "image-bank:isolation-check",
+] as const;
 
 describe("les gardes d'isolation sont appelées par la CI", () => {
   const ci = codeYaml(CI);
