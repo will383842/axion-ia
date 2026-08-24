@@ -72,33 +72,49 @@ const GATE_B = blocDuJob(CI, "gate-b");
 const ETAPE_BUILD = /^\s+run:\s+pnpm exec next build\b/;
 const ETAPE_DESTRUCTRICE = /^\s+uses:\s+andresz1\/size-limit-action@/;
 const ETAPE_PLAYWRIGHT = /^\s+run:\s+pnpm test:e2e\b/;
-const ETAPE_LIGHTHOUSE = /^\s+run:\s+pnpm lhci:autorun\b/;
+// `ETAPE_LIGHTHOUSE` a été retirée avec le step qu'elle repérait
+// (`pnpm lhci:autorun`, sorti de gate-b le 2026-08-24 — il mesurait le runner).
 const ASSERTION_BUILD_ID = /^\s+if \[ ! -f \.next\/BUILD_ID \]/;
 
 describe("harnais E2E de Gate B — il doit mesurer quelque chose", () => {
-  it("place l'étape qui DÉTRUIT `.next` après Playwright et après Lighthouse", () => {
+  it("n'admet AUCUNE étape qui détruise `.next` dans gate-b", () => {
+    // 🔴 2026-08-24 — CE TEST GARDAIT UN ORDRE ; IL GARDE MAINTENANT UNE ABSENCE,
+    // ET C'EST PLUS FORT.
+    //
+    // Il exigeait que `size-limit-action` vienne APRÈS Playwright et APRÈS
+    // Lighthouse. Les deux étapes qu'il nommait ont été retirées de `ci.yml` le
+    // 2026-08-24, sur mesure et non sur impression :
+    //
+    //   · `size-limit-action` relance un `pnpm run build` complet pour comparer
+    //     à `main`. Le step `Build` de ce job prend 8 min ; l'action portait
+    //     `timeout-minutes: 6`. Elle ne pouvait pas finir un seul de ses deux
+    //     builds — l'OOM à ~4 Go la tuait de toute façon avant (run 32666732630).
+    //   · `Lighthouse CI` échouait sur 11 URL sur 11 pendant que le lhci
+    //     post-deploy passait propre sur la prod : il mesurait le runner.
+    //
+    // 🔑 Une étape qui ne peut pas aboutir ET qui détruit le build des autres
+    // n'a pas besoin d'être bien placée : elle n'a pas à être là. On garde donc
+    // l'invariant utile — RIEN dans gate-b ne doit vider `.next` — au lieu de
+    // veiller sur la position d'une étape disparue. Ce test a rougi au retrait ;
+    // c'est ce qu'on attend d'un cliquet, et c'est pourquoi il est réécrit
+    // plutôt que supprimé.
+    //
+    // ⚠️ Si `size-limit-action` revient un jour, elle devra revenir avec un
+    // budget de temps supérieur au `Build` du job, et EN DERNIER. Ce test la
+    // refusera d'ici là — c'est délibéré : le retour se discute, il ne se
+    // glisse pas.
     const destructrice = indexDe(GATE_B, ETAPE_DESTRUCTRICE);
     const playwright = indexDe(GATE_B, ETAPE_PLAYWRIGHT);
-    const lighthouse = indexDe(GATE_B, ETAPE_LIGHTHOUSE);
 
-    expect(destructrice, "`size-limit-action` a disparu de gate-b").toBeGreaterThanOrEqual(0);
     expect(playwright, "l'étape Playwright a disparu de gate-b").toBeGreaterThanOrEqual(0);
-    expect(lighthouse, "l'étape Lighthouse a disparu de gate-b").toBeGreaterThanOrEqual(0);
-
     expect(
       destructrice,
-      "`size-limit-action` relance un build complet dans le répertoire de travail : elle " +
-        "VIDE `.next`. Placée avant Playwright, elle fait démarrer `pnpm start` sur un " +
-        "dossier sans `BUILD_ID` — les 237 tests partent en ERR_CONNECTION_REFUSED et le " +
-        "gate rend un vert de complaisance. Elle doit rester la dernière étape utile du job.",
-    ).toBeGreaterThan(playwright);
-
-    expect(
-      destructrice,
-      "même raison pour Lighthouse : `next start` a besoin du build de l'étape `Build`. " +
-        "Le `CHROME_INTERSTITIAL_ERROR` chronique attribué en 2026-07 à un défaut de bind " +
-        "sur loopback n'était que cette destruction, vue depuis Chrome.",
-    ).toBeGreaterThan(lighthouse);
+      "`size-limit-action` est de retour dans gate-b. Elle relance un build complet " +
+        "et VIDE `.next` : placée avant Playwright, elle fait démarrer `pnpm start` sur " +
+        "un dossier sans `BUILD_ID` (run 32443013208 — 209 échecs, zéro passé). Et elle " +
+        "n'aboutit pas : 8 min de build sous un cap de 6. Si son retour est voulu, il " +
+        "faut le décider, pas le laisser passer sous ce cliquet.",
+    ).toBe(-1);
   });
 
   it("assère l'existence de `.next/BUILD_ID` entre le build et Playwright", () => {
