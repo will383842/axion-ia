@@ -114,6 +114,48 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     },
   });
 
+  // 🔴 `D5-5-02` (2026-08-24) — LES MESSAGES QU'ON VOUS A ENVOYÉS SONT VOS DONNÉES.
+  //
+  // `email_logs` et `email_outbox` n'étaient ni exportés, ni déclarés dans
+  // `excludedTables` — une liste qui se présente pourtant comme la liste
+  // exhaustive de ce qui manque. C'est le défaut que le commentaire de `crm`,
+  // vingt lignes plus bas, nomme lui-même : « on ne présente JAMAIS un export
+  // amputé comme complet ».
+  //
+  // On exporte le QUOI et le QUAND, pas le corps du message : un envoi groupé
+  // peut nommer d'autres personnes, et le corps se reconstitue de toute façon à
+  // partir du gabarit. Ce que l'art. 15 doit rendre est « quels messages
+  // m'avez-vous adressés, quand, et sont-ils arrivés ».
+  const [emailsEnvoyes, emailsEnAttente] = await Promise.all([
+    prisma.emailLog.findMany({
+      where: { recipient: email },
+      select: {
+        template: true,
+        locale: true,
+        status: true,
+        sentAt: true,
+        failedAt: true,
+        bounceType: true,
+        bouncedAt: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.emailOutbox.findMany({
+      where: { recipient: email },
+      select: {
+        template: true,
+        sujet: true,
+        statut: true,
+        approuveAt: true,
+        refuseAt: true,
+        envoyeAt: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
+
   const newsletter = await prisma.newsletterSubscriber.findUnique({
     where: { email },
     select: {
@@ -222,6 +264,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     kb,
     chat,
     consentEvents,
+    /** Messages qui vous ont été adressés : quoi, quand, et s'ils sont arrivés. */
+    emailsEnvoyes,
+    /** Messages vous concernant en attente d'envoi ou de validation interne. */
+    emailsEnAttente,
     candidatures: candidatures.candidatures,
     // ⚠️ Une recherche TRONQUÉE qui se présente comme complète est pire qu'une
     // recherche refusée. Le repli déchiffrant est borné : s'il a mordu son
@@ -242,6 +288,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         "cost_ledger (montants USD provider IA, sans PII)",
         "web_vital_samples (RUM agrégé, sessionId client anonyme)",
         "content_gen_jobs (pipeline interne éditorial)",
+        // ⚠️ Le CORPS des messages, et lui seul. Les métadonnées d'envoi sont
+        // exportées ci-dessus (`emailsEnvoyes`, `emailsEnAttente`) : les omettre
+        // sans le dire était le défaut `D5-5-02`.
+        "email_outbox.payload (corps du message : un envoi groupé peut nommer d'autres personnes ; le contenu se reconstitue depuis le gabarit, disponible sur demande)",
       ],
       excludedReason:
         "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence. Purgés automatiquement (cf. retention-purge-worker).",
