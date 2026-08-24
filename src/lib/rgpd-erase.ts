@@ -14,6 +14,14 @@
  *   via FK ; anonymiser la Submission suffit (le booking row reste pour
  *   l'audit comptable mais ne contient déjà aucune PII propre).
  * - KB bookmarks : géré par `src/lib/knowledge/rgpd-export.ts` → `eraseKbDataForEmail`.
+ * - Journaux d'e-mail (`email_logs`) : PSEUDONYMISATION de l'adresse, la ligne
+ *   est conservée. C'est la preuve que le bénéficiaire a été informé — pièce
+ *   exigée par Qualiopi (critère 2) et couverte par l'art. 17(3)(b) et (e).
+ *   Ce qui compte pour un auditeur est « CE DOSSIER a reçu sa convocation le
+ *   JJ/MM », pas l'adresse : la preuve survit, l'identifiant disparaît.
+ * - Corbeille d'envoi (`email_outbox`) : SUPPRESSION. Un message NON ENVOYÉ ne
+ *   prouve rien, et rien ne justifie de conserver sa charge utile — laquelle
+ *   porte le nom, la formation, les dates et les liens personnels.
  *
  * Tous les appels génèrent un ActivityLog `gdpr.erase.<table>` (forensique).
  */
@@ -86,6 +94,61 @@ export async function eraseSubmissionsForEmail(email: string): Promise<EraseSubm
 export async function eraseNewsletterForEmail(email: string): Promise<EraseNewsletterResult> {
   const result = await prisma.newsletterSubscriber.deleteMany({ where: { email } });
   return { deleted: result.count };
+}
+
+export interface EraseEmailTracesResult {
+  /** Lignes de `email_logs` dont l'adresse a été pseudonymisée. */
+  readonly logsPseudonymises: number;
+  /** Lignes de `email_outbox` supprimées (messages non envoyés). */
+  readonly outboxSupprimes: number;
+}
+
+/**
+ * 🔴 `D5-5-01` (2026-08-24) — LES DEUX TABLES D'E-MAIL ÉCHAPPAIENT À L'EFFACEMENT.
+ *
+ * `email_logs.recipient` et `email_outbox.recipient` portent l'adresse **en
+ * clair** (`@db.Citext`), et `email_outbox.payload` porte la charge utile
+ * complète du message : nom, intitulé de formation, dates, liens personnels.
+ * Ni l'une ni l'autre n'était touchée par la route d'effacement — et elles ne
+ * figuraient pas davantage parmi les exceptions de rétention déclarées.
+ *
+ * 🔑 C'est le défaut exact de `D5-5-03`, une table plus loin : les candidatures
+ * étaient hors de portée, et le courriel de confirmation ÉNUMÉRAIT ce qui avait
+ * été effacé. Le commentaire écrit alors vaut mot pour mot ici — « une liste qui
+ * se donne pour exhaustive et qui omet le CV est pire qu'une absence de liste ».
+ * La personne recevait « vos données identifiantes ont été effacées » pendant
+ * que son adresse et le contenu de ses messages survivaient.
+ *
+ * ## Pourquoi les deux tables ne se traitent PAS pareil
+ *
+ * `email_logs` est une PREUVE. Qualiopi exige de démontrer que le bénéficiaire a
+ * été informé (convocation, convention, attestation) ; l'art. 17(3)(b) et (e) du
+ * RGPD couvre cette conservation. Mais la preuve utile est « ce DOSSIER a reçu
+ * sa convocation le JJ/MM » — le rattachement se fait par `entityType`/`entityId`,
+ * pas par l'adresse. On pseudonymise donc l'adresse et on garde la ligne : un
+ * auditeur peut toujours vérifier qu'un envoi a eu lieu, plus à qui.
+ *
+ * `email_outbox` ne prouve RIEN : ce sont des messages en attente ou garés en
+ * corbeille de validation, jamais partis. Aucune base légale ne justifie de
+ * conserver la charge utile d'un courrier qu'on n'a pas envoyé. Suppression.
+ *
+ * ⚠️ `bounceReason` est vidé au passage : c'est du texte libre renvoyé par le
+ * transporteur, qui contient l'adresse et parfois davantage.
+ */
+export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmailTracesResult> {
+  // Même forme que `eraseSubmissionsForEmail` : `erased:<empreinte>@erased.local`.
+  // Une SEULE écriture de ce format dans le module — un format recopié diverge.
+  const pseudonyme = `erased:${hashEmail(email)}@erased.local`;
+
+  const [logs, outbox] = await Promise.all([
+    prisma.emailLog.updateMany({
+      where: { recipient: email },
+      data: { recipient: pseudonyme, bounceReason: null },
+    }),
+    prisma.emailOutbox.deleteMany({ where: { recipient: email } }),
+  ]);
+
+  return { logsPseudonymises: logs.count, outboxSupprimes: outbox.count };
 }
 
 export interface EraseChatResult {

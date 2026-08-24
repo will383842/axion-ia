@@ -38,6 +38,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { eraseKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import {
   eraseChatDataForEmail,
+  eraseEmailTracesForEmail,
   eraseNewsletterForEmail,
   eraseSubmissionsForEmail,
 } from "@/lib/rgpd-erase";
@@ -90,23 +91,38 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const chatResult = await eraseChatDataForEmail(email);
 
   // Exécution des effacements
-  const [submissionsResult, newsletterResult, kbResult, candidaturesResult] = await Promise.all([
-    eraseSubmissionsForEmail(email),
-    eraseNewsletterForEmail(email),
-    eraseKbDataForEmail(email),
-    // 🔴 `D5-5-03` (2026-08-20) — LES CANDIDATURES ÉTAIENT HORS DE PORTÉE.
-    //
-    // Ni exportées, ni effacées — alors qu'une candidature porte le **CV**, la
-    // **photo** et le **téléphone**, c'est-à-dire les données les plus
-    // sensibles que ce site détienne sur une personne. Et le courriel de
-    // confirmation ÉNUMÉRAIT ce qui avait été effacé : une liste qui se donne
-    // pour exhaustive et qui omet le CV est pire qu'une absence de liste.
-    //
-    // Le défaut était plus profond qu'un oubli de branchement : `email` est
-    // chiffré avec un IV aléatoire, donc la candidature était INTROUVABLE par
-    // son adresse. Cf. `careers/candidature-rgpd.ts`.
-    effacerCandidaturesPour(email),
-  ]);
+  const [submissionsResult, newsletterResult, kbResult, candidaturesResult, emailTracesResult] =
+    await Promise.all([
+      eraseSubmissionsForEmail(email),
+      eraseNewsletterForEmail(email),
+      eraseKbDataForEmail(email),
+      // 🔴 `D5-5-03` (2026-08-20) — LES CANDIDATURES ÉTAIENT HORS DE PORTÉE.
+      //
+      // Ni exportées, ni effacées — alors qu'une candidature porte le **CV**, la
+      // **photo** et le **téléphone**, c'est-à-dire les données les plus
+      // sensibles que ce site détienne sur une personne. Et le courriel de
+      // confirmation ÉNUMÉRAIT ce qui avait été effacé : une liste qui se donne
+      // pour exhaustive et qui omet le CV est pire qu'une absence de liste.
+      //
+      // Le défaut était plus profond qu'un oubli de branchement : `email` est
+      // chiffré avec un IV aléatoire, donc la candidature était INTROUVABLE par
+      // son adresse. Cf. `careers/candidature-rgpd.ts`.
+      effacerCandidaturesPour(email),
+      // 🔴 `D5-5-01` (2026-08-24) — LES DEUX TABLES D'E-MAIL ÉTAIENT HORS DE PORTÉE.
+      //
+      // Exactement le défaut de `D5-5-03` ci-dessus, une table plus loin :
+      // `email_logs.recipient` et `email_outbox.recipient` portent l'adresse EN
+      // CLAIR, et `email_outbox.payload` la charge utile complète — nom, formation,
+      // dates, liens personnels. Ni effacées, ni déclarées en exception : la
+      // personne recevait « vos données identifiantes ont été effacées » pendant
+      // qu'elles survivaient.
+      //
+      // Les deux ne se traitent pas pareil, et le détail est dans `rgpd-erase.ts` :
+      // le journal est une PREUVE Qualiopi (art. 17(3)(b) et (e)) — on
+      // pseudonymise l'adresse et on garde la ligne ; la corbeille ne prouve rien
+      // — on supprime.
+      eraseEmailTracesForEmail(email),
+    ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
   // univers et inscrit l'empreinte en liste de suppression (ce qui empêche une
@@ -202,6 +218,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       kbBookmarksDeleted: kbResult.bookmarksDeleted,
       chatConversationsDeleted: chatResult.conversationsDeleted,
       chatEscalationsAnonymized: chatResult.escalationsAnonymized,
+      emailLogsPseudonymises: emailTracesResult.logsPseudonymises,
+      emailOutboxSupprimes: emailTracesResult.outboxSupprimes,
       /** `ok` | `deferred` | `failed` — cf. `notice.retentionExceptions`. */
       crm: crmResult.status,
     },
@@ -218,6 +236,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // Le registre ne contient AUCUNE adresse en clair, seulement une
         // empreinte : il ne permet pas de retrouver la personne.
         "consent_events : registre de preuve des consentements, conservé sous forme d'empreinte (art. 7(1) et 17(3)(e) RGPD).",
+        // ⚠️ DÉCLARÉE, et pas seulement appliquée. Une exception de rétention
+        // qu'on pratique sans la dire est indiscernable d'un oubli — et c'est
+        // précisément sous cette forme que le défaut a vécu.
+        "email_logs : l'adresse est PSEUDONYMISÉE, la ligne conservée. C'est la preuve que vous avez été informé (convocation, convention, attestation), exigée par la certification Qualiopi et couverte par l'art. 17(3)(b) et (e) RGPD. Elle ne permet plus de vous identifier.",
+        "email_outbox : SUPPRIMÉ intégralement — messages non envoyés, charge utile comprise. Aucune base légale ne justifie de les conserver.",
       ],
       contactDpo: "contact@axion-ia.com",
     },
