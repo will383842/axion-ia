@@ -103,13 +103,31 @@ export async function envoyerQuestionnaireAction(input: {
 
   const enrollmentId = questionnaire.enrollment.id;
 
+  // 🔴 2026-08-24 — LE RETOUR EST LE CONTRAT, ET IL ÉTAIT JETÉ.
+  //
+  // Ces trois fonctions rendent `Promise<boolean>` et NE LÈVENT PAS quand
+  // l'envoi échoue : elles rendent `false`. Cinq chemins le font sans lever —
+  // stub, questionnaire déjà répondu, stagiaire sans adresse, file de messages
+  // indisponible, e-mail garé en corbeille de validation. Le `catch` ci-dessous
+  // n'attrape donc AUCUN de ces cas.
+  //
+  // Résultat mesuré avant ce correctif : `envoyeAt` était écrit hors de tout
+  // test, l'écran affichait « Lien envoyé au stagiaire », l'alerte J-2 disait
+  // « envoyé mais sans réponse », et le rattrapage — qui ne reprend que les
+  // `envoyeAt: null` — écartait le dossier DÉFINITIVEMENT. Le stagiaire n'avait
+  // rien reçu, et la base attestait l'inverse.
+  //
+  // 🔑 Le worker porte cette garde depuis la PR #764 ; le correctif n'avait
+  // jamais franchi la couche action. Cliquet :
+  // `notifications/__tests__/appelant-ne-jette-pas-le-booleen-denvoi.spec.ts`.
+  let parti = false;
   try {
     switch (questionnaire.type) {
       case "satisfaction_chaud":
-        await envoyerSatisfactionJ1(enrollmentId);
+        parti = await envoyerSatisfactionJ1(enrollmentId);
         break;
       case "satisfaction_froid":
-        await envoyerSuiviJ30(enrollmentId);
+        parti = await envoyerSuiviJ30(enrollmentId);
         break;
       default:
         // `positionnement` — email DÉDIÉ, qui nomme la formation, sa date, et
@@ -121,11 +139,25 @@ export async function envoyerQuestionnaireAction(input: {
         // n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet
         // email » — une invitation explicite à ignorer la seule pièce qui
         // fonde l'indicateur 8. Constaté sur le premier dossier réel.
-        await envoyerPositionnement(questionnaireId);
+        parti = await envoyerPositionnement(questionnaireId);
         break;
     }
   } catch {
     return { error: "L'envoi a échoué. Réessayez dans quelques instants." };
+  }
+
+  // ⚠️ Le message doit distinguer les deux causes : un e-mail garé en corbeille
+  // de validation partira peut-être après approbation humaine, une file absente
+  // non. Les deux comptent comme NON ENVOYÉ, et dans les deux cas la trace ne
+  // doit pas être écrite — c'est elle qui ferme le rattrapage.
+  if (!parti) {
+    return {
+      error:
+        "Rien n'est parti : le message est soit garé en corbeille de validation, " +
+        "soit resté en attente faute de file de messages. Aucune trace d'envoi " +
+        "n'a été enregistrée, le rattrapage automatique reprendra ce " +
+        "questionnaire.",
+    };
   }
 
   const envoyeAt = new Date();
@@ -184,10 +216,22 @@ export async function relancerQuestionnaireAction(input: {
     return { error: "Ce questionnaire a déjà été rempli — inutile de relancer." };
   }
 
+  // Même contrat, même piège : `envoyerRelanceQuestionnaire` rend `false` sans
+  // lever. Une relance non partie qui journalise un succès consomme le plafond
+  // (`RELANCES_MAX = 2`) et referme le rattrapage sur un envoi fantôme.
+  let relanceePartie = false;
   try {
-    await envoyerRelanceQuestionnaire(questionnaireId);
+    relanceePartie = await envoyerRelanceQuestionnaire(questionnaireId);
   } catch {
     return { error: "La relance a échoué. Réessayez dans quelques instants." };
+  }
+  if (!relanceePartie) {
+    return {
+      error:
+        "La relance n'est pas partie : message garé en corbeille de validation, " +
+        "ou file de messages indisponible. Aucun compteur de relance n'a été " +
+        "consommé.",
+    };
   }
 
   await logQualiopiActivity({

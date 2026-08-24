@@ -113,7 +113,14 @@ beforeEach(() => {
   mockTelegram.mockResolvedValue(undefined);
   mockPrisma.questionnaire.findMany.mockResolvedValue([]);
   mockPrisma.questionnaire.update.mockResolvedValue({});
-  mockPositionnement.mockResolvedValue(undefined);
+  // 🔴 2026-08-24 — CE MOCK RENDAIT `undefined`, ET ROMPAIT LE CONTRAT ICI MÊME.
+  // `envoyerPositionnement` rend `Promise<boolean>` : `true` = remis à la file,
+  // `false` = rien n'est parti. Un double qui rend `undefined` rend un faux
+  // toujours — et rendait donc impossible de tester le chemin nominal. C'est la
+  // raison pour laquelle cette suite est restée VERTE pendant que l'appelant
+  // jetait son booléen en production. Recopier la SIGNATURE, pas le minimum qui
+  // passe.
+  mockPositionnement.mockResolvedValue(true);
 });
 
 function entree(over: Record<string, unknown> = {}) {
@@ -208,6 +215,39 @@ describe("🔴 le positionnement part À LA CONCLUSION de la pièce qui engage l
     const res = await signerPieceParJetonAction(entree());
 
     expect(res).toMatchObject({ ok: true, statutSignature: "signee" });
+  });
+
+  /**
+   * 🔴 2026-08-24 — LE SEUL MODE D'ÉCHEC QUI SE PRODUIT VRAIMENT N'ÉTAIT PAS TESTÉ.
+   *
+   * Le cas ci-dessus couvre la LEVÉE (`mockRejectedValue`). Or
+   * `envoyerPositionnement` ne lève pas quand l'envoi échoue : elle rend `false`,
+   * sur cinq chemins — stub, questionnaire déjà répondu, stagiaire sans adresse,
+   * file de messages indisponible, e-mail garé en corbeille de validation.
+   *
+   * 🔑 Tester uniquement la levée, c'est garder le seul mode d'échec IMPOSSIBLE.
+   * C'est ainsi qu'un défaut a survécu à un correctif qui le visait (PR #764).
+   */
+  it("🔴 un envoi NON PARTI ne pose aucune date d'envoi — la trace fermerait le rattrapage", async () => {
+    conventionConclue();
+    mockPrisma.questionnaire.findMany.mockResolvedValue([{ id: "q-1" }]);
+    // Pas de levée : la fonction rend `false`, exactement comme en production
+    // quand une règle `EmailAutomationSetting` gare le message.
+    mockPositionnement.mockResolvedValue(false);
+
+    const res = await signerPieceParJetonAction(entree());
+
+    // La signature reste écrite : ce n'est pas l'e-mail qui la fonde.
+    expect(res).toMatchObject({ ok: true, statutSignature: "signee" });
+
+    expect(
+      mockPrisma.questionnaire.update,
+      "une date d'envoi a été posée alors que RIEN n'est parti. Le cron du " +
+        "positionnement ne reprend que les `envoyeAt: null` : cette écriture " +
+        "écarte le stagiaire du rattrapage DÉFINITIVEMENT, et fabrique la preuve " +
+        "d'une information qui ne lui a jamais été donnée — exactement ce qu'un " +
+        "certificateur du critère 2 sait faire tomber",
+    ).not.toHaveBeenCalled();
   });
 
   it("une pièce sans session rattachée sort sans rien envoyer", async () => {

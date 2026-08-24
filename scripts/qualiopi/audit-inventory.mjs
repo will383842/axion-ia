@@ -12,11 +12,33 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 
 const ROOT = process.cwd();
-const OUT = process.argv[2];
-if (!OUT) {
-  console.error("usage: node scripts/qualiopi/audit-inventory.mjs <dossier-de-sortie>");
-  process.exit(1);
-}
+
+/**
+ * 🔑 CE SCRIPT NE DOIT PLUS JAMAIS RENDRE LE VIDE EN ANNONÇANT LE SUCCÈS.
+ *
+ * Ces deux registres collectent ce qui a échoué pendant le balayage. Ils sont
+ * relus à la toute fin, et le script SORT EN ERREUR s'ils ne sont pas vides ou
+ * si un inventaire est invraisemblable. Un audit lancé sur un périmètre faux ne
+ * mesure rien — et il ressemble exactement à un audit qui n'a rien trouvé.
+ */
+const illisibles = [];
+const absents = [];
+const invraisemblances = [];
+
+/**
+ * 🔴 2026-08-24 — LE DOSSIER DE SORTIE ÉTAIT UN ARGUMENT OBLIGATOIRE, ET C'EST
+ * UNE DES RAISONS POUR LESQUELLES CE SCRIPT NE TOURNAIT JAMAIS.
+ *
+ * Sans valeur par défaut, il ne pouvait pas être appelé par un script npm ni par
+ * un workflow — et de fait, au 2026-08-24, AUCUN des deux ne l'appelait. La
+ * « source de vérité de ce qu'il y a à auditer » ne tournait que si quelqu'un se
+ * souvenait de la lancer à la main, avec le bon chemin.
+ *
+ * Le défaut est désormais gitignoré (`_AUDIT/VERIF-QUALIOPI-CHAINE-COMPLETE/`
+ * couvre déjà les artefacts de run ; celui-ci a sa propre ligne) : relancer ne
+ * salit pas le dépôt, et `pnpm qualiopi:audit-inventory` suffit.
+ */
+const OUT = process.argv[2] ?? join(ROOT, "_AUDIT-INVENTAIRE");
 mkdirSync(join(OUT, "05-INVENTAIRE"), { recursive: true });
 
 const SKIP_DIRS = new Set([
@@ -38,7 +60,14 @@ function walk(dir, acc = []) {
   let entries;
   try {
     entries = readdirSync(dir, { withFileTypes: true });
-  } catch {
+  } catch (err) {
+    // 🔴 2026-08-24 — CE `catch` ÉTAIT NU, ET IL RENDAIT L'ACCUMULATEUR EN L'ÉTAT.
+    // Un dossier illisible disparaissait donc de l'inventaire sans un mot, et le
+    // script se terminait sur un code 0. Ce fichier se déclare « la source de
+    // vérité de ce qu'il y a à auditer » : une source de vérité qui perd une
+    // branche en silence produit un périmètre faux, et tout l'audit raisonne
+    // dessus. On COMPTE l'incident, et `main` refuse de conclure s'il y en a.
+    illisibles.push(`${relative(ROOT, dir)} — ${err instanceof Error ? err.message : String(err)}`);
     return acc;
   }
   for (const e of entries) {
@@ -67,10 +96,23 @@ const writeCsv = (name, header, rows) => {
   return rows.length;
 };
 
+/**
+ * 🔴 2026-08-24 — CE `catch` RENDAIT `""`, ET UN FICHIER MANQUANT DEVENAIT DONC
+ * INDISCERNABLE D'UN FICHIER VIDE.
+ *
+ * Conséquence : un chemin périmé — après un renommage, un déplacement — faisait
+ * rendre un inventaire VIDE sur la section concernée, sans erreur, avec un code
+ * de sortie 0. Le dépôt a déjà payé ce motif trois fois : 0 test sur 237 lus
+ * comme un vert, quatre specs de console qui n'exécutaient aucune assertion, et
+ * un cliquet de budgets qui cherchait deux de ses trois aides au mauvais chemin.
+ *
+ * On distingue désormais les deux cas, et on RETIENT l'absence.
+ */
 const read = (p) => {
   try {
     return readFileSync(join(ROOT, p), "utf8");
-  } catch {
+  } catch (err) {
+    absents.push(`${p} — ${err instanceof Error ? err.message : String(err)}`);
     return "";
   }
 };
@@ -306,8 +348,14 @@ counts.ind = writeCsv(
   ],
   indRows.sort((a, b) => Number(a[0]) - Number(b[0])),
 );
+// 🔴 C'ÉTAIT UN `console.log`, DONC RIEN. Le référentiel national de qualité
+// compte 32 indicateurs : ce n'est pas une estimation, c'est un invariant. Un
+// parseur qui en rend 7 ou 0 a cessé de fonctionner, et l'audit qui suit compte
+// une couverture sur un denominateur faux. On le porte en faute vraisemblance.
 if (indRows.length !== 32) {
-  console.log(`  ⚠️  ${indRows.length} indicateurs extraits au lieu de 32 — parseur à revoir`);
+  invraisemblances.push(
+    `${indRows.length} indicateurs RNQ extraits au lieu de 32 — le parseur a cessé de fonctionner`,
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -411,3 +459,53 @@ for (const r of progress) byType[r[2]] = (byType[r[2]] ?? 0) + 1;
 for (const [t, c] of Object.entries(byType).sort((a, b) => b[1] - a[1])) {
   console.log(`  ${t.padEnd(18)} ${c}`);
 }
+
+/* ------------------------------------------------------------------ */
+/* 9 — LE VERDICT DU SCRIPT SUR LUI-MÊME                               */
+/* ------------------------------------------------------------------ */
+/**
+ * 🔴 2026-08-24 — SANS CE BLOC, TOUT CE QUI PRÉCÈDE N'EST QUE DE LA PROSE.
+ *
+ * Ce script se déclare en tête « la source de vérité de ce qu'il y a à
+ * auditer ». Il avalait pourtant ses propres pannes : un dossier illisible
+ * rendait l'accumulateur, un fichier manquant rendait une chaîne vide, et
+ * l'écart sur les 32 indicateurs du RNQ n'était qu'un `console.log`. Il
+ * terminait donc sur un code 0 en ayant produit des inventaires vides — et un
+ * audit lancé là-dessus croit avoir traversé un périmètre qu'il n'a pas vu.
+ *
+ * 🔑 Un inventaire vide n'est pas « rien à auditer », c'est « rien n'a été
+ * mesuré ». Les deux se ressemblent exactement, et c'est pour cela qu'il faut
+ * une garde qui ROUGIT : le dépôt a déjà payé ce motif trois fois (0 test sur
+ * 237 lus comme un vert, quatre specs de console sans assertion, un cliquet de
+ * budgets aveugle à deux de ses trois aides).
+ *
+ * ⚠️ Le seuil de vraisemblance est délibérément bas : il ne cherche pas à juger
+ * la qualité de l'inventaire, seulement à refuser un effondrement. Un dépôt
+ * Qualiopi qui rendrait moins de 50 unités de travail n'a pas été lu.
+ */
+const SEUIL_UNITES = 50;
+if (progress.length < SEUIL_UNITES) {
+  invraisemblances.push(
+    `PROGRESS.csv ne porte que ${progress.length} unités de travail (seuil : ${SEUIL_UNITES}) — ` +
+      "le balayage n'a pas atteint le dépôt",
+  );
+}
+
+const incidents = [
+  ...illisibles.map((x) => `dossier illisible : ${x}`),
+  ...absents.map((x) => `fichier attendu ABSENT : ${x}`),
+  ...invraisemblances.map((x) => `invraisemblance : ${x}`),
+];
+
+if (incidents.length > 0) {
+  console.error("\n🔴 INVENTAIRE NON CONCLUANT — ne PAS auditer sur cette base :\n");
+  for (const i of incidents) console.error(`  · ${i}`);
+  console.error(
+    "\n  Chacun de ces incidents produisait auparavant un inventaire silencieusement" +
+      "\n  amputé, avec un code de sortie 0. Corriger la cause, puis relancer." +
+      "\n  Un périmètre faux rend tout verdict d'audit sans valeur.\n",
+  );
+  process.exit(1);
+}
+
+console.log("\n✅ Inventaire conclusif : aucun dossier illisible, aucun fichier attendu absent.");

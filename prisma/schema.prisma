@@ -6261,8 +6261,28 @@ model TrainingSession {
   acompteRecu                        Boolean                  @default(false) @map("acompte_recu")
   acompteMoyen                       String?                  @map("acompte_moyen") @db.VarChar(60)
   statut                             TrainingSessionStatut    @default(planifiee)
-  createdAt                          DateTime                 @default(now()) @map("created_at")
-  updatedAt                          DateTime                 @updatedAt @map("updated_at")
+
+  /// 🔴 2026-08-24 — LE RAPPEL J-7 NE LAISSAIT AUCUNE TRACE, DONC AUCUNE PREUVE.
+  ///
+  /// `handleRappelJ7` etait un PUR COMPTE A REBOURS : il ne retenait que les
+  /// sessions dont `dateDebut` tombait dans [J-7,5 ; J-6,5] au passage quotidien
+  /// de 08:00 UTC. Trois consequences, toutes mesurees le 2026-08-24 :
+  ///
+  ///   1. une session creee moins de 7,5 jours avant son debut n'entre JAMAIS
+  ///      dans la fenetre — et c'est le cas ordinaire, pas le cas limite : la
+  ///      session du 31/07 a ete creee le 31/07, celle du 16/08 la veille ;
+  ///   2. un worker arrete pendant le creneau perd l'occurrence, sans rattrapage ;
+  ///   3. surtout — AUCUNE donnee ne permettait d'affirmer devant un
+  ///      certificateur qu'un rappel etait parti. Le critere 2 du RNQ porte sur
+  ///      l'information du beneficiaire : une preuve inatteignable n'est pas une
+  ///      preuve.
+  ///
+  /// Cette colonne remplace le balayage par date par un ETAT — exactement comme
+  /// `Enrollment.convocationEnvoyeeAt`, dont ce champ copie le patron. Ecrite
+  /// SEULEMENT quand tous les stagiaires de la session ont recu leur message.
+  rappelJ7EnvoyeAt DateTime? @map("rappel_j7_envoye_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
 
   enrollments                Enrollment[]
   transitions                FormationTransition[]
@@ -6295,6 +6315,8 @@ model TrainingSession {
   @@index([dateDebut, dateFin])
   /// Calendrier filtré par statut / financement (prévisionnel).
   @@index([statut, dateDebut])
+  /// Selection du cron `rappel-j7` : les sessions planifiees encore sans rappel.
+  @@index([rappelJ7EnvoyeAt, statut, dateDebut])
   @@index([financementType, dateDebut])
   /// Charge d'un formateur sur une période.
   @@index([formateurPrincipalId, dateDebut])
@@ -11226,7 +11248,7 @@ model EdMarque {
 }
 
 model EdCompte {
-  id         String       @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   /// Clé naturelle stable. Comme EdMarque, EdPilier, EdFamille et EdSerie :
   /// c’est elle qui rend l’amorçage idempotent et l’import référençable,
@@ -11780,11 +11802,11 @@ model EdJournal {
   /// qu'il incrimine, sinon il s'efface au moment ou il servirait.
   auteurUserId String? @map("auteur_user_id")
   auteurNom    String? @map("auteur_nom") @db.VarChar(160)
-  entite   String    @db.VarChar(60)
-  entiteId String    @map("entite_id") @db.Uuid
-  action   String    @db.VarChar(40)
-  avant    Json?
-  apres    Json?
+  entite       String  @db.VarChar(60)
+  entiteId     String  @map("entite_id") @db.Uuid
+  action       String  @db.VarChar(40)
+  avant        Json?
+  apres        Json?
 
   createdAt DateTime @default(now()) @map("created_at")
 
