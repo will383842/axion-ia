@@ -202,6 +202,24 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/formateur/etapes-formateur.spec.ts",
   "src/server/queue/workers/__tests__/envoi-non-parti-aucune-trace.spec.ts",
   "src/server/queue/workers/__tests__/retention-preuve-envoi.spec.ts",
+  // ── Gardes CI qui empruntent `sansCommentaires` au domaine.
+  //
+  //    Ce n'est PAS une dependance metier : `revues/sans-commentaires` est un
+  //    utilitaire de TEXTE (retirer les commentaires d'une source avant de la
+  //    fouiller), qui se trouve loge dans le domaine sans lui appartenir. Un
+  //    cliquet statique en a besoin pour la meme raison que les autres : sans
+  //    lui, il trouve ses propres commentaires et rend un vert imaginaire --
+  //    defaut deja paye ici.
+  //
+  //    L'alternative etait de recopier le predicat, comme le font deja une
+  //    dizaine de specs qui le redefinissent localement. C'est precisement ce
+  //    qu'il ne faut pas faire : un predicat recopie diverge toujours, et ce
+  //    depot l'a paye quatre fois. On assume donc l'arete, ecrite ici.
+  //
+  //    ⚠️ Le jour ou un troisieme emprunteur apparait, DEPLACER l'utilitaire
+  //    vers une zone neutre (`src/lib/`) plutot que d'allonger cette liste :
+  //    trois exceptions pour un meme symbole ne sont plus des exceptions.
+  "tests/unit/ci/origine-de-prod-jamais-en-repli.spec.ts",
 ]);
 
 /**
