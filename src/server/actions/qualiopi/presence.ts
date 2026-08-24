@@ -383,7 +383,7 @@ export async function saveEmargementAction(input: {
     present: boolean;
     dureeRealiseeMinutes?: number;
   }>;
-}): Promise<ActionResult<{ updated: number }>> {
+}): Promise<ActionResult<{ updated: number; signaturesProtegees: number }>> {
   const session = await requireAdminWrite();
   const parsed = saveEmargementSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -403,6 +403,8 @@ export async function saveEmargementAction(input: {
   // Pour chaque entrée, on a besoin de la dureePrevue du créneau existant
   // afin de remplir dureeRealiseeMinutes si absent.
   let updated = 0;
+  /** Créneaux sautés parce qu'ils portent une signature vivante — cf. la garde. */
+  let signaturesProtegees = 0;
 
   for (const entry of v.entries) {
     const dateObj = new Date(`${entry.date}T00:00:00+00:00`);
@@ -416,8 +418,44 @@ export async function saveEmargementAction(input: {
           demiJournee: toDemiJourneeEnum(entry.demiJournee),
         },
       },
-      select: { id: true, dureePrevueMinutes: true, source: true, libelle: true },
+      select: {
+        id: true,
+        dureePrevueMinutes: true,
+        source: true,
+        libelle: true,
+        // 🔴 2026-08-24 — `importId` et le compte de signatures MANQUAIENT ici,
+        // et c'est tout le défaut : sans eux, cette boucle ne pouvait pas savoir
+        // qu'elle écrasait une preuve. La requête jumelle du chemin d'import les
+        // lit déjà (`presence.ts`, garde `protegePresentiel`).
+        importId: true,
+        _count: { select: { emargementSignatures: true } },
+      },
     });
+
+    // 🔴 2026-08-24 — LA GRILLE ÉCRASAIT UNE SIGNATURE, ET LA GARDE EXISTAIT DÉJÀ
+    // DANS CE FICHIER.
+    //
+    // `importReleveConnexionAction` porte `protegePresentiel` : elle refuse
+    // d'écraser une demi-journée qui porte une signature vivante, et son
+    // commentaire dit pourquoi — « une preuve d'émargement présentiel détruite en
+    // silence sur une session hybride ». Le chemin MANUEL n'avait aucun
+    // équivalent : un clic « Enregistrer » case décochée écrivait
+    // `present: false, dureeRealiseeMinutes: 0` sur un créneau signé
+    // électroniquement. La signature restait vivante et affirmait la présence,
+    // le créneau la niait. Deux sources de vérité, dont l'une contredit l'autre
+    // en silence — et c'est la preuve d'assiduité de l'indicateur `off.12`.
+    //
+    // 🔑 Le bon geste existe, et il est désormais complet : RÉVOQUER la signature
+    // (`emargement/revocation-service.ts`) retire la preuve ET la présence
+    // qu'elle avait créée. La grille refuse donc, au lieu de court-circuiter.
+    //
+    // ⚠️ Refuser en SILENCE serait le même défaut sous une autre forme : l'écran
+    // annoncerait « N mises à jour » en ayant sauté une ligne. Le compte est
+    // remonté à l'appelant.
+    if (existingCreneau !== null && existingCreneau._count.emargementSignatures > 0) {
+      signaturesProtegees += 1;
+      continue;
+    }
 
     // Durée réalisée : si présent et non renseignée → dureePrevue du créneau.
     //
@@ -526,11 +564,11 @@ export async function saveEmargementAction(input: {
     action: "qualiopi.presence.emargement.save",
     targetType: "TrainingSession",
     targetId: v.sessionId,
-    changes: { updated, nbEnrollmentsTouches: enrollmentIds.size },
+    changes: { updated, signaturesProtegees, nbEnrollmentsTouches: enrollmentIds.size },
     session,
   });
 
-  return { data: { updated } };
+  return { data: { updated, signaturesProtegees } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -970,10 +1008,35 @@ export async function setPresenceCreneauManualAction(input: {
     select: {
       id: true,
       enrollmentId: true,
+      // 🔴 2026-08-24 — MÊME GARDE QUE LA GRILLE ET QUE L'IMPORT.
+      // Cette action force `source: "manuel"` et réécrit `present` : sans ce
+      // compte, elle écrase une signature électronique vivante, la preuve
+      // continuant d'affirmer une présence que le créneau nie.
+      _count: { select: { emargementSignatures: true } },
       enrollment: { select: { session: { select: { dateDebut: true } } } },
     },
   });
   if (!creneau) return { error: "Créneau introuvable" };
+
+  // ⚠️ PROPHYLACTIQUE, ET JE LE DIS : au 2026-08-24 cette action n'a AUCUN
+  // appelant de production — seulement sa propre spec. Le défaut y est donc une
+  // DETTE, pas un incident. Mais la garde est posée quand même : laisser le
+  // dernier écrivain de la présence sans protection, à côté de ses deux jumeaux
+  // protégés, recréerait l'asymétrie exacte que ce lot ferme. Le jour où un
+  // écran câble cette action, elle sera déjà juste.
+  //
+  // 🔑 Le cliquet `toute-action-a-une-surface.spec.ts` ne l'attrape pas : son
+  // grain est le FICHIER, pas la fonction, et `presence.ts` a d'autres actions
+  // bien câblées. C'est documenté et assumé dans son en-tête — mais il faut le
+  // savoir en lisant ceci.
+  if (creneau._count.emargementSignatures > 0) {
+    return {
+      error:
+        "Ce créneau porte une signature d'émargement : sa présence ne peut pas " +
+        "être corrigée directement. Révoquez d'abord la signature — la révocation " +
+        "retire la preuve ET la présence qu'elle avait créée.",
+    };
+  }
 
   // Mise à jour.
   await prisma.presenceCreneau.update({
