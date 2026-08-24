@@ -48,10 +48,15 @@ et l'a toujours été :
     refuse désormais le RETOUR de `size-limit-action`, et par
     `tests/unit/ci/gate-b-a-ses-services.spec.ts`, qui exige que toute étape placée après la
     suite E2E déclare `always()` ou `!cancelled()`.
-- **Ce qui reste en reporting** : `pnpm bundle:check` (étape « Poids du bundle », 0 min)
-  porte `continue-on-error: true`. **Aucune PR qui alourdit le bundle ne rougira.** Toute
-  revue qui écrit « le risque bundle est couvert par la gate » raisonne sur une fausse
-  sécurité.
+- **🟢 2026-08-24 — `pnpm bundle:check` EST DÉSORMAIS BLOQUANTE.** L'étape « Poids du
+  bundle » (0 min) ne porte plus `continue-on-error`. Une PR qui alourdit le bundle
+  au-delà d'un cliquet **rougit maintenant pour de bon**. Le raisonnement qui la
+  maintenait muette était un faux dilemme (« soit muette, soit bloquante à 100 KB et
+  toutes les PR ferment ») : la troisième voie était d'**aligner le seuil sur la mesure,
+  puis de bloquer** — c'est-à-dire la doctrine écrite deux paragraphes plus bas, jamais
+  appliquée à ce bucket. Verrouillé par
+  `tests/unit/ci/poids-du-bundle-garde-vraiment.spec.ts`, qui refuse le retour du
+  `continue-on-error` ET un cliquet reposé sous la mesure.
 - **⛔ CE QUI N'EST MESURÉ PAR AUCUNE GATE : le First Load JS PAR ROUTE** (la cible ≤ 75 KB
   gz ci-dessus). `size-limit` ne sait pas exprimer un budget par route sur un glob — il
   **SOMME**. Le bucket qui prétendait le faire s'appelait « page chunks individuels » et
@@ -60,12 +65,17 @@ et l'a toujours été :
   La doctrine renvoyait la question à Lighthouse ; Lighthouse n'y a jamais répondu. **Se
   mesure à la main** : `next build --experimental-build-mode compile` (~2 min) puis lecture
   de `.next/static/chunks/app/`.
-- **⚠️ DETTE OUVERTE, CHIFFRÉE : le shell partagé pèse 135,78 KB pour un budget de 100 KB**
-  (framework + main + main-app + webpack + polyfills, brotli, run `32666732630`). Ce
-  bucket-là est honnête — cumulatif comme son nom l'annonce — et réellement dépassé de
-  **35,78 KB**. Il est resté invisible parce que l'étape entière est en `continue-on-error`.
-  Le jour où le shell repasse sous 100 KB, retirer ce `continue-on-error` est la dernière
-  chose à faire : l'étape gardera enfin.
+- **⚠️ DETTE OUVERTE, CHIFFRÉE : le shell partagé pèse 135,75 kB.** Mesure de la dernière
+  CI verte (run `32701301987`, 2026-08-24) : dépassement de **35,75 kB** sur la cible de
+  100 KB (framework + main + main-app + webpack + polyfills, brotli). Ce bucket-là est
+  honnête — cumulatif comme son nom l'annonce. ⚠️ Les deux chiffres qui circulaient
+  auparavant dans ce fichier (135,78 puis 134,87) étaient tous les deux **faux** : lire la
+  sortie de l'étape « Poids du bundle » d'un run récent, jamais cette page.
+  Le bucket porte désormais un **CLIQUET à 138 KB** (mesure + ~2 KB de marge de bruit) et
+  la **CIBLE de 100 KB reste écrite dans son nom**. Le cliquet n'excuse pas la dette : il
+  empêche qu'elle grossisse, ce qui est le seul risque qu'une gate sache traiter. Abaisser
+  ce seuil se fait APRÈS le travail de réduction — jamais avant, sous peine de rouvrir un
+  rouge que personne ne peut fermer dans sa propre PR.
 - ⚠️ **Le « bind loopback » n'a jamais existé** (mesuré le 2026-08-21). Ce paragraphe a
   affirmé que `next start` ne bindait pas sur 127.0.0.1 en CI. Il ne bindait rien parce
   qu'il n'avait **rien à servir** : l'étape `Bundle delta vs main` relançait `pnpm run build`
@@ -73,9 +83,14 @@ et l'a toujours été :
   dossier sans `BUILD_ID`. Les 237 tests Playwright et les 5 URLs Lighthouse de Gate B
   mesuraient donc le vide (run 32443013208 : 209 failed, 0 passed).
 
-Ne repassez pas ces gates en bloquant « au passage » : un ratchet posé sur un seuil déjà
-dépassé (le bucket « Shell partagé » mesure 134,87 kB réels pour une limite affichée à
-100 kB) ouvre un rouge permanent sur toutes les PR. Seuil aligné d'abord, blocage ensuite.
+Ne repassez pas les gates RETIRÉES (Lighthouse PR-time, `size-limit-action`) en bloquant
+« au passage » : elles ne mesuraient pas leurs cibles. Et ne reposez jamais un ratchet sur
+un seuil déjà dépassé — cela ouvre un rouge permanent sur toutes les PR. **Seuil aligné
+d'abord, blocage ensuite** : c'est exactement ce qui a été appliqué au bucket « Shell
+partagé » le 2026-08-24, et les cinq autres buckets étaient déjà verts sur la même mesure
+(/appel 110 KB, somme anti-croissance 700 KB, /galerie 75 KB, /implantations 72 KB, et le
+dernier à 30 KB) — l'étape est donc devenue bloquante **en passant**, ce qui est le seul
+état dans lequel poser une gate.
 
 Source de vérité : `_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md`.
 

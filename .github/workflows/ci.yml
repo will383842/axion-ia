@@ -409,17 +409,39 @@ jobs:
       # pas un budget par route.
       #
       # ⚠️ ET ELLE A UN VRAI DÉPASSEMENT À MONTRER, resté invisible sous le
-      # `continue-on-error` : le SHELL PARTAGÉ pèse **135,78 KB** pour un budget
-      # de 100 KB (run 32666732630). Celui-là est honnête — cumulatif comme son
-      # nom l'annonce, et dépassé de 35,78 KB. Dette ouverte, cf. `AGENTS.md`.
+      # `continue-on-error` : le SHELL PARTAGÉ. Mesuré sur la dernière CI verte
+      # (run 32701301987, 2026-08-24) : **dépassement de 35,75 kB** sur un budget
+      # de 100 KB, soit **135,75 kB**. Celui-là est honnête — cumulatif comme son
+      # nom l'annonce. Dette ouverte, cf. `AGENTS.md`.
       #
-      # 🔑 Rester en `continue-on-error` est ici un CHOIX, pas un oubli : rendre
-      # l'étape bloquante aujourd'hui fermerait toutes les PR jusqu'à ce que le
-      # shell repasse sous 100 KB. Le jour où il y repasse, retirer cette ligne
-      # est la dernière chose à faire — et alors seulement l'étape gardera.
-      - name: Poids du bundle (reporting — AUCUNE gate per-route n'existe, voir AGENTS.md)
+      # 🔴 2026-08-24 — `continue-on-error` RETIRÉ, et le raisonnement qui le
+      # justifiait était un FAUX DILEMME.
+      #
+      # Ce commentaire posait deux options : garder l'étape muette, ou la rendre
+      # bloquante à 100 KB et fermer toutes les PR jusqu'à ce que quelqu'un ait
+      # fait les 35 kB de réduction. La première ne garde rien ; la seconde
+      # n'arrivera jamais. Il en existait une troisième : **aligner le seuil sur
+      # la mesure, puis bloquer**. C'est la doctrine déjà écrite dans AGENTS.md
+      # (« Seuil aligné d'abord, blocage ensuite ») — elle n'avait simplement
+      # jamais été appliquée à ce bucket.
+      #
+      # Le bucket « Shell partagé » porte donc un CLIQUET à 138 KB (mesure
+      # 135,75 + ~2 KB de marge pour le bruit d'une montée de dépendance), et la
+      # CIBLE de 100 KB reste écrite dans son nom : c'est une dette, pas un
+      # budget atteint. Le cliquet n'excuse rien — il empêche la dette de
+      # GROSSIR, ce qui est le risque réel et le seul qu'une gate puisse traiter.
+      #
+      # Les cinq autres buckets étaient DÉJÀ verts sur cette même mesure
+      # (/appel 110 KB, somme anti-croissance 700 KB, /galerie 75 KB,
+      # /implantations 72 KB, et le dernier à 30 KB). Retirer le
+      # `continue-on-error` ne rougit donc AUCUNE PR aujourd'hui : l'étape
+      # devient bloquante en passant, ce qui est exactement l'état dans lequel
+      # une gate doit être posée.
+      #
+      # ⛔ NE PAS remettre `continue-on-error` ici. Verrouillé par
+      # `tests/unit/ci/poids-du-bundle-garde-vraiment.spec.ts`.
+      - name: Poids du bundle (gate bloquante — cliquet anti-croissance, PAS un budget per-route)
         run: pnpm bundle:check
-        continue-on-error: true
       # ⚠️ `DATABASE_URL` reste `stub.invalid` AU NIVEAU DU JOB, et ce n'est pas un
       # oubli : le contrat d'ADR 0026 veut que le BUILD tourne sur les stubs Prisma
       # (cf. AGENTS.md, « magic string stub.invalid »). Seules les étapes d'exécution
