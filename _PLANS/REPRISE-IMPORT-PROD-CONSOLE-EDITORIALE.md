@@ -1,89 +1,78 @@
-# Reprise — importer le dossier LinkedIn en PRODUCTION
+# Console éditoriale — le dossier LinkedIn est en production
 
-> Écrit le 2026-08-24, à la fin de la PR #810. À lire depuis n'importe quelle
-> machine : c'est la seule trace qui voyage.
+> Écrit le 2026-08-24 pendant la PR #810, puis **corrigé le même jour une fois
+> l'import fait**. La première version de cette note annonçait une console de
+> production vide : elle ne l'est plus.
 
-## Ce qui est FAIT, définitivement
+## Ce qui est FAIT
 
-**PR #810 mergée dans `main` (`9fa2de1bc`) et déployée.** Build GHCR 51 min,
-deploy Coolify 4 min, Lighthouse post-deploy vert, `axion-ia.com` répond en 200. La migration `ed_asset_segments` s'est appliquée au démarrage du
-conteneur.
+**Le code** — PR #810 mergée dans `main` (`9fa2de1bc`) et déployée. Build GHCR
+51 min, deploy Coolify 4 min, Lighthouse post-deploy vert. La migration
+`ed_asset_segments` s'est appliquée au démarrage du conteneur.
 
-Rien de tout cela ne dépend d'une machine. C'est acquis.
+**Les données** — importées en production le 2026-08-24, en une fenêtre de
+quelques minutes pendant laquelle la base a été exposée puis refermée
+(`is_public` remis à `false`, port 15432 vérifié fermé).
 
-## Ce qui RESTE, et ne se fera pas tout seul
+| Objet             |                                                          En production |
+| ----------------- | ---------------------------------------------------------------------: |
+| Publications      |                                                 **74** (61 + 13 échos) |
+| Assets            |                                                                 **84** |
+| Segments de brief | **238** — 114 slides, 68 consignes, 27 prompts, 22 scripts, 7 légendes |
+| Séries            |                                              **4**, 19 posts rattachés |
+| Erreurs           |                                                                  **0** |
 
-⚠️ **La console éditoriale de production est VIDE.** Le code y est, les
-données non. Aucun cron, aucun hook ne les y mettra : il faut lancer l'import
-à la main.
+Avant cela, `editorial:seed` a créé les référentiels : la production n'en avait
+**aucun** (`0 préservé(s)` sur les sept familles d'objets).
 
-Ce qui existe uniquement dans la base de **dev locale** du poste #2 :
+## Le défaut que seule la production a révélé
 
-| Objet             |             Compte |
-| ----------------- | -----------------: |
-| Publications      | 74 (61 + 13 échos) |
-| Assets            |                 84 |
-| Segments de brief |                238 |
-| Séries            |                  4 |
+Le premier import a échoué :
 
-## Les deux prérequis
-
-1. **Le dossier source**, cinq fichiers, aujourd'hui dans
-   `C:\Users\Will\Downloads\AXION-IA_Dispositif_LinkedIn` du **poste #2** :
-   - `02-calendrier-publication.csv`
-   - `10-LES-61-POSTS.md`
-   - `20-PRODUCTION-VIDEOS.md`
-   - `21-PRODUCTION-CARROUSELS.md`
-   - `22-PRODUCTION-IMAGES-ET-PROMPTS.md`
-   - `23-PRODUCTION-PHOTOS-DE-WILL.md`
-
-   🔴 **Ne PAS committer ce dossier** : le dépôt est public, et ce serait
-   publier le trimestre éditorial avant sa parution.
-
-2. **Un accès à la base de production.** Le tunnel SSH depuis le poste #1 est
-   la voie propre :
-
-   ```bash
-   ssh -L 15432:localhost:5432 root@<vps>    # laisser ouvert
-   ```
-
-## La séquence
-
-```bash
-export DATABASE_URL='postgresql://<user>:<pass>@localhost:15432/<db>'
-export DIRECT_URL="$DATABASE_URL"
-
-pnpm editorial:seed                  # référentiels — idempotent, non destructif
-
-pnpm editorial:import --source "<dossier>" --dry-run   # LIRE le rapport
-pnpm editorial:import --source "<dossier>"
-
-pnpm editorial:import-production --source "<dossier>" --dry-run
-pnpm editorial:import-production --source "<dossier>"
+```
+Transaction already closed: the timeout was 5000 ms,
+however 5038 ms passed since the start.
 ```
 
-Les identifiants Postgres sont dans `.secrets/api-tokens.env`
-(`COOLIFY_PG_USER`, `COOLIFY_PG_PASSWORD`, `COOLIFY_PG_DATABASE`).
+5 000 ms est le **défaut de Prisma**. Il suffisait tant que l'import ne
+tournait qu'en local ; contre une base distante, la latence réseau de chaque
+requête s'accumule et la transaction expire. Corrigé à 120 s.
 
-**Attendu** : 74 publications, 84 assets, 238 segments, 4 séries, 0 erreur.
+⚠️ **Le tout-ou-rien a tenu** : l'échec n'a rien laissé derrière lui, et le
+rejeu a tout écrit d'un coup.
 
-## Ce qui NE marche pas — vérifié, ne pas réessayer
+## Ce qui reste ouvert
 
-| Voie                                                  | Résultat                                                                      |
-| ----------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Postgres depuis l'extérieur                           | port filtré, `is_public: false`                                               |
-| SSH depuis le poste #2                                | `Permission denied (publickey)` — pas de clé                                  |
-| API Coolify `applications/{uuid}/execute`             | **404** — l'endpoint n'existe pas sur cette version                           |
-| API Coolify `PATCH databases/{uuid}` `is_public:true` | fonctionne, mais expose la base sur Internet — refusé sans décision explicite |
+- **Les visuels** : les 84 assets sont à `a_produire`, aucun fichier déposé.
+  Ils se déposent depuis la fiche d'une publication, bloc « Les médias ».
+- **Import en lot des visuels** : à écrire quand les fichiers existeront. Ils
+  s'apparieraient aux emplacements par la référence de production
+  (« vidéo 12 », « carrousel 7 »).
+- **Piliers et idées** : toujours 0. `40-PLAN-DIRECTEUR.md` et
+  `43-IDEES-EDITORIALES.md` les portent, mais leur extraction demande une
+  décision éditoriale, pas une règle mécanique.
+- **Vignettes vidéo et PDF** : `sharp` ne sait en fabriquer que pour les
+  images. Contournement sans dépendance : déposer une image de couverture à
+  côté du mp4 ou du PDF — le calendrier prend la première vignette disponible
+  du jour, quel que soit l'asset qui la porte.
+
+## Pour refaire un import contre la production
+
+🔴 **Ne JAMAIS committer le dossier source** : le dépôt est public, et ce
+serait publier le trimestre éditorial avant sa parution.
+
+Voies vérifiées le 2026-08-24 :
+
+| Voie                                      | Résultat                                                                |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| Postgres depuis l'extérieur               | fermé par défaut (`is_public: false`)                                   |
+| SSH depuis le poste #2                    | `Permission denied (publickey)` — pas de clé                            |
+| API Coolify `applications/{uuid}/execute` | **404** — l'endpoint n'existe pas sur cette version                     |
+| API Coolify `PATCH databases/{uuid}`      | fonctionne — c'est la voie employée, ouverture puis fermeture immédiate |
 
 Piège d'API : `COOLIFY_API_URL` vaut la racine **sans** `/api/v1`. Sans le
 suffixe, tout redirige vers `/login` et on croit le jeton mort.
 
-## Après l'import — deux points ouverts
-
-- **Piliers et idées** : toujours 0 en base. `40-PLAN-DIRECTEUR.md` et
-  `43-IDEES-EDITORIALES.md` les portent, mais leur extraction demande une
-  décision éditoriale, pas une règle mécanique.
-- **Import en lot des visuels** : à écrire quand les 84 fichiers existeront.
-  Ils s'apparieraient aux emplacements par la référence de production
-  (« vidéo 12 », « carrousel 7 »).
+Les imports sont **idempotents** (`refImport`) et **non répétables** (marqueur
+`SiteSetting`) : un rejeu sans `--confirmer` ne fait rien, et avec
+`--confirmer` ne crée aucun doublon.
