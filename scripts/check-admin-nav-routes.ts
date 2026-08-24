@@ -59,17 +59,60 @@ function routeExists(dir: string, segments: string[]): boolean {
 
 const items = buildAdminNav(PREFIX);
 const missing: string[] = [];
+const externesInvalides: string[] = [];
 
-for (const item of items) {
+// 🔴 2026-08-24 — cette garde a rougi à l'ajout du premier lien EXTERNE (Tiime,
+// notre plateforme agréée de facturation). Elle n'avait pas tort : jusque-là,
+// toute entrée de nav était une route de cette application, et une entrée sans
+// fichier de route était forcément un lien mort.
+//
+// On ne l'affaiblit donc pas en excluant simplement le cas. On lui apprend les
+// DEUX natures, et on exige de chacune ce qui lui correspond :
+//   · une entrée INTERNE doit avoir son fichier de route ;
+//   · une entrée EXTERNE doit être une URL absolue en https, et ne peut pas
+//     être une route interne déguisée — ce qui produirait un `target="_blank"`
+//     sur notre propre console.
+const internes = items.filter((it) => it.external !== true);
+const externes = items.filter((it) => it.external === true);
+
+for (const item of internes) {
   if (!routeExists(ADMIN_ROOT, navSegments(item.href))) {
     missing.push(`${item.label} → ${item.href}`);
   }
 }
 
-if (missing.length > 0) {
-  console.error(`❌ [admin-nav:routes] ${missing.length} entrée(s) sans route :`);
-  for (const m of missing) console.error(`  - ${m}`);
+for (const item of externes) {
+  if (!item.href.startsWith("https://")) {
+    externesInvalides.push(`${item.label} → ${item.href} (doit être une URL absolue https)`);
+  }
+}
+
+// Contre-témoin : si `external` était posé en masse par erreur, la boucle
+// ci-dessus n'examinerait presque plus rien et la garde passerait au vert en
+// n'ayant rien vérifié.
+if (internes.length < items.length - 10) {
+  console.error(
+    `❌ [admin-nav:routes] ${externes.length} entrées marquées \`external\` sur ${items.length} : ` +
+      `beaucoup trop. Cette garde ne vérifierait plus rien.`,
+  );
   process.exit(1);
 }
 
-console.log(`✅ [admin-nav:routes] OK — ${items.length} entrées, toutes résolues.`);
+if (missing.length > 0 || externesInvalides.length > 0) {
+  if (missing.length > 0) {
+    console.error(`❌ [admin-nav:routes] ${missing.length} entrée(s) sans route :`);
+    for (const m of missing) console.error(`  - ${m}`);
+  }
+  if (externesInvalides.length > 0) {
+    console.error(
+      `❌ [admin-nav:routes] ${externesInvalides.length} lien(s) externe(s) invalide(s) :`,
+    );
+    for (const m of externesInvalides) console.error(`  - ${m}`);
+  }
+  process.exit(1);
+}
+
+console.log(
+  `✅ [admin-nav:routes] OK — ${internes.length} routes internes résolues, ` +
+    `${externes.length} lien(s) externe(s) valides.`,
+);
