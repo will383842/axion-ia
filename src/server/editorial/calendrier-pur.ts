@@ -190,3 +190,101 @@ export function dateUtcStricte(iso: string): Date {
   if (!r.ok) throw new Error(r.erreur);
   return r.date;
 }
+
+// ── L'état d'avancement, pour la couleur du calendrier ─────────────────────
+
+/**
+ * L'état d'une publication, réduit à UNE valeur lisible.
+ *
+ * 🔴 Pourquoi une valeur unique alors que le modèle en porte trois.
+ *
+ * Une publication a trois statuts indépendants — rédaction, asset, diffusion —
+ * et c'est juste : ils avancent séparément. Mais une case de calendrier fait
+ * 64 pixels de haut : elle ne peut pas en afficher trois, et surtout on ne
+ * regarde pas un mois pour lire des statuts. On le regarde pour répondre à
+ * « qu'est-ce qu'il me reste à faire ? ».
+ *
+ * L'ordre ci-dessous est celui du RESTE À FAIRE, du plus urgent au terminé.
+ * C'est lui qui décide de la couleur : l'état le moins avancé d'un jour
+ * l'emporte, parce qu'un jour où tout est prêt sauf un visuel n'est pas un
+ * jour prêt.
+ */
+export const ETATS_AVANCEMENT = [
+  "a_produire",
+  "en_cours",
+  "pret",
+  "programme",
+  "publie",
+  "annule",
+] as const;
+export type EtatAvancement = (typeof ETATS_AVANCEMENT)[number];
+
+export interface AvecStatuts {
+  dayKey: string;
+  statutAsset: string;
+  statutDiffusion: string;
+}
+
+/**
+ * L'état d'UNE publication.
+ *
+ * La diffusion prime quand elle est engagée : un post publié est terminé,
+ * quel que soit l'état de son visuel — c'est déjà en ligne, il est trop tard
+ * pour le produire.
+ *
+ * ⚠️ `non_requis` compte comme PRÊT et non comme « à produire ». Un post de
+ * texte seul n'attend aucun visuel : le peindre en rouge le ferait remonter
+ * dans la liste du travail restant, où il n'a rien à faire.
+ */
+export function etatPublication(p: {
+  statutAsset: string;
+  statutDiffusion: string;
+}): EtatAvancement {
+  if (p.statutDiffusion === "annule") return "annule";
+  if (p.statutDiffusion === "publie") return "publie";
+  if (p.statutDiffusion === "programme") return "programme";
+  if (p.statutAsset === "pret" || p.statutAsset === "non_requis") return "pret";
+  if (p.statutAsset === "en_cours" || p.statutAsset === "a_valider") return "en_cours";
+  return "a_produire";
+}
+
+/**
+ * L'état d'un JOUR : le moins avancé de ses publications.
+ *
+ * 🔴 Le moins avancé, jamais la moyenne ni le plus avancé. Un jour qui porte
+ * un post publié et un post dont le visuel manque n'est pas « à moitié fait » :
+ * il reste du travail dessus, et c'est ce qu'on veut voir.
+ *
+ * `annule` est ÉCARTÉ du calcul : un post annulé n'est pas du travail restant,
+ * et le laisser peser ferait passer un jour terminé pour un jour en retard.
+ * Un jour qui n'a QUE des annulés rend bien `annule`.
+ */
+export function etatDuJour(
+  publications: readonly { statutAsset: string; statutDiffusion: string }[],
+): EtatAvancement | null {
+  if (publications.length === 0) return null;
+  const etats = publications.map(etatPublication);
+  const vivants = etats.filter((e) => e !== "annule");
+  if (vivants.length === 0) return "annule";
+  let pire: EtatAvancement = "publie";
+  for (const e of vivants) {
+    if (ETATS_AVANCEMENT.indexOf(e) < ETATS_AVANCEMENT.indexOf(pire)) pire = e;
+  }
+  return pire;
+}
+
+/** L'état de chaque jour, prêt pour la grille. */
+export function etatParJour(publications: readonly AvecStatuts[]): Map<string, EtatAvancement> {
+  const groupes = new Map<string, AvecStatuts[]>();
+  for (const p of publications) {
+    const liste = groupes.get(p.dayKey);
+    if (liste) liste.push(p);
+    else groupes.set(p.dayKey, [p]);
+  }
+  const resultat = new Map<string, EtatAvancement>();
+  for (const [cle, liste] of groupes) {
+    const etat = etatDuJour(liste);
+    if (etat) resultat.set(cle, etat);
+  }
+  return resultat;
+}

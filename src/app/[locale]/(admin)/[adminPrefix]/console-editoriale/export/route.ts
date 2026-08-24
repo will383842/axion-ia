@@ -8,6 +8,7 @@
  *
  *   /console-editoriale/export?type=csv&year=2026&month=9
  *   /console-editoriale/export?type=sauvegarde
+ *   /console-editoriale/export?type=plan&asset=carrousel&periode=2026-10&format=md
  */
 
 import { NextResponse, type NextRequest } from "next/server";
@@ -26,6 +27,24 @@ import {
   type PublicationExportable,
 } from "@/server/editorial/exports";
 import { cheminAbsolu, nomArchive, nomDansArchive } from "@/server/editorial/stockage";
+import {
+  construireMarkdown,
+  construireCsvPlan,
+  nomFichierPlan,
+  TYPES_PLAN,
+  type AssetPlan,
+} from "@/server/editorial/plan-production";
+
+/** Le titre humain d'un plan. La clé sert l'URL, le mot sert le lecteur. */
+const LIBELLE_TYPE_PLAN: Record<string, string> = {
+  video: "Vidéos",
+  carrousel: "Carrousels",
+  image: "Images",
+  photo: "Photos de Williams",
+  audio: "Audio",
+  document: "Documents",
+  tout: "tous les assets",
+};
 
 export const dynamic = "force-dynamic";
 
@@ -262,6 +281,95 @@ async function exporterArchive(publicationId: string): Promise<NextResponse> {
   });
 }
 
+/**
+ * Le plan de production — l'export centré sur l'ASSET, et non sur le post.
+ *
+ * Les autres exports répondent à « qu'est-ce qui part le 12 ? ». Celui-ci
+ * répond à « qu'est-ce que je fabrique aujourd'hui ? ». Ce n'est pas la même
+ * question, et un tri par date de publication n'y repond pas : on ne produit
+ * pas une vidéo et un carrousel dans la même séance.
+ */
+async function exporterPlan(
+  typeAsset: string | null,
+  periode: string | null,
+  format: "md" | "csv",
+  seulementAProduire: boolean,
+): Promise<NextResponse> {
+  // Bornes de période. `periode` vaut « 2026-10 », ou rien pour tout.
+  let bornes: { debut: Date; fin: Date } | null = null;
+  if (periode && /^d{4}-d{2}$/.test(periode)) {
+    const annee = Number(periode.slice(0, 4));
+    const mois = Number(periode.slice(5, 7));
+    if (mois >= 1 && mois <= 12) bornes = bornesDuMois(annee, mois);
+  }
+
+  const assets = await prisma.edAsset.findMany({
+    where: {
+      ...(typeAsset && TYPES_PLAN.includes(typeAsset as never) ? { type: typeAsset as never } : {}),
+      // `pret` est le seul statut qui signifie « il n'y a plus rien à faire ».
+      ...(seulementAProduire ? { NOT: { statut: "pret" as never } } : {}),
+      ...(bornes
+        ? {
+            publications: {
+              some: { publication: { datePrevue: { gte: bornes.debut, lt: bornes.fin } } },
+            },
+          }
+        : {}),
+    },
+    select: {
+      id: true,
+      type: true,
+      libelle: true,
+      statut: true,
+      segments: {
+        orderBy: { ordre: "asc" },
+        select: { ordre: true, role: true, titre: true, contenu: true, prompt: true, fait: true },
+      },
+      publications: {
+        orderBy: { ordre: "asc" },
+        take: 1,
+        select: {
+          publication: { select: { datePrevue: true, heurePrevue: true, titreInterne: true } },
+        },
+      },
+    },
+    take: 1000,
+  });
+
+  const plan: AssetPlan[] = assets.map((a) => {
+    const pub = a.publications[0]?.publication ?? null;
+    return {
+      id: a.id,
+      type: a.type,
+      libelle: a.libelle,
+      statut: a.statut,
+      datePost: pub ? dayKeyOfGridDate(pub.datePrevue) : null,
+      heurePost: pub?.heurePrevue ?? null,
+      titrePost: pub?.titreInterne ?? null,
+      segments: a.segments,
+    };
+  });
+
+  const libelleType = typeAsset && TYPES_PLAN.includes(typeAsset as never) ? typeAsset : "tout";
+  const libellePeriode = bornes ? (periode ?? "tout") : "tout";
+
+  if (format === "csv") {
+    return new NextResponse(construireCsvPlan(plan), {
+      headers: enTetes(nomFichierPlan(libelleType, libellePeriode, "csv"), "text/csv"),
+    });
+  }
+
+  const md = construireMarkdown(plan, {
+    titre: `Plan de production — ${LIBELLE_TYPE_PLAN[libelleType] ?? libelleType}`,
+    periode:
+      (bornes ? `Période ${libellePeriode}` : "Toutes périodes") +
+      (seulementAProduire ? " · assets non terminés seulement" : " · tous statuts"),
+  });
+  return new NextResponse(md, {
+    headers: enTetes(nomFichierPlan(libelleType, libellePeriode, "md"), "text/markdown"),
+  });
+}
+
 export async function GET(requete: NextRequest): Promise<NextResponse> {
   try {
     // Exporter, c'est SORTIR des données : le §4 réserve ce geste à
@@ -289,6 +397,14 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
     return exporterArchive(id);
   }
 
+  if (type === "plan") {
+    const format = params.get("format") === "csv" ? "csv" : "md";
+    // Par defaut on ne sort QUE ce qui reste a faire : un plan de production
+    // qui reliste les assets termines se relit mal et se coche deux fois.
+    const seulementAProduire = params.get("statut") !== "tous";
+    return exporterPlan(params.get("asset"), params.get("periode"), format, seulementAProduire);
+  }
+
   if (type === "csv") {
     const maintenant = new Date();
     const annee = lireAnnee(params.get("year") ?? undefined, maintenant.getUTCFullYear());
@@ -297,7 +413,7 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json(
-    { error: `Type d'export inconnu : « ${type} ». Attendu : csv, archive ou sauvegarde.` },
+    { error: `Type d'export inconnu : « ${type} ». Attendu : csv, plan, archive ou sauvegarde.` },
     { status: 400 },
   );
 }

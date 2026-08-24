@@ -31,8 +31,11 @@ export {
   lireAnnee,
   estCleJour,
   compterParJour,
+  etatPublication,
+  etatDuJour,
+  etatParJour,
 } from "@/server/editorial/calendrier-pur";
-export type { FiltreIdentite } from "@/server/editorial/calendrier-pur";
+export type { FiltreIdentite, EtatAvancement } from "@/server/editorial/calendrier-pur";
 
 /** Traduit le filtre en clause Prisma. `toutes` n'ajoute aucune contrainte. */
 function clauseIdentite(identite: FiltreIdentite) {
@@ -51,6 +54,14 @@ export interface PublicationDuCalendrier {
   statutDiffusion: string;
   /** Vrai quand la publication est une reprise (écho de page, relais). */
   estReprise: boolean;
+  /**
+   * Chemin de la vignette du premier visuel DÉPOSÉ, ou `null`.
+   *
+   * `null` n'est pas un détail d'affichage : il dit « aucun fichier n'est
+   * encore arrivé ». C'est la différence entre un visuel fait et un visuel à
+   * faire, lisible sans ouvrir la fiche.
+   */
+  cheminVignette: string | null;
 }
 
 /**
@@ -85,6 +96,12 @@ export async function listerPublicationsDuMois(
       statutDiffusion: true,
       sourceId: true,
       compte: { select: { libelle: true, identite: true } },
+      // La première vignette disponible. `take` non borné ici : une
+      // publication porte deux ou trois assets, pas deux cents.
+      assets: {
+        orderBy: { ordre: "asc" },
+        select: { asset: { select: { cheminVignette: true } } },
+      },
     },
     orderBy: [{ datePrevue: "asc" }, { heurePrevue: "asc" }],
   });
@@ -100,9 +117,57 @@ export async function listerPublicationsDuMois(
     statutAsset: l.statutAsset,
     statutDiffusion: l.statutDiffusion,
     estReprise: l.sourceId !== null,
+    cheminVignette: l.assets.find((a) => a.asset.cheminVignette)?.asset.cheminVignette ?? null,
   }));
 }
 
+/**
+ * Le mois NON VIDE le plus proche d'un mois donné, ou `null`.
+ *
+ * 🔴 Sert à réparer un message qui mentait. Le calendrier s'ouvre sur le
+ * mois courant ; le dossier commence en septembre. En août, l'écran
+ * affichait donc « Ce mois est vide — importez le dossier du trimestre avec
+ * `pnpm editorial:import` », alors que 74 publications existaient un mois
+ * plus loin. Le message se lisait comme « rien n'a été importé », et c'est
+ * exactement ainsi qu'il a été lu.
+ *
+ * Une seule requête, sur la colonne indexée `date_prevue` : on prend la
+ * date la plus proche avant et la plus proche après, et on garde la moins
+ * éloignée. Compter tous les mois pour n'en afficher qu'un serait payer
+ * un agrégat à chaque ouverture d'un mois vide.
+ */
+export async function moisNonVideLePlusProche(
+  annee: number,
+  mois: number,
+): Promise<{ annee: number; mois: number } | null> {
+  const { debut, fin } = bornesDuMois(annee, mois);
+  const [avant, apres] = await Promise.all([
+    prisma.edPublication.findFirst({
+      where: { datePrevue: { lt: debut }, archiveeA: null },
+      orderBy: { datePrevue: "desc" },
+      select: { datePrevue: true },
+    }),
+    prisma.edPublication.findFirst({
+      where: { datePrevue: { gte: fin }, archiveeA: null },
+      orderBy: { datePrevue: "asc" },
+      select: { datePrevue: true },
+    }),
+  ]);
+
+  const candidats = [avant?.datePrevue, apres?.datePrevue].filter(
+    (d): d is Date => d instanceof Date,
+  );
+  if (candidats.length === 0) return null;
+
+  // Le plus proche en valeur absolue — un mois vide entre deux mois pleins
+  // doit renvoyer vers le voisin, pas systématiquement vers l'avenir.
+  const pivot = debut.getTime();
+  let meilleur = candidats[0] as Date;
+  for (const d of candidats) {
+    if (Math.abs(d.getTime() - pivot) < Math.abs(meilleur.getTime() - pivot)) meilleur = d;
+  }
+  return { annee: meilleur.getUTCFullYear(), mois: meilleur.getUTCMonth() + 1 };
+}
 export interface ResumeConsole {
   publicationsTotal: number;
   publicationsAVenir: number;

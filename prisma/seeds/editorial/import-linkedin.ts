@@ -31,10 +31,13 @@ import {
   refImportEcho,
   construireLien,
   estVrai,
-  normaliserFormat,
+  lireProduction,
+  lireEchoPage,
+  resoudreFamilleFormat,
   CLE_MARQUEUR_IMPORT,
   type LigneCalendrier,
   type ErreurLigne,
+  type TypeAsset,
 } from "../../../src/server/editorial/import/linkedin-q4";
 import { ED_FAMILLES, ALIAS_TEXTE_SEUL } from "../../../src/server/editorial/referentiels/familles";
 
@@ -87,16 +90,14 @@ interface Rapport {
 }
 
 /** Rend la famille correspondant au `format`, ou `null` pour du texte seul. */
-function resoudreFamille(format: string): { slug: string | null; connu: boolean } {
-  const f = normaliserFormat(format);
-  if (ALIAS_TEXTE_SEUL.includes(f)) return { slug: null, connu: true };
-  for (const famille of ED_FAMILLES) {
-    if (famille.aliasImport.some((a) => normaliserFormat(a) === f)) {
-      return { slug: famille.slug, connu: true };
-    }
-  }
-  // Une écriture inconnue n'invente PAS une famille : la ligne part en erreur.
-  return { slug: null, connu: false };
+function resoudreFamille(format: string): {
+  slug: string | null;
+  type: TypeAsset | null;
+  connu: boolean;
+} {
+  // La règle vit dans le module pur — elle est trop subtile (exact d'abord,
+  // tête de cellule ensuite) pour être écrite ici sans test.
+  return resoudreFamilleFormat(format, ED_FAMILLES, ALIAS_TEXTE_SEUL);
 }
 
 async function main(): Promise<void> {
@@ -176,9 +177,15 @@ async function main(): Promise<void> {
     tags: string[];
     lienUrl: string | null;
     familleId: string | null;
+    /** Le type d'asset que le `format` désigne — il décide du type produit. */
+    familleType: TypeAsset | null;
     statutAsset: "non_requis" | "a_produire";
     production: boolean;
+    /** « visuel », « vidéo 12 »… — le renvoi vers la fiche de production. */
+    productionRef: string | null;
     photoWill: boolean;
+    /** La date de la reprise en page, quand il y en a une. */
+    dateEcho: Date | null;
   }
 
   const pretes: Prete[] = [];
@@ -220,15 +227,36 @@ async function main(): Promise<void> {
       }
 
       const accroche = ligne.accroche.trim();
-      const production = estVrai(ligne.production);
+      const prod = lireProduction(ligne.production);
+      const production = prod.aProduire;
       const photoWill = estVrai(ligne.photoWill);
+
+      const datePrevue = convertirDate(ligne.date);
+      // 🔴 L'écho porte SA date, pas celle de son post. Le dossier programme
+      // la reprise en page deux jours après le profil : la dater du même jour
+      // effacerait un choix éditorial, silencieusement.
+      const dateEcho = lireEchoPage(ligne.echoPage, datePrevue);
+
+      if (production && !famille.slug) {
+        // Contradiction dans le CSV : « rien à produire » côté format, mais
+        // une référence de production côté colonne. On produit quand même —
+        // perdre l'asset serait pire — en le disant.
+        rapport.avertissements.push(
+          `Ligne ${numeroLigne} (n°${ligne.numero}) : production « ${ligne.production} » ` +
+            `annoncée sur un format « ${ligne.format} » qui ne désigne aucune famille. ` +
+            `Asset créé en « image » par défaut.`,
+        );
+      }
 
       pretes.push({
         ligne,
         numeroLigne,
         ref: refImport(ligne.numero),
-        refEcho: estVrai(ligne.echoPage) ? refImportEcho(ligne.numero) : null,
-        datePrevue: convertirDate(ligne.date),
+        refEcho: dateEcho ? refImportEcho(ligne.numero) : null,
+        datePrevue,
+        dateEcho,
+        familleType: famille.type,
+        productionRef: prod.reference,
         heurePrevue: convertirHeure(ligne.heure),
         // Le titre interne sert à retrouver la publication dans une liste :
         // l'accroche tronquée est ce qui la rend reconnaissable d'un coup d'œil.
@@ -313,12 +341,21 @@ async function main(): Promise<void> {
         rapport.publicationsCreees += 1;
 
         // Les assets annoncés par les colonnes `production` et `photo_will`.
-        const aCreer: { type: "video" | "photo"; familleId: string | null; libelle: string }[] = [];
+        const aCreer: { type: TypeAsset; familleId: string | null; libelle: string }[] = [];
         if (p.production) {
+          // 🔴 Le type vient du FORMAT, pas d'une constante. Il était figé à
+          // « video » : un post « Carrousel 9 slides » se voyait créer un
+          // asset vidéo, et la spec de plateforme vérifiait la mauvaise
+          // contrainte. Le dossier réel compte 26 visuels et 13 carrousels.
           aCreer.push({
-            type: "video",
+            type: p.familleType ?? "image",
             familleId: p.familleId,
-            libelle: `Production — ${p.titreInterne}`.slice(0, 200),
+            // La référence de production (« vidéo 12 ») est ce qui permet de
+            // retrouver la fiche correspondante dans le dossier source.
+            libelle: (p.productionRef
+              ? `Production ${p.productionRef} — ${p.titreInterne}`
+              : `Production — ${p.titreInterne}`
+            ).slice(0, 200),
           });
         }
         if (p.photoWill) {
@@ -374,7 +411,8 @@ async function main(): Promise<void> {
           data: {
             compteId: page.id,
             refImport: p.refEcho,
-            datePrevue: p.datePrevue,
+            // Sa propre date — voir `lireEchoPage`.
+            datePrevue: p.dateEcho ?? p.datePrevue,
             heurePrevue: p.heurePrevue,
             titreInterne: `Écho page — ${p.titreInterne}`.slice(0, 200),
             accroche: p.accroche,

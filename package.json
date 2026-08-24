@@ -73,6 +73,7 @@
     "qualiopi:seed": "tsx prisma/seeds/qualiopi/index.ts",
     "editorial:seed": "tsx prisma/seeds/editorial/index.ts",
     "editorial:import": "tsx prisma/seeds/editorial/import-linkedin.ts",
+    "editorial:import-production": "tsx prisma/seeds/editorial/import-production.ts",
     "qualiopi:seed-demo": "tsx prisma/seeds/qualiopi/demo.ts",
     "volumetrie:seed": "tsx prisma/seeds/volumetrie/fixture-volumetrique.ts",
     "volumetrie:mesure": "tsx scripts/volumetrie/mesurer.ts",
