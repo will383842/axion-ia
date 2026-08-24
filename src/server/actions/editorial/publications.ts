@@ -190,6 +190,8 @@ export async function modifierPublicationAction(
         lienUrl: true,
         versionCourante: true,
         updatedAt: true,
+        statutDiffusion: true,
+        publieeA: true,
       },
     });
     if (!existante) return { error: "Publication introuvable" };
@@ -216,6 +218,28 @@ export async function modifierPublicationAction(
     };
 
     const versionCreee = doitVersionner(avant, patchBrut);
+
+    // 🔴 Un post PUBLIÉ reste modifiable — corriger une coquille ne doit pas
+    // obliger à dépublier. Mais le texte en base ne correspond alors plus à
+    // ce qui est en ligne sur LinkedIn, et rien ne le disait : la divergence
+    // s'installait en silence, et six mois plus tard personne ne savait
+    // laquelle des deux versions avait réellement été lue.
+    //
+    // Le motif devient donc OBLIGATOIRE dans ce cas, et seulement dans ce
+    // cas. Il ne bloque pas le geste : il oblige à dire pourquoi, et
+    // l'historique porte la réponse.
+    if (versionCreee && existante.statutDiffusion === "publie" && !motif?.trim()) {
+      const quand = existante.publieeA
+        ? existante.publieeA.toISOString().slice(0, 10)
+        : "une date inconnue";
+      return {
+        error:
+          `Cette publication est en ligne depuis le ${quand}. La modifier ici ` +
+          `ne change RIEN sur la plateforme : le texte publié reste celui que ` +
+          `vos lecteurs ont vu. Indiquez un motif pour que l'historique dise ` +
+          `pourquoi les deux diffèrent.`,
+      };
+    }
     const modifies = champsModifies(avant, patchBrut);
     const apres = appliquer(avant, patchBrut);
 

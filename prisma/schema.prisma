@@ -11528,13 +11528,77 @@ model EdAsset {
   publications EdAssetPublication[]
   alertes      EdAlerteDeclenchee[]
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+  segments  EdAssetSegment[]
 
   @@index([parentId])
   @@index([statut])
   @@index([type, familleId])
   @@map("ed_assets")
+}
+
+/// Le rôle d'un segment de brief. Ce n'est PAS le type de l'asset : une
+/// vidéo porte un `script`, une image un `prompt`, un carrousel N `slide`.
+enum EdSegmentRole {
+  /// Le script à tourner — hook, corps, chute.
+  script
+  /// Le prompt de génération, à coller tel quel dans le générateur.
+  prompt
+  /// Une slide de carrousel : son texte ET son prompt lui sont propres.
+  slide
+  /// La légende du post prévue par le dossier de production.
+  legende
+  /// Une consigne de production : cadrage, décor, registre, tenue.
+  consigne
+}
+
+/// Le brief de production d'un asset — ce qu'il faut pour le FABRIQUER.
+///
+/// 🔴 Ajouté le 24/08/2026. Le modèle savait dire « il faut produire un
+/// carrousel de 9 slides », et rien de plus : ni le script de la vidéo, ni le
+/// prompt de l'image, ni le plan slide par slide. Toute cette matière vivait
+/// dans quatre fichiers Markdown que l'import ne lisait pas, et il fallait
+/// rouvrir le dossier à côté de la console pour produire quoi que ce soit.
+///
+/// Une TABLE et non deux colonnes de texte sur l'asset, pour une raison
+/// concrète : un carrousel se pilote slide par slide. Aplati dans un seul
+/// bloc, on ne peut ni cocher une slide comme faite, ni régénérer la slide 6
+/// seule. Une vidéo n'a qu'une ligne, et c'est très bien.
+model EdAssetSegment {
+  id      String  @id @default(uuid()) @db.Uuid
+  assetId String  @map("asset_id") @db.Uuid
+  asset   EdAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  /// Rang d'affichage. Pour un carrousel : le numéro de la slide.
+  ordre Int @default(1)
+
+  role EdSegmentRole @default(consigne)
+
+  /// Intitulé court — « Slide 3 — Le compteur », « Hook », « Registre B ».
+  titre String? @db.VarChar(200)
+
+  /// Le texte : script parlé, texte affiché sur la slide, légende.
+  contenu String? @db.Text
+
+  /// Le prompt de génération, propre à CE segment. Séparé du contenu : on
+  /// copie l'un dans le générateur et l'autre dans l'outil de mise en page,
+  /// et les mélanger ferait coller le mauvais dans le mauvais champ.
+  prompt String? @db.Text
+
+  /// Coché quand le segment est produit. C'est ce qui rend un carrousel
+  /// suivable : « 7 slides sur 9 » se lit, « en cours » ne se lit pas.
+  fait Boolean @default(false)
+
+  /// D'où vient ce segment — « 21-PRODUCTION-CARROUSELS.md#carrousel-3 ».
+  /// Sert l'idempotence de l'import, comme `refImport` pour les publications.
+  refImport String? @unique @map("ref_import") @db.VarChar(120)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([assetId, ordre])
+  @@map("ed_asset_segments")
 }
 
 /// Un même short part sur quatre comptes. Table de liaison explicite

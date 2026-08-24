@@ -10,6 +10,7 @@
 
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
+import { AlertTriangle } from "lucide-react";
 import { auth } from "@/auth";
 import {
   AdminPageShell,
@@ -25,6 +26,8 @@ import { evaluerConformite, type RegleEvaluable } from "@/server/editorial/confo
 import { televerserAssetAction } from "@/server/actions/editorial/assets";
 import { urlPublique } from "@/server/editorial/stockage";
 import { DepotFichier } from "./DepotFichier";
+import { BriefProduction } from "./BriefProduction";
+import { ApercuMedia } from "./ApercuMedia";
 import { saisirReleveFormAction } from "@/server/actions/editorial/metriques";
 import {
   validerPublicationFormAction,
@@ -257,6 +260,30 @@ export default async function FichePublicationPage({ params, searchParams }: Pag
         <AdminCard>
           <h2 className="admin-h2 mb-[var(--space-admin-3)]">Rédiger</h2>
 
+          {/*
+            🔴 Le post est EN LIGNE. Le formulaire reste ouvert — corriger
+            une coquille ne doit pas obliger à dépublier — mais l'écran dit
+            ce que la modification ne fera PAS, et l'action exige un motif.
+            Sans cela, la base et LinkedIn divergent en silence.
+          */}
+          {publication.statutDiffusion === "publie" && (
+            <div className="mb-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning-fg)] bg-[color:var(--color-admin-warning-soft)] p-3">
+              <p className="inline-flex items-center gap-1.5 font-semibold text-[color:var(--color-admin-warning-fg)]">
+                <AlertTriangle size={16} aria-hidden="true" />
+                En ligne
+                {publication.publieeA
+                  ? ` depuis le ${publication.publieeA.slice(8, 10)}/${publication.publieeA.slice(5, 7)}/${publication.publieeA.slice(0, 4)}`
+                  : ""}
+                .
+              </p>
+              <p className="text-[length:var(--text-admin-sm)]">
+                Modifier ce texte ne change <strong>rien</strong> sur la plateforme : ce que vos
+                lecteurs ont vu reste en ligne. Le motif devient obligatoire, pour que
+                l&apos;historique dise pourquoi les deux diffèrent.
+              </p>
+            </div>
+          )}
+
           <form action={modifierPublicationFormAction} className="admin-form">
             <input type="hidden" name="id" value={id} />
             <input type="hidden" name="retour" value={`${base}/publications/${id}`} />
@@ -345,10 +372,16 @@ export default async function FichePublicationPage({ params, searchParams }: Pag
               <label htmlFor="motif" className="admin-label">
                 Pourquoi cette version
               </label>
-              <input id="motif" name="motif" className="admin-input" />
+              <input
+                id="motif"
+                name="motif"
+                className="admin-input"
+                required={publication.statutDiffusion === "publie"}
+              />
               <p className="admin-help">
-                Facultatif, fortement encouragé — c&apos;est ce qu&apos;on cherche en relisant
-                l&apos;historique six mois plus tard.
+                {publication.statutDiffusion === "publie"
+                  ? "Obligatoire : ce post est en ligne, et le texte enregistré ici ne sera plus celui que vos lecteurs ont lu."
+                  : "Facultatif, fortement encouragé — c'est ce qu'on cherche en relisant l'historique six mois plus tard."}
               </p>
             </div>
 
@@ -358,6 +391,81 @@ export default async function FichePublicationPage({ params, searchParams }: Pag
               </AdminButton>
             </div>
           </form>
+        </AdminCard>
+      </div>
+
+      {/*
+        🔴 « Les médias » remonte ICI, juste après « Rédiger » — mesuré le
+        24/08/2026 : le bloc s'ouvrait à 2 155 px sur une page de 3 157, soit
+        la QUATRIÈME hauteur d'écran. Personne ne le trouvait, et la zone de
+        dépôt est le seul endroit d'où un visuel entre dans l'outil. Un écran
+        qu'on ne peut pas atteindre en défilant vaut un écran qui n'existe pas.
+
+        « Le contenu », qui le précédait, ne fait que RE-afficher en lecture
+        seule ce que le formulaire du dessus montre déjà. Il reste — la vue
+        `<pre>` respecte les sauts de ligne mieux qu'un textarea — mais il
+        passe derrière : dupliquer un texte ne justifie pas de repousser le
+        seul geste qui manque.
+      */}
+      {/* ── Les médias — critères 4 et 5 ────────────────────────────────── */}
+      <div className="mt-[var(--space-admin-4)]">
+        <AdminCard>
+          <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-2">
+            <h2 className="admin-h2">Les médias</h2>
+            {publication.assets.some((a) => a.cheminObjet) && (
+              <a
+                href={`${base}/export?type=archive&publication=${id}`}
+                className="admin-button-secondary admin-button-sm"
+              >
+                Télécharger l&apos;archive
+              </a>
+            )}
+          </div>
+
+          {publication.assets.length > 0 && (
+            <ul className="mb-[var(--space-admin-3)] space-y-2">
+              {publication.assets.map((a) => (
+                <li
+                  key={a.id}
+                  className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-2"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span className="min-w-0 truncate">{a.libelle}</span>
+                    </span>
+                    <span className="flex shrink-0 items-center gap-2">
+                      <AdminBadge tone="neutral">{a.type}</AdminBadge>
+                      <AdminBadge tone={a.statut === "pret" ? "success" : "warning"}>
+                        {a.statut}
+                      </AdminBadge>
+                    </span>
+                  </div>
+                  {/*
+                    🔴 L'aperçu REMPLACE la vignette de 40 pixels qui tenait
+                    cette place. On ne relit pas un carrousel dans 40 pixels,
+                    on ne vérifie pas un montage, et on ne voit pas qu'une
+                    incrustation déborde. La fiche disait qu'un fichier
+                    existait ; elle ne permettait pas de le regarder — donc
+                    « prêt » se cochait sur la foi d'un nom de fichier.
+                  */}
+                  <ApercuMedia
+                    type={a.type}
+                    url={a.cheminObjet ? urlPublique(a.cheminObjet) : null}
+                    libelle={a.libelle}
+                  />
+
+                  {/*
+                    Le brief vit SOUS son asset, et non dans un bloc à part :
+                    un script sans l'aperçu de ce qu'il décrit oblige à faire
+                    l'aller-retour de tête.
+                  */}
+                  <BriefProduction segments={a.segments} retour={`${base}/publications/${id}`} />
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <DepotFichier publicationId={id} televerser={televerserAssetAction} />
         </AdminCard>
       </div>
 
@@ -406,56 +514,6 @@ export default async function FichePublicationPage({ params, searchParams }: Pag
               ))}
             </div>
           )}
-        </AdminCard>
-      </div>
-
-      {/* ── Les médias — critères 4 et 5 ────────────────────────────────── */}
-      <div className="mt-[var(--space-admin-4)]">
-        <AdminCard>
-          <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-2">
-            <h2 className="admin-h2">Les médias</h2>
-            {publication.assets.some((a) => a.cheminObjet) && (
-              <a
-                href={`${base}/export?type=archive&publication=${id}`}
-                className="admin-button-secondary admin-button-sm"
-              >
-                Télécharger l&apos;archive
-              </a>
-            )}
-          </div>
-
-          {publication.assets.length > 0 && (
-            <ul className="mb-[var(--space-admin-3)] space-y-2">
-              {publication.assets.map((a) => (
-                <li
-                  key={a.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-2"
-                >
-                  <span className="flex min-w-0 items-center gap-2">
-                    {a.cheminObjet && a.type === "image" ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={urlPublique(a.cheminObjet)}
-                        alt=""
-                        width={40}
-                        height={40}
-                        className="h-10 w-10 shrink-0 rounded-[var(--radius-admin-sm)] object-cover"
-                      />
-                    ) : null}
-                    <span className="min-w-0 truncate">{a.libelle}</span>
-                  </span>
-                  <span className="flex shrink-0 items-center gap-2">
-                    <AdminBadge tone="neutral">{a.type}</AdminBadge>
-                    <AdminBadge tone={a.statut === "pret" ? "success" : "warning"}>
-                      {a.statut}
-                    </AdminBadge>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <DepotFichier publicationId={id} televerser={televerserAssetAction} />
         </AdminCard>
       </div>
 

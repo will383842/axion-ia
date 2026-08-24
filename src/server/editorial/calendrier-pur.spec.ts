@@ -23,6 +23,9 @@ import {
   heureValide,
   ANNEE_MIN,
   ANNEE_MAX,
+  etatPublication,
+  etatDuJour,
+  etatParJour,
 } from "./calendrier-pur";
 
 describe("estFiltreIdentite", () => {
@@ -240,5 +243,86 @@ describe("heureValide — 99:99 n'est pas une heure", () => {
     for (const h of ["00:00", "09:30", "23:59"]) {
       expect(heureValide(h), h).toBe(true);
     }
+  });
+});
+
+describe("etatPublication", () => {
+  it("rend l'état le plus avancé quand la diffusion est engagée", () => {
+    // Un post publié est terminé même si son visuel n'a jamais été déposé :
+    // il est trop tard pour le produire, le peindre en rouge n'aide personne.
+    expect(etatPublication({ statutAsset: "a_produire", statutDiffusion: "publie" })).toBe(
+      "publie",
+    );
+    expect(etatPublication({ statutAsset: "a_produire", statutDiffusion: "programme" })).toBe(
+      "programme",
+    );
+  });
+
+  it("🔴 compte « non_requis » comme PRÊT, pas comme à produire", () => {
+    // Un post de texte seul n'attend aucun visuel. Le classer « à produire »
+    // le ferait remonter dans le travail restant, où il n'a rien à faire.
+    expect(etatPublication({ statutAsset: "non_requis", statutDiffusion: "non_programme" })).toBe(
+      "pret",
+    );
+  });
+
+  it("distingue le visuel déposé du visuel absent", () => {
+    // C'est LA distinction qu'on vient chercher : ce qui est fait, et ce qui
+    // reste à faire.
+    expect(etatPublication({ statutAsset: "a_produire", statutDiffusion: "non_programme" })).toBe(
+      "a_produire",
+    );
+    expect(etatPublication({ statutAsset: "en_cours", statutDiffusion: "non_programme" })).toBe(
+      "en_cours",
+    );
+    expect(etatPublication({ statutAsset: "a_valider", statutDiffusion: "non_programme" })).toBe(
+      "en_cours",
+    );
+    expect(etatPublication({ statutAsset: "pret", statutDiffusion: "non_programme" })).toBe("pret");
+  });
+});
+
+describe("etatDuJour", () => {
+  it("🔴 retient le MOINS avancé, jamais le plus avancé", () => {
+    // Un jour qui porte un post publié et un post sans visuel n'est pas à
+    // moitié fait : il reste du travail dessus, et c'est ce qu'on veut voir.
+    expect(
+      etatDuJour([
+        { statutAsset: "pret", statutDiffusion: "publie" },
+        { statutAsset: "a_produire", statutDiffusion: "non_programme" },
+      ]),
+    ).toBe("a_produire");
+  });
+
+  it("🔴 ÉCARTE les annulés du calcul", () => {
+    // Un post annulé n'est pas du travail restant. Le laisser peser ferait
+    // passer un jour terminé pour un jour en retard.
+    expect(
+      etatDuJour([
+        { statutAsset: "pret", statutDiffusion: "publie" },
+        { statutAsset: "a_produire", statutDiffusion: "annule" },
+      ]),
+    ).toBe("publie");
+  });
+
+  it("rend « annulé » quand il n'y a QUE des annulés", () => {
+    expect(etatDuJour([{ statutAsset: "a_produire", statutDiffusion: "annule" }])).toBe("annule");
+  });
+
+  it("rend null sur un jour vide, plutôt qu'une couleur arbitraire", () => {
+    expect(etatDuJour([])).toBeNull();
+  });
+});
+
+describe("etatParJour", () => {
+  it("groupe par jour et rend un état par jour", () => {
+    const etats = etatParJour([
+      { dayKey: "2026-09-01", statutAsset: "a_produire", statutDiffusion: "non_programme" },
+      { dayKey: "2026-09-01", statutAsset: "pret", statutDiffusion: "publie" },
+      { dayKey: "2026-09-02", statutAsset: "pret", statutDiffusion: "publie" },
+    ]);
+    expect(etats.get("2026-09-01")).toBe("a_produire");
+    expect(etats.get("2026-09-02")).toBe("publie");
+    expect(etats.size).toBe(2);
   });
 });

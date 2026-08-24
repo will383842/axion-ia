@@ -99,6 +99,8 @@ export interface PublicationDetaillee {
   statutAsset: string;
   statutDiffusion: string;
   urlPubliee: string | null;
+  /** Quand elle est partie en ligne — l'écran s'en sert pour avertir. */
+  publieeA: string | null;
   versionCourante: number;
   compte: { id: string; libelle: string; identite: string; plateforme: string };
   /** Les assets liés, dans l'ordre voulu par le kit. */
@@ -109,6 +111,22 @@ export interface PublicationDetaillee {
     statut: string;
     cheminObjet: string | null;
     dureeSec: number | null;
+    /**
+     * Le brief de production — script, prompt, plan de slides.
+     *
+     * Chargé AVEC l'asset et non dans un second appel : la fiche l'affiche
+     * toujours, et un aller-retour de plus par asset ferait six requetes
+     * la ou une suffit.
+     */
+    segments: {
+      id: string;
+      ordre: number;
+      role: string;
+      titre: string | null;
+      contenu: string | null;
+      prompt: string | null;
+      fait: boolean;
+    }[];
   }[];
   /** Les versions antérieures, la plus récente d'abord. */
   versions: {
@@ -139,6 +157,7 @@ export async function chargerPublication(id: string): Promise<PublicationDetaill
       statutAsset: true,
       statutDiffusion: true,
       urlPubliee: true,
+      publieeA: true,
       versionCourante: true,
       compte: { select: { id: true, libelle: true, identite: true, plateforme: true } },
       assets: {
@@ -153,6 +172,18 @@ export async function chargerPublication(id: string): Promise<PublicationDetaill
               statut: true,
               cheminObjet: true,
               dureeSec: true,
+              segments: {
+                orderBy: { ordre: "asc" },
+                select: {
+                  id: true,
+                  ordre: true,
+                  role: true,
+                  titre: true,
+                  contenu: true,
+                  prompt: true,
+                  fait: true,
+                },
+              },
             },
           },
         },
@@ -186,6 +217,7 @@ export async function chargerPublication(id: string): Promise<PublicationDetaill
     statutRedaction: p.statutRedaction,
     statutAsset: p.statutAsset,
     statutDiffusion: p.statutDiffusion,
+    publieeA: p.publieeA ? p.publieeA.toISOString() : null,
     urlPubliee: p.urlPubliee,
     versionCourante: p.versionCourante,
     compte: p.compte,

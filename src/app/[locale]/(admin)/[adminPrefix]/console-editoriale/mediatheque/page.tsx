@@ -30,6 +30,18 @@ interface PageProps {
 
 const NATURES = ["source", "derive", "variante_plateforme", "autonome"] as const;
 
+/**
+ * 🔴 Le filtre par TYPE, ajouté le 24/08/2026.
+ *
+ * L'écran savait filtrer par nature (source, dérivé, variante) et par
+ * statut — deux axes qui décrivent la place d'un asset dans un arbre, pas
+ * ce qu'il faut faire pour le fabriquer. Il ne savait PAS répondre à
+ * « montre-moi les carrousels », qui est pourtant la façon dont une
+ * journée de production se découpe : on ne tourne pas une vidéo et on ne
+ * monte pas un carrousel dans la même séance.
+ */
+const TYPES = ["video", "carrousel", "image", "photo", "audio", "document"] as const;
+
 export default async function MediathequePage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
@@ -39,6 +51,7 @@ export default async function MediathequePage({ params, searchParams }: PageProp
   const base = `/fr/${adminPrefix}/console-editoriale`;
   const nature = NATURES.includes(sp.nature as (typeof NATURES)[number]) ? sp.nature : undefined;
   const statut = sp.statut;
+  const type = TYPES.includes(sp.type as (typeof TYPES)[number]) ? sp.type : undefined;
 
   // 🔴 Critère 1 du lot 4 : « un montage ne voit que SES assets ».
   //
@@ -57,6 +70,7 @@ export default async function MediathequePage({ params, searchParams }: PageProp
   const assets = await prisma.edAsset.findMany({
     where: {
       ...(nature ? { nature: nature as never } : {}),
+      ...(type ? { type: type as never } : {}),
       ...(statut ? { statut: statut as never } : {}),
       ...(limiteAMoi ? { responsableId: moi.membreId } : {}),
     },
@@ -83,7 +97,7 @@ export default async function MediathequePage({ params, searchParams }: PageProp
 
   function lien(patch: Record<string, string | undefined>): string {
     const p = new URLSearchParams();
-    for (const [k, v] of Object.entries({ nature, statut, ...patch })) {
+    for (const [k, v] of Object.entries({ nature, statut, type, ...patch })) {
       if (v) p.set(k, v);
     }
     const qs = p.toString();
@@ -113,6 +127,45 @@ export default async function MediathequePage({ params, searchParams }: PageProp
       )}
 
       <AdminCard>
+        <nav
+          aria-label="Filtrer par type"
+          className="mb-[var(--space-admin-2)] flex flex-wrap gap-1"
+        >
+          <Link
+            href={lien({ type: undefined })}
+            aria-current={!type ? "true" : undefined}
+            className={
+              !type
+                ? "rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-accent)] px-3 py-1.5 text-[length:var(--text-admin-sm)] font-semibold text-white"
+                : "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-hover)]"
+            }
+          >
+            Tous types
+          </Link>
+          {TYPES.map((t) => (
+            <Link
+              key={t}
+              href={lien({ type: t })}
+              aria-current={t === type ? "true" : undefined}
+              className={
+                t === type
+                  ? "rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-accent)] px-3 py-1.5 text-[length:var(--text-admin-sm)] font-semibold text-white"
+                  : "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-hover)]"
+              }
+            >
+              {t}
+            </Link>
+          ))}
+          {/* Le plan de production du type courant, à un clic de la liste
+              qu'on vient de filtrer : c'est là qu'on décide de le produire. */}
+          <a
+            href={`${base}/export?type=plan${type ? `&asset=${type}` : ""}&format=md`}
+            className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-hover)]"
+          >
+            ↓ Plan de production
+          </a>
+        </nav>
+
         <nav
           aria-label="Filtrer par nature"
           className="mb-[var(--space-admin-4)] flex flex-wrap gap-1"

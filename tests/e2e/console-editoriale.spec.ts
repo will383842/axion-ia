@@ -259,7 +259,20 @@ test.describe("console éditoriale — autorisé", () => {
     // Un mois sans aucune publication : l'écran doit orienter, pas constater.
     await page.goto(`${BASE}/calendrier?year=2030&month=4`);
     await expect(page.getByText(/aucune publication en avril 2030/i)).toBeVisible();
-    await expect(page.getByText(/importez le dossier|naviguez vers un autre mois/i)).toBeVisible();
+
+    // 🔴 Le message dépend de ce qu'il y a AILLEURS, et c'est le correctif du
+    // 2026-08-24 : l'écran disait « importez le dossier du trimestre » sans
+    // jamais vérifier s'il l'avait déjà été. Le calendrier s'ouvre sur le mois
+    // courant, le dossier commence en septembre — en août, il envoyait donc
+    // relancer un import qui avait créé 74 publications. Il se lisait comme
+    // « rien n'a été importé », et c'est exactement ainsi qu'il a été lu.
+    //
+    // Les deux formulations sont acceptées parce que l'état de la base E2E
+    // ne doit pas décider du sort du test : ce qu'on vérifie, c'est que
+    // l'écran ORIENTE. Figer une seule phrase reviendrait à tester la copie.
+    await expect(
+      page.getByText(/le contenu est ailleurs|importez le dossier|naviguez vers un autre mois/i),
+    ).toBeVisible();
   });
 
   test("le filtre se parcourt entièrement au clavier", async ({ page }) => {

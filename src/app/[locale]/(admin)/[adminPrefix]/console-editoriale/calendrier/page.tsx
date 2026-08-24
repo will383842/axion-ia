@@ -20,9 +20,13 @@ import { MonthGridCalendar, type MonthGridDay } from "@/components/admin/ui/Mont
 import { deplacerPublicationAction } from "@/server/actions/editorial/publications";
 import { GrilleDeplacable } from "./GrilleDeplacable";
 import { dayKeyOfGridDate } from "@/lib/calendar-grid";
+import { urlPublique } from "@/server/editorial/stockage";
 import {
   listerPublicationsDuMois,
+  moisNonVideLePlusProche,
   compterParJour,
+  etatParJour,
+  type EtatAvancement,
   estFiltreIdentite,
   moisVoisin,
   lireMois,
@@ -30,6 +34,39 @@ import {
   type FiltreIdentite,
 } from "@/server/editorial/queries";
 
+/**
+ * Ce que dit chaque couleur.
+ *
+ * 🔴 Le mot accompagne TOUJOURS la couleur — infobulle et lecteur d'écran.
+ * Une information portée par la seule teinte disparaît pour un daltonien,
+ * et ne s'apprend pas pour les autres.
+ */
+const TON_ETAT: Record<
+  EtatAvancement,
+  { ton: "danger" | "warning" | "neutral" | "info" | "success"; mot: string }
+> = {
+  a_produire: { ton: "danger", mot: "visuel à produire" },
+  en_cours: { ton: "warning", mot: "visuel déposé, à valider" },
+  pret: { ton: "neutral", mot: "prêt, non programmé" },
+  programme: { ton: "info", mot: "programmé" },
+  publie: { ton: "success", mot: "publié" },
+  annule: { ton: "neutral", mot: "annulé" },
+};
+/** L'ordre de la légende suit celui du travail : ce qui reste d'abord. */
+const LEGENDE: { etat: EtatAvancement; pastille: string }[] = [
+  { etat: "a_produire", pastille: "bg-[color:var(--color-admin-destructive-fg)]" },
+  { etat: "en_cours", pastille: "bg-[color:var(--color-admin-warning-fg)]" },
+  { etat: "pret", pastille: "bg-[color:var(--color-admin-neutral)]" },
+  { etat: "programme", pastille: "bg-[color:var(--color-admin-id-bleu)]" },
+  { etat: "publie", pastille: "bg-[color:var(--color-admin-success-fg)]" },
+];
+
+/** Combien de JOURS sont dans cet état — pas combien de publications. */
+function compteEtat(etats: Map<string, EtatAvancement>, cible: EtatAvancement): number {
+  let n = 0;
+  for (const e of etats.values()) if (e === cible) n += 1;
+  return n;
+}
 export const dynamic = "force-dynamic";
 
 interface PageProps {
@@ -88,6 +125,10 @@ export default async function CalendrierEditorialPage({ params, searchParams }: 
   const identite = estFiltreIdentite(sp.identite);
 
   const publications = await listerPublicationsDuMois(annee, mois, identite);
+
+  // Sur un mois vide, on cherche où le contenu se trouve VRAIMENT. Ne pas le
+  // faire coûtait un message qui envoyait relancer un import déjà effectué.
+  const ailleurs = publications.length === 0 ? await moisNonVideLePlusProche(annee, mois) : null;
   const parJour = compterParJour(publications);
 
   const jourSelectionne = sp.jour && /^\d{4}-\d{2}-\d{2}$/.test(sp.jour) ? sp.jour : null;
@@ -97,12 +138,32 @@ export default async function CalendrierEditorialPage({ params, searchParams }: 
   const modeDeplacement = sp.mode === "replanifier";
   const duJour = jourSelectionne ? publications.filter((p) => p.dayKey === jourSelectionne) : [];
 
-  const jours: MonthGridDay[] = [...parJour.entries()].map(([dayKey, count]) => ({
-    dayKey,
-    count,
-    href: lien(base, annee, mois, identite, dayKey),
-    selected: dayKey === jourSelectionne,
-  }));
+  // L'état de chaque jour : le MOINS avancé de ses publications. Un jour où
+  // tout est prêt sauf un visuel n'est pas un jour prêt.
+  const etats = etatParJour(publications);
+
+  // La première vignette disponible du jour. Absente tant qu'aucun fichier
+  // n'a été déposé — et cette absence est elle-même l'information.
+  const vignettes = new Map<string, string>();
+  for (const p of publications) {
+    if (p.cheminVignette && !vignettes.has(p.dayKey)) {
+      vignettes.set(p.dayKey, urlPublique(p.cheminVignette));
+    }
+  }
+
+  const jours: MonthGridDay[] = [...parJour.entries()].map(([dayKey, count]) => {
+    const etat = etats.get(dayKey);
+    const ton = etat ? TON_ETAT[etat] : undefined;
+    const vignetteUrl = vignettes.get(dayKey);
+    return {
+      dayKey,
+      count,
+      href: lien(base, annee, mois, identite, dayKey),
+      selected: dayKey === jourSelectionne,
+      ...(ton ? { tone: ton.ton, toneLabel: ton.mot } : {}),
+      ...(vignetteUrl ? { vignetteUrl } : {}),
+    };
+  });
 
   const precedent = moisVoisin(annee, mois, -1);
   const suivant = moisVoisin(annee, mois, 1);
@@ -203,14 +264,33 @@ export default async function CalendrierEditorialPage({ params, searchParams }: 
           <AdminEmptyState
             title={`Aucune publication en ${MOIS[mois - 1]} ${annee}`}
             description={
-              identite === "toutes"
-                ? "Ce mois est vide. Naviguez vers un autre mois, ou importez le dossier du trimestre avec « pnpm editorial:import »."
-                : `Aucune publication sur l'identité « ${identite} » ce mois-ci. Le filtre « Toutes » montre les autres canaux.`
+              identite !== "toutes"
+                ? `Aucune publication sur l'identité « ${identite} » ce mois-ci. Le filtre « Toutes » montre les autres canaux.`
+                : ailleurs
+                  ? `Le contenu est ailleurs : le mois non vide le plus proche est ${MOIS[ailleurs.mois - 1]} ${ailleurs.annee}.`
+                  : "Aucune publication en base. Importez le dossier du trimestre avec « pnpm editorial:import »."
             }
             secondaryAction={
+              /*
+                🔴 Le message précédent disait « importez le dossier » SANS
+                vérifier s'il l'avait déjà été. Le calendrier s'ouvre sur le
+                mois courant, le dossier commence en septembre : en août,
+                l'écran envoyait relancer un import qui avait créé
+                74 publications. Il se lisait comme « rien n'a été importé »,
+                et c'est ainsi qu'il a été lu. On ne propose désormais l'import
+                que si la base est réellement vide.
+              */
               identite !== "toutes" ? (
                 <AdminButton href={lien(base, annee, mois, "toutes")} variant="ghost" size="sm">
                   Voir toutes les identités
+                </AdminButton>
+              ) : ailleurs ? (
+                <AdminButton
+                  href={lien(base, ailleurs.annee, ailleurs.mois, identite)}
+                  variant="primary"
+                  size="sm"
+                >
+                  Aller à {MOIS[ailleurs.mois - 1]} {ailleurs.annee}
                 </AdminButton>
               ) : undefined
             }
@@ -233,6 +313,27 @@ export default async function CalendrierEditorialPage({ params, searchParams }: 
           />
         )}
 
+        {/*
+          La légende. Une couleur qu'on doit deviner ne renseigne personne :
+          elle s'apprend en une lecture, et on ne la relit plus jamais.
+        */}
+        {publications.length > 0 && (
+          <div className="mt-[var(--space-admin-3)] flex flex-wrap items-center gap-3 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            {LEGENDE.map((l) => (
+              <span key={l.etat} className="inline-flex items-center gap-1.5">
+                <span
+                  aria-hidden="true"
+                  className={`inline-block h-2.5 w-2.5 rounded-full ${l.pastille}`}
+                />
+                {TON_ETAT[l.etat].mot}
+                {compteEtat(etats, l.etat) > 0 && (
+                  <span className="font-semibold">({compteEtat(etats, l.etat)})</span>
+                )}
+              </span>
+            ))}
+          </div>
+        )}
+
         {jourSelectionne && (
           <div className="mt-[var(--space-admin-6)]">
             <h2 className="admin-h2">Le {jourSelectionne.split("-").reverse().join("/")}</h2>
@@ -252,7 +353,19 @@ export default async function CalendrierEditorialPage({ params, searchParams }: 
                         <span className="font-mono text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                           {p.heurePrevue}
                         </span>
-                        <span className="truncate font-medium">{p.titreInterne}</span>
+                        {/*
+                          🔴 Ce titre était un `<span>` : le calendrier menait
+                          au jour, et s'arrêtait là. On voyait la publication,
+                          on ne pouvait pas l'ouvrir — il fallait ressortir par
+                          « Les publications » et la retrouver dans une liste
+                          de 74. Un cul-de-sac se lit comme une panne.
+                        */}
+                        <Link
+                          href={`/fr/${adminPrefix}/console-editoriale/publications/${p.id}`}
+                          className="admin-link truncate font-medium"
+                        >
+                          {p.titreInterne}
+                        </Link>
                       </div>
                       <div className="mt-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                         {p.compteLibelle}

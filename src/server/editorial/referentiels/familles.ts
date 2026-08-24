@@ -59,7 +59,20 @@ export const ED_FAMILLES: readonly AmorcageFamille[] = [
     dureeMinSec: null,
     dureeMaxSec: null,
     description: "Visuel unique — schéma, citation, capture.",
-    aliasImport: ["image", "image unique", "visuel", "infographie"],
+    // « texte + cover », « multi-images » et « 2 photos » viennent du dossier
+    // LinkedIn Q4 : ces trois écritures désignent un visuel à produire (leur
+    // colonne `production` vaut « visuel »), pas un post de texte nu. Sans
+    // elles, 14 lignes du CSV partaient en erreur et bloquaient TOUT l'import.
+    aliasImport: [
+      "image",
+      "image unique",
+      "visuel",
+      "infographie",
+      "texte + cover",
+      "multi-images",
+      "multi images",
+      "2 photos",
+    ],
   },
   {
     slug: "photo-williams",

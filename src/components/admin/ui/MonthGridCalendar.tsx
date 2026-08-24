@@ -19,12 +19,46 @@
 import Link from "next/link";
 import { buildMonthGrid, dayKeyOfGridDate } from "@/lib/calendar-grid";
 
+/**
+ * Le ton d'une case — l'avancement, en une couleur.
+ *
+ * 🔴 Ajouté le 24/08/2026. La case ne portait qu'un NOMBRE : « 3 » ne dit pas
+ * s'il reste du travail. Sur un calendrier éditorial, la question posée n'est
+ * pas « combien de posts le 12 ? » mais « qu'est-ce qu'il me reste à faire
+ * cette semaine ? » — et un compteur n'y répond jamais.
+ *
+ * Optionnel : les autres appelants (planning, appels) ne le passent pas et
+ * gardent exactement le rendu qu'ils avaient.
+ */
+export type MonthGridTone = "danger" | "warning" | "neutral" | "info" | "success";
+
 export interface MonthGridDay {
   dayKey: string;
   count: number;
   href?: string;
   selected?: boolean;
+  /** Colore la pastille selon l'avancement. Sans lui, bleu comme avant. */
+  tone?: MonthGridTone;
+  /** Vignette du visuel du jour, si un fichier a déjà été déposé. */
+  vignetteUrl?: string;
+  /** Ce que la couleur veut dire — pour l'infobulle ET le lecteur d'écran. */
+  toneLabel?: string;
 }
+
+/**
+ * Les couleurs des pastilles.
+ *
+ * ⚠️ Le texte reste porté par `toneLabel`, jamais par la seule couleur : un
+ * daltonien ne doit pas perdre l'information, et une pastille sans mot n'est
+ * pas lisible non plus pour qui découvre l'écran.
+ */
+const TONE_PASTILLE: Record<MonthGridTone, string> = {
+  danger: "bg-[color:var(--color-admin-destructive-fg)] text-white",
+  warning: "bg-[color:var(--color-admin-warning-fg)] text-white",
+  neutral: "bg-[color:var(--color-admin-neutral)] text-white",
+  info: "bg-[color:var(--color-admin-id-bleu)] text-white",
+  success: "bg-[color:var(--color-admin-success-fg)] text-white",
+};
 
 interface Props {
   /** Année (ex 2026). */
@@ -116,12 +150,29 @@ export function MonthGridCalendar({
               >
                 {dayNum}
               </span>
+              {hasRdv && info?.vignetteUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={info.vignetteUrl}
+                  alt=""
+                  className="mt-1 h-8 w-full rounded-[var(--radius-admin-sm)] object-cover"
+                />
+              )}
               {hasRdv && (
                 <span
-                  className="mt-auto inline-flex items-center self-start rounded-full bg-[color:var(--color-admin-id-bleu)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-white"
-                  title={`${info?.count} ${unitLabel}${(info?.count ?? 0) > 1 ? "s" : ""}`}
+                  className={[
+                    "mt-auto inline-flex items-center self-start rounded-full px-2 py-0.5 text-[length:var(--text-admin-xs)] font-semibold",
+                    TONE_PASTILLE[info?.tone ?? "info"],
+                  ].join(" ")}
+                  title={
+                    `${info?.count} ${unitLabel}${(info?.count ?? 0) > 1 ? "s" : ""}` +
+                    (info?.toneLabel ? ` — ${info.toneLabel}` : "")
+                  }
                 >
                   {info?.count}
+                  {/* Le mot, en plus de la couleur : une information portée
+                      par la seule teinte se perd pour un daltonien. */}
+                  {info?.toneLabel && <span className="sr-only"> — {info.toneLabel}</span>}
                 </span>
               )}
             </div>

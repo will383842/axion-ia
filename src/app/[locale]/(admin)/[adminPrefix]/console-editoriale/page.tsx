@@ -32,6 +32,14 @@ interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
 }
 
+/** Les journées de production qu'on peut isoler d'un clic. */
+const PLANS = [
+  { cle: "video", libelle: "Vidéos" },
+  { cle: "carrousel", libelle: "Carrousels" },
+  { cle: "image", libelle: "Images" },
+  { cle: "photo", libelle: "Photos" },
+] as const;
+
 const MOIS = [
   "janvier",
   "février",
@@ -269,6 +277,46 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
             ))}
             <a href={`${base}/export?type=sauvegarde`} className="admin-button admin-button-sm">
               Sauvegarde complète (JSON)
+            </a>
+          </div>
+        </AdminCard>
+      </div>
+
+      {/* ── Le plan de production ───────────────────────────────────────── */}
+      <div className="mt-[var(--space-admin-6)]">
+        <AdminCard>
+          <h2 className="admin-h2 mb-[var(--space-admin-3)]">Plan de production</h2>
+          <p className="mb-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
+            {/*
+              🔴 Ce bloc répond à une question que les exports du dessus ne
+              savaient PAS traiter : « aujourd'hui je fais tous les
+              carrousels — qu'est-ce qu'il y a à faire ? » Les exports
+              mensuels sont centrés sur la PUBLICATION, une ligne par post ;
+              on ne produit pas une vidéo et un carrousel dans la même séance.
+            */}
+            Groupé par type et trié par échéance, avec le script, les prompts et les slides. Le
+            Markdown est la feuille de route qu&apos;on ouvre à côté de l&apos;outil de fabrication
+            ; le CSV porte une ligne par segment, pour un tableur de suivi. Par défaut, seuls les
+            assets non terminés y figurent.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {PLANS.map((p) => (
+              <a
+                key={`plan-${p.cle}`}
+                href={`${base}/export?type=plan&asset=${p.cle}&format=md`}
+                className="admin-button-secondary admin-button-sm"
+              >
+                {p.libelle}
+              </a>
+            ))}
+            <a href={`${base}/export?type=plan&format=md`} className="admin-button admin-button-sm">
+              Tout — feuille de route
+            </a>
+            <a
+              href={`${base}/export?type=plan&format=csv`}
+              className="admin-button-secondary admin-button-sm"
+            >
+              Tout — CSV de suivi
             </a>
           </div>
         </AdminCard>
