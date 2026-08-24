@@ -320,7 +320,7 @@ export function LivretAccueilPdf({
             portabilité de vos données, ainsi que du droit de vous opposer à leur traitement.
           </Text>
           <FieldRow
-            label="Exercice de vos droits (DPO)"
+            label="Exercice de vos droits (RGPD)"
             value={identite.dpoEmail || identite.email || "—"}
           />
           <Text style={pdfStyles.legalNote}>
