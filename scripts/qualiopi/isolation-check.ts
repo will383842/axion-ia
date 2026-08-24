@@ -180,6 +180,18 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/espace-formateur/page.tsx",
   "src/app/api/formateur/lettre-mission/[id]/route.ts",
   "src/components/portail/DemanderAccesForm.tsx",
+  // 🔴 2026-08-24, cahier D3-3 — la phrase d'attestation que le stagiaire COCHE
+  // était codée en dur dans ce composant, hors de `qualiopi/emargement/mentions`.
+  // Elle échappait donc à la règle de versionnement que ce module impose : on
+  // pouvait la réécrire sans incrémenter `mentionVersion`, et les empreintes
+  // déjà scellées auraient pointé vers un texte qui n'existe plus.
+  //
+  // Le composant consomme donc désormais la SSOT des mentions. C'est un
+  // élargissement ASSUMÉ, et le plus étroit possible : un seul libellé, depuis
+  // un module de logique pure (aucun import Prisma, aucune horloge). Son jumeau
+  // de l'espace formateur fait de même et vit déjà en zone autorisée
+  // (`components/espace-formateur/Emargement*`).
+  "src/components/portail/EmargementForm.tsx",
   "src/components/portail/EnqueteEntrepriseForm.tsx",
   "src/server/formateur/echeances-formateur.ts",
   "src/server/formateur/etapes-formateur.ts",

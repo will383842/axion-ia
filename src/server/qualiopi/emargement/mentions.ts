@@ -95,3 +95,124 @@ export const MENTION_RGPD = [
 export function mentionComplete(p: ParametresMention): string[] {
   return [mentionAttestation(p), MENTION_VALEUR_JURIDIQUE, ...MENTION_RGPD];
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LA CONTRESIGNATURE DU FORMATEUR — son propre texte, sa propre version
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Version du texte de CONTRESIGNATURE. À incrémenter à chaque modification.
+ *
+ * 🔴 2026-08-24, cahier D3-3 — pourquoi une version distincte de `MENTION_VERSION`.
+ *
+ * L'écran de contresignature servait au formateur les mentions du STAGIAIRE :
+ * « J'atteste avoir **suivi** … » et, en finalité RGPD, « justifier de **votre
+ * assiduité** ». Un formateur n'a pas suivi la formation, il l'a animée ; et il
+ * n'a pas d'assiduité de stagiaire à justifier.
+ *
+ * Ce n'était pas qu'un défaut d'affichage : `mentionVersion` est **scellée dans
+ * le tuple haché** de la contresignature. La pièce attestait donc, sous
+ * empreinte, que le formateur avait lu un texte qui n'était pas le sien.
+ *
+ * Deux textes différents ne peuvent pas partager une version — c'est tout le
+ * propos de `mention_version` : dire CE QUI A ÉTÉ SIGNÉ. Le dépôt porte déjà ce
+ * motif avec `MENTION_VERSION_DOCUMENT` pour les pièces contractuelles.
+ *
+ * ⚠️ Le préfixe `cs-` évite toute confusion à la lecture d'une ligne en base :
+ * un « v2 » dans `emargement_contresignatures.mention_version` et un « v2 » dans
+ * `emargement_signatures.mention_version` ne désignent pas le même texte.
+ *
+ * 🔑 Les contresignatures DÉJÀ scellées conservent leur valeur en colonne et
+ * restent vérifiables telles quelles : la reconstruction relit
+ * `ligne.mentionVersion`, jamais cette constante.
+ */
+export const MENTION_VERSION_CONTRESIGNATURE = "cs-v1" as const;
+
+/**
+ * Bloc 1 de la contresignature — ce que le FORMATEUR atteste, précisément.
+ *
+ * Il n'atteste pas sa propre présence : il atteste avoir **animé** la
+ * demi-journée devant le groupe. C'est cette affirmation-là qui donne à la
+ * feuille sa valeur probante (CAA Nantes, 20/04/2021) — une feuille signée des
+ * seuls stagiaires n'établit pas que la séance a été dispensée.
+ *
+ * ⚠️ Même précaution d'horaires que `mentionAttestation` : `session_jours` ne
+ * déclare les horaires qu'au grain de la JOURNÉE. On nomme donc la plage pour ce
+ * qu'elle est — « journée déclarée de … » — au lieu d'inventer un horaire de
+ * demi-journée que personne n'a saisi.
+ */
+export function mentionAttestationContresignature(p: ParametresMention): string {
+  return `J'atteste avoir animé ${p.demiJourneeLisible} du ${p.jourLisible} (journée déclarée de ${p.horaires}) de la formation « ${p.formationIntitule} », pour le compte de ${p.organisme}.`;
+}
+
+/**
+ * Bloc RGPD de la contresignature — même collecte, finalité différente.
+ *
+ * On recueille du formateur exactement ce qu'on recueille d'un stagiaire : nom,
+ * tracé rasterisé, horodatage, empreintes non réversibles d'IP et de navigateur.
+ * L'information de l'art. 13 lui est donc due dans les mêmes termes — **sauf la
+ * finalité**, qui n'est pas de justifier son assiduité mais d'établir la réalité
+ * de l'action de formation.
+ */
+export const MENTION_RGPD_CONTRESIGNATURE = [
+  `Données enregistrées : votre nom, votre adresse électronique, l'image de votre signature, la date et l'heure exactes, ainsi qu'une empreinte non réversible de votre adresse IP et de votre navigateur.`,
+  `Seul le tracé de votre signature est conservé, sous forme d'image. Aucune donnée de dynamique de tracé — pression, vitesse, inclinaison — n'est enregistrée ni transmise.`,
+  `Finalité : établir la réalité de l'action de formation en attestant que la séance a été animée, obligation légale de l'organisme de formation (articles L.6362-5 et R.6313-3 du Code du travail).`,
+  `Conservation : ${DOCUMENT_RETENTION_YEARS} ans, conformément aux conditions particulières applicables aux organismes de formation.`,
+  `Vos droits d'accès, de rectification et d'effacement s'exercent auprès de l'organisme. L'effacement ne peut toutefois pas porter sur les éléments nécessaires à la constatation d'un droit en justice (article 17.3.b du RGPD) : votre nom et l'attestation d'animation sont conservés, les autres données sont supprimées.`,
+] as const;
+
+/**
+ * Le texte complet présenté au formateur qui contresigne, dans l'ordre
+ * d'affichage. Exposé pour l'écran ET pour le PDF, comme son jumeau stagiaire.
+ */
+export function mentionCompleteContresignature(p: ParametresMention): string[] {
+  return [
+    mentionAttestationContresignature(p),
+    MENTION_VALEUR_JURIDIQUE,
+    ...MENTION_RGPD_CONTRESIGNATURE,
+  ];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LES LIBELLÉS DE CASE À COCHER — ils font partie du texte présenté
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 2026-08-24 — pourquoi ces deux libellés vivent ICI et non dans le JSX.
+ *
+ * Les deux cases à cocher des écrans de signature portaient leur phrase
+ * d'attestation **codée en dur dans le composant**. Or c'est la phrase que le
+ * signataire coche : elle fait partie de ce qu'il atteste, donc du texte que
+ * `mentionVersion` est censée identifier.
+ *
+ * Écrite dans le JSX, elle échappait à la règle posée en tête de ce module :
+ * on pouvait la réécrire sans incrémenter la version, et les empreintes déjà
+ * scellées auraient pointé vers un texte qui n'existe plus.
+ *
+ * ⚠️ Toute modification de ces libellés impose donc d'incrémenter la version
+ * correspondante — `MENTION_VERSION` pour le stagiaire,
+ * `MENTION_VERSION_CONTRESIGNATURE` pour le formateur.
+ */
+
+/** Case cochée par le FORMATEUR avant de contresigner. Il a animé, pas suivi. */
+export const CASE_ATTESTATION_CONTRESIGNATURE =
+  "J'atteste avoir animé cette demi-journée de formation devant le groupe présent.";
+
+/**
+ * Case cochée par un STAGIAIRE qui signe sur SON PROPRE appareil (portail QR).
+ *
+ * Première personne : c'est lui qui tient l'appareil et qui coche.
+ */
+export const CASE_ATTESTATION_STAGIAIRE_SOI =
+  "J'atteste avoir suivi cette demi-journée de formation.";
+
+/**
+ * Case cochée pour un STAGIAIRE qui signe sur le poste du formateur.
+ *
+ * Le nom est injecté par l'appelant : l'écran s'adresse au formateur qui tend
+ * l'appareil, et nomme donc la personne qui signe.
+ */
+export function caseAttestationStagiaire(nomStagiaire: string): string {
+  return `${nomStagiaire} atteste avoir suivi cette demi-journée de formation.`;
+}
