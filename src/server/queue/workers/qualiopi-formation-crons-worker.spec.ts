@@ -87,6 +87,10 @@ vi.mock("@/server/qualiopi/indicateurs/service", () => ({
 
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   synchroniserAlertes: vi.fn().mockResolvedValue({ crees: 0, resolues: 0 }),
+  // 2026-08-24 : le mock recopie la SIGNATURE reelle du module. Sans
+  // `creerOuDedup`, `trace-cloture.ts` recevrait `undefined` et la cloture
+  // automatique echouerait en TypeError au lieu de signaler.
+  creerOuDedup: vi.fn().mockResolvedValue(null),
 }));
 
 // Lot 14 — la notification des alertes a quitté le cron pour `envoi-groupe`.
@@ -117,7 +121,7 @@ import {
   envoyerRelanceQuestionnaire,
   envoyerEnqueteEntreprise,
 } from "@/server/qualiopi/notifications/notifications-service";
-import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import { synchroniserAlertes, creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe";
 import { decideSessionTransitions } from "@/server/qualiopi/formations/crons";
 import { formationCronsHandler } from "./qualiopi-formation-crons-worker";
@@ -152,6 +156,7 @@ const mockEnvoyerPositionnement = envoyerPositionnement as ReturnType<typeof vi.
 const mockEnvoyerRelance = envoyerRelanceQuestionnaire as ReturnType<typeof vi.fn>;
 const mockEnvoyerEnquete = envoyerEnqueteEntreprise as ReturnType<typeof vi.fn>;
 const mockSynchroniserAlertes = synchroniserAlertes as ReturnType<typeof vi.fn>;
+const mockCreerOuDedup = creerOuDedup as ReturnType<typeof vi.fn>;
 const mockNotifierGroupees = notifierAlertesGroupees as ReturnType<typeof vi.fn>;
 const mockDecide = decideSessionTransitions as ReturnType<typeof vi.fn>;
 
@@ -385,6 +390,72 @@ describe("handleClotureAuto — garde émargement (audit E2E 2026-06)", () => {
     });
 
     expect(mockPrisma.$transaction).toHaveBeenCalledOnce();
+  });
+
+  it("🔴 SIGNALE la clôture auto quand des inscrits n'ont AUCUNE trace", async () => {
+    // 🔴 2026-08-24, cahier D2 — la clôture MANUELLE émettait cette alerte, la
+    // clôture AUTOMATIQUE non. Or le cron J+24 h est le chemin DOMINANT : une
+    // session dont 11 inscrits sur 12 n'ont aucune preuve passait en
+    // « réalisée » en silence, et `attestations-auto` délivrait ensuite les
+    // attestations. Personne n'apprenait rien.
+    //
+    // Le worker importait `mesurerTraceCloture` et `clotureSansAucuneTrace`,
+    // mais pas `traceClotureIncomplete` : la mesure était faite, le cas partiel
+    // simplement jamais lu.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      { id: "sess-1", statut: "en_cours", dateDebut: new Date(), dateFin: new Date() },
+    ]);
+    mockDecide.mockReturnValue([decision]);
+    // 12 inscrits actifs, 1 seul avec une trace → 11 sans trace. La clôture
+    // s'applique (ce n'est pas un dossier vide), mais elle doit le DIRE.
+    mockPrisma.enrollment.count.mockResolvedValueOnce(12).mockResolvedValueOnce(1);
+    mockPrisma.$transaction.mockResolvedValue(undefined);
+
+    await formationCronsHandler({
+      type: "formation-crons.cloture-auto",
+      tick: "2026-06-06T08:00:00Z",
+    });
+
+    expect(
+      mockPrisma.$transaction,
+      "la clôture doit rester APPLIQUÉE : le durcissement rendrait des sessions " +
+        "définitivement non clôturables (arbitrage écrit dans `trace-cloture.ts`).",
+    ).toHaveBeenCalledOnce();
+
+    expect(
+      mockCreerOuDedup,
+      "la clôture automatique ne signale RIEN quand des inscrits n'ont aucune " +
+        "trace de présence. C'est le chemin dominant : la session part en " +
+        "« réalisée », les attestations suivent, et personne n'apprend que N " +
+        "personnes n'ont aucune preuve à leur nom.",
+    ).toHaveBeenCalledWith(
+      expect.objectContaining({
+        code: "cloture_trace_presence_incomplete",
+        cibleId: "sess-1",
+      }),
+    );
+  });
+
+  it("ne signale RIEN quand tous les inscrits ont une trace", async () => {
+    // 🔑 Contre-témoin. Sans lui, une implantation qui alerterait à CHAQUE
+    // clôture passerait le test précédent — et noierait le signal utile sous
+    // une alerte quotidienne que plus personne ne lirait.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      { id: "sess-1", statut: "en_cours", dateDebut: new Date(), dateFin: new Date() },
+    ]);
+    mockDecide.mockReturnValue([decision]);
+    mockPrisma.enrollment.count.mockResolvedValueOnce(12).mockResolvedValueOnce(12);
+    mockPrisma.$transaction.mockResolvedValue(undefined);
+
+    await formationCronsHandler({
+      type: "formation-crons.cloture-auto",
+      tick: "2026-06-06T08:00:00Z",
+    });
+
+    expect(
+      mockCreerOuDedup,
+      "une alerte est émise sur un dossier COMPLET : le signal perd tout sens.",
+    ).not.toHaveBeenCalled();
   });
 
   it("APPLIQUE la clôture auto d'une session SANS aucun inscrit (0 inscrit = pas de garde)", async () => {
