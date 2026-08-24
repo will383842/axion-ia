@@ -274,9 +274,14 @@ jobs:
       #   3. Bundle size (`size-limit` seul : il LIT `.next/static`, il n'y touche pas).
       #   4. Garde : `.next/BUILD_ID` existe encore. BLOQUANTE.
       #   5. Playwright suite — `pnpm start`, donc a besoin du build de l'étape 2.
-      #   6. Lighthouse CI — `next start`, même dépendance.
-      #   7. Bundle delta vs main — EN DERNIER : cette action relance un build
-      #      complet dans le répertoire de travail et DÉTRUIT `.next`.
+      #
+      # ⚠️ 2026-08-24 — LES ÉTAPES 6 ET 7 N'EXISTENT PLUS. « Lighthouse CI » et
+      # « Bundle delta vs main » ont été retirées : la première mesurait le
+      # runner (11 URL en faute sur 11, quand la prod passe propre), la seconde
+      # ne pouvait pas aboutir (build de 8 min sous un cap de 6) et détruisait
+      # `.next`. Le pavé qui remplace les deux, en fin de job, porte les mesures.
+      # L'ordre reste néanmoins la correction : rien de ce qui écrit dans `.next`
+      # ne doit passer devant ce qui le lit.
       #
       # L'ordre précédent plaçait le 7 en position 3. Conséquence mesurée sur le
       # run 32443013208 : `.next` détruit à 03:31:24, et les 237 tests Playwright
@@ -391,14 +396,28 @@ jobs:
       # `continue-on-error: true`. AGENTS.md a d'ailleurs été corrigé le 2026-08-17
       # sur ce point précis — aucun gate de budget ne bloque une PR. On garde le
       # texte pour la traçabilité, pas comme description de l'état.
-      # NON-BLOQUANT (2026-05-29) : le gate size-limit est mal calibré et
-      # pré-existant-cassé — il SOMME tous les `page-*.js` du glob vs une limite
-      # « par route » (ex 275 KB vs 75 KB), et nécessitait Chrome (timeout CI).
-      # La doctrine `_size_limit_doctrine` (package.json) désigne d'ailleurs
-      # Lighthouse CI comme « autorité finale pour les seuils per-route ». On le
-      # garde en reporting (logue les tailles) sans bloquer ; Lighthouse (ci-dessous)
-      # reste STRICT. À recalibrer proprement dans un sprint dédié (per-route réel).
-      - name: Bundle size (reporting — gate per-route = Lighthouse)
+      # 🔴 2026-08-24 — CE QUE CETTE ÉTAPE MESURE VRAIMENT, ET CE QU'ELLE A TROUVÉ.
+      #
+      # NON-BLOQUANT depuis le 2026-05-29. Le motif écrit alors était juste sur un
+      # point (« il SOMME tous les `page-*.js` du glob vs une limite par route »)
+      # et faux sur la suite : il renvoyait l'autorité per-route à Lighthouse CI,
+      # qui ne l'a jamais exercée et qui est retiré depuis (voir le pavé en fin de
+      # job). Personne ne mesurait donc le First Load JS par route.
+      #
+      # L'entrée fautive est corrigée dans `package.json` : elle s'appelle
+      # désormais pour ce qu'elle est — un CLIQUET ANTI-CROISSANCE sur la somme,
+      # pas un budget par route.
+      #
+      # ⚠️ ET ELLE A UN VRAI DÉPASSEMENT À MONTRER, resté invisible sous le
+      # `continue-on-error` : le SHELL PARTAGÉ pèse **135,78 KB** pour un budget
+      # de 100 KB (run 32666732630). Celui-là est honnête — cumulatif comme son
+      # nom l'annonce, et dépassé de 35,78 KB. Dette ouverte, cf. `AGENTS.md`.
+      #
+      # 🔑 Rester en `continue-on-error` est ici un CHOIX, pas un oubli : rendre
+      # l'étape bloquante aujourd'hui fermerait toutes les PR jusqu'à ce que le
+      # shell repasse sous 100 KB. Le jour où il y repasse, retirer cette ligne
+      # est la dernière chose à faire — et alors seulement l'étape gardera.
+      - name: Poids du bundle (reporting — AUCUNE gate per-route n'existe, voir AGENTS.md)
         run: pnpm bundle:check
         continue-on-error: true
       # ⚠️ `DATABASE_URL` reste `stub.invalid` AU NIVEAU DU JOB, et ce n'est pas un
@@ -571,60 +590,64 @@ jobs:
         # en « success », et un relevé fait sur une suite tronquée ressemble
         # exactement à un relevé complet.
         timeout-minutes: 30
-      - name: Lighthouse CI
-        # 🔴 `!cancelled()` — SANS LUI, CE STEP DISPARAÎT DÈS QUE PLAYWRIGHT ROUGIT.
-        #
-        # Depuis le retrait du `continue-on-error` ci-dessus, un échec Playwright
-        # interrompt le job. Les mesures Lighthouse — et surtout le rapport
-        # d'artefacts plus bas — seraient alors sautées PRÉCISÉMENT le jour où
-        # l'on en a besoin pour comprendre l'échec.
-        if: ${{ !cancelled() }}
-        # NON-BLOQUANT (2026-07-01), MAIS LE MOTIF ÉCRIT ICI ÉTAIT FAUX.
-        #
-        # Ce commentaire a affirmé pendant sept semaines que « le serveur `next start`
-        # démarré par lhci ne bind PAS sur loopback en CI ». C'est inexact : le serveur
-        # ne bindait rien parce qu'il n'avait RIEN À SERVIR — `.next` venait d'être
-        # détruit par `andresz1/size-limit-action` (voir la garde BUILD_ID ci-dessus).
-        # Le `curl 127.0.0.1:3000 → Connection refused` du diagnostic d'époque est la
-        # conséquence, pas la cause. Les rustines posées sur cette fausse piste
-        # (`-H 0.0.0.0`, URLs 127.0.0.1, HOSTNAME) sont inoffensives : on les garde,
-        # mais elles n'ont jamais été le levier.
-        #
-        # On laisse le step en REPORTING pour CE passage : il faut d'abord voir ce
-        # qu'il mesure une fois qu'il mesure vraiment quelque chose. ⚠️ Le contrôle
-        # Web Vitals qui fait foi reste le lhci POST-DEPLOY sur l'URL prod LIVE
-        # (`deploy-coolify.yml`, job `lhci`).
-        continue-on-error: true
-        env:
-          # `next start` bind sur l'hôte auto-détecté en CI (IP réseau, pas loopback).
-          # Le flag -H dans startServerCommand est le vrai levier ; HOSTNAME est une
-          # ceinture-bretelle (Next l'ignore, mais sans nuire). NODE_OPTIONS = marge
-          # heap (manifests ~18k routes SSG). Scopé à ce step CI uniquement.
-          HOSTNAME: "0.0.0.0"
-          NODE_OPTIONS: --max-old-space-size=6144
-        run: pnpm lhci:autorun
-        timeout-minutes: 20
-      # ⚠️ EN DERNIER, ET C'EST STRUCTUREL — CETTE ÉTAPE DÉTRUIT `.next`.
+      # ═══════════════════════════════════════════════════════════════════
+      # 🔴 2026-08-24 — DEUX ÉTAPES RETIRÉES ICI, ET C'EST UNE MESURE QUI LE DIT
+      # ═══════════════════════════════════════════════════════════════════
       #
-      # `size-limit-action` relance `pnpm run build` dans le répertoire de travail
-      # pour comparer à `main`. Elle vide donc `.next` avant toute chose, et n'a
-      # même pas la marge de heap du step Build (elle meurt en OOM à ~4 Go). Tant
-      # qu'elle tournait AVANT Playwright et Lighthouse, ces deux étapes mesuraient
-      # le vide. Elle doit rester la DERNIÈRE étape utile du job.
+      # Il y avait à cet endroit « Lighthouse CI » (13 min) et « Bundle delta vs
+      # main » (3 min). Seize minutes sur les trente-sept du job. Ni l'une ni
+      # l'autre ne produisait un signal exploitable — mesuré sur le run
+      # 32666732630, PAS supposé.
       #
-      # Cap dur : sur les ~17,9k pages SSG l'action peut hang ~50 min et, MALGRE
-      # continue-on-error, un hang epuise le timeout du job (Gate B tue en
-      # « cancelled », run 26674394530 le 2026-05-30). Le cap la fait echouer vite.
-      - name: Bundle delta vs main (reporting — DÉTRUIT .next, doit rester en dernier)
-        # Même raison que Lighthouse : ce report doit survivre à un rouge de la
-        # suite E2E. Il reste en DERNIER — il détruit `.next`.
-        if: ${{ !cancelled() }}
-        uses: andresz1/size-limit-action@v1
-        timeout-minutes: 6
-        continue-on-error: true
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          skip_step: install
+      # ── « Lighthouse CI » mesurait le RUNNER, pas le produit ─────────────
+      #
+      # Elle échouait sur 11 URL sur 11, toujours sur les mêmes métriques :
+      # FCP 7,2 s, LCP 11,5 s, Speed Index 7,2 s, TBT 357 ms, performance 0,50.
+      # Au même moment, le lhci POST-DEPLOY sur l'URL prod LIVE
+      # (`deploy-coolify.yml`, job `lhci`, run 32668725236) ne rendait AUCUN
+      # échec — un seul avertissement, `interaction-to-next-paint / auditRan`,
+      # qui ne se mesure pas en laboratoire et n'a rien à voir.
+      #
+      # 🔑 Une gate qui déclare TOUTES ses cibles en faute pendant que la même
+      # mesure passe propre en production ne mesure pas ses cibles. Elle
+      # mesurait un runner à 2 cœurs, chauffé par les 8 min de Playwright qui la
+      # précèdent immédiatement, sous quatre workers.
+      #
+      # Le commentaire qu'elle portait annonçait le plan : « on laisse le step en
+      # REPORTING pour CE passage : il faut d'abord voir ce qu'il mesure une fois
+      # qu'il mesure vraiment quelque chose ». C'est fait, on a vu, on tranche.
+      #
+      # ⚠️ Le contrôle Web Vitals qui fait foi reste — et était DÉJÀ — le lhci
+      # post-deploy sur l'URL prod live. `AGENTS.md` le dit depuis le 2026-08-17.
+      # `lighthouserc.json` est conservé pour un usage manuel (`pnpm lhci:autorun`)
+      # mais n'est plus joué par aucun workflow.
+      #
+      # ── « Bundle delta vs main » ne pouvait PAS aboutir ──────────────────
+      #
+      # `size-limit-action` relance un `pnpm run build` complet pour comparer à
+      # `main`. Le step Build de ce même job prend 8 min. L'action portait
+      # `timeout-minutes: 6`. Elle n'avait donc pas le temps de finir un seul des
+      # deux builds qu'elle doit faire — indépendamment de l'OOM à ~4 Go qui la
+      # tuait d'abord (faute de la marge de heap du step Build). Sur le run
+      # 32666732630 : morte à 3 min, `FATAL ERROR: … heap out of memory`.
+      #
+      # 🔑 Un cap de 6 min sur un travail de 8 min n'est pas un garde-fou, c'est
+      # une garantie d'échec. Et cette étape DÉTRUISAIT `.next` en partant : elle
+      # a déjà fait mesurer le vide à Playwright et Lighthouse (run 32443013208,
+      # 209 échecs, zéro passé). Le risque disparaît avec elle.
+      #
+      # ── CE QUI RESTE, ET CE QUI N'EST PLUS MESURÉ DU TOUT ────────────────
+      #
+      # Reste : `pnpm bundle:check` (étape « Poids du bundle », plus haut, 0 min)
+      # et la garde bloquante `.next/BUILD_ID`.
+      #
+      # ⛔ N'EST MESURÉ PAR AUCUNE GATE : le **First Load JS par route** (cible
+      # AGENTS.md ≤ 75 KB gz). `size-limit` ne sait pas exprimer un budget par
+      # route sur un glob — il SOMME. La doctrine renvoyait la question à
+      # Lighthouse ; Lighthouse n'y répondait pas. Le trou est réel, il est
+      # documenté dans `AGENTS.md`, et il se comble à la main
+      # (`next build --experimental-build-mode compile`, ~2 min).
+      # ═══════════════════════════════════════════════════════════════════
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v7

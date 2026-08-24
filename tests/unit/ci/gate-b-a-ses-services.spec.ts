@@ -149,18 +149,44 @@ describe("Gate B dispose de ses services", () => {
   it("les étapes AVAL survivent à un rouge de la suite", () => {
     // Contre-témoin du test précédent : retirer le drapeau sans protéger l'aval
     // ferait disparaître le rapport d'artefacts exactement le jour où il sert.
-    const lighthouse = bloc.slice(bloc.indexOf("- name: Lighthouse CI"));
-    const enTete = lighthouse.slice(0, lighthouse.indexOf("run:"));
-    expect(
-      enTete,
-      "sans `if: !cancelled()`, un échec Playwright saute Lighthouse ET le " +
-        "report qui permettrait de le comprendre",
-    ).toMatch(/if:\s*\$\{\{\s*!cancelled\(\)\s*\}\}/);
-
+    //
+    // 🔴 2026-08-24 — CE TEST VEILLAIT SUR « Lighthouse CI », QUI N'EXISTE PLUS.
+    // L'étape mesurait le runner (11 URL en faute sur 11, quand le lhci
+    // post-deploy passe propre sur la prod) et a été retirée de `ci.yml`. Le
+    // test a ROUGI sur ce retrait — c'est ce qu'on attend d'un cliquet, et
+    // c'est pourquoi on le réécrit plutôt que de le supprimer.
+    //
+    // 🔑 Ce qui reste vrai, et c'est l'essentiel : APRÈS la suite E2E il ne
+    // subsiste qu'une étape en aval, l'upload des artefacts. C'est elle,
+    // désormais, qui doit survivre au rouge — sans elle, un échec Playwright
+    // n'a ni rapport HTML, ni trace, ni capture. La garde porte donc sur le
+    // dernier maillon, pas sur un maillon disparu.
     const upload = bloc.slice(bloc.indexOf("- name: Upload artifacts"));
-    expect(upload.slice(0, 400), "l'upload des artefacts doit rester en `always()`").toMatch(
-      /if:\s*always\(\)/,
-    );
+    expect(
+      upload.slice(0, 400),
+      "sans `if: always()`, un échec Playwright emporte le rapport qui " +
+        "permettrait de le comprendre : c'est la SEULE étape aval qui reste",
+    ).toMatch(/if:\s*always\(\)/);
+
+    // Et l'inverse doit rester impossible à réintroduire en silence : toute
+    // étape rajoutée APRÈS Playwright doit déclarer sa survie, sinon elle
+    // disparaîtra le jour du rouge sans que personne ne s'en aperçoive.
+    const apresSuite = bloc.slice(bloc.indexOf("- name: Playwright suite"));
+    const etapesAval = apresSuite
+      .split(/^ {6}- name: /m)
+      .slice(1)
+      .map((b) => (b.split(/\r?\n/)[0] ?? "").trim());
+    const sansGarde = apresSuite
+      .split(/^ {6}- name: /m)
+      .slice(1)
+      .filter((b) => !/if:\s*(always\(\)|\$\{\{\s*!cancelled\(\)\s*\}\})/.test(b))
+      .map((b) => (b.split(/\r?\n/)[0] ?? "").trim());
+    expect(
+      sansGarde,
+      `étape(s) placée(s) après la suite E2E sans \`if: always()\` ni ` +
+        `\`if: !cancelled()\` — elles seront SAUTÉES au premier rouge de Playwright, ` +
+        `donc précisément quand on en a besoin. Étapes aval vues : ${etapesAval.join(", ")}`,
+    ).toEqual([]);
   });
 
   it("le JOB garde bien le stub — le build en dépend", () => {
