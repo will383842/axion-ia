@@ -321,18 +321,33 @@ export function QuestionnairesSection({
 
   // Envoi manuel : id en cours d'envoi, et message par questionnaire.
   const [envoiEnCoursId, setEnvoiEnCoursId] = useState<string | null>(null);
-  const [envoiMessage, setEnvoiMessage] = useState<Record<string, string>>({});
+  // 🔴 2026-08-24 — UN REFUS S'AFFICHAIT COMME UNE CONFIRMATION.
+  //
+  // Le message était une simple chaîne, rendue en gris neutre avec
+  // `role="status"`. « Lien envoyé au stagiaire. » et « Rien n'est parti » se
+  // ressemblaient donc à l'œil ET pour un lecteur d'écran. On porte désormais la
+  // NATURE du message, pas seulement son texte.
+  const [envoiMessage, setEnvoiMessage] = useState<
+    Record<string, { texte: string; refus: boolean }>
+  >({});
   const [, startEnvoiTransition] = useTransition();
 
   function handleEnvoyer(questionnaireId: string) {
     setEnvoiEnCoursId(questionnaireId);
-    setEnvoiMessage((m) => ({ ...m, [questionnaireId]: "" }));
+    setEnvoiMessage((m) => ({ ...m, [questionnaireId]: { texte: "", refus: false } }));
     startEnvoiTransition(async () => {
       const result = await envoyerAction({ questionnaireId });
       setEnvoiEnCoursId(null);
+      // ⚠️ « Lien envoyé au stagiaire. » ne s'affiche QUE sur un envoi réellement
+      // parti. L'action rend désormais `{ error }` quand le message est garé en
+      // corbeille de validation ou que la file est indisponible — avant ce
+      // correctif elle rendait un succès, et cet écran l'annonçait.
       setEnvoiMessage((m) => ({
         ...m,
-        [questionnaireId]: "error" in result ? result.error : "Lien envoyé au stagiaire.",
+        [questionnaireId]:
+          "error" in result
+            ? { texte: result.error, refus: true }
+            : { texte: "Lien envoyé au stagiaire.", refus: false },
       }));
       if (!("error" in result)) router.refresh();
     });
@@ -496,12 +511,16 @@ export function QuestionnairesSection({
                           >
                             Saisir les réponses
                           </button>
-                          {envoiMessage[q.id] !== undefined && envoiMessage[q.id] !== "" && (
+                          {envoiMessage[q.id] !== undefined && envoiMessage[q.id]!.texte !== "" && (
                             <span
-                              role="status"
-                              className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                              role={envoiMessage[q.id]!.refus ? "alert" : "status"}
+                              className={
+                                envoiMessage[q.id]!.refus
+                                  ? "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
+                                  : "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                              }
                             >
-                              {envoiMessage[q.id]}
+                              {envoiMessage[q.id]!.texte}
                             </span>
                           )}
                         </div>

@@ -498,8 +498,40 @@ export async function genererAttestationPourEnrollment(
   });
 
   // 7b. Notification stagiaire — fail-soft (ne bloque pas la génération)
+  //
+  // 🔴 2026-08-24 — LE HUITIÈME APPELANT DE LA FAMILLE, ET LE DERNIER.
+  //
+  // `envoyerAttestationDisponible` rend `Promise<boolean>` : `false` = rien n'est
+  // parti. Elle ne lève PAS dans ce cas — le `catch` ci-dessous ne voyait donc
+  // aucun de ses cinq chemins d'échec (stub, stagiaire sans adresse, file
+  // indisponible, e-mail garé en corbeille de validation).
+  //
+  // Conséquence : l'attestation était générée et enregistrée, le stagiaire
+  // n'était JAMAIS prévenu qu'elle existait, et rien ne le rattrapait. Le
+  // fail-soft est bon — la génération ne doit pas dépendre d'un e-mail — mais
+  // avaler l'information est autre chose : personne ne pouvait savoir combien de
+  // stagiaires attendaient une attestation dont ils ignoraient l'existence.
+  //
+  // 🔑 CE DÉFAUT A ÉCHAPPÉ À DEUX GARDES. `aucun-envoi-ignore.spec.ts` ne lit
+  // qu'un seul fichier, le worker des crons. Et le cliquet que j'ai écrit ce
+  // matin reposait sur une LISTE DE SEPT NOMS écrite à la main, dont
+  // `envoyerAttestationDisponible` ne faisait pas partie. Une liste à maintenir
+  // vieillit toujours mal : le cliquet découvre désormais les fonctions à
+  // contrat tout seul, en lisant leur signature.
+  //
+  // Fail-soft, donc : on ne bloque pas. Mais on le DIT, et le message nomme la
+  // conséquence pour que la ligne de journal soit actionnable.
   try {
-    await envoyerAttestationDisponible(enrollmentId);
+    if (!(await envoyerAttestationDisponible(enrollmentId))) {
+      console.error(
+        `[attestation-service] NON ENVOYÉ — l'attestation de l'inscription ` +
+          `${enrollmentId} est générée et enregistrée, mais le stagiaire n'a PAS ` +
+          "été prévenu qu'elle est disponible (message garé en corbeille de " +
+          "validation, ou file de messages indisponible). Aucun rattrapage " +
+          "automatique n'existe pour cette notification : le prévenir demande un " +
+          "geste manuel.",
+      );
+    }
   } catch (err) {
     console.error(
       `[attestation-service] envoyerAttestationDisponible: erreur enrollment ${enrollmentId}:`,

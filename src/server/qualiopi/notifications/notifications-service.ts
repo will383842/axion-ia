@@ -336,6 +336,24 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const dk = dateKey(session.dateDebut);
 
+  // 🔴 2026-08-24 — DEUX DÉFAUTS DANS CETTE BOUCLE, ET LE SECOND ANNULAIT LE PREMIER.
+  //
+  //   1. `return false` au premier enqueue en échec ABANDONNAIT les stagiaires
+  //      suivants. Sur une session de dix, un message garé en corbeille pour le
+  //      premier privait les neuf autres de leur rappel — et le journal ne
+  //      nommait qu'une session, pas neuf personnes.
+  //   2. `return true` en sortie de boucle ignorait les échecs attrapés par le
+  //      `catch` : une session dont trois envois avaient levé rendait `true`,
+  //      et l'appelant en concluait un succès.
+  //
+  // On parcourt donc TOUS les inscrits, on retient l'échec, et on ne rend `true`
+  // que si chacun a bien été remis à la file.
+  //
+  // ⚠️ Repasser n'envoie rien deux fois : le `jobId` est dérivé de la date de
+  // DÉBUT de session (`dk`), pas du jour courant. Ceux qui ont déjà reçu leur
+  // message sont dédoublonnés par la file.
+  let tousPartis = true;
+
   for (const enrollment of session.enrollments) {
     const { trainee } = enrollment;
     try {
@@ -368,22 +386,54 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
       );
       if (!envoi.enqueued) {
         console.error(
-          `[rappel-j7] NON ENVOYÉ — session ${sessionId} laissée candidate au rattrapage` +
+          `[rappel-j7] NON ENVOYÉ — session ${sessionId}, inscription ${enrollment.id} ` +
+            "laissée candidate au rattrapage" +
             (envoi.garePourValidation === true
               ? " (e-mail garé en corbeille de validation)"
               : " (file de messages indisponible)"),
         );
-        return false;
+        // `continue`, PAS `return` : les inscrits suivants ont droit à leur rappel.
+        tousPartis = false;
+        continue;
       }
     } catch (err) {
-      // Fail-soft : une erreur d'enqueue ne bloque pas les autres stagiaires
+      // Fail-soft PAR STAGIAIRE : une erreur ne bloque pas les autres. Mais elle
+      // compte — la session reste candidate au rattrapage.
+      tousPartis = false;
       console.error(
         `[notifications] rappel-j7: erreur enrollment ${enrollment.id}:`,
         err instanceof Error ? err.message : String(err),
       );
     }
   }
-  return true;
+
+  // Une session sans inscrit n'a personne à prévenir : ne rien attester. Elle
+  // reste candidate, et le journal quotidien la nomme — c'est un écart à traiter
+  // (session planifiée à J-7 sans aucun stagiaire), pas un envoi réussi.
+  if (session.enrollments.length === 0) {
+    console.error(
+      `[rappel-j7] session ${sessionId} SANS INSCRIT à J-7 — aucun rappel à ` +
+        "envoyer, aucune trace posée",
+    );
+    return false;
+  }
+
+  // 🔑 LA TRACE — ET SEULEMENT SI TOUT EST PARTI.
+  //
+  // C'est elle qui rend le rappel PROUVABLE devant un certificateur, et qui
+  // permet au cron de sélectionner sur l'ÉTAT plutôt que sur une fenêtre de
+  // dates. Avant le 2026-08-24 aucune colonne n'existait : rien ne permettait
+  // d'affirmer qu'un rappel était parti, ni de mesurer combien manquaient.
+  //
+  // Écrite ICI, dans la fonction, et non chez l'appelant — c'est le patron
+  // d'`envoyerConvocation` : aucun appelant ne peut alors décider de mentir.
+  if (tousPartis) {
+    await prisma.trainingSession.update({
+      where: { id: sessionId },
+      data: { rappelJ7EnvoyeAt: new Date() },
+    });
+  }
+  return tousPartis;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -774,7 +824,27 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
     //
     // On relance avec le template de positionnement, qui dit « avant le début
     // de la formation » — la phrase juste dans les deux cas.
-    await envoyerPositionnement(q.id);
+    //
+    // 🔴 2026-08-24 — CETTE BRANCHE ÉTAIT LA SEULE DES TROIS À JETER SON RETOUR.
+    // Ses deux sœurs, vingt lignes plus haut et vingt plus bas, testent
+    // `envoi.enqueued` et rendent `false`. Ici l'appel était nu, et l'`update`
+    // de `relanceCount` / `derniereRelanceAt` en fin de fonction était donc
+    // atteint même quand rien n'était parti. Conséquence : deux relances
+    // fantômes suffisaient à consommer `RELANCES_MAX = 2` et à fermer le
+    // rattrapage définitivement, sur un stagiaire qui n'avait jamais rien reçu.
+    //
+    // 🔑 Trois branches, trois décisions indépendantes de lire ou non le
+    // booléen : c'est la signature d'un prédicat recopié. Le cliquet
+    // `__tests__/appelant-ne-jette-pas-le-booleen-denvoi.spec.ts` refuse
+    // désormais la forme, pas le cas.
+    if (!(await envoyerPositionnement(q.id))) {
+      console.error(
+        `[relance-questionnaire] NON ENVOYÉ — questionnaire ${questionnaireId} ` +
+          "laissé candidat au rattrapage (positionnement : message garé en " +
+          "corbeille de validation, ou file de messages indisponible)",
+      );
+      return false;
+    }
   } else {
     const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
     const envoi = await enqueueEmail(

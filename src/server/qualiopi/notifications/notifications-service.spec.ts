@@ -23,6 +23,13 @@ vi.mock("@/lib/prisma", () => ({
     trainingSession: {
       findUnique: vi.fn(),
       findMany: vi.fn(),
+      // 🔴 2026-08-24 — `update` MANQUAIT, et son absence n'était pas un oubli de
+      // mock : la colonne n'existait pas. Le rappel J-7 ne laissait AUCUNE trace,
+      // donc rien ne prouvait qu'il était parti. `envoyerRappelJ7` pose désormais
+      // `rappelJ7EnvoyeAt`, et seulement quand TOUS les inscrits ont reçu leur
+      // message. Un mock incomplet est un contrat rompu : on recopie la
+      // signature, pas le minimum qui passe.
+      update: vi.fn(),
     },
     alerteSysteme: {
       findUnique: vi.fn(),
@@ -111,6 +118,11 @@ const mockPrisma = prisma as unknown as {
   trainingSession: {
     findUnique: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
+    // ⚠️ LE CONTRAT SE ROMPT À DEUX ENDROITS, PAS UN : la fabrique `vi.mock`
+    // ci-dessus fournit le double, mais c'est CE type qui décide de ce que le
+    // test a le droit d'appeler. Ajouter la méthode à l'un sans l'autre donne
+    // 350 fichiers de tests verts et un `tsc` rouge — mesuré le 2026-08-24.
+    update: ReturnType<typeof vi.fn>;
   };
   alerteSysteme: {
     findUnique: ReturnType<typeof vi.fn>;
@@ -434,6 +446,88 @@ describe("envoyerRappelJ7", () => {
     const lieu = (call[3] as Record<string, unknown>)["lieu"] as string;
     expect(lieu).toContain("Distanciel");
     expect(lieu).toContain("meet.google.com");
+  });
+
+  /**
+   * 🔴 2026-08-24 — LE RAPPEL J-7 NE LAISSAIT AUCUNE TRACE, DONC AUCUNE PREUVE.
+   *
+   * `handleRappelJ7` était un PUR COMPTE À REBOURS : fenêtre [J-7,5 ; J-6,5] au
+   * passage quotidien de 08:00 UTC, et aucune colonne d'état. Trois conséquences,
+   * dont la troisième est celle qui compte devant un certificateur :
+   *
+   *   1. une session créée moins de 7,5 jours avant son début n'entrait JAMAIS
+   *      dans la fenêtre — le cas ORDINAIRE, pas le cas limite ;
+   *   2. un worker arrêté pendant le créneau perdait l'occurrence ;
+   *   3. AUCUNE donnée ne permettait d'affirmer qu'un rappel était parti.
+   *
+   * Le critère 2 du RNQ porte sur l'information du bénéficiaire. Une preuve
+   * inatteignable n'est pas une preuve.
+   */
+  it("🔴 tous les envois partis → la trace `rappelJ7EnvoyeAt` est posée", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+
+    const parti = await envoyerRappelJ7(SESSION_ID);
+
+    expect(parti).toBe(true);
+    expect(
+      mockPrisma.trainingSession.update,
+      "aucune trace posée alors que les deux rappels sont partis : sans elle, " +
+        "rien ne prouve à un certificateur que les stagiaires ont été informés, " +
+        "et le cron repasserait indéfiniment sur la même session",
+    ).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: SESSION_ID },
+        data: expect.objectContaining({ rappelJ7EnvoyeAt: expect.any(Date) }),
+      }),
+    );
+  });
+
+  /**
+   * ⚠️ CE TEST GARDE DEUX CHOSES À LA FOIS, ET C'EST VOULU : l'ancien code
+   * faisait `return false` au premier enqueue en échec, ce qui ABANDONNAIT les
+   * inscrits suivants. Sur une session de dix, un message garé en corbeille pour
+   * le premier privait les neuf autres de leur rappel — et le journal ne nommait
+   * qu'une session, pas neuf personnes.
+   */
+  it("🔴 un envoi non parti → AUCUNE trace, et les inscrits SUIVANTS sont quand même servis", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    // Le PREMIER stagiaire échoue sans lever — exactement le comportement réel
+    // quand une règle `EmailAutomationSetting` gare le message en corbeille.
+    mockEnqueueEmail.mockResolvedValueOnce({ enqueued: false, garePourValidation: true });
+
+    const parti = await envoyerRappelJ7(SESSION_ID);
+
+    expect(parti).toBe(false);
+    expect(
+      mockPrisma.trainingSession.update,
+      "une trace a été posée alors qu'un rappel n'est pas parti. La sélection du " +
+        "cron se fait sur `rappelJ7EnvoyeAt: null` : cette écriture écarte la " +
+        "session du rattrapage DÉFINITIVEMENT, et atteste une information qui " +
+        "n'a pas été donnée",
+    ).not.toHaveBeenCalled();
+    expect(
+      mockEnqueueEmail.mock.calls.length,
+      "le second inscrit n'a pas été servi : un échec sur le premier ne doit " +
+        "jamais priver les suivants de leur rappel",
+    ).toBe(2);
+  });
+
+  it("🔴 une session SANS INSCRIT n'atteste rien", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue({
+      ...fakeSessionWithEnrollments,
+      enrollments: [],
+    });
+
+    const parti = await envoyerRappelJ7(SESSION_ID);
+
+    // Personne à prévenir : ne rien poser. Une session planifiée à J-7 sans
+    // aucun stagiaire est un écart à traiter, pas un envoi réussi.
+    expect(parti).toBe(false);
+    expect(
+      mockPrisma.trainingSession.update,
+      "une trace de rappel a été posée sur une session qui n'a aucun inscrit : " +
+        "elle atteste un envoi qui n'a eu aucun destinataire",
+    ).not.toHaveBeenCalled();
   });
 });
 

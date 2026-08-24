@@ -442,16 +442,57 @@ async function handleRappelJ7(): Promise<void> {
   }
 
   const now = new Date();
-  const windowStart = new Date(now.getTime() + 6.5 * 24 * 60 * 60 * 1000);
-  const windowEnd = new Date(now.getTime() + 7.5 * 24 * 60 * 60 * 1000);
+  // 🔴 PLUS DE FENÊTRE BASSE (2026-08-24) — MÊME DÉFAUT QUE LA CONVOCATION,
+  // MÊME CORRECTIF.
+  //
+  // L'ancienne sélection était `dateDebut ∈ [J-7,5 ; J-6,5]` au passage quotidien
+  // de 08:00 UTC. Trois conséquences :
+  //
+  //   1. une session créée moins de 7,5 jours avant son début n'entrait JAMAIS
+  //      dans la fenêtre — et c'est le cas ordinaire, pas le cas limite : la
+  //      session du 31/07 a été créée le 31/07 pour un début le même jour,
+  //      celle du 16/08 la veille ;
+  //   2. un worker arrêté pendant le créneau perdait l'occurrence, sans retour ;
+  //   3. rien ne permettait de savoir combien de rappels manquaient.
+  //
+  // Le plafond haut demeure : on ne rappelle pas trois mois à l'avance, le
+  // message porte les informations logistiques finales. Ce qui disparaît, c'est
+  // le plancher — le cron RATTRAPE chaque jour, tant que la session n'a pas
+  // commencé.
+  const plafond = new Date(now.getTime() + 7.5 * 24 * 60 * 60 * 1000);
 
   const sessions = await prisma.trainingSession.findMany({
     where: {
       statut: "planifiee",
-      dateDebut: { gte: windowStart, lte: windowEnd },
+      // L'ÉTAT, pas la date : tant que la colonne est nulle, la session reste
+      // candidate. `envoyerRappelJ7` ne l'écrit qu'après avoir remis à la file
+      // le message de CHAQUE inscrit.
+      rappelJ7EnvoyeAt: null,
+      // Pas encore commencée : rappeler après coup n'informe plus personne.
+      // Ce cas relève d'un écart à consigner — c'est l'objet du relevé ci-dessous.
+      dateDebut: { gt: now, lte: plafond },
     },
     select: { id: true },
   });
+
+  // 🔑 CE QUE LE COMPTE À REBOURS RENDAIT INVISIBLE : les sessions qui ont
+  // DÉMARRÉ sans que personne n'ait été rappelé. Sans cette ligne, le journal
+  // dirait « 3 sessions traitées » sans jamais mentionner les cinq qui sont
+  // passées à travers. Un chiffre qui ne compte que ses succès ne mesure rien.
+  const manquees = await prisma.trainingSession.count({
+    where: {
+      statut: { in: ["planifiee", "en_cours", "realisee"] },
+      rappelJ7EnvoyeAt: null,
+      dateDebut: { lte: now, gte: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000) },
+    },
+  });
+  if (manquees > 0) {
+    console.error(
+      `[formation-crons] rappel-j7: ÉCART — ${manquees} session(s) des 30 derniers ` +
+        "jours ont commencé sans qu'aucun rappel n'ait été envoyé (aucune trace " +
+        "`rappelJ7EnvoyeAt`). Le rappel n'est plus envoyable pour elles.",
+    );
+  }
 
   let ok = 0;
   let ko = 0;

@@ -107,3 +107,7 @@ _contact/
 # pièces d'audit : `_AUDIT/` étant suivi, sans cette ligne un `git add -A` les
 # ferait entrer dans le dépôt. En CI, le job nocturne les publie en artifact.
 _AUDIT/VERIF-QUALIOPI-CHAINE-COMPLETE/
+
+# Sorties de `pnpm qualiopi:audit-inventory` — 8 inventaires + PROGRESS.csv,
+# regeneres a chaque passage. Artefacts de run, pas pieces d audit.
+_AUDIT-INVENTAIRE/
