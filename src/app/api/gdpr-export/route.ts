@@ -25,6 +25,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { exporterCandidaturesPour } from "@/server/careers/candidature-rgpd";
+import { trouverDemandesPodcast } from "@/features/podcast-request/rgpd";
 import { decryptPiiObject } from "@/lib/pii-crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -182,6 +183,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // incluses, ni déclarées exclues. Un export qui omet sans le dire se présente
   // comme complet.
   const candidatures = await exporterCandidaturesPour(email);
+  // `D5-5-04` — les demandes de podcast manquaient AUX DEUX droits, comme les
+  // candidatures avant elles. Un export qui omet une table que le site detient
+  // n'est pas un export partiel : c'est une reponse fausse a l'art. 15.
+  const podcast = await trouverDemandesPodcast(email);
 
   // Sprint Correctif S+1 (P0-S1-2) : KB data RGPD art. 15 (bookmarks).
   const kb = await exportKbDataForEmail(email);
@@ -269,6 +274,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     /** Messages vous concernant en attente d'envoi ou de validation interne. */
     emailsEnAttente,
     candidatures: candidatures.candidatures,
+    /** Demandes de tournage de podcast deposees via le formulaire public. */
+    podcast: podcast.demandes,
+    ...(podcast.tronque
+      ? {
+          podcastAvertissement:
+            "La recherche des demandes de podcast anciennes a atteint sa limite d'examen : cette liste peut être incomplète. Écrivez à contact@axion-ia.com pour une vérification manuelle.",
+        }
+      : {}),
     // ⚠️ Une recherche TRONQUÉE qui se présente comme complète est pire qu'une
     // recherche refusée. Le repli déchiffrant est borné : s'il a mordu son
     // plafond, la personne doit le savoir.

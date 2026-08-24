@@ -168,6 +168,41 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
   },
 ];
 
+/**
+ * Noms de MODÈLES et d'ENUMS du schéma — tous les types qu'une colonne peut
+ * porter sans être une chaîne de caractères.
+ *
+ * 🔴 2026-08-24 — CE JEU N'EXISTAIT PAS, ET LA GARDE COMPTAIT TROIS FANTÔMES.
+ * Voir la section « ce cliquet s'est trompé DANS LES DEUX SENS » en tête.
+ */
+const TYPES_NON_TEXTE: ReadonlySet<string> = new Set([
+  ...[...SCHEMA.matchAll(/^model (\w+) \{/gm)].map((m) => m[1] ?? ""),
+  ...[...SCHEMA.matchAll(/^enum (\w+) \{/gm)].map((m) => m[1] ?? ""),
+]);
+
+/**
+ * Une ligne de modèle porte-t-elle vraiment une ADRESSE, ou seulement un nom
+ * qui y ressemble ?
+ *
+ * Deux pièges, tous deux payés le 2026-08-24 :
+ *   · `recipient   DocumentRecipient @relation(...)` — un champ de RELATION. Le
+ *     nom matche, la ligne ne contient aucune donnée. Deux tables comptées.
+ *   · `destinataire  FactureFormationDestinataire` — un ENUM à quatre valeurs
+ *     (`entreprise | opco | stagiaire | france_travail`). Aucune adresse.
+ *
+ * Le remède ne pouvait pas être une liste d'exclusions écrite à la main : ce
+ * dépôt a déjà payé deux fois qu'une liste en dur prenne du retard sur ce
+ * qu'elle couvre. On DÉRIVE donc du schéma lui-même — un type qui est un modèle
+ * ou un enum déclaré n'est pas une chaîne, donc pas une adresse.
+ */
+function ligneEstUneAdresse(ligne: string): boolean {
+  const jetons = ligne.split(/\s+/);
+  if (!COLONNE_ADRESSE.test(jetons[0] ?? "")) return false;
+  if (ligne.includes("@relation")) return false;
+  const type = (jetons[1] ?? "").replace(/[?[\]]/g, "");
+  return !TYPES_NON_TEXTE.has(type);
+}
+
 /** Les modèles du schéma portant une colonne d'adresse en clair. */
 function modelesAvecAdresse(): string[] {
   const trouves: string[] = [];
@@ -179,7 +214,7 @@ function modelesAvecAdresse(): string[] {
       .split(/\r?\n/)
       .map((l) => l.trim())
       .filter((l) => l !== "" && !l.startsWith("//") && !l.startsWith("@@"))
-      .some((l) => COLONNE_ADRESSE.test(l.split(/\s+/)[0] ?? ""));
+      .some(ligneEstUneAdresse);
     if (porte) trouves.push(nom);
   }
   return trouves.sort();

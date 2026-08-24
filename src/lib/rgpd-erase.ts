@@ -10,9 +10,18 @@
  *   l'historique anti-fraude).
  * - NewsletterSubscriber : suppression hard (consent retiré, pas d'historique
  *   à conserver).
- * - Bookings : pas d'erase direct — les bookings référencent une Submission
- *   via FK ; anonymiser la Submission suffit (le booking row reste pour
- *   l'audit comptable mais ne contient déjà aucune PII propre).
+ * - `Booking` : pas d'erase direct — il référence une Submission via FK ;
+ *   anonymiser la Submission suffit (la ligne reste pour l'audit comptable mais
+ *   ne contient déjà aucune PII propre). ⚠️ VÉRIFIÉ le 2026-08-24, et c'est bien
+ *   exact POUR CE MODÈLE-LÀ.
+ * - 🔴 `BookingOption` : la phrase ci-dessus a servi de couverture implicite à
+ *   son VOISIN, qui ne lui ressemble pas. `BookingOption` n'a **aucun**
+ *   `submissionId`, et porte `contactName`, `contactEmail` et `contactPhone`
+ *   **en propre**. Elle n'était donc ni effacée ni exemptée. Un raisonnement
+ *   juste sur une table, écrit au pluriel, a dispensé d'examiner l'autre :
+ *   c'est la forme récurrente de tous les défauts listés ici. → SUPPRESSION :
+ *   une option de réservation jamais confirmée ne prouve rien (même
+ *   raisonnement que `email_outbox`).
  * - KB bookmarks : géré par `src/lib/knowledge/rgpd-export.ts` → `eraseKbDataForEmail`.
  * - Journaux d'e-mail (`email_logs`) : PSEUDONYMISATION de l'adresse, la ligne
  *   est conservée. C'est la preuve que le bénéficiaire a été informé — pièce
@@ -94,6 +103,88 @@ export async function eraseSubmissionsForEmail(email: string): Promise<EraseSubm
 export async function eraseNewsletterForEmail(email: string): Promise<EraseNewsletterResult> {
   const result = await prisma.newsletterSubscriber.deleteMany({ where: { email } });
   return { deleted: result.count };
+}
+
+export interface EraseBookingOptionsResult {
+  /** Lignes de `booking_options` supprimées. */
+  readonly supprimees: number;
+}
+
+/**
+ * Supprime les options de réservation posées par une personne.
+ *
+ * `contactEmail` est en `citext` et **non chiffré** : l'égalité SQL suffit,
+ * contrairement aux candidatures et aux demandes de podcast qui exigent une
+ * empreinte. Pas de repli déchiffrant, donc pas de troncature possible.
+ *
+ * Suppression et non pseudonymisation : une option de 48 h qui n'a pas abouti à
+ * une réservation ne fonde aucune obligation — ni comptable, ni probatoire.
+ */
+export async function eraseBookingOptionsForEmail(
+  email: string,
+): Promise<EraseBookingOptionsResult> {
+  const result = await prisma.bookingOption.deleteMany({ where: { contactEmail: email } });
+  return { supprimees: result.count };
+}
+
+export interface EraseSignatureTokensResult {
+  /** Jetons encore vivants qui ont été révoqués. */
+  readonly revoques: number;
+  /** Jetons dont l'adresse en clair a été pseudonymisée. */
+  readonly pseudonymises: number;
+}
+
+/**
+ * Traite les JETONS d'invitation à signer — pas les signatures elles-mêmes.
+ *
+ * ## La distinction, qui est tout le sujet
+ *
+ * `DocumentSignature.signataireEmail` est **scellé** dans le tuple haché
+ * (`COLONNES_SCELLEES_DOCUMENT`) : l'écraser ferait rendre `empreinte_invalide`
+ * à la vérification de chaîne, c'est-à-dire, dans un dossier présenté à un
+ * contrôle, le verdict « ces pièces ont été modifiées après coup » sur des
+ * pièces intactes. Ce dépôt a déjà payé ce défaut exact côté émargement. On n'y
+ * touche pas — c'est une exception déclarée, pas un oubli.
+ *
+ * Le JETON, lui, ne prouve rien. C'est un artefact d'émission éphémère
+ * (`expiresAt`), sans tuple haché : `tokenHash` est l'empreinte du jeton, pas
+ * d'un tuple de preuve. Une fois la pièce signée, l'identité vit — scellée —
+ * dans `DocumentSignature`. L'adresse en clair conservée ici n'ajoute rien à la
+ * valeur probante : c'est un reliquat d'envoi.
+ *
+ * ## Pourquoi révoquer AVANT de pseudonymiser
+ *
+ * Un lien de signature encore valide survivant à l'effacement permettrait de
+ * signer au nom d'une personne « supprimée » — **et de resceller son adresse en
+ * clair dans un `DocumentSignature` neuf**, ce qui annulerait l'effacement
+ * qu'on vient de faire. Même raisonnement que la révocation des jetons
+ * d'émargement dans `portail/rgpd-service.ts`.
+ *
+ * ## Pourquoi effacer AUSSI `destinataireEmailSha256`
+ *
+ * Ce n'est pas un pseudonyme suffisant : c'est un `sha256Hex(email)` **nu, non
+ * salé**. L'espace des adresses plausibles est petit et des tables précalculées
+ * existent — le laisser reviendrait à conserver l'adresse sous un déguisement.
+ * C'est exactement pourquoi `hashEmailForLookup` est un HMAC clé, et pourquoi
+ * `eraseSubmissionsForEmail` efface déjà `contactEmailHash`.
+ */
+export async function eraseSignatureTokensForEmail(
+  email: string,
+): Promise<EraseSignatureTokensResult> {
+  const revocation = await prisma.documentSignatureToken.updateMany({
+    where: { signataireEmail: email, revokedAt: null, usedAt: null },
+    data: { revokedAt: new Date(), revokedMotif: "Effacement RGPD (art. 17)" },
+  });
+
+  const pseudonymisation = await prisma.documentSignatureToken.updateMany({
+    where: { signataireEmail: email },
+    data: {
+      signataireEmail: `erased:${hashEmail(email)}@erased.local`,
+      destinataireEmailSha256: null,
+    },
+  });
+
+  return { revoques: revocation.count, pseudonymises: pseudonymisation.count };
 }
 
 export interface EraseEmailTracesResult {
