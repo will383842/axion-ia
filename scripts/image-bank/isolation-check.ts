@@ -185,12 +185,14 @@ const EST_ARETE = /\bfrom\s*["']|\brequire\s*\(|\bimport\s*\(/;
  * n'importe plus rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
-  // `escapeXml` — un utilitaire XML GÉNÉRIQUE qui se trouve rangé sous
-  // `server/image-bank/utils/`. Le sitemap news n'a aucun lien avec la banque
-  // d'images : il emprunte une fonction d'échappement. Le vrai correctif serait
-  // de déplacer ce helper dans `src/lib/`, mais c'est un autre chantier — on
-  // acte la dépendance plutôt que de la masquer.
-  "src/app/sitemap-news-evergreen.xml/route.ts",
+  // ✅ 2026-08-24, quelques heures plus tard — `sitemap-news-evergreen.xml` est
+  // SORTI de cette liste. Il n'y était que pour `escapeXml`, un utilitaire XML
+  // générique qui se trouvait rangé sous `server/image-bank/utils/` ; le helper
+  // vit désormais dans `@/lib/xml`, où il n'appartient à aucun domaine.
+  // 🔑 C'est le contrôle d'exception périmée qui l'a signalé, tout seul, dès que
+  // l'import a disparu — et il a nommé le fichier à retirer. Une liste
+  // d'exceptions qui ne sait pas rétrécir se serait tue.
+  //
   // Ces deux-là importent `ImageAsset` / `ImageAssetTranslation` depuis
   // `prisma/generated/client` : ce sont les TYPES DE LA BASE, générés par
   // Prisma, pas du code du module image-bank. La salle de presse affiche des
