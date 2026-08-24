@@ -61,6 +61,9 @@ import {
 } from "@/server/qualiopi/notifications/notifications-service";
 import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe";
+// La MEME mesure que la regle d alerte rappel_j7_non_envoye : une seconde
+// requete jumelle divergerait au premier changement de borne.
+import { sessionsSansRappelJ7 } from "@/server/qualiopi/notifications/rappel-j7-manquant";
 import {
   gestePositionnement,
   HORIZON_JOURS,
@@ -489,13 +492,16 @@ async function handleRappelJ7(): Promise<void> {
   // DÉMARRÉ sans que personne n'ait été rappelé. Sans cette ligne, le journal
   // dirait « 3 sessions traitées » sans jamais mentionner les cinq qui sont
   // passées à travers. Un chiffre qui ne compte que ses succès ne mesure rien.
-  const manquees = await prisma.trainingSession.count({
-    where: {
-      statut: { in: ["planifiee", "en_cours", "realisee"] },
-      rappelJ7EnvoyeAt: null,
-      dateDebut: { lte: now, gte: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000) },
-    },
-  });
+  // 🔴 2026-08-24, cahier D5 — la MESURE est partagée avec la règle d'alerte
+  // `rappel_j7_non_envoye`. Elle vivait ici seule, et son résultat n'allait
+  // qu'au journal ; la règle en avait besoin. Écrire une seconde requête
+  // jumelle aurait recréé la divergence que ce dépôt paie sans arrêt — c'est
+  // exactement ce que `CONF-01` a fermé sur la trace de clôture.
+  //
+  // Le journal garde sa ligne : il sert au diagnostic d'un passage de cron,
+  // l'alerte sert à la personne qui doit consigner l'écart. Les deux lisent la
+  // même chose.
+  const manquees = (await sessionsSansRappelJ7(now)).length;
   if (manquees > 0) {
     console.error(
       `[formation-crons] rappel-j7: ÉCART — ${manquees} session(s) des 30 derniers ` +
