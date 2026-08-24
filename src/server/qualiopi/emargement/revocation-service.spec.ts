@@ -15,14 +15,33 @@ const countSuccesseurs = vi.fn();
 const updateSignature = vi.fn();
 const countSignatures = vi.fn();
 const updateEnrollment = vi.fn();
+/**
+ * 🔴 2026-08-24 — LES DOUBLES DU CRÉNEAU MANQUAIENT, ET CE N'ÉTAIT PAS UN OUBLI
+ * DE MOCK : la révocation ne touchait tout simplement pas la présence.
+ */
+const countSignaturesCreneau = vi.fn();
+const updateCreneau = vi.fn();
+const findUniqueCreneau = vi.fn();
+const recompute = vi.fn();
 
 vi.mock("@/lib/prisma", () => {
   const tx = {
     emargementSignature: {
       update: (...a: unknown[]) => updateSignature(...a),
-      count: (...a: unknown[]) => countSignatures(...a),
+      // Deux comptages distincts vivent dans la transaction : les signatures
+      // vivantes de l'INSCRIPTION, et celles du CRÉNEAU. Le double route sur la
+      // présence de `creneauId` dans le filtre — sans quoi les deux effets
+      // seraient indiscernables, et le test ne garderait rien.
+      count: (...a: unknown[]) => {
+        const filtre = (a[0] as { where?: Record<string, unknown> } | undefined)?.where ?? {};
+        return "creneauId" in filtre ? countSignaturesCreneau(...a) : countSignatures(...a);
+      },
     },
     enrollment: { update: (...a: unknown[]) => updateEnrollment(...a) },
+    presenceCreneau: {
+      findUnique: (...a: unknown[]) => findUniqueCreneau(...a),
+      update: (...a: unknown[]) => updateCreneau(...a),
+    },
   };
   return {
     prisma: {
@@ -35,13 +54,24 @@ vi.mock("@/lib/prisma", () => {
   };
 });
 
+vi.mock("@/server/qualiopi/presence/presence-service", () => ({
+  recomputeTauxPresence: (...a: unknown[]) => recompute(...a),
+}));
+
 import { revoquerSignature, MOTIF_MIN } from "./revocation-service";
 
 const MOTIF = "Signée par erreur sur la ligne du voisin.";
 const ADMIN = "admin-1";
 
 function signature(over: Record<string, unknown> = {}) {
-  return { id: "sig-1", revokedAt: null, enrollmentId: "enr-1", selfHash: "h1", ...over };
+  return {
+    id: "sig-1",
+    revokedAt: null,
+    enrollmentId: "enr-1",
+    creneauId: "cre-1",
+    selfHash: "h1",
+    ...over,
+  };
 }
 
 describe("revoquerSignature", () => {
@@ -53,6 +83,16 @@ describe("revoquerSignature", () => {
     countSuccesseurs.mockReset().mockResolvedValue(0);
     countSignatures.mockReset().mockResolvedValue(1);
     updateEnrollment.mockReset().mockResolvedValue({});
+    // Par défaut : la signature couvre un créneau PRÉSENTIEL, et c'est la
+    // dernière vivante sur ce créneau.
+    countSignaturesCreneau.mockReset().mockResolvedValue(0);
+    updateCreneau.mockReset().mockResolvedValue({});
+    findUniqueCreneau.mockReset().mockResolvedValue({
+      id: "cre-1",
+      importId: null,
+      dureePrevueMinutes: 210,
+    });
+    recompute.mockReset().mockResolvedValue(0);
   });
 
   // ── Le motif ───────────────────────────────────────────────────────────────
@@ -192,6 +232,114 @@ describe("revoquerSignature", () => {
     expect(countSignatures).toHaveBeenCalledWith({
       where: { enrollmentId: "enr-1", revokedAt: null },
     });
+  });
+
+  // ── La PRÉSENCE que la signature avait créée ───────────────────────────────
+
+  /**
+   * 🔴 2026-08-24 — LA RÉVOCATION RETIRAIT LA PREUVE ET GARDAIT SON EFFET.
+   *
+   * La signature écrit, dans SA transaction :
+   * `presenceCreneau.update({ dureeRealiseeMinutes: dureePrevueMinutes, present: true })`
+   * (signature-service.ts:484). La révocation effaçait `emargementSigneAt` — le
+   * drapeau de l'inscription — et laissait la durée réalisée exactement où la
+   * signature l'avait mise.
+   *
+   * La chaîne complète, vérifiée maillon par maillon :
+   *   `dureeRealiseeMinutes` → `recomputeTauxPresence` → `enrollment.tauxPresencePct`
+   *   → `classifierPresence` (attestation-service.ts:209) → RÉSULTAT DE L'ATTESTATION.
+   *
+   * Donc une inscription dont TOUTES les signatures sont révoquées conservait un
+   * taux au-dessus du seuil, une attestation « totale », et un certificat de
+   * réalisation déclarant les heures — sans qu'il reste la moindre preuve de
+   * présence. Et le geste est offert à l'AUDITRICE elle-même : un `<form>` réel
+   * vit à `mode-auditeur/emargement/page.tsx:154`.
+   *
+   * 🔑 C'est la MÊME faute que celle que ce fichier corrige déjà un niveau plus
+   * haut — « plus aucune signature vivante ⇒ retomber » — appliquée à
+   * l'inscription et oubliée sur le créneau. Le fichier porte d'ailleurs, vingt
+   * lignes plus haut, l'aveu écrit du même travers : « j'ai traité un cas sans
+   * regarder la classe ».
+   */
+  it("🔴 plus aucune signature vivante SUR LE CRÉNEAU → la durée réalisée retombe à 0", async () => {
+    findUnique.mockResolvedValue(signature());
+    countSignaturesCreneau.mockResolvedValue(0);
+
+    await revoquerSignature("sig-1", MOTIF, ADMIN);
+
+    expect(
+      updateCreneau,
+      "la durée réalisée n'a pas été remise à zéro : le taux de présence reste " +
+        "celui que la signature avait produit, l'attestation garde son résultat, " +
+        "et le certificat continue de déclarer des heures qu'aucune preuve ne " +
+        "soutient plus",
+    ).toHaveBeenCalledWith({
+      where: { id: "cre-1" },
+      data: { dureeRealiseeMinutes: 0 },
+    });
+  });
+
+  it("🔴 le taux de présence est RECALCULÉ après la révocation", async () => {
+    // Sans lui, `dureeRealiseeMinutes` retombe mais `tauxPresencePct` — que lit
+    // `classifierPresence` — garde sa valeur d'avant. La moitié du correctif
+    // suffirait à laisser l'attestation fausse.
+    findUnique.mockResolvedValue(signature());
+    countSignaturesCreneau.mockResolvedValue(0);
+
+    await revoquerSignature("sig-1", MOTIF, ADMIN);
+
+    expect(recompute, "`recomputeTauxPresence` n'a pas été appelé").toHaveBeenCalledWith("enr-1");
+  });
+
+  it("🔴 une AUTRE signature vit encore sur le créneau → la présence est CONSERVÉE", async () => {
+    // 🔑 Le témoin discriminant, et le piège symétrique : retomber dès la
+    // première révocation effacerait une présence encore prouvée. Un créneau
+    // peut porter plusieurs signatures — le modèle déclare la relation
+    // `PresenceCreneau.emargementSignatures`.
+    findUnique.mockResolvedValue(signature());
+    countSignaturesCreneau.mockResolvedValue(1);
+
+    await revoquerSignature("sig-1", MOTIF, ADMIN);
+
+    expect(
+      updateCreneau,
+      "la présence a été retirée alors qu'une autre signature vivante la prouve " +
+        "encore sur ce créneau",
+    ).not.toHaveBeenCalled();
+  });
+
+  it("🔴 un créneau issu d'un IMPORT distanciel n'est pas touché", async () => {
+    // ⚠️ EXCEPTION SYMÉTRIQUE DE CELLE DE LA SIGNATURE. Un créneau importé tient
+    // sa vérité du relevé de connexion (D.6313-3-1) : la signature refuse déjà
+    // d'y toucher (signature-service.ts:483, `if (ctx.importId === null)`).
+    // La révocation doit refuser de même — sinon révoquer une signature de
+    // confort DÉTRUIRAIT une durée de connexion mesurée, que rien ne peut
+    // reconstituer.
+    findUnique.mockResolvedValue(signature());
+    countSignaturesCreneau.mockResolvedValue(0);
+    findUniqueCreneau.mockResolvedValue({
+      id: "cre-1",
+      importId: "imp-1",
+      dureePrevueMinutes: 210,
+    });
+
+    await revoquerSignature("sig-1", MOTIF, ADMIN);
+
+    expect(
+      updateCreneau,
+      "la durée d'un créneau distanciel a été écrasée : elle vient du relevé de " +
+        "connexion, pas de la signature, et rien ne peut la reconstituer",
+    ).not.toHaveBeenCalled();
+  });
+
+  it("une signature de coaching, sans créneau, ne cherche aucune présence", async () => {
+    // Cas réel : les signatures de coaching portent `creneauId: null`.
+    findUnique.mockResolvedValue(signature({ creneauId: null }));
+
+    await revoquerSignature("sig-1", MOTIF, ADMIN);
+
+    expect(countSignaturesCreneau).not.toHaveBeenCalled();
+    expect(updateCreneau).not.toHaveBeenCalled();
   });
 
   it("une signature sans inscription rattachée ne cherche aucun émargement", async () => {
