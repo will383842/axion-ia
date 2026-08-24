@@ -154,6 +154,20 @@ export interface AdminNavItem {
    * (⌘K, favoris et liens externes restent valides).
    */
   navLevel?: number;
+  /**
+   * Lien vers un OUTIL EXTERNE, ouvert dans un nouvel onglet.
+   *
+   * `href` est alors une URL absolue, pas une route de cette application. La
+   * sidebar rend un `<a target="_blank" rel="noopener noreferrer">` au lieu du
+   * `<Link>` habituel, et force le niveau d'indentation à 0 — sinon
+   * `itemLevel()` compterait les segments de l'URL (`https:`, le domaine…) et
+   * décalerait l'entrée de deux crans.
+   *
+   * Précédent : le lien vers Axion CRM Pro, jusqu'ici codé en dur hors de la
+   * liste. Ce drapeau permet de placer un outil externe DANS le pôle auquel il
+   * appartient métier, plutôt qu'en tuile isolée.
+   */
+  external?: true;
 }
 
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
@@ -1030,6 +1044,33 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "dossiers",
     },
+    // ── Tiime — notre PLATEFORME AGRÉÉE de facturation électronique ────────
+    //
+    // Pourquoi ce lien vit ICI, dans « Finances », et pas dans un coin :
+    // c'est là que passent nos factures électroniques, dans les deux sens.
+    // Réforme française : RÉCEPTION obligatoire au 1/9/2026 (toutes
+    // entreprises), ÉMISSION au 1/9/2027 pour les TPE/PME.
+    //
+    // Tiime est immatriculée par la DGFiP depuis le 18/12/2025, et son offre
+    // gratuite couvre les deux sens. Nos fournisseurs n'ont RIEN de spécial à
+    // recevoir de nous : ils utilisent notre SIREN, et l'annuaire national
+    // route la facture vers Tiime.
+    //
+    // ⚠️ Ce lien ne remplace PAS l'émission depuis cette application. Nos
+    // factures portent notre série continue et nos mentions obligatoires ;
+    // les ressaisir dans Tiime romprait la série. Le raccordement se fera par
+    // `financements/e-invoicing/pa-adapter.ts`, dont l'interface est figée.
+    //
+    // Aucun identifiant n'est stocké ici, et il ne faut pas en ajouter : ce
+    // dépôt est PUBLIC. La session est celle du navigateur.
+    {
+      href: "https://apps.tiime.fr/companies/635824/home",
+      label: "Tiime — facturation électronique",
+      icon: "ExternalLink",
+      group: "finances",
+      external: true,
+    },
+
     // Hub facturation unifié 5 activités (page gatée par FACTURATION_HUB_ENABLED).
     {
       href: `${base}/qualiopi/facturation`,

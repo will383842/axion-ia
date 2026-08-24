@@ -175,10 +175,26 @@ export async function submitCommercialApplicationAction(
 ): Promise<CommercialApplicationState> {
   const ip = await getClientIp();
 
-  // 1. Rate-limit
-  const rl = await checkRateLimit(`commercial-application:${ip}`, { limit: 3, windowSec: 600 });
+  // 1. Anti-martèlement par IP — volontairement large.
+  //
+  // 🔴 Il était à 3 par 10 minutes. Or il est consommé ICI, avant même le
+  // parsing : un wizard qui échoue à la validation trois fois de suite (une
+  // faute de frappe, un champ mal compris) verrouillait le candidat 10 minutes,
+  // sur un message qui ne dit pas quoi corriger. Le commentaire de l'étape 3bis
+  // ci-dessous l'avait déjà écrit — « trois personnes derrière le même
+  // opérateur mobile partagent une adresse IP » — sans en tirer la conséquence
+  // sur ce compteur-ci.
+  //
+  // Ce qui protège réellement du spam ici, c'est le compteur par ADRESSE de
+  // l'étape 3bis : lui n'est atteint qu'après un payload valide. Cette borne-ci
+  // ne sert qu'à empêcher le martèlement brut.
+  const rl = await checkRateLimit(`commercial-application:${ip}`, { limit: 20, windowSec: 600 });
   if (!rl.allowed) {
-    return { ok: false, error: "Trop de tentatives. Réessaie dans quelques minutes." };
+    return {
+      ok: false,
+      error:
+        "Trop d'essais depuis cette connexion. Patiente quelques minutes — ou écris-nous à contact@axion-ia.com.",
+    };
   }
 
   // 2. Honeypot — bot silent success
