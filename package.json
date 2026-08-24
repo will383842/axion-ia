@@ -227,7 +227,7 @@
       "prettier --write"
     ]
   },
-  "_size_limit_doctrine": "Sprint S6.3 P1-6 (2026-05-15) — refactor multi-bucket aligné AGENTS.md. 75 KB gz/route (cible interne stricte), 110 KB sur /appel (iframe Calendly client-heavy, ADR exception). Per-route strict path-matching n'est pas supporté nativement par size-limit (les page-*.js sont sommés sur tout le glob) ; on contrôle donc le shell partagé + les pages standard via globs séparés, et Lighthouse CI gate-b reste l'autorité finale pour les seuils per-route LCP/INP/CLS. ⚠️ 2026-08-15 (audit GEO/AEO E2E, GEO-025) : les trois globs /reserver étaient MORTS depuis la suppression de la page le 2026-06-26 (Will) — size-limit ne mesurait donc RIEN sur l'exception de budget, et /appel, la vraie page à iframe Calendly, tombait dans le bucket 'Pages standard' à 75 KB au lieu des 110 KB promis par AGENTS.md. Verrou : tests/unit/ci/size-limit-buckets.spec.ts refuse tout glob nommant une route qui n'existe plus. ⚠️ Ces gates sont en continue-on-error dans ci.yml : elles rapportent, elles ne bloquent pas.",
+  "_size_limit_doctrine": "Sprint S6.3 P1-6 (2026-05-15) — refactor multi-bucket aligné AGENTS.md. 75 KB gz/route (cible interne stricte), 110 KB sur /appel (iframe Calendly client-heavy, ADR exception). Per-route strict path-matching n'est pas supporté nativement par size-limit (les page-*.js sont sommés sur tout le glob) ; on contrôle donc le shell partagé + les pages standard via globs séparés, et Lighthouse CI gate-b reste l'autorité finale pour les seuils per-route LCP/INP/CLS. ⚠️ 2026-08-15 (audit GEO/AEO E2E, GEO-025) : les trois globs /reserver étaient MORTS depuis la suppression de la page le 2026-06-26 (Will) — size-limit ne mesurait donc RIEN sur l'exception de budget, et /appel, la vraie page à iframe Calendly, tombait dans le bucket 'Pages standard' à 75 KB au lieu des 110 KB promis par AGENTS.md. Verrou : tests/unit/ci/size-limit-buckets.spec.ts refuse tout glob nommant une route qui n'existe plus. ⚠️ Ces gates sont en continue-on-error dans ci.yml : elles rapportent, elles ne bloquent pas. 🔴 2026-08-24 — DEUX AFFIRMATIONS DE CE TEXTE ÉTAIENT FAUSSES. (1) « Lighthouse CI gate-b reste l'autorité finale pour les seuils per-route » : Lighthouse ne l'a jamais exercée — il échouait sur 11 URL sur 11 en mesurant le runner, pendant que le lhci post-deploy passait propre sur la prod (run 32666732630 vs 32668725236) — et le step est RETIRÉ de ci.yml depuis. (2) Le bucket qui somme s'appelait « page chunks individuels » et portait 75 KB, soit un budget PAR ROUTE comparé à une SOMME : 654 KB mesurés, impossible à passer, et muet sur chaque route. Il s'appelle désormais « SOMME … cliquet anti-croissance » avec une limite de 700 KB, calée sur la mesure : il attrape une PR qui alourdit, il ne prétend plus rien sur une route. ⛔ CONSÉQUENCE À CONNAÎTRE : le First Load JS PAR ROUTE (≤ 75 KB gz, AGENTS.md) n'est mesuré par AUCUNE gate. Il se mesure à la main, cf. AGENTS.md. ⚠️ Le SHELL PARTAGÉ est réellement dépassé : 135,78 KB pour 100 KB.",
   "_size_limit_running_note": "running:false sur chaque entrée (2026-05-29) — on ne mesure QUE la taille gz (le seuil du gate), pas le temps d'exécution JS qui exige un Chrome headless. size-limit lançait Chrome en CI et restait bloqué (« Running JS in headless Chrome » → SIGTERM Gate B). Lighthouse CI reste l'autorité perf (LCP/INP/CLS). Cf doctrine ci-dessous.",
   "size-limit": [
     {
@@ -249,12 +249,12 @@
       "running": false
     },
     {
-      "name": "Pages standard (toutes routes hors /appel) — page chunks individuels",
+      "name": "SOMME de tous les page chunks hors /appel — cliquet anti-croissance, PAS un budget par route",
       "path": [
         ".next/static/chunks/app/**/page-*.js",
         "!.next/static/chunks/app/**/appel/**"
       ],
-      "limit": "75 KB",
+      "limit": "700 KB",
       "running": false
     },
     {
