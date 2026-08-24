@@ -18,51 +18,27 @@ import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-servi
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
-import type { DocumentType, TrainingSessionStatut } from "../../../../prisma/generated/client";
+import type { DocumentType } from "../../../../prisma/generated/client";
 
 /**
- * Le `where` des pièces ADMISSIBLES au dossier de preuves — écrit une seule fois.
+ * Le predicat d'admissibilite vit desormais dans son propre module.
  *
- * ## Deux exclusions, deux raisons distinctes
+ * 2026-08-24, cahier D1-4 : il a fallu l'en sortir pour que
+ * `conformite-service.ts` puisse enfin l'appeler. Ce fichier-ci importe
+ * `evaluerConformite` (plus haut), donc l'importer en retour aurait cree un
+ * CYCLE d'import. Et il tire toute la chaine d'authentification, ce qui
+ * rendait le predicat inutilisable dans un test unitaire.
  *
- * **`annuleeAt: null`** — une pièce déclarée sans valeur n'est pas une preuve.
- * L'y glisser sans marquage reviendrait à présenter comme preuve un document
- * qu'on a soi-même annulé.
+ * Ré-exporté ici pour ne casser aucun appelant existant.
  *
- * **La session ni ANNULÉE ni REPORTÉE** — 🔴 `D2-5-12` (2026-08-20). Ce filtre
- * manquait. Une session reportée conserve la convention émise pour ses dates
- * INITIALES : la pièce n'est pas annulée — elle a bien été signée — mais aucune
- * formation n'a eu lieu à ces dates. Le certificateur recevait donc **deux
- * conventions pour la même prestation**, dont une pour une période vide. Un
- * dossier qui se contredit lui-même ne fait pas douter d'une pièce : il fait
- * douter de toutes.
- *
- * ⚠️ `sessionId: null` est ADMIS, et ce n'est pas un oubli : les pièces
- * générales de l'organisme (procédures, registres, lettres-cadres couvrant
- * plusieurs sessions) n'ont pas de session et sont précisément ce que la moitié
- * des indicateurs réclame. Les exclure viderait le dossier.
- *
- * 🔑 UNE fonction, pas trois recopies. Ce prédicat vivait en littéral à **trois**
- * endroits — le comptage `groupBy`, la liste par type, et la constitution du
- * ZIP — avec, à chaque fois, un commentaire priant le lecteur de les garder
- * identiques. Une prière n'est pas une garantie : c'est exactement ainsi que
- * `regleSignatureEnAttente` a divergé de `enAttente()` (constat `D3-4-06`, une
- * alerte critique par nuit sur des pièces annulées). Tout nouveau consommateur
- * appelle cette fonction, jamais ne réécrit son prédicat.
- *
- * La trace des annulations et des reports, elle, reste entière au registre
- * (motif, date, auteur) et au journal d'activité — c'est là que l'auditeur la
- * recoupe s'il la demande. Le dossier de PREUVES n'est pas le registre.
+ * ⚠️ On IMPORTE puis on ré-exporte, au lieu d'un `export … from` direct : ce
+ * dernier ne crée aucun binding local, et les trois appels internes de ce
+ * fichier tombaient alors sur « pieceAdmissibleAuDossier is not defined ». La
+ * suite de tests l'a dit immédiatement, et elle avait raison.
  */
-export function pieceAdmissibleAuDossier(): {
-  annuleeAt: null;
-  OR: [{ sessionId: null }, { session: { statut: { notIn: TrainingSessionStatut[] } } }];
-} {
-  return {
-    annuleeAt: null,
-    OR: [{ sessionId: null }, { session: { statut: { notIn: ["annulee", "reportee"] } } }],
-  };
-}
+import { pieceAdmissibleAuDossier } from "@/server/qualiopi/conformite/piece-admissible";
+
+export { pieceAdmissibleAuDossier };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
