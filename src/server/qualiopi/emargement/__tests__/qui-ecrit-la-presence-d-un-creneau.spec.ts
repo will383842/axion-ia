@@ -76,7 +76,8 @@ const ECRIVAINS_CONNUS: ReadonlyArray<{ fichier: string; sites: number; raison: 
       "création d'un créneau neuf (aucune signature possible) · mise à jour du " +
       "PLAN seul (`dureePrevueMinutes`/`libelle`, jamais la présence) · grille " +
       "manuelle et correction unitaire, toutes deux GARDÉES par " +
-      "`_count.emargementSignatures` · import, gardé par `protegePresentiel`.",
+      "`emargementSignatures`, relation filtrée sur `revokedAt: null` depuis le " +
+      "2026-08-24 · import, gardé par `protegePresentiel`.",
   },
   {
     fichier: "src/server/qualiopi/emargement/signature-service.ts",
@@ -200,7 +201,8 @@ describe("qui écrit la présence d'un créneau", () => {
     expect(
       ecarts,
       "site(s) d'écriture ajouté(s) dans un fichier déjà inventorié. Poser la " +
-        "garde `_count.emargementSignatures`, puis relever le compte ici en " +
+        "garde `emargementSignatures` (relation filtrée `revokedAt: null`), puis " +
+        "relever le compte ici en " +
         "expliquant pourquoi la nouvelle écriture est légitime.",
     ).toEqual([]);
   });
@@ -214,7 +216,7 @@ describe("qui écrit la présence d'un créneau", () => {
       "utf8",
     );
     // 🔴 ANCRÉ SUR LES DEUX GARDES, PAS SUR UN COMPTE. Une première version
-    // exigeait « au moins 2 occurrences de `_count.emargementSignatures > 0` ».
+    // exigeait « au moins 2 occurrences de la lecture des signatures ».
     // Or le fichier en porte SIX — l'import en a les siennes — et retirer l'une
     // des deux nouvelles laissait le cliquet vert. Mesuré en la retirant.
     expect(
