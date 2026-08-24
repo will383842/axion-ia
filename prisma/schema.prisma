@@ -7831,15 +7831,35 @@ model Veille {
 
 /// Partenariats / réseau (off.25 réseau de partenaires, dont réseau handicap).
 model Partenariat {
-  id        String    @id @default(uuid()) @db.Uuid
-  nom       String    @db.VarChar(250)
-  type      String    @db.VarChar(100)
-  objet     String    @db.Text
-  dateDebut DateTime  @map("date_debut")
-  dateFin   DateTime? @map("date_fin")
-  actif     Boolean   @default(true)
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  id                 String    @id @default(uuid()) @db.Uuid
+  nom                String    @db.VarChar(250)
+  type               String    @db.VarChar(100)
+  objet              String    @db.Text
+  dateDebut          DateTime  @map("date_debut")
+  dateFin            DateTime? @map("date_fin")
+  actif              Boolean   @default(true)
+  /// ── TRACE DE L'ÉCHANGE (2026-08-24) ───────────────────────────────────────
+  /// off.26 ⭐ est un super-indicateur : une NC y est majeure. Le registre ne
+  /// portait que `objet`, du texte libre écrit par l'organisme lui-même — une
+  /// DÉCLARATION, jamais une preuve. Relevé en production : les trois fiches
+  /// « réseau handicap » affirmaient un relais mobilisable sans qu'aucune
+  /// trace d'échange ne vive nulle part, alors que l'échange existait
+  /// (réponse nominative d'une conseillère RHF). La preuve dormait dans une
+  /// boîte mail et a dû être recopiée en prose dans `objet`.
+  ///
+  /// L'auditeur ne demande pas « avez-vous une ligne dans votre logiciel »,
+  /// il demande QUI, QUAND, et OÙ EST LA PIÈCE. Ces trois champs sont
+  /// exactement ces trois questions.
+  ///
+  /// `preuveUrl` est une URL et non un téléversement : c'est la convention
+  /// déjà en place pour les pièces formateur (`TrainerDocument.fichierUrl`).
+  /// Deux mécanismes de dépôt pour la même nature de preuve divergeraient.
+  interlocuteurNom   String?   @map("interlocuteur_nom") @db.VarChar(200)
+  interlocuteurEmail String?   @map("interlocuteur_email") @db.VarChar(320)
+  dernierEchangeAt   DateTime? @map("dernier_echange_at")
+  preuveUrl          String?   @map("preuve_url") @db.Text
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
 
   @@index([actif])
   @@map("partenariats")
@@ -11226,7 +11246,7 @@ model EdMarque {
 }
 
 model EdCompte {
-  id         String       @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   /// Clé naturelle stable. Comme EdMarque, EdPilier, EdFamille et EdSerie :
   /// c’est elle qui rend l’amorçage idempotent et l’import référençable,
@@ -11780,11 +11800,11 @@ model EdJournal {
   /// qu'il incrimine, sinon il s'efface au moment ou il servirait.
   auteurUserId String? @map("auteur_user_id")
   auteurNom    String? @map("auteur_nom") @db.VarChar(160)
-  entite   String    @db.VarChar(60)
-  entiteId String    @map("entite_id") @db.Uuid
-  action   String    @db.VarChar(40)
-  avant    Json?
-  apres    Json?
+  entite       String  @db.VarChar(60)
+  entiteId     String  @map("entite_id") @db.Uuid
+  action       String  @db.VarChar(40)
+  avant        Json?
+  apres        Json?
 
   createdAt DateTime @default(now()) @map("created_at")
 
