@@ -38,14 +38,17 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const findManySessions = vi.fn();
 const findManyPieces = vi.fn();
 
+const findManyFormations = vi.fn();
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: { findMany: (...a: unknown[]) => findManySessions(...a) },
     documentGenere: { findMany: (...a: unknown[]) => findManyPieces(...a) },
+    formation: { findMany: (...a: unknown[]) => findManyFormations(...a) },
   },
 }));
 
-const { allocateSessionNumero } = await import("./numbering");
+const { allocateSessionNumero, allocateFormationNumero } = await import("./numbering");
 
 const ANNEE = new Date().getFullYear();
 const P = `AXI-SESS-${ANNEE}-`;
@@ -105,5 +108,59 @@ describe("allocateSessionNumero — borne haute inter-registres (ADR 0035 §5)",
     findManySessions.mockResolvedValue([{ numero: `${P}002` }]);
     findManyPieces.mockResolvedValue([{ numero: `${P}003` }]);
     expect(await allocateSessionNumero({ recurrence: 2 })).toBe(`${P}004-R02`);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 2026-08-24, cahier D9-2 — LE JUMEAU, resté aveugle
+// ─────────────────────────────────────────────────────────────────────────────
+
+const PF = `AXI-FORM-${ANNEE}-`;
+
+describe("allocateFormationNumero — le même héritage, la même borne", () => {
+  beforeEach(() => {
+    findManyFormations.mockReset();
+    findManyPieces.mockReset();
+  });
+
+  it("🔴 saute le numéro déjà porté par une pièce du registre documentaire", async () => {
+    // 🔑 `AXI-SESS` a reçu la lecture croisée (V19/V20). `AXI-FORM` ne l'a
+    // jamais reçue — alors que l'héritage est le MÊME, et qu'il est constaté
+    // dans le code lui-même : `formats.ts` écrit que `documents_generes`
+    // empruntait « AXI-FORM / AXI-SESS / AXI-DEV » aux tables métier, et que
+    // « AXI-FORM-2026-001 désigne à la fois une formation du catalogue et un
+    // livret d'accueil — vérifié en production le 2026-07-26 : 7 numéros dans
+    // ce cas ».
+    //
+    // Deux artefacts distincts sous la même référence, c'est un point d'audit.
+    findManyFormations.mockResolvedValue([{ numero: `${PF}001` }, { numero: `${PF}002` }]);
+    findManyPieces.mockResolvedValue([{ numero: `${PF}003` }]);
+
+    expect(
+      await allocateFormationNumero(),
+      "la borne haute des FORMATIONS ignore `documents_generes` : la formation " +
+        "créée porterait le numéro d'une pièce déjà émise sous l'ancienne " +
+        "numérotation. C'est exactement le défaut corrigé pour les sessions, " +
+        "laissé ouvert sur leur jumeau.",
+    ).toBe(`${PF}004`);
+  });
+
+  it("interroge BIEN les deux registres, et sur le même préfixe", async () => {
+    // 🔑 Sans ce cas, le précédent passerait encore si l'on interrogeait les
+    // pièces sur un préfixe différent : la borne serait juste, par accident.
+    findManyFormations.mockResolvedValue([]);
+    findManyPieces.mockResolvedValue([]);
+    await allocateFormationNumero();
+
+    expect(findManyFormations).toHaveBeenCalledTimes(1);
+    expect(findManyPieces).toHaveBeenCalledTimes(1);
+    const argFormations = findManyFormations.mock.calls[0]?.[0] as {
+      where: { numero: { startsWith: string } };
+    };
+    const argPieces = findManyPieces.mock.calls[0]?.[0] as {
+      where: { numero: { startsWith: string } };
+    };
+    expect(argPieces.where.numero.startsWith).toBe(argFormations.where.numero.startsWith);
+    expect(argFormations.where.numero.startsWith).toBe(PF);
   });
 });
