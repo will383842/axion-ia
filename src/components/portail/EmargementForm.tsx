@@ -19,6 +19,11 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { SignaturePad } from "./SignaturePad";
+// 🔴 2026-08-24 — la phrase d'attestation était codée en dur ici. Ce que le
+//    stagiaire coche fait partie de ce qu'il atteste, donc du texte que
+//    `mentionVersion` identifie : elle doit vivre dans le module versionné,
+//    sinon on peut la réécrire sans que la version bouge.
+import { CASE_ATTESTATION_STAGIAIRE_SOI } from "@/server/qualiopi/emargement/mentions";
 
 export interface CreneauAffiche {
   id: string;
@@ -169,7 +174,7 @@ export function EmargementForm({
                         onChange={(e) => setAtteste(e.target.checked)}
                         className="mt-1"
                       />
-                      <span>J&apos;atteste avoir suivi cette demi-journée de formation.</span>
+                      <span>{CASE_ATTESTATION_STAGIAIRE_SOI}</span>
                     </label>
 
                     <label className="flex flex-col gap-1 text-sm">
