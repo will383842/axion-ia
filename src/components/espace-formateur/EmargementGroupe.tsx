@@ -22,6 +22,13 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { SignaturePad } from "@/components/portail/SignaturePad";
+// 🔴 Les deux phrases d'attestation viennent du module VERSIONNÉ, plus du JSX :
+//    ce que le signataire coche fait partie de ce qu'il atteste, donc du texte
+//    que `mentionVersion` identifie.
+import {
+  CASE_ATTESTATION_CONTRESIGNATURE,
+  caseAttestationStagiaire,
+} from "@/server/qualiopi/emargement/mentions";
 
 export interface LigneGroupeAffichee {
   creneauId: string;
@@ -42,8 +49,16 @@ export interface DemiJourneeAffichee {
   commencee: boolean;
   /** Le formateur connecté a-t-il déjà contresigné cette demi-journée ? */
   contresigneeParMoi: boolean;
-  /** Texte présenté au signataire pour CETTE demi-journée. */
+  /** Texte présenté au STAGIAIRE qui signe sur le poste du formateur. */
   mentions: string[];
+  /**
+   * Texte présenté au FORMATEUR qui contresigne.
+   *
+   * 🔴 2026-08-24 — ce champ n'existait pas : le dialogue de contresignature
+   * affichait `mentions`, c'est-à-dire le texte du stagiaire. Le formateur
+   * lisait « J'atteste avoir suivi … ». Un seul champ pour deux signataires.
+   */
+  mentionsContresignature: string[];
   lignes: LigneGroupeAffichee[];
 }
 
@@ -286,9 +301,7 @@ export function EmargementGroupe({
               onChange={(e) => setAtteste(e.target.checked)}
               className="mt-1"
             />
-            <span>
-              {signataire.stagiaireNom} atteste avoir suivi cette demi-journée de formation.
-            </span>
+            <span>{caseAttestationStagiaire(signataire.stagiaireNom)}</span>
           </label>
 
           {mode === "accessible" && (
@@ -529,9 +542,7 @@ function ContresignatureControl({
           onChange={(e) => setAtteste(e.target.checked)}
           className="mt-1"
         />
-        <span>
-          J&apos;atteste avoir animé cette demi-journée de formation devant le groupe présent.
-        </span>
+        <span>{CASE_ATTESTATION_CONTRESIGNATURE}</span>
       </label>
 
       {mode === "accessible" && (

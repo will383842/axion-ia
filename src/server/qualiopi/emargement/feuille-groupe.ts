@@ -17,7 +17,7 @@ import { prisma } from "@/lib/prisma";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import { demiJourneeCommencee } from "./creneaux-signables";
-import { mentionComplete } from "./mentions";
+import { mentionComplete, mentionCompleteContresignature } from "./mentions";
 import { whereSessionsDuFormateur } from "@/server/formateur/collectif-queries";
 
 export interface LigneGroupe {
@@ -56,6 +56,20 @@ export interface DemiJourneeGroupe {
    * les empreintes d'IP et de navigateur.
    */
   mentions: string[];
+  /**
+   * Texte présenté au FORMATEUR qui contresigne cette demi-journée.
+   *
+   * 🔴 2026-08-24, cahier D3-3 — il n'existait pas : l'écran de contresignature
+   * réutilisait `mentions`, c'est-à-dire le texte du STAGIAIRE. Le formateur
+   * lisait donc « J'atteste avoir suivi … » et, en finalité RGPD, « justifier de
+   * votre assiduité ». Il n'a pas suivi la formation, il l'a animée.
+   *
+   * Le défaut venait d'un seul champ pour deux signataires : le même écran fait
+   * signer les stagiaires sur le poste du formateur ET recueille la
+   * contresignature. Les deux textes sont désormais distincts, et scellés sous
+   * deux versions distinctes.
+   */
+  mentionsContresignature: string[];
   lignes: LigneGroupe[];
 }
 
@@ -186,6 +200,16 @@ export async function lireFeuilleGroupe(
       let groupe = groupes.get(cle);
       if (groupe === undefined) {
         const formateur = jour.trainer ?? session.formateurPrincipal;
+        // Les MÊMES paramètres pour les deux textes : seule la formulation de
+        // ce qui est attesté change entre le stagiaire et le formateur.
+        const parametresMention = {
+          formationIntitule: session.titreSession,
+          jourLisible: jourLisible(iso),
+          // Forme phrase alignée sur le portail (M3), pas l'en-tête d'écran.
+          demiJourneeLisible: PHRASE_DEMI[dj],
+          horaires,
+          organisme,
+        };
         groupe = {
           cle,
           date: iso,
@@ -204,14 +228,11 @@ export async function lireFeuilleGroupe(
             maintenant,
           ),
           contresigneeParMoi: contresigneesParMoi.has(cle),
-          mentions: mentionComplete({
-            formationIntitule: session.titreSession,
-            jourLisible: jourLisible(iso),
-            // Forme phrase alignée sur le portail (M3), pas l'en-tête d'écran.
-            demiJourneeLisible: PHRASE_DEMI[dj],
-            horaires,
-            organisme,
-          }),
+          mentions: mentionComplete(parametresMention),
+          // 🔴 Le texte du FORMATEUR, distinct de celui du stagiaire : il atteste
+          //    avoir ANIMÉ la demi-journée, et sa finalité RGPD n'est pas de
+          //    justifier une assiduité mais d'établir la réalité de l'action.
+          mentionsContresignature: mentionCompleteContresignature(parametresMention),
           lignes: [],
         };
         groupes.set(cle, groupe);
