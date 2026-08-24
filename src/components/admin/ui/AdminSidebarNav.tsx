@@ -535,14 +535,26 @@ export function AdminSidebarNav({
     // `navLevel` prime sur la déduction par URL : une catégorie de Messages
     // vit sur une route sœur (`/contacts/presse`, `/podcast`) dont la
     // profondeur ne dit pas qu'elle est une fille.
-    const level = collapsed ? 0 : (item.navLevel ?? itemLevel(item.href));
+    // Un lien EXTERNE porte une URL absolue : `itemLevel()` y compterait les
+    // segments de l'URL (`https:`, le domaine, le chemin) et le décalerait de
+    // deux crans, comme s'il était imbriqué. Il vit au ras de son pôle.
+    const level = collapsed || item.external === true ? 0 : (item.navLevel ?? itemLevel(item.href));
+    // Outil externe : nouvel onglet, et `rel="noopener"` — sans lui, la page
+    // ouverte peut réécrire l'onglet d'origine via `window.opener`.
     const iconSize = level >= 1 ? 14 : 16;
     return (
       <li key={item.href}>
         <Link
           href={item.href}
+          {...(item.external === true ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           {...(active ? { "aria-current": "page" } : {})}
-          title={collapsed ? item.label : undefined}
+          title={
+            item.external === true
+              ? `${item.label} — s'ouvre dans un nouvel onglet`
+              : collapsed
+                ? item.label
+                : undefined
+          }
           style={
             !collapsed && level > 0
               ? { paddingLeft: `calc(var(--space-admin-3) + ${level * 13}px)` }
