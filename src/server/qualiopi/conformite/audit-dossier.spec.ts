@@ -1211,10 +1211,48 @@ describe("`D2-5-12` — pièces d'une session annulée ou reportée", () => {
       .replace(/(^|[^:])\/\/.*$/gm, "$1");
 
     const appels = source.match(/pieceAdmissibleAuDossier\(\)/g) ?? [];
-    // 3 lectures + 1 définition + 1 `return` interne.
-    expect(appels.length, `occurrences trouvées : ${appels.length}`).toBeGreaterThanOrEqual(4);
+    // 🔴 2026-08-24 — le seuil était de 4 : « 3 lectures + 1 définition + 1
+    // `return` interne ». La DÉFINITION a quitté ce fichier pour
+    // `piece-admissible.ts`, afin que `conformite-service.ts` puisse enfin
+    // l'appeler sans créer de cycle d'import (cahier D1-4). Il ne reste donc
+    // que les 3 lectures ici.
+    //
+    // ⚠️ Le seuil n'est pas « baissé pour passer » : il compte maintenant ce
+    // qu'il doit compter — les LECTURES — et le test qui suit exige que la
+    // définition existe bien ailleurs. Sans ce second contrôle, supprimer le
+    // prédicat partagé laisserait celui-ci vert.
+    expect(appels.length, `lectures trouvées : ${appels.length}`).toBeGreaterThanOrEqual(3);
     // Et plus aucun littéral `annuleeAt: null` posé à la main dans une requête.
     const litteraux = source.match(/where:\s*\{[^}]*annuleeAt:\s*null/g) ?? [];
     expect(litteraux, `littéraux résiduels : ${litteraux.length}`).toHaveLength(0);
+  });
+
+  it("🔴 la définition du prédicat existe bien dans le module partagé", async () => {
+    // 🔑 Le contre-témoin du test précédent, et il n'est pas facultatif.
+    //
+    // Depuis que la définition a quitté `audit-dossier.ts`, un compte de
+    // lectures ne dit plus rien de son existence : supprimer le prédicat
+    // partagé, ou le vider de sa substance, laisserait le test ci-dessus
+    // parfaitement vert. On vérifie donc la source ELLE-MÊME.
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const source = readFileSync(
+      join(process.cwd(), "src", "server", "qualiopi", "conformite", "piece-admissible.ts"),
+      "utf-8",
+    );
+
+    expect(
+      source,
+      "`piece-admissible.ts` ne définit plus le prédicat : les lectures d'" +
+        "`audit-dossier.ts` pointent vers un module vide.",
+    ).toContain("export function pieceAdmissibleAuDossier()");
+
+    for (const statut of ["annulee", "reportee"]) {
+      expect(
+        source,
+        `le prédicat partagé n'exclut plus « ${statut} » : les pièces d'une ` +
+          `session qui n'a pas eu lieu redeviennent des preuves d'indicateur.`,
+      ).toContain(`"${statut}"`);
+    }
   });
 });
