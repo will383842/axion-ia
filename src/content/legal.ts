@@ -1153,8 +1153,40 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Le stagiaire s'engage à être présent et ponctuel à toutes les sessions de formation. Toute absence ou tout retard doit être signalé le plus tôt possible à l'organisme de formation. En formation distancielle, la caméra doit rester activée pendant les séquences synchrones, sauf autorisation explicite du formateur ; une absence de caméra non justifiée peut entraîner la non-validation de la présence pour la demi-journée concernée. La feuille d'émargement est signée à chaque demi-journée ; en distanciel, le relevé de connexion fait office de justificatif de présence.",
         },
         {
+          // ── Remise du règlement (art. L.6352-3 et R.6352-1) — reportée du
+          //    gabarit PDF. Un règlement qui n'est pas porté à la connaissance du
+          //    stagiaire AVANT son entrée ne lui est pas opposable.
+          title: "Article 2 bis — Remise du règlement",
+          body: "Le présent règlement intérieur est porté à la connaissance de chaque stagiaire avant son entrée en formation, conformément aux articles L.6352-3 et R.6352-1 du code du travail.",
+        },
+        {
           title: "Article 3 — Discipline et comportement",
           body: "Sont notamment interdits : tout comportement irrespectueux envers le formateur ou les autres stagiaires ; l'enregistrement audio ou vidéo des sessions sans accord écrit préalable de l'organisme ; l'usage de téléphones portables ou d'appareils personnels à des fins non pédagogiques pendant les séquences synchrones ; la consommation d'alcool ou de substances illicites. Tout manquement grave aux règles de discipline peut entraîner l'exclusion définitive du stagiaire, sans remboursement des frais de formation déjà engagés.",
+        },
+        {
+          // 🔴 2026-08-24 — CET ARTICLE MANQUAIT À LA PAGE PUBLIQUE.
+          //
+          // La page annonçait l'exclusion définitive SANS échelle des sanctions
+          // ni droits de la défense — zéro citation des art. R.6352-3 à -8.
+          // Le gabarit PDF remis au stagiaire, lui, les contenait déjà
+          // (`documents/templates/reglement-interieur.tsx`, « Article 3 bis »).
+          // La correction n'avait été appliquée qu'à une des deux versions.
+          //
+          // ⚠️ Le critère 1 du RNQ porte sur l'INFORMATION DU PUBLIC : c'est
+          // cette page-ci que le certificateur lira. Texte reporté VERBATIM du
+          // gabarit — rien n'a été inventé ni reformulé. Le cliquet
+          // `reglement-interieur-publie-vaut-le-pdf.spec.ts` interdit désormais
+          // que les deux versions divergent de nouveau.
+          // ── Échelle des sanctions (art. R6352-3) — reportée VERBATIM du gabarit.
+          //    Elle manquait à la page publique, qui annonçait pourtant la sanction
+          //    la plus lourde. Annoncer l'exclusion sans dire ce qu'est une sanction
+          //    ni ce qui la précède est précisément ce que la loi interdit.
+          title: "Article 3 bis — Échelle des sanctions",
+          body: "Constitue une sanction toute mesure, autre que les observations verbales, prise à la suite d'un agissement du stagiaire considéré comme fautif, qu'elle affecte ou non immédiatement sa présence dans la formation (art. R6352-3 du code du travail). Échelle des sanctions applicables, par ordre de gravité croissante : l'avertissement écrit ; le blâme, notifié par écrit et versé au dossier du stagiaire ; l'exclusion temporaire de la formation ; l'exclusion définitive de la formation. Les amendes et autres sanctions pécuniaires sont interdites (art. R6352-3).",
+        },
+        {
+          title: "Article 3 ter — Procédure disciplinaire et droits de la défense",
+          body: "Aucune sanction ne peut être infligée au stagiaire sans qu'il ait été informé au préalable des griefs retenus contre lui (art. R6352-4 du code du travail). Lorsqu'une sanction susceptible d'avoir une incidence, immédiate ou non, sur sa présence dans la formation est envisagée, la procédure suivante s'applique : le stagiaire est convoqué à un entretien par lettre remise en main propre ou adressée en recommandé, indiquant l'objet de la convocation ; lors de l'entretien, le stagiaire expose ses explications et peut se faire assister par la personne de son choix, stagiaire ou salarié de l'organisme ; la sanction ne peut intervenir moins d'un jour franc ni plus de quinze jours après l'entretien (art. R6352-6) ; elle est notifiée par écrit et motivée. Lorsqu'un agissement rend indispensable une mesure conservatoire d'exclusion temporaire à effet immédiat, aucune sanction définitive ne peut être prise sans que cette procédure ait été observée (art. R6352-7). Lorsque le stagiaire est un salarié envoyé par son employeur ou que la formation est financée par un tiers, l'organisme informe l'employeur et, le cas échéant, le financeur de la sanction prise (art. R6352-8).",
         },
         {
           title: "Article 4 — Propriété intellectuelle",
