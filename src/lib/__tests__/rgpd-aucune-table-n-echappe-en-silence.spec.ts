@@ -21,6 +21,35 @@
  * **présentée comme exhaustive** puisse être fausse sans que rien ne rougisse.
  * Corriger les trois cas sans garder la classe garantit un quatrième.
  *
+ * ## 🔴 2026-08-24 — CE CLIQUET S'EST TROMPÉ DANS LES DEUX SENS
+ *
+ * Il comptait **trois tables qui n'existent pas**, et en ignorait une qui porte
+ * de la donnée personnelle. Son motif testait le PREMIER MOT de chaque ligne
+ * sans jamais regarder le TYPE :
+ *
+ *   · `recipient   DocumentRecipient @relation(...)` — un champ de RELATION.
+ *     Deux tables comptées à tort (`RessourcesMagicLink`,
+ *     `RessourceTelechargement`), qui ne portent aucune adresse.
+ *   · `destinataire  FactureFormationDestinataire` — un ENUM à quatre valeurs
+ *     (`entreprise | opco | stagiaire | france_travail`). Une de plus.
+ *
+ * Trois des douze entrées « à instruire » étaient donc des fantômes : elles
+ * gonflaient la dette d'un quart et envoyaient le prochain lecteur instruire du
+ * vide. C'est la RÉCIDIVE de ce que ce fichier documente lui-même à propos
+ * d'`EmargementToken`, deux paragraphes plus bas — j'avais écrit
+ * l'avertissement et refait la faute.
+ *
+ * Le remède ne pouvait pas être une liste d'exclusions écrite à la main : ce
+ * dépôt a déjà payé deux fois qu'une liste en dur prenne du retard. La
+ * détection est donc **dérivée du schéma** (`TYPES_NON_TEXTE`).
+ *
+ * ⚠️ ET L'ERREUR INVERSE RESTE : `FactureFormation` porte `destinataireNom` et
+ * `destinataireAdresse` — nom et adresse postale en clair — que ce motif ne
+ * verra JAMAIS. Le périmètre de ce cliquet est l'ADRESSE E-MAIL, rien d'autre.
+ * La facture est couverte par une exception déclarée dans la route (obligation
+ * comptable), mais **aucun inventaire ne couvre aujourd'hui les colonnes de nom
+ * et d'adresse postale**. C'est une lacune nommée, pas une lacune traitée.
+ *
  * ## Ce que ce cliquet fait, et ce qu'il NE fait PAS
  *
  * Il fige l'inventaire des modèles Prisma portant une colonne d'adresse en clair,
@@ -121,58 +150,112 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
     statut: "traite",
     note: "chaîne DÉDIÉE `portail/rgpd-service.ts` : anonymisation PII + `deletedAt` + révocation des accès portail (jamais de DELETE physique — intégrité comptable). Export art. 15 dédié.",
   },
+  // ── INSTRUITS le 2026-08-24. Les douze entrées ci-dessous portaient toutes
+  //    `a-instruire`, c'est-à-dire « non vérifié ». Elles le sont désormais, et
+  //    la réponse n'a pas été la même trois fois de suite. ────────────────────
+
+  // ── Traités par la chaîne d'effacement ────────────────────────────────────
   {
-    modele: "Client",
-    statut: "a-instruire",
-    note: "contact B2B ; conservation contractuelle probable, non instruite.",
+    modele: "PodcastRequest",
+    statut: "traite",
+    note:
+      "SUPPRIMÉ intégralement — `D5-5-04`. Le seul VRAI trou des douze : formulaire " +
+      "public, aucun contrat, aucune pièce comptable, et la table n'était NI effacée " +
+      "NI exemptée. Fallait en outre lui donner un `emailHash` : l'adresse est " +
+      "chiffrée à IV aléatoire, la ligne était INTROUVABLE.",
   },
-  { modele: "SousTraitant", statut: "a-instruire", note: "contact B2B, non instruit." },
   {
-    modele: "FactureFormation",
-    statut: "a-instruire",
-    note: "destinataire de facture ; obligation comptable probable, non instruite.",
-  },
-  {
-    modele: "DocumentSignature",
-    statut: "a-instruire",
-    note: "signataire d'une pièce ; preuve, non instruite.",
+    modele: "BookingOption",
+    statut: "traite",
+    note:
+      "SUPPRIMÉ (`eraseBookingOptionsForEmail`). Une doctrine JUSTE écrite au pluriel " +
+      "(« Bookings : … ne contient déjà aucune PII propre ») a couvert son voisin : " +
+      "`Booking` n'a effectivement rien, `BookingOption` porte nom, adresse et " +
+      "téléphone EN PROPRE, sans aucun `submissionId`.",
   },
   {
     modele: "DocumentSignatureToken",
+    statut: "traite",
+    note:
+      "RÉVOQUÉ puis pseudonymisé (`eraseSignatureTokensForEmail`). Le jeton n'est pas " +
+      "une preuve : `tokenHash` est l'empreinte du jeton, pas d'un tuple scellé. " +
+      "Révocation d'abord — un lien vivant permettrait de resceller l'adresse dans " +
+      "une signature neuve. `destinataireEmailSha256` part aussi : non salé, donc " +
+      "réidentifiable par dictionnaire.",
+  },
+
+  // ── Conservés pour un motif désormais ÉCRIT dans la route ─────────────────
+  //
+  //    ⚠️ Les quatre suivants étaient déjà pratiqués ainsi. Aucun n'était faux ;
+  //    aucun n'était DÉCLARÉ. Or une exception qu'on applique sans la dire est
+  //    indiscernable d'un oubli — c'est exactement sous cette forme qu'ont vécu
+  //    les quatre défauts `D5-5-01` à `D5-5-04`.
+  {
+    modele: "EmargementSignature",
+    statut: "exception-declaree",
+    note:
+      "adresse SCELLÉE dans le tuple haché (`COLONNES_SCELLEES`). L'effacer rendrait " +
+      "`empreinte_invalide` sur chaque feuille — soit, devant un contrôle, « pièces " +
+      "modifiées après coup » sur des pièces intactes. Ce dépôt a déjà payé ce défaut " +
+      "exact. Art. 17(3)(b) et (e) ; l'IMAGE du tracé, elle, est purgée.",
+  },
+  {
+    modele: "DocumentSignature",
+    statut: "exception-declaree",
+    note:
+      "idem — l'identité du signataire est scellée dans l'empreinte de la pièce " +
+      "(`COLONNES_SCELLEES_DOCUMENT`). Art. 1366 du code civil, art. 17(3)(e) RGPD. " +
+      "Seule l'image de la signature est purgeable.",
+  },
+  {
+    modele: "SousTraitant",
+    statut: "exception-declaree",
+    note:
+      "dossier du signataire d'un contrat de sous-traitance : art. 17(3)(b) — pièces " +
+      "exigées par la certification (indicateur 27) — et 17(3)(e), `contactFonction` " +
+      "étant FIGÉE à la signature pour porter l'opposabilité du pouvoir de signer. " +
+      "⚠️ Réserve : l'exception est fondée mais NON BORNÉE — `actif` est un booléen " +
+      "sans date, donc les 5 ans n'ont aucun point de départ calculable.",
+  },
+
+  // ── ⚠️ IL EN RESTE TROIS. Chacun bute sur une décision qui n'est pas
+  //    technique, et qu'il serait malhonnête de trancher ici. ────────────────
+  {
+    modele: "Client",
     statut: "a-instruire",
-    note: "jeton de signature, non instruit.",
+    note:
+      "⛔ BLOQUÉ SUR UNE DÉCISION. La table mélange des relations qui n'ont pas la " +
+      "même base légale : un `prospect` ou un `perdu` n'a aucun contrat et rien ne " +
+      "le retient, un `client_actif` est couvert. Mais AUCUNE date de fin de relation " +
+      "n'existe — ni `deletedAt`, ni `finRelationAt` — donc les « 5 ans après fin de " +
+      "prestation » que le site PUBLIE sont incalculables en base. Et le dépôt porte " +
+      "deux durées contradictoires : 5 ans (`content/legal.ts`, art. L.6353-9) et " +
+      "10 ans (registre art. 30, art. L123-22). Il faut une colonne datée et un " +
+      "arbitrage sur la durée avant d'écrire quoi que ce soit.",
   },
   {
     modele: "DocumentRecipient",
     statut: "a-instruire",
-    note: "destinataire d'une pièce, non instruit.",
-  },
-  {
-    modele: "EmargementSignature",
-    statut: "a-instruire",
-    note: "signataire d'émargement ; preuve d'assiduité, non instruite.",
+    note:
+      "⛔ BLOQUÉ SUR UN EFFET DE BORD. C'est une liste de diffusion doublée d'un " +
+      "compte de connexion sans mot de passe : rien ne fonde de la conserver quand la " +
+      "relation cesse. Mais un `deleteMany` emporte EN CASCADE " +
+      "`RessourceTelechargement`, l'accusé de lecture des supports — trace qui peut " +
+      "valoir preuve de diffusion Qualiopi. Supprimer ou détacher : à trancher avant " +
+      "de câbler.",
   },
   {
     modele: "CoachingSeanceSignature",
     statut: "a-instruire",
-    note: "signataire de séance, non instruit.",
+    note:
+      "⛔ BLOQUÉ SUR UNE QUESTION EN AMONT. La table est ORPHELINE depuis le " +
+      "2026-08-10 : plus une ligne de `src/` ne l'écrit ni ne la lit, le module AFEST " +
+      "1-to-1 ayant été supprimé. L'argument du tuple scellé qui sauve les deux " +
+      "signatures ci-dessus ne tient donc pas ici — plus aucun vérificateur ne " +
+      "recalcule ces empreintes. La vraie question n'est pas « comment l'effacer » " +
+      "mais « pourquoi existe-t-elle encore » : une table morte qui porte de la PII " +
+      "en clair est le pire des deux mondes.",
   },
-  {
-    modele: "BookingOption",
-    statut: "a-instruire",
-    note: "contact d'une option de réservation, non instruit.",
-  },
-  {
-    modele: "RessourcesMagicLink",
-    statut: "a-instruire",
-    note: "lien d'accès ressource, non instruit.",
-  },
-  {
-    modele: "RessourceTelechargement",
-    statut: "a-instruire",
-    note: "téléchargement de ressource, non instruit.",
-  },
-  { modele: "PodcastRequest", statut: "a-instruire", note: "demande podcast, non instruite." },
   {
     modele: "ProspectionHealthPractitioner",
     statut: "exception-declaree",
@@ -210,6 +293,12 @@ const TYPES_NON_TEXTE: ReadonlySet<string> = new Set([
 function ligneEstUneAdresse(ligne: string): boolean {
   const jetons = ligne.split(/\s+/);
   if (!COLONNE_ADRESSE.test(jetons[0] ?? "")) return false;
+  // Ceinture REDONDANTE, et mesuree comme telle : l'eprouver seule laisse le
+  // test vert, parce que le filtre par type ci-dessous suffit deja (le type
+  // d'un champ de relation EST un nom de modele). On la garde pour le jour ou
+  // une relation porterait un type absent du schema, mais un lecteur doit
+  // savoir laquelle des deux lignes porte reellement la garde : c'est la
+  // suivante.
   if (ligne.includes("@relation")) return false;
   const type = (jetons[1] ?? "").replace(/[?[\]]/g, "");
   return !TYPES_NON_TEXTE.has(type);
@@ -290,6 +379,11 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
       // la règle qu'elle garde pousse à mentir pour la satisfaire — c'est un
       // défaut de garde, pas un défaut de code.
       "src/server/qualiopi/portail/rgpd-service.ts",
+      // Meme raison, une table plus loin : les demandes de podcast ont leur
+      // propre module, parce que leur adresse est chiffree et exige une
+      // empreinte + un balayage borne. Sans cette ligne, le cliquet refuserait
+      // un `traite` EXACT -- il l'a deja fait une fois pour `Trainee`.
+      "src/features/podcast-request/rgpd.ts",
     ]
       .map((f) => readFileSync(join(process.cwd(), f), "utf8"))
       .join("\n");
@@ -318,8 +412,11 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
       aInstruire.length,
       `${aInstruire.length} table(s) portant une adresse en clair ne sont NI ` +
         `traitées NI exemptées avec un motif : ${aInstruire.join(", ")}. Ce nombre ` +
-        "ne doit que DÉCROÎTRE. La première à reprendre est `Trainee` — c'est le " +
-        "stagiaire lui-même.",
-    ).toBeLessThanOrEqual(14);
+        "ne doit que DÉCROÎTRE. Les trois qui restent ne butent pas sur un " +
+        "manque de temps mais sur une DÉCISION : une date de fin de relation à " +
+        "créer (`Client`), un effet de cascade à arbitrer (`DocumentRecipient`), " +
+        "et une table morte dont il faut d'abord dire si elle doit exister " +
+        "(`CoachingSeanceSignature`). Les détails sont dans leurs notes.",
+    ).toBeLessThanOrEqual(3);
   });
 });
