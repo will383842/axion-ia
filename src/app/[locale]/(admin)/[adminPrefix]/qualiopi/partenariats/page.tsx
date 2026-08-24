@@ -112,6 +112,7 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
                 <th className={headCls}>Début</th>
                 <th className={headCls}>Fin</th>
                 <th className={headCls}>Statut</th>
+                <th className={headCls}>Trace de l&apos;échange</th>
                 <th className={headCls}>Actions</th>
               </tr>
             </thead>
@@ -156,6 +157,40 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
                       <span className="text-[color:var(--color-admin-fg-muted)]">Inactif</span>
                     )}
                   </td>
+                  {/* La colonne existe pour rendre l'ABSENCE visible. Une fiche
+                      « réseau handicap » sans trace d'échange est une déclaration,
+                      et off.26 est un super-indicateur : la lire d'un coup d'œil
+                      vaut mieux que la découvrir devant l'auditeur. */}
+                  <td className={cellCls}>
+                    {p.interlocuteurNom != null && p.interlocuteurNom.trim().length > 0 ? (
+                      <div className="text-[length:var(--text-admin-xs)]">
+                        <div className="font-medium">{p.interlocuteurNom}</div>
+                        {p.dernierEchangeAt != null && (
+                          <div className="text-[color:var(--color-admin-fg-muted)]">
+                            échange du {p.dernierEchangeAt.toLocaleDateString("fr-FR")}
+                          </div>
+                        )}
+                        {p.preuveUrl != null && p.preuveUrl.trim().length > 0 && (
+                          <a
+                            href={p.preuveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-[color:var(--color-admin-accent)] underline"
+                          >
+                            pièce jointe
+                          </a>
+                        )}
+                      </div>
+                    ) : p.type === "reseau_handicap" ? (
+                      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                        Aucune trace — fiche déclarative
+                      </span>
+                    ) : (
+                      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                        —
+                      </span>
+                    )}
+                  </td>
                   <td className={cellCls}>
                     <PartenariatRowActions
                       partenariat={{
@@ -166,6 +201,10 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
                         dateDebut: p.dateDebut,
                         dateFin: p.dateFin ?? null,
                         actif: p.actif,
+                        interlocuteurNom: p.interlocuteurNom ?? null,
+                        interlocuteurEmail: p.interlocuteurEmail ?? null,
+                        dernierEchangeAt: p.dernierEchangeAt ?? null,
+                        preuveUrl: p.preuveUrl ?? null,
                       }}
                       updateAction={updatePartenariatAction}
                     />

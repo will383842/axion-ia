@@ -18,7 +18,21 @@ import type { Partenariat } from "../../../../prisma/generated/client";
 // Types d'entrée
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface CreerPartenariatInput {
+/**
+ * Trace de l'échange (off.26 ⭐) — voir le commentaire du modèle Prisma.
+ *
+ * `null` EFFACE la valeur, `undefined` la laisse intacte. La distinction est
+ * nécessaire : une trace saisie par erreur doit pouvoir être retirée, et un
+ * formulaire d'édition qui n'envoie pas le champ ne doit rien écraser.
+ */
+export interface TracePartenariatInput {
+  interlocuteurNom?: string | null;
+  interlocuteurEmail?: string | null;
+  dernierEchangeAt?: Date | null;
+  preuveUrl?: string | null;
+}
+
+export interface CreerPartenariatInput extends TracePartenariatInput {
   nom: string;
   type: string;
   objet: string;
@@ -27,7 +41,7 @@ export interface CreerPartenariatInput {
   actif?: boolean;
 }
 
-export interface UpdatePartenariatInput {
+export interface UpdatePartenariatInput extends TracePartenariatInput {
   nom?: string;
   type?: string;
   objet?: string;
@@ -40,6 +54,28 @@ export interface ListPartenariatsOptions {
   actif?: boolean;
   skip?: number;
   take?: number;
+}
+
+/**
+ * Traduit la trace en fragment `data` Prisma, une seule fois pour la création
+ * et la mise à jour. Recopier ce mapping dans les deux fonctions le ferait
+ * diverger au premier champ ajouté — ce dépôt a déjà payé quatre fois un
+ * prédicat recopié.
+ */
+function fragmentTrace(input: TracePartenariatInput): {
+  interlocuteurNom?: string | null;
+  interlocuteurEmail?: string | null;
+  dernierEchangeAt?: Date | null;
+  preuveUrl?: string | null;
+} {
+  return {
+    ...(input.interlocuteurNom !== undefined ? { interlocuteurNom: input.interlocuteurNom } : {}),
+    ...(input.interlocuteurEmail !== undefined
+      ? { interlocuteurEmail: input.interlocuteurEmail }
+      : {}),
+    ...(input.dernierEchangeAt !== undefined ? { dernierEchangeAt: input.dernierEchangeAt } : {}),
+    ...(input.preuveUrl !== undefined ? { preuveUrl: input.preuveUrl } : {}),
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -59,6 +95,7 @@ export async function creerPartenariat(input: CreerPartenariatInput): Promise<Pa
       dateDebut: input.dateDebut,
       ...(input.dateFin !== undefined ? { dateFin: input.dateFin } : {}),
       actif: input.actif ?? true,
+      ...fragmentTrace(input),
     },
   });
 }
@@ -84,6 +121,7 @@ export async function updatePartenariat(
       ...(input.dateDebut !== undefined ? { dateDebut: input.dateDebut } : {}),
       ...(input.dateFin !== undefined ? { dateFin: input.dateFin } : {}),
       ...(input.actif !== undefined ? { actif: input.actif } : {}),
+      ...fragmentTrace(input),
     },
   });
 }
