@@ -446,7 +446,7 @@ describe("saveEmargementAction", () => {
       // rompu, et le code échoue sur `undefined` au lieu d'être mesuré. On
       // recopie la SIGNATURE, pas le minimum qui passe.
       importId: null,
-      _count: { emargementSignatures: 0 },
+      emargementSignatures: [],
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
     mockUpsertCreneau.mockResolvedValue("upserted-id");
@@ -491,7 +491,7 @@ describe("saveEmargementAction", () => {
       dureePrevueMinutes: 210,
       enrollmentId: "enr-1",
       importId: null,
-      _count: { emargementSignatures: 1 },
+      emargementSignatures: [{ id: "sig-vivante" }],
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
 
@@ -527,7 +527,7 @@ describe("saveEmargementAction", () => {
       dureePrevueMinutes: 210,
       enrollmentId: "enr-1",
       importId: null,
-      _count: { emargementSignatures: 0 },
+      emargementSignatures: [],
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
 
@@ -633,7 +633,7 @@ describe("saveEmargementAction", () => {
       // signés ne doit pas le saisir — c'est bien la protection de la DURÉE
       // importée qui est mesurée ici, pas celle des signatures.
       importId: "imp-1",
-      _count: { emargementSignatures: 0 },
+      emargementSignatures: [],
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
 
@@ -660,7 +660,7 @@ describe("saveEmargementAction", () => {
       // rompu, et le code échoue sur `undefined` au lieu d'être mesuré. On
       // recopie la SIGNATURE, pas le minimum qui passe.
       importId: null,
-      _count: { emargementSignatures: 0 },
+      emargementSignatures: [],
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
 
@@ -1370,7 +1370,7 @@ describe("importReleveConnexionAction", () => {
       present: false,
       source: "import_zoom",
       commentaire: null,
-      _count: { emargementSignatures: 0 },
+      emargementSignatures: [],
       ...over,
     };
   }
@@ -1394,7 +1394,7 @@ describe("importReleveConnexionAction", () => {
   });
 
   it.each([
-    ["une SIGNATURE", { _count: { emargementSignatures: 1 } }, "signature"],
+    ["une SIGNATURE", { emargementSignatures: [{ id: "sig-vivante" }] }, "signature"],
     ["une présence COCHÉE", { present: true }, "presence_cochee"],
     ["une correction MANUELLE", { source: "manuel" }, "saisie_manuelle"],
     ["un COMMENTAIRE d'admin", { commentaire: "arrivée tardive" }, "saisie_manuelle"],
@@ -1444,7 +1444,7 @@ describe("setPresenceCreneauManualAction", () => {
       enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
       // Recopie la SIGNATURE de la requête réelle : elle lit aussi le compte de
       // signatures, pour refuser d'écraser une preuve d'émargement.
-      _count: { emargementSignatures: 0 },
+      emargementSignatures: [],
       // Remonté jusqu'à la session pour invalider le cache indicateurs de la
       // bonne année après correction manuelle d'un créneau.
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
@@ -1465,7 +1465,7 @@ describe("setPresenceCreneauManualAction", () => {
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "550e8400-e29b-41d4-a716-446655440010",
       enrollmentId: "550e8400-e29b-41d4-a716-446655440001",
-      _count: { emargementSignatures: 1 },
+      emargementSignatures: [{ id: "sig-vivante" }],
       enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
     });
 
@@ -1480,6 +1480,36 @@ describe("setPresenceCreneauManualAction", () => {
       mockPrisma.presenceCreneau.update,
       "le créneau a été écrit malgré la signature vivante",
     ).not.toHaveBeenCalled();
+  });
+
+  it("🔴 une signature RÉVOQUÉE ne bloque plus la correction", async () => {
+    // 🔴 2026-08-24, cahier D3-4 — l'effet INVERSE du défaut du certificat, et
+    // le même oubli.
+    //
+    // Les quatre gardes de présence de `presence.ts` comptaient les lignes
+    // révoquées. Conséquence : après avoir révoqué une signature — le geste
+    // même par lequel on constate qu'une preuve ne vaut pas et qu'il faut
+    // corriger la présence — la grille CONTINUAIT de refuser la correction, au
+    // motif d'une signature qui n'existe plus. Le geste de sortie verrouillait
+    // la porte qu'il devait ouvrir.
+    //
+    // 🔑 On asserte la REQUÊTE, pas seulement son résultat : un mock qui rend
+    // un tableau vide passerait au vert même si le filtre avait disparu.
+    await setPresenceCreneauManualAction({
+      creneauId: "550e8400-e29b-41d4-a716-446655440010",
+      present: false,
+      dureeRealiseeMinutes: 0,
+    });
+
+    const arg = mockCall<{ select: Record<string, unknown> }>(
+      mockPrisma.presenceCreneau.findUnique as ReturnType<typeof vi.fn>,
+    );
+    expect(
+      arg.select["emargementSignatures"],
+      "la garde de correction lit les signatures SANS exclure les révoquées : " +
+        "une signature retirée du registre continue de bloquer la correction " +
+        "de présence qu'elle devait justement permettre.",
+    ).toMatchObject({ where: { revokedAt: null } });
   });
 
   it("retourne { data: { id } } pour un créneau valide", async () => {

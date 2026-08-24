@@ -1390,6 +1390,33 @@ describe("genererCertificatRealisationAction — preuve d'assiduité exigée", (
     ).not.toContain("manuel");
   });
 
+  it("🔴 une signature RÉVOQUÉE ne vaut pas preuve — le compteur doit les exclure", async () => {
+    // 🔴 2026-08-24, cahier D3-4. Le compteur de cette garde comptait TOUTES les
+    // lignes, révoquées comprises. Conséquence : révoquer la totalité des
+    // signatures d'une inscription — le geste même par lequel on retire une
+    // preuve — n'empêchait pas d'émettre le certificat de réalisation qu'elles
+    // fondaient. La pièce continuait d'affirmer une assiduité que le registre
+    // niait.
+    //
+    // 🔑 Le jumeau le faisait déjà correctement : `revocation-service.ts` compte
+    // les signatures « restantes » avec `revokedAt: null`, et remet
+    // `emargementSigneAt` à `null` quand il n'en reste aucune. La révocation
+    // nettoyait donc partout SAUF dans la garde qui délivre la pièce. C'est la
+    // forme récurrente de ce dépôt : une règle appliquée à un site, oubliée sur
+    // son jumeau.
+    mockSignatureCount.mockResolvedValue(1);
+    await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const where = (mockSignatureCount.mock.calls[0]?.[0] as { where: Record<string, unknown> })
+      .where;
+    expect(
+      where["revokedAt"],
+      "la garde du certificat compte les signatures RÉVOQUÉES. Une inscription " +
+        "dont toutes les signatures ont été révoquées obtient encore son " +
+        "certificat de réalisation — la pièce R.6313-3 que l'OPCO finance.",
+    ).toBe(null);
+  });
+
   it("une signature suffit — le relevé n'est interrogé que si elle manque", async () => {
     // 🔑 Non-vacuité dans l'autre sens : le présentiel ne doit pas se mettre à
     // exiger un relevé de connexion, ni payer une requête inutile.

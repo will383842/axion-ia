@@ -428,7 +428,16 @@ export async function saveEmargementAction(input: {
         // qu'elle écrasait une preuve. La requête jumelle du chemin d'import les
         // lit déjà (`presence.ts`, garde `protegePresentiel`).
         importId: true,
-        _count: { select: { emargementSignatures: true } },
+        // 🔴 2026-08-24, cahier D3-4 — ce compte prenait les signatures RÉVOQUÉES.
+        // On ne peut pas filtrer un `_count` de relation ici : la preview
+        // `filteredRelationCount` n'est pas activée (Prisma 5.22). On lit donc
+        // la relation elle-même, bornée à 1 ligne — la question posée en aval
+        // est « en existe-t-il une vivante ? », pas « combien ».
+        emargementSignatures: {
+          where: { revokedAt: null },
+          select: { id: true },
+          take: 1,
+        },
       },
     });
 
@@ -452,7 +461,7 @@ export async function saveEmargementAction(input: {
     // ⚠️ Refuser en SILENCE serait le même défaut sous une autre forme : l'écran
     // annoncerait « N mises à jour » en ayant sauté une ligne. Le compte est
     // remonté à l'appelant.
-    if (existingCreneau !== null && existingCreneau._count.emargementSignatures > 0) {
+    if (existingCreneau !== null && existingCreneau.emargementSignatures.length > 0) {
       signaturesProtegees += 1;
       continue;
     }
@@ -852,13 +861,22 @@ export async function importReleveConnexionAction(input: {
         present: true,
         source: true,
         commentaire: true,
-        _count: { select: { emargementSignatures: true } },
+        // 🔴 2026-08-24, cahier D3-4 — ce compte prenait les signatures RÉVOQUÉES.
+        // On ne peut pas filtrer un `_count` de relation ici : la preview
+        // `filteredRelationCount` n'est pas activée (Prisma 5.22). On lit donc
+        // la relation elle-même, bornée à 1 ligne — la question posée en aval
+        // est « en existe-t-il une vivante ? », pas « combien ».
+        emargementSignatures: {
+          where: { revokedAt: null },
+          select: { id: true },
+          take: 1,
+        },
       },
     });
 
     if (journeeHeritee !== null) {
       const porteUneTrace =
-        journeeHeritee._count.emargementSignatures > 0 ||
+        journeeHeritee.emargementSignatures.length > 0 ||
         journeeHeritee.present ||
         journeeHeritee.source === "manuel" ||
         journeeHeritee.commentaire !== null;
@@ -868,7 +886,7 @@ export async function importReleveConnexionAction(input: {
           enrollmentId: enrollment.id,
           date: dateCivile,
           motif:
-            journeeHeritee._count.emargementSignatures > 0
+            journeeHeritee.emargementSignatures.length > 0
               ? "signature"
               : journeeHeritee.present
                 ? "presence_cochee"
@@ -903,18 +921,27 @@ export async function importReleveConnexionAction(input: {
           // Discriminant présentiel/distanciel : `importId` (et non `source`, que
           // `toPresenceSource("autre")` rend « emargement_presentiel » à tort).
           importId: true,
-          _count: { select: { emargementSignatures: true } },
+          // 🔴 2026-08-24, cahier D3-4 — ce compte prenait les signatures RÉVOQUÉES.
+          // On ne peut pas filtrer un `_count` de relation ici : la preview
+          // `filteredRelationCount` n'est pas activée (Prisma 5.22). On lit donc
+          // la relation elle-même, bornée à 1 ligne — la question posée en aval
+          // est « en existe-t-il une vivante ? », pas « combien ».
+          emargementSignatures: {
+            where: { revokedAt: null },
+            select: { id: true },
+            take: 1,
+          },
         },
       });
       const protegePresentiel =
         existantDemi !== null &&
         existantDemi.importId === null &&
-        (existantDemi._count.emargementSignatures > 0 || existantDemi.present);
+        (existantDemi.emargementSignatures.length > 0 || existantDemi.present);
       if (protegePresentiel) {
         journeesConflictuelles.push({
           enrollmentId: enrollment.id,
           date: dateCivile,
-          motif: existantDemi._count.emargementSignatures > 0 ? "signature" : "presence_cochee",
+          motif: existantDemi.emargementSignatures.length > 0 ? "signature" : "presence_cochee",
         });
         continue;
       }
@@ -1012,7 +1039,16 @@ export async function setPresenceCreneauManualAction(input: {
       // Cette action force `source: "manuel"` et réécrit `present` : sans ce
       // compte, elle écrase une signature électronique vivante, la preuve
       // continuant d'affirmer une présence que le créneau nie.
-      _count: { select: { emargementSignatures: true } },
+      // 🔴 2026-08-24, cahier D3-4 — ce compte prenait les signatures RÉVOQUÉES.
+      // On ne peut pas filtrer un `_count` de relation ici : la preview
+      // `filteredRelationCount` n'est pas activée (Prisma 5.22). On lit donc
+      // la relation elle-même, bornée à 1 ligne — la question posée en aval
+      // est « en existe-t-il une vivante ? », pas « combien ».
+      emargementSignatures: {
+        where: { revokedAt: null },
+        select: { id: true },
+        take: 1,
+      },
       enrollment: { select: { session: { select: { dateDebut: true } } } },
     },
   });
@@ -1029,7 +1065,7 @@ export async function setPresenceCreneauManualAction(input: {
   // grain est le FICHIER, pas la fonction, et `presence.ts` a d'autres actions
   // bien câblées. C'est documenté et assumé dans son en-tête — mais il faut le
   // savoir en lisant ceci.
-  if (creneau._count.emargementSignatures > 0) {
+  if (creneau.emargementSignatures.length > 0) {
     return {
       error:
         "Ce créneau porte une signature d'émargement : sa présence ne peut pas " +
