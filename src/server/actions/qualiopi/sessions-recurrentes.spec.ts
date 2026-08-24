@@ -169,18 +169,38 @@ function dataCreee(): Record<string, unknown> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("reportSessionAction — 1/4 stagiaires", () => {
-  it("migre chaque inscription vers la session de remplacement", async () => {
+  it("migre chaque inscription EN REMETTANT le déroulé à zéro", async () => {
+    // 🔴 2026-08-24 — CE TEST ASSERTAIT LE BUG.
+    //
+    // Il exigeait `data: { sessionId }` **exactement** — c'est-à-dire qu'il
+    // interdisait le correctif. Or transporter `convocationEnvoyeeAt` tel quel
+    // était un BLOQUANT : le cron de convocation ne sélectionne que les
+    // drapeaux nuls, donc aucune convocation ne partait aux nouvelles dates,
+    // et l'écran « À traiter » affichait pourtant l'étape faite.
+    //
+    // C'est la seconde fois que ce dépôt trouve un test qui verrouille le
+    // défaut qu'il prétend couvrir (cf. `COLONNES_SCELLEES` côté émargement).
+    const attendu = {
+      sessionId: NOUVELLE_ID,
+      convocationEnvoyeeAt: null,
+      emargementSigneAt: null,
+      tauxPresencePct: null,
+      attestationResultat: null,
+      attestationDocumentId: null,
+      attestationGenereeAt: null,
+    };
+
     const r = await reportSessionAction(INPUT);
 
     expect(r).toHaveProperty("data");
     expect(mockEnrollmentUpdate).toHaveBeenCalledTimes(2);
     expect(mockEnrollmentUpdate).toHaveBeenCalledWith({
       where: { id: "enr-1" },
-      data: { sessionId: NOUVELLE_ID },
+      data: attendu,
     });
     expect(mockEnrollmentUpdate).toHaveBeenCalledWith({
       where: { id: "enr-2" },
-      data: { sessionId: NOUVELLE_ID },
+      data: attendu,
     });
   });
 
