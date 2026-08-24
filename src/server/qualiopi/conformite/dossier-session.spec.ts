@@ -34,9 +34,22 @@ vi.mock("@/server/qualiopi/emargement/feuille-pdf", () => ({
   construireFeuillePdf: vi.fn(),
 }));
 
+// 🔴 2026-08-24, cahier D9 — le dossier vérifie désormais la TROISIÈME famille
+// de chaînes : celle des pièces contractuelles. Sa logique est testée dans
+// `documents/signature/registre-verification.spec.ts` ; ici on la double, comme
+// `construireFeuillePdf`, pour tester ce que le DOSSIER en fait.
+//
+// Défaut par défaut : `null` — « cette pièce ne porte aucune signature ». C'est
+// le cas des fixtures existantes, et il ne doit ni compter au dénominateur ni
+// lever d'anomalie.
+vi.mock("@/server/qualiopi/documents/signature/registre-verification", () => ({
+  verifierChaineDocument: vi.fn().mockResolvedValue(null),
+}));
+
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
+import { verifierChaineDocument } from "@/server/qualiopi/documents/signature/registre-verification";
 import { genererDossierSessionZip } from "./dossier-session";
 import { calculerSelfHash, type TupleSignatureV1 } from "@/server/qualiopi/emargement/hash";
 
@@ -49,6 +62,7 @@ const mockDocsAnnulees = (
 const mockR2Ok = isR2Configured as unknown as ReturnType<typeof vi.fn>;
 const mockGetBuffer = getObjectBufferR2 as unknown as ReturnType<typeof vi.fn>;
 const mockFeuille = construireFeuillePdf as unknown as ReturnType<typeof vi.fn>;
+const mockVerifierChaineDocument = verifierChaineDocument as unknown as ReturnType<typeof vi.fn>;
 
 /** Tuple d'une signature, tel que le service l'écrit. */
 function tuple(prevHash: string | null, over: Partial<TupleSignatureV1> = {}): TupleSignatureV1 {
@@ -153,6 +167,10 @@ beforeEach(() => {
   mockDocsAnnulees.mockResolvedValue([]);
   mockR2Ok.mockReturnValue(true);
   mockGetBuffer.mockResolvedValue(Buffer.from("%PDF-"));
+  // `null` = « cette pièce ne porte aucune signature », le cas d'une convocation
+  // ou d'un livret d'accueil. Reposé ici : `clearAllMocks` efface les valeurs de
+  // retour posées dans la fabrique du `vi.mock`.
+  mockVerifierChaineDocument.mockResolvedValue(null);
   mockFeuille.mockResolvedValue({
     intituleFormation: "Bien démarrer avec l'IA",
     numeroSession: "AXI-SESS-2026-001",
@@ -212,6 +230,87 @@ describe("genererDossierSessionZip", () => {
     expect(res?.avertissements.join(" ")).toContain("intégrité");
     const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
     expect(JSON.parse(rapport!).signatures[0].integrite).toBe("ANOMALIE");
+  });
+
+  it("🔴 DÉTECTE une chaîne rompue sur une PIÈCE CONTRACTUELLE", async () => {
+    // 🔴 2026-08-24, cahier D9 — la troisième famille, qui n'était vérifiée par
+    // RIEN. L'en-tête de ce module promet pourtant « la VÉRIFICATION
+    // D'INTÉGRITÉ de chaque chaîne de signatures », et le bouton qui déclenche
+    // le dossier le promet aussi.
+    //
+    // Une convention signée dont la chaîne aurait été rompue sortait du ZIP avec
+    // le `[OK]` de son PDF et aucun verdict : le dossier avait l'air complet.
+    //
+    // 🔑 `verifierChaineDocument` existait déjà, écrite et testée — elle n'avait
+    // simplement AUCUN appelant de production.
+    mockVerifierChaineDocument.mockResolvedValue({
+      valide: false,
+      anomalies: [{ type: "empreinte_invalide", signatureId: "sig-doc-1" }],
+      nbVerifies: 2,
+    });
+    // ⚠️ Une pièce doit exister, sinon la boucle de vérification ne tourne pas
+    // et ce test passerait au vert sans rien mesurer.
+    mockFindUnique.mockResolvedValue(
+      session({
+        documents: [
+          {
+            id: "doc-1",
+            type: "convention",
+            numero: "AXI-CONV-2026-001",
+            createdAt: new Date("2026-06-01T09:00:00Z"),
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    // L'anomalie est ÉCRITE, pas seulement comptée.
+    expect(
+      res?.avertissements.join(" "),
+      "une chaîne de signatures de pièce contractuelle est rompue et le dossier " +
+        "ne le dit pas. C'est l'engagement contractuel lui-même qui n'est plus " +
+        "opposable — plus grave qu'un émargement douteux.",
+    ).toContain("pièces contractuelles");
+
+    const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
+    expect(JSON.parse(rapport!).piecesContractuelles[0].integrite).toBe("ANOMALIE");
+  });
+
+  it("une pièce SANS signature n'est ni une anomalie ni un dénominateur", async () => {
+    // 🔑 Contre-témoin. `verifierChaineDocument` rend `null` pour une pièce qui
+    // ne porte aucune signature — ce qui est le cas normal d'une convocation ou
+    // d'un livret d'accueil. La compter au dénominateur referait le défaut
+    // « 0/0 conformes » corrigé par `D3-3-01` : un ratio complet sur du vide se
+    // lit « tout va bien ».
+    mockVerifierChaineDocument.mockResolvedValue(null);
+    // ⚠️ Une pièce doit exister, sinon la boucle de vérification ne tourne pas
+    // et ce test passerait au vert sans rien mesurer.
+    mockFindUnique.mockResolvedValue(
+      session({
+        documents: [
+          {
+            id: "doc-1",
+            type: "convention",
+            numero: "AXI-CONV-2026-001",
+            createdAt: new Date("2026-06-01T09:00:00Z"),
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    expect(
+      res?.avertissements.join(" "),
+      "une pièce non signée est comptée comme une anomalie d'intégrité.",
+    ).not.toContain("pièces contractuelles");
+
+    const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
+    expect(
+      JSON.parse(rapport!).piecesContractuelles,
+      "une pièce sans signature entre au dénominateur du ratio d'intégrité.",
+    ).toEqual([]);
   });
 
   it("🔴 DÉTECTE la suppression d'un maillon du milieu", async () => {

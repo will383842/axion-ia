@@ -432,6 +432,21 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "administratif",
   },
+  /**
+   * 🔴 2026-08-24, cahier D5 — la mesure existait, elle sortait en
+   * `console.error`. Un journal de conteneur n'est lu par personne le lendemain.
+   */
+  rappel_j7_non_envoye: {
+    niveau: "important",
+    titre: "Rappel J-7 jamais envoyé",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "IRRÉVERSIBLE — la condition (`rappelJ7EnvoyeAt` nulle sur une session DÉJÀ " +
+      "commencée) ne disparaîtra jamais : le rappel n'est plus envoyable après le " +
+      "début. Une résolution automatique attendrait un événement qui ne peut pas " +
+      "se produire. L'écart s'acquitte à la main, une fois consigné.",
+    guichet: "administratif",
+  },
 
   // ── Formateur ──────────────────────────────────────────────────────────────
   session_sans_formateur: {

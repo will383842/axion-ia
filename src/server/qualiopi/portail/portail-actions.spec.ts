@@ -78,18 +78,13 @@ import {
   verifierToken,
   revoquerAcces,
 } from "@/server/qualiopi/portail/portail-service";
-import {
-  setPortailCookie,
-  getPortailToken,
-  clearPortailCookie,
-} from "@/server/qualiopi/portail/cookie";
+import { getPortailToken, clearPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { enqueueEmail } from "@/server/queue/queues";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { encryptPii } from "@/lib/pii-crypto";
 import { prisma } from "@/lib/prisma";
 import {
-  accederPortailAction,
   quitterPortailAction,
   soumettreSatisfactionPortailAction,
   declarerHandicapAction,
@@ -114,7 +109,6 @@ const mockLogActivity = logQualiopiActivity as ReturnType<typeof vi.fn>;
 const mockCreerAcces = creerAcces as ReturnType<typeof vi.fn>;
 const mockVerifierToken = verifierToken as ReturnType<typeof vi.fn>;
 const mockRevoquerAcces = revoquerAcces as ReturnType<typeof vi.fn>;
-const mockSetPortailCookie = setPortailCookie as ReturnType<typeof vi.fn>;
 const mockGetPortailToken = getPortailToken as ReturnType<typeof vi.fn>;
 const mockClearPortailCookie = clearPortailCookie as ReturnType<typeof vi.fn>;
 const mockCreerDemandeRgpd = creerDemandeRgpd as ReturnType<typeof vi.fn>;
@@ -135,56 +129,16 @@ const QUEST_ID = "11111111-2222-4333-8444-555555555555";
 const EXPIRES_FUTURE = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
 
 // ─────────────────────────────────────────────────────────────────────────────
-// accederPortailAction
+// 🔴 2026-08-25 — les tests d'`accederPortailAction` ont été RETIRÉS avec elle.
+//
+// Cette Server Action échangeait un token portail contre le cookie de session
+// SANS le rate-limit anti-brute-force que porte la route `portail/acces/[token]`.
+// Elle n'avait aucun appelant de production : un second chemin d'entrée, non
+// protégé, ouvert en HTTP par le `"use server"` du fichier.
+//
+// La propriété qui la remplace — « un seul chemin pose le cookie de session » —
+// est gardée par `src/server/actions/qualiopi/__tests__/un-seul-chemin-vers-le-cookie-portail.spec.ts`.
 // ─────────────────────────────────────────────────────────────────────────────
-
-describe("accederPortailAction", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    mockVerifierToken.mockResolvedValue({ traineeId: TRAINEE_UUID });
-    mockSetPortailCookie.mockResolvedValue(undefined);
-  });
-
-  it("retourne { data: { ok: true } } pour un token valide", async () => {
-    const result = await accederPortailAction({ token: VALID_TOKEN });
-
-    expect("data" in result).toBe(true);
-    if (!("data" in result)) return;
-    expect(result.data.ok).toBe(true);
-  });
-
-  it("appelle setPortailCookie apres verification reussie", async () => {
-    await accederPortailAction({ token: VALID_TOKEN });
-
-    expect(mockSetPortailCookie).toHaveBeenCalledOnce();
-    expect(mockSetPortailCookie).toHaveBeenCalledWith(VALID_TOKEN);
-  });
-
-  it("retourne { error } si token invalide (longueur incorrecte)", async () => {
-    const result = await accederPortailAction({ token: "court" });
-
-    expect("error" in result).toBe(true);
-    expect(mockVerifierToken).not.toHaveBeenCalled();
-  });
-
-  it("retourne { error } si verifierToken retourne null", async () => {
-    mockVerifierToken.mockResolvedValue(null);
-
-    const result = await accederPortailAction({ token: VALID_TOKEN });
-
-    expect("error" in result).toBe(true);
-    if (!("error" in result)) return;
-    expect(result.error).toMatch(/invalid|expire|revoque/i);
-  });
-
-  it("ne pose pas le cookie si le token est invalide", async () => {
-    mockVerifierToken.mockResolvedValue(null);
-
-    await accederPortailAction({ token: VALID_TOKEN });
-
-    expect(mockSetPortailCookie).not.toHaveBeenCalled();
-  });
-});
 
 // ─────────────────────────────────────────────────────────────────────────────
 // quitterPortailAction
