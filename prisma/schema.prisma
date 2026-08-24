@@ -10906,6 +10906,13 @@ model PodcastRequest {
   companyName String @map("company_name") @db.VarChar(200)
   leaderName  String @map("leader_name") @db.Text
   email       String @db.Text
+  /// D5-5-04 — `email` est chiffre par `encryptPii` avec un IV ALEATOIRE : deux
+  /// chiffrements de la meme adresse different, donc `where: { email }` ne
+  /// correspond jamais. Empreinte HMAC deterministe et indexee, sans laquelle
+  /// ni l'export (art. 15) ni l'effacement (art. 17) ne peuvent atteindre la
+  /// ligne. Meme remede que `submissions.contact_email_hash` et
+  /// `job_applications.email_hash`. Nullable : l'historique n'en a pas.
+  emailHash   String? @map("email_hash") @db.VarChar(64)
   phone       String @db.Text
   city        String @db.VarChar(120)
   postalCode  String @map("postal_code") @db.VarChar(10)
@@ -10930,6 +10937,7 @@ model PodcastRequest {
   @@index([status])
   @@index([status, createdAt(sort: Desc)])
   @@index([createdAt(sort: Desc)])
+  @@index([emailHash])
   @@map("podcast_requests")
 }
 
