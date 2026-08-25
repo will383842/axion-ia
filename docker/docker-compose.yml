@@ -19,8 +19,21 @@ services:
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C.UTF-8"
       TZ: Europe/Paris
     ports:
-      # Host 5433 → container 5432 (un Postgres natif Windows occupe déjà 5432).
-      - "5433:5432"
+      # Host 5434 → container 5432.
+      # 5432 : occupé par un Postgres natif Windows.
+      # 5433 : occupé par `bookforge-postgres`, conteneur d'un projet SANS RAPPORT
+      #        qui tourne en permanence sur le poste de développement. Mesuré le
+      #        2026-08-25 : `Bind for 0.0.0.0:5433 failed: port is already allocated`,
+      #        et `docker ps -a` ne connaissait aucun conteneur `axion-ia-postgres`.
+      #        La pile de dev était donc INDÉMARRABLE — d'où des mois de recettes
+      #        d'écrans admin repoussées faute de base locale. (Le volume, lui,
+      #        portait de vieilles données E2E : la pile avait tourné AVANT que le
+      #        5433 ne soit pris. L'absence de conteneur ne prouvait donc pas
+      #        qu'elle n'avait jamais démarré — seulement qu'elle ne le pouvait
+      #        plus.) Le port est déplacé plutôt que d'arrêter le conteneur d'autrui.
+      # ⚠️ Tout changement ici doit être propagé à `.env.dev.example` ET au
+      #    `.env.local` de chaque poste (hors dépôt, donc jamais mis à jour tout seul).
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
@@ -37,7 +50,16 @@ services:
     # noeviction obligatoire pour BullMQ (sinon jobs perdus si memory full).
     # Le rate-limit reste safe : keys ont un TTL court (15min) donc la
     # memoire ne grossit pas dans des conditions normales.
-    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "noeviction"]
+    command:
+      [
+        "redis-server",
+        "--appendonly",
+        "yes",
+        "--maxmemory",
+        "256mb",
+        "--maxmemory-policy",
+        "noeviction",
+      ]
     ports:
       # Host 6381 → container 6379 (6379+6380 hôte déjà pris par WebFactory).
       - "6381:6379"
@@ -54,8 +76,8 @@ services:
     container_name: axion-ia-mailhog
     restart: unless-stopped
     ports:
-      - "2525:1025"  # SMTP (mappé sur 2525 pour matcher SMTP_PORT du .env)
-      - "8025:8025"  # UI web http://localhost:8025
+      - "2525:1025" # SMTP (mappé sur 2525 pour matcher SMTP_PORT du .env)
+      - "8025:8025" # UI web http://localhost:8025
 
 volumes:
   postgres_data:
