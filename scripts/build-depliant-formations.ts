@@ -428,16 +428,6 @@ const GENERALES = lignes("generale");
 const METIERS = lignes("metier");
 const SECTEURS = lignes("secteur");
 
-/** Les six raccourcis « je veux… » — repris de la page 7 du catalogue 48 p. */
-const OBJECTIFS = [
-  { veux: "Faire découvrir l'IA à toute l'équipe", vers: "IA pour bien commencer · 4 h" },
-  { veux: "Ancrer la pratique en une journée", vers: "IA pour les équipes · 1 j" },
-  { veux: "Automatiser les tâches répétitives", vers: "IA pour l'automatisation · 2 j" },
-  { veux: "Outiller une fonction (RH, vente, finance…)", vers: "Une formation par métier" },
-  { veux: "Parler la langue de votre secteur", vers: "Une formation par secteur" },
-  { veux: "Fédérer jusqu'à 50 personnes en 1 jour", vers: "Séminaire IA" },
-];
-
 /**
  * Les tâches de la page 2 — reprises de la page 4 du catalogue 48 p.
  *
@@ -921,19 +911,40 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
 
 .note-page3 { font-size:7pt; line-height:1.35; color:#6E645C; margin-top:2mm; font-style:italic; }
 
-.objectifs { margin-top:2mm; }
-.objectifs h3 {
-  font-size:7.6pt; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
-  color:${C.olive}; margin-bottom:2.5mm;
+/*
+ * LE BLOC OPCO DE LA PAGE 3.
+ *
+ * Il est ICI, et pas seulement au dos, parce que c'est ICI que sont les prix
+ * (demande Will, 2026-08-25). Une grille tarifaire lue sans son financement
+ * produit l'objection au moment exact où le lecteur découvre les montants ;
+ * la réponse doit être dans le même coup d'œil, pas trois pages plus loin.
+ *
+ * ⚠️ Il RÉPÈTE volontairement le bloc « 0 € / 100 % » de la page 4. Ce n'est
+ * pas un doublon : une fois le dépliant plié, la page 3 est à l'intérieur et
+ * la page 4 au dos — elles ne sont JAMAIS vues ensemble. Ce qui se lit comme
+ * une redite dans le PDF à plat est, sur le papier, le même argument servi
+ * aux deux moments où il compte.
+ *
+ * La place vient du bloc « par objectif », retiré : il proposait une seconde
+ * grille de lecture sur une page qui en portait déjà trois.
+ */
+.opco {
+  margin-top:4mm; background:${C.terracotta}; color:${C.blanc}; border-radius:2.5mm;
+  padding:4mm 5mm; display:flex; gap:5mm; align-items:center;
 }
-.obj-grille { display:grid; grid-template-columns:1fr 1fr; gap:1mm 5mm; }
-.obj {
-  display:flex; align-items:baseline; gap:2mm; font-size:8pt;
-  border-bottom:1px dotted rgba(94,108,85,.35); padding-bottom:.9mm;
+.opco-chiffre {
+  flex-shrink:0; text-align:center; padding-right:5mm;
+  border-right:1px solid rgba(255,255,255,.35);
 }
-.obj .veux { flex:1; color:#4A423C; }
-.obj .fl { color:${C.terracotta}; flex-shrink:0; }
-.obj .vers { font-weight:700; color:${C.encre}; text-align:right; }
+.opco-chiffre b {
+  display:block; font-size:26pt; line-height:.95; color:${C.blanc}; white-space:nowrap;
+}
+.opco-chiffre span {
+  display:block; font-size:6.4pt; font-weight:700; letter-spacing:.1em;
+  color:rgba(255,255,255,.9); margin-top:1.4mm; line-height:1.3;
+}
+.opco-txt > b { display:block; font-size:11pt; font-weight:700; margin-bottom:1.4mm; }
+.opco-txt p { font-size:8.2pt; line-height:1.42; color:rgba(255,255,255,.96); }
 
 /* ── Page 4 · tarifs, financement, contact ──────────────────────────────── */
 .surmesure { display:flex; gap:4.5mm; align-items:stretch; margin-bottom:4mm; }
@@ -1304,16 +1315,16 @@ function pageFormations(a: Actifs): string {
     <p class="note-page3"><b>Des portes d'entrée, pas un catalogue fermé</b> — le contenu sort de vos tâches
     réelles. Sur mesure possible, 4 h à 3 jours. Prix HT par groupe, pas par personne.</p>
 
-    <div class="objectifs">
-      <h3>Par objectif — « je veux… »</h3>
-      <div class="obj-grille">
-        ${OBJECTIFS.map(
-          (o) => `<div class="obj">
-            <span class="veux">${echapper(o.veux)}</span>
-            <span class="fl">${FLECHE}</span>
-            <span class="vers">${echapper(o.vers)}</span>
-          </div>`,
-        ).join("")}
+    <div class="opco">
+      <div class="opco-chiffre">
+        <b>100 %</b>
+        <span>PRIS EN CHARGE<br>POSSIBLE</span>
+      </div>
+      <div class="opco-txt">
+        <b>Ces prix, vous ne les paierez peut-être jamais.</b>
+        <p>Votre OPCO peut financer ces formations <b>jusqu'à 100 %</b> — vous avez déjà cotisé pour ça.
+        <b>Nous montons le dossier de A à Z</b>, vous n'avez qu'à signer. Et en subrogation, l'OPCO nous
+        règle directement : <b>vous n'avancez rien.</b></p>
       </div>
     </div>
   </div>
