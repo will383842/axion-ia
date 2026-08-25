@@ -609,10 +609,14 @@ h2.section {
 h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; letter-spacing:.06em; }
 
 /* ── Page 1 · couverture ────────────────────────────────────────────────── */
-.couv { background:${C.encre}; color:${C.creme}; }
-.couv-photo { position:absolute; top:0; left:0; width:100%; height:62mm; object-fit:cover; object-position:center 50%; }
+/* La hauteur du bandeau photo vit ICI, une seule fois : les regles de fond
+ * perdu la reprenaient en dur (66mm = 62+4) et ont donc silencieusement
+ * diverge quand la bande est passee a 50 mm — le fichier imprimeur aurait
+ * porte une photo plus haute que la version de lecture. */
+.couv { background:${C.encre}; color:${C.creme}; --h-photo:50mm; }
+.couv-photo { position:absolute; top:0; left:0; width:100%; height:var(--h-photo); object-fit:cover; object-position:center 50%; }
 .couv-voile {
-  position:absolute; top:0; left:0; width:100%; height:62mm;
+  position:absolute; top:0; left:0; width:100%; height:var(--h-photo);
   background:linear-gradient(to bottom, rgba(25,16,11,.55) 0%, rgba(25,16,11,.10) 30%,
                              rgba(25,16,11,.20) 72%, rgba(25,16,11,.95) 100%);
 }
@@ -622,7 +626,7 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
   position:absolute; top:10.5mm; right:12mm; background:${C.terracotta}; color:${C.blanc};
   border-radius:99px; padding:1.8mm 5mm; font-size:9pt; font-weight:700; letter-spacing:.14em;
 }
-.couv-titre { position:absolute; top:70mm; left:12mm; right:12mm; }
+.couv-titre { position:absolute; top:58mm; left:12mm; right:12mm; }
 .couv-sur {
   font-size:8pt; font-weight:700; letter-spacing:.24em; text-transform:uppercase;
   color:${C.sable}; margin-bottom:3mm;
@@ -640,11 +644,23 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
  * réponse est en grand et en terracotta. Mettre les deux au même corps
  * aurait produit un slogan ; les séparer produit une conversation.
  */
+/*
+ * ⚠️ LE CONSTAT DOIT SE VOIR. Il était en 14,5 pt sable : à côté d'un
+ * « Nous, si. » de 48 pt, il disparaissait — on lisait la réponse sans avoir
+ * lu la question, et le dialogue tombait à plat. Mon raisonnement initial
+ * (« le constat n'est pas la promesse, donc il s'efface ») confondait
+ * hiérarchie et effacement : dans une accroche en deux temps, le premier
+ * temps doit ÊTRE LU, sinon le second ne veut rien dire.
+ *
+ * Il passe donc à 25 pt en crème pleine. Il reste sous la réponse — qui est
+ * à 52 pt, en blanc et terracotta — mais il est désormais du même ordre de
+ * grandeur qu'elle. Rapport de corps ~1 : 2, contre 1 : 3,3 auparavant.
+ */
 .couv-amorce {
-  font-size:14.5pt; line-height:1.32; color:${C.sable}; font-weight:400;
-  margin-bottom:4mm; max-width:120mm;
+  font-size:25pt; line-height:1.22; color:${C.creme}; font-weight:400;
+  margin-bottom:5mm; max-width:172mm;
 }
-.couv-titre h1 { font-size:48pt; line-height:.98; font-weight:700; color:${C.blanc}; }
+.couv-titre h1 { font-size:52pt; line-height:.98; font-weight:700; color:${C.blanc}; }
 .couv-titre h1 em { font-style:italic; font-weight:400; color:${C.terracottaVif}; }
 .couv-sous { margin-top:5mm; font-size:10.5pt; color:${C.creme}; }
 
@@ -1038,7 +1054,7 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
 .planche-imp-int > .page:last-child .pied { right:-4mm; padding-right:20mm; }
 .planche-imp-int > .page.couv { overflow:visible; }
 .planche-imp-int > .page.couv .couv-photo,
-.planche-imp-int > .page.couv .couv-voile { top:-4mm; height:66mm; }
+.planche-imp-int > .page.couv .couv-voile { top:-4mm; height:calc(var(--h-photo) + 4mm); }
 .planche-imp-int > .page.couv .couv-pied { bottom:-4mm; height:11mm; }
 .planche-imp-int > .page:first-child.couv .couv-photo,
 .planche-imp-int > .page:first-child.couv .couv-voile,
