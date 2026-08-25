@@ -1,0 +1,11 @@
+-- `thumbs_down` fait 11 caracteres. La colonne en acceptait 10.
+--
+-- Depuis la creation de la table (20260521170000), TOUT vote negatif etait
+-- refuse par Postgres : `value too long for type character varying(10)`.
+-- `thumbs_up` (9 caracteres) passait. Le bouton « pouce vers le bas » n'a
+-- donc jamais rien enregistre, et la seule trace etait une exception Sentry.
+--
+-- Elargissement a 20 : sur Postgres >= 9.2, augmenter la longueur d'un
+-- VARCHAR ne reecrit pas la table (changement de catalogue seul), donc pas
+-- de verrou long sur `article_feedback`.
+ALTER TABLE "article_feedback" ALTER COLUMN "type" TYPE VARCHAR(20);

@@ -4469,7 +4469,9 @@ model ArticleFeedback {
   id        String   @id @default(cuid())
   articleId String   @map("article_id") @db.Uuid
   userId    String   @map("user_id") @db.VarChar(255)
-  type      String   @db.VarChar(10)
+  /// `thumbs_down` fait 11 caracteres : en VarChar(10), tout vote negatif
+  /// etait refuse par Postgres depuis la creation de la table.
+  type      String   @db.VarChar(20)
   comment   String?  @db.Text
   createdAt DateTime @default(now()) @map("created_at")
 
