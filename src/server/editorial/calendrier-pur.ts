@@ -73,6 +73,53 @@ export function lireAnnee(v: string | undefined, defaut: number): number {
   return Number.isFinite(n) && n >= ANNEE_MIN && n <= ANNEE_MAX ? n : defaut;
 }
 
+/**
+ * Lit une période « AAAA-MM » venue d'une URL.
+ *
+ * 🔴 Pourquoi cette fonction existe au lieu d'une regex écrite à l'appel.
+ *
+ * L'export du plan de production testait la période avec `/^d{4}-d{2}$/` —
+ * les deux antislashs manquaient. Cette expression ne reconnaît QUE la chaîne
+ * littérale « dddd-dd » : `?periode=2026-10` n'a jamais matché, le filtre de
+ * période n'a jamais été posé, et l'export sortait **tous les mois** en
+ * affichant « Toutes périodes » en tête. Un filtre qui ne filtre rien ET qui
+ * ne le dit pas est pire qu'un filtre absent : il fait croire au périmètre
+ * qu'on a demandé.
+ *
+ * Deux conséquences sur la forme retenue :
+ *   - la lecture vit dans un module PUR, donc sous test — la regex inline
+ *     d'un Route Handler n'était couverte par rien ;
+ *   - une période MALFORMÉE rend une erreur, elle n'est pas ignorée. Un
+ *     appelant qui reçoit `{ ok: false }` peut refuser en le disant, au lieu
+ *     de retomber silencieusement sur « tout ».
+ *
+ * Les bornes d'année sont celles de `lireAnnee` : une période que le
+ * calendrier ne sait pas afficher n'a pas de plan à produire.
+ */
+export type LecturePeriode =
+  { ok: true; annee: number; mois: number } | { ok: false; erreur: string };
+
+export function lirePeriodeMois(v: string): LecturePeriode {
+  const m = /^(\d{4})-(\d{2})$/.exec(v);
+  if (!m) {
+    return { ok: false, erreur: `Période « ${v} » : format attendu AAAA-MM.` };
+  }
+  const annee = Number(m[1]);
+  const mois = Number(m[2]);
+  if (mois < 1 || mois > 12) {
+    return { ok: false, erreur: `Période « ${v} » : le mois ${mois} n'existe pas.` };
+  }
+  if (annee < ANNEE_MIN || annee > ANNEE_MAX) {
+    return {
+      ok: false,
+      erreur:
+        `Période « ${v} » : l'année ${annee} sort du calendrier, qui va de ` +
+        `${ANNEE_MIN} à ${ANNEE_MAX}.`,
+    };
+  }
+  return { ok: true, annee, mois };
+}
+
 /** Vrai si la chaîne est une clé de jour « AAAA-MM-JJ » plausible. */
 export function estCleJour(v: string | undefined): v is string {
   return typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v);
