@@ -462,6 +462,26 @@ const TACHES = [
 // ────────────────────────────────────────────────────────────────────────────
 // GABARIT
 // ────────────────────────────────────────────────────────────────────────────
+/**
+ * La flèche, DESSINÉE et non composée.
+ *
+ * ⚠️ Fraunces ne contient ni « → », ni « × », ni « ≠ ». Le navigateur allait
+ * donc chercher un repli — mesuré au protocole CDP : 28 glyphes en Times New
+ * Roman pour les seules flèches, 2 en Georgia pour le « × » et le « ≠ ».
+ * Dans un dépliant dont tout l'argument typographique est « une seule
+ * famille », trois caractères empruntés à deux autres fontes se voient
+ * comme un accident — et à l'impression, on ne les rattrape pas.
+ *
+ * Les deux autres signes ont été remplacés par des mots. Celui-ci ne pouvait
+ * pas l'être : il porte le sens du tableau (avant / après). Il est donc tracé,
+ * en `currentColor`, ce qui le rend en plus solidaire de la couleur du texte
+ * qui l'entoure.
+ */
+const FLECHE =
+  '<svg class="fl-svg" viewBox="0 0 22 10" aria-hidden="true">' +
+  '<path d="M1 5h17M14.5 1.5 19 5l-4.5 3.5" fill="none" stroke="currentColor" ' +
+  'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
 function echapper(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -727,7 +747,9 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
 }
 .barre .tps { text-align:right; white-space:nowrap; }
 .barre .tps s { font-size:8pt; color:#8A7F76; }
-.barre .tps i { font-style:normal; font-size:8pt; color:${C.terracotta}; font-weight:700; margin:0 1mm; }
+.barre .tps i { font-style:normal; color:${C.terracotta}; margin:0 1.4mm; }
+/* Fleche vectorielle : elle remplace le caractere « → », absent de Fraunces. */
+.fl-svg { width:4.4mm; height:2mm; vertical-align:.2mm; }
 .barre .tps b { font-size:11.5pt; font-weight:700; color:${C.olive}; }
 
 /*
@@ -881,20 +903,20 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
 .seminaire .sem-p b { font-size:16pt; color:${C.terracottaVif}; }
 .seminaire .sem-p span { display:block; font-size:6.8pt; color:${C.sable}; margin-top:1mm; letter-spacing:.06em; }
 
-.note-page3 { font-size:7pt; line-height:1.4; color:#6E645C; margin-top:2.5mm; font-style:italic; }
+.note-page3 { font-size:7pt; line-height:1.35; color:#6E645C; margin-top:2mm; font-style:italic; }
 
-.objectifs { margin-top:3mm; }
+.objectifs { margin-top:2mm; }
 .objectifs h3 {
   font-size:7.6pt; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
   color:${C.olive}; margin-bottom:2.5mm;
 }
-.obj-grille { display:grid; grid-template-columns:1fr 1fr; gap:1.4mm 5mm; }
+.obj-grille { display:grid; grid-template-columns:1fr 1fr; gap:1mm 5mm; }
 .obj {
   display:flex; align-items:baseline; gap:2mm; font-size:8pt;
-  border-bottom:1px dotted rgba(94,108,85,.35); padding-bottom:1.2mm;
+  border-bottom:1px dotted rgba(94,108,85,.35); padding-bottom:.9mm;
 }
 .obj .veux { flex:1; color:#4A423C; }
-.obj .fl { color:${C.terracotta}; font-weight:700; }
+.obj .fl { color:${C.terracotta}; flex-shrink:0; }
 .obj .vers { font-weight:700; color:${C.encre}; text-align:right; }
 
 /* ── Page 4 · tarifs, financement, contact ──────────────────────────────── */
@@ -1131,7 +1153,7 @@ function pagePourquoi(a: Actifs): string {
     <div class="barre">
       <div class="nom">${echapper(t.t)}</div>
       <div class="piste"><div class="plein" style="width:${part}%"></div></div>
-      <div class="tps"><s>${echapper(t.a)}</s><i>→</i><b>${echapper(t.b)}</b></div>
+      <div class="tps"><s>${echapper(t.a)}</s><i>${FLECHE}</i><b>${echapper(t.b)}</b></div>
     </div>`;
   }).join("");
 
@@ -1272,7 +1294,7 @@ function pageFormations(a: Actifs): string {
         ${OBJECTIFS.map(
           (o) => `<div class="obj">
             <span class="veux">${echapper(o.veux)}</span>
-            <span class="fl">→</span>
+            <span class="fl">${FLECHE}</span>
             <span class="vers">${echapper(o.vers)}</span>
           </div>`,
         ).join("")}
@@ -1321,7 +1343,7 @@ function pageTarifs(a: Actifs): string {
         </div>
         <div class="sm-item">
           <span class="sm-num">02</span>
-          <div><b>Métier × secteur</b><p>Commercial dans le BTP ≠ commercial en immobilier.</p></div>
+          <div><b>Métier et secteur croisés</b><p>Un commercial dans le BTP ne travaille pas comme un commercial en immobilier.</p></div>
         </div>
         <div class="sm-item">
           <span class="sm-num">03</span>
@@ -1488,13 +1510,6 @@ async function verifierDebordements(page: import("playwright").Page): Promise<vo
 }
 
 /**
- * Enveloppe une page dans un support 216 × 303 mm avec ses 8 repères de coupe.
- *
- * Le fond perdu vaut 3 mm — la valeur demandée par Exaprint comme par
- * Vistaprint sur ce format. Les repères sont posés aux quatre coins, à
- * l'extérieur du trait de coupe.
- */
-/**
  * Planche A3 prête pour l'imprimeur : deux pages A4 accolées, plus le fond
  * perdu tout autour.
  *
@@ -1562,11 +1577,6 @@ async function main() {
   const htmlA3 = documentHtml(
     `<div class="planche">${p4}${p1}</div><div class="planche">${p2}${p3}</div>`,
   );
-
-  // Version imprimeur : 4 pages A4 séparées, chacune à 216 × 303 mm avec ses
-  // repères. Pages SÉPARÉES et non imposées : Vistaprint comme Exaprint
-  // imposent eux-mêmes à partir des pages du fichier — leur livrer une planche
-  // A3 déjà imposée ferait doublon et casserait leur gabarit.
 
   // ⚠️ Les aperçus HTML vont dans le RÉPERTOIRE TEMPORAIRE, jamais sous
   // `public/`. Ils y étaient au premier jet : or tout ce qui vit sous `public/`
