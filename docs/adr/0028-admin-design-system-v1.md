@@ -43,7 +43,7 @@ Constat Will :
 - **Radius** : 4/6/8/12 max (vs public 12-16).
 - **Shadows** : elevation 1/2/3/4 subtles, `0 1px 0 rgb(0 0 0 / 0.04)` à `0 12px 24px rgb(0 0 0 / 0.10)`.
 - **Light only** : pas de dark mode admin (cohérent doctrine éditoriale).
-- **Doctrine intouchable** : pas de noir pur (`#000`, `text-black`, `bg-black`), pas d'italique terracotta sur CTA primaire (signature éditoriale uniquement), pas d'emojis comme icônes (remplacer par `lucide-react`).
+- **Doctrine intouchable** : pas de noir pur (`#000`, `text-black`, `bg-black`), pas d'italique terracotta sur CTA primaire (signature éditoriale uniquement). ~~pas d'emojis comme icônes (remplacer par `lucide-react`)~~ — **clause levée le 2026-08-25, voir l'amendement en fin d'ADR**.
 
 ### 3. Primitives admin (≈ 25 composants)
 
@@ -160,3 +160,34 @@ Voir `_AUDIT/ADMIN-REFONTE-2026-05-17/IMPLEMENTATION-PLAN.md` (15 PRs équivalen
 ## Décision
 
 **Adopter le design system admin v1** comme défini ci-dessus, avec exécution autopilote selon les règles dures Will. Le STOP & ASK §6.4 du master prompt (validation Phase 2 par Will) est **explicitement remplacé** par la règle dure §3 du brief Will : autopilote sauf 4 cas extrêmes (scope > 200 routes, score Phase 1 < 350, régression non-réparable, dépendance npm > 30 KB gz). Ces 4 conditions ne sont pas remplies (116 routes < 200 ; 531.7/1000 > 350 ; pas de régression encore ; pas de nouvelle dépendance prévue). → **GO Phase 3** sans interruption.
+
+## Amendement 2026-08-25 — la clause anti-emoji est levée
+
+**Décidé par Will**, en connaissance de l'argument opposé, qui lui a été présenté
+avant la décision.
+
+Ce que la clause interdisait : l'emoji comme icône dans la console admin. Elle
+était outillée par trois gardes — `admin-emoji-ratchet.test.ts` (plafond global
+sur `src/app/[locale]/(admin)` + `src/components/admin` + deux fichiers SSOT
+nommés), une assertion dans `admin-labels.test.ts`, et un bloc de
+`session-parcours.spec.ts`. **Les trois sont retirés.**
+
+Les deux motifs d'origine restent vrais et sont consignés ici pour que la
+décision soit reprise en connaissance de cause si elle doit l'être un jour :
+
+1. le dessin, la chasse et la graisse d'un emoji dépendent du système et de la
+   police du poste — impossible à aligner sur une grille, rendu variable d'un
+   utilisateur à l'autre ;
+2. deux emojis peuvent ne différer **que par la couleur** (🔴 / 🟠), ce qui rend
+   l'information invisible en vision des couleurs déficiente. C'était le cas du
+   niveau d'alerte, l'information la plus urgente de la console.
+
+Ce qui NE change pas, et qui n'a jamais été une règle sur les emojis :
+**un pictogramme ne porte jamais seul une information.** L'état s'écrit en
+toutes lettres, la couleur s'accompagne d'une forme ou d'un mot (WCAG 1.4.1), et
+un glyphe décoratif se marque `aria-hidden`. C'est cette exigence-là que les
+tests conservés vérifient désormais, à la place du comptage d'emojis.
+
+Motif de la levée : les emojis sont voulus sur le **site public** (refonte de
+`/contact` du 2026-08-25), et Will a choisi de ne pas maintenir deux doctrines
+opposées de part et d'autre de la frontière admin/public.

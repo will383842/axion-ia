@@ -123,7 +123,7 @@ Vérifier que **tous** les skills `axionia-*` partagent :
 - Mêmes conventions de citation des fichiers projet (`docs/_DECISIONS-FINALES.md` plutôt que numéros de doc qui peuvent bouger).
 - Même structure de SKILL.md (titre, contexte, règles, exemples ✅/❌, anti-patterns, checklist finale).
 - Mêmes ancres pour les triggers (mots-clés FR + EN).
-- Aucun emoji décoratif (sauf marqueurs ✅/❌/⚠️ structurés).
+- Emojis autorisés (doctrine anti-emoji levée par Will le 2026-08-25) — à condition qu'un pictogramme ne porte JAMAIS seul une information : l'état s'écrit en toutes lettres, et un glyphe décoratif se marque `aria-hidden`.
 
 Annexe → `_AUDIT/01s-D-harmonie.md`.
 
@@ -181,7 +181,7 @@ Procédure :
    - Typographie (probable : Inter ou Geist + une serif pour les titres ?).
    - Spacing scale (4-8-12-16-24-32-48-64-96).
    - Motion principles (ease-out 200-300ms, `prefers-reduced-motion` strict).
-   - Anti-patterns Axion-IA (pas de gradients gratuits, pas de glassmorphism, 80 % blanc dominant, jamais d'emoji décoratif, jamais de stock photo).
+   - Anti-patterns Axion-IA (pas de gradients gratuits, pas de glassmorphism, 80 % blanc dominant, jamais de stock photo). L'emoji décoratif n'en fait PLUS partie : la doctrine a été levée par Will le 2026-08-25 (voir l'amendement de l'ADR 0028).
    - Photographic style (B&W ou desaturé léger pour humains, geometric abstract sinon).
 4. Mettre à jour `axionia-design` pour pointer vers ce `DESIGN.md` comme source unique des tokens.
 
