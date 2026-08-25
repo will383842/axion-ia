@@ -50,8 +50,26 @@ export { AdminBadge, AdminStatusBadge } from "./AdminBadge";
 export { AdminEtatBooleen } from "./AdminEtatBooleen";
 export { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 export type { AdminBreadcrumbItem } from "./AdminBreadcrumbs";
-export { AdminTabs } from "./AdminTabs";
-export type { AdminTabItem } from "./AdminTabs";
+// 🔴 2026-08-25, cahier D7-2 — CE RÉ-EXPORT DÉSIGNAIT LA MAUVAISE JUMELLE.
+//
+// `AdminTabs.tsx` existait à DEUX emplacements. Celui d'ici (`ui/AdminTabs.tsx`)
+// n'avait AUCUN appelant, n'était pas testé, et surtout ne portait AUCUN rôle
+// ARIA — ni `role="tablist"`, ni `role="tab"`, ni `aria-selected`, ni
+// `aria-controls`. L'autre (`admin/AdminTabs.tsx`) les porte tous les cinq, a
+// deux appelants réels dont les layouts rendent bien le `tabpanel` annoncé, et
+// porte son propre test.
+//
+// Le piège n'était pas la duplication : c'était que le chemin le plus NATUREL —
+// ce barrel — menait à la moins bonne des deux. Un
+// `import { AdminTabs } from "@/components/admin/ui"` aurait rendu des onglets
+// qu'un lecteur d'écran ne peut pas annoncer, en silence.
+//
+// La jumelle muette est supprimée (0 appelant). ⚠️ Sa seule capacité propre —
+// une prop `disabled` — n'est PAS reportée : elle n'avait aucun consommateur, et
+// l'ajouter serait introduire une fonctionnalité que personne n'a demandée. Dit
+// ici pour que ce soit une décision, pas un oubli.
+export { AdminTabs } from "../AdminTabs";
+export type { AdminTabItem } from "../AdminTabs";
 export { AdminConfirmDialog } from "./AdminConfirmDialog";
 export { AdminStatCard } from "./AdminStatCard";
 export { AdminPagination } from "./AdminPagination";
