@@ -587,7 +587,11 @@ export default async function SessionHubPage({ params }: PageProps) {
       />
 
       {/* ── En-tête de la session ─────────────────────────────────────────── */}
-      <section id="infos" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="infos"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Informations générales</h2>
         <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
           {/* Formation */}
@@ -722,13 +726,21 @@ export default async function SessionHubPage({ params }: PageProps) {
           question qu'on se pose en ouvrant un dossier — « où en est-il ? » —
           et le serveur la calculait déjà sans jamais la rendre ici. */}
       {parcours !== null ? (
-        <section id="checklist" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+        <section
+          id="checklist"
+          tabIndex={-1}
+          className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+        >
           <h2 className={sectionHeadCls}>Où en est ce dossier</h2>
           <ChecklistSession etapes={parcours.etapes} fait={parcours.fait} total={parcours.total} />
         </section>
       ) : null}
 
-      <section id="cycle-de-vie" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="cycle-de-vie"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Cycle de vie</h2>
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
           <SessionLifecycleButtons
@@ -745,7 +757,11 @@ export default async function SessionHubPage({ params }: PageProps) {
           crée une seconde session et laisse la première « Reportée » au
           registre. Voisiner avec les boutons de report ferait choisir le
           marteau-pilon pour une faute de frappe. */}
-      <section id="dates" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="dates"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Dates de déroulement</h2>
         <SessionDatesForm
           sessionId={id}
@@ -758,13 +774,21 @@ export default async function SessionHubPage({ params }: PageProps) {
       </section>
 
       {/* ── Lieu de déroulement (convention L.6353-1 · Qualiopi off.9) ────── */}
-      <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="lieu"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Lieu de déroulement</h2>
         <SessionLieuForm sessionId={id} initial={lieuValuesDepuisSession(trainingSession)} />
       </section>
 
       {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
-      <section id="formateur" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="formateur"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Formateur principal</h2>
         <AssignFormateurForm
           sessionId={id}
@@ -776,6 +800,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}
       <section
         id="inter-entreprises"
+        tabIndex={-1}
         className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
       >
         <h2 className={sectionHeadCls}>Inter-entreprises</h2>
@@ -793,6 +818,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       {preparationKit !== null && preparationKit.aPreparer ? (
         <section
           id="preparation-kit"
+          tabIndex={-1}
           className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
         >
           <PreparationKitSession
@@ -811,7 +837,11 @@ export default async function SessionHubPage({ params }: PageProps) {
       ) : null}
 
       {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
-      <section id="sous-pages" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="sous-pages"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Sous-pages</h2>
         <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
           <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
@@ -845,7 +875,11 @@ export default async function SessionHubPage({ params }: PageProps) {
        *         genererPortailAccesAction, revoquerPortailAccesAction.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section id="stagiaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="stagiaires"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Stagiaires</h2>
         <EnrollmentsSection
           sessionId={id}
@@ -869,7 +903,11 @@ export default async function SessionHubPage({ params }: PageProps) {
        * Affiche les DocumentGenere existants + lien de téléchargement PDF.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section id="documents" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="documents"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Documents</h2>
 
         {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
@@ -1036,7 +1074,11 @@ export default async function SessionHubPage({ params }: PageProps) {
        * (saisirReponsesQuestionnaireAction) par stagiaire.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section id="questionnaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+      <section
+        id="questionnaires"
+        tabIndex={-1}
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Questionnaires de satisfaction</h2>
         <QuestionnairesSection
           sessionId={id}

@@ -13,6 +13,7 @@
  */
 
 import type { AncreHub } from "./ancres";
+import { ID_ACTIONS_PAGE } from "@/lib/ancres-admin";
 
 export function AncresHubSession({ ancres }: { readonly ancres: readonly AncreHub[] }) {
   // Une barre d'un seul lien n'aide personne et prend une ligne : on s'abstient.
@@ -23,6 +24,20 @@ export function AncresHubSession({ ancres }: { readonly ancres: readonly AncreHu
       aria-label="Sections de cette session"
       className="mb-[var(--space-admin-6)] flex flex-wrap gap-[var(--space-admin-2)] border-b border-[color:var(--color-admin-border)] pb-[var(--space-admin-3)]"
     >
+      {/* 🔴 LIEN D'ÉVITEMENT, EN PREMIER FOCUSABLE.
+          Les boutons d'action du hub sont précédés de douze sections et de
+          cette barre : au clavier, les atteindre demandait une quinzaine de
+          tabulations. Il n'est visible qu'au focus — il ne coûte rien à la
+          souris et fait tout pour le clavier.
+          ⚠️ Le lien d'évitement GLOBAL de l'application ne convient pas ici :
+          il pointe le `<main>` public, qui sur la console CONTIENT la topbar et
+          la barre latérale. Il n'éviterait rien. */}
+      <a
+        href={`#${ID_ACTIONS_PAGE}`}
+        className="sr-only rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-accent)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-accent)] focus-visible:not-sr-only focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--color-admin-accent)]"
+      >
+        Aller aux actions
+      </a>
       {ancres.map((a) => (
         <a
           key={a.id}

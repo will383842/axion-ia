@@ -7,6 +7,7 @@
 // border-b mocha-soft, tokens --color-admin-* + --space-admin-*.
 
 import { cn } from "@/lib/utils";
+import { ID_ACTIONS_PAGE } from "@/lib/ancres-admin";
 
 interface AdminPageHeaderProps {
   title: string;
@@ -95,6 +96,18 @@ export function AdminPageHeader({
           // il a un sens ; en colonne il n'aurait servi qu'à empêcher
           // l'ajustement.
           <div
+            // 🔴 Cible du lien d'évitement « Aller aux actions ».
+            //
+            // Sans identifiant, aucun raccourci clavier ne pouvait atteindre
+            // les boutons de la page : sur le hub d'une session, ils sont
+            // précédés de douze sections et d'une barre de sommaire.
+            //
+            // `tabIndex` à -1 rend la zone atteignable PAR LE LIEN sans
+            // l'insérer dans l'ordre de tabulation — sinon on gagnerait un
+            // arrêt parasite sur CHAQUE page de la console, pour un service
+            // qui ne sert qu'à celles qui sont longues.
+            id={ID_ACTIONS_PAGE}
+            tabIndex={-1}
             className={cn(
               "flex flex-wrap items-center gap-[var(--space-admin-3,6px)]",
               "sm:shrink-0 sm:flex-nowrap",
