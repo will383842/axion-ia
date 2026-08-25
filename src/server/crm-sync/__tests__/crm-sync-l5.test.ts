@@ -26,6 +26,7 @@ const {
   jobApplication,
   calendlyEvent,
   customerReview,
+  podcastRequest,
   queueAdd,
   enqueueSpy,
   siteSettingUpsert,
@@ -50,6 +51,8 @@ const {
   jobApplication: { findMany: vi.fn() },
   calendlyEvent: { findMany: vi.fn() },
   customerReview: { findMany: vi.fn() },
+  // E33-004 : sixieme famille de capture, absente du filet jusqu'au 2026-08-22.
+  podcastRequest: { findMany: vi.fn() },
   queueAdd: vi.fn(),
   enqueueSpy: vi.fn(),
   siteSettingUpsert: vi.fn(),
@@ -64,6 +67,7 @@ vi.mock("@/lib/prisma", () => ({
     jobApplication,
     calendlyEvent,
     customerReview,
+    podcastRequest,
     siteSetting: {
       upsert: (...args: unknown[]) => siteSettingUpsert(...args),
     },
@@ -146,6 +150,7 @@ beforeEach(() => {
   jobApplication.findMany.mockResolvedValue([]);
   calendlyEvent.findMany.mockResolvedValue([]);
   customerReview.findMany.mockResolvedValue([]);
+  podcastRequest.findMany.mockResolvedValue([]);
 });
 
 afterEach(() => {
@@ -578,8 +583,10 @@ describe("alerte de file d'attente", () => {
   });
 });
 
-// ── Étape 0, ligne 12 (2026-08-18) — les cinq familles sont comparées ────────
-describe("réconciliation — parité sur les CINQ familles de capture", () => {
+// ── Étape 0, ligne 12 (2026-08-18) — les familles comparées ─────────────────
+// E33-004 (2026-08-22) : passées à SIX. `podcast_request` émettait sans être
+// jamais vérifiée — voir le test dédié plus bas.
+describe("réconciliation — parité sur les SIX familles de capture", () => {
   beforeEach(() => {
     process.env.CRM_SYNC_ENABLED = "true";
     process.env.CRM_SYNC_URL = "https://crm.test/api/internal/site-sync";
@@ -587,13 +594,18 @@ describe("réconciliation — parité sur les CINQ familles de capture", () => {
     outbox.findFirst.mockResolvedValue({ createdAt: new Date(Date.now() - 6 * 24 * 3600 * 1000) });
   });
 
-  it("le rapport porte les cinq familles, jamais moins", async () => {
+  it("le rapport porte les six familles, jamais moins", async () => {
     const rapport = await collectReconciliation();
+    // 🔴 La liste est écrite EN DUR, jamais dérivée de `CrmSyncFamily` : un
+    // test qui lirait le type mesurerait le type, pas le comportement — et
+    // c'est exactement le défaut E33-004 (une famille déclarée nulle part
+    // comparée) qui serait passé au vert.
     expect(rapport.families.map((f) => f.family).sort()).toEqual([
       "calendly_event",
       "customer_review",
       "job_application",
       "newsletter_subscriber",
+      "podcast_request",
       "submission",
     ]);
   });
@@ -630,5 +642,35 @@ describe("réconciliation — parité sur les CINQ familles de capture", () => {
     const famille = rapport.families.find((f) => f.family === "customer_review");
     expect(famille?.missingIds).toEqual(["site:customer_review:av-1"]);
     expect(rapport.totalMissing).toBe(1);
+  });
+
+  // 🔴 E33-004 — mesure du 2026-08-22 : la réconciliation comparait CINQ
+  // familles alors que le site en émet six. Une demande podcast perdue entre
+  // l'écriture métier et l'outbox n'était signalée par personne, et le rapport
+  // affichait « 0 manquant » — un filet qui rassure sans rien voir.
+  it("podcast : une demande sans ligne d'outbox est un manquant (référence site:podcast_request:…)", async () => {
+    podcastRequest.findMany.mockResolvedValue([{ id: "pod-1" }, { id: "pod-2" }]);
+    outbox.findMany.mockResolvedValue([{ subjectRef: "site:podcast_request:pod-1" }]);
+
+    const rapport = await collectReconciliation();
+    const famille = rapport.families.find((f) => f.family === "podcast_request");
+
+    expect(famille).toBeDefined();
+    expect(famille?.sources).toBe(2);
+    expect(famille?.emitted).toBe(1);
+    // La référence attendue est EXACTEMENT celle qu'émet
+    // `src/features/podcast-request/actions.ts` : `site:podcast_request:<id>`.
+    // Un préfixe divergent rendrait 100 % de manquants — bruit permanent qui
+    // finirait par faire ignorer l'alerte.
+    expect(famille?.missingIds).toEqual(["site:podcast_request:pod-2"]);
+    expect(famille?.universe).toBe("business");
+
+    // La fenêtre porte sur `createdAt` : `PodcastRequest` n'a pas de colonne de
+    // soumission distincte, et `handledAt` (traitement interne) exclurait les
+    // demandes encore `new` — celles-là mêmes qu'un défaut de synchro perdrait.
+    const appel = podcastRequest.findMany.mock.calls.at(-1)?.[0] as {
+      where: Record<string, unknown>;
+    };
+    expect(Object.keys(appel.where)).toEqual(["createdAt"]);
   });
 });

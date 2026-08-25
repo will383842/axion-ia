@@ -41,7 +41,12 @@ vi.mock("@/lib/security/email-hash", () => ({
 }));
 
 import { emitOutboxRow, signBody } from "../emit";
-import { syncCandidateToCrm, syncFormSubmissionToCrm, normalizeSiren } from "../index";
+import {
+  syncCandidateToCrm,
+  syncFormSubmissionToCrm,
+  syncVivierOppositionToCrm,
+  normalizeSiren,
+} from "../index";
 import { CRM_FORM_TYPES } from "../types";
 import { UNIFIED_CONTACT_TYPES } from "@/lib/schemas/unified-contact-schema";
 import { sweepCrmSyncOutbox } from "@/server/queue/workers/crm-sync-worker";
@@ -60,6 +65,18 @@ afterEach(() => {
   process.env = { ...OLD_ENV };
   vi.unstubAllGlobals();
 });
+
+/**
+ * Aplati un espion de `console.error` en UNE chaîne inspectable.
+ * Les traces de ce module passent leurs identifiants en objet (dernier
+ * argument) : sans `JSON.stringify`, `subject_ref` se lirait `[object Object]`
+ * et une garde qui le cherche serait rouge pour une mauvaise raison.
+ */
+function lignesDeJournal(espion: { mock: { calls: unknown[][] } }): string {
+  return espion.mock.calls
+    .map((args) => args.map((a) => (typeof a === "string" ? a : JSON.stringify(a))).join(" "))
+    .join("\n");
+}
 
 function enableSync(): void {
   process.env.CRM_SYNC_ENABLED = "true";
@@ -122,6 +139,75 @@ describe("inertie (drapeaux à OFF)", () => {
 
     expect(createMock).toHaveBeenCalledTimes(1);
     expect(createMock.mock.calls[0]?.[0]?.data?.universe).toBe("vivier");
+  });
+
+  /**
+   * E31-003 — l'abandon d'une OPPOSITION n'a pas le droit d'être muet.
+   *
+   * Mesuré le 2026-08-22 : `syncVivierOppositionToCrm()` force l'univers à
+   * `vivier`, et le verrou candidats rendait alors `null` SANS un mot. Drapeau
+   * maître ON + flux candidats OFF est un état nominal et durable : dans cet
+   * état, une opposition — un droit qui s'exerce — disparaissait sans laisser
+   * de quoi la rejouer, la personne voyant une page de confirmation.
+   *
+   * Cette garde ne dit RIEN sur la transmission elle-même (arbitrage ouvert,
+   * il appartient au contrat d'ingestion du CRM) : elle inspecte uniquement le
+   * fait que l'abandon est journalisé, avec de quoi retrouver l'événement.
+   */
+  it("E31-003 — journalise l'opposition vivier abandonnée par le verrou candidats", async () => {
+    enableSync();
+    delete process.env.CRM_SYNC_CANDIDATES_ENABLED;
+
+    const journal = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      await syncVivierOppositionToCrm({
+        subjectRef: "site:job_application:E31-003",
+        person: { email: "oppose@example.invalid" },
+        consent: { version: "careers-v2-2026-08-13" },
+      });
+
+      const trace = lignesDeJournal(journal);
+
+      expect(
+        trace.includes("opposition vivier NON transmise"),
+        "E31-003 : le verrou `CRM_SYNC_CANDIDATES_ENABLED` abandonne à nouveau " +
+          "une opposition au vivier SANS rien journaliser — elle est perdue et " +
+          "personne ne peut la rejouer après la bascule. GESTE : rétablir le " +
+          '`console.error` du chemin `event_type === "opt_out"` dans ' +
+          "`src/server/crm-sync/enqueue.ts` (verrou d'inertie).",
+      ).toBe(true);
+
+      expect(
+        trace.includes("site:job_application:E31-003"),
+        "E31-003 : l'abandon est journalisé mais SANS `subject_ref` — une trace " +
+          "qui ne nomme pas la personne concernée ne permet pas de rejouer " +
+          "l'opposition. GESTE : joindre `{ event_id, subject_ref }` au " +
+          "`console.error` de `src/server/crm-sync/enqueue.ts`.",
+      ).toBe(true);
+
+      // …et le silence revient quand le verrou s'ouvre, sinon la garde ci-dessus
+      // serait verte pour une mauvaise raison (« ça journalise toujours »).
+      journal.mockClear();
+      createMock.mockClear();
+      process.env.CRM_SYNC_CANDIDATES_ENABLED = "true";
+
+      await syncVivierOppositionToCrm({
+        subjectRef: "site:job_application:E31-003",
+        person: { email: "oppose@example.invalid" },
+        consent: { version: "careers-v2-2026-08-13" },
+      });
+
+      expect(createMock).toHaveBeenCalledTimes(1);
+      expect(
+        lignesDeJournal(journal).includes("opposition vivier NON transmise"),
+        "E31-003 : le flux candidats est OUVERT et l'opposition part bien au CRM, " +
+          "mais la trace d'abandon est quand même émise — elle devient du bruit " +
+          "et ne veut plus rien dire. GESTE : garder le `console.error` DANS la " +
+          "branche du verrou, dans `src/server/crm-sync/enqueue.ts`.",
+      ).toBe(false);
+    } finally {
+      journal.mockRestore();
+    }
   });
 
   it("le balayage ne touche pas la base quand le drapeau est à OFF", async () => {

@@ -44,8 +44,15 @@ vi.mock("@/server/queue/queues", () => ({
 
 // Les PII sont chiffrées at-rest : dans les tests, l'identité est la plus
 // simple des transformations réversibles.
+//
+// E31-010 — `decryptPii` doit pouvoir ÉCHOUER ici : c'est exactement le cas que
+// le constat décrit (clé tournée, chiffré corrompu), et une fonction figée ne
+// permettrait pas de l'atteindre. D'où un `vi.fn` qui porte l'implémentation
+// par défaut — `vi.clearAllMocks()` n'efface que les appels, pas elle.
+const decryptPiiMock = vi.fn((value: string | null) => value);
+
 vi.mock("@/lib/pii-crypto", () => ({
-  decryptPii: (value: string | null) => value,
+  decryptPii: (value: string | null) => decryptPiiMock(value),
   encryptPii: (value: string | null) => value,
 }));
 
@@ -419,6 +426,64 @@ describe("enregistrement de l'opposition", () => {
       ok: false,
       reason: "internal",
     });
+  });
+
+  // E31-010 (S2) — jusqu'au 2026-08-22, une adresse que `decryptPii` refusait
+  // de rendre faisait sauter À LA FOIS le registre de preuve et la propagation
+  // au CRM, et la fonction répondait quand même `ok: true`. La perte était
+  // totale et muette : aucune trace, aucun compteur, aucun signal au visiteur.
+  it("E31-010 — une adresse illisible pose le drapeau, le DIT, et ne se perd plus en silence", async () => {
+    const erreurs = vi.spyOn(console, "error").mockImplementation(() => {});
+    decryptPiiMock.mockImplementation(() => {
+      throw new Error("clé de chiffrement tournée");
+    });
+
+    try {
+      const result = await recordVivierOpposition("app-1");
+
+      // 1. LE DROIT EST EXERCÉ QUAND MÊME. Le drapeau se pose AVANT tout
+      //    signalement : refuser l'opposition parce qu'on n'a pas su lire
+      //    l'adresse punirait la personne d'un défaut qui est le nôtre.
+      expect(updateManyMock).toHaveBeenCalledTimes(1);
+      expect(updateManyMock.mock.calls[0]?.[0]?.data).toEqual({
+        vivierOpposedAt: expect.any(Date),
+      });
+
+      // 2. LE RÉSULTAT DIT LA DÉGRADATION. C'est ce champ, et lui seul, qui
+      //    distingue une opposition complète d'une opposition à moitié faite.
+      expect(result).toEqual({
+        ok: true,
+        alreadyOpposed: false,
+        applications: 1,
+        degraded: true,
+      });
+
+      // 3. LE SILENCE A CESSÉ, et le journal nomme la candidature — sans quoi
+      //    on saurait qu'il manque quelque chose sans savoir chez qui.
+      expect(erreurs).toHaveBeenCalledTimes(1);
+      expect(String(erreurs.mock.calls[0]?.[0])).toContain("DÉGRADÉE");
+      expect(erreurs.mock.calls[0]?.[1]).toMatchObject({ applicationId: "app-1" });
+
+      // 4. TÉMOIN DU MANQUE : c'est bien la preuve et le CRM qui sautent. Sans
+      //    ces deux lignes, la garde certifierait une dégradation qu'elle
+      //    n'aurait pas constatée.
+      expect(consentCreateMock).not.toHaveBeenCalled();
+      expect(outboxCreateMock).not.toHaveBeenCalled();
+    } finally {
+      decryptPiiMock.mockImplementation((value: string | null) => value);
+      erreurs.mockRestore();
+    }
+  });
+
+  // TÉMOIN INVERSE : le cas nominal ne porte PAS `degraded`. Sans lui, un
+  // correctif qui marquerait TOUTES les oppositions comme dégradées passerait
+  // pour vert, et le drapeau ne distinguerait plus rien.
+  it("E31-010 — TÉMOIN : une adresse lisible ne rend aucun `degraded`", async () => {
+    const result = await recordVivierOpposition("app-1");
+
+    expect(result).toEqual({ ok: true, alreadyOpposed: false, applications: 2 });
+    expect(consentCreateMock).toHaveBeenCalled();
+    expect(outboxCreateMock).toHaveBeenCalled();
   });
 });
 

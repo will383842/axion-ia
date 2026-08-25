@@ -60,7 +60,7 @@ const MAX_SOURCES_PER_FAMILY = 2000;
 const MAX_REPORTED_IDS = 20;
 
 /**
- * Les cinq familles de capture du site qui émettent vers le CRM.
+ * Les SIX familles de capture du site qui émettent vers le CRM.
  *
  * Étape 0, ligne 12 (2026-08-18) : la réconciliation ne comparait que les
  * formulaires et les candidatures — le critère de PARITÉ du cahier des charges
@@ -68,9 +68,25 @@ const MAX_REPORTED_IDS = 20;
  * familles ») était mesuré sur deux familles sur cinq. Calendly, newsletter et
  * avis rejoignent la comparaison ; chacune avec SA condition d'émission (un
  * enregistrement qui, par construction, n'émet pas n'est pas un manquant).
+ *
+ * 🔴 E33-004, mesuré le 2026-08-22 : il en manquait une SIXIÈME. Les demandes
+ * podcast émettent bel et bien (`src/features/podcast-request/actions.ts`,
+ * `syncFormSubmissionToCrm({ subjectRef: "site:podcast_request:…" })`) mais
+ * aucun `compareFamily` ne les couvrait : le filet ne voyait pas passer les
+ * leads venus des QR des flyers papier. Un filet muet sur une famille est pire
+ * qu'un filet absent — il donne le rapport « 0 manquant » qui rassure.
+ *
+ * Toute famille ajoutée ici DOIT recevoir son `compareFamily` ci-dessous ; la
+ * garde `réconciliation — parité sur les SIX familles` compare la liste rendue
+ * par le rapport à cette union et rougit si l'un des deux avance seul.
  */
 export type CrmSyncFamily =
-  "submission" | "job_application" | "calendly_event" | "newsletter_subscriber" | "customer_review";
+  | "submission"
+  | "job_application"
+  | "calendly_event"
+  | "newsletter_subscriber"
+  | "customer_review"
+  | "podcast_request";
 
 export interface ReconcileFamilyReport {
   family: CrmSyncFamily;
@@ -107,6 +123,7 @@ const FAMILY_LABELS: Record<CrmSyncFamily, string> = {
   calendly_event: "Rendez-vous Calendly (invité identifié)",
   newsletter_subscriber: "Newsletter (inscriptions confirmées)",
   customer_review: "Avis clients",
+  podcast_request: "Demandes de podcast (page /podcast + QR flyers)",
 };
 
 /**
@@ -256,6 +273,28 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
       until,
       loadIds: (from, to) =>
         prisma.customerReview.findMany({
+          where: { createdAt: { gte: from, lt: to } },
+          select: { id: true },
+          orderBy: { createdAt: "asc" },
+          take: MAX_SOURCES_PER_FAMILY,
+        }),
+    }),
+    // 🔴 E33-004 — la sixième famille, ajoutée le 2026-08-22.
+    // `createdAt` et non `handledAt` : `PodcastRequest` n'a pas de colonne de
+    // soumission distincte (cf. `prisma/schema.prisma`, modèle PodcastRequest),
+    // et `handledAt` est l'horodatage du TRAITEMENT interne — le prendre pour
+    // borne exclurait de la fenêtre toute demande encore `new`, c'est-à-dire
+    // précisément celles qu'un défaut de synchro laisserait tomber.
+    // L'émission est INCONDITIONNELLE dans l'action (aucun garde-fou métier
+    // avant `syncFormSubmissionToCrm`) : toute demande créée dans la fenêtre
+    // doit avoir sa ligne d'outbox, sans exception à retrancher.
+    await compareFamily({
+      family: "podcast_request",
+      universe: "business",
+      since,
+      until,
+      loadIds: (from, to) =>
+        prisma.podcastRequest.findMany({
           where: { createdAt: { gte: from, lt: to } },
           select: { id: true },
           orderBy: { createdAt: "asc" },

@@ -53,5 +53,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return redirectTo(`status=fail&reason=${encodeURIComponent(result.reason)}`);
   }
 
-  return redirectTo(`status=ok&already=${result.alreadyOpposed ? "1" : "0"}`);
+  // E31-010 — `degraded` marque le cas où le drapeau a bien été posé mais où
+  // l'adresse ne s'est pas déchiffrée : ni ligne au registre de preuve, ni
+  // propagation au CRM. On le porte jusqu'à l'URL pour qu'il cesse d'être noyé
+  // dans un `status=ok` indistinct. La page de confirmation ne le rend pas
+  // encore : formuler ce que le visiteur doit lire dans ce cas est un arbitrage
+  // de rédaction, il revient à Will.
+  const degrade = result.degraded === true ? "&degraded=1" : "";
+
+  return redirectTo(`status=ok&already=${result.alreadyOpposed ? "1" : "0"}${degrade}`);
 }
