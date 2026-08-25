@@ -1,6 +1,6 @@
 "use client";
 // use-client: case enrichissement IA + feedback + useTransition pour la server action
-// genererTousSupportsAction (génère les 7 supports d'un coup).
+// genererTousSupportsAction (génère tous les supports d'un coup).
 /**
  * GenererTousSupportsButton — Génère en un clic les 7 types de supports d'une
  * formation (formateur, stagiaire, mémo, guide d'animation, exercices, grille éval…).
@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 
 export interface GenererTousSupportsButtonProps {
   formationId: string;
-  /** Server Action — génère les 7 supports. */
+  /** Server Action — génère tous les supports. */
   genererTousAction: (input: {
     formationId: string;
     enrichirIA?: boolean;
@@ -41,7 +41,7 @@ export function GenererTousSupportsButton({
       if ("error" in result) {
         setError(result.error);
       } else {
-        setSucces("Les 7 supports ont été (re)générés.");
+        setSucces("Tous les supports ont été (re)générés.");
         router.refresh();
       }
     });
@@ -50,7 +50,7 @@ export function GenererTousSupportsButton({
   return (
     <div className="mb-[var(--space-admin-5)] flex flex-wrap items-center gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)]">
       <button type="button" onClick={handleGenerer} disabled={isPending} className="admin-button">
-        {isPending ? "Génération…" : "Générer les 7 supports"}
+        {isPending ? "Génération…" : "Générer tous les supports"}
       </button>
       <label className="flex cursor-pointer items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
         <input

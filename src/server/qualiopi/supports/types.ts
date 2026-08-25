@@ -127,3 +127,29 @@ export interface SupportRenderInput {
     site: string;
   };
 }
+
+/**
+ * Les types que « Générer tous les supports » produit.
+ *
+ * ⚠️ NE PAS y ajouter `kit_formateur_imprime` : le kit n'est pas produit par le
+ * moteur, et `construireSupport` lève volontairement pour ce type. L'ajouter
+ * ici ferait échouer la génération complète.
+ *
+ * 🛑 NE PAS y ajouter `slides_formateur` ni `slides_stagiaire`. Décision de Will
+ * du 2026-07-15, réaffirmée le 2026-08-25 : le PowerPoint PROJETÉ pendant une
+ * formation n'est jamais fabriqué par le système. Il est réalisé à l'extérieur
+ * et téléversé, pour que Will garde la main sur le visuel et puisse le retoucher
+ * à tout moment — ce qu'un support généré ne permet pas commodément.
+ *
+ * Ils y ont figuré du 2026-07-07 (#268) au 2026-08-25 : la décision avait été
+ * écrite huit jours APRÈS la liste, et n'avait jamais été portée dans le code.
+ * « Générer tous les supports » écrasait donc en silence le visuel déposé.
+ * Le garde-fou est `tests/unit/qualiopi/le-ppt-projete-nest-jamais-genere.spec.ts`.
+ */
+export const TOUS_SUPPORT_TYPES: readonly SupportType[] = [
+  "livret_stagiaire",
+  "memo",
+  "guide_animation",
+  "exercices",
+  "grille_eval",
+];

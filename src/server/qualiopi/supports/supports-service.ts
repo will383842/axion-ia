@@ -366,26 +366,16 @@ export async function regenererSupport(input: {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// genererTousSupports — génération EN LOT des 7 supports d'une formation
+// genererTousSupports — génération EN LOT des supports d'une formation
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Les 7 types de supports produits pour une formation. */
-/**
- * Les types que « Générer tous les supports » produit.
- *
- * ⚠️ NE PAS y ajouter `kit_formateur_imprime` : le kit n'est pas produit par le
- * moteur, et `construireSupport` lève volontairement pour ce type. L'ajouter
- * ici ferait échouer la génération complète.
- */
-export const TOUS_SUPPORT_TYPES: readonly SupportType[] = [
-  "slides_formateur",
-  "slides_stagiaire",
-  "livret_stagiaire",
-  "memo",
-  "guide_animation",
-  "exercices",
-  "grille_eval",
-];
+// `TOUS_SUPPORT_TYPES` vit dans `./types` — module PUR, importable par une
+// garde de test sans tirer le runtime Next. Ré-exporté ici pour les appelants
+// historiques. ⚠️ `export … from` ne crée AUCUNE liaison locale : l'import
+// ci-dessous est indispensable, `genererTousSupports` s'en sert plus bas.
+import { TOUS_SUPPORT_TYPES } from "./types";
+
+export { TOUS_SUPPORT_TYPES } from "./types";
 
 export interface GenererTousSupportsResult {
   formationId: string;
@@ -394,7 +384,9 @@ export interface GenererTousSupportsResult {
 }
 
 /**
- * Génère (ou régénère) les 7 supports d'une formation, séquentiellement.
+ * Génère (ou régénère) les supports d'une formation, séquentiellement.
+ * Le nombre exact est celui de `TOUS_SUPPORT_TYPES` — ne PAS l'écrire en dur
+ * ailleurs : il a valu un libellé faux le jour où la liste a changé.
  * Un échec sur un type n'interrompt pas les autres (chaque type est isolé).
  * Idéal pour un bouton « Générer tous les supports » ou un batch multi-formations.
  *
