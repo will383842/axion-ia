@@ -670,10 +670,15 @@ function UnifiedContactFormBody({
           le bloc tient en ~190 px au lieu de ~480 px, ce qui suffit à faire
           remonter « Nom complet » dans le premier écran d'un téléphone. */}
       {!lockType ? (
-        {/* `min-w-0` est OBLIGATOIRE : un <fieldset> porte
-            `min-inline-size: min-content` par la feuille de style du navigateur et
-            refuse de rétrécir — sans lui, il pousse la page hors de l'écran sur un
-            téléphone étroit. Verrouillé par `formulaires-mobile-first.spec.ts`. */}
+        // `min-w-0` est OBLIGATOIRE : un <fieldset> porte
+        // `min-inline-size: min-content` par la feuille de style du navigateur et
+        // refuse de rétrécir — sans lui, il pousse la page hors de l'écran sur un
+        // téléphone étroit. Verrouillé par `formulaires-mobile-first.spec.ts`.
+        //
+        // ⚠️ Commentaire de LIGNE, pas `{/* … */}` : on est ici dans la branche
+        // d'un ternaire, donc en position d'EXPRESSION et non d'enfant JSX — une
+        // accolade y ouvre un littéral d'objet, et le parseur meurt sur le
+        // `<fieldset>` suivant (« Expected '</', got 'ident' »).
         <fieldset className="min-w-0 space-y-3">
           <legend className="text-fg mb-1.5 block text-[15px] font-bold sm:text-base">
             {t.typeLabel}
