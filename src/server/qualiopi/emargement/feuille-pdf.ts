@@ -34,7 +34,10 @@
 import { prisma } from "@/lib/prisma";
 import { parisDateISO, parisMinutesDuJour } from "@/server/qualiopi/presence/time";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
-import { fenetreDemiJournee } from "@/server/qualiopi/presence/repartition-distanciel";
+import {
+  fenetreDemiJournee,
+  demiJourneesDuJour,
+} from "@/server/qualiopi/presence/repartition-distanciel";
 
 export interface CaseEmargement {
   demiJournee: DemiJourneeLabel;
@@ -224,11 +227,12 @@ export async function construireFeuillePdf(
       : [];
 
     // Demi-journées réellement portées par cette journée, dans l'ordre.
-    const demiJournees: DemiJourneeLabel[] = [];
-    for (const dj of ["matin", "apres_midi"] as const) {
-      const f = fenetreDemiJournee(jour.heureDebut, jour.heureFin, dj);
-      if (f.finMin > f.debutMin) demiJournees.push(dj);
-    }
+    //
+    // 🔑 2026-08-25 — ce calcul vivait ICI en littéral, et la règle d'alerte
+    // « journée déclarée sans créneau » en avait besoin à l'identique. Il est
+    // devenu un SSOT (`demiJourneesDuJour`) : deux copies auraient divergé, et
+    // ce dépôt l'a payé quatre fois.
+    const demiJournees: DemiJourneeLabel[] = demiJourneesDuJour(jour.heureDebut, jour.heureFin);
     // 🔴 M4 — un créneau au grain « journee » (hérité d'un import distanciel,
     // préservé s'il porte une signature) était SIGNÉ mais rendu par des cases
     // vides, alors que l'ancrage le comptait : grille et ancrage se
