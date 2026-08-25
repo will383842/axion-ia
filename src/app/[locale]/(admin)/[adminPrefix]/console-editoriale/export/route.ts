@@ -19,6 +19,11 @@ import { prisma } from "@/lib/prisma";
 import { requirePermission } from "@/server/actions/editorial/_guards";
 import { dayKeyOfGridDate } from "@/lib/calendar-grid";
 import {
+  dispositionDemandee,
+  ENREGISTREMENT,
+  type DispositionFichier,
+} from "@/lib/content-disposition";
+import {
   lireAnnee,
   lireMois,
   bornesDuMois,
@@ -65,12 +70,27 @@ const LIMITE_PLAN = 2000;
 
 export const dynamic = "force-dynamic";
 
-/** En-têtes qui déclenchent un vrai téléchargement, pas un affichage. */
-function enTetes(nomFichier: string, type: string): HeadersInit {
+/**
+ * En-têtes de service d'un export.
+ *
+ * 🔴 `disposition` n'a PAS de valeur par défaut, et c'est délibéré.
+ *
+ * Cette fonction imposait `attachment` à tout le monde. Tant qu'elle ne
+ * servait que du CSV, du Markdown et du ZIP, c'était juste : un tableur
+ * s'enregistre, c'est son usage. Le PDF a changé la donne — une pièce qu'on
+ * ne peut pas OUVRIR ne s'imprime pas d'un `Ctrl+P`, il faut sortir du
+ * navigateur pour la lire. C'est le constat de l'audit blanc Qualiopi, et la
+ * garde `content-disposition.spec.ts` l'a rattrapé ici.
+ *
+ * Un paramètre obligatoire plutôt qu'un défaut : un défaut se reconduit sans
+ * qu'on y pense, et c'est exactement comme ça que `attachment` s'était figé
+ * partout. Ici, chaque appelant DIT ce qu'il veut.
+ */
+function enTetes(nomFichier: string, type: string, disposition: DispositionFichier): HeadersInit {
   return {
     "Content-Type": `${type}; charset=utf-8`,
     // Le nom est cité : sans cela, un nom à espace serait tronqué.
-    "Content-Disposition": `attachment; filename="${nomFichier}"`,
+    "Content-Disposition": `${disposition}; filename="${nomFichier}"`,
     // Un export est un instantané : il ne se met jamais en cache.
     "Cache-Control": "no-store, max-age=0",
   };
@@ -121,7 +141,7 @@ async function exporterCsv(annee: number, mois: number): Promise<NextResponse> {
   }));
 
   return new NextResponse(construireCsv(exportables), {
-    headers: enTetes(nomFichierCsv(annee, mois), "text/csv"),
+    headers: enTetes(nomFichierCsv(annee, mois), "text/csv", ENREGISTREMENT),
   });
 }
 
@@ -216,7 +236,7 @@ async function exporterSauvegarde(): Promise<NextResponse> {
   );
 
   return new NextResponse(serialiserSauvegarde(sauvegarde), {
-    headers: enTetes(nomFichierSauvegarde(genereeA), "application/json"),
+    headers: enTetes(nomFichierSauvegarde(genereeA), "application/json", ENREGISTREMENT),
   });
 }
 
@@ -294,6 +314,7 @@ async function exporterArchive(publicationId: string): Promise<NextResponse> {
     headers: enTetes(
       nomArchive(publication.refImport, publication.titreInterne),
       "application/zip",
+      ENREGISTREMENT,
     ),
   });
 }
@@ -311,6 +332,11 @@ async function exporterPlan(
   periode: string | null,
   format: "md" | "csv" | "pdf",
   seulementAProduire: boolean,
+  /**
+   * Ce que le navigateur doit faire du PDF. Lue de l'URL par l'appelant, pas
+   * décidée ici : la route est le seul endroit qui voit la requête.
+   */
+  dispositionPdf: DispositionFichier,
 ): Promise<NextResponse> {
   // Bornes de période. `periode` vaut « 2026-10 », ou rien pour tout.
   //
@@ -434,19 +460,23 @@ async function exporterPlan(
 
   if (format === "csv") {
     return new NextResponse(construireCsvPlan(plan), {
-      headers: enTetes(nom("csv"), "text/csv"),
+      headers: enTetes(nom("csv"), "text/csv", ENREGISTREMENT),
     });
   }
 
   if (format === "pdf") {
     const buffer = await rendrePlanEnPdf(plan, contexte);
+    // 🔑 `inline` par défaut : le plan s'ouvre dans un onglet et s'imprime
+    // d'un Ctrl+P. Forcer l'enregistrement obligerait à sortir du navigateur
+    // pour lire un document dont l'IMPRESSION est la raison d'être.
+    // `?dl=1` reste disponible pour l'archiver.
     return new NextResponse(new Uint8Array(buffer), {
-      headers: enTetes(nom("pdf"), "application/pdf"),
+      headers: enTetes(nom("pdf"), "application/pdf", dispositionPdf),
     });
   }
 
   return new NextResponse(construireMarkdown(plan, contexte), {
-    headers: enTetes(nom("md"), "text/markdown"),
+    headers: enTetes(nom("md"), "text/markdown", ENREGISTREMENT),
   });
 }
 
@@ -483,7 +513,14 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
     // Par defaut on ne sort QUE ce qui reste a faire : un plan de production
     // qui reliste les assets termines se relit mal et se coche deux fois.
     const seulementAProduire = params.get("statut") !== "tous";
-    return exporterPlan(params.get("asset"), params.get("periode"), format, seulementAProduire);
+    return exporterPlan(
+      params.get("asset"),
+      params.get("periode"),
+      format,
+      seulementAProduire,
+      // Lue ICI parce que c'est le seul endroit qui voit la requête.
+      dispositionDemandee(requete.url),
+    );
   }
 
   if (type === "csv") {

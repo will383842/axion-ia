@@ -13,7 +13,12 @@
 
 import { describe, it, expect } from "vitest";
 import React from "react";
-import { PlanProductionPdf, rendrePlanEnPdf, compterNonImprimables } from "./plan-production-pdf";
+import {
+  PlanProductionPdf,
+  rendrePlanEnPdf,
+  compterNonImprimables,
+  styles,
+} from "./plan-production-pdf";
 import {
   collectPdfText,
   collectPdfTextNormalized,
@@ -279,86 +284,106 @@ describe("PlanProductionPdf — les glyphes réellement imprimables", () => {
 });
 
 /**
- * Extrait le texte du PDF RENDU, page par page.
+ * Les `<Page>` de l'arbre, sous-arbres dépliés.
  *
- * ⚠️ L'extraction est APPROXIMATIVE, et c'est mesuré : pdfjs échoue parfois à
- * charger le sous-ensemble de police embarqué (« Cannot substitute the font
- * because of its name: QSJRRX+Manrope-Bold ») et remappe alors quelques
- * glyphes — on a vu « octobre » ressortir « octo8re » et « . » ressortir « / »
- * sur un document par ailleurs parfaitement imprimé.
- *
- * Les assertions faites sur ce texte restent donc GROSSIÈRES : présence d'un
- * témoin en capitales, chiffres de pagination, absence d'un artefact connu.
- * Le contenu fin se vérifie sur l'ARBRE, avant rendu, où rien n'est remappé.
+ * Même marche que `compterPages` : les composants fonction sont INVOQUÉS, car
+ * `Pied` en est un et son contenu n'existe pas avant l'appel.
  */
-async function texteDuPdf(buffer: Buffer): Promise<string[]> {
-  const { extractText, getDocumentProxy } = await import("unpdf");
-  const doc = await getDocumentProxy(new Uint8Array(buffer));
-  const { text } = await extractText(doc, { mergePages: false });
-  return (Array.isArray(text) ? text : [String(text)]).map((t) => t.replace(/\s+/g, " "));
+function deplier(node: React.ReactNode): React.ReactElement[] {
+  if (node === null || node === undefined || typeof node === "boolean") return [];
+  if (typeof node === "string" || typeof node === "number") return [];
+  if (Array.isArray(node)) return node.flatMap(deplier);
+  if (!React.isValidElement(node)) return [];
+
+  const element = node as React.ReactElement<Record<string, unknown>>;
+  if (typeof element.type === "function") {
+    const rendu = (element.type as (props: unknown) => React.ReactNode)(element.props);
+    return deplier(rendu);
+  }
+  return [element, ...deplier(element.props.children as React.ReactNode)];
 }
+
+/** Vrai si le sous-arbre porte un bloc `fixed` contenant un texte paginé. */
+function aUnPiedPagine(node: React.ReactNode): boolean {
+  const elements = deplier(node);
+  return elements.some(
+    (e) =>
+      (e.props as Record<string, unknown>).fixed === true &&
+      deplier((e.props as Record<string, unknown>).children as React.ReactNode).some(
+        (enfant) => typeof (enfant.props as Record<string, unknown>).render === "function",
+      ),
+  );
+}
+
+describe("PlanProductionPdf — le pied répété, sous garde", () => {
+  /**
+   * 🔴 La régression visée, et pourquoi elle se garde AINSI.
+   *
+   * MESURÉ le 2026-08-25 : avec un `lineHeight` sur le style de la `Page`,
+   * @react-pdf jette le pied `fixed` EN ENTIER — périmètre et pagination —
+   * dès qu'il contient un `<Text render={…}>`. Le composant est invoqué, ses
+   * styles sont justes, rien ne throw : le texte n'arrive simplement jamais
+   * dans le document produit.
+   *
+   * ⚠️ Ce défaut ne se voit NI sur l'arbre (le pied y est), NI sur un
+   * `expect(buffer).toStartWith("%PDF-")`. La première version de ce test
+   * extrayait donc le texte du binaire avec pdfjs — et c'était un mauvais
+   * instrument : sur un runner CI **sans polices système**, pdfjs ne sait
+   * substituer aucune des huit polices sous-ensemblées du document et rend un
+   * texte VIDE. Le test rougissait sur un PDF parfaitement imprimé. Un
+   * instrument qui ne mesure pas là où il tourne ne garde rien : il bloque.
+   *
+   * Deux gardes déterministes le remplacent, qui tiennent partout :
+   *   1. le style de `Page` ne porte AUCUN `lineHeight` — la cause exacte ;
+   *   2. chaque `<Page>` porte bien un pied `fixed` avec un texte paginé.
+   *
+   * Elles ne prouvent pas que l'encre arrive sur la feuille. Elles verrouillent
+   * la cause connue et la structure — et elles le disent, au lieu de laisser
+   * croire à une vérification de bout en bout qui n'a jamais tourné en CI.
+   */
+  it("🔴 le style de Page ne porte AUCUN lineHeight", () => {
+    expect(styles.page).not.toHaveProperty("lineHeight");
+  });
+
+  it("l'interligne est bien porté par les styles de TEXTE — témoin négatif", () => {
+    // Sans lui, supprimer tout `lineHeight` du fichier passerait aussi.
+    expect(styles.sousTitre).toHaveProperty("lineHeight");
+    expect(styles.segmentTexte).toHaveProperty("lineHeight");
+  });
+
+  it("🔴 CHAQUE page porte un pied fixe avec sa pagination", () => {
+    const arbre = (
+      <PlanProductionPdf
+        assets={[asset({ id: "v1", type: "video" }), asset({ id: "c1", type: "carrousel" })]}
+        contexte={CONTEXTE}
+      />
+    );
+    const pages = deplier(arbre).filter((e) => e.type === "PAGE");
+    expect(pages).toHaveLength(3); // couverture + vidéos + carrousels
+    pages.forEach((page, i) => {
+      expect(aUnPiedPagine(page), `page ${i + 1} sans son pied paginé`).toBe(true);
+    });
+  });
+
+  it("porte le périmètre du plan dans le pied — une feuille détachée le dit encore", () => {
+    const texte = collectPdfTextNormalized(
+      <PlanProductionPdf
+        assets={[asset({ id: "v1", type: "video" })]}
+        contexte={{ titre: "PERIMETRE-TEMOIN", periode: "Période 2026-10" }}
+      />,
+    );
+    expect(texte).toContain("PERIMETRE-TEMOIN");
+  });
+});
 
 describe("rendrePlanEnPdf — le binaire", () => {
   /**
-   * 🔴 La garde du pied de page, et le seul test qui pouvait l'attraper.
+   * Ce qui reste vérifié sur le document RENDU.
    *
-   * MESURÉ le 2026-08-25 : avec `lineHeight` sur le style de la `Page`,
-   * @react-pdf jette le pied `fixed` EN ENTIER — périmètre et numéro de page —
-   * dès qu'il contient un `<Text render={…}>`. Le composant est invoqué, ses
-   * styles sont justes, rien ne throw : le texte n'arrive simplement jamais
-   * dans le document.
-   *
-   * Aucun test d'arbre ne peut le voir : avant rendu, le pied EST là.
-   * `expect(buffer[0..4]).toBe("%PDF-")` ne le voit pas non plus. Il faut
-   * extraire le texte du binaire — c'est la leçon du « 1/440,00 € ».
+   * Volontairement grossier, et c'est la leçon apprise plus haut : tout ce qui
+   * demande de DÉCODER les polices embarquées dépend de l'environnement. Le
+   * nombre de pages, lui, se lit dans la structure du PDF et tient partout.
    */
-  it("🔴 répète le pied de page et sa pagination sur CHAQUE feuille", async () => {
-    const buffer = await rendrePlanEnPdf(
-      [asset({ id: "v1", type: "video" }), asset({ id: "c1", type: "carrousel" })],
-      { titre: "PERIMETRE-TEMOIN", periode: "Période 2026-10" },
-    );
-    const pages = await texteDuPdf(buffer);
-    expect(pages).toHaveLength(3); // couverture + vidéos + carrousels
-
-    pages.forEach((texte, i) => {
-      expect(texte, `page ${i + 1} sans son périmètre en pied`).toContain("PERIMETRE-TEMOIN");
-      expect(texte, `page ${i + 1} sans sa pagination`).toContain(`${i + 1} / 3`);
-    });
-  }, 30_000);
-
-  it("🔴 n'imprime aucun emoji en octets faux — il les retire et le DIT", async () => {
-    const buffer = await rendrePlanEnPdf(
-      [
-        asset({
-          id: "c1",
-          type: "carrousel",
-          libelle: "Carrousel du jeudi",
-          titrePost: "Post du 3 octobre \u{1F680}",
-          segments: [
-            {
-              ordre: 1,
-              role: "legende",
-              titre: null,
-              contenu: "Réponse en 5 slides. \u{1F447}",
-              prompt: null,
-              fait: false,
-            },
-          ],
-        }),
-      ],
-      CONTEXTE,
-    );
-    const texte = (await texteDuPdf(buffer)).join(" ");
-
-    // Les octets faux réellement observés avant le correctif : U+1F680 sortait
-    // « =€ » et U+1F447 sortait « =G ».
-    expect(texte).not.toContain("=€");
-    expect(texte).not.toContain("=G");
-    // …et le retrait est ANNONCÉ, avec son compte. Le témoin est réduit à ce
-    // que l'extraction rend fidèlement (chiffre + racine du mot).
-    expect(texte).toMatch(/2 caract/);
-  }, 30_000);
-
   it("rend un PDF non vide", async () => {
     const buffer = await rendrePlanEnPdf(
       [
@@ -383,6 +408,18 @@ describe("rendrePlanEnPdf — le binaire", () => {
     );
     expect(buffer.subarray(0, 5).toString("latin1")).toBe("%PDF-");
     expect(buffer.byteLength).toBeGreaterThan(2000);
+  }, 30_000);
+
+  it("🔑 ouvre bien une page par type DANS LE DOCUMENT PRODUIT, pas seulement dans l'arbre", async () => {
+    // Le découpage par type est la raison d'être du format : il se vérifie sur
+    // le PDF réel. La pagination se lit sans toucher aux polices.
+    const buffer = await rendrePlanEnPdf(
+      [asset({ id: "v1", type: "video" }), asset({ id: "c1", type: "carrousel" })],
+      CONTEXTE,
+    );
+    const { getDocumentProxy } = await import("unpdf");
+    const doc = await getDocumentProxy(new Uint8Array(buffer));
+    expect(doc.numPages).toBe(3);
   }, 30_000);
 });
 

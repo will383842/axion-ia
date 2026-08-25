@@ -146,7 +146,16 @@ export function compterNonImprimables(assets: readonly AssetPlan[]): number {
   return n;
 }
 
-const styles = StyleSheet.create({
+/**
+ * 🔴 EXPORTÉ pour être mis sous garde.
+ *
+ * `plan-production-pdf.spec.tsx` vérifie que `page` ne porte AUCUN
+ * `lineHeight` — voir le commentaire du style lui-même. Cette régression-là
+ * est invisible sur l'arbre (le pied y EST) et invisible sur un
+ * `expect(buffer).toStartWith("%PDF")`. La seule façon de la verrouiller sans
+ * dépendre d'un extracteur de texte est de regarder le style directement.
+ */
+export const styles = StyleSheet.create({
   /**
    * 🔴 PAS de `lineHeight` ici — et ce n'est pas un oubli.
    *

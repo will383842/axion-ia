@@ -332,17 +332,29 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
           */}
           <div className="flex flex-wrap gap-2">
             {PLANS.map((p) => (
-              <span key={`plan-${p.cle}`} className="inline-flex">
+              // 🔴 Deux boutons VOISINS, pas un pavé accolé.
+              //
+              // La première version les fusionnait avec `rounded-r-none` /
+              // `rounded-l-none` et un `-ml-px`. Ces trois utilitaires ne
+              // peignaient RIEN : `.admin-button-secondary` vit hors couche et
+              // bat `utilities`. Les boutons n'ont jamais été accolés — le
+              // code décrivait une jonction que le rendu n'a jamais eue, et
+              // seule la garde `admin-design-tokens` l'a vu.
+              //
+              // Les fusionner pour de bon demanderait un modificateur dans
+              // `admin.css`. Deux boutons dans le même groupe se lisent aussi
+              // bien, et n'ajoutent aucune surface au système de design.
+              <span key={`plan-${p.cle}`} className="inline-flex gap-1">
                 <a
                   href={`${base}/export?type=plan&asset=${p.cle}&format=md`}
-                  className="admin-button-secondary admin-button-sm rounded-r-none"
+                  className="admin-button-secondary admin-button-sm"
                 >
                   {p.libelle}
                 </a>
                 <a
                   href={`${base}/export?type=plan&asset=${p.cle}&format=pdf`}
                   aria-label={`${p.libelle} — PDF à imprimer`}
-                  className="admin-button-secondary admin-button-sm -ml-px rounded-l-none"
+                  className="admin-button-secondary admin-button-sm"
                 >
                   PDF
                 </a>
