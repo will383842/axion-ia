@@ -34,6 +34,10 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  dossierDeLaLettre,
+  retenirUneLettreParDossier,
+} from "@/server/formateur/lettres-par-dossier";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import { partiesRequisesPour, circuitPour } from "./parties-requises";
@@ -245,6 +249,48 @@ type Lecteur =
   { pourPartie: "formateur"; trainerId: string } | { pourPartie: "axionia"; role: string };
 
 /**
+ * LA règle de mandat, en un seul endroit.
+ *
+ * L'ancre directe `trainerId` PRIME quand elle existe (pièces émises depuis le
+ * 2026-08-01, lettres-cadre comprises) : c'est elle que le générateur a
+ * imprimée. À défaut, le résolveur de session couvre les pièces legacy.
+ * `null` au bout du compte = personne d'identifiable — la pièce doit être
+ * régénérée, pas signée.
+ *
+ * Recopiée aux quatre endroits qui en dépendent, elle aurait fini par diverger :
+ * l'un des écrans aurait alors proposé un bouton que l'action refuse à coup sûr.
+ */
+function mandataireDeLaLettre(piece: PieceLue): string | null {
+  return (
+    piece.trainerId ??
+    (piece.session === null
+      ? null
+      : resolvePrincipalTrainerId({
+          formateurPrincipalId: piece.session.formateurPrincipalId,
+          coFormateurs: piece.session.coFormateurs,
+        }))
+  );
+}
+
+/**
+ * Attelle à chaque pièce son DOSSIER et son MANDATAIRE, pour la règle pure.
+ *
+ * Partagée par les deux entrées : c'est elle qui garantit que l'organisme
+ * contresigne exactement ce que le formateur a sous les yeux.
+ */
+function candidatesDepuis(pieces: readonly PieceLue[]) {
+  return pieces.map((piece) => ({
+    piece,
+    dossier: dossierDeLaLettre({
+      sessionId: piece.session?.id ?? null,
+      clePeriodeCadre: cleLettreCadre(piece.metadata),
+      pieceId: piece.id,
+    }),
+    mandataireId: mandataireDeLaLettre(piece),
+  }));
+}
+
+/**
  * Le formateur voit les lettres de mission qui LE nomment.
  *
  * Le plan situe cet écran sur l'accueil de l'espace formateur, pas sur une page
@@ -311,46 +357,20 @@ export async function lireLettresMissionDuFormateur(
   const identite = await getOrganismeIdentite();
   const lecteur: Lecteur = { pourPartie: "formateur", trainerId };
 
-  // 🔴 Une seule lettre par session : la PLUS RÉCENTE fait foi en cas de
-  // réémission. Les précédentes restent en base avec leurs signatures — une
-  // preuve ne disparaît pas parce qu'une pièce a été réémise — mais les
-  // afficher côte à côte ferait signer la périmée aussi souvent que la bonne.
-  const retenues = new Set<string>();
-  const etats: EtatSignatureLettreMission[] = [];
-  for (const piece of pieces as unknown as PieceLue[]) {
-    if (piece.session === null) {
-      // Lettre-CADRE. Le mandat est l'ancre directe — déjà filtrée en SQL,
-      // revérifiée ici (le pré-filtre n'est jamais la règle).
-      if (piece.trainerId === null || piece.trainerId !== trainerId) continue;
-      // Une réémission de la MÊME période remplace la précédente à l'écran
-      // (même règle « la plus récente fait foi » que par session) ; deux
-      // périodes différentes coexistent — ce sont deux mandats distincts.
-      // Métadonnée illisible → la pièce reste visible, seule (clé = son id).
-      const cle = `cadre:${cleLettreCadre(piece.metadata) ?? piece.id}`;
-      if (retenues.has(cle)) continue;
-      retenues.add(cle);
-      etats.push(construireEtat(piece, lecteur, identite.raisonSociale));
-      continue;
-    }
-    if (retenues.has(piece.session.id)) continue;
-    retenues.add(piece.session.id);
-
-    // ⚠️ Le pré-filtre SQL laisse passer les co-formateurs et les assistants :
-    // ils sont membres de la session sans être le mandataire que la lettre
-    // nomme. On ne leur montre pas la pièce du tout — afficher un mandat qui
-    // désigne quelqu'un d'autre n'a aucune utilité pour eux et expose le nom du
-    // formateur principal à qui n'a pas à le connaître par ce canal.
-    const mandataire =
-      piece.trainerId ??
-      resolvePrincipalTrainerId({
-        formateurPrincipalId: piece.session.formateurPrincipalId,
-        coFormateurs: piece.session.coFormateurs,
-      });
-    if (mandataire === null || mandataire !== trainerId) continue;
-
-    etats.push(construireEtat(piece, lecteur, identite.raisonSociale));
-  }
-  return etats;
+  // 🔴 Le MANDAT d'abord, la déduplication par dossier ensuite — cf.
+  // `lettres-par-dossier.ts`. L'ordre inverse laissait la lettre d'un autre
+  // mandataire consommer la clé de la session et effacer celle du lecteur.
+  //
+  // ⚠️ Le pré-filtre SQL laisse passer les co-formateurs et les assistants : ils
+  // sont membres de la session sans être le mandataire que la lettre nomme. On
+  // ne leur montre pas la pièce du tout — afficher un mandat qui désigne
+  // quelqu'un d'autre n'a aucune utilité pour eux et expose le nom du formateur
+  // principal à qui n'a pas à le connaître par ce canal.
+  const retenues = retenirUneLettreParDossier(
+    candidatesDepuis(pieces as unknown as PieceLue[]),
+    trainerId,
+  );
+  return retenues.map((c) => construireEtat(c.piece, lecteur, identite.raisonSociale));
 }
 
 /**
@@ -400,30 +420,14 @@ export async function lireLettresMissionConsoleDuFormateur(
   const identite = await getOrganismeIdentite();
   const lecteur: Lecteur = { pourPartie: "axionia", role };
 
-  const retenues = new Set<string>();
-  const etats: EtatSignatureLettreMission[] = [];
-  for (const piece of pieces as unknown as PieceLue[]) {
-    // Appartenance : l'ancre PRIME, le résolveur de session couvre le legacy.
-    const mandataire =
-      piece.trainerId ??
-      (piece.session === null
-        ? null
-        : resolvePrincipalTrainerId({
-            formateurPrincipalId: piece.session.formateurPrincipalId,
-            coFormateurs: piece.session.coFormateurs,
-          }));
-    if (mandataire !== trainerId) continue;
-
-    const cle =
-      piece.session === null
-        ? `cadre:${cleLettreCadre(piece.metadata) ?? piece.id}`
-        : piece.session.id;
-    if (retenues.has(cle)) continue;
-    retenues.add(cle);
-
-    etats.push(construireEtat(piece, lecteur, identite.raisonSociale));
-  }
-  return etats;
+  // La MÊME règle que l'écran du formateur, appliquée au même endroit : deux
+  // sélections parallèles finiraient par afficher à l'organisme une pièce que le
+  // formateur n'a pas sous les yeux.
+  const retenues = retenirUneLettreParDossier(
+    candidatesDepuis(pieces as unknown as PieceLue[]),
+    trainerId,
+  );
+  return retenues.map((c) => construireEtat(c.piece, lecteur, identite.raisonSociale));
 }
 
 /**
@@ -524,21 +528,10 @@ function construireEtat(
 
   const dejaSignee = parties.some((p) => p.partie === lecteur.pourPartie && p.signee);
 
-  // 🔴 LA règle de mandat — la même que la Server Action, dans le même ordre.
-  //
-  // L'ancre directe `trainerId` PRIME quand elle existe (pièces émises depuis
-  // le 2026-08-01, lettres-cadre comprises) : c'est elle que le générateur a
-  // imprimée. À défaut, le résolveur de session couvre les pièces legacy.
-  // `null` au bout du compte = personne d'identifiable — la pièce doit être
-  // régénérée, pas signée, d'où le refus de TOUT LE MONDE dans ce cas.
-  const mandataire =
-    piece.trainerId ??
-    (piece.session === null
-      ? null
-      : resolvePrincipalTrainerId({
-          formateurPrincipalId: piece.session.formateurPrincipalId,
-          coFormateurs: piece.session.coFormateurs,
-        }));
+  // 🔴 LA règle de mandat — la même que la Server Action, et la même que celle
+  // qui a sélectionné la pièce plus haut. `null` = personne d'identifiable, d'où
+  // le refus de TOUT LE MONDE dans ce cas.
+  const mandataire = mandataireDeLaLettre(piece);
   const estMandataire =
     lecteur.pourPartie === "formateur" && mandataire !== null && mandataire === lecteur.trainerId;
 

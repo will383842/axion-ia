@@ -142,6 +142,26 @@ describe("lecture côté FORMATEUR", () => {
     expect(etats).toHaveLength(1);
     expect(etats[0]?.numero).toBe("AXI-LM-2026-0009");
   });
+
+  it("🔴 une lettre réémise au nom d'un AUTRE formateur n'efface pas la mienne", async () => {
+    // Remplacement du formateur principal : la session est réémise au nom du
+    // remplaçant, et le remplacé reste co-animateur — donc membre de la session,
+    // donc le pré-filtre SQL lui rapporte les DEUX pièces. La déduplication par
+    // session, appliquée avant le contrôle de mandat, laissait la pièce du
+    // remplaçant consommer la clé du dossier : sa propre lettre disparaissait
+    // ensuite comme un doublon. Il ne la signait plus — donc n'était plus payé —
+    // pendant que la console continuait de la compter en attente de sa signature.
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      piece({ id: "reemise", numero: "AXI-LM-2026-0009", trainerId: AUTRE_TRAINER }),
+      piece({ id: "la-mienne", numero: "AXI-LM-2026-0004", trainerId: TRAINER }),
+    ]);
+
+    const etats = await lireLettresMissionDuFormateur(TRAINER);
+
+    expect(etats).toHaveLength(1);
+    expect(etats[0]?.numero).toBe("AXI-LM-2026-0004");
+    expect(etats[0]?.peutAgir).toBe(true);
+  });
 });
 
 describe("🔴 le MANDAT — la même règle que la Server Action", () => {
