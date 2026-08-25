@@ -29,6 +29,7 @@ export interface NewReleaseFormValues {
   title: string;
   dek: string;
   tag: string;
+  publishedAt: string;
   audience: string;
   region: string;
   departement: string;
@@ -135,6 +136,13 @@ export function NewPressReleaseForm({
               required
               options={tagOptions}
               defaultValue={v?.tag ?? ""}
+            />
+            <AdminFormField
+              label="Date de diffusion"
+              name="publishedAt"
+              type="date"
+              defaultValue={v?.publishedAt ?? ""}
+              hint="Date réelle du communiqué. Laissée vide, elle sera posée au moment de la publication — ce qui donne une date fausse pour un CP rédigé plus tôt."
             />
           </AdminFormSection>
 
