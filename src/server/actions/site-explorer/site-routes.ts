@@ -9,7 +9,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { siteRouteInspectorQueue, siteRouteDiscoveryQueue } from "@/server/queue/queues";
-import { requireAdminWrite } from "./_guards";
+import { requireAdminWrite, requireAdminRead } from "./_guards";
 import type {
   SiteRouteType,
   SiteRouteStatus,
@@ -128,6 +128,14 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
   page: number;
   pageSize: number;
 }> {
+  // 🔴 2026-08-25, cahier D6-1 — GARDE MANQUANTE en LECTURE. Ce fichier rend
+  // l'inventaire SEO complet : `adminNotes` (que seule une action GARDÉE sait
+  // écrire), `filePath` (arborescence serveur) et les métriques GSC. Le module
+  // voisin `og-apercus.ts` garde bien ses lectures.
+  //
+  // ⚠️ Le middleware n'y change rien : il autorise par chemin d'URL, pas par
+  // surface Server Action.
+  await requireAdminRead();
   const page = Math.max(1, filters.page ?? 1);
   const pageSize = Math.min(100, Math.max(10, filters.pageSize ?? 50));
   const skip = (page - 1) * pageSize;
@@ -186,6 +194,14 @@ export async function listSiteRoutes(filters: SiteRouteFilters = {}): Promise<{
 // ─── getSiteRouteDetail ────────────────────────────────────────────────────────
 
 export async function getSiteRouteDetail(id: string): Promise<SiteRouteDetail | null> {
+  // 🔴 2026-08-25, cahier D6-1 — GARDE MANQUANTE en LECTURE. Ce fichier rend
+  // l'inventaire SEO complet : `adminNotes` (que seule une action GARDÉE sait
+  // écrire), `filePath` (arborescence serveur) et les métriques GSC. Le module
+  // voisin `og-apercus.ts` garde bien ses lectures.
+  //
+  // ⚠️ Le middleware n'y change rien : il autorise par chemin d'URL, pas par
+  // surface Server Action.
+  await requireAdminRead();
   const route = await prisma.siteRoute.findUnique({
     where: { id, visibility: "public" },
     include: {
@@ -258,6 +274,14 @@ export async function getSiteRouteDetail(id: string): Promise<SiteRouteDetail | 
 // ─── getSiteRouteStats ─────────────────────────────────────────────────────────
 
 export async function getSiteRouteStats(): Promise<SiteRouteStats> {
+  // 🔴 2026-08-25, cahier D6-1 — GARDE MANQUANTE en LECTURE. Ce fichier rend
+  // l'inventaire SEO complet : `adminNotes` (que seule une action GARDÉE sait
+  // écrire), `filePath` (arborescence serveur) et les métriques GSC. Le module
+  // voisin `og-apercus.ts` garde bien ses lectures.
+  //
+  // ⚠️ Le middleware n'y change rien : il autorise par chemin d'URL, pas par
+  // surface Server Action.
+  await requireAdminRead();
   // Toutes les stats portent sur les URLs vivantes (removedAt null).
   const live = { visibility: "public" as const, removedAt: null };
   const [
@@ -336,6 +360,14 @@ const TriggerInspectionSchema = z.object({
 export async function triggerInspection(
   siteRouteId: string,
 ): Promise<{ success: boolean; error?: string }> {
+  // 🔴 2026-08-25, cahier D6-1 — GARDE MANQUANTE. Cette action met en file un
+  // traitement BullMQ (ou résout une anomalie) et vivait SANS aucune garde,
+  // alors que `triggerDiscovery`, dans ce MÊME fichier, en porte une.
+  //
+  // ⚠️ Vivre sous `/[adminPrefix]/` ne protège RIEN : `auth.config.ts` autorise
+  // par CHEMIN d'URL (`if (!isOnAdmin) return true`), or une Server Action est
+  // identifiée par l'en-tête `Next-Action` et peut viser n'importe quelle URL.
+  await requireAdminWrite();
   const input = TriggerInspectionSchema.safeParse({ siteRouteId });
   if (!input.success) return { success: false, error: "ID route invalide" };
 
@@ -363,6 +395,14 @@ export async function triggerInspection(
 // ─── triggerScanAll ────────────────────────────────────────────────────────────
 
 export async function triggerScanAll(): Promise<{ success: boolean; error?: string }> {
+  // 🔴 2026-08-25, cahier D6-1 — GARDE MANQUANTE. Cette action met en file un
+  // traitement BullMQ (ou résout une anomalie) et vivait SANS aucune garde,
+  // alors que `triggerDiscovery`, dans ce MÊME fichier, en porte une.
+  //
+  // ⚠️ Vivre sous `/[adminPrefix]/` ne protège RIEN : `auth.config.ts` autorise
+  // par CHEMIN d'URL (`if (!isOnAdmin) return true`), or une Server Action est
+  // identifiée par l'en-tête `Next-Action` et peut viser n'importe quelle URL.
+  await requireAdminWrite();
   if (!siteRouteInspectorQueue) {
     return { success: false, error: "Queue BullMQ non disponible" };
   }
@@ -503,6 +543,14 @@ export async function bulkToggleGsc(
 export async function resolveAnomaly(
   anomalyId: string,
 ): Promise<{ success: boolean; error?: string }> {
+  // 🔴 2026-08-25, cahier D6-1 — GARDE MANQUANTE. Cette action met en file un
+  // traitement BullMQ (ou résout une anomalie) et vivait SANS aucune garde,
+  // alors que `triggerDiscovery`, dans ce MÊME fichier, en porte une.
+  //
+  // ⚠️ Vivre sous `/[adminPrefix]/` ne protège RIEN : `auth.config.ts` autorise
+  // par CHEMIN d'URL (`if (!isOnAdmin) return true`), or une Server Action est
+  // identifiée par l'en-tête `Next-Action` et peut viser n'importe quelle URL.
+  await requireAdminWrite();
   if (!z.string().cuid().safeParse(anomalyId).success) {
     return { success: false, error: "ID anomalie invalide" };
   }
@@ -546,6 +594,14 @@ export async function listAnomalies(filters: {
   }>;
   total: number;
 }> {
+  // 🔴 2026-08-25, cahier D6-1 — GARDE MANQUANTE en LECTURE. Ce fichier rend
+  // l'inventaire SEO complet : `adminNotes` (que seule une action GARDÉE sait
+  // écrire), `filePath` (arborescence serveur) et les métriques GSC. Le module
+  // voisin `og-apercus.ts` garde bien ses lectures.
+  //
+  // ⚠️ Le middleware n'y change rien : il autorise par chemin d'URL, pas par
+  // surface Server Action.
+  await requireAdminRead();
   const page = Math.max(1, filters.page ?? 1);
   const pageSize = Math.min(100, Math.max(10, filters.pageSize ?? 50));
   const skip = (page - 1) * pageSize;
