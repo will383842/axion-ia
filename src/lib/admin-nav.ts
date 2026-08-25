@@ -223,20 +223,13 @@ export const CONTENT_GEN_POLE_ORDER: ReadonlyArray<ContentGenPole> = [
 /**
  * Libellés FR des pôles `qualiopi` (refonte console phase 1, 2026-08-01).
  *
- * 🔴 Ces six libellés ont porté un emoji jusqu'au 2026-08-03 — une phase
- * antérieure du chantier les avait ajoutés sur un « n'hésite pas à mettre des
- * émojis », AVANT que Will ne tranche l'inverse le 2026-08-01 : la console
- * passe aux icônes `lucide-react`, jamais à l'emoji. Le commentaire justifiant
- * les emojis a survécu à la décision qui les annulait.
- *
- * Ils ont tenu deux jours de plus parce que le cliquet anti-emoji ne scanne
- * que `src/app/[locale]/(admin)` et `src/components/admin` : un libellé qui
- * vit dans `src/lib` s'affiche sur TOUTES les pages de la console sans qu'un
- * seul test le voie. Le cliquet couvre désormais ce fichier nommément.
- *
  * Un module de `lib` ne porte pas de pictogramme (même raison qu'il y a pour
- * `activity-labels.ts`) : l'icône du pôle est décidée dans le composant, par
- * `POLE_ICON_MAP` (`AdminSidebarNav.tsx`).
+ * `activity-labels.ts`) : ce fichier est la SSOT TEXTE des pôles, et l'icône du
+ * pôle est décidée dans le composant, par `POLE_ICON_MAP`
+ * (`AdminSidebarNav.tsx`). Ce n'est pas une règle sur les emojis — Will a levé
+ * la doctrine anti-emoji du dépôt le 2026-08-25 — mais une règle de couche :
+ * un libellé qui s'affiche sur TOUTES les pages de la console se change à un
+ * seul endroit, et sa représentation visuelle se décide là où elle se rend.
  */
 export const QUALIOPI_POLE_LABELS: Record<QualiopiPole, string> = {
   a_traiter: "À traiter",

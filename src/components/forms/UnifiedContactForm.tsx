@@ -1,43 +1,48 @@
 "use client";
-// use-client: react-hook-form + Zod + Turnstile + segmented control state.
-// Unified contact form — composant unifié (2026-05-24).
+// use-client: react-hook-form + Zod + Turnstile + état du dévoilement progressif.
 //
-// Remplace ContactForm, AuditForm (legacy), AuditRequestForm,
-// ImplementationForm, QuoteRequestForm et InterventionRequestForm.
-// NewsletterForm est conservé séparément (double opt-in distinct).
+// Formulaire de contact unifié — refonte 2026-08-25 (Will).
 //
-// Pattern :
-//   - Segmented control `type` (5 boutons) en tête, masquable via lockType.
-//   - 5 champs base toujours visibles : nom, email, téléphone, ville, message.
-//   - Toggle "Aller plus loin" qui révèle 5 champs avancés (entreprise, taille,
-//     secteur, budget, timing). Ouvert automatiquement pour type=audit |
-//     type=implementation OU si advancedOpenByDefault.
-//   - Honeypot + Turnstile + react-hook-form + Zod côté client.
-//   - Submit via server action `submitUnifiedContactAction`.
+// CE QUE LE VISITEUR VIVAIT AVANT, MESURÉ EN PRODUCTION
+// -----------------------------------------------------
+// Sur un écran de 390 px, le premier champ saisissable (« Nom complet »)
+// tombait à ~1 100 px du haut de la page : deux écrans et demi de défilement
+// avant de pouvoir taper une seule lettre. Le sélecteur d'objet à lui seul
+// occupait cinq grandes cartes à icône, sept pastilles, et TROIS lignes d'aide
+// concurrentes (« choisissez ce qui décrit le mieux », « un autre sujet ? »,
+// « vous ne trouvez pas votre cas ? »).
+//
+// CE QUI CHANGE
+// -------------
+//   1. Sélecteur d'objet COMPACT : pastilles à emoji, les cinq intentions
+//      commerciales visibles, les sept autres repliées derrière « Autre sujet ».
+//      Le bloc passe d'environ 480 px de haut à environ 190 px.
+//   2. `<input type="radio">` NATIFS, visuellement masqués, au lieu de
+//      `role="radio"` posé sur des `<button>`. Trois gains : la navigation
+//      clavier aux flèches redevient celle du navigateur (elle n'existait pas),
+//      le choix part avec le formulaire même sans JS, et l'état sélectionné se
+//      peint en CSS pur (`peer-checked:`) sans attendre un rendu React.
+//   3. Validation au FLOU (`mode: "onTouched"`) : l'erreur s'affiche en
+//      quittant le champ, plus seulement à la soumission.
+//   4. Une seule ligne d'aide, dynamique, à hauteur réservée (CLS = 0).
+//   5. Le placeholder du message s'adapte à l'intention choisie.
+//   6. Le compteur de caractères ne s'affiche QUE lorsqu'il sert (trop court,
+//      ou proche de la limite) — et il vit dans son propre sous-composant
+//      (`useWatch`) pour ne pas re-rendre tout le formulaire à chaque frappe.
+//   7. Le consentement pointe enfin vers la politique de confidentialité par un
+//      VRAI lien : le texte la citait sans jamais y mener.
+//
+// Inchangé, à dessein : les six champs obligatoires (Will, 2026-08-25 — la
+// question a été posée, la réponse est « rien ne change »), le honeypot, le
+// Turnstile soft-fail, la server action, et l'API de props du composant.
 
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch, type Control } from "react-hook-form";
 import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  ArrowRight,
-  BadgeCheck,
-  Check,
-  ChevronDown,
-  Clock,
-  ShieldCheck,
-  FileText,
-  Handshake,
-  Newspaper,
-  Briefcase,
-  Mic,
-  LineChart,
-  LifeBuoy,
-  MessageCircle,
-  type LucideIcon,
-} from "lucide-react";
-import { ACCENT_CLASSES, SERVICE_VISUAL, type ServiceAccent } from "@/content/services-visual";
+import { ArrowRight, Check, ChevronDown } from "lucide-react";
+import { ACCENT_CLASSES, type ServiceAccent } from "@/content/services-visual";
 import {
   unifiedContactSchema,
   UNIFIED_CONTACT_TYPES,
@@ -49,6 +54,7 @@ import {
   type UnifiedContactType,
 } from "@/lib/schemas/unified-contact-schema";
 import { submitUnifiedContactAction } from "@/features/unified-contact/actions";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,50 +70,46 @@ import { cn } from "@/lib/utils";
 
 const LABELS = {
   fr: {
-    eyebrow: "Démarrer un échange",
-    title: "Décrivez votre besoin",
-    titleEm: "en quelques secondes",
-    subtitle:
-      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 48 h ouvrées. Sans engagement.",
-    typeLabel: "Que pouvons-nous faire pour vous ?",
-    typePrompt: "Choisissez ce qui décrit le mieux votre demande — un seul suffit.",
-    typeHelp: "Vous ne trouvez pas votre cas ? Choisissez « Autre » — le formulaire sert à tout.",
-    typeGroupHint: "Un autre sujet ?",
+    formAriaLabel: "Formulaire de contact Axion-IA",
+    typeLabel: "Votre demande porte sur",
+    typeMore: "Autre sujet",
+    typeMoreClose: "Masquer les autres sujets",
+    typePrompt: "Un seul choix suffit — il oriente votre message vers la bonne personne.",
+    // Libellés COURTS : ce sont des pastilles, pas des cartes. Le libellé long
+    // reste dans `unifiedTypeLabel` (schema) pour les e-mails et la console.
     typeOptions: {
-      // Groupe 1 — Projet IA pour mon entreprise
       audit: "Audit IA",
-      implementation: "Intégration sur-mesure",
-      formation: "Formation IA",
-      un_a_un: "Coaching 1 to 1",
-      devis: "Devis sur projet",
-      // Groupe 2 — Autres demandes
+      implementation: "Intégration",
+      formation: "Formation",
+      un_a_un: "Coaching 1-à-1",
+      devis: "Devis",
       partenariat: "Partenariat",
       presse: "Presse / média",
       recrutement: "Recrutement",
-      speaker: "Invitation conférence",
-      investisseur: "Investisseur / M&A",
+      speaker: "Conférence",
+      investisseur: "Investisseur",
       support_client: "Support client",
-      autre: "Autre demande",
-    },
-    typeGroups: {
-      projet: "Projet IA pour mon entreprise",
-      autre: "Autre demande",
+      autre: "Autre",
     },
     nom: "Nom complet",
     nomPlaceholder: "Prénom Nom",
     email: "Email professionnel",
     emailPlaceholder: "vous@entreprise.com",
-    telephone: "Téléphone (avec indicatif pays)",
+    telephone: "Téléphone",
+    telephoneHint: "Avec l'indicatif pays — ex. +33 6 12 34 56 78",
     telephonePlaceholder: "+33 6 12 34 56 78",
     ville: "Ville",
     villePlaceholder: "Paris",
     message: "Votre message",
-    messagePlaceholder: "Décrivez votre contexte, vos objectifs, vos contraintes éventuelles…",
-    advancedToggle: "Aller plus loin (recommandé pour audit / projet sur-mesure)",
-    advancedHint: "Quelques infos en plus = devis plus précis et call de cadrage plus efficace.",
+    messagePlaceholderDefault:
+      "Votre contexte, votre objectif, et ce qui bloque aujourd'hui. Trois phrases suffisent.",
+    messageTooShort: (n: number) => `Encore ${n} caractère${n > 1 ? "s" : ""}`,
+    messageNearLimit: (n: number) => `${n} / 2000`,
+    advancedToggle: "Ajouter des détails (facultatif)",
+    advancedHint: "Plus de contexte, c'est un devis plus juste et un premier appel plus court.",
     companyName: "Société",
     companyNamePlaceholder: "Raison sociale",
-    companySize: "Taille (INSEE)",
+    companySize: "Effectif",
     companySizeOptions: {
       tpe: "TPE — 1 à 19",
       pme: "PME — 20 à 250",
@@ -115,10 +117,10 @@ const LABELS = {
       grande_entreprise: "Grande entreprise — 5 000+",
     },
     companySector: "Secteur d'activité",
-    companySectorPlaceholder: "Ex : industrie, retail, santé…",
-    budgetIndicative: "Budget pressenti (optionnel)",
+    companySectorPlaceholder: "Industrie, retail, santé…",
+    budgetIndicative: "Budget pressenti",
     budgetIndicativePlaceholder:
-      "Ex : 10-20 k€, à définir" /* price-exempt: placeholder budget saisi par le visiteur, pas un tarif Axion-IA */,
+      "10-20 k€, ou à définir" /* price-exempt: placeholder budget saisi par le visiteur, pas un tarif Axion-IA */,
     timingWeeks: "Timing souhaité",
     timingWeeksOptions: {
       "0-4": "0-4 semaines",
@@ -126,67 +128,69 @@ const LABELS = {
       "8-12": "8-12 semaines",
       "12+": "12+ semaines",
     },
-    consent:
-      "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité. Aucune revente, aucun profilage, désinscription à tout moment.",
+    selectNone: "Non précisé",
+    consentLead: "J'accepte que mes données servent à traiter cette demande, conformément à la ",
+    consentLink: "politique de confidentialité",
+    consentTail: ". Aucune revente, aucun profilage, désinscription à tout moment.",
     submit: "Envoyer ma demande",
     sending: "Envoi…",
-    success:
-      "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 48 h ouvrées. Votre projet a notre entière attention.",
+    successTitle: "Demande reçue.",
+    successBody:
+      "Un consultant senior Axion-IA vous recontacte personnellement sous 48 h ouvrées. Votre projet a notre entière attention.",
     failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
     captchaBlocked:
       "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur pour ce site), puis réessayez — ou écrivez-nous directement à contact@axion-ia.com.",
     pageOutdated:
       "Cette page a expiré suite à une mise à jour du site. Rechargez la page (Ctrl+R / ⌘+R) puis renvoyez votre demande.",
-    typeRequired: "Choisissez un type pour continuer.",
+    typeRequired: "Choisissez un objet pour continuer.",
     submitAgain: "Faire une autre demande",
     referenceLabel: "Référence",
-    trustPills: ["RGPD · UE", "Réponse 48 h ouvrées", "Sans engagement"],
+    trustPills: [
+      "⏱️ Réponse sous 48 h ouvrées",
+      "🧑 Lu par un consultant senior",
+      "🔒 RGPD · données en UE",
+      "🙂 Sans engagement",
+    ],
   },
   en: {
-    eyebrow: "Start a conversation",
-    title: "Tell us about your need",
-    titleEm: "in seconds",
-    subtitle:
-      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 48 h ouvrées. Sans engagement.",
-    typeLabel: "What can we do for you?",
-    typePrompt: "Pick the one that best describes your request — just one.",
-    typeHelp: "Not sure where you fit? Pick « Other » — this form covers everything.",
-    typeGroupHint: "Something else?",
+    formAriaLabel: "Axion-IA contact form",
+    typeLabel: "Your request is about",
+    typeMore: "Another topic",
+    typeMoreClose: "Hide other topics",
+    typePrompt: "One choice is enough — it routes your message to the right person.",
     typeOptions: {
-      // Group 1 — AI project for my company
       audit: "AI audit",
-      implementation: "Bespoke integration",
-      formation: "AI training",
+      implementation: "Integration",
+      formation: "Training",
       un_a_un: "1-to-1 coaching",
-      devis: "Project quote",
-      // Group 2 — Other requests
+      devis: "Quote",
       partenariat: "Partnership",
       presse: "Press / media",
       recrutement: "Recruitment",
-      speaker: "Speaking invitation",
-      investisseur: "Investor / M&A",
-      support_client: "Customer support",
-      autre: "Other request",
-    },
-    typeGroups: {
-      projet: "AI project for my company",
-      autre: "Other request",
+      speaker: "Speaking",
+      investisseur: "Investor",
+      support_client: "Support",
+      autre: "Other",
     },
     nom: "Full name",
     nomPlaceholder: "First Last",
     email: "Work email",
     emailPlaceholder: "you@company.com",
     telephone: "Phone",
+    telephoneHint: "With country code — e.g. +33 6 12 34 56 78",
     telephonePlaceholder: "+33 6 12 34 56 78",
     ville: "City",
     villePlaceholder: "Paris",
     message: "Your message",
-    messagePlaceholder: "Describe your context, goals, constraints…",
-    advancedToggle: "Go further (recommended for audit / custom project)",
-    advancedHint: "A few more facts = sharper quote and faster scoping call.",
+    messagePlaceholderDefault:
+      "Your context, your goal, and what is blocking you today. Three sentences will do.",
+    messageTooShort: (n: number) => `${n} more character${n > 1 ? "s" : ""}`,
+    messageNearLimit: (n: number) => `${n} / 2000`,
+    advancedToggle: "Add details (optional)",
+    advancedHint: "More context means a sharper quote and a shorter first call.",
     companyName: "Company",
     companyNamePlaceholder: "Company name",
-    companySize: "Size (INSEE)",
+    companySize: "Headcount",
     companySizeOptions: {
       tpe: "Small — 1 to 19",
       pme: "SME — 20 to 250",
@@ -194,10 +198,10 @@ const LABELS = {
       grande_entreprise: "Enterprise — 5,000+",
     },
     companySector: "Sector",
-    companySectorPlaceholder: "e.g. industry, retail, healthcare…",
-    budgetIndicative: "Indicative budget (optional)",
+    companySectorPlaceholder: "Industry, retail, healthcare…",
+    budgetIndicative: "Indicative budget",
     budgetIndicativePlaceholder:
-      "e.g. 10-20 k€, TBD" /* price-exempt: visitor-entered budget placeholder, not an Axion-IA price */,
+      "10-20 k€, or TBD" /* price-exempt: visitor-entered budget placeholder, not an Axion-IA price */,
     timingWeeks: "Desired timing",
     timingWeeksOptions: {
       "0-4": "0-4 weeks",
@@ -205,57 +209,66 @@ const LABELS = {
       "8-12": "8-12 weeks",
       "12+": "12+ weeks",
     },
-    consent:
-      "I agree to my data being used to handle this request per the privacy policy. No resale, no profiling, one-click unsubscribe.",
+    selectNone: "Not specified",
+    consentLead: "I agree my data is used to handle this request, per the ",
+    consentLink: "privacy policy",
+    consentTail: ". No resale, no profiling, one-click unsubscribe.",
     submit: "Send my request",
     sending: "Sending…",
-    success:
-      "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 48 h ouvrées. Votre projet a notre entière attention.",
+    successTitle: "Request received.",
+    successBody:
+      "A senior Axion-IA consultant will get back to you personally within 48 business hours. Your project has our full attention.",
     failure: "An error occurred. Try again or email contact@axion-ia.com.",
     captchaBlocked:
       "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker for this site) and try again — or email us directly at contact@axion-ia.com.",
     pageOutdated:
       "This page expired after a site update. Reload the page (Ctrl+R / ⌘+R) and resend your request.",
-    typeRequired: "Pick a type to continue.",
+    typeRequired: "Pick a topic to continue.",
     submitAgain: "Send another request",
     referenceLabel: "Reference",
-    trustPills: ["RGPD · UE", "Réponse 48 h ouvrées", "Sans engagement"],
+    trustPills: [
+      "⏱️ Reply within 48 business hours",
+      "🧑 Read by a senior consultant",
+      "🔒 GDPR · data in the EU",
+      "🙂 No commitment",
+    ],
   },
 } as const;
 
-// ---- Icônes + accents par type (grille de sélection visuelle) --------------
-// Chaque intention a son icône lucide — la sélection devient scannable d'un
-// coup d'œil (pattern 2026 : Linear, Vercel, Stripe). Remplace le dropdown
-// caché qui pré-affichait « Autre demande » comme un fallback (refonte
-// 2026-07-09 : sélecteur visuel, zéro friction).
+// ---- Emoji + accent par intention -----------------------------------------
 //
-// Les 4 intentions qui correspondent à un service réel empruntent leur icône ET
-// leur accent à `SERVICE_VISUAL` (SSOT) : le visiteur retrouve exactement la
-// loupe bleue de l'Audit et l'engrenage sage de l'Implémentation qu'il vient de
-// voir dans le menu et sur les cartes services. `devis` n'est pas un service —
-// il prend le 5e accent libre (plum) pour compléter la palette.
-const TYPE_ICONS: Record<UnifiedContactType, LucideIcon> = {
-  audit: SERVICE_VISUAL.audit.Icon,
-  implementation: SERVICE_VISUAL.implementation.Icon,
-  formation: SERVICE_VISUAL.formations.Icon,
-  un_a_un: SERVICE_VISUAL.unAUn.Icon,
-  devis: FileText,
-  partenariat: Handshake,
-  presse: Newspaper,
-  recrutement: Briefcase,
-  speaker: Mic,
-  investisseur: LineChart,
-  support_client: LifeBuoy,
-  autre: MessageCircle,
+// Le pictogramme est un EMOJI et non une icône `lucide-react` : décision de
+// Will du 2026-08-25, qui lève la doctrine « jamais d'emoji décoratif ». Un
+// emoji est reconnu plus vite qu'un glyphe monochrome sur une pastille de
+// 32 px, et il donne à la page le ton que Will demande.
+//
+// Chaque emoji est enveloppé d'un `aria-hidden` : le libellé textuel porte
+// seul l'information, donc rien ne dépend de la police emoji du poste ni de la
+// couleur (WCAG 1.4.1).
+const TYPE_EMOJI: Record<UnifiedContactType, string> = {
+  audit: "🔍",
+  implementation: "⚙️",
+  formation: "🎓",
+  un_a_un: "🧭",
+  devis: "📄",
+  partenariat: "🤝",
+  presse: "📰",
+  recrutement: "💼",
+  speaker: "🎤",
+  investisseur: "📈",
+  support_client: "🛟",
+  autre: "💬",
 };
 
-// Groupe 2 = accent terracotta unique, à dessein : les « autres demandes » sont
-// des pastilles discrètes, la polychromie reste réservée au groupe commercial.
+// Groupe 1 = les cinq accents de la palette services (le visiteur retrouve le
+// bleu de l'Audit et le sage de l'Implémentation vus dans le menu).
+// Groupe 2 = terracotta unique, à dessein : la polychromie reste réservée aux
+// intentions commerciales.
 const TYPE_ACCENT: Record<UnifiedContactType, ServiceAccent> = {
-  audit: SERVICE_VISUAL.audit.accent,
-  implementation: SERVICE_VISUAL.implementation.accent,
-  formation: SERVICE_VISUAL.formations.accent,
-  un_a_un: SERVICE_VISUAL.unAUn.accent,
+  audit: "primary",
+  implementation: "sage",
+  formation: "terracotta",
+  un_a_un: "ochre",
   devis: "plum",
   partenariat: "terracotta",
   presse: "terracotta",
@@ -266,35 +279,148 @@ const TYPE_ACCENT: Record<UnifiedContactType, ServiceAccent> = {
   autre: "terracotta",
 };
 
-/** Pastilles de réassurance sous le bouton — une couleur par promesse. */
-const TRUST_PILLS: ReadonlyArray<{ key: string; Icon: LucideIcon; accent: ServiceAccent }> = [
-  { key: "rgpd", Icon: ShieldCheck, accent: "primary" },
-  { key: "delai", Icon: Clock, accent: "terracotta" },
-  { key: "engagement", Icon: BadgeCheck, accent: "sage" },
-];
+/**
+ * État « coché » d'une pastille, en classes LITTÉRALES par accent.
+ *
+ * ⚠️ Ces chaînes ne peuvent pas être construites (`peer-checked:border-${a}`) :
+ * le JIT Tailwind v4 scanne le source et ne génère que les classes qu'il y lit
+ * en toutes lettres. Elles ne peuvent pas non plus venir de `ACCENT_CLASSES`,
+ * qui ne porte pas la variante `peer-checked:`.
+ *
+ * Le couple fond/texte reprend `surface` + `textOnSurface` d'`ACCENT_CLASSES` :
+ * c'est le seul couple vérifié WCAG AA sur ces fonds `-soft` (cf. le
+ * commentaire de `textOnSurface` dans services-visual.ts).
+ */
+const PILL_CHECKED: Record<ServiceAccent, string> = {
+  terracotta:
+    "peer-checked:border-terracotta peer-checked:bg-terracotta-soft peer-checked:text-terracotta-deep peer-focus-visible:ring-terracotta",
+  ochre:
+    "peer-checked:border-ochre peer-checked:bg-ochre-soft peer-checked:text-ochre-deep peer-focus-visible:ring-ochre",
+  primary:
+    "peer-checked:border-primary peer-checked:bg-primary-soft peer-checked:text-primary peer-focus-visible:ring-primary",
+  sage: "peer-checked:border-sage peer-checked:bg-sage-soft peer-checked:text-sage peer-focus-visible:ring-sage",
+  plum: "peer-checked:border-plum peer-checked:bg-plum-soft peer-checked:text-plum-deep peer-focus-visible:ring-plum",
+};
+
+/**
+ * Placeholder du message, adapté à l'intention.
+ *
+ * Un champ libre est le moment où l'on abandonne : le visiteur ne sait pas ce
+ * qu'on attend. Une amorce qui parle de SON cas divise le temps de rédaction.
+ */
+function messagePlaceholder(type: UnifiedContactType | undefined, locale: "fr" | "en"): string {
+  if (!type) return LABELS[locale].messagePlaceholderDefault;
+  const fr: Record<UnifiedContactType, string> = {
+    audit: "Votre métier, vos outils actuels, et ce que vous aimeriez qu'on regarde en priorité.",
+    implementation:
+      "Ce que vous voulez automatiser, sur quelles données, et avec quel outil aujourd'hui.",
+    formation:
+      "Combien de personnes, quels métiers, quel niveau de départ, et vos dates possibles.",
+    un_a_un:
+      "Qui serait accompagné, sur quel sujet, et ce que vous voulez savoir faire seul après.",
+    devis: "Le périmètre, les livrables attendus, et votre échéance.",
+    partenariat: "Votre activité, ce que vous proposez, et ce que vous attendez de nous.",
+    presse: "Votre média, votre angle, et votre date de bouclage.",
+    recrutement: "Le poste visé, ce que vous savez faire, et un lien vers votre travail.",
+    speaker: "L'événement, la date, le public attendu et le format d'intervention.",
+    investisseur: "Votre structure, votre thèse et ce que vous souhaitez examiner.",
+    support_client: "Ce qui ne fonctionne pas, depuis quand, et sur quelle prestation.",
+    autre: "Dites-nous simplement de quoi il s'agit.",
+  };
+  const en: Record<UnifiedContactType, string> = {
+    audit: "Your business, the tools you use today, and what you would like us to look at first.",
+    implementation: "What you want to automate, on which data, and with which tool today.",
+    formation: "How many people, which roles, starting level, and your possible dates.",
+    un_a_un: "Who would be coached, on what topic, and what you want to master on your own after.",
+    devis: "The scope, the expected deliverables, and your deadline.",
+    partenariat: "Your business, what you offer, and what you expect from us.",
+    presse: "Your outlet, your angle, and your deadline.",
+    recrutement: "The role, what you can do, and a link to your work.",
+    speaker: "The event, the date, the expected audience and the format.",
+    investisseur: "Your firm, your thesis, and what you would like to review.",
+    support_client: "What is not working, since when, and on which engagement.",
+    autre: "Just tell us what it is about.",
+  };
+  return (locale === "en" ? en : fr)[type];
+}
 
 // ---- Props -----------------------------------------------------------------
 
 export interface UnifiedContactFormProps {
   /** Pré-sélectionne le type. */
   defaultType?: UnifiedContactType;
-  /** Bloque la modification du type — masque le segmented control. */
+  /** Bloque la modification du type — masque le sélecteur. */
   lockType?: boolean;
   /** Granularité fine (audit-flash, chatbot, etc.) — stockée en details.subType. */
   defaultSubType?: string;
   /** Message pré-rempli. */
   defaultMessage?: string;
-  /** Toggle "aller plus loin" forcé ouvert. */
+  /** Bloc « ajouter des détails » forcé ouvert. */
   advancedOpenByDefault?: boolean;
   /** Source override (sinon usePathname()). */
   source?: string;
   className?: string;
 }
 
+// ---- Sous-composants -------------------------------------------------------
+
+/** Astérisque des champs requis — même signe partout. */
+function Req() {
+  return <span className="text-terracotta-deep ml-1 font-bold">*</span>;
+}
+
+/**
+ * Compteur du message, isolé dans son propre nœud.
+ *
+ * `useWatch` abonne CE composant à la valeur, et lui seul : sans ça, chaque
+ * frappe re-rendait le formulaire entier (douze pastilles, dix champs), ce qui
+ * se paie directement sur l'INP.
+ *
+ * Il ne dit quelque chose que quand il sert : le minimum n'est pas atteint, ou
+ * la limite approche. Un compteur permanent « 0 / 2000 » sous un champ vide
+ * n'informe personne et alourdit la page.
+ */
+function MessageMeter({
+  control,
+  locale,
+}: {
+  control: Control<UnifiedContactInput>;
+  locale: "fr" | "en";
+}) {
+  const t = LABELS[locale];
+  const value = useWatch({ control, name: "message" }) ?? "";
+  const len = value.length;
+  if (len > 0 && len < 20) {
+    return (
+      <span className="text-fg-muted text-[12px] tabular-nums" aria-live="polite">
+        {t.messageTooShort(20 - len)}
+      </span>
+    );
+  }
+  if (len >= 1800) {
+    return (
+      <span
+        className={cn(
+          "text-[12px] font-semibold tabular-nums",
+          len >= 2000 ? "text-accent-red" : "text-fg-muted",
+        )}
+        aria-live="polite"
+      >
+        {t.messageNearLimit(len)}
+      </span>
+    );
+  }
+  return null;
+}
+
 // ---- Composant -------------------------------------------------------------
 
 function isAdvancedType(t: UnifiedContactType | undefined): boolean {
   return t === "audit" || t === "implementation";
+}
+
+function isSecondaryType(t: UnifiedContactType | undefined): boolean {
+  return t !== undefined && (TYPE_GROUPS.autre as readonly UnifiedContactType[]).includes(t);
 }
 
 function UnifiedContactFormBody({
@@ -328,10 +454,16 @@ function UnifiedContactFormBody({
     register,
     handleSubmit,
     setValue,
+    control,
     watch,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<UnifiedContactInput>({
     resolver: zodResolver(unifiedContactSchema as never) as never,
+    // Validation au FLOU, puis à la frappe une fois le champ en faute.
+    // Le défaut de react-hook-form (`onSubmit`) gardait le visiteur dans le
+    // noir jusqu'au bouton : il découvrait ses six erreurs d'un coup.
+    mode: "onTouched",
+    reValidateMode: "onChange",
     defaultValues: {
       ...(initialType ? { type: initialType } : {}),
       message: defaultMessage ?? "",
@@ -342,13 +474,16 @@ function UnifiedContactFormBody({
   });
   const type = watch("type");
   const consent = watch("consent");
-  const messageValue = watch("message") ?? "";
 
   const [advancedOpen, setAdvancedOpen] = React.useState<boolean>(
     advancedOpenByDefault === true || isAdvancedType(initialType),
   );
+  // Les sept intentions périphériques sont repliées — sauf si l'une d'elles est
+  // déjà choisie (deep-link `?type=presse`, ou retour arrière du navigateur) :
+  // une pastille cochée mais invisible serait un état incompréhensible.
+  const [moreOpen, setMoreOpen] = React.useState<boolean>(isSecondaryType(initialType));
 
-  // Si l'user change vers audit/implementation, on ouvre le toggle.
+  // Si l'user change vers audit/implementation, on ouvre le bloc détails.
   React.useEffect(() => {
     if (isAdvancedType(type)) setAdvancedOpen(true);
   }, [type]);
@@ -363,7 +498,9 @@ function UnifiedContactFormBody({
     const urlType = sp.get("type");
     const urlSubType = sp.get("subType");
     if (!lockType && urlType && UNIFIED_CONTACT_TYPES.includes(urlType as UnifiedContactType)) {
-      setValue("type", urlType as UnifiedContactType, { shouldValidate: true });
+      const next = urlType as UnifiedContactType;
+      setValue("type", next, { shouldValidate: true });
+      if (isSecondaryType(next)) setMoreOpen(true);
     }
     if (urlSubType && !defaultSubType) {
       setEffectiveSubType(urlSubType);
@@ -371,16 +508,6 @@ function UnifiedContactFormBody({
     // Montage unique : on lit l'URL une fois après hydratation.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Sélection du type — grille de chips visuels (refonte 2026-07-09). Plus de
-  // dropdown/popover : les 12 intentions sont toutes visibles, sélectionnables
-  // en un tap, sans état d'ouverture ni gestion click-outside/Escape.
-  const selectType = React.useCallback(
-    (opt: UnifiedContactType) => setValue("type", opt, { shouldValidate: true, shouldDirty: true }),
-    // setValue est stable (react-hook-form) — dépendances vides volontaires.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
 
   const {
     token: turnstileToken,
@@ -439,27 +566,26 @@ function UnifiedContactFormBody({
     return (
       <div
         className={cn(
-          "border-terracotta/30 bg-paper shadow-card rounded-3xl border-2 p-8 sm:p-10",
+          "border-sage/40 bg-paper shadow-card rounded-3xl border-2 p-7 sm:p-9",
           className,
         )}
         role="status"
       >
-        <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2.5 rounded-full border py-1.5 pr-4 pl-1.5">
-          <span className="bg-sage text-paper flex h-6 w-6 items-center justify-center rounded-full">
-            <Check aria-hidden="true" strokeWidth={3.5} className="h-3.5 w-3.5" />
-          </span>
-          <span className="text-terracotta-deep text-[12px] font-semibold tracking-[0.16em] uppercase">
-            {t.eyebrow}
-          </span>
-        </div>
+        <span
+          aria-hidden="true"
+          className="bg-sage text-paper mb-5 flex h-11 w-11 items-center justify-center rounded-2xl"
+        >
+          <Check strokeWidth={3.5} className="h-6 w-6" />
+        </span>
         <p
           className="text-fg text-2xl leading-snug font-medium tracking-tight sm:text-3xl"
           style={{ fontFamily: "var(--font-serif)" }}
         >
-          {t.success}
+          {t.successTitle}
         </p>
+        <p className="text-fg-soft mt-3 text-base leading-relaxed">{t.successBody}</p>
         {submissionId ? (
-          <p className="text-fg-muted mt-3 text-sm">
+          <p className="text-fg-muted mt-4 text-sm">
             {t.referenceLabel} :{" "}
             <span className="font-mono text-xs tabular-nums">{submissionId}</span>
           </p>
@@ -477,158 +603,149 @@ function UnifiedContactFormBody({
     );
   }
 
+  // ---- Pastille d'intention ----------------------------------------------
+  // `<input type="radio">` natif transparent + `<span>` peint en `peer-checked:`.
+  // L'état sélectionné se voit par TROIS signes : la coche en pastille d'angle,
+  // le fond teinté, et la bordure d'accent. Jamais par la couleur seule.
+  const renderPill = (opt: UnifiedContactType, compact: boolean) => {
+    const accent = TYPE_ACCENT[opt];
+    return (
+      <label key={opt} className="relative inline-flex cursor-pointer">
+        {/* Le bouton radio est TRANSPARENT et recouvre toute la pastille, au
+            lieu d'être `sr-only`. Un `sr-only` est réduit à 1 × 1 px : la souris
+            ne l'atteint jamais (c'est le `<label>` qui relaie le clic), et tout
+            outil qui pilote le vrai contrôle — Playwright, un lecteur d'écran
+            en mode formulaire, une extension d'accessibilité — bute dessus.
+            Ici, la cible cliquable EST le contrôle, à la taille de la pastille. */}
+        <input
+          type="radio"
+          value={opt}
+          {...register("type")}
+          className="peer absolute inset-0 z-10 cursor-pointer opacity-0"
+          aria-describedby="unified-type-hint"
+        />
+        {/* Coche de confirmation — l'état sélectionné ne repose PAS que sur la
+            couleur (WCAG 1.4.1 « use of color »). Elle est en position absolue,
+            donc son apparition ne décale aucune pastille : la grille ne bouge
+            pas au clic (CLS = 0). */}
+        <span
+          aria-hidden="true"
+          className={cn(
+            "absolute -top-1 -right-1 z-20 flex h-4 w-4 items-center justify-center rounded-full opacity-0 transition-opacity peer-checked:opacity-100",
+            ACCENT_CLASSES[accent].chipSolid,
+          )}
+        >
+          <Check className="h-2.5 w-2.5" strokeWidth={3.5} />
+        </span>
+        <span
+          className={cn(
+            "border-border bg-paper text-fg flex items-center gap-2 rounded-full border-2 font-semibold transition",
+            "peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2",
+            compact ? "px-2.5 py-1.5 text-[12px]" : "px-3 py-2 text-[13px]",
+            ACCENT_CLASSES[accent].hoverBorder,
+            PILL_CHECKED[accent],
+          )}
+        >
+          <span aria-hidden="true" className={compact ? "text-[13px]" : "text-[15px]"}>
+            {TYPE_EMOJI[opt]}
+          </span>
+          {t.typeOptions[opt]}
+        </span>
+      </label>
+    );
+  };
+
   // ---- Form --------------------------------------------------------------
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
       className={cn("space-y-5", className)}
-      aria-label={t.title}
+      aria-label={t.formAriaLabel}
     >
       <HoneypotField />
 
-      {/* Objet de la demande — grille de chips visuels (refonte 2026-07-09).
-          Remplace le dropdown/popover qui pré-affichait « Autre demande » comme
-          un fallback (effet « pré-rempli / cassé »). Les 12 intentions sont
-          désormais visibles d'un coup d'œil, sélectionnables en un tap : le
-          Projet IA en grille prominente à icônes, les autres demandes en
-          pastilles discrètes dessous. Un helper dynamique décrit l'intention
-          choisie. Zéro friction, mobile-first, sans état d'ouverture. */}
+      {/* Objet de la demande — pastilles compactes.
+          Cinq intentions commerciales visibles, sept périphériques repliées :
+          le bloc tient en ~190 px au lieu de ~480 px, ce qui suffit à faire
+          remonter « Nom complet » dans le premier écran d'un téléphone. */}
       {!lockType ? (
-        <fieldset className="min-w-0 space-y-3.5">
-          <legend className="text-fg mb-1 block text-base font-bold sm:text-lg">
+        // `min-w-0` est OBLIGATOIRE : un <fieldset> porte
+        // `min-inline-size: min-content` par la feuille de style du navigateur et
+        // refuse de rétrécir — sans lui, il pousse la page hors de l'écran sur un
+        // téléphone étroit. Verrouillé par `formulaires-mobile-first.spec.ts`.
+        //
+        // ⚠️ Commentaire de LIGNE, pas `{/* … */}` : on est ici dans la branche
+        // d'un ternaire, donc en position d'EXPRESSION et non d'enfant JSX — une
+        // accolade y ouvre un littéral d'objet, et le parseur meurt sur le
+        // `<fieldset>` suivant (« Expected '</', got 'ident' »).
+        <fieldset className="min-w-0 space-y-3">
+          <legend className="text-fg mb-1.5 block text-[15px] font-bold sm:text-base">
             {t.typeLabel}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <Req />
           </legend>
 
-          {/* Groupe 1 — Projet IA : chips prominents (icône + libellé) */}
-          <div
-            role="radiogroup"
-            aria-label={t.typeGroups.projet}
-            className="grid grid-cols-2 gap-2.5 sm:grid-cols-3"
-          >
-            {TYPE_GROUPS.projet.map((opt) => {
-              const Icon = TYPE_ICONS[opt];
-              const a = ACCENT_CLASSES[TYPE_ACCENT[opt]];
-              const isSel = type === opt;
-              return (
-                <button
-                  key={opt}
-                  type="button"
-                  role="radio"
-                  aria-checked={isSel}
-                  onClick={() => selectType(opt)}
-                  className={cn(
-                    "group relative flex flex-col items-start gap-2 rounded-2xl border-2 p-3.5 text-left transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                    a.ring,
-                    isSel
-                      ? cn(a.borderSolid, a.surface, "shadow-sm")
-                      : cn("border-border bg-paper", a.hoverBorder, "hover:shadow-sm"),
-                  )}
-                >
-                  {/* Coche de confirmation — l'état sélectionné ne repose pas que
-                      sur la couleur (WCAG 1.4.1 « use of color »). */}
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "absolute top-2.5 right-2.5 flex h-4 w-4 items-center justify-center rounded-full transition-opacity",
-                      a.chipSolid,
-                      isSel ? "opacity-100" : "opacity-0",
-                    )}
-                  >
-                    <Check className="h-2.5 w-2.5" strokeWidth={3.5} />
-                  </span>
-                  {/* Puce PLEINE dès le repos : les 5 accents sont saturés avant
-                      toute interaction. En version « soft » (bg-*-soft), le sage
-                      et le plum virent au gris sur l'ivoire — la grille perdait
-                      tout contraste. C'est cette puce qui porte le « pep ». */}
-                  <span
-                    className={cn(
-                      "flex h-9 w-9 items-center justify-center rounded-xl shadow-sm",
-                      a.chipSolid,
-                    )}
-                  >
-                    <Icon aria-hidden="true" className="h-[18px] w-[18px]" strokeWidth={1.9} />
-                  </span>
-                  <span
-                    className={cn(
-                      "pr-4 text-[13.5px] leading-tight font-semibold transition-colors",
-                      // Sélectionné = texte sur `surface` (fond -soft) → `textOnSurface`.
-                      // Au repos, le fond est `bg-paper` : `text`/`textHover` conviennent.
-                      isSel ? a.textOnSurface : cn("text-fg", a.textHover),
-                    )}
-                  >
-                    {t.typeOptions[opt]}
-                  </span>
-                </button>
-              );
-            })}
+          <div className="flex flex-wrap gap-2">
+            {TYPE_GROUPS.projet.map((opt) => renderPill(opt, false))}
           </div>
 
-          {/* Groupe 2 — Autres demandes : pastilles discrètes (hiérarchie) */}
-          <div className="border-border/70 border-t pt-3.5">
-            <p className="text-fg-muted mb-2 text-[11px] font-semibold tracking-[0.14em] uppercase">
-              {t.typeGroupHint}
-            </p>
-            <div role="radiogroup" aria-label={t.typeGroups.autre} className="flex flex-wrap gap-2">
-              {TYPE_GROUPS.autre.map((opt) => {
-                const Icon = TYPE_ICONS[opt];
-                const isSel = type === opt;
-                return (
-                  <button
-                    key={opt}
-                    type="button"
-                    role="radio"
-                    aria-checked={isSel}
-                    onClick={() => selectType(opt)}
-                    className={cn(
-                      "focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                      isSel
-                        ? "border-terracotta bg-terracotta text-paper shadow-sm"
-                        : "border-border bg-paper text-fg-soft hover:border-terracotta hover:bg-terracotta-soft hover:text-terracotta-deep",
-                    )}
-                  >
-                    {isSel ? (
-                      <Check aria-hidden="true" className="h-3.5 w-3.5 shrink-0" strokeWidth={3} />
-                    ) : (
-                      <Icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0" strokeWidth={1.9} />
-                    )}
-                    {t.typeOptions[opt]}
-                  </button>
-                );
-              })}
+          <div>
+            <button
+              type="button"
+              onClick={() => setMoreOpen((v) => !v)}
+              aria-expanded={moreOpen}
+              aria-controls="unified-type-more"
+              className="text-fg-soft hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded text-[13px] font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              <ChevronDown
+                aria-hidden="true"
+                className={cn("h-4 w-4 transition-transform", moreOpen ? "rotate-180" : "rotate-0")}
+              />
+              {moreOpen ? t.typeMoreClose : t.typeMore}
+            </button>
+            {/* Le conteneur est TOUJOURS rendu, masqué par `hidden` quand il est
+                replié : un `aria-controls` qui désigne un élément absent du DOM
+                est une référence morte, et le lecteur d'écran n'a plus rien à
+                annoncer quand `aria-expanded` passe à `true`. */}
+            <div
+              id="unified-type-more"
+              className={cn("mt-2.5 flex-wrap gap-2", moreOpen ? "flex" : "hidden")}
+            >
+              {TYPE_GROUPS.autre.map((opt) => renderPill(opt, true))}
             </div>
           </div>
 
-          {/* Helper dynamique : décrit l'intention choisie (ou invite à choisir).
-              Une fois un type choisi, l'encart se teinte de SON accent — la
-              couleur devient un accusé de réception du choix. */}
-          {type ? (
-            <p
-              className={cn(
-                "text-fg flex items-start gap-2.5 rounded-2xl px-3.5 py-3 text-[13px] leading-relaxed",
-                ACCENT_CLASSES[TYPE_ACCENT[type]].surface,
-              )}
-              aria-live="polite"
-            >
-              <ArrowRight
-                aria-hidden="true"
-                className={cn(
-                  "mt-[3px] h-3.5 w-3.5 shrink-0",
-                  ACCENT_CLASSES[TYPE_ACCENT[type]].textOnSurface,
-                )}
-                strokeWidth={2.5}
-              />
-              <span>{unifiedTypeHint(type, locale)}</span>
-            </p>
-          ) : (
-            <p className="text-fg-muted text-[13px] leading-relaxed" aria-live="polite">
-              {t.typePrompt}
-            </p>
-          )}
+          {/* Une seule ligne d'aide — hauteur réservée pour que le choix d'une
+              intention ne pousse pas les champs vers le bas (CLS = 0). */}
+          <p
+            id="unified-type-hint"
+            aria-live="polite"
+            className={cn(
+              "flex min-h-[38px] items-start gap-2 rounded-xl px-3 py-2 text-[13px] leading-snug transition-colors",
+              type
+                ? cn(ACCENT_CLASSES[TYPE_ACCENT[type]].surface, "text-fg")
+                : "text-fg-muted bg-transparent",
+            )}
+          >
+            {type ? (
+              <>
+                <ArrowRight
+                  aria-hidden="true"
+                  className={cn(
+                    "mt-[3px] h-3.5 w-3.5 shrink-0",
+                    ACCENT_CLASSES[TYPE_ACCENT[type]].textOnSurface,
+                  )}
+                  strokeWidth={2.5}
+                />
+                <span>{unifiedTypeHint(type, locale)}</span>
+              </>
+            ) : (
+              <span>{t.typePrompt}</span>
+            )}
+          </p>
 
           {errors.type ? (
-            <p role="alert" className="text-error text-xs">
+            <p role="alert" className="text-accent-red text-xs">
               {errors.type.message ?? t.typeRequired}
             </p>
           ) : null}
@@ -637,43 +754,52 @@ function UnifiedContactFormBody({
         <input type="hidden" {...register("type")} />
       )}
 
-      {/* Nom + Email — 2 colonnes desktop */}
+      {/* Nom + Email — empilés sur mobile, appariés dès `sm`. */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="grid gap-2">
+        <div className="grid gap-1.5">
           <Label htmlFor="unified-nom">
             {t.nom}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <Req />
           </Label>
           <Input
             id="unified-nom"
+            aria-required="true"
             autoComplete="name"
+            autoCapitalize="words"
+            enterKeyHint="next"
             placeholder={t.nomPlaceholder}
             {...register("nom")}
             aria-invalid={!!errors.nom}
             aria-describedby={errors.nom ? "unified-nom-err" : undefined}
           />
           {errors.nom ? (
-            <p id="unified-nom-err" role="alert" className="text-error text-xs">
+            <p id="unified-nom-err" role="alert" className="text-accent-red text-xs">
               {errors.nom.message}
             </p>
           ) : null}
         </div>
-        <div className="grid gap-2">
+        <div className="grid gap-1.5">
           <Label htmlFor="unified-email">
             {t.email}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <Req />
           </Label>
           <Input
             id="unified-email"
+            aria-required="true"
             type="email"
+            inputMode="email"
             autoComplete="email"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="next"
             placeholder={t.emailPlaceholder}
             {...register("email")}
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "unified-email-err" : undefined}
           />
           {errors.email ? (
-            <p id="unified-email-err" role="alert" className="text-error text-xs">
+            <p id="unified-email-err" role="alert" className="text-accent-red text-xs">
               {errors.email.message}
             </p>
           ) : null}
@@ -682,186 +808,206 @@ function UnifiedContactFormBody({
 
       {/* Téléphone + Ville */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="grid gap-2">
+        <div className="grid gap-1.5">
           <Label htmlFor="unified-telephone">
             {t.telephone}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <Req />
           </Label>
           <Input
             id="unified-telephone"
+            aria-required="true"
             type="tel"
             inputMode="tel"
             autoComplete="tel"
+            enterKeyHint="next"
             placeholder={t.telephonePlaceholder}
             {...register("telephone")}
             aria-invalid={!!errors.telephone}
-            aria-describedby={errors.telephone ? "unified-tel-err" : undefined}
+            // L'indicatif pays est OBLIGATOIRE (regex du schema). Il vivait dans
+            // le libellé — « Téléphone (avec indicatif pays) » —, ce qui allongeait
+            // la ligne sans jamais montrer la forme attendue. Il est désormais
+            // dit sous le champ, et rattaché par aria-describedby.
+            aria-describedby={
+              errors.telephone ? "unified-tel-err unified-tel-hint" : "unified-tel-hint"
+            }
           />
           {errors.telephone ? (
-            <p id="unified-tel-err" role="alert" className="text-error text-xs">
+            <p id="unified-tel-err" role="alert" className="text-accent-red text-xs">
               {errors.telephone.message}
             </p>
-          ) : null}
+          ) : (
+            <p id="unified-tel-hint" className="text-fg-muted text-[12px]">
+              {t.telephoneHint}
+            </p>
+          )}
         </div>
-        <div className="grid gap-2">
+        <div className="grid gap-1.5">
           <Label htmlFor="unified-ville">
             {t.ville}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <Req />
           </Label>
           <Input
             id="unified-ville"
+            aria-required="true"
             autoComplete="address-level2"
+            autoCapitalize="words"
+            enterKeyHint="next"
             placeholder={t.villePlaceholder}
             {...register("ville")}
             aria-invalid={!!errors.ville}
             aria-describedby={errors.ville ? "unified-ville-err" : undefined}
           />
           {errors.ville ? (
-            <p id="unified-ville-err" role="alert" className="text-error text-xs">
+            <p id="unified-ville-err" role="alert" className="text-accent-red text-xs">
               {errors.ville.message}
             </p>
           ) : null}
         </div>
       </div>
 
-      {/* Message */}
-      <div className="grid gap-2">
+      {/* Message — l'amorce s'adapte à l'intention choisie. */}
+      <div className="grid gap-1.5">
         <div className="flex items-baseline justify-between gap-3">
           <Label htmlFor="unified-message">
             {t.message}
-            <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
+            <Req />
           </Label>
-          <span
-            className={cn(
-              "text-[11px] font-bold tabular-nums",
-              messageValue.length < 20 ? "text-fg-muted" : "text-sage",
-            )}
-            aria-live="polite"
-          >
-            {messageValue.length} / 2000
-          </span>
+          <MessageMeter control={control} locale={locale} />
         </div>
         <Textarea
           id="unified-message"
-          rows={5}
-          placeholder={t.messagePlaceholder}
+          aria-required="true"
+          rows={4}
+          placeholder={messagePlaceholder(type, locale)}
           {...register("message")}
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "unified-msg-err" : undefined}
         />
         {errors.message ? (
-          <p id="unified-msg-err" role="alert" className="text-error text-xs">
+          <p id="unified-msg-err" role="alert" className="text-accent-red text-xs">
             {errors.message.message}
           </p>
         ) : null}
       </div>
 
-      {/* Toggle avancé */}
-      <div className="border-border border-t pt-5">
+      {/* Détails facultatifs */}
+      <div className="border-border border-t pt-4">
         <button
           type="button"
           onClick={() => setAdvancedOpen((v) => !v)}
           aria-expanded={advancedOpen}
           aria-controls="unified-advanced"
-          className="group text-fg hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex items-center gap-2.5 rounded text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="group text-fg-soft hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex items-center gap-2 rounded text-[13.5px] font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
-          <span className="bg-terracotta-soft text-terracotta-deep group-hover:bg-terracotta group-hover:text-paper flex h-6 w-6 shrink-0 items-center justify-center rounded-lg transition-colors">
-            <ChevronDown
-              aria-hidden="true"
-              className={cn(
-                "h-4 w-4 transition-transform",
-                advancedOpen ? "rotate-180" : "rotate-0",
-              )}
-            />
-          </span>
+          <ChevronDown
+            aria-hidden="true"
+            className={cn("h-4 w-4 transition-transform", advancedOpen ? "rotate-180" : "rotate-0")}
+          />
           {t.advancedToggle}
         </button>
-        {advancedOpen ? (
-          <div id="unified-advanced" className="mt-4 space-y-4">
-            <p className="text-fg-muted text-[12.5px] leading-relaxed">{t.advancedHint}</p>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="grid gap-2">
-                <Label htmlFor="unified-companyName">{t.companyName}</Label>
-                <Input
-                  id="unified-companyName"
-                  autoComplete="organization"
-                  placeholder={t.companyNamePlaceholder}
-                  {...register("companyName")}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="unified-companySize">{t.companySize}</Label>
-                <select
-                  id="unified-companySize"
-                  {...register("companySize")}
-                  className="border-border bg-paper text-fg focus-visible:ring-terracotta h-10 rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
-                >
-                  <option value="">—</option>
-                  {COMPANY_SIZES.map((s) => (
-                    <option key={s} value={s}>
-                      {t.companySizeOptions[s]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="grid gap-2">
-                <Label htmlFor="unified-companySector">{t.companySector}</Label>
-                <Input
-                  id="unified-companySector"
-                  placeholder={t.companySectorPlaceholder}
-                  {...register("companySector")}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="unified-timingWeeks">{t.timingWeeks}</Label>
-                <select
-                  id="unified-timingWeeks"
-                  {...register("timingWeeks")}
-                  className="border-border bg-paper text-fg focus-visible:ring-terracotta h-10 rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
-                >
-                  <option value="">—</option>
-                  {TIMING_WEEKS.map((w) => (
-                    <option key={w} value={w}>
-                      {t.timingWeeksOptions[w]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="unified-budget">{t.budgetIndicative}</Label>
+        {/* Même raison que pour « Autre sujet » : le conteneur reste dans le DOM
+            pour que `aria-controls` désigne quelque chose. */}
+        <div
+          id="unified-advanced"
+          className={cn("mt-4 space-y-4", advancedOpen ? "block" : "hidden")}
+        >
+          <p className="text-fg-muted text-[12.5px] leading-relaxed">{t.advancedHint}</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-1.5">
+              <Label htmlFor="unified-companyName">{t.companyName}</Label>
               <Input
-                id="unified-budget"
-                placeholder={t.budgetIndicativePlaceholder}
-                {...register("budgetIndicative")}
+                id="unified-companyName"
+                autoComplete="organization"
+                placeholder={t.companyNamePlaceholder}
+                {...register("companyName")}
               />
             </div>
+            <div className="grid gap-1.5">
+              <Label htmlFor="unified-companySize">{t.companySize}</Label>
+              <select
+                id="unified-companySize"
+                {...register("companySize")}
+                className="border-border-strong bg-paper text-fg focus-visible:border-terracotta focus-visible:ring-terracotta/20 h-12 rounded-lg border px-3 text-base transition focus-visible:ring-4 focus-visible:outline-none"
+              >
+                <option value="">{t.selectNone}</option>
+                {COMPANY_SIZES.map((s) => (
+                  <option key={s} value={s}>
+                    {t.companySizeOptions[s]}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        ) : null}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-1.5">
+              <Label htmlFor="unified-companySector">{t.companySector}</Label>
+              <Input
+                id="unified-companySector"
+                placeholder={t.companySectorPlaceholder}
+                {...register("companySector")}
+              />
+            </div>
+            <div className="grid gap-1.5">
+              <Label htmlFor="unified-timingWeeks">{t.timingWeeks}</Label>
+              <select
+                id="unified-timingWeeks"
+                {...register("timingWeeks")}
+                className="border-border-strong bg-paper text-fg focus-visible:border-terracotta focus-visible:ring-terracotta/20 h-12 rounded-lg border px-3 text-base transition focus-visible:ring-4 focus-visible:outline-none"
+              >
+                <option value="">{t.selectNone}</option>
+                {TIMING_WEEKS.map((w) => (
+                  <option key={w} value={w}>
+                    {t.timingWeeksOptions[w]}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="grid gap-1.5">
+            <Label htmlFor="unified-budget">{t.budgetIndicative}</Label>
+            <Input
+              id="unified-budget"
+              placeholder={t.budgetIndicativePlaceholder}
+              {...register("budgetIndicative")}
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Consent — encart sable : sépare l'engagement RGPD du reste des champs. */}
+      {/* Consentement — le lien vers la politique de confidentialité est un
+          VRAI lien depuis 2026-08-25 : le texte la citait sans y mener. */}
       <div className="border-border bg-bg flex items-start gap-3 rounded-2xl border p-4">
         <Checkbox
           id="unified-consent"
+          aria-required="true"
           checked={!!consent}
           onCheckedChange={(c) =>
             setValue("consent", c === true ? true : (false as never), {
               shouldValidate: true,
             })
           }
+          aria-describedby="unified-consent-text"
         />
         <Label
           htmlFor="unified-consent"
-          className="text-fg-soft cursor-pointer text-[13px] leading-relaxed"
+          id="unified-consent-text"
+          className="text-fg-soft cursor-pointer text-[13px] leading-relaxed font-normal"
         >
-          {t.consent}
+          {t.consentLead}
+          <Link
+            href="/politique-confidentialite"
+            className="text-terracotta-deep underline underline-offset-2"
+            // Le clic sur un lien DANS un <label> cocherait la case : on arrête
+            // la propagation pour que le lien reste un lien.
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t.consentLink}
+          </Link>
+          {t.consentTail}
         </Label>
       </div>
       {errors.consent ? (
-        <p role="alert" className="text-error text-xs">
+        <p role="alert" className="text-accent-red text-xs">
           {errors.consent.message}
         </p>
       ) : null}
@@ -891,21 +1037,9 @@ function UnifiedContactFormBody({
         />
       </Button>
 
-      {/* Trust pills — une couleur par promesse (RGPD bleu, délai terracotta,
-          sans-engagement sage) : trois points d'ancrage plutôt qu'une ligne grise. */}
-      <ul className="flex flex-wrap items-center justify-center gap-2">
-        {TRUST_PILLS.map(({ key, Icon, accent }, i) => (
-          <li
-            key={key}
-            className="border-border bg-bg text-fg-soft inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-medium"
-          >
-            <Icon
-              aria-hidden="true"
-              strokeWidth={2.2}
-              className={cn("h-3.5 w-3.5 shrink-0", ACCENT_CLASSES[accent].text)}
-            />
-            {t.trustPills[i]}
-          </li>
+      <ul className="text-fg-muted flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[12px]">
+        {t.trustPills.map((pill) => (
+          <li key={pill}>{pill}</li>
         ))}
       </ul>
     </form>
@@ -925,7 +1059,6 @@ function UnifiedContactFormBody({
  * `?subType=` sont désormais appliqués côté client via `useEffect` dans le corps
  * (cf. commentaires plus haut) : pas de bailout, pas de frontière pending, et
  * l'îlot s'hydrate normalement au chargement direct. Chantier 2026-07-01.
- * Même correctif à appliquer à `cas-concrets/CaseStudiesFilteredGrid`.
  */
 export function UnifiedContactForm(props: UnifiedContactFormProps) {
   return <UnifiedContactFormBody {...props} />;

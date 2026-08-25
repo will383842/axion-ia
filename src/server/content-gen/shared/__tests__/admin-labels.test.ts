@@ -102,20 +102,23 @@ describe("admin-labels — spot-checks métier", () => {
     expect(articleStatusLabelFr("inconnu")).toBe("inconnu");
   });
 
-  // 🔴 CE TEST VERROUILLAIT UN EMOJI. Il exigeait littéralement « 🟢 En ligne »,
-  // et c'est ce qui a fait rougir `main` quand les trois libellés ont été
-  // dé-emojifiés — alors que la charte de la console impose lucide-react depuis
-  // le 2026-08-02. Le contrat utile n'est pas le pictogramme : c'est que le
-  // libellé dise l'état en clair, et que la tonalité porte la couleur.
-  it("articlePublicationBadge : badges métier limpides, sans pictogramme", () => {
+  // Ce test a d'abord verrouillé un emoji (« 🟢 En ligne »), puis son ABSENCE.
+  // Les deux étaient hors sujet : le 2026-08-25, Will lève la doctrine
+  // anti-emoji du dépôt, et l'interdiction posée ici n'a donc plus de règle à
+  // faire respecter. Ce qui reste vrai — et seul contrat utile — est que le
+  // libellé dise l'état EN CLAIR et que la tonalité porte la couleur : un
+  // pictogramme, quel qu'il soit, ne doit jamais être la seule information.
+  it("articlePublicationBadge : l'état est dit en clair, la tonalité porte la couleur", () => {
     expect(articlePublicationBadge("published")).toEqual({ label: "En ligne", tone: "success" });
     expect(articlePublicationBadge("draft").tone).toBe("warning");
     expect(articlePublicationBadge("archived").tone).toBe("neutral");
     for (const statut of ["published", "draft", "archived"]) {
+      // Au moins un mot lisible : un badge réduit à un pictogramme serait muet
+      // pour un lecteur d'écran.
       expect(
-        /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(articlePublicationBadge(statut).label),
-        `emoji dans le badge « ${statut} » — la charte impose une icône lucide`,
-      ).toBe(false);
+        /\p{Letter}{2,}/u.test(articlePublicationBadge(statut).label),
+        `le badge « ${statut} » ne dit pas son état en toutes lettres`,
+      ).toBe(true);
     }
   });
 
