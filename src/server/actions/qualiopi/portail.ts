@@ -639,13 +639,18 @@ export async function revoquerPortailAccesAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;
 
-  await revoquerAcces(id);
+  // 🔴 2026-08-25 — révoque TOUS les accès vivants du stagiaire, pas seulement
+  // celui affiché : `creerAcces` n'invalide pas les précédents, et l'écran n'en
+  // montre qu'un. Le geste ne coupait donc pas ce qu'il annonçait.
+  const nbRevoques = await revoquerAcces(id);
 
   await logQualiopiActivity({
     action: "qualiopi.portail.revoquer_acces",
     targetType: "PortailAcces",
     targetId: id,
-    changes: { revoked: true },
+    // Le COMPTE, pas un booléen : un journal qui écrit « revoked: true » sans
+    // dire combien laisse croire qu'un seul accès existait.
+    changes: { revoked: true, nbAccesRevoques: nbRevoques },
     session,
   });
 
