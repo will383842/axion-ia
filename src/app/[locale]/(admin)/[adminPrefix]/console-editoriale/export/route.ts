@@ -9,6 +9,7 @@
  *   /console-editoriale/export?type=csv&year=2026&month=9
  *   /console-editoriale/export?type=sauvegarde
  *   /console-editoriale/export?type=plan&asset=carrousel&periode=2026-10&format=md
+ *   /console-editoriale/export?type=plan&asset=carrousel&format=pdf
  */
 
 import { NextResponse, type NextRequest } from "next/server";
@@ -17,7 +18,12 @@ import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { requirePermission } from "@/server/actions/editorial/_guards";
 import { dayKeyOfGridDate } from "@/lib/calendar-grid";
-import { lireAnnee, lireMois, bornesDuMois } from "@/server/editorial/calendrier-pur";
+import {
+  lireAnnee,
+  lireMois,
+  bornesDuMois,
+  lirePeriodeMois,
+} from "@/server/editorial/calendrier-pur";
 import {
   construireCsv,
   nomFichierCsv,
@@ -34,6 +40,7 @@ import {
   TYPES_PLAN,
   type AssetPlan,
 } from "@/server/editorial/plan-production";
+import { rendrePlanEnPdf } from "@/server/editorial/plan-production-pdf";
 
 /** Le titre humain d'un plan. La clé sert l'URL, le mot sert le lecteur. */
 const LIBELLE_TYPE_PLAN: Record<string, string> = {
@@ -45,6 +52,16 @@ const LIBELLE_TYPE_PLAN: Record<string, string> = {
   document: "Documents",
   tout: "tous les assets",
 };
+
+/**
+ * Plafond du plan de production.
+ *
+ * Il existe pour la même raison que tous les plafonds de requête : sans lui,
+ * un compte qui aurait dix mille assets sortirait un PDF que personne
+ * n'imprime et qui fait tomber la route. Ce qui compte n'est pas sa valeur,
+ * c'est que le document DISE quand il l'atteint — cf. `tronque` plus bas.
+ */
+const LIMITE_PLAN = 2000;
 
 export const dynamic = "force-dynamic";
 
@@ -292,15 +309,24 @@ async function exporterArchive(publicationId: string): Promise<NextResponse> {
 async function exporterPlan(
   typeAsset: string | null,
   periode: string | null,
-  format: "md" | "csv",
+  format: "md" | "csv" | "pdf",
   seulementAProduire: boolean,
 ): Promise<NextResponse> {
   // Bornes de période. `periode` vaut « 2026-10 », ou rien pour tout.
+  //
+  // 🔴 Ce bloc testait la période avec `/^d{4}-d{2}$/` — les deux antislashs
+  // manquaient. L'expression ne reconnaissait que la chaîne littérale
+  // « dddd-dd » : AUCUNE période n'a jamais matché, le filtre n'était jamais
+  // posé, et l'export sortait tous les mois en affichant « Toutes périodes ».
+  // La lecture vit désormais dans `calendrier-pur`, sous test — une regex
+  // écrite dans un Route Handler n'était couverte par rien.
   let bornes: { debut: Date; fin: Date } | null = null;
-  if (periode && /^d{4}-d{2}$/.test(periode)) {
-    const annee = Number(periode.slice(0, 4));
-    const mois = Number(periode.slice(5, 7));
-    if (mois >= 1 && mois <= 12) bornes = bornesDuMois(annee, mois);
+  if (periode) {
+    const lue = lirePeriodeMois(periode);
+    // Et on REFUSE au lieu d'ignorer : retomber en silence sur « tout », c'est
+    // rendre un document qui ment sur son propre périmètre.
+    if (!lue.ok) return NextResponse.json({ error: lue.erreur }, { status: 400 });
+    bornes = bornesDuMois(lue.annee, lue.mois);
   }
 
   const assets = await prisma.edAsset.findMany({
@@ -333,10 +359,17 @@ async function exporterPlan(
         },
       },
     },
-    take: 1000,
+    // ⚠️ `+ 1` : on demande un élément DE PLUS que le plafond, uniquement
+    // pour savoir s'il en existait d'autres. Un `take: LIMITE` sec rend un
+    // plan tronqué indiscernable d'un plan complet — le travail qui manque
+    // ne manque alors nulle part.
+    take: LIMITE_PLAN + 1,
   });
 
-  const plan: AssetPlan[] = assets.map((a) => {
+  const tronque = assets.length > LIMITE_PLAN;
+  const retenus = tronque ? assets.slice(0, LIMITE_PLAN) : assets;
+
+  const plan: AssetPlan[] = retenus.map((a) => {
     const pub = a.publications[0]?.publication ?? null;
     return {
       id: a.id,
@@ -353,20 +386,39 @@ async function exporterPlan(
   const libelleType = typeAsset && TYPES_PLAN.includes(typeAsset as never) ? typeAsset : "tout";
   const libellePeriode = bornes ? (periode ?? "tout") : "tout";
 
-  if (format === "csv") {
-    return new NextResponse(construireCsvPlan(plan), {
-      headers: enTetes(nomFichierPlan(libelleType, libellePeriode, "csv"), "text/csv"),
-    });
-  }
-
-  const md = construireMarkdown(plan, {
+  const contexte = {
     titre: `Plan de production — ${LIBELLE_TYPE_PLAN[libelleType] ?? libelleType}`,
     periode:
       (bornes ? `Période ${libellePeriode}` : "Toutes périodes") +
       (seulementAProduire ? " · assets non terminés seulement" : " · tous statuts"),
-  });
-  return new NextResponse(md, {
-    headers: enTetes(nomFichierPlan(libelleType, libellePeriode, "md"), "text/markdown"),
+    avertissement: tronque
+      ? `Ce plan est TRONQUÉ : il s'arrête à ${LIMITE_PLAN} assets, et le ` +
+        "périmètre demandé en contient davantage. Filtrez par type " +
+        "(« asset=carrousel ») ou par mois (« periode=2026-10 ») pour tout voir."
+      : null,
+  };
+
+  // Le nom du fichier porte la troncature quel que soit le format : c'est le
+  // seul avertissement qu'un CSV peut transporter — y écrire une ligne de
+  // commentaire casserait le tableur qui l'ouvre.
+  const nom = (extension: "md" | "csv" | "pdf") =>
+    nomFichierPlan(libelleType, libellePeriode, extension, tronque);
+
+  if (format === "csv") {
+    return new NextResponse(construireCsvPlan(plan), {
+      headers: enTetes(nom("csv"), "text/csv"),
+    });
+  }
+
+  if (format === "pdf") {
+    const buffer = await rendrePlanEnPdf(plan, contexte);
+    return new NextResponse(new Uint8Array(buffer), {
+      headers: enTetes(nom("pdf"), "application/pdf"),
+    });
+  }
+
+  return new NextResponse(construireMarkdown(plan, contexte), {
+    headers: enTetes(nom("md"), "text/markdown"),
   });
 }
 
@@ -398,7 +450,8 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
   }
 
   if (type === "plan") {
-    const format = params.get("format") === "csv" ? "csv" : "md";
+    const demande = params.get("format");
+    const format = demande === "csv" ? "csv" : demande === "pdf" ? "pdf" : "md";
     // Par defaut on ne sort QUE ce qui reste a faire : un plan de production
     // qui reliste les assets termines se relit mal et se coche deux fois.
     const seulementAProduire = params.get("statut") !== "tous";

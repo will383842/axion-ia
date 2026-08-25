@@ -296,21 +296,43 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
             */}
             Groupé par type et trié par échéance, avec le script, les prompts et les slides. Le
             Markdown est la feuille de route qu&apos;on ouvre à côté de l&apos;outil de fabrication
-            ; le CSV porte une ligne par segment, pour un tableur de suivi. Par défaut, seuls les
-            assets non terminés y figurent.
+            ; le PDF est celle qu&apos;on imprime et qu&apos;on coche au stylo ; le CSV porte une
+            ligne par segment, pour un tableur de suivi. Par défaut, seuls les assets non terminés y
+            figurent.
           </p>
+          {/*
+            Chaque type porte SES DEUX formats côte à côte. Un seul bouton par
+            type obligeait à retélécharger un fichier pour changer de format,
+            et le PDF — celui qu'on emporte à l'impression — n'existait nulle
+            part. Dans le PDF, chaque type commence sur une page neuve : la
+            plage « les carrousels » s'imprime seule.
+          */}
           <div className="flex flex-wrap gap-2">
             {PLANS.map((p) => (
-              <a
-                key={`plan-${p.cle}`}
-                href={`${base}/export?type=plan&asset=${p.cle}&format=md`}
-                className="admin-button-secondary admin-button-sm"
-              >
-                {p.libelle}
-              </a>
+              <span key={`plan-${p.cle}`} className="inline-flex">
+                <a
+                  href={`${base}/export?type=plan&asset=${p.cle}&format=md`}
+                  className="admin-button-secondary admin-button-sm rounded-r-none"
+                >
+                  {p.libelle}
+                </a>
+                <a
+                  href={`${base}/export?type=plan&asset=${p.cle}&format=pdf`}
+                  aria-label={`${p.libelle} — PDF à imprimer`}
+                  className="admin-button-secondary admin-button-sm -ml-px rounded-l-none"
+                >
+                  PDF
+                </a>
+              </span>
             ))}
             <a href={`${base}/export?type=plan&format=md`} className="admin-button admin-button-sm">
               Tout — feuille de route
+            </a>
+            <a
+              href={`${base}/export?type=plan&format=pdf`}
+              className="admin-button-secondary admin-button-sm"
+            >
+              Tout — PDF à imprimer
             </a>
             <a
               href={`${base}/export?type=plan&format=csv`}

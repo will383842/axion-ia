@@ -157,12 +157,20 @@ export default async function MediathequePage({ params, searchParams }: PageProp
             </Link>
           ))}
           {/* Le plan de production du type courant, à un clic de la liste
-              qu'on vient de filtrer : c'est là qu'on décide de le produire. */}
+              qu'on vient de filtrer : c'est là qu'on décide de le produire.
+              Le PDF est à côté, parce que la décision « je fabrique ça
+              aujourd'hui » se prend ici et s'emporte à l'imprimante. */}
           <a
             href={`${base}/export?type=plan${type ? `&asset=${type}` : ""}&format=md`}
             className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-hover)]"
           >
             ↓ Plan de production
+          </a>
+          <a
+            href={`${base}/export?type=plan${type ? `&asset=${type}` : ""}&format=pdf`}
+            className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-hover)]"
+          >
+            ↓ Plan en PDF
           </a>
         </nav>
 

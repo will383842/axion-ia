@@ -233,4 +233,44 @@ describe("nomFichierPlan", () => {
       "plan-production-videos-courtes-tout.csv",
     );
   });
+
+  it("nomme aussi le PDF, celui qu'on imprime", () => {
+    expect(nomFichierPlan("carrousel", "2026-10", "pdf")).toBe(
+      "plan-production-carrousel-2026-10.pdf",
+    );
+  });
+
+  it("🔴 marque la troncature DANS LE NOM — le seul avertissement qu'un CSV porte", () => {
+    // Une ligne de commentaire casserait le tableur ; le nom, lui, survit au
+    // téléchargement, au classement et à la réouverture six mois plus tard.
+    expect(nomFichierPlan("carrousel", "tout", "csv", true)).toBe(
+      "plan-production-carrousel-tout-tronque.csv",
+    );
+    expect(nomFichierPlan("carrousel", "tout", "csv", false)).toBe(
+      "plan-production-carrousel-tout.csv",
+    );
+  });
+});
+
+describe("construireMarkdown — l'avertissement", () => {
+  it("🔴 imprime l'avertissement en tête, avant la première section", () => {
+    const md = construireMarkdown([asset({ id: "a", type: "video" })], {
+      titre: "Plan",
+      periode: "Toutes périodes",
+      avertissement: "Ce plan est TRONQUÉ.",
+    });
+    expect(md).toContain("Ce plan est TRONQUÉ.");
+    // Avant le premier titre de section : un avertissement placé après les
+    // cent pages du plan n'avertit personne.
+    expect(md.indexOf("Ce plan est TRONQUÉ.")).toBeLessThan(md.indexOf("# Vidéos"));
+  });
+
+  it("n'écrit RIEN quand il n'y a rien à signaler", () => {
+    const md = construireMarkdown([asset({ id: "a", type: "video" })], {
+      titre: "Plan",
+      periode: "Toutes périodes",
+    });
+    // Le témoin négatif : sans lui, un avertissement toujours vide passerait.
+    expect(md).not.toContain("⚠️");
+  });
 });

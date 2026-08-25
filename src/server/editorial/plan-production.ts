@@ -109,6 +109,19 @@ export function avancement(asset: AssetPlan): { faits: number; total: number } {
 }
 
 /**
+ * Le contexte d'un plan — ce qui s'imprime en tête, avant les assets.
+ *
+ * `avertissement` porte ce qui rendrait le document MENSONGER s'il restait tu.
+ * Aujourd'hui c'est la troncature : un plan plafonné qui ne l'annonce pas se
+ * lit comme un plan complet, et le travail qui manque ne manque nulle part.
+ */
+export interface ContextePlan {
+  titre: string;
+  periode: string;
+  avertissement?: string | null;
+}
+
+/**
  * La feuille de route, en Markdown.
  *
  * ⚠️ Le prompt reste dans un bloc encadré, seul dans son bloc. Il se colle
@@ -117,10 +130,7 @@ export function avancement(asset: AssetPlan): { faits: number; total: number } {
  * texte de la slide — la règle du dossier est qu'un prompt ne contient AUCUN
  * texte à afficher, les générateurs déforment les lettres.
  */
-export function construireMarkdown(
-  assets: readonly AssetPlan[],
-  contexte: { titre: string; periode: string },
-): string {
+export function construireMarkdown(assets: readonly AssetPlan[], contexte: ContextePlan): string {
   const tries = trierPourProduction(assets);
   const l: string[] = [];
 
@@ -128,6 +138,10 @@ export function construireMarkdown(
   l.push("");
   l.push(`> ${contexte.periode} · ${tries.length} asset(s) à produire.`);
   l.push("");
+  if (contexte.avertissement) {
+    l.push(`> ⚠️ ${contexte.avertissement}`);
+    l.push("");
+  }
 
   if (tries.length === 0) {
     l.push("Rien à produire sur ce périmètre.");
@@ -257,8 +271,19 @@ export function construireCsvPlan(assets: readonly AssetPlan[]): string {
   return "﻿" + lignes.join("\r\n") + "\r\n";
 }
 
-/** Nom de fichier — lisible, triable, sans espace. */
-export function nomFichierPlan(type: string, periode: string, extension: "md" | "csv"): string {
+/**
+ * Nom de fichier — lisible, triable, sans espace.
+ *
+ * ⚠️ `tronque` n'est pas cosmétique : c'est le SEUL endroit où un CSV peut
+ * avouer qu'il est incomplet. Y écrire une ligne de commentaire casserait le
+ * tableur ; le nom du fichier, lui, survit au téléchargement et à l'archivage.
+ */
+export function nomFichierPlan(
+  type: string,
+  periode: string,
+  extension: "md" | "csv" | "pdf",
+  tronque = false,
+): string {
   const propre = (s: string) =>
     s
       .toLowerCase()
@@ -266,5 +291,5 @@ export function nomFichierPlan(type: string, periode: string, extension: "md" | 
       .replace(/[̀-ͯ]/g, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
-  return `plan-production-${propre(type)}-${propre(periode)}.${extension}`;
+  return `plan-production-${propre(type)}-${propre(periode)}${tronque ? "-tronque" : ""}.${extension}`;
 }
