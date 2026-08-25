@@ -146,7 +146,9 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     id: "depliant-formations",
     icon: "ScrollText",
     nom: "Dépliant formations · 4 pages",
-    format: "A3 ouvert / A4 fermé · 420 × 297 mm à plat, 210 × 297 mm plié · une pliure au centre",
+    format:
+      "A3 ouvert / A4 fermé · 420 × 297 mm à plat, 210 × 297 mm plié · pli central · " +
+      "pages 2-3 conçues comme une seule double page, bandeau traversant le pli",
     resume:
       "Les 21 formations et le séminaire sur une seule page, avec les prix publics et la prise en charge OPCO. Le format à laisser après un rendez-vous quand le catalogue 48 p. est trop lourd.",
     fichiersPublics: [
@@ -161,9 +163,14 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
         role: "Recto « page 4 | page 1 », verso « page 2 | page 3 » : imprimé en recto-verso sur A3 et plié au centre, il tombe dans le bon ordre. Pour le tirage bureautique.",
       },
       {
-        chemin: "imprimes/depliant-formations-axion-ia-IMPRIMEUR.pdf",
-        nom: "Le fichier imprimeur — Vistaprint / Exaprint",
-        role: "4 pages à 216 × 303 mm : le format fini 210 × 297 plus 3 mm de fond perdu sur chaque bord, avec les repères de coupe. C'est CE fichier qu'on téléverse chez l'imprimeur, pas les deux autres. Pages séparées et non imposées — Vistaprint comme Exaprint imposent eux-mêmes.",
+        chemin: "imprimes/depliant-formations-axion-ia-VISTAPRINT.pdf",
+        nom: "Fichier Vistaprint — 422 × 299 mm",
+        role: "2 planches A3 recto-verso, aux cotes exactes du gabarit « Dépliant pli central » (fini 420 × 297, soit 1 mm de fond perdu par bord). C'est CE fichier qu'on téléverse chez Vistaprint.",
+      },
+      {
+        chemin: "imprimes/depliant-formations-axion-ia-EXAPRINT.pdf",
+        nom: "Fichier Exaprint — 426 × 303 mm",
+        role: "Le même document avec 3 mm de fond perdu, le standard des offsets français. ⚠️ Ces 3 mm viennent de l'usage, pas d'un gabarit Exaprint lu : à confronter à leur gabarit avant de lancer un tirage.",
       },
     ],
     fichiersHorsLigne: [],

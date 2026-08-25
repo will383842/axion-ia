@@ -74,6 +74,20 @@ const MENTIONS =
   "SIRET (siège) 108 018 631 00011 · TVA intracommunautaire FR51 108 018 631 · " +
   "Directeur de la publication : Williams Jullin, président · contact@axion-ia.com";
 
+// ─────────────────────────────────────────────────────────────────────────
+// FICHIERS IMPRIMEUR — un par valeur de fond perdu.
+//
+// VISTAPRINT : 422 × 299 mm, lu dans le gabarit « Dépliant pli central »
+// fourni par Will (fini 42 × 29,7, page 422 × 299) → 1 mm de débord.
+// EXAPRINT : 3 mm, le standard des offsets français. À reconfirmer sur leur
+// propre gabarit si le tirage part chez eux — ce chiffre-là n'a PAS été lu
+// dans un fichier, contrairement à celui de Vistaprint.
+// ─────────────────────────────────────────────────────────────────────────
+const DEBORDS = [
+  { debord: 1, nom: "VISTAPRINT" },
+  { debord: 3, nom: "EXAPRINT" },
+] as const;
+
 const QUALIOPI_MENTION =
   "La certification qualité a été délivrée au titre de la catégorie d'actions suivante : " +
   "ACTIONS DE FORMATION.";
@@ -96,7 +110,7 @@ const C = {
 };
 
 // ────────────────────────────────────────────────────────────────────────────
-// FONTES — Fraunces (titres) + Manrope (texte), auto-hébergées dans le dépôt.
+// FONTES — Fraunces seule, auto-hébergée dans le dépôt (Regular/Bold/Italic).
 // Embarquées en base64 : le rendu ne doit dépendre d'aucun réseau.
 // ────────────────────────────────────────────────────────────────────────────
 function fonte(fichier: string): string {
@@ -445,22 +459,6 @@ const TACHES = [
   { t: "Le reporting mensuel", avant: 480, apres: 120, a: "1 jour", b: "2 h" },
 ];
 
-/**
- * Le parcours — CINQ étapes, pas six.
- *
- * La page 5 du catalogue 48 p. en porte une sixième, « Visibilité offerte »,
- * dont le premier item est le podcast. Will l'a exclue de ce dépliant. Les
- * interviews de stagiaires, elles, restent — mais au dos, dans leur propre
- * bloc, pas comme une étape du parcours de formation.
- */
-const PARCOURS = [
-  { n: "1", t: "Appel", d: "30 min, sans engagement" },
-  { n: "2", t: "Dossier OPCO", d: "monté par nous, de A à Z" },
-  { n: "3", t: "Formation", d: "chez vous, sur vos dossiers" },
-  { n: "4", t: "Kit livré", d: "gabarits et prompts, à vous" },
-  { n: "5", t: "Attestations", d: "preuves Qualiopi + AI Act" },
-];
-
 // ────────────────────────────────────────────────────────────────────────────
 // GABARIT
 // ────────────────────────────────────────────────────────────────────────────
@@ -486,13 +484,30 @@ function styles(): string {
 @font-face { font-family:'Fraunces'; src:url('${fonte("Fraunces-Regular.ttf")}') format('truetype'); font-weight:400; font-style:normal; }
 @font-face { font-family:'Fraunces'; src:url('${fonte("Fraunces-Bold.ttf")}') format('truetype'); font-weight:700; font-style:normal; }
 @font-face { font-family:'Fraunces'; src:url('${fonte("Fraunces-Italic.ttf")}') format('truetype'); font-weight:400; font-style:italic; }
-@font-face { font-family:'Manrope'; src:url('${fonte("Manrope-Regular.ttf")}') format('truetype'); font-weight:400; }
-@font-face { font-family:'Manrope'; src:url('${fonte("Manrope-Medium.ttf")}') format('truetype'); font-weight:500; }
-@font-face { font-family:'Manrope'; src:url('${fonte("Manrope-Bold.ttf")}') format('truetype'); font-weight:700; }
 
+/*
+ * UNE SEULE FAMILLE — Fraunces, partout (décision Will, 2026-08-25).
+ *
+ * Manrope a été retiré : le dépliant portait deux fontes et onze corps, ce qui
+ * fait « dense » avant même de lire. La hiérarchie passe désormais par le
+ * CORPS, la CASSE et la COULEUR — jamais par un changement de famille.
+ *
+ * ⚠️ ÉCART ASSUMÉ AVEC LE CATALOGUE 48 p., qui associe Fraunces et Manrope
+ * comme le site. Le dépliant ne lui ressemblera donc pas tout à fait, alors
+ * que son QR y renvoie. C'est un choix de registre, pas un oubli : à ce
+ * grammage, une seule voix typographique tient mieux qu'une paire.
+ *
+ * ÉCHELLE FERMÉE — cinq corps, pas un de plus. Toute valeur hors de cette
+ * liste est une dérive : 25 / 13 / 10 / 8,4 / 7 pt.
+ */
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
 html, body { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-body { font-family:'Manrope', system-ui, sans-serif; color:${C.encre}; }
+body {
+  font-family:'Fraunces', Georgia, serif; color:${C.encre};
+  /* Fraunces est dessinée large : un poil de resserrement évite que le texte
+   * courant ne paraisse gras à 8 pt. */
+  letter-spacing:-.002em;
+}
 
 .page {
   width:210mm; height:297mm; position:relative; overflow:hidden;
@@ -501,7 +516,7 @@ body { font-family:'Manrope', system-ui, sans-serif; color:${C.encre}; }
 .page:last-child { page-break-after:auto; break-after:auto; }
 
 /* ── Ossature commune ───────────────────────────────────────────────────── */
-.corps { padding:13mm 13mm 11.5mm 13mm; height:100%; display:flex; flex-direction:column; }
+.corps { padding:16mm 16mm 13mm 16mm; height:100%; display:flex; flex-direction:column; }
 .tranche { position:absolute; top:0; right:0; width:5mm; height:100%; background:${C.terracotta}; }
 /*
  * Page 2 = volet INTÉRIEUR GAUCHE une fois plié : son bord extérieur est à
@@ -513,10 +528,48 @@ body { font-family:'Manrope', system-ui, sans-serif; color:${C.encre}; }
 .pied {
   position:absolute; bottom:0; left:0; right:0; height:9mm; background:${C.encreDoux};
   color:${C.creme}; display:flex; align-items:center; justify-content:space-between;
-  padding:0 13mm; font-size:7.4pt; letter-spacing:.01em;
+  padding:0 16mm; font-size:7pt; letter-spacing:.01em;
 }
 .pied strong { color:${C.blanc}; font-weight:700; }
 .folio { font-weight:700; letter-spacing:.08em; opacity:.75; }
+
+/*
+ * LA BANDE QUI TRAVERSE LE PLI.
+ *
+ * Les pages 2 et 3 ne sont pas deux A4 côte à côte : c'est UNE double page A3.
+ * Cette bande le dit. Elle est à fond perdu vers le pli — bord droit sur la
+ * page 2, bord gauche sur la page 3 — donc une fois le dépliant ouvert, les
+ * deux moitiés se rejoignent en un seul bandeau continu de 420 mm.
+ *
+ * ⚠️ SON Y DOIT ÊTRE IDENTIQUE SUR LES DEUX PAGES, sinon le raccord se voit
+ * comme un décrochement au pli. C'est pour ça que le bloc de tête au-dessus
+ * (.tete-double) porte une HAUTEUR FIXE : le titre de la page 2 tient sur
+ * deux lignes, celui de la page 3 sur une seule ; sans hauteur imposée, la
+ * bande tomberait 8 mm plus haut à droite.
+ *
+ * Chaque moitié porte son propre libellé complet : lu à plat dans le PDF
+ * 4 pages, chaque page reste autonome ; lu ouvert, l'ensemble se lit comme un
+ * sommaire de double page. Une phrase coupée par le pli aurait été plus
+ * spectaculaire, et illisible dans la moitié des usages.
+ */
+/* « flex-shrink:0 » est ce qui fait tenir le raccord au pli : sans lui, le
+ * conteneur flex comprime le bloc de tête de la page la plus chargée, et la
+ * bande y descend de 12 mm par rapport à sa jumelle. Mesuré au premier rendu. */
+.tete-double { height:44mm; flex-shrink:0; }
+
+.bande-pli {
+  background:${C.terracotta}; color:${C.blanc};
+  height:13mm; display:flex; align-items:center;
+  margin-bottom:6mm;
+  font-size:8.4pt; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+}
+.bande-pli .num {
+  font-size:13pt; font-weight:700; letter-spacing:0; margin-right:4mm;
+  color:rgba(255,255,255,.6); text-transform:none;
+}
+/* Vers le pli : la bande sort du cadre de texte et va jusqu'au bord. */
+.page:not(.couv) .bande-pli { margin-left:-16mm; margin-right:-16mm; padding-left:16mm; }
+.page .bande-pli.vers-droite { margin-right:-16mm; }
 
 .entete { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:6mm; }
 .entete img { height:11mm; }
@@ -525,15 +578,15 @@ body { font-family:'Manrope', system-ui, sans-serif; color:${C.encre}; }
   color:${C.olive}; text-align:right; padding-top:2mm;
 }
 
-h1.titre { font-family:'Fraunces', serif; font-size:25pt; line-height:1.03; font-weight:700; }
+h1.titre { font-size:25pt; line-height:1.03; font-weight:700; }
 h1.titre em { font-style:italic; font-weight:400; color:${C.terracotta}; }
 .chapo { font-size:9.2pt; line-height:1.45; color:#4A423C; margin-top:2.5mm; max-width:150mm; }
 
 h2.section {
-  font-family:'Fraunces', serif; font-size:13.5pt; font-weight:700; margin-bottom:3mm;
+  font-size:13.5pt; font-weight:700; margin-bottom:3mm;
   display:flex; align-items:baseline; gap:2.5mm;
 }
-h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; color:${C.terracotta}; letter-spacing:.06em; }
+h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; letter-spacing:.06em; }
 
 /* ── Page 1 · couverture ────────────────────────────────────────────────── */
 .couv { background:${C.encre}; color:${C.creme}; }
@@ -554,7 +607,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
   font-size:8pt; font-weight:700; letter-spacing:.24em; text-transform:uppercase;
   color:${C.sable}; margin-bottom:3mm;
 }
-.couv-titre h1 { font-family:'Fraunces', serif; font-size:41pt; line-height:.98; font-weight:700; color:${C.blanc}; }
+.couv-titre h1 { font-size:41pt; line-height:.98; font-weight:700; color:${C.blanc}; }
 .couv-titre h1 em { display:block; font-style:italic; font-weight:400; color:${C.terracottaVif}; font-size:39pt; }
 .couv-sous { margin-top:4mm; font-size:11.5pt; font-weight:500; color:${C.creme}; }
 
@@ -576,7 +629,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
   flex-shrink:0;
 }
 .couv-zero .chiffre b {
-  font-family:'Fraunces', serif; font-size:34pt; line-height:1; color:${C.blanc};
+  font-size:34pt; line-height:1; color:${C.blanc};
   display:block; white-space:nowrap;
 }
 .couv-zero .chiffre span {
@@ -606,7 +659,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
 .couv-fondateur .cf-txt span {
   display:block; font-size:7.4pt; color:${C.sable}; margin-top:.8mm; letter-spacing:.02em;
 }
-.couv-offre h2 { font-family:'Fraunces', serif; font-size:19pt; line-height:1.1; color:${C.blanc}; }
+.couv-offre h2 { font-size:19pt; line-height:1.1; color:${C.blanc}; }
 .couv-offre h2 em { font-style:italic; color:${C.terracottaVif}; }
 .couv-offre p { font-size:8.6pt; line-height:1.45; color:${C.sable}; margin-top:2.5mm; max-width:105mm; }
 .couv-qr { text-align:center; flex-shrink:0; }
@@ -620,7 +673,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
 .couv-trois > div { padding:0 5mm; border-left:1px solid rgba(236,224,200,.16); }
 .couv-trois > div:first-child { padding-left:0; border-left:none; }
 .couv-trois b {
-  font-family:'Fraunces', serif; font-size:22pt; line-height:1;
+  font-size:22pt; line-height:1;
   color:${C.terracottaVif}; display:block;
 }
 .couv-trois i {
@@ -660,27 +713,6 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
 .barre .tps i { font-style:normal; font-size:8pt; color:${C.terracotta}; font-weight:700; margin:0 1mm; }
 .barre .tps b { font-size:11.5pt; font-weight:700; color:${C.olive}; }
 
-/* ── Frise du parcours ─────────────────────────────────────────────────── */
-.chemin { display:grid; grid-template-columns:repeat(5,1fr); gap:2mm; position:relative; margin-bottom:3.5mm; }
-.chemin::before {
-  content:''; position:absolute; top:4.5mm; left:10%; right:10%;
-  border-top:1.4px dashed rgba(94,108,85,.45);
-}
-.jalon { text-align:center; position:relative; }
-.jalon .rond {
-  width:9mm; height:9mm; border-radius:99px; background:${C.terracotta}; color:${C.blanc};
-  font-size:11pt; font-weight:700; display:flex; align-items:center; justify-content:center;
-  margin:0 auto 2mm; position:relative; z-index:1;
-  box-shadow:0 0 0 2.2mm ${C.creme};
-}
-.jalon b { display:block; font-size:9pt; font-weight:700; line-height:1.15; }
-.jalon span { display:block; font-size:7.2pt; color:#6E645C; margin-top:.8mm; line-height:1.3; }
-
-.kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:3.5mm; margin-bottom:4mm; }
-.kpi { background:${C.encreDoux}; color:${C.creme}; border-radius:2.5mm; padding:3.2mm 4mm; }
-.kpi b { display:block; font-family:'Fraunces', serif; font-size:20pt; color:${C.terracottaVif}; line-height:1; }
-.kpi span { display:block; font-size:7.6pt; line-height:1.35; margin-top:2mm; color:${C.sable}; }
-
 /*
  * AI Act — mis en avant à la demande de Will (2026-08-25). Il était en bande
  * pâle de 8 pt en bas de page : c'est le seul argument du dépliant qui soit
@@ -707,14 +739,16 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
   border-right:1px solid rgba(255,255,255,.35);
 }
 .aiact .ai-badge b {
-  display:block; font-family:'Fraunces', serif; font-size:15pt; line-height:1; color:${C.blanc};
+  display:block; font-size:15pt; line-height:1; color:${C.blanc};
   white-space:nowrap;
 }
 .aiact .ai-badge span {
   display:block; font-size:6.4pt; font-weight:700; letter-spacing:.1em;
   color:rgba(255,255,255,.9); margin-top:1.4mm; text-transform:uppercase;
 }
-.aiact .ai-txt b { display:block; font-size:10.5pt; font-weight:700; margin-bottom:1.2mm; }
+/* « > b:first-child » et non « b » : le paragraphe contient des gras en ligne,
+ * qui passaient en display:block et se retrouvaient seuls sur leur ligne. */
+.aiact .ai-txt > b:first-child { display:block; font-size:10.5pt; font-weight:700; margin-bottom:1.2mm; }
 .aiact .ai-txt p { font-size:7.8pt; line-height:1.38; color:rgba(255,255,255,.95); }
 
 /* ── « Et dans votre secteur » ─────────────────────────────────────────── */
@@ -770,17 +804,17 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
 /* Hauteur commune, largeur dérivée du ratio du viewBox : c'est la même
  * normalisation que la bande du site (toutes les hauteurs à 60 px), sans quoi
  * un logo large écraserait visuellement les autres. */
-.logos img { height:5.6mm; width:auto; max-width:21mm; object-fit:contain; opacity:.85; }
+.logos img { height:5.2mm; width:auto; max-width:20mm; object-fit:contain; opacity:.85; }
 /* ── Page 3 · les formations ────────────────────────────────────────────── */
 .colonnes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:4mm; margin-top:1mm; }
 .colonne { display:flex; flex-direction:column; }
 .col-tete { margin-bottom:2.5mm; padding-bottom:1.8mm; border-bottom:1.6px solid ${C.olive}; }
-.col-tete b { display:block; font-family:'Fraunces', serif; font-size:11.5pt; font-weight:700; line-height:1.1; }
+.col-tete b { display:block; font-size:11.5pt; font-weight:700; line-height:1.1; }
 .col-tete span { display:block; font-size:7pt; font-weight:700; color:${C.terracotta}; margin-top:1mm; letter-spacing:.03em; }
 .col-tete i { display:block; font-style:normal; font-size:6.8pt; color:#6E645C; margin-top:.6mm; }
 
 .formation {
-  background:${C.blanc}; border-radius:1.6mm; padding:2.1mm 2.6mm; margin-bottom:1.5mm;
+  background:${C.blanc}; border-radius:1.6mm; padding:1.9mm 2.6mm; margin-bottom:1.3mm;
   border-left:2.2px solid ${C.olive};
 }
 .formation b { display:block; font-size:8.3pt; font-weight:700; line-height:1.2; }
@@ -799,18 +833,18 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
   padding:4.5mm 5.5mm; display:flex; gap:6mm; align-items:center;
 }
 .seminaire .sem-t { flex:1; }
-.seminaire b { font-family:'Fraunces', serif; font-size:14pt; color:${C.blanc}; display:block; }
-.seminaire i { font-style:italic; font-family:'Fraunces', serif; color:${C.terracottaVif}; font-size:9.6pt; display:block; margin-top:1mm; }
+.seminaire b { font-size:14pt; color:${C.blanc}; display:block; }
+.seminaire i { font-style:italic; color:${C.terracottaVif}; font-size:9.6pt; display:block; margin-top:1mm; }
 .seminaire p { font-size:8pt; line-height:1.4; color:${C.sable}; margin-top:1.8mm; }
 .seminaire .sem-p {
   flex-shrink:0; text-align:center; border-left:1px solid rgba(236,224,200,.28); padding-left:6mm;
 }
-.seminaire .sem-p b { font-family:'Fraunces', serif; font-size:16pt; color:${C.terracottaVif}; }
+.seminaire .sem-p b { font-size:16pt; color:${C.terracottaVif}; }
 .seminaire .sem-p span { display:block; font-size:6.8pt; color:${C.sable}; margin-top:1mm; letter-spacing:.06em; }
 
 .note-page3 { font-size:7pt; line-height:1.4; color:#6E645C; margin-top:2.5mm; font-style:italic; }
 
-.objectifs { margin-top:4mm; }
+.objectifs { margin-top:3mm; }
 .objectifs h3 {
   font-size:7.6pt; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
   color:${C.olive}; margin-bottom:2.5mm;
@@ -833,7 +867,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
   padding:2.8mm 3.5mm; display:flex; gap:3mm; align-items:center; flex:1;
 }
 .sm-item .sm-num {
-  font-family:'Fraunces', serif; font-size:19pt; color:${C.sable};
+  font-size:19pt; color:${C.sable};
   line-height:1; flex-shrink:0;
 }
 .sm-item b { display:block; font-size:10pt; font-weight:700; margin-bottom:1mm; }
@@ -847,7 +881,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
   border-radius:2.5mm; padding:4mm; text-align:center;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
 }
-.sm-qr b { font-family:'Fraunces', serif; font-size:12.5pt; line-height:1.1; display:block; }
+.sm-qr b { font-size:12.5pt; line-height:1.1; display:block; }
 .sm-qr .sm-pages {
   display:block; font-size:7pt; font-weight:700; letter-spacing:.14em;
   color:rgba(255,255,255,.85); margin-top:1mm; text-transform:uppercase;
@@ -868,7 +902,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
   display:flex; gap:5mm; align-items:center; margin-bottom:4mm;
 }
 .finance .fin-t { flex:1; }
-.finance .fin-t > b { font-family:'Fraunces', serif; font-size:14pt; display:block; line-height:1.1; }
+.finance .fin-t > b { font-size:14pt; display:block; line-height:1.1; }
 .finance p { font-size:8.3pt; line-height:1.45; margin-top:2mm; color:rgba(255,255,255,.96); }
 
 /* Les deux chiffres qui portent la page : ils disent en un coup d'œil ce que
@@ -876,7 +910,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
 .fin-chiffres { display:flex; gap:5mm; flex-shrink:0; padding-right:5mm; border-right:1px solid rgba(255,255,255,.3); }
 .fin-c { text-align:center; }
 .fin-c b {
-  font-family:'Fraunces', serif; font-size:30pt; line-height:.95; color:${C.blanc};
+  font-size:30pt; line-height:.95; color:${C.blanc};
   display:block; white-space:nowrap;
 }
 .fin-c span {
@@ -899,7 +933,7 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
   display:flex; gap:6mm; align-items:center;
 }
 .contact .ct { flex:1; }
-.contact .ct > b { font-family:'Fraunces', serif; font-size:17pt; color:${C.blanc}; display:block; line-height:1.1; }
+.contact .ct > b { font-size:17pt; color:${C.blanc}; display:block; line-height:1.1; }
 .contact .ct > b em { font-style:italic; color:${C.terracottaVif}; }
 .contact p { font-size:8.2pt; line-height:1.45; color:${C.sable}; margin-top:2mm; }
 .contact .coord { font-size:8.4pt; font-weight:700; color:${C.blanc}; margin-top:2.5mm; line-height:1.6; }
@@ -921,49 +955,38 @@ h2.section span.compte { font-family:'Manrope'; font-size:8pt; font-weight:700; 
 }
 .mentions b { color:#5A5149; }
 
-/* ── Version imprimeur : fond perdu 3 mm + repères de coupe ──────────────
- *
- * La page passe de 210 × 297 à 216 × 303 mm. Le contenu garde sa taille et
- * son calage — il est simplement décalé de 3 mm vers l'intérieur — et les
- * aplats de bord (bande de tranche, bandeau de pied, fond de couverture)
- * débordent dans la zone qui sera rognée.
- *
- * ⚠️ Les repères de coupe sont HORS du format fini, dans le fond perdu :
- * placés dedans, ils seraient imprimés sur le document livré. Ils s'arrêtent
- * donc à 1 mm du trait de coupe et pointent vers l'extérieur.
- */
-.planche-fp {
-  width:216mm; height:303mm; position:relative; overflow:hidden;
-  background:${C.creme}; page-break-after:always; break-after:page;
-}
-/*
- * ⚠️ Le support prend la couleur de fond de la page qu'il porte. Sans cette
- * règle, la couverture — seule page à fond sombre — laissait apparaître une
- * bande CRÈME de 3 mm sur ses bords droit et inférieur : le fond perdu ne
- * mordait pas, et la coupe aurait montré un liseré clair sur un imprimé
- * noir. Le défaut ne se voit pas à l'écran sur le PDF au format fini ; il ne
- * serait apparu qu'après massicotage.
- */
-.planche-fp:has(> .page.couv) { background:${C.encre}; }
-.planche-fp:last-child { page-break-after:auto; break-after:auto; }
-.planche-fp > .page {
-  position:absolute; top:3mm; left:3mm;
-  page-break-after:auto; break-after:auto;
-}
-/* Les aplats qui doivent mordre dans le fond perdu : on les prolonge de 3 mm
- * au-delà du format fini, dans les quatre directions utiles. */
-.planche-fp > .page .tranche { right:-3mm; width:8mm; top:-3mm; height:calc(100% + 6mm); }
-.planche-fp > .page .tranche.gauche { right:auto; left:-3mm; }
-.planche-fp > .page .pied { left:-3mm; right:-3mm; bottom:-3mm; height:12mm; padding-bottom:3mm; }
-.planche-fp > .page.couv { overflow:visible; }
-.planche-fp > .page.couv .couv-photo { top:-3mm; left:-3mm; width:calc(100% + 6mm); height:65mm; }
-.planche-fp > .page.couv .couv-voile { top:-3mm; left:-3mm; width:calc(100% + 6mm); height:65mm; }
-.planche-fp > .page.couv .couv-bande { left:-3mm; right:-3mm; }
-.planche-fp > .page.couv .couv-pied { left:-3mm; right:-3mm; bottom:-3mm; height:10mm; }
 
-.repere { position:absolute; background:${C.encre}; }
-.repere.h { height:.25mm; width:2mm; }
-.repere.v { width:.25mm; height:2mm; }
+/* ── Planche imprimeur : A3 + fond perdu ────────────────────────────────
+ * Le contenu (420 × 297) est calé au retrait voulu ; les aplats de bord
+ * des deux pages sont prolongés pour mordre dans la zone rognée. */
+.planche-imp {
+  position:relative; overflow:hidden; background:${C.creme};
+  page-break-after:always; break-after:page;
+}
+.planche-imp:last-child { page-break-after:auto; break-after:auto; }
+.planche-imp-int { position:absolute; display:flex; width:420mm; height:297mm; }
+.planche-imp-int > .page { page-break-after:auto; break-after:auto; }
+
+/* Débords : les aplats sortent de 4 mm, ce qui couvre les 1 mm de Vistaprint
+ * comme les 3 mm d'un offset sans avoir à les paramétrer un par un. */
+.planche-imp-int > .page .tranche { top:-4mm; height:calc(100% + 8mm); }
+.planche-imp-int > .page:first-child .tranche.gauche { left:-4mm; width:9mm; }
+.planche-imp-int > .page:last-child .tranche { right:-4mm; width:9mm; }
+.planche-imp-int > .page .pied { bottom:-4mm; height:13mm; padding-bottom:4mm; }
+.planche-imp-int > .page:first-child .pied { left:-4mm; padding-left:20mm; }
+.planche-imp-int > .page:last-child .pied { right:-4mm; padding-right:20mm; }
+.planche-imp-int > .page.couv { overflow:visible; }
+.planche-imp-int > .page.couv .couv-photo,
+.planche-imp-int > .page.couv .couv-voile { top:-4mm; height:66mm; }
+.planche-imp-int > .page.couv .couv-pied { bottom:-4mm; height:11mm; }
+.planche-imp-int > .page:first-child.couv .couv-photo,
+.planche-imp-int > .page:first-child.couv .couv-voile,
+.planche-imp-int > .page:first-child.couv .couv-bande,
+.planche-imp-int > .page:first-child.couv .couv-pied { left:-4mm; width:calc(100% + 4mm); }
+.planche-imp-int > .page:last-child.couv .couv-photo,
+.planche-imp-int > .page:last-child.couv .couv-voile,
+.planche-imp-int > .page:last-child.couv .couv-bande,
+.planche-imp-int > .page:last-child.couv .couv-pied { right:-4mm; width:calc(100% + 4mm); }
 
 /* ── Planche A3 ─────────────────────────────────────────────────────────── */
 .planche { width:420mm; height:297mm; display:flex; page-break-after:always; break-after:page; }
@@ -1078,32 +1101,22 @@ function pagePourquoi(a: Actifs): string {
     )
     .join("");
 
-  const jalons = PARCOURS.map(
-    (e) => `
-    <div class="jalon">
-      <div class="rond">${e.n}</div>
-      <b>${echapper(e.t)}</b>
-      <span>${echapper(e.d)}</span>
-    </div>`,
-  ).join("");
-
   return `
 <div class="page">
   <div class="tranche gauche"></div>
   <div class="corps">
-    <div class="entete">
-      <img src="${a.logo}" alt="Axion-IA">
-      <div class="rubrique">Le temps que l'IA vous rend</div>
+    <div class="tete-double">
+      <div class="entete">
+        <img src="${a.logo}" alt="Axion-IA">
+      </div>
+      <h1 class="titre">Le même travail,<br><em>en dix fois moins de temps.</em></h1>
     </div>
 
-    <h1 class="titre">Le même travail, <em>en dix fois moins de temps.</em></h1>
-    <p class="chapo">D'abord les tâches que <b>toutes</b> les équipes font. Ensuite, ce que ça donne
-    <b>dans votre secteur.</b></p>
+    <div class="bande-pli vers-droite"><span class="num">01</span>Le temps qu'elle vous rend</div>
 
-    <div style="height:5mm"></div>
     <div class="barres">${barres}</div>
 
-    <h2 class="section">Et dans votre secteur <span class="compte">8 SECTEURS</span></h2>
+    <h2 class="section">Et dans votre secteur</h2>
     <div class="secteurs">${blocsSecteurs}</div>
 
     <div class="metiers-rappel">
@@ -1111,15 +1124,6 @@ function pagePourquoi(a: Actifs): string {
       Achats · Relation client · IT</i> — 9 formations par fonction, 8 par secteur, plus le socle commun
       et le séminaire. <b>Et s'il n'y est pas, on la construit</b> : 4 h à 3 jours, tout thème.
     </div>
-
-    <div class="kpis">
-      <div class="kpi"><b>1 h</b><span>gagnée par jour<br>et par personne formée</span></div>
-      <div class="kpi"><b>1 temps plein</b><span>récupéré chaque mois<br>dès 8 personnes formées</span></div>
-      <div class="kpi"><b>Semaine 1</b><span>les premiers gains<br>sur vos vrais dossiers</span></div>
-    </div>
-
-    <h2 class="section">De l'appel au terrain <span class="compte">5 ÉTAPES</span></h2>
-    <div class="chemin">${jalons}</div>
 
     <div class="aiact">
       <div class="ai-badge">
@@ -1153,16 +1157,15 @@ function pageFormations(a: Actifs): string {
 <div class="page">
   <div class="tranche"></div>
   <div class="corps">
-    <div class="entete">
-      <img src="${a.logo}" alt="Axion-IA">
-      <div class="rubrique">Les 21 formations + le séminaire</div>
+    <div class="tete-double">
+      <div class="entete">
+        <img src="${a.logo}" alt="Axion-IA">
+      </div>
+      <h1 class="titre">Quelle formation<br><em>pour vous ?</em></h1>
     </div>
 
-    <h1 class="titre">Quelle formation <em>pour vous ?</em></h1>
-    <p class="chapo">Trois portes d'entrée, à prix publics par groupe. Toutes en intra-entreprise, présentiel ou distanciel,
-    de 2 à 15 participants — <b>et toutes finançables par votre OPCO, jusqu'à 100 %.</b></p>
+    <div class="bande-pli"><span class="num">02</span>Les 21 formations + le séminaire</div>
 
-    <div style="height:4mm"></div>
     <div class="colonnes">
       <div class="colonne">
         <div class="col-tete">
@@ -1413,29 +1416,32 @@ async function verifierDebordements(page: import("playwright").Page): Promise<vo
  * Vistaprint sur ce format. Les repères sont posés aux quatre coins, à
  * l'extérieur du trait de coupe.
  */
-function avecFondPerdu(page: string): string {
-  // Les 4 coins × 2 traits (un horizontal, un vertical), tous hors format fini.
-  const reperes = [
-    // haut-gauche
-    `<div class="repere h" style="top:3mm;left:0"></div>`,
-    `<div class="repere v" style="left:3mm;top:0"></div>`,
-    // haut-droit
-    `<div class="repere h" style="top:3mm;right:0"></div>`,
-    `<div class="repere v" style="right:3mm;top:0"></div>`,
-    // bas-gauche
-    `<div class="repere h" style="bottom:3mm;left:0"></div>`,
-    `<div class="repere v" style="left:3mm;bottom:0"></div>`,
-    // bas-droit
-    `<div class="repere h" style="bottom:3mm;right:0"></div>`,
-    `<div class="repere v" style="right:3mm;bottom:0"></div>`,
-  ].join("");
-
-  return `<div class="planche-fp">${page}${reperes}</div>`;
+/**
+ * Planche A3 prête pour l'imprimeur : deux pages A4 accolées, plus le fond
+ * perdu tout autour.
+ *
+ * ⚠️ LA GÉOMÉTRIE VIENT DU GABARIT VISTAPRINT, pas d'une convention. Le
+ * fichier « Dépliant pli central » fourni par Will annonce 42 × 29,7 en format
+ * fini et porte une page de 422 × 299 mm : le débord est donc de 1 mm par
+ * bord, et le pli tombe au centre. La première version de ce script livrait
+ * QUATRE pages A4 de 216 × 303 — un tout autre produit, que le gabarit aurait
+ * refusé. Ne pas y revenir sans un gabarit qui le demande.
+ *
+ * `debord` est paramétré parce que les imprimeurs ne s'accordent pas :
+ * Vistaprint fournit 1 mm sur ce produit, la plupart des offsets (Exaprint)
+ * en demandent 3.
+ */
+function plancheImprimeur(gauche: string, droite: string, debord: number): string {
+  const largeur = 420 + debord * 2;
+  const hauteur = 297 + debord * 2;
+  return `<div class="planche-imp" style="width:${largeur}mm;height:${hauteur}mm">
+    <div class="planche-imp-int" style="top:${debord}mm;left:${debord}mm">${gauche}${droite}</div>
+  </div>`;
 }
 
-function documentHtml(corps: string): string {
+function documentHtml(corps: string, pageCss = ""): string {
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8">
-<title>Dépliant formations — Axion-IA</title><style>${styles()}</style></head>
+<title>Dépliant formations — Axion-IA</title><style>${styles()}${pageCss}</style></head>
 <body>${corps}</body></html>`;
 }
 
@@ -1483,7 +1489,6 @@ async function main() {
   // repères. Pages SÉPARÉES et non imposées : Vistaprint comme Exaprint
   // imposent eux-mêmes à partir des pages du fichier — leur livrer une planche
   // A3 déjà imposée ferait doublon et casserait leur gabarit.
-  const htmlImprimeur = documentHtml([p1, p2, p3, p4].map(avecFondPerdu).join(""));
 
   // ⚠️ Les aperçus HTML vont dans le RÉPERTOIRE TEMPORAIRE, jamais sous
   // `public/`. Ils y étaient au premier jet : or tout ce qui vit sous `public/`
@@ -1496,7 +1501,6 @@ async function main() {
   const debug = join(apercus, "depliant-apercu.html");
   writeFileSync(debug, htmlA4, "utf8");
   writeFileSync(join(apercus, "depliant-apercu-A3.html"), htmlA3, "utf8");
-  writeFileSync(join(apercus, "depliant-imprimeur.html"), htmlImprimeur, "utf8");
 
   console.log("→ Rendu PDF (Playwright / Chromium)…");
   const navigateur = await chromium.launch();
@@ -1523,24 +1527,48 @@ async function main() {
     margin: { top: "0", right: "0", bottom: "0", left: "0" },
   });
 
-  await page.setContent(htmlImprimeur, { waitUntil: "load" });
-  await page.evaluate(() => document.fonts.ready.then(() => true));
-  await page.pdf({
-    path: join(SORTIE, "depliant-formations-axion-ia-IMPRIMEUR.pdf"),
-    width: "216mm",
-    height: "303mm",
-    printBackground: true,
-    margin: { top: "0", right: "0", bottom: "0", left: "0" },
-  });
+  for (const { debord, nom } of DEBORDS) {
+    const l = 420 + debord * 2;
+    const h = 297 + debord * 2;
+
+    // COTE DE PAGE — ce qu'on obtient vraiment, et pourquoi c'est accepté.
+    //
+    // Les options width/height de page.pdf donnaient 422,3 × 299,1 : Chromium
+    // convertit en pixels CSS puis quantifie, et l'erreur ressort dans le
+    // MediaBox. La regle @page lue via preferCSSPageSize ramene a
+    // 421,89 × 299,13 — mieux, mais TOUJOURS PAS EXACT. Essaye aussi en
+    // pouces (l'unite native du PDF) : au millieme pres, meme resultat.
+    //
+    // On en reste donc a ~0,11 mm d'ecart sur un format de 422 mm, soit 0,03 %
+    // — un ordre de grandeur sous le fond perdu de 1 mm lui-meme, et sous la
+    // tolerance de n'importe quel preflight. Ne pas chercher a corriger ce
+    // reliquat en trichant sur la taille demandee : on rendrait le chiffre
+    // ecrit dans le script faux pour gagner un dixieme de millimetre.
+    const html = documentHtml(
+      plancheImprimeur(p4, p1, debord) + plancheImprimeur(p2, p3, debord),
+      `@page { size:${l}mm ${h}mm; margin:0; }`,
+    );
+    await page.setContent(html, { waitUntil: "load" });
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    await page.pdf({
+      path: join(SORTIE, `depliant-formations-axion-ia-${nom}.pdf`),
+      preferCSSPageSize: true,
+      printBackground: true,
+      margin: { top: "0", right: "0", bottom: "0", left: "0" },
+    });
+  }
 
   await navigateur.close();
 
   console.log("");
   console.log("✓ public/imprimes/depliant-formations-axion-ia.pdf      (4 pages A4)");
   console.log("✓ public/imprimes/depliant-formations-axion-ia-A3.pdf   (2 planches A3)");
-  console.log(
-    "✓ public/imprimes/depliant-formations-axion-ia-IMPRIMEUR.pdf (4 pages 216 × 303, fond perdu 3 mm)",
-  );
+  for (const { debord, nom } of DEBORDS) {
+    console.log(
+      `✓ public/imprimes/depliant-formations-axion-ia-${nom}.pdf ` +
+        `(2 planches ${420 + debord * 2} × ${297 + debord * 2} mm, fond perdu ${debord} mm)`,
+    );
+  }
   console.log(`  aperçu HTML : ${debug}`);
   console.log("");
   console.log(
