@@ -20,6 +20,7 @@ import {
   AdminSubmitButton,
   AdminFormError,
 } from "@/components/admin/ui";
+import { messageErreurPresse } from "@/lib/press/message-erreur";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -67,7 +68,9 @@ export default async function BulkImportPressReleasesPage({ params, searchParams
 
       {sp.error ? (
         <div className="mb-[var(--space-admin-5)]">
-          <AdminFormError message={`Erreur : ${sp.error}`} />
+          {/* 🔴 Cahier D7-3 — meme defaut que le formulaire voisin : le code
+              machine arrivait tel quel a l'ecran, ici par la query string. */}
+          <AdminFormError message={messageErreurPresse(sp.error)} />
         </div>
       ) : null}
 

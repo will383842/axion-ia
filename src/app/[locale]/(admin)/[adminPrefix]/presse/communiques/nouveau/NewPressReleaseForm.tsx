@@ -17,6 +17,8 @@
 
 import { useActionState } from "react";
 
+import { messageErreurPresse } from "@/lib/press/message-erreur";
+
 import {
   AdminCard,
   AdminFormField,
@@ -70,7 +72,11 @@ export function NewPressReleaseForm({
 
   return (
     <>
-      {state.error ? <AdminFormError message={`Erreur : ${state.error}`} /> : null}
+      {/* 🔴 2026-08-25, cahier D7-3 — rendait « Erreur : file_required » au
+          redacteur. Un code machine n'est pas un message d'erreur : il ne dit
+          ni ce qui s'est passe, ni quoi faire. La traduction vit a la frontiere
+          d'affichage, et laisse passer tel quel un message deja redige (Zod). */}
+      {state.error ? <AdminFormError message={messageErreurPresse(state.error)} /> : null}
 
       <AdminCard>
         <form action={formAction} className="flex flex-col gap-[var(--space-admin-5)]">
