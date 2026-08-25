@@ -300,172 +300,187 @@ async function main(): Promise<void> {
   }
 
   // ── L'écriture, en une transaction ────────────────────────────────────────
-  await prisma.$transaction(async (tx) => {
-    for (const p of pretes) {
-      const existante = await tx.edPublication.findUnique({ where: { refImport: p.ref } });
+  await prisma.$transaction(
+    async (tx) => {
+      for (const p of pretes) {
+        const existante = await tx.edPublication.findUnique({ where: { refImport: p.ref } });
 
-      // 🔴 Défaut trouvé par la passe 5 du protocole.
-      //
-      // Ce bloc faisait un `continue` quand la publication existait déjà —
-      // ce qui sautait AUSSI la création de son écho de page, plus bas. Une
-      // publication importée sans son écho (import interrompu, écho supprimé
-      // à la main) ne le retrouvait donc JAMAIS : chaque rejeu la comptait en
-      // « ignorée » et passait au suivant.
-      //
-      // On garde désormais l'identifiant de l'existante et on descend
-      // jusqu'au bloc de l'écho, qui a sa propre garde d'idempotence.
-      let publicationId: string;
+        // 🔴 Défaut trouvé par la passe 5 du protocole.
+        //
+        // Ce bloc faisait un `continue` quand la publication existait déjà —
+        // ce qui sautait AUSSI la création de son écho de page, plus bas. Une
+        // publication importée sans son écho (import interrompu, écho supprimé
+        // à la main) ne le retrouvait donc JAMAIS : chaque rejeu la comptait en
+        // « ignorée » et passait au suivant.
+        //
+        // On garde désormais l'identifiant de l'existante et on descend
+        // jusqu'au bloc de l'écho, qui a sa propre garde d'idempotence.
+        let publicationId: string;
 
-      if (existante) {
-        rapport.ignorees += 1;
-        publicationId = existante.id;
-      } else {
-        const publication = await tx.edPublication.create({
-          data: {
-            compteId: profil.id,
-            refImport: p.ref,
-            datePrevue: p.datePrevue,
-            heurePrevue: p.heurePrevue,
-            titreInterne: p.titreInterne,
-            accroche: p.accroche,
-            corps: p.corps,
-            premierCommentaire: p.premierCommentaire,
-            tags: p.tags,
-            lienUrl: p.lienUrl,
-            statutRedaction: p.corps ? "redige" : "idee",
-            statutAsset: p.statutAsset,
-            statutDiffusion: "non_programme",
-            campagne: CAMPAGNE,
-          },
-        });
-        rapport.publicationsCreees += 1;
-
-        // Les assets annoncés par les colonnes `production` et `photo_will`.
-        const aCreer: { type: TypeAsset; familleId: string | null; libelle: string }[] = [];
-        if (p.production) {
-          // 🔴 Le type vient du FORMAT, pas d'une constante. Il était figé à
-          // « video » : un post « Carrousel 9 slides » se voyait créer un
-          // asset vidéo, et la spec de plateforme vérifiait la mauvaise
-          // contrainte. Le dossier réel compte 26 visuels et 13 carrousels.
-          aCreer.push({
-            type: p.familleType ?? "image",
-            familleId: p.familleId,
-            // La référence de production (« vidéo 12 ») est ce qui permet de
-            // retrouver la fiche correspondante dans le dossier source.
-            libelle: (p.productionRef
-              ? `Production ${p.productionRef} — ${p.titreInterne}`
-              : `Production — ${p.titreInterne}`
-            ).slice(0, 200),
-          });
-        }
-        if (p.photoWill) {
-          aCreer.push({
-            type: "photo",
-            familleId: familleParSlug.get("photo-williams") ?? null,
-            libelle: `Photo Williams — ${p.titreInterne}`.slice(0, 200),
-          });
-        }
-        for (let k = 0; k < aCreer.length; k += 1) {
-          const a = aCreer[k];
-          if (!a) continue;
-          const asset = await tx.edAsset.create({
+        if (existante) {
+          rapport.ignorees += 1;
+          publicationId = existante.id;
+        } else {
+          const publication = await tx.edPublication.create({
             data: {
-              type: a.type,
-              familleId: a.familleId,
-              nature: "autonome",
-              usage: "organique",
-              libelle: a.libelle,
-              statut: "a_produire",
+              compteId: profil.id,
+              refImport: p.ref,
+              datePrevue: p.datePrevue,
+              heurePrevue: p.heurePrevue,
+              titreInterne: p.titreInterne,
+              accroche: p.accroche,
+              corps: p.corps,
+              premierCommentaire: p.premierCommentaire,
+              tags: p.tags,
+              lienUrl: p.lienUrl,
+              statutRedaction: p.corps ? "redige" : "idee",
+              statutAsset: p.statutAsset,
+              statutDiffusion: "non_programme",
+              campagne: CAMPAGNE,
             },
           });
-          await tx.edAssetPublication.create({
-            data: { assetId: asset.id, publicationId: publication.id, ordre: k },
+          rapport.publicationsCreees += 1;
+
+          // Les assets annoncés par les colonnes `production` et `photo_will`.
+          const aCreer: { type: TypeAsset; familleId: string | null; libelle: string }[] = [];
+          if (p.production) {
+            // 🔴 Le type vient du FORMAT, pas d'une constante. Il était figé à
+            // « video » : un post « Carrousel 9 slides » se voyait créer un
+            // asset vidéo, et la spec de plateforme vérifiait la mauvaise
+            // contrainte. Le dossier réel compte 26 visuels et 13 carrousels.
+            aCreer.push({
+              type: p.familleType ?? "image",
+              familleId: p.familleId,
+              // La référence de production (« vidéo 12 ») est ce qui permet de
+              // retrouver la fiche correspondante dans le dossier source.
+              libelle: (p.productionRef
+                ? `Production ${p.productionRef} — ${p.titreInterne}`
+                : `Production — ${p.titreInterne}`
+              ).slice(0, 200),
+            });
+          }
+          if (p.photoWill) {
+            aCreer.push({
+              type: "photo",
+              familleId: familleParSlug.get("photo-williams") ?? null,
+              libelle: `Photo Williams — ${p.titreInterne}`.slice(0, 200),
+            });
+          }
+          for (let k = 0; k < aCreer.length; k += 1) {
+            const a = aCreer[k];
+            if (!a) continue;
+            const asset = await tx.edAsset.create({
+              data: {
+                type: a.type,
+                familleId: a.familleId,
+                nature: "autonome",
+                usage: "organique",
+                libelle: a.libelle,
+                statut: "a_produire",
+              },
+            });
+            await tx.edAssetPublication.create({
+              data: { assetId: asset.id, publicationId: publication.id, ordre: k },
+            });
+            rapport.assetsCrees += 1;
+          }
+
+          await tx.edJournal.create({
+            data: {
+              entite: "EdPublication",
+              entiteId: publication.id,
+              action: "import",
+              apres: { refImport: p.ref, source: NOM_CSV } as Prisma.InputJsonValue,
+            },
           });
-          rapport.assetsCrees += 1;
+
+          publicationId = publication.id;
+        } // fin de la branche « la publication n'existait pas »
+
+        // L'écho de page : une SECONDE diffusion, liée à la première par
+        // `sourceId`. Ce n'est pas une copie — les deux ont leurs métriques.
+        //
+        // ⚠️ Atteint MÊME quand la publication existait déjà : c'est tout
+        // l'objet du correctif ci-dessus.
+        if (p.refEcho) {
+          const dejaEcho = await tx.edPublication.findUnique({ where: { refImport: p.refEcho } });
+          if (dejaEcho) {
+            rapport.ignorees += 1;
+            continue;
+          }
+          const echo = await tx.edPublication.create({
+            data: {
+              compteId: page.id,
+              refImport: p.refEcho,
+              // Sa propre date — voir `lireEchoPage`.
+              datePrevue: p.dateEcho ?? p.datePrevue,
+              heurePrevue: p.heurePrevue,
+              titreInterne: `Écho page — ${p.titreInterne}`.slice(0, 200),
+              accroche: p.accroche,
+              corps: p.corps,
+              premierCommentaire: p.premierCommentaire,
+              tags: p.tags,
+              lienUrl: p.lienUrl,
+              statutRedaction: p.corps ? "redige" : "idee",
+              statutAsset: p.statutAsset,
+              statutDiffusion: "non_programme",
+              campagne: CAMPAGNE,
+              sourceId: publicationId,
+            },
+          });
+          rapport.reprisesCreees += 1;
+          await tx.edJournal.create({
+            data: {
+              entite: "EdPublication",
+              entiteId: echo.id,
+              action: "import",
+              apres: { refImport: p.refEcho, sourceRef: p.ref } as Prisma.InputJsonValue,
+            },
+          });
         }
-
-        await tx.edJournal.create({
-          data: {
-            entite: "EdPublication",
-            entiteId: publication.id,
-            action: "import",
-            apres: { refImport: p.ref, source: NOM_CSV } as Prisma.InputJsonValue,
-          },
-        });
-
-        publicationId = publication.id;
-      } // fin de la branche « la publication n'existait pas »
-
-      // L'écho de page : une SECONDE diffusion, liée à la première par
-      // `sourceId`. Ce n'est pas une copie — les deux ont leurs métriques.
-      //
-      // ⚠️ Atteint MÊME quand la publication existait déjà : c'est tout
-      // l'objet du correctif ci-dessus.
-      if (p.refEcho) {
-        const dejaEcho = await tx.edPublication.findUnique({ where: { refImport: p.refEcho } });
-        if (dejaEcho) {
-          rapport.ignorees += 1;
-          continue;
-        }
-        const echo = await tx.edPublication.create({
-          data: {
-            compteId: page.id,
-            refImport: p.refEcho,
-            // Sa propre date — voir `lireEchoPage`.
-            datePrevue: p.dateEcho ?? p.datePrevue,
-            heurePrevue: p.heurePrevue,
-            titreInterne: `Écho page — ${p.titreInterne}`.slice(0, 200),
-            accroche: p.accroche,
-            corps: p.corps,
-            premierCommentaire: p.premierCommentaire,
-            tags: p.tags,
-            lienUrl: p.lienUrl,
-            statutRedaction: p.corps ? "redige" : "idee",
-            statutAsset: p.statutAsset,
-            statutDiffusion: "non_programme",
-            campagne: CAMPAGNE,
-            sourceId: publicationId,
-          },
-        });
-        rapport.reprisesCreees += 1;
-        await tx.edJournal.create({
-          data: {
-            entite: "EdPublication",
-            entiteId: echo.id,
-            action: "import",
-            apres: { refImport: p.refEcho, sourceRef: p.ref } as Prisma.InputJsonValue,
-          },
-        });
       }
-    }
 
-    // Le marqueur est écrit DANS la transaction : si l'import échoue, il
-    // n'existe pas, et le prochain lancement n'est pas bloqué par un marqueur
-    // qui mentirait sur un import qui n'a jamais eu lieu.
-    await tx.siteSetting.upsert({
-      where: { key: CLE_MARQUEUR },
-      create: {
-        key: CLE_MARQUEUR,
-        category: "editorial",
-        description: "Marqueur de non-répétabilité de l'import LinkedIn Q4 2026 (§6 du plan).",
-        value: {
-          faitA: new Date().toISOString(),
-          publications: rapport.publicationsCreees,
-          reprises: rapport.reprisesCreees,
-          source: NOM_CSV,
-        } as Prisma.InputJsonValue,
-      },
-      update: {
-        value: {
-          faitA: new Date().toISOString(),
-          publications: rapport.publicationsCreees,
-          reprises: rapport.reprisesCreees,
-          source: NOM_CSV,
-          rejoue: true,
-        } as Prisma.InputJsonValue,
-      },
-    });
-  });
+      // Le marqueur est écrit DANS la transaction : si l'import échoue, il
+      // n'existe pas, et le prochain lancement n'est pas bloqué par un marqueur
+      // qui mentirait sur un import qui n'a jamais eu lieu.
+      await tx.siteSetting.upsert({
+        where: { key: CLE_MARQUEUR },
+        create: {
+          key: CLE_MARQUEUR,
+          category: "editorial",
+          description: "Marqueur de non-répétabilité de l'import LinkedIn Q4 2026 (§6 du plan).",
+          value: {
+            faitA: new Date().toISOString(),
+            publications: rapport.publicationsCreees,
+            reprises: rapport.reprisesCreees,
+            source: NOM_CSV,
+          } as Prisma.InputJsonValue,
+        },
+        update: {
+          value: {
+            faitA: new Date().toISOString(),
+            publications: rapport.publicationsCreees,
+            reprises: rapport.reprisesCreees,
+            source: NOM_CSV,
+            rejoue: true,
+          } as Prisma.InputJsonValue,
+        },
+      });
+    },
+    // 🔴 Le défaut de Prisma est de 5 SECONDES, et il a suffi tant que la base
+    // était en local : 74 publications et 84 assets s'y écrivent en quelques
+    // dizaines de millisecondes. Contre une base DISTANTE, chaque aller-retour
+    // coûte ~50 ms, les centaines de requêtes de cette boucle en cumulent bien
+    // plus, et la transaction expire :
+    //
+    //     Transaction already closed: the timeout was 5000 ms,
+    //     however 5038 ms passed since the start.
+    //
+    // Rencontré le 2026-08-24 au premier import en PRODUCTION. Rien n'avait
+    // été écrit — le tout-ou-rien a tenu — mais l'import était impossible à
+    // terminer. `import-production.ts` portait déjà ce délai ; celui-ci, non.
+    { timeout: 120_000, maxWait: 30_000 },
+  );
 
   // Le compte est recalculé, jamais agrégé au rendu (cf. `derniereParutionA`).
   afficherRapport(rapport, opts);

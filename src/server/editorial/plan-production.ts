@@ -35,6 +35,23 @@ export interface SegmentPlan {
   fait: boolean;
 }
 
+/**
+ * Le texte qui sera PUBLIÉ autour de l'asset.
+ *
+ * 🔑 Ce n'est pas le brief, c'est la copie. La distinction compte : le brief
+ * dit quoi fabriquer, la copie dit ce qui s'affichera à côté. On fabrique
+ * mal un visuel sans avoir sous les yeux le texte qu'il illustre — c'est le
+ * manque que la première version de ce plan avait, et qui ne s'est vu qu'en
+ * demandant « est-ce que j'ai VRAIMENT tout pour chaque post ? ».
+ */
+export interface PostPlan {
+  accroche: string | null;
+  corps: string | null;
+  premierCommentaire: string | null;
+  /** Sans croisillon en base ; le croisillon est ajouté à l'affichage. */
+  tags: string[];
+}
+
 /** Un asset à produire, avec le contexte qui dit QUAND il doit être prêt. */
 export interface AssetPlan {
   id: string;
@@ -45,6 +62,14 @@ export interface AssetPlan {
   datePost: string | null;
   heurePost: string | null;
   titrePost: string | null;
+  /**
+   * Qui doit le produire. `null` quand personne n'est désigné — et c'est
+   * alors ÉCRIT sur la feuille, pas passé sous silence : un plan qui dit
+   * quoi faire sans dire par qui laisse chaque ligne sans propriétaire.
+   */
+  responsable: string | null;
+  /** La copie du post. `null` si l'asset n'est rattaché à aucune publication. */
+  post: PostPlan | null;
   segments: SegmentPlan[];
 }
 
@@ -52,7 +77,16 @@ export interface AssetPlan {
 export const TYPES_PLAN = ["video", "carrousel", "image", "photo", "audio", "document"] as const;
 export type TypePlan = (typeof TYPES_PLAN)[number];
 
-const LIBELLE_TYPE: Record<string, string> = {
+/**
+ * Le titre humain d'un type d'asset.
+ *
+ * 🔴 EXPORTÉ, et volontairement seul de son espèce. Cette table a existé en
+ * double — une copie dans le générateur PDF — et deux copies d'une table de
+ * libellés finissent toujours par se contredire : l'une gagne un type, pas
+ * l'autre, et le même asset s'appelle « Documents » sur une feuille et
+ * « document » sur la suivante. Les boutons de la console en dérivent aussi.
+ */
+export const LIBELLE_TYPE_ASSET: Record<string, string> = {
   video: "Vidéos",
   carrousel: "Carrousels",
   image: "Images",
@@ -108,6 +142,78 @@ export function avancement(asset: AssetPlan): { faits: number; total: number } {
   };
 }
 
+/** Une part de la copie : son intitulé et son texte. */
+export interface PartPost {
+  libelle: string;
+  texte: string;
+}
+
+/**
+ * Les parts NON VIDES de la copie, dans l'ordre de lecture.
+ *
+ * 🔴 Cette fonction existe pour n'être écrite QU'UNE FOIS. Le Markdown, le
+ * CSV et le PDF affichent tous les trois le même bloc ; trois copies du même
+ * prédicat « ce champ est-il vide ? » divergeraient, et un format finirait
+ * par montrer une accroche que les deux autres taisent. C'est un défaut déjà
+ * payé quatre fois dans ce dépôt.
+ *
+ * Une chaîne d'espaces compte comme vide : un champ « rempli » d'une espace
+ * imprimerait un intitulé suivi de rien.
+ */
+export function partsDuPost(post: PostPlan | null): PartPost[] {
+  if (!post) return [];
+
+  const parts: PartPost[] = [];
+  const ajouter = (libelle: string, texte: string | null) => {
+    const propre = texte?.trim();
+    if (propre) parts.push({ libelle, texte: propre });
+  };
+
+  ajouter("Accroche", post.accroche);
+  ajouter("Corps du post", post.corps);
+  ajouter("Premier commentaire", post.premierCommentaire);
+
+  ajouter("Tags", formaterTags(post.tags));
+
+  return parts;
+}
+
+/**
+ * Les tags, prêts à lire : « #ia #formation ».
+ *
+ * Le croisillon est ajouté ICI, jamais stocké — la base garde les tags nus.
+ * Extrait parce que le CSV en avait recopié le formatage : deux copies du
+ * même geste, et le jour où l'une gagne un préfixe l'autre écrit « ##ia ».
+ */
+export function formaterTags(tags: readonly string[]): string {
+  return tags
+    .map((t) => t.trim())
+    .filter(Boolean)
+    .map((t) => `#${t}`)
+    .join(" ");
+}
+
+/**
+ * Ce qu'on écrit quand personne n'est désigné.
+ *
+ * Un blanc se lit comme un oubli d'impression ; ces trois mots se lisent
+ * comme une ligne à attribuer.
+ */
+export const SANS_RESPONSABLE = "non attribué";
+
+/**
+ * Le contexte d'un plan — ce qui s'imprime en tête, avant les assets.
+ *
+ * `avertissement` porte ce qui rendrait le document MENSONGER s'il restait tu.
+ * Aujourd'hui c'est la troncature : un plan plafonné qui ne l'annonce pas se
+ * lit comme un plan complet, et le travail qui manque ne manque nulle part.
+ */
+export interface ContextePlan {
+  titre: string;
+  periode: string;
+  avertissement?: string | null;
+}
+
 /**
  * La feuille de route, en Markdown.
  *
@@ -117,10 +223,7 @@ export function avancement(asset: AssetPlan): { faits: number; total: number } {
  * texte de la slide — la règle du dossier est qu'un prompt ne contient AUCUN
  * texte à afficher, les générateurs déforment les lettres.
  */
-export function construireMarkdown(
-  assets: readonly AssetPlan[],
-  contexte: { titre: string; periode: string },
-): string {
+export function construireMarkdown(assets: readonly AssetPlan[], contexte: ContextePlan): string {
   const tries = trierPourProduction(assets);
   const l: string[] = [];
 
@@ -128,6 +231,10 @@ export function construireMarkdown(
   l.push("");
   l.push(`> ${contexte.periode} · ${tries.length} asset(s) à produire.`);
   l.push("");
+  if (contexte.avertissement) {
+    l.push(`> ⚠️ ${contexte.avertissement}`);
+    l.push("");
+  }
 
   if (tries.length === 0) {
     l.push("Rien à produire sur ce périmètre.");
@@ -144,7 +251,7 @@ export function construireMarkdown(
     if (duType.length === 0) continue;
     const segments = duType.reduce((n, a) => n + a.segments.length, 0);
     const faits = duType.reduce((n, a) => n + avancement(a).faits, 0);
-    l.push(`| ${LIBELLE_TYPE[t] ?? t} | ${duType.length} | ${segments} | ${faits} |`);
+    l.push(`| ${LIBELLE_TYPE_ASSET[t] ?? t} | ${duType.length} | ${segments} | ${faits} |`);
   }
   l.push("");
 
@@ -154,7 +261,7 @@ export function construireMarkdown(
       typeCourant = a.type;
       l.push("---");
       l.push("");
-      l.push(`# ${LIBELLE_TYPE[a.type] ?? a.type}`);
+      l.push(`# ${LIBELLE_TYPE_ASSET[a.type] ?? a.type}`);
       l.push("");
     }
 
@@ -162,8 +269,33 @@ export function construireMarkdown(
     l.push(`## ${dateFr(a.datePost)}${a.heurePost ? ` ${a.heurePost}` : ""} — ${a.libelle}`);
     l.push("");
     if (a.titrePost) l.push(`*Post :* ${a.titrePost}`);
-    l.push(`*Statut :* ${a.statut} · *Avancement :* ${av.faits} / ${av.total}`);
+    l.push(
+      `*Statut :* ${a.statut} · *Avancement :* ${av.faits} / ${av.total}` +
+        ` · *Responsable :* ${a.responsable ?? SANS_RESPONSABLE}`,
+    );
     l.push("");
+
+    // La copie du post, AVANT le brief : on fabrique un visuel pour un texte,
+    // et lire le texte d'abord change ce qu'on fabrique.
+    const parts = partsDuPost(a.post);
+    if (parts.length > 0) {
+      l.push("> **Le post qui accompagne ce visuel**");
+      l.push(">");
+      for (const p of parts) {
+        l.push(`> *${p.libelle} :*`);
+        // Le corps d'un post est multiligne : chaque ligne doit porter le
+        // chevron, sinon la citation se referme à la première.
+        for (const ligne of p.texte.split("\n")) l.push(`> ${ligne}`);
+        l.push(">");
+      }
+      l.push("");
+    } else if (a.titrePost) {
+      // Un asset RATTACHÉ à un post dont la copie est vide : c'est un signal,
+      // pas un silence. On s'apprête à fabriquer le visuel d'un texte qui
+      // n'existe pas encore.
+      l.push("> ⚠️ Aucun texte rédigé pour ce post.");
+      l.push("");
+    }
 
     if (a.segments.length === 0) {
       l.push("> Aucun brief importé pour cet asset.");
@@ -214,6 +346,14 @@ export const COLONNES_PLAN = [
   "prompt",
   "fait",
   "titre_post",
+  // ⚠️ Ajoutées EN FIN de liste, jamais intercalées : une colonne insérée au
+  // milieu décale tout ce qui suit, et une feuille de suivi déjà ouverte se
+  // met à lire les prompts dans la colonne des statuts.
+  "responsable",
+  "accroche",
+  "corps",
+  "premier_commentaire",
+  "tags",
 ] as const;
 
 function cel(v: string | null | undefined): string {
@@ -247,6 +387,11 @@ export function construireCsvPlan(assets: readonly AssetPlan[]): string {
           cel(s.prompt),
           cel(s.fait ? "oui" : "non"),
           cel(a.titrePost),
+          cel(a.responsable),
+          cel(a.post?.accroche),
+          cel(a.post?.corps),
+          cel(a.post?.premierCommentaire),
+          cel(a.post ? formaterTags(a.post.tags) : ""),
         ].join(";"),
       );
     }
@@ -257,8 +402,19 @@ export function construireCsvPlan(assets: readonly AssetPlan[]): string {
   return "﻿" + lignes.join("\r\n") + "\r\n";
 }
 
-/** Nom de fichier — lisible, triable, sans espace. */
-export function nomFichierPlan(type: string, periode: string, extension: "md" | "csv"): string {
+/**
+ * Nom de fichier — lisible, triable, sans espace.
+ *
+ * ⚠️ `tronque` n'est pas cosmétique : c'est le SEUL endroit où un CSV peut
+ * avouer qu'il est incomplet. Y écrire une ligne de commentaire casserait le
+ * tableur ; le nom du fichier, lui, survit au téléchargement et à l'archivage.
+ */
+export function nomFichierPlan(
+  type: string,
+  periode: string,
+  extension: "md" | "csv" | "pdf",
+  tronque = false,
+): string {
   const propre = (s: string) =>
     s
       .toLowerCase()
@@ -266,5 +422,5 @@ export function nomFichierPlan(type: string, periode: string, extension: "md" | 
       .replace(/[̀-ͯ]/g, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
-  return `plan-production-${propre(type)}-${propre(periode)}.${extension}`;
+  return `plan-production-${propre(type)}-${propre(periode)}${tronque ? "-tronque" : ""}.${extension}`;
 }
