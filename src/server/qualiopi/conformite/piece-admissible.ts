@@ -55,12 +55,71 @@
 
 import type { TrainingSessionStatut } from "../../../../prisma/generated/client";
 
+/**
+ * Les statuts de session dont RIEN ne peut servir de preuve.
+ *
+ * 🔑 Cette liste est la SOURCE des deux prédicats ci-dessous. Elle a été écrite
+ * en littéral dans chacun d'eux le temps d'une nuit, et c'est exactement ainsi
+ * qu'une règle diverge de son jumeau — le motif que ce module tout entier
+ * existe pour empêcher.
+ */
+export const STATUTS_SESSION_SANS_PREUVE: TrainingSessionStatut[] = ["annulee", "reportee"];
+
 export function pieceAdmissibleAuDossier(): {
   annuleeAt: null;
   OR: [{ sessionId: null }, { session: { statut: { notIn: TrainingSessionStatut[] } } }];
 } {
   return {
     annuleeAt: null,
-    OR: [{ sessionId: null }, { session: { statut: { notIn: ["annulee", "reportee"] } } }],
+    OR: [{ sessionId: null }, { session: { statut: { notIn: STATUTS_SESSION_SANS_PREUVE } } }],
   };
+}
+
+/**
+ * ── LE JUMEAU : une INSCRIPTION sur une session qui a réellement eu lieu ─────
+ *
+ * ## 🔴 Le défaut que ce prédicat ferme (mesuré le 2026-08-25, cahier D1-2)
+ *
+ * La règle du 2026-08-24 ci-dessus a été appliquée aux **cinq** sites
+ * `prisma.documentGenere.*` de `conformite-service.ts`. Les **trois** sites
+ * `prisma.enrollment.*` du même fichier sont restés nus.
+ *
+ * Et pas dans un fichier lointain : dans le **même `Promise.all`**, à cinq
+ * lignes. Le commentaire qui explique pourquoi la garde est nécessaire est
+ * écrit juste EN DESSOUS de la ligne qui s'en passe :
+ *
+ * ```
+ * :209   prisma.enrollment.count({ where: { adaptationsRealisees: { not: null } } }),
+ * :210   // 🔴 2026-08-24 — ce compte portait `annuleeAt: null` en littéral…
+ * :214   prisma.documentGenere.count({ where: pieceAdmissibleAuDossier() }),
+ * ```
+ *
+ * Effet mesuré : l'indicateur **12** affichait « Couvert · 1 inscription avec
+ * présence constatée » alors que la seule feuille du dossier appartenait à une
+ * session **annulée**. Et rien n'empêche ce cas : `transitionSessionAction`
+ * révoque bien les jetons d'émargement à l'annulation
+ * (`actions/qualiopi/sessions.ts:939`), mais un `emargementSigneAt` déjà posé
+ * **reste posé**. Signer puis annuler suffit.
+ *
+ * Le manifeste d'audit se contredisait alors sur une seule page — statut de
+ * l'indicateur d'un côté, liste des pièces filtrée de l'autre. C'est
+ * exactement la contradiction décrite plus haut, sur une autre table.
+ *
+ * ## Pourquoi la forme diffère de sa jumelle
+ *
+ * `Enrollment.sessionId` est **non-nullable** (`schema.prisma:6714`) : une
+ * inscription appartient toujours à une session. Il n'y a donc pas de branche
+ * `OR` à prévoir — l'exception des « pièces générales de l'organisme » n'a pas
+ * d'équivalent ici. Et `Enrollment` ne porte pas de colonne `annuleeAt` : une
+ * inscription ne s'annule pas, elle change de statut.
+ *
+ * ⚠️ Ce prédicat ne dit RIEN du statut de l'inscription elle-même (abandon,
+ * exclusion). C'est délibéré et c'est la limite de ce lot : filtrer les
+ * inscriptions inactives rendrait certains indicateurs **plus faciles** à
+ * satisfaire, ce qui est la direction dangereuse. Voir le cahier D1-2 § 5.
+ */
+export function inscriptionSurSessionTenue(): {
+  session: { statut: { notIn: TrainingSessionStatut[] } };
+} {
+  return { session: { statut: { notIn: STATUTS_SESSION_SANS_PREUVE } } };
 }
