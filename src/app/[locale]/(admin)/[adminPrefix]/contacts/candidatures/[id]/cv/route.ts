@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { readCv } from "@/server/careers/cv-storage";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
-import { logActivity } from "@/server/content-gen/shared/activity-log";
+import { getClientIp } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -38,21 +38,32 @@ export async function GET(
   try {
     const buf = await readCv(a.cvStoragePath);
     const safeName = (a.cvOriginalName || "cv").replace(/[^a-zA-Z0-9._-]/g, "_");
-    // 🔑 La TRACE, pas la liste de roles, est ce qui rend cet acces defendable
-    // devant la CNIL. Aucun acces au CV d'un candidat n'etait journalise :
-    // personne ne savait qui avait telecharge quel dossier. `logActivity` est
-    // best-effort et n'echoue jamais — un journal indisponible ne doit pas
-    // priver le recruteur de la piece.
-    await logActivity({
-      session: {
-        userId: session.user.id,
-        email: session.user.email ?? "",
-        role: role ?? "reader",
-      },
-      action: "careers.candidature.cv.telecharge",
-      targetType: "JobApplication",
-      targetId: id,
-    });
+    // 🔑 La TRACE, pas la liste de rôles, est ce qui rend cet accès défendable
+    // devant la CNIL. Aucun accès au CV d'un candidat n'était journalisé :
+    // personne ne savait qui avait téléchargé quel dossier.
+    //
+    // ⚠️ Écrit DIRECTEMENT sur `prisma.activityLog`, et non via le helper
+    // partagé du générateur éditorial : ce module vit dans une zone dont
+    // l'isolation est vérifiée en CI (§ 4.1bis), et rien du dossier d'un
+    // candidat n'y appartient. L'écriture directe est d'ailleurs l'idiome réel
+    // du dépôt partout ailleurs — `admin-blog`, `admin-faq`, `gdpr-erase`,
+    // `auth.ts`.
+    //
+    // Best-effort : un journal indisponible ne doit pas priver le recruteur de
+    // la pièce.
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: session.user.id,
+          action: "careers.candidature.cv.telecharge",
+          targetType: "JobApplication",
+          targetId: id,
+          ipAddress: await getClientIp(),
+        },
+      });
+    } catch {
+      // silence volontaire : cf. ci-dessus
+    }
     return new NextResponse(new Uint8Array(buf), {
       headers: {
         // Type forcé neutre + nosniff : on ne fait pas confiance au MIME déclaré

@@ -127,6 +127,26 @@ interface Surface {
 }
 
 /**
+ * Le code SEUL — commentaires vidés, sauts de ligne préservés.
+ *
+ * 🔴 Sans cela, ce cliquet trouve ses propres explications. Mesuré : après avoir
+ * remplacé l'appel de journalisation par autre chose, le test de trace restait
+ * **VERT** — parce que le commentaire juste au-dessus contient la phrase
+ * « Écrit DIRECTEMENT sur `prisma.activityLog` ». La garde lisait la prose qui
+ * décrit le code, pas le code.
+ *
+ * *Un test statique qui trouve ses propres commentaires ne mesure rien* — le
+ * dépôt l'a déjà payé, et il vient de le repayer ici.
+ */
+function codeSeul(source: string): string {
+  return source
+    .replace(/\/\*[\s\S]*?\*\//g, (bloc) => bloc.replace(/[^\n]/g, " "))
+    .split(/\r?\n/)
+    .map((l) => (l.trim().startsWith("//") ? "" : l))
+    .join("\n");
+}
+
+/**
  * Les surfaces admin qui exposent un dossier de candidat, DÉRIVÉES du code.
  *
  * Deux conditions cumulatives : le fichier lit la table des candidatures ET il
@@ -142,7 +162,10 @@ function surfacesDossierCandidat(): Surface[] {
     const source = readFileSync(chemin, "utf8");
     if (!LIT_LA_TABLE.test(source)) continue;
     if (!MARQUEURS_DOSSIER_CANDIDAT.some((m) => source.includes(m))) continue;
-    surfaces.push({ chemin: relatif.split(sep).join("/"), source });
+    // Le tri de la classe se fait sur la source BRUTE (les marqueurs
+    // `cvStoragePath` & co. y sont du code), mais tout ce qu'on VÉRIFIE ensuite
+    // se lit sur le code seul — sinon la garde trouve ses propres commentaires.
+    surfaces.push({ chemin: relatif.split(sep).join("/"), source: codeSeul(source) });
   }
   return surfaces;
 }
@@ -196,15 +219,99 @@ describe("cliquet — aucune surface n'ouvre un dossier de candidat sans le pré
       ).toBe(false);
     }
   });
+  /**
+   * Le texte d'UN SEUL appel — de sa parenthèse ouvrante à sa fermante.
+   *
+   * 🔴 Une fenêtre de N caractères après le nom de la méthode déborde sur
+   * l'appel voisin et y trouve ce qu'elle cherche. Le dépôt l'a mesuré le
+   * 2026-08-25 sur un autre cliquet : un site non gardé y était déclaré gardé
+   * par la ligne d'à côté.
+   */
+  function extraitDeLAppel(source: string, indexOuvrante: number): string {
+    let profondeur = 0;
+    for (let i = indexOuvrante; i < source.length; i += 1) {
+      const c = source[i];
+      if (c === "(") profondeur += 1;
+      else if (c === ")") {
+        profondeur -= 1;
+        if (profondeur === 0) return source.slice(indexOuvrante, i + 1);
+      }
+    }
+    return source.slice(indexOuvrante);
+  }
+
+  /**
+   * La surface journalise-t-elle l'ouverture d'un DOSSIER DE CANDIDAT ?
+   *
+   * 🔴 Deux versions de ce détecteur ont échoué avant celle-ci, et chacune a
+   * enseigné quelque chose :
+   *
+   *  1. `includes("ActivityLog")` — sensible à la casse, alors que l'idiome réel
+   *     du dépôt est `prisma.activityLog` avec un **`a` minuscule**. Il déclarait
+   *     « sans trace » trois fichiers qui journalisent correctement.
+   *  2. `includes("prisma.activityLog")` sur la source BRUTE — il trouvait la
+   *     phrase du **commentaire** qui décrit le code. Épreuve faite : l'appel
+   *     retiré, le test restait VERT.
+   *  3. Présence d'un appel de journal **n'importe où dans le fichier** —
+   *     `actions.ts` en porte trois (`jobapplication.updated`, `.deleted`), donc
+   *     retirer celui de la LECTURE ne changeait rien.
+   *
+   * Ce qui est décidable statiquement, et qui est vérifié ici : le nom d'action
+   * du domaine (`careers.candidature.`) doit se trouver **À L'INTÉRIEUR** d'un
+   * appel de journalisation. Déplacer la trace hors de l'appel, ou remplacer
+   * l'appel par autre chose, fait rougir.
+   *
+   * ⚠️ **Ce que ce cliquet NE prouve PAS** : que l'appel se trouve bien sur le
+   * chemin de LECTURE plutôt que dans une autre fonction du même fichier. Une
+   * analyse statique ne peut pas l'établir honnêtement, et prétendre le
+   * contraire ferait de cette garde une décoration.
+   */
+  function journaliseLOuvertureDuDossier(source: string): boolean {
+    const motif = /(?:prisma\.activityLog\.create|logActivity)\s*\(/g;
+    let m = motif.exec(source);
+    while (m !== null) {
+      const extrait = extraitDeLAppel(source, m.index + m[0].length - 1);
+      if (extrait.includes("careers.candidature.")) return true;
+      m = motif.exec(source);
+    }
+    return false;
+  }
+
+  it("🔑 CONTRE-TÉMOIN : le détecteur de trace reconnaît les deux idiomes, et refuse le reste", () => {
+    // Sans ceci, une casse ou un renommage rendrait le test suivant incapable de
+    // voir une trace pourtant présente — et on « corrigerait » du code correct
+    // pour le faire taire.
+    expect(
+      journaliseLOuvertureDuDossier(
+        'await prisma.activityLog.create({ data: { action: "careers.candidature.cv.telecharge" } })',
+      ),
+    ).toBe(true);
+    expect(
+      journaliseLOuvertureDuDossier('await logActivity({ action: "careers.candidature.ouvert" })'),
+    ).toBe(true);
+
+    // Le journal existe, mais il ne parle PAS du dossier de candidat.
+    expect(
+      journaliseLOuvertureDuDossier(
+        'await prisma.activityLog.create({ data: { action: "jobapplication.updated" } })',
+      ),
+    ).toBe(false);
+
+    // 🔴 Le cas qui a fait échouer la version précédente : le nom d'action est
+    // présent, mais HORS de tout appel de journalisation.
+    expect(
+      journaliseLOuvertureDuDossier(
+        'await prisma.jobApplication.count({ data: { action: "careers.candidature.ouvert" } })',
+      ),
+    ).toBe(false);
+  });
 
   it("chaque surface laisse une TRACE de l'accès — c'est elle qui le rend défendable", () => {
     // Une liste de rôles dit qui A LE DROIT ; seul le journal dit qui A OUVERT.
     // Devant la CNIL, c'est la seconde question qui est posée.
     for (const surface of surfaces) {
-      const journalise =
-        surface.source.includes("logActivity") || surface.source.includes("ActivityLog");
       expect(
-        journalise,
+        journaliseLOuvertureDuDossier(surface.source),
         `${surface.chemin} ouvre un dossier de candidat sans journaliser l'accès`,
       ).toBe(true);
     }

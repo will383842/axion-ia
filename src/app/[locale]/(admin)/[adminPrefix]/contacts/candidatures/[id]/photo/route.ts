@@ -7,7 +7,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { readCv } from "@/server/careers/cv-storage";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
-import { logActivity } from "@/server/content-gen/shared/activity-log";
+import { getClientIp } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,19 +40,27 @@ export async function GET(
 
   try {
     const buf = await readCv(a.photoStoragePath);
-    // 🔑 Meme raison que pour le CV : la trace est ce qui rend l'acces
-    // defendable. Best-effort — un journal indisponible ne prive personne de la
-    // piece.
-    await logActivity({
-      session: {
-        userId: session.user.id,
-        email: session.user.email ?? "",
-        role: role ?? "reader",
-      },
-      action: "careers.candidature.photo.consultee",
-      targetType: "JobApplication",
-      targetId: id,
-    });
+    // 🔑 Même raison que pour le CV : la trace est ce qui rend l'accès
+    // défendable devant la CNIL.
+    //
+    // ⚠️ Écrit DIRECTEMENT sur `prisma.activityLog`, et non via le helper
+    // partagé du générateur éditorial — son isolation est vérifiée en CI
+    // (§ 4.1bis) et rien du dossier d'un candidat n'y appartient.
+    //
+    // Best-effort : un journal indisponible ne prive personne de la pièce.
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: session.user.id,
+          action: "careers.candidature.photo.consultee",
+          targetType: "JobApplication",
+          targetId: id,
+          ipAddress: await getClientIp(),
+        },
+      });
+    } catch {
+      // silence volontaire : cf. ci-dessus
+    }
     // MIME restreint : on ne sert que des types image validés, sinon octet-stream.
     const mime =
       a.photoMimeType && ALLOWED_IMG.has(a.photoMimeType)

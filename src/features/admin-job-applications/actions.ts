@@ -12,7 +12,6 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
-import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
@@ -393,24 +392,36 @@ export async function getApplicationDetailAction(id: string): Promise<JobApplica
   const acteur = await requireAdminRead();
   const a = await prisma.jobApplication.findUnique({ where: { id } });
   if (!a) return null;
-  // 🔑 La TRACE, pas la liste de roles, est ce qui rend cet acces defendable
-  // devant la CNIL. Une liste de roles dit qui A LE DROIT ; seul le journal dit
+  // 🔑 La TRACE, pas la liste de rôles, est ce qui rend cet accès défendable
+  // devant la CNIL. Une liste de rôles dit qui A LE DROIT ; seul le journal dit
   // qui A OUVERT le dossier de Madame X, et quand.
   //
-  // Journalise ICI et pas dans `requireAdminRead` a dessein : c'est l'ouverture
-  // d'un dossier NOMME qui constitue l'acces individualise. Les deux actions de
-  // liste partagent la meme garde, mais parcourir un tableau pagine a chaque
-  // rendu d'ecran produirait un journal de volume sans en dire davantage — et un
+  // Journalisé ICI et pas dans `requireAdminRead` à dessein : c'est l'ouverture
+  // d'un dossier NOMMÉ qui constitue l'accès individualisé. Les deux actions de
+  // liste partagent la même garde, mais parcourir un tableau paginé à chaque
+  // rendu d'écran produirait un journal de volume sans en dire davantage — et un
   // journal qu'on ne peut plus lire ne prouve plus rien.
   //
-  // Best-effort : `logActivity` n'echoue jamais. Un journal indisponible ne doit
-  // pas priver le recruteur du dossier.
-  await logActivity({
-    session: { userId: acteur.userId, email: acteur.email, role: acteur.role },
-    action: "careers.candidature.dossier.ouvert",
-    targetType: "JobApplication",
-    targetId: a.id,
-  });
+  // ⚠️ Écrit DIRECTEMENT sur `prisma.activityLog`, et non via le helper partagé
+  // du générateur éditorial — son isolation est vérifiée en CI (§ 4.1bis) et
+  // rien du dossier d'un candidat n'y appartient. C'est aussi l'idiome réel du
+  // dépôt partout ailleurs (`admin-blog`, `admin-faq`, `gdpr-erase`, `auth.ts`).
+  //
+  // Best-effort : un journal indisponible ne doit pas priver le recruteur du
+  // dossier.
+  try {
+    await prisma.activityLog.create({
+      data: {
+        adminUserId: acteur.userId,
+        action: "careers.candidature.dossier.ouvert",
+        targetType: "JobApplication",
+        targetId: a.id,
+        ipAddress: await getClientIp(),
+      },
+    });
+  } catch {
+    // silence volontaire : cf. ci-dessus
+  }
   const answers =
     a.answers && typeof a.answers === "object" && !Array.isArray(a.answers)
       ? (a.answers as Record<string, string>)
