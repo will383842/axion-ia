@@ -76,7 +76,30 @@ const metaSchema = z.object({
     .optional(),
   sector: z.string().max(64).optional(),
   audience: audienceSchema.optional(),
+  // Date de diffusion du communiqué (jour, `<input type="date">`).
+  //
+  // 🔴 Elle DOIT être saisissable. Auparavant `publishedAt` n'était posé que par
+  // le premier clic « Publier » et n'était modifiable nulle part : la date de la
+  // carte, le `datePublished` du JSON-LD NewsArticle et le `<lastmod>` du
+  // sitemap valaient donc l'instant du clic, jamais la date réelle du CP. Un
+  // communiqué rédigé la veille, ou importé en lot, sortait daté du jour.
+  // La couverture médias, elle, avait ce champ depuis le début — l'asymétrie
+  // signait l'oubli, pas un choix.
+  publishedAt: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date attendue au format AAAA-MM-JJ.")
+    .refine((v) => !Number.isNaN(Date.parse(`${v}T12:00:00.000Z`)), "Date invalide.")
+    .optional(),
 });
+
+/**
+ * "AAAA-MM-JJ" → Date à midi UTC. Midi (et non minuit) : la page publique
+ * n'affiche que le jour via `toISOString().slice(0, 10)`, et minuit UTC bascule
+ * d'un jour dans les fuseaux à l'ouest. Midi tient dans les deux sens.
+ */
+function parseDayToDate(day: string): Date {
+  return new Date(`${day}T12:00:00.000Z`);
+}
 
 /** "" / undefined → undefined (champ non fourni). Sinon la valeur trimée. */
 function emptyToUndefined(v: FormDataEntryValue | null): string | undefined {
@@ -163,6 +186,14 @@ async function uniqueSlug(
 
 function revalidatePresse(): void {
   revalidatePath("/fr/presse");
+  // 🔴 La liste ne suffit pas. Une correction de titre, de date ou de PDF laissait
+  // la page détail (ISR 1 h) et le sitemap servir l'ancienne version : seule
+  // `/fr/presse` était purgée. `"page"` sur la route dynamique purge toutes ses
+  // instances rendues, sans avoir à connaître les slugs.
+  revalidatePath("/fr/presse/[slug]", "page");
+  // Pas de purge du sitemap : `/sitemap-presse.xml` est `force-dynamic`
+  // (cf. son `route.ts`), donc recalculé à chaque requête. Un `revalidatePath`
+  // dessus ne purgerait rien et se lirait, à tort, comme une garantie.
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -183,12 +214,20 @@ export async function createPressRelease(
       departement: emptyToUndefined(formData.get("departement")),
       sector: emptyToUndefined(formData.get("sector")),
       audience: emptyToUndefined(formData.get("audience")),
+      publishedAt: emptyToUndefined(formData.get("publishedAt")),
     });
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "validation_failed" };
     }
     const meta = parsed.data;
     const status = meta.status ?? "draft";
+    // Date saisie si fournie ; sinon comportement historique (maintenant, au
+    // premier publish uniquement).
+    const publishedAt = meta.publishedAt
+      ? parseDayToDate(meta.publishedAt)
+      : status === "published"
+        ? new Date()
+        : null;
 
     // PDF requis à la création.
     const pdf = await validateAndStorePdf(formData.get("file"));
@@ -200,7 +239,7 @@ export async function createPressRelease(
       data: {
         tag: meta.tag,
         status,
-        ...(status === "published" ? { publishedAt: new Date() } : {}),
+        ...(publishedAt ? { publishedAt } : {}),
         // Taxonomie ciblage média — spreads conditionnels (exactOptionalPropertyTypes).
         // audience absente ⇒ défaut DB GENERAL.
         ...(meta.region ? { region: meta.region } : {}),
@@ -253,6 +292,7 @@ export async function updatePressRelease(
       departement: emptyToUndefined(formData.get("departement")),
       sector: emptyToUndefined(formData.get("sector")),
       audience: emptyToUndefined(formData.get("audience")),
+      publishedAt: emptyToUndefined(formData.get("publishedAt")),
     });
     if (!parsed.success) {
       return { ok: false, error: parsed.error.issues[0]?.message ?? "validation_failed" };
@@ -283,12 +323,16 @@ export async function updatePressRelease(
         departement?: string | null;
         sector?: string | null;
         audience?: z.infer<typeof audienceSchema>;
+        publishedAt?: Date;
         pdfStoragePath?: string;
         pdfFileName?: string;
         pdfFileSize?: number;
         pdfHashSha256?: string;
       } = {};
       if (meta.tag !== undefined) releaseData.tag = meta.tag;
+      if (meta.publishedAt !== undefined) {
+        releaseData.publishedAt = parseDayToDate(meta.publishedAt);
+      }
       // Taxonomie : présent ⇒ on définit (vide → null). audience vide ⇒ GENERAL.
       if (regionTouched) releaseData.region = meta.region ?? null;
       if (departementTouched) releaseData.departement = meta.departement ?? null;

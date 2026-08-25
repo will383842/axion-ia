@@ -5,7 +5,6 @@
 // Pattern aligné sur email-worker (singleton via startXxxWorker()).
 
 import { Worker } from "bullmq";
-import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -48,14 +47,11 @@ export function startImageBankEnrichWorker(): Worker<ImageBankEnrichJobData, voi
   );
   worker.on("failed", (job, err) => {
     console.error(`[image-bank-enrich-worker] failed: ${job?.data?.imageId}: ${err.message}`);
-    Sentry.captureException(err, {
-      tags: { worker: "image-bank-enrich" },
-      extra: {
-        jobId: job?.id,
-        imageId: job?.data?.imageId,
-        attemptsMade: job?.attemptsMade,
-      },
-    });
+    // Le repli passe par `captureWorkerError`, jamais par Sentry en direct :
+    // `captureException` est ABSENT du build `@sentry/nextjs` resolu hors
+    // bundler Next (mesure prod du 2026-07-21, cf. `lib/sentry-worker.ts`).
+    // L'appel direct qui vivait ici levait un TypeError DANS ce gestionnaire,
+    // et — place avant l'appel garde — rendait le repli inatteignable.
     captureWorkerError("image-bank-enrich", "image-bank-enrich", job, err);
   });
 

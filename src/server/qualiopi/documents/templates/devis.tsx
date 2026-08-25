@@ -133,6 +133,17 @@ const styles = StyleSheet.create({
 // ============================================================
 
 export interface ClientDevis {
+  /**
+   * Le destinataire est-il une PERSONNE PHYSIQUE ?
+   *
+   * 🔴 Ce champ manquait : le devis d'un particulier s'intitulait « Raison
+   * sociale : Prenom Nom » et lui opposait une clause en langage B2B pur —
+   * « elles prevalent sur toutes conditions d'achat du client ». Un particulier
+   * n'a pas de conditions d'achat.
+   *
+   * Derive au serveur, jamais decide ici. Absent = professionnel (refus prudent).
+   */
+  estPersonnePhysique?: boolean;
   raisonSociale: string;
   siret?: string;
   adresse?: string;
@@ -212,9 +223,26 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
   // renseignée) : dans ce cas on énonce quand même l'opposabilité et le canal
   // de communication, plutôt que de rendre une URL tronquée du type « /conditions-generales ».
   const siteBase = identite.site.replace(/\/+$/, "");
+  // 🔴 2026-08-25, cahier D4-3 — la phrase « Elles prévalent sur toutes
+  // conditions d'achat du client, sauf dérogation écrite et signée des deux
+  // parties » est une clause ENTRE PROFESSIONNELS : elle règle le conflit entre
+  // CGV du vendeur et conditions d'achat de l'acheteur. **Un particulier n'a pas
+  // de conditions d'achat**, et la lui opposer n'a aucun sens.
+  //
+  // ⛔ Elle est OMISE pour une personne physique, pas remplacée. On n'invente
+  // pas ici de mention consumériste — ni rétractation, ni médiation : le droit
+  // de rétractation de dix jours (L.6353-5) est porté par le CONTRAT DE
+  // FORMATION, qui est la pièce contractuelle du particulier, et l'ajouter au
+  // devis serait écrire une clause absente du gabarit.
+  //
+  // L'acceptation des CGV, elle, RESTE : elle est due dans les deux cas.
+  const cgvOpposabilite =
+    data.client.estPersonnePhysique === true
+      ? ""
+      : " Elles prévalent sur toutes conditions d'achat du client, sauf dérogation écrite et signée des deux parties.";
   const cgvMention = siteBase
-    ? `L'acceptation du présent devis emporte acceptation des Conditions générales de vente d'${identite.raisonSociale || "Axion-IA"}, consultables sur ${siteBase}/conditions-generales et communiquées sur simple demande. Elles prévalent sur toutes conditions d'achat du client, sauf dérogation écrite et signée des deux parties.`
-    : `L'acceptation du présent devis emporte acceptation des Conditions générales de vente, communiquées sur simple demande. Elles prévalent sur toutes conditions d'achat du client, sauf dérogation écrite et signée des deux parties.`;
+    ? `L'acceptation du présent devis emporte acceptation des Conditions générales de vente d'${identite.raisonSociale || "Axion-IA"}, consultables sur ${siteBase}/conditions-generales et communiquées sur simple demande.${cgvOpposabilite}`
+    : `L'acceptation du présent devis emporte acceptation des Conditions générales de vente, communiquées sur simple demande.${cgvOpposabilite}`;
   // Sous-lot 8G — la mention d'indisponibilité PRIME sur les montants : voir le
   // commentaire de `mentionEstimationIndisponible`. Le bloc reste affiché (le
   // client doit savoir que le dispositif existe), seuls les chiffres partent.
@@ -260,7 +288,11 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
 
         {/* Client */}
         <DocSection title="Client">
-          <FieldRow label="Raison sociale" value={data.client.raisonSociale} required />
+          <FieldRow
+            label={data.client.estPersonnePhysique === true ? "Nom et prénom" : "Raison sociale"}
+            value={data.client.raisonSociale}
+            required
+          />
           {data.client.siret ? <FieldRow label="SIRET" value={data.client.siret} /> : null}
           {data.client.adresse ? <FieldRow label="Adresse" value={data.client.adresse} /> : null}
           {data.client.email ? <FieldRow label="Email" value={data.client.email} /> : null}

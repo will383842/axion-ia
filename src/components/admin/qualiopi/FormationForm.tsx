@@ -19,6 +19,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createFormationAction, updateFormationAction } from "@/server/actions/qualiopi/formations";
+import { setMoyensFormationAction } from "@/server/actions/qualiopi/financements";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -52,6 +53,12 @@ interface FormationFormEditProps {
   initial: {
     titre: string;
     methodesPedagogiques: string | null;
+    /**
+     * Moyens techniques (off.17/18). Ils s'impriment sur le programme de
+     * formation ; jusqu'au 2026-08-25 aucun ecran ne permettait de les
+     * corriger apres l'import du catalogue.
+     */
+    moyensTechniques: string;
     seuilReussitePct: number | null;
     ratioPratiquePct: number | null;
     accessibleHandicap: boolean;
@@ -138,6 +145,9 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
   const [titreEdit, setTitreEdit] = useState(props.id !== undefined ? props.initial.titre : "");
   const [methodesPedagogiques, setMethodesPedagogiques] = useState(
     props.id !== undefined ? (props.initial.methodesPedagogiques ?? "") : "",
+  );
+  const [moyensTechniques, setMoyensTechniques] = useState(
+    props.id !== undefined ? props.initial.moyensTechniques : "",
   );
   const [seuilReussitePct, setSeuilReussitePct] = useState<number | "">(
     props.id !== undefined ? (props.initial.seuilReussitePct ?? "") : "",
@@ -259,14 +269,38 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
       updatePayload.objectifsPedagogiques = lignesVersObjectifs(objectifsTexte);
     }
 
+    // Les moyens passent par leur PROPRE action : `updateFormationAction` ne
+    // les accepte pas. `setMoyensFormationAction` porte déjà les mêmes gardes
+    // (session verrouillante, bump de version, dévalidation) — elle n'avait
+    // simplement aucun appelant.
+    const moyensModifies = moyensTechniques.trim() !== props.initial.moyensTechniques.trim();
+    const autresModifies = Object.keys(updatePayload).length > 1;
+
+    if (!moyensModifies && !autresModifies) {
+      setError("Aucune modification à enregistrer.");
+      return;
+    }
+
     startTransition(async () => {
-      const result = await updateFormationAction(updatePayload);
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        setSuccess("Formation mise à jour.");
-        router.refresh();
+      if (autresModifies) {
+        const result = await updateFormationAction(updatePayload);
+        if ("error" in result) {
+          setError(result.error);
+          return;
+        }
       }
+      if (moyensModifies) {
+        const result = await setMoyensFormationAction({
+          formationId: props.id as string,
+          moyensTechniques: moyensTechniques.trim(),
+        });
+        if ("error" in result) {
+          setError(result.error);
+          return;
+        }
+      }
+      setSuccess("Formation mise à jour.");
+      router.refresh();
     });
   }
 
@@ -577,6 +611,31 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
           className={inputCls}
           placeholder="Décrivez les méthodes pédagogiques employées…"
         />
+      </div>
+
+      {/* Moyens techniques — off.17 / off.18 ⭐
+          Ils s'impriment sur le PROGRAMME DE FORMATION remis au client
+          (`programme-formation.tsx:231`). Avant le 2026-08-25, la valeur venait
+          d'une constante figée appliquée à TOUT le catalogue à l'import
+          (`catalog-import.ts:83`) et aucun écran ne l'éditait : chaque formation
+          déclarait donc les mêmes moyens, quelle que soit la prestation. */}
+      <div>
+        <label htmlFor="ff-edit-moyens" className={labelCls}>
+          Moyens techniques et d&apos;encadrement
+        </label>
+        <textarea
+          id="ff-edit-moyens"
+          value={moyensTechniques}
+          onChange={(e) => setMoyensTechniques(e.target.value)}
+          rows={4}
+          className={inputCls}
+          placeholder="Salle, plateforme, matériel, encadrement mobilisé pour CETTE formation…"
+        />
+        <p className={hintCls}>
+          Imprimés sur le programme de formation remis au client. Les indicateurs 17 et 18 demandent
+          des moyens <strong>adaptés à la prestation</strong> : une phrase identique sur tout le
+          catalogue montre qu&apos;ils ont été déclarés une fois, pas adaptés.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">

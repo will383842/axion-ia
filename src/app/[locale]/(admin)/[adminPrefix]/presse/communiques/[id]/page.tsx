@@ -8,6 +8,7 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { auth } from "@/auth";
@@ -67,6 +68,13 @@ export default async function EditPressReleasePage({ params, searchParams }: Pag
   const fr = release.translations[0];
   const isPublished = release.status === "published";
   const currentPdfName = release.pdfFileName;
+  // Date de diffusion pour `<input type="date">`. Repli sur `createdAt` — c'est
+  // exactement ce que la page publique affiche quand `publishedAt` est null,
+  // donc le champ montre la date réellement servie aux journalistes.
+  const publishedAtValue = (release.publishedAt ?? release.createdAt).toISOString().slice(0, 10);
+  // Aperçu public : disponible seulement si le communiqué est publié ET porte
+  // une traduction FR (donc un slug). En brouillon, /presse/[slug] rend un 404.
+  const publicUrl = isPublished && fr?.slug ? `/${locale}/presse/${fr.slug}` : null;
 
   async function update(formData: FormData): Promise<void> {
     "use server";
@@ -98,14 +106,26 @@ export default async function EditPressReleasePage({ params, searchParams }: Pag
         description="Modifiez le contenu, publiez/dépubliez ou supprimez ce communiqué."
         meta={<AdminStatusBadge type="publication" status={release.status} />}
         actions={
-          <form action={toggleStatus}>
-            <AdminSubmitButton
-              variant={isPublished ? "destructive" : "primary"}
-              pendingLabel={isPublished ? "Dépublication…" : "Publication…"}
-            >
-              {isPublished ? "Dépublier" : "Publier"}
-            </AdminSubmitButton>
-          </form>
+          <div className="flex items-center gap-[var(--space-admin-3)]">
+            {publicUrl ? (
+              <Link
+                href={publicUrl}
+                target="_blank"
+                rel="noopener"
+                className="admin-button-secondary"
+              >
+                Voir en ligne
+              </Link>
+            ) : null}
+            <form action={toggleStatus}>
+              <AdminSubmitButton
+                variant={isPublished ? "destructive" : "primary"}
+                pendingLabel={isPublished ? "Dépublication…" : "Publication…"}
+              >
+                {isPublished ? "Dépublier" : "Publier"}
+              </AdminSubmitButton>
+            </form>
+          </div>
         }
       />
 
@@ -169,6 +189,13 @@ export default async function EditPressReleasePage({ params, searchParams }: Pag
               required
               defaultValue={release.tag}
               options={TAG_OPTIONS}
+            />
+            <AdminFormField
+              label="Date de diffusion"
+              name="publishedAt"
+              type="date"
+              defaultValue={publishedAtValue}
+              hint="Date affichée sur /presse, dans le JSON-LD du communiqué et dans le sitemap. Corrigez-la si le communiqué a été publié après sa rédaction."
             />
           </AdminFormSection>
 

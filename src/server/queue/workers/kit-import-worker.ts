@@ -6,7 +6,6 @@
 // prod légitime) — jamais côté agent.
 
 import { Worker } from "bullmq";
-import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -79,7 +78,11 @@ export function startKitImportWorker(): Worker<KitImportJobData, void, string> {
   worker.on("failed", (job, err) => {
     console.error(`[kit-import-worker] failed: job=${job?.id}: ${err.message}`);
     captureWorkerError("kit-import", "kit-import", job, err);
-    Sentry.captureException(err);
+    // Le repli passe par `captureWorkerError`, jamais par Sentry en direct :
+    // `captureException` est ABSENT du build `@sentry/nextjs` resolu hors
+    // bundler Next (mesure prod du 2026-07-21, cf. `lib/sentry-worker.ts`).
+    // L'appel direct qui vivait ici levait un TypeError DANS ce gestionnaire,
+    // et — place avant l'appel garde — rendait le repli inatteignable.
   });
 
   return worker;
