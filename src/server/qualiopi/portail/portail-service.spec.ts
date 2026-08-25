@@ -19,6 +19,9 @@ vi.mock("@/lib/prisma", () => ({
       create: vi.fn(),
       findUnique: vi.fn(),
       update: vi.fn(),
+      // 2026-08-25 : la révocation coupe désormais TOUS les accès vivants du
+      // stagiaire, donc `updateMany`. Un mock incomplet est un contrat rompu.
+      updateMany: vi.fn(),
     },
     trainee: {
       findUnique: vi.fn(),
@@ -66,6 +69,7 @@ const mockPrisma = prisma as unknown as {
     create: ReturnType<typeof vi.fn>;
     findUnique: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
   };
   trainee: {
     findUnique: ReturnType<typeof vi.fn>;
@@ -290,17 +294,46 @@ describe("verifierToken", () => {
 describe("revoquerAcces", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("appelle prisma.portailAcces.update avec revoked=true", async () => {
-    mockPrisma.portailAcces.update.mockResolvedValue({});
+  it("🔴 révoque TOUS les accès vivants du stagiaire, pas seulement celui visé", async () => {
+    // 🔴 2026-08-25, cahier D4-4 — ce test exigeait un `update` sur la SEULE
+    // ligne visée. Il verrouillait le défaut : `creerAcces` n'invalide pas les
+    // précédents, et l'écran n'en montre qu'un (`take: 1`). Cliquer
+    // « Révoquer l'accès » coupait le lien affiché et laissait vivre les plus
+    // anciens — jusqu'à 90 jours. Le geste ne faisait pas ce qu'il annonce.
+    //
+    // 🔑 La doctrine existait déjà, écrite et motivée pour l'effacement RGPD
+    // (`rgpd-service.ts`) : « révoquer TOUS les accès portail du stagiaire […]
+    // sans cela un lien encore valide resterait exploitable ». Le raisonnement
+    // vaut mot pour mot ici ; les deux chemins convergent désormais.
+    mockPrisma.portailAcces.findUnique.mockResolvedValue({ traineeId: "trainee-1" });
+    mockPrisma.portailAcces.updateMany.mockResolvedValue({ count: 3 });
 
-    await revoquerAcces("acces-r1");
+    const n = await revoquerAcces("acces-r1");
 
-    expect(mockPrisma.portailAcces.update).toHaveBeenCalledWith(
+    expect(
+      mockPrisma.portailAcces.updateMany,
+      "la révocation ne coupe qu'un accès : les autres liens du stagiaire " +
+        "restent exploitables, alors que l'écran annonce l'accès coupé.",
+    ).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { id: "acces-r1" },
+        where: { traineeId: "trainee-1", revoked: false },
         data: { revoked: true },
       }),
     );
+    expect(n, "le compte réel n'est pas remonté : le journal ne peut pas le dire").toBe(3);
+  });
+
+  it("un accès introuvable ne lève pas — le geste est idempotent", async () => {
+    // 🔑 Contre-témoin. Sans lui, on pourrait « corriger » en lançant une
+    // exception sur un id inconnu : l'écran afficherait une erreur là où il n'y
+    // a simplement plus rien à couper.
+    mockPrisma.portailAcces.findUnique.mockResolvedValue(null);
+
+    await expect(revoquerAcces("inconnu")).resolves.toBe(0);
+    expect(
+      mockPrisma.portailAcces.updateMany,
+      "une révocation à vide écrit quand même en base",
+    ).not.toHaveBeenCalled();
   });
 
   it("leve si stub.invalid", async () => {
