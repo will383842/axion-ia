@@ -21,6 +21,7 @@ import {
   verifierDateIso,
   dateUtcStricte,
   heureValide,
+  lirePeriodeMois,
   ANNEE_MIN,
   ANNEE_MAX,
   etatPublication,
@@ -324,5 +325,58 @@ describe("etatParJour", () => {
     expect(etats.get("2026-09-01")).toBe("a_produire");
     expect(etats.get("2026-09-02")).toBe("publie");
     expect(etats.size).toBe(2);
+  });
+});
+
+describe("lirePeriodeMois", () => {
+  /**
+   * 🔴 Le témoin de la panne réelle.
+   *
+   * L'export du plan de production testait la période avec `/^d{4}-d{2}$/`,
+   * sans ses antislashs. Cette expression ne reconnaît QUE la chaîne
+   * littérale « dddd-dd ». Résultat : `?periode=2026-10` n'a jamais matché,
+   * l'export n'a jamais filtré, et il annonçait « Toutes périodes » en tête
+   * du document qu'on venait de demander pour octobre.
+   *
+   * Ce test échoue si les antislashs disparaissent à nouveau — VÉRIFIÉ en
+   * réintroduisant le défaut : une garde qu'on n'a pas vue rougir ne garde
+   * rien.
+   */
+  it("🔴 lit une période bien formée — le cas que la regex sans antislash ratait", () => {
+    expect(lirePeriodeMois("2026-10")).toEqual({ ok: true, annee: 2026, mois: 10 });
+    expect(lirePeriodeMois("2026-01")).toEqual({ ok: true, annee: 2026, mois: 1 });
+    expect(lirePeriodeMois("2026-12")).toEqual({ ok: true, annee: 2026, mois: 12 });
+  });
+
+  it("🔴 REFUSE « dddd-dd » — la seule chaîne que la regex fautive acceptait", () => {
+    // Contre-témoin : si ce cas passait, c'est que l'antislash manque encore.
+    expect(lirePeriodeMois("dddd-dd").ok).toBe(false);
+  });
+
+  it("refuse une forme qui n'est pas AAAA-MM", () => {
+    for (const v of ["", "2026", "2026-1", "2026-10-01", "octobre", "26-10", " 2026-10"]) {
+      expect(lirePeriodeMois(v).ok, `« ${v} » aurait dû être refusé`).toBe(false);
+    }
+  });
+
+  it("refuse un mois qui n'existe pas, plutôt que de le laisser filer", () => {
+    // `bornesDuMois(2026, 13)` rendrait janvier 2027 sans rien dire : le
+    // document sortirait sur un mois que personne n'a demandé.
+    expect(lirePeriodeMois("2026-00").ok).toBe(false);
+    expect(lirePeriodeMois("2026-13").ok).toBe(false);
+    expect(lirePeriodeMois("2026-99").ok).toBe(false);
+  });
+
+  it("refuse une année hors du calendrier navigable", () => {
+    expect(lirePeriodeMois(`${ANNEE_MIN - 1}-06`).ok).toBe(false);
+    expect(lirePeriodeMois(`${ANNEE_MAX + 1}-06`).ok).toBe(false);
+    expect(lirePeriodeMois(`${ANNEE_MIN}-06`).ok).toBe(true);
+    expect(lirePeriodeMois(`${ANNEE_MAX}-06`).ok).toBe(true);
+  });
+
+  it("dit POURQUOI il refuse — un refus muet renvoie chercher au mauvais endroit", () => {
+    const r = lirePeriodeMois("2026-13");
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.erreur).toContain("13");
   });
 });

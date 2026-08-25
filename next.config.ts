@@ -277,6 +277,17 @@ const nextConfig: NextConfig = {
         destination: "/:locale/blog/page/:num",
         permanent: true,
       },
+      // Boilerplate presse : le TXT statique de `public/press/` est retiré au
+      // profit d'une génération depuis les SSOT (`/api/presse/boilerplate`).
+      // Le fichier figé avait divergé du site — il annonçait « fondé en 2024 »
+      // quand le JSON-LD publie `foundingDate: 2026`. Redirection permanente
+      // plutôt que 404 : des journalistes ont pu enregistrer le lien depuis la
+      // salle de presse. `permanent: true` ⇒ 308 (vérifié en recette), pas 301.
+      {
+        source: "/press/axion-ia-boilerplate-fr-en.txt",
+        destination: "/api/presse/boilerplate",
+        permanent: true,
+      },
       // Suppression page /reserver (Will 2026-06-26) — le calendrier de booking
       // est retiré ; toute prise de contact passe désormais par /appel
       // (réservation d'un appel) ou /contact. 301 vers /appel pour préserver les

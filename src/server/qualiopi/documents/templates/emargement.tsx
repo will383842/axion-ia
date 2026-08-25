@@ -120,6 +120,11 @@ export function EmargementPdf({
 }): React.ReactElement {
   const lignesVides = data.lignesVides ?? 3;
 
+  // Une SEULE demi-journée non contresignée suffit : le commentaire de
+  // `contresignaturesManquantes` le dit déjà — « une journée à moitié
+  // contresignée ne doit pas passer pour complète ».
+  const feuilleIncomplete = data.journees.some((j) => j.contresignaturesManquantes.length > 0);
+
   return (
     <Document>
       <QualiopiPage
@@ -197,10 +202,32 @@ export function EmargementPdf({
           </DocSection>
         ))}
 
-        {/* Certification des présences */}
+        {/* Certification des présences.
+
+            🔴 2026-08-25, cahier D9-1 — cette phrase était imprimée
+            INCONDITIONNELLEMENT, y compris sur une feuille où le bloc
+            ci-dessus venait d'écrire « Non contresignée (…) — feuille
+            incomplète ». La pièce se contredisait sur la même page : elle
+            déclarait exact un relevé qu'elle qualifiait elle-même d'incomplet.
+
+            La donnée était pourtant déjà là — `contresignaturesManquantes` est
+            une propriété du gabarit, alimentée par `emargement-tirage.ts`. La
+            phrase ne la consultait simplement pas.
+
+            ⚠️ On ne RETIRE pas la certification : une feuille complète doit
+            certifier, c'est ce qui lui donne sa valeur probante. On la remplace
+            par un constat NOMMÉ — un blanc à cet endroit se confondrait avec un
+            défaut d'impression.
+
+            ⚠️ Et le constat ne commence PAS par « Je certifie … sous réserve » :
+            un lecteur pressé retient la première proposition. Sur une feuille
+            incomplète, l'organisme ne PEUT PAS certifier l'exactitude — le
+            formateur n'a pas contresigné. On le dit dans cet ordre-là. */}
         <View>
           <Text style={localStyles.certificationText}>
-            Je certifie l'exactitude des présences enregistrées sur ce document.
+            {feuilleIncomplete
+              ? "FEUILLE INCOMPLÈTE — les demi-journées signalées ci-dessus n'ont pas été contresignées par le formateur. L'exactitude des présences ne peut pas être certifiée pour ces demi-journées."
+              : "Je certifie l'exactitude des présences enregistrées sur ce document."}
           </Text>
         </View>
 

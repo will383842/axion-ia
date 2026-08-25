@@ -1367,7 +1367,22 @@ export async function genererCertificatRealisationAction(input: {
   // n'importe quel `PresenceCreneau` aurait vidé la garde de sa substance —
   // elle aurait continué d'exister en refusant seulement les dossiers vides.
   const signatures = await prisma.emargementSignature.count({
-    where: { enrollmentId: enrollment.id },
+    where: {
+      enrollmentId: enrollment.id,
+      // 🔴 2026-08-24, cahier D3-4 — `revokedAt: null` MANQUAIT ici.
+      //
+      // Une signature révoquée est une signature retirée du registre : c'est
+      // le geste par lequel on constate qu'une preuve ne vaut pas. Sans ce
+      // filtre, révoquer TOUTES les signatures d'une inscription n'empêchait
+      // pas d'émettre le certificat de réalisation qu'elles fondaient — la
+      // pièce continuait d'affirmer une assiduité que le registre niait.
+      //
+      // 🔑 Le jumeau le faisait déjà : `emargement/revocation-service.ts`
+      // compte les « restantes » avec ce même filtre et remet
+      // `emargementSigneAt` à `null` quand il n'en reste aucune. La révocation
+      // nettoyait donc partout SAUF dans la garde qui délivre la pièce.
+      revokedAt: null,
+    },
   });
   const creneauxImportes =
     signatures > 0

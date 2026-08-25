@@ -90,6 +90,7 @@ export default async function NewPressReleasePage({ params }: PageProps) {
         title: str(formData.get("title")),
         dek: str(formData.get("dek")),
         tag: str(formData.get("tag")),
+        publishedAt: str(formData.get("publishedAt")),
         audience: str(formData.get("audience")),
         region: str(formData.get("region")),
         departement: str(formData.get("departement")),

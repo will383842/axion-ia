@@ -36,6 +36,13 @@ import { prisma } from "@/lib/prisma";
 import { lignesDeChaine } from "@/server/qualiopi/emargement/lignes-de-chaine";
 import { isR2Configured, getObjectBufferR2, documentPdfKey } from "@/lib/r2-storage";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
+// 🔴 2026-08-24, cahier D9 — cet export n'avait AUCUN appelant de production.
+// Le dossier promet « la VÉRIFICATION D'INTÉGRITÉ de CHAQUE chaîne de
+// signatures » et n'en vérifiait que deux familles sur trois : les signatures
+// des PIÈCES CONTRACTUELLES (convention, devis, lettre de mission) n'étaient
+// vérifiées nulle part. La fonction pour le faire existait, écrite et testée,
+// simplement jamais appelée.
+import { verifierChaineDocument } from "@/server/qualiopi/documents/signature/registre-verification";
 import {
   maillonDepuisLigne,
   verrouColonnes,
@@ -219,9 +226,43 @@ export async function genererDossierSessionZip(
     });
   }
 
+  // Chaînes de signatures des PIÈCES CONTRACTUELLES — la troisième famille.
+  //
+  // 🔴 2026-08-24, cahier D9 — elle manquait, alors que l'en-tête de ce fichier
+  // promet « chaque chaîne de signatures ». Une convention signée dont la chaîne
+  // aurait été rompue sortait du ZIP avec la mention `[OK]` de son PDF et aucun
+  // verdict d'intégrité : le dossier avait l'air complet.
+  //
+  // ⚠️ Une pièce sans aucune signature rend `null` : ce n'est pas une anomalie,
+  // c'est une pièce non signée — et l'index ne doit pas la compter au
+  // dénominateur, sous peine de refaire le défaut « 0/0 conformes » corrigé
+  // juste en dessous.
+  const rapportsPieces: Array<Record<string, unknown>> = [];
+  let nbChainesPieceAnormales = 0;
+  for (const doc of session.documents) {
+    const res = await verifierChaineDocument(doc.id);
+    if (res === null) continue;
+    if (!res.valide) nbChainesPieceAnormales += 1;
+    rapportsPieces.push({
+      piece: doc.numero,
+      type: doc.type,
+      nbSignatures: res.nbVerifies,
+      integrite: res.valide ? "OK" : "ANOMALIE",
+      anomalies: res.anomalies,
+    });
+  }
+
   zip.file(
     "verification-integrite.json",
-    JSON.stringify({ signatures: rapports, contresignatures: rapportsContresignatures }, null, 2),
+    JSON.stringify(
+      {
+        signatures: rapports,
+        contresignatures: rapportsContresignatures,
+        piecesContractuelles: rapportsPieces,
+      },
+      null,
+      2,
+    ),
   );
   // 🔴 `D3-3-01` (2026-08-20) — « 0/0 conformes » SE LIT « TOUT VA BIEN ».
   //
@@ -248,6 +289,11 @@ export async function genererDossierSessionZip(
       ? "Intégrité des chaînes de contresignatures : AUCUNE contresignature de formateur au dossier."
       : `Intégrité des chaînes de contresignatures : ${parFormateur.size - nbChainesContresignAnormales}/${parFormateur.size} conformes.`,
   );
+  index.push(
+    rapportsPieces.length === 0
+      ? "Intégrité des chaînes de signatures de pièces : AUCUNE pièce contractuelle signée au dossier."
+      : `Intégrité des chaînes de signatures de pièces : ${rapportsPieces.length - nbChainesPieceAnormales}/${rapportsPieces.length} conformes.`,
+  );
   if (session.enrollments.length === 0) {
     avertissements.push(
       "⚠️ Aucune signature d'émargement dans ce dossier. La feuille d'émargement est la pièce que le certificateur demande en premier pour établir la réalité de l'action.",
@@ -270,6 +316,15 @@ export async function genererDossierSessionZip(
   if (nbChainesContresignAnormales > 0) {
     avertissements.push(
       `⚠️ ${nbChainesContresignAnormales} chaîne${nbChainesContresignAnormales > 1 ? "s" : ""} de contresignatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
+    );
+  }
+  if (nbChainesPieceAnormales > 0) {
+    // 🔴 2026-08-24 — la troisième famille, qui n'était vérifiée par rien. Une
+    // convention ou une lettre de mission dont la chaîne de signatures est
+    // rompue est plus grave qu'un émargement douteux : c'est l'engagement
+    // contractuel lui-même qui n'est plus opposable.
+    avertissements.push(
+      `⚠️ ${nbChainesPieceAnormales} chaîne${nbChainesPieceAnormales > 1 ? "s" : ""} de signatures de pièces contractuelles présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
     );
   }
   if (nbImagesAlterees > 0) {

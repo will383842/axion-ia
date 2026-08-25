@@ -143,6 +143,47 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     voirAussi: { href: "/qr-codes/catalogue", label: "Les 22 QR du catalogue" },
   },
   {
+    id: "depliant-formations",
+    icon: "ScrollText",
+    nom: "Dépliant formations · 4 pages",
+    format:
+      "A3 ouvert / A4 fermé · 420 × 297 mm à plat, 210 × 297 mm plié · pli central · " +
+      "pages 2-3 conçues comme une seule double page, bandeau traversant le pli",
+    resume:
+      "Les 21 formations et le séminaire sur une seule page, avec les prix publics et la prise en charge OPCO. Le format à laisser après un rendez-vous quand le catalogue 48 p. est trop lourd.",
+    fichiersPublics: [
+      {
+        chemin: "imprimes/depliant-formations-axion-ia.pdf",
+        nom: "Les 4 pages A4",
+        role: "À lire à l'écran et à envoyer par mail. Page 1 la couverture, page 2 le temps gagné et le parcours, page 3 les 22 formations, page 4 les tarifs et le contact.",
+      },
+      {
+        chemin: "imprimes/depliant-formations-axion-ia-A3.pdf",
+        nom: "Les 2 planches A3, imposées",
+        role: "Recto « page 4 | page 1 », verso « page 2 | page 3 » : imprimé en recto-verso sur A3 et plié au centre, il tombe dans le bon ordre. Pour le tirage bureautique.",
+      },
+      {
+        chemin: "imprimes/depliant-formations-axion-ia-VISTAPRINT.pdf",
+        nom: "Fichier Vistaprint — 422 × 299 mm",
+        role: "2 planches A3 recto-verso, aux cotes exactes du gabarit « Dépliant pli central » (fini 420 × 297, soit 1 mm de fond perdu par bord). C'est CE fichier qu'on téléverse chez Vistaprint.",
+      },
+      {
+        chemin: "imprimes/depliant-formations-axion-ia-EXAPRINT.pdf",
+        nom: "Fichier Exaprint — 426 × 303 mm",
+        role: "Le même document avec 3 mm de fond perdu, le standard des offsets français. ⚠️ Ces 3 mm viennent de l'usage, pas d'un gabarit Exaprint lu : à confronter à leur gabarit avant de lancer un tirage.",
+      },
+    ],
+    fichiersHorsLigne: [],
+    avantTirage: [
+      "⛔ NE PAS IMPRIMER AVANT LA DÉLIVRANCE DE QUALIOPI. Le dépliant l'affiche quatre fois, dont la bande de couverture — c'est irréversible sur papier. Distribution prévue une fois la certification obtenue (décision Will, 2026-08-25).",
+      "Les prix et les 22 intitulés sont DÉRIVÉS de catalog-v2.ts × pricing.ts : ils ne peuvent pas diverger du site, mais ils gèlent au moment du tirage. Refabriquer juste avant d'imprimer : pnpm tsx scripts/build-depliant-formations.ts",
+      "Vérifier que les 3 QR pointent où il faut. ⚠️ Ils visent des URL canoniques, PAS des /qr/<slug> : leur destination NE se change PAS après impression, contrairement à ceux du catalogue.",
+      "⚠️ LE FICHIER IMPRIMEUR EST EN RVB, pas en CMJN. Vistaprint l'accepte et convertit lui-même. Exaprint l'accepte aussi mais recommande le CMJN : la conversion se fera chez eux, avec un risque d'écart sur le terracotta et les aplats sombres. Pour un tirage où la couleur doit être garantie, faire convertir en CMJN (profil Fogra39) avant de téléverser.",
+      "La photo de couverture est recadrée dans le rendu web du catalogue (~230 dpi à 210 mm). Correcte en bureautique, en dessous des 300 dpi d'un offset.",
+    ],
+    voirAussi: { href: "/imprimes/catalogue-a4", label: "Le catalogue 48 pages" },
+  },
+  {
     id: "flyer-a5",
     icon: "Newspaper",
     nom: "Flyer A5 · recto-verso",

@@ -9,6 +9,11 @@
 
 import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+// 🔴 2026-08-24 — la MÊME mesure que le cron, jamais une seconde requête jumelle :
+// deux prédicats qui se ressemblent finissent par diverger, et ce dépôt le paie
+// sans arrêt. Le cron en prend le compte, cette règle en mappe les lignes.
+import { sessionsSansRappelJ7 } from "@/server/qualiopi/notifications/rappel-j7-manquant";
+import { sessionsAvecJourneesSansCreneaux } from "@/server/qualiopi/presence/journees-sans-creneaux";
 import {
   porteUneTraceDePresence,
   sansAucuneTraceDePresence,
@@ -547,6 +552,70 @@ async function regleEmargementAucuneSignature(now: Date): Promise<AlerteCandidat
       `en circulation depuis le ${s.dateDebut.toLocaleDateString("fr-FR")} et PERSONNE n'a signé. ` +
       `Les jetons expirent 48 h après le ${s.dateFin.toLocaleDateString("fr-FR")} : après, ` +
       `l'émargement ne sera plus rattrapable et l'écart devra être consigné (ind. 12).`,
+    cibleType: "TrainingSession" as const,
+    cibleId: s.id,
+  }));
+}
+
+/**
+ * 🔴 2026-08-24, cahier D5 — le rappel J-7 n'a jamais été envoyé.
+ *
+ * La mesure existait, dans le cron ; elle sortait en `console.error`. Un journal
+ * de conteneur n'est lu par personne le lendemain matin, et le rappel J-7 porte
+ * les informations logistiques finales — lieu, horaires, accès. Le certificateur
+ * vérifie que le stagiaire a bien été informé.
+ *
+ * ⚠️ `niveau: "important"` et non `critique` : le geste n'est PLUS posable
+ * (après le début, rappeler n'informe plus personne). C'est un écart à
+ * consigner, pas une urgence à traiter dans l'heure. La doctrine du catalogue
+ * est explicite — réserver `critique` aux manquements rend les alertes
+ * critiques crédibles.
+ */
+/**
+ * 🔴 2026-08-25, cahier D3-4 — une journée déclarée sans ses créneaux.
+ *
+ * Le taux de présence a pour dénominateur les créneaux **existants**, pas les
+ * journées déclarées. Une journée sans créneaux disparaît donc du calcul, et le
+ * taux affiche 100 % sur une session à moitié couverte — sur un chiffre qui
+ * part ensuite sur l'attestation et le certificat de réalisation.
+ *
+ * ⚠️ `niveau: "important"` et non `critique` : le geste EXISTE et il est
+ * immédiat (bouton « Générer les créneaux »). Ce n'est pas un manquement, c'est
+ * une tâche à poser. Réserver `critique` aux manquements rend les alertes
+ * critiques crédibles — doctrine écrite du catalogue.
+ */
+async function regleJourneeSansCreneaux(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await sessionsAvecJourneesSansCreneaux(now);
+  return sessions.map((s) => ({
+    code: "journee_sans_creneaux" as const,
+    niveau: "important" as const,
+    titre: "Journée déclarée sans créneau de présence",
+    message:
+      `Session ${s.numero}${s.titreSession ? ` — ${s.titreSession}` : ""} : ` +
+      `${s.demiJourneesManquantes.length} demi-journée(s) sur ${s.demiJourneesAttendues} ` +
+      `n'ont AUCUN créneau de présence (${s.demiJourneesManquantes.slice(0, 4).join(", ")}` +
+      `${s.demiJourneesManquantes.length > 4 ? "…" : ""}). ` +
+      `Personne ne peut y émarger, et surtout : le taux de présence se calcule sur les ` +
+      `créneaux EXISTANTS — ces demi-journées sont donc absentes du dénominateur, et le ` +
+      `taux affiché est trop élevé. Il part ensuite sur l'attestation et le certificat de ` +
+      `réalisation. Geste : « Générer les créneaux » sur la fiche session.`,
+    cibleType: "TrainingSession" as const,
+    cibleId: s.id,
+  }));
+}
+
+async function regleRappelJ7NonEnvoye(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await sessionsSansRappelJ7(now);
+  return sessions.map((s) => ({
+    code: "rappel_j7_non_envoye" as const,
+    niveau: "important" as const,
+    titre: "Rappel J-7 jamais envoyé",
+    message:
+      `Session ${s.numero}${s.titreSession ? ` — ${s.titreSession}` : ""} : commencée le ` +
+      `${s.dateDebut.toLocaleDateString("fr-FR")} sans qu'aucun rappel J-7 ne soit parti. ` +
+      `Le rappel porte les informations logistiques finales (lieu, horaires, accès) ; ` +
+      `après le début, il n'est plus envoyable. L'écart est à consigner : le certificateur ` +
+      `vérifie que le stagiaire a été informé.`,
     cibleType: "TrainingSession" as const,
     cibleId: s.id,
   }));
@@ -2437,6 +2506,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "session_bloquee_en_cours", fn: regleSessionBloqueeEnCours },
   { nom: "session_sans_dispositif_emargement", fn: regleSessionSansDispositifEmargement },
   { nom: "emargement_aucune_signature", fn: regleEmargementAucuneSignature },
+  { nom: "rappel_j7_non_envoye", fn: regleRappelJ7NonEnvoye },
+  { nom: "journee_sans_creneaux", fn: regleJourneeSansCreneaux },
   { nom: "diaporama_manquant_session", fn: regleDiaporamaManquant },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },

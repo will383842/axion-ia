@@ -3,6 +3,13 @@
 **Date** : 06/05/2026 — soir, post-réécriture Webflow
 **Mode** : audit READ-ONLY
 
+> ⚠️ **2026-08-25 — le critère D8 (« Aucun emoji décoratif ») est CADUQUE.** Will a levé
+> la doctrine anti-emoji du dépôt, console admin comprise (voir l'amendement en fin de
+> `docs/adr/0028-admin-design-system-v1.md`). Les scores D8 ci-dessous restent lisibles
+> comme relevé historique, mais **ils ne notent plus rien** : ne pas les réutiliser comme
+> exigence. La seule règle qui subsiste est qu'un pictogramme ne porte jamais seul une
+> information.
+
 ---
 
 ## 1. Dimensions d'harmonie évaluées

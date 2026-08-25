@@ -60,6 +60,7 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 }));
 
 import { prisma } from "@/lib/prisma";
+import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { genererFactureFormation } from "./facturation-service";
 
 const mockPrisma = prisma as unknown as {
@@ -296,6 +297,69 @@ describe("genererFactureFormation", () => {
     });
     expect(result.factureId).toBe("facture-retry-1");
     expect(mockPrisma.factureFormation.create).toHaveBeenCalledTimes(2);
+  });
+
+  it("🔴 une collision P2002 ne laisse PAS de PDF orphelin au registre", async () => {
+    // 🔴 2026-08-24, cahier D9-2. Le PDF était généré AVANT le `create` de la
+    // facture. Sur collision de numéro, la boucle repartait au tour suivant — et
+    // générait un SECOND document, laissant le premier ORPHELIN au registre des
+    // pièces, portant un numéro de facture qui allait être attribué à une autre.
+    //
+    // Sur une pièce comptable, c'est doublement faux : le registre porte une
+    // pièce qui ne correspond à aucune facture, et son PDF affiche un numéro
+    // qui en désigne une autre.
+    //
+    // 🔑 Le bon patron existait DÉJÀ, écrit et commenté « PDF APRÈS le create
+    // réussi (revue C2) », dans `plan-recurrent.ts` et `facture-libre.ts`. Il
+    // avait simplement été oublié sur les deux jumeaux. C'est la forme
+    // récurrente de ce dépôt.
+    const p2002Error = Object.assign(new Error("Unique constraint"), { code: "P2002" });
+    mockPrisma.factureFormation.create
+      .mockRejectedValueOnce(p2002Error)
+      .mockResolvedValueOnce({ id: "facture-retry-1", numero: "AXI-FACT-2026-002" });
+
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+
+    expect(
+      vi.mocked(generateDocument),
+      "un PDF a été généré par tour de boucle : les tours perdus laissent des " +
+        "pièces orphelines au registre, avec un numéro de facture attribué à une " +
+        "autre facture.",
+    ).toHaveBeenCalledTimes(1);
+  });
+
+  it("🔴 le PDF porte le numéro RÉELLEMENT enregistré, pas celui du tour perdu", async () => {
+    // 🔑 L'autre moitié, et elle compte autant. Générer le PDF une seule fois ne
+    // suffit pas : il faut qu'il porte le numéro que la base a accepté. Sinon on
+    // remet exactement le défaut « le PDF remis au client porte un numéro absent
+    // du registre comptable » que ce fichier documente déjà — facture
+    // introuvable dans les livres, refus au contrôle.
+    const p2002Error = Object.assign(new Error("Unique constraint"), { code: "P2002" });
+    mockPrisma.factureFormation.create
+      .mockRejectedValueOnce(p2002Error)
+      .mockResolvedValueOnce({ id: "facture-retry-1", numero: "AXI-FACT-2026-007" });
+
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+
+    // ⚠️ Ce service passe `buildElement` (une fabrique), pas `element` : il faut
+    // l'INVOQUER pour voir le numéro réellement rendu dans le PDF. Lire une clé
+    // `element` inexistante rendrait `undefined` — et un test qui compare
+    // `undefined` à une valeur attendue rougit pour la mauvaise raison.
+    const appel = vi.mocked(generateDocument).mock.calls[0]?.[0] as
+      { buildElement?: () => { props?: { data?: { numero?: string } } } } | undefined;
+    expect(
+      appel?.buildElement?.().props?.data?.numero,
+      "le PDF porte un numéro différent de celui enregistré en base : la facture " +
+        "remise au client serait introuvable dans les livres.",
+    ).toBe("AXI-FACT-2026-007");
   });
 
   it("propage l'erreur si P2002 se produit MAX_ATTEMPTS fois", async () => {

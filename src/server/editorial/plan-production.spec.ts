@@ -15,6 +15,9 @@ import {
   construireCsvPlan,
   nomFichierPlan,
   avancement,
+  partsDuPost,
+  formaterTags,
+  SANS_RESPONSABLE,
   COLONNES_PLAN,
   type AssetPlan,
 } from "./plan-production";
@@ -26,6 +29,8 @@ function asset(p: Partial<AssetPlan> & { id: string; type: string }): AssetPlan 
     datePost: null,
     heurePost: null,
     titrePost: null,
+    responsable: null,
+    post: null,
     segments: [],
     ...p,
   };
@@ -232,5 +237,213 @@ describe("nomFichierPlan", () => {
     expect(nomFichierPlan("Vidéos courtes", "tout", "csv")).toBe(
       "plan-production-videos-courtes-tout.csv",
     );
+  });
+
+  it("nomme aussi le PDF, celui qu'on imprime", () => {
+    expect(nomFichierPlan("carrousel", "2026-10", "pdf")).toBe(
+      "plan-production-carrousel-2026-10.pdf",
+    );
+  });
+
+  it("🔴 marque la troncature DANS LE NOM — le seul avertissement qu'un CSV porte", () => {
+    // Une ligne de commentaire casserait le tableur ; le nom, lui, survit au
+    // téléchargement, au classement et à la réouverture six mois plus tard.
+    expect(nomFichierPlan("carrousel", "tout", "csv", true)).toBe(
+      "plan-production-carrousel-tout-tronque.csv",
+    );
+    expect(nomFichierPlan("carrousel", "tout", "csv", false)).toBe(
+      "plan-production-carrousel-tout.csv",
+    );
+  });
+});
+
+describe("construireMarkdown — l'avertissement", () => {
+  it("🔴 imprime l'avertissement en tête, avant la première section", () => {
+    const md = construireMarkdown([asset({ id: "a", type: "video" })], {
+      titre: "Plan",
+      periode: "Toutes périodes",
+      avertissement: "Ce plan est TRONQUÉ.",
+    });
+    expect(md).toContain("Ce plan est TRONQUÉ.");
+    // Avant le premier titre de section : un avertissement placé après les
+    // cent pages du plan n'avertit personne.
+    expect(md.indexOf("Ce plan est TRONQUÉ.")).toBeLessThan(md.indexOf("# Vidéos"));
+  });
+
+  it("n'écrit RIEN quand il n'y a rien à signaler", () => {
+    const md = construireMarkdown([asset({ id: "a", type: "video" })], {
+      titre: "Plan",
+      periode: "Toutes périodes",
+    });
+    // Le témoin négatif : sans lui, un avertissement toujours vide passerait.
+    expect(md).not.toContain("⚠️");
+  });
+});
+
+describe("partsDuPost — la copie du post", () => {
+  const post = {
+    accroche: "Trois pièges de l'IA",
+    corps: "Le premier est le plus coûteux.",
+    premierCommentaire: "Le lien est ici.",
+    tags: ["ia", "formation"],
+  };
+
+  it("rend les parts dans l'ordre de lecture", () => {
+    expect(partsDuPost(post).map((p) => p.libelle)).toEqual([
+      "Accroche",
+      "Corps du post",
+      "Premier commentaire",
+      "Tags",
+    ]);
+  });
+
+  it("🔴 ÉCARTE les champs vides au lieu d'imprimer un intitulé suivi de rien", () => {
+    const parts = partsDuPost({ ...post, corps: null, premierCommentaire: "" });
+    expect(parts.map((p) => p.libelle)).toEqual(["Accroche", "Tags"]);
+  });
+
+  it("🔴 traite une chaîne d'ESPACES comme vide", () => {
+    // Un champ « rempli » d'une espace est un champ vide qui ne se voit pas.
+    const parts = partsDuPost({ ...post, accroche: "   \n  ", corps: null, tags: [] });
+    expect(parts.map((p) => p.libelle)).toEqual(["Premier commentaire"]);
+  });
+
+  it("rend une liste VIDE quand l'asset n'est rattaché à aucun post", () => {
+    // Distinct d'un post rattaché mais non rédigé — que l'appelant signale.
+    expect(partsDuPost(null)).toEqual([]);
+  });
+
+  it("préfixe les tags d'un croisillon, une seule fois", () => {
+    expect(partsDuPost(post).at(-1)?.texte).toBe("#ia #formation");
+  });
+});
+
+describe("formaterTags", () => {
+  it("🔴 écarte les tags vides plutôt que d'écrire un croisillon seul", () => {
+    expect(formaterTags(["ia", "", "  ", "formation"])).toBe("#ia #formation");
+  });
+
+  it("rend une chaîne vide sur une liste vide, jamais un croisillon orphelin", () => {
+    expect(formaterTags([])).toBe("");
+  });
+});
+
+describe("construireMarkdown — la copie et le responsable", () => {
+  const avecPost = asset({
+    id: "c1",
+    type: "carrousel",
+    libelle: "Carrousel",
+    titrePost: "Post du 12",
+    responsable: "Williams",
+    post: {
+      accroche: "Trois pièges",
+      corps: "Ligne une\nLigne deux",
+      premierCommentaire: null,
+      tags: ["ia"],
+    },
+  });
+
+  it("🔑 porte le TEXTE du post, pas seulement son titre interne", () => {
+    const md = construireMarkdown([avecPost], { titre: "T", periode: "P" });
+    expect(md).toContain("Le post qui accompagne ce visuel");
+    expect(md).toContain("Trois pièges");
+    expect(md).toContain("Ligne une");
+    expect(md).toContain("#ia");
+  });
+
+  it("🔴 préfixe CHAQUE ligne du corps — sinon la citation se referme à la première", () => {
+    const md = construireMarkdown([avecPost], { titre: "T", periode: "P" });
+    expect(md).toContain("> Ligne une");
+    expect(md).toContain("> Ligne deux");
+  });
+
+  it("nomme le responsable", () => {
+    expect(construireMarkdown([avecPost], { titre: "T", periode: "P" })).toContain(
+      "*Responsable :* Williams",
+    );
+  });
+
+  it("🔴 ÉCRIT « non attribué » au lieu de laisser un blanc", () => {
+    // Un blanc se lit comme un oubli d'impression ; ces mots se lisent comme
+    // une ligne à attribuer.
+    const md = construireMarkdown([asset({ id: "x", type: "image" })], {
+      titre: "T",
+      periode: "P",
+    });
+    expect(md).toContain(`*Responsable :* ${SANS_RESPONSABLE}`);
+  });
+
+  it("🔴 SIGNALE un post rattaché dont la copie est vide", () => {
+    // On s'apprête à fabriquer le visuel d'un texte qui n'existe pas encore.
+    const md = construireMarkdown(
+      [asset({ id: "x", type: "image", titrePost: "Post du 12", post: null })],
+      { titre: "T", periode: "P" },
+    );
+    expect(md).toContain("Aucun texte rédigé pour ce post.");
+  });
+
+  it("ne signale RIEN pour un asset rattaché à aucun post", () => {
+    // Son absence d'échéance le dit déjà ; l'avertir serait du bruit.
+    const md = construireMarkdown([asset({ id: "x", type: "image" })], {
+      titre: "T",
+      periode: "P",
+    });
+    expect(md).not.toContain("Aucun texte rédigé");
+  });
+});
+
+describe("construireCsvPlan — les colonnes de la copie", () => {
+  it("🔴 ajoute les nouvelles colonnes EN FIN, sans décaler les anciennes", () => {
+    // Une colonne insérée au milieu ferait lire les prompts dans la colonne
+    // des statuts à toute feuille de suivi déjà ouverte.
+    expect(COLONNES_PLAN.slice(0, 12)).toEqual([
+      "date_post",
+      "heure_post",
+      "type",
+      "asset",
+      "statut_asset",
+      "rang",
+      "role",
+      "titre",
+      "contenu",
+      "prompt",
+      "fait",
+      "titre_post",
+    ]);
+    expect(COLONNES_PLAN.slice(12)).toEqual([
+      "responsable",
+      "accroche",
+      "corps",
+      "premier_commentaire",
+      "tags",
+    ]);
+  });
+
+  it("porte la copie et le responsable sur chaque ligne de segment", () => {
+    const csv = construireCsvPlan([
+      asset({
+        id: "c1",
+        type: "carrousel",
+        responsable: "Williams",
+        post: {
+          accroche: "Trois pièges",
+          corps: "Le corps",
+          premierCommentaire: "Le lien",
+          tags: ["ia", "formation"],
+        },
+        segments: [
+          { ordre: 1, role: "slide", titre: null, contenu: null, prompt: null, fait: false },
+        ],
+      }),
+    ]);
+    expect(csv).toContain("Williams");
+    expect(csv).toContain("Trois pièges");
+    expect(csv).toContain("#ia #formation");
+  });
+
+  it("laisse les cellules VIDES quand il n'y a pas de post, sans écrire « null »", () => {
+    const csv = construireCsvPlan([asset({ id: "nu", type: "image", libelle: "Nu" })]);
+    expect(csv).not.toContain("null");
+    expect(csv).not.toContain("undefined");
   });
 });

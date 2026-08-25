@@ -16,6 +16,10 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: { findMany: vi.fn() },
+    // 🔴 2026-08-24 — le BPF lit désormais les factures pour rapprocher son CA
+    // déclaré du CA facturé. Sans cette entrée, `computeBpf` plante : c'est le
+    // premier signal, et il est immédiat.
+    factureFormation: { findMany: vi.fn() },
     trainer: { count: vi.fn() },
     bpfDepense: { findMany: vi.fn(), create: vi.fn(), delete: vi.fn() },
     coachingContract: { findMany: vi.fn() },
@@ -42,6 +46,7 @@ import { computeBpf, bpfToCsv, listDepenses, ajouterDepense, type BpfResult } fr
 
 const mockPrisma = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
+  factureFormation: { findMany: ReturnType<typeof vi.fn> };
   trainer: { count: ReturnType<typeof vi.fn> };
   bpfDepense: {
     findMany: ReturnType<typeof vi.fn>;
@@ -62,6 +67,7 @@ function makeSession(overrides: {
   nbParticipantsReels?: number | null;
   montantHtCents?: number;
   financementType?: string | null;
+  interEntreprises?: boolean;
   enrollments?: Array<{ traineeId: string }>;
 }) {
   return {
@@ -71,6 +77,7 @@ function makeSession(overrides: {
     nbParticipantsReels: "nbParticipantsReels" in overrides ? overrides.nbParticipantsReels : 10,
     montantHtCents: overrides.montantHtCents ?? 500000,
     financementType: "financementType" in overrides ? overrides.financementType : "direct",
+    interEntreprises: overrides.interEntreprises ?? false,
     enrollments: overrides.enrollments ?? [{ traineeId: "trainee-1" }],
   };
 }
@@ -83,6 +90,7 @@ describe("computeBpf", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockPrisma.trainingSession.findMany.mockResolvedValue([]);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([]);
     mockPrisma.trainer.count.mockResolvedValue(0);
     mockPrisma.bpfDepense.findMany.mockResolvedValue([]);
     mockPrisma.coachingContract.findMany.mockResolvedValue([]);
@@ -96,6 +104,137 @@ describe("computeBpf", () => {
     expect(result.nbStagiairesDistincts).toBe(0);
     expect(result.nbHeuresStagiaires).toBe(0);
     expect(result.caTotalHtCents).toBe(0);
+  });
+
+  // ── Rapprochement BPF ↔ factures (2026-08-24, cahier D9) ─────────────────
+  //
+  // 🔴 Le module BPF ne lisait AUCUNE facture : il déclarait
+  // `Σ session.montantHtCents` pendant que le FEC déclarait
+  // `Σ facture.montantHtCents`, et rien ne rapprochait les deux.
+  //
+  // 🔑 Le vrai risque de ce rapprochement n'est pas de rater un écart : c'est
+  // d'en INVENTER. Chacun des cas ci-dessous produit un écart parfaitement
+  // légitime, et chacun a son test. Un écart qui crie sur des dossiers sains
+  // est pire que pas d'écart du tout : on apprend à l'ignorer, et il cesse de
+  // protéger le jour où il compte.
+
+  it("🔴 signale une session déclarée au-delà de ce qui a été facturé", async () => {
+    // Le cas utile : 5 000 € déclarés au BPF, 3 000 € facturés.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ montantHtCents: 500000 }),
+    ]);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { sessionId: "session-uuid-1", statut: "emise", montantHtCents: 300000 },
+    ]);
+
+    const r = await computeBpf(2026);
+
+    expect(
+      r.sessionsEcartFacturation,
+      "le BPF ne rapproche plus son CA déclaré du CA facturé : un contrôle croisé " +
+        "DREETS/DGFiP verrait un écart que l'outil ne sait pas expliquer.",
+    ).toHaveLength(1);
+    expect(r.sessionsEcartFacturation[0]?.ecartHtCents).toBe(200000);
+    expect(r.ecartFacturationTotalHtCents).toBe(200000);
+  });
+
+  it("ne signale RIEN quand le facturé correspond", async () => {
+    // 🔑 Contre-témoin de base. Sans lui, une implantation qui listerait TOUTES
+    // les sessions passerait le test précédent.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ montantHtCents: 500000 }),
+    ]);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { sessionId: "session-uuid-1", statut: "payee", montantHtCents: 500000 },
+    ]);
+
+    const r = await computeBpf(2026);
+    expect(r.sessionsEcartFacturation, "un dossier sain est listé comme un écart").toEqual([]);
+  });
+
+  it("① une session INTER n'est jamais un écart — son montant est un prix de SIÈGE", async () => {
+    // En inter, la facturation se fait PAR INSCRIPTION : `montantHtCents` est le
+    // prix d'un siège, pas un total. Comparer les deux ferait crier +300 % sur
+    // chaque session inter, systématiquement et à tort.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ montantHtCents: 100000, interEntreprises: true }),
+    ]);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { sessionId: "session-uuid-1", statut: "emise", montantHtCents: 300000 },
+    ]);
+
+    const r = await computeBpf(2026);
+    expect(
+      r.sessionsEcartFacturation,
+      "une session INTER est comptée comme un écart : l'outil crierait sur toutes " +
+        "les sessions inter, où le montant est un prix de siège et non un total.",
+    ).toEqual([]);
+  });
+
+  it("③ une session CPF sans facture n'est pas un écart", async () => {
+    // La Caisse des Dépôts règle l'organisme APRÈS service fait, sur pièces
+    // déposées dans EDOF. Le titulaire ne verse rien : une session CPF réalisée
+    // peut légitimement n'avoir aucune facture dans l'outil.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ montantHtCents: 500000, financementType: "cpf" }),
+    ]);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([]);
+
+    const r = await computeBpf(2026);
+    expect(
+      r.sessionsEcartFacturation,
+      "une session CPF sans facture est signalée : c'est pourtant le fonctionnement " +
+        "normal du dispositif.",
+    ).toEqual([]);
+  });
+
+  it("② une session gratuite n'entre pas dans la liste", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([makeSession({ montantHtCents: 0 })]);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([]);
+
+    const r = await computeBpf(2026);
+    expect(r.sessionsEcartFacturation, "une session gratuite figure comme anomalie").toEqual([]);
+  });
+
+  it("une facture BROUILLON ne facture rien, une facture EN RETARD si", async () => {
+    // 🔑 Le SSOT `statuts-facture.ts`, et la doctrine de `previsionnel/calcul.ts` :
+    // un brouillon ou une facture annulée ne facture pas ; une facture en retard
+    // ou partiellement payée SI — sans quoi la même session serait comptée deux
+    // fois.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      makeSession({ montantHtCents: 500000 }),
+    ]);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { sessionId: "session-uuid-1", statut: "brouillon", montantHtCents: 500000 },
+    ]);
+    expect(
+      (await computeBpf(2026)).sessionsEcartFacturation,
+      "un BROUILLON est compté comme facturé : la session passerait pour réglée.",
+    ).toHaveLength(1);
+
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { sessionId: "session-uuid-1", statut: "en_retard", montantHtCents: 500000 },
+    ]);
+    expect(
+      (await computeBpf(2026)).sessionsEcartFacturation,
+      "une facture EN RETARD n'est pas comptée comme facturée : la session serait " +
+        "signalée alors qu'elle a bien été facturée, seulement pas encore payée.",
+    ).toEqual([]);
+  });
+
+  it("les AVOIRS et les factures d'historique sont écartés à la requête", async () => {
+    // Un avoir porte des montants NÉGATIFS : l'additionner fabriquerait un écart
+    // de toutes pièces. Une reprise d'historique est hors séquence AXI-FACT.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([makeSession({})]);
+    await computeBpf(2026);
+
+    const where = (
+      mockPrisma.factureFormation.findMany.mock.calls[0]?.[0] as {
+        where: Record<string, unknown>;
+      }
+    ).where;
+    expect(where["avoirDeId"], "les avoirs entrent dans le facturé").toBeNull();
+    expect(where["estImportee"], "les reprises d'historique entrent dans le facturé").toBe(false);
   });
 
   it("retourne l'identité de l'organisme", async () => {
@@ -374,6 +513,8 @@ describe("bpfToCsv", () => {
     nbStagiairesDistincts: 87,
     nbHeuresStagiaires: 609,
     sessionsNonChiffrables: [],
+    sessionsEcartFacturation: [],
+    ecartFacturationTotalHtCents: 0,
     caTotalHtCents: 4500000,
     caParFinanceur: {
       opco: 1500000,

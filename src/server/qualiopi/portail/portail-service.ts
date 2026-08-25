@@ -335,19 +335,55 @@ export async function verifierToken(token: string): Promise<{ traineeId: string 
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Révoque un accès portail par son id.
+ * Révoque l'accès portail d'un stagiaire — TOUS ses accès vivants.
+ *
+ * ## Pourquoi tous, et pas seulement celui qu'on a sous les yeux
+ *
+ * 🔴 2026-08-25, cahier D4-4 — cette fonction ne révoquait QUE la ligne visée.
+ * Or `creerAcces` n'invalide pas les précédents : un stagiaire peut porter
+ * plusieurs accès vivants, et l'écran d'administration n'en montre **qu'un**
+ * (`take: 1`). Cliquer « Révoquer l'accès » coupait donc le lien affiché et
+ * laissait vivre les plus anciens — jusqu'à 90 jours.
+ *
+ * Le geste ne faisait pas ce qu'il annonce. C'est la forme même d'une
+ * protection décrite mais absente : on croit avoir coupé, on n'a pas coupé.
+ *
+ * 🔑 **La doctrine existait déjà dans ce dépôt**, écrite et motivée pour
+ * l'effacement RGPD (`rgpd-service.ts`) :
+ *
+ * > « révoquer TOUS les accès portail du stagiaire […] Sans cela un lien
+ * > portail encore valide (token 90 j) resterait exploitable et donnerait accès
+ * > à l'espace d'un stagiaire pourtant "supprimé". »
+ *
+ * Le raisonnement vaut mot pour mot ici. Les deux chemins convergent désormais.
+ *
+ * ⚠️ Le sens du risque tranche : révoquer trop se rattrape en renvoyant un lien ;
+ * révoquer trop peu ne se rattrape pas — quelqu'un garde un accès qu'on croit
+ * fermé. C'est la même logique que le jalon `jamais` par défaut du portail.
  *
  * Stub-aware : lève si DATABASE_URL contient "stub.invalid".
+ *
+ * @param id Accès visé — sert à retrouver le stagiaire concerné.
+ * @returns Le nombre d'accès effectivement révoqués.
  */
-export async function revoquerAcces(id: string): Promise<void> {
+export async function revoquerAcces(id: string): Promise<number> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     throw new Error("revoquerAcces: stub DB — non disponible au build");
   }
 
-  await prisma.portailAcces.update({
+  const acces = await prisma.portailAcces.findUnique({
     where: { id },
+    select: { traineeId: true },
+  });
+  // Accès déjà supprimé, ou id inconnu : rien à couper, et surtout pas de quoi
+  // lever — le geste est idempotent côté écran.
+  if (acces === null) return 0;
+
+  const { count } = await prisma.portailAcces.updateMany({
+    where: { traineeId: acces.traineeId, revoked: false },
     data: { revoked: true },
   });
+  return count;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

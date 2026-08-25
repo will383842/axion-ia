@@ -180,6 +180,18 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/espace-formateur/page.tsx",
   "src/app/api/formateur/lettre-mission/[id]/route.ts",
   "src/components/portail/DemanderAccesForm.tsx",
+  // 🔴 2026-08-24, cahier D3-3 — la phrase d'attestation que le stagiaire COCHE
+  // était codée en dur dans ce composant, hors de `qualiopi/emargement/mentions`.
+  // Elle échappait donc à la règle de versionnement que ce module impose : on
+  // pouvait la réécrire sans incrémenter `mentionVersion`, et les empreintes
+  // déjà scellées auraient pointé vers un texte qui n'existe plus.
+  //
+  // Le composant consomme donc désormais la SSOT des mentions. C'est un
+  // élargissement ASSUMÉ, et le plus étroit possible : un seul libellé, depuis
+  // un module de logique pure (aucun import Prisma, aucune horloge). Son jumeau
+  // de l'espace formateur fait de même et vit déjà en zone autorisée
+  // (`components/espace-formateur/Emargement*`).
+  "src/components/portail/EmargementForm.tsx",
   "src/components/portail/EnqueteEntrepriseForm.tsx",
   "src/server/formateur/echeances-formateur.ts",
   "src/server/formateur/etapes-formateur.ts",
@@ -188,6 +200,19 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/features/contract/admin-actions.ts",
   "src/features/invoice/admin-actions.ts",
   "src/lib/email/templates/_layout.tsx",
+  // ── Plan de production éditorial en PDF : n'emprunte au domaine que la
+  //    PLOMBERIE du rendu — jetons de marque, polices, nettoyage d'espaces,
+  //    extraction du texte pour les tests. Aucune lecture métier Qualiopi :
+  //    ni session, ni stagiaire, ni indicateur. Ces utilitaires sont logés
+  //    dans le domaine sans lui appartenir, comme `revues/sans-commentaires`
+  //    plus bas.
+  //
+  //    ⚠️ Même arbitrage que là-bas : au troisième emprunteur de la plomberie
+  //    PDF, la DÉPLACER vers une zone neutre plutôt que d'allonger cette
+  //    liste. Trois exceptions pour une même plomberie ne sont plus des
+  //    exceptions — c'est un module mal rangé.
+  "src/server/editorial/plan-production-pdf.spec.tsx",
+  "src/server/editorial/plan-production-pdf.tsx",
   // ── Workers & santé : rétention de preuve d'envoi, alertes.
   "src/server/email/health.ts",
   "src/server/queue/workers/retention-purge-worker.ts",

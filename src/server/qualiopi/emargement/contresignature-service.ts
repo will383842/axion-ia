@@ -36,7 +36,11 @@ import {
   type TupleContresignatureV1,
 } from "./contresignature-hash";
 import { demiJourneeCommencee } from "./creneaux-signables";
-import { MENTION_VERSION } from "./mentions";
+// 🔴 2026-08-24 — la contresignature scellait `MENTION_VERSION`, la version du
+//    texte du STAGIAIRE, alors que le formateur lit un texte différent. Deux
+//    textes ne peuvent pas partager une version : `mention_version` sert à dire
+//    CE QUI A ÉTÉ SIGNÉ.
+import { MENTION_VERSION_CONTRESIGNATURE } from "./mentions";
 import { storeSignatureImage, supprimerImageSignature } from "./storage";
 
 /** Nombre de reprises sur conflit de chaîne. Au-delà, ce n'est plus une course. */
@@ -280,7 +284,7 @@ export async function contresignerDemiJournee(
     signeAtIso: maintenant.toISOString(),
     ipHash: input.ipHash ?? null,
     userAgentSha256: input.userAgentSha256 ?? null,
-    mentionVersion: MENTION_VERSION,
+    mentionVersion: MENTION_VERSION_CONTRESIGNATURE,
   };
 
   for (let essai = 0; essai < MAX_REPRISES_CHAINE; essai++) {
@@ -323,7 +327,7 @@ export async function contresignerDemiJournee(
             prevHash,
             selfHash,
             hashVersion: HASH_VERSION_CONTRESIGNATURE,
-            mentionVersion: MENTION_VERSION,
+            mentionVersion: MENTION_VERSION_CONTRESIGNATURE,
           },
           select: { id: true, selfHash: true },
         });

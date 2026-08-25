@@ -2,7 +2,6 @@
  * Qualiopi — Server Actions Portail stagiaire + RGPD (AGENT B — T14).
  *
  * Actions PORTAIL (authentification via cookie, PAS requireAdminWrite) :
- *   accederPortailAction          : vérifie le token URL → pose le cookie → { ok: true }
  *   quitterPortailAction          : supprime le cookie (déconnexion)
  *   soumettreSatisfactionPortailAction : réutilise soumettreReponses T10 via cookie
  *   declarerHandicapAction        : set situationHandicap + handicapDetailsChiffre (encryptPii)
@@ -39,11 +38,7 @@ import {
 } from "@/server/qualiopi/portail/portail-service";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { headers } from "next/headers";
-import {
-  setPortailCookie,
-  getPortailToken,
-  clearPortailCookie,
-} from "@/server/qualiopi/portail/cookie";
+import { getPortailToken, clearPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { encryptPii, decryptPii } from "@/lib/pii-crypto";
@@ -57,10 +52,6 @@ type ActionResult<T> = { data: T } | { error: string };
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
 // ─────────────────────────────────────────────────────────────────────────────
-
-const accederPortailSchema = z.object({
-  token: z.string().length(64),
-});
 
 const demanderAccesSchema = z.object({
   email: z.string().trim().email().max(254),
@@ -108,25 +99,23 @@ async function resolveTraineeIdFromCookie(): Promise<{ traineeId: string } | { e
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PORTAIL — accederPortailAction
+// 🔴 2026-08-25 — `accederPortailAction` A ÉTÉ RETIRÉE. Ne pas la réintroduire.
+//
+// Elle échangeait un token d'accès portail contre le cookie de session, comme
+// la route `app/[locale]/portail/acces/[token]/route.ts` — mais SANS son
+// rate-limit anti-brute-force (10 tentatives / 60 s par IP).
+//
+// Ce fichier porte `"use server"` : chacune de ses fonctions exportées est un
+// ENDPOINT HTTP. C'était donc un second chemin d'entrée au portail, dépourvu de
+// la seule protection qui garde le premier — et **sans aucun appelant de
+// production** : trouvée par le balayage des exports sans appelant.
+//
+// ⚠️ Le correctif n'a PAS été d'y recopier le rate-limit : un prédicat recopié
+// diverge toujours, et ce dépôt l'a payé quatre fois. Il n'y a plus qu'un seul
+// chemin vers le cookie de session, et il est protégé.
+//
+// Verrouillé par `__tests__/un-seul-chemin-vers-le-cookie-portail.spec.ts`.
 // ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Vérifie un token URL portail, pose le cookie de session et retourne { ok: true }.
- * La redirection vers /portail/mon-espace est effectuée côté page client.
- */
-export async function accederPortailAction(input: {
-  token: string;
-}): Promise<ActionResult<{ ok: boolean }>> {
-  const parsed = accederPortailSchema.safeParse(input);
-  if (!parsed.success) return { error: "Lien invalide" };
-
-  const result = await verifierToken(parsed.data.token);
-  if (!result) return { error: "Lien invalide, expiré ou révoqué" };
-
-  await setPortailCookie(parsed.data.token);
-  return { data: { ok: true } };
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PORTAIL — demanderAccesPortailAction (self-service, public, sans cookie)
@@ -650,13 +639,18 @@ export async function revoquerPortailAccesAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;
 
-  await revoquerAcces(id);
+  // 🔴 2026-08-25 — révoque TOUS les accès vivants du stagiaire, pas seulement
+  // celui affiché : `creerAcces` n'invalide pas les précédents, et l'écran n'en
+  // montre qu'un. Le geste ne coupait donc pas ce qu'il annonçait.
+  const nbRevoques = await revoquerAcces(id);
 
   await logQualiopiActivity({
     action: "qualiopi.portail.revoquer_acces",
     targetType: "PortailAcces",
     targetId: id,
-    changes: { revoked: true },
+    // Le COMPTE, pas un booléen : un journal qui écrit « revoked: true » sans
+    // dire combien laisse croire qu'un seul accès existait.
+    changes: { revoked: true, nbAccesRevoques: nbRevoques },
     session,
   });
 

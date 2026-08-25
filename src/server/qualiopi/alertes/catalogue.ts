@@ -432,6 +432,36 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "administratif",
   },
+  /**
+   * 🔴 2026-08-24, cahier D5 — la mesure existait, elle sortait en
+   * `console.error`. Un journal de conteneur n'est lu par personne le lendemain.
+   */
+  rappel_j7_non_envoye: {
+    niveau: "important",
+    titre: "Rappel J-7 jamais envoyé",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "IRRÉVERSIBLE — la condition (`rappelJ7EnvoyeAt` nulle sur une session DÉJÀ " +
+      "commencée) ne disparaîtra jamais : le rappel n'est plus envoyable après le " +
+      "début. Une résolution automatique attendrait un événement qui ne peut pas " +
+      "se produire. L'écart s'acquitte à la main, une fois consigné.",
+    guichet: "administratif",
+  },
+  /**
+   * 🔴 2026-08-25, cahier D3-4 — le taux de présence se calcule sur les créneaux
+   * EXISTANTS. Une journée déclarée sans créneaux disparaît du dénominateur, et
+   * le taux affiche 100 % sur une session à moitié couverte — chiffre qui part
+   * ensuite sur l'attestation et le certificat de réalisation.
+   */
+  journee_sans_creneaux: {
+    niveau: "important",
+    titre: "Journée déclarée sans créneau de présence",
+    // Le geste existe et il est immédiat : « Générer les créneaux ». Dès qu'il
+    // est posé, la règle cesse de produire la candidate et l'alerte se referme
+    // d'elle-même — c'est exactement le cas d'une résolution automatique.
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
 
   // ── Formateur ──────────────────────────────────────────────────────────────
   session_sans_formateur: {

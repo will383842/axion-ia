@@ -24,7 +24,10 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
 import { computeVentilationDossier, computeForfait } from "./opco-calcul";
-import { resoudreDestinataireFacture } from "./destinataire-facture";
+import {
+  resoudreDestinataireFacture,
+  destinataireEstPersonnePhysique,
+} from "./destinataire-facture";
 import { periodePrestationSession } from "./periode-prestation";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -293,37 +296,6 @@ export async function genererFactureFormation(
       }),
     );
 
-    // Construction FactureData (React.createElement, pas de JSX en .ts)
-    // Date d'exécution réelle, lue sur la session — sans elle le gabarit
-    // retombe sur la date d'émission et la facture contredit la convention
-    // (cf. `periode-prestation.ts`).
-    const periodePrestation = periodePrestationSession(session);
-
-    const factureData: FactureData = {
-      numero,
-      dateEmission: formatDate(now),
-      dateEcheance: formatDate(echeance),
-      ...(periodePrestation !== undefined ? { periodePrestation } : {}),
-      identite,
-      regimeTva,
-      tauxTvaStandardPercent: tauxStandard,
-      client: {
-        raisonSociale: destinataireNom,
-        ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
-        ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
-      },
-      lignes,
-      ...(session.opcoSubrogation && session.numeroDossierOpco !== null
-        ? {
-            subrogationOpco: {
-              nomOpco: destinataireNom,
-              numeroDossier: session.numeroDossierOpco,
-            },
-          }
-        : {}),
-      ...(rib !== null ? { rib } : {}),
-    };
-
     // 🔴 #7 — Le PDF affiche le NUMÉRO DE FACTURE (`factureData.numero`, celui
     // enregistré dans `factureFormation` et exporté au FEC/compta), et NON le
     // numéro DocumentGenere alloué indépendamment par `generateDocument`. Avant,
@@ -333,19 +305,6 @@ export async function genererFactureFormation(
     // (Le DocumentGenere garde son propre numéro pour le classement interne R2 —
     // artefact de stockage, sans valeur comptable ; unification complète = chantier
     // à part, l'historique des deux séquences se chevauche.)
-    let docResult: { id: string } | null = null;
-    try {
-      docResult = await generateDocument({
-        type: "facture",
-        identite,
-        buildElement: () => React.createElement(FacturePdf, { data: factureData }),
-        refs: { sessionId: input.sessionId },
-      });
-    } catch {
-      // Fail-soft : la facture est créée sans PDF si le renderer échoue
-    }
-    documentId = docResult?.id ?? null;
-
     try {
       const facture = await prisma.factureFormation.create({
         data: {
@@ -373,7 +332,6 @@ export async function genererFactureFormation(
           statut: "emise",
           emiseAt: now,
           echeanceAt: echeance,
-          ...(documentId !== null ? { documentId } : {}),
         },
         select: { id: true, numero: true },
       });
@@ -394,6 +352,76 @@ export async function genererFactureFormation(
     throw new Error(
       `[genererFactureFormation] Impossible d'allouer un numéro unique après ${MAX_ATTEMPTS} tentatives.`,
     );
+  }
+
+  // 🔴 2026-08-24, cahier D9-2 — PDF APRÈS le create réussi (revue C2).
+  //
+  // Il était généré AVANT, à l'intérieur de la boucle de reprise. Sur collision
+  // de numéro, le tour suivant en générait un SECOND, laissant le premier
+  // ORPHELIN au registre des pièces — avec un numéro de facture qui allait être
+  // attribué à une AUTRE facture. Sur une pièce comptable, c'est doublement
+  // faux : le registre porte une pièce qui ne correspond à aucune facture, et
+  // son PDF affiche le numéro d'une autre.
+  //
+  // 🔑 Le patron correct existait déjà, écrit et commenté, dans
+  // `plan-recurrent.ts` et `facture-libre.ts`. Il avait été oublié ici et dans
+  // `facturation-1to1.ts`.
+  //
+  // Le PDF porte `factureCreee.numero` — le numéro que la base a ACCEPTÉ, jamais
+  // celui d'un tour perdu.
+  // Construction FactureData (React.createElement, pas de JSX en .ts)
+  // Date d'exécution réelle, lue sur la session — sans elle le gabarit
+  // retombe sur la date d'émission et la facture contredit la convention
+  // (cf. `periode-prestation.ts`).
+  const periodePrestation = periodePrestationSession(session);
+
+  const factureData: FactureData = {
+    // Le numéro que la base a ACCEPTÉ, jamais celui d'un tour de reprise perdu.
+    numero: factureCreee.numero,
+    dateEmission: formatDate(now),
+    dateEcheance: formatDate(echeance),
+    ...(periodePrestation !== undefined ? { periodePrestation } : {}),
+    identite,
+    regimeTva,
+    tauxTvaStandardPercent: tauxStandard,
+    client: {
+      // 🔴 2026-08-25, cahier D4-3 — LE JUMEAU. `financements.ts` est l'autre
+      // emetteur de facture, et il recevait le meme correctif : sans ce champ,
+      // les trois mentions du Code de commerce ENTRE PROFESSIONNELS partent a un
+      // particulier. Une regle appliquee a un site et oubliee sur son jumeau est
+      // le motif dominant de ce depot — on le ferme ici en meme temps.
+      estPersonnePhysique: destinataireEstPersonnePhysique(destinataireReel, session.client),
+      raisonSociale: destinataireNom,
+      ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
+      ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
+    },
+    lignes,
+    ...(session.opcoSubrogation && session.numeroDossierOpco !== null
+      ? {
+          subrogationOpco: {
+            nomOpco: destinataireNom,
+            numeroDossier: session.numeroDossierOpco,
+          },
+        }
+      : {}),
+    ...(rib !== null ? { rib } : {}),
+  };
+
+  try {
+    const docResult = await generateDocument({
+      type: "facture",
+      identite,
+      buildElement: () => React.createElement(FacturePdf, { data: factureData }),
+      refs: { sessionId: input.sessionId },
+    });
+    documentId = docResult.id;
+    await prisma.factureFormation.update({
+      where: { id: factureCreee.id },
+      data: { documentId },
+    });
+  } catch {
+    // Fail-soft assumé : la facture reste ÉMISE sans PDF si le renderer échoue.
+    // Une facture au registre sans PDF se régénère ; une facture perdue, non.
   }
 
   return {

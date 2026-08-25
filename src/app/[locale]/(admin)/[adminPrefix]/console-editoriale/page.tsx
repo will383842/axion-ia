@@ -22,6 +22,7 @@ import {
   AdminButton,
   AdminBadge,
 } from "@/components/admin/ui";
+import { TYPES_PLAN, LIBELLE_TYPE_ASSET, type TypePlan } from "@/server/editorial/plan-production";
 import { chargerResumeConsole } from "@/server/editorial/queries";
 import { publicationsSansAssetPret, listerIdees } from "@/server/editorial/publication-queries";
 import { PremierLancement } from "./_composants/PremierLancement";
@@ -32,13 +33,35 @@ interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
 }
 
-/** Les journées de production qu'on peut isoler d'un clic. */
-const PLANS = [
-  { cle: "video", libelle: "Vidéos" },
-  { cle: "carrousel", libelle: "Carrousels" },
-  { cle: "image", libelle: "Images" },
-  { cle: "photo", libelle: "Photos" },
-] as const;
+/**
+ * Libellés courts, propres au BOUTON — le référentiel dit « Photos de
+ * Williams », ce qui est juste en tête de section mais trop long dans une
+ * rangée de boutons.
+ *
+ * `Partial` volontaire : un type sans entrée ici retombe sur le libellé du
+ * référentiel. C'est ce qui rend l'oubli impossible plutôt qu'improbable.
+ */
+const LIBELLE_BOUTON: Partial<Record<TypePlan, string>> = {
+  photo: "Photos",
+};
+
+/**
+ * Les types offerts au téléchargement, un bouton chacun.
+ *
+ * 🔴 DÉRIVÉ de `TYPES_PLAN`, jamais listé à la main. La liste écrite en dur
+ * n'en portait que quatre sur six : les assets `audio` et `document`
+ * n'étaient joignables que par « Tout », donc invisibles à qui filtrait par
+ * type. Un asset qu'aucun bouton ne sort est un travail que le plan ne
+ * montre pas.
+ *
+ * Une liste en dur qui ne dérive de rien vieillit mal — le jour où un
+ * septième type entre au référentiel, celle-ci le suit sans que personne
+ * ait à y penser.
+ */
+const PLANS = TYPES_PLAN.map((cle) => ({
+  cle,
+  libelle: LIBELLE_BOUTON[cle] ?? LIBELLE_TYPE_ASSET[cle] ?? cle,
+}));
 
 const MOIS = [
   "janvier",
@@ -296,21 +319,55 @@ export default async function ConsoleEditorialePage({ params }: PageProps) {
             */}
             Groupé par type et trié par échéance, avec le script, les prompts et les slides. Le
             Markdown est la feuille de route qu&apos;on ouvre à côté de l&apos;outil de fabrication
-            ; le CSV porte une ligne par segment, pour un tableur de suivi. Par défaut, seuls les
-            assets non terminés y figurent.
+            ; le PDF est celle qu&apos;on imprime et qu&apos;on coche au stylo ; le CSV porte une
+            ligne par segment, pour un tableur de suivi. Par défaut, seuls les assets non terminés y
+            figurent.
           </p>
+          {/*
+            Chaque type porte SES DEUX formats côte à côte. Un seul bouton par
+            type obligeait à retélécharger un fichier pour changer de format,
+            et le PDF — celui qu'on emporte à l'impression — n'existait nulle
+            part. Dans le PDF, chaque type commence sur une page neuve : la
+            plage « les carrousels » s'imprime seule.
+          */}
           <div className="flex flex-wrap gap-2">
             {PLANS.map((p) => (
-              <a
-                key={`plan-${p.cle}`}
-                href={`${base}/export?type=plan&asset=${p.cle}&format=md`}
-                className="admin-button-secondary admin-button-sm"
-              >
-                {p.libelle}
-              </a>
+              // 🔴 Deux boutons VOISINS, pas un pavé accolé.
+              //
+              // La première version les fusionnait avec `rounded-r-none` /
+              // `rounded-l-none` et un `-ml-px`. Ces trois utilitaires ne
+              // peignaient RIEN : `.admin-button-secondary` vit hors couche et
+              // bat `utilities`. Les boutons n'ont jamais été accolés — le
+              // code décrivait une jonction que le rendu n'a jamais eue, et
+              // seule la garde `admin-design-tokens` l'a vu.
+              //
+              // Les fusionner pour de bon demanderait un modificateur dans
+              // `admin.css`. Deux boutons dans le même groupe se lisent aussi
+              // bien, et n'ajoutent aucune surface au système de design.
+              <span key={`plan-${p.cle}`} className="inline-flex gap-1">
+                <a
+                  href={`${base}/export?type=plan&asset=${p.cle}&format=md`}
+                  className="admin-button-secondary admin-button-sm"
+                >
+                  {p.libelle}
+                </a>
+                <a
+                  href={`${base}/export?type=plan&asset=${p.cle}&format=pdf`}
+                  aria-label={`${p.libelle} — PDF à imprimer`}
+                  className="admin-button-secondary admin-button-sm"
+                >
+                  PDF
+                </a>
+              </span>
             ))}
             <a href={`${base}/export?type=plan&format=md`} className="admin-button admin-button-sm">
               Tout — feuille de route
+            </a>
+            <a
+              href={`${base}/export?type=plan&format=pdf`}
+              className="admin-button-secondary admin-button-sm"
+            >
+              Tout — PDF à imprimer
             </a>
             <a
               href={`${base}/export?type=plan&format=csv`}
