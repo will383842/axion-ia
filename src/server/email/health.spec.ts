@@ -122,13 +122,49 @@ describe("verifierSanteEmails — robustesse", () => {
     expect(notifyMock).toHaveBeenCalledTimes(1);
   });
 
-  it("une base illisible ne fait pas tomber le cron qui porte la surveillance", async () => {
+  it("une base illisible ne fait pas tomber le cron — mais ne se tait plus", async () => {
+    // 🔴 2026-08-25 — CE TEST VERROUILLAIT LE DÉFAUT QU'IL PRÉTENDAIT COUVRIR.
+    //
+    // Son TITRE est juste : une surveillance qui casse le cron qui la porte
+    // ferait taire tout ce que ce cron surveille par ailleurs. Le *fail-soft*
+    // est la bonne décision, et il reste.
+    //
+    // Mais son ASSERTION exigeait `alertesLevees: []` — c'est-à-dire le
+    // SILENCE. Or le rendu `{ 0, 0, [] }` est **exactement** celui d'une chaîne
+    // en parfait état : aucun consommateur ne pouvait distinguer « rien ne va
+    // mal » de « je n'ai rien pu regarder ». Le test photographiait ce que le
+    // code FAISAIT, pas ce qu'il DEVAIT faire — et lui donnait par là
+    // l'apparence d'une décision réfléchie.
+    //
+    // 🔑 Ne pas lever d'exception n'oblige pas à rendre un résultat rassurant.
+    // Ce qui est verrouillé désormais : la promesse RÉSOUT (le cron survit) ET
+    // l'impossibilité de mesurer est DITE.
     countMock.mockRejectedValueOnce(new Error("connexion perdue"));
-    await expect(verifierSanteEmails()).resolves.toEqual({
-      echecsRecents: 0,
-      bloquesEnFile: 0,
-      alertesLevees: [],
-    });
+
+    const r = await verifierSanteEmails();
+
+    expect(r.mesureIndisponible, "l'impossibilité de mesurer n'est pas signalée").toBe(true);
+    expect(
+      r.alertesLevees,
+      "une base illisible reste silencieuse : l'absence d'alerte se lira comme " +
+        "« la chaîne va bien »",
+    ).toContain("emails_sante_non_mesurable");
+    // Les compteurs ne veulent rien dire dans ce cas — on vérifie seulement
+    // qu'ils n'inventent pas un chiffre.
+    expect(r.echecsRecents).toBe(0);
+    expect(r.bloquesEnFile).toBe(0);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : une mesure RÉUSSIE ne lève jamais le drapeau d'indisponibilité", () => {
+    // Sans ceci, on satisferait le test précédent en levant le drapeau toujours
+    // — et « je n'ai rien pu regarder » deviendrait le rendu normal, donc du
+    // bruit qu'on apprendrait à ignorer.
+    return (async () => {
+      compteurs(0, 0);
+      const r = await verifierSanteEmails();
+      expect(r.mesureIndisponible).toBe(false);
+      expect(r.alertesLevees).toEqual([]);
+    })();
   });
 
   it("reste muette au build (base stub)", async () => {
