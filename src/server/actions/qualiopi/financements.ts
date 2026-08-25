@@ -51,6 +51,7 @@ import {
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import {
   resoudreDestinataireFacture,
+  destinataireEstPersonnePhysique,
   CLIENT_FACTURABLE_SELECT,
 } from "@/server/qualiopi/financements/destinataire-facture";
 import { DELAI_PAIEMENT_DEFAUT_JOURS } from "@/server/qualiopi/financements/conditions-client";
@@ -982,6 +983,13 @@ export async function genererFacturePdfAction(input: {
       emiseAt: true,
       echeanceAt: true,
       sessionId: true,
+      // 🔴 2026-08-25, cahier D4-3 — la REGENERATION doit rendre la meme piece
+      // que l'emission. Sans ces deux champs, un PDF regenere reimprimerait les
+      // trois mentions du Code de commerce ENTRE PROFESSIONNELS sur la facture
+      // d'un particulier, alors que l'emission ne les met plus. Deux rendus
+      // differents pour la meme facture, c'est pire que le defaut d'origine.
+      destinataire: true,
+      session: { select: { client: { select: { type: true } } } },
     },
   });
   if (!facture) return { error: "Facture introuvable" };
@@ -1050,6 +1058,14 @@ export async function genererFacturePdfAction(input: {
       ? { refClient: facture.refClient }
       : {}),
     client: {
+      // 🔴 2026-08-25, cahier D4-3 — SANS ce champ, les trois mentions du Code
+      // de commerce ENTRE PROFESSIONNELS partaient a un particulier. Le type
+      // etait deja selectionne cote serveur : il manquait le branchement.
+      // Derive au SSOT, jamais recopie ici.
+      estPersonnePhysique: destinataireEstPersonnePhysique(
+        facture.destinataire,
+        facture.session?.client ?? null,
+      ),
       raisonSociale: facture.destinataireNom,
       ...(facture.destinataireSiret !== null && facture.destinataireSiret !== undefined
         ? { siret: facture.destinataireSiret }
