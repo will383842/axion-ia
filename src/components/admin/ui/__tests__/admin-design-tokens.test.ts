@@ -309,7 +309,7 @@ describe("système de design de la console admin", () => {
     // qui corrigent chacune une combinaison inerte passent au vert séparément,
     // et rendent `main` rouge une fois fusionnées — pour avoir fait exactement
     // ce que le cliquet demande. Le même piège existait sur le cliquet
-    // anti-emoji et avait déjà coûté un correctif à chaud.
+    // anti-emoji (retiré le 2026-08-25) et avait déjà coûté un correctif à chaud.
     //
     // Ce qu'un cliquet doit interdire, c'est la RÉGRESSION, pas le progrès. On
     // n'exige donc plus que la liste soit identique : on exige qu'aucune
