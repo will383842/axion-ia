@@ -607,16 +607,33 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
   font-size:8pt; font-weight:700; letter-spacing:.24em; text-transform:uppercase;
   color:${C.sable}; margin-bottom:3mm;
 }
-.couv-titre h1 { font-size:41pt; line-height:.98; font-weight:700; color:${C.blanc}; }
-.couv-titre h1 em { display:block; font-style:italic; font-weight:400; color:${C.terracottaVif}; font-size:39pt; }
-.couv-sous { margin-top:4mm; font-size:11.5pt; font-weight:500; color:${C.creme}; }
+/*
+ * LA COUVERTURE PORTE LE POSITIONNEMENT, pas une signature d'agence.
+ *
+ * Elle annonçait « L'IA, de l'idée à l'impact » — vrai, mais interchangeable
+ * avec n'importe quel prestataire, et muet sur ce que ressent le lecteur.
+ * Le positionnement de Will est un dialogue en deux temps : le constat
+ * (« vous ne savez plus par où commencer ») puis la réponse (« nous, si »).
+ *
+ * D'où la hiérarchie inversée : le constat est en petit et en sable, parce
+ * qu'il n'est pas la promesse — il est le problème du lecteur, cité. La
+ * réponse est en grand et en terracotta. Mettre les deux au même corps
+ * aurait produit un slogan ; les séparer produit une conversation.
+ */
+.couv-amorce {
+  font-size:14.5pt; line-height:1.32; color:${C.sable}; font-weight:400;
+  margin-bottom:4mm; max-width:120mm;
+}
+.couv-titre h1 { font-size:48pt; line-height:.98; font-weight:700; color:${C.blanc}; }
+.couv-titre h1 em { font-style:italic; font-weight:400; color:${C.terracottaVif}; }
+.couv-sous { margin-top:5mm; font-size:10.5pt; color:${C.creme}; }
 
 .couv-bande {
   position:absolute; top:132mm; left:0; right:0; background:${C.terracotta}; color:${C.blanc};
   padding:3mm 12mm; font-size:9.4pt; font-weight:700; letter-spacing:.01em;
 }
 
-.couv-bas { position:absolute; left:12mm; right:12mm; top:152mm; }
+.couv-bas { position:absolute; left:12mm; right:12mm; top:148mm; }
 .couv-argent {
   display:flex; gap:5mm; align-items:stretch;
 }
@@ -648,7 +665,7 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
 
 /* Médaillon du fondateur — petit, comme demandé : il humanise la couverture
  * sans concurrencer le titre ni le bloc « 0 € ». */
-.couv-fondateur { display:flex; align-items:center; gap:3.5mm; margin-bottom:3.5mm; }
+.couv-fondateur { display:flex; align-items:center; gap:3.5mm; margin-bottom:2.5mm; }
 .couv-fondateur img {
   width:17mm; height:17mm; border-radius:99px; object-fit:cover;
   border:1.6px solid rgba(236,224,200,.55); flex-shrink:0;
@@ -667,7 +684,7 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
 .couv-qr span { display:block; font-size:6.8pt; font-weight:700; color:${C.sable}; margin-top:1.5mm; letter-spacing:.04em; }
 
 .couv-trois {
-  margin-top:13mm; display:grid; grid-template-columns:repeat(3,1fr);
+  margin-top:9mm; display:grid; grid-template-columns:repeat(3,1fr);
   border-top:1px solid rgba(236,224,200,.22); padding-top:5mm;
 }
 .couv-trois > div { padding:0 5mm; border-left:1px solid rgba(236,224,200,.16); }
@@ -712,6 +729,28 @@ h2.section span.compte { font-size:8pt; font-weight:700; color:${C.terracotta}; 
 .barre .tps s { font-size:8pt; color:#8A7F76; }
 .barre .tps i { font-style:normal; font-size:8pt; color:${C.terracotta}; font-weight:700; margin:0 1mm; }
 .barre .tps b { font-size:11.5pt; font-weight:700; color:${C.olive}; }
+
+/*
+ * LES TROIS CRAINTES.
+ *
+ * Le positionnement (Will, 2026-08-25) est de retirer la peur : celle de ne
+ * rien y comprendre, d'être largué, de se lancer dans quelque chose qu'on ne
+ * saura pas tenir. Le dépliant démontrait le gain de temps et l'étendue de
+ * l'offre — deux arguments de valeur — mais ne répondait à aucune de ces
+ * trois-là. Il avait même perdu la seule qui y répondait, en supprimant la
+ * FAQ de la page 2 pour gagner de la place.
+ *
+ * On cite l'objection AU DISCOURS DIRECT, entre guillemets. Reformulée en
+ * bénéfice (« une formation accessible à tous »), elle cesse d'être reconnue
+ * par celui qui la porte — et c'est justement sa reconnaissance qui désamorce.
+ */
+.craintes { display:grid; grid-template-columns:repeat(3,1fr); gap:5mm; margin-bottom:6mm; }
+.crainte q {
+  display:block; font-style:italic; font-size:9.4pt; line-height:1.25;
+  color:${C.terracotta}; quotes:'«\\2009' '\\2009»'; margin-bottom:1.8mm;
+}
+.crainte p { font-size:8pt; line-height:1.4; color:#5A5149; }
+.crainte p b { font-weight:700; color:${C.encre}; }
 
 /*
  * AI Act — mis en avant à la demande de Will (2026-08-25). Il était en bande
@@ -1005,7 +1044,8 @@ function pageCouverture(a: Actifs): string {
 
   <div class="couv-titre">
     <div class="couv-sur">Catalogue de formations IA en entreprise</div>
-    <h1>L'IA,<em>de l'idée à l'impact.</em></h1>
+    <p class="couv-amorce">On vous parle d'IA partout.<br>Vous ne savez plus par où commencer.</p>
+    <h1>Nous, <em>si.</em></h1>
     <div class="couv-sous">21 formations + 1 séminaire · intra-entreprise, présentiel &amp; distanciel</div>
   </div>
 
@@ -1033,9 +1073,10 @@ function pageCouverture(a: Actifs): string {
             <span>Fondateur &amp; formateur — Axion-IA</span>
           </div>
         </div>
-        <h2>Par où commencer ? <em>La réponse à l'intérieur.</em></h2>
-        <p>Trois portes d'entrée — le socle pour toute l'équipe, l'IA appliquée à votre métier,
-        l'IA appliquée à votre secteur. Et une journée pour mettre toute l'entreprise au diapason.</p>
+        <h2>Aucun pré-requis. <em>Vraiment aucun.</em></h2>
+        <p>La moitié de nos participants n'ont jamais ouvert un outil d'IA, et aucune de nos offres
+        générales n'a de pré-requis. On part de vos vrais dossiers — chacun repart avec un livrable
+        terminé, pas avec des notes.</p>
       </div>
       <div class="couv-qr">
         <img src="${a.qrCatalogue}" alt="">
@@ -1125,16 +1166,35 @@ function pagePourquoi(a: Actifs): string {
       et le séminaire. <b>Et s'il n'y est pas, on la construit</b> : 4 h à 3 jours, tout thème.
     </div>
 
+    <div class="craintes">
+      <div class="crainte">
+        <q>Mes équipes n'y connaissent rien.</q>
+        <p><b>La moitié des nôtres non plus</b> le matin de la formation. Aucun pré-requis, aucun
+        compte à créer.</p>
+      </div>
+      <div class="crainte">
+        <q>On n'a pas le temps pour ça.</q>
+        <p><b>Une demi-journée suffit</b> pour démarrer. Et on travaille sur vos dossiers en cours —
+        pas en plus d'eux.</p>
+      </div>
+      <div class="crainte">
+        <q>On ne saura pas quoi en faire après.</q>
+        <p><b>Le kit reste chez vous</b> : gabarits, bibliothèque de prompts, charte d'usage. Le
+        savoir-faire ne repart pas avec le formateur.</p>
+      </div>
+    </div>
+
     <div class="aiact">
       <div class="ai-badge">
         <b>Art. 4</b>
         <span>AI Act<br>depuis fév. 2025</span>
       </div>
       <div class="ai-txt">
-        <b>La littératie IA de vos équipes est une obligation.</b>
-        <p>Le règlement européen impose d'assurer un niveau suffisant de maîtrise de l'IA chez ceux qui
-        l'utilisent. Se former, c'est y répondre <b>et</b> en garder la preuve : programmes, émargements,
-        attestations — les pièces que produit un organisme certifié Qualiopi.</p>
+        <b>L'AI Act ? Vous n'avez pas à vous en occuper.</b>
+        <p>Le règlement impose d'assurer la maîtrise de l'IA chez ceux qui l'utilisent. Se former y
+        répond — et produit les preuves qui vont avec : programmes, émargements, attestations. Un
+        organisme certifié Qualiopi les délivre en même temps que la formation. Vous n'avez rien
+        à monter.</p>
       </div>
     </div>
 
@@ -1394,6 +1454,24 @@ async function verifierDebordements(page: import("playwright").Page): Promise<vo
       const debord = basReel - limite;
       if (debord > 1) ecarts.push({ page: i + 1, deborde: debord });
     });
+
+    // ── La couverture, qui n'a pas de .corps ────────────────────────────
+    // Elle est en positionnement absolu : rien n'y pousse rien, donc deux
+    // blocs peuvent se CHEVAUCHER sans que la page déborde. C'est arrivé —
+    // le bloc de mentions est passé sous les trois portes d'entrée quand
+    // l'accroche a grandi, et seul un coup d'œil l'a vu. On vérifie donc la
+    // seule paire qui peut se marcher dessus : ce qui monte depuis le bas de
+    // .couv-bas, contre le haut des mentions.
+    const couv = document.querySelector(".page.couv");
+    if (couv) {
+      const bas = couv.querySelector(".couv-bas");
+      const note = couv.querySelector(".couv-note");
+      if (bas && note) {
+        const chevauchement = bas.getBoundingClientRect().bottom - note.getBoundingClientRect().top;
+        if (chevauchement > 1) ecarts.push({ page: 1, deborde: chevauchement });
+      }
+    }
+
     return ecarts;
   });
 
