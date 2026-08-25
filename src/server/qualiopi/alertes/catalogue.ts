@@ -447,6 +447,21 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "se produire. L'écart s'acquitte à la main, une fois consigné.",
     guichet: "administratif",
   },
+  /**
+   * 🔴 2026-08-25, cahier D3-4 — le taux de présence se calcule sur les créneaux
+   * EXISTANTS. Une journée déclarée sans créneaux disparaît du dénominateur, et
+   * le taux affiche 100 % sur une session à moitié couverte — chiffre qui part
+   * ensuite sur l'attestation et le certificat de réalisation.
+   */
+  journee_sans_creneaux: {
+    niveau: "important",
+    titre: "Journée déclarée sans créneau de présence",
+    // Le geste existe et il est immédiat : « Générer les créneaux ». Dès qu'il
+    // est posé, la règle cesse de produire la candidate et l'alerte se referme
+    // d'elle-même — c'est exactement le cas d'une résolution automatique.
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
 
   // ── Formateur ──────────────────────────────────────────────────────────────
   session_sans_formateur: {
