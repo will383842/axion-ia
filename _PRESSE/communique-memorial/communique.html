@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Axion-IA — Communiqué de presse — Le Mémorial de l'Isère — 25/08/2026</title>
+<style>
+  /* ════════════════════════════════════════════════════════════════════════
+     COMMUNIQUÉ DE PRESSE — registre MAGAZINE ÉDITORIAL.
+     Fontes de marque locales (public/fonts) : Fraunces au titrage, Manrope au
+     texte, Inconsolata aux libellés et aux folios. Aucune dépendance réseau.
+     ════════════════════════════════════════════════════════════════════════ */
+
+  @font-face { font-family: "Fraunces"; src: url("fonts/Fraunces-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; }
+  @font-face { font-family: "Fraunces"; src: url("fonts/Fraunces-Bold.ttf")    format("truetype"); font-weight: 700; font-style: normal; }
+  @font-face { font-family: "Fraunces"; src: url("fonts/Fraunces-Italic.ttf")  format("truetype"); font-weight: 400; font-style: italic; }
+  @font-face { font-family: "Manrope";  src: url("fonts/Manrope-Regular.ttf")  format("truetype"); font-weight: 400; }
+  @font-face { font-family: "Manrope";  src: url("fonts/Manrope-Medium.ttf")   format("truetype"); font-weight: 500; }
+  @font-face { font-family: "Manrope";  src: url("fonts/Manrope-Bold.ttf")     format("truetype"); font-weight: 700; }
+  @font-face { font-family: "Inconsolata"; src: url("fonts/Inconsolata-Regular.ttf") format("truetype"); font-weight: 400; }
+  @font-face { font-family: "Inconsolata"; src: url("fonts/Inconsolata-Bold.ttf")    format("truetype"); font-weight: 700; }
+
+  @page { size: A4; margin: 0; }
+
+  :root {
+    --ink:      #17130f;
+    --ink-2:    #4a4137;
+    --ink-3:    #7d7263;
+    --rule:     #ddd4c2;
+    --rule-2:   #efe9dd;
+    --paper:    #ffffff;
+    --cream:    #faf7f0;
+    --cream-2:  #f4efe4;
+    --accent:   #b8420f;
+    --accent-2: #e0691f;
+    --gold:     #d99b1c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: #6f6a63;
+    font-size: 9.3pt;
+    line-height: 1.58;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  .page {
+    position: relative;
+    width: 210mm; height: 297mm;
+    padding: 14mm 16mm 12mm;
+    background: var(--paper);
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  @media screen { .page { margin: 9mm auto; box-shadow: 0 3px 26px rgba(0,0,0,.4); } }
+  @media print  { .page { margin: 0; box-shadow: none; page-break-after: always; } }
+  .page:last-child { page-break-after: auto; }
+
+  /* ── Titre courant : double filet, une épaisse une fine ─────────────── */
+  .masthead {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 2.2mm;
+    border-bottom: 1.6pt solid var(--ink);
+    flex: none;
+  }
+  .masthead::after {
+    content: ""; position: absolute; left: 16mm; right: 16mm;
+    margin-top: 3.4mm; height: .4pt; background: var(--ink);
+  }
+  .wordmark {
+    font-family: "Fraunces", serif; font-weight: 700;
+    font-size: 13pt; letter-spacing: -.015em; line-height: 1;
+  }
+  .wordmark em { font-style: normal; color: var(--accent); }
+  .masthead .slug {
+    font-family: "Inconsolata", monospace; font-size: 7pt;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+    text-align: right; line-height: 1.55;
+  }
+  .masthead .slug b { display: block; color: var(--ink); font-weight: 700; letter-spacing: .2em; }
+
+  .body-start { margin-top: 9mm; }
+
+  /* ── Folio ──────────────────────────────────────────────────────────── */
+  .folio {
+    margin-top: auto; padding-top: 3.5mm; border-top: .4pt solid var(--rule);
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: "Inconsolata", monospace; font-size: 6.8pt;
+    letter-spacing: .05em; color: var(--ink-3); flex: none;
+  }
+  .folio .n { font-weight: 700; color: var(--ink); letter-spacing: .12em; }
+
+  /* ── Typographie ────────────────────────────────────────────────────── */
+  .kicker {
+    font-family: "Inconsolata", monospace; font-size: 7.4pt; font-weight: 700;
+    letter-spacing: .26em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 3mm; margin-bottom: 5mm;
+  }
+  .kicker::after { content: ""; flex: 1; height: .4pt; background: var(--rule); }
+
+  h1 {
+    font-family: "Fraunces", serif; font-weight: 700;
+    font-size: 40pt; line-height: 1.02; letter-spacing: -.022em;
+    margin-bottom: 6mm;
+  }
+  h2 {
+    font-family: "Fraunces", serif; font-weight: 700;
+    font-size: 21pt; line-height: 1.12; letter-spacing: -.015em;
+    margin-bottom: 4mm;
+  }
+  h3 {
+    font-family: "Manrope", sans-serif; font-weight: 700;
+    font-size: 9.6pt; letter-spacing: -.005em; margin-bottom: 1.4mm;
+  }
+  .dek {
+    font-family: "Fraunces", serif; font-size: 12.4pt; line-height: 1.46;
+    color: var(--ink-2); max-width: 158mm;
+  }
+  p { margin-bottom: 2.8mm; }
+  p:last-child { margin-bottom: 0; }
+  .fine { font-size: 7.9pt; line-height: 1.5; color: var(--ink-2); }
+  .micro {
+    font-family: "Inconsolata", monospace; font-size: 6.8pt;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+  }
+
+  .rubric {
+    font-family: "Inconsolata", monospace; font-size: 7pt; font-weight: 700;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3);
+    border-bottom: .4pt solid var(--rule); padding-bottom: 1.8mm;
+    margin: 7mm 0 4.5mm;
+  }
+
+  /* ── Grilles ────────────────────────────────────────────────────────── */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm 8mm; }
+  .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
+  .row { display: flex; gap: 7mm; }
+
+  /* ── Chiffres : filet fin au-dessus, numéral Fraunces ───────────────── */
+  .stat { border-top: 1.4pt solid var(--ink); padding-top: 2.6mm; }
+  .stat .n {
+    font-family: "Fraunces", serif; font-weight: 700;
+    font-size: 27pt; line-height: .96; letter-spacing: -.03em;
+    font-variant-numeric: lining-nums;
+  }
+  .stat .n sup { font-size: 13pt; vertical-align: super; letter-spacing: 0; }
+  .stat .n .yr { display: block; font-size: 15pt; line-height: 1.1; }
+  .stat .l { font-size: 7.6pt; line-height: 1.42; color: var(--ink-2); margin-top: 2.4mm; }
+
+  /* ── Citation : guillemet suspendu, Fraunces italique ───────────────── */
+  .quote { position: relative; padding: 1mm 0 1mm 13mm; margin: 6mm 0; }
+  .quote::before {
+    content: "\201C"; position: absolute; left: 0; top: -5mm;
+    font-family: "Fraunces", serif; font-size: 42pt; color: var(--accent);
+    line-height: 1;
+  }
+  .quote p {
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 12.6pt; line-height: 1.42; color: var(--ink);
+  }
+  .quote .who {
+    font-family: "Inconsolata", monospace; font-size: 7pt;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+    margin-top: 3mm;
+  }
+
+  /* ── Encadrés ───────────────────────────────────────────────────────── */
+  .note {
+    border-left: 2pt solid var(--accent); padding: 0 0 0 5mm; margin: 5mm 0;
+  }
+  .panel {
+    background: var(--cream); border-top: 1.4pt solid var(--ink);
+    padding: 4.5mm 5mm; margin: 5mm 0;
+  }
+  .slab {
+    background: var(--ink); color: #fff; padding: 5.5mm 6mm; margin: 5mm 0;
+  }
+  .slab .k {
+    font-family: "Fraunces", serif; font-weight: 700;
+    font-size: 16pt; line-height: 1.14; letter-spacing: -.015em;
+  }
+  .slab p { color: #cfc6b6; font-size: 8.2pt; margin-top: 1.6mm; }
+  .slab .url {
+    font-family: "Inconsolata", monospace; font-weight: 700; font-size: 10pt;
+    letter-spacing: .02em; white-space: nowrap;
+  }
+
+  /* ── Q/R en colonnes, filet de tête ─────────────────────────────────── */
+  .qa { border-top: .4pt solid var(--rule); padding-top: 2.8mm; }
+
+  /* ── Liste de communes : filets pointillés, pas de pastilles ────────── */
+  .communes {
+    column-count: 4; column-gap: 7mm; margin-top: 3mm;
+    font-size: 7.9pt; color: var(--ink-2);
+  }
+  .communes span {
+    display: block; break-inside: avoid;
+    border-bottom: .3pt dotted var(--rule); padding: .9mm 0;
+  }
+
+  /* ── Repères chronologiques ─────────────────────────────────────────── */
+  .chrono { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+  .chrono .c { border-top: .4pt solid var(--rule); padding-top: 2.6mm; }
+  .chrono .c .d {
+    font-family: "Inconsolata", monospace; font-weight: 700; font-size: 7.6pt;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.6mm;
+  }
+
+  /* ── Étapes numérotées ──────────────────────────────────────────────── */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
+  .steps .s { border-top: .4pt solid var(--rule); padding-top: 2.6mm; }
+  .steps .s .num {
+    font-family: "Fraunces", serif; font-weight: 700; font-size: 15pt;
+    color: var(--accent); line-height: 1; display: block; margin-bottom: 1.4mm;
+  }
+
+  .price {
+    font-family: "Inconsolata", monospace; font-weight: 700; font-size: 8.2pt;
+    letter-spacing: .04em; color: var(--accent); margin-top: 2mm;
+  }
+
+  /* ── Bandeau de logos ───────────────────────────────────────────────── */
+  .logos {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 6mm 4mm; align-items: center; justify-items: center;
+    padding: 6mm 4mm; background: var(--cream);
+    border-top: .4pt solid var(--rule); border-bottom: .4pt solid var(--rule);
+  }
+  /* Trois échelles, pas une. Mesure au getBBox() : ces SVG remplissent tous
+     leur viewBox à 100 %, mais pour Point P, ECF et Jardiland ce qui le
+     remplit est un fond carré, pas la marque. */
+  .logos img { width: auto; max-width: 100%; object-fit: contain; }
+  .logos img.lg-wide { height: 7mm; }
+  .logos img.lg-sq   { height: 9mm; }
+  .logos img.lg-box  { height: 13mm; }
+
+  /* ── Fiche d'identité : filets pointillés ───────────────────────────── */
+  .id { display: grid; grid-template-columns: 1fr 1fr; gap: 0 9mm; }
+  .id div {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 4mm;
+    border-bottom: .3pt dotted var(--rule); padding: 1.7mm 0;
+  }
+  .id dt {
+    font-family: "Inconsolata", monospace; font-size: 6.6pt;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3);
+    white-space: nowrap;
+  }
+  .id dd { font-size: 8.4pt; font-weight: 500; text-align: right; }
+
+  /* Pages 3 et 4 : les plus chargées en blocs. Resserrage LOCAL du rythme
+     vertical plutôt qu'une réduction globale, qui déséquilibrerait la
+     couverture et la page contact — mesuré, elles débordaient de 1 px et 16 px. */
+  .dense .rubric { margin: 5mm 0 3.4mm; }
+  .dense .quote { margin: 4.5mm 0; }
+  .dense .panel { padding: 3.6mm 4.5mm; margin: 4mm 0; }
+  .dense p { margin-bottom: 2.2mm; }
+  .dense .g2 { gap: 4mm 8mm; }
+
+  .portrait {
+    border-radius: 50%; border: .5pt solid var(--rule);
+    object-fit: cover; object-position: center 20%;
+    flex: none; display: block;
+  }
+
+  .contact-line {
+    font-family: "Inconsolata", monospace; font-size: 9.6pt; font-weight: 700;
+    letter-spacing: .02em; color: var(--accent);
+  }
+  /* (Le surlignage d'attente du téléphone a servi jusqu'au 2026-08-25 ; le
+     numéro est désormais renseigné — 07 43 33 12 01, repris du commit
+     529326dca qui porte la version texte du communiqué.) */
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ 1 · COUVERTURE ══════════════════════════ -->
+<section class="page">
+  <div class="masthead">
+    <div class="wordmark">Axion<em>-IA</em></div>
+    <div class="slug"><b>Communiqué de presse</b>Saint-Marcellin · Sud-Grésivaudan — 25 août 2026</div>
+  </div>
+
+  <div class="body-start">
+    <div class="kicker">Ce qui change pour vous</div>
+
+    <h1>Votre entreprise<br>doit désormais<br>vous former à l'IA</h1>
+
+    <p class="dek">Depuis février 2025, la loi oblige toute entreprise à former ses salariés à
+    l'intelligence artificielle — et depuis le 2 août 2026, les autorités peuvent enfin le contrôler.
+    Le cabinet Axion-IA, fondé par un enfant du pays, recrute plus de 30 personnes pour répondre
+    à l'urgence.</p>
+
+    <div class="g3" style="margin-top:11mm">
+      <div class="stat"><div class="n">15<sup>&nbsp;M€</sup></div>
+        <div class="l">plafond des sanctions prévues par l'AI Act pour les manquements les plus graves</div></div>
+      <div class="stat"><div class="n">30<sup>+</sup></div>
+        <div class="l">postes ouverts par Axion-IA pour répondre à la demande</div></div>
+      <div class="stat"><div class="n">2 août<span class="yr">2026</span></div>
+        <div class="l">entrée en application pleine de la loi</div></div>
+    </div>
+
+    <div class="row" style="align-items:center; margin-top:12mm">
+      <img class="portrait" style="width:38mm;height:38mm" src="logos/portrait-williams-jullin.jpg"
+           alt="Williams Jullin, fondateur et président d'Axion-IA">
+      <div>
+        <div class="micro" style="margin-bottom:1.6mm">Fondateur &amp; président</div>
+        <h2 style="font-size:17pt;margin-bottom:2.5mm">Williams Jullin</h2>
+        <p class="fine" style="max-width:106mm">Originaire de la région saint-marcellinoise, il dirige un
+        cabinet dont la demande a débordé le Sud-Grésivaudan pour devenir nationale. Cette première vague
+        de recrutements répond à l'urgence et à l'engouement des entreprises, partout en France.</p>
+      </div>
+    </div>
+
+    <div class="rubric" style="margin-top:11mm">Zone de diffusion — 24 communes</div>
+    <p class="micro">Le Mémorial de l'Isère · cantons de Saint-Marcellin, Vinay, Pont-en-Royans, Tullins</p>
+    <div class="communes">
+      <span>Saint-Marcellin</span><span>Vinay</span><span>Pont-en-Royans</span><span>Tullins</span>
+      <span>Saint-Romans</span><span>Chatte</span><span>La Sône</span><span>Saint-Just-de-Claix</span>
+      <span>Saint-Antoine-l'Abbaye</span><span>Saint-Hilaire-du-Rosier</span><span>Beauvoir-en-Royans</span>
+      <span>Choranche</span><span>L'Albenc</span><span>Cognin-les-Gorges</span><span>Notre-Dame-de-l'Osier</span>
+      <span>Chevrières</span><span>Izeron</span><span>Saint-Quentin-sur-Isère</span><span>Moirans</span>
+      <span>Rives</span><span>Renage</span><span>Presles</span><span>Saint-Vérand</span><span>Saint-Lattier</span>
+    </div>
+  </div>
+
+  <div class="folio">
+    <span>Axion-IA SAS · Conseil et formation en intelligence artificielle</span>
+    <span class="n">01 / 06</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 2 · LE CONTEXTE ══════════════════════════ -->
+<section class="page">
+  <div class="masthead">
+    <div class="wordmark">Axion<em>-IA</em></div>
+    <div class="slug"><b>Communiqué de presse</b>Saint-Marcellin · Sud-Grésivaudan — 25 août 2026</div>
+  </div>
+
+  <div class="body-start">
+    <div class="kicker">Le contexte</div>
+    <h2>Pourquoi maintenant :<br>ce qui a changé le 2 août</h2>
+
+    <div class="panel" style="display:flex;align-items:center;gap:8mm">
+      <div style="text-align:center;flex:none">
+        <div style="font-family:Fraunces,serif;font-weight:700;font-size:19pt;line-height:1">3</div>
+        <div class="micro" style="margin-top:1mm">personnes</div>
+      </div>
+      <div style="font-family:Fraunces,serif;font-size:17pt;color:var(--accent);flex:none">=</div>
+      <div style="text-align:center;flex:none">
+        <div style="font-family:Fraunces,serif;font-weight:700;font-size:19pt;line-height:1">400</div>
+        <div class="micro" style="margin-top:1mm">salariés</div>
+      </div>
+      <p class="fine" style="border-left:.4pt solid var(--rule);padding-left:7mm">
+        De la plus petite entreprise du territoire au plus grand site industriel, l'AI Act européen impose
+        <strong>la même obligation de formation</strong> — sans distinction de taille.</p>
+    </div>
+
+    <div class="chrono" style="margin-top:6mm">
+      <div class="c"><div class="d">Février 2025</div>
+        <p class="fine">Les premières obligations de l'AI Act s'appliquent, dont la formation des salariés
+        à l'IA (article 4).</p></div>
+      <div class="c"><div class="d">2 août 2026</div>
+        <p class="fine">Le texte devient pleinement applicable : les autorités nationales, dont la CNIL,
+        peuvent contrôler.</p></div>
+      <div class="c"><div class="d">Aujourd'hui</div>
+        <p class="fine">Axion-IA ouvre plus de 30 postes pour répondre à l'urgence des entreprises.</p></div>
+    </div>
+
+    <div class="slab">
+      <div class="k">15 M € ou 3 % du chiffre d'affaires mondial</div>
+      <p>Le plafond des sanctions prévues par l'AI Act pour les manquements les plus graves au règlement.</p>
+    </div>
+
+    <div class="note">
+      <p class="fine">La formation des salariés, elle, n'a pas d'amende automatique — mais depuis 2025, un
+      salarié mal formé qui cause un dommage (fuite de données, décision biaisée) engage la
+      <strong>responsabilité civile</strong> de l'entreprise.</p>
+    </div>
+
+    <div class="quote">
+      <p>Le vrai risque n'est pas de mal utiliser l'IA, c'est de ne pas s'y mettre du tout. Une entreprise
+      qui reste immobile pendant que ses concurrents divisent par trois le temps passé sur leurs devis ou
+      leur service client verra sa productivité décrocher — pas dans dix ans : dans les dix-huit mois.</p>
+      <div class="who">Williams Jullin · fondateur et président d'Axion-IA</div>
+    </div>
+
+    <div class="rubric">Ce que dit l'Observatoire Axion-IA</div>
+    <div class="g3">
+      <div class="stat"><div class="n">72<sup>%</sup></div><div class="l">pensent que leurs concurrents utilisent déjà l'IA</div></div>
+      <div class="stat"><div class="n">56<sup>%</sup></div><div class="l">n'ont pas de stratégie IA formalisée</div></div>
+      <div class="stat"><div class="n">76<sup>%</sup></div><div class="l">sont préoccupées par la souveraineté de leurs données</div></div>
+    </div>
+    <p class="micro" style="margin-top:3.5mm">1 147 entreprises françaises interrogées · données ouvertes
+    CC BY 4.0 · méthodologie complète sur axion-ia.com/fr/presse</p>
+  </div>
+
+  <div class="folio">
+    <span>Le positionnement : « On vous parle d'IA partout. Vous ne savez plus par où commencer. Nous, si. »</span>
+    <span class="n">02 / 06</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 3 · EN PRATIQUE ══════════════════════════ -->
+<section class="page dense">
+  <div class="masthead">
+    <div class="wordmark">Axion<em>-IA</em></div>
+    <div class="slug"><b>Communiqué de presse</b>Saint-Marcellin · Sud-Grésivaudan — 25 août 2026</div>
+  </div>
+
+  <div class="body-start">
+    <div class="kicker">Le positionnement</div>
+    <h1 style="font-size:29pt;line-height:1.08;margin-bottom:5mm">« On vous parle d'IA partout.<br>
+      Vous ne savez plus par où commencer.<br><span style="color:var(--accent)">Nous, si.</span> »</h1>
+    <p class="fine" style="max-width:150mm">C'est la phrase qui résume l'activité du cabinet — et le problème
+    qu'il observe chez la plupart des dirigeants qu'il rencontre. À force d'entendre parler d'intelligence
+    artificielle dans les médias, chez les concurrents, dans les salons, beaucoup abandonnent avant même
+    d'avoir essayé. Le sujet paraît trop vaste, trop technique, réservé aux autres.</p>
+
+    <div class="rubric">Les questions que tout salarié va se poser</div>
+
+    <div class="g2">
+      <div class="qa"><h3>Qui est concerné ?</h3>
+        <p class="fine">Toute entreprise ayant au moins un salarié utilisateur d'un outil d'IA — chatbot,
+        assistant de rédaction, outil d'aide à la décision — quels que soient sa taille et son secteur.</p></div>
+      <div class="qa"><h3>Qui paie la formation ?</h3>
+        <p class="fine">L'employeur — mais les fonds existent déjà. Sa contribution formation professionnelle,
+        gérée par son OPCO, peut couvrir jusqu'à 100 % du coût, sans avance de trésorerie.</p></div>
+      <div class="qa"><h3>Quel est le risque encouru ?</h3>
+        <p class="fine">Pas d'amende automatique pour la seule formation — mais depuis 2025, un salarié mal
+        formé qui cause un dommage engage la responsabilité civile de l'entreprise. Et l'AI Act prévoit
+        jusqu'à 15 M € ou 3 % du CA mondial pour ses manquements les plus graves.</p></div>
+      <div class="qa"><h3>Comment se renseigner, sans engagement ?</h3>
+        <p class="fine">Un appel de cadrage gratuit de 30 minutes pour évaluer la situation d'une entreprise —
+        axion-ia.com/fr/appel.</p></div>
+    </div>
+
+    <div class="quote">
+      <p>On ne demande à personne de devenir informaticien. On part de ce que le salarié fait déjà — un devis,
+      un mail, un compte rendu — et on lui montre comment le faire mieux, avec les bons réflexes.</p>
+      <div class="who">Williams Jullin · fondateur et président d'Axion-IA</div>
+    </div>
+
+    <div class="rubric">Et pour les salariés ?</div>
+    <p class="fine" style="max-width:150mm">L'obligation pèse sur l'employeur, mais elle bénéficie d'abord aux
+    salariés : elle leur donne un droit à être formés à des outils qu'on leur demande déjà d'utiliser. Le
+    cabinet observe que les réticences tombent lorsque la formation part des tâches réelles — un devis, un
+    compte rendu, une réponse client — plutôt que de la technologie.</p>
+
+    <div class="panel">
+      <h3>Pour aller plus loin</h3>
+      <p class="fine">Le texte intégral du règlement européen sur l'intelligence artificielle est consultable
+      sur <strong>eur-lex.europa.eu</strong>. Axion-IA tient à disposition des journalistes des cas concrets
+      documentés, secteur par secteur, ainsi que l'ensemble de ses ressources presse sur
+      <strong>axion-ia.com/fr/presse</strong>.</p>
+    </div>
+  </div>
+
+  <div class="folio">
+    <span>Axion-IA SAS · Conseil et formation en intelligence artificielle</span>
+    <span class="n">03 / 06</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 4 · ET CHEZ VOUS ══════════════════════════ -->
+<section class="page dense">
+  <div class="masthead">
+    <div class="wordmark">Axion<em>-IA</em></div>
+    <div class="slug"><b>Communiqué de presse</b>Saint-Marcellin · Sud-Grésivaudan — 25 août 2026</div>
+  </div>
+
+  <div class="body-start">
+    <div class="kicker">Et chez vous ?</div>
+    <h2>L'IA ne s'arrête pas<br>à la porte du bureau</h2>
+    <p class="fine" style="max-width:150mm">Pas besoin d'être une entreprise, ni d'être « technophile », pour
+    que l'intelligence artificielle change concrètement le quotidien.</p>
+
+    <div class="g3" style="margin-top:6mm">
+      <div class="qa"><h3>Ce soir, on mange quoi ?</h3>
+        <p class="fine">Une photo du frigo, un budget — l'IA compose le repas, sans dix onglets de recettes
+        ouverts pour rien.</p></div>
+      <div class="qa"><h3>La boîte mail qui se trie seule</h3>
+        <p class="fine">Newsletters, spam, urgent : les mails se rangent avant même le café du matin.</p></div>
+      <div class="qa"><h3>Le jardin, sans y penser</h3>
+        <p class="fine">Arrosage, maladies, bon moment pour planter : un rappel au bon moment, jamais un
+        carnet à tenir.</p></div>
+    </div>
+
+    <div class="rubric">Témoignage client</div>
+    <h2 style="font-size:16pt">58 ans, jamais « technophile » —<br>elle a lancé son activité grâce à l'IA</h2>
+    <p class="fine" style="max-width:150mm">Retraitée depuis peu, Pauline a lancé une activité de coaching de
+    vie à 58 ans. Pas du tout technophile de son propre aveu, elle savait qu'il lui fallait un minimum de
+    présence numérique pour exister. Trois séances avec Axion-IA plus tard : un site qui lui ressemble, une
+    prise de contact automatisée, et du temps retrouvé pour ce qui compte — coacher, pas gérer
+    l'administratif.</p>
+
+    <div class="quote">
+      <p>À 58 ans, on peut apprendre. On peut même y prendre goût.</p>
+      <div class="who">Pauline M. · cliente Axion-IA, avis vérifié</div>
+    </div>
+
+    <div class="panel" style="display:flex;gap:6mm;align-items:center">
+      <div style="font-family:Fraunces,serif;font-weight:700;font-size:19pt;line-height:1;color:var(--accent);flex:none;white-space:nowrap">1 à 3 h</div>
+      <p class="fine">par jour : le temps que les artisans, indépendants et retraités actifs accompagnés par
+      Axion-IA regagnent en moyenne sur leurs mails, devis et tâches administratives.</p>
+    </div>
+
+    <div class="rubric">Cinq métiers, un seul objectif</div>
+    <p class="fine" style="margin-bottom:4.5mm">Entreprise ou particulier : la formation n'est qu'une porte
+    d'entrée. Axion-IA couvre cinq métiers pour faire progresser la productivité de chacun.</p>
+
+    <div class="g3" style="margin-bottom:5mm">
+      <div class="qa"><h3>Formation IA</h3>
+        <p class="fine">Ateliers pratiques en entreprise, sur les vrais cas métier des équipes.</p>
+        <div class="price">dès 1 200 €</div></div>
+      <div class="qa"><h3>Coaching 1-to-1</h3>
+        <p class="fine">Un expert dédié à un dirigeant, un collaborateur — ou un particulier.</p>
+        <div class="price">dès 990 €</div></div>
+      <div class="qa"><h3>Audit IA</h3>
+        <p class="fine">Cartographie des gains potentiels, chiffrés action par action.</p>
+        <div class="price">dès 1 190 €</div></div>
+    </div>
+    <div class="g3">
+      <div class="qa"><h3>Implémentation</h3>
+        <p class="fine">Automatisations sur mesure, intégrées aux outils déjà en place.</p>
+        <div class="price">dès 990 €</div></div>
+      <div class="qa"><h3>Sites &amp; SaaS IA</h3>
+        <p class="fine">Le site reconstruit avec l'IA intégrée nativement, pas en surface.</p>
+        <div class="price">dès 990 €</div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <div class="folio">
+    <span>Axion-IA SAS · Conseil et formation en intelligence artificielle</span>
+    <span class="n">04 / 06</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 5 · L'EMPLOI ══════════════════════════ -->
+<section class="page">
+  <div class="masthead">
+    <div class="wordmark">Axion<em>-IA</em></div>
+    <div class="slug"><b>Communiqué de presse</b>Saint-Marcellin · Sud-Grésivaudan — 25 août 2026</div>
+  </div>
+
+  <div class="body-start">
+    <div class="kicker">L'emploi</div>
+    <h2>Trente postes,<br>quatre familles de métiers</h2>
+    <p class="fine" style="max-width:150mm">Une part importante des postes s'adresse à des profils sans
+    formation en informatique.</p>
+
+    <div class="g4" style="margin-top:6mm">
+      <div class="qa"><h3>Formateurs</h3><p class="fine">Animer les formations IA certifiées Qualiopi, chez les clients.</p></div>
+      <div class="qa"><h3>Commerciaux</h3><p class="fine">Rencontrer les dirigeants et cadrer les missions.</p></div>
+      <div class="qa"><h3>Développeurs</h3><p class="fine">Concevoir les automatisations sur mesure des clients.</p></div>
+      <div class="qa"><h3>Monteurs vidéo</h3><p class="fine">Produire les contenus qui documentent les missions.</p></div>
+    </div>
+
+    <div class="note" style="margin-top:6mm">
+      <p class="fine"><strong>Les équipes interviennent chez les clients</strong>, de Saint-Marcellin à toute
+      la France et jusqu'à l'international — au plus près du poste de travail, là où les gestes s'apprennent
+      vraiment.</p>
+    </div>
+
+    <div class="slab" style="display:flex;justify-content:space-between;align-items:center;gap:7mm">
+      <div>
+        <div class="k">Les offres sont en ligne dès aujourd'hui</div>
+        <p>Mises à jour en continu · candidature en ligne, CV optionnel</p>
+      </div>
+      <div class="url">axion-ia.com/fr/carrieres</div>
+    </div>
+
+    <div class="rubric">Pas seulement de la formation : une méthode en quatre volets</div>
+    <div class="steps">
+      <div class="s"><span class="num">01</span><h3>Audit</h3><p class="fine">Recenser les usages et mesurer où se perd le temps.</p></div>
+      <div class="s"><span class="num">02</span><h3>Formation</h3><p class="fine">Certifiée Qualiopi, métier par métier.</p></div>
+      <div class="s"><span class="num">03</span><h3>Accompagnement</h3><p class="fine">En tête-à-tête avec le dirigeant.</p></div>
+      <div class="s"><span class="num">04</span><h3>Implémentation</h3><p class="fine">Automatisations intégrées aux outils existants.</p></div>
+    </div>
+
+    <div class="panel">
+      <h3>Formations finançables jusqu'à 100 % par l'OPCO</h3>
+      <p class="fine">La certification Qualiopi d'Axion-IA ouvre l'accès aux fonds mutualisés de formation
+      professionnelle. Grâce à la <strong>subrogation de paiement</strong>, l'OPCO règle directement
+      l'organisme : l'entreprise n'avance rien.</p>
+    </div>
+
+    <div class="rubric">Ils font déjà confiance au cabinet</div>
+    <div class="logos">
+      <img class="lg-wide" src="logos/leclerc.svg"     alt="E.Leclerc">
+      <img class="lg-wide" src="logos/intermarche.svg" alt="Intermarché">
+      <img class="lg-sq"   src="logos/renault.svg"     alt="Renault">
+      <img class="lg-sq"   src="logos/volkswagen.svg"  alt="Volkswagen">
+      <img class="lg-sq"   src="logos/axa.svg"         alt="AXA">
+      <img class="lg-wide" src="logos/generali.svg"    alt="Generali">
+      <img class="lg-wide" src="logos/la-poste.svg"    alt="La Poste">
+      <img class="lg-box"  src="logos/point-p.svg"     alt="Point P">
+      <img class="lg-sq"   src="logos/krys.svg"        alt="Krys">
+      <img class="lg-box"  src="logos/jardiland.svg"   alt="Jardiland">
+      <img class="lg-wide" src="logos/intersport.svg"  alt="Intersport">
+      <img class="lg-box"  src="logos/ecf.svg"         alt="ECF">
+    </div>
+    <p class="micro" style="margin-top:2.5mm">Marques affichées avec l'accord de leurs représentants</p>
+  </div>
+
+  <div class="folio">
+    <span>Axion-IA SAS · Conseil et formation en intelligence artificielle</span>
+    <span class="n">05 / 06</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 6 · À PROPOS & CONTACT ══════════════════════════ -->
+<section class="page">
+  <div class="masthead">
+    <div class="wordmark">Axion<em>-IA</em></div>
+    <div class="slug"><b>Communiqué de presse</b>Saint-Marcellin · Sud-Grésivaudan — 25 août 2026</div>
+  </div>
+
+  <div class="body-start">
+    <div class="kicker">À propos d'Axion-IA</div>
+    <p class="dek" style="font-size:11pt;margin-bottom:6mm">Cabinet de conseil en intelligence artificielle
+    opérationnelle, basé à Grenoble et actif dans tout le Sud-Grésivaudan. Idée IA → usages concrets → ROI
+    mesurable : données réelles, plan chiffré, mise en production accompagnée, hébergement UE conforme au RGPD.</p>
+
+    <dl class="id">
+      <div><dt>Raison sociale</dt><dd>AXION IA SAS</dd></div>
+      <div><dt>Immatriculation</dt><dd>RCS Grenoble · SIREN 108 018 631</dd></div>
+      <div><dt>Siège social</dt><dd>11 av. Paul Verlaine, 38100 Grenoble</dd></div>
+      <div><dt>Fondateur</dt><dd>Williams Jullin</dd></div>
+      <div><dt>Certification</dt><dd>Organisme de formation Qualiopi</dd></div>
+      <div><dt>Langues</dt><dd>Français · Anglais</dd></div>
+      <div><dt>Activités</dt><dd>Formation · coaching · audit · implémentation · sites IA</dd></div>
+      <div><dt>Écosystème</dt><dd>Membre de French Tech in the Alps</dd></div>
+      <div><dt>International</dt><dd>Roumanie · Estonie · Allemagne · Maroc</dd></div>
+      <div><dt>Références</dt><dd>4,9/5 sur 77 avis clients vérifiés</dd></div>
+    </dl>
+
+    <div class="panel" style="display:flex;gap:6mm;align-items:center">
+      <div style="font-family:Fraunces,serif;font-weight:700;font-size:19pt;line-height:1;color:var(--accent);flex:none">× 2,5</div>
+      <p class="fine">Exemple mesuré chez un client : un cycle de recrutement réduit de 8 semaines à
+      3 semaines grâce à l'automatisation IA, avec 80 % des tâches prises en charge par le système.</p>
+    </div>
+
+    <div class="rubric">Contact presse — porte-parole disponible pour interview</div>
+    <div class="row" style="align-items:center">
+      <img class="portrait" style="width:26mm;height:26mm" src="logos/portrait-williams-jullin.jpg"
+           alt="Williams Jullin, fondateur et président d'Axion-IA">
+      <div style="flex:1">
+        <h2 style="font-size:15pt;margin-bottom:1.5mm">Williams Jullin</h2>
+        <div class="micro" style="margin-bottom:2.2mm">Fondateur &amp; président d'Axion-IA</div>
+        <p class="fine">Architecte IA, opérationnel terrain. Interviews écrites, téléphone, visio ou podcast,
+        FR/EN — réponse sous 48 h ouvrées. Visuels HD et portraits disponibles sur demande.</p>
+      </div>
+      <div style="text-align:right;flex:none">
+        <div class="contact-line">presse@axion-ia.com</div>
+        <div class="contact-line" style="margin-top:1.8mm">07 43 33 12 01</div>
+        <div class="micro" style="margin-top:1.5mm">Ligne directe</div>
+      </div>
+    </div>
+
+    <div class="slab" style="margin-top:6mm">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8mm">
+        <div style="flex:1">
+          <div class="k" style="font-size:14pt">Ressources pour la rédaction</div>
+          <p style="margin-bottom:3mm">Tout ce dont vous avez besoin pour écrire votre article est réuni sur
+          la salle de presse. Un élément manque, ou vous voulez un format particulier ? Écrivez-nous.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8mm 6mm;font-size:8pt;color:#cfc6b6">
+            <span>— Ce communiqué en PDF, et les précédents</span>
+            <span>— Boilerplate et chartes graphique / couleurs</span>
+            <span>— Visuels HD : logo, portraits, terrain</span>
+            <span>— Observatoire Axion-IA, données CC BY 4.0</span>
+            <span>— Retombées presse déjà publiées</span>
+            <span>— Cas clients documentés, secteur par secteur</span>
+          </div>
+        </div>
+        <div class="url" style="font-size:11pt">axion-ia.com<br>/fr/presse</div>
+      </div>
+    </div>
+
+    <p class="micro" style="margin-top:5mm;text-align:center">
+      Certifié Qualiopi &nbsp;·&nbsp; Membre French Tech in the Alps &nbsp;·&nbsp; Hébergement UE conforme au RGPD
+    </p>
+  </div>
+
+  <div class="folio">
+    <span>axion-ia.com/fr &nbsp;·&nbsp; presse : /fr/presse &nbsp;·&nbsp; offres : /fr/carrieres &nbsp;·&nbsp; rendez-vous : /fr/appel</span>
+    <span class="n">06 / 06</span>
+  </div>
+</section>
+
+</body>
+</html>
