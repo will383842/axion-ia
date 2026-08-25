@@ -324,6 +324,10 @@ export async function sendDevisAction(
       dateValidite: true,
       client: {
         select: {
+          // 🔴 2026-08-25, cahier D4-3 — sans `type`, le devis d'un particulier
+          // s'intitulait « Raison sociale : Prenom Nom » et lui opposait une
+          // clause sur « toutes conditions d'achat du client », qu'il n'a pas.
+          type: true,
           raisonSociale: true,
           siret: true,
           adresse: true,
@@ -417,6 +421,10 @@ export async function sendDevisAction(
       dateValidite: formatDate(devis.dateValidite),
       identite,
       client: {
+        // Un devis part TOUJOURS au client lui-meme : pas de destinataire tiers
+        // ici, contrairement a la facture (OPCO, France Travail, beneficiaire).
+        // Le predicat se reduit donc au type du client.
+        estPersonnePhysique: devis.client.type === "particulier",
         raisonSociale: devis.client.raisonSociale,
         ...(devis.client.siret !== null ? { siret: devis.client.siret } : {}),
         ...(adresse !== undefined ? { adresse } : {}),
