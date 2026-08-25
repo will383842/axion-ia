@@ -20,7 +20,6 @@ import sharp from "sharp";
 // (`sharp.Gravity` ne résout plus). Le type se nomme explicitement.
 import type { Gravity } from "sharp";
 import { Worker } from "bullmq";
-import * as Sentry from "@sentry/nextjs";
 
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -55,7 +54,14 @@ export type ImageBankAutoConvertResult = {
 // ─── Constantes variants ─────────────────────────────────────────────────────
 
 type ImageType =
-  "banniere" | "carre" | "affiche" | "infographie" | "editorial" | "photo" | "dataviz" | "logo";
+  | "banniere"
+  | "carre"
+  | "affiche"
+  | "infographie"
+  | "editorial"
+  | "photo"
+  | "dataviz"
+  | "logo";
 
 interface VariantDef {
   /** Suffixe ajouté au slug — "" pour le variant pleine largeur. */
@@ -233,16 +239,11 @@ export function startImageBankAutoConvertWorker(): Worker<
     console.error(
       `[image-bank-auto-convert-worker] failed: ${job?.data?.targetSlug ?? "?"}: ${err.message}`,
     );
-    Sentry.captureException(err, {
-      tags: { worker: "image-bank-auto-convert" },
-      extra: {
-        jobId: job?.id,
-        targetSlug: job?.data?.targetSlug,
-        sourcePath: job?.data?.sourcePath,
-        imageType: job?.data?.imageType,
-        attemptsMade: job?.attemptsMade,
-      },
-    });
+    // Le repli passe par `captureWorkerError`, jamais par Sentry en direct :
+    // `captureException` est ABSENT du build `@sentry/nextjs` resolu hors
+    // bundler Next (mesure prod du 2026-07-21, cf. `lib/sentry-worker.ts`).
+    // L'appel direct qui vivait ici levait un TypeError DANS ce gestionnaire,
+    // et — place avant l'appel garde — rendait le repli inatteignable.
     captureWorkerError("image-bank-auto-convert", AUTO_CONVERT_QUEUE_NAME, job, err);
   });
 

@@ -123,7 +123,20 @@ function redactSecretsInString(raw: string): string {
   return out;
 }
 
-function redactEmailValue(raw: string): string {
+/**
+ * Masque une adresse : `marie.dupont@exemple.fr` → `m****@exemple.fr`.
+ *
+ * 🔑 **Exportée** depuis le 2026-08-25, et pas recopiée ailleurs. Le worker
+ * e-mail imprimait `job.data.to` **en clair** sur stdout à chaque envoi et à
+ * chaque échec — alors que `"to"` figure dans `EMAIL_KEYS` juste au-dessus,
+ * c'est-à-dire que ce fichier le classe déjà comme donnée personnelle et le
+ * masque avant Sentry. La protection ne couvrait que le canal SaaS, jamais les
+ * journaux du conteneur.
+ *
+ * Le domaine est **conservé** à dessein : c'est lui qui sert au diagnostic (un
+ * relais qui refuse tout un domaine), et il n'identifie personne à lui seul.
+ */
+export function redactEmailValue(raw: string): string {
   const idx = raw.indexOf("@");
   if (idx <= 0 || idx === raw.length - 1) return REDACTED;
   const local = raw.slice(0, idx);
