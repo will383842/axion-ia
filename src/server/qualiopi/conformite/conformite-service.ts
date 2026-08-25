@@ -36,7 +36,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import { pieceAdmissibleAuDossier } from "@/server/qualiopi/conformite/piece-admissible";
+import {
+  pieceAdmissibleAuDossier,
+  inscriptionSurSessionTenue,
+} from "@/server/qualiopi/conformite/piece-admissible";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre";
 
@@ -206,7 +209,13 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // off.21 : formateurs avec CV téléversé (cvUrl non null)
     prisma.trainer.count({ where: { actif: true, cvUrl: { not: null } } }),
     prisma.trainee.count({ where: { situationHandicap: true } }),
-    prisma.enrollment.count({ where: { adaptationsRealisees: { not: null } } }),
+    // 🔴 2026-08-25, cahier D1-2 — ce compte était NU. La garde posée cinq lignes
+    // plus bas sur `documentGenere` (24/08) n'a jamais été portée à son jumeau
+    // `enrollment` : une adaptation saisie sur une session ensuite ANNULÉE
+    // couvrait off.10 ⭐ et off.20.
+    prisma.enrollment.count({
+      where: { adaptationsRealisees: { not: null }, ...inscriptionSurSessionTenue() },
+    }),
     // 🔴 2026-08-24 — ce compte portait `annuleeAt: null` en littéral, donc SANS
     // le filtre de statut de session. Les pièces d'une session ANNULÉE ou
     // REPORTÉE comptaient comme preuves. Le prédicat partagé exclut les deux, et
@@ -322,7 +331,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // off.30 : diversité RÉELLE des sources d'appréciation (multi-parties = ≥2 sources).
     prisma.appreciation.groupBy({ by: ["source"] }),
     // off.12 : émargements RÉELLEMENT signés (Enrollment.emargementSigneAt), ≠ simple PDF.
-    prisma.enrollment.count({ where: { emargementSigneAt: { not: null } } }),
+    // 🔴 2026-08-25, cahier D1-2 — même défaut, même cause. off.12 affichait
+    // « Couvert · 1 inscription avec présence constatée » sur l'émargement d'une
+    // session ANNULÉE. La transition d'annulation révoque bien les jetons
+    // (`actions/qualiopi/sessions.ts:939`), mais un `emargementSigneAt` déjà posé
+    // reste posé : signer puis annuler suffisait.
+    prisma.enrollment.count({
+      where: { emargementSigneAt: { not: null }, ...inscriptionSurSessionTenue() },
+    }),
     // off.4 : analyse du besoin = questionnaire de positionnement RÉPONDU (≠ grille d'acquis off.8),
     //   et RÉPONDU AVANT le démarrage de la session de l'inscription.
     //
