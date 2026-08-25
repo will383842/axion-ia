@@ -3,6 +3,7 @@ import {
   PRESS_PITCH,
   PRESS_FACTS,
   PRESS_KIT_ASSETS,
+  PRESS_KIT_KINDS,
   PRESS_RELEASES,
   PRESS_MEDIA_COVERAGE,
   PRESS_SPOKESPERSONS,
@@ -54,8 +55,12 @@ describe("press · kit assets", () => {
   });
 
   it("declares one of the supported kinds", () => {
-    const valid = new Set(["logo", "wordmark", "photo", "brand-book", "boilerplate"]);
-    for (const a of PRESS_KIT_ASSETS) expect(valid.has(a.kind)).toBe(true);
+    // 🔑 Set DERIVE de `PRESS_KIT_KINDS`, jamais recopie : la liste en dur qui
+    // vivait ici a rougi sur `color-charter`, une fixture pourtant legitime.
+    const valid = new Set<string>(PRESS_KIT_KINDS);
+    // Contre-temoin : sans fixtures, la boucle ne verifierait rien.
+    expect(PRESS_KIT_ASSETS.length).toBeGreaterThanOrEqual(6);
+    for (const a of PRESS_KIT_ASSETS) expect(valid.has(a.kind), `${a.id} -> ${a.kind}`).toBe(true);
   });
 });
 
