@@ -6,6 +6,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { readCv } from "@/server/careers/cv-storage";
+import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,7 +21,13 @@ export async function GET(
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
   const role = (session.user as { role?: string }).role;
-  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+  // 🔴 La liste etait ecrite ICI, et elle admettait `editor` tout en refusant
+  // `responsable_qualite` et `secretaire` — c'est-a-dire le role purement
+  // redactionnel admis, et les deux roles qui TRAITENT le dossier refuses. Ce
+  // n'etait pas un arbitrage : la liste a ete ecrite avant que ces deux roles
+  // existent (15/08). Elle vit desormais au SSOT, partagee avec la liste des
+  // candidatures et la piece jointe.
+  if (!peutOuvrirDossierCandidat(role)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
@@ -32,6 +40,19 @@ export async function GET(
 
   try {
     const buf = await readCv(a.photoStoragePath);
+    // 🔑 Meme raison que pour le CV : la trace est ce qui rend l'acces
+    // defendable. Best-effort — un journal indisponible ne prive personne de la
+    // piece.
+    await logActivity({
+      session: {
+        userId: session.user.id,
+        email: session.user.email ?? "",
+        role: role ?? "reader",
+      },
+      action: "careers.candidature.photo.consultee",
+      targetType: "JobApplication",
+      targetId: id,
+    });
     // MIME restreint : on ne sert que des types image validés, sinon octet-stream.
     const mime =
       a.photoMimeType && ALLOWED_IMG.has(a.photoMimeType)

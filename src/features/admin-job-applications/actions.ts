@@ -11,6 +11,8 @@ import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
+import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
@@ -36,10 +38,29 @@ async function requireAdminWrite() {
   }
   return { userId: session.user.id, role };
 }
-async function requireAdminRead() {
+/**
+ * Ouvrir un dossier de candidature — identite comprise.
+ *
+ * 🔴 Cette garde ne testait AUCUN role : elle verifiait la seule presence d'une
+ * session. Or les trois actions qui l'appellent rendent les PII DECHIFFREES
+ * (nom, e-mail, telephone) via `decryptPii`. Un compte `reader` — le role de
+ * consultation, explicitement exclu de l'ecriture — lisait donc l'identite
+ * complete de chaque candidat.
+ *
+ * Le CV, lui, etait garde. La piece jointe etait mieux protegee que l'identite
+ * a laquelle elle appartient : proteger la porte en laissant la fenetre ouverte
+ * n'est pas de la prudence.
+ *
+ * La liste des roles vit au SSOT (`auth/habilitations.ts`), avec le CV et la
+ * photo qui la partagent. Une liste recopiee ici divergerait — le depot vient
+ * d'en solder vingt-neuf copies du predicat d'ecriture.
+ */
+async function requireAdminRead(): Promise<{ userId: string; email: string; role: string }> {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
-  return session.user.id;
+  const role = (session.user as { role?: string }).role ?? "reader";
+  if (!peutOuvrirDossierCandidat(role)) throw new Error("forbidden");
+  return { userId: session.user.id, email: session.user.email ?? "", role };
 }
 async function requireSuperAdmin() {
   const session = await auth();
@@ -369,9 +390,27 @@ export interface JobApplicationDetail {
 }
 
 export async function getApplicationDetailAction(id: string): Promise<JobApplicationDetail | null> {
-  await requireAdminRead();
+  const acteur = await requireAdminRead();
   const a = await prisma.jobApplication.findUnique({ where: { id } });
   if (!a) return null;
+  // 🔑 La TRACE, pas la liste de roles, est ce qui rend cet acces defendable
+  // devant la CNIL. Une liste de roles dit qui A LE DROIT ; seul le journal dit
+  // qui A OUVERT le dossier de Madame X, et quand.
+  //
+  // Journalise ICI et pas dans `requireAdminRead` a dessein : c'est l'ouverture
+  // d'un dossier NOMME qui constitue l'acces individualise. Les deux actions de
+  // liste partagent la meme garde, mais parcourir un tableau pagine a chaque
+  // rendu d'ecran produirait un journal de volume sans en dire davantage — et un
+  // journal qu'on ne peut plus lire ne prouve plus rien.
+  //
+  // Best-effort : `logActivity` n'echoue jamais. Un journal indisponible ne doit
+  // pas priver le recruteur du dossier.
+  await logActivity({
+    session: { userId: acteur.userId, email: acteur.email, role: acteur.role },
+    action: "careers.candidature.dossier.ouvert",
+    targetType: "JobApplication",
+    targetId: a.id,
+  });
   const answers =
     a.answers && typeof a.answers === "object" && !Array.isArray(a.answers)
       ? (a.answers as Record<string, string>)

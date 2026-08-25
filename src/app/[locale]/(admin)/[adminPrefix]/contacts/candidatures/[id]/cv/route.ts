@@ -5,6 +5,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { readCv } from "@/server/careers/cv-storage";
+import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
+import { logActivity } from "@/server/content-gen/shared/activity-log";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,7 +18,13 @@ export async function GET(
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
   const role = (session.user as { role?: string }).role;
-  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+  // 🔴 La liste etait ecrite ICI, et elle admettait `editor` tout en refusant
+  // `responsable_qualite` et `secretaire` — c'est-a-dire le role purement
+  // redactionnel admis, et les deux roles qui TRAITENT le dossier refuses. Ce
+  // n'etait pas un arbitrage : la liste a ete ecrite avant que ces deux roles
+  // existent (15/08). Elle vit desormais au SSOT, partagee avec la liste des
+  // candidatures et la photo.
+  if (!peutOuvrirDossierCandidat(role)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
@@ -30,6 +38,21 @@ export async function GET(
   try {
     const buf = await readCv(a.cvStoragePath);
     const safeName = (a.cvOriginalName || "cv").replace(/[^a-zA-Z0-9._-]/g, "_");
+    // 🔑 La TRACE, pas la liste de roles, est ce qui rend cet acces defendable
+    // devant la CNIL. Aucun acces au CV d'un candidat n'etait journalise :
+    // personne ne savait qui avait telecharge quel dossier. `logActivity` est
+    // best-effort et n'echoue jamais — un journal indisponible ne doit pas
+    // priver le recruteur de la piece.
+    await logActivity({
+      session: {
+        userId: session.user.id,
+        email: session.user.email ?? "",
+        role: role ?? "reader",
+      },
+      action: "careers.candidature.cv.telecharge",
+      targetType: "JobApplication",
+      targetId: id,
+    });
     return new NextResponse(new Uint8Array(buf), {
       headers: {
         // Type forcé neutre + nosniff : on ne fait pas confiance au MIME déclaré
