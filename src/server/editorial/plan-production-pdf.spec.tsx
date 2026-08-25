@@ -13,7 +13,7 @@
 
 import { describe, it, expect } from "vitest";
 import React from "react";
-import { PlanProductionPdf, rendrePlanEnPdf } from "./plan-production-pdf";
+import { PlanProductionPdf, rendrePlanEnPdf, compterNonImprimables } from "./plan-production-pdf";
 import {
   collectPdfText,
   collectPdfTextNormalized,
@@ -27,6 +27,8 @@ function asset(p: Partial<AssetPlan> & { id: string; type: string }): AssetPlan 
     datePost: null,
     heurePost: null,
     titrePost: null,
+    responsable: null,
+    post: null,
     segments: [],
     ...p,
   };
@@ -382,4 +384,101 @@ describe("rendrePlanEnPdf — le binaire", () => {
     expect(buffer.subarray(0, 5).toString("latin1")).toBe("%PDF-");
     expect(buffer.byteLength).toBeGreaterThan(2000);
   }, 30_000);
+});
+
+describe("PlanProductionPdf — la copie du post sur la feuille", () => {
+  const arbre = (
+    <PlanProductionPdf
+      assets={[
+        asset({
+          id: "c1",
+          type: "carrousel",
+          libelle: "Carrousel du jeudi",
+          titrePost: "Post du 12",
+          responsable: "Williams",
+          post: {
+            accroche: "Trois pièges de l'IA",
+            corps: "Le premier est le plus coûteux.",
+            premierCommentaire: "Le lien est en commentaire.",
+            tags: ["ia", "formation"],
+          },
+        }),
+      ]}
+      contexte={CONTEXTE}
+    />
+  );
+  const texte = collectPdfTextNormalized(arbre);
+
+  it("🔑 imprime le TEXTE du post, pas seulement son titre interne", () => {
+    // C'est le manque de la première version : il fallait rouvrir la console
+    // pour savoir de quoi le visuel qu'on fabrique parle.
+    expect(texte).toContain("Le post qui accompagne ce visuel");
+    expect(texte).toContain("Trois pièges de l'IA");
+    expect(texte).toContain("Le premier est le plus coûteux.");
+    expect(texte).toContain("Le lien est en commentaire.");
+    expect(texte).toContain("#ia #formation");
+  });
+
+  it("nomme le responsable", () => {
+    expect(texte).toContain("Williams");
+  });
+
+  it("🔴 écrit « non attribué » quand personne n'est désigné", () => {
+    const sans = collectPdfTextNormalized(
+      <PlanProductionPdf assets={[asset({ id: "x", type: "image" })]} contexte={CONTEXTE} />,
+    );
+    expect(sans).toContain("non attribué");
+  });
+
+  it("🔴 SIGNALE un post rattaché dont la copie est vide", () => {
+    const vide = collectPdfTextNormalized(
+      <PlanProductionPdf
+        assets={[asset({ id: "x", type: "image", titrePost: "Post du 12", post: null })]}
+        contexte={CONTEXTE}
+      />,
+    );
+    expect(vide).toContain("Aucun texte rédigé pour ce post.");
+  });
+
+  it("ne signale RIEN pour un asset rattaché à aucun post", () => {
+    const orphelin = collectPdfTextNormalized(
+      <PlanProductionPdf assets={[asset({ id: "x", type: "image" })]} contexte={CONTEXTE} />,
+    );
+    expect(orphelin).not.toContain("Aucun texte rédigé");
+  });
+});
+
+describe("compterNonImprimables — le compte doit couvrir la COPIE", () => {
+  it("🔴 compte les emoji du corps du post, pas seulement ceux du brief", () => {
+    // Le corps d'un post LinkedIn porte plus d'emoji que tout le reste de la
+    // feuille réuni. Un compte qui l'ignore annonce « 2 retirés » sur un
+    // document qui en a perdu quarante — et un compte faux est pire qu'une
+    // absence de compte : il fait croire qu'on a vérifié.
+    const n = compterNonImprimables([
+      asset({
+        id: "c1",
+        type: "carrousel",
+        post: {
+          accroche: "Trois pièges \u{1F680}",
+          corps: "Le corps \u{1F447} et encore \u{1F525}",
+          premierCommentaire: null,
+          tags: [],
+        },
+      }),
+    ]);
+    expect(n).toBe(3);
+  });
+
+  it("compte ZÉRO sur une copie sans emoji — le témoin négatif", () => {
+    // Sans lui, une fonction qui renverrait toujours 3 passerait le test
+    // précédent.
+    const n = compterNonImprimables([
+      asset({
+        id: "c1",
+        type: "carrousel",
+        post: { accroche: "Trois pièges", corps: "Le corps", premierCommentaire: null, tags: [] },
+      }),
+    ]);
+    expect(n).toBe(0);
+  });
 });

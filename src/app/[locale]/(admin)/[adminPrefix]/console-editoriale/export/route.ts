@@ -347,6 +347,9 @@ async function exporterPlan(
       type: true,
       libelle: true,
       statut: true,
+      // Qui doit le produire. Un plan qui dit quoi faire sans dire par qui
+      // laisse chaque ligne sans propriétaire.
+      responsable: { select: { nom: true } },
       segments: {
         orderBy: { ordre: "asc" },
         select: { ordre: true, role: true, titre: true, contenu: true, prompt: true, fait: true },
@@ -355,7 +358,20 @@ async function exporterPlan(
         orderBy: { ordre: "asc" },
         take: 1,
         select: {
-          publication: { select: { datePrevue: true, heurePrevue: true, titreInterne: true } },
+          publication: {
+            select: {
+              datePrevue: true,
+              heurePrevue: true,
+              titreInterne: true,
+              // 🔑 La COPIE du post, pas seulement son titre interne. On
+              // fabrique un visuel pour un texte : sans lui sous les yeux, il
+              // fallait rouvrir la console pour savoir de quoi le visuel parle.
+              accroche: true,
+              corps: true,
+              premierCommentaire: true,
+              tags: true,
+            },
+          },
         },
       },
     },
@@ -379,6 +395,18 @@ async function exporterPlan(
       datePost: pub ? dayKeyOfGridDate(pub.datePrevue) : null,
       heurePost: pub?.heurePrevue ?? null,
       titrePost: pub?.titreInterne ?? null,
+      responsable: a.responsable?.nom ?? null,
+      // `null` quand l'asset n'est rattaché à AUCUNE publication — distinct
+      // d'un post rattaché dont la copie est encore vide, que le plan
+      // signale explicitement.
+      post: pub
+        ? {
+            accroche: pub.accroche,
+            corps: pub.corps,
+            premierCommentaire: pub.premierCommentaire,
+            tags: pub.tags,
+          }
+        : null,
       segments: a.segments,
     };
   });

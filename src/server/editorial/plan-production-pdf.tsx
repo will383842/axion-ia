@@ -53,22 +53,15 @@ import { assainirEspacesPdf } from "@/server/qualiopi/documents/base-layout";
 import {
   trierPourProduction,
   avancement,
+  partsDuPost,
+  LIBELLE_TYPE_ASSET,
+  SANS_RESPONSABLE,
   TYPES_PLAN,
   type AssetPlan,
   type ContextePlan,
 } from "@/server/editorial/plan-production";
 
 registerQualiopiPdfFonts();
-
-/** Le titre humain d'un type d'asset, en tête de sa section. */
-const LIBELLE_TYPE: Record<string, string> = {
-  video: "Vidéos",
-  carrousel: "Carrousels",
-  image: "Images",
-  photo: "Photos de Williams",
-  audio: "Audio",
-  document: "Documents",
-};
 
 /** Le titre humain d'un rôle de segment. Miroir de celui du Markdown. */
 const LIBELLE_ROLE: Record<string, string> = {
@@ -137,6 +130,13 @@ export function compterNonImprimables(assets: readonly AssetPlan[]): number {
   for (const a of assets) {
     compter(a.libelle);
     compter(a.titrePost);
+    compter(a.responsable);
+    // 🔴 La copie du post AUSSI. C'est même là que se trouve l'essentiel des
+    // emoji — un corps de post LinkedIn en porte plus que tout le reste de la
+    // feuille réuni. L'oublier ici annoncerait « 2 caractères retirés » sur
+    // un document qui en aurait perdu quarante : un compte faux est pire
+    // qu'une absence de compte, il fait croire qu'on a vérifié.
+    for (const p of partsDuPost(a.post)) compter(p.texte);
     for (const s of a.segments) {
       compter(s.titre);
       compter(s.contenu);
@@ -306,6 +306,50 @@ const styles = StyleSheet.create({
     color: brandColor("fg-muted"),
   },
 
+  // ── La copie du post ────────────────────────────────────────────────────
+  // Encadrée et posée AVANT le brief : on fabrique un visuel pour un texte,
+  // et le lire d'abord change ce qu'on fabrique. Le liseré la distingue des
+  // blocs de prompt, qui se copient dans un générateur — celui-ci se lit.
+  // Le liseré mocha porte la distinction, pas le fond : les blocs de prompt
+  // sont pleins (`sand`) et sans liseré. Deux fonds proches et deux bordures
+  // opposées se distinguent mieux que deux fonds contrastés.
+  post: {
+    borderLeftWidth: 3,
+    borderLeftColor: brandColor("mocha"),
+    backgroundColor: brandColor("bg"),
+    borderRadius: S.radius,
+    paddingVertical: S.lg,
+    paddingHorizontal: S.xl,
+    marginBottom: S.xl,
+  },
+  postTitre: {
+    fontSize: T.xs,
+    letterSpacing: T.trackingWide,
+    textTransform: "uppercase",
+    fontWeight: "bold",
+    color: brandColor("mocha"),
+    marginBottom: S.md,
+  },
+  postLibelle: {
+    fontSize: T.xs,
+    fontWeight: "bold",
+    color: brandColor("fg-muted"),
+    marginBottom: S.xs,
+  },
+  postTexte: {
+    fontSize: T.sm,
+    lineHeight: T.lineNormal,
+    color: brandColor("fg"),
+    marginBottom: S.md,
+  },
+  postManquant: {
+    fontSize: T.sm,
+    lineHeight: T.lineNormal,
+    fontStyle: "italic",
+    color: brandColor("terracotta-deep"),
+    marginBottom: S.xl,
+  },
+
   // ── Segment ─────────────────────────────────────────────────────────────
   segment: {
     flexDirection: "row",
@@ -453,6 +497,44 @@ function Segment({ segment }: { segment: AssetPlan["segments"][number] }): React
   );
 }
 
+/**
+ * La copie du post — ce qui sera publié à côté du visuel.
+ *
+ * 🔑 Placée AVANT le brief, délibérément. On fabrique un visuel pour un
+ * texte : lire le texte d'abord change ce qu'on fabrique. La première
+ * version de ce plan ne portait que le titre interne de la publication, et
+ * il fallait rouvrir la console pour savoir de quoi le visuel parlait.
+ *
+ * `wrap={false}` n'est PAS posé ici : un corps de post LinkedIn dépasse
+ * souvent la demi-page, et l'empêcher de couper le pousserait entier sur la
+ * feuille suivante en laissant un grand blanc derrière lui.
+ */
+function BlocPost({ asset }: { asset: AssetPlan }): React.ReactElement | null {
+  const parts = partsDuPost(asset.post);
+
+  if (parts.length === 0) {
+    // Rattaché à un post dont la copie est vide : c'est un signal, pas un
+    // silence. On s'apprête à fabriquer le visuel d'un texte qui n'existe
+    // pas encore. Un asset rattaché à AUCUN post, lui, ne dit rien — son
+    // absence d'échéance le montre déjà.
+    return asset.titrePost ? (
+      <Text style={styles.postManquant}>Aucun texte rédigé pour ce post.</Text>
+    ) : null;
+  }
+
+  return (
+    <View style={styles.post}>
+      <Text style={styles.postTitre}>Le post qui accompagne ce visuel</Text>
+      {parts.map((p) => (
+        <View key={p.libelle}>
+          <Text style={styles.postLibelle}>{p.libelle}</Text>
+          <Text style={styles.postTexte}>{txt(p.texte)}</Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 /** Le bloc d'un asset : son échéance, son avancement, ses segments. */
 function BlocAsset({ asset }: { asset: AssetPlan }): React.ReactElement {
   const av = avancement(asset);
@@ -468,9 +550,12 @@ function BlocAsset({ asset }: { asset: AssetPlan }): React.ReactElement {
         </Text>
       </View>
       <Text style={styles.assetMeta}>
-        Statut : {txt(asset.statut)} · Avancement : {av.faits} / {av.total}
+        Statut : {txt(asset.statut)} · Avancement : {av.faits} / {av.total} · Responsable :{" "}
+        {txt(asset.responsable) || SANS_RESPONSABLE}
         {asset.titrePost ? ` · Post : ${txt(asset.titrePost)}` : ""}
       </Text>
+
+      <BlocPost asset={asset} />
 
       {asset.segments.length === 0 ? (
         <Text style={styles.assetVide}>Aucun brief importé pour cet asset.</Text>
@@ -560,7 +645,7 @@ export function PlanProductionPdf({
                 key={l.type}
                 style={i === lignes.length - 1 ? styles.ligneDerniere : styles.ligne}
               >
-                <Text style={styles.colType}>{LIBELLE_TYPE[l.type] ?? l.type}</Text>
+                <Text style={styles.colType}>{LIBELLE_TYPE_ASSET[l.type] ?? l.type}</Text>
                 <Text style={styles.colNombre}>{l.assets}</Text>
                 <Text style={styles.colNombre}>{l.segments}</Text>
                 <Text style={styles.colNombre}>{l.faits}</Text>
@@ -575,7 +660,7 @@ export function PlanProductionPdf({
       {/* ── Une page neuve par type ────────────────────────────────────── */}
       {typesPresents.map((t) => (
         <Page key={t} size="A4" style={styles.page}>
-          <Text style={styles.titreSection}>{LIBELLE_TYPE[t] ?? t}</Text>
+          <Text style={styles.titreSection}>{LIBELLE_TYPE_ASSET[t] ?? t}</Text>
           {tries
             .filter((a) => a.type === t)
             .map((a) => (

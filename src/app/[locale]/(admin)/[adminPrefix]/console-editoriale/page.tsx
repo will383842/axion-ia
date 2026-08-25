@@ -22,6 +22,7 @@ import {
   AdminButton,
   AdminBadge,
 } from "@/components/admin/ui";
+import { TYPES_PLAN, LIBELLE_TYPE_ASSET, type TypePlan } from "@/server/editorial/plan-production";
 import { chargerResumeConsole } from "@/server/editorial/queries";
 import { publicationsSansAssetPret, listerIdees } from "@/server/editorial/publication-queries";
 import { PremierLancement } from "./_composants/PremierLancement";
@@ -32,13 +33,35 @@ interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
 }
 
-/** Les journées de production qu'on peut isoler d'un clic. */
-const PLANS = [
-  { cle: "video", libelle: "Vidéos" },
-  { cle: "carrousel", libelle: "Carrousels" },
-  { cle: "image", libelle: "Images" },
-  { cle: "photo", libelle: "Photos" },
-] as const;
+/**
+ * Libellés courts, propres au BOUTON — le référentiel dit « Photos de
+ * Williams », ce qui est juste en tête de section mais trop long dans une
+ * rangée de boutons.
+ *
+ * `Partial` volontaire : un type sans entrée ici retombe sur le libellé du
+ * référentiel. C'est ce qui rend l'oubli impossible plutôt qu'improbable.
+ */
+const LIBELLE_BOUTON: Partial<Record<TypePlan, string>> = {
+  photo: "Photos",
+};
+
+/**
+ * Les types offerts au téléchargement, un bouton chacun.
+ *
+ * 🔴 DÉRIVÉ de `TYPES_PLAN`, jamais listé à la main. La liste écrite en dur
+ * n'en portait que quatre sur six : les assets `audio` et `document`
+ * n'étaient joignables que par « Tout », donc invisibles à qui filtrait par
+ * type. Un asset qu'aucun bouton ne sort est un travail que le plan ne
+ * montre pas.
+ *
+ * Une liste en dur qui ne dérive de rien vieillit mal — le jour où un
+ * septième type entre au référentiel, celle-ci le suit sans que personne
+ * ait à y penser.
+ */
+const PLANS = TYPES_PLAN.map((cle) => ({
+  cle,
+  libelle: LIBELLE_BOUTON[cle] ?? LIBELLE_TYPE_ASSET[cle] ?? cle,
+}));
 
 const MOIS = [
   "janvier",
