@@ -176,9 +176,46 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
 
 // ─────────────────────────────────────────────────────────────────
 // PRESS KIT — assets téléchargeables. `fileUrl: null` = placeholder UI disabled.
-// Phase 1 : tous placeholders, Will fournit les binaires en suite.
+//
+// Plus aucun placeholder ici : une fixture affichée « bientôt disponible » sur une
+// page publique est une promesse non tenue faite à la presse. Un test le verrouille
+// (`queries.spec.ts`), et vérifie en plus que chaque `fileUrl` existe sur le disque.
+//
+// Les deux SVG viennent en tête : c'est le format que demande la presse print, et le
+// seul qui ne se dégrade pas à l'agrandissement (affiche, kakémono, 4e de couverture).
 // ─────────────────────────────────────────────────────────────────
 export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
+  {
+    id: "logo-vector-color",
+    kind: "logo",
+    fileUrl: "/images/axion-ia-logo-vectoriel-couleur.svg",
+    format: "SVG",
+    fr: {
+      title: "Logo vectoriel couleur",
+      description:
+        "Format vectoriel, sans perte à toute taille — impression, affichage grand format, découpe.",
+    },
+    en: {
+      title: "Vector logo, color",
+      description: "Vector format, lossless at any size — print, large-format display, cutting.",
+    },
+  },
+  {
+    id: "logo-vector-reversed",
+    kind: "logo",
+    fileUrl: "/images/axion-ia-logo-vectoriel-blanc-fond-sombre.svg",
+    format: "SVG",
+    fr: {
+      title: "Logo vectoriel blanc (fonds sombres)",
+      description:
+        "Version monochrome blanche, intérieur transparent — à poser sur photo ou fond foncé.",
+    },
+    en: {
+      title: "Vector logo, white (dark backgrounds)",
+      description:
+        "White monochrome version, transparent interior — for photos or dark backgrounds.",
+    },
+  },
   {
     id: "logo-primary",
     kind: "logo",
@@ -208,31 +245,31 @@ export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
     },
   },
   {
-    id: "wordmark-dark",
-    kind: "wordmark",
-    fileUrl: null,
-    format: "PNG",
+    id: "logo-square",
+    kind: "logo",
+    fileUrl: "/images/axion-ia-logo-full-transparent-toutes-couleurs-fond-versatile.webp",
+    format: "WebP",
     fr: {
-      title: "Wordmark dark",
-      description: "Wordmark sur fond mocha — usage éditorial premium.",
+      title: "Logo carré",
+      description: "Format carré fond transparent — vignettes, encadrés, réseaux sociaux.",
     },
     en: {
-      title: "Wordmark dark",
-      description: "Wordmark on mocha background — premium editorial use.",
+      title: "Square logo",
+      description: "Square format, transparent background — thumbnails, sidebars, social.",
     },
   },
   {
-    id: "brand-book",
-    kind: "brand-book",
-    fileUrl: null,
-    format: "PDF",
+    id: "logo-avatar",
+    kind: "logo",
+    fileUrl: "/images/axion-ia-logo-format-cercle-avatar-profil-linkedin-reseaux.webp",
+    format: "WebP",
     fr: {
-      title: "Brand book synthétique",
-      description: "Palette, typographie, ton de voix, règles d'usage du logo.",
+      title: "Logo rond (avatar)",
+      description: "Version circulaire — avatars, profils, pastilles de crédit.",
     },
     en: {
-      title: "Brand book summary",
-      description: "Palette, typography, tone of voice, logo usage rules.",
+      title: "Round logo (avatar)",
+      description: "Circular version — avatars, profiles, credit badges.",
     },
   },
   {
@@ -242,17 +279,20 @@ export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
     format: "JPG",
     fr: {
       title: "Photo fondateur",
-      description: "Portrait haute définition, format 1:1 et 16:9.",
+      description: "Portrait carré 2048 × 2048 px, libre pour usage éditorial presse.",
     },
     en: {
       title: "Founder photo",
-      description: "High-resolution portrait, 1:1 and 16:9 formats.",
+      description: "Square portrait, 2048 × 2048 px, free for editorial press use.",
     },
   },
   {
     id: "boilerplate",
     kind: "boilerplate",
-    fileUrl: "/press/axion-ia-boilerplate-fr-en.txt",
+    // Généré au runtime depuis `PRESS_PITCH` + l'identité légale (SSOT), et non
+    // servi comme fichier statique : le TXT figé avait divergé du site (il
+    // annonçait « fondé en 2024 » quand le JSON-LD publiait `foundingDate: 2026`).
+    fileUrl: "/api/presse/boilerplate",
     format: "TXT",
     fr: {
       title: "Boilerplate FR + EN",

@@ -81,12 +81,20 @@ const updateSchema = z.object({
   title: z.string().min(3).max(255).optional(),
   description: z.string().max(2000).optional(),
   status: statusSchema.optional(),
+  // Ordre d'affichage dans le kit public (croissant). Piloté à la main : le kit
+  // compte quelques fichiers, un champ numérique suffit — pas besoin des ↑/↓
+  // des communiqués.
+  sortOrder: z.number().int().min(0).max(999).optional(),
 });
 
 export type UpdatePressMediaInput = z.infer<typeof updateSchema>;
 
 function revalidatePresse(): void {
   revalidatePath("/fr/presse");
+  // Le kit média n'apparaît que sur /presse, mais un asset renommé change aussi
+  // le rendu de la page détail (même layout) — on purge les deux, comme côté
+  // communiqués.
+  revalidatePath("/fr/presse/[slug]", "page");
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -184,9 +192,10 @@ export async function updatePressMediaAsset(
     if (!existing) return { ok: false, error: "not_found" };
 
     await prisma.$transaction(async (tx) => {
-      const assetData: { kind?: PressMediaKind; status?: PublishStatus } = {};
+      const assetData: { kind?: PressMediaKind; status?: PublishStatus; sortOrder?: number } = {};
       if (data.kind !== undefined) assetData.kind = data.kind;
       if (data.status !== undefined) assetData.status = data.status;
+      if (data.sortOrder !== undefined) assetData.sortOrder = data.sortOrder;
       if (Object.keys(assetData).length > 0) {
         await tx.pressMediaAsset.update({ where: { id }, data: assetData });
       }
