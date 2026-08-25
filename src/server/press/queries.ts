@@ -218,10 +218,33 @@ export async function getAllPublishedPressReleaseSlugs(locale: Locale): Promise<
 // ─────────────────────────────────────────────────────────────────
 // Kit média publié.
 // ─────────────────────────────────────────────────────────────────
+/** Clé de rapprochement fixture ↔ asset console : titre normalisé (casse/accents). */
+function normalizeKitTitle(title: string): string {
+  // `\p{M}` (marques Unicode) après NFD, plutôt qu'une plage de diacritiques
+  // combinants écrite en dur : ces caractères-là sont invisibles dans un éditeur
+  // et ne survivent pas à un aller-retour d'encodage.
+  return title.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
 export async function getPublishedPressMedia(locale: Locale): Promise<PressKitItem[]> {
-  // Kit média : on GARDE le fallback fixtures (vrais logos/charte de marque, pas
-  // de contenu inventé) tant que rien n'est uploadé en console. try/catch : table
-  // absente → fallback fixtures plutôt que crash.
+  // Kit média = assets console PUIS fixtures restantes.
+  //
+  // 🔴 Ne PAS revenir à un fallback tout-ou-rien (« fixtures seulement si la DB
+  // est vide »). C'était le comportement d'origine, et il posait un piège de
+  // production : les logos, le boilerplate et le portrait du fondateur ne
+  // vivent QUE dans les fixtures — le premier upload console (un brand book,
+  // par exemple) les faisait tous disparaître d'un coup de la salle de presse,
+  // sans qu'aucun écran n'annonce la substitution.
+  //
+  // Règle de fusion, dans cet ordre :
+  //   1. les assets publiés en console (l'admin fait autorité, `sortOrder` d'abord) ;
+  //   2. les fixtures qu'aucun asset console ne remplace :
+  //      - même titre normalisé  ⇒ la fixture s'efface (remplacement explicite) ;
+  //      - fixture placeholder (`fileUrl: null`) et un asset console porte déjà
+  //        ce `kind` ⇒ la fixture s'efface (la promesse est tenue par un vrai fichier).
+  //
+  // try/catch : table absente (migration non appliquée) → fixtures seules plutôt
+  // que crash.
   try {
     const rows = await prisma.pressMediaAsset.findMany({
       where: { status: "published", deletedAt: null },
@@ -244,14 +267,25 @@ export async function getPublishedPressMedia(locale: Locale): Promise<PressKitIt
       });
     }
 
-    // Fallback fixtures si rien de publié en console.
-    if (mapped.length === 0) {
-      return PRESS_KIT_ASSETS.map((a) => fixtureToKitItem(a, locale));
-    }
-    return mapped;
+    return [...mapped, ...remainingFixtures(mapped, locale)];
   } catch {
     return PRESS_KIT_ASSETS.map((a) => fixtureToKitItem(a, locale));
   }
+}
+
+/**
+ * Fixtures que les assets console ne remplacent pas. Voir la règle de fusion
+ * documentée sur `getPublishedPressMedia`.
+ */
+function remainingFixtures(published: ReadonlyArray<PressKitItem>, locale: Locale): PressKitItem[] {
+  const publishedTitles = new Set(published.map((p) => normalizeKitTitle(p.title)));
+  const publishedKinds = new Set(published.filter((p) => p.fileUrl).map((p) => p.kind));
+
+  return PRESS_KIT_ASSETS.map((a) => fixtureToKitItem(a, locale)).filter((f) => {
+    if (publishedTitles.has(normalizeKitTitle(f.title))) return false;
+    if (!f.fileUrl && publishedKinds.has(f.kind)) return false;
+    return true;
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────

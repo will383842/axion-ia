@@ -208,31 +208,31 @@ export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
     },
   },
   {
-    id: "wordmark-dark",
-    kind: "wordmark",
-    fileUrl: null,
-    format: "PNG",
+    id: "logo-square",
+    kind: "logo",
+    fileUrl: "/images/axion-ia-logo-full-transparent-toutes-couleurs-fond-versatile.webp",
+    format: "WebP",
     fr: {
-      title: "Wordmark dark",
-      description: "Wordmark sur fond mocha — usage éditorial premium.",
+      title: "Logo carré",
+      description: "Format carré fond transparent — vignettes, encadrés, réseaux sociaux.",
     },
     en: {
-      title: "Wordmark dark",
-      description: "Wordmark on mocha background — premium editorial use.",
+      title: "Square logo",
+      description: "Square format, transparent background — thumbnails, sidebars, social.",
     },
   },
   {
-    id: "brand-book",
-    kind: "brand-book",
-    fileUrl: null,
-    format: "PDF",
+    id: "logo-avatar",
+    kind: "logo",
+    fileUrl: "/images/axion-ia-logo-format-cercle-avatar-profil-linkedin-reseaux.webp",
+    format: "WebP",
     fr: {
-      title: "Brand book synthétique",
-      description: "Palette, typographie, ton de voix, règles d'usage du logo.",
+      title: "Logo rond (avatar)",
+      description: "Version circulaire — avatars, profils, pastilles de crédit.",
     },
     en: {
-      title: "Brand book summary",
-      description: "Palette, typography, tone of voice, logo usage rules.",
+      title: "Round logo (avatar)",
+      description: "Circular version — avatars, profiles, credit badges.",
     },
   },
   {
@@ -242,17 +242,20 @@ export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
     format: "JPG",
     fr: {
       title: "Photo fondateur",
-      description: "Portrait haute définition, format 1:1 et 16:9.",
+      description: "Portrait carré 2048 × 2048 px, libre pour usage éditorial presse.",
     },
     en: {
       title: "Founder photo",
-      description: "High-resolution portrait, 1:1 and 16:9 formats.",
+      description: "Square portrait, 2048 × 2048 px, free for editorial press use.",
     },
   },
   {
     id: "boilerplate",
     kind: "boilerplate",
-    fileUrl: "/press/axion-ia-boilerplate-fr-en.txt",
+    // Généré au runtime depuis `PRESS_PITCH` + l'identité légale (SSOT), et non
+    // servi comme fichier statique : le TXT figé avait divergé du site (il
+    // annonçait « fondé en 2024 » quand le JSON-LD publiait `foundingDate: 2026`).
+    fileUrl: "/api/presse/boilerplate",
     format: "TXT",
     fr: {
       title: "Boilerplate FR + EN",
