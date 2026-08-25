@@ -304,3 +304,195 @@ export async function eraseChatDataForEmail(email: string): Promise<EraseChatRes
 
   return { conversationsDeleted, escalationsAnonymized: esc.count };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LES TROIS DERNIÈRES TABLES DE L'INVENTAIRE (2026-08-25)
+//
+// Le cliquet `rgpd-aucune-table-n-echappe-en-silence.spec.ts` en portait trois
+// « à instruire », chacune bloquée sur une décision. Elles sont tranchées ici,
+// et la raison de chaque arbitrage est écrite au-dessus de son effaceur.
+//
+// 🔑 LA CLÉ QUI A DÉBLOQUÉ LES TROIS : cette route est **déclenchée par une
+// DEMANDE** (adresse + jeton HMAC + confirmation littérale), pas par une purge
+// automatique. Or les blocages écrits dans le cliquet supposaient tous une
+// purge : « aucune date de fin de relation, donc les 5 ans sont incalculables »
+// ne s'oppose qu'à un traitement périodique. **Une personne qui exerce son
+// droit n'a besoin d'aucune échéance** — la seule question est de savoir si une
+// obligation légale justifie de garder, au sens de l'art. 17(3).
+//
+// Et la purge automatique, elle, a été écartée par le propriétaire en
+// connaissance de cause (« garder 5 ans sans purger ») : le blocage portait
+// donc sur une voie qui ne sera pas prise.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface EraseClientsResult {
+  /** Fiches dont les coordonnées de contact ont été pseudonymisées. */
+  readonly anonymises: number;
+  /** Fiches gardées intactes parce qu'une pièce comptable les retient. */
+  readonly retenusObligationComptable: number;
+}
+
+/**
+ * `Client` — les coordonnées du CONTACT, pas la fiche de l'entreprise.
+ *
+ * ## Ce qui est effacé, et ce qui ne l'est pas
+ *
+ * Une fiche `Client` mélange deux natures de données. La **personne morale**
+ * (raison sociale, SIRET, adresse de l'établissement, code NAF) n'est pas une
+ * donnée à caractère personnel : l'art. 17 ne porte pas dessus. Le **contact**
+ * — nom, adresse électronique, téléphone, fonction — en est une, et c'est lui
+ * qu'on efface.
+ *
+ * ⚠️ **Sauf pour un `particulier`.** Quand `type === "particulier"`, la
+ * « raison sociale » EST le nom de la personne : elle est alors pseudonymisée
+ * comme le reste. C'est le piège du champ dont le sens dépend d'une colonne
+ * voisine — ce dépôt l'a déjà payé sur la facture qui appelait « OPCO » un
+ * client qui n'en était pas un.
+ *
+ * ## La rétention opposable, et sa borne
+ *
+ * Une fiche rattachée à une **facture** est retenue : l'art. L.123-22 du code
+ * de commerce impose dix ans aux pièces justificatives comptables, et
+ * l'art. 17(3)(b) du RGPD réserve explicitement ce cas. **On le DÉCLARE au lieu
+ * de le taire** : le compte rendu distingue les fiches effacées de celles
+ * retenues, parce qu'une réponse qui annonce un effacement total alors qu'une
+ * ligne survit est précisément le défaut que cette famille de correctifs
+ * corrige depuis quatre occurrences.
+ *
+ * 🔑 Le critère est la **pièce comptable émise**, pas le statut commercial. Un
+ * `prospect` sans facture ne retient rien ; un `perdu` qui a été facturé une
+ * fois, si. Raisonner sur `statut` aurait laissé filer le second.
+ */
+export async function eraseClientsForEmail(email: string): Promise<EraseClientsResult> {
+  const hashedEmail = `erased:${hashEmail(email)}@erased.local`;
+
+  const fiches = await prisma.client.findMany({
+    where: { contactEmail: email },
+    select: { id: true, type: true, _count: { select: { facturesFormation: true } } },
+  });
+  if (fiches.length === 0) return { anonymises: 0, retenusObligationComptable: 0 };
+
+  const retenus = fiches.filter((c) => c._count.facturesFormation > 0);
+  const effacables = fiches.filter((c) => c._count.facturesFormation === 0);
+
+  let anonymises = 0;
+  for (const fiche of effacables) {
+    await prisma.client.update({
+      where: { id: fiche.id },
+      data: {
+        contactEmail: hashedEmail,
+        contactNom: null,
+        contactTelephone: null,
+        contactFonction: null,
+        // Champs de saisie libre : ils portent régulièrement le nom et le
+        // contexte de la personne. On ne peut pas les trier, donc on les vide.
+        notes: null,
+        contexteIa: null,
+        // Le nom de la personne physique se cache dans la « raison sociale ».
+        ...(fiche.type === "particulier" ? { raisonSociale: "Personne effacée" } : {}),
+      },
+    });
+    anonymises += 1;
+  }
+
+  return { anonymises, retenusObligationComptable: retenus.length };
+}
+
+export interface EraseDocumentRecipientsResult {
+  /** Destinataires pseudonymisés et désactivés. */
+  readonly anonymises: number;
+  /** Accusés de téléchargement PRÉSERVÉS (preuve de diffusion Qualiopi). */
+  readonly telechargementsPreserves: number;
+}
+
+/**
+ * `DocumentRecipient` — pseudonymiser SANS supprimer, et c'est tout l'arbitrage.
+ *
+ * ## L'effet de bord qui bloquait
+ *
+ * Un `deleteMany` emporterait en cascade `RessourceTelechargement`, l'accusé de
+ * lecture des supports. Or cette trace peut valoir **preuve de diffusion** dans
+ * un dossier Qualiopi : elle établit qu'un document a été mis à disposition et
+ * consulté. La détruire pour honorer un droit à l'effacement reviendrait à
+ * détruire la preuve d'un autre engagement.
+ *
+ * ## La sortie : l'anonymisation n'est pas un demi-effacement
+ *
+ * Le RGPD ne réclame pas la destruction de la LIGNE, il réclame que la personne
+ * ne soit plus identifiable. En écrasant l'adresse et le nom, l'accusé de
+ * téléchargement survit **rattaché à personne** : il prouve encore qu'une
+ * diffusion a eu lieu, sans plus désigner quiconque.
+ *
+ * On coupe aussi l'accès : `actif: false`, et les liens magiques encore vivants
+ * sont supprimés. Un lien passwordless survivant à l'effacement rouvrirait
+ * l'espace ressources au nom d'une personne effacée — même raisonnement que la
+ * révocation des jetons de signature plus haut dans ce fichier.
+ */
+export async function eraseDocumentRecipientsForEmail(
+  email: string,
+): Promise<EraseDocumentRecipientsResult> {
+  const hashedEmail = `erased:${hashEmail(email)}@erased.local`;
+
+  const destinataires = await prisma.documentRecipient.findMany({
+    where: { email },
+    select: { id: true, _count: { select: { telechargements: true } } },
+  });
+  if (destinataires.length === 0) return { anonymises: 0, telechargementsPreserves: 0 };
+
+  const ids = destinataires.map((d) => d.id);
+  const telechargementsPreserves = destinataires.reduce((n, d) => n + d._count.telechargements, 0);
+
+  // Les liens d'accès d'abord : révoquer avant de pseudonymiser.
+  await prisma.ressourcesMagicLink.deleteMany({ where: { recipientId: { in: ids } } });
+
+  const maj = await prisma.documentRecipient.updateMany({
+    where: { id: { in: ids } },
+    data: { email: hashedEmail, nom: null, actif: false },
+  });
+
+  return { anonymises: maj.count, telechargementsPreserves };
+}
+
+export interface EraseCoachingSignaturesResult {
+  readonly anonymises: number;
+}
+
+/**
+ * `CoachingSeanceSignature` — la table dont la vraie question était « pourquoi
+ * existe-t-elle encore ».
+ *
+ * ## Pourquoi l'argument du tuple scellé ne s'applique PAS ici
+ *
+ * Les signatures de documents et d'émargement sont exclues de l'effacement
+ * parce que l'adresse est scellée dans un tuple haché : l'écraser ferait rendre
+ * `empreinte_invalide` à la vérification de chaîne, c'est-à-dire, dans un
+ * dossier présenté à un contrôle, le verdict « ces pièces ont été modifiées
+ * après coup » sur des pièces intactes.
+ *
+ * Cette table porte bien un `prevHash`/`selfHash` — **mais plus aucun code ne
+ * les recalcule.** Mesuré le 2026-08-25 : plus une ligne de `src/` ne lit ni
+ * n'écrit `coachingSeanceSignature`, le module AFEST 1-to-1 ayant été retiré le
+ * 2026-08-10 ; et la table compte **zéro ligne en production**. Une chaîne que
+ * personne ne vérifie ne prouve rien : elle ne peut donc pas être opposée à une
+ * demande d'effacement.
+ *
+ * 🔑 **Une table morte qui porte de la donnée personnelle en clair est le pire
+ * des deux mondes** — aucune valeur d'usage, tout le risque. L'effacement est
+ * ici un no-op en pratique, et il existe pour que la liste soit VRAIE : c'est
+ * l'exhaustivité qui est le sujet de cette famille de correctifs, pas le volume.
+ *
+ * ⚠️ La question « faut-il retirer la table du schéma » reste ouverte et n'est
+ * pas tranchée ici : supprimer un modèle est irréversible et se décide à froid.
+ */
+export async function eraseCoachingSignaturesForEmail(
+  email: string,
+): Promise<EraseCoachingSignaturesResult> {
+  const hashedEmail = `erased:${hashEmail(email)}@erased.local`;
+
+  const maj = await prisma.coachingSeanceSignature.updateMany({
+    where: { signataireEmail: email },
+    data: { signataireEmail: hashedEmail, signataireNom: "Personne effacée" },
+  });
+
+  return { anonymises: maj.count };
+}

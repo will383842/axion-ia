@@ -90,6 +90,19 @@ export interface ContratFormationData {
   }>;
   dateContrat: string;
   /**
+   * Médiateur de la consommation, quand l'organisme a adhéré.
+   *
+   * 🔴 ABSENT = la clause n'est PAS imprimée, et c'est le comportement voulu :
+   * annoncer un médiateur qui n'existe pas serait pire que le silence — une
+   * affirmation inexacte sur un support contractuel se retourne contre celui
+   * qui l'a écrite. L'admin est averti à l'émission (`documents.ts`) et la
+   * trace part au journal d'audit.
+   *
+   * ⚠️ Ce champ n'a de sens que pour le CONTRAT INDIVIDUEL. La convention B2B
+   * ne relève pas du droit de la consommation.
+   */
+  mediation?: { nom: string; url: string };
+  /**
    * Preuves de signature RÉELLEMENT apposées, par partie.
    *
    * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
@@ -371,10 +384,50 @@ export function ContratFormationPdf({
           <Text style={local.listItem}>– Conditions générales de vente (CGV)</Text>
         </DocSection>
 
-        {/* 7. Signatures */}
+        {/* 7. Médiation de la consommation (L.612-1 C. conso)
+
+            🔴 Comblé le 2026-08-25. Le gabarit n'imprimait RIEN, même une fois
+            les clés `mediateur_consommation_*` renseignées : renseigner la
+            configuration éteignait l'avertissement admin sans mettre la clause
+            au contrat — une conformité de façade, précisément l'écart que
+            `documents.ts` décrivait et demandait de combler avant de retirer
+            son propre commentaire.
+
+            L'obligation vise le PROFESSIONNEL face à un CONSOMMATEUR : elle est
+            déclenchée par la qualité de l'acheteur, pas par la nature du
+            produit. Amende administrative jusqu'à 15 000 € pour une personne
+            morale (art. L.641-1).
+
+            🔑 Rien ne s'imprime tant qu'aucun médiateur n'a été renseigné. Une
+            clause qui nommerait un médiateur inexistant donnerait au
+            consommateur un recours qui échoue — donc un grief de plus, pas une
+            conformité. */}
+        {data.mediation ? (
+          <DocSection title="7. Médiation de la consommation">
+            <Text style={pdfStyles.paragraph}>
+              Conformément aux articles L.611-1 et L.612-1 du Code de la consommation, le stagiaire
+              agissant en qualité de consommateur peut recourir gratuitement à un médiateur de la
+              consommation en vue de la résolution amiable d'un litige qui l'opposerait à
+              l'organisme de formation.
+            </Text>
+            <Text style={pdfStyles.paragraph}>
+              Le recours à la médiation suppose que le stagiaire ait préalablement adressé une
+              réclamation écrite à l'organisme et n'ait pas obtenu satisfaction, ou soit resté sans
+              réponse pendant deux mois.
+            </Text>
+            <Text style={local.listItem}>• Médiateur : {data.mediation.nom}</Text>
+            <Text style={local.listItem}>• Saisine : {data.mediation.url}</Text>
+          </DocSection>
+        ) : null}
+
+        {/* Signatures — numérotée 8 quand la clause de médiation précède, 7
+            sinon. 🔑 Un numéro FIXE aurait fait sauter le contrat de 6 à 8 sur
+            tous les contrats émis avant l'adhésion à un médiateur : un trou
+            dans la numérotation d'une pièce contractuelle se lit comme une page
+            manquante, et c'est la première chose qu'un lecteur méfiant relève. */}
         {/* « Fait à » = ville du siège — même raisonnement que la convention : un
             blanc sur une pièce signée électroniquement reste vide pour toujours. */}
-        <DocSection title="7. Signatures">
+        <DocSection title={`${data.mediation ? 8 : 7}. Signatures`}>
           <SignatureZone
             intro="Le présent contrat est établi en deux exemplaires originaux, un pour chaque partie."
             faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateContrat}`}

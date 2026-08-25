@@ -628,10 +628,18 @@ export async function genererContratFormationAction(input: {
   // n'imprime AUCUNE clause de médiation, ni aujourd'hui ni avec les clés
   // renseignées. Le refus posé en 2026-07-26 protégeait donc l'émission d'un
   // document qui, même conforme côté configuration, n'aurait pas porté la
-  // mention — une conformité de façade. Renseigner les deux clés éteindra
-  // l'avertissement SANS ajouter la clause au contrat : il faudra aussi
-  // modifier le gabarit, sous peine de croire le contrat en règle alors qu'il
-  // ne l'est pas. Ne pas retirer ce commentaire avant que le gabarit l'imprime.
+  // mention — une conformité de façade.
+  //
+  // ✅ 2026-08-25 — LE GABARIT L'IMPRIME DÉSORMAIS. Le commentaire précédent
+  // demandait de ne pas le retirer avant que ce soit fait ; c'est fait.
+  // `contrat-formation.tsx` rend une section « Médiation de la consommation »
+  // dès que les deux clés sont renseignées, et RIEN tant qu'elles ne le sont
+  // pas — nommer un médiateur inexistant donnerait au consommateur un recours
+  // qui échoue, donc un grief de plus, pas une conformité.
+  //
+  // ⚠️ Il reste UN acte qui n'est pas du code : ADHÉRER à un médiateur agréé
+  // CECMC et renseigner les deux clés. Le logiciel est prêt ; l'adhésion ne
+  // s'écrit pas.
   //
   // ⚠️ N'affecte QUE le contrat individuel. La convention B2B ne relève pas du
   // droit de la consommation et n'a jamais été concernée.
@@ -773,6 +781,17 @@ export async function genererContratFormationAction(input: {
               dueLeLisible: e.dueLe === null ? null : formatDate(e.dueLe),
             })),
           dateContrat: formatDateFr(new Date()),
+          // Rien n'est transmis tant qu'aucun médiateur n'a été renseigné : le
+          // gabarit n'imprime alors aucune clause, et l'avertissement
+          // ci-dessus part au journal d'audit.
+          ...(mediateurManquant
+            ? {}
+            : {
+                mediation: {
+                  nom: (mediateurNom as string).trim(),
+                  url: (mediateurUrl as string).trim(),
+                },
+              }),
         },
         identite,
       }),
@@ -3250,6 +3269,13 @@ export async function genererContratSousTraitanceAction(input: {
             ? formatDateFr(new Date(sousTraitant.verifieDataGouvAt))
             : "",
           dateContrat: formatDateFr(new Date()),
+          // 🔑 AUCUNE clause de médiation ici, et ce n'est pas un oubli : la
+          // médiation de la consommation vise le professionnel face à un
+          // CONSOMMATEUR. Un contrat de sous-traitance lie deux professionnels.
+          // Le motif de recherche qui a servi à câbler le contrat individuel
+          // touchait aussi ce fichier-ci — « une règle juste appliquée au
+          // pluriel dispense d'examiner le voisin » est le défaut le plus
+          // fréquent de ce dépôt, et il s'est présenté ici même.
         },
         identite,
       }),
