@@ -14,9 +14,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 export type ImageBankCronJobType =
-  | "seo-score-recalc"
-  | "taxonomy-redetect-batch"
-  | "watermark-backfill";
+  "seo-score-recalc" | "taxonomy-redetect-batch" | "watermark-backfill";
 
 export type ImageBankCronJobData = {
   type: ImageBankCronJobType;

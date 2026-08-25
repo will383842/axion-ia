@@ -54,14 +54,7 @@ export type ImageBankAutoConvertResult = {
 // ─── Constantes variants ─────────────────────────────────────────────────────
 
 type ImageType =
-  | "banniere"
-  | "carre"
-  | "affiche"
-  | "infographie"
-  | "editorial"
-  | "photo"
-  | "dataviz"
-  | "logo";
+  "banniere" | "carre" | "affiche" | "infographie" | "editorial" | "photo" | "dataviz" | "logo";
 
 interface VariantDef {
   /** Suffixe ajouté au slug — "" pour le variant pleine largeur. */
