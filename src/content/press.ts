@@ -176,9 +176,46 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
 
 // ─────────────────────────────────────────────────────────────────
 // PRESS KIT — assets téléchargeables. `fileUrl: null` = placeholder UI disabled.
-// Phase 1 : tous placeholders, Will fournit les binaires en suite.
+//
+// Plus aucun placeholder ici : une fixture affichée « bientôt disponible » sur une
+// page publique est une promesse non tenue faite à la presse. Un test le verrouille
+// (`queries.spec.ts`), et vérifie en plus que chaque `fileUrl` existe sur le disque.
+//
+// Les deux SVG viennent en tête : c'est le format que demande la presse print, et le
+// seul qui ne se dégrade pas à l'agrandissement (affiche, kakémono, 4e de couverture).
 // ─────────────────────────────────────────────────────────────────
 export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
+  {
+    id: "logo-vector-color",
+    kind: "logo",
+    fileUrl: "/images/axion-ia-logo-vectoriel-couleur.svg",
+    format: "SVG",
+    fr: {
+      title: "Logo vectoriel couleur",
+      description:
+        "Format vectoriel, sans perte à toute taille — impression, affichage grand format, découpe.",
+    },
+    en: {
+      title: "Vector logo, color",
+      description: "Vector format, lossless at any size — print, large-format display, cutting.",
+    },
+  },
+  {
+    id: "logo-vector-reversed",
+    kind: "logo",
+    fileUrl: "/images/axion-ia-logo-vectoriel-blanc-fond-sombre.svg",
+    format: "SVG",
+    fr: {
+      title: "Logo vectoriel blanc (fonds sombres)",
+      description:
+        "Version monochrome blanche, intérieur transparent — à poser sur photo ou fond foncé.",
+    },
+    en: {
+      title: "Vector logo, white (dark backgrounds)",
+      description:
+        "White monochrome version, transparent interior — for photos or dark backgrounds.",
+    },
+  },
   {
     id: "logo-primary",
     kind: "logo",
