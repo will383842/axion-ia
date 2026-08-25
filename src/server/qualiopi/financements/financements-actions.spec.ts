@@ -577,8 +577,36 @@ describe("genererFactureFormationAction", () => {
       createCall.data["destinataire"],
       "le destinataire a été écrasé : le reste à charge redevient infacturable",
     ).toBe("entreprise");
-    // La subrogation reste tracée : elle décrit le dossier, pas le destinataire.
-    expect(createCall.data["subrogation"]).toBe(true);
+    // 🔴 2026-08-25 — CETTE ASSERTION A ÉTÉ RETOURNÉE, et il faut dire pourquoi.
+    //
+    // Elle valait `toBe(true)`, au motif écrit juste au-dessus : « la subrogation
+    // reste tracée : elle décrit le DOSSIER, pas le destinataire ». Le concept
+    // est juste. **La colonne était la mauvaise.**
+    //
+    // `FactureFormation.subrogation` n'est pas un champ d'archive : c'est lui
+    // qui ARME l'encadré légal du gabarit PDF
+    // (`actions/qualiopi/financements.ts:1029` → `templates/facture.tsx:332`),
+    // alimenté par `nomOpco: facture.destinataireNom`. Une facture du reste à
+    // charge portant `subrogation: true` imprimait donc, au client et sous son
+    // propre SIRET : « Facture libellée à l'OPCO **Acme** dans le cadre de la
+    // subrogation de paiement ». La facture appelait le client OPCO et affirmait
+    // qu'un financeur la réglait — alors que ces euros sont précisément ce que
+    // le client doit payer lui-même. Mentions obligatoires fausses.
+    //
+    // 🔑 La trace du dossier n'est pas perdue pour autant, et c'est ce qui rend
+    // le retournement légitime : `TrainingSession.opcoSubrogation` la porte
+    // toujours, et la créance `opco_subroge` du `DossierPayeur` aussi. Ce qui
+    // disparaît ici, c'est une COPIE de ce fait sur une pièce qui n'est pas
+    // adressée au financeur — et cette copie n'était pas neutre, elle
+    // s'imprimait.
+    //
+    // La facture ADRESSÉE À L'OPCO, elle, garde sa mention : contre-témoin dans
+    // `actions/qualiopi/facture-creance-cablage.spec.ts`.
+    expect(
+      createCall.data["subrogation"],
+      "la facture du reste à charge se déclare subrogée : le PDF y imprimera " +
+        "« Facture libellée à l'OPCO <nom du CLIENT> ».",
+    ).toBe(false);
   });
 
   // ── Ventilation ───────────────────────────────────────────────────────────

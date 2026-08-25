@@ -70,7 +70,15 @@ vi.mock("@/server/qualiopi/documents/conformite", () => ({
 }));
 
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
-  getQualiopiConfig: vi.fn().mockResolvedValue(30),
+  // 🔴 Le mock rendait 30 pour TOUTES les clés. Un test qui vérifie « le client
+  // reçoit son délai et non celui du financeur » passait alors même sur le code
+  // fautif : les deux valeurs étaient identiques, donc indiscernables. Un mock
+  // plus étroit que le vrai contrat rend un test décoratif — et ce dépôt l'a
+  // déjà payé. Les deux délais sont désormais DISTINCTS, comme en production
+  // (30 j client / 45 j financeur, `config/registry.ts:391,395`).
+  getQualiopiConfig: vi.fn(async (cle: string) =>
+    cle === "delai_paiement_financeur_jours" ? 45 : 30,
+  ),
 }));
 
 import { genererFactureFormationAction } from "@/server/actions/qualiopi/financements";
@@ -272,5 +280,120 @@ describe("🔴 les refus", () => {
     expect("data" in r, `l'émission sans dossier a échoué : ${JSON.stringify(r)}`).toBe(true);
     const data = mockFactureCreate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
     expect(data["montantHtCents"], "le montant de la session doit primer sans créance").toBe(30000);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 LA MENTION DE SUBROGATION SUR LA FACTURE DU RESTE À CHARGE
+//
+// Le bloc ci-dessus a retiré l'écrasement `opcoSubrogation ? "opco" : destinataire`,
+// et il a eu raison : « l'OPCO paie sa part, le client le reste à charge. Deux
+// factures. »
+//
+// Mais TROIS consommateurs interrogeaient encore `trainingSession.opcoSubrogation`
+// — c'est-à-dire « cette SESSION est-elle subrogée ? » — là où la question posée
+// est « cette FACTURE-CI part-elle au financeur ? ». Sur une session subrogée, la
+// facture du reste à charge adressée au CLIENT recevait donc :
+//
+//   · `subrogation: true` et le n° de dossier OPCO (financements.ts:730-733) ;
+//   · d'où, dans le PDF, l'encadré légal `subrogationOpco` alimenté par
+//     `nomOpco: facture.destinataireNom` (financements.ts:1034) — soit, mot pour
+//     mot : « Facture libellée à l'OPCO **Acme** dans le cadre de la subrogation
+//     de paiement — N° dossier : ATL-1. » **La facture appelle le client OPCO**,
+//     sous son propre SIRET, et affirme qu'un financeur règle directement
+//     l'organisme alors que ces euros sont le reste à charge du client. Elle se
+//     contredit avec ses propres conditions de règlement et le RIB imprimé
+//     dessous ;
+//   · le délai de paiement du FINANCEUR (45 j) au lieu de celui du client (30 j),
+//     alors que le commentaire de `financements.ts:650` dit lui-même la bonne
+//     règle — « sauf subrogation, où c'est le FINANCEUR QUI PAIE, avec son délai
+//     propre ».
+//
+// 🔑 Le gabarit PDF **présuppose** l'écrasement qu'on a retiré. Un émetteur a
+// changé de règle ; ni le gabarit, ni son jumeau `facturation-service.ts:147`
+// (qui écrase toujours, et reste donc cohérent), ni la phrase d'aide de l'écran
+// n'ont suivi. Motif dominant du dépôt, énième instance.
+//
+// ⚠️ Mentions FAUSSES au sens de l'art. L.441-9 C. com. et 242 nonies A CGI.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 la facture du reste à charge ne se déclare PAS subrogée", () => {
+  it("une facture au CLIENT, sur session subrogée, ne porte ni subrogation ni n° de dossier", async () => {
+    mockSessionFindUnique.mockResolvedValue(sessionAvecCreances());
+
+    const r = await genererFactureFormationAction({
+      sessionId: SESSION_ID,
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+    expect("data" in r, `l'émission a échoué : ${JSON.stringify(r)}`).toBe(true);
+
+    const data = mockFactureCreate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+
+    expect(
+      data["subrogation"],
+      "la facture du RESTE À CHARGE se déclare subrogée. Le PDF y ajoutera " +
+        "« Facture libellée à l'OPCO <nom du CLIENT> … » — la facture appelle le " +
+        "client OPCO, sous son propre SIRET, et affirme qu'un financeur la règle " +
+        "alors que c'est justement la part que le client doit payer lui-même.",
+    ).toBe(false);
+
+    expect(
+      data["numeroDossierOpco"],
+      "le n° de dossier OPCO est porté sur la facture du client. C'est lui qui " +
+        "arme l'encadré de subrogation dans le gabarit PDF (financements.ts:1029).",
+    ).toBeNull();
+  });
+
+  it("la facture à l'OPCO, elle, garde sa subrogation et son n° de dossier", async () => {
+    // 🔑 CONTRE-TÉMOIN. Sans lui, on satisferait le test précédent en retirant
+    // purement la subrogation de TOUTES les factures — et l'OPCO perdrait la
+    // mention qui lui est due. La garde doit distinguer, pas supprimer.
+    mockSessionFindUnique.mockResolvedValue(sessionAvecCreances());
+
+    const r = await genererFactureFormationAction({
+      sessionId: SESSION_ID,
+      destinataire: "opco",
+      ventilation: "forfait",
+    });
+    expect("data" in r, `l'émission a échoué : ${JSON.stringify(r)}`).toBe(true);
+
+    const data = mockFactureCreate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data["destinataire"]).toBe("opco");
+    expect(
+      data["subrogation"],
+      "la facture ADRESSÉE À L'OPCO a perdu sa mention de subrogation : le " +
+        "correctif a supprimé au lieu de distinguer.",
+    ).toBe(true);
+    expect(data["numeroDossierOpco"]).toBe("ATL-1");
+  });
+
+  it("et le CLIENT reçoit SON délai de paiement, pas celui du financeur", async () => {
+    // `financements.ts:650` écrit la bonne règle — « sauf subrogation, où c'est
+    // le FINANCEUR QUI PAIE, avec son délai propre » — puis interroge la
+    // session au lieu de la facture. Le client se voyait accorder 45 jours sur
+    // une somme qu'il doit lui-même.
+    //
+    // ⚠️ `getQualiopiConfig` est simulé à 30 pour TOUTES les clés dans ce
+    // fichier : on ne peut donc pas distinguer 30 de 45 par la valeur. On
+    // vérifie ce qui est vérifiable ici — que l'échéance est bien posée, et
+    // qu'elle vaut émission + 30 j, c'est-à-dire le délai CLIENT.
+    mockSessionFindUnique.mockResolvedValue(sessionAvecCreances());
+
+    await genererFactureFormationAction({
+      sessionId: SESSION_ID,
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+
+    const data = mockFactureCreate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    const emiseAt = data["emiseAt"] as Date;
+    const echeanceAt = data["echeanceAt"] as Date;
+    expect(echeanceAt, "aucune échéance posée — mention obligatoire").toBeInstanceOf(Date);
+
+    const jours = Math.round((echeanceAt.getTime() - emiseAt.getTime()) / 86_400_000);
+    expect(jours, "l'échéance de la facture du reste à charge ne suit pas le délai CLIENT.").toBe(
+      30,
+    );
   });
 });

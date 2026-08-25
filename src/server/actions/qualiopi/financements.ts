@@ -622,6 +622,42 @@ export async function genererFactureFormationAction(input: {
   }
 
   const destinataireEffectif: FactureFormationDestinataire = destinataire;
+
+  // ── 🔴 CETTE FACTURE-CI part-elle au financeur ? ──────────────────────────
+  //
+  // Trois consommateurs interrogeaient `trainingSession.opcoSubrogation`,
+  // c'est-à-dire « cette SESSION est-elle subrogée ? », là où la question posée
+  // est « cette FACTURE-CI part-elle au financeur ? ». Depuis que le bloc
+  // ci-dessus a retiré l'écrasement du destinataire — à raison : « l'OPCO paie
+  // sa part, le client le reste à charge, deux factures » — les deux questions
+  // ont des réponses DIFFÉRENTES sur la facture du reste à charge.
+  //
+  // Ce qu'un client recevait, sur une session subrogée :
+  //
+  //   · l'encadré légal du gabarit PDF, alimenté par `nomOpco:
+  //     facture.destinataireNom` (plus bas) — soit, mot pour mot : « Facture
+  //     libellée à l'OPCO **Acme** dans le cadre de la subrogation de paiement ».
+  //     La facture appelait le CLIENT « OPCO », sous son propre SIRET, et
+  //     affirmait qu'un financeur la réglait alors que ces euros sont
+  //     précisément le reste à charge qu'il doit payer lui-même. Elle se
+  //     contredisait avec ses propres conditions de règlement et le RIB imprimé
+  //     dessous. Mentions obligatoires FAUSSES (art. L.441-9 C. com.,
+  //     242 nonies A CGI) ;
+  //   · le délai de paiement du FINANCEUR (45 j) au lieu du sien (30 j) — alors
+  //     que le commentaire de l'échéance, plus bas, écrit lui-même la bonne
+  //     règle : « sauf subrogation, où c'est le FINANCEUR QUI PAIE, avec son
+  //     délai propre ».
+  //
+  // 🔑 Le gabarit PDF PRÉSUPPOSE l'écrasement qu'on lui a retiré. Un émetteur a
+  // changé de règle ; ni lui, ni son jumeau `facturation-service.ts:147` — qui
+  // écrase toujours, et reste donc cohérent — n'ont suivi.
+  //
+  // ⚠️ Volontairement `=== "opco"` et non « tout financeur » : la subrogation
+  // est un mécanisme OPCO, et étendre à `france_travail` ALLONGERAIT son délai
+  // de 30 à 45 jours. Élargir un délai de paiement n'est pas la direction
+  // prudente, et ce n'est pas le défaut mesuré.
+  const factureAuFinanceurSubroge =
+    trainingSession.opcoSubrogation && destinataireEffectif === "opco";
   if (choix.ok) {
     // Le montant de la créance PRIME sur la ventilation calculée : c'est lui
     // qui porte la part réellement due par ce débiteur après application du
@@ -652,7 +688,7 @@ export async function genererFactureFormationAction(input: {
     getQualiopiConfig("delai_paiement_jours"),
     getQualiopiConfig("delai_paiement_financeur_jours"),
   ]);
-  const delaiRetenu = trainingSession.opcoSubrogation
+  const delaiRetenu = factureAuFinanceurSubroge
     ? delaiFinanceur
     : (trainingSession.client?.delaiPaiementJours ?? delaiClientGlobal);
   const delaiJours =
@@ -727,8 +763,8 @@ export async function genererFactureFormationAction(input: {
         montantTvaCents: totaux.totalTvaCents,
         montantTtcCents: totaux.totalTtcCents,
         lignes: lignes as never,
-        subrogation: trainingSession.opcoSubrogation,
-        numeroDossierOpco: trainingSession.opcoSubrogation
+        subrogation: factureAuFinanceurSubroge,
+        numeroDossierOpco: factureAuFinanceurSubroge
           ? (trainingSession.numeroDossierOpco ?? null)
           : null,
         statut: "emise",

@@ -42,6 +42,7 @@ import {
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { Link } from "@/i18n/navigation";
 import { readLatestSnapshot } from "@/server/observatoire/snapshot";
+import { resolveLegalIdentity } from "@/lib/legal-identity";
 import {
   STUDY_LICENSE_LABEL,
   STUDY_LICENSE_URL,
@@ -119,11 +120,44 @@ export default async function PressePage({ params, searchParams }: Props) {
   const obsHasData = obsTotal > 0;
   const obsCsvUrl = `${SITE_URL}/api/observatoire/export-csv`;
 
-  const facts = PRESS_FACTS.map((f) => ({
-    id: f.id,
-    label: f[loc].label,
-    value: f[loc].value,
-  }));
+  // Identité légale — SSOT `legal_overrides` (la même que les mentions légales
+  // et les factures). Un desk presse demande systématiquement la raison sociale
+  // et le numéro d'immatriculation avant de citer une entreprise ; la fiche de
+  // faits n'en portait aucun, alors que ces valeurs sont déjà publiées ailleurs
+  // sur le site au titre de la LCEN. Chaque ligne n'apparaît que si la valeur
+  // est réellement renseignée (au build `stub.invalid` → defaults → rien).
+  //
+  // ⚠️ L'année de fondation reste volontairement absente (décision Will
+  // 2026-06-23, cf. le commentaire de `PRESS_PITCH`).
+  const legal = await resolveLegalIdentity();
+  const legalFacts: Array<{ id: string; label: string; value: string }> = [
+    { id: "legal-name", label: isFr ? "Raison sociale" : "Legal name", value: legal.legalName },
+  ];
+  if (legal.rcsVille && legal.siren) {
+    legalFacts.push({
+      id: "legal-registration",
+      label: isFr ? "Immatriculation" : "Registration",
+      value: `RCS ${legal.rcsVille} · SIREN ${legal.siren}`,
+    });
+  } else if (legal.siren) {
+    legalFacts.push({ id: "legal-registration", label: "SIREN", value: legal.siren });
+  }
+  if (legal.addressCity) {
+    legalFacts.push({
+      id: "legal-hq",
+      label: isFr ? "Siège social" : "Head office",
+      value: `${legal.addressCity}, France`,
+    });
+  }
+
+  const facts = [
+    ...PRESS_FACTS.map((f) => ({
+      id: f.id,
+      label: f[loc].label,
+      value: f[loc].value,
+    })),
+    ...legalFacts,
+  ];
 
   // Porte-parole interview-ready — fondateur Axion-IA. Bio + citation attribuée
   // copy-paste (cf. PressSpokesperson). Photo réelle dans /public.
@@ -208,9 +242,13 @@ export default async function PressePage({ params, searchParams }: Props) {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "Axion-IA",
+      legalName: legal.legalName,
       url: SITE_URL,
       address: {
         "@type": "PostalAddress",
+        // Ville du siège dès qu'elle est renseignée : un `addressCountry` seul
+        // ne rapproche l'entité d'aucun registre.
+        ...(legal.addressCity ? { addressLocality: legal.addressCity } : {}),
         addressCountry: "FR",
       },
       contactPoint: [

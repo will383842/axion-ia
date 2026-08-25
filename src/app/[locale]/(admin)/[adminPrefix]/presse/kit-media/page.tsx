@@ -94,7 +94,12 @@ export default async function PressMediaListPage({ params }: PageProps) {
       key: "title",
       header: "Titre",
       cell: (row) => (
-        <span className="font-medium text-[color:var(--color-admin-fg)]">{row.title}</span>
+        <Link
+          href={`${base}/kit-media/${row.id}`}
+          className="font-medium text-[color:var(--color-admin-fg)] underline-offset-2 hover:underline"
+        >
+          {row.title}
+        </Link>
       ),
     },
     {
@@ -137,12 +142,17 @@ export default async function PressMediaListPage({ params }: PageProps) {
         getRowId={(row) => row.id}
         caption="Liste des assets du kit média"
         rowAction={(row) => (
-          <form action={remove}>
-            <input type="hidden" name="id" value={row.id} />
-            <AdminSubmitButton variant="destructive" pendingLabel="…">
-              Supprimer
-            </AdminSubmitButton>
-          </form>
+          <div className="flex items-center gap-[var(--space-admin-3)]">
+            <Link href={`${base}/kit-media/${row.id}`} className="admin-button-secondary">
+              Éditer
+            </Link>
+            <form action={remove}>
+              <input type="hidden" name="id" value={row.id} />
+              <AdminSubmitButton variant="destructive" pendingLabel="…">
+                Supprimer
+              </AdminSubmitButton>
+            </form>
+          </div>
         )}
         emptyState={
           <AdminEmptyState
