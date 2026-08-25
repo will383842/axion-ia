@@ -72,10 +72,33 @@ export interface PressSpokesperson {
   en: { name: string; role: string; bio: string; quote: string };
 }
 
+/**
+ * Types de pièces que le kit presse sait servir.
+ *
+ * 🔑 C'est la LISTE qui fait foi, et le type qui en découle — pas l'inverse. Un
+ * test vérifiait l'appartenance à une liste recopiée à la main : elle a péri au
+ * premier type ajouté (`color-charter`), en rougissant sur une fixture pourtant
+ * légitime. Dérivée d'ici, elle ne peut plus se périmer.
+ *
+ * Ajouter un type ici oblige aussi à le mapper dans `FIXTURE_KIND_TO_PRISMA`
+ * (`src/server/press/queries.ts`) : ce `Record` est exhaustif, donc `tsc` refuse
+ * l'oubli.
+ */
+export const PRESS_KIT_KINDS = [
+  "logo",
+  "wordmark",
+  "photo",
+  "brand-book",
+  "color-charter",
+  "boilerplate",
+] as const;
+
+export type PressKitKind = (typeof PRESS_KIT_KINDS)[number];
+
 export interface PressKitAsset {
   id: string;
   /** Asset category — drives card icon + group. */
-  kind: "logo" | "wordmark" | "photo" | "brand-book" | "boilerplate";
+  kind: PressKitKind;
   /** Public path under `/press-kit/...`. `null` = placeholder, button disabled. */
   fileUrl: string | null;
   /** Format label shown in the badge (e.g. SVG, PNG, PDF). */
@@ -172,6 +195,43 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
     fr: { label: "Délai de réponse presse", value: "48 h ouvrées" },
     en: { label: "Press response time", value: "48 business hours" },
   },
+];
+
+// ─────────────────────────────────────────────────────────────────
+// CHARTE COULEUR — source unique, partagée par la page presse ET la route
+// `/api/presse/charte-couleur` qui la sert en téléchargement.
+//
+// 🔴 Elle vivait dans `PressImages.tsx`, donc invisible depuis une route. Un
+// fichier de charte écrit à la main à côté aurait divergé des pastilles
+// affichées — exactement le défaut que le boilerplate figé a payé (il
+// annonçait « fondé en 2024 » quand le JSON-LD publiait 2026). La charte
+// téléchargeable est donc GÉNÉRÉE d'ici, jamais recopiée.
+//
+// `className` peint réellement la pastille (token CSS de `globals.css`, SSOT
+// couleur) ; `hex` est l'information destinée aux journalistes et maquettistes
+// — c'est la raison d'être d'une charte. Direction « ivoire chaud + sand +
+// mocha + terracotta » (ADR 0002).
+// ─────────────────────────────────────────────────────────────────
+export interface BrandColor {
+  /** Nom affiché aux journalistes. */
+  name: string;
+  /** Code HEX officiel, miroir du token `globals.css`. */
+  hex: string;
+  /** Classe Tailwind qui peint la pastille (la couleur vient du token, pas du hex). */
+  className: string;
+  /** Teinte très claire → pastille cerclée pour rester visible sur fond ivoire. */
+  ring?: boolean;
+}
+
+export const BRAND_PALETTE: ReadonlyArray<BrandColor> = [
+  // hex-ok: charte couleur presse — HEX officiels affichés aux journalistes, miroir des tokens globals.css (la COULEUR du swatch vient de className).
+  { name: "Terracotta", hex: "#C24A1B", className: "bg-terracotta" }, // hex-ok: charte presse
+  { name: "Mocha", hex: "#2A2520", className: "bg-mocha" }, // hex-ok: charte presse
+  { name: "Bleu éditorial", hex: "#1A4DD9", className: "bg-primary" }, // hex-ok: charte presse
+  { name: "Sauge", hex: "#5E6C54", className: "bg-sage" }, // hex-ok: charte presse
+  { name: "Sable", hex: "#F0E9DA", className: "bg-sand", ring: true }, // hex-ok: charte presse
+  { name: "Ivoire", hex: "#FAF8F3", className: "bg-canvas", ring: true }, // hex-ok: charte presse
+  { name: "Anthracite", hex: "#1A1815", className: "bg-fg" }, // hex-ok: charte presse
 ];
 
 // ─────────────────────────────────────────────────────────────────
@@ -284,6 +344,23 @@ export const PRESS_KIT_ASSETS: ReadonlyArray<PressKitAsset> = [
     en: {
       title: "Founder photo",
       description: "Square portrait, 2048 × 2048 px, free for editorial press use.",
+    },
+  },
+  {
+    id: "color-charter",
+    kind: "color-charter",
+    // Générée depuis `BRAND_PALETTE` ci-dessus : le fichier téléchargé ne peut
+    // pas contredire les pastilles affichées sur la page.
+    fileUrl: "/api/presse/charte-couleur",
+    format: "TXT",
+    fr: {
+      title: "Charte couleur (HEX + RGB)",
+      description:
+        "Les sept couleurs officielles, codes HEX et RGB — générés depuis les tokens du site.",
+    },
+    en: {
+      title: "Color charter (HEX + RGB)",
+      description: "The seven official colors, HEX and RGB codes — generated from the site tokens.",
     },
   },
   {

@@ -13,7 +13,7 @@ import {
 } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 155 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique)", () => {
+  it("returns 156 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES)", () => {
     const items = buildAdminNav("admin-test-prefix");
     // Base 131 − 14 module Prospection retiré 2026-07-08 (#278) = 117.
     // Refonte messagerie 2026-07-09 : 3 groupes distincts sortis de « main » /
@@ -129,7 +129,7 @@ describe("buildAdminNav SSOT", () => {
     // description et le H1, et rien de la vignette. L'entrée vit sous
     // l'explorateur d'URLs et non dans `settings/` : même inventaire, même
     // inspecteur, même RBAC. = 153.
-    expect(items.length).toBe(155);
+    expect(items.length).toBe(156);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {

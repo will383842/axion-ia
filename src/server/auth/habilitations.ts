@@ -226,3 +226,63 @@ export function actesAutorises(role: string | null | undefined): ActeEngageant[]
 
 /** Liste ordonnée des actes engageants — sert aux tests d'exhaustivité. */
 export const ACTES_ENGAGEANTS = Object.keys(HABILITATIONS) as ReadonlyArray<ActeEngageant>;
+
+/**
+ * ── Le dossier d'un CANDIDAT ────────────────────────────────────────────────
+ *
+ * Une troisième frontière, qui n'est ni « écrire » ni « engager ».
+ *
+ * ## Pourquoi elle ne se déduit d'aucune des deux autres
+ *
+ * `ROLES_ECRITURE` admet `editor` : produire un brouillon n'engage rien, et
+ * c'est justement la colonne déléguable. Mais un rôle purement rédactionnel n'a
+ * aucune raison d'ouvrir le CV, la photo ou le numéro de téléphone d'une
+ * personne qui a postulé. Et `HABILITATIONS` ne s'applique pas non plus : lire
+ * un dossier de candidature n'engage l'organisme envers personne.
+ *
+ * La question n'est donc pas « cela engage-t-il ? » mais « **qui traite ce
+ * dossier ?** ». Trier des candidatures est du secrétariat, et le responsable
+ * qualité en a besoin pour l'indicateur des compétences. L'éditeur, non.
+ *
+ * ## 🔴 Le défaut que cette frontière ferme (mesuré le 2026-08-25, cahier D6-1)
+ *
+ * `admin-job-applications/actions.ts` protégeait le CV par
+ * `super_admin | admin | editor`, mais son `requireAdminRead()` **ne testait
+ * AUCUN rôle** — il vérifiait la seule présence d'une session. Or trois actions
+ * derrière lui (`listApplicationsAction`, `listCandidaturesUnifieesAction`,
+ * `getApplicationDetailAction`) rendent les PII **déchiffrées** : nom, adresse
+ * e-mail, téléphone.
+ *
+ * Autrement dit : **la pièce jointe était mieux protégée que l'identité à
+ * laquelle elle appartient**, et un compte `reader` — le rôle de consultation,
+ * explicitement exclu de l'écriture — lisait l'identité complète de chaque
+ * candidat. Protéger la porte en laissant la fenêtre ouverte n'est pas de la
+ * prudence : c'est de la fausse sécurité.
+ *
+ * ## Pourquoi ici, et pas une liste locale de plus
+ *
+ * Trois surfaces distinctes lisent ce dossier — la liste, le CV, la photo. Une
+ * liste recopiée dans chacune divergerait : le dépôt vient d'en solder
+ * vingt-neuf copies du prédicat d'écriture, et neuf défauts sur onze de la nuit
+ * du 24 étaient « une règle appliquée à un site, oubliée sur son jumeau ».
+ *
+ * ⚠️ **La liste de rôles ne suffit pas à rendre l'accès défendable devant la
+ * CNIL — c'est la TRACE qui le rend défendable.** Les trois surfaces journalisent
+ * désormais l'accès (`ActivityLog`), ce qu'aucune ne faisait.
+ */
+export const ROLES_DOSSIER_CANDIDAT: ReadonlyArray<RoleAdmin> = [
+  "super_admin",
+  "admin",
+  "responsable_qualite",
+  "secretaire",
+];
+
+/**
+ * Ce rôle peut-il ouvrir le dossier d'un candidat — identité, CV, photo ?
+ *
+ * Refus par défaut sur un rôle inconnu, pour la même raison que `peutEngager`.
+ */
+export function peutOuvrirDossierCandidat(role: string | null | undefined): boolean {
+  if (role == null) return false;
+  return (ROLES_DOSSIER_CANDIDAT as ReadonlyArray<string>).includes(role);
+}

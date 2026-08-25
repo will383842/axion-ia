@@ -2,6 +2,8 @@ import * as React from "react";
 import Image from "next/image";
 import { Download, Palette as PaletteIcon, FileText, Image as ImageIcon, Type } from "lucide-react";
 
+import { BRAND_PALETTE } from "@/content/press";
+
 // Section « Images presse » — identité de marque téléchargeable, DISTINCTE de la
 // banque d'images éditoriale (/galerie). Regroupe les assets `PressMediaAsset`
 // (kit média géré en admin) par usage : logos, nuancier charte couleur, documents.
@@ -33,27 +35,6 @@ interface PressImagesProps {
     documentsTitle: string;
   };
 }
-
-/**
- * Charte couleur officielle Axion-IA — miroir des tokens `globals.css` (SSOT).
- * `className` pilote la couleur réelle du swatch (token CSS) ; `hex` est l'info
- * affichée. Direction « ivoire chaud + sand + mocha + terracotta » (ADR 0002).
- */
-const BRAND_PALETTE: ReadonlyArray<{
-  name: string;
-  hex: string;
-  className: string;
-  ring?: boolean;
-}> = [
-  // hex-ok: charte couleur presse — HEX officiels affichés aux journalistes, miroir des tokens globals.css (la COULEUR du swatch vient de className).
-  { name: "Terracotta", hex: "#C24A1B", className: "bg-terracotta" }, // hex-ok: charte presse
-  { name: "Mocha", hex: "#2A2520", className: "bg-mocha" }, // hex-ok: charte presse
-  { name: "Bleu éditorial", hex: "#1A4DD9", className: "bg-primary" }, // hex-ok: charte presse
-  { name: "Sauge", hex: "#5E6C54", className: "bg-sage" }, // hex-ok: charte presse
-  { name: "Sable", hex: "#F0E9DA", className: "bg-sand", ring: true }, // hex-ok: charte presse
-  { name: "Ivoire", hex: "#FAF8F3", className: "bg-canvas", ring: true }, // hex-ok: charte presse
-  { name: "Anthracite", hex: "#1A1815", className: "bg-fg" }, // hex-ok: charte presse
-];
 
 const KIND_ICON: Record<string, React.ComponentType<{ className?: string }>> = {
   logo: PaletteIcon,
