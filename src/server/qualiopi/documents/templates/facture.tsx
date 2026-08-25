@@ -124,6 +124,19 @@ export interface LigneFacture {
 }
 
 export interface ClientFacture {
+  /**
+   * Le destinataire est-il une PERSONNE PHYSIQUE (particulier, ou beneficiaire
+   * facture de son reste a charge) ?
+   *
+   * 🔴 Ce champ manquait, et c'est tout ce qui manquait : les trois mentions du
+   * Code de commerce ENTRE PROFESSIONNELS partaient a un particulier. Il est
+   * derive au serveur par `destinataireEstPersonnePhysique()` — jamais decide
+   * ici : un gabarit qui interrogerait la base rendrait deux pieces
+   * differentes pour la meme facture selon l'endroit d'ou on la regenere.
+   *
+   * Absent = professionnel, qui est le refus PRUDENT.
+   */
+  estPersonnePhysique?: boolean;
   raisonSociale: string;
   siret?: string;
   adresse?: string;
@@ -301,7 +314,11 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
 
         {/* Client */}
         <DocSection title="Client">
-          <FieldRow label="Raison sociale" value={data.client.raisonSociale} required />
+          <FieldRow
+            label={data.client.estPersonnePhysique === true ? "Nom et prénom" : "Raison sociale"}
+            value={data.client.raisonSociale}
+            required
+          />
           {data.client.siret ? <FieldRow label="SIRET" value={data.client.siret} /> : null}
           {/*
             `required` et non conditionnel : l'article L.441-9 C. com. impose « le nom
@@ -416,9 +433,25 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
               293 B). En régime assujetti : pas de mention d'exonération, la TVA
               figure dans les totaux. */}
           {mentionRegimeTva ? <Text style={styles.legalLine}>{mentionRegimeTva}</Text> : null}
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureIndemniteRecouvrement}</Text>
-          <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>
+          {/* 🔴 Les trois mentions ci-dessous relevent du Code de commerce ENTRE
+              PROFESSIONNELS — penalites de retard (L.441-10), indemnite
+              forfaitaire de recouvrement de 40 € (D.441-5), absence d'escompte
+              (L.441-9). Aucune ne s'applique a un consommateur. Elles etaient
+              imprimees SANS CONDITION, y compris sur la facture d'un
+              particulier, et `legal-mentions.ts` nommait deja ce defaut.
+
+              ⛔ Pour un particulier, elles sont OMISES — pas remplacees. On
+              n'invente pas ici un texte consumeriste : ajouter une clause
+              absente du gabarit est precisement ce que le mandat interdit, et
+              `legal-mentions.ts` a deja ecarte le renvoi aux CGV comme une
+              AGGRAVATION du defaut plutot qu'un correctif. */}
+          {data.client.estPersonnePhysique === true ? null : (
+            <>
+              <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
+              <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureIndemniteRecouvrement}</Text>
+              <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>
+            </>
+          )}
         </LegalCallout>
       </QualiopiPage>
     </Document>

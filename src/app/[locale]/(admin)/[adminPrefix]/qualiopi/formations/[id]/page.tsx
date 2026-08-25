@@ -240,6 +240,7 @@ export default async function QualiopiFormationDetailPage({ params }: PageProps)
           initial={{
             titre: formation.titre,
             methodesPedagogiques: formation.methodesPedagogiques || null,
+            moyensTechniques: formation.moyensTechniques,
             seuilReussitePct: formation.seuilReussitePct ?? null,
             ratioPratiquePct: formation.ratioPratiquePct ?? null,
             accessibleHandicap: formation.accessibleHandicap,

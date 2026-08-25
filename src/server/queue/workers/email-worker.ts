@@ -16,6 +16,7 @@
 import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
+import { redactEmailValue } from "../lib/sanitize-job-data";
 import { sendEmail, verifyTransport } from "@/lib/email/client";
 import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
@@ -227,9 +228,20 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       }
     });
   });
-  worker.on("completed", (job) => console.log(`[email-worker] sent: ${job.name} → ${job.data.to}`));
+  // La TRACE masque l'adresse (`m****@exemple.fr`). Elle etait imprimee en clair
+  // sur stdout a chaque envoi et a chaque echec — alors que `"to"` figure dans
+  // `EMAIL_KEYS` de `sanitize-job-data.ts`, c'est-a-dire que le depot la classe
+  // deja comme donnee personnelle et la masque avant Sentry. On ne protegeait
+  // que le canal SaaS, jamais les journaux du conteneur. Le domaine reste
+  // visible : c'est lui qui sert au diagnostic, et il n'identifie personne.
+  worker.on("completed", (job) =>
+    console.log(`[email-worker] sent: ${job.name} → ${redactEmailValue(String(job.data.to))}`),
+  );
   worker.on("failed", (job, err) => {
-    console.error(`[email-worker] failed: ${job?.name} → ${job?.data?.to}: ${err.message}`);
+    console.error(
+      `[email-worker] failed: ${job?.name} → ` +
+        `${redactEmailValue(String(job?.data?.to ?? ""))}: ${err.message}`,
+    );
     // Sprint Final P1-2 (audit final 2026-05-22) — Sentry capture email-worker.
     captureWorkerError("email", "emails", job, err);
   });
