@@ -1411,6 +1411,62 @@ model GenerationProvenance {
   @@map("generation_provenance")
 }
 
+/// 🔴 2026-08-25, cahier D6-4 — LÀ OÙ LA PROVENANCE SURVIT À L'EFFACEMENT.
+///
+/// `GenerationProvenance.article` est en `onDelete: Restrict`, et c'est
+/// délibéré : la migration `20260521150000_fix_provenance_cascade` l'a posé pour
+/// que les traces AI Act art. 50 ne soient pas emportées par la suppression d'un
+/// article. Elle a écrit la consigne — « la suppression doit passer par une
+/// procédure admin dédiée qui ARCHIVE les lignes provenance avant de supprimer
+/// l'article ».
+///
+/// Cette procédure n'existait pas. Conséquence mesurée : la route
+/// `DELETE /api/admin/articles/[id]/forget`, qui se déclare « Suppression RGPD
+/// art. 17 », violait la clé étrangère et rendait **HTTP 500** — donc
+/// **l'effacement échouait précisément sur les articles générés par l'IA**,
+/// c'est-à-dire sur la seule classe pour laquelle cette route existe.
+///
+/// ## Pourquoi une table SANS relation
+///
+/// Une archive qui garderait la clé étrangère vers l'article serait détruite par
+/// la même suppression qu'elle est censée survivre. `articleId` est donc un
+/// `Uuid` NU : il conserve le rattachement pour un audit, sans contrainte.
+///
+/// ## Pourquoi l'archivage satisfait les DEUX droits
+///
+/// Cette table ne porte **aucune donnée personnelle** — fournisseur, modèle,
+/// empreintes, comptes de jetons, coût, horodatage. L'article est bien effacé
+/// (art. 17) ; la preuve qu'il a été généré par une IA, et comment, est
+/// conservée (AI Act art. 50). Un cliquet vérifie cette prémisse :
+/// `src/app/api/admin/articles/[id]/forget/effacement-art17.spec.ts`.
+model GenerationProvenanceArchive {
+  id                   String   @id @default(cuid())
+  /// UUID de l'article effacé. Volontairement SANS relation — cf. en-tête.
+  articleId            String   @map("article_id") @db.Uuid
+  /// Slug FR au moment de l'effacement, pour retrouver la trace sans l'article.
+  articleSlugSnapshot  String?  @map("article_slug_snapshot") @db.VarChar(255)
+  step                 String   @db.VarChar(80)
+  provider             String   @db.VarChar(40)
+  model                String   @db.VarChar(80)
+  modelVersion         String?  @map("model_version") @db.VarChar(40)
+  promptHash           String   @map("prompt_hash") @db.VarChar(64)
+  inputTokens          Int      @map("input_tokens")
+  outputTokens         Int      @map("output_tokens")
+  cacheReadInputTokens Int      @default(0) @map("cache_read_input_tokens")
+  cost                 Decimal  @db.Decimal(10, 6)
+  regulationVersion    String   @default("AI-Act-2024/1689") @map("regulation_version") @db.VarChar(40)
+  previousHash         String?  @map("previous_hash") @db.VarChar(64)
+  hash                 String   @db.VarChar(64)
+  /// Horodatage d'origine de l'appel LLM — la chaîne d'empreintes le référence.
+  timestamp            DateTime
+  /// Quand l'article a été effacé, et donc cette ligne déplacée ici.
+  archivedAt           DateTime @default(now()) @map("archived_at")
+
+  @@index([articleId])
+  @@index([archivedAt])
+  @@map("generation_provenance_archive")
+}
+
 /// P4 Sprint P0-6 — Claims factuels extraits + vérifiés par fact-checker.
 /// Persistance individuelle par claim pour audit trail + monitoring qualité.
 /// Claim verification = stub SHA-256 V1 (Voyage AI RAG différé Sprint S+7).
@@ -10903,9 +10959,9 @@ enum PodcastRequestStatus {
 model PodcastRequest {
   id String @id @default(uuid()) @db.Uuid
 
-  companyName String @map("company_name") @db.VarChar(200)
-  leaderName  String @map("leader_name") @db.Text
-  email       String @db.Text
+  companyName String  @map("company_name") @db.VarChar(200)
+  leaderName  String  @map("leader_name") @db.Text
+  email       String  @db.Text
   /// D5-5-04 — `email` est chiffre par `encryptPii` avec un IV ALEATOIRE : deux
   /// chiffrements de la meme adresse different, donc `where: { email }` ne
   /// correspond jamais. Empreinte HMAC deterministe et indexee, sans laquelle
@@ -10913,11 +10969,11 @@ model PodcastRequest {
   /// ligne. Meme remede que `submissions.contact_email_hash` et
   /// `job_applications.email_hash`. Nullable : l'historique n'en a pas.
   emailHash   String? @map("email_hash") @db.VarChar(64)
-  phone       String @db.Text
-  city        String @db.VarChar(120)
-  postalCode  String @map("postal_code") @db.VarChar(10)
+  phone       String  @db.Text
+  city        String  @db.VarChar(120)
+  postalCode  String  @map("postal_code") @db.VarChar(10)
   /// Quelques mots sur l'activité de l'entreprise (saisie libre, bornée en Zod).
-  activity    String @db.Text
+  activity    String  @db.Text
 
   locale Locale @default(fr)
   /// Origine du lead : "form" (page /podcast) ou "qr" (flyer papier → /qr/podcast).

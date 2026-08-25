@@ -24,7 +24,10 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
 import { computeVentilationDossier, computeForfait } from "./opco-calcul";
-import { resoudreDestinataireFacture } from "./destinataire-facture";
+import {
+  resoudreDestinataireFacture,
+  destinataireEstPersonnePhysique,
+} from "./destinataire-facture";
 import { periodePrestationSession } from "./periode-prestation";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -382,6 +385,12 @@ export async function genererFactureFormation(
     regimeTva,
     tauxTvaStandardPercent: tauxStandard,
     client: {
+      // 🔴 2026-08-25, cahier D4-3 — LE JUMEAU. `financements.ts` est l'autre
+      // emetteur de facture, et il recevait le meme correctif : sans ce champ,
+      // les trois mentions du Code de commerce ENTRE PROFESSIONNELS partent a un
+      // particulier. Une regle appliquee a un site et oubliee sur son jumeau est
+      // le motif dominant de ce depot — on le ferme ici en meme temps.
+      estPersonnePhysique: destinataireEstPersonnePhysique(destinataireReel, session.client),
       raisonSociale: destinataireNom,
       ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
       ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
