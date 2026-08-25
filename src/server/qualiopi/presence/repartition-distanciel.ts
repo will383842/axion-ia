@@ -143,3 +143,33 @@ export function repartirMinutesConnexion(input: {
   // fichier, et un export de deux jours le produirait.
   return parts.map((p, i) => Math.min(p, creneaux[i]!.dureePrevueMinutes));
 }
+
+/**
+ * Les demi-journées RÉELLEMENT portées par une journée, dans l'ordre.
+ *
+ * ## Pourquoi cette fonction existe (2026-08-25)
+ *
+ * 🔑 Cette règle vivait **en littéral** dans `feuille-pdf.ts`, et nulle part
+ * ailleurs. Toute nouvelle lecture des demi-journées attendues devait la
+ * recopier — et un prédicat recopié diverge toujours : ce dépôt l'a payé
+ * quatre fois. La règle d'alerte « journée déclarée sans créneau » avait
+ * besoin exactement du même calcul.
+ *
+ * Une journée de 09:00 à 12:00 ne porte QUE le matin ; de 14:00 à 18:00, que
+ * l'après-midi. Une demi-journée de durée nulle n'existe pas : l'inclure
+ * ferait réclamer une signature pour un créneau qui n'a jamais eu lieu.
+ *
+ * ⚠️ Le grain `journee` n'est pas produit ici : il vient d'un import
+ * distanciel, jamais du découpage d'une journée déclarée.
+ */
+export function demiJourneesDuJour(
+  jourHeureDebut: string,
+  jourHeureFin: string,
+): DemiJourneeLabel[] {
+  const portees: DemiJourneeLabel[] = [];
+  for (const dj of ["matin", "apres_midi"] as const) {
+    const f = fenetreDemiJournee(jourHeureDebut, jourHeureFin, dj);
+    if (f.finMin > f.debutMin) portees.push(dj);
+  }
+  return portees;
+}
