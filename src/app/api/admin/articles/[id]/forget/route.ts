@@ -3,8 +3,10 @@
  *
  * B.4 P1.5 — Suppression RGPD art. 17 d'un article genere par l'IA.
  * Purge en cascade :
- *   - Article (+ ArticleTranslation, ArticleTagOnArticle, ArticleSlugHistory,
- *     GenerationProvenance → CASCADE Prisma)
+ *   - Article (+ ArticleTranslation, ArticleTagOnArticle, ArticleSlugHistory
+ *     → CASCADE Prisma)
+ *   - GenerationProvenance → ARCHIVEE, jamais effacee : elle est en
+ *     `onDelete: Restrict` (AI Act art. 50). Cf. le bloc de suppression.
  *   - ReviewQueue lié (si existe)
  *   - ContentGenJob.outputBlogPostId → null (delink, pas de suppression job)
  *   - IndexNow remove (best-effort)
@@ -70,9 +72,60 @@ export async function DELETE(
 
   const frSlug = article.translations.find((t) => t.locale === "fr")?.slug ?? null;
 
-  // Suppression en cascade via Prisma (GenerationProvenance CASCADE from schema).
+  // 🔴 2026-08-25, cahier D6-4 — CE BLOC RENDAIT 500 SUR LES ARTICLES QU'IL
+  // EXISTE POUR EFFACER.
+  //
+  // Le commentaire qui vivait ici affirmait « GenerationProvenance CASCADE from
+  // schema ». Le schéma dit l'inverse : `onDelete: Restrict`
+  // (`prisma/schema.prisma:1394`). Or TOUT article généré par l'IA porte au
+  // moins une ligne de provenance — c'est la définition de la table. Le DELETE
+  // violait donc la clé étrangère, la transaction était annulée, et la route
+  // rendait « Delete failed » en 500.
+  //
+  // Le `Restrict` n'est pas l'erreur : la migration `20260521150000` l'a posé
+  // exprès pour que les traces AI Act art. 50 ne soient pas emportées, et a
+  // écrit la consigne — « archiver les lignes provenance AVANT de supprimer
+  // l'article ». Cette procédure n'existait pas. La voici.
+  //
+  // 🔑 L'ORDRE EST LA GARANTIE : archiver, purger, supprimer. Archiver après
+  // avoir supprimé ne garderait rien ; supprimer sans purger échoue toujours.
+  // Le tout dans UNE transaction — un effacement partiel laisserait des traces
+  // orphelines et un article vivant.
+  //
+  // ⚠️ Les deux droits ne s'opposent pas : la provenance ne porte AUCUNE donnée
+  // personnelle (fournisseur, modèle, empreintes, jetons, coût). L'article est
+  // effacé, la preuve qu'une IA l'a produit est conservée. Un cliquet vérifie
+  // cette prémisse : `effacement-art17.spec.ts`.
   try {
+    const provenances = await prisma.generationProvenance.findMany({
+      where: { articleId: id },
+    });
+
     await prisma.$transaction([
+      // 1. ARCHIVER — la table cible n'a aucune clé étrangère vers l'article,
+      //    sans quoi elle serait détruite par la suppression qu'elle survit.
+      prisma.generationProvenanceArchive.createMany({
+        data: provenances.map((p) => ({
+          articleId: p.articleId,
+          articleSlugSnapshot: frSlug,
+          step: p.step,
+          provider: p.provider,
+          model: p.model,
+          modelVersion: p.modelVersion,
+          promptHash: p.promptHash,
+          inputTokens: p.inputTokens,
+          outputTokens: p.outputTokens,
+          cacheReadInputTokens: p.cacheReadInputTokens,
+          cost: p.cost,
+          regulationVersion: p.regulationVersion,
+          previousHash: p.previousHash,
+          hash: p.hash,
+          timestamp: p.timestamp,
+        })),
+      }),
+      // 2. PURGER la provenance — c'est elle que le `Restrict` protégeait, et
+      //    elle est désormais en lieu sûr.
+      prisma.generationProvenance.deleteMany({ where: { articleId: id } }),
       // Delink ContentGenJob (pas de suppression du job — audit trail conserve).
       prisma.contentGenJob.updateMany({
         where: { outputBlogPostId: id },
@@ -80,7 +133,7 @@ export async function DELETE(
       }),
       // Purge ReviewQueue lié.
       prisma.reviewQueue.deleteMany({ where: { job: { outputBlogPostId: null, id } } }),
-      // Suppression Article (cascade : translations, tags, slugHistory, provenance).
+      // 3. SUPPRIMER l'article (cascade : translations, tags, slugHistory).
       prisma.article.delete({ where: { id } }),
     ]);
   } catch (err) {
@@ -101,13 +154,13 @@ export async function DELETE(
       reason: "RGPD art. 17 — droit à l'effacement",
       status: article.status,
       slug: frSlug,
-      cascade: [
-        "ArticleTranslation",
-        "ArticleTagOnArticle",
-        "ArticleSlugHistory",
-        "GenerationProvenance",
-        "ReviewQueue",
-      ],
+      // 🔴 `GenerationProvenance` figurait ici, en CASCADE. Elle est en
+      // `Restrict`, et elle est désormais ARCHIVÉE — pas effacée. Une trace
+      // d'audit RGPD qui affirme un effacement qui n'a pas eu lieu est pire
+      // qu'une trace absente : elle se lit comme une preuve. La trace dit
+      // maintenant ce qui a réellement eu lieu, et le distingue.
+      cascade: ["ArticleTranslation", "ArticleTagOnArticle", "ArticleSlugHistory", "ReviewQueue"],
+      archive: ["GenerationProvenance → GenerationProvenanceArchive (AI Act art. 50)"],
       contentGenJobDelinked: true,
     },
     session: {
