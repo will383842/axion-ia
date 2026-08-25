@@ -93,6 +93,7 @@ const FIXTURE_KIND_TO_PRISMA: Record<FixturePressKitAsset["kind"], PressMediaKin
   wordmark: "wordmark",
   photo: "photo",
   "brand-book": "brand_book",
+  "color-charter": "color_charter",
   boilerplate: "boilerplate",
 };
 
