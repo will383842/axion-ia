@@ -33,44 +33,29 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { ecartEffectif, mentionStagiaires } from "@/server/qualiopi/documents/stagiaires-nommes";
 
-/**
- * Lot 1ter §6 — les trois champs « stagiaires » d'une convention, d'un coup.
- *
- * Écrit ici plutôt qu'inséré deux fois : la convention bipartite et la
- * tripartite doivent dire EXACTEMENT la même chose des mêmes personnes. Deux
- * constructions recopiées divergeraient, et l'écart se lirait comme deux
- * versions du même contrat.
- */
-function mentionsStagiairesDe(session: {
-  nbParticipantsPrevus: number;
-  enrollments: ReadonlyArray<{
-    statut: string;
-    trainee: { nom: string; prenom: string; fonction: string | null };
-  }>;
-}): {
-  stagiairesNommes: readonly string[];
-  stagiairesADesigner: string | null;
-  ecartEffectif: string | null;
-} {
-  const mention = mentionStagiaires(
-    session.enrollments.map((e) => ({
-      nom: e.trainee.nom,
-      prenom: e.trainee.prenom,
-      fonction: e.trainee.fonction,
-      statut: e.statut,
-    })),
-  );
-  return {
-    stagiairesNommes: mention.nommes,
-    stagiairesADesigner: mention.aDesigner,
-    ecartEffectif: ecartEffectif({
-      prevu: session.nbParticipantsPrevus,
-      nomme: mention.effectifNomme,
-    }),
-  };
-}
+// 🔴 S5 (2026-08-26) — la CONSTRUCTION des pièces a déménagé dans la couche
+// service `documents/production/producteurs.ts`, partagée avec le worker
+// `qualiopi-documents-worker` (production automatique au jalon). Ici ne
+// restent que la garde admin, la validation d'entrée et le journal : une seule
+// construction par type de pièce, deux appelants — jamais de jumeau.
+import {
+  formatDate,
+  formatDateFr,
+  modaliteLabel,
+  produireConvention,
+  produireConventionTripartite,
+  produireContratFormation,
+  produireConvocation,
+  produireEmargement,
+  produirePositionnement,
+  produireGrilleEvaluation,
+  produireSatisfaction,
+  produireReglementInterieur,
+  produireProgramme,
+  produireOrganisationAction,
+  produireLivretAccueil,
+} from "@/server/qualiopi/documents/production/producteurs";
 
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import {
@@ -81,31 +66,17 @@ import {
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
-import { ProgrammeFormationPdf } from "@/server/qualiopi/documents/templates/programme-formation";
-import { OrganisationActionPdf } from "@/server/qualiopi/documents/templates/organisation-action";
-import { lireModulesProgramme } from "@/server/qualiopi/documents/programme-modules";
 import {
   LIEU_DOCUMENT_SELECT,
-  resolveLieuConvocation,
   resolveLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
-import {
-  calculerAcompte,
-  PLAFOND_ACOMPTE_PARTICULIER_PCT,
-} from "@/server/qualiopi/financements/acompte";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { CvFormateurPdf } from "@/server/qualiopi/documents/templates/cv-formateur";
 import { buildCvFormateurData } from "@/server/qualiopi/documents/cv-formateur-data";
 
-// Templates
-import { ConventionPdf } from "@/server/qualiopi/documents/templates/convention";
-import { ConventionTripartitePdf } from "@/server/qualiopi/documents/templates/convention-tripartite";
-import { ContratFormationPdf } from "@/server/qualiopi/documents/templates/contrat-formation";
-import { ConvocationPdf } from "@/server/qualiopi/documents/templates/convocation";
-import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
-import { PositionnementPdf } from "@/server/qualiopi/documents/templates/positionnement";
-import { GrilleEvaluationPdf } from "@/server/qualiopi/documents/templates/grille-evaluation";
-import { SatisfactionPdf } from "@/server/qualiopi/documents/templates/satisfaction";
+// Templates — seuls restent ceux des actions dont la construction vit encore
+// ici ; les gabarits des 12 pièces extraites sont importés par
+// `production/producteurs.ts`.
 import { CertificatRealisationPdf } from "@/server/qualiopi/documents/templates/certificat-realisation";
 import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
 import { KitCpfPdf } from "@/server/qualiopi/documents/templates/kit-cpf";
@@ -117,8 +88,6 @@ import {
 } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { resolveRegle, type RegleRemuneration } from "@/server/qualiopi/remuneration/calcul";
 import { libelleRemuneration } from "@/server/qualiopi/remuneration/libelle";
-import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
-import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
 import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
 import { ListeFormateursPdf } from "@/server/qualiopi/documents/templates/liste-formateurs";
 import { AutorisationCaptationPdf } from "@/server/qualiopi/documents/templates/autorisation-captation";
@@ -126,7 +95,6 @@ import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/c
 import { ProcedureSousTraitancePdf } from "@/server/qualiopi/documents/templates/procedure-sous-traitance";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
-import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 import {
   listTrainers,
@@ -135,10 +103,6 @@ import {
 } from "@/server/qualiopi/trainers/trainers";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
-import {
-  montantPrisEnChargeCents,
-  resteAChargeCents,
-} from "@/server/qualiopi/financements/prise-en-charge-montant";
 // Annulation d'une pièce : les liens de signature en circulation meurent avec
 // la valeur de la pièce (§ 24).
 import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
@@ -155,73 +119,9 @@ function isStub(): boolean {
   return process.env.DATABASE_URL?.includes(STUB) ?? false;
 }
 
-function formatDate(d: Date): string {
-  return d.toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-}
-
-function formatDateFr(d: Date): string {
-  return d.toLocaleDateString("fr-FR");
-}
-
-function modaliteLabel(
-  m: "presentiel" | "distanciel" | "hybride",
-): "Présentiel" | "Distanciel" | "Mixte" {
-  if (m === "presentiel") return "Présentiel";
-  if (m === "distanciel") return "Distanciel";
-  return "Mixte";
-}
-
-function modaliteLabelLower(
-  m: "presentiel" | "distanciel" | "hybride",
-): "présentiel" | "distanciel" | "mixte" {
-  if (m === "presentiel") return "présentiel";
-  if (m === "distanciel") return "distanciel";
-  return "mixte";
-}
-
-/**
- * Nom du formateur principal d'une session. FK `formateurPrincipalId` prioritaire
- * (fiable, écrite par l'assignation), repli sur le Json `coFormateurs` (legacy),
- * puis `fallback` (raison sociale). Corrige le nom du formateur sur les documents
- * légaux (auparavant toujours le fallback car coFormateurs est vide en pratique).
- */
-async function resolveFormateurNom(
-  input: { formateurPrincipalId: string | null; coFormateurs: unknown },
-  fallback: string,
-): Promise<string> {
-  const principalTrainerId = resolvePrincipalTrainerId(input);
-  if (principalTrainerId) {
-    try {
-      const t = await prisma.trainer.findUnique({
-        where: { id: principalTrainerId },
-        select: { nom: true, prenom: true },
-      });
-      if (t) return `${t.prenom} ${t.nom}`.trim();
-    } catch {
-      // fall through
-    }
-  }
-  // Repli legacy : nom inline éventuel dans coFormateurs[0].
-  const arr = Array.isArray(input.coFormateurs) ? input.coFormateurs : [];
-  const premier = arr[0] as { nom?: string; prenom?: string } | undefined;
-  if (premier?.nom) {
-    return [premier.prenom, premier.nom].filter(Boolean).join(" ");
-  }
-  return fallback;
-}
-
-/** Extrait les objectifs pédagogiques depuis un champ Json. */
-/**
- * Seule des cinq lectures d'`objectifsPedagogiques` à connaître `description`,
- * donc la seule qui sortait juste sur le catalogue — c'est en la comparant aux
- * quatre autres qu'on a trouvé le défaut (parcours à blanc 2026-07-27).
- * Conservée sous son nom d'origine, mais déléguée : une seule implémentation.
- */
-const parseObjectifs = normaliserObjectifsPedagogiques;
+// Les helpers de mise en forme (formatDate, modaliteLabel, resolveFormateurNom,
+// parseObjectifs…) vivent désormais dans `production/producteurs.ts` — voir
+// l'import en tête : une seule implémentation, partagée avec le worker.
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
@@ -292,104 +192,14 @@ export async function genererConventionAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, acomptePercent, rectificationMotif } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      id: true,
-      // 🔴 Sans lui, `DocumentGenere.clientId` restait NULL et le lien de
-      // signature « client » était refusé (« Aucun client n'est rattaché à
-      // cette pièce ») — le circuit convention: [client, axionia] était déclaré
-      // mais structurellement inatteignable. Constaté sur la PREMIÈRE
-      // convention réelle (AXI-DOC-2026-003, INVEST SUN, 2026-07-31).
-      // Gardé par refs-circuits.spec.ts.
-      clientId: true,
-      titreSession: true,
-      dateDebut: true,
-      dateFin: true,
-      modalite: true,
-      ...LIEU_DOCUMENT_SELECT,
-      nbParticipantsPrevus: true,
-      // 🔴 Lot 1ter §6 — la convention doit NOMMER les stagiaires. Vérifié sur
-      // `AXI-DOC-2026-032` : « Effectif prévu : 1 stagiaire », personne de
-      // nommé, alors que Simone Blanc y était inscrite. La même personne doit
-      // se retrouver sur l'émargement, l'évaluation et l'attestation.
-      enrollments: {
-        select: {
-          statut: true,
-          // `fonction` vit sur le stagiaire, pas sur l'inscription.
-          trainee: { select: { nom: true, prenom: true, fonction: true } },
-        },
-      },
-      montantHtCents: true,
-      formationSnapshot: true,
-      formation: {
-        select: {
-          objectifsPedagogiques: true,
-          dureeHeures: true,
-          offreSite: { select: { publicViseFr: true } },
-        },
-      },
-      client: {
-        select: {
-          raisonSociale: true,
-          siret: true,
-          adresse: true,
-          contactNom: true,
-          contactEmail: true,
-        },
-      },
-    },
-  });
-  if (!session) return { error: "Session introuvable" };
-  if (!session.client)
-    return { error: "Session sans client — impossible de générer la convention" };
-
-  const identite = await getOrganismeIdentite();
-  // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
-  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
-  const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-
-  const doc = await generateDocument({
-    type: "convention",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction vit dans `production/producteurs.ts` (partagée avec le
+  // worker S5) — ici : garde, validation, journal.
+  const resultat = await produireConvention(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(ConventionPdf, {
-        data: {
-          numero,
-          client: {
-            raisonSociale: session.client!.raisonSociale,
-            siret: session.client!.siret ?? "—",
-            adresse: session.client!.adresse ?? "—",
-            contact: session.client!.contactNom ?? session.client!.contactEmail ?? "—",
-          },
-          intitule: session.titreSession,
-          objectifs: objectifs.length > 0 ? objectifs : [session.titreSession],
-          publicVise: session.formation.offreSite.publicViseFr,
-          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
-          dateDebut: formatDate(new Date(session.dateDebut)),
-          dateFin: formatDate(new Date(session.dateFin)),
-          modalite: modaliteLabel(session.modalite),
-          lieu: resolveLieuDocument(session, identite),
-          effectif: session.nbParticipantsPrevus,
-          // Lot 1ter §6 — les stagiaires sont NOMMÉS, et l'écart entre la
-          // prévision (`nbParticipantsPrevus`, saisie à la création) et les
-          // inscrits (un FAIT) est dit plutôt que laissé à découvrir.
-          ...mentionsStagiairesDe(session),
-          prixHt: session.montantHtCents / 100,
-          // Absent → le gabarit applique 30 % (usage commercial). `0` = payable
-          // en totalité à réception de facture — le gabarit rend la mention, pas
-          // une ligne « Acompte (0 %) : 0,00 € ».
-          ...(acomptePercent !== undefined ? { acomptePercent } : {}),
-          dateConvention: formatDateFr(new Date()),
-        },
-        identite,
-      }),
-    // `clientId` est non-null ici : la garde « Session sans client » a déjà
-    // refusé la génération sinon. C'est lui qui rend le lien de signature
-    // « client » émissible sur la pièce.
-    refs: { sessionId, clientId: session.clientId! },
+    ...(acomptePercent !== undefined ? { acomptePercent } : {}),
   });
+  if (!resultat.ok) return { error: resultat.motif };
+  const doc = { id: resultat.documentId, numero: resultat.numero };
 
   await logQualiopiActivity({
     action: "qualiopi.document.convention.genere",
@@ -422,147 +232,13 @@ export async function genererConventionTripartiteAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      id: true,
-      // Même défaut, même remède que la convention bipartite : sans `clientId`
-      // dans les refs, le lien de signature « client » de la tripartite était
-      // refusé à l'émission. Gardé par refs-circuits.spec.ts.
-      clientId: true,
-      titreSession: true,
-      dateDebut: true,
-      dateFin: true,
-      modalite: true,
-      ...LIEU_DOCUMENT_SELECT,
-      nbParticipantsPrevus: true,
-      // 🔴 Lot 1ter §6 — la convention doit NOMMER les stagiaires. Vérifié sur
-      // `AXI-DOC-2026-032` : « Effectif prévu : 1 stagiaire », personne de
-      // nommé, alors que Simone Blanc y était inscrite. La même personne doit
-      // se retrouver sur l'émargement, l'évaluation et l'attestation.
-      enrollments: {
-        select: {
-          statut: true,
-          // `fonction` vit sur le stagiaire, pas sur l'inscription.
-          trainee: { select: { nom: true, prenom: true, fonction: true } },
-        },
-      },
-      montantHtCents: true,
-      opcoSubrogation: true,
-      numeroDossierOpco: true,
-      // 🔴 16/08 — `priseEnChargeMontantCents` était sélectionné SEUL et lu comme
-      // un total. C'est un TARIF : son sens dépend entièrement de l'unité, et
-      // les plafonds le bornent. Sans ces quatre champs, la convention imprimait
-      // « Prise en charge OPCO : 40,00 € » pour un OPCO couvrant 40 €/h sur 14 h
-      // et 8 participants, soit 4 480 € — un facteur 112, sur la pièce que lit
-      // le financeur et que trois parties signent.
-      priseEnChargeMontantCents: true,
-      priseEnChargeUnite: true,
-      priseEnChargePlafondFormationCents: true,
-      priseEnChargePlafondAnnuelCents: true,
-      formationSnapshot: true,
-      formation: {
-        select: {
-          objectifsPedagogiques: true,
-          dureeHeures: true,
-          offreSite: { select: { publicViseFr: true } },
-        },
-      },
-      client: {
-        select: {
-          raisonSociale: true,
-          siret: true,
-          adresse: true,
-          contactNom: true,
-          contactEmail: true,
-          opcoIdentifie: true,
-          opcoNumeroAdherent: true,
-        },
-      },
-    },
-  });
-  if (!session) return { error: "Session introuvable" };
-  if (!session.client) return { error: "Session sans client" };
-
-  const identite = await getOrganismeIdentite();
-  // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
-  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
-  const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  // Libellé, pas slug : `opcoIdentifie` stocke « akto », la convention
-  // tripartite doit lire « Akto ». Le motif existe déjà dans
-  // facturation-service.ts et facturation-1to1.ts.
-  const nomOpco = session.client.opcoIdentifie
-    ? opcoLabel(session.client.opcoIdentifie)
-    : "OPCO (à préciser)";
-  const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
-  const prixHt = session.montantHtCents / 100;
-
-  // 🔴 16/08 — le montant pris en charge se CALCULE, il ne se lit pas.
-  //
-  // `priseEnChargeMontantCents` est un TARIF (€/h, €/j, €/formation,
-  // €/an/salarié) : le lire brut imprimait « 40,00 € » là où l'OPCO couvre
-  // 40 €/h × 14 h × 8 participants = 4 480 €. Sur une pièce contractuelle
-  // signée par trois parties, avec un reste à charge faux du même écart.
-  //
-  // ⚠️ `null` = montant NON ÉTABLI (tarif absent, unité absente, durée requise
-  // et inconnue). Le gabarit le dit alors, au lieu d'imprimer 0 — un zéro se
-  // lirait comme « le financeur ne prend rien en charge », ce qui est une
-  // affirmation, et une affirmation fausse.
-  const basePriseEnCharge = {
-    priseEnChargeMontantCents: session.priseEnChargeMontantCents,
-    priseEnChargeUnite: session.priseEnChargeUnite,
-    priseEnChargePlafondFormationCents: session.priseEnChargePlafondFormationCents,
-    priseEnChargePlafondAnnuelCents: session.priseEnChargePlafondAnnuelCents,
-    dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
-    nbParticipants: session.nbParticipantsPrevus,
-  };
-  const priseEnChargeCents = montantPrisEnChargeCents(basePriseEnCharge);
-  const resteCents = resteAChargeCents(basePriseEnCharge, session.montantHtCents);
-
-  const doc = await generateDocument({
-    type: "convention_tripartite",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction vit dans `production/producteurs.ts` (partagée avec le
+  // worker S5) — ici : garde, validation, journal.
+  const resultat = await produireConventionTripartite(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(ConventionTripartitePdf, {
-        data: {
-          numero,
-          client: {
-            raisonSociale: session.client!.raisonSociale,
-            siret: session.client!.siret ?? "—",
-            adresse: session.client!.adresse ?? "—",
-            contact: session.client!.contactNom ?? session.client!.contactEmail ?? "—",
-          },
-          opco: {
-            nom: nomOpco,
-            numeroPriseEnCharge,
-          },
-          intitule: session.titreSession,
-          objectifs: objectifs.length > 0 ? objectifs : [session.titreSession],
-          publicVise: session.formation.offreSite.publicViseFr,
-          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
-          dateDebut: formatDate(new Date(session.dateDebut)),
-          dateFin: formatDate(new Date(session.dateFin)),
-          modalite: modaliteLabel(session.modalite),
-          lieu: resolveLieuDocument(session, identite),
-          effectif: session.nbParticipantsPrevus,
-          // Lot 1ter §6 — les stagiaires sont NOMMÉS, et l'écart entre la
-          // prévision (`nbParticipantsPrevus`, saisie à la création) et les
-          // inscrits (un FAIT) est dit plutôt que laissé à découvrir.
-          ...mentionsStagiairesDe(session),
-          prixHt,
-          // `null` quand le montant n'est pas établi : le gabarit le DIT.
-          montantPrisEnCharge: priseEnChargeCents !== null ? priseEnChargeCents / 100 : null,
-          resteAChargeClient: resteCents !== null ? resteCents / 100 : null,
-          dateConvention: formatDateFr(new Date()),
-        },
-        identite,
-      }),
-    // Non-null : la garde « Session sans client » a déjà refusé sinon. La
-    // partie « financeur », elle, se résout via `sessionId` (dossier de
-    // financement le plus récent) — les deux refs sont donc nécessaires.
-    refs: { sessionId, clientId: session.clientId! },
   });
+  if (!resultat.ok) return { error: resultat.motif };
+  const doc = { id: resultat.documentId, numero: resultat.numero };
 
   await logQualiopiActivity({
     action: "qualiopi.document.convention_tripartite.genere",
@@ -643,186 +319,39 @@ export async function genererContratFormationAction(input: {
   //
   // ⚠️ N'affecte QUE le contrat individuel. La convention B2B ne relève pas du
   // droit de la consommation et n'a jamais été concernée.
-  const [mediateurNom, mediateurUrl] = await Promise.all([
-    getQualiopiConfig("mediateur_consommation_nom"),
-    getQualiopiConfig("mediateur_consommation_url"),
-  ]);
-  const mediateurManquant = !mediateurNom?.trim() || !mediateurUrl?.trim();
-  const avertissementMediation = mediateurManquant
-    ? "Contrat émis SANS mention de médiation de la consommation : aucun médiateur n'est renseigné. Vendre une formation à un particulier impose d'avoir adhéré à un médiateur agréé CECMC et d'en publier les coordonnées (art. L.612-1 du Code de la consommation). Renseignez « mediateur_consommation_nom » et « mediateur_consommation_url » dans la configuration Qualiopi. Les conventions B2B ne sont pas concernées."
-    : undefined;
-
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
 
-  const enrollment = await prisma.enrollment.findUnique({
-    where: { id: enrollmentId },
-    select: {
-      id: true,
-      trainee: { select: { id: true, nom: true, prenom: true, email: true, telephone: true } },
-      session: {
-        select: {
-          id: true,
-          titreSession: true,
-          dateDebut: true,
-          dateFin: true,
-          modalite: true,
-          ...LIEU_DOCUMENT_SELECT,
-          montantHtCents: true,
-          // 🔴 Nécessaire au calcul de l'acompte : l'assiette est le RESTE À
-          // CHARGE, pas le prix total. Sans cette lecture, le contrat annonçait
-          // 30 % du total — sur 2 000 € dont 1 200 € financés, 600 € au lieu de
-          // 240. Le client signait un chiffre que le système n'appliquait pas.
-          priseEnChargeMontantCents: true,
-          opcoSubrogation: true,
-          formationSnapshot: true,
-          formation: {
-            select: {
-              objectifsPedagogiques: true,
-              dureeHeures: true,
-            },
-          },
-        },
-      },
-    },
-  });
-  if (!enrollment) return { error: "Inscription introuvable" };
-
-  const identite = await getOrganismeIdentite();
-  const session = enrollment.session;
-  const trainee = enrollment.trainee;
-  // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
-  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
-  const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  const nomPrenom = `${trainee.prenom} ${trainee.nom}`.trim();
-
-  // 🔴 L'acompte ANNONCÉ vient désormais du calcul, plus d'un pourcentage
-  // recalculé dans le gabarit.
-  //
-  // Le gabarit accepte `acompteEuros` depuis le 2026-07-27, précisément pour
-  // que le contrat imprime ce qui a été CONVENU au lieu de recalculer un
-  // plafond. Mais personne ne le lui fournissait : il retombait donc toujours
-  // sur 30 % de `prixNet`, c'est-à-dire du TOTAL. Le correctif était à moitié
-  // posé — la moitié visible, pas la moitié agissante.
-  //
-  // `calculerAcompte` prend pour assiette le RESTE À CHARGE, ce que le
-  // particulier avance réellement de sa poche. Les deux étages ne se
-  // contredisent pas : 30 % du reste à charge est toujours ≤ 30 % du prix
-  // convenu, plafond que `facturation-hub` fait respecter au refus.
-  //
-  // ⚠️ Ne lève jamais : un contexte incohérent est ramené à des bornes sûres.
-  // Une exception ici bloquerait l'émission du contrat, ce qui est pire qu'un
-  // acompte à zéro.
-  const acompte = calculerAcompte({
-    montantTotalHtCents: session.montantHtCents,
-    priseEnChargeCents: session.priseEnChargeMontantCents ?? 0,
-    subrogation: session.opcoSubrogation === true,
-    // Un contrat individuel n'est pas un dossier CPF : le CPF passe par la
-    // Caisse des dépôts, jamais par un contrat de gré à gré avec l'organisme.
-    cpf: false,
-    nature: "particulier",
-    tauxAcomptePct: PLAFOND_ACOMPTE_PARTICULIER_PCT,
-    // 🔴 Les bornes de l'action, sans lesquelles le point (3) de L6353-6 reste
-    // une citation : `calculerAcompte` ne peut DATER les échéances du solde que
-    // s'il connaît la période sur laquelle l'action se déroule.
-    //
-    // ⚠️ La signature n'a pas encore eu lieu — on prend donc `new Date()` comme
-    // date d'engagement présumée pour borner la première échéance après le délai
-    // de rétractation. Le contrat imprimé annonce un échéancier calculé à SA date
-    // d'émission ; si la signature est plus tardive, le garde-fou serveur
-    // (`encaissementAutorise`) reste l'autorité sur l'encaissement réel.
-    dateSignature: new Date(),
-    dateDebutAction: new Date(session.dateDebut),
-    dateFinAction: new Date(session.dateFin),
-    // « En 3 fois » par défaut, réglable. ⚠️ Le plancher légal de 2 échéances du
-    // particulier reste appliqué par `calculerAcompte` : ce réglage ne peut pas
-    // descendre sous la loi.
-    nbEcheancesSolde: (await getQualiopiConfig("nb_echeances_solde_defaut")) || 3,
-  });
-
-  const doc = await generateDocument({
-    type: "contrat",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction (acompte calculé sur le reste à charge, échéancier daté,
+  // clause de médiation conditionnelle) vit dans `production/producteurs.ts`,
+  // partagée avec le worker S5 — ici : garde, validation, journal.
+  const resultat = await produireContratFormation(enrollmentId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(ContratFormationPdf, {
-        data: {
-          numero,
-          stagiaire: {
-            nomPrenom,
-            ...(trainee.email ? { email: trainee.email } : {}),
-            ...(trainee.telephone !== null && trainee.telephone !== undefined
-              ? { telephone: trainee.telephone }
-              : {}),
-          },
-          intitule: session.titreSession,
-          objectifs: objectifs.length > 0 ? objectifs : [session.titreSession],
-          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
-          dateDebut: formatDate(new Date(session.dateDebut)),
-          dateFin: formatDate(new Date(session.dateFin)),
-          modalite: modaliteLabel(session.modalite),
-          lieu: resolveLieuDocument(session, identite),
-          prixNet: session.montantHtCents / 100,
-          // Ce que le système DEMANDERA réellement, pas un plafond recalculé.
-          acompteEuros: acompte.acompteCents / 100,
-          // 🔴 L'échéancier DATÉ, transmis au gabarit. Sans cette ligne, la prop
-          // `echeancierSolde` serait un paramètre mort — exactement le défaut F1
-          // trouvé sur le devis (un gabarit câblé qu'aucun producteur n'alimente).
-          //
-          // ⚠️ On ne garde QUE les échéances du solde : la première ligne de
-          // `acompte.echeancier` est l'acompte, déjà affiché au-dessus. La
-          // dédoubler donnerait un contrat où le stagiaire paie deux fois.
-          echeancierSolde: acompte.echeancier
-            .filter((e) => !e.libelle.startsWith("Acompte"))
-            .map((e) => ({
-              libelle: e.libelle,
-              montantEuros: e.montantCents / 100,
-              dueLeLisible: e.dueLe === null ? null : formatDate(e.dueLe),
-            })),
-          dateContrat: formatDateFr(new Date()),
-          // Rien n'est transmis tant qu'aucun médiateur n'a été renseigné : le
-          // gabarit n'imprime alors aucune clause, et l'avertissement
-          // ci-dessus part au journal d'audit.
-          ...(mediateurManquant
-            ? {}
-            : {
-                mediation: {
-                  nom: (mediateurNom as string).trim(),
-                  url: (mediateurUrl as string).trim(),
-                },
-              }),
-        },
-        identite,
-      }),
-    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
-    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
-    // « copie » toutes les pièces des stagiaires suivants d'une même session.
-    refs: { sessionId: session.id, traineeId: trainee.id },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.contrat.genere",
     targetType: "Enrollment",
     targetId: enrollmentId,
     changes: {
-      documentId: doc.id,
-      numero: doc.numero,
-      sessionId: session.id,
+      documentId: resultat.documentId,
+      numero: resultat.numero,
       // Trace de conformité. Le jour d'un contrôle, la question sera « quels
       // contrats ont été émis sans la mention de médiation ? » — cette clé rend
       // la liste extractible du journal, contrat par contrat, au lieu de la
       // laisser introuvable.
-      ...(mediateurManquant ? { mentionMediationAbsente: true } : {}),
+      ...(resultat.details ?? {}),
     },
     session: adminSession,
   });
 
   return {
     data: {
-      documentId: doc.id,
-      numero: doc.numero,
-      ...(avertissementMediation ? { avertissement: avertissementMediation } : {}),
+      documentId: resultat.documentId,
+      numero: resultat.numero,
+      ...(resultat.avertissement ? { avertissement: resultat.avertissement } : {}),
     },
   };
 }
@@ -846,108 +375,22 @@ export async function genererConvocationAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
 
-  const enrollment = await prisma.enrollment.findUnique({
-    where: { id: enrollmentId },
-    select: {
-      id: true,
-      trainee: { select: { id: true, nom: true, prenom: true, entreprise: true } },
-      session: {
-        select: {
-          id: true,
-          titreSession: true,
-          dateDebut: true,
-          dateFin: true,
-          modalite: true,
-          ...LIEU_DOCUMENT_SELECT,
-          formationSnapshot: true,
-          formation: { select: { dureeHeures: true } },
-          coFormateurs: true,
-          formateurPrincipalId: true,
-          numeroDossierOpco: true,
-          financementType: true,
-        },
-      },
-    },
-  });
-  if (!enrollment) return { error: "Inscription introuvable" };
-
-  const identite = await getOrganismeIdentite();
-  const session = enrollment.session;
-  const trainee = enrollment.trainee;
-  // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
-  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
-  const formateurNom = await resolveFormateurNom(
-    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
-    identite.raisonSociale,
-  );
-
-  const nomStagiaire = `${trainee.prenom} ${trainee.nom}`.trim();
-  const financement = session.financementType ?? undefined;
-
-  // Horaires réels : un seul créneau si toutes les journées ont les mêmes, la
-  // liste sinon. Rien n'est inventé — sans journées déclarées, on le dit.
-  const joursConvocation = await prisma.sessionJour.findMany({
-    where: { sessionId: session.id },
-    select: { heureDebut: true, heureFin: true },
-    orderBy: { date: "asc" },
-  });
-  const plages = [...new Set(joursConvocation.map((j) => `${j.heureDebut}–${j.heureFin}`))];
-  const horairesReels =
-    plages.length === 0 ? "horaires communiqués par l'organisme" : plages.join(", ");
-
-  const lieuConvocation = resolveLieuConvocation(session, identite);
-
-  const doc = await generateDocument({
-    type: "convocation",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction (horaires réels des journées, lieu, financement) vit dans
+  // `production/producteurs.ts`, partagée avec le worker S5.
+  const resultat = await produireConvocation(enrollmentId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(ConvocationPdf, {
-        data: {
-          numero,
-          intituleFormation: session.titreSession,
-          dateDebut: formatDate(new Date(session.dateDebut)),
-          dateFin: formatDate(new Date(session.dateFin)),
-          // Horaires RÉELS des journées déclarées, jamais un « 09h00–17h00 »
-          // codé en dur : la convocation et la feuille d'émargement doivent dire
-          // la même chose, et CAA Nantes 20/04/2021 sanctionne précisément les
-          // intitulés et horaires divergents entre documents.
-          horaires: horairesReels,
-          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
-          modalite: modaliteLabelLower(session.modalite),
-          // Le gabarit masque déjà cette ligne en distanciel. `undefined` plutôt
-          // que « — » : une convocation qui affiche « Lieu : — » est pire que
-          // muette, elle laisse croire que l'information a été cherchée et
-          // qu'elle n'existe pas.
-          ...(lieuConvocation !== undefined ? { lieu: lieuConvocation } : {}),
-          nomFormateur: formateurNom,
-          contactEmail: identite.email,
-          nomStagiaire,
-          ...(trainee.entreprise !== null && trainee.entreprise !== undefined
-            ? { entreprise: trainee.entreprise }
-            : {}),
-          ...(financement !== null && financement !== undefined ? { financement } : {}),
-          ...(session.numeroDossierOpco !== null && session.numeroDossierOpco !== undefined
-            ? { numeroOrdrePriseEnCharge: session.numeroDossierOpco }
-            : {}),
-        },
-        identite,
-      }),
-    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
-    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
-    // « copie » toutes les pièces des stagiaires suivants d'une même session.
-    refs: { sessionId: session.id, traineeId: trainee.id },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.convocation.genere",
     targetType: "Enrollment",
     targetId: enrollmentId,
-    changes: { documentId: doc.id, numero: doc.numero, sessionId: session.id },
+    changes: { documentId: resultat.documentId, numero: resultat.numero, ...(resultat.details ?? {}) },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -970,35 +413,23 @@ export async function genererEmargementAction(input: {
   const { sessionId, rectificationMotif } = parsed.data;
 
   // ⚠️ Pas de `resolveFormateurNom` ici : le formateur est porté JOURNÉE PAR
-  // JOURNÉE par `construireFeuillePdf` (désistement, co-animation). Un nom
-  // unique en tête de feuille contredirait le tableau qui suit, et CAA Nantes
-  // 20/04/2021 sanctionne précisément les feuilles dont le formateur annoncé ne
-  // correspond pas à celui qui a animé.
-  //
-  // Le contenu de la feuille est construit par `construireTirageEmargement`,
-  // partagé avec le TIRAGE à la demande (`/api/qualiopi/sessions/[id]/
-  // emargement`). Les deux voies doivent rendre exactement la même feuille :
-  // celle du registre est figée à l'émission, le tirage la rejoue à jour.
-  const tirage = await construireTirageEmargement(sessionId);
-  if (!tirage.ok) return { error: tirage.message };
-
-  const doc = await generateDocument({
-    type: "emargement",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // JOURNÉE par la feuille (désistement, co-animation). La construction —
+  // `construireTirageEmargement`, partagée avec le tirage à la demande — vit
+  // dans `production/producteurs.ts`, partagée avec le worker S5.
+  const resultat = await produireEmargement(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) => tirage.element(numero),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.emargement.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero, nbParticipants: tirage.nbParticipants },
+    changes: { documentId: resultat.documentId, numero: resultat.numero, ...(resultat.details ?? {}) },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1020,39 +451,20 @@ export async function genererPositionnementAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: { id: true, titreSession: true, dateDebut: true },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-
-  const doc = await generateDocument({
-    type: "positionnement",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  const resultat = await produirePositionnement(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(PositionnementPdf, {
-        data: {
-          numero,
-          intituleFormation: session.titreSession,
-          dateSession: formatDate(new Date(session.dateDebut)),
-        },
-        identite,
-      }),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.positionnement.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero },
+    changes: { documentId: resultat.documentId, numero: resultat.numero },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1074,122 +486,22 @@ export async function genererGrilleEvaluationAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
 
-  const enrollment = await prisma.enrollment.findUnique({
-    where: { id: enrollmentId },
-    select: {
-      id: true,
-      trainee: { select: { id: true, nom: true, prenom: true } },
-      session: {
-        select: {
-          id: true,
-          titreSession: true,
-          dateDebut: true,
-          coFormateurs: true,
-          formateurPrincipalId: true,
-          formationSnapshot: true,
-          formation: { select: { objectifsPedagogiques: true } },
-        },
-      },
-    },
-  });
-  if (!enrollment) return { error: "Inscription introuvable" };
-
-  const identite = await getOrganismeIdentite();
-  const session = enrollment.session;
-  const trainee = enrollment.trainee;
-  const formateurNom = await resolveFormateurNom(
-    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
-    identite.raisonSociale,
-  );
-  // Objectifs depuis le snapshot légal (WS5), repli LIVE si legacy.
-  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
-  const rawObjectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  const grilleVierge =
-    rawObjectifs.length > 0
-      ? rawObjectifs.map((libelle) => ({ libelle }))
-      : [{ libelle: session.titreSession }];
-
-  // 🔴 Audit pré-visite 2026-08-03. La grille ne lisait JAMAIS l'évaluation
-  // enregistrée : elle rendait toujours le formulaire vierge, même quand une
-  // évaluation finale existait en base.
-  //
-  // Sur le premier dossier réel, la grille affichait « Score total : — / 15 »
-  // pendant que l'attestation du même dossier portait « Réussite — score 100 % ».
-  // Régénérer ne changeait rien, puisque la source n'était pas consultée.
-  //
-  // Deux pièces du même dossier qui se contredisent sur l'atteinte des
-  // objectifs, c'est exactement ce qu'un contrôle relève — et l'indicateur 11
-  // n'est pas graduable.
-  //
-  // La forme stockée dans `evaluationAcquis.competences` est déjà celle
-  // qu'attend le gabarit (`{ libelle, note, observations }`) : on la reprend
-  // telle quelle, sans re-mapper, pour qu'écran et PDF ne puissent pas diverger.
-  const evaluationFinale = await prisma.evaluationAcquis.findFirst({
-    where: { enrollmentId, type: "finale" },
-    orderBy: { dateEvaluation: "desc" },
-    select: { competences: true, recommandations: true },
-  });
-
-  const competencesEvaluees = Array.isArray(evaluationFinale?.competences)
-    ? (evaluationFinale.competences as unknown[]).flatMap((c) => {
-        if (c === null || typeof c !== "object") return [];
-        const o = c as Record<string, unknown>;
-        const libelle = typeof o["libelle"] === "string" ? o["libelle"] : null;
-        if (libelle === null || libelle.trim() === "") return [];
-        const note = o["note"];
-        const observations = o["observations"];
-        return [
-          {
-            libelle,
-            ...(note === 1 || note === 2 || note === 3 ? { note } : {}),
-            ...(typeof observations === "string" && observations.trim() !== ""
-              ? { observations }
-              : {}),
-          },
-        ];
-      })
-    : [];
-
-  // Repli sur la grille vierge : une évaluation absente ou illisible doit
-  // produire un formulaire imprimable, jamais faire échouer la génération.
-  const competences = competencesEvaluees.length > 0 ? competencesEvaluees : grilleVierge;
-
-  const doc = await generateDocument({
-    type: "grille_evaluation",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction (grille vierge OU évaluation enregistrée — audit
+  // 2026-08-03) vit dans `production/producteurs.ts`, partagée avec le worker S5.
+  const resultat = await produireGrilleEvaluation(enrollmentId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(GrilleEvaluationPdf, {
-        data: {
-          numero,
-          intituleFormation: session.titreSession,
-          dateEvaluation: formatDate(new Date(session.dateDebut)),
-          typeEvaluation: "finale",
-          nomFormateur: formateurNom,
-          nomStagiaire: `${trainee.prenom} ${trainee.nom}`.trim(),
-          competences,
-          ...(typeof evaluationFinale?.recommandations === "string" &&
-          evaluationFinale.recommandations.trim() !== ""
-            ? { recommandations: evaluationFinale.recommandations }
-            : {}),
-        },
-        identite,
-      }),
-    // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
-    // établis PAR STAGIAIRE. Sans lui, la détection de régénération marquait
-    // « copie » toutes les pièces des stagiaires suivants d'une même session.
-    refs: { sessionId: session.id, traineeId: trainee.id },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.grille_evaluation.genere",
     targetType: "Enrollment",
     targetId: enrollmentId,
-    changes: { documentId: doc.id, numero: doc.numero },
+    changes: { documentId: resultat.documentId, numero: resultat.numero },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1210,39 +522,20 @@ export async function genererSatisfactionAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: { id: true, titreSession: true, dateFin: true },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-
-  const doc = await generateDocument({
-    type: "satisfaction",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  const resultat = await produireSatisfaction(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(SatisfactionPdf, {
-        data: {
-          numero,
-          intituleFormation: session.titreSession,
-          dateSession: formatDate(new Date(session.dateFin)),
-        },
-        identite,
-      }),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.satisfaction.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero },
+    changes: { documentId: resultat.documentId, numero: resultat.numero },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2554,70 +1847,28 @@ export async function genererReglementInterieurAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: { id: true },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-  const dateVersion = formatDateFr(new Date());
-
-  const doc = await generateDocument({
-    type: "reglement_interieur",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  const resultat = await produireReglementInterieur(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(ReglementInterieurPdf, {
-        data: {
-          numero,
-          dateVersion,
-        },
-        identite,
-      }),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.reglement_interieur.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero },
+    changes: { documentId: resultat.documentId, numero: resultat.numero },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 13 bis. Programme de l'action de formation (annexe de la convention)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const NIVEAU_LABELS: Record<string, string> = {
-  debutant: "Débutant",
-  intermediaire: "Intermédiaire",
-  avance: "Avancé",
-  tous_niveaux: "Tous niveaux",
-};
-
-/**
- * Libellé de la sanction de l'action (art. L.6353-1 : « modalités de sanction »).
- *
- * ⚠️ On ne promet JAMAIS une certification que l'action ne délivre pas. Une
- * formation non certifiante sanctionne par une attestation de fin de formation
- * — c'est exact, opposable, et suffisant. Annoncer « certification » sur une
- * action `aucune` serait une allégation trompeuse au sens du Code de la
- * consommation, sur la pièce même qui est annexée au contrat.
- */
-function sanctionLabel(certificationType: string | null): string {
-  if (certificationType === "rncp") {
-    return "Certification enregistrée au Répertoire national des certifications professionnelles (RNCP).";
-  }
-  if (certificationType === "rs") {
-    return "Certification enregistrée au Répertoire spécifique (RS).";
-  }
-  return "Attestation de fin de formation mentionnant les objectifs, la nature, la durée de l'action et les résultats de l'évaluation des acquis.";
-}
+// `NIVEAU_LABELS` et `sanctionLabel` vivent dans `production/producteurs.ts`
+// (cf. import en tête) — partagés avec le worker S5.
 
 /**
  * Génère le programme de l'action de formation d'une session.
@@ -2643,107 +1894,28 @@ export async function genererProgrammeAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      id: true,
-      titreSession: true,
-      modalite: true,
-      formationSnapshot: true,
-      ...LIEU_DOCUMENT_SELECT,
-      formation: {
-        select: {
-          titre: true,
-          dureeHeures: true,
-          objectifsPedagogiques: true,
-          programmeDetaille: true,
-          methodesPedagogiques: true,
-          moyensTechniques: true,
-          versionProgramme: true,
-          certificationType: true,
-          prerequis: true,
-          niveau: true,
-          accessibleHandicap: true,
-          seuilReussitePct: true,
-          offreSite: { select: { publicViseFr: true } },
-        },
-      },
-    },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
-  const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  const modules = lireModulesProgramme(formationDoc.programmeDetaille);
-
-  // Les modalités d'évaluation ne sont pas un champ libre de la formation :
-  // elles décrivent le dispositif RÉEL de la plateforme (positionnement amont,
-  // évaluation des acquis, satisfaction), dont le seuil de réussite est le seul
-  // paramètre variable. Les inventer par formation les ferait diverger de ce que
-  // le système produit effectivement.
-  const seuil = session.formation.seuilReussitePct;
-  const modalitesEvaluation =
-    `Évaluation des prérequis et du niveau par questionnaire de positionnement avant l'entrée en formation. ` +
-    `Évaluation des acquis en fin d'action au regard des objectifs pédagogiques ci-dessus ` +
-    `(seuil de réussite : ${seuil} %). ` +
-    `Recueil de la satisfaction des participants à l'issue de l'action.`;
-
-  const doc = await generateDocument({
-    type: "programme",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction (snapshot légal WS5, modules, sanction) vit dans
+  // `production/producteurs.ts`, partagée avec le worker S5.
+  const resultat = await produireProgramme(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    identite,
-    buildElement: (numero) =>
-      React.createElement(ProgrammeFormationPdf, {
-        data: {
-          numero,
-          intitule: formationDoc.titre ?? session.titreSession,
-          ...(formationDoc.versionProgramme
-            ? { versionProgramme: formationDoc.versionProgramme }
-            : {}),
-          dateEdition: formatDateFr(new Date()),
-          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
-          modalite: modaliteLabel(session.modalite),
-          lieu: resolveLieuDocument(session, identite),
-          publicVise: session.formation.offreSite.publicViseFr,
-          prerequis: session.formation.prerequis,
-          niveau: NIVEAU_LABELS[session.formation.niveau] ?? session.formation.niveau,
-          accessibleHandicap: session.formation.accessibleHandicap,
-          objectifs,
-          modules,
-          methodesPedagogiques:
-            formationDoc.methodesPedagogiques ?? session.formation.methodesPedagogiques,
-          ...(session.formation.moyensTechniques
-            ? { moyensTechniques: session.formation.moyensTechniques }
-            : {}),
-          modalitesEvaluation,
-          sanction: sanctionLabel(formationDoc.certificationType),
-          ...(identite.referentHandicapEmail
-            ? { referentHandicapEmail: identite.referentHandicapEmail }
-            : {}),
-        },
-        identite,
-      }),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.programme.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
     changes: {
-      documentId: doc.id,
-      numero: doc.numero,
+      documentId: resultat.documentId,
+      numero: resultat.numero,
       // Traçabilité utile en cas de contestation : d'où vient ce qui est imprimé,
       // et le découpage était-il structuré au moment de l'édition.
-      source: formationDoc.source,
-      nbModules: modules.length,
+      ...(resultat.details ?? {}),
     },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2766,102 +1938,22 @@ export async function genererOrganisationActionAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      id: true,
-      numero: true,
-      titreSession: true,
-      modalite: true,
-      dateDebut: true,
-      dateFin: true,
-      dureeReelleHeures: true,
-      nbParticipantsPrevus: true,
-      ...LIEU_DOCUMENT_SELECT,
-      formation: { select: { dureeHeures: true } },
-      formateurPrincipal: { select: { prenom: true, nom: true } },
-      jours: {
-        orderBy: { date: "asc" },
-        select: {
-          date: true,
-          heureDebut: true,
-          heureFin: true,
-          horairesConfirmes: true,
-          trainer: { select: { prenom: true, nom: true } },
-        },
-      },
-    },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-
-  const formateurPrincipal = session.formateurPrincipal
-    ? `${session.formateurPrincipal.prenom} ${session.formateurPrincipal.nom}`
-    : "";
-
-  const jours = session.jours.map((j) => ({
-    date: formatDate(j.date),
-    heureDebut: j.heureDebut,
-    heureFin: j.heureFin,
-    horairesConfirmes: j.horairesConfirmes,
-    formateur: j.trainer ? `${j.trainer.prenom} ${j.trainer.nom}` : "",
-  }));
-
-  // Rythme lisible, calculé depuis le calendrier réel — jamais saisi à la main.
-  // « Consécutives » = aucun trou calendaire ; un week-end au milieu suffit à
-  // basculer sur « réparties », ce qui est exactement l'information attendue.
-  const nbJours = session.jours.length;
-  let rythme: string;
-  if (nbJours === 0) {
-    rythme = `Du ${formatDate(session.dateDebut)} au ${formatDate(session.dateFin)} (calendrier détaillé non arrêté).`;
-  } else if (nbJours === 1) {
-    rythme = `1 journée, le ${jours[0]!.date} (${jours[0]!.heureDebut} – ${jours[0]!.heureFin}).`;
-  } else {
-    const premier = session.jours[0]!.date.getTime();
-    const dernier = session.jours[nbJours - 1]!.date.getTime();
-    const etendueJours = Math.round((dernier - premier) / 86_400_000) + 1;
-    const repartition = etendueJours === nbJours ? "consécutives" : "réparties";
-    rythme = `${nbJours} journées ${repartition}, du ${jours[0]!.date} au ${jours[nbJours - 1]!.date}.`;
-  }
-
-  const doc = await generateDocument({
-    type: "organisation_action",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction (calendrier `session_jours`, rythme calculé) vit dans
+  // `production/producteurs.ts`, partagée avec le worker S5.
+  const resultat = await produireOrganisationAction(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    identite,
-    buildElement: (numero) =>
-      React.createElement(OrganisationActionPdf, {
-        data: {
-          numero,
-          intitule: session.titreSession,
-          numeroSession: session.numero,
-          dateEdition: formatDateFr(new Date()),
-          dureeHeures: session.dureeReelleHeures ?? session.formation.dureeHeures,
-          modalite: modaliteLabel(session.modalite),
-          lieu: resolveLieuDocument(session, identite),
-          effectifPrevu: session.nbParticipantsPrevus,
-          jours,
-          rythme,
-          formateurPrincipal,
-          ...(identite.referentHandicapEmail
-            ? { referentHandicapEmail: identite.referentHandicapEmail }
-            : {}),
-        },
-        identite,
-      }),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.organisation_action.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero, nbJours },
+    changes: { documentId: resultat.documentId, numero: resultat.numero, ...(resultat.details ?? {}) },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2884,50 +1976,20 @@ export async function genererLivretAccueilAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: { id: true, coFormateurs: true, formateurPrincipalId: true },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-
-  // Contact pédagogique — formateur principal ou identité OF
-  const formateurNom = await resolveFormateurNom(
-    { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
-    identite.raisonSociale,
-  );
-  const dateVersion = formatDateFr(new Date());
-
-  const doc = await generateDocument({
-    type: "livret_accueil",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  const resultat = await produireLivretAccueil(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(LivretAccueilPdf, {
-        data: {
-          numero,
-          contactPedagogique: {
-            nomPrenom: formateurNom,
-            email: identite.email,
-            ...(identite.telephone ? { telephone: identite.telephone } : {}),
-          },
-          dateVersion,
-        },
-        identite,
-      }),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
 
   await logQualiopiActivity({
     action: "qualiopi.document.livret_accueil.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero },
+    changes: { documentId: resultat.documentId, numero: resultat.numero },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return { data: { documentId: resultat.documentId, numero: resultat.numero } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -5,6 +5,9 @@
 #   - emails (10 templates React Email × FR/EN)
 #   - option-expiration (cron 5min)
 #   - option-reminder (cron 1h, fenetre [22h, 26h])
+#   - documents-auto (S5 — production documentaire Qualiopi au jalon, horaire
+#     :15 ; rend des PDF react-pdf → depend des polices copiees plus bas,
+#     exactement comme formation-crons)
 #
 # Aligne avec axionia_audit_sequence.md Sprint 18 + ADR 0009 :
 #   - Coolify deploie 2 services Web + Worker (meme image partagee possible

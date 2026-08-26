@@ -40,6 +40,10 @@ import type {
   FormationCronJobData,
   FormationCronJobType,
 } from "./workers/qualiopi-formation-crons-worker";
+import type {
+  DocumentsAutoJobData,
+  DocumentsAutoJobType,
+} from "./workers/qualiopi-documents-worker";
 
 const connection = getBullConnection();
 
@@ -587,6 +591,24 @@ export const formationCronsQueue: Queue<FormationCronJobData, void, FormationCro
     ? new Queue<FormationCronJobData, void, FormationCronJobType>("formation-crons", {
         connection,
         defaultJobOptions: { ...defaultJobOptions, attempts: 3 },
+      })
+    : null;
+
+// ============================================================
+// Qualiopi — Production documentaire au jalon (S5, 2026-08-26).
+// Queue séparée de formation-crons : la production de PDF est LENTE (rendu
+// react-pdf, upload R2) et ne doit jamais retarder les crons d'obligation
+// légale (convocation, attestations) qui partagent leur file.
+// ============================================================
+
+export const documentsAutoQueue: Queue<DocumentsAutoJobData, void, DocumentsAutoJobType> | null =
+  connection
+    ? new Queue<DocumentsAutoJobData, void, DocumentsAutoJobType>("documents-auto", {
+        connection,
+        // `attempts: 1` : le passage suivant arrive dans l'heure et repart de
+        // l'ÉTAT (pièces manquantes) — rejouer un passage raté doublerait le
+        // travail sans rien rattraper de plus.
+        defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
       })
     : null;
 
@@ -1608,17 +1630,23 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "30 7 * * *",
         jobId: "formation-crons-positionnement-cron",
       },
-      // 2026-08-16 — liens de signature J-0, à 06:00 UTC (08:00 Paris l'été).
+      // 2026-08-16 — liens de signature J-0.
       //
-      // AVANT le passage des alertes (07:00) : ainsi une session servie le matin
-      // ne déclenche pas, une heure plus tard, l'alerte qui dit que personne ne
-      // peut signer. L'ordre des crons est ici une règle, pas un détail — deux
-      // passages inversés produiraient une alerte critique quotidienne sur des
-      // sessions parfaitement en ordre, et une alerte qui crie à tort cesse
-      // d'être lue.
+      // 🔴 HORAIRE depuis S5 (2026-08-26), et non plus un unique passage à
+      // 06:00. Le passage unique était un résidu M2 : une session créée à 10 h
+      // pour l'après-midi ne rencontrait AUCUN passage avant son démarrage —
+      // exactement le trou de calendrier déjà payé et documenté sur
+      // convocation-j5 ci-dessus. La sélection du handler est un ÉTAT (sans
+      // jeton vivant, commencée depuis < 24 h), donc les 24 passages/jour ne
+      // réémettent jamais rien : la garde anti-réémission tient le coût à une
+      // requête indexée qui ne ramène presque jamais rien.
+      //
+      // `:05` pour ne pas percuter convocation-j5 à l'heure pile, et rester
+      // AVANT le passage des alertes de 07:00 au moins une fois par jour : une
+      // session servie ne déclenche pas l'alerte « personne ne peut signer ».
       {
         type: "formation-crons.liens-emargement-j0",
-        pattern: "0 6 * * *",
+        pattern: "5 * * * *",
         jobId: "formation-crons-liens-emargement-j0-cron",
       },
       // Hub facturation Phase 3 — marquage retards (statut seul, AUCUN email),
@@ -1670,6 +1698,27 @@ export async function bootRepeatableJobs(): Promise<void> {
         { repeat: { pattern }, jobId },
       );
     }
+  }
+
+  // ============================================================
+  // Qualiopi S5 — production documentaire au jalon, HORAIRE à :15.
+  //
+  // Piloté par l'ÉTAT (statut de session + absence de pièce), jamais par une
+  // fenêtre de date : un passage manqué se rattrape au suivant — même doctrine
+  // que convocation-j5. `:15` pour ne pas percuter la minute ronde où se
+  // pressent convocation-j5 (:00), liens-emargement-j0 (:05) et email-sante
+  // (:20).
+  // ============================================================
+  if (documentsAutoQueue) {
+    const type: DocumentsAutoJobType = "documents-auto.production";
+    const pattern = "15 * * * *";
+    const jobId = "documents-auto-production-cron";
+    await documentsAutoQueue.removeRepeatable(type, { pattern }, jobId);
+    await documentsAutoQueue.add(
+      type,
+      { type, tick: new Date().toISOString() },
+      { repeat: { pattern }, jobId },
+    );
   }
 
   // ── Entretien : restes Redis des 3 files legacy dormantes ─────────────────

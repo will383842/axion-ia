@@ -473,6 +473,14 @@ async function handleRappelJ7(): Promise<void> {
   // le plancher — le cron RATTRAPE chaque jour, tant que la session n'a pas
   // commencé.
   const plafond = new Date(now.getTime() + 7.5 * 24 * 60 * 60 * 1000);
+  // 🔴 S5 (2026-08-26) — LE RAPPEL NE PART JAMAIS LE MÊME MATIN QUE LA
+  // CONVOCATION. Défaut mesuré (AN-S6) : une session créée moins de 5,5 j du
+  // début recevait la convocation (cron HORAIRE, rattrapant) puis le rappel
+  // J-7 au passage de 08:00 — deux messages quasi identiques dans la même
+  // matinée, les drapeaux `convocationEnvoyeeAt` et `rappelJ7EnvoyeAt`
+  // n'étant jamais croisés. Le rappel exige désormais que la convocation soit
+  // PARTIE depuis au moins 24 h pour chaque inscrit actif.
+  const seuilConvocation24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
   const sessions = await prisma.trainingSession.findMany({
     where: {
@@ -485,8 +493,31 @@ async function handleRappelJ7(): Promise<void> {
       // Ce cas relève d'un écart à consigner — c'est l'objet du relevé ci-dessous.
       dateDebut: { gt: now, lte: plafond },
     },
-    select: { id: true },
+    // Les convocations des inscrits ACTIFS, pour décider en mémoire : la
+    // condition « tous convoqués depuis ≥ 24 h » s'exprime mal en un seul
+    // `where` Prisma lisible, et le volume (quelques sessions planifiées sous
+    // J+7,5) rend le filtre applicatif gratuit — et testable à sec.
+    select: {
+      id: true,
+      enrollments: {
+        where: { ...inscriptionsActives() },
+        select: { convocationEnvoyeeAt: true },
+      },
+    },
   });
+
+  // La session saute son tour tant qu'UN inscrit actif n'a pas sa convocation
+  // partie depuis 24 h — jamais convoqué compris : le cron de convocation est
+  // horaire, il passera avant le prochain tour du rappel, et rappeler avant
+  // d'avoir convoqué inverserait les deux pièces. Le rattrapage par état
+  // (`rappelJ7EnvoyeAt: null`) représentera la session au passage suivant.
+  const candidates = sessions.filter(
+    (s) =>
+      s.enrollments.length > 0 &&
+      s.enrollments.every(
+        (e) => e.convocationEnvoyeeAt !== null && e.convocationEnvoyeeAt < seuilConvocation24h,
+      ),
+  );
 
   // 🔑 CE QUE LE COMPTE À REBOURS RENDAIT INVISIBLE : les sessions qui ont
   // DÉMARRÉ sans que personne n'ait été rappelé. Sans cette ligne, le journal
@@ -513,7 +544,7 @@ async function handleRappelJ7(): Promise<void> {
   let ok = 0;
   let ko = 0;
 
-  for (const session of sessions) {
+  for (const session of candidates) {
     try {
       // 🔴 `D5-1-C1` — le compteur ne compte plus un envoi qui n'est pas parti.
       // Ce cron n'écrit aucune trace en base (c'est le constat `D5-1-C2`, à
@@ -535,7 +566,9 @@ async function handleRappelJ7(): Promise<void> {
   }
 
   console.log(
-    `[formation-crons] rappel-j7: ${ok} sessions traitées, ${ko} erreurs (${sessions.length} candidats scannés)`,
+    `[formation-crons] rappel-j7: ${ok} sessions traitées, ${ko} erreurs ` +
+      `(${sessions.length} candidats scannés, ${sessions.length - candidates.length} en attente ` +
+      `des 24 h post-convocation)`,
   );
 }
 
@@ -1504,15 +1537,25 @@ async function handleLiensEmargementJ0(): Promise<void> {
   }
 
   const now = new Date();
-  const debutJour = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0),
+  // 🔴 S5 (2026-08-26) — PLUS DE FENÊTRE JOUR UTC (résidu M2). L'ancienne
+  // sélection était `dateDebut ∈ [minuit UTC ; minuit+24h[` au SEUL passage de
+  // 06:00 : une session créée à 10 h pour l'après-midi — le cas ordinaire, cf.
+  // AXI-SESS-2026-005 — ne rencontrait aucun passage avant son démarrage, et
+  // la stagiaire ne pouvait pas émarger. Même correctif que convocation-j5
+  // (queues.ts en documente le motif) : le cron passe à l'HORAIRE, et la
+  // sélection devient un ÉTAT — session qui commence aujourd'hui OU commencée
+  // depuis moins de 24 h, sans jeton vivant. La garde anti-réémission
+  // ci-dessous fait qu'un passage horaire ne réémet jamais des liens vivants.
+  const finJour = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0) +
+      24 * 60 * 60 * 1000,
   );
-  const finJour = new Date(debutJour.getTime() + 24 * 60 * 60 * 1000);
+  const borneBasse24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
   const sessions = await prisma.trainingSession.findMany({
     where: {
       statut: { in: ["planifiee", "en_cours"] },
-      dateDebut: { gte: debutJour, lt: finJour },
+      dateDebut: { gte: borneBasse24h, lt: finJour },
       AND: [
         { enrollments: { some: { ...inscriptionsActives() } } },
         // La garde anti-réémission : personne n'a de lien vivant.
@@ -1574,7 +1617,7 @@ async function handleLiensEmargementJ0(): Promise<void> {
   console.log(
     `[formation-crons] liens-emargement-j0: ${traitees} session(s) servie(s), ` +
       `${sansJournees} sans journée déclarée, ${enEchec} en échec ` +
-      `(${sessions.length} session(s) démarrant aujourd'hui sans lien vivant)`,
+      `(${sessions.length} session(s) sans lien vivant, démarrant aujourd'hui ou depuis < 24 h)`,
   );
 }
 

@@ -114,13 +114,29 @@ vi.mock("@/server/qualiopi/formations/transition-helper", () => ({
   writeSessionTransition: vi.fn(),
 }));
 
+// Rappel J-7 (S5, 2026-08-26) — l'écart « sessions démarrées sans rappel » est
+// mesuré par un module partagé avec la règle d'alerte ; ici on le neutralise,
+// il a ses propres tests (`rappel-j7-remonte-vraiment.spec.ts`).
+vi.mock("@/server/qualiopi/notifications/rappel-j7-manquant", () => ({
+  sessionsSansRappelJ7: vi.fn(async () => []),
+}));
+
+// Liens d'émargement J-0 — l'envoi réel a ses propres tests ; ici on vérifie
+// la SÉLECTION (résidu M2 : fenêtre JOUR UTC aveugle aux sessions créées après
+// le passage du matin).
+vi.mock("@/server/qualiopi/emargement/envoi-liens", () => ({
+  envoyerLiensPourSession: vi.fn(async () => ({ ok: true, echecs: [] })),
+}));
+
 import { prisma } from "@/lib/prisma";
 import {
   envoyerConvocation,
   envoyerPositionnement,
+  envoyerRappelJ7,
   envoyerRelanceQuestionnaire,
   envoyerEnqueteEntreprise,
 } from "@/server/qualiopi/notifications/notifications-service";
+import { envoyerLiensPourSession } from "@/server/qualiopi/emargement/envoi-liens";
 import { synchroniserAlertes, creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe";
 import { decideSessionTransitions } from "@/server/qualiopi/formations/crons";
@@ -1252,5 +1268,155 @@ describe("relance-questionnaires — le positionnement a son PROPRE canal", () =
     ).where;
 
     expect(where.type).toEqual({ not: "positionnement" });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Rappel J-7 (S5, 2026-08-26) — JAMAIS le même matin que la convocation
+//
+// 🔴 Défaut mesuré (AN-S6) : une session créée moins de 5,5 j avant son début
+// recevait la convocation (cron horaire) ET le rappel J-7 (cron de 08:00) le
+// MÊME matin — deux messages quasi identiques à quelques minutes d'écart, les
+// drapeaux `convocationEnvoyeeAt` et `rappelJ7EnvoyeAt` n'étant jamais croisés.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("handleRappelJ7 — la convocation doit être partie depuis ≥ 24 h", () => {
+  const HEURE_MS = 60 * 60 * 1000;
+  const mockEnvoyerRappelJ7 = envoyerRappelJ7 as ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+    mockPrisma.trainingSession.findMany.mockResolvedValue([]);
+    mockEnvoyerRappelJ7.mockResolvedValue(true);
+  });
+
+  const lancer = () =>
+    formationCronsHandler({ type: "formation-crons.rappel-j7", tick: "2026-08-26T08:00:00Z" });
+
+  it("🔴 un inscrit convoqué il y a 1 h → la session SAUTE son tour", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      {
+        id: "sess-frais",
+        enrollments: [{ convocationEnvoyeeAt: new Date(Date.now() - 1 * HEURE_MS) }],
+      },
+    ]);
+
+    await lancer();
+
+    // Le rattrapage par état le représentera demain : `rappelJ7EnvoyeAt`
+    // reste nul, la session reste candidate — mais PAS ce matin.
+    expect(mockEnvoyerRappelJ7).not.toHaveBeenCalled();
+  });
+
+  it("un inscrit convoqué il y a 25 h → la session est candidate", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      {
+        id: "sess-mur",
+        enrollments: [{ convocationEnvoyeeAt: new Date(Date.now() - 25 * HEURE_MS) }],
+      },
+    ]);
+
+    await lancer();
+
+    expect(mockEnvoyerRappelJ7).toHaveBeenCalledWith("sess-mur");
+  });
+
+  it("un inscrit JAMAIS convoqué → la session saute aussi (la convocation d'abord)", async () => {
+    // Le cron de convocation est HORAIRE : il passera avant le prochain tour
+    // du rappel. Rappeler avant d'avoir convoqué inverserait les deux pièces.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      {
+        id: "sess-non-convoquee",
+        enrollments: [
+          { convocationEnvoyeeAt: new Date(Date.now() - 25 * HEURE_MS) },
+          { convocationEnvoyeeAt: null },
+        ],
+      },
+    ]);
+
+    await lancer();
+
+    expect(mockEnvoyerRappelJ7).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Liens d'émargement J-0 — sélection par ÉTAT, plus par fenêtre JOUR UTC
+//
+// 🔴 Résidu M2 : la sélection `dateDebut ∈ [minuit UTC ; minuit+24h[` au seul
+// passage de 06:00 laissait sans lien toute session créée APRÈS ce passage —
+// le cas ordinaire d'une session créée le matin même pour l'après-midi. Même
+// correctif que convocation-j5 : l'état (aucun jeton vivant) + un passage
+// horaire, et la borne basse devient « commencée depuis moins de 24 h ».
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("handleLiensEmargementJ0 — plus de fenêtre jour UTC aveugle", () => {
+  const mockEnvoyerLiens = envoyerLiensPourSession as ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+    mockPrisma.trainingSession.findMany.mockResolvedValue([]);
+    mockEnvoyerLiens.mockResolvedValue({ ok: true, echecs: [] });
+  });
+
+  const lancer = () =>
+    formationCronsHandler({
+      type: "formation-crons.liens-emargement-j0",
+      tick: "2026-08-26T10:05:00Z",
+    });
+
+  it("🔴 borne basse = now-24h (état), plus le minuit UTC du jour", async () => {
+    await lancer();
+
+    const where = (
+      mockPrisma.trainingSession.findMany.mock.calls[0]![0] as {
+        where: { dateDebut: { gte: Date; lt?: Date; lte?: Date } };
+      }
+    ).where;
+
+    // Une session commencée il y a 4 h — créée à 10 h, après l'ancien passage
+    // unique de 06:00 — doit rester dans la sélection : la borne basse est
+    // « il y a 24 h », pas « minuit UTC ».
+    const borneBasseAttendue = Date.now() - 24 * 60 * 60 * 1000;
+    expect(
+      Math.abs(where.dateDebut.gte.getTime() - borneBasseAttendue),
+      "la borne basse est retombée sur minuit UTC : une session créée après le " +
+        "passage du matin redevient invisible (résidu M2)",
+    ).toBeLessThan(5000);
+
+    // Le plafond reste la fin de la journée courante : on n'émet pas les liens
+    // d'une session de demain.
+    const now = new Date();
+    const finJour =
+      Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) + 24 * 60 * 60 * 1000;
+    const plafond = where.dateDebut.lt ?? where.dateDebut.lte;
+    expect(plafond).toBeInstanceOf(Date);
+    expect(Math.abs((plafond as Date).getTime() - finJour)).toBeLessThan(5000);
+  });
+
+  it("une session servie l'est par envoyerLiensPourSession (origine cron)", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      { id: "sess-1", numero: "AXI-SESS-2026-009", _count: { jours: 2 } },
+    ]);
+
+    await lancer();
+
+    expect(mockEnvoyerLiens).toHaveBeenCalledWith({ sessionId: "sess-1", origine: "cron-j0" });
+  });
+
+  it("🔴 le cron est HORAIRE dans queues.ts — pas un unique passage à 06:00", async () => {
+    // Structurel, comme le motif documenté sur convocation-j5 (queues.ts) :
+    // l'état ne rattrape rien si le SEUL passage a lieu avant la création de
+    // la session. `:05` pour ne pas percuter convocation-j5 à l'heure pile.
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const source = readFileSync(join(process.cwd(), "src/server/queue/queues.ts"), "utf8");
+    const bloc = source.slice(
+      source.indexOf('type: "formation-crons.liens-emargement-j0"'),
+      source.indexOf('jobId: "formation-crons-liens-emargement-j0-cron"'),
+    );
+    expect(bloc).toContain('pattern: "5 * * * *"');
   });
 });
