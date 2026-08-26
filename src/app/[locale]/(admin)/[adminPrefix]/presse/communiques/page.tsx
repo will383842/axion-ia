@@ -70,6 +70,7 @@ interface ReleaseRow {
   title: string;
   updatedAt: Date;
   idx: number;
+  hasPdf: boolean;
 }
 
 /** Construit un query-string en ignorant les valeurs vides / « all ». */
@@ -169,6 +170,7 @@ export default async function PressReleasesListPage({ params, searchParams }: Pa
       title: r.translations[0]?.title ?? "(sans titre)",
       updatedAt: r.updatedAt,
       idx: i,
+      hasPdf: Boolean(r.pdfStoragePath),
     }));
     if (sortKey === "title") {
       mapped = [...mapped]
@@ -376,12 +378,24 @@ export default async function PressReleasesListPage({ params, searchParams }: Pa
         getRowId={(row) => row.id}
         caption="Liste des communiqués de presse"
         rowAction={(row) => (
-          <Link
-            href={`${base}/communiques/${row.id}`}
-            className="admin-link text-[length:var(--text-admin-sm)] font-medium"
-          >
-            Éditer
-          </Link>
+          <span className="flex items-center gap-[var(--space-admin-3)]">
+            {row.hasPdf ? (
+              <a
+                href={`/api/presse/communique/${row.id}`}
+                target="_blank"
+                rel="noreferrer"
+                className="admin-link text-[length:var(--text-admin-sm)] font-medium"
+              >
+                PDF
+              </a>
+            ) : null}
+            <Link
+              href={`${base}/communiques/${row.id}`}
+              className="admin-link text-[length:var(--text-admin-sm)] font-medium"
+            >
+              Éditer
+            </Link>
+          </span>
         )}
         emptyState={
           <AdminEmptyState

@@ -161,7 +161,16 @@ export default async function EditPressReleasePage({ params, searchParams }: Pag
               </label>
               {currentPdfName ? (
                 <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
-                  PDF actuel : <strong>{currentPdfName}</strong>
+                  PDF actuel :{" "}
+                  <a
+                    href={`/api/presse/communique/${id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-semibold text-[color:var(--color-admin-info)] underline underline-offset-2"
+                  >
+                    {currentPdfName}
+                  </a>{" "}
+                  (ouvrir / télécharger)
                 </p>
               ) : (
                 <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] italic">
