@@ -51,7 +51,7 @@ describe("modeParDefaut", () => {
   });
 
   it("laisse passer un template inconnu — le comportement historique prime", () => {
-    expect(modeParDefaut("booking-confirmed")).toBe("auto");
+    expect(modeParDefaut("template-inconnu")).toBe("auto");
   });
 });
 
@@ -75,7 +75,7 @@ describe("resoudreModeEnvoi — précédence", () => {
   });
 
   it("une règle globale « tous templates » couvre ce que le défaut ne dit pas", () => {
-    expect(resoudreModeEnvoi("booking-confirmed", [global(null, "validation")])).toBe("validation");
+    expect(resoudreModeEnvoi("template-inconnu", [global(null, "validation")])).toBe("validation");
   });
 
   it("une règle globale sur le template exact prime sur la règle globale générale", () => {
@@ -146,7 +146,7 @@ describe("resoudreModeEnvoi — précédence", () => {
     it("la garde ne s'applique QU'À la chaîne réglementaire", () => {
       // Le commercial reste gouvernable par une règle générale : c'est
       // exactement l'usage pour lequel la page de réglages existe.
-      expect(resoudreModeEnvoi("booking-confirmed", [global(null, "validation")])).toBe(
+      expect(resoudreModeEnvoi("template-inconnu", [global(null, "validation")])).toBe(
         "validation",
       );
       expect(resoudreModeEnvoi("qualiopi-relance-impayee", [global(null, "validation")])).toBe(
@@ -275,8 +275,6 @@ describe("Cohérence avec les noms de jobs réels", () => {
     // Lien de signature d'une convention adressé au client (2026-08-01) :
     // pièce contractuelle → même traitement que devis et contrat.
     "convention-envoi",
-    "contract-sent",
-    "contract-reminder",
   ];
 
   it("chaque email « à valider » correspond à un job réel", () => {

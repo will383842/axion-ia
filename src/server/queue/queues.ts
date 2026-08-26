@@ -13,12 +13,8 @@ import { journaliserEnAttente } from "@/server/email/email-log";
 import type {
   EmailJobData,
   EmailJobName,
-  OptionExpirationJobData,
-  OptionReminderJobData,
   SearchIndexerJobData,
   RetentionPurgeJobData,
-  BookingCronJobData,
-  BookingCronJobType,
   SiteRouteInspectorJobData,
   SiteRouteAnomalyDetectorJobData,
   SiteRouteDiscoveryJobData,
@@ -56,20 +52,6 @@ const defaultJobOptions = {
 
 export const emailsQueue: Queue<EmailJobData, void, EmailJobName> | null = connection
   ? new Queue<EmailJobData, void, EmailJobName>("emails", { connection, defaultJobOptions })
-  : null;
-
-export const optionExpirationQueue: Queue<OptionExpirationJobData> | null = connection
-  ? new Queue<OptionExpirationJobData>("option-expiration", {
-      connection,
-      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
-    })
-  : null;
-
-export const optionReminderQueue: Queue<OptionReminderJobData> | null = connection
-  ? new Queue<OptionReminderJobData>("option-reminder", {
-      connection,
-      defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
-    })
   : null;
 
 // `newsletterQueue` retirée le 2026-08-16 (audit de la chaîne d'envoi).
@@ -179,17 +161,6 @@ export const vivierCronsQueue: Queue<VivierCronJobData, void, VivierCronJobType>
       },
     })
   : null;
-
-// Sprint X.12 — Booking V1 crons (relances paiement, J-7/J-1 reminders, etc.).
-// 1 seule queue qui dispatche par `type`. `attempts: 3` — fail-soft sur DB
-// temporaire mais pas d'accumulation infinie.
-export const bookingCronsQueue: Queue<BookingCronJobData, void, BookingCronJobType> | null =
-  connection
-    ? new Queue<BookingCronJobData, void, BookingCronJobType>("booking-crons", {
-        connection,
-        defaultJobOptions: { ...defaultJobOptions, attempts: 3 },
-      })
-    : null;
 
 // ============================================================
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
@@ -862,66 +833,6 @@ export async function enqueueEmail(
 }
 
 /**
- * Interrupteur des workers/crons hérités du flux de réservation payante
- * (`option-expiration`, `option-reminder`, `booking-crons`).
- *
- * OFF par défaut depuis l'audit 2026-07-09 : ce flux est éteint (Calendly a
- * remplacé le créneau public, Stripe est neutralisé) et ces crons tournaient à
- * vide. Poser `LEGACY_BOOKING_WORKERS_ENABLED=true` (scope RUN) pour les
- * réactiver — `bootRepeatableJobs()` les replanifie et `worker.ts` redémarre
- * les 3 workers.
- *
- * SSOT partagée : consommée par `bootRepeatableJobs()` (ici) ET par `worker.ts`.
- */
-export function isLegacyBookingWorkersEnabled(): boolean {
-  return process.env.LEGACY_BOOKING_WORKERS_ENABLED === "true";
-}
-
-/**
- * Purge les restes Redis d'une file legacy DORMANTE (flag ci-dessus a false).
- *
- * LE PIEGE : `removeOnComplete` / `removeOnFail` ne rognent la retention qu'a
- * l'EXECUTION d'un job. Une file sans consommateur ne trime donc plus jamais —
- * son stock reste fige A VIE, pile au plafond. Mesure en prod le 2026-07-26 :
- * 6 005 cles `bull:option-expiration:*`, 726 pour `option-reminder`, 245 pour
- * `booking-crons` — 6 976 cles immortelles pour zero job utile. Les ZSET
- * `repeat` des trois files sont a 0 : la decommission du commit 2c377916 a bien
- * fonctionne, il ne reste que les carcasses de jobs. Rien a rallumer.
- *
- * POURQUOI `clean()` ET SURTOUT PAS `obliterate()` : `obliterate()` commence par
- * `await this.pause()` (bullmq 5.76.8, queue.js:584) et ne supprime la cle
- * `meta` — donc le drapeau `paused` — qu'a la toute fin de son script Lua. Une
- * coupure Redis entre les deux laisse la file PAUSEE de facon permanente, et
- * personne ne le verrait puisque la file est dormante. Le piege se declencherait
- * le jour ou quelqu'un repose `LEGACY_BOOKING_WORKERS_ENABLED=true` : les crons
- * seraient replanifies mais jamais consommes. `clean()` ne touche jamais a
- * l'etat de la file.
- *
- * POURQUOI SEULEMENT `completed` ET `failed` : ce sont des dechets par
- * construction. On ne touche NI a `wait` NI a `delayed`, qui seraient du travail
- * en attente si un producteur reapparaissait.
- *
- * Best-effort : de l'entretien ne doit jamais empecher le worker de demarrer.
- */
-async function purgeDormantLegacyQueue(queue: Pick<Queue, "clean">, label: string): Promise<void> {
-  try {
-    // grace=0 (tout est purgeable) + limit=0 → bullmq traduit en Infinity et
-    // boucle par lots de 10 000 jusqu'a epuisement (queue.js:546-561).
-    const completed = await queue.clean(0, 0, "completed");
-    const failed = await queue.clean(0, 0, "failed");
-    const total = completed.length + failed.length;
-    if (total > 0) {
-      console.warn(`[bullmq] file legacy dormante ${label} : ${total} jobs residuels purges`);
-    }
-  } catch (err) {
-    console.warn(
-      `[bullmq] purge des restes de ${label} impossible (non bloquant) :`,
-      err instanceof Error ? err.message : String(err),
-    );
-  }
-}
-
-/**
  * Boot des cron jobs recurrents — appele une seule fois au demarrage du
  * worker (`pnpm worker`). Utilise des repeatable jobs BullMQ.
  *
@@ -931,64 +842,14 @@ async function purgeDormantLegacyQueue(queue: Pick<Queue, "clean">, label: strin
  */
 export async function bootRepeatableJobs(): Promise<void> {
   // ⚠️ Le garde ne dépend QUE de `retentionPurgeQueue` (purge RGPD, vivante).
-  //    Avant l'audit 2026-07-09 il exigeait aussi `optionExpirationQueue` et
-  //    `optionReminderQueue` : la purge RGPD quotidienne était donc silencieusement
-  //    court-circuitée si l'une de ces queues legacy manquait. Bug latent corrigé.
+  //    Avant l'audit 2026-07-09 il exigeait aussi des queues booking legacy
+  //    (supprimées depuis) : la purge RGPD quotidienne était donc silencieusement
+  //    court-circuitée si l'une d'elles manquait. Bug latent corrigé.
   if (!retentionPurgeQueue) {
     if (process.env.NODE_ENV !== "production") {
       console.warn("[bullmq] no connection, skipping bootRepeatableJobs");
     }
     return;
-  }
-
-  // ── Crons legacy « réservation payante » — DÉSACTIVÉS par défaut ──────────
-  //   Le flux booking payant est éteint (audit 2026-07-09) : Calendly a remplacé
-  //   le créneau public (`createBookingAction`/`postOption48hAction` n'existent
-  //   plus) et Stripe est neutralisé. Ces crons tournaient à vide :
-  //     · option-expiration → toutes les 5 min (288 exécutions/jour)
-  //     · option-reminder   → toutes les heures
-  //     · booking-crons     → 11 crons (relances paiement, J-7/J-1, cadrages…)
-  //
-  //   IMPORTANT : les repeatable jobs BullMQ PERSISTENT dans Redis. Ne plus les
-  //   `add()` ne suffit pas — on appelle donc TOUJOURS `removeRepeatable()` pour
-  //   purger les entrées déjà enregistrées, sinon elles continueraient à se
-  //   déclencher et les jobs s'empileraient sans consommateur (les workers
-  //   correspondants ne démarrent plus, cf. worker.ts).
-  //
-  //   Réversible : poser `LEGACY_BOOKING_WORKERS_ENABLED=true` (scope RUN) →
-  //   les crons sont re-planifiés ici ET les 3 workers redémarrent.
-  const legacyBookingEnabled = isLegacyBookingWorkersEnabled();
-
-  if (optionExpirationQueue) {
-    // Cron 5min : libere les options 48h expirees
-    await optionExpirationQueue.removeRepeatable(
-      "tick",
-      { pattern: "*/5 * * * *" },
-      "option-expiration-cron",
-    );
-    if (legacyBookingEnabled) {
-      await optionExpirationQueue.add(
-        "tick",
-        { tick: new Date().toISOString() },
-        { repeat: { pattern: "*/5 * * * *" }, jobId: "option-expiration-cron" },
-      );
-    }
-  }
-
-  if (optionReminderQueue) {
-    // Cron 1h : envoie rappel H+24 (fenetre [22h,26h] post-fix Fork 1 C3)
-    await optionReminderQueue.removeRepeatable(
-      "tick",
-      { pattern: "0 * * * *" },
-      "option-reminder-cron",
-    );
-    if (legacyBookingEnabled) {
-      await optionReminderQueue.add(
-        "tick",
-        { tick: new Date().toISOString() },
-        { repeat: { pattern: "0 * * * *" }, jobId: "option-reminder-cron" },
-      );
-    }
   }
 
   // Sprint 24 / D3 — RGPD purge quotidienne 03:00 UTC. VIVANT — toujours planifié.
@@ -1112,66 +973,6 @@ export async function bootRepeatableJobs(): Promise<void> {
       { type: "integrate-stock", tick: new Date().toISOString() },
       { repeat: { pattern: "0 5 * * *" }, jobId: "vivier-integrate-stock-cron" },
     );
-  }
-
-  // Sprint X.12 — Booking V1 crons (legacy, cf. bloc ci-dessus).
-  if (bookingCronsQueue) {
-    // Liste des cron jobs Booking V1 — pattern, jobId, type.
-    // Most jobs run daily 09:00 (Europe/Paris ≈ 07:00-08:00 UTC selon DST).
-    // Cadrage-h2-reminder = hourly.
-    const bookingCronSchedule: Array<{
-      type: BookingCronJobType;
-      pattern: string;
-      jobId: string;
-    }> = [
-      { type: "payment-overdue-scan", pattern: "0 8 * * *", jobId: "payment-overdue-scan-cron" },
-      { type: "booking-j7-reminder", pattern: "0 8 * * *", jobId: "booking-j7-reminder-cron" },
-      { type: "booking-j1-reminder", pattern: "0 8 * * *", jobId: "booking-j1-reminder-cron" },
-      { type: "cadrage-j1-reminder", pattern: "0 8 * * *", jobId: "cadrage-j1-reminder-cron" },
-      { type: "cadrage-h2-reminder", pattern: "0 * * * *", jobId: "cadrage-h2-reminder-cron" },
-      {
-        type: "contract-pending-reminder",
-        pattern: "30 8 * * *",
-        jobId: "contract-pending-reminder-cron",
-      },
-      {
-        type: "quote-pending-reminder",
-        pattern: "30 8 * * *",
-        jobId: "quote-pending-reminder-cron",
-      },
-      {
-        type: "quote-expiration-check",
-        pattern: "30 8 * * *",
-        jobId: "quote-expiration-check-cron",
-      },
-      {
-        type: "contract-signed-without-deposit-cutoff",
-        pattern: "30 8 * * *",
-        jobId: "contract-signed-without-deposit-cutoff-cron",
-      },
-      {
-        type: "booking-paused-resume-reminder",
-        pattern: "0 9 * * *",
-        jobId: "booking-paused-resume-reminder-cron",
-      },
-      {
-        type: "booking-completed-thanks-sweep",
-        pattern: "0 18 * * *",
-        jobId: "booking-completed-thanks-sweep-cron",
-      },
-    ];
-
-    for (const { type, pattern, jobId } of bookingCronSchedule) {
-      // Purge systématique de l'entrée repeatable Redis (cf. bloc legacy ci-dessus).
-      await bookingCronsQueue.removeRepeatable(type, { pattern }, jobId);
-      if (legacyBookingEnabled) {
-        await bookingCronsQueue.add(
-          type,
-          { type, tick: new Date().toISOString() },
-          { repeat: { pattern }, jobId },
-        );
-      }
-    }
   }
 
   // ============================================================
@@ -1719,28 +1520,5 @@ export async function bootRepeatableJobs(): Promise<void> {
       { type, tick: new Date().toISOString() },
       { repeat: { pattern }, jobId },
     );
-  }
-
-  // ── Entretien : restes Redis des 3 files legacy dormantes ─────────────────
-  //
-  // VOLONTAIREMENT EN DERNIER, apres la planification de TOUS les crons — en
-  // particulier `retention-purge` (purge RGPD 03:00 UTC) et `formation-crons`.
-  // `worker.ts` await `bootRepeatableJobs()` sans timeout : un Redis lent sur
-  // ~6 000 cles ne doit jamais retarder l'enregistrement d'un cron d'obligation
-  // legale. Ce fichier porte deja la cicatrice de ce bug — cf. le garde en tete
-  // de fonction, qui ne depend plus que de `retentionPurgeQueue`. NE PAS le
-  // rejouer en remontant ces appels dans les blocs legacy ci-dessus.
-  //
-  // Une seule passe pour `booking-crons`, hors de la boucle des 11 crons.
-  if (!legacyBookingEnabled) {
-    if (optionExpirationQueue) {
-      await purgeDormantLegacyQueue(optionExpirationQueue, "option-expiration");
-    }
-    if (optionReminderQueue) {
-      await purgeDormantLegacyQueue(optionReminderQueue, "option-reminder");
-    }
-    if (bookingCronsQueue) {
-      await purgeDormantLegacyQueue(bookingCronsQueue, "booking-crons");
-    }
   }
 }

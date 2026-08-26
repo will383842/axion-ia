@@ -2,9 +2,8 @@
 #
 # Service separe du web app pour isoler le throughput email/cron du request
 # handling Next. Lance via `pnpm worker` → consume queues Redis :
-#   - emails (10 templates React Email × FR/EN)
-#   - option-expiration (cron 5min)
-#   - option-reminder (cron 1h, fenetre [22h, 26h])
+#   - emails (templates React Email × FR/EN)
+#   - crons recurrents (retention-purge, formation-crons, calendly-poll, ...)
 #   - documents-auto (S5 — production documentaire Qualiopi au jalon, horaire
 #     :15 ; rend des PDF react-pdf → depend des polices copiees plus bas,
 #     exactement comme formation-crons)

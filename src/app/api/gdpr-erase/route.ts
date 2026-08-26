@@ -39,7 +39,6 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { eraseKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import {
   eraseChatDataForEmail,
-  eraseBookingOptionsForEmail,
   eraseSignatureTokensForEmail,
   eraseEmailTracesForEmail,
   eraseNewsletterForEmail,
@@ -104,7 +103,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     candidaturesResult,
     emailTracesResult,
     podcastResult,
-    bookingOptionsResult,
     signatureTokensResult,
     clientsResult,
     destinatairesResult,
@@ -155,11 +153,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // aleatoire, donc la ligne etait INTROUVABLE par son adresse. Cf.
     // `features/podcast-request/rgpd.ts`.
     effacerDemandesPodcastPour(email),
-    // `BookingOption` — la doctrine « Bookings » de `rgpd-erase.ts` disait
-    // vrai de `Booking` et faux de son voisin, qui porte nom, adresse et
-    // telephone EN PROPRE, sans aucun `submissionId`. Un raisonnement juste
-    // ecrit au pluriel a dispense d'examiner la table d'a cote.
-    eraseBookingOptionsForEmail(email),
     // Les JETONS d'invitation a signer -- PAS les signatures, qui sont
     // scellees dans un tuple hache et declarees en exception ci-dessous.
     // Revocation d'abord : un lien encore valide permettrait de signer au nom
@@ -298,7 +291,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       emailLogsPseudonymises: emailTracesResult.logsPseudonymises,
       emailOutboxSupprimes: emailTracesResult.outboxSupprimes,
       podcastSupprimes: podcastResult.supprimees,
-      bookingOptionsSupprimees: bookingOptionsResult.supprimees,
       jetonsSignatureRevoques: signatureTokensResult.revoques,
       jetonsSignaturePseudonymises: signatureTokensResult.pseudonymises,
       // Le repli dechiffrant est BORNE, ici comme pour les candidatures. S'il a

@@ -10,18 +10,6 @@
  *   l'historique anti-fraude).
  * - NewsletterSubscriber : suppression hard (consent retiré, pas d'historique
  *   à conserver).
- * - `Booking` : pas d'erase direct — il référence une Submission via FK ;
- *   anonymiser la Submission suffit (la ligne reste pour l'audit comptable mais
- *   ne contient déjà aucune PII propre). ⚠️ VÉRIFIÉ le 2026-08-24, et c'est bien
- *   exact POUR CE MODÈLE-LÀ.
- * - 🔴 `BookingOption` : la phrase ci-dessus a servi de couverture implicite à
- *   son VOISIN, qui ne lui ressemble pas. `BookingOption` n'a **aucun**
- *   `submissionId`, et porte `contactName`, `contactEmail` et `contactPhone`
- *   **en propre**. Elle n'était donc ni effacée ni exemptée. Un raisonnement
- *   juste sur une table, écrit au pluriel, a dispensé d'examiner l'autre :
- *   c'est la forme récurrente de tous les défauts listés ici. → SUPPRESSION :
- *   une option de réservation jamais confirmée ne prouve rien (même
- *   raisonnement que `email_outbox`).
  * - KB bookmarks : géré par `src/lib/knowledge/rgpd-export.ts` → `eraseKbDataForEmail`.
  * - Journaux d'e-mail (`email_logs`) : PSEUDONYMISATION de l'adresse, la ligne
  *   est conservée. C'est la preuve que le bénéficiaire a été informé — pièce
@@ -103,28 +91,6 @@ export async function eraseSubmissionsForEmail(email: string): Promise<EraseSubm
 export async function eraseNewsletterForEmail(email: string): Promise<EraseNewsletterResult> {
   const result = await prisma.newsletterSubscriber.deleteMany({ where: { email } });
   return { deleted: result.count };
-}
-
-export interface EraseBookingOptionsResult {
-  /** Lignes de `booking_options` supprimées. */
-  readonly supprimees: number;
-}
-
-/**
- * Supprime les options de réservation posées par une personne.
- *
- * `contactEmail` est en `citext` et **non chiffré** : l'égalité SQL suffit,
- * contrairement aux candidatures et aux demandes de podcast qui exigent une
- * empreinte. Pas de repli déchiffrant, donc pas de troncature possible.
- *
- * Suppression et non pseudonymisation : une option de 48 h qui n'a pas abouti à
- * une réservation ne fonde aucune obligation — ni comptable, ni probatoire.
- */
-export async function eraseBookingOptionsForEmail(
-  email: string,
-): Promise<EraseBookingOptionsResult> {
-  const result = await prisma.bookingOption.deleteMany({ where: { contactEmail: email } });
-  return { supprimees: result.count };
 }
 
 export interface EraseSignatureTokensResult {
