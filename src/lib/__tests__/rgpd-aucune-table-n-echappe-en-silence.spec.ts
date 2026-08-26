@@ -166,12 +166,12 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
   },
   {
     modele: "BookingOption",
-    statut: "traite",
+    statut: "exception-declaree",
     note:
-      "SUPPRIMÉ (`eraseBookingOptionsForEmail`). Une doctrine JUSTE écrite au pluriel " +
-      "(« Bookings : … ne contient déjà aucune PII propre ») a couvert son voisin : " +
-      "`Booking` n'a effectivement rien, `BookingOption` porte nom, adresse et " +
-      "téléphone EN PROPRE, sans aucun `submissionId`.",
+      "SYSTÈME BOOKING SUPPRIMÉ (2026-08-26) : table VIDE (0 ligne en dev ET en prod, " +
+      "mesuré), plus aucun producteur, effaceur `eraseBookingOptionsForEmail` retiré " +
+      "avec le reste du flux. Le DROP TABLE arrive dans la découpe Prisma du même " +
+      "chantier — retirer cette entrée à ce moment-là.",
   },
   {
     modele: "DocumentSignatureToken",

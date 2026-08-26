@@ -5,7 +5,37 @@
 // SQL identifiers). Ce module fait le pont.
 
 import { z } from "zod";
-import type { InterventionType as PrismaInterventionType } from "../../prisma/generated/client";
+
+// Union locale — l'enum Postgres `InterventionType` a été supprimé avec le
+// système Booking (2026-08-26) ; ces valeurs restent le SSOT du catalogue
+// commercial (booking-catalog.ts, pricing, pages villes) côté TypeScript.
+type PrismaInterventionType =
+  | "essentielle"
+  | "approfondie"
+  | "conference"
+  | "dirigeants"
+  | "gagner_du_temps"
+  | "intervention_claude"
+  | "audit_flash_onsite"
+  | "demarrage_ia_express"
+  | "atelier_ia_cible"
+  | "ia_express"
+  | "art_du_prompt"
+  | "ia_securite"
+  | "ia_conformite"
+  | "ia_fondamentaux"
+  | "ia_commercial"
+  | "ia_au_bureau"
+  | "ia_sur_le_terrain"
+  | "automatisations_decouverte"
+  | "ia_integration_metier"
+  | "ia_commercial_avance"
+  | "ia_transformation_equipe"
+  | "agents_automatisations"
+  | "agents_automatisations_avance"
+  | "claude_decouverte"
+  | "claude_createur"
+  | "claude_architecte";
 
 /** Slugs UI canoniques (cf. src/content/interventions.ts InterventionSlug). */
 export const INTERVENTION_SLUGS = [
