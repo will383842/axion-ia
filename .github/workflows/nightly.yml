@@ -135,14 +135,43 @@ jobs:
       # tout le monde en local, et l'audit n'a de toute façon besoin que du
       # lockfile résolu, jamais d'un script de cycle de vie.
       - run: pnpm install --frozen-lockfile --prod --ignore-scripts
+      # ⚠️ `pnpm audit` SORT EN ERREUR quand il trouve une vulnérabilité — c'est
+      # son contrat, pas une panne. Or GitHub lance tout bloc `run:` avec
+      # `bash -e {0}` : sans le `|| code=$?` ci-dessous, le script MEURT sur la
+      # ligne de l'audit, et les lignes qui suivent — le comptage, le message
+      # `::error::`, le `cat audit.json` qui NOMME la CVE — ne s'exécutent
+      # jamais. Elles n'existaient que pour ce cas-là : c'était du code mort.
+      #
+      # Mesuré le 2026-08-26 : la nightly rougissait sur `fast-uri@4.1.1`
+      # (GHSA-7p8r-x3mc-p8w7) en n'affichant qu'un `exit code 1` nu. Il a fallu
+      # relancer l'audit à la main pour apprendre quel paquet était en cause.
+      # Une garde qui échoue sans dire pourquoi coûte le diagnostic à chaque
+      # fois qu'elle sert.
+      #
+      # Le `set -e` explicite est retiré : il donnait l'illusion de porter le
+      # comportement, alors que le shell l'imposait déjà et qu'il empêchait de
+      # lire le code de sortie.
       - name: pnpm audit (production deps) — hard fail high/critical
         run: |
-          set -e
-          pnpm audit --prod --audit-level high --json > audit.json
+          code=0
+          pnpm audit --prod --audit-level high --json > audit.json || code=$?
+
+          # Un audit qui n'a pas tourné (réseau, registre, quota) produit un
+          # fichier vide ou tronqué. Sans ce contrôle il rendrait `high=0`,
+          # donc VERT : la garde ne garderait plus rien, en silence.
+          if ! node -e "JSON.parse(require('fs').readFileSync('audit.json','utf8'))" 2>/dev/null; then
+            echo "::error::pnpm audit n'a produit aucun JSON exploitable (sortie $code) — l'audit n'a PAS tourné, ce vert ne mesurerait rien."
+            echo "--- 2 000 premiers octets de audit.json ---"
+            head -c 2000 audit.json || true
+            exit 1
+          fi
+
           high=$(grep -oE '"severity":"(high|critical)"' audit.json | wc -l || true)
-          echo "High/critical vulnerabilities: $high"
+          echo "High/critical vulnerabilities: $high (code de sortie pnpm : $code)"
           if [ "$high" -gt 0 ]; then
             echo "::error::Nightly audit found $high high/critical CVEs"
+            # Le détail lisible AVANT le JSON brut : c'est ce qu'on lit en premier.
+            pnpm audit --prod --audit-level high || true
             cat audit.json
             exit 1
           fi

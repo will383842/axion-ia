@@ -298,7 +298,7 @@
       "@tailwindcss/oxide",
       "sharp"
     ],
-    "_overrides_doctrine": "Sprint S6.3 (2026-05-15) — patch CVE prod high+. Pre-push hook utilise --prod --audit-level high, donc seul postcss (transitive prod via next) requiert override. Sprint Final P1-19 (2026-05-22) — overrides supplémentaires devDeps moderate/low : brace-expansion >=5.0.6 (DoS minimatch transitive), ws >=8.20.1 (memory disclosure jsdom transitive), tmp >=0.2.4 (symlink traversal lhci transitive), esbuild >=0.25.0 (CORS dev server vitest>vite transitive), uuid >=11.1.1 (buffer bounds lhci transitive), qs >=6.15.2 (prototype pollution lhci>express transitive). Override vite >=6.4.2 incompatible vitest 2.x SSR (peer ^5.0.0) — reporté V1.5 (upgrade vitest 3.x ou 4.x). Vuln vite path traversal n'affecte que dev server exposé via --host, non-applicable prod/CI. 2026-06-17 — bump ws >=8.20.1 → >=8.21.0 (GHSA-96hv-2xvq-fx4p, DoS via fragments, path prod openai>ws) + ajout form-data >=4.0.6 (GHSA-hmw2-7cc7-3qxx, CRLF injection, path prod @anthropic-ai/sdk>@types/node-fetch>form-data) : les 2 dernières CVE high --prod restantes.",
+    "_overrides_doctrine": "Sprint S6.3 (2026-05-15) — patch CVE prod high+. Pre-push hook utilise --prod --audit-level high, donc seul postcss (transitive prod via next) requiert override. Sprint Final P1-19 (2026-05-22) — overrides supplémentaires devDeps moderate/low : brace-expansion >=5.0.6 (DoS minimatch transitive), ws >=8.20.1 (memory disclosure jsdom transitive), tmp >=0.2.4 (symlink traversal lhci transitive), esbuild >=0.25.0 (CORS dev server vitest>vite transitive), uuid >=11.1.1 (buffer bounds lhci transitive), qs >=6.15.2 (prototype pollution lhci>express transitive). Override vite >=6.4.2 incompatible vitest 2.x SSR (peer ^5.0.0) — reporté V1.5 (upgrade vitest 3.x ou 4.x). Vuln vite path traversal n'affecte que dev server exposé via --host, non-applicable prod/CI. 2026-06-17 — bump ws >=8.20.1 → >=8.21.0 (GHSA-96hv-2xvq-fx4p, DoS via fragments, path prod openai>ws) + ajout form-data >=4.0.6 (GHSA-hmw2-7cc7-3qxx, CRLF injection, path prod @anthropic-ai/sdk>@types/node-fetch>form-data) : les 2 dernières CVE high --prod restantes. 2026-08-26 — fast-uri : borne HAUTE ajoutee, '>=3.1.4' -> '>=3.1.4 <4'. La cible etait NON BORNEE : ajv@8.20.0 declare fast-uri ^3.0.1, l'override l'a fait franchir la majeure jusqu'a 4.1.1, soit GHSA-7p8r-x3mc-p8w7 (host confusion via backslash). Le correctif d'une CVE 3.x fabriquait une CVE 4.x. Toute cible d'override sans borne haute peut sauter une majeure : borner systematiquement.",
     "overrides": {
       "postcss": ">=8.5.18",
       "ws@>=8.0.0 <8.21.0": ">=8.21.0",
@@ -310,7 +310,7 @@
       "nodemailer@<9.0.1": ">=9.0.1",
       "@auth/core@<0.41.3": ">=0.41.3",
       "sharp@<0.35.0": ">=0.35.0",
-      "fast-uri@<3.1.4": ">=3.1.4",
+      "fast-uri@<3.1.4": ">=3.1.4 <4",
       "brace-expansion@>=5.0.0 <5.0.8": ">=5.0.8"
     }
   }
