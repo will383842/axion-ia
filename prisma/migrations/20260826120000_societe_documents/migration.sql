@@ -34,6 +34,7 @@ CREATE TYPE "SocieteDocumentType" AS ENUM (
   'rib',
   'statuts',
   'pv_pouvoirs',
+  'piece_identite_dirigeant',
   'liste_salaries_etrangers',
   'attestation_honneur',
   'autre_piece_legale',

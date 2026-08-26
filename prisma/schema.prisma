@@ -9991,6 +9991,14 @@ enum SocieteDocumentType {
   rib
   statuts
   pv_pouvoirs
+  /// Piece d'identite du representant legal (passeport ou CNI). Demandee avec
+  /// les statuts pour verifier que le signataire est bien celui qu'il declare,
+  /// et par les controles LCB-FT de certains donneurs d'ordre.
+  ///
+  /// TOUJOURS confidentielle : c'est une donnee personnelle au sens du RGPD,
+  /// jamais rendue dans le navigateur, jamais mise en cache, reservee aux
+  /// roles d'administration. La SSOT la pre-coche « confidentielle ».
+  piece_identite_dirigeant
   /// Art. D.8254-2 — liste nominative des salariés étrangers soumis à
   /// autorisation de travail, ou attestation « néant ». Pièce jumelle de
   /// l'attestation de vigilance : les achats les réclament ensemble.

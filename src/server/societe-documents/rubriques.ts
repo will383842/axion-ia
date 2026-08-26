@@ -89,6 +89,14 @@ export const SOCIETE_RUBRIQUES: ReadonlyArray<SocieteRubriqueDef> = [
         motif: "Vérifie que le président peut engager la société.",
       },
       {
+        key: "piece_identite_dirigeant",
+        label: "Pièce d'identité du dirigeant",
+        validiteMois: null,
+        motif:
+          "Passeport ou CNI du représentant légal. Donnée personnelle : déposée confidentielle, jamais visible hors administration.",
+        sensibleParDefaut: true,
+      },
+      {
         key: "liste_salaries_etrangers",
         label: "Liste des salariés étrangers, ou attestation « néant »",
         validiteMois: 6,
