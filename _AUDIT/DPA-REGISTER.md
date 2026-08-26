@@ -33,6 +33,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | online | SCC                        | 🟡 à accepter   |
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
 | 18  | LinkedIn Ireland Unlimited | Insight Tag — reciblage publicitaire | Irlande (UE) + USA      | online | SCC + EU-US DPF            | ⚪ non activé   |
+| 19  | Google Ireland Limited (Google Agenda) | Agenda de la console — lecture des rendez-vous, écriture des indisponibilités | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | ⚪ non activé — voir note |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
 > ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
@@ -84,6 +85,27 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 > qu'il se déclencherait sans passer par le consentement.
 > ⛔ **Will, avant d'activer** : accepter le DPA LinkedIn, puis poser l'ID dans
 > Coolify. Passer alors le statut de ⚪ à 🟡, puis ✅ une fois le DPA accepté.
+
+> 🆕 **Ligne 19 ajoutée 2026-08-26**, en même temps que l'intégration Google
+> Agenda de la console — c'est la garde `sous-traitants-serveur.spec.ts` qui a
+> refusé la branche tant que `GOOGLE_CALENDAR_PRIVATE_KEY` n'était rattachée à
+> rien. Calendly avait mis quatorze mois à figurer ici ; celui-ci n'a pas pu
+> attendre une heure.
+>
+> 🔴 **ET C'EST LA LIGNE LA PLUS INCONFORTABLE DU REGISTRE.** L'agenda visé est
+> un compte **Gmail grand public**. Les conditions consommateur de Google ne
+> comportent AUCUN accord de sous-traitance au sens de l'art. 28 : un DPA
+> n'existe que sur Google Workspace. Autrement dit, des noms et coordonnées de
+> prospects transitent déjà par cet agenda — Calendly les y écrit depuis le
+> 2026-05-26, indépendamment de cette intégration — **sans contrat de
+> sous-traitance**. Le brancher à la console ne crée pas le problème, il le rend
+> visible et le documente.
+>
+> ⛔ **Will** : la seule sortie propre est de basculer l'agenda professionnel sur
+> **Google Workspace** (~6 €/mois), qui ouvre le DPA et les CCT. À défaut, cette
+> ligne restera ❌ et un auditeur la trouvera. Tant que les trois variables
+> `GOOGLE_CALENDAR_*` ne sont pas posées en production, la console n'émet aucun
+> flux : le statut reste ⚪.
 
 > 🆕 **Ligne 16 ajoutée 2026-07-26** (lot L10 / constat X2). Calendly était en
 > production depuis le 2026-05-26 — onze jours après le gel de la SSOT publique
