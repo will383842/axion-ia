@@ -27,7 +27,8 @@
  *
  * ⚠️ POURQUOI DEUX IMPLÉMENTATIONS ET PAS UNE. `revalidateTag`/`revalidatePath`
  * exigent un contexte de requête : dans un worker BullMQ ce sont des no-op
- * silencieux (cf. l'en-tête de `content-gen/shared/revalidate-content.ts`). Le
+ * silencieux (cf. l'en-tête de `shared/revalidate-content.ts`, côté pipeline
+ * éditorial, qui documente ce piège en détail). Le
  * worker doit donc passer par `api/internal/revalidate`. Ce module tient les
  * deux bouts pour que la liste des chemins et l'étiquette ne divergent jamais.
  *
