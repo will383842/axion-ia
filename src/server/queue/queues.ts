@@ -983,7 +983,7 @@ export async function bootRepeatableJobs(): Promise<void> {
 
   // ── Sondage Calendly (2026-08-09) — VIVANT, c'est le canal de RDV réel ─────
   //
-  // Deux passes à deux cadences, pour tenir le quota de 60 requêtes/minute de
+  // Trois passes à trois cadences, pour tenir le quota de 60 requêtes/minute de
   // l'API Calendly. Le raisonnement complet est dans l'en-tête de
   // `workers/calendly-poll-worker.ts` — NE PAS accélérer `refresh` sans le lire.
   if (calendlyPollQueue) {
@@ -997,6 +997,13 @@ export async function bootRepeatableJobs(): Promise<void> {
       { type: "discover", pattern: "* * * * *", jobId: "calendly-discover-cron" },
       // Annulations et déplacements : toutes les 10 min (jusqu'à ~50 requêtes).
       { type: "refresh", pattern: "*/10 * * * *", jobId: "calendly-refresh-cron" },
+      // Fraîcheur des créneaux de `/appel` : toutes les 2 min, ZÉRO requête
+      // Calendly (cette passe invalide un cache, elle n'interroge personne).
+      // Elle existe pour le seul cas que le webhook ne peut pas voir : un
+      // rendez-vous posé à la main dans Google Agenda ou sur l'iPhone. Calendly
+      // ferme le créneau en 11 s et ne prévient personne — mesuré le 2026-08-26,
+      // avec 13 min de décalage constatées sur le site.
+      { type: "revalidate-slots", pattern: "*/2 * * * *", jobId: "calendly-slots-revalidate-cron" },
     ];
 
     // 🔴 Purge EXHAUSTIVE avant ré-enregistrement, et pas le
