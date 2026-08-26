@@ -78,7 +78,14 @@ vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
 }));
 
 vi.mock("@/server/qualiopi/evaluations/attestation-service", () => ({
-  genererAttestationPourEnrollment: vi.fn(),
+  // ⚠️ Le défaut par défaut compte. `vi.fn()` nu rend `undefined` ; depuis que
+  // l'appelant LIT `{ resultat }`, un mock nu ferait tomber chaque appel dans le
+  // `catch` — les tests resteraient verts en exerçant le chemin d'ERREUR au lieu
+  // du nominal. Le mock rend donc la forme réelle du contrat.
+  genererAttestationPourEnrollment: vi.fn(async () => ({
+    resultat: "complete" as const,
+    documentId: "doc-1",
+  })),
 }));
 
 vi.mock("@/server/qualiopi/indicateurs/service", () => ({
@@ -840,6 +847,46 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     expect(genererAttestationPourEnrollment).toHaveBeenCalledTimes(2);
     expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-1");
     expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-2");
+  });
+
+  it("🔴 ne compte PAS « générée » une attestation qui n'a produit AUCUNE pièce", async () => {
+    // Défaut mesuré en dev le 2026-08-26 : la valeur de retour était JETÉE et
+    // `ok++` s'incrémentait quoi qu'il arrive. `resultat: "aucune"` — le taux de
+    // présence est sous le seuil, donc aucune pièce n'est produite, et c'est le
+    // BON comportement — était compté comme une génération. Journal : « 1
+    // générées » ; base : ZÉRO ligne `DocumentGenere`.
+    //
+    // Les données restaient saines. C'est le compte rendu qui mentait, et c'est
+    // lui qu'un humain lit le matin pour croire la chaîne en ordre.
+    //
+    // Même famille que `D5-1-C2` (convocation-j5) et que les six fonctions
+    // d'envoi alignées le 2026-08-20 : ici, le membre oublié.
+    const { genererAttestationPourEnrollment } =
+      await import("@/server/qualiopi/evaluations/attestation-service");
+    const mock = genererAttestationPourEnrollment as ReturnType<typeof vi.fn>;
+    mock.mockResolvedValue({ resultat: "aucune", documentId: null });
+    mockPrisma.enrollment.findMany.mockResolvedValue([
+      { id: "enroll-absent", session: { id: "s1" } },
+    ]);
+    const journal = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-08-03T09:00:00Z",
+    });
+
+    const ligne = journal.mock.calls.map((c) => String(c[0])).find((l) => l.includes("générées"));
+    journal.mockRestore();
+
+    expect(ligne, "le cron ne journalise plus son compte rendu").toBeDefined();
+    expect(
+      ligne,
+      "le journal annonce une attestation générée alors qu'aucune pièce n'a été produite",
+    ).toContain("0 générées");
+    expect(
+      ligne,
+      "le cas « présence sous le seuil » doit être DIT, pas seulement retiré du compte",
+    ).toContain("1 sans pièce");
   });
 });
 

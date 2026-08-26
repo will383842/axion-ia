@@ -418,10 +418,31 @@ async function handleAttestationsAuto(): Promise<void> {
   let ok = 0;
   let ko = 0;
 
+  // 🔴 2026-08-26 — LE RETOUR EST LU. Il était JETÉ, et `ok++` s'incrémentait
+  // quoi qu'il arrive.
+  //
+  // `genererAttestationPourEnrollment` rend `{ resultat, documentId }`, et
+  // `resultat` vaut `"aucune"` quand le taux de présence est sous le seuil :
+  // aucune pièce n'est alors produite, et c'est le BON comportement. Mais le
+  // journal annonçait quand même « 1 générées » — mesuré en dev le 2026-08-26,
+  // le cron déclarait une attestation produite alors que ZÉRO ligne
+  // `DocumentGenere` avait été écrite.
+  //
+  // Les DONNÉES étaient saines : aucune attestation fausse n'a jamais été
+  // émise. C'est le COMPTE RENDU qui mentait — et c'est cette ligne-là qu'un
+  // humain lit le matin pour croire la chaîne en ordre. Sur une pièce
+  // d'indicateur 11, un journal qui surdéclare est un faux témoignage de
+  // conformité.
+  //
+  // ⚠️ Même famille que `D5-1-C2` (convocation-j5, 2026-08-21) et que les six
+  // fonctions d'envoi alignées le 2026-08-20. Ici, le membre oublié.
+  let sansPiece = 0;
+
   for (const enrollment of enrollments) {
     try {
-      await genererAttestationPourEnrollment(enrollment.id);
-      ok++;
+      const { resultat } = await genererAttestationPourEnrollment(enrollment.id);
+      if (resultat === "aucune") sansPiece++;
+      else ok++;
     } catch (err) {
       ko++;
       console.error(
@@ -432,7 +453,8 @@ async function handleAttestationsAuto(): Promise<void> {
   }
 
   console.log(
-    `[formation-crons] attestations-auto: ${ok} générées, ${ko} erreurs ` +
+    `[formation-crons] attestations-auto: ${ok} générées, ${sansPiece} sans pièce ` +
+      `(présence sous le seuil), ${ko} erreurs ` +
       `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale)`,
   );
 }
