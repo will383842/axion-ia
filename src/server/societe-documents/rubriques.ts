@@ -168,8 +168,14 @@ export const SOCIETE_RUBRIQUES: ReadonlyArray<SocieteRubriqueDef> = [
       {
         key: "cgv",
         label: "Conditions générales de vente",
-        validiteMois: null,
-        motif: "Version horodatée du texte publié, à joindre au dossier.",
+        // 🔴 Les CGV déposées ici sont un PDF FIGÉ, pas une vue sur la page
+        // publique — et c'est voulu : ce qu'un client a accepté ne doit pas
+        // changer rétroactivement. Le revers, c'est qu'une modification du
+        // texte en ligne laisse ce PDF périmé sans que rien ne le signale.
+        // D'où une échéance annuelle : elle ne prouve rien, mais elle force à
+        // rouvrir la question une fois par an.
+        validiteMois: 12,
+        motif: "Version horodatée du texte publié. À redéposer si le texte en ligne change.",
       },
       {
         key: "fiche_offre",
@@ -277,6 +283,36 @@ export function getRubriqueBySegment(segment: string): SocieteRubriqueDef | unde
 /** Les types acceptés par une rubrique (alimente le sélecteur du formulaire). */
 export function typesDeRubrique(key: SocieteRubriqueKey): ReadonlyArray<SocieteDocTypeDef> {
   return SOCIETE_RUBRIQUES.find((r) => r.key === key)?.types ?? [];
+}
+
+/**
+ * La pièce fait-elle partie de ce qu'un service achats attend ?
+ *
+ * 🔑 DÉRIVÉ, jamais recopié. Marquer trente et un types à la main aurait créé
+ * une liste à tenir à jour en parallèle de la SSOT — et ce dépôt a déjà payé
+ * quatre fois le prix d'un prédicat recopié qui diverge. La règle est simple
+ * et vérifiable : tout type nommé vient de la checklist d'un donneur d'ordre ;
+ * seuls les fourre-tout « Autre … » n'y figurent pas, et un fourre-tout ne
+ * peut pas manquer.
+ */
+export function estAttendu(key: SocieteDocumentType): boolean {
+  return !(key as string).startsWith("autre_");
+}
+
+/** Les types attendus d'une rubrique, dans l'ordre où elle les déclare. */
+export function typesAttendusDeRubrique(key: SocieteRubriqueKey): ReadonlyArray<SocieteDocTypeDef> {
+  return typesDeRubrique(key).filter((t) => estAttendu(t.key));
+}
+
+/**
+ * Ce qui manque dans une rubrique : les types attendus qu'aucune pièce ne
+ * couvre. C'est la question qu'on se pose devant un dossier fournisseur.
+ */
+export function typesManquants(
+  rubrique: SocieteRubriqueKey,
+  typesPresents: ReadonlySet<string>,
+): ReadonlyArray<SocieteDocTypeDef> {
+  return typesAttendusDeRubrique(rubrique).filter((t) => !typesPresents.has(t.key as string));
 }
 
 /**

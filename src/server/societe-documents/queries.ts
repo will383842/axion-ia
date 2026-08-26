@@ -3,7 +3,12 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 import type { SocieteDocumentType } from "../../../prisma/generated/client";
-import { SOCIETE_RUBRIQUES, type SocieteRubriqueKey, typesDeRubrique } from "./rubriques";
+import {
+  SOCIETE_RUBRIQUES,
+  type SocieteRubriqueKey,
+  typesAttendusDeRubrique,
+  typesDeRubrique,
+} from "./rubriques";
 
 export interface SocieteDocListItem {
   id: string;
@@ -81,7 +86,12 @@ export async function getSocieteDocForDownload(id: string): Promise<{
 
 export interface RubriqueCompteur {
   rubrique: SocieteRubriqueKey;
+  /** Nombre de pièces déposées (plusieurs Kbis successifs comptent chacun). */
   total: number;
+  /** Types ATTENDUS couverts par au moins une pièce. */
+  attendusCouverts: number;
+  /** Types attendus de la rubrique — le dénominateur affiché. */
+  attendusTotal: number;
 }
 
 /**
@@ -96,10 +106,37 @@ export async function compterParRubrique(): Promise<RubriqueCompteur[]> {
     _count: { _all: true },
   });
   const parType = new Map(rows.map((r) => [r.type as string, r._count._all]));
-  return SOCIETE_RUBRIQUES.map((r) => ({
-    rubrique: r.key,
-    total: r.types.reduce((n, t) => n + (parType.get(t.key as string) ?? 0), 0),
-  }));
+  return SOCIETE_RUBRIQUES.map((r) => {
+    const attendus = typesAttendusDeRubrique(r.key);
+    return {
+      rubrique: r.key,
+      total: r.types.reduce((n, t) => n + (parType.get(t.key as string) ?? 0), 0),
+      // Un type est COUVERT dès qu'une pièce le porte : deux Kbis successifs
+      // ne couvrent pas deux cases, ils couvrent la même.
+      attendusCouverts: attendus.filter((t) => (parType.get(t.key as string) ?? 0) > 0).length,
+      attendusTotal: attendus.length,
+    };
+  });
+}
+
+/**
+ * Les types effectivement déposés dans une rubrique.
+ *
+ * Sert à calculer ce qui MANQUE, en soustrayant de la liste des attendus.
+ * Renvoyé comme ensemble de chaînes : le calcul se fait dans la SSOT, qui est
+ * seule à savoir ce qui est attendu.
+ */
+export async function typesPresentsDansRubrique(
+  rubrique: SocieteRubriqueKey,
+): Promise<Set<string>> {
+  const types = typesDeRubrique(rubrique).map((t) => t.key);
+  if (types.length === 0) return new Set();
+  const rows = await prisma.societeDocument.groupBy({
+    by: ["type"],
+    where: { type: { in: types } },
+    _count: { _all: true },
+  });
+  return new Set(rows.map((r) => r.type as string));
 }
 
 /**

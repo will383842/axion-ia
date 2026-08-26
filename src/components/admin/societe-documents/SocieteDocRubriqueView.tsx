@@ -4,10 +4,15 @@
 // L'état d'échéance est calculé ICI, au rendu, à partir de la date stockée —
 // jamais lu depuis une colonne de statut, qui serait fausse dès le lendemain.
 
-import { listSocieteDocsByRubrique } from "@/server/societe-documents/queries";
+import {
+  listSocieteDocsByRubrique,
+  typesPresentsDansRubrique,
+} from "@/server/societe-documents/queries";
 import {
   getRubriqueBySegment,
   labelSocieteDocType,
+  typesAttendusDeRubrique,
+  typesManquants,
   type SocieteRubriqueKey,
 } from "@/server/societe-documents/rubriques";
 import {
@@ -74,7 +79,14 @@ export async function SocieteDocRubriqueView({
     return <p className="text-fg-muted text-sm">Rubrique inconnue&nbsp;: {segment}</p>;
   }
 
-  const docs = await listSocieteDocsByRubrique(rubrique.key as SocieteRubriqueKey);
+  const cle = rubrique.key as SocieteRubriqueKey;
+  const [docs, presents] = await Promise.all([
+    listSocieteDocsByRubrique(cle),
+    typesPresentsDansRubrique(cle),
+  ]);
+  const manquants = typesManquants(cle, presents);
+  const attendus = typesAttendusDeRubrique(cle);
+  const couverts = attendus.length - manquants.length;
   const fichiersBase = `/fr/${adminPrefix}/societe/fichiers`;
 
   return (
@@ -83,6 +95,18 @@ export async function SocieteDocRubriqueView({
         <div>
           <h1 className="text-mocha mb-1 text-xl font-semibold">{rubrique.label}</h1>
           <p className="text-fg-muted max-w-prose text-sm">{rubrique.description}</p>
+          {/*
+            ⚠️ La phrase est construite en UNE expression, pas en alternant
+            texte JSX et accolades. Écrit ainsi — `attendue{n > 1 ? "s" : ""}`
+            — Prettier passe à la ligne avant l'accolade, et JSX transforme ce
+            retour en ESPACE : l'écran affichait « sur 10 attendue s ». Ni le
+            typecheck ni les tests ne voient ce défaut ; seule la page rendue.
+          */}
+          <p className="text-fg-muted mt-2 text-sm font-medium tabular-nums">
+            {`${couverts} pièce${couverts > 1 ? "s" : ""} sur ${attendus.length} attendue${
+              attendus.length > 1 ? "s" : ""
+            }`}
+          </p>
         </div>
         <SocieteDocForm types={rubrique.types} />
       </div>
@@ -135,7 +159,8 @@ export async function SocieteDocRubriqueView({
                     </p>
 
                     <p className="text-fg-muted mt-1 font-mono text-[11px]">
-                      {doc.fileName} · {formatBytes(doc.sizeBytes)}
+                      {doc.fileName} · {formatBytes(doc.sizeBytes)} · déposé le{" "}
+                      {formatDate(doc.createdAt)}
                     </p>
 
                     <div className="mt-2 flex items-center gap-4">
@@ -176,6 +201,55 @@ export async function SocieteDocRubriqueView({
             );
           })}
         </ul>
+      )}
+
+      {/*
+        🔴 CE QUI MANQUE, ET POURQUOI C'EST EN BAS MAIS PAS EN PETIT.
+        Un dossier fournisseur ne se lit pas par ce qu'il contient : il se lit
+        par ses TROUS. La première version de cet écran n'affichait que les
+        pièces déposées — une armoire qui montre son contenu et tait ce qui
+        lui manque. Un onglet vide disait « Aucune pièce », sans nommer les
+        onze qu'un acheteur va réclamer.
+      */}
+      {manquants.length > 0 ? (
+        <section className="mt-6 rounded-lg border border-[color:var(--color-admin-warning-fg)] bg-[color:var(--color-admin-warning-soft)] p-5">
+          <h2 className="mb-2 text-sm font-semibold text-[color:var(--color-admin-warning-fg)]">
+            {manquants.length === 1
+              ? "Une pièce attendue n'est pas encore déposée"
+              : `${manquants.length} pièces attendues ne sont pas encore déposées`}
+          </h2>
+          {/*
+            🔑 CHAQUE LIGNE PORTE SON PROPRE BOUTON D'IMPORT.
+            Nommer le manque sans offrir le geste obligeait à remonter en
+            haut de page, rouvrir le formulaire général, puis retrouver la
+            pièce dans un menu de dix entrées — trois gestes pour une
+            intention déjà exprimée par le clic. Le bouton pré-remplit la
+            nature ET le titre : il reste à choisir le fichier.
+          */}
+          <ul className="space-y-2">
+            {manquants.map((t) => (
+              <li key={t.key} className="text-sm">
+                <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+                  <p className="min-w-0 flex-1">
+                    <span className="text-mocha font-medium">{t.label}</span>
+                    {t.motif ? <span className="text-fg-muted"> — {t.motif}</span> : null}
+                  </p>
+                  <SocieteDocForm
+                    types={rubrique.types}
+                    typeInitial={t.key}
+                    titreInitial={t.label}
+                    labelBouton="Importer"
+                    variante="ligne"
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <p className="mt-6 rounded-lg border border-[color:var(--color-admin-success-fg)] bg-[color:var(--color-admin-success-soft)] p-4 text-sm font-medium text-[color:var(--color-admin-success-fg)]">
+          Toutes les pièces attendues de cette rubrique sont déposées.
+        </p>
       )}
     </div>
   );

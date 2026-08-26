@@ -59,7 +59,20 @@ import { CALENDLY_API_BASE } from "./api";
  */
 export const SLOTS_REVALIDATE_SECONDS = 900;
 
-/** Étiquette de cache des créneaux — permet une invalidation à la réservation. */
+/**
+ * Étiquette de cache des créneaux.
+ *
+ * 🔴 ELLE N'A EU AUCUN APPELANT PENDANT QUATRE SEMAINES. Ce commentaire annonçait
+ * « permet une invalidation à la réservation » depuis l'ADR 0038, et
+ * `revalidateTag("calendly-slots")` n'apparaissait NULLE PART dans `src/`.
+ * L'étiquette était décorative : la seule fraîcheur venait du TTL de 900 s, et
+ * `/appel` a proposé pendant 13 minutes (mesuré le 2026-08-26) un créneau que
+ * Calendly refusait déjà.
+ *
+ * Les deux appelants sont désormais dans `revalider-creneaux.ts` — lire son
+ * en-tête avant d'en ajouter un troisième : le webhook et le cron ne couvrent
+ * pas le même cas, et il en faut deux.
+ */
 export const CALENDLY_SLOTS_TAG = "calendly-slots";
 
 /** L'event-type et l'identité du compte ne bougent pas : cache long. */
@@ -496,14 +509,26 @@ export interface FetchAvailableSlotsOptions {
    * matinée était déjà passée — proposait 12:30 → 15:00. L'après-midi existait
    * bien côté Calendly, le plafond le masquait.
    *
-   * 16 couvre une journée ouvrée complète au pas de 30 minutes (8 h). Le coût
-   * a été mesuré sur 28 jours, et il est faible parce que ce markup est très
-   * répétitif donc très compressible :
+   * 🔴 C'EST EXACTEMENT CE QUI S'EST REPRODUIT — mesuré le 2026-08-26. La valeur
+   * précédente (16) couvrait une journée de 8 h. L'agenda Calendly, lui, ouvre
+   * désormais 9 h → 19 h, soit **20 créneaux**. Le plafond retranchait donc les
+   * quatre derniers de chaque journée pleine : 17:00, 17:30, 18:00 et 18:30
+   * étaient réservables sur Calendly et INVISIBLES sur le site, ~70 créneaux sur
+   * les 28 jours d'horizon — toutes les fins d'après-midi. Le paragraphe
+   * ci-dessus avait prévu le cas ; personne n'était là pour le lire au moment où
+   * la plage s'est élargie. D'où le journal ajouté plus bas : à la prochaine
+   * extension, la troncature se signalera d'elle-même au lieu d'attendre qu'on
+   * la soupçonne.
+   *
+   * 20 couvre une journée de 10 h au pas de 30 minutes. Le coût est faible parce
+   * que ce markup est très répétitif donc très compressible :
    *     plafond  8 → 192 créneaux, 115 Ko brut, 4,1 Ko gz
    *     plafond 16 → 384 créneaux, 211 Ko brut, 6,1 Ko gz   (+2,0 Ko gz)
-   * Aucun JavaScript n'est ajouté : le budget `First Load JS` est inchangé.
+   *     plafond 20 → 480 créneaux, 264 Ko brut, 7,6 Ko gz   (+1,5 Ko gz)
+   * Aucun JavaScript n'est ajouté : le budget `First Load JS` de `/appel`
+   * (≤ 110 Ko gz, cf. AGENTS.md) est inchangé — c'est du HTML, pas un chunk.
    *
-   * Si l'agenda s'ouvrait un jour au-delà de 8 h par jour, remonter ce plafond
+   * Si l'agenda s'ouvrait un jour au-delà de 10 h par jour, remonter ce plafond
    * plutôt que de laisser la troncature décider à la place du visiteur.
    */
   readonly maxSlotsPerDay?: number;
@@ -520,7 +545,7 @@ export interface FetchAvailableSlotsOptions {
 export async function fetchAvailableSlots({
   schedulingUrl,
   maxDays = 31,
-  maxSlotsPerDay = 16,
+  maxSlotsPerDay = 20,
   nowMs = Date.now(),
 }: FetchAvailableSlotsOptions): Promise<CalendlyAvailability> {
   if (!process.env.CALENDLY_API_TOKEN?.trim()) return { ok: false, reason: "not_configured" };
@@ -609,6 +634,25 @@ export async function fetchAvailableSlots({
   const days = [...byDay.entries()]
     .slice(0, maxDays)
     .map(([dateKey, slots]) => ({ dateKey, slots: slots.slice(0, maxSlotsPerDay) }));
+
+  // 🔴 UNE TRONCATURE MUETTE SE LIT COMME UN AGENDA PLEIN. Ajouté le 2026-08-26,
+  // après avoir mis quatre semaines à découvrir que le plafond de 16 masquait
+  // toutes les fins d'après-midi (cf. `maxSlotsPerDay`). Rien ne distinguait, de
+  // l'extérieur, « Calendly n'ouvre pas après 16 h 30 » de « on coupe à 16 h 30 » :
+  // les deux rendent la même page. Ce journal nomme le jour et les deux comptes,
+  // pour que la prochaine extension de plage se signale au lieu d'attendre.
+  const jourTronque = [...byDay.entries()]
+    .slice(0, maxDays)
+    .find(([, slots]) => slots.length > maxSlotsPerDay);
+  if (jourTronque) {
+    const [dateKey, slots] = jourTronque;
+    journaliser("créneaux TRONQUÉS par le plafond — la fin de journée est masquée", {
+      premierJourTronque: dateKey,
+      offertsParCalendly: slots.length,
+      rendus: maxSlotsPerDay,
+      premierMasqueIso: slots[maxSlotsPerDay]?.startIso ?? null,
+    });
+  }
 
   const diagnostics = diagnostiquer(sorted.at(-1)?.startIso ?? null);
 

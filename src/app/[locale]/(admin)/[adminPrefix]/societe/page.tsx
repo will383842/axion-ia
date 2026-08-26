@@ -51,8 +51,14 @@ export default async function SocietePage({
     listSocieteDocsEnAlerte(maintenant, SEUIL_ALERTE_JOURS),
   ]);
 
-  const totalParRubrique = new Map(compteurs.map((c) => [c.rubrique, c.total]));
+  const parRubrique = new Map(compteurs.map((c) => [c.rubrique, c]));
   const base = `/fr/${adminPrefix}/societe`;
+
+  // État global du dossier : ce qui compte avant d'envoyer, c'est le reste à
+  // faire, pas le déjà-fait. Les deux sont affichés, le manque en premier.
+  const attendusTotal = compteurs.reduce((n, c) => n + c.attendusTotal, 0);
+  const couvertsTotal = compteurs.reduce((n, c) => n + c.attendusCouverts, 0);
+  const manquantsTotal = attendusTotal - couvertsTotal;
 
   return (
     <>
@@ -62,6 +68,18 @@ export default async function SocietePage({
         title="Société & conformité"
         description="Le dossier qu'un service achats de grand compte réclame pour référencer Axion-IA comme fournisseur, plus les pièces commerciales et de conformité qui partent chez le même destinataire."
       />
+
+      <section className="border-border mb-6 rounded-lg border bg-[color:var(--color-admin-paper)] p-5">
+        <p className="text-mocha text-sm font-semibold">
+          {manquantsTotal === 0
+            ? `Dossier complet — les ${attendusTotal} pièces attendues sont déposées.`
+            : `${couvertsTotal} pièce${couvertsTotal > 1 ? "s" : ""} sur ${attendusTotal} — il en manque ${manquantsTotal}.`}
+        </p>
+        <p className="text-fg-muted mt-1 text-sm">
+          Le détail de ce qui manque est en bas de chaque rubrique. Les emplacements
+          «&nbsp;Autre…&nbsp;» ne sont pas comptés : un fourre-tout ne peut pas manquer.
+        </p>
+      </section>
 
       {alertes.length > 0 ? (
         <section className="mb-6 rounded-lg border border-[color:var(--color-admin-warning-fg)] bg-[color:var(--color-admin-warning-soft)] p-5">
@@ -114,7 +132,10 @@ export default async function SocietePage({
         </Link>
 
         {SOCIETE_RUBRIQUES.map((r) => {
-          const total = totalParRubrique.get(r.key) ?? 0;
+          const c = parRubrique.get(r.key);
+          const couverts = c?.attendusCouverts ?? 0;
+          const attendus = c?.attendusTotal ?? 0;
+          const complet = attendus > 0 && couverts === attendus;
           return (
             <Link
               key={r.key}
@@ -123,8 +144,14 @@ export default async function SocietePage({
             >
               <div className="mb-1 flex items-baseline justify-between gap-2">
                 <h3 className="text-mocha text-sm font-semibold">{r.label}</h3>
-                <span className="text-fg-muted text-xs tabular-nums">
-                  {total === 0 ? "vide" : total === 1 ? "1 pièce" : `${total} pièces`}
+                <span
+                  className={`text-xs font-medium tabular-nums ${
+                    complet
+                      ? "text-[color:var(--color-admin-success-fg)]"
+                      : "text-[color:var(--color-admin-warning-fg)]"
+                  }`}
+                >
+                  {couverts} / {attendus}
                 </span>
               </div>
               <p className="text-fg-muted line-clamp-3 text-xs">{r.description}</p>
