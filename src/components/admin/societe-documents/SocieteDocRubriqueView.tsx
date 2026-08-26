@@ -218,11 +218,30 @@ export async function SocieteDocRubriqueView({
               ? "Une pièce attendue n'est pas encore déposée"
               : `${manquants.length} pièces attendues ne sont pas encore déposées`}
           </h2>
-          <ul className="space-y-1.5">
+          {/*
+            🔑 CHAQUE LIGNE PORTE SON PROPRE BOUTON D'IMPORT.
+            Nommer le manque sans offrir le geste obligeait à remonter en
+            haut de page, rouvrir le formulaire général, puis retrouver la
+            pièce dans un menu de dix entrées — trois gestes pour une
+            intention déjà exprimée par le clic. Le bouton pré-remplit la
+            nature ET le titre : il reste à choisir le fichier.
+          */}
+          <ul className="space-y-2">
             {manquants.map((t) => (
               <li key={t.key} className="text-sm">
-                <span className="text-mocha font-medium">{t.label}</span>
-                {t.motif ? <span className="text-fg-muted"> — {t.motif}</span> : null}
+                <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+                  <p className="min-w-0 flex-1">
+                    <span className="text-mocha font-medium">{t.label}</span>
+                    {t.motif ? <span className="text-fg-muted"> — {t.motif}</span> : null}
+                  </p>
+                  <SocieteDocForm
+                    types={rubrique.types}
+                    typeInitial={t.key}
+                    titreInitial={t.label}
+                    labelBouton="Importer"
+                    variante="ligne"
+                  />
+                </div>
               </li>
             ))}
           </ul>

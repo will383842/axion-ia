@@ -41,6 +41,23 @@ interface Props {
   ouvertParDefaut?: boolean;
   /** Appelé après un enregistrement réussi (fermeture d'un panneau parent). */
   onTermine?: () => void;
+  /**
+   * Nature pré-sélectionnée à l'ouverture. Renseignée quand l'import part
+   * d'une pièce NOMMÉE (une ligne de la liste des manquantes) : l'utilisateur
+   * a déjà dit laquelle il dépose en cliquant, le lui redemander dans un
+   * menu déroulant de dix entrées serait lui faire refaire le geste.
+   */
+  typeInitial?: SocieteDocumentType;
+  /** Titre pré-rempli — le libellé de la pièce, corrigeable. */
+  titreInitial?: string;
+  /** Texte du bouton replié. */
+  labelBouton?: string;
+  /**
+   * `ligne` : bouton discret posé au bout d'une ligne de liste ; le
+   * formulaire déplié occupe alors toute la largeur au lieu de se serrer
+   * dans la colonne de droite.
+   */
+  variante?: "principal" | "ligne";
 }
 
 const CHAMP =
@@ -52,6 +69,10 @@ export function SocieteDocForm({
   piece,
   ouvertParDefaut = false,
   onTermine,
+  typeInitial,
+  titreInitial,
+  labelBouton = "+ Importer une pièce",
+  variante = "principal",
 }: Props): React.ReactElement {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -59,7 +80,7 @@ export function SocieteDocForm({
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(ouvertParDefaut);
 
-  const [type, setType] = useState<string>(piece?.type ?? types[0]?.key ?? "");
+  const [type, setType] = useState<string>(piece?.type ?? typeInitial ?? types[0]?.key ?? "");
   const [dateEmission, setDateEmission] = useState<string>(piece?.dateEmission ?? "");
   const [dateExpiration, setDateExpiration] = useState<string>(piece?.dateExpiration ?? "");
 
@@ -87,7 +108,21 @@ export function SocieteDocForm({
     startTransition(async () => {
       const res = piece ? await modifierSocieteDocAction(fd) : await importerSocieteDocAction(fd);
       if (res.ok) {
-        if (!piece) formRef.current?.reset();
+        if (!piece) {
+          /*
+            🔴 `form.reset()` NE SUFFIT PAS, et c'est le genre de défaut qui
+            ne se voit qu'en déposant deux pièces de suite. Il remet les
+            champs du DOM, mais la nature et les deux dates vivent dans
+            l'état React : après un premier import, le formulaire rouvrait
+            en portant encore la date d'émission de la pièce précédente,
+            silencieusement. Une date fausse sur une pièce qui périme, c'est
+            une alerte d'échéance fausse.
+          */
+          formRef.current?.reset();
+          setType(typeInitial ?? types[0]?.key ?? "");
+          setDateEmission("");
+          setDateExpiration("");
+        }
         if (!ouvertParDefaut) setOpen(false);
         onTermine?.();
         router.refresh();
@@ -102,9 +137,13 @@ export function SocieteDocForm({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="border-terracotta text-terracotta hover:bg-terracotta inline-flex items-center gap-2 rounded-md border bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm font-medium transition hover:text-white"
+        className={
+          variante === "ligne"
+            ? "border-terracotta text-terracotta hover:bg-terracotta inline-flex shrink-0 items-center gap-2 rounded-md border bg-[color:var(--color-admin-paper)] px-2.5 py-1 text-xs font-medium transition hover:text-white"
+            : "border-terracotta text-terracotta hover:bg-terracotta inline-flex items-center gap-2 rounded-md border bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm font-medium transition hover:text-white"
+        }
       >
-        + Importer une pièce
+        {labelBouton}
       </button>
     );
   }
@@ -113,7 +152,17 @@ export function SocieteDocForm({
     <form
       ref={formRef}
       onSubmit={onSubmit}
-      className="border-border space-y-3 rounded-lg border bg-[color:var(--color-admin-paper)] p-4"
+      // ⚠️ Classes JOINTES par un tableau, jamais concaténées dans un gabarit.
+      // Écrit `p-4${cond ? "mt-3…" : ""}`, Prettier coupe la ligne juste après
+      // `p-4` et l'espace qui séparait les deux classes disparaît : la classe
+      // rendue devient `p-4mt-3`, que Tailwind ignore en silence. Même piège
+      // que le « attendue s » signalé dans SocieteDocRubriqueView.
+      className={[
+        "border-border space-y-3 rounded-lg border bg-[color:var(--color-admin-paper)] p-4",
+        variante === "ligne" ? "mt-3 w-full basis-full" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       <div>
         <label className={LABEL} htmlFor="sd-type">
@@ -148,7 +197,7 @@ export function SocieteDocForm({
           name="titre"
           required
           maxLength={200}
-          defaultValue={piece?.titre ?? ""}
+          defaultValue={piece?.titre ?? titreInitial ?? ""}
           className={CHAMP}
           placeholder="Ex. Extrait Kbis au 30 juillet 2026"
         />
