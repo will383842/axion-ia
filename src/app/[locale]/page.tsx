@@ -405,16 +405,17 @@ export default async function Home({ params }: HomeProps) {
                   href="/appel"
                   className="bg-terracotta text-paper cta-lift focus-visible:ring-terracotta inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
-                  {isFr
-                    ? "Je veux réserver un appel pour me renseigner sans aucun engagement"
-                    : "I want to book a call to learn more, with no commitment"}
+                  {isFr ? "Je réserve un appel" : "I book a call"}
                   <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
                 </Link>
               </div>
               {/* Chips bénéfices RETIRÉES (Will 2026-08-10) : « Sans engagement /
                   Formations adaptées / Résultats dès la première semaine » —
-                  redondantes avec le CTA qui porte désormais « sans aucun
-                  engagement ». Clés heroChip1-3 supprimées de fr/en.json. */}
+                  jugées redondantes avec le CTA, qui portait alors « sans aucun
+                  engagement ». Clés heroChip1-3 supprimées de fr/en.json.
+                  ⚠️ CTA raccourci en « Je réserve un appel » (Will 2026-08-26) :
+                  la mention « sans engagement » n'est donc PLUS above the fold
+                  sur l'accueil — elle ne subsiste que sur /appel. */}
             </div>
 
             {/* Colonne droite : photo hero placeholder. Will drop l'image
