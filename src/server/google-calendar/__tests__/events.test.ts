@@ -41,9 +41,9 @@ beforeEach(async () => {
       format: "pem",
     }) as string;
   }
-  process.env.GOOGLE_CALENDAR_CLIENT_EMAIL = "axion@projet.iam.gserviceaccount.com";
+  process.env.GOOGLE_CALENDAR_CLIENT_EMAIL = "compte-de-test@example.invalid";
   process.env.GOOGLE_CALENDAR_PRIVATE_KEY = PRIVATE_KEY;
-  process.env.GOOGLE_CALENDAR_ID = "williamsjullin@gmail.com";
+  process.env.GOOGLE_CALENDAR_ID = "agenda-de-test@example.invalid";
 });
 
 afterEach(() => {

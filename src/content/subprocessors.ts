@@ -35,7 +35,7 @@
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-08-20" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-08-26" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -267,6 +267,44 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     category: "communications",
     activationStatus: "active",
     documentationUrl: "https://calendly.com/dpa",
+  },
+  {
+    // Ajouté le 2026-08-26, EN MÊME TEMPS que l'intégration — c'est tout
+    // l'intérêt de la garde `sous-traitants-serveur.spec.ts` : elle a refusé la
+    // branche tant que `GOOGLE_CALENDAR_PRIVATE_KEY` n'était rattachée à rien.
+    // Calendly, lui, avait mis quatorze mois à figurer ici (cf. l'en-tête).
+    name: "Google Ireland Limited (Google Agenda)",
+    location: "Dublin, Irlande",
+    serversLocation: "Union européenne et États-Unis",
+    purposeFr:
+      "Lecture et écriture de l'agenda professionnel depuis la console d'administration : afficher les rendez-vous à venir et poser des plages d'indisponibilité. L'agenda est le pivot de la disponibilité — Calendly y inscrit ses réservations, et un événement posé ici ferme le créneau correspondant.",
+    purposeEn:
+      "Reading and writing the business calendar from the admin console: displaying upcoming appointments and blocking unavailable periods. The calendar is the single source of availability — Calendly writes its bookings there, and an event created here closes the matching slot.",
+    dataCategoriesFr:
+      "Nom et coordonnées des personnes ayant réservé un rendez-vous, tels qu'ils figurent déjà dans l'agenda ; intitulés, horaires et lieux des rendez-vous. Aucune donnée nouvelle ne lui est transmise : les plages d'indisponibilité écrites par la console ne portent aucune donnée personnelle.",
+    dataCategoriesEn:
+      "Names and contact details of people who booked an appointment, as already present in the calendar; appointment titles, times and locations. No new data is sent: the unavailability blocks written by the console carry no personal data.",
+    // 6.1.b comme Calendly, et pour la même raison : gérer les rendez-vous de
+    // découverte relève des mesures précontractuelles. Ce n'est pas un intérêt
+    // légitime distinct — c'est la suite du même traitement, vue depuis l'autre
+    // bout du tuyau.
+    legalBasis: "6.1.b_contract",
+    // 🔴 « pending » EST ICI UN CONSTAT, PAS UNE FORMALITÉ EN ATTENTE.
+    // L'agenda visé est un compte Gmail GRAND PUBLIC. Les conditions
+    // consommateur de Google ne comportent pas d'accord de sous-traitance au
+    // sens de l'art. 28 : un DPA n'existe que sur Google Workspace. Tant que
+    // l'agenda professionnel vit sur un compte personnel, ce sous-traitant est
+    // déclaré SANS contrat de sous-traitance — la ligne 19 du registre le dit
+    // aussi, et la sortie est de basculer l'agenda sur Workspace.
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "communications",
+    // `pending_activation` au sens strict de l'interface : le code est livré,
+    // les trois variables GOOGLE_CALENDAR_* ne sont pas posées en production,
+    // donc AUCUN flux réel n'existe à ce jour. À basculer en `active` le jour
+    // où le compte de service est branché.
+    activationStatus: "pending_activation",
+    documentationUrl: "https://policies.google.com/privacy",
   },
   {
     name: "OpenStreetMap Foundation (Nominatim)",

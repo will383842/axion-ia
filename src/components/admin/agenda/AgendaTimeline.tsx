@@ -26,6 +26,7 @@
 
 import Link from "next/link";
 import { AGENDA_SOURCE_LABELS, type AgendaItem } from "@/features/admin-agenda/types";
+import { RetirerIndisponibiliteButton } from "./RetirerIndisponibiliteButton";
 
 /**
  * Amplitude affichée. 7 h → 21 h couvre la plage réservable (9 h – 19 h) avec
@@ -206,6 +207,19 @@ export function AgendaTimeline({
                   </Link>
                 ) : (
                   contenu
+                )}
+                {/* Retrait proposé UNIQUEMENT sur les blocages posés par la
+                    console : `googleEventId` n'est renseigné que là (cf.
+                    `features/admin-agenda/queries.ts`). Un vrai rendez-vous ne
+                    doit pas offrir de bouton de suppression — la console n'a
+                    aucune raison légitime d'en effacer un, et une suppression
+                    d'agenda ne se rattrape pas. Le serveur revérifie de toute
+                    façon avant de supprimer : cette condition est du confort,
+                    pas la garde. */}
+                {i.googleEventId && (
+                  <span className="mt-[2px] block">
+                    <RetirerIndisponibiliteButton eventId={i.googleEventId} titre={i.titre} />
+                  </span>
                 )}
               </div>
             );
