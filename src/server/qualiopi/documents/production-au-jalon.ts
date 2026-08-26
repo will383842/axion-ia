@@ -234,8 +234,7 @@ function pieceVivanteExiste(
   traineeId: string | null,
 ): boolean {
   return pieces.some(
-    (p) =>
-      p.type === type && p.traineeId === traineeId && p.annuleeAt === null && !p.estCopie,
+    (p) => p.type === type && p.traineeId === traineeId && p.annuleeAt === null && !p.estCopie,
   );
 }
 

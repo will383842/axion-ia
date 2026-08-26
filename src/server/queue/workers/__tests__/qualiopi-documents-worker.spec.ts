@@ -255,7 +255,12 @@ describe("G2 — pertinence `attendue` seulement", () => {
     const inst = instantane({
       enrollments: [
         { id: "enr-entreprise", traineeId: "t-1" },
-        { id: "enr-particulier", traineeId: "t-2", financementType: "direct", clientType: "particulier" },
+        {
+          id: "enr-particulier",
+          traineeId: "t-2",
+          financementType: "direct",
+          clientType: "particulier",
+        },
       ],
     });
     const productions = productionsAuJalon(inst, MAINTENANT);
@@ -278,9 +283,9 @@ describe("G2 — pertinence `attendue` seulement", () => {
   });
 
   it("la tripartite n'existe qu'en OPCO/mixte", () => {
-    expect(productionsAuJalon(instantane({ financementType: "opco" }), MAINTENANT).map((p) => p.type)).toContain(
-      "convention_tripartite",
-    );
+    expect(
+      productionsAuJalon(instantane({ financementType: "opco" }), MAINTENANT).map((p) => p.type),
+    ).toContain("convention_tripartite");
     expect(
       productionsAuJalon(instantane({ financementType: "direct" }), MAINTENANT).map((p) => p.type),
     ).not.toContain("convention_tripartite");
@@ -313,7 +318,11 @@ describe("G2 — pertinence `attendue` seulement", () => {
 
 describe("G3 — idempotence", () => {
   it("deux appels sur le même état rendent la même liste", () => {
-    const inst = instantane({ statut: "realisee", dateDebut: new Date(MAINTENANT.getTime() - 3 * JOUR_MS), dateFin: new Date(MAINTENANT.getTime() - 2 * JOUR_MS) });
+    const inst = instantane({
+      statut: "realisee",
+      dateDebut: new Date(MAINTENANT.getTime() - 3 * JOUR_MS),
+      dateFin: new Date(MAINTENANT.getTime() - 2 * JOUR_MS),
+    });
     const a = productionsAuJalon(inst, MAINTENANT);
     const b = productionsAuJalon(inst, MAINTENANT);
     expect(a).toEqual(b);
@@ -395,10 +404,9 @@ describe("G4 — toute pièce nominative porte un traineeId", () => {
   it("une session sans aucun inscrit ne produit AUCUNE pièce nominative", () => {
     const productions = productionsAuJalon(instantane({ enrollments: [] }), MAINTENANT);
     for (const p of productions) {
-      expect(
-        TYPES_NOMINATIFS.includes(p.type),
-        `${p.type} nominative produite sans inscrit`,
-      ).toBe(false);
+      expect(TYPES_NOMINATIFS.includes(p.type), `${p.type} nominative produite sans inscrit`).toBe(
+        false,
+      );
     }
     // Les pièces de session, elles, sortent (le programme prépare la session).
     expect(productions.map((p) => p.type)).toContain("programme");

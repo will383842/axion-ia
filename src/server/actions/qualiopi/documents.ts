@@ -386,7 +386,11 @@ export async function genererConvocationAction(input: {
     action: "qualiopi.document.convocation.genere",
     targetType: "Enrollment",
     targetId: enrollmentId,
-    changes: { documentId: resultat.documentId, numero: resultat.numero, ...(resultat.details ?? {}) },
+    changes: {
+      documentId: resultat.documentId,
+      numero: resultat.numero,
+      ...(resultat.details ?? {}),
+    },
     session: adminSession,
   });
 
@@ -425,7 +429,11 @@ export async function genererEmargementAction(input: {
     action: "qualiopi.document.emargement.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: resultat.documentId, numero: resultat.numero, ...(resultat.details ?? {}) },
+    changes: {
+      documentId: resultat.documentId,
+      numero: resultat.numero,
+      ...(resultat.details ?? {}),
+    },
     session: adminSession,
   });
 
@@ -1949,7 +1957,11 @@ export async function genererOrganisationActionAction(input: {
     action: "qualiopi.document.organisation_action.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: resultat.documentId, numero: resultat.numero, ...(resultat.details ?? {}) },
+    changes: {
+      documentId: resultat.documentId,
+      numero: resultat.numero,
+      ...(resultat.details ?? {}),
+    },
     session: adminSession,
   });
 

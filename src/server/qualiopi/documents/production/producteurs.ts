@@ -573,7 +573,10 @@ export async function produireContratFormation(
     documentId: doc.id,
     numero: doc.numero,
     mediateurManquant,
-    details: { sessionId: session.id, ...(mediateurManquant ? { mentionMediationAbsente: true } : {}) },
+    details: {
+      sessionId: session.id,
+      ...(mediateurManquant ? { mentionMediationAbsente: true } : {}),
+    },
     ...(avertissementMediation ? { avertissement: avertissementMediation } : {}),
   };
 }
