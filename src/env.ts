@@ -127,6 +127,29 @@ export const env = createEnv({
     // n'a pas droit aux abonnements webhook.
     // Obtenue UNE SEULE FOIS via `pnpm calendly:webhook:subscribe`.
     CALENDLY_WEBHOOK_SIGNING_KEY: z.string().optional(),
+
+    // ── Agenda Google — console « Agenda » (2026-08-26) ────────────────────
+    // Accès en LECTURE ET ÉCRITURE à l'agenda de Will, par compte de service.
+    // Les trois vont ensemble : il en manque une, le module est inerte et la
+    // console affiche les seules réservations Calendly, en le disant.
+    //
+    // Pourquoi cet agenda et pas Calendly : il est le pivot mesuré de toute la
+    // disponibilité. Calendly y écrit ses réservations, l'iPhone de Will y
+    // écrit les siennes, et un événement posé ici ferme le créneau Calendly
+    // correspondant en 11 secondes (mesuré le 2026-08-26). Lire cet agenda =
+    // tout voir ; y écrire = fermer Calendly sans jamais lui parler.
+    //
+    // Mise en service : créer un compte de service dans Google Cloud, puis
+    // PARTAGER l'agenda avec son adresse en « Apporter des modifications aux
+    // événements ». Pas de délégation à l'échelle du domaine, pas d'écran de
+    // consentement — ça fonctionne avec un Gmail personnel.
+    GOOGLE_CALENDAR_CLIENT_EMAIL: z.string().optional(),
+    // ⚠️ Clé privée PEM. Coolify et GitHub Actions transportent les sauts de
+    // ligne en `\n` littéraux ; `auth.ts` les redéveloppe. Ne pas tenter de les
+    // « corriger » à la main dans l'interface : les deux formes sont acceptées.
+    GOOGLE_CALENDAR_PRIVATE_KEY: z.string().optional(),
+    // L'agenda visé — l'adresse Gmail elle-même.
+    GOOGLE_CALENDAR_ID: z.string().optional(),
     /**
      * 🔴 `D5-3-02` — clé d'authentification du webhook de rebonds ZeptoMail
      * (Agent > Webhooks > « Authentication Key »).
@@ -491,6 +514,9 @@ export const env = createEnv({
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
+    GOOGLE_CALENDAR_CLIENT_EMAIL: process.env.GOOGLE_CALENDAR_CLIENT_EMAIL,
+    GOOGLE_CALENDAR_PRIVATE_KEY: process.env.GOOGLE_CALENDAR_PRIVATE_KEY,
+    GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
     ZEPTOMAIL_WEBHOOK_KEY: process.env.ZEPTOMAIL_WEBHOOK_KEY,
     // Stripe Checkout V1 (Booking V1 — ADR 0013)
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
