@@ -28,10 +28,25 @@
  *     enrichissements, chacun 1 à 2 requêtes, soit ~50 requêtes. À la minute, on
  *     saturerait le quota à lui seul. Une annulation connue avec 10 min de retard
  *     reste très en deçà de l'heure d'avant.
+ *   · `revalidate-slots` — toutes les 2 MINUTES. Coût côté Calendly : ZÉRO. Cette
+ *     passe n'appelle pas Calendly, elle demande au site d'oublier ses créneaux ;
+ *     les 4 requêtes de re-résolution partent du site, au prochain rendu, et
+ *     seulement s'il y a un visiteur.
  *
  * 🔴 NE PAS passer `refresh` à la minute « pour aller plus vite » : on
  * dépasserait le quota, Calendly répondrait 429, et c'est `discover` — la passe
  * qui compte — qui serait rejetée en premier.
+ *
+ * POURQUOI UNE TROISIÈME PASSE, ALORS QUE LE WEBHOOK EXISTE
+ * ---------------------------------------------------------
+ * Parce que le webhook ne voit QUE ce qui se passe chez Calendly. Un rendez-vous
+ * posé à la main dans Google Agenda ou sur l'iPhone ferme bien le créneau côté
+ * Calendly — mesuré le 2026-08-26 : **11 secondes** — mais **personne ne nous
+ * prévient**. Aucun webhook, aucun évènement. Le site gardait donc ses créneaux
+ * jusqu'à l'expiration de son TTL de 900 s : 13 minutes mesurées, pendant
+ * lesquelles `/appel` proposait un horaire que Calendly refusait déjà. C'est le
+ * cas qui a déclenché l'audit, et c'est le seul que le webhook ne couvre pas.
+ * Pour le voir, il faut aller regarder — donc un cron.
  *
  * INERTE PAR DÉFAUT
  * -----------------
@@ -46,12 +61,14 @@ import { Worker, type Job } from "bullmq";
 import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
 import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
+import { CALENDLY_SLOTS_TAG } from "@/server/calendly/availability";
+import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 export const CALENDLY_POLL_QUEUE_NAME = "calendly-poll";
 
-/** Les deux passes, à deux cadences différentes — voir l'en-tête. */
-export type CalendlyPollJobType = "discover" | "refresh";
+/** Les trois passes, à trois cadences différentes — voir l'en-tête. */
+export type CalendlyPollJobType = "discover" | "refresh" | "revalidate-slots";
 
 export interface CalendlyPollJobData {
   readonly type: CalendlyPollJobType;
@@ -60,9 +77,27 @@ export interface CalendlyPollJobData {
 }
 
 async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
-  // Garde explicite en plus de celle des deux modules appelés : elle évite
-  // d'écrire une ligne de log toutes les minutes sur une installation sans jeton.
+  // Garde explicite en plus de celle des modules appelés : elle évite d'écrire
+  // une ligne de log toutes les minutes sur une installation sans jeton. Elle
+  // couvre aussi `revalidate-slots` à dessein — sans jeton, `/appel` rend le
+  // repli sans créneaux, il n'y a donc rien à rafraîchir.
   if (!isCalendlyApiConfigured()) return;
+
+  if (job.data.type === "revalidate-slots") {
+    // `revalidateTag`/`revalidatePath` sont des no-op SILENCIEUX hors contexte
+    // de requête : dans ce worker, l'appel direct ne ferait rien du tout et
+    // rien ne le dirait. On passe donc par la route interne, qui les exécute
+    // côté Next — même patron que la publication de contenu.
+    const res = await revalidateContent({ tags: [CALENDLY_SLOTS_TAG] });
+    // On ne journalise QUE l'échec : 720 lignes/jour annonçant un succès
+    // noieraient les logs du worker et rendraient invisible la seule qui compte.
+    // `revalidateContent` a déjà écrit son propre JSON structuré ; cette ligne
+    // ajoute l'identité de l'appelant, qu'il ne connaît pas.
+    if (!res.ok) {
+      console.warn(`[calendly-poll] créneaux non invalidés : ${res.reason ?? "inconnu"}`);
+    }
+    return;
+  }
 
   if (job.data.type === "discover") {
     const res = await discoverNewCalendlyEvents();

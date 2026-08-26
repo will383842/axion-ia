@@ -250,6 +250,74 @@ describe("fetchAvailableSlots — nominal", () => {
     expect(heures.at(-1)).toBe("2026-08-04T14:30:00.000Z");
   });
 
+  it("rend la JOURNÉE DE 10 H en entier — c'est la plage réellement ouverte", async () => {
+    // 🔴 RÉGRESSION MESURÉE EN PRODUCTION LE 2026-08-26. Le test précédent
+    // verrouillait une journée de 8 h (16 créneaux) et restait vert pendant que
+    // l'agenda Calendly ouvrait 9 h → 19 h, soit 20 créneaux. Le plafond de 16
+    // retranchait donc les quatre derniers de chaque journée pleine — 17:00,
+    // 17:30, 18:00 et 18:30 réservables sur Calendly, invisibles sur le site,
+    // ~70 créneaux sur les 28 jours d'horizon. Un test qui n'éprouve que 16
+    // créneaux ne peut pas voir un plafond posé à 16 : il faut lui en donner 20.
+    const journeeDeDixHeures = Array.from({ length: 20 }, (_, i) => {
+      const h = 7 + Math.floor(i / 2); // 07:00 UTC = 09:00 à Paris en été.
+      const mn = i % 2 ? "30" : "00";
+      return slot(`2026-08-04T${String(h).padStart(2, "0")}:${mn}:00Z`);
+    });
+
+    routeFetch({
+      times: (url) =>
+        url.includes("2026-08-03")
+          ? jsonRes({ collection: journeeDeDixHeures })
+          : jsonRes({ collection: [] }),
+    });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+
+    const heures = res.days[0]?.slots.map((s) => s.startIso) ?? [];
+    expect(heures).toHaveLength(20);
+    // 16:30 UTC = 18:30 à Paris en été : la dernière fin d'après-midi tient.
+    expect(heures.at(-1)).toBe("2026-08-04T16:30:00.000Z");
+  });
+
+  it("JOURNALISE la troncature au lieu de la subir en silence", async () => {
+    // Une troncature muette se lit exactement comme un agenda qui s'arrête tôt :
+    // les deux rendent la même page. C'est ce qui a laissé le plafond de 16
+    // masquer les fins d'après-midi sans que rien ne le signale. Le jour où la
+    // plage dépassera encore le plafond, le journal doit le dire — sinon on
+    // repart pour quatre semaines d'enquête.
+    const vingtEtUn = Array.from({ length: 21 }, (_, i) =>
+      slot(
+        `2026-08-04T${String(7 + Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}:00Z`,
+      ),
+    );
+
+    routeFetch({
+      times: (url) =>
+        url.includes("2026-08-03")
+          ? jsonRes({ collection: vingtEtUn })
+          : jsonRes({ collection: [] }),
+    });
+
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+      expect(res.ok).toBe(true);
+
+      const ligne = warn.mock.calls.find(([msg]) => String(msg).includes("TRONQUÉS"));
+      expect(ligne, "aucune ligne de journal n'annonce la troncature").toBeDefined();
+      // Le journal doit nommer le jour ET les deux comptes : « il manque des
+      // créneaux » sans dire lesquels n'oriente aucune correction.
+      const contexte = JSON.parse(String(ligne?.[1])) as Record<string, unknown>;
+      expect(contexte["premierJourTronque"]).toBe("2026-08-04");
+      expect(contexte["offertsParCalendly"]).toBe(21);
+      expect(contexte["rendus"]).toBe(20);
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
   it("ignore les créneaux pris, sans horaire, ou dont l'URL de réservation n'est pas Calendly", async () => {
     routeFetch({
       times: (url) =>
