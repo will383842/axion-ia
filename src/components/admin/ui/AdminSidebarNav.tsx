@@ -48,6 +48,7 @@ import {
   BookOpen,
   Users,
   BadgeCheck,
+  Building2,
   type LucideIcon,
   Filter,
 } from "lucide-react";
@@ -82,6 +83,7 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   qualiopi: GraduationCap,
   finances: Wallet,
   "documents-interventions": FolderOpen,
+  societe: Building2,
   "coaching-1to1": GraduationCap,
   "image-bank": Images,
   presse: Newspaper,

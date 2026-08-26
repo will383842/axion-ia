@@ -34,6 +34,7 @@ import { sendTelegram } from "@/lib/telegram";
 import { getClientIp } from "@/lib/client-ip";
 import { enqueueEmail } from "@/server/queue/queues";
 import { applyTransition, StateMachineError, type ApplyTransitionOptions } from "./state-machine";
+import { roleAtteintLeRang } from "./rangs-de-role";
 
 // Helper : récupère contact + intervention type d'un booking pour les emails.
 async function getEmailPayloadBase(bookingId: string): Promise<{
@@ -79,12 +80,14 @@ async function requireAdmin(minRole: "super_admin" | "admin" | "editor"): Promis
   const session = await auth();
   if (!session?.user?.id) throw new AdminAuthError("unauthorized");
   const role = (session.user as { role?: string }).role as AdminContext["role"] | undefined;
-  if (!role) throw new AdminAuthError("forbidden");
-  const ROLE_RANK = { reader: 0, editor: 1, admin: 2, super_admin: 3 } as const;
-  if (ROLE_RANK[role] < ROLE_RANK[minRole]) {
+  // 🔴 Le barème vit dans `rangs-de-role.ts`, avec REFUS PAR DÉFAUT : il rendait
+  // `undefined` pour `secretaire` et `responsable_qualite`, et `undefined < 2`
+  // vaut `false` — la garde laissait donc passer les deux rôles qu'elle ne
+  // connaissait pas.
+  if (!roleAtteintLeRang(role, minRole)) {
     throw new AdminAuthError("forbidden");
   }
-  return { userId: session.user.id, role };
+  return { userId: session.user.id, role: role as AdminContext["role"] };
 }
 
 function authErrorResult(err: unknown): AdminActionResult {

@@ -195,6 +195,21 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/components/portail/EnqueteEntrepriseForm.tsx",
   "src/server/formateur/echeances-formateur.ts",
   "src/server/formateur/etapes-formateur.ts",
+  // ── Dossier société (2026-08-26) : l'onglet « Société & conformité » affiche
+  //    l'identité de l'organisme de formation — numéro de déclaration
+  //    d'activité, numéro de certificat Qualiopi, adresse d'exercice, référent
+  //    handicap. Ce sont des pièces que RÉCLAME un service achats de grand
+  //    compte (checklist Délifrance, point 19), et elles n'existent qu'ici.
+  //
+  //    L'élargissement est le plus étroit possible : UNE page, en LECTURE
+  //    SEULE, qui appelle `getOrganismeIdentite()` et rien d'autre du domaine.
+  //    Elle ne lit ni session, ni stagiaire, ni indicateur, et n'écrit rien.
+  //
+  //    ⚠️ L'alternative — recopier ces lectures hors du domaine — aurait créé
+  //    une seconde vérité sur le numéro de déclaration d'activité, que onze
+  //    gabarits de documents lisent déjà depuis cette source. C'est exactement
+  //    le motif que ce dépôt a payé quatre fois : un prédicat recopié diverge.
+  "src/app/[locale]/(admin)/[adminPrefix]/societe/identite/page.tsx",
   // ── Contrats, factures, e-mails : portent les mentions légales, qui sont
   //    la SSOT du domaine (`qualiopi/legal`).
   "src/features/contract/admin-actions.ts",

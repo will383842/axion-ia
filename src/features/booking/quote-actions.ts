@@ -30,6 +30,7 @@ import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import { sendTelegram } from "@/lib/telegram";
 import { applyTransition, StateMachineError } from "./state-machine";
+import { roleAtteintLeRang } from "./rangs-de-role";
 import { generateQuoteNumber, computeQuotePricing } from "@/lib/quote-helpers";
 import { createContractSubmission, isDocusealConfigured, DocusealApiError } from "@/lib/docuseal";
 
@@ -41,10 +42,10 @@ async function requireAdmin(
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
   const role = (session.user as { role?: string }).role as AdminContext["role"] | undefined;
-  if (!role) throw new Error("forbidden");
-  const RANK = { reader: 0, editor: 1, admin: 2, super_admin: 3 } as const;
-  if (RANK[role] < RANK[min]) throw new Error("forbidden");
-  return { userId: session.user.id, role };
+  // Même défaut, même correctif que `admin-actions.ts` : refus par défaut de tout
+  // rôle absent du barème (cf. `rangs-de-role.ts`).
+  if (!roleAtteintLeRang(role, min)) throw new Error("forbidden");
+  return { userId: session.user.id, role: role as AdminContext["role"] };
 }
 
 export interface QuoteActionResult {
