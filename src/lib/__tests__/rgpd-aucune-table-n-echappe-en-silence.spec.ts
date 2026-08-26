@@ -218,43 +218,56 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
       "sans date, donc les 5 ans n'ont aucun point de départ calculable.",
   },
 
-  // ── ⚠️ IL EN RESTE TROIS. Chacun bute sur une décision qui n'est pas
-  //    technique, et qu'il serait malhonnête de trancher ici. ────────────────
+  // ── ✅ LES TROIS DERNIÈRES ONT ÉTÉ INSTRUITES LE 2026-08-25. ─────────────
+  //
+  // 🔑 La clé qui a débloqué les trois d'un coup : les blocages écrits ici
+  // supposaient tous une PURGE PÉRIODIQUE. Or la route d'effacement est
+  // déclenchée par une DEMANDE (adresse + jeton HMAC + confirmation littérale).
+  // « Aucune date de fin de relation, donc les 5 ans sont incalculables » ne
+  // s'oppose qu'à un traitement automatique — et la purge automatique a été
+  // écartée par le propriétaire en connaissance de cause.
+  //
+  // *On instruisait un obstacle qui barrait une route qu'on ne prendrait pas.*
   {
     modele: "Client",
-    statut: "a-instruire",
+    statut: "traite",
     note:
-      "⛔ BLOQUÉ SUR UNE DÉCISION. La table mélange des relations qui n'ont pas la " +
-      "même base légale : un `prospect` ou un `perdu` n'a aucun contrat et rien ne " +
-      "le retient, un `client_actif` est couvert. Mais AUCUNE date de fin de relation " +
-      "n'existe — ni `deletedAt`, ni `finRelationAt` — donc les « 5 ans après fin de " +
-      "prestation » que le site PUBLIE sont incalculables en base. Et le dépôt porte " +
-      "deux durées contradictoires : 5 ans (`content/legal.ts`, art. L.6353-9) et " +
-      "10 ans (registre art. 30, art. L123-22). Il faut une colonne datée et un " +
-      "arbitrage sur la durée avant d'écrire quoi que ce soit.",
+      "pseudonymisation du CONTACT (nom, adresse, téléphone, fonction, notes, " +
+      "contexte). La personne MORALE — raison sociale, SIRET, adresse de " +
+      "l'établissement — n'est pas une donnée personnelle et reste. ⚠️ SAUF si " +
+      '`type === "particulier"` : la « raison sociale » est alors le nom de la ' +
+      "personne, et elle est pseudonymisée. Rétention DÉCLARÉE, pas tue : une " +
+      "fiche rattachée à une facture est retenue (art. L.123-22 C.com, 10 ans, " +
+      "réservé par l'art. 17(3)(b)) et le compte rendu la compte à part. Le " +
+      "critère est la pièce comptable ÉMISE, jamais le statut commercial — un " +
+      "`perdu` facturé une fois retient, un `prospect` sans facture ne retient rien.",
   },
   {
     modele: "DocumentRecipient",
-    statut: "a-instruire",
+    statut: "traite",
     note:
-      "⛔ BLOQUÉ SUR UN EFFET DE BORD. C'est une liste de diffusion doublée d'un " +
-      "compte de connexion sans mot de passe : rien ne fonde de la conserver quand la " +
-      "relation cesse. Mais un `deleteMany` emporte EN CASCADE " +
-      "`RessourceTelechargement`, l'accusé de lecture des supports — trace qui peut " +
-      "valoir preuve de diffusion Qualiopi. Supprimer ou détacher : à trancher avant " +
-      "de câbler.",
+      "pseudonymisation SANS suppression, et c'est tout l'arbitrage. Un " +
+      "`deleteMany` emporterait en cascade `RessourceTelechargement`, l'accusé " +
+      "de lecture qui peut valoir PREUVE DE DIFFUSION Qualiopi : détruire la " +
+      "preuve d'un engagement pour honorer un droit n'est pas une sortie. Le " +
+      "RGPD ne réclame pas la destruction de la ligne, il réclame que la " +
+      "personne ne soit plus identifiable — l'accusé survit rattaché à " +
+      "personne. Accès coupé (`actif: false`) et liens magiques révoqués AVANT " +
+      "la pseudonymisation : un lien passwordless survivant rouvrirait l'espace " +
+      "au nom d'une personne effacée.",
   },
   {
     modele: "CoachingSeanceSignature",
-    statut: "a-instruire",
+    statut: "traite",
     note:
-      "⛔ BLOQUÉ SUR UNE QUESTION EN AMONT. La table est ORPHELINE depuis le " +
-      "2026-08-10 : plus une ligne de `src/` ne l'écrit ni ne la lit, le module AFEST " +
-      "1-to-1 ayant été supprimé. L'argument du tuple scellé qui sauve les deux " +
-      "signatures ci-dessus ne tient donc pas ici — plus aucun vérificateur ne " +
-      "recalcule ces empreintes. La vraie question n'est pas « comment l'effacer » " +
-      "mais « pourquoi existe-t-elle encore » : une table morte qui porte de la PII " +
-      "en clair est le pire des deux mondes.",
+      "pseudonymisation. L'argument du tuple scellé qui protège les autres " +
+      "signatures NE S'APPLIQUE PAS ici : la table porte bien `prevHash`/" +
+      "`selfHash`, mais plus aucun code ne les recalcule — mesuré le 2026-08-25, " +
+      "aucune ligne de `src/` ne la lit ni ne l'écrit depuis le retrait du " +
+      "module AFEST 1-to-1 le 2026-08-10, et elle compte ZÉRO ligne en " +
+      "production. Une chaîne que personne ne vérifie ne prouve rien, donc ne " +
+      "s'oppose pas à une demande. ⚠️ « Faut-il retirer la table du schéma » " +
+      "reste ouvert : supprimer un modèle est irréversible et se décide à froid.",
   },
   {
     modele: "ProspectionHealthPractitioner",
@@ -412,11 +425,11 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
       aInstruire.length,
       `${aInstruire.length} table(s) portant une adresse en clair ne sont NI ` +
         `traitées NI exemptées avec un motif : ${aInstruire.join(", ")}. Ce nombre ` +
-        "ne doit que DÉCROÎTRE. Les trois qui restent ne butent pas sur un " +
-        "manque de temps mais sur une DÉCISION : une date de fin de relation à " +
-        "créer (`Client`), un effet de cascade à arbitrer (`DocumentRecipient`), " +
-        "et une table morte dont il faut d'abord dire si elle doit exister " +
-        "(`CoachingSeanceSignature`). Les détails sont dans leurs notes.",
-    ).toBeLessThanOrEqual(3);
+        "ne doit que DÉCROÎTRE. Il est à ZÉRO depuis le 2026-08-25 : toute " +
+        "table qui réapparaît ici est une NOUVELLE dette, pas un reliquat. " +
+        "Instruire veut dire l'un des trois : l'effacer, la pseudonymiser, ou " +
+        "déclarer l'obligation légale qui s'y oppose — jamais la laisser sans " +
+        "mention.",
+    ).toBeLessThanOrEqual(0);
   });
 });

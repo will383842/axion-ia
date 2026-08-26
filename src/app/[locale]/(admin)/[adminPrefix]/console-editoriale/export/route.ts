@@ -9,6 +9,7 @@
  *   /console-editoriale/export?type=csv&year=2026&month=9
  *   /console-editoriale/export?type=sauvegarde
  *   /console-editoriale/export?type=plan&asset=carrousel&periode=2026-10&format=md
+ *   /console-editoriale/export?type=plan&asset=carrousel&format=pdf
  */
 
 import { NextResponse, type NextRequest } from "next/server";
@@ -17,7 +18,17 @@ import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
 import { requirePermission } from "@/server/actions/editorial/_guards";
 import { dayKeyOfGridDate } from "@/lib/calendar-grid";
-import { lireAnnee, lireMois, bornesDuMois } from "@/server/editorial/calendrier-pur";
+import {
+  dispositionDemandee,
+  ENREGISTREMENT,
+  type DispositionFichier,
+} from "@/lib/content-disposition";
+import {
+  lireAnnee,
+  lireMois,
+  bornesDuMois,
+  lirePeriodeMois,
+} from "@/server/editorial/calendrier-pur";
 import {
   construireCsv,
   nomFichierCsv,
@@ -34,6 +45,7 @@ import {
   TYPES_PLAN,
   type AssetPlan,
 } from "@/server/editorial/plan-production";
+import { rendrePlanEnPdf } from "@/server/editorial/plan-production-pdf";
 
 /** Le titre humain d'un plan. La clé sert l'URL, le mot sert le lecteur. */
 const LIBELLE_TYPE_PLAN: Record<string, string> = {
@@ -46,14 +58,39 @@ const LIBELLE_TYPE_PLAN: Record<string, string> = {
   tout: "tous les assets",
 };
 
+/**
+ * Plafond du plan de production.
+ *
+ * Il existe pour la même raison que tous les plafonds de requête : sans lui,
+ * un compte qui aurait dix mille assets sortirait un PDF que personne
+ * n'imprime et qui fait tomber la route. Ce qui compte n'est pas sa valeur,
+ * c'est que le document DISE quand il l'atteint — cf. `tronque` plus bas.
+ */
+const LIMITE_PLAN = 2000;
+
 export const dynamic = "force-dynamic";
 
-/** En-têtes qui déclenchent un vrai téléchargement, pas un affichage. */
-function enTetes(nomFichier: string, type: string): HeadersInit {
+/**
+ * En-têtes de service d'un export.
+ *
+ * 🔴 `disposition` n'a PAS de valeur par défaut, et c'est délibéré.
+ *
+ * Cette fonction imposait `attachment` à tout le monde. Tant qu'elle ne
+ * servait que du CSV, du Markdown et du ZIP, c'était juste : un tableur
+ * s'enregistre, c'est son usage. Le PDF a changé la donne — une pièce qu'on
+ * ne peut pas OUVRIR ne s'imprime pas d'un `Ctrl+P`, il faut sortir du
+ * navigateur pour la lire. C'est le constat de l'audit blanc Qualiopi, et la
+ * garde `content-disposition.spec.ts` l'a rattrapé ici.
+ *
+ * Un paramètre obligatoire plutôt qu'un défaut : un défaut se reconduit sans
+ * qu'on y pense, et c'est exactement comme ça que `attachment` s'était figé
+ * partout. Ici, chaque appelant DIT ce qu'il veut.
+ */
+function enTetes(nomFichier: string, type: string, disposition: DispositionFichier): HeadersInit {
   return {
     "Content-Type": `${type}; charset=utf-8`,
     // Le nom est cité : sans cela, un nom à espace serait tronqué.
-    "Content-Disposition": `attachment; filename="${nomFichier}"`,
+    "Content-Disposition": `${disposition}; filename="${nomFichier}"`,
     // Un export est un instantané : il ne se met jamais en cache.
     "Cache-Control": "no-store, max-age=0",
   };
@@ -104,7 +141,7 @@ async function exporterCsv(annee: number, mois: number): Promise<NextResponse> {
   }));
 
   return new NextResponse(construireCsv(exportables), {
-    headers: enTetes(nomFichierCsv(annee, mois), "text/csv"),
+    headers: enTetes(nomFichierCsv(annee, mois), "text/csv", ENREGISTREMENT),
   });
 }
 
@@ -199,7 +236,7 @@ async function exporterSauvegarde(): Promise<NextResponse> {
   );
 
   return new NextResponse(serialiserSauvegarde(sauvegarde), {
-    headers: enTetes(nomFichierSauvegarde(genereeA), "application/json"),
+    headers: enTetes(nomFichierSauvegarde(genereeA), "application/json", ENREGISTREMENT),
   });
 }
 
@@ -277,6 +314,7 @@ async function exporterArchive(publicationId: string): Promise<NextResponse> {
     headers: enTetes(
       nomArchive(publication.refImport, publication.titreInterne),
       "application/zip",
+      ENREGISTREMENT,
     ),
   });
 }
@@ -292,15 +330,29 @@ async function exporterArchive(publicationId: string): Promise<NextResponse> {
 async function exporterPlan(
   typeAsset: string | null,
   periode: string | null,
-  format: "md" | "csv",
+  format: "md" | "csv" | "pdf",
   seulementAProduire: boolean,
+  /**
+   * Ce que le navigateur doit faire du PDF. Lue de l'URL par l'appelant, pas
+   * décidée ici : la route est le seul endroit qui voit la requête.
+   */
+  dispositionPdf: DispositionFichier,
 ): Promise<NextResponse> {
   // Bornes de période. `periode` vaut « 2026-10 », ou rien pour tout.
+  //
+  // 🔴 Ce bloc testait la période avec `/^d{4}-d{2}$/` — les deux antislashs
+  // manquaient. L'expression ne reconnaissait que la chaîne littérale
+  // « dddd-dd » : AUCUNE période n'a jamais matché, le filtre n'était jamais
+  // posé, et l'export sortait tous les mois en affichant « Toutes périodes ».
+  // La lecture vit désormais dans `calendrier-pur`, sous test — une regex
+  // écrite dans un Route Handler n'était couverte par rien.
   let bornes: { debut: Date; fin: Date } | null = null;
-  if (periode && /^d{4}-d{2}$/.test(periode)) {
-    const annee = Number(periode.slice(0, 4));
-    const mois = Number(periode.slice(5, 7));
-    if (mois >= 1 && mois <= 12) bornes = bornesDuMois(annee, mois);
+  if (periode) {
+    const lue = lirePeriodeMois(periode);
+    // Et on REFUSE au lieu d'ignorer : retomber en silence sur « tout », c'est
+    // rendre un document qui ment sur son propre périmètre.
+    if (!lue.ok) return NextResponse.json({ error: lue.erreur }, { status: 400 });
+    bornes = bornesDuMois(lue.annee, lue.mois);
   }
 
   const assets = await prisma.edAsset.findMany({
@@ -321,6 +373,9 @@ async function exporterPlan(
       type: true,
       libelle: true,
       statut: true,
+      // Qui doit le produire. Un plan qui dit quoi faire sans dire par qui
+      // laisse chaque ligne sans propriétaire.
+      responsable: { select: { nom: true } },
       segments: {
         orderBy: { ordre: "asc" },
         select: { ordre: true, role: true, titre: true, contenu: true, prompt: true, fait: true },
@@ -329,14 +384,34 @@ async function exporterPlan(
         orderBy: { ordre: "asc" },
         take: 1,
         select: {
-          publication: { select: { datePrevue: true, heurePrevue: true, titreInterne: true } },
+          publication: {
+            select: {
+              datePrevue: true,
+              heurePrevue: true,
+              titreInterne: true,
+              // 🔑 La COPIE du post, pas seulement son titre interne. On
+              // fabrique un visuel pour un texte : sans lui sous les yeux, il
+              // fallait rouvrir la console pour savoir de quoi le visuel parle.
+              accroche: true,
+              corps: true,
+              premierCommentaire: true,
+              tags: true,
+            },
+          },
         },
       },
     },
-    take: 1000,
+    // ⚠️ `+ 1` : on demande un élément DE PLUS que le plafond, uniquement
+    // pour savoir s'il en existait d'autres. Un `take: LIMITE` sec rend un
+    // plan tronqué indiscernable d'un plan complet — le travail qui manque
+    // ne manque alors nulle part.
+    take: LIMITE_PLAN + 1,
   });
 
-  const plan: AssetPlan[] = assets.map((a) => {
+  const tronque = assets.length > LIMITE_PLAN;
+  const retenus = tronque ? assets.slice(0, LIMITE_PLAN) : assets;
+
+  const plan: AssetPlan[] = retenus.map((a) => {
     const pub = a.publications[0]?.publication ?? null;
     return {
       id: a.id,
@@ -346,6 +421,18 @@ async function exporterPlan(
       datePost: pub ? dayKeyOfGridDate(pub.datePrevue) : null,
       heurePost: pub?.heurePrevue ?? null,
       titrePost: pub?.titreInterne ?? null,
+      responsable: a.responsable?.nom ?? null,
+      // `null` quand l'asset n'est rattaché à AUCUNE publication — distinct
+      // d'un post rattaché dont la copie est encore vide, que le plan
+      // signale explicitement.
+      post: pub
+        ? {
+            accroche: pub.accroche,
+            corps: pub.corps,
+            premierCommentaire: pub.premierCommentaire,
+            tags: pub.tags,
+          }
+        : null,
       segments: a.segments,
     };
   });
@@ -353,20 +440,43 @@ async function exporterPlan(
   const libelleType = typeAsset && TYPES_PLAN.includes(typeAsset as never) ? typeAsset : "tout";
   const libellePeriode = bornes ? (periode ?? "tout") : "tout";
 
-  if (format === "csv") {
-    return new NextResponse(construireCsvPlan(plan), {
-      headers: enTetes(nomFichierPlan(libelleType, libellePeriode, "csv"), "text/csv"),
-    });
-  }
-
-  const md = construireMarkdown(plan, {
+  const contexte = {
     titre: `Plan de production — ${LIBELLE_TYPE_PLAN[libelleType] ?? libelleType}`,
     periode:
       (bornes ? `Période ${libellePeriode}` : "Toutes périodes") +
       (seulementAProduire ? " · assets non terminés seulement" : " · tous statuts"),
-  });
-  return new NextResponse(md, {
-    headers: enTetes(nomFichierPlan(libelleType, libellePeriode, "md"), "text/markdown"),
+    avertissement: tronque
+      ? `Ce plan est TRONQUÉ : il s'arrête à ${LIMITE_PLAN} assets, et le ` +
+        "périmètre demandé en contient davantage. Filtrez par type " +
+        "(« asset=carrousel ») ou par mois (« periode=2026-10 ») pour tout voir."
+      : null,
+  };
+
+  // Le nom du fichier porte la troncature quel que soit le format : c'est le
+  // seul avertissement qu'un CSV peut transporter — y écrire une ligne de
+  // commentaire casserait le tableur qui l'ouvre.
+  const nom = (extension: "md" | "csv" | "pdf") =>
+    nomFichierPlan(libelleType, libellePeriode, extension, tronque);
+
+  if (format === "csv") {
+    return new NextResponse(construireCsvPlan(plan), {
+      headers: enTetes(nom("csv"), "text/csv", ENREGISTREMENT),
+    });
+  }
+
+  if (format === "pdf") {
+    const buffer = await rendrePlanEnPdf(plan, contexte);
+    // 🔑 `inline` par défaut : le plan s'ouvre dans un onglet et s'imprime
+    // d'un Ctrl+P. Forcer l'enregistrement obligerait à sortir du navigateur
+    // pour lire un document dont l'IMPRESSION est la raison d'être.
+    // `?dl=1` reste disponible pour l'archiver.
+    return new NextResponse(new Uint8Array(buffer), {
+      headers: enTetes(nom("pdf"), "application/pdf", dispositionPdf),
+    });
+  }
+
+  return new NextResponse(construireMarkdown(plan, contexte), {
+    headers: enTetes(nom("md"), "text/markdown", ENREGISTREMENT),
   });
 }
 
@@ -398,11 +508,19 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
   }
 
   if (type === "plan") {
-    const format = params.get("format") === "csv" ? "csv" : "md";
+    const demande = params.get("format");
+    const format = demande === "csv" ? "csv" : demande === "pdf" ? "pdf" : "md";
     // Par defaut on ne sort QUE ce qui reste a faire : un plan de production
     // qui reliste les assets termines se relit mal et se coche deux fois.
     const seulementAProduire = params.get("statut") !== "tous";
-    return exporterPlan(params.get("asset"), params.get("periode"), format, seulementAProduire);
+    return exporterPlan(
+      params.get("asset"),
+      params.get("periode"),
+      format,
+      seulementAProduire,
+      // Lue ICI parce que c'est le seul endroit qui voit la requête.
+      dispositionDemandee(requete.url),
+    );
   }
 
   if (type === "csv") {

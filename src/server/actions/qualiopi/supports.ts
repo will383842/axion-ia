@@ -108,7 +108,7 @@ export async function genererSupportAction(input: {
 }
 
 /**
- * Génère (ou régénère) EN LOT les 7 supports d'une formation en un clic.
+ * Génère (ou régénère) EN LOT tous les supports d'une formation en un clic.
  */
 export async function genererTousSupportsAction(input: {
   formationId: string;

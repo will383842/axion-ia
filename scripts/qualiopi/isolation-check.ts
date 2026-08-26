@@ -200,6 +200,19 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/features/contract/admin-actions.ts",
   "src/features/invoice/admin-actions.ts",
   "src/lib/email/templates/_layout.tsx",
+  // ── Plan de production éditorial en PDF : n'emprunte au domaine que la
+  //    PLOMBERIE du rendu — jetons de marque, polices, nettoyage d'espaces,
+  //    extraction du texte pour les tests. Aucune lecture métier Qualiopi :
+  //    ni session, ni stagiaire, ni indicateur. Ces utilitaires sont logés
+  //    dans le domaine sans lui appartenir, comme `revues/sans-commentaires`
+  //    plus bas.
+  //
+  //    ⚠️ Même arbitrage que là-bas : au troisième emprunteur de la plomberie
+  //    PDF, la DÉPLACER vers une zone neutre plutôt que d'allonger cette
+  //    liste. Trois exceptions pour une même plomberie ne sont plus des
+  //    exceptions — c'est un module mal rangé.
+  "src/server/editorial/plan-production-pdf.spec.tsx",
+  "src/server/editorial/plan-production-pdf.tsx",
   // ── Workers & santé : rétention de preuve d'envoi, alertes.
   "src/server/email/health.ts",
   "src/server/queue/workers/retention-purge-worker.ts",
@@ -231,6 +244,14 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    ⚠️ Le jour ou un troisieme emprunteur apparait, DEPLACER l'utilitaire
   //    vers une zone neutre (`src/lib/`) plutot que d'allonger cette liste :
   //    trois exceptions pour un meme symbole ne sont plus des exceptions.
+  // ── Garde du PowerPoint projeté. Elle DOIT importer `TOUS_SUPPORT_TYPES`
+  //    depuis le domaine : c'est la valeur qu'elle surveille. Lire la liste
+  //    par une regex sur le fichier source serait plus faible — un extracteur
+  //    trop malin nous a déjà menti trois fois le 2026-08-25 (un `[a-z-]+`
+  //    aveugle aux chiffres, un comptage sur une base périmée, un filtre qui
+  //    écartait un prérequis). La constante vit dans `supports/types.ts`, un
+  //    module PUR : l'import ne tire aucun runtime, seulement une donnée.
+  "tests/unit/qualiopi/le-ppt-projete-nest-jamais-genere.spec.ts",
   "tests/unit/ci/origine-de-prod-jamais-en-repli.spec.ts",
 ]);
 

@@ -44,6 +44,9 @@ import {
   eraseEmailTracesForEmail,
   eraseNewsletterForEmail,
   eraseSubmissionsForEmail,
+  eraseClientsForEmail,
+  eraseDocumentRecipientsForEmail,
+  eraseCoachingSignaturesForEmail,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -103,6 +106,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     podcastResult,
     bookingOptionsResult,
     signatureTokensResult,
+    clientsResult,
+    destinatairesResult,
+    signaturesCoachingResult,
   ] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
@@ -160,6 +166,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // d'une personne effacee, et de resceller son adresse dans une signature
     // neuve -- ce qui annulerait l'effacement qu'on vient de faire.
     eraseSignatureTokensForEmail(email),
+    // ── LES TROIS DERNIERES TABLES « A INSTRUIRE » (2026-08-25) ──────────────
+    //
+    // Elles etaient nommees depuis le 2026-08-24 dans
+    // `rgpd-aucune-table-n-echappe-en-silence.spec.ts`, chacune bloquee sur une
+    // decision. La cle qui les a debloquees toutes les trois : cette route est
+    // declenchee par une DEMANDE, pas par une purge periodique. Les blocages
+    // ecrits (« aucune date de fin de relation, donc les 5 ans sont
+    // incalculables ») ne s'opposaient qu'a une purge - or la purge a ete
+    // ecartee par le proprietaire en connaissance de cause.
+    //
+    // Le detail de chaque arbitrage est au-dessus de son effaceur dans
+    // `rgpd-erase.ts`. En resume : `Client` pseudonymise le CONTACT et retient
+    // les fiches facturees (art. L.123-22 + art. 17(3)(b)) ; `DocumentRecipient`
+    // pseudonymise SANS supprimer, pour ne pas emporter en cascade l'accuse de
+    // telechargement qui vaut preuve de diffusion Qualiopi ;
+    // `CoachingSeanceSignature` est pseudonymisee parce que sa chaine
+    // d'empreintes n'est plus recalculee par personne.
+    eraseClientsForEmail(email),
+    eraseDocumentRecipientsForEmail(email),
+    eraseCoachingSignaturesForEmail(email),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -236,6 +262,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       // Une liste qui se donne pour exhaustive et qui omet la demande de
       // podcast est, selon les termes de ce depot, pire qu'une absence de liste.
       podcast: podcastResult.supprimees,
+      // 2026-08-25 — les trois dernieres tables de l'inventaire entrent dans
+      // l'enumeration. `clientsRetenus` est annonce SEPAREMENT et a dessein :
+      // une reponse qui dirait « tout est efface » alors qu'une fiche facturee
+      // survit serait exactement le defaut que cette famille de correctifs
+      // corrige depuis quatre occurrences. On declare la retention, on ne la
+      // tait pas.
+      fichesClient: clientsResult.anonymises,
+      fichesClientRetenues: clientsResult.retenusObligationComptable,
+      destinatairesDocuments: destinatairesResult.anonymises,
     });
   } catch (err) {
     console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);
@@ -244,7 +279,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Telegram alert (DPO doit savoir — art. 30 RGPD register update)
   try {
     await alertIncident(
-      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${kbResult.bookmarksDeleted} KB bookmarks, ${chatResult.conversationsDeleted} conversations chatbot supprimées, ${chatResult.escalationsAnonymized} escalades anonymisées.`,
+      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${kbResult.bookmarksDeleted} KB bookmarks, ${chatResult.conversationsDeleted} conversations chatbot supprimées, ${chatResult.escalationsAnonymized} escalades anonymisées, ${clientsResult.anonymises} fiches client pseudonymisées (${clientsResult.retenusObligationComptable} RETENUES au titre de l'obligation comptable), ${destinatairesResult.anonymises} destinataires de documents, ${signaturesCoachingResult.anonymises} signatures de coaching.`,
       { userId: v.jti },
     );
   } catch {

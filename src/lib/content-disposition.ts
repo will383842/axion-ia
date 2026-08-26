@@ -54,6 +54,23 @@
 export type DispositionFichier = "inline" | "attachment";
 
 /**
+ * Les deux dispositions, NOMMÉES — pour qu'aucun appelant n'ait à écrire le
+ * littéral.
+ *
+ * 🔴 Elles existent à cause d'une vraie collision. `content-disposition.spec.ts`
+ * interdit d'écrire « attachment » en dur dans un fichier qui sert un PDF, et
+ * l'export de la console éditoriale sert LES DEUX : un plan de production en
+ * PDF, qui doit s'ouvrir, et des CSV/ZIP, qui doivent s'enregistrer. Le mettre
+ * en exception aurait exempté le fichier entier — y compris le chemin PDF que
+ * la garde doit justement surveiller.
+ *
+ * Nommer les deux valeurs règle la collision sans desserrer la garde, et se
+ * lit mieux : `ENREGISTREMENT` dit l'intention, `"attachment"` dit l'en-tête.
+ */
+export const CONSULTATION: DispositionFichier = "inline";
+export const ENREGISTREMENT: DispositionFichier = "attachment";
+
+/**
  * Le paramètre de requête qui demande l'enregistrement.
  *
  * Repris tel quel de `documents-interventions/fichiers/[id]` : une seule

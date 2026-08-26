@@ -78,6 +78,18 @@ export interface SanteEmails {
   echecsRecents: number;
   bloquesEnFile: number;
   alertesLevees: string[];
+  /**
+   * 🔑 « Je n'ai rien pu regarder » ≠ « rien ne va mal ».
+   *
+   * Sans ce champ, un zéro était **indistinguable** d'une chaîne saine : un
+   * échec de lecture du journal rendait `{ 0, 0, [] }`, c'est-à-dire le rendu
+   * exact d'un système en parfait état. Un compteur à zéro n'est une bonne
+   * nouvelle que si l'on sait qu'il a compté.
+   *
+   * ⚠️ Les deux compteurs ci-dessus **ne veulent rien dire** quand ce drapeau
+   * est levé — ils n'ont jamais été renseignés.
+   */
+  mesureIndisponible: boolean;
 }
 
 /**
@@ -87,7 +99,12 @@ export interface SanteEmails {
  * ferait taire, en plus d'elle-même, tout ce que ce cron surveille par ailleurs.
  */
 export async function verifierSanteEmails(maintenant: Date = new Date()): Promise<SanteEmails> {
-  const resultat: SanteEmails = { echecsRecents: 0, bloquesEnFile: 0, alertesLevees: [] };
+  const resultat: SanteEmails = {
+    echecsRecents: 0,
+    bloquesEnFile: 0,
+    alertesLevees: [],
+    mesureIndisponible: false,
+  };
   if (estStub()) return resultat;
 
   const depuis = new Date(maintenant.getTime() - FENETRE_ECHECS_H * 3600_000);
@@ -103,10 +120,36 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
       }),
     ]);
   } catch (e) {
-    console.error(
-      "[email-sante] lecture du journal impossible :",
-      e instanceof Error ? e.message : String(e),
+    // 🔴 2026-08-25 — CE CHEMIN RENDAIT UN ZÉRO QUI AVAIT L'AIR SAIN.
+    //
+    // Il sortait sur `console.error` puis rendait `{ echecsRecents: 0,
+    // bloquesEnFile: 0, alertesLevees: [] }` — c'est-à-dire **exactement** ce
+    // que rend une chaîne en parfait état. Aucun consommateur ne pouvait
+    // distinguer « rien ne va mal » de « je n'ai rien pu regarder ».
+    //
+    // Le *fail-soft* est juste, et il reste : une surveillance qui casse le cron
+    // qui la porte ferait taire tout ce que ce cron surveille par ailleurs. Mais
+    // ne pas lever d'exception n'oblige pas à rendre un résultat rassurant.
+    // C'est le piège que ce dépôt nomme « les journaux muets = succès », sur le
+    // module même dont l'en-tête raconte qu'un mot de passe SMTP expiré avait
+    // coupé 100 % des envois en silence.
+    //
+    // 🔑 On lève donc l'alerte par les DEUX canaux hors bande. Le canal console
+    // passe par la base — celle-là même qui vient d'échouer — et il échouera
+    // probablement ; `leverAlerte` l'isole déjà. **Telegram, lui, ne dépend pas
+    // de la base** : c'est le seul chemin qui reste debout quand Postgres tombe,
+    // et c'est précisément le cas qu'on veut couvrir.
+    const detail = e instanceof Error ? e.message : String(e);
+    resultat.mesureIndisponible = true;
+    await leverAlerte(
+      "emails_sante_non_mesurable",
+      "La surveillance des e-mails n'a rien pu mesurer",
+      `La lecture du journal d'envois a échoué : ${detail}. Tant que dure cette panne, ` +
+        `l'absence d'alerte « e-mails en échec » ou « e-mails bloqués » ne prouve RIEN — ` +
+        `la chaîne peut être rompue sans que personne ne l'apprenne. Vérifier Postgres.`,
+      0,
     );
+    resultat.alertesLevees.push("emails_sante_non_mesurable");
     return resultat;
   }
 

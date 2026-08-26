@@ -6,6 +6,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { readCv } from "@/server/careers/cv-storage";
+import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
+import { getClientIp } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,7 +21,13 @@ export async function GET(
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
   const role = (session.user as { role?: string }).role;
-  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+  // 🔴 La liste etait ecrite ICI, et elle admettait `editor` tout en refusant
+  // `responsable_qualite` et `secretaire` — c'est-a-dire le role purement
+  // redactionnel admis, et les deux roles qui TRAITENT le dossier refuses. Ce
+  // n'etait pas un arbitrage : la liste a ete ecrite avant que ces deux roles
+  // existent (15/08). Elle vit desormais au SSOT, partagee avec la liste des
+  // candidatures et la piece jointe.
+  if (!peutOuvrirDossierCandidat(role)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
@@ -32,6 +40,27 @@ export async function GET(
 
   try {
     const buf = await readCv(a.photoStoragePath);
+    // 🔑 Même raison que pour le CV : la trace est ce qui rend l'accès
+    // défendable devant la CNIL.
+    //
+    // ⚠️ Écrit DIRECTEMENT sur `prisma.activityLog`, et non via le helper
+    // partagé du générateur éditorial — son isolation est vérifiée en CI
+    // (§ 4.1bis) et rien du dossier d'un candidat n'y appartient.
+    //
+    // Best-effort : un journal indisponible ne prive personne de la pièce.
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: session.user.id,
+          action: "careers.candidature.photo.consultee",
+          targetType: "JobApplication",
+          targetId: id,
+          ipAddress: await getClientIp(),
+        },
+      });
+    } catch {
+      // silence volontaire : cf. ci-dessus
+    }
     // MIME restreint : on ne sert que des types image validés, sinon octet-stream.
     const mime =
       a.photoMimeType && ALLOWED_IMG.has(a.photoMimeType)
