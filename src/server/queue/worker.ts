@@ -5,13 +5,10 @@
 // service dedicated) pour isoler le throughput email du throughput web.
 
 import { startEmailWorker } from "./workers/email-worker";
-import { startOptionExpirationWorker } from "./workers/option-expiration-worker";
-import { startOptionReminderWorker } from "./workers/option-reminder-worker";
 import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
 import { startCalendlyPollWorker } from "./workers/calendly-poll-worker";
 import { startCrmSyncWorker } from "./workers/crm-sync-worker";
 import { startVivierCronsWorker } from "./workers/vivier-crons-worker";
-import { startBookingCronsWorker } from "./workers/booking-crons-worker";
 import { startContentGenWorker } from "./workers/content-gen-worker";
 import { startOrchestratorWorker } from "./workers/content-orchestrator-worker";
 import { startQualityImproverWorker } from "./workers/content-quality-improver-worker";
@@ -60,7 +57,7 @@ import { startFormationEngineWorker } from "./workers/qualiopi-formation-engine-
 import { startFormationCronsWorker } from "./workers/qualiopi-formation-crons-worker";
 // Chatbot (T-05) — env-gated CHATBOT_ENABLED (réversible sans redeploy).
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
-import { bootRepeatableJobs, isLegacyBookingWorkersEnabled } from "./queues";
+import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
 async function main() {
@@ -72,15 +69,6 @@ async function main() {
 
   const workers = [
     startEmailWorker(),
-    // Workers hérités du flux de réservation payante — OFF par défaut
-    // (audit 2026-07-09). Le flux est éteint : Calendly a remplacé le créneau
-    // public et Stripe est neutralisé, donc `option-expiration` (toutes les
-    // 5 min), `option-reminder` (horaire) et `booking-crons` (11 crons)
-    // scannaient des tables vides. Leurs repeatable jobs Redis sont purgés au
-    // boot par `bootRepeatableJobs()`. Réversible : LEGACY_BOOKING_WORKERS_ENABLED=true.
-    ...(isLegacyBookingWorkersEnabled()
-      ? [startOptionExpirationWorker(), startOptionReminderWorker(), startBookingCronsWorker()]
-      : []),
     startRetentionPurgeWorker(),
     // Sondage Calendly (2026-08-09) — remplace le cron GitHub horaire, qui
     // dérivait jusqu'à 2 h 44. C'est aujourd'hui le SEUL chemin par lequel une

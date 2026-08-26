@@ -217,10 +217,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    requête hors domaine — aurait créé une seconde vérité sur « ce client
   //    existe-t-il ? », le motif payé quatre fois dans ce dépôt.
   "src/app/[locale]/(admin)/[adminPrefix]/submissions/_v2/SubmissionDetailContent.tsx",
-  // ── Contrats, factures, e-mails : portent les mentions légales, qui sont
-  //    la SSOT du domaine (`qualiopi/legal`).
-  "src/features/contract/admin-actions.ts",
-  "src/features/invoice/admin-actions.ts",
+  // ── E-mails : le layout porte les mentions légales, qui sont la SSOT du
+  //    domaine (`qualiopi/legal`). (contract/invoice retirés avec le système
+  //    Booking, 2026-08-26.)
   "src/lib/email/templates/_layout.tsx",
   // ── Plan de production éditorial en PDF : n'emprunte au domaine que la
   //    PLOMBERIE du rendu — jetons de marque, polices, nettoyage d'espaces,

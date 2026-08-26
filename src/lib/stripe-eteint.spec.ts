@@ -19,7 +19,7 @@
  * HTTP, contenu statique) : rien ne les tient ensemble sinon ce fichier.
  */
 import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildCspHeader } from "./csp";
 import { SUBPROCESSORS } from "@/content/subprocessors";
@@ -27,64 +27,33 @@ import { SUBPROCESSORS } from "@/content/subprocessors";
 const RACINE = process.cwd();
 const lire = (p: string) => readFileSync(join(RACINE, p), "utf8");
 
-/**
- * 🔴 LIRE LE CODE, PAS LES COMMENTAIRES.
- *
- * Première version de ces gardes : `source.includes("isStripeConfigured()")`.
- * Elle restait VERTE alors que j'avais retiré la garde de la route — parce que
- * le commentaire explicatif juste au-dessus, que je venais d'écrire, contient
- * l'appel. Le test se satisfaisait de sa propre documentation.
- *
- * Vérifié en réintroduisant les trois défauts d'un coup : deux gardes sur trois
- * ont rougi, celle-ci non. D'où ce décapage préalable — un contrôle statique
- * doit interroger le code exécuté, jamais la prose qui l'entoure.
- */
-function sansCommentaires(source: string): string {
-  return source.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:])\/\/.*$/gm, "$1");
-}
-const lireCode = (p: string) => sansCommentaires(lire(p));
-
-describe("1. l'interrupteur coupe l'ENTRANT autant que le SORTANT", () => {
+describe("1. aucune surface Stripe entrante ni sortante n'existe", () => {
   /**
-   * 🔴 LE DÉFAUT TROUVÉ.
+   * Suppression du système booking (2026-08-26) : la route webhook, la
+   * création de session Checkout (`features/payment/actions.ts`) et les
+   * remboursements (`features/booking/refund-actions.ts`) sont SUPPRIMÉS,
+   * plus seulement gardés par `isStripeConfigured()`. Ces cas verrouillent
+   * l'absence : les réintroduire exige de repasser par une décision explicite
+   * (et de re-gater CSP + notice RGPD dans le même mouvement).
    *
-   * `isStripeConfigured()` gardait la création de session Checkout et les
-   * remboursements, mais PAS la route webhook — qui écrit dans
-   * `stripeWebhookEvent` puis appelle `dispatchStripeEvent`, lequel mute l'état
-   * des réservations et des paiements. Un événement signé aurait modifié des
-   * données persistées d'une intégration réputée hors service.
+   * Aucun encaissement Stripe Qualiopi n'existe (paiements manuels) — la
+   * suppression ne perd rien.
    */
-  it("la route webhook consulte `isStripeConfigured`", () => {
-    const source = lireCode("src/app/api/stripe/webhook/route.ts");
+  it("la route webhook n'existe plus", () => {
     expect(
-      source.includes("isStripeConfigured()"),
-      "la route webhook ne consulte pas l'interrupteur : Stripe serait éteint " +
-        "dans un seul sens (rien ne sort, tout entre) alors qu'elle mute " +
-        "l'état des réservations via `dispatchStripeEvent`.",
-    ).toBe(true);
+      existsSync(join(RACINE, "src/app/api/stripe")),
+      "src/app/api/stripe est réapparu : la surface entrante Stripe a été " +
+        "supprimée avec le système booking (2026-08-26). La réintroduire " +
+        "exige une garde isStripeConfigured() AVANT toute lecture du corps.",
+    ).toBe(false);
   });
 
-  it("le refus précède la lecture du corps de la requête", () => {
-    const source = lireCode("src/app/api/stripe/webhook/route.ts");
-    const garde = source.indexOf("isStripeConfigured()");
-    const lecture = source.indexOf("await req.text()");
-    expect(garde).toBeGreaterThan(-1);
-    expect(lecture).toBeGreaterThan(-1);
-    expect(
-      garde,
-      "refuser AVANT de lire le corps : sinon on traite la charge utile d'une " +
-        "intégration désactivée.",
-    ).toBeLessThan(lecture);
-  });
-
-  it("les deux chemins sortants restent gardés", () => {
+  it("les chemins sortants (Checkout, remboursements) n'existent plus", () => {
     for (const chemin of [
       "src/features/payment/actions.ts",
       "src/features/booking/refund-actions.ts",
     ]) {
-      expect(lireCode(chemin).includes("isStripeConfigured()"), `${chemin} a perdu sa garde`).toBe(
-        true,
-      );
+      expect(existsSync(join(RACINE, chemin)), `${chemin} est réapparu`).toBe(false);
     }
   });
 });

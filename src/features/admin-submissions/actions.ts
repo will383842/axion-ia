@@ -243,20 +243,6 @@ export async function getSubmissionDetailAction(id: string) {
   await requireAdminReadSession();
   const submission = await prisma.submission.findUnique({
     where: { id },
-    include: {
-      bookings: {
-        select: {
-          id: true,
-          interventionType: true,
-          bookingDate: true,
-          participantsCount: true,
-          status: true,
-          pricePaidCents: true,
-          createdAt: true,
-        },
-        orderBy: { createdAt: "desc" },
-      },
-    },
   });
   if (!submission) return submission;
   // Déchiffre le PII stocké chiffré (enc:v1). No-op sur les valeurs en clair.
@@ -364,14 +350,6 @@ export async function eraseSubmissionAction(
       select: { id: true, type: true, contactEmail: true },
     });
     if (!sub) throw new Error("submission_not_found");
-
-    // Detache les bookings (Submission.id devient null sur Booking.submissionId)
-    // pour ne pas casser la referentielle. Le Booking lui-même reste (donnée
-    // contractuelle conservée 5 ans, obligation comptable EE).
-    await tx.booking.updateMany({
-      where: { submissionId: parsed.data.id },
-      data: { submissionId: null },
-    });
 
     await tx.submission.delete({ where: { id: parsed.data.id } });
 

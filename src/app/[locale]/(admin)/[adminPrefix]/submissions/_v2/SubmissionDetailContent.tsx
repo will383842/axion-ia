@@ -12,8 +12,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getSubmissionDetailAction } from "@/features/admin-submissions/actions";
 import { findClientByEmail } from "@/server/qualiopi/crm/entrees";
-import { AdminPageShell, AdminPageHeader, AdminStatusBadge } from "@/components/admin/ui";
-import { interventionTypeLabel } from "@/lib/intervention-label";
+import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
@@ -214,42 +213,6 @@ export async function SubmissionDetailContent({
             )}
           </dl>
         </div>
-        {submission.bookings.length > 0 && (
-          <div className="admin-card admin-card-wide">
-            <h2 className="admin-h2">Réservations liées ({submission.bookings.length})</h2>
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Type</th>
-                  <th>Participants</th>
-                  <th>Prix</th>
-                  <th>Statut</th>
-                </tr>
-              </thead>
-              <tbody>
-                {submission.bookings.map((b) => (
-                  <tr key={b.id}>
-                    <td>{formatDateFrShort(b.bookingDate)}</td>
-                    <td>{interventionTypeLabel(b.interventionType)}</td>
-                    <td>{b.participantsCount}</td>
-                    <td>
-                      {b.pricePaidCents != null
-                        ? `${(b.pricePaidCents / 100).toFixed(0)} € HT`
-                        : "sur devis"}
-                    </td>
-                    <td>
-                      {/* Le statut sortait en anglais (« confirmed », « pending »)
-                          dans une classe `admin-badge-${status}` qui n'existe
-                          nulle part : ni traduit, ni teinté. */}
-                      <AdminStatusBadge type="booking" status={b.status} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
         <div className="admin-card admin-card-wide">
           <h2 className="admin-h2">Workflow admin</h2>
           <SubmissionUpdateForm
