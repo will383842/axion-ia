@@ -9958,6 +9958,128 @@ model ConsoleDocument {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// DOSSIER SOCIÉTÉ (2026-08-26) — les pièces qu'un service achats de grand
+// compte réclame pour référencer Axion-IA comme fournisseur (plateformes type
+// e-Attestations / Provigis), plus les pièces commerciales et de conformité
+// qui partent chez le même destinataire.
+//
+// ⚠️ NE PAS confondre avec les trois voisins, qui existent déjà et ne couvrent
+// pas ce besoin :
+//   • `ConsoleDocument`      — buckets de fichiers génériques, SANS échéance ;
+//   • `TrainerDocument`      — les MÊMES natures de pièces (URSSAF, Kbis, RC
+//     pro…) mais collectées AUPRÈS de nos formateurs. Ce modèle-ci en est le
+//     miroir : les pièces que NOUS produisons pour un donneur d'ordre ;
+//   • `InterventionDocument` — kits pédagogiques versionnés par prestation.
+//
+// La rubrique n'est PAS une colonne : elle se DÉRIVE du type via la SSOT
+// `src/server/societe-documents/rubriques.ts`, et un test exige que chaque
+// membre de l'enum y figure exactement une fois. Une colonne redondante aurait
+// fini par diverger du type qu'elle est censée classer.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Nature d'une pièce du dossier société. Le préfixe n'encode PAS la rubrique
+/// (c'est la SSOT TS qui la porte) — il ne sert qu'à la lisibilité.
+enum SocieteDocumentType {
+  // ── Pièces légales (référencement fournisseur) ──
+  kbis
+  /// Art. L.8222-1 — exigible par le donneur d'ordre dès 5 000 € HT, à
+  /// renouveler tous les 6 mois. Symétrique exact de
+  /// `TrainerDocumentType.attestation_vigilance_urssaf`, dans l'autre sens.
+  attestation_vigilance_urssaf
+  attestation_regularite_fiscale
+  assurance_rc_pro
+  rib
+  statuts
+  pv_pouvoirs
+  /// Art. D.8254-2 — liste nominative des salariés étrangers soumis à
+  /// autorisation de travail, ou attestation « néant ». Pièce jumelle de
+  /// l'attestation de vigilance : les achats les réclament ensemble.
+  liste_salaries_etrangers
+  attestation_honneur
+  autre_piece_legale
+
+  // ── Organisme de formation ──
+  recepisse_declaration_activite
+  certificat_qualiopi
+  reglement_interieur
+  livret_accueil
+  programme_type
+  liste_formateurs
+  cv_formateur
+  autre_organisme_formation
+
+  // ── Commercial ──
+  plaquette_presentation
+  grille_tarifaire
+  cgv
+  fiche_offre
+  /// Accord de confidentialité qu'Axion-IA PROPOSE. À ne pas confondre avec le
+  /// « NDA » du reste du dépôt, qui désigne le numéro de déclaration
+  /// d'activité (cf. `recepisse_declaration_activite`).
+  nda
+  modele_proposition
+  autre_commercial
+
+  // ── Audit & méthode ──
+  methodologie_audit
+  questionnaire_pre_audit
+  modele_lettre_mission
+  modele_rapport_audit
+  autre_audit_methode
+
+  // ── RGPD & sécurité ──
+  registre_traitements
+  modele_dpa
+  note_securite
+  politique_usage_ia
+  questionnaire_securite
+  autre_rgpd_securite
+}
+
+/// Pièce du dossier société. Fichier stocké sur le volume `console-docs`
+/// (hors web-root, cf. `src/server/console-documents/storage.ts` — réutilisé
+/// tel quel), servi par une route admin authentifiée.
+model SocieteDocument {
+  id          String              @id @default(uuid()) @db.Uuid
+  type        SocieteDocumentType
+  titre       String              @db.VarChar(200)
+  description String?             @db.Text
+
+  /// N° de la pièce quand elle en porte un : n° de police RC pro, code de
+  /// vérification URSSAF, n° de certificat Qualiopi, n° de déclaration
+  /// d'activité. Affiché tel quel — jamais reformaté.
+  numeroPiece String? @map("numero_piece") @db.VarChar(60)
+
+  // ── Fichier ──
+  fileName    String @map("file_name") @db.VarChar(255)
+  storagePath String @map("storage_path") @db.VarChar(512)
+  mimeType    String @map("mime_type") @db.VarChar(120)
+  sizeBytes   Int    @map("size_bytes")
+  hashSha256  String @map("hash_sha256") @db.VarChar(64)
+
+  dateEmission DateTime? @map("date_emission") @db.Date
+  /// Null = pièce sans échéance (des statuts ne périment pas). Sinon pilote
+  /// l'état affiché et l'alerte de péremption. L'expiration n'est PAS un
+  /// statut stocké : elle se recalcule à chaque lecture, sinon une pièce
+  /// resterait « à jour » après sa date.
+  dateExpiration DateTime? @map("date_expiration") @db.Date
+
+  /// Donnée personnelle ou pièce confidentielle — jamais rendue inline,
+  /// jamais mise en cache, réservée aux rôles admin.
+  sensitive Boolean @default(false)
+
+  sortOrder    Int     @default(0) @map("sort_order")
+  uploadedById String? @map("uploaded_by_id") @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([type, sortOrder])
+  @@index([dateExpiration])
+  @@map("societe_documents")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // SALLE DE PRESSE (2026-06-22) — communiqués + kit média gérés depuis l'admin.
 // Remplace les fixtures statiques `src/content/press.ts` (migrées en seed).
 // ⚠️ Le KIT MÉDIA (logo, charte couleur/graphique, brand book…) est DISTINCT de
