@@ -69,33 +69,15 @@ async function listFormationsLite(): Promise<Array<{ id: string; titre: string }
 }
 
 // « Nombre de formations faites » — calculé automatiquement (Will 2026-06-10) :
-// sessions Qualiopi animées + interventions calendrier confirmées/réalisées.
-// Stub-safe (build sans DB → 0).
-async function getTrainerActivityCounts(
-  trainerId: string,
-): Promise<{ sessionsCount: number; interventionsCount: number }> {
+// sessions Qualiopi animées. Stub-safe (build sans DB → 0).
+async function getTrainerActivityCounts(trainerId: string): Promise<{ sessionsCount: number }> {
   try {
-    const [sessionsCount, interventionsCount] = await Promise.all([
-      prisma.trainingSession.count({ where: { formateurPrincipalId: trainerId } }),
-      prisma.booking.count({
-        where: {
-          formateurId: trainerId,
-          status: {
-            in: [
-              "confirmed",
-              "reminded_j7",
-              "in_progress",
-              "completed",
-              "invoiced_balance",
-              "paid_balance",
-            ],
-          },
-        },
-      }),
-    ]);
-    return { sessionsCount, interventionsCount };
+    const sessionsCount = await prisma.trainingSession.count({
+      where: { formateurPrincipalId: trainerId },
+    });
+    return { sessionsCount };
   } catch {
-    return { sessionsCount: 0, interventionsCount: 0 };
+    return { sessionsCount: 0 };
   }
 }
 
@@ -121,7 +103,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
     // surface qui couvre les lettres-cadre sans session (coaching/audit).
     lireLettresMissionConsoleDuFormateur(trainer.id, role),
   ]);
-  const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
+  const { sessionsCount } = await getTrainerActivityCounts(trainer.id);
 
   // Domaines de compétences au format d'ÉDITION (input date = `YYYY-MM-DD`).
   // Le stockage historique accepte aussi des chaînes nues (« IA générative »)
@@ -211,10 +193,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         <p className="admin-meta">Activité (calculée automatiquement)</p>
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
           <strong>{sessionsCount}</strong> session{sessionsCount > 1 ? "s" : ""} Qualiopi animée
-          {sessionsCount > 1 ? "s" : ""} · <strong>{interventionsCount}</strong> intervention
-          {interventionsCount > 1 ? "s" : ""} calendrier réalisée{interventionsCount > 1 ? "s" : ""}
-          {" — soit "}
-          <strong>{sessionsCount + interventionsCount}</strong> au total.
+          {sessionsCount > 1 ? "s" : ""}.
         </p>
       </div>
 

@@ -223,8 +223,6 @@ export default async function FacturationHubPage({
           suggestion: true,
           factureFormationId: true,
           factureFormation: { select: { numero: true } },
-          invoice: { select: { number: true } },
-          quote: { select: { number: true } },
           devis: { select: { numero: true } },
         },
       }),
@@ -324,12 +322,7 @@ export default async function FacturationHubPage({
       id: r.id,
       palier: r.palier,
       suggestion: r.suggestion,
-      libelle:
-        r.factureFormation?.numero ??
-        r.invoice?.number ??
-        r.quote?.number ??
-        r.devis?.numero ??
-        "Document inconnu",
+      libelle: r.factureFormation?.numero ?? r.devis?.numero ?? "Document inconnu",
       envoiDirect: r.factureFormationId !== null,
       // Le formatage (euros, dates) est fait ICI, côté serveur : le composant
       // client n'embarque ni `Intl.NumberFormat` ni logique de montant.

@@ -71,5 +71,9 @@ CREATE INDEX IF NOT EXISTS submissions_email_trgm_idx
 -- interrompait le fichier : tout statement placé APRÈS ne s'appliquait plus.
 -- Ne pas réintroduire sans recréer la table.
 
-CREATE INDEX IF NOT EXISTS bookings_options_email_trgm_idx
-  ON bookings_options USING GIN (contact_email gin_trgm_ops);
+-- NOTE (2026-08-26) : l'index trgm sur `bookings_options` a été RETIRÉ d'ici.
+-- La table a été supprimée par `20260826160000_suppression_systeme_booking`
+-- (décision Will : le système de réservation en ligne disparaît). Même famille
+-- d'incident que `testimonials` ci-dessus : un CREATE INDEX résiduel sur une
+-- table droppée interromprait ce fichier et priverait tout statement suivant.
+-- Ne pas réintroduire.

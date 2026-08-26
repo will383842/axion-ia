@@ -53,8 +53,6 @@ export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   "devis-envoi",
   "convention-envoi",
   "facture-envoi",
-  "contract-sent",
-  "contract-reminder",
 ] as const;
 
 /**
@@ -83,8 +81,7 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
 /**
  * 🔴 CES IDENTIFIANTS S'AFFICHAIENT TELS QUELS, à trois endroits : le menu
  * « Nature d'email » des réglages, la liste des règles enregistrées, et la
- * phrase d'explication de la page — en monospace, comme pour assumer. Deux
- * d'entre eux sont même en anglais (`contract-sent`, `contract-reminder`).
+ * phrase d'explication de la page — en monospace, comme pour assumer.
  *
  * Les libellés vivent ici, avec les listes qu'ils décrivent : un template
  * ajouté plus haut sans libellé se verra à l'écran entre guillemets plutôt
@@ -94,8 +91,6 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "devis-envoi": "Envoi d'un devis",
   "convention-envoi": "Envoi d'une convention",
   "facture-envoi": "Envoi d'une facture",
-  "contract-sent": "Envoi d'un contrat à signer",
-  "contract-reminder": "Relance de signature d'un contrat",
   "qualiopi-convocation": "Convocation à une session",
   "qualiopi-rappel-j7": "Rappel à J-7",
   "qualiopi-satisfaction-j1": "Questionnaire de satisfaction (J+1)",

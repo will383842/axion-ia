@@ -71,7 +71,6 @@ export type WorkerName =
   // Observatoire IA 2026 — auto-update snapshot + analyse LLM (cron 6 h)
   | "observatoire-snapshot"
   // Sprint Final 2026-05-22 (P1-2 ratchet Sentry 17/33 → 33/33 audit final)
-  | "booking-crons"
   | "google-indexing"
   | "keyword-sync"
   | "content-monitoring"
@@ -88,8 +87,6 @@ export type WorkerName =
   | "image-bank-enrich"
   | "image-bank-import"
   | "image-bank-translate"
-  | "option-expiration"
-  | "option-reminder"
   | "retention-purge"
   // Sprint Site Explorer Admin 2026-05-22
   | "site-route-inspector"
