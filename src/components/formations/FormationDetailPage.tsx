@@ -385,10 +385,25 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                   <Phone aria-hidden="true" className="h-4 w-4" />
                   Réserver un appel
                 </Cta>
-                <Cta href="/contact" variant="outline" size="lg">
+                {/* `?type=` + `?formation=` : le formulaire pré-sélectionne le
+                    sujet et nomme la formation — sans ça le visiteur retapait
+                    ce que le système savait déjà (relevé P1-02, 2026-08-26). */}
+                <Cta
+                  href={`/contact?type=formation&formation=${encodeURIComponent(f.titreFr)}`}
+                  variant="outline"
+                  size="lg"
+                >
                   Nous écrire
                 </Cta>
-                <span className="text-fg-muted text-[12px]">Renseignements sans engagement</span>
+                <span className="text-fg-muted text-[12px]">
+                  Renseignements sans engagement — ou{" "}
+                  <a
+                    href="#devis"
+                    className="text-terracotta font-semibold underline underline-offset-2"
+                  >
+                    devis express en 30 secondes
+                  </a>
+                </span>
               </div>
             </div>
 
@@ -729,7 +744,12 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               <Phone aria-hidden="true" className="h-4 w-4" />
               Réserver un appel
             </Cta>
-            <Cta href="/contact" variant="outline" size="lg" className="w-full justify-center">
+            <Cta
+              href={`/contact?type=formation&formation=${encodeURIComponent(f.titreFr)}`}
+              variant="outline"
+              size="lg"
+              className="w-full justify-center"
+            >
               Nous écrire
             </Cta>
             <p className="text-fg-muted text-center text-[11.5px]">

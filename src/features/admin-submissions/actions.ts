@@ -96,6 +96,10 @@ export interface SubmissionListItem {
    * nouveaux types (presse, recrutement, speaker, investisseur, support_client)
    * sont stockés en DB comme SubmissionType.contact + details.unifiedType. */
   unifiedType: string | null;
+  /** details.subType — le slug de la formation (devis express des fiches) ou la
+   * granularité fine (audit-flash, chatbot…). C'est LE contexte que la boîte de
+   * réception affichait « — » alors qu'il était en base (relevé P1-08). */
+  subType: string | null;
 }
 
 export interface SubmissionListResult {
@@ -159,6 +163,7 @@ export async function listSubmissionsAction(
         : null;
     const unifiedType =
       details && typeof details.unifiedType === "string" ? details.unifiedType : null;
+    const subType = details && typeof details.subType === "string" ? details.subType : null;
     const rawMessage = details && typeof details.message === "string" ? details.message.trim() : "";
     return {
       id: s.id,
@@ -184,6 +189,7 @@ export async function listSubmissionsAction(
       lastRepliedAt: s.lastRepliedAt,
       lastReplyStatus: s.replies[0]?.deliveryStatus ?? null,
       unifiedType,
+      subType,
     };
   };
 

@@ -216,9 +216,12 @@ export async function SubmissionsV2({
 
   return (
     <AdminPageShell width="wide">
+      {/* « Soumissions » était le nom de la TABLE, pas celui du geste : partout
+          ailleurs (nav, boîte de réception) l'écran s'appelle Messages. Dernier
+          jargon base visible de la chaîne (audit réservation 2026-08-26). */}
       <AdminPageHeader
-        title="Soumissions"
-        description={`${result.total} soumission${result.total > 1 ? "s" : ""} · page ${result.page}/${result.totalPages}`}
+        title="Messages"
+        description={`${result.total} message${result.total > 1 ? "s" : ""} · page ${result.page}/${result.totalPages}`}
         actions={
           <Link href={csvUrl} className="admin-button-ghost" download>
             Exporter CSV
