@@ -181,6 +181,22 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // d'offres d'emploi publiées. Le marqueur "content-gen" vient du seul chemin
   // d'import (consommateur, pas du pipeline de génération). Même cas qu'admin-blog.
   /^src\/features\/admin-job-offers\/actions\.ts$/,
+  // calendly-poll-worker (2026-08-26) — CONSOMME `revalidateContent` depuis
+  // src/server/content-gen/shared pour invalider le cache des créneaux de
+  // `/appel` toutes les 2 min. Le marqueur "content-gen" vient du SEUL chemin
+  // d'import : ce worker ne touche ni un article, ni un template, ni une
+  // campagne — il invalide une étiquette de cache Calendly.
+  //
+  // ⚠️ DETTE ASSUMÉE, NOMMÉE ICI POUR NE PAS ÊTRE OUBLIÉE. `revalidateContent`
+  // n'a rien d'éditorial : c'est un POST HTTP vers `api/internal/revalidate`,
+  // le seul moyen pour un worker BullMQ de faire aboutir une revalidation (hors
+  // contexte de requête, `revalidateTag` est un no-op silencieux). Sa place est
+  // à côté de `src/server/cache/revalidate-and-purge.ts`, pas sous le pipeline
+  // éditorial. Le déplacer touche 5 workers et leurs mocks de test : hors
+  // périmètre d'un correctif Calendly, mais à faire — sinon chaque futur
+  // consommateur non-éditorial devra rouvrir cette liste, et une liste qui
+  // s'allonge à chaque usage légitime ne mesure plus rien.
+  /^src\/server\/queue\/workers\/calendly-poll-worker\.ts$/,
   // prospection (feat/prospection 2026-07-04) — module autonome qui CONSOMME la
   // brique partagée `content-gen/_auth` (requireAdmin) via un import, et mentionne
   // "content-gen" dans un commentaire de contexte (robots.ts : « on ne réutilise

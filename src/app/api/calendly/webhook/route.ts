@@ -39,6 +39,7 @@ import * as Sentry from "@sentry/nextjs";
 import { verifyCalendlySignature } from "@/server/calendly/webhook-signature";
 import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
 import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
+import { invaliderCreneaux } from "@/server/calendly/revalider-creneaux";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { notify } from "@/server/notifications";
@@ -152,6 +153,27 @@ export async function POST(req: NextRequest): Promise<Response> {
     Sentry.captureException(e);
     return Response.json({ ok: false, error: "processing_failed" });
   }
+
+  // 🔴 SANS CES DEUX LIGNES, /appel VENDAIT UN CRÉNEAU DÉJÀ PRIS pendant un
+  // quart d'heure. Mesuré le 2026-08-26 : 13 min de décalage entre la fermeture
+  // du créneau chez Calendly et sa disparition du site. L'étiquette existait
+  // depuis l'ADR 0038, annoncée « permet une invalidation à la réservation » —
+  // mais aucun appelant ne l'invoquait, ni ici ni ailleurs. Le visiteur qui
+  // cliquait un créneau périmé n'était pas refusé : Calendly lui ouvrait le
+  // formulaire complet (nom, e-mail, téléphone, trois questions) et ne le
+  // rejetait qu'au bouton de confirmation, sur la seule page de conversion du
+  // site.
+  //
+  // Ici on est dans un handler de route Next : le contexte de requête existe,
+  // donc l'invalidation directe fonctionne (contrairement à un worker BullMQ,
+  // qui doit passer par `api/internal/revalidate` — cf. le cron du worker de
+  // sondage, qui couvre le cas que ce webhook NE PEUT PAS voir : un rendez-vous
+  // posé à la main dans Google Agenda, pour lequel Calendly ne notifie personne).
+  //
+  // Pas de purge Cloudflare : `/appel` répond `no-store` et sort en
+  // `cf-cache-status: BYPASS` (relevé le 2026-08-26), il n'y a pas de copie
+  // d'edge à invalider.
+  invaliderCreneaux("webhook");
 
   return Response.json({ ok: true, event: eventType });
 }
