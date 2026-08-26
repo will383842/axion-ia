@@ -1341,7 +1341,20 @@ async function handleEnqueteEntrepriseJ30(): Promise<void> {
     where: {
       statut: "realisee",
       dateFin: { gte: plafond90j, lte: j30 },
-      client: { contactEmail: { not: null } },
+      // 🔴 2026-08-26 — `type: "entreprise"` AJOUTÉ. La sélection ne portait
+      // que sur `contactEmail`, jamais sur le TYPE du client. Mesuré en dev :
+      // « Camille Berger », client PARTICULIER, recevait l'enquête. Et le
+      // gabarit n'a rien de neutre — il dit « Votre avis d'entreprise
+      // cliente », « ce que votre entreprise a pensé », « les effets attendus
+      // dans votre activité ». Un particulier qui a payé SA PROPRE formation
+      // se voyait donc demander ce que son entreprise pensait du stage de son
+      // salarié.
+      //
+      // Deux dégâts, pas un : la personne reçoit un message absurde, ET la
+      // mesure « satisfaction entreprise » se remplit de réponses qui ne
+      // viennent d'aucune entreprise — un indicateur Qualiopi pollué à sa
+      // source.
+      client: { type: "entreprise", contactEmail: { not: null } },
       // Jamais envoyée : aucune enquête entreprise expédiée sur cette session.
       // (Le questionnaire est ancré sur une inscription de la session.)
       NOT: {

@@ -1024,6 +1024,41 @@ describe("formation-crons.enquete-entreprise-j30", () => {
     });
   });
 
+  it("🔴 n'écrit JAMAIS à un client PARTICULIER — le gabarit dit « votre entreprise »", async () => {
+    // Défaut mesuré en dev le 2026-08-26 : la sélection ne portait que sur
+    // `contactEmail`, jamais sur le TYPE du client. « Camille Berger », client
+    // particulier, recevait l'enquête — et le gabarit n'a rien de neutre :
+    // « Votre avis d'entreprise cliente », « ce que votre entreprise a pensé »,
+    // « les effets attendus dans votre activité ». Un particulier qui a payé
+    // SA PROPRE formation se voyait demander l'avis de son entreprise sur le
+    // stage de son salarié.
+    //
+    // Deux dégâts : la personne reçoit un message absurde, ET l'indicateur
+    // « satisfaction entreprise » se remplit de réponses qui ne viennent
+    // d'aucune entreprise.
+    //
+    // ⚠️ Cette assertion manquait alors que le test voisin vérifiait déjà
+    // `where.statut` et `where.NOT` : la garde lisait la sélection SANS lire
+    // la clause qui décide À QUI l'on écrit.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([]);
+
+    await formationCronsHandler({
+      type: "formation-crons.enquete-entreprise-j30",
+      tick: "2026-08-04T08:15:00Z",
+    });
+
+    const where = (
+      mockPrisma.trainingSession.findMany.mock.calls[0]![0] as {
+        where: { client?: { type?: string } };
+      }
+    ).where;
+    expect(
+      where.client?.type,
+      "la sélection de l'enquête ENTREPRISE ne filtre plus sur le type de client : " +
+        "un particulier va recevoir un message qui lui parle de son entreprise",
+    ).toBe("entreprise");
+  });
+
   it("échec d'envoi → envoyeAt N'EST PAS marqué (la session reste candidate)", async () => {
     // 🔴 Marquer avant d'avoir envoyé transformerait tout échec transitoire en
     // enquête définitivement perdue — le contraire exact du bug satisfaction-j1
