@@ -44,6 +44,7 @@ export type AdminNavGroup =
   | "qualiopi"
   | "finances"
   | "documents-interventions"
+  | "societe"
   | "coaching-1to1"
   | "image-bank"
   | "presse"
@@ -184,6 +185,11 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   qualiopi: "Formations & prestations",
   finances: "Finances",
   "documents-interventions": "Documents",
+  // Le dossier qu'on envoie à un donneur d'ordre : pièces légales à échéance,
+  // pièces OF, commerciales, méthode d'audit, RGPD et sécurité. Distinct de
+  // « Documents », qui porte les kits de prestation et des fichiers SANS date
+  // de péremption — or l'essentiel de ce dossier-ci périme.
+  societe: "Société & conformité",
   "coaching-1to1": "Coaching 1-to-1",
   "image-bank": "Banque d'images",
   presse: "Salle de presse",
@@ -318,6 +324,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "qualiopi",
   "finances",
   "documents-interventions",
+  "societe",
   "coaching-1to1",
   "image-bank",
   "presse",
@@ -1287,6 +1294,52 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Package",
       group: "documents-interventions",
       subGroup: "outils",
+    },
+    // ── Société & conformité (dossier de référencement fournisseur) ───────
+    // Liste PLATE, sans pôles : six entrées se lisent d'un coup d'œil, et un
+    // accordéon supplémentaire coûterait un clic pour ranger ce qui tient déjà
+    // dans une colonne.
+    {
+      href: `${base}/societe`,
+      label: "Vue d'ensemble",
+      icon: "Landmark",
+      group: "societe",
+    },
+    {
+      href: `${base}/societe/identite`,
+      label: "Identité",
+      icon: "IdCard",
+      group: "societe",
+    },
+    {
+      href: `${base}/societe/pieces-legales`,
+      label: "Pièces légales",
+      icon: "Scale",
+      group: "societe",
+    },
+    {
+      href: `${base}/societe/organisme-formation`,
+      label: "Organisme de formation",
+      icon: "BadgeCheck",
+      group: "societe",
+    },
+    {
+      href: `${base}/societe/commercial`,
+      label: "Commercial",
+      icon: "Briefcase",
+      group: "societe",
+    },
+    {
+      href: `${base}/societe/audit-methode`,
+      label: "Audit & méthode",
+      icon: "FileSearch",
+      group: "societe",
+    },
+    {
+      href: `${base}/societe/rgpd-securite`,
+      label: "RGPD & sécurité",
+      icon: "ShieldCheck",
+      group: "societe",
     },
     // ── Coaching 1-to-1 (séances de conseil remplies par les formateurs) ──
     {
