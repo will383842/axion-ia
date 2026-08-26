@@ -69,6 +69,37 @@ const ACTIONS = readFileSync(
   "utf8",
 );
 
+/**
+ * 🔑 2026-08-26 — CE CHEMIN EST DÉRIVÉ, PAS ÉCRIT.
+ *
+ * La construction des données du contrat a quitté `actions/qualiopi/documents.ts`
+ * pour un module de service (extraction S5 : un worker BullMQ ne peut pas appeler
+ * une Server Action gardée). Cette garde lisait le chemin EN DUR : elle a rougi,
+ * ce qui était juste — mais si on s'était contenté de recopier le nouveau chemin,
+ * elle serait redevenue aveugle au déplacement SUIVANT, en silence.
+ *
+ * On résout donc le module depuis l'`import` de `produireContratFormation` dans
+ * l'action. Conséquence : déplacer encore le producteur ne rend pas la garde
+ * muette — soit l'import bouge avec lui et la garde suit, soit l'import
+ * disparaît et l'assertion ci-dessous échoue en le disant.
+ */
+const IMPORT_PRODUCTEUR =
+  /import\s*\{[^}]*\bproduireContratFormation\b[^}]*\}\s*from\s*"([^"]+)"/.exec(ACTIONS);
+
+if (!IMPORT_PRODUCTEUR) {
+  throw new Error(
+    "Cette garde ne trouve plus d'où vient `produireContratFormation` dans " +
+      "src/server/actions/qualiopi/documents.ts. Le producteur du contrat a été " +
+      "déplacé ou renommé : mettre la garde en accord AVANT de la contourner — " +
+      "c'est la clause de médiation L.612-1 qu'elle protège.",
+  );
+}
+
+const PRODUCTEUR = readFileSync(
+  join(process.cwd(), IMPORT_PRODUCTEUR[1].replace(/^@\//, "src/") + ".ts"),
+  "utf8",
+);
+
 /** Le code seul — un test statique trouve sinon ses propres commentaires. */
 function codeSeul(source: string): string {
   return source
@@ -79,6 +110,7 @@ function codeSeul(source: string): string {
 
 const GABARIT_CODE = codeSeul(GABARIT);
 const ACTIONS_CODE = codeSeul(ACTIONS);
+const PRODUCTEUR_CODE = codeSeul(PRODUCTEUR);
 
 describe("le contrat individuel porte la médiation de la consommation", () => {
   it("🔑 CONTRE-TÉMOIN : le dépouillement des commentaires n'a pas tout vidé", () => {
@@ -86,6 +118,7 @@ describe("le contrat individuel porte la médiation de la consommation", () => {
     // et chaque assertion ci-dessous passerait au vert en ne lisant rien.
     expect(GABARIT_CODE.length).toBeGreaterThan(3000);
     expect(ACTIONS_CODE.length).toBeGreaterThan(50000);
+    expect(PRODUCTEUR_CODE.length).toBeGreaterThan(20000);
     expect(GABARIT_CODE).toContain("ContratFormationData");
   });
 
@@ -121,11 +154,20 @@ describe("le contrat individuel porte la médiation de la consommation", () => {
   it("l'action transmet le médiateur au gabarit, pas seulement à l'avertissement", () => {
     // C'est EXACTEMENT le défaut d'origine : la valeur était lue, servait à
     // décider d'un avertissement, et n'atteignait jamais le document.
-    expect(ACTIONS_CODE).toContain("mediateur_consommation_nom");
+    expect(PRODUCTEUR_CODE).toContain("mediateur_consommation_nom");
     expect(
-      /mediation:\s*\{/.test(ACTIONS_CODE),
+      /mediation:\s*\{/.test(PRODUCTEUR_CODE),
       "la configuration est lue mais n'est plus transmise au gabarit : " +
         "l'avertissement s'éteindrait sans que la clause soit imprimée",
+    ).toBe(true);
+
+    // 🔑 CONTRE-TÉMOIN DU DÉPLACEMENT : le producteur lu ci-dessus est bien
+    // CELUI que l'action appelle. Sans cette ligne, la garde pourrait lire un
+    // module correct pendant que l'action, elle, en appellerait un autre.
+    expect(
+      /produireContratFormation\s*\(/.test(ACTIONS_CODE),
+      "l'action n'appelle plus le producteur du contrat : la garde lit un " +
+        "module qui n'est plus dans le chemin d'émission",
     ).toBe(true);
   });
 
