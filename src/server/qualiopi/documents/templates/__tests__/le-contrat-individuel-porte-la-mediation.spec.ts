@@ -83,10 +83,10 @@ const ACTIONS = readFileSync(
  * muette — soit l'import bouge avec lui et la garde suit, soit l'import
  * disparaît et l'assertion ci-dessous échoue en le disant.
  */
-const IMPORT_PRODUCTEUR =
-  /import\s*\{[^}]*\bproduireContratFormation\b[^}]*\}\s*from\s*"([^"]+)"/.exec(ACTIONS);
+const CHEMIN_PRODUCTEUR =
+  /import\s*\{[^}]*\bproduireContratFormation\b[^}]*\}\s*from\s*"([^"]+)"/.exec(ACTIONS)?.[1];
 
-if (!IMPORT_PRODUCTEUR) {
+if (!CHEMIN_PRODUCTEUR) {
   throw new Error(
     "Cette garde ne trouve plus d'où vient `produireContratFormation` dans " +
       "src/server/actions/qualiopi/documents.ts. Le producteur du contrat a été " +
@@ -96,7 +96,7 @@ if (!IMPORT_PRODUCTEUR) {
 }
 
 const PRODUCTEUR = readFileSync(
-  join(process.cwd(), IMPORT_PRODUCTEUR[1].replace(/^@\//, "src/") + ".ts"),
+  join(process.cwd(), CHEMIN_PRODUCTEUR.replace(/^@\//, "src/") + ".ts"),
   "utf8",
 );
 
