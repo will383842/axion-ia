@@ -1,0 +1,30 @@
+# Fichiers de TRAVAIL du communiqué — volontairement hors dépôt.
+#
+# Pourquoi : ce sont des COPIES de fichiers déjà versionnés ailleurs dans ce
+# dépôt, qui est public. Les verser ici ajouterait ~2,3 Mo de binaires en double
+# sans rien apporter.
+#
+#   fonts/   ← copie de public/fonts/{Fraunces,Manrope,Inconsolata}-*.ttf
+#   logos/   ← copie de public/logos/clients/*.svg
+#              + portrait-williams-jullin.jpg, copie de
+#                public/illustrations/home-founder-william.jpg
+#
+# Pour RECONSTRUIRE le dossier de travail après un clone, depuis la racine :
+#
+#   mkdir -p _PRESSE/communique-memorial/{fonts,logos}
+#   cp public/fonts/{Fraunces-Bold,Fraunces-Regular,Fraunces-Italic,\
+#      Manrope-Regular,Manrope-Medium,Manrope-Bold,\
+#      Inconsolata-Bold,Inconsolata-Regular}.ttf _PRESSE/communique-memorial/fonts/
+#   cp public/logos/clients/{leclerc,intermarche,renault,axa,la-poste,point-p,\
+#      krys,generali,volkswagen,jardiland,intersport,ecf}.svg _PRESSE/communique-memorial/logos/
+#   cp public/illustrations/home-founder-william.jpg \
+#      _PRESSE/communique-memorial/logos/portrait-williams-jullin.jpg
+#
+# puis `node _PRESSE/communique-memorial/generer-pdf.mjs`.
+#
+# Le PDF final, lui, RESTE versionné : c'est le livrable envoyé à la rédaction,
+# et un livrable diffusé doit pouvoir être retrouvé tel qu'il a été envoyé.
+
+communique-memorial/fonts/
+communique-memorial/logos/
+communique-memorial/apercu-*.png
