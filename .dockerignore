@@ -36,6 +36,10 @@ lhci
 # Docs / audits (pas needed runtime)
 docs
 _AUDIT
+# _PRESSE : communiqués de presse. Le PDF livrable pèse 655 Ko à lui seul et
+# n'a aucun rôle au runtime — sans cette ligne, il entrait dans le contexte de
+# build à chaque déploiement.
+_PRESSE
 AGENTS.md
 CHANGELOG.md
 SESSION_LOG.md
