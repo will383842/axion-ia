@@ -164,15 +164,10 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
       "NI exemptée. Fallait en outre lui donner un `emailHash` : l'adresse est " +
       "chiffrée à IV aléatoire, la ligne était INTROUVABLE.",
   },
-  {
-    modele: "BookingOption",
-    statut: "exception-declaree",
-    note:
-      "SYSTÈME BOOKING SUPPRIMÉ (2026-08-26) : table VIDE (0 ligne en dev ET en prod, " +
-      "mesuré), plus aucun producteur, effaceur `eraseBookingOptionsForEmail` retiré " +
-      "avec le reste du flux. Le DROP TABLE arrive dans la découpe Prisma du même " +
-      "chantier — retirer cette entrée à ce moment-là.",
-  },
+  // BookingOption : entrée RETIRÉE le 2026-08-26 — le modèle a disparu du
+  // schéma avec le système Booking (table vide en dev et en prod, mesuré).
+  // Le cliquet ci-dessous vérifie justement qu'aucun modèle inventorié ne
+  // survit à son schéma : un inventaire faux est pire qu'une absence.
   {
     modele: "DocumentSignatureToken",
     statut: "traite",
