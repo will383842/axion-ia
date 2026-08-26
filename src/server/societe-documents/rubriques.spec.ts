@@ -17,11 +17,14 @@ import { SocieteDocumentType } from "../../../prisma/generated/client";
 import {
   SOCIETE_RUBRIQUES,
   SOCIETE_DOC_TYPES,
+  estAttendu,
   getRubriqueForType,
   getRubriqueBySegment,
   labelSocieteDocType,
   proposerDateExpiration,
+  typesAttendusDeRubrique,
   typesDeRubrique,
+  typesManquants,
 } from "./rubriques";
 
 const VALEURS_ENUM = Object.values(SocieteDocumentType) as string[];
@@ -116,5 +119,63 @@ describe("date de péremption proposée", () => {
 
     const trimestre = proposerDateExpiration("kbis", new Date("2026-11-30T00:00:00.000Z"));
     expect(trimestre?.toISOString()).toBe("2027-02-28T00:00:00.000Z");
+  });
+});
+
+describe("ce qui est ATTENDU dans un dossier fournisseur", () => {
+  it("tout type nommé est attendu ; aucun fourre-tout ne l'est", () => {
+    for (const t of SOCIETE_DOC_TYPES) {
+      const cle = t.key as string;
+      expect(estAttendu(t.key), `type ${cle}`).toBe(!cle.startsWith("autre_"));
+    }
+  });
+
+  it("chaque rubrique attend au moins deux pièces — sinon le compteur ne dit rien", () => {
+    for (const r of SOCIETE_RUBRIQUES) {
+      expect(typesAttendusDeRubrique(r.key).length, `rubrique ${r.key}`).toBeGreaterThan(1);
+    }
+  });
+
+  it("il y a bien des fourre-tout, et ils sont exclus du décompte", () => {
+    // Contre-témoin : sans lui, une SSOT sans aucun « autre_ » ferait passer
+    // le test précédent en n'excluant jamais rien.
+    const fourreTout = SOCIETE_DOC_TYPES.filter((t) => (t.key as string).startsWith("autre_"));
+    expect(fourreTout.length).toBeGreaterThanOrEqual(5);
+    expect(SOCIETE_DOC_TYPES.length - fourreTout.length).toBe(
+      SOCIETE_RUBRIQUES.reduce((n, r) => n + typesAttendusDeRubrique(r.key).length, 0),
+    );
+  });
+
+  it("rubrique vide : tout ce qui est attendu est déclaré manquant", () => {
+    const manquants = typesManquants("pieces_legales", new Set());
+    expect(manquants.map((t) => t.key)).toEqual(
+      typesAttendusDeRubrique("pieces_legales").map((t) => t.key),
+    );
+    expect(manquants.some((t) => (t.key as string).startsWith("autre_"))).toBe(false);
+  });
+
+  it("une pièce déposée retire son type des manquants, et seulement le sien", () => {
+    const avant = typesManquants("pieces_legales", new Set());
+    const apres = typesManquants("pieces_legales", new Set(["kbis"]));
+    expect(apres.length).toBe(avant.length - 1);
+    expect(apres.some((t) => t.key === "kbis")).toBe(false);
+    expect(apres.some((t) => t.key === "assurance_rc_pro")).toBe(true);
+  });
+
+  it("un type déposé qui n'appartient pas à la rubrique ne retire rien", () => {
+    // `note_securite` vit dans « RGPD & sécurité » : le déposer ne comble
+    // aucun trou des pièces légales.
+    const apres = typesManquants("pieces_legales", new Set(["note_securite"]));
+    expect(apres.length).toBe(typesAttendusDeRubrique("pieces_legales").length);
+  });
+});
+
+describe("les CGV portent désormais une échéance", () => {
+  it("le PDF déposé périme au bout d'un an — il est figé, la page en ligne ne l'est pas", () => {
+    const cgv = SOCIETE_DOC_TYPES.find((t) => t.key === "cgv");
+    expect(cgv?.validiteMois).toBe(12);
+    expect(proposerDateExpiration("cgv", new Date("2026-08-26T00:00:00.000Z"))?.toISOString()).toBe(
+      "2027-08-26T00:00:00.000Z",
+    );
   });
 });
