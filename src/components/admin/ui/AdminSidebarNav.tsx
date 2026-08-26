@@ -28,6 +28,7 @@ import {
   Images,
   FolderOpen,
   ScanSearch,
+  CalendarDays,
   CalendarRange,
   Activity,
   ChevronRight,
@@ -721,7 +722,10 @@ export function AdminSidebarNav({
             </span>
             {!collapsed ? (
               <span className="flex flex-col leading-none">
-                <span className="text-[length:var(--text-admin-base)] font-bold tracking-tight text-[color:var(--color-admin-rail-fg)]">
+                {/* 14 px (`--text-admin-md`), comme la marque « Axion CRM Pro »
+                    de l'autre console — alignement demandé par Will le
+                    2026-08-26. Elle pesait 16 px ici. */}
+                <span className="text-[length:var(--text-admin-md)] font-bold tracking-tight text-[color:var(--color-admin-rail-fg)]">
                   Axion-IA
                 </span>
                 <span className="mt-[3px] text-[length:var(--text-admin-xs)] font-medium tracking-wide text-[color:var(--color-admin-rail-fg-muted)] uppercase">
@@ -852,6 +856,31 @@ export function AdminSidebarNav({
             <CalendarRange className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
             {!collapsed && <span className="flex-1 text-sm font-medium">Console éditoriale</span>}
           </Link>
+
+          {/* Agenda — épinglé juste sous la console éditoriale (demande Will du
+              2026-08-26), et pour la même raison que les deux liens au-dessus :
+              c'est un écran qu'on consulte avant de répondre à quelqu'un, pas
+              une rubrique qu'on visite.
+
+              Il ne fait doublon avec aucun onglet existant. « Appels réservés »
+              répond à « qui a réservé ? » — une liste de réservations Calendly
+              lues en base. L'Agenda répond à « où suis-je libre ? », en
+              fusionnant ces réservations avec l'agenda Google : les rendez-vous
+              personnels et ceux de l'iPhone, que la base ne connaît pas. */}
+          <Link
+            href={`${accountHref ?? ""}/agenda`}
+            title="Ouvrir l'agenda"
+            className={cn(
+              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
+              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
+              "transition-opacity hover:opacity-80",
+              collapsed && "justify-center",
+            )}
+          >
+            <CalendarDays className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
+            {!collapsed && <span className="flex-1 text-sm font-medium">Agenda</span>}
+          </Link>
           {ADMIN_NAV_GROUP_ORDER.map((g, gi) => {
             // Exclut les items `parent != null` : atteignables par URL/palette
             // mais volontairement masqués de la sidebar (placeholders non livrés).
@@ -892,7 +921,15 @@ export function AdminSidebarNav({
                     className={cn(
                       "group/main flex w-full items-center gap-[var(--space-admin-4)]",
                       "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
-                      "min-h-[36px] text-[length:var(--text-admin-base)] font-semibold",
+                      // Typographie alignée sur la barre latérale d'Axion CRM Pro
+                      // (demande Will du 2026-08-26) : 10 px, demi-gras, majuscules,
+                      // interlettrage élargi. Les deux consoles partagent déjà Inter
+                      // et la même taille de lien de nav (14 px / 500) ; l'en-tête de
+                      // groupe était le principal écart — il pesait 16 px ici contre
+                      // 10 px là-bas, et se lisait comme un titre plutôt que comme un
+                      // intercalaire. `min-h-[36px]` est conservé : la cible tactile
+                      // ne suit pas la taille du texte (WCAG 2.2 §2.5.8).
+                      "min-h-[36px] text-[10px] font-semibold tracking-wider uppercase",
                       // Onglet principal en TERRACOTTA (demande Will) — distingue
                       // nettement les onglets principaux des sous-onglets ivoire.
                       "text-[color:var(--color-admin-rail-accent)]",
@@ -901,12 +938,16 @@ export function AdminSidebarNav({
                       containsActive && "bg-[color:var(--color-admin-rail-active-bg)]",
                     )}
                   >
+                    {/* 14 px et non 18 : à côté d'un libellé passé de 16 à 10 px,
+                        une icône de 18 px écraserait le texte au lieu de
+                        l'accompagner. Le CRM Pro, lui, n'a qu'un chevron de 12 px
+                        sur ses en-têtes de section. */}
                     <GroupIcon
-                      size={18}
+                      size={14}
                       aria-hidden="true"
                       className="shrink-0 text-[color:var(--color-admin-rail-accent)]"
                     />
-                    <span className="truncate">{ADMIN_NAV_GROUP_LABELS[g]}</span>
+                    <span className="truncate text-left">{ADMIN_NAV_GROUP_LABELS[g]}</span>
                     <span className="ml-auto flex shrink-0 items-center gap-[var(--space-admin-2)]">
                       {/* Bulle-somme si onglet fermé contenant des badges */}
                       {closedBadge ? (
