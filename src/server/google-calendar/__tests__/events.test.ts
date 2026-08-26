@@ -69,11 +69,11 @@ function routeFetch(calendarResponse: (url: string) => Response) {
 
 describe("battement Calendly — le piège qui a coûté deux allers-retours", () => {
   it("décale le blocage APRÈS la fin du dernier créneau conservé", () => {
-    // Garder le créneau de 11:30 (qui finit à 12:00) impose de ne bloquer qu'à
-    // 12:30. Un blocage à 12:00 pile emporterait la matinée avec lui.
+    // Garder le créneau qui finit à 12:00 impose de ne bloquer qu'à 12:15. Un
+    // blocage à 12:00 pile emporterait ce créneau-là avec lui.
     const finDeMatinee = new Date("2026-09-08T10:00:00.000Z"); // 12:00 à Paris.
     const debut = debutBlocageApres(finDeMatinee);
-    expect(debut.toISOString()).toBe("2026-09-08T10:30:00.000Z"); // 12:30 à Paris.
+    expect(debut.toISOString()).toBe("2026-09-08T10:15:00.000Z"); // 12:15 à Paris.
   });
 
   it("le décalage vaut exactement le battement mesuré", () => {
@@ -81,9 +81,17 @@ describe("battement Calendly — le piège qui a coûté deux allers-retours", (
     const ecartMinutes = (debutBlocageApres(t).getTime() - t.getTime()) / 60_000;
     expect(ecartMinutes).toBe(BATTEMENT_CALENDLY_MINUTES);
     // 🔑 Si Calendly change son réglage de battement, c'est CETTE constante
-    // qu'il faut corriger — le symptôme sera « je ferme après 12 h et je perds
-    // aussi 11 h 30 ». Le test la nomme pour que le lien soit trouvable.
-    expect(BATTEMENT_CALENDLY_MINUTES).toBe(30);
+    // qu'il faut corriger — le symptôme sera « je ferme après midi et je perds
+    // aussi le créneau d'avant ». Le test la nomme pour que le lien soit
+    // trouvable.
+    //
+    // ⚠️ 15 et non 30. La première mesure du 2026-08-26 concluait 30, mais elle
+    // était faite sur une grille de 30 minutes : aucun écart intermédiaire
+    // n'était OBSERVABLE. Le passage des rendez-vous à 45 min, la grille restant
+    // à 30, a fait apparaître des écarts de 15 minutes — et ils sont acceptés
+    // par Calendly. On ne mesurait donc pas le battement, on mesurait le pas de
+    // la grille. Garder 30 coûtait un créneau réservable par journée fermée.
+    expect(BATTEMENT_CALENDLY_MINUTES).toBe(15);
   });
 });
 

@@ -42,15 +42,31 @@ const MAX_RESULTS = 250;
  *
  * ⚠️ VALEUR DÉRIVÉE D'UNE MESURE, PAS D'UNE DOCUMENTATION. Calendly n'expose
  * son réglage de battement ni dans l'API v2 ni dans la réponse publique de
- * réservation. Le 2026-08-26, deux observations l'ont encadré : un créneau
- * séparé de 0 minute d'un événement est refusé, un créneau séparé de 30 minutes
- * est accepté. On prend donc 30 — la borne haute mesurée. Trop peu rognerait un
- * créneau de plus que nécessaire ; trop rognerait la journée.
+ * réservation. Il faut donc l'encadrer par observation — et l'encadrement dépend
+ * du PAS de la grille, ce qui a d'abord conduit à une valeur trop large :
+ *
+ *   · Première mesure (2026-08-26, rendez-vous de 30 min, grille de 30 min) :
+ *     écart de 0 refusé, écart de 30 accepté. Aucun écart intermédiaire n'était
+ *     OBSERVABLE — la grille n'en produisait pas. Conclusion prudente : 30.
+ *   · Seconde mesure, le même jour, après le passage à 45 min sur une grille
+ *     restée à 30 : les créneaux finissent désormais à :15 et :45, donc des
+ *     écarts de 15 minutes existent. Constaté sur trois journées réelles
+ *     (01/09 et 22/09) : un créneau séparé de 15 minutes d'un événement est
+ *     ACCEPTÉ. Le battement vaut donc au plus 15.
+ *
+ * On retient 15, et ce n'est pas un arrondi prudent : c'est la borne HAUTE
+ * mesurée, et c'est exactement ce qu'il faut. Pour garantir qu'un créneau
+ * survive, il suffit d'un écart ≥ battement réel ; 15 le garantit puisque le
+ * battement lui est inférieur ou égal. Pour garantir que le suivant tombe, il
+ * suffit d'un écart nul, refusé dans tous les cas. Garder 30 coûtait un créneau
+ * réservable par journée fermée, pour rien.
  *
  * 🔑 Si Will change le battement dans Calendly, c'est CETTE constante qu'il faut
- * corriger, et le symptôme sera : « je ferme après 12 h et je perds aussi 11 h 30 ».
+ * corriger, et le symptôme sera : « je ferme après midi et je perds aussi le
+ * créneau d'avant ». La re-mesurer demande une grille dont le pas est plus fin
+ * que le battement soupçonné — sinon on ne mesure que le pas.
  */
-export const BATTEMENT_CALENDLY_MINUTES = 30;
+export const BATTEMENT_CALENDLY_MINUTES = 15;
 
 export type GoogleEventsFailure =
   | "not_configured"
