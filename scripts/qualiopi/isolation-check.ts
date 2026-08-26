@@ -210,6 +210,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    gabarits de documents lisent déjà depuis cette source. C'est exactement
   //    le motif que ce dépôt a payé quatre fois : un prédicat recopié diverge.
   "src/app/[locale]/(admin)/[adminPrefix]/societe/identite/page.tsx",
+  // ── Fiche message (boîte de réception) : appelle `findClientByEmail()` et
+  //    rien d'autre du domaine, pour proposer « Créer le devis » quand le
+  //    client existe déjà (audit réservation 2026-08-26, P1-09) — le même
+  //    appariement e-mail que qualiopi/entrees. L'alternative — recopier la
+  //    requête hors domaine — aurait créé une seconde vérité sur « ce client
+  //    existe-t-il ? », le motif payé quatre fois dans ce dépôt.
+  "src/app/[locale]/(admin)/[adminPrefix]/submissions/_v2/SubmissionDetailContent.tsx",
   // ── Contrats, factures, e-mails : portent les mentions légales, qui sont
   //    la SSOT du domaine (`qualiopi/legal`).
   "src/features/contract/admin-actions.ts",
