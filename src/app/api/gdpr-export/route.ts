@@ -101,17 +101,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       address: true,
       details: true,
       submittedAt: true,
-      bookings: {
-        select: {
-          id: true,
-          interventionType: true,
-          bookingDate: true,
-          participantsCount: true,
-          status: true,
-          pricePaidCents: true,
-          createdAt: true,
-        },
-      },
     },
   });
 

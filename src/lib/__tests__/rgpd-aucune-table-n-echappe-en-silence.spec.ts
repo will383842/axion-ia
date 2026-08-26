@@ -164,15 +164,10 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
       "NI exemptée. Fallait en outre lui donner un `emailHash` : l'adresse est " +
       "chiffrée à IV aléatoire, la ligne était INTROUVABLE.",
   },
-  {
-    modele: "BookingOption",
-    statut: "traite",
-    note:
-      "SUPPRIMÉ (`eraseBookingOptionsForEmail`). Une doctrine JUSTE écrite au pluriel " +
-      "(« Bookings : … ne contient déjà aucune PII propre ») a couvert son voisin : " +
-      "`Booking` n'a effectivement rien, `BookingOption` porte nom, adresse et " +
-      "téléphone EN PROPRE, sans aucun `submissionId`.",
-  },
+  // BookingOption : entrée RETIRÉE le 2026-08-26 — le modèle a disparu du
+  // schéma avec le système Booking (table vide en dev et en prod, mesuré).
+  // Le cliquet ci-dessous vérifie justement qu'aucun modèle inventorié ne
+  // survit à son schéma : un inventaire faux est pire qu'une absence.
   {
     modele: "DocumentSignatureToken",
     statut: "traite",

@@ -7,7 +7,6 @@
 //                              On ne conserve que email_hash dans activity_log
 //                              (handle propre RGPD art. 17 droit à l'oubli +
 //                              audit trail nominatif).
-//   - bookings      : suppression hard si status='cancelled' ET updated_at > N mois (default 12).
 //   - generation_logs (audit B5 P0-7) : logs techniques content-gen — purge à N mois
 //                              (default 12). Ces logs sont append-only et lient les
 //                              prompts content-gen à un job_id non-PII. Pas d'export
@@ -23,7 +22,6 @@
 //   RETENTION_LOGS_MONTHS=12
 //   RETENTION_SUBS_ARCHIVE_MONTHS=24
 //   RETENTION_NEWSLETTER_UNSUB_MONTHS=36
-//   RETENTION_BOOKINGS_CANCELLED_MONTHS=12
 //   RETENTION_GENERATION_LOGS_MONTHS=12   (audit B5)
 //   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — obligation comptable française)
 //   RETENTION_WEB_VITALS_MONTHS=6         (audit B5)
@@ -47,7 +45,6 @@ const DEFAULTS = {
   logs: 12,
   submissionsArchived: 24,
   newsletterUnsub: 36,
-  bookingsCancelled: 12,
   generationLogs: 12,
   costLedger: 24,
   webVitals: 6,
@@ -122,7 +119,6 @@ export async function executerPurgeRetention(): Promise<void> {
     logs: 0,
     submissions: 0,
     newsletter: 0,
-    bookings: 0,
     generationLogs: 0,
     costLedger: 0,
     webVitals: 0,
@@ -183,10 +179,6 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   for (const s of archivedSubs) {
     await prisma.$transaction(async (tx) => {
-      await tx.booking.updateMany({
-        where: { submissionId: s.id },
-        data: { submissionId: null },
-      });
       await tx.submission.delete({ where: { id: s.id } });
       await tx.activityLog.create({
         data: {
@@ -234,16 +226,6 @@ export async function executerPurgeRetention(): Promise<void> {
     });
     counts.newsletter++;
   }
-
-  // 4) bookings cancelled anciens
-  const bookingsMonths = readMonths(
-    "RETENTION_BOOKINGS_CANCELLED_MONTHS",
-    DEFAULTS.bookingsCancelled,
-  );
-  const cancelledBookings = await prisma.booking.deleteMany({
-    where: { status: "cancelled", updatedAt: { lt: monthsAgo(bookingsMonths) } },
-  });
-  counts.bookings = cancelledBookings.count;
 
   // 5) generation_logs anciens (content-gen audit trail technique, audit B5 P0-7).
   // GenerationLog.timestamp = createdAt — pas de updatedAt (table append-only).
@@ -477,7 +459,7 @@ export async function executerPurgeRetention(): Promise<void> {
 
   console.log(
     `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
-      `newsletter=${counts.newsletter} bookings=${counts.bookings} ` +
+      `newsletter=${counts.newsletter} ` +
       `generationLogs=${counts.generationLogs} costLedger=${counts.costLedger} ` +
       `webVitals=${counts.webVitals} ` +
       `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs} ` +
