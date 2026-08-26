@@ -239,7 +239,10 @@ export async function SubmissionsV2({
       </div>
       <AdminListScaffold
         title=""
-        itemLabel="soumission"
+        // « soumission » est le nom de la TABLE, jamais le mot d'un écran. Le h1
+        // de cet écran a été corrigé en « Messages » ; ce compteur, quatre lignes
+        // plus bas, disait encore « 1 234 soumissions » — le jumeau oublié.
+        itemLabel="message"
         total={result.total}
         page={result.page}
         totalPages={result.totalPages}
