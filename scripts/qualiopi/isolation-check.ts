@@ -210,10 +210,9 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    gabarits de documents lisent déjà depuis cette source. C'est exactement
   //    le motif que ce dépôt a payé quatre fois : un prédicat recopié diverge.
   "src/app/[locale]/(admin)/[adminPrefix]/societe/identite/page.tsx",
-  // ── Contrats, factures, e-mails : portent les mentions légales, qui sont
-  //    la SSOT du domaine (`qualiopi/legal`).
-  "src/features/contract/admin-actions.ts",
-  "src/features/invoice/admin-actions.ts",
+  // ── E-mails : le layout porte les mentions légales, qui sont la SSOT du
+  //    domaine (`qualiopi/legal`). (contract/invoice retirés avec le système
+  //    Booking, 2026-08-26.)
   "src/lib/email/templates/_layout.tsx",
   // ── Plan de production éditorial en PDF : n'emprunte au domaine que la
   //    PLOMBERIE du rendu — jetons de marque, polices, nettoyage d'espaces,

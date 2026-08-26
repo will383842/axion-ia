@@ -12,10 +12,8 @@
 //      `docusealEventId` UNIQUE. Si conflict P2002 → 200 OK (déjà reçu).
 //   4. Pour les events critiques (`form.completed`, `submission.completed`,
 //      `form.declined`) :
-//        - Si `metadata.kind === "quote"` → dispatch Quote (X.7 final).
-//        - Sinon (contract signature) → V1 light : Telegram only. Le wiring
-//          ContractDocument complet viendra avec
-//          `sendContractAndDepositRequestAction` (Sprint X.8 admin UI).
+//        - Si `metadata.kind === "devis"` → dispatch Devis (CRM Qualiopi).
+//        - Sinon → Telegram only.
 //   5. Marquer l'event `processedAt` après dispatch réussi.
 //   6. Return 200 OK immédiat (DocuSeal retry exponentiel sinon).
 //
@@ -29,13 +27,10 @@ import {
   parseWebhookPayload,
   verifyWebhookAuth,
   isDocusealWebhookConfigured,
-  getSubmission,
   type DocusealWebhookPayload,
 } from "@/lib/docuseal";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
-import { applyTransition, StateMachineError } from "@/features/booking/state-machine";
-import { enqueueEmail } from "@/server/queue/queues";
 
 // Prisma error codes (string literals — pas d'import Prisma runtime ici car edge-friendly).
 const PRISMA_UNIQUE_CONSTRAINT = "P2002";
@@ -102,9 +97,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       event.eventType === "form.completed" || event.eventType === "submission.completed";
     const isDeclined = event.eventType === "form.declined";
 
-    if (kind === "quote" && (isCompleted || isDeclined)) {
-      await dispatchQuoteEvent(event, isCompleted);
-    } else if (kind === "devis" && (isCompleted || isDeclined)) {
+    if (kind === "devis" && (isCompleted || isDeclined)) {
       await dispatchDevisEvent(event, isCompleted);
     } else if (isCompleted) {
       sendTelegram({
@@ -209,132 +202,6 @@ async function dispatchDevisEvent(
     sendTelegram({
       tag: "OPTION REFUSÉE",
       body: `📑 Devis ${devis.numero} refusé via DocuSeal`,
-    }).catch(() => {});
-  }
-}
-
-/**
- * Dispatch un event DocuSeal lié à un Quote (X.7 final).
- *
- * - `form.completed` / `submission.completed` :
- *   1. Fetch submission DocuSeal (signed PDF URL + audit trail).
- *   2. Update Quote (status=accepted, acceptedAt, pdfUrl, hashSha256).
- *   3. applyTransition(quote_signed) — si booking en quote_sent.
- *   4. Enqueue email `quote-signed` au visiteur.
- *
- * - `form.declined` :
- *   1. Update Quote (status=declined, declinedAt).
- *   2. applyTransition(quote_declined) — si booking en quote_sent.
- *   3. Enqueue email `quote-declined` au visiteur.
- *
- * Idempotence : la state machine refuse les transitions backward, donc un
- * replay sur Quote déjà signé/refusé est no-op côté Booking.status.
- */
-async function dispatchQuoteEvent(
-  event: DocusealWebhookPayload,
-  isCompleted: boolean,
-): Promise<void> {
-  const quoteId = event.metadata["quoteId"];
-  if (!quoteId) {
-    throw new Error(
-      `[docuseal-webhook] missing quoteId in metadata for submission ${event.submissionId}`,
-    );
-  }
-
-  const quote = await prisma.quote.findUnique({
-    where: { id: quoteId },
-    select: {
-      id: true,
-      number: true,
-      status: true,
-      bookingId: true,
-      booking: {
-        select: {
-          locale: true,
-          submission: { select: { contactEmail: true, contactName: true } },
-        },
-      },
-    },
-  });
-  if (!quote) {
-    throw new Error(`[docuseal-webhook] quote ${quoteId} not found`);
-  }
-
-  // Idempotence applicative : si Quote déjà dans l'état cible, no-op.
-  if (isCompleted && quote.status === "accepted") return;
-  if (!isCompleted && quote.status === "declined") return;
-
-  if (isCompleted) {
-    // Fetch détails submission (signed PDF + hash + IP signataire).
-    const sub = await getSubmission(event.submissionId);
-
-    await prisma.$transaction(async (tx) => {
-      await tx.quote.update({
-        where: { id: quote.id },
-        data: {
-          status: "accepted",
-          acceptedAt: sub.signedAt ? new Date(sub.signedAt) : new Date(),
-          ...(sub.signedPdfUrl ? { pdfUrl: sub.signedPdfUrl } : {}),
-          ...(sub.signedPdfSha256 ? { hashSha256: sub.signedPdfSha256 } : {}),
-        },
-      });
-
-      try {
-        await applyTransition(tx, quote.bookingId, {
-          to: "quote_signed",
-          trigger: `docuseal.${event.eventType}:${event.submissionId}`,
-          triggeredBy: "webhook",
-          ignoreDuplicate: true,
-        });
-      } catch (e) {
-        // Si la transition n'est pas autorisée (ex: booking pas dans quote_sent),
-        // on log mais on ne bloque pas la persistance du Quote signé.
-        if (!(e instanceof StateMachineError)) throw e;
-        console.warn(`[docuseal-webhook] quote_signed transition skipped: ${e.code}`);
-      }
-    });
-
-    const email = quote.booking.submission?.contactEmail;
-    if (email) {
-      enqueueEmail("quote-signed", email, quote.booking.locale, {
-        contactName: quote.booking.submission?.contactName ?? "Client",
-        quoteNumber: quote.number,
-      }).catch(() => {});
-    }
-    sendTelegram({
-      tag: "OPTION CONFIRMÉE",
-      body: `📑 Devis ${quote.number} signé via DocuSeal (booking ${quote.bookingId})`,
-    }).catch(() => {});
-  } else {
-    await prisma.$transaction(async (tx) => {
-      await tx.quote.update({
-        where: { id: quote.id },
-        data: { status: "declined", declinedAt: new Date() },
-      });
-
-      try {
-        await applyTransition(tx, quote.bookingId, {
-          to: "quote_declined",
-          trigger: `docuseal.${event.eventType}:${event.submissionId}`,
-          triggeredBy: "webhook",
-          ignoreDuplicate: true,
-        });
-      } catch (e) {
-        if (!(e instanceof StateMachineError)) throw e;
-        console.warn(`[docuseal-webhook] quote_declined transition skipped: ${e.code}`);
-      }
-    });
-
-    const email = quote.booking.submission?.contactEmail;
-    if (email) {
-      enqueueEmail("quote-declined", email, quote.booking.locale, {
-        contactName: quote.booking.submission?.contactName ?? "Client",
-        quoteNumber: quote.number,
-      }).catch(() => {});
-    }
-    sendTelegram({
-      tag: "OPTION REFUSÉE",
-      body: `📑 Devis ${quote.number} refusé via DocuSeal (booking ${quote.bookingId})`,
     }).catch(() => {});
   }
 }

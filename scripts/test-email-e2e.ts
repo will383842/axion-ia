@@ -11,15 +11,11 @@ async function main() {
   });
   console.log("✓ enqueued contact-confirmed → test@example.com (FR)");
 
-  await enqueueEmail("booking-confirmed", "test-en@example.com", "en", {
+  await enqueueEmail("contact-confirmed", "test-en@example.com", "en", {
     contactName: "Will Test",
-    bookingDate: "2026-06-15",
-    bookingTime: "09:00",
-    interventionType: "essentielle",
-    participantsCount: 5,
-    bookingId: "smoke-bk-67890",
+    submissionId: "smoke-67890",
   });
-  console.log("✓ enqueued booking-confirmed → test-en@example.com (EN)");
+  console.log("✓ enqueued contact-confirmed → test-en@example.com (EN)");
 
   // Laisse le temps a BullMQ de pousser sur Redis avant de quitter
   await new Promise((r) => setTimeout(r, 500));

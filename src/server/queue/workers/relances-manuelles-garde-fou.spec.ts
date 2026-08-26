@@ -25,22 +25,8 @@ function extraireFonction(source: string, nom: string): string {
 }
 
 describe("relances manuelles — garde-fou anti-envoi automatique", () => {
-  it("booking-crons : handlePaymentOverdueScan n'envoie AUCUN email client", () => {
-    const src = readFileSync(join(WORKERS_DIR, "booking-crons-worker.ts"), "utf8");
-    const corps = extraireFonction(src, "handlePaymentOverdueScan");
-    expect(corps).not.toContain("enqueueClientEmail");
-    expect(corps).not.toContain("enqueueEmail(");
-    expect(corps).toContain("relanceProposee");
-  });
-
-  it("booking-crons : handleQuotePendingReminder n'envoie AUCUN email client", () => {
-    const src = readFileSync(join(WORKERS_DIR, "booking-crons-worker.ts"), "utf8");
-    const corps = extraireFonction(src, "handleQuotePendingReminder");
-    expect(corps).not.toContain("enqueueClientEmail");
-    expect(corps).not.toContain("enqueueEmail(");
-    expect(corps).toContain("relanceProposee");
-  });
-
+  // Les deux gardes jumelles sur `booking-crons-worker.ts` sont parties avec le
+  // worker lui-même (suppression du système booking, 2026-08-26).
   it("formation-crons : handleFacturesRetard n'envoie AUCUN email client", () => {
     const src = readFileSync(join(WORKERS_DIR, "qualiopi-formation-crons-worker.ts"), "utf8");
     const corps = extraireFonction(src, "handleFacturesRetard");
