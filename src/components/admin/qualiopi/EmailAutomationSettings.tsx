@@ -21,7 +21,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { libelleTemplateEmail } from "@/server/email/outbox-policy";
+import { libelleTemplateEmail, estEmailQualiopiAutomatique } from "@/server/email/outbox-policy";
 import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -90,6 +90,25 @@ export function EmailAutomationSettings({
             "Ces e-mails partiront SANS passer par votre relecture. Un e-mail envoyé ne se rappelle pas.",
           destructif: true,
           libelleConfirmer: "Activer l'envoi automatique",
+        },
+        () => enregistrerVraiment(),
+      );
+      return;
+    }
+    // S5 (2026-08-26) — geler une nature RÉGLEMENTAIRE (convocation,
+    // attestation…) reste permis : une règle qui la NOMME est souveraine
+    // (`outbox-policy.ts`). Mais le geste doit être CONSCIENT : ces envois ne
+    // partiront plus qu'après validation manuelle, et un oubli en corbeille
+    // prive un stagiaire de sa convocation. Le même avertissement reste
+    // affiché en bandeau sur la page tant que la règle est active.
+    if (mode === "validation" && template !== "" && estEmailQualiopiAutomatique(template)) {
+      demander(
+        {
+          titre: `Soumettre « ${libelleTemplateEmail(template)} » à validation manuelle ?`,
+          description:
+            "Cette règle retient des envois réglementaires (convocations, attestations…) : ils partiront seulement après validation manuelle. Un envoi oublié en corbeille prive le stagiaire d'une pièce due.",
+          destructif: true,
+          libelleConfirmer: "Retenir ces envois pour relecture",
         },
         () => enregistrerVraiment(),
       );

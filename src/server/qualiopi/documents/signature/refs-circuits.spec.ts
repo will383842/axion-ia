@@ -66,6 +66,10 @@ const ECARTS_ASSUMES: ReadonlyArray<{ type: string; partie: PartieSignataire; ra
 const FICHIERS_GENERATEURS = [
   "src/server/actions/qualiopi/documents.ts",
   "src/server/actions/qualiopi/devis.ts",
+  // S5 (2026-08-26) : la construction des 12 pièces produisibles au jalon —
+  // dont convention, tripartite et contrat, toutes signables — a déménagé dans
+  // la couche service partagée avec le worker `qualiopi-documents-worker`.
+  "src/server/qualiopi/documents/production/producteurs.ts",
 ];
 
 const REF_KEYS = ["sessionId", "clientId", "traineeId", "sousTraitantId", "coachingSessionId"];

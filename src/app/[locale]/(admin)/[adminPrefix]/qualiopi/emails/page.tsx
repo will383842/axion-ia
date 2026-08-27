@@ -29,6 +29,7 @@ import {
   EMAILS_A_VALIDER_PAR_DEFAUT,
   EMAILS_AUTOMATIQUES_PAR_DEFAUT,
   libelleTemplateEmail,
+  reglesRetenantDesEnvoisReglementaires,
 } from "@/server/email/outbox-policy";
 
 /**
@@ -137,12 +138,32 @@ export default async function EmailsAValiderPage({
   const carte =
     "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]";
 
+  // S5 (2026-08-26) — le gel réglementaire par règle NOMMÉE reste permis (la
+  // règle nommée est souveraine, c'est documenté dans `outbox-policy.ts`) mais
+  // il ne doit jamais être SILENCIEUX : tant qu'une telle règle est active, la
+  // page le dit — en persistance, pas seulement au moment du clic.
+  const naturesRetenues = reglesRetenantDesEnvoisReglementaires(reglages);
+
   return (
     <AdminPageShell>
       <AdminPageHeader
         title="E-mails à valider"
         description="Les emails commerciaux attendent votre relecture avant de partir. La chaîne Qualiopi — convocation, rappel, questionnaires, attestation — part automatiquement et n'apparaît pas ici."
       />
+
+      {naturesRetenues.length > 0 && (
+        <p
+          role="alert"
+          className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+        >
+          <span className="font-semibold">
+            Cette règle retient des envois réglementaires (convocations, attestations…) : ils
+            partiront seulement après validation manuelle.
+          </span>{" "}
+          Natures concernées : {naturesRetenues.map((t) => libelleTemplateEmail(t)).join(", ")}.
+          Retirez la règle correspondante ci-dessous pour rétablir l&apos;envoi automatique.
+        </p>
+      )}
 
       <section className="mb-[var(--space-admin-8)]">
         <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">

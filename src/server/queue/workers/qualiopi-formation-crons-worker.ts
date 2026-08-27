@@ -418,10 +418,31 @@ async function handleAttestationsAuto(): Promise<void> {
   let ok = 0;
   let ko = 0;
 
+  // 🔴 2026-08-26 — LE RETOUR EST LU. Il était JETÉ, et `ok++` s'incrémentait
+  // quoi qu'il arrive.
+  //
+  // `genererAttestationPourEnrollment` rend `{ resultat, documentId }`, et
+  // `resultat` vaut `"aucune"` quand le taux de présence est sous le seuil :
+  // aucune pièce n'est alors produite, et c'est le BON comportement. Mais le
+  // journal annonçait quand même « 1 générées » — mesuré en dev le 2026-08-26,
+  // le cron déclarait une attestation produite alors que ZÉRO ligne
+  // `DocumentGenere` avait été écrite.
+  //
+  // Les DONNÉES étaient saines : aucune attestation fausse n'a jamais été
+  // émise. C'est le COMPTE RENDU qui mentait — et c'est cette ligne-là qu'un
+  // humain lit le matin pour croire la chaîne en ordre. Sur une pièce
+  // d'indicateur 11, un journal qui surdéclare est un faux témoignage de
+  // conformité.
+  //
+  // ⚠️ Même famille que `D5-1-C2` (convocation-j5, 2026-08-21) et que les six
+  // fonctions d'envoi alignées le 2026-08-20. Ici, le membre oublié.
+  let sansPiece = 0;
+
   for (const enrollment of enrollments) {
     try {
-      await genererAttestationPourEnrollment(enrollment.id);
-      ok++;
+      const { resultat } = await genererAttestationPourEnrollment(enrollment.id);
+      if (resultat === "aucune") sansPiece++;
+      else ok++;
     } catch (err) {
       ko++;
       console.error(
@@ -432,7 +453,8 @@ async function handleAttestationsAuto(): Promise<void> {
   }
 
   console.log(
-    `[formation-crons] attestations-auto: ${ok} générées, ${ko} erreurs ` +
+    `[formation-crons] attestations-auto: ${ok} générées, ${sansPiece} sans pièce ` +
+      `(présence sous le seuil), ${ko} erreurs ` +
       `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale)`,
   );
 }
@@ -473,6 +495,14 @@ async function handleRappelJ7(): Promise<void> {
   // le plancher — le cron RATTRAPE chaque jour, tant que la session n'a pas
   // commencé.
   const plafond = new Date(now.getTime() + 7.5 * 24 * 60 * 60 * 1000);
+  // 🔴 S5 (2026-08-26) — LE RAPPEL NE PART JAMAIS LE MÊME MATIN QUE LA
+  // CONVOCATION. Défaut mesuré (AN-S6) : une session créée moins de 5,5 j du
+  // début recevait la convocation (cron HORAIRE, rattrapant) puis le rappel
+  // J-7 au passage de 08:00 — deux messages quasi identiques dans la même
+  // matinée, les drapeaux `convocationEnvoyeeAt` et `rappelJ7EnvoyeAt`
+  // n'étant jamais croisés. Le rappel exige désormais que la convocation soit
+  // PARTIE depuis au moins 24 h pour chaque inscrit actif.
+  const seuilConvocation24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
   const sessions = await prisma.trainingSession.findMany({
     where: {
@@ -485,8 +515,31 @@ async function handleRappelJ7(): Promise<void> {
       // Ce cas relève d'un écart à consigner — c'est l'objet du relevé ci-dessous.
       dateDebut: { gt: now, lte: plafond },
     },
-    select: { id: true },
+    // Les convocations des inscrits ACTIFS, pour décider en mémoire : la
+    // condition « tous convoqués depuis ≥ 24 h » s'exprime mal en un seul
+    // `where` Prisma lisible, et le volume (quelques sessions planifiées sous
+    // J+7,5) rend le filtre applicatif gratuit — et testable à sec.
+    select: {
+      id: true,
+      enrollments: {
+        where: { ...inscriptionsActives() },
+        select: { convocationEnvoyeeAt: true },
+      },
+    },
   });
+
+  // La session saute son tour tant qu'UN inscrit actif n'a pas sa convocation
+  // partie depuis 24 h — jamais convoqué compris : le cron de convocation est
+  // horaire, il passera avant le prochain tour du rappel, et rappeler avant
+  // d'avoir convoqué inverserait les deux pièces. Le rattrapage par état
+  // (`rappelJ7EnvoyeAt: null`) représentera la session au passage suivant.
+  const candidates = sessions.filter(
+    (s) =>
+      s.enrollments.length > 0 &&
+      s.enrollments.every(
+        (e) => e.convocationEnvoyeeAt !== null && e.convocationEnvoyeeAt < seuilConvocation24h,
+      ),
+  );
 
   // 🔑 CE QUE LE COMPTE À REBOURS RENDAIT INVISIBLE : les sessions qui ont
   // DÉMARRÉ sans que personne n'ait été rappelé. Sans cette ligne, le journal
@@ -513,7 +566,7 @@ async function handleRappelJ7(): Promise<void> {
   let ok = 0;
   let ko = 0;
 
-  for (const session of sessions) {
+  for (const session of candidates) {
     try {
       // 🔴 `D5-1-C1` — le compteur ne compte plus un envoi qui n'est pas parti.
       // Ce cron n'écrit aucune trace en base (c'est le constat `D5-1-C2`, à
@@ -535,7 +588,9 @@ async function handleRappelJ7(): Promise<void> {
   }
 
   console.log(
-    `[formation-crons] rappel-j7: ${ok} sessions traitées, ${ko} erreurs (${sessions.length} candidats scannés)`,
+    `[formation-crons] rappel-j7: ${ok} sessions traitées, ${ko} erreurs ` +
+      `(${sessions.length} candidats scannés, ${sessions.length - candidates.length} en attente ` +
+      `des 24 h post-convocation)`,
   );
 }
 
@@ -1308,7 +1363,20 @@ async function handleEnqueteEntrepriseJ30(): Promise<void> {
     where: {
       statut: "realisee",
       dateFin: { gte: plafond90j, lte: j30 },
-      client: { contactEmail: { not: null } },
+      // 🔴 2026-08-26 — `type: "entreprise"` AJOUTÉ. La sélection ne portait
+      // que sur `contactEmail`, jamais sur le TYPE du client. Mesuré en dev :
+      // « Camille Berger », client PARTICULIER, recevait l'enquête. Et le
+      // gabarit n'a rien de neutre — il dit « Votre avis d'entreprise
+      // cliente », « ce que votre entreprise a pensé », « les effets attendus
+      // dans votre activité ». Un particulier qui a payé SA PROPRE formation
+      // se voyait donc demander ce que son entreprise pensait du stage de son
+      // salarié.
+      //
+      // Deux dégâts, pas un : la personne reçoit un message absurde, ET la
+      // mesure « satisfaction entreprise » se remplit de réponses qui ne
+      // viennent d'aucune entreprise — un indicateur Qualiopi pollué à sa
+      // source.
+      client: { type: "entreprise", contactEmail: { not: null } },
       // Jamais envoyée : aucune enquête entreprise expédiée sur cette session.
       // (Le questionnaire est ancré sur une inscription de la session.)
       NOT: {
@@ -1504,15 +1572,25 @@ async function handleLiensEmargementJ0(): Promise<void> {
   }
 
   const now = new Date();
-  const debutJour = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0),
+  // 🔴 S5 (2026-08-26) — PLUS DE FENÊTRE JOUR UTC (résidu M2). L'ancienne
+  // sélection était `dateDebut ∈ [minuit UTC ; minuit+24h[` au SEUL passage de
+  // 06:00 : une session créée à 10 h pour l'après-midi — le cas ordinaire, cf.
+  // AXI-SESS-2026-005 — ne rencontrait aucun passage avant son démarrage, et
+  // la stagiaire ne pouvait pas émarger. Même correctif que convocation-j5
+  // (queues.ts en documente le motif) : le cron passe à l'HORAIRE, et la
+  // sélection devient un ÉTAT — session qui commence aujourd'hui OU commencée
+  // depuis moins de 24 h, sans jeton vivant. La garde anti-réémission
+  // ci-dessous fait qu'un passage horaire ne réémet jamais des liens vivants.
+  const finJour = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0) +
+      24 * 60 * 60 * 1000,
   );
-  const finJour = new Date(debutJour.getTime() + 24 * 60 * 60 * 1000);
+  const borneBasse24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
   const sessions = await prisma.trainingSession.findMany({
     where: {
       statut: { in: ["planifiee", "en_cours"] },
-      dateDebut: { gte: debutJour, lt: finJour },
+      dateDebut: { gte: borneBasse24h, lt: finJour },
       AND: [
         { enrollments: { some: { ...inscriptionsActives() } } },
         // La garde anti-réémission : personne n'a de lien vivant.
@@ -1574,7 +1652,7 @@ async function handleLiensEmargementJ0(): Promise<void> {
   console.log(
     `[formation-crons] liens-emargement-j0: ${traitees} session(s) servie(s), ` +
       `${sansJournees} sans journée déclarée, ${enEchec} en échec ` +
-      `(${sessions.length} session(s) démarrant aujourd'hui sans lien vivant)`,
+      `(${sessions.length} session(s) sans lien vivant, démarrant aujourd'hui ou depuis < 24 h)`,
   );
 }
 

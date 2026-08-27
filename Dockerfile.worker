@@ -4,6 +4,9 @@
 # handling Next. Lance via `pnpm worker` → consume queues Redis :
 #   - emails (templates React Email × FR/EN)
 #   - crons recurrents (retention-purge, formation-crons, calendly-poll, ...)
+#   - documents-auto (S5 — production documentaire Qualiopi au jalon, horaire
+#     :15 ; rend des PDF react-pdf → depend des polices copiees plus bas,
+#     exactement comme formation-crons)
 #
 # Aligne avec axionia_audit_sequence.md Sprint 18 + ADR 0009 :
 #   - Coolify deploie 2 services Web + Worker (meme image partagee possible
