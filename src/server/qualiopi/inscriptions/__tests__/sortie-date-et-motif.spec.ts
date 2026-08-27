@@ -33,6 +33,17 @@
  * soit un motif réclamé pour rien, soit une sortie enregistrable sans raison —
  * le défaut revenu par la porte de derrière.
  *
+ * ## 🔑 Pourquoi ce fichier vit DANS le domaine et non sous `tests/unit/`
+ *
+ * Il importe `STATUTS_SORTIS` — donc il consomme le domaine Qualiopi.
+ * `qualiopi:isolation-check` refuse cette consommation depuis une surface qui
+ * ne la faisait pas : le cloisonnement n'est pas décoratif.
+ *
+ * ⚠️ Ce contrôle est passé VERT en local pendant que la CI le refusait. Il
+ * énumère par `git ls-files` : tant que le fichier n'était pas `git add`é, il
+ * n'existait pas pour lui. **Un contrôle statique est aveugle au travail pas
+ * encore suivi** — lancer `git add -A` avant de croire son vert.
+ *
  * ## Ce que cette garde ne couvre PAS
  *
  * La contrainte `CHECK` en base (`enrollments_sortie_coherente_check`), qui est
