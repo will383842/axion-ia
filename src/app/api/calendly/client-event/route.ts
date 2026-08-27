@@ -27,8 +27,10 @@
 // champs PII est conservee : elle ne coute rien et couvrirait un futur payload
 // plus riche.
 
-import { NextResponse } from "next/server";
+import crypto from "node:crypto";
+import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
+import { requireSameOrigin } from "@/lib/same-origin";
 import { prisma } from "@/lib/prisma";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { notify } from "@/server/notifications";
@@ -51,7 +53,136 @@ const ClientEventSchema = z.object({
 
 export const runtime = "nodejs"; // Prisma + ioredis requis (pas Edge)
 
-export async function POST(req: Request): Promise<NextResponse> {
+/**
+ * Même plafond que le jumeau `api/calendly/webhook` — un évènement pèse quelques
+ * kilo-octets.
+ *
+ * ⚠️ Et comme lui, mesuré DEUX FOIS : l'en-tête déclaré (refus précoce), puis
+ * les octets réellement lus. Le premier seul ne borne rien — `content-length`
+ * absent (`Transfer-Encoding: chunked`, HTTP/2) ou non numérique le saute, et le
+ * corps entier finit dans la colonne `raw_payload`, qui n'est pas bornée.
+ */
+const MAX_BODY_BYTES = 128 * 1024;
+
+/**
+ * Les PII que le payload peut porter — bornées, et JAMAIS bloquantes.
+ *
+ * 🔴 Elles étaient lues par un simple `typeof === "string"`, sans plafond ni
+ * validation, puis écrites telles quelles. Un `invitee.name` de 300 caractères
+ * dépassait le `@db.VarChar(255)` : Postgres levait `22001`, que le `catch`
+ * n'interceptait pas (seul `P2002` l'était) — la route rendait **500**.
+ *
+ * ⚠️ MAIS LE REMÈDE NE DOIT PAS COÛTER LA RÉSERVATION. Une première version de
+ * ce correctif rendait 400 sur toute valeur hors bornes — y compris sur une
+ * chaîne VIDE, que le formulaire Calendly produit quand un champ facultatif
+ * n'est pas rempli. Elle perdait donc la ligne, la synchro CRM et l'alerte, sur
+ * la seule route qui capte des prospects. C'est plus grave que le 500 qu'elle
+ * corrigeait.
+ *
+ * `.catch(undefined)` par champ : une valeur illisible, vide ou trop longue
+ * devient ABSENTE, et la réservation est enregistrée quand même. C'est cohérent
+ * avec le contrat de ce fichier — les PII y sont best-effort, l'enrichissement
+ * Calendly repose le vrai nom une minute plus tard. Ce qu'on empêche, c'est
+ * l'écriture d'une valeur qui fait tomber Postgres ; pas la capture du lead.
+ */
+const InviteePiiSchema = z.object({
+  name: z.string().trim().min(1).max(255).optional().catch(undefined),
+  email: z.string().trim().email().max(255).optional().catch(undefined),
+});
+
+/**
+ * Clé de déduplication d'alerte, dérivée du FAIT et non de la ligne écrite.
+ *
+ * L'ancienne clé était `event.id` : l'identifiant de la ligne qu'on venait de
+ * créer, donc différent à chaque appel. Le dédoublonnage du hub ne pouvait
+ * jamais s'appliquer, et une route publique pouvait donc émettre autant
+ * d'alertes que de lignes fabriquées.
+ *
+ * ⚠️ Le repli SANS `inviteeUri` inclut le JOUR, pas l'instant : deux
+ * signalements du même rendez-vous à quelques minutes d'écart doivent tomber
+ * sur la même clé. Il n'inclut pas non plus l'IP — sinon deux sources
+ * différentes rapportant le même fait rouvriraient deux alertes.
+ *
+ * ⚠️ LA GRANULARITÉ RÉELLE N'EST PAS LA JOURNÉE : le hub applique un TTL de
+ * déduplication de **300 secondes** (`server/notifications/index.ts`,
+ * `dedupTtlSec ?? 300`). Inclure le jour dans la clé ne fait donc pas taire une
+ * alerte pendant 24 h — il évite seulement qu'une même clé change en cours de
+ * fenêtre. Deux réservations distinctes du même type, sans adresse et sans URI,
+ * partagent la clé pendant ces 5 minutes : la seconde alerte est ravalée, mais
+ * les deux LIGNES existent. Cas dégénéré, mesuré, assumé.
+ *
+ * L'adresse est hachée : une clé de déduplication traverse Redis et les
+ * journaux, elle n'a pas à y porter une adresse en clair.
+ */
+function dedupKeyDuFait(
+  inviteeUri: string | undefined,
+  email: string | null | undefined,
+  slug: string,
+): string {
+  if (inviteeUri) return `cal-created:${inviteeUri}`;
+  const jour = new Date().toISOString().slice(0, 10);
+  const empreinte = crypto
+    .createHash("sha256")
+    .update(`${(email ?? "").toLowerCase()}|${slug}|${jour}`)
+    .digest("hex")
+    .slice(0, 32);
+  return `cal-created:${empreinte}`;
+}
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  // 0. CONTRÔLE D'ORIGINE — ajouté le 2026-08-27.
+  //
+  // Cette route écrit sans authentification : une requête portant l'adresse d'un
+  // tiers crée une ligne `calendly_events`, **une personne dans le CRM** avec un
+  // évènement « réservé » dans sa chronologie (écriture asynchrone via l'outbox,
+  // donc irréversible), et une alerte sur le téléphone du gérant.
+  //
+  // 🔴 CE QUE CETTE GARDE FERME, ET CE QU'ELLE NE FERME PAS. À écrire noir sur
+  // blanc, parce qu'une première rédaction de ce bloc annonçait « porte fermée »
+  // et un contradicteur l'a démentie EN L'EXÉCUTANT :
+  //
+  //   ✅ elle ferme le CSRF navigateur — une page tierce ne peut pas poser
+  //      d'`Origin` mensonger, le navigateur l'impose ;
+  //   ✅ elle ferme le balayage automatisé naïf et le `curl` nu ;
+  //   ❌ elle NE ferme PAS l'appel scripté informé. `TRUSTED_ORIGINS` contient
+  //      `https://axion-ia.com` en dur : `curl -H 'Origin: https://axion-ia.com'`
+  //      passe. Le scénario « fabriquer une fiche CRM au nom d'un tiers » reste
+  //      donc atteignable par qui prend la peine d'ajouter un en-tête.
+  //
+  // Fermer vraiment demanderait un jeton court signé, émis par la page `/appel`
+  // (le patron existe : `server/actions/content-gen/_auth.ts`). C'est un lot à
+  // part — mais il ne fallait PAS laisser croire le sujet clos : une porte qu'on
+  // croit fermée cesse d'être surveillée.
+  //
+  // ⚠️ `allowMissingOrigin: false` est indispensable : le défaut du helper est
+  // `true`, et tolère l'absence d'`Origin` ET de `Referer` — avec lui, cette
+  // garde n'aurait rien gardé du tout. Un `fetch()` de navigateur en POST envoie
+  // toujours `Origin`, même same-origin (spécification Fetch : tout ce qui n'est
+  // pas GET/HEAD). Seul appelant légitime : `CalendlyEventCapture.tsx`.
+  //
+  // Placé AVANT le compteur de débit, à dessein : il est gratuit et sans état,
+  // là où le compteur écrit dans Redis.
+  try {
+    requireSameOrigin(req, { allowMissingOrigin: false });
+  } catch {
+    return NextResponse.json({ error: "cross_origin_forbidden" }, { status: 403 });
+  }
+
+  // 0 bis. Plafond de volume — DEUX mesures, comme le jumeau webhook.
+  //
+  // ⚠️ LE CONTRÔLE D'EN-TÊTE SEUL NE BORNE RIEN, et une première version de ce
+  // correctif ne faisait que ça en annonçant « même plafond que le jumeau ».
+  // `content-length` est déclaré par l'appelant : absent (`Transfer-Encoding:
+  // chunked`), menteur, ou non numérique, et le contrôle est sauté — après quoi
+  // `req.json()` lit le corps entier, qui finit dans la colonne `raw_payload`.
+  //
+  // Le refus précoce reste utile (il évite de lire 50 Mo quand l'appelant est
+  // honnête), mais la mesure qui compte est celle d'APRÈS lecture.
+  const declaredLength = Number(req.headers.get("content-length") ?? "0");
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+  }
+
   // 1. Rate limit par IP
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   const ipHash = hashIp(ip) ?? "unknown";
@@ -63,10 +194,23 @@ export async function POST(req: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
-  // 2. Parse JSON
+  // 2. Parse JSON — après la SECONDE mesure de taille, celle qui borne vraiment.
+  let brut: string;
+  try {
+    brut = await req.text();
+  } catch {
+    return NextResponse.json({ error: "unreadable_body" }, { status: 400 });
+  }
+  // `Buffer.byteLength` et non `.length` : une chaîne de 128 000 caractères
+  // accentués pèse le double en octets, et c'est en octets que la colonne se
+  // remplit.
+  if (Buffer.byteLength(brut, "utf8") > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+  }
+
   let body: unknown;
   try {
-    body = await req.json();
+    body = JSON.parse(brut) as unknown;
   } catch {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
@@ -117,9 +261,19 @@ export async function POST(req: Request): Promise<NextResponse> {
   // 6. Extraction best-effort des PII. Absentes du payload Embed JS actuel
   //    (cf. bandeau en tete de fichier) — conservee au cas ou Calendly
   //    enrichirait le payload, et pour les tests de non-regression.
-  const inviteeName = typeof invitee["name"] === "string" ? (invitee["name"] as string) : undefined;
-  const inviteeEmail =
-    typeof invitee["email"] === "string" ? (invitee["email"] as string) : undefined;
+  // 🔴 VALIDÉES, pas seulement typées (cf. `InviteePiiSchema`). Une valeur
+  // présente mais hors bornes est un REFUS explicite : la tronquer écrirait en
+  // base une donnée que l'appelant n'a pas envoyée, et la laisser passer rendait
+  // 500 sur une contrainte Postgres.
+  // `parse` et non `safeParse` : chaque champ porte son `.catch`, le schéma ne
+  // peut donc plus lever, et l'entrée est un objet littéral construit ici même.
+  // Un `safeParse` ajouterait une branche morte.
+  const pii = InviteePiiSchema.parse({
+    ...(typeof invitee["name"] === "string" ? { name: invitee["name"] } : {}),
+    ...(typeof invitee["email"] === "string" ? { email: invitee["email"] } : {}),
+  });
+  const inviteeName = pii.name;
+  const inviteeEmail = pii.email;
   // Sprint Notif Infra 2026-05-26 / fix P1-4 audit 2026-05-27 — location
   // peut être string (URL Meet) ou objet { type, location } selon config Calendly.
   const locationRaw = eventObj["location"];
@@ -226,7 +380,14 @@ export async function POST(req: Request): Promise<NextResponse> {
       ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
       ...(enriched?.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
     },
-    dedupKey: event.id,
+    // 🔴 La clé était `event.id` — l'identifiant de la ligne qu'on VIENT de
+    // créer, donc neuf à chaque appel. Elle ne pouvait rien dédoublonner : la
+    // route pouvait émettre autant d'alertes que de lignes fabriquées.
+    // Dérivée du FAIT désormais : la réservation identifiée par son URI
+    // d'invité quand Calendly la fournit, sinon par le triplet
+    // adresse + type + jour. Deux signalements du même rendez-vous n'émettent
+    // qu'une alerte, quel que soit le nombre de lignes créées.
+    dedupKey: dedupKeyDuFait(inviteeUri, notifyEmail, parsed.data.eventTypeSlug),
   });
 
   return NextResponse.json({ ok: true, eventId: event.id });
