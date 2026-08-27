@@ -15,9 +15,10 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
-import { auth } from "@/auth";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { prisma } from "@/lib/prisma";
@@ -41,8 +42,10 @@ export default async function Page({
 }): Promise<React.ReactElement> {
   const { locale, adminPrefix, id } = await params;
 
-  const session = await auth();
-  if (!session?.user?.id) redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
 
   const infos = await prisma.trainingSession.findUnique({
     where: { id },

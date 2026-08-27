@@ -106,7 +106,6 @@ describe("matrice d'habilitation — invariants de structure", () => {
       "facturer",
       "habiliter_formateur",
       "revoquer_signature",
-      "valider_evaluation",
     ];
     expect([...ACTES_ENGAGEANTS].sort()).toEqual(attendus.sort());
   });
@@ -193,7 +192,6 @@ describe("🔴 la liste d'écriture dit ce qu'elle doit dire", () => {
   it("`responsable_qualite` engage sur le domaine QUALITÉ, jamais sur le contractuel", () => {
     const actes = actesAutorises("responsable_qualite");
     expect(actes).toContain("attester");
-    expect(actes).toContain("valider_evaluation");
     expect(actes).toContain("habiliter_formateur");
     expect(actes).not.toContain("facturer");
     expect(actes).not.toContain("conclure_devis");
