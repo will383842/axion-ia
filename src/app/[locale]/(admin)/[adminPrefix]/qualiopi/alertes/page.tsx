@@ -55,7 +55,7 @@ function NiveauBadge({ niveau }: { niveau: AlerteNiveau }): React.ReactElement {
     niveau === "critique"
       ? "text-[color:var(--color-admin-error)]"
       : niveau === "important"
-        ? "text-[color:var(--color-admin-warning)]"
+        ? "text-[color:var(--color-admin-warning-fg)]"
         : "text-[color:var(--color-admin-fg-muted)]";
   return (
     <span
@@ -81,7 +81,7 @@ function GroupeHeader({
     niveau === "critique"
       ? "text-[color:var(--color-admin-error)]"
       : niveau === "important"
-        ? "text-[color:var(--color-admin-warning)]"
+        ? "text-[color:var(--color-admin-warning-fg)]"
         : "text-[color:var(--color-admin-fg-muted)]";
 
   return (
@@ -94,7 +94,7 @@ function GroupeHeader({
           niveau === "critique"
             ? "bg-[color:var(--color-admin-error-subtle)] text-[color:var(--color-admin-error)]"
             : niveau === "important"
-              ? "bg-[color:var(--color-admin-warning-subtle)] text-[color:var(--color-admin-warning)]"
+              ? "bg-[color:var(--color-admin-warning-subtle)] text-[color:var(--color-admin-warning-fg)]"
               : "bg-[color:var(--color-admin-surface)] text-[color:var(--color-admin-fg-muted)]"
         }`}
       >
@@ -171,7 +171,7 @@ export default async function QualiopiAlertesPage({ params }: PageProps) {
           {total !== 1 ? "s" : ""} active{total !== 1 ? "s" : ""}
         </span>
         {nonLues > 0 && (
-          <span className="text-[color:var(--color-admin-warning)]">
+          <span className="text-[color:var(--color-admin-warning-fg)]">
             <span className="font-semibold">{nonLues}</span> non lue{nonLues !== 1 ? "s" : ""}
           </span>
         )}
