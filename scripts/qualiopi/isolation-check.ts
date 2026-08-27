@@ -160,6 +160,19 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/components/nav/Footer.tsx",
   "src/components/recrutement/PartenaireLandingPage.tsx",
   "src/server/content-gen/generators/blog-article.ts",
+  // ── Boîte de réception (2026-08-27) : annote chaque demande entrante du
+  //    client CRM au même e-mail, pour qu'on ne convertisse pas deux fois la
+  //    même personne. Cette annotation était la seule valeur propre de l'écran
+  //    « Entrées récentes », quatrième porte pour un seul geste, désormais
+  //    fermée en 308 (UNE-SEULE-PORTE.md).
+  //
+  //    ⚠️ La surface consomme VRAIMENT le domaine, elle ne le duplique pas :
+  //    `clientsParEmail()` est importée, jamais recopiée. Deux règles doivent
+  //    rester communes aux deux appelants — comparaison insensible à la casse,
+  //    et « le premier client créé gagne » sur un e-mail en double. Recopiées,
+  //    elles auraient fini par désigner deux clients différents pour la même
+  //    demande, sur deux écrans qui la montrent tous les deux.
+  "src/app/[locale]/(admin)/[adminPrefix]/contacts/page.tsx",
   // ── Planning & pilotage admin : lisent formateurs, financements, lieux,
   //    prévisionnel. Surfaces métier assumées, comme `coaching/` au-dessus.
   "src/app/[locale]/(admin)/[adminPrefix]/planning/[type]/[id]/page.tsx",
