@@ -54,7 +54,7 @@ export default async function AuditRequest({ params }: Props) {
     },
     {
       icon: Building2,
-      label: isFr ? "TPE → grandes entreprises" : "Small → enterprise",
+      label: isFr ? "PME → grands groupes" : "SME → large groups",
     },
     {
       icon: Clock,
