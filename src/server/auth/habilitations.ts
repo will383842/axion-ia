@@ -164,6 +164,65 @@ export function peutEcrire(role: string | null | undefined): boolean {
   return ROLES_ECRITURE.includes(role as RoleAdmin);
 }
 
+/**
+ * 🔴 QUI PEUT CONSULTER — la troisième moitié, restée hors du SSOT jusqu'ici.
+ *
+ * ## Le défaut que cette constante ferme
+ *
+ * Mesuré le 2026-08-27. Le SSOT décrivait qui ÉCRIT et qui ENGAGE, jamais qui
+ * REGARDE. Chaque page a donc tranché seule, et le résultat n'est pas un
+ * périmètre, c'est une dérive :
+ *
+ * | | |
+ * |---|---|
+ * | pages `(admin)` | **305** |
+ * | fermées par une liste de rôles ÉCRITE EN DUR | **64** |
+ * | passant par ce fichier | **0** |
+ *
+ * Le callback `authorized()` d'Auth.js ne teste que `isLoggedIn` — jamais le
+ * rôle — et aucun `layout` n'ajoute de garde. **241 pages sur 305 (79 %) étaient
+ * donc déjà ouvertes** à `secretaire`, `reader`, `editor` et
+ * `responsable_qualite`. Les 64 autres se fermaient sans que rien ne dise
+ * pourquoi celles-là.
+ *
+ * ⚠️ La preuve que c'est une dérive et non une décision : `/qualiopi/facturation`
+ * portait sa propre liste, `["admin", "super_admin", "editor", "reader"]`.
+ * **`reader` — le rôle qui, par définition, ne fait que lire — voyait le hub de
+ * facturation ; `secretaire`, dont ce fichier écrit qu'elle « gère le système »,
+ * ne le voyait pas.** `responsable_qualite`, le rôle Qualiopi, non plus. Aucune
+ * décision de périmètre ne produit ce classement.
+ *
+ * ## Pourquoi ouvrir en lecture est SÛR
+ *
+ * Vérifié acte par acte : les sept actes engageants qui existent réellement sont
+ * gardés CÔTÉ SERVEUR par `requireHabilitation`, indépendamment de l'écran
+ * atteint. Atteindre la fiche d'un devis ne permet pas de le conclure —
+ * `conclure_devis` reste `["super_admin", "admin"]`.
+ *
+ * (Le huitième, `valider_evaluation`, n'est appelé nulle part : `EvaluationAcquis`
+ * ne porte aucun état de validation. L'acte qu'il prétend garder n'existe pas
+ * dans le produit ; ce qu'il décrit — « elle fonde l'attestation » — est gardé
+ * par `attester`. Dette signalée, sans conséquence de sécurité.)
+ *
+ * ## La frontière, en une phrase
+ *
+ * `reader` lit et ne fait que lire ; tous les autres lisent aussi. La frontière
+ * du produit est sur l'**acte**, jamais sur l'écran.
+ */
+export const ROLES_CONSULTATION: ReadonlyArray<RoleAdmin> = ROLES_ADMIN;
+
+/**
+ * Ce rôle peut-il CONSULTER la console ?
+ *
+ * 🔑 Volontairement dérivé de `ROLES_ADMIN` et non recopié : un rôle ajouté à
+ * l'énumération consulte par défaut, et c'est la bonne valeur par défaut —
+ * l'inverse (un rôle neuf qui ne voit rien) fabrique exactement les comptes
+ * inertes du 2026-08-17.
+ */
+export function peutConsulter(role: string | null | undefined): boolean {
+  return ROLES_CONSULTATION.includes(role as RoleAdmin);
+}
+
 export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdmin>>> = {
   contresigner: ["super_admin", "admin"],
   attester: ["super_admin", "admin", "responsable_qualite"],

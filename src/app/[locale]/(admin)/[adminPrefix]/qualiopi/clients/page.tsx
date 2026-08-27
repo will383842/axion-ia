@@ -7,9 +7,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
@@ -18,6 +16,8 @@ import { listClients } from "@/server/qualiopi/crm/clients";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { Hash, Users, FileText, CheckCircle2 } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/ui";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -55,10 +55,9 @@ interface PageProps {
 export default async function QualiopiClientsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const { q } = await searchParams;
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const recherche = (q ?? "").trim();
