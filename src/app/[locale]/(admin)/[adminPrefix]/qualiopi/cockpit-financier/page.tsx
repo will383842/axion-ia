@@ -229,7 +229,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
       </div>
 
       {nbSansCout > 0 && (
-        <p className="mb-[var(--space-admin-6)] flex items-center gap-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
+        <p className="mb-[var(--space-admin-6)] flex items-center gap-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning-fg)]">
           <AlertTriangle className="h-4 w-4" aria-hidden />
           {/* « 1 session(s) réalisée(s) » : deux pluriels entre parenthèses dans
               l'avertissement qui dit que le chiffre affiché juste au-dessus est
@@ -286,7 +286,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
                     {euros(s.coutFormateurCents)}
                     {!s.coutCalcule ? (
                       <span
-                        className="ml-1 text-[color:var(--color-admin-warning)]"
+                        className="ml-1 text-[color:var(--color-admin-warning-fg)]"
                         title="Aucune ligne de rémunération — coût non calculé"
                       >
                         *
