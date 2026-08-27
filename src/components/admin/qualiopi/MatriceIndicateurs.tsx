@@ -36,14 +36,14 @@ function libelleCritere(c: number): string {
 function StatutBadge({ statut }: { statut: IndicateurManifeste["statut"] }): React.ReactElement {
   if (statut === "couvert") {
     return (
-      <span className="inline-flex items-center rounded-full bg-[color:var(--color-admin-success-subtle,color-mix(in_srgb,var(--color-admin-success)_15%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-success)]">
+      <span className="inline-flex items-center rounded-full bg-[color:var(--color-admin-success-subtle,color-mix(in_srgb,var(--color-admin-success)_15%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-success-fg)]">
         Couvert
       </span>
     );
   }
   if (statut === "a_completer") {
     return (
-      <span className="inline-flex items-center rounded-full bg-[color:var(--color-admin-warning-subtle,color-mix(in_srgb,var(--color-admin-warning)_15%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-warning)]">
+      <span className="inline-flex items-center rounded-full bg-[color:var(--color-admin-warning-subtle,color-mix(in_srgb,var(--color-admin-warning)_15%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-warning-fg)]">
         À compléter
       </span>
     );
@@ -97,8 +97,18 @@ function compteEtAffichage(doc: IndicateurManifeste["documents"][number]): strin
 /** Étoile « NC majeure » commune aux deux vues. */
 function SuperStar(): React.ReactElement {
   return (
+    // 🔴 `role="img"` AJOUTÉ le 2026-08-27. `aria-label` sur un `<span>` SANS
+    // rôle est INTERDIT par la spécification ARIA : un `<span>` nu n'expose
+    // aucun rôle, donc rien à nommer — et un lecteur d'écran ignore le nom, ou
+    // pire, annonce le contenu brut. `axe` le relevait 17 fois sur le MODE
+    // AUDITEUR, c'est-à-dire l'écran que le certificateur lit le jour de sa
+    // venue : l'étoile « NC majeure » n'était annoncée à personne.
+    //
+    // `role="img"` est le rôle juste ici : le contenu est une icône décorative
+    // (`aria-hidden`), et le nom accessible porte à lui seul l'information.
     <span
       title="NC majeure en audit"
+      role="img"
       className="ml-1 text-[color:var(--color-admin-destructive)]"
       aria-label="Indicateur critique (NC majeure)"
     >
