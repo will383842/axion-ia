@@ -210,6 +210,57 @@ describe("poserIndisponibilite", () => {
     expect(String(corps["description"])).toContain(MARQUEUR_CONSOLE);
   });
 
+  it("le motif devient le titre et la note descend sous le marqueur", async () => {
+    // Les deux champs libres de la console (2026-08-27). L'action serveur les
+    // acceptait depuis le premier jour, mais le formulaire envoyait « Indisponible »
+    // en dur : tous les blocages portaient le même nom dans Google Agenda et sur
+    // l'iPhone, et rien ne distinguait un déjeuner client d'un congé.
+    let corps: Record<string, unknown> = {};
+    fetchMock.mockImplementation((url: string, init?: RequestInit) => {
+      if (url.includes("oauth2.googleapis.com/token")) {
+        return Promise.resolve(jsonRes({ access_token: "jeton-test", expires_in: 3600 }));
+      }
+      corps = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      return Promise.resolve(jsonRes({ id: "nouvel-id", htmlLink: "https://cal/x" }));
+    });
+
+    const res = await poserIndisponibilite({
+      titre: "Déjeuner client Délifrance",
+      note: "Restaurant côté gare, prévoir 30 min de trajet.",
+      debut: new Date("2026-09-08T10:30:00.000Z"),
+      fin: new Date("2026-09-08T12:30:00.000Z"),
+    });
+
+    expect(res.ok).toBe(true);
+    expect(corps["summary"]).toBe("Déjeuner client Délifrance");
+    const description = String(corps["description"]);
+    // La note ne remplace JAMAIS le marqueur : c'est lui qui rend le blocage
+    // reconnaissable et donc retirable depuis la console.
+    expect(description).toContain(MARQUEUR_CONSOLE);
+    expect(description).toContain("Restaurant côté gare");
+  });
+
+  it("sans note, la description garde le marqueur et rien de plus", async () => {
+    let corps: Record<string, unknown> = {};
+    fetchMock.mockImplementation((url: string, init?: RequestInit) => {
+      if (url.includes("oauth2.googleapis.com/token")) {
+        return Promise.resolve(jsonRes({ access_token: "jeton-test", expires_in: 3600 }));
+      }
+      corps = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      return Promise.resolve(jsonRes({ id: "nouvel-id", htmlLink: "https://cal/x" }));
+    });
+
+    await poserIndisponibilite({
+      titre: "Indisponible",
+      debut: new Date("2026-09-08T10:30:00.000Z"),
+      fin: new Date("2026-09-08T12:30:00.000Z"),
+    });
+
+    // Pas de « undefined » ni de ligne vide traînante dans un texte que Will lira
+    // dans son agenda.
+    expect(String(corps["description"])).not.toContain("undefined");
+  });
+
   it("un échec revient avec sa cause, sans exception", async () => {
     routeFetch(() => jsonRes({ error: { message: "Insufficient permission" } }, 403));
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
