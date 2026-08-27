@@ -614,9 +614,9 @@ export default async function SessionHubPage({ params }: PageProps) {
             </p>
           </div>
 
-          {/* Participants */}
+          {/* Stagiaires — « participant » reste au marketing public, jamais en console. */}
           <div>
-            <p className={infoLabelCls}>Participants</p>
+            <p className={infoLabelCls}>Stagiaires</p>
             <p className={infoValueCls}>
               {trainingSession._count.enrollments} inscrits / {trainingSession.nbParticipantsPrevus}{" "}
               prévus

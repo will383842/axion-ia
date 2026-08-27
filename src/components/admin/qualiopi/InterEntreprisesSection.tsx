@@ -98,7 +98,7 @@ function EnrollmentRow({
           onChange={(e) => setFinancementType(e.target.value)}
           disabled={isPending}
           className={inputCls}
-          aria-label="Financement du participant"
+          aria-label="Financement du stagiaire"
         >
           <option value="">— Financement —</option>
           <option value="direct">Direct (employeur)</option>
