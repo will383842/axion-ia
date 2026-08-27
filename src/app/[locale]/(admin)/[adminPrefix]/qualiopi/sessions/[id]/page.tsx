@@ -286,6 +286,8 @@ export default async function SessionHubPage({ params }: PageProps) {
         statut: true,
         tauxPresencePct: true,
         adaptationsRealisees: true,
+        sortieAt: true,
+        sortieMotif: true,
         // Financement par participant (R-INTER)
         financementType: true,
         clientId: true,
@@ -418,6 +420,8 @@ export default async function SessionHubPage({ params }: PageProps) {
       statut: e.statut,
       tauxPresencePct: e.tauxPresencePct,
       adaptationsRealisees: e.adaptationsRealisees,
+      sortieAt: e.sortieAt?.toISOString() ?? null,
+      sortieMotif: e.sortieMotif,
       trainee: {
         id: e.trainee.id,
         nom: e.trainee.nom,

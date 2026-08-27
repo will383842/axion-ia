@@ -274,14 +274,43 @@ export function construireFixture(opts: { graine: number; maintenant: Date }): F
   );
 
   // ── Les inscriptions : plusieurs par stagiaire, plusieurs par session ──────
+  // 🔴 Une SORTIE se sème avec sa date et son motif (2026-08-27).
+  //
+  // La contrainte `enrollments_sortie_coherente_check` refuse desormais un
+  // `abandon`/`exclu` sans `sortie_at` ni `sortie_motif` — ET une inscription
+  // active qui porterait une date fantome. Ce tirage aleatoire aurait fait
+  // echouer toute la fixture des la premiere sortie tiree.
+  //
+  // 🔑 Les motifs sont VRAISEMBLABLES, pas decoratifs : cette fixture alimente
+  // l'ecran « Pourquoi ils abandonnent » du pilotage. Un semis a motif unique
+  // rendrait une liste a une seule ligne, et on croirait l'ecran casse.
+  const MOTIFS_SORTIE = [
+    "Emploi retrouve en cours de parcours",
+    "Raisons de sante",
+    "Contenu juge inadapte au poste",
+    "Absences repetees non justifiees",
+    "Mutation geographique",
+    "Financement OPCO refuse en cours de route",
+  ] as const;
+
   const inscriptions: Prisma.EnrollmentCreateManyInput[] = Array.from(
     { length: VOLUMES.inscriptions },
-    (_, i) => ({
-      id: identifiant(7, i),
-      sessionId: identifiant(6, i % VOLUMES.sessions),
-      traineeId: identifiant(5, (i * 7) % VOLUMES.stagiaires),
-      statut: choisir(r, ["planifiee", "presente", "abandon", "exclu"] as const),
-    }),
+    (_, i) => {
+      const statut = choisir(r, ["planifiee", "presente", "abandon", "exclu"] as const);
+      const sortie = statut === "abandon" || statut === "exclu";
+      return {
+        id: identifiant(7, i),
+        sessionId: identifiant(6, i % VOLUMES.sessions),
+        traineeId: identifiant(5, (i * 7) % VOLUMES.stagiaires),
+        statut,
+        ...(sortie
+          ? {
+              sortieAt: jourDecale(now, -entier(r, 1, 300)),
+              sortieMotif: choisir(r, MOTIFS_SORTIE),
+            }
+          : {}),
+      };
+    },
   );
 
   const documents: Prisma.DocumentGenereCreateManyInput[] = Array.from(
