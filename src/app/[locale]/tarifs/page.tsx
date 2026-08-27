@@ -176,8 +176,8 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Diagnostic" : "Diagnostic",
       title: serviceOfficial(SERVICE_BY_ID.audit, isFr),
       description: isFr
-        ? "4 niveaux pyramide TPE → ETI. Cartographie de vos opportunités IA chiffrées action par action."
-        : "4-level pyramid SMB → mid-cap. Map of your AI opportunities, costed action by action.",
+        ? "4 niveaux, de la PME au grand groupe. Cartographie de vos opportunités IA chiffrées action par action."
+        : "4-level pyramid SME → large group. Map of your AI opportunities, costed action by action.",
       tiers: AUDIT_TIERS,
       ctaLabel: isFr ? "Voir les 4 audits" : "See the 4 audits",
     },

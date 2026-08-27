@@ -174,8 +174,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Audit Will 2026-05-27 : éviter description boilerplate, utiliser seoHook pour
   // différencier les 1842 villes qui ont un hook sectoriel auto-généré.
   const fallbackFr = seoHook
-    ? `Axion-IA à ${ville.nameFr} (${region.nameFr}) : audit IA, formation, implémentation, coaching 1-to-1 et plateformes web/SaaS pour ${seoHook}. TPE, PME, ETI.`
-    : `Axion-IA à ${ville.nameFr} (${region.nameFr}) : audit IA, formation à l'IA, implémentation, coaching 1-to-1 dirigeants et plateformes web/SaaS IA. TPE, PME, ETI.`;
+    ? `Axion-IA à ${ville.nameFr} (${region.nameFr}) : audit IA, formation, implémentation, coaching 1-to-1 et plateformes web/SaaS pour ${seoHook}. PME, ETI, grands groupes.`
+    : `Axion-IA à ${ville.nameFr} (${region.nameFr}) : audit IA, formation à l'IA, implémentation, coaching 1-to-1 dirigeants et plateformes web/SaaS IA. PME, ETI, grands groupes.`;
   const fallbackEn = seoHook
     ? `Axion-IA in ${ville.nameFr} (${region.nameFr}): AI audit, training, implementation, 1-to-1 coaching and AI web/SaaS platforms for ${seoHook}. SMBs, mid-market.`
     : `Axion-IA in ${ville.nameFr} (${region.nameFr}): AI audit, training, implementation, 1-to-1 executive coaching and AI web/SaaS platforms. SMBs, mid-market.`;
@@ -244,7 +244,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       slug: "interventions",
       labelFr: "Formations et interventions sur site",
       labelEn: "On-site interventions",
-      descFr: `Ateliers et formations IA sur site à ${v} — demi-journée à 2 jours, sur vos données réelles, avec vos équipes. TPE, PME, ETI et grandes entreprises.`,
+      descFr: `Ateliers et formations IA sur site à ${v} — demi-journée à 2 jours, sur vos données réelles, avec vos équipes. PME, ETI, grands groupes et TPE.`,
       descEn: `On-site AI workshops in ${v} — half-day to 2 days, on your real data, with your teams. Micro-businesses, SMBs, mid-market, large enterprises.`,
       mainServiceHref: "/formations",
     },
@@ -252,7 +252,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       slug: "un-a-un",
       labelFr: "Accompagnement 1-to-1",
       labelEn: "1-to-1 coaching",
-      descFr: `Journée 1-to-1 avec Williams à ${v} — cartographie IA de vos processus et 3 chantiers chiffrés, sans engagement. Dirigeants TPE, PME, ETI.`,
+      descFr: `Journée 1-to-1 avec Williams à ${v} — cartographie IA de vos processus et 3 chantiers chiffrés, sans engagement. Dirigeants PME, ETI et grands groupes.`,
       descEn: `1-on-1 day with Williams in ${v} — AI mapping of your processes and 3 costed projects, no commitment. Leaders of SMBs and mid-market.`,
       mainServiceHref: "/un-a-un",
     },
@@ -260,7 +260,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       slug: "audits",
       labelFr: "Audit IA",
       labelEn: "AI Audit",
-      descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). TPE, PME, ETI, grandes entreprises.`,
+      descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). PME, ETI, grands groupes et TPE.`,
       descEn: `AI audit in ${v} — 3 costed projects, 6-month roadmap, same-day result (Flash) or 2-4 weeks (Strategic). Micro-businesses, SMBs, mid-market, large enterprises.`,
       mainServiceHref: "/audit",
     },
@@ -633,7 +633,7 @@ export default async function VilleHubPage({ params }: Props) {
                   {ville.nameFr} {isFr ? "et alentours" : "and surroundings"}
                 </span>
                 {isFr
-                  ? " : audit IA, formation à l'IA pour vos équipes, implémentation, coaching 1-to-1 dirigeants et plateformes/SaaS web IA. De la TPE à l'ETI."
+                  ? " : audit IA, formation à l'IA pour vos équipes, implémentation, coaching 1-to-1 dirigeants et plateformes/SaaS web IA. PME, ETI et grands groupes."
                   : ": AI audit, AI training for your teams, implementation, 1-to-1 executive coaching and AI web/SaaS platforms. From SME to mid-market."}
               </p>
               {/* Badges 5 services — pills TEINTÉS par service (icône + couleur
@@ -753,7 +753,7 @@ export default async function VilleHubPage({ params }: Props) {
             </h2>
             <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-base leading-relaxed sm:text-lg">
               {isFr
-                ? "Audit IA, formations et interventions sur site, implémentation, accompagnement 1-to-1 dirigeants, sites web et plateformes SaaS IA. Adapté aux TPE, PME, ETI et grandes entreprises."
+                ? "Audit IA, formations et interventions sur site, implémentation, accompagnement 1-to-1 dirigeants, sites web et plateformes SaaS IA. Adapté aux PME, ETI, grands groupes et TPE."
                 : "Audit, on-site engagement, implementation, 1-to-1 coaching, AI-augmented websites. Adapted to micro-businesses, SMBs, mid-market and large enterprises."}
             </p>
           </div>

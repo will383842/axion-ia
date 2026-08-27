@@ -331,7 +331,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
           title: "Génération d'articles SEO",
           benefit:
             "Votre site remonte sur Google sur vos mots-clés métier, sans payer 1 500 €/mois à une agence." /* price-exempt: coût agence SEO concurrente, pas un tarif Axion-IA */,
-          audience: "TPE → ETI",
+          audience: "PME → grands groupes",
         },
         {
           title: "Création de visuels produits",
@@ -697,7 +697,7 @@ export const AUTOMATISATIONS: ReadonlyArray<AutomatisationCategory> = [
           title: "Tableau de bord IA mis à jour automatiquement",
           benefit:
             "Chaque matin, vous voyez votre boîte en un coup d'œil : CA, marges, alertes, points à traiter aujourd'hui.",
-          audience: "TPE → ETI",
+          audience: "PME → grands groupes",
         },
         {
           title: "Analyse client automatique",

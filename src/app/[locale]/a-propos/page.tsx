@@ -103,7 +103,7 @@ export default async function About({ params }: Props) {
       ? "Axion-IA — Cabinet IA opérationnel B2B (siège Grenoble, France)"
       : "Axion-IA — Operational B2B AI consultancy (HQ Grenoble, France)",
     description: isFr
-      ? "Axion-IA est un cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès de TPE, PME, ETI et grands comptes : interventions IA, audits, implémentations, coaching 1-to-1 et sites web augmentés."
+      ? "Axion-IA est un cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès de PME, ETI, grands groupes et TPE : interventions IA, audits, implémentations, coaching 1-to-1 et sites web augmentés."
       : "Axion-IA is an operational AI consultancy headquartered in Grenoble (Auvergne-Rhône-Alpes), serving the whole of France — including Paris and the Île-de-France region — for SMBs, mid-caps and enterprises: AI sessions, audits, implementations, 1-to-1 coaching and AI-augmented websites.",
     areaServed: { type: "AdministrativeArea", name: "France" },
     address: {
@@ -156,13 +156,13 @@ export default async function About({ params }: Props) {
           id: "definition",
           question: "Qu'est-ce qu'Axion-IA ?",
           answer:
-            "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle, basé en France (siège à Grenoble). Il accompagne les TPE, PME, ETI et grands comptes sur l'audit IA, la formation, l'implémentation de solutions IA en production, le coaching 1-à-1 et les sites web augmentés, avec une approche centrée sur des résultats concrets et mesurables.",
+            "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle, basé en France (siège à Grenoble). Il accompagne les PME, ETI, grands groupes et TPE sur l'audit IA, la formation, l'implémentation de solutions IA en production, le coaching 1-à-1 et les sites web augmentés, avec une approche centrée sur des résultats concrets et mesurables.",
         },
         {
           id: "siege",
           question: "Où est le siège d'Axion-IA ?",
           answer:
-            "Le siège d'Axion-IA est à Grenoble (Auvergne-Rhône-Alpes), en France. C'est un cabinet IA opérationnel français qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès des TPE, PME, ETI et grands comptes.",
+            "Le siège d'Axion-IA est à Grenoble (Auvergne-Rhône-Alpes), en France. C'est un cabinet IA opérationnel français qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès des PME, ETI, grands groupes et TPE.",
         },
         {
           id: "couverture-paris",

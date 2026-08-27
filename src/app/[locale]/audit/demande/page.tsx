@@ -54,7 +54,7 @@ export default async function AuditRequest({ params }: Props) {
     },
     {
       icon: Building2,
-      label: isFr ? "TPE → grandes entreprises" : "Small → enterprise",
+      label: isFr ? "PME → grands groupes" : "SME → large groups",
     },
     {
       icon: Clock,
@@ -93,7 +93,7 @@ export default async function AuditRequest({ params }: Props) {
           </h1>
           <p className="text-fg-soft mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
             {isFr
-              ? "6 questions pour cadrer votre projet. Devis personnalisé à partir de 24-48 h ouvrées selon la complexité · TPE → ETI · France & international."
+              ? "6 questions pour cadrer votre projet. Devis personnalisé à partir de 24-48 h ouvrées selon la complexité · PME → grands groupes · France & international."
               : "6 questions to frame your project. Personalised quote from 24-48 business hours depending on complexity · Small → enterprise · France & worldwide."}
           </p>
 

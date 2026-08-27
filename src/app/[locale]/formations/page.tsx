@@ -282,7 +282,7 @@ export default async function FormationsHub({ params }: Props) {
       courseMode: ["Onsite"],
       duration: formationDureeIso(f.duree),
       audienceType: isFr
-        ? "Décideurs, managers, équipes opérationnelles TPE PME ETI grandes entreprises (B2B)"
+        ? "Décideurs, managers, équipes opérationnelles PME ETI grands groupes TPE (B2B)"
         : "Decision-makers, managers, operational teams SME mid-cap large enterprise (B2B)",
       about: "IA opérationnelle (ChatGPT, Claude, Gemini, méthode AXION)",
     }),
@@ -736,7 +736,7 @@ export default async function FormationsHub({ params }: Props) {
         titleEm={isFr ? "mensuelle" : "monthly"}
         description={
           isFr
-            ? "Pour les TPE, PME, ETI, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
+            ? "Pour les PME, ETI et grands groupes, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
             : "For SMEs, mid-caps and large companies, an expert AI trainer comes on site regularly, over 6, 12 or 24 months. Instant time savings measured at each session, business automations rolled out progressively, continuous exchanges between training days so you're never left alone."
         }
         contentClassName={TIGHT_X}
@@ -1171,7 +1171,7 @@ export default async function FormationsHub({ params }: Props) {
                     src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
                     alt={
                       isFr
-                        ? "Williams, fondateur Axion-IA et formateur IA — portrait posé devant olivier, ambiance méditerranée. Forme les équipes TPE, PME, ETI et grandes entreprises françaises avec une équipe de formateurs experts dédiés."
+                        ? "Williams, fondateur Axion-IA et formateur IA — portrait posé devant olivier, ambiance méditerranée. Forme les équipes des PME, ETI et grands groupes français avec une équipe de formateurs experts dédiés."
                         : "Williams, Axion-IA founder and AI trainer — portrait in front of olive tree, Mediterranean atmosphere. Trains French SME, mid-cap and large enterprise teams with a dedicated team of expert trainers."
                     }
                     width={800}
