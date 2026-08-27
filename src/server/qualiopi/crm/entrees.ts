@@ -191,9 +191,44 @@ export async function listEntreesRecentes(opts?: ListEntreesOpts): Promise<Entre
     .sort((a, b) => b.date.getTime() - a.date.getTime())
     .slice(0, limit);
 
-  // Annotation « client existant » : un seul findMany sur les emails distincts.
-  const cles = [...new Set(entrees.map((e) => emailCle(e.email)).filter((c): c is string => !!c))];
-  if (cles.length === 0) return entrees;
+  const parEmail = await clientsParEmail(entrees.map((e) => e.email));
+  if (parEmail.size === 0) return entrees;
+
+  return entrees.map((e) => {
+    const cle = emailCle(e.email);
+    const client = cle ? (parEmail.get(cle) ?? null) : null;
+    return client ? { ...e, clientExistant: client } : e;
+  });
+}
+
+/**
+ * Les clients CRM correspondant à une liste d'e-mails, indexés par e-mail
+ * NORMALISÉ (`emailCle` : trim + minuscules).
+ *
+ * ## Pourquoi c'est exporté
+ *
+ * Cette annotation était la seule valeur propre de l'écran « Entrées récentes ».
+ * Cet écran refaisait l'union appels + messages que la Boîte de réception fait
+ * déjà — quatre portes pour un seul geste (cf.
+ * `_AUDIT/RESERVATION-2026-08-26/UNE-SEULE-PORTE.md`). L'écran redirige
+ * désormais vers la Boîte de réception, qui reprend l'annotation **en appelant
+ * cette fonction**, pas en la recopiant.
+ *
+ * 🔑 Un prédicat recopié diverge au premier correctif. Ici, deux règles
+ * subtiles doivent rester communes aux deux appelants : la comparaison
+ * insensible à la casse, et « le PREMIER client créé gagne » en cas de doublon
+ * d'e-mail. Dupliquées, elles auraient fini par ne plus désigner le même client
+ * sur deux écrans qui montrent la même demande.
+ *
+ * Un seul `findMany` sur les e-mails distincts, quelle que soit la taille de la
+ * liste. **Stub-safe** : rend une Map vide plutôt que de lever.
+ */
+export async function clientsParEmail(
+  emails: ReadonlyArray<string | null | undefined>,
+): Promise<Map<string, ClientExistant>> {
+  const parEmail = new Map<string, ClientExistant>();
+  const cles = [...new Set(emails.map(emailCle).filter((c): c is string => !!c))];
+  if (cles.length === 0) return parEmail;
 
   let clients: Array<ClientExistant & { contactEmail: string | null }>;
   try {
@@ -206,10 +241,9 @@ export async function listEntreesRecentes(opts?: ListEntreesOpts): Promise<Entre
       orderBy: { createdAt: "asc" },
     });
   } catch {
-    return entrees;
+    return parEmail;
   }
 
-  const parEmail = new Map<string, ClientExistant>();
   for (const c of clients ?? []) {
     const cle = emailCle(c.contactEmail);
     // Premier client créé gagne en cas de doublon (orderBy createdAt asc).
@@ -217,12 +251,7 @@ export async function listEntreesRecentes(opts?: ListEntreesOpts): Promise<Entre
       parEmail.set(cle, { id: c.id, numero: c.numero, raisonSociale: c.raisonSociale });
     }
   }
-
-  return entrees.map((e) => {
-    const cle = emailCle(e.email);
-    const client = cle ? (parEmail.get(cle) ?? null) : null;
-    return client ? { ...e, clientExistant: client } : e;
-  });
+  return parEmail;
 }
 
 /**

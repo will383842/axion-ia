@@ -15,6 +15,7 @@ import { CircleDot, Mail, Mic, PhoneCall, TriangleAlert, UserPlus } from "lucide
 import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import { listInbox } from "@/features/admin-inbox/queries";
+import { clientsParEmail } from "@/server/qualiopi/crm/entrees";
 import {
   INBOX_CHANNEL_LABELS,
   INBOX_CHANNEL_ORDER,
@@ -89,6 +90,13 @@ export default async function InboxPage({
     page,
     pageSize: PAGE_SIZE,
   });
+
+  // Annotation « déjà client » — un seul `findMany` sur les e-mails de la page.
+  // ⚠️ La fonction est IMPORTÉE, jamais recopiée : deux règles doivent rester
+  // communes aux deux appelants (comparaison insensible à la casse, et « le
+  // premier client créé gagne » en cas de doublon d'e-mail). Dupliquées, elles
+  // finiraient par désigner deux clients différents pour la même demande.
+  const clientsCrm = await clientsParEmail(result.rows.map((r) => r.contactEmail));
 
   const keep = (extra: Record<string, string>): string => {
     const qs = new URLSearchParams(extra);
@@ -187,6 +195,32 @@ export default async function InboxPage({
       header: "Contexte",
       hiddenBelow: "lg",
       cell: (r) => r.context ?? <span className="text-[color:var(--color-admin-fg-muted)]">—</span>,
+    },
+    {
+      // Reprise de l'écran « Entrées récentes », dont c'était la SEULE valeur
+      // propre : dire tout de suite si l'expéditeur est déjà un client, pour
+      // qu'on ne le convertisse pas une seconde fois. Cet écran refaisait par
+      // ailleurs l'union appels + messages que cette page fait déjà — quatre
+      // portes pour un seul geste (UNE-SEULE-PORTE.md). Il redirige désormais ici.
+      key: "client",
+      header: "Client",
+      hiddenBelow: "lg",
+      cell: (r) => {
+        const client = r.contactEmail
+          ? (clientsCrm.get(r.contactEmail.trim().toLowerCase()) ?? null)
+          : null;
+        return client ? (
+          <Link
+            href={`/fr/${adminPrefix}/qualiopi/clients/${client.id}`}
+            className="whitespace-nowrap text-[color:var(--color-admin-accent)] hover:underline"
+            title={client.raisonSociale}
+          >
+            {client.numero}
+          </Link>
+        ) : (
+          <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+        );
+      },
     },
     {
       key: "status",

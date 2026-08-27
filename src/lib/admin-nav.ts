@@ -1021,15 +1021,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "catalogue",
     },
-    // Lot 3 (pont appel/contact → CRM) : appels Calendly + messages contact
-    // fusionnés, conversion 1 clic en client CRM puis devis pré-rempli.
-    {
-      href: `${base}/qualiopi/entrees`,
-      label: "Entrées récentes",
-      icon: "Inbox",
-      group: "qualiopi",
-      subGroup: "dossiers",
-    },
+    // 🔴 « Entrées récentes » RETIRÉE le 2026-08-27 — quatrième porte pour un
+    // seul geste. Elle refaisait l'union « appels + messages » que la Boîte de
+    // réception (`/contacts`) fait déjà : deux lectures des mêmes tables, sans
+    // moyen de savoir laquelle disait vrai quand elles divergeaient.
+    //
+    // Sa seule valeur propre — l'annotation « déjà client » — est reprise en
+    // COLONNE de la Boîte de réception. La route survit en 308 vers elle, comme
+    // les 11 routes du module Booking (marque-pages, liens en e-mail).
+    //
+    // Décision : `_AUDIT/RESERVATION-2026-08-26/UNE-SEULE-PORTE.md`.
     {
       href: `${base}/qualiopi/clients`,
       label: "Clients (CRM)",

@@ -13,7 +13,7 @@ import {
 } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 163 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES)", () => {
+  it("returns 162 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES) ; −1 Entrées récentes 2026-08-27 (quatrième porte pour lire une demande — redirige en 308 vers la Boîte de réception)", () => {
     const items = buildAdminNav("admin-test-prefix");
     // Base 131 − 14 module Prospection retiré 2026-07-08 (#278) = 117.
     // Refonte messagerie 2026-07-09 : 3 groupes distincts sortis de « main » /
@@ -135,7 +135,10 @@ describe("buildAdminNav SSOT", () => {
     // RGPD & sécurité). Distinct du groupe « Documents », qui porte les kits de
     // prestation et des fichiers sans date de péremption ; ici l'essentiel des
     // pièces périme, et c'est ce que l'écran surveille. = 163.
-    expect(items.length).toBe(163);
+    //
+    // 🔴 −1 le 2026-08-27 : « Entrées récentes » retirée (quatrième porte pour
+    // lire une demande, cf. UNE-SEULE-PORTE.md). = 162.
+    expect(items.length).toBe(162);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -446,6 +449,24 @@ describe("phase 2 structure — verrous", () => {
     ]) {
       expect(hrefs.has(`${base}${dead}`), `${dead} devrait avoir disparu`).toBe(false);
     }
+  });
+
+  it("🔴 « Entrées récentes » ne revient pas — une seule porte pour lire une demande", () => {
+    // Retirée le 2026-08-27. Elle refaisait l'union « appels + messages » que la
+    // Boîte de réception fait déjà : quatre portes pour un seul geste, dont deux
+    // lectures des mêmes tables sans moyen de départager quand elles divergent.
+    //
+    // ⚠️ Ce test verrouille les DEUX sens. Sans la seconde assertion, retirer
+    // AUSSI la Boîte de réception le laisserait vert : « aucune porte » passe
+    // exactement comme « une seule porte ».
+    expect(
+      hrefs.has(`${base}/qualiopi/entrees`),
+      "« Entrées récentes » est revenue dans la nav — voir UNE-SEULE-PORTE.md",
+    ).toBe(false);
+    expect(
+      hrefs.has(`${base}/contacts`),
+      "la porte CANONIQUE (Boîte de réception) a disparu : il n'en reste aucune",
+    ).toBe(true);
   });
 
   it("les doublons fusionnés (Vue d'ensemble, Conformité, kb-readonly) sont sortis de la nav", () => {
