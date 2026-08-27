@@ -210,7 +210,7 @@ export default async function PlanningDetailPage({
               </>
             )}
             {e.participants !== null && (
-              <Line label="Participants">
+              <Line label="Stagiaires">
                 {e.participants.inscrits} inscrit{e.participants.inscrits > 1 ? "s" : ""} /{" "}
                 {e.participants.prevus} prévu{e.participants.prevus > 1 ? "s" : ""}
                 {e.participants.reels !== null ? ` · ${e.participants.reels} réels` : ""}

@@ -1021,7 +1021,7 @@ export function VenteWizard({
                   />
                 </label>
                 <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-                  Participants prévus
+                  Stagiaires prévus
                   <input
                     type="number"
                     min={1}
@@ -1175,7 +1175,7 @@ export function VenteWizard({
                       </select>
                     </label>
                     <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-                      Participants prévus
+                      Stagiaires prévus
                       <input
                         type="number"
                         min={1}

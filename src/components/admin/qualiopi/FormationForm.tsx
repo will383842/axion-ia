@@ -437,7 +437,7 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
             {/* Niveau */}
             <div>
               <label htmlFor="ff-create-niveau" className={labelCls}>
-                Niveau des participants
+                Niveau des stagiaires
               </label>
               <select
                 id="ff-create-niveau"
@@ -704,7 +704,7 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
           {/* Niveau */}
           <div>
             <label htmlFor="ff-edit-niveau" className={labelCls}>
-              Niveau des participants
+              Niveau des stagiaires
             </label>
             <select
               id="ff-edit-niveau"

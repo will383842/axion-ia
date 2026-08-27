@@ -1344,86 +1344,167 @@ export function DocumentsSection({
               </select>
             </div>
 
-            {selectedEnrollmentId !== "" && (
-              <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
-                <EnrollmentDocButton
-                  label="Convocation"
-                  action={genererConvocationAction}
-                  enrollmentId={selectedEnrollmentId}
-                  onDone={handleDone}
-                  dejaGenereLe={genereStagiaireLe("convocation")}
-                />
-                <EnrollmentDocButton
-                  label="Grille d'évaluation"
-                  action={genererGrilleEvaluationAction}
-                  enrollmentId={selectedEnrollmentId}
-                  onDone={handleDone}
-                  dejaGenereLe={genereStagiaireLe("grille_evaluation")}
-                />
-                <EnrollmentDocButton
-                  label="Certificat de réalisation (R.6313-3)"
-                  action={genererCertificatRealisationAction}
-                  enrollmentId={selectedEnrollmentId}
-                  onDone={handleDone}
-                  dejaGenereLe={genereStagiaireLe("certificat_realisation")}
-                />
-                <EnrollmentDocButton
-                  label="Kit CPF / EDOF"
-                  action={genererKitCpfAction}
-                  enrollmentId={selectedEnrollmentId}
-                  onDone={handleDone}
-                  dejaGenereLe={genereStagiaireLe("kit_cpf")}
-                />
-                <EnrollmentDocButton
-                  label="Kit France Travail"
-                  action={genererKitFranceTravailAction}
-                  enrollmentId={selectedEnrollmentId}
-                  onDone={handleDone}
-                  dejaGenereLe={genereStagiaireLe("kit_france_travail")}
-                />
-                <EnrollmentDocButton
-                  label="Attestation de réalisation"
-                  action={genererAttestationAction}
-                  enrollmentId={selectedEnrollmentId}
-                  onDone={handleDone}
-                  dejaGenereLe={genereStagiaireLe("attestation", "attestation_partielle")}
-                />
-                <EnrollmentDocButton
-                  label="Contrat de formation (particulier, L.6353-3)"
-                  action={genererContratFormationAction}
-                  enrollmentId={selectedEnrollmentId}
-                  onDone={handleDone}
-                  dejaGenereLe={genereStagiaireLe("contrat")}
-                />
-                {/* 🔴 `D5-6-C1` (2026-08-21) — CE BOUTON N'EXISTAIT PAS.
-                    `genererAutorisationCaptationAction` était écrite, testée et
-                    complète — et n'était appelée de NULLE PART. Or tout le reste
-                    de la chaîne était en place : le libellé (plus haut dans ce
-                    fichier même), les parties signataires, la remise au portail,
-                    le gabarit PDF, le nom de fichier, la règle de relance.
-                    Seul le déclencheur manquait, et la pièce était donc
-                    impossible à produire.
-                    ⚠️ Elle est SÉPARÉE des contrats à dessein : un consentement
-                    doit être libre, et enfoui dans la convention le refus serait
-                    indissociable du refus de la formation. Sans ce bouton,
-                    filmer ou photographier une session ne reposait sur aucun
-                    consentement écrit (art. 9 C. civ. + RGPD). */}
-                <EnrollmentDocButton
-                  label="Autorisation de captation (image et voix)"
-                  action={genererAutorisationCaptationAction}
-                  enrollmentId={selectedEnrollmentId}
-                  onDone={handleDone}
-                  dejaGenereLe={genereStagiaireLe("autorisation_captation")}
-                />
-                {/* Export d'état (pas un document officiel numéroté) : fiche
-                    d'adaptation individuelle (A16/A9), téléchargée en PDF. */}
-                <PdfExportButton
-                  label="Fiche d'adaptation individuelle (PDF)"
-                  input={{ enrollmentId: selectedEnrollmentId }}
-                  action={genererFicheAdaptationAction}
-                />
-              </div>
-            )}
+            {selectedEnrollmentId !== "" &&
+              (() => {
+                // 🔴 Audit réservation 2026-08-26 — ce bloc était le SEUL à
+                // ignorer `pertinence-piece` : un « Contrat de formation
+                // (particulier) » restait proposé sur un dossier entreprise, un
+                // « Kit CPF » sur un financement direct. C'est mot pour mot la
+                // plainte de Will (« plein de boutons qui apparaissent même si
+                // ça ne correspond pas au client »). Même tri que le bloc
+                // Documents de session : attendues en avant, le reste REPLIÉ
+                // avec son motif — jamais masqué (masquer dur enverrait
+                // contourner l'outil).
+                const boutonsStagiaire: { type: DocumentType; el: React.ReactElement }[] = [
+                  {
+                    type: "convocation",
+                    el: (
+                      <EnrollmentDocButton
+                        key="convocation"
+                        label="Convocation"
+                        action={genererConvocationAction}
+                        enrollmentId={selectedEnrollmentId}
+                        onDone={handleDone}
+                        dejaGenereLe={genereStagiaireLe("convocation")}
+                      />
+                    ),
+                  },
+                  {
+                    type: "grille_evaluation",
+                    el: (
+                      <EnrollmentDocButton
+                        key="grille_evaluation"
+                        label="Grille d'évaluation"
+                        action={genererGrilleEvaluationAction}
+                        enrollmentId={selectedEnrollmentId}
+                        onDone={handleDone}
+                        dejaGenereLe={genereStagiaireLe("grille_evaluation")}
+                      />
+                    ),
+                  },
+                  {
+                    type: "certificat_realisation",
+                    el: (
+                      <EnrollmentDocButton
+                        key="certificat_realisation"
+                        label="Certificat de réalisation (R.6313-3)"
+                        action={genererCertificatRealisationAction}
+                        enrollmentId={selectedEnrollmentId}
+                        onDone={handleDone}
+                        dejaGenereLe={genereStagiaireLe("certificat_realisation")}
+                      />
+                    ),
+                  },
+                  {
+                    type: "kit_cpf",
+                    el: (
+                      <EnrollmentDocButton
+                        key="kit_cpf"
+                        label="Kit CPF / EDOF"
+                        action={genererKitCpfAction}
+                        enrollmentId={selectedEnrollmentId}
+                        onDone={handleDone}
+                        dejaGenereLe={genereStagiaireLe("kit_cpf")}
+                      />
+                    ),
+                  },
+                  {
+                    type: "kit_france_travail",
+                    el: (
+                      <EnrollmentDocButton
+                        key="kit_france_travail"
+                        label="Kit France Travail"
+                        action={genererKitFranceTravailAction}
+                        enrollmentId={selectedEnrollmentId}
+                        onDone={handleDone}
+                        dejaGenereLe={genereStagiaireLe("kit_france_travail")}
+                      />
+                    ),
+                  },
+                  {
+                    type: "attestation",
+                    el: (
+                      <EnrollmentDocButton
+                        key="attestation"
+                        label="Attestation de réalisation"
+                        action={genererAttestationAction}
+                        enrollmentId={selectedEnrollmentId}
+                        onDone={handleDone}
+                        dejaGenereLe={genereStagiaireLe("attestation", "attestation_partielle")}
+                      />
+                    ),
+                  },
+                  {
+                    type: "contrat",
+                    el: (
+                      <EnrollmentDocButton
+                        key="contrat"
+                        label="Contrat de formation (particulier, L.6353-3)"
+                        action={genererContratFormationAction}
+                        enrollmentId={selectedEnrollmentId}
+                        onDone={handleDone}
+                        dejaGenereLe={genereStagiaireLe("contrat")}
+                      />
+                    ),
+                  },
+                  {
+                    // 🔴 `D5-6-C1` (2026-08-21) — ce bouton n'existait pas :
+                    // l'action était écrite, testée, appelée de nulle part.
+                    // ⚠️ SÉPARÉ des contrats à dessein : un consentement doit
+                    // être libre — enfoui dans la convention, le refus serait
+                    // indissociable du refus de la formation (art. 9 C. civ.).
+                    type: "autorisation_captation",
+                    el: (
+                      <EnrollmentDocButton
+                        key="autorisation_captation"
+                        label="Autorisation de captation (image et voix)"
+                        action={genererAutorisationCaptationAction}
+                        enrollmentId={selectedEnrollmentId}
+                        onDone={handleDone}
+                        dejaGenereLe={genereStagiaireLe("autorisation_captation")}
+                      />
+                    ),
+                  },
+                ];
+                const attenduesStagiaire = boutonsStagiaire.filter((b) =>
+                  pieceMiseEnAvant(b.type, contexte),
+                );
+                const autresStagiaire = boutonsStagiaire.filter(
+                  (b) => !pieceMiseEnAvant(b.type, contexte),
+                );
+                return (
+                  <>
+                    <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                      {attenduesStagiaire.map((b) => b.el)}
+                      {/* Export d'état (pas un document officiel numéroté) :
+                          fiche d'adaptation individuelle (A16/A9), toujours
+                          proposée — l'adaptation ne dépend pas du financement. */}
+                      <PdfExportButton
+                        label="Fiche d'adaptation individuelle (PDF)"
+                        input={{ enrollmentId: selectedEnrollmentId }}
+                        action={genererFicheAdaptationAction}
+                      />
+                    </div>
+                    {autresStagiaire.length > 0 && (
+                      <details className="mt-[var(--space-admin-4)]">
+                        <summary className="cursor-pointer text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                          Autres pièces ({autresStagiaire.length}) — hors du cas de ce dossier
+                        </summary>
+                        <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                          {autresStagiaire.map((b) => (
+                            <div key={b.type} className="flex flex-col gap-[var(--space-admin-1)]">
+                              {b.el}
+                              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                                {motifRepli(b.type, contexte)}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </details>
+                    )}
+                  </>
+                );
+              })()}
           </>
         )}
       </div>

@@ -235,7 +235,7 @@ export function ImportReleveForm({
           {rapport.unmatched.length > 0 && (
             <div className="mt-[var(--space-admin-3)]">
               <p className="mb-1 text-[length:var(--text-admin-xs)] font-medium tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                Participants non rapprochés
+                Stagiaires non rapprochés
               </p>
               <ul className="space-y-1">
                 {rapport.unmatched.map((u, i) => (

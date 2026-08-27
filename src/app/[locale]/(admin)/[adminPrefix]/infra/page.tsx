@@ -479,7 +479,14 @@ export default async function AdminInfraPage({ params }: PageProps) {
     },
     {
       name: "Postgres axion-ia-db",
-      role: "Base de données prod (réservations, blog, users, FAQ, etc.)",
+      // Les « réservations » ont disparu avec le système Booking (PR 860) :
+      // une description d'infra qui nomme une table morte fait chercher ce qui
+      // n'existe plus.
+      //
+      // ⚠️ Écrire le numéro de PR avec un croisillon (« # » suivi de 860) fait
+      // rougir `anti-hex:check`, qui y lit une couleur hexadécimale à trois
+      // chiffres. La garde a raison : elle ne peut pas deviner l'intention.
+      role: "Base de données prod (sessions, inscriptions, messages, blog, FAQ, etc.)",
       externalUrl: `${process.env["COOLIFY_URL"] ?? "http://178.105.55.15:8000"}/project/wfm03z4asw5yf5mro2fk6gp9`,
       status: process.env["DATABASE_URL"] ? "ok" : "not-configured",
       detail: process.env["DATABASE_URL"] ? "DATABASE_URL configuré" : "DATABASE_URL manquant",

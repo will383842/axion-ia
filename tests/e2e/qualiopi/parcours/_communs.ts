@@ -466,8 +466,17 @@ export async function creerSession(
   ).fill(horodatage(debutDansJours + dureeJours - 1, "17:00"));
 
   if (options.participants !== undefined) {
-    await (
-      await champEtiquete(page, "session-participants", /participants/i)
+    await // ⚠️ L'identifiant DOM reste `session-participants` (il n'est pas lu par
+    // un humain), mais le LIBELLÉ dit désormais « Nb stagiaires prévus » :
+    // « participant » est resté au marketing public, la console dit
+    // « stagiaire » (cf. _AUDIT/RESERVATION-2026-08-26/LEXIQUE.md).
+    //
+    // Ce test est le SEUL qui verrouillait ce libellé, et il l'a fait savoir
+    // en rougissant — un `grep` sur les specs ne l'avait pas trouvé, parce
+    // que le motif est passé en ARGUMENT et n'apparaît nulle part comme
+    // texte dans le fichier de test.
+    (
+      await champEtiquete(page, "session-participants", /stagiaires/i)
     ).fill(String(options.participants));
   }
   if (options.montantHt !== undefined) {

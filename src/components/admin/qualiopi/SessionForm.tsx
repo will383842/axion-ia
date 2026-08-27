@@ -584,7 +584,7 @@ export function SessionForm({
       <div className="mb-[var(--space-admin-5)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
         <div>
           <label className={labelCls} htmlFor="session-participants">
-            Nb participants prévus <span aria-hidden="true">*</span>
+            Nb stagiaires prévus <span aria-hidden="true">*</span>
           </label>
           <input
             id="session-participants"

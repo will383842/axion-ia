@@ -110,6 +110,18 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   TURNSTILE_SECRET_KEY: { tiers: "Cloudflare" },
   CALENDLY_API_TOKEN: { tiers: "Calendly" },
   CALENDLY_WEBHOOK_SIGNING_KEY: { tiers: "Calendly" },
+
+  // ── Agenda Google de la console (2026-08-26) ──────────────────────────────
+  // Le tiers est Google, et il n'est PAS visible depuis une CSP : ces appels
+  // partent du serveur, pas du navigateur. C'est exactement le trou que cette
+  // garde-ci couvre — `subprocessors-coherence.spec.ts`, adossé à `csp.ts`, ne
+  // pouvait pas le voir.
+  GOOGLE_CALENDAR_CLIENT_EMAIL: { tiers: "Google" },
+  GOOGLE_CALENDAR_PRIVATE_KEY: { tiers: "Google" },
+  GOOGLE_CALENDAR_ID: {
+    exempt:
+      "Identifiant de l'agenda visé, côté Axion-IA. Le tiers est déclaré par les deux variables ci-dessus.",
+  },
   HETZNER_STORAGE_KEY: { tiers: "Hetzner" },
   HETZNER_STORAGE_SECRET: { tiers: "Hetzner" },
   SENTRY_DSN: { tiers: "Sentry" },
