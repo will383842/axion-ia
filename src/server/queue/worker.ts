@@ -55,6 +55,9 @@ import { startContentRefreshWorker } from "./workers/content-refresh-worker";
 import { startFormationEngineWorker } from "./workers/qualiopi-formation-engine-worker";
 // Qualiopi — Formation Crons T6 (auto-transitions session : planifiee→en_cours, en_cours→realisee).
 import { startFormationCronsWorker } from "./workers/qualiopi-formation-crons-worker";
+// Qualiopi — Production documentaire au jalon (S5, 2026-08-26) : queue
+// `documents-auto`, horaire à :15, décision par le module pur gardé G1-G5.
+import { startQualiopiDocumentsWorker } from "./workers/qualiopi-documents-worker";
 // Chatbot (T-05) — env-gated CHATBOT_ENABLED (réversible sans redeploy).
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
 import { bootRepeatableJobs } from "./queues";
@@ -143,6 +146,10 @@ async function main() {
     startFormationEngineWorker(),
     // Qualiopi Formation Crons T6 — auto-transitions session (daily 08:00 UTC).
     startFormationCronsWorker(),
+    // Qualiopi S5 — production documentaire au jalon (horaire :15). Produit
+    // les pièces « attendues » de chaque session au moment où leur jalon les
+    // rend dues (module pur production-au-jalon.ts, gardes G1-G5).
+    startQualiopiDocumentsWorker(),
     // Chatbot ingest — démarre uniquement si le flag est explicitement activé.
     ...(process.env.CHATBOT_ENABLED === "true" ? [startChatbotIngestWorker()] : []),
   ];

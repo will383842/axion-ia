@@ -211,3 +211,29 @@ export function modeParDefaut(template: string): ModeEnvoi {
 export function estEmailQualiopiAutomatique(template: string): boolean {
   return EMAILS_AUTOMATIQUES_PAR_DEFAUT.includes(template);
 }
+
+/**
+ * S5 (2026-08-26) — les natures RÉGLEMENTAIRES que ces règles retiennent.
+ *
+ * La règle NOMMÉE reste souveraine (cf. `resoudreModeEnvoi` : on peut vouloir
+ * relire une convocation précise, c'est un choix conscient) — on n'interdit
+ * rien. Mais un gel de la chaîne réglementaire ne doit jamais être SILENCIEUX :
+ * la page des règles affiche un bandeau persistant tant qu'une telle règle est
+ * active, et le formulaire avertit au moment de l'enregistrement. Ce prédicat
+ * est leur source unique.
+ *
+ * ⚠️ Les règles attrape-tout (`template: null`) ne sont PAS signalées : la
+ * garde de résolution les neutralise déjà pour la chaîne Qualiopi — elles ne
+ * retiennent donc rien, et un bandeau qui crie à tort cesse d'être lu.
+ */
+export function reglesRetenantDesEnvoisReglementaires(
+  regles: ReadonlyArray<Pick<RegleAutomatisation, "template" | "mode">>,
+): string[] {
+  const natures = regles
+    .filter(
+      (r) =>
+        r.mode === "validation" && r.template !== null && estEmailQualiopiAutomatique(r.template),
+    )
+    .map((r) => r.template as string);
+  return [...new Set(natures)];
+}

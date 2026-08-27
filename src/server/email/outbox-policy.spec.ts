@@ -14,6 +14,7 @@ import {
   resoudreModeEnvoi,
   modeParDefaut,
   estEmailQualiopiAutomatique,
+  reglesRetenantDesEnvoisReglementaires,
   type RegleAutomatisation,
 } from "./outbox-policy";
 
@@ -175,6 +176,57 @@ describe("resoudreModeEnvoi — précédence", () => {
   it("une règle client « toutes natures » prime sur une règle globale nominative", () => {
     const regles = [global("devis-envoi", "validation"), client(null, "auto")];
     expect(resoudreModeEnvoi("devis-envoi", regles)).toBe("auto");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// S5 (2026-08-26) — le gel réglementaire par règle NOMMÉE devient CONSCIENT.
+//
+// La règle nommée reste souveraine (c'est documenté et testé ci-dessus) : on
+// n'interdit rien. Mais une règle qui retient des convocations ou des
+// attestations doit être VISIBLE — bandeau persistant sur la page des règles
+// et avertissement à l'enregistrement. Cette fonction est le prédicat unique
+// que la page et le formulaire consomment.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("reglesRetenantDesEnvoisReglementaires — le gel se voit", () => {
+  it("signale une règle NOMMÉE qualiopi en mode validation", () => {
+    expect(
+      reglesRetenantDesEnvoisReglementaires([
+        { template: "qualiopi-convocation", mode: "validation" },
+      ]),
+    ).toEqual(["qualiopi-convocation"]);
+  });
+
+  it("ne signale PAS une règle attrape-tout : la garde de résolution la neutralise déjà", () => {
+    // `resoudreModeEnvoi` force « auto » pour la chaîne réglementaire face à
+    // une règle sans template : elle ne retient donc rien — l'afficher crierait
+    // à tort, et un bandeau qui crie à tort cesse d'être lu.
+    expect(reglesRetenantDesEnvoisReglementaires([{ template: null, mode: "validation" }])).toEqual(
+      [],
+    );
+  });
+
+  it("ne signale PAS une règle commerciale en validation (c'est son régime nominal)", () => {
+    expect(
+      reglesRetenantDesEnvoisReglementaires([{ template: "devis-envoi", mode: "validation" }]),
+    ).toEqual([]);
+  });
+
+  it("ne signale PAS une règle qualiopi repassée en auto", () => {
+    expect(
+      reglesRetenantDesEnvoisReglementaires([{ template: "qualiopi-convocation", mode: "auto" }]),
+    ).toEqual([]);
+  });
+
+  it("dédoublonne : la même nature gelée en global ET par client = une seule mention", () => {
+    expect(
+      reglesRetenantDesEnvoisReglementaires([
+        { template: "qualiopi-attestation-disponible", mode: "validation" },
+        { template: "qualiopi-attestation-disponible", mode: "validation" },
+        { template: "qualiopi-rappel-j7", mode: "validation" },
+      ]),
+    ).toEqual(["qualiopi-attestation-disponible", "qualiopi-rappel-j7"]);
   });
 });
 

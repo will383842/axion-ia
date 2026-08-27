@@ -110,7 +110,12 @@ export type WorkerName =
   | "crm-sync"
   // Lot L4 2026-08-14 — intégration au vivier à échéance de la fenêtre
   // d'opposition de 30 jours (passage quotidien)
-  | "vivier-crons";
+  | "vivier-crons"
+  // Qualiopi S5 2026-08-26 — production documentaire au jalon (queue horaire
+  // `documents-auto`). Nom distinct de `formation-crons` : le rendu react-pdf
+  // et l'upload R2 echouent pour d'autres raisons que les crons d'e-mail, et
+  // un fingerprint partage les aurait melanges dans le meme groupe Sentry.
+  | "documents-auto";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
