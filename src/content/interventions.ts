@@ -645,7 +645,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         priceTiers: APPROFONDIE_PRICE_TIERS_FR,
         groupSize: "2 à 15 personnes",
         format: "Sur site · France & international",
-        audience: "Équipes opérationnelles complètes · TPE, PME, ETI",
+        audience: "Équipes opérationnelles complètes · PME, ETI, grands groupes",
         outcomes: [
           "Vos équipes maîtrisent l'IA appliquée à leurs métiers — pas de théorie générique",
           "Co-construction de 10 à 20 méthodes opérationnelles sur leurs vrais outils",

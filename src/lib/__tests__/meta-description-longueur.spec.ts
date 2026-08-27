@@ -49,7 +49,7 @@ const APP = path.resolve(process.cwd(), "src", "app");
  */
 const DETTE: Readonly<Record<string, number>> = {
   "src/app/[locale]/a-propos/page.tsx": 288,
-  "src/app/[locale]/implantations/page.tsx": 237,
+  "src/app/[locale]/implantations/page.tsx": 218,
   "src/app/[locale]/interventions/coaching-decouverte/page.tsx": 233,
   "src/app/[locale]/stack-ia/page.tsx": 221,
   "src/app/[locale]/appel/page.tsx": 212,

@@ -184,7 +184,7 @@ export default async function BlogCategoryPage({ params }: Props) {
     // Résumé answer-ready (schema.org `abstract`) — excerptable par Perplexity /
     // Claude / AI Overviews (audit AEO 2026-06-25, parité hub).
     abstract: isFr
-      ? `${label} sur le blog Axion-IA : méthodologie et cas d'usage IA concrets pour TPE et PME françaises (${posts.length} article${posts.length > 1 ? "s" : ""}).`
+      ? `${label} sur le blog Axion-IA : méthodologie et cas d'usage IA concrets pour PME, ETI et grands groupes français (${posts.length} article${posts.length > 1 ? "s" : ""}).`
       : `${label} on the Axion-IA blog: concrete AI methodology and use cases for French SMBs (${posts.length} article${posts.length > 1 ? "s" : ""}).`,
     // Fraîcheur + E-E-A-T (audit AEO 2026-06-25) — date du dernier article +
     // revue éditoriale rattachée au nœud Person canonique du fondateur (référence
@@ -358,7 +358,7 @@ export default async function BlogCategoryPage({ params }: Props) {
             className="text-fg text-base leading-relaxed md:text-lg"
           >
             {isFr
-              ? `Les articles « ${label} » d'Axion-IA réunissent une méthodologie éprouvée et des cas d'usage IA concrets, issus de missions réelles auprès des TPE et PME françaises. Parcourez les ${posts.length} article${posts.length > 1 ? "s" : ""} ci-dessous ou affinez votre recherche par mots-clés.`
+              ? `Les articles « ${label} » d'Axion-IA réunissent une méthodologie éprouvée et des cas d'usage IA concrets, issus de missions réelles auprès des PME, ETI et grands groupes français. Parcourez les ${posts.length} article${posts.length > 1 ? "s" : ""} ci-dessous ou affinez votre recherche par mots-clés.`
               : `Axion-IA's « ${label} » articles bundle a proven methodology and concrete AI use cases drawn from real field missions with French SMBs. Browse the ${posts.length} article${posts.length > 1 ? "s" : ""} below or refine your search by keywords.`}
           </p>
           <p className="text-fg-muted mt-4 text-sm">

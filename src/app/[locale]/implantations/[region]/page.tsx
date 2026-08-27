@@ -773,7 +773,7 @@ export default async function RegionPage({ params }: Props) {
         titleEm={isFr ? "Parlons-en." : "Let's talk."}
         description={
           isFr
-            ? `TPE, PME, ETI ou grande entreprise — en ${region.nameFr} comme partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous.`
+            ? `PME, ETI, grand groupe ou TPE — en ${region.nameFr} comme partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous.`
             : `Micro-business, SMB, mid-market or large enterprise — in ${region.nameFr} as anywhere in France, you get the same premium senior standard. Public pricing, real-time calendar, your data stays yours.`
         }
         cta={

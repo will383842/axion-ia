@@ -52,7 +52,7 @@ export const WILLIAMS_TAGLINE =
  * puis l'étendue de l'offre. Aucun pronom en ouverture, aucune référence à
  * « cette page » : une citation extraite du contexte doit rester vraie.
  */
-export const WILLIAMS_LEAD = `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France. Il conçoit et pilote des transformations par l'IA à gains rapides et mesurables pour les TPE, PME, ETI et grands comptes, sur cinq métiers : audit IA, formation, coaching individuel de dirigeants, implémentation en code source dont l'entreprise reste propriétaire, et automatisation des processus.`;
+export const WILLIAMS_LEAD = `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France. Il conçoit et pilote des transformations par l'IA à gains rapides et mesurables pour les PME, ETI et grands groupes, TPE comprises, sur cinq métiers : audit IA, formation, coaching individuel de dirigeants, implémentation en code source dont l'entreprise reste propriétaire, et automatisation des processus.`;
 
 /**
  * Second paragraphe — la DOCTRINE, en propre. C'est le passage qui différencie
@@ -75,7 +75,7 @@ export const WILLIAMS_IDENTITE: ReadonlyArray<{ terme: string; valeur: string }>
   { terme: "Entreprise", valeur: "Axion-IA — agence d'intelligence artificielle opérationnelle" },
   { terme: "Siège", valeur: "Grenoble, Auvergne-Rhône-Alpes, France" },
   { terme: "Zone d'intervention", valeur: "France entière — sur site et à distance" },
-  { terme: "Clients", valeur: "TPE, PME, ETI et grands comptes, tous secteurs" },
+  { terme: "Clients", valeur: "PME, ETI, grands groupes et TPE, tous secteurs" },
   {
     terme: "Domaines",
     valeur:
@@ -284,7 +284,7 @@ export function buildWilliamsFaq({
     {
       id: "qui-est-williams-jullin",
       question: "Qui est Williams Jullin ?",
-      answer: `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble et qui intervient dans toute la France. Il accompagne les TPE, PME, ETI et grands comptes sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation d'IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats mesurés.`,
+      answer: `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble et qui intervient dans toute la France. Il accompagne les PME, les ETI et les grands groupes — ainsi que les TPE à fort potentiel — sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation d'IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats mesurés.`,
     },
     {
       id: "que-fait-axion-ia",

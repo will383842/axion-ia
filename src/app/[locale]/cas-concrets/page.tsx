@@ -287,7 +287,7 @@ export default async function CaseStudiesListing({ params }: Props) {
                 </CardTitle>
                 <CardDescription>
                   {isFr
-                    ? "TPE, PME, ETI, grand compte. Chacune a sa logique : volume, gouvernance, vélocité décision."
+                    ? "PME, ETI, grand groupe, TPE. Chacune a sa logique : volume, gouvernance, vélocité décision."
                     : "Small, SME, mid-cap, large account. Each has its logic: volume, governance, decision velocity."}
                 </CardDescription>
               </CardHeader>

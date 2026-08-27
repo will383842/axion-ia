@@ -534,7 +534,7 @@ export default async function MethodologyPage({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed sm:text-xl">
                 {isFr
-                  ? "Méthodologie Axion-IA, éprouvée sur 50+ entreprises de la TPE au mid-market. On démontre sur vos données, pas sur des démos vendeur."
+                  ? "Méthodologie Axion-IA, éprouvée sur 50+ entreprises de la PME au grand groupe. On démontre sur vos données, pas sur des démos vendeur."
                   : "Axion-IA methodology, proven on 50+ companies from small business to mid-market. We demonstrate on your data, not vendor demos."}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">

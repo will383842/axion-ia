@@ -248,7 +248,7 @@ export const SUR_MESURE: ReadonlyArray<SurMesureMeta> = [
     labelFr: "Formation 100 % sur mesure",
     dureeFr: "toute durée, tout thème",
     descriptionFr:
-      "Nous construisons votre formation de A à Z : contenu, durée, format, équipes concernées — de la TPE au grand compte. Combinaisons métier × secteur possibles, multi-sites, secteurs réglementés.",
+      "Nous construisons votre formation de A à Z : contenu, durée, format, équipes concernées — de la PME au grand groupe. Combinaisons métier × secteur possibles, multi-sites, secteurs réglementés.",
   },
 ];
 
