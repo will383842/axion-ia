@@ -76,6 +76,10 @@ function apiData(overrides: Record<string, unknown> = {}) {
       cancelUrl: "https://calendly.com/cancellations/abc",
       rescheduleUrl: null,
       eventTypeName: "Premier contact — 30 min",
+      raw: {
+        invitee: { status: "active", name: "Jean Dupont" },
+        event: { status: "active", name: "Premier contact" },
+      },
       ...overrides,
     },
   };
@@ -277,10 +281,16 @@ describe("enrichCalendlyEvent", () => {
     );
     fetchInviteeMock.mockResolvedValueOnce(apiData({ timezone: null, calendlyStatus: "active" }));
     const res = await enrichCalendlyEvent("evt_1");
+    // Zéro champ ANNONCÉ : rien de ce qui compte pour la fiche n'a bougé.
     expect(res).toEqual({ ok: true, updatedFields: [] });
-    // L'horodatage seul est écrit : la tentative a bien eu lieu.
+    // Deux champs écrits malgré tout, et c'est voulu (2026-08-27) :
+    //   · `enrichedAt`, l'horodatage qui prouve que la tentative a eu lieu ;
+    //   · `rawPayload`, la charge brute remontée — elle n'était écrite qu'à la
+    //     capture et finissait par contredire le statut affiché juste au-dessus.
+    // Ni l'un ni l'autre n'est un CHANGEMENT de la fiche, d'où leur absence de
+    // `updatedFields`.
     const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
-    expect(Object.keys(data)).toEqual(["enrichedAt"]);
+    expect(Object.keys(data).sort()).toEqual(["enrichedAt", "rawPayload"]);
   });
 });
 
@@ -403,5 +413,87 @@ describe("enrichCalendlyEvent — issue du RDV vers le CRM, sans geste humain", 
     const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
     expect(data["status"]).toBe("no_show");
     expect((syncCrmMock.mock.calls[0]?.[0] as { kind: string }).kind).toBe("no_show");
+  });
+  // ── La charge brute, et le piege qu'elle cache ────────────────────────────
+  //
+  // Jusqu'au 2026-08-27, `rawPayload` n'etait ecrit qu'a la CAPTURE et jamais
+  // rafraichi. Une fiche affichait donc « Annule » au-dessus d'un JSON qui
+  // disait encore `"status": "active"` — verifie ce jour-la sur trois sources,
+  // dont l'agenda Google, ou l'evenement avait bel et bien disparu.
+
+  it("🔴 remonte la charge brute pour qu'elle cesse de contredire le statut", async () => {
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({ rawPayload: { status: "active", _capture: "vieille" } }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(
+      apiData({
+        calendlyStatus: "canceled",
+        raw: {
+          invitee: { status: "canceled" },
+          event: { status: "canceled" },
+        },
+      }),
+    );
+
+    await enrichCalendlyEvent("evt_1");
+    const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    const brut = data["rawPayload"] as Record<string, unknown>;
+
+    expect(data["status"]).toBe("canceled");
+    // Le brut dit la meme chose que la fiche, et non plus le contraire.
+    expect((brut["invitee"] as Record<string, unknown>)["status"]).toBe("canceled");
+    expect(brut["_refreshedAt"]).toEqual(expect.any(String));
+  });
+
+  it("🔴 PRESERVE `_ipHash` — sinon le garde-fou anti-abus s'eteint en silence", async () => {
+    // `api/calendly/client-event` interroge `rawPayload.path(["_ipHash"])` pour
+    // reconnaitre un renvoi du meme visiteur. Ecraser la charge brute sans
+    // reporter cette cle ne casserait RIEN de visible : la requete ne trouverait
+    // simplement plus rien. C'est la panne qu'on ne decouvre qu'apres.
+    findUniqueMock.mockResolvedValueOnce(
+      emptyRow({ rawPayload: { _ipHash: "abc123", _source: "beacon", status: "active" } }),
+    );
+    fetchInviteeMock.mockResolvedValueOnce(apiData());
+
+    await enrichCalendlyEvent("evt_1");
+    const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    const brut = data["rawPayload"] as Record<string, unknown>;
+
+    expect(brut["_ipHash"]).toBe("abc123");
+    expect(brut["_source"]).toBe("beacon");
+  });
+
+  it("ne remplace JAMAIS une charge existante par du vide", async () => {
+    // Un brut vide detruirait la seule trace exploitable d'un cas litigieux.
+    findUniqueMock.mockResolvedValueOnce(emptyRow({ rawPayload: { status: "active" } }));
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ raw: { invitee: {}, event: {} } }));
+
+    await enrichCalendlyEvent("evt_1");
+    const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(data["rawPayload"]).toBeUndefined();
+  });
+
+  it("rafraichir la charge brute ne fait PAS passer la fiche pour modifiee", async () => {
+    // `updatedFields` alimente le journal et l'alerte. La charge brute change a
+    // chaque passage — l'y inscrire noierait les vrais changements sous du bruit.
+    findUniqueMock.mockResolvedValueOnce(emptyRow({ rawPayload: { status: "active" } }));
+    fetchInviteeMock.mockResolvedValueOnce(apiData());
+
+    const res = await enrichCalendlyEvent("evt_1");
+    expect(res.ok).toBe(true);
+    if (res.ok) expect(res.updatedFields).not.toContain("rawPayload");
+    // Elle est bien ecrite pour autant.
+    const { data } = updateMock.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(data["rawPayload"]).toBeDefined();
+  });
+
+  it("ne leve pas si l'appelant ne rend pas de charge brute", async () => {
+    // Le module promet en tete de fichier de ne JAMAIS lever. Lire `d.raw.invitee`
+    // sans garde suffirait a violer ce contrat.
+    findUniqueMock.mockResolvedValueOnce(emptyRow());
+    fetchInviteeMock.mockResolvedValueOnce(apiData({ raw: undefined }));
+
+    const res = await enrichCalendlyEvent("evt_1");
+    expect(res.ok).toBe(true);
   });
 });

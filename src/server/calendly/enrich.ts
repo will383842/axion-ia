@@ -100,6 +100,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     eventTypeSlug: string;
     cancelUrl: string | null;
     rescheduleUrl: string | null;
+    rawPayload: unknown;
   } | null;
   try {
     row = await prisma.calendlyEvent.findUnique({
@@ -119,6 +120,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
         eventTypeSlug: true,
         cancelUrl: true,
         rescheduleUrl: true,
+        rawPayload: true,
       },
     });
   } catch (e) {
@@ -196,6 +198,51 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   if (mapped && mapped !== row.status && !terminal) {
     data["status"] = mapped;
     updatedFields.push("status");
+  }
+
+  // ── La charge brute, remontee a chaque passage ───────────────────────────
+  //
+  // 🔴 ELLE N'ETAIT ECRITE QU'A LA CAPTURE. Le statut, les horaires et le
+  // telephone se rafraichissaient ici pendant qu'elle vieillissait sur place :
+  // le 2026-08-27, une fiche affichait « Annule » au-dessus d'un JSON qui disait
+  // encore `"status": "active"`. Le statut avait raison — verifie sur trois
+  // sources, dont l'agenda Google ou l'evenement avait bel et bien disparu —
+  // mais l'ecran donnait a lire deux verites d'ages differents sans les dater.
+  //
+  // ⚠️ ON PRESERVE LES CLES PRIVEES, prefixees `_`. `rawPayload._ipHash` est
+  // interroge par `api/calendly/client-event` (`path: ["_ipHash"]`) pour
+  // reconnaitre un renvoi du meme visiteur. L'ecraser ne casserait RIEN de
+  // visible : la requete ne trouverait simplement plus rien, et le garde-fou
+  // anti-abus s'eteindrait en silence. C'est exactement le genre de panne qu'on
+  // ne decouvre qu'apres.
+  const ancienBrut =
+    typeof row.rawPayload === "object" && row.rawPayload !== null
+      ? (row.rawPayload as Record<string, unknown>)
+      : {};
+  const clesPrivees = Object.fromEntries(
+    Object.entries(ancienBrut).filter(([cle]) => cle.startsWith("_")),
+  );
+  // ⚠️ ON N'ECRIT QUE SI ON A REELLEMENT QUELQUE CHOSE. Remplacer une charge
+  // brute existante par un objet vide detruirait la seule trace exploitable d'un
+  // cas litigieux — et cette fonction promet, en tete de fichier, de ne jamais
+  // lever : lire `d.raw.invitee` sans garde suffirait a violer ce contrat le
+  // jour ou un appelant rendrait la forme courte.
+  const brutFrais = d.raw;
+  if (
+    brutFrais &&
+    (Object.keys(brutFrais.invitee).length > 0 || Object.keys(brutFrais.event).length > 0)
+  ) {
+    data["rawPayload"] = {
+      ...clesPrivees,
+      invitee: brutFrais.invitee,
+      event: brutFrais.event,
+      _refreshedAt: new Date().toISOString(),
+    } as never;
+    // ⚠️ VOLONTAIREMENT ABSENT de `updatedFields`. Ce tableau annonce ce qui a
+    // CHANGE pour la fiche — il alimente le journal et l'alerte. La charge brute
+    // change a chaque passage, ne serait-ce que par son horodatage : l'y inscrire
+    // ferait passer toute fiche pour modifiee a chaque sondage, et noierait les
+    // vrais changements (un deplacement, une annulation) sous du bruit.
   }
 
   try {

@@ -125,31 +125,21 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
 
         <div className="admin-card">
           <h2 className="admin-h2">Métadonnées</h2>
+          {/* 🔑 CE QUI SE LIT AVANT UN APPEL EN HAUT, LE RESTE PLIE.
+              Ce bloc melangeait le statut du rendez-vous avec le slug de
+              l'event-type, le nom du collecteur (`api_poll`) et une URL d'API de
+              120 caracteres. Trois vocabulaires de machine au milieu de deux
+              informations humaines : on ne trouvait plus le statut. Les
+              identifiants restent accessibles — repliés. */}
           <dl className="admin-dl">
-            <dt className="admin-dt">Identifiant du type de rendez-vous</dt>
-            <dd className="admin-dd">
-              <code className="text-xs">{event.eventTypeSlug}</code>
-            </dd>
             <dt className="admin-dt">Statut</dt>
             <dd className="admin-dd">{STATUS_LABEL[event.status] ?? event.status}</dd>
-            <dt className="admin-dt">Source</dt>
-            <dd className="admin-dd">{event.source}</dd>
             <dt className="admin-dt">Enrichi depuis Calendly</dt>
             <dd className="admin-dd">
               {event.enrichedAt ? (
                 formatDateFr(event.enrichedAt)
               ) : (
                 <span className="text-[color:var(--color-admin-fg-muted)]">jamais</span>
-              )}
-            </dd>
-            <dt className="admin-dt">Identifiant Calendly</dt>
-            <dd className="admin-dd">
-              {event.inviteeUri ? (
-                <code className="text-xs break-all">{event.inviteeUri}</code>
-              ) : (
-                <span className="text-[color:var(--color-admin-fg-muted)]">
-                  absent (saisie manuelle ou capture antérieure)
-                </span>
               )}
             </dd>
             {event.cancelUrl && (
@@ -172,45 +162,16 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
                 </dd>
               </>
             )}
-            <dt className="admin-dt">Page</dt>
-            <dd className="admin-dd">
-              {event.pageUrl ? (
-                <a href={event.pageUrl} target="_blank" rel="noopener noreferrer">
-                  {event.pageUrl}
-                </a>
-              ) : (
-                "—"
-              )}
-            </dd>
-            {event.utmSource && (
+            {/* Une ligne « Page : — » occupe la place d'une information sans en
+                porter aucune. Les autres champs facultatifs de ce bloc se cachent
+                deja quand ils sont vides ; celui-ci ne le faisait pas. */}
+            {event.pageUrl && (
               <>
-                <dt className="admin-dt">UTM source</dt>
+                <dt className="admin-dt">Page</dt>
                 <dd className="admin-dd">
-                  <code className="text-xs">{event.utmSource}</code>
-                </dd>
-              </>
-            )}
-            {event.utmCampaign && (
-              <>
-                <dt className="admin-dt">UTM campagne</dt>
-                <dd className="admin-dd">
-                  <code className="text-xs">{event.utmCampaign}</code>
-                </dd>
-              </>
-            )}
-            {event.utmMedium && (
-              <>
-                <dt className="admin-dt">UTM support</dt>
-                <dd className="admin-dd">
-                  <code className="text-xs">{event.utmMedium}</code>
-                </dd>
-              </>
-            )}
-            {event.referrer && (
-              <>
-                <dt className="admin-dt">Provenance</dt>
-                <dd className="admin-dd">
-                  <code className="text-xs">{event.referrer}</code>
+                  <a href={event.pageUrl} target="_blank" rel="noopener noreferrer">
+                    {event.pageUrl}
+                  </a>
                 </dd>
               </>
             )}
@@ -219,16 +180,94 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
             <dt className="admin-dt">Mis à jour</dt>
             <dd className="admin-dd">{formatDateFr(event.updatedAt)}</dd>
           </dl>
+
+          <details className="mt-[var(--space-admin-3)]">
+            <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-muted)] select-none">
+              Identifiants et provenance
+            </summary>
+            <dl className="admin-dl mt-[var(--space-admin-2)]">
+              <dt className="admin-dt">Type de rendez-vous</dt>
+              <dd className="admin-dd">
+                <code className="text-xs">{event.eventTypeSlug}</code>
+              </dd>
+              <dt className="admin-dt">Collecté par</dt>
+              <dd className="admin-dd">
+                <code className="text-xs">{event.source}</code>
+              </dd>
+              <dt className="admin-dt">Identifiant Calendly</dt>
+              <dd className="admin-dd">
+                {event.inviteeUri ? (
+                  /* L'URI complete fait 120 caracteres d'URL d'API et n'apprend
+                   rien a personne : on montre l'identifiant terminal, et on garde
+                   l'adresse entiere dans le `title` pour qui doit la copier. */
+                  <code className="text-xs" title={event.inviteeUri}>
+                    {event.inviteeUri.split("/").pop() ?? event.inviteeUri}
+                  </code>
+                ) : (
+                  <span className="text-[color:var(--color-admin-fg-muted)]">
+                    absent (saisie manuelle ou capture antérieure)
+                  </span>
+                )}
+              </dd>
+              {event.utmSource && (
+                <>
+                  <dt className="admin-dt">UTM source</dt>
+                  <dd className="admin-dd">
+                    <code className="text-xs">{event.utmSource}</code>
+                  </dd>
+                </>
+              )}
+              {event.utmCampaign && (
+                <>
+                  <dt className="admin-dt">UTM campagne</dt>
+                  <dd className="admin-dd">
+                    <code className="text-xs">{event.utmCampaign}</code>
+                  </dd>
+                </>
+              )}
+              {event.utmMedium && (
+                <>
+                  <dt className="admin-dt">UTM support</dt>
+                  <dd className="admin-dd">
+                    <code className="text-xs">{event.utmMedium}</code>
+                  </dd>
+                </>
+              )}
+              {event.referrer && (
+                <>
+                  <dt className="admin-dt">Provenance</dt>
+                  <dd className="admin-dd">
+                    <code className="text-xs">{event.referrer}</code>
+                  </dd>
+                </>
+              )}
+            </dl>
+          </details>
         </div>
 
         <div className="admin-card admin-card-wide">
           {/* La charge utile brute de Calendly est légitimement technique — elle
               sert à comprendre un cas litigieux. Elle n'a pas à s'imposer en
-              pleine page pour autant. */}
+              pleine page pour autant.
+
+              🔴 ELLE DOIT DIRE DE QUAND ELLE DATE. Jusqu'au 2026-08-27 elle
+              n'était écrite qu'à la capture et jamais rafraîchie : une fiche
+              affichait « Annulé » au-dessus d'un JSON qui disait encore
+              `"status": "active"`. Le brut remonte désormais à chaque
+              enrichissement, mais il peut toujours être plus ancien que la fiche
+              — d'où la date et la mention de ce qui fait foi. */}
           <details>
             <summary className="admin-h2 cursor-pointer select-none">
               Données Calendly brutes
             </summary>
+            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Cliché technique
+              {event.enrichedAt
+                ? ` du ${formatDateFr(event.enrichedAt)}`
+                : ` du ${formatDateFr(event.capturedAt)} (jamais rafraîchi)`}
+              . En cas de désaccord, ce sont les champs ci-dessus qui font foi — eux seuls sont
+              tenus à jour.
+            </p>
             <pre className="admin-json mt-[var(--space-admin-3)] text-xs">
               {JSON.stringify(event.rawPayload, null, 2)}
             </pre>
