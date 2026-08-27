@@ -114,6 +114,15 @@ jobs:
       # aligné AVANT le blocage (doctrine AGENTS.md).
       - name: Rayons ≤ 8px (Design.md §5)
         run: pnpm radius:check
+      # Trouvée par le même inventaire : `contrast:check` était l'autre garde
+      # câblée nulle part. Elle est VERTE (39 paires ≥ AA), donc on la branche
+      # sans dette à amorcer.
+      # ⚠️ Ce qu'elle NE fait PAS : elle compare des JETONS déclarés, pas des
+      # pixels rendus. Un audit axe a déjà trouvé des violations qu'elle ne voit
+      # pas (cf. PR #872). La câbler empêche une RÉGRESSION sur ses 39 paires ;
+      # ça ne la rend pas exhaustive, et son vert ne vaut pas « accessible ».
+      - name: Contrastes ≥ AA sur les jetons déclarés
+        run: pnpm contrast:check
       # Refonte « Boîte de réception » 2026-07-29 — `buildAdminNav()` est un SSOT
       # de CHAÎNES : rien ne reliait ses href aux fichiers `page.tsx`. Un dossier
       # renommé laissait donc une entrée de menu vers un 404, sans que typecheck

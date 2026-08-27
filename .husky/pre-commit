@@ -3,6 +3,10 @@ pnpm exec lint-staged
 pnpm anti-siren:check
 pnpm anti-hex:check
 pnpm use-client:check
+# ⚠️ Ce hook ne tourne PAS en worktree (husky n'y est pas installé), et
+# plusieurs sessions travaillent en worktree. Le câblage qui porte réellement
+# est celui de `ci.yml` — celui-ci n'est qu'un raccourci de confort qui fait
+# gagner un aller-retour de CI quand on commite depuis le dépôt principal.
 pnpm radius:check
 pnpm typecheck
 
