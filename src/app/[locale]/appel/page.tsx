@@ -125,13 +125,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
     <>
       <JsonLd data={jsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
-      <Breadcrumbs
-        items={[
-          { label: isFr ? "Accueil" : "Home", href: "/" },
-          { label: isFr ? "Premier contact" : "Premier contact", href: "/appel" },
-        ]}
-        emitJsonLd={false}
-      />
+      {/* Le composant préfixe déjà « Accueil » (fullItems) : le repasser ici
+          affichait « Accueil / Accueil / Premier contact » à l'écran. */}
+      <Breadcrumbs items={[{ label: "Premier contact", href: "/appel" }]} emitJsonLd={false} />
       {/* GEO-123 (audit GEO/AEO 2026-08-14) — `<div>` et NON `<main>` : le
           layout `[locale]` porte deja `<main id="main">`, cible du lien
           d'evitement. Un second `<main>` imbrique rend le contenu principal

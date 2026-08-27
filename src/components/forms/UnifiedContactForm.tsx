@@ -505,6 +505,18 @@ function UnifiedContactFormBody({
     if (urlSubType && !defaultSubType) {
       setEffectiveSubType(urlSubType);
     }
+    // ?formation=<titre> — posé par le lien « Nous écrire » des fiches
+    // formation (2026-08-26). Sans lui, le visiteur retapait le nom de la
+    // formation que le système connaissait déjà (relevé P1-02 du chantier
+    // réservation). Le titre voyage dans l'URL pour ne pas embarquer le
+    // catalogue dans le bundle client ; borné pour garder l'URL saine.
+    const urlFormation = sp.get("formation");
+    if (urlFormation && urlFormation.length <= 120 && !defaultMessage) {
+      setValue(
+        "message",
+        `Bonjour, je souhaite des renseignements sur la formation « ${urlFormation} ».`,
+      );
+    }
     // Montage unique : on lit l'URL une fois après hydratation.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

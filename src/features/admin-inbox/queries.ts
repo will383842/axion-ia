@@ -87,7 +87,9 @@ async function fetchMessages(): Promise<InboxItem[]> {
     subject: resolveSubmissionLabel(s.type, s.unifiedType),
     contactName: s.contactName || null,
     contactEmail: s.contactEmail || null,
-    context: s.companyName || null,
+    // subType (slug formation du devis express, granularité audit/chatbot…)
+    // prime sur la société : c'est lui qui dit DE QUOI parle la demande.
+    context: s.subType || s.companyName || null,
     statusLabel: SUBMISSION_STATUS_LABELS[s.status] ?? s.status,
     // Un message sans réponse et non traité attend quelque chose de nous.
     needsAction: s.replyCount === 0 && s.status !== "processed" && s.status !== "archived",

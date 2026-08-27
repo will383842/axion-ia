@@ -564,7 +564,7 @@ export function DevisForm({
 
               <div className={fieldCls}>
                 <label className={labelCls} htmlFor="devis-opco-participants">
-                  Nb. participants
+                  Nb. stagiaires
                 </label>
                 <input
                   id="devis-opco-participants"

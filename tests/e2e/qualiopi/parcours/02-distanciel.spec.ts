@@ -588,7 +588,7 @@ test.describe("@parcours-qualiopi 2 — distanciel, relevé de connexion", () =>
     // un bloc déjà nommé deux lignes plus haut, c'est la porte ouverte au jour
     // où un second écran portera le même libellé.
     await expect(
-      blocRapport.getByText("Participants non rapprochés"),
+      blocRapport.getByText("Stagiaires non rapprochés"),
       "l'écran ne dénonce pas l'intrus : la liste nominative des non-rapprochés " +
         "(ImportReleveForm.tsx:235-257) est absente alors que le compteur annonce 1 non " +
         "rapproché. Le contre-témoin ne tient plus, et l'assertion « 0 non rapproché » de " +
@@ -618,7 +618,7 @@ test.describe("@parcours-qualiopi 2 — distanciel, relevé de connexion", () =>
     // La même garde que ci-dessus, retournée. On sait qu'elle peut rougir :
     // elle vient de le faire, vingt lignes plus haut.
     await expect(
-      blocRapport.getByText("Participants non rapprochés"),
+      blocRapport.getByText("Stagiaires non rapprochés"),
       "l'écran affiche encore la liste des non-rapprochés après un relevé qui ne contient que " +
         "des inscrits — c'est l'AVEU D'ÉCHEC de l'import, et c'est exactement le texte que " +
         "l'ancienne version de ce parcours lisait comme une preuve de succès",

@@ -11,6 +11,7 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getSubmissionDetailAction } from "@/features/admin-submissions/actions";
+import { findClientByEmail } from "@/server/qualiopi/crm/entrees";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
@@ -31,13 +32,22 @@ export async function SubmissionDetailContent({
   adminPrefix,
   id,
   backHref,
-  backLabel = "← Soumissions",
+  backLabel = "← Messages",
 }: Props): Promise<React.ReactElement> {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const submission = await getSubmissionDetailAction(id);
   if (!submission) notFound();
+
+  // Le geste ATTENDU sur une demande de devis/formation est « créer le devis »,
+  // pas seulement « convertir en client » : quand le client existe déjà (même
+  // e-mail, insensible à la casse), la conversion ferait un doublon et le devis
+  // exigeait de repartir de zéro dans qualiopi/devis/new (relevé P1-09,
+  // audit réservation 2026-08-26). Même appariement que qualiopi/entrees.
+  const clientExistant = submission.contactEmail
+    ? await findClientByEmail(submission.contactEmail)
+    : null;
 
   // Form v2 (2026-05-28) — extrait unifiedType depuis details JSON pour
   // afficher le label fin (presse, recrutement, etc.) plutôt que le type DB
@@ -101,12 +111,21 @@ export async function SubmissionDetailContent({
                 les coordonnées de ce lead (déchiffrées côté serveur sur la page
                 cible). Évite la re-saisie manuelle inbox → CRM Qualiopi. L'URL
                 ne porte que l'id — aucune PII n'y transite. */}
-            <a
-              href={`/fr/${adminPrefix}/qualiopi/clients/new?fromSubmission=${submission.id}`}
-              className="admin-button"
-            >
-              Convertir en client
-            </a>
+            {clientExistant ? (
+              <a
+                href={`/fr/${adminPrefix}/qualiopi/devis/new?clientId=${clientExistant.id}`}
+                className="admin-button"
+              >
+                Créer le devis · {clientExistant.raisonSociale}
+              </a>
+            ) : (
+              <a
+                href={`/fr/${adminPrefix}/qualiopi/clients/new?fromSubmission=${submission.id}`}
+                className="admin-button"
+              >
+                Convertir en client
+              </a>
+            )}
             <ReplyComposer
               submissionId={submission.id}
               contactName={submission.contactName}
