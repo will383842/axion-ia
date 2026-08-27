@@ -12,14 +12,15 @@
  */
 
 import type { Metadata } from "next";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 
-import { auth } from "@/auth";
 import { isFacturationHubEnabled } from "@/server/qualiopi/config/flag";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { RapprochementReleve } from "@/components/admin/qualiopi/RapprochementReleve";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -34,10 +35,9 @@ interface PageProps {
 export default async function QualiopiRapprochementPage({ params }: PageProps) {
   if (!isFacturationHubEnabled()) notFound();
   const { locale, adminPrefix } = await params;
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const basePath = `/${locale}/${adminPrefix}/qualiopi/facturation`;

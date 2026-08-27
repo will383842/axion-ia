@@ -9,9 +9,7 @@
 // Le garde auth() est conservé : sans session, on part vers /login comme
 // toutes les pages admin (les tests E2E l'assertent).
 
-import { permanentRedirect, redirect } from "next/navigation";
-
-import { auth } from "@/auth";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -24,12 +22,7 @@ export default async function LegacyQualiopiHubRedirect({
   params,
   searchParams,
 }: PageProps): Promise<never> {
-  const { locale, adminPrefix } = await params;
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
-  }
+  const { adminPrefix } = await params;
   const sp = await searchParams;
   // La cible consomme ?activite=, ?perimetre=, ?archives= — on recopie tout.
   const qs = new URLSearchParams();
