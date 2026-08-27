@@ -77,7 +77,9 @@ export function decalerMois(cle: CleJour, n: number): CleJour {
   // On passe par le 1er : sinon « 31 janvier + 1 mois » déborde sur le 3 mars.
   d.setUTCDate(1);
   d.setUTCMonth(d.getUTCMonth() + n);
-  const dernier = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0, 12, 0, 0)).getUTCDate();
+  const dernier = new Date(
+    Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0, 12, 0, 0),
+  ).getUTCDate();
   d.setUTCDate(Math.min(quantieme, dernier));
   return versCle(d);
 }

@@ -115,7 +115,9 @@ describe("grille du mois", () => {
   it("commence un lundi et finit un dimanche", () => {
     const g = grilleDuMois("2026-08-15");
     expect(lundiDeLaSemaine(g[0] as string)).toBe(g[0]);
-    expect(decalerJours(g[41] as string, 1)).toBe(lundiDeLaSemaine(decalerJours(g[41] as string, 1)));
+    expect(decalerJours(g[41] as string, 1)).toBe(
+      lundiDeLaSemaine(decalerJours(g[41] as string, 1)),
+    );
   });
 
   it("contient tous les jours du mois visé", () => {
@@ -123,7 +125,7 @@ describe("grille du mois", () => {
     expect(g).toContain("2026-08-01");
     expect(g).toContain("2026-08-31");
     // Et déborde des deux côtés, ce qui est voulu.
-    expect(g[0] as string < "2026-08-01").toBe(true);
+    expect((g[0] as string) < "2026-08-01").toBe(true);
   });
 
   it("est stable quel que soit le jour du mois qu'on lui donne", () => {

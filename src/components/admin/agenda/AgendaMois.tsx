@@ -110,7 +110,7 @@ export function AgendaMois({
           {JOURS_COURTS.map((j) => (
             <div
               key={j}
-              className="px-[var(--space-admin-1)] py-[var(--space-admin-1)] text-center text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]"
+              className="px-[var(--space-admin-1)] py-[var(--space-admin-1)] text-center text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase"
             >
               {j}
             </div>
@@ -155,7 +155,7 @@ export function AgendaMois({
                     {quantieme(cle)}
                   </span>
                   {duJour.length > 0 && (
-                    <span className="text-[length:var(--text-admin-xs)] tabular-nums text-[color:var(--color-admin-fg-muted)]">
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] tabular-nums">
                       {duJour.length}
                     </span>
                   )}
@@ -199,7 +199,12 @@ export function AgendaMois({
         </p>
       </div>
 
-      <PanneauJour base={base} jour={jour} aujourdhui={aujourdhui} items={parJour.get(jour) ?? []} />
+      <PanneauJour
+        base={base}
+        jour={jour}
+        aujourdhui={aujourdhui}
+        items={parJour.get(jour) ?? []}
+      />
     </div>
   );
 }
@@ -260,7 +265,7 @@ function PanneauJour({
                 borderLeft: `3px solid ${COULEUR_SOURCE[it.source]}`,
               }}
             >
-              <span className="text-[length:var(--text-admin-xs)] tabular-nums text-[color:var(--color-admin-fg-muted)]">
+              <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] tabular-nums">
                 {it.journeeEntiere
                   ? "toute la journée"
                   : `${heureCourte(it.debut)} – ${heureCourte(it.fin)}`}

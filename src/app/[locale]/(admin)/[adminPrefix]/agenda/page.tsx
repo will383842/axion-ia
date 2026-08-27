@@ -145,13 +145,7 @@ export default async function AgendaPage({
         tronque={diagnostics.googleTronque}
       />
 
-      <AgendaBarre
-        base={base}
-        vue={vue}
-        jour={jour}
-        aujourdhui={aujourdhui}
-        sources={sources}
-      />
+      <AgendaBarre base={base} vue={vue} jour={jour} aujourdhui={aujourdhui} sources={sources} />
 
       {vue === "mois" && (
         <AgendaMois

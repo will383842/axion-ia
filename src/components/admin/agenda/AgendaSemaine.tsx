@@ -78,7 +78,9 @@ function minutesDepuisMinuitParis(d: Date): number {
 function placer(debut: Date, fin: Date | null): { top: number; hauteur: number } {
   const d = minutesDepuisMinuitParis(debut) - HEURE_DEBUT * 60;
   // Sans fin connue, une demi-heure : la durée par défaut d'un rendez-vous ici.
-  const duree = fin ? Math.max(15, minutesDepuisMinuitParis(fin) - minutesDepuisMinuitParis(debut)) : 30;
+  const duree = fin
+    ? Math.max(15, minutesDepuisMinuitParis(fin) - minutesDepuisMinuitParis(debut))
+    : 30;
   const top = Math.max(0, (d / AMPLITUDE_MINUTES) * 100);
   const hauteur = Math.max(HAUTEUR_MIN_PCT, (duree / AMPLITUDE_MINUTES) * 100);
   return { top: Math.min(top, 100 - HAUTEUR_MIN_PCT), hauteur: Math.min(hauteur, 100 - top) };
@@ -132,7 +134,7 @@ export function AgendaSemaine({
                   estAujourdhui ? "bg-[color:var(--color-admin-info-soft)]" : ""
                 }`}
               >
-                <span className="text-[length:var(--text-admin-xs)] uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]">
+                <span className="text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
                   {JOURS_COURTS[i]}
                 </span>
                 <span
@@ -158,7 +160,7 @@ export function AgendaSemaine({
             {heures.map((h, i) => (
               <span
                 key={h}
-                className="absolute right-[var(--space-admin-1)] -translate-y-1/2 text-[length:var(--text-admin-xs)] tabular-nums text-[color:var(--color-admin-fg-muted)]"
+                className="absolute right-[var(--space-admin-1)] -translate-y-1/2 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] tabular-nums"
                 style={{ top: `${String((i / (heures.length - 1)) * 100)}%` }}
               >
                 {String(h).padStart(2, "0")}h

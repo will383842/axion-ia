@@ -47,12 +47,7 @@ export interface AgendaBarreProps {
 }
 
 /** Construit une URL de la page en ne changeant que ce qu'on lui demande. */
-function lien(
-  base: string,
-  vue: VueAgenda,
-  jour: CleJour,
-  sources: readonly string[],
-): string {
+function lien(base: string, vue: VueAgenda, jour: CleJour, sources: readonly string[]): string {
   const p = new URLSearchParams({ vue, jour });
   // Les filtres ne sont écrits que s'ils filtrent réellement : une URL propre
   // quand tout est affiché reste partageable et lisible.
@@ -97,14 +92,20 @@ export function AgendaBarre({
         </nav>
 
         {/* Titre de la période — la seule information qui dit où l'on est. */}
-        <h2 className="text-[length:var(--text-admin-lg)] font-semibold first-letter:uppercase tabular-nums">
+        <h2 className="text-[length:var(--text-admin-lg)] font-semibold tabular-nums first-letter:uppercase">
           {libelleDeLaVue(vue, jour)}
         </h2>
 
         <div className="flex items-center gap-[var(--space-admin-1)]">
           <Link
             href={lien(base, vue, naviguer(vue, jour, -1), sources)}
-            aria-label={vue === "mois" ? "Mois précédent" : vue === "semaine" ? "Semaine précédente" : "Jour précédent"}
+            aria-label={
+              vue === "mois"
+                ? "Mois précédent"
+                : vue === "semaine"
+                  ? "Semaine précédente"
+                  : "Jour précédent"
+            }
             className="flex h-[2.25rem] w-[2.25rem] items-center justify-center rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-bg)] text-[length:var(--text-admin-md)] hover:bg-[color:var(--color-admin-hover)]"
           >
             ‹
@@ -122,7 +123,13 @@ export function AgendaBarre({
           </Link>
           <Link
             href={lien(base, vue, naviguer(vue, jour, 1), sources)}
-            aria-label={vue === "mois" ? "Mois suivant" : vue === "semaine" ? "Semaine suivante" : "Jour suivant"}
+            aria-label={
+              vue === "mois"
+                ? "Mois suivant"
+                : vue === "semaine"
+                  ? "Semaine suivante"
+                  : "Jour suivant"
+            }
             className="flex h-[2.25rem] w-[2.25rem] items-center justify-center rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-bg)] text-[length:var(--text-admin-md)] hover:bg-[color:var(--color-admin-hover)]"
           >
             ›
@@ -222,7 +229,10 @@ function AgendaFiltres({
             <span
               aria-hidden="true"
               className="h-[0.625rem] w-[0.625rem] shrink-0 rounded-full"
-              style={{ backgroundColor: active ? s.couleur : "transparent", border: `1px solid ${s.couleur}` }}
+              style={{
+                backgroundColor: active ? s.couleur : "transparent",
+                border: `1px solid ${s.couleur}`,
+              }}
             />
             {s.label}
           </Link>
