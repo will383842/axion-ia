@@ -77,6 +77,8 @@ async function chargerCalendly(debut: Date, fin: Date): Promise<AgendaItem[]> {
         lieu: texteOuNull(e.location),
         detailHref: adminPath("fr", `contacts/appels/${e.id}`),
         googleEventId: null,
+        // Une reservation Calendly n'a pas de note de console : elle a sa fiche.
+        note: null,
         annule,
       },
     ];
@@ -129,6 +131,7 @@ export async function getAgendaFenetre(debut: Date, fin: Date): Promise<AgendaFe
             // n'a aucune raison de supprimer un vrai rendez-vous, et une
             // suppression d'agenda ne se rattrape pas.
             googleEventId: e.description?.includes(MARQUEUR_CONSOLE) ? e.id : null,
+            note: e.noteConsole,
             annule: false,
           };
         });

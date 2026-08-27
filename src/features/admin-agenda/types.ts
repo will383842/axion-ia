@@ -57,6 +57,14 @@ export interface AgendaItem {
   readonly detailHref: string | null;
   /** Identifiant Google — présent seulement pour ce qui est retirable. */
   readonly googleEventId: string | null;
+  /**
+   * Note interne saisie dans la console, quand il y en a une.
+   *
+   * Portée jusqu'ici pour que le formulaire de MODIFICATION s'ouvre pré-rempli :
+   * sans elle, enregistrer une modification effacerait la note existante sans
+   * que rien ne l'ait annoncé.
+   */
+  readonly note: string | null;
   readonly annule: boolean;
 }
 

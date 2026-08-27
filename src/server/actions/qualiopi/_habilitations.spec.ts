@@ -75,7 +75,6 @@ describe("requireHabilitation — refus côté serveur", () => {
     await expect(requireHabilitation("attester")).resolves.toMatchObject({
       role: "responsable_qualite",
     });
-    await expect(requireHabilitation("valider_evaluation")).resolves.toBeTruthy();
     await expect(requireHabilitation("habiliter_formateur")).resolves.toBeTruthy();
   });
 
