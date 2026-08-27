@@ -145,7 +145,7 @@ export function VilleTissuEconomique({ ville, isFr }: VilleTissuEconomiqueProps)
     : `Secteurs B2B et leviers IA à ${ville.nameFr}`;
 
   const description = isFr
-    ? `Vue d'ensemble des secteurs B2B représentés à ${ville.nameFr} et leurs leviers IA prioritaires. Notre cabinet accompagne TPE, PME, ETI et grandes entreprises sans biais sectoriel.`
+    ? `Vue d'ensemble des secteurs B2B représentés à ${ville.nameFr} et leurs leviers IA prioritaires. Notre cabinet accompagne PME, ETI, grands groupes et TPE sans biais sectoriel.`
     : `Overview of B2B sectors active in ${ville.nameEn ?? ville.nameFr} and their priority AI levers. Our consultancy supports very small, medium, mid-cap and large companies with no sector bias.`;
 
   return (

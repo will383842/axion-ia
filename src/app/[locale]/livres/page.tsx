@@ -30,7 +30,7 @@ interface Props {
 
 const TITRE = "Livres · Axion-IA";
 const DESCRIPTION =
-  "Les ouvrages publiés par Axion-IA sur l'intelligence artificielle appliquée au travail des dirigeants de TPE, PME et ETI.";
+  "Les ouvrages publiés par Axion-IA sur l'intelligence artificielle appliquée au travail des dirigeants de PME, ETI et grands groupes.";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

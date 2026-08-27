@@ -200,7 +200,7 @@ export default async function ImplementationListing({ params }: Props) {
       ? "Implémentation IA & agents IA sur-mesure · Axion-IA"
       : "Custom AI implementation & AI agents · Axion-IA",
     description: isFr
-      ? "Implémentation IA sur-mesure pour TPE, PME et ETI : agents IA, chatbots, automatisations, intégrations CRM/ERP. Du vrai code, à vous, sans abonnement."
+      ? "Implémentation IA sur-mesure pour PME, ETI et grands groupes : agents IA, chatbots, automatisations, intégrations CRM/ERP. Du vrai code, à vous, sans abonnement."
       : "Custom AI implementation for every company: AI agents, chatbots, automations, CRM/ERP integrations. Real code, yours, no subscription.",
     speakable: true,
     ...(buildPrimaryImageOfPage("/implementation")

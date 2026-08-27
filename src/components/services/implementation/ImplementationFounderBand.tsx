@@ -29,7 +29,7 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
           label: "Vous échangez directement avec l'équipe Axion-IA",
         },
         { number: "Top 1 %", label: "Ingénieurs & experts IA sélectionnés" },
-        { number: "TPE → grands comptes", label: "Tous types de projets, toutes tailles" },
+        { number: "PME → grands groupes", label: "Tous types de projets, toutes tailles" },
       ]
     : [
         { number: "0 middlemen", label: "You talk directly to the expert who builds" },
