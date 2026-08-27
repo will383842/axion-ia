@@ -434,7 +434,14 @@ function CodeTrendyBadge() {
       // l'espace privé du stagiaire (cf. le commentaire là-bas). Le retirer
       // rouvrirait un appel tiers depuis une route dont l'URL est un secret.
       data-tiers="codetrendy"
-      className="focus-visible:ring-terracotta focus-visible:ring-offset-mocha mt-6 inline-flex rounded-[10px] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+      // 🔑 `rounded-[8px]` et non `rounded-lg` : la valeur est écrite en dur
+      // EXPRÈS pour que `scripts/check-radius.ts` puisse la MESURER — il ne lit
+      // que la syntaxe `rounded-[Npx]`, jamais les utilitaires nommés. Passer à
+      // `rounded-lg` rendrait ce rayon invisible à la garde, donc libre de
+      // dériver au-dessus du plafond de 8 px sans que rien ne rougisse.
+      // (Valait 10 px jusqu'au 2026-08-27 : hors charte, et la garde criait
+      // dans un script que rien n'exécutait.)
+      className="focus-visible:ring-terracotta focus-visible:ring-offset-mocha mt-6 inline-flex rounded-[8px] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
