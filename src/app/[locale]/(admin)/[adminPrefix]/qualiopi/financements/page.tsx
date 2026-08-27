@@ -10,10 +10,8 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { FileText, Hourglass, CheckCircle2, AlertTriangle } from "lucide-react";
 
-import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
@@ -21,6 +19,8 @@ import { ExportComptaButton } from "@/components/admin/qualiopi/ExportComptaButt
 import { prisma } from "@/lib/prisma";
 import { libellerStatutOpco } from "@/server/qualiopi/financements/labels";
 import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -74,10 +74,9 @@ interface PageProps {
 
 export default async function QualiopiFinancementsPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const userSession = await auth();
-  const role = userSession?.user?.role;
-  if (!userSession?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   // ── Factures ──────────────────────────────────────────────────────────────
@@ -215,13 +214,13 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                       {s.numero}
                     </span>
                     <span className="text-[color:var(--color-admin-fg)]">{s.titreSession}</span>
-                    <span className="text-[color:var(--color-admin-warning)]">
+                    <span className="text-[color:var(--color-admin-warning-fg)]">
                       {FINANCEMENT_LABELS[s.financementType ?? ""] ?? s.financementType} —{" "}
                       {libellerStatutOpco(s.opcoStatut)}
                     </span>
                     <Link
                       href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/financement`}
-                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                      className="inline-flex min-h-[24px] items-center text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
                     >
                       Gérer
                     </Link>
@@ -253,7 +252,7 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                     <span className="text-[color:var(--color-admin-fg)]">{s.titreSession}</span>
                     <Link
                       href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/financement`}
-                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                      className="inline-flex min-h-[24px] items-center text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
                     >
                       Gérer
                     </Link>
@@ -340,7 +339,7 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                         {f.destinataireNom}
                       </div>
                       {f.subrogation && (
-                        <div className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                        <div className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning-fg)]">
                           Subrogation
                         </div>
                       )}
@@ -381,7 +380,7 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                           ○ {STATUT_FACTURE_LABELS[f.statut]}
                         </span>
                       ) : f.statut === "emise" ? (
-                        <span className="text-[color:var(--color-admin-warning)]">
+                        <span className="text-[color:var(--color-admin-warning-fg)]">
                           ◑ {STATUT_FACTURE_LABELS[f.statut]}
                         </span>
                       ) : (

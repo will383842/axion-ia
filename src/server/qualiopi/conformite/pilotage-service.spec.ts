@@ -19,7 +19,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: { count: vi.fn() },
-    enrollment: { count: vi.fn(), findMany: vi.fn() },
+    // ⚠️ `groupBy` fait partie du contrat depuis que M4 rend ses MOTIFS.
+    // Un mock incomplet est un contrat rompu — patron paye plusieurs fois
+    // ici : sans lui, huit tests rougissent sur la FORME du mock et non
+    // sur ce qu'ils verifient.
+    enrollment: { count: vi.fn(), findMany: vi.fn(), groupBy: vi.fn() },
     reclamation: { count: vi.fn() },
     sousTraitant: { count: vi.fn() },
     documentGenere: { count: vi.fn() },
@@ -71,7 +75,7 @@ type MockFn = ReturnType<typeof vi.fn>;
 
 const mockP = prisma as unknown as {
   trainingSession: { count: MockFn };
-  enrollment: { count: MockFn; findMany: MockFn };
+  enrollment: { count: MockFn; findMany: MockFn; groupBy: MockFn };
   reclamation: { count: MockFn };
   sousTraitant: { count: MockFn };
   documentGenere: { count: MockFn };
@@ -93,6 +97,13 @@ function setupCounts() {
   mockP.trainer.count.mockResolvedValue(3);
   mockP.incident.count.mockResolvedValue(0);
   mockP.enrollment.findMany.mockResolvedValue([]);
+  // 🔑 La forme REELLE du contrat, pas le minimum qui passe : `groupBy` rend
+  // des lignes `{ sortieMotif, _count: { _all } }`. Un `[]` nu ferait passer
+  // les tests en n'exercant JAMAIS la mise en forme des motifs.
+  mockP.enrollment.groupBy.mockResolvedValue([
+    { sortieMotif: "Emploi retrouve en cours de parcours", _count: { _all: 3 } },
+    { sortieMotif: "Raisons de sante", _count: { _all: 1 } },
+  ]);
   mockP.questionnaire.findMany.mockResolvedValue([]);
   mockP.evaluationAcquis.findMany.mockResolvedValue([]);
 }
@@ -348,6 +359,10 @@ function buildFixtureResult(): PilotageResult {
     m2_taux_entree_delai: { valeur: 90, libelle: "Taux d'entrée", unite: "%" },
     m3_taux_completion: { valeur: 95, libelle: "Complétion", unite: "%" },
     m4_taux_abandon: { valeur: 5, libelle: "Abandon", unite: "%" },
+    m4_motifs_abandon: [
+      { motif: "Emploi retrouvé", nombre: 2 },
+      { motif: "Raisons de santé", nombre: 1 },
+    ],
     m5_taux_reussite: { valeur: 80, libelle: "Réussite", unite: "%" },
     m6_satisfaction: { valeur: 88, libelle: "Satisfaction", unite: "%" },
     m7_incidents: m("Incidents déclarés (registre)", 2, "Complément : 1 session(s) annulée(s)"),

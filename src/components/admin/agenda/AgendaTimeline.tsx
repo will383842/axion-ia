@@ -27,6 +27,7 @@
 import Link from "next/link";
 import { AGENDA_SOURCE_LABELS, type AgendaItem } from "@/features/admin-agenda/types";
 import { RetirerIndisponibiliteButton } from "./RetirerIndisponibiliteButton";
+import { RendezVousForm } from "./RendezVousForm";
 
 /**
  * Amplitude affichée. 7 h → 21 h couvre la plage réservable (9 h – 19 h) avec
@@ -52,6 +53,24 @@ function minutesDepuisMinuitParis(d: Date): number {
   });
   const [h, m] = f.format(d).split(":").map(Number);
   return (h ?? 0) * 60 + (m ?? 0);
+}
+
+/**
+ * « HH:MM » a Paris, pour pre-remplir un `<input type="time">`.
+ *
+ * ⚠️ On demande l'heure ET les minutes. En francais, une heure SEULE se rend
+ * « 14 h » : c'est ce suffixe qui a mis l'agenda a terre en production le
+ * 2026-08-27. Avec les minutes, le format est « 14:30 » et il alimente
+ * directement le champ.
+ */
+function heureSaisie(d: Date | null): string {
+  if (!d) return "09:00";
+  return new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(d);
 }
 
 function heureParis(d: Date): string {
@@ -217,7 +236,25 @@ export function AgendaTimeline({
                     façon avant de supprimer : cette condition est du confort,
                     pas la garde. */}
                 {i.googleEventId && (
-                  <span className="mt-[2px] block">
+                  <span className="mt-[2px] flex flex-wrap gap-[var(--space-admin-2)]">
+                    {/* Modification proposee a la meme condition que le retrait,
+                        et pour la meme raison : seul ce que la console a pose
+                        peut etre reecrit ici. Le formulaire s'ouvre PRE-REMPLI,
+                        note comprise — sinon enregistrer effacerait la note
+                        existante sans que rien ne l'ait annonce. */}
+                    <RendezVousForm
+                      jour={i.jour}
+                      actif
+                      existant={{
+                        eventId: i.googleEventId,
+                        titre: i.titre,
+                        heureDebut: heureSaisie(i.debut),
+                        heureFin: heureSaisie(i.fin),
+                        contact: i.contact ?? "",
+                        telephone: i.telephone ?? "",
+                        note: i.note ?? "",
+                      }}
+                    />
                     <RetirerIndisponibiliteButton eventId={i.googleEventId} titre={i.titre} />
                   </span>
                 )}

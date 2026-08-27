@@ -10,9 +10,7 @@
  */
 
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
@@ -24,6 +22,8 @@ import {
   marquerToutLuAction,
   synchroniserAlertesAction,
 } from "@/server/actions/qualiopi/alertes";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 // Enum locale — miroir de AlerteNiveau Prisma (évite le chemin relatif depuis le routeur).
 type AlerteNiveau = "critique" | "important" | "info";
@@ -55,7 +55,7 @@ function NiveauBadge({ niveau }: { niveau: AlerteNiveau }): React.ReactElement {
     niveau === "critique"
       ? "text-[color:var(--color-admin-error)]"
       : niveau === "important"
-        ? "text-[color:var(--color-admin-warning)]"
+        ? "text-[color:var(--color-admin-warning-fg)]"
         : "text-[color:var(--color-admin-fg-muted)]";
   return (
     <span
@@ -81,7 +81,7 @@ function GroupeHeader({
     niveau === "critique"
       ? "text-[color:var(--color-admin-error)]"
       : niveau === "important"
-        ? "text-[color:var(--color-admin-warning)]"
+        ? "text-[color:var(--color-admin-warning-fg)]"
         : "text-[color:var(--color-admin-fg-muted)]";
 
   return (
@@ -94,7 +94,7 @@ function GroupeHeader({
           niveau === "critique"
             ? "bg-[color:var(--color-admin-error-subtle)] text-[color:var(--color-admin-error)]"
             : niveau === "important"
-              ? "bg-[color:var(--color-admin-warning-subtle)] text-[color:var(--color-admin-warning)]"
+              ? "bg-[color:var(--color-admin-warning-subtle)] text-[color:var(--color-admin-warning-fg)]"
               : "bg-[color:var(--color-admin-surface)] text-[color:var(--color-admin-fg-muted)]"
         }`}
       >
@@ -114,10 +114,9 @@ interface PageProps {
 
 export default async function QualiopiAlertesPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const alertes = await listAlertes({ resolue: false });
@@ -172,7 +171,7 @@ export default async function QualiopiAlertesPage({ params }: PageProps) {
           {total !== 1 ? "s" : ""} active{total !== 1 ? "s" : ""}
         </span>
         {nonLues > 0 && (
-          <span className="text-[color:var(--color-admin-warning)]">
+          <span className="text-[color:var(--color-admin-warning-fg)]">
             <span className="font-semibold">{nonLues}</span> non lue{nonLues !== 1 ? "s" : ""}
           </span>
         )}

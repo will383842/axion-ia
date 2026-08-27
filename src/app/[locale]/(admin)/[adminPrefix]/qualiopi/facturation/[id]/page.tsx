@@ -10,10 +10,9 @@
  */
 
 import type { Metadata } from "next";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isFacturationHubEnabled } from "@/server/qualiopi/config/flag";
 import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
@@ -29,6 +28,9 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { RegenererFacturePdfButton } from "@/components/admin/qualiopi/RegenererFacturePdfButton";
 import { FactureFormationActions } from "@/components/admin/qualiopi/FactureFormationActions";
 import { lienTelechargement } from "@/lib/content-disposition";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
+import { peutEngager } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -109,13 +111,14 @@ interface PageProps {
 export default async function QualiopiFactureDetailPage({ params }: PageProps) {
   if (!isFacturationHubEnabled()) notFound();
   const { locale, adminPrefix, id } = await params;
-  const session = await auth();
-  const role = session?.user?.role;
-  const rolesAutorises = ["admin", "super_admin", "editor", "reader"];
-  if (!session?.user || !rolesAutorises.includes(role ?? "")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
-  const peutEcrire = role === "admin" || role === "super_admin";
+  const role = acces.role;
+  // Perimetre INCHANGE (admin/super_admin), mais derive du SSOT :
+  // ce drapeau vaut le niveau ENGAGEANT, pas `ROLES_ECRITURE`.
+  const peutEcrire = peutEngager(role, "facturer");
 
   const facture = await prisma.factureFormation.findUnique({
     where: { id },

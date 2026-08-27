@@ -15,8 +15,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { isFacturationHubEnabled } from "@/server/qualiopi/config/flag";
 import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
@@ -47,6 +46,9 @@ import type {
   FactureFormationStatut,
   Prisma,
 } from "../../../../../../../prisma/generated/client";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
+import { peutEngager } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -107,16 +109,17 @@ export default async function FacturationHubPage({
 }) {
   if (!isFacturationHubEnabled()) notFound();
   const { locale, adminPrefix } = await params;
-  const userSession = await auth();
-  const role = userSession?.user?.role;
   // Lecture ouverte aussi à editor/reader (rôle « comptable » lecture seule —
   // C7 du plan). Les ACTIONS restent gardées par requireAdminWrite.
-  const rolesAutorises = ["admin", "super_admin", "editor", "reader"];
-  if (!userSession?.user || !rolesAutorises.includes(role ?? "")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
+  const role = acces.role;
   // Écriture réservée admin/super_admin (les actions du Hub throw pour editor/reader).
-  const peutEcrire = role === "admin" || role === "super_admin";
+  // Perimetre INCHANGE (admin/super_admin), mais derive du SSOT :
+  // ce drapeau vaut le niveau ENGAGEANT, pas `ROLES_ECRITURE`.
+  const peutEcrire = peutEngager(role, "facturer");
   const sp = await searchParams;
 
   const statutParam = typeof sp["statut"] === "string" ? sp["statut"] : undefined;

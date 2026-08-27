@@ -9,10 +9,8 @@
  */
 
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
-import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
@@ -23,6 +21,8 @@ import {
   listAuditMissions,
   listClientOptions,
 } from "@/server/qualiopi/audits/audit-missions-queries";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -48,10 +48,9 @@ interface PageProps {
 
 export default async function QualiopiAuditsPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const [audits, clients] = await Promise.all([listAuditMissions(), listClientOptions()]);

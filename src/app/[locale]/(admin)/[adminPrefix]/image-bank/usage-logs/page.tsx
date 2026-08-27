@@ -17,12 +17,12 @@
 
 import type { Metadata } from "next";
 import { isIP } from "node:net";
-import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { hashImageBankIp } from "@/server/image-bank/utils/ip-hash";
 import { UsageLogsV2 } from "./_v2/UsageLogsV2";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -41,9 +41,9 @@ export default async function UsageLogsPage({ params, searchParams }: PageProps)
   const { locale, adminPrefix } = await params;
   const { ip: rawIp } = await searchParams;
 
-  const session = await auth();
-  if (!session?.user || (session.user.role !== "admin" && session.user.role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const ip = rawIp && isIP(rawIp) !== 0 ? rawIp : undefined;

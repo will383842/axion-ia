@@ -8,12 +8,12 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 import { FileText, Clock, Image, Newspaper } from "lucide-react";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -27,9 +27,9 @@ interface PageProps {
 
 export default async function PressOverviewPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const session = await auth();
-  if (!session?.user || (session.user.role !== "admin" && session.user.role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
   const base = `/${locale}/${adminPrefix}/presse`;
 

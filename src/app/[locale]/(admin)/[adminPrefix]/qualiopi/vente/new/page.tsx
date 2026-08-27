@@ -18,6 +18,8 @@ import { prisma } from "@/lib/prisma";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { estOffreUnAUn } from "@/server/qualiopi/offres/famille-prestation";
 import type { ChecklistVenteInput, VenteFinancement } from "@/server/qualiopi/vente/checklist";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -38,12 +40,16 @@ interface PageProps {
 export default async function QualiopiVenteNewPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const sp = await searchParams;
-  const session = await auth();
-  const role = session?.user?.role;
-  const userId = session?.user?.id;
-  if (!session?.user || !userId || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("ecriture", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
+  // ⚠️ `userId` est CONSOMMÉ plus bas (auteur de la vente) : le retirer avec la
+  // garde casserait la page. `gardePage` a déjà refusé l'absence de session.
+  const role = acces.role;
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) redirect(`/${locale}/${adminPrefix}/login`);
 
   const [offresWithPrice, formations, clients, mesBrouillons] = await Promise.all([
     listOffres({ actifOnly: true }),

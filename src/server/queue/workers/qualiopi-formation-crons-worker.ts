@@ -44,6 +44,9 @@ import { getFinancementValidations } from "@/server/qualiopi/financements/valida
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
 import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
 import { palierPourJours, libellePalier } from "@/server/qualiopi/financements/relance-paliers";
+// M7 — le MÊME résolveur que la chaîne d'envoi (`facturation-hub.ts`) : la
+// proposition ne peut plus annoncer un débiteur que l'envoi contredirait.
+import { resoudreDestinataireRelance } from "@/server/qualiopi/financements/relance-destinataire";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
 import { verifierSanteEmails } from "@/server/email/health";
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
@@ -1120,8 +1123,46 @@ async function handleFacturesRetard(): Promise<void> {
       createdAt: true,
       montantTtcCents: true,
       montantHtCents: true,
+      // 🔴 M7 (2026-08-27) — LE DÉBITEUR DÉCIDE DE QUI L'ON RÉCLAME.
+      //
+      // Sur une facture libellée à un financeur (subrogation), l'OPCO règle
+      // l'organisme DIRECTEMENT : le client ne doit rien pour ce montant.
+      // Mesuré en dev, ce cron proposait pourtant de le relancer — même
+      // facture, même palier, aucune mention du financeur. L'opérateur qui
+      // traitait sa pile n'avait aucun signal.
+      //
+      // ⚠️ On ne SUPPRIME pas la proposition : la créance existe toujours,
+      // simplement l'OPCO en est le débiteur. La faire disparaître remplacerait
+      // un mauvais rappel par un impayé INVISIBLE — pire.
+      //
+      // 🔑 Ces quatre champs ne sont pas choisis ici : ce sont EXACTEMENT ceux
+      // que `resoudreDestinataireRelance` consomme. La proposition et l'envoi
+      // dérivent ainsi du même résolveur — une note qui annonce l'OPCO est une
+      // note dont l'envoi partira à l'OPCO. Deux dérivations séparées auraient
+      // fini par se contredire, et c'est le pire des deux mondes : un écran qui
+      // dit une chose et un e-mail qui en fait une autre.
+      destinataire: true,
+      destinataireNom: true,
+      dossierFinancement: {
+        select: {
+          financeurNom: true,
+          financeurContactNom: true,
+          financeurContactEmail: true,
+          numeroDossierExterne: true,
+          subrogation: true,
+        },
+      },
       // Délai de paiement propre au client (F61) — base de la réparation.
-      client: { select: { delaiPaiementJours: true } },
+      // `raisonSociale` / `opcoIdentifie` : consommés par le résolveur.
+      client: {
+        select: {
+          delaiPaiementJours: true,
+          raisonSociale: true,
+          opcoIdentifie: true,
+          contactNom: true,
+          contactEmail: true,
+        },
+      },
       payments: { where: { status: "succeeded" }, select: { amountCents: true } },
       avoirs: {
         where: { statut: { not: "annulee" } },
@@ -1133,6 +1174,8 @@ async function handleFacturesRetard(): Promise<void> {
   let marquees = 0;
   let proposees = 0;
   let echeancesReparees = 0;
+  // M7 : combien de propositions visent l'OPCO et non le client.
+  let subrogees = 0;
   for (const f of candidates) {
     // Reste dû NET (revue M3/M4) : TTC + avoirs (négatifs) − encaissements.
     // Créance éteinte (avoir total, trop-perçu) → ni retard, ni relance.
@@ -1195,23 +1238,63 @@ async function handleFacturesRetard(): Promise<void> {
       select: { id: true },
     });
     if (deja !== null) continue;
+    // 🔴 M7 — LE DÉBITEUR, PAS SEULEMENT LA CRÉANCE.
+    //
+    // En subrogation, la relance change de destinataire : c'est le DOSSIER
+    // FINANCEUR qu'on relance, pas le client. Le type `dossier_financeur`
+    // existait déjà dans l'énumération et n'était produit nulle part — il est
+    // fait pour ce cas.
+    //
+    // La note d'écran nomme explicitement le financeur et le dossier, pour que
+    // l'opérateur ne puisse pas cliquer « relancer » en croyant s'adresser au
+    // client. Sans elle, la seule différence serait un champ en base que
+    // personne ne lit.
+    const debiteur = resoudreDestinataireRelance({
+      destinataire: f.destinataire,
+      destinataireNom: f.destinataireNom,
+      dossier: f.dossierFinancement,
+      client: f.client,
+    });
+    const subroge = debiteur.qualite === "financeur";
+    const solde = `${(netDuCents / 100).toFixed(2)} € TTC`;
+    const echeanceFr = echeance.toLocaleDateString("fr-FR");
+
     await prisma.relanceProposee.create({
       data: {
-        type: "facture_retard",
+        type: subroge ? "dossier_financeur" : "facture_retard",
         palier,
         factureFormationId: f.id,
         // ⚠️ Note INTERNE, affichée à l'admin dans le hub. Elle n'est PLUS le
         // corps de l'e-mail envoyé au client (ce jargon partait tel quel) : la
         // rédaction vit dans le gabarit `qualiopi-relance-impayee`, choisie par
         // le ton du palier.
-        suggestion: `Facture ${f.numero} — solde de ${(netDuCents / 100).toFixed(2)} € TTC échu le ${echeance.toLocaleDateString("fr-FR")} — ${libellePalier(palier)}.`,
+        // 🔑 `debiteur.precision` et `debiteur.empechement` viennent du
+        // résolveur, pas d'une phrase réécrite ici. L'empêchement mérite d'être
+        // ANNONCÉ dès la proposition : sans contact financeur connu, l'envoi
+        // sera refusé au clic — le dire maintenant évite un aller-retour, et
+        // désigne le travail réel (renseigner le gestionnaire du dossier).
+        // ⚠️ `debiteur.nom` est le nom du GESTIONNAIRE quand le dossier en porte
+        // un (« M. Dupont ») — il n'a rien à faire dans « le règlement est dû
+        // par … » : ce n'est pas lui qui doit, c'est son organisme. C'est
+        // `precision` qui nomme le financeur ET le dossier.
+        suggestion: subroge
+          ? `SUBROGATION OPCO — ne pas relancer le client. Facture ${f.numero}, solde de ${solde} ` +
+            `échu le ${echeanceFr} : le règlement est dû par le FINANCEUR, à relancer sur le ` +
+            `dossier de financement — ${libellePalier(palier)}. ${debiteur.precision ?? ""}` +
+            (debiteur.empechement !== null
+              ? " ⚠️ Aucun e-mail de gestionnaire connu : l'envoi sera refusé tant que le dossier n'en porte pas."
+              : "")
+          : `Facture ${f.numero} — solde de ${solde} échu le ${echeanceFr} — ${libellePalier(palier)}.`,
       },
     });
+    if (subroge) subrogees++;
     proposees++;
   }
 
   console.log(
-    `[formation-crons] factures-retard: ${marquees} passée(s) en retard, ${proposees} relance(s) proposée(s), ${echeancesReparees} échéance(s) manquante(s) reconstituée(s) — AUCUN email client (manuel)`,
+    `[formation-crons] factures-retard: ${marquees} passée(s) en retard, ${proposees} relance(s) proposée(s) ` +
+      `dont ${subrogees} vers l'OPCO (subrogation), ${echeancesReparees} échéance(s) manquante(s) reconstituée(s) ` +
+      `— AUCUN email : toute relance d'impayé est déclenchée A LA MAIN`,
   );
 }
 

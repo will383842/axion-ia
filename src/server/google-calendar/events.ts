@@ -100,6 +100,15 @@ export interface GoogleEvent {
   readonly fromCalendly: boolean;
   /** `true` quand l'événement a été posé depuis la console. */
   readonly fromConsole: boolean;
+  /**
+   * La note libre saisie dans la console, extraite de la description.
+   *
+   * 🔴 ELLE DOIT REMONTER JUSQU'À L'ÉCRAN, sinon le formulaire de modification
+   * s'ouvrirait avec un champ note VIDE et l'enregistrement effacerait la note
+   * existante — en silence, puisque rien à l'écran n'aurait signalé sa présence.
+   * C'est le genre de perte qu'on ne découvre que le jour où on en a besoin.
+   */
+  readonly noteConsole: string | null;
   readonly htmlLink: string | null;
 }
 
@@ -255,6 +264,7 @@ function normaliser(raw: unknown): GoogleEvent | null {
     description,
     fromCalendly: description?.includes(SIGNATURE_CALENDLY) ?? false,
     fromConsole: description?.includes(MARQUEUR_CONSOLE) ?? false,
+    noteConsole: extraireNote(description),
     htmlLink: texte(e["htmlLink"]),
   };
 }
@@ -394,6 +404,186 @@ export async function poserIndisponibilite(
   const rec =
     typeof res.body === "object" && res.body !== null ? (res.body as Record<string, unknown>) : {};
   return { ok: true, id: texte(rec["id"]) ?? "", htmlLink: texte(rec["htmlLink"]) };
+}
+
+/**
+ * Récupère la note libre d'une description écrite par la console.
+ *
+ * Structure posée par `composerDescription` : le marqueur et sa phrase, puis
+ * `Contact :` / `Téléphone :` s'ils existent, puis une LIGNE VIDE, puis la note.
+ * C'est cette ligne vide qui sert de séparateur — tout ce qui la suit est la
+ * note, retours à la ligne compris.
+ */
+function extraireNote(description: string | null): string | null {
+  if (!description || !description.includes(MARQUEUR_CONSOLE)) return null;
+  const lignes = description.split(SAUT_DE_LIGNE);
+  const vide = lignes.findIndex((l, i) => i > 0 && l.trim() === "");
+  if (vide === -1) return null;
+  const note = lignes
+    .slice(vide + 1)
+    .join(SAUT_DE_LIGNE)
+    .trim();
+  return note.length > 0 ? note : null;
+}
+
+/** Separateur de lignes des descriptions. */
+const SAUT_DE_LIGNE = String.fromCharCode(10);
+
+/**
+ * Compose la description d'un événement posé depuis la console.
+ *
+ * 🔑 LE MARQUEUR VIENT TOUJOURS EN PREMIER, et il n'est jamais facultatif : c'est
+ * lui, et lui seul, qui autorise la console à modifier ou supprimer un événement
+ * plus tard. Un événement écrit sans marqueur devient intouchable — le contraire
+ * d'un service rendu.
+ */
+function composerDescription(
+  phrase: string,
+  contact: string | null,
+  telephone: string | null,
+  note: string | null,
+): string {
+  const lignes = [`${MARQUEUR_CONSOLE} ${phrase}`];
+  if (contact) lignes.push(`Contact : ${contact}`);
+  if (telephone) lignes.push(`Téléphone : ${telephone}`);
+  if (note) lignes.push("", note);
+  return lignes.join(SAUT_DE_LIGNE);
+}
+
+export interface CreerRendezVousInput {
+  readonly titre: string;
+  readonly debut: Date;
+  readonly fin: Date;
+  readonly contact?: string | null;
+  readonly telephone?: string | null;
+  /** Note interne. Elle finit dans la description Google — donc sur l'iPhone. */
+  readonly note?: string | null;
+}
+
+/**
+ * Crée un VRAI rendez-vous — pas un blocage — depuis la console.
+ *
+ * POURQUOI C'EST LA MÊME MÉCANIQUE QU'UNE INDISPONIBILITÉ
+ * -------------------------------------------------------
+ * Un rendez-vous et un blocage ne different, pour Google, que par leur titre et
+ * leur description : les deux sont des événements OCCUPÉS, et c'est ce
+ * `transparency: "opaque"` qui ferme le créneau Calendly correspondant en une
+ * dizaine de secondes. On ne parle donc jamais à Calendly, ici non plus.
+ *
+ * 🔴 ET C'EST LA SEULE VOIE POSSIBLE. Calendly n'expose AUCUNE API de création
+ * de réservation — on ne réserve que par leur page. Passer par l'agenda Google
+ * n'est pas un contournement : c'est le seul mécanisme qui existe, et il a
+ * l'avantage de tenir les deux bouts d'un coup.
+ *
+ * ⚠️ L'invité n'est PAS prévenu. Aucun e-mail ne part : l'événement est posé
+ * dans l'agenda de Will, pour Will. Si quelqu'un doit être prévenu, c'est un
+ * geste humain, séparé et délibéré.
+ */
+export async function creerRendezVous(input: CreerRendezVousInput): Promise<GoogleWriteResult> {
+  const cfg = readGoogleCalendarConfig();
+  if (!cfg) return { ok: false, reason: "not_configured" };
+
+  const auth = await getGoogleAccessToken();
+  if (!auth.ok) return echec(auth.reason, auth.detail);
+
+  const description = composerDescription(
+    "Rendez-vous posé depuis la console Axion-IA. Il ferme la réservation en ligne sur ce créneau.",
+    input.contact ?? null,
+    input.telephone ?? null,
+    input.note ?? null,
+  );
+
+  const res = await appeler(`/calendars/${encodeURIComponent(cfg.calendarId)}/events`, {
+    method: "POST",
+    token: auth.token,
+    body: JSON.stringify({
+      summary: input.titre,
+      description,
+      start: { dateTime: input.debut.toISOString(), timeZone: "Europe/Paris" },
+      end: { dateTime: input.fin.toISOString(), timeZone: "Europe/Paris" },
+      transparency: "opaque",
+    }),
+  });
+
+  if (!res.ok) {
+    journaliser("création de rendez-vous en échec", {
+      reason: res.reason,
+      detail: res.detail,
+      debut: input.debut.toISOString(),
+    });
+    return { ok: false, reason: res.reason, detail: res.detail };
+  }
+
+  const rec =
+    typeof res.body === "object" && res.body !== null ? (res.body as Record<string, unknown>) : {};
+  return { ok: true, id: texte(rec["id"]) ?? "", htmlLink: texte(rec["htmlLink"]) };
+}
+
+export interface ModifierEvenementInput {
+  readonly titre?: string;
+  readonly debut?: Date;
+  readonly fin?: Date;
+  readonly contact?: string | null;
+  readonly telephone?: string | null;
+  readonly note?: string | null;
+  /** Phrase d'en-tête à conserver — dépend du type d'événement modifié. */
+  readonly phrase: string;
+}
+
+/**
+ * Modifie un événement posé depuis la console — horaire, titre ou note.
+ *
+ * ⚠️ MÊME GARDE QUE LA SUPPRESSION, ET POUR LA MÊME RAISON. L'appelant DOIT
+ * avoir vérifié que l'événement porte `MARQUEUR_CONSOLE` avant d'appeler. La
+ * console n'a aucune raison de réécrire un vrai rendez-vous client ni un
+ * événement personnel : déplacer l'heure d'un rendez-vous que l'invité croit
+ * fixé produirait exactement la panne qu'on veut éviter — deux personnes qui
+ * n'ont pas la même vérité.
+ *
+ * On emploie `PATCH` et non `PUT` : les champs non transmis restent intacts,
+ * donc on ne détruit pas les invités, les rappels ni la visioconférence d'un
+ * événement en n'en changeant que l'heure.
+ */
+export async function modifierEvenement(
+  eventId: string,
+  input: ModifierEvenementInput,
+): Promise<GoogleWriteResult> {
+  const cfg = readGoogleCalendarConfig();
+  if (!cfg) return { ok: false, reason: "not_configured" };
+
+  const auth = await getGoogleAccessToken();
+  if (!auth.ok) return echec(auth.reason, auth.detail);
+
+  const corps: Record<string, unknown> = {
+    description: composerDescription(
+      input.phrase,
+      input.contact ?? null,
+      input.telephone ?? null,
+      input.note ?? null,
+    ),
+  };
+  if (input.titre) corps["summary"] = input.titre;
+  if (input.debut)
+    corps["start"] = { dateTime: input.debut.toISOString(), timeZone: "Europe/Paris" };
+  if (input.fin) corps["end"] = { dateTime: input.fin.toISOString(), timeZone: "Europe/Paris" };
+
+  const res = await appeler(
+    `/calendars/${encodeURIComponent(cfg.calendarId)}/events/${encodeURIComponent(eventId)}`,
+    { method: "PATCH", token: auth.token, body: JSON.stringify(corps) },
+  );
+
+  if (!res.ok) {
+    journaliser("modification d'événement en échec", {
+      reason: res.reason,
+      detail: res.detail,
+      eventId,
+    });
+    return { ok: false, reason: res.reason, detail: res.detail };
+  }
+
+  const rec =
+    typeof res.body === "object" && res.body !== null ? (res.body as Record<string, unknown>) : {};
+  return { ok: true, id: texte(rec["id"]) ?? eventId, htmlLink: texte(rec["htmlLink"]) };
 }
 
 /**
