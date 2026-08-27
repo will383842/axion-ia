@@ -27,6 +27,7 @@ import { AdminPageHeader } from "@/components/admin/ui";
 import { getAgendaFenetre } from "@/features/admin-agenda/queries";
 import { AgendaTimeline } from "@/components/admin/agenda/AgendaTimeline";
 import { PoserIndisponibiliteForm } from "@/components/admin/agenda/PoserIndisponibiliteForm";
+import { RendezVousForm } from "@/components/admin/agenda/RendezVousForm";
 import { AgendaBarre, SOURCES_FILTRABLES } from "@/components/admin/agenda/AgendaBarre";
 import { AgendaMois } from "@/components/admin/agenda/AgendaMois";
 import { AgendaSemaine } from "@/components/admin/agenda/AgendaSemaine";
@@ -221,7 +222,13 @@ export default async function AgendaPage({
             maintenant={maintenant}
           />
 
-          <PoserIndisponibiliteForm jour={jour} actif={diagnostics.googleConfigure} />
+          {/* Deux ecritures, deux gestes distincts : ajouter un rendez-vous, ou
+              fermer des creneaux. Les confondre dans un seul formulaire
+              obligerait a choisir un type avant de saisir quoi que ce soit. */}
+          <div className="flex flex-wrap gap-[var(--space-admin-3)]">
+            <RendezVousForm jour={jour} actif={diagnostics.googleConfigure} />
+            <PoserIndisponibiliteForm jour={jour} actif={diagnostics.googleConfigure} />
+          </div>
         </>
       )}
     </div>

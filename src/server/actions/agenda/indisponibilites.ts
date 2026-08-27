@@ -24,6 +24,8 @@ import { z } from "zod";
 import { requireAdminWrite } from "@/server/actions/backups/_guards";
 import {
   poserIndisponibilite,
+  creerRendezVous,
+  modifierEvenement,
   retirerEvenement,
   listerEvenements,
   debutBlocageApres,
@@ -162,4 +164,149 @@ export async function retirerIndisponibiliteAction(input: unknown): Promise<Resu
     ok: true,
     message: "Indisponibilité retirée. Les créneaux rouvrent en quelques secondes.",
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Rendez-vous : créer, modifier (2026-08-27)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 CE QUE LA CONSOLE PEUT ÉCRIRE, ET CE QU'ELLE NE DOIT JAMAIS TOUCHER.
+//
+// Elle écrit dans l'agenda Google, jamais dans Calendly — qui n'expose AUCUNE
+// API de création de réservation, et dont notre jeton est de toute façon en
+// lecture seule. Ce n'est pas une limite gênante : un événement occupé posé dans
+// Google ferme le créneau Calendly correspondant en une dizaine de secondes.
+// Une seule écriture tient donc les deux bouts.
+//
+// En revanche, un rendez-vous VENU de Calendly ne se modifie ni ne se supprime
+// ici. Le supprimer de Google ne l'annulerait pas côté Calendly : l'invité
+// garderait son rendez-vous, recevrait ses rappels, et se présenterait à
+// l'heure dite pendant que la console afficherait un créneau libre. C'est la
+// panne la plus coûteuse possible pour un agenda — deux personnes qui n'ont pas
+// la même vérité. La garde `MARQUEUR_CONSOLE` est donc la même que pour la
+// suppression, et le message renvoie vers la page d'annulation Calendly, seule
+// voie qui prévient réellement l'invité.
+
+const SchemaCreerRdv = z.object({
+  titre: z.string().trim().min(1).max(120),
+  debutIso: z.string().datetime(),
+  finIso: z.string().datetime(),
+  contact: z.string().trim().max(120).optional(),
+  telephone: z.string().trim().max(40).optional(),
+  note: z.string().trim().max(500).optional(),
+});
+
+const SchemaModifier = z.object({
+  eventId: z.string().trim().min(1).max(200),
+  titre: z.string().trim().min(1).max(120),
+  debutIso: z.string().datetime(),
+  finIso: z.string().datetime(),
+  contact: z.string().trim().max(120).optional(),
+  telephone: z.string().trim().max(40).optional(),
+  note: z.string().trim().max(500).optional(),
+});
+
+/**
+ * Retrouve un événement de l'agenda et vérifie qu'il vient bien de la console.
+ *
+ * Mutualisé entre modification et suppression : la garde ne vaut que si elle est
+ * IDENTIQUE aux deux endroits. Deux copies divergent — c'est ainsi qu'un jour
+ * l'une des deux oublie de vérifier.
+ */
+async function trouverEvenementModifiable(
+  eventId: string,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const maintenant = Date.now();
+  const lecture = await listerEvenements(
+    new Date(maintenant - 90 * 86_400_000).toISOString(),
+    new Date(maintenant + 365 * 86_400_000).toISOString(),
+  );
+  if (!lecture.ok) return { ok: false, message: phrasePour(lecture.reason) };
+
+  const cible = lecture.events.find((e) => e.id === eventId);
+  if (!cible) return { ok: false, message: "Cet événement n'existe plus dans l'agenda." };
+
+  if (cible.fromCalendly) {
+    return {
+      ok: false,
+      message:
+        "Ce rendez-vous vient de la réservation en ligne. Le modifier ici ne préviendrait pas la personne : utilisez la page de report Calendly, depuis sa fiche.",
+    };
+  }
+  if (!cible.description?.includes(MARQUEUR_CONSOLE)) {
+    return {
+      ok: false,
+      message:
+        "Cet événement n'a pas été posé depuis la console — modifiez-le directement dans Google Agenda si c'est bien votre intention.",
+    };
+  }
+  return { ok: true };
+}
+
+/** Crée un vrai rendez-vous dans l'agenda. Ferme le créneau Calendly au passage. */
+export async function creerRendezVousAction(input: unknown): Promise<ResultatAction> {
+  await requireAdminWrite();
+
+  const parsed = SchemaCreerRdv.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, message: "Saisie invalide : vérifiez le titre et les horaires." };
+  }
+  const { titre, debutIso, finIso, contact, telephone, note } = parsed.data;
+  const debut = new Date(debutIso);
+  const fin = new Date(finIso);
+  // Une fin antérieure au début produirait un événement que Google refuse, avec
+  // un message technique. On le dit ici, en français, avant d'appeler.
+  if (fin.getTime() <= debut.getTime()) {
+    return { ok: false, message: "La fin doit être postérieure au début." };
+  }
+
+  const res = await creerRendezVous({
+    titre,
+    debut,
+    fin,
+    ...(contact ? { contact } : {}),
+    ...(telephone ? { telephone } : {}),
+    ...(note ? { note } : {}),
+  });
+  if (!res.ok) return { ok: false, message: phrasePour(res.reason) };
+
+  rafraichir();
+  return {
+    ok: true,
+    message: "Rendez-vous ajouté. Le créneau se ferme à la réservation en ligne dans la minute.",
+  };
+}
+
+/** Modifie un événement posé depuis la console — horaire, titre, contact ou note. */
+export async function modifierEvenementAction(input: unknown): Promise<ResultatAction> {
+  await requireAdminWrite();
+
+  const parsed = SchemaModifier.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, message: "Saisie invalide : vérifiez le titre et les horaires." };
+  }
+  const { eventId, titre, debutIso, finIso, contact, telephone, note } = parsed.data;
+  const debut = new Date(debutIso);
+  const fin = new Date(finIso);
+  if (fin.getTime() <= debut.getTime()) {
+    return { ok: false, message: "La fin doit être postérieure au début." };
+  }
+
+  const garde = await trouverEvenementModifiable(eventId);
+  if (!garde.ok) return { ok: false, message: garde.message };
+
+  const res = await modifierEvenement(eventId, {
+    titre,
+    debut,
+    fin,
+    phrase:
+      "Rendez-vous posé depuis la console Axion-IA. Il ferme la réservation en ligne sur ce créneau.",
+    ...(contact ? { contact } : {}),
+    ...(telephone ? { telephone } : {}),
+    ...(note ? { note } : {}),
+  });
+  if (!res.ok) return { ok: false, message: phrasePour(res.reason) };
+
+  rafraichir();
+  return { ok: true, message: "Rendez-vous modifié. L'agenda et la réservation en ligne suivent." };
 }
