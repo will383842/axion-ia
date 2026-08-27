@@ -24,30 +24,30 @@
 
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/ui";
-import { getAgendaFenetre, bornesDuJourParis } from "@/features/admin-agenda/queries";
+import { getAgendaFenetre } from "@/features/admin-agenda/queries";
 import { AgendaTimeline } from "@/components/admin/agenda/AgendaTimeline";
 import { PoserIndisponibiliteForm } from "@/components/admin/agenda/PoserIndisponibiliteForm";
-import { dayKeyInParis } from "@/lib/calendar-grid";
+import { AgendaBarre, SOURCES_FILTRABLES } from "@/components/admin/agenda/AgendaBarre";
+import { AgendaMois } from "@/components/admin/agenda/AgendaMois";
+import { AgendaSemaine } from "@/components/admin/agenda/AgendaSemaine";
+import {
+  aujourdhuiParis,
+  bornesPlageParis,
+  estCleJour,
+  estVue,
+  plageDeLaVue,
+  semaineDe,
+  type VueAgenda,
+} from "@/features/admin-agenda/calendrier";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string }>;
-  searchParams: Promise<{ jour?: string }>;
+  searchParams: Promise<{ jour?: string; vue?: string; sources?: string }>;
 }
 
 const JOURS_COURTS = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
-
-/** `AAAA-MM-JJ` valide ? Sinon on retombe sur aujourd'hui plutôt que de planter. */
-function jourValide(v: string | undefined): string | null {
-  return v && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
-}
-
-function decalerJour(jour: string, delta: number): string {
-  const d = new Date(`${jour}T12:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + delta);
-  return d.toISOString().slice(0, 10);
-}
 
 function libelleJour(jour: string): string {
   return new Intl.DateTimeFormat("fr-FR", {
@@ -103,21 +103,33 @@ export default async function AgendaPage({
   searchParams,
 }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix } = await params;
-  const { jour: jourBrut } = await searchParams;
+  const { jour: jourBrut, vue: vueBrute, sources: sourcesBrutes } = await searchParams;
 
   const maintenant = new Date();
-  const aujourdhui = dayKeyInParis(maintenant);
-  const jour = jourValide(jourBrut) ?? aujourdhui;
+  const aujourdhui = aujourdhuiParis(maintenant);
+  // Toute entree douteuse retombe sur une valeur sure : cette page a deja
+  // rendu un ecran d'erreur en production pour avoir laisse passer une date
+  // invalide jusqu'a Prisma (cf. bornes-du-jour-paris.spec.ts).
+  const jour = estCleJour(jourBrut) ? jourBrut : aujourdhui;
+  const vue: VueAgenda = estVue(vueBrute) ? vueBrute : "mois";
 
-  const { debut, fin } = bornesDuJourParis(jour);
-  const { items, diagnostics } = await getAgendaFenetre(debut, fin);
+  // Filtres de source. Une valeur inconnue est ignoree plutot que de vider
+  // l'ecran : un parametre d'URL bricole ne doit jamais faire croire a un
+  // agenda vide.
+  const connues = SOURCES_FILTRABLES.map((s) => s.id) as readonly string[];
+  const sources = (sourcesBrutes ?? "")
+    .split(",")
+    .map((x) => x.trim())
+    .filter((x) => connues.includes(x));
+
+  const plage = plageDeLaVue(vue, jour);
+  const { debut, fin } = bornesPlageParis(plage.debut, plage.finExclue);
+  const { items: bruts, diagnostics } = await getAgendaFenetre(debut, fin);
+  const items = sources.length > 0 ? bruts.filter((i) => sources.includes(i.source)) : bruts;
 
   const base = `/fr/${adminPrefix}/agenda`;
-  // Frise de sept jours centrée sur le jour affiché : sur mobile, c'est ce qui
-  // tient sans défilement horizontal tout en gardant hier et demain à portée.
-  const semaine = Array.from({ length: 7 }, (_, i) => decalerJour(jour, i - 3));
-
-  const occupes = items.filter((i) => i.occupe).length;
+  const duJour = items.filter((i) => i.jour === jour);
+  const occupes = duJour.filter((i) => i.occupe).length;
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-4)]">
@@ -133,56 +145,91 @@ export default async function AgendaPage({
         tronque={diagnostics.googleTronque}
       />
 
-      {/* Frise de semaine — des liens, donc navigables sans JavaScript et
-          ouvrables dans un nouvel onglet. */}
-      <nav aria-label="Choisir un jour">
-        <ul className="flex gap-[var(--space-admin-2)] overflow-x-auto pb-[var(--space-admin-1)]">
-          {semaine.map((j) => {
-            const actif = j === jour;
-            const d = new Date(`${j}T12:00:00Z`);
-            return (
-              <li key={j} className="shrink-0">
-                <Link
-                  href={`${base}?jour=${j}`}
-                  aria-current={actif ? "date" : undefined}
-                  className={`flex min-w-[3.25rem] flex-col items-center rounded-[var(--radius-admin-md)] border px-[var(--space-admin-3)] py-[var(--space-admin-2)] ${
-                    actif
-                      ? "border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-info-soft)]"
-                      : "border-[color:var(--color-admin-border)]"
-                  }`}
-                >
-                  <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {JOURS_COURTS[d.getUTCDay()]}
-                  </span>
-                  <span className="text-[length:var(--text-admin-md)] font-medium tabular-nums">
-                    {d.getUTCDate()}
-                  </span>
-                  {j === aujourdhui && (
-                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)]">
-                      auj.
-                    </span>
-                  )}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      <AgendaBarre
+        base={base}
+        vue={vue}
+        jour={jour}
+        aujourdhui={aujourdhui}
+        sources={sources}
+      />
 
-      <div className="flex flex-wrap items-baseline justify-between gap-[var(--space-admin-2)]">
-        <h2 className="text-[length:var(--text-admin-lg)] font-medium first-letter:uppercase">
-          {libelleJour(jour)}
-        </h2>
-        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          {occupes === 0
-            ? "Aucune plage occupée"
-            : `${occupes} plage${occupes > 1 ? "s" : ""} occupée${occupes > 1 ? "s" : ""}`}
-        </p>
-      </div>
+      {vue === "mois" && (
+        <AgendaMois
+          base={base}
+          jour={jour}
+          aujourdhui={aujourdhui}
+          items={items}
+          sources={sources}
+        />
+      )}
 
-      <AgendaTimeline items={items} estAujourdhui={jour === aujourdhui} maintenant={maintenant} />
+      {vue === "semaine" && (
+        <AgendaSemaine
+          base={base}
+          jour={jour}
+          aujourdhui={aujourdhui}
+          items={items}
+          sources={sources}
+        />
+      )}
 
-      <PoserIndisponibiliteForm jour={jour} actif={diagnostics.googleConfigure} />
+      {vue === "jour" && (
+        <>
+          {/* Frise de sept jours — des liens, donc navigables sans JavaScript. */}
+          <nav aria-label="Choisir un jour de la semaine">
+            <ul className="flex gap-[var(--space-admin-2)] overflow-x-auto pb-[var(--space-admin-1)]">
+              {semaineDe(jour).map((j) => {
+                const actif = j === jour;
+                const d = new Date(`${j}T12:00:00Z`);
+                return (
+                  <li key={j} className="shrink-0">
+                    <Link
+                      href={`${base}?vue=jour&jour=${j}`}
+                      aria-current={actif ? "date" : undefined}
+                      className={`flex min-w-[3.25rem] flex-col items-center rounded-[var(--radius-admin-md)] border px-[var(--space-admin-3)] py-[var(--space-admin-2)] ${
+                        actif
+                          ? "border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-info-soft)]"
+                          : "border-[color:var(--color-admin-border)]"
+                      }`}
+                    >
+                      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                        {JOURS_COURTS[d.getUTCDay()]}
+                      </span>
+                      <span className="text-[length:var(--text-admin-md)] font-medium tabular-nums">
+                        {d.getUTCDate()}
+                      </span>
+                      {j === aujourdhui && (
+                        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)]">
+                          auj.
+                        </span>
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <div className="flex flex-wrap items-baseline justify-between gap-[var(--space-admin-2)]">
+            <h2 className="text-[length:var(--text-admin-lg)] font-medium first-letter:uppercase">
+              {libelleJour(jour)}
+            </h2>
+            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              {occupes === 0
+                ? "Aucune plage occupée"
+                : `${String(occupes)} plage${occupes > 1 ? "s" : ""} occupée${occupes > 1 ? "s" : ""}`}
+            </p>
+          </div>
+
+          <AgendaTimeline
+            items={duJour}
+            estAujourdhui={jour === aujourdhui}
+            maintenant={maintenant}
+          />
+
+          <PoserIndisponibiliteForm jour={jour} actif={diagnostics.googleConfigure} />
+        </>
+      )}
     </div>
   );
 }
