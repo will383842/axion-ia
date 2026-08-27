@@ -33,10 +33,8 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Archive, ArrowLeft, ArrowRight } from "lucide-react";
 
-import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
@@ -49,6 +47,8 @@ import {
   type LigneDossier,
 } from "@/server/admin/dossiers-pipeline";
 import { libellerPerimetre, PERIMETRE_LABELS } from "@/server/qualiopi/perimetre";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -85,11 +85,10 @@ function plage(dateDebut: Date | null, dateFin: Date | null): string | null {
 
 export default async function DossiersPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const session = await auth();
-  const role = session?.user?.role;
   // Même garde que le reste de la console Qualiopi (à-traiter, alertes, sessions).
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const base = `/${locale}/${adminPrefix}`;

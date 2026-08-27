@@ -55,8 +55,6 @@ export type ActeEngageant =
   | "contresigner"
   /** Émettre une attestation de fin de formation ou un certificat de réalisation. */
   | "attester"
-  /** Valider une évaluation finale des acquis — elle fonde l'attestation. */
-  | "valider_evaluation"
   /** Conclure un devis au nom de l'organisme (acceptation, transformation en convention). */
   | "conclure_devis"
   /** Émettre une facture, un avoir, ou encaisser. */
@@ -164,10 +162,84 @@ export function peutEcrire(role: string | null | undefined): boolean {
   return ROLES_ECRITURE.includes(role as RoleAdmin);
 }
 
+/**
+ * 🔴 QUI PEUT CONSULTER — la troisième moitié, restée hors du SSOT jusqu'ici.
+ *
+ * ## Le défaut que cette constante ferme
+ *
+ * Mesuré le 2026-08-27. Le SSOT décrivait qui ÉCRIT et qui ENGAGE, jamais qui
+ * REGARDE. Chaque page a donc tranché seule, et le résultat n'est pas un
+ * périmètre, c'est une dérive :
+ *
+ * | | |
+ * |---|---|
+ * | pages `(admin)` | **305** |
+ * | fermées par une liste de rôles ÉCRITE EN DUR | **64** |
+ * | passant par ce fichier | **0** |
+ *
+ * Le callback `authorized()` d'Auth.js ne teste que `isLoggedIn` — jamais le
+ * rôle — et aucun `layout` n'ajoute de garde. **241 pages sur 305 (79 %) étaient
+ * donc déjà ouvertes** à `secretaire`, `reader`, `editor` et
+ * `responsable_qualite`. Les 64 autres se fermaient sans que rien ne dise
+ * pourquoi celles-là.
+ *
+ * ⚠️ La preuve que c'est une dérive et non une décision : `/qualiopi/facturation`
+ * portait sa propre liste, `["admin", "super_admin", "editor", "reader"]`.
+ * **`reader` — le rôle qui, par définition, ne fait que lire — voyait le hub de
+ * facturation ; `secretaire`, dont ce fichier écrit qu'elle « gère le système »,
+ * ne le voyait pas.** `responsable_qualite`, le rôle Qualiopi, non plus. Aucune
+ * décision de périmètre ne produit ce classement.
+ *
+ * ## Pourquoi ouvrir en lecture est SÛR
+ *
+ * Vérifié acte par acte : les sept actes engageants qui existent réellement sont
+ * gardés CÔTÉ SERVEUR par `requireHabilitation`, indépendamment de l'écran
+ * atteint. Atteindre la fiche d'un devis ne permet pas de le conclure —
+ * `conclure_devis` reste `["super_admin", "admin"]`.
+ *
+ * ## 🔴 `valider_evaluation` A ÉTÉ RETIRÉ (décision de Will, 2026-08-27)
+ *
+ * Cette matrice a porté pendant des mois un huitième acte, `valider_evaluation`,
+ * réservé à `["super_admin", "admin", "responsable_qualite"]` et assorti d'un
+ * motif de refus soigné. **Il n'était appelé nulle part.**
+ *
+ * Vérifié avant de conclure : ce n'était pas un trou de sécurité, c'était un acte
+ * **qui n'existe pas dans le produit**. `EvaluationAcquis` ne porte aucun état de
+ * validation — ni `valideeAt`, ni `valideePar`, ni statut. Ce que l'entrée
+ * décrivait (« elle fonde l'attestation ») est réellement gardé, mais par
+ * `attester`, sur `genererAttestationAction`.
+ *
+ * 🔑 **Une entrée de matrice qui ne garde rien est pire qu'une absence** :
+ * `actesAutorises()` la rendait, et tout lecteur en déduisait que le geste était
+ * contrôlé. Le dépôt le savait déjà — `toute-action-a-une-surface.spec.ts` la
+ * nomme parmi SEPT cas du même motif, « l'outil est écrit, le raccordement
+ * manque ». Nommée, jamais résolue.
+ *
+ * Si un jour on construit vraiment cette étape, c'est l'entrée qu'il faudra
+ * remettre — en même temps que le bouton, pas avant.
+ *
+ * ## La frontière, en une phrase
+ *
+ * `reader` lit et ne fait que lire ; tous les autres lisent aussi. La frontière
+ * du produit est sur l'**acte**, jamais sur l'écran.
+ */
+export const ROLES_CONSULTATION: ReadonlyArray<RoleAdmin> = ROLES_ADMIN;
+
+/**
+ * Ce rôle peut-il CONSULTER la console ?
+ *
+ * 🔑 Volontairement dérivé de `ROLES_ADMIN` et non recopié : un rôle ajouté à
+ * l'énumération consulte par défaut, et c'est la bonne valeur par défaut —
+ * l'inverse (un rôle neuf qui ne voit rien) fabrique exactement les comptes
+ * inertes du 2026-08-17.
+ */
+export function peutConsulter(role: string | null | undefined): boolean {
+  return ROLES_CONSULTATION.includes(role as RoleAdmin);
+}
+
 export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdmin>>> = {
   contresigner: ["super_admin", "admin"],
   attester: ["super_admin", "admin", "responsable_qualite"],
-  valider_evaluation: ["super_admin", "admin", "responsable_qualite"],
   conclure_devis: ["super_admin", "admin"],
   facturer: ["super_admin", "admin"],
   habiliter_formateur: ["super_admin", "admin", "responsable_qualite"],
@@ -187,8 +259,6 @@ export const MOTIF_REFUS: Readonly<Record<ActeEngageant, string>> = {
     "Contresigner engage l'organisme : cet acte revient à un responsable habilité (direction).",
   attester:
     "Émettre une attestation engage l'organisme sur la réalisation : acte réservé à la direction ou au responsable qualité.",
-  valider_evaluation:
-    "Valider une évaluation finale fonde l'attestation : acte réservé à la direction ou au responsable qualité.",
   conclure_devis:
     "Conclure un devis engage l'organisme contractuellement : acte réservé à la direction.",
   facturer: "Émettre une facture engage l'organisme comptablement : acte réservé à la direction.",
