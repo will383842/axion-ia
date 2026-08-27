@@ -14,9 +14,8 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 
-import { auth } from "@/auth";
 import { AcompteFormationPanel } from "@/components/admin/qualiopi/AcompteFormationPanel";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -27,6 +26,8 @@ import { prisma } from "@/lib/prisma";
 import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
 import type { FactureFormationDestinataire } from "../../../../../../../../../prisma/generated/client";
 import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -100,10 +101,9 @@ function defaultDestinataireForType(
 
 export default async function FinancementSessionPage({ params }: PageProps) {
   const { locale, adminPrefix, id } = await params;
-  const userSession = await auth();
-  const role = userSession?.user?.role;
-  if (!userSession?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const trainingSession = await prisma.trainingSession.findUnique({

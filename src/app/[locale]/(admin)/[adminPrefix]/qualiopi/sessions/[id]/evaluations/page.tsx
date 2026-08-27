@@ -11,11 +11,10 @@
  */
 
 import type { Metadata } from "next";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import Link from "next/link";
 
-import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { prisma } from "@/lib/prisma";
@@ -26,6 +25,8 @@ import {
   createEvaluationAcquisAction,
   genererAttestationAction,
 } from "@/server/actions/qualiopi/evaluations";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -78,10 +79,9 @@ interface PageProps {
 
 export default async function EvaluationsPage({ params }: PageProps) {
   const { locale, adminPrefix, id } = await params;
-  const userSession = await auth();
-  const role = userSession?.user?.role;
-  if (!userSession?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   // ── Chargement session + formation + enrollments + évaluations ──────────────
