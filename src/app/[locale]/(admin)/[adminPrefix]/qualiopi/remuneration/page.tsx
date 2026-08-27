@@ -10,11 +10,9 @@
  */
 
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { AlertTriangle, Calculator, Euro, FileWarning, Users } from "lucide-react";
 
-import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
@@ -36,6 +34,8 @@ import {
   MOIS_FR,
   TON_STATUT_RELEVE,
 } from "./_labels";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -51,10 +51,9 @@ interface PageProps {
 export default async function QualiopiRemunerationPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const sp = await searchParams;
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   // Par défaut : le mois écoulé. On calcule un mois APRÈS l'avoir vécu.

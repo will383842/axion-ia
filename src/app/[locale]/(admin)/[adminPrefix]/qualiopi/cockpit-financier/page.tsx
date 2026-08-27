@@ -10,10 +10,8 @@
  */
 
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Wallet, Coins, TrendingUp, Percent, AlertTriangle, Clock } from "lucide-react";
 
-import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
@@ -26,6 +24,8 @@ import {
   getConsolidationMensuelle,
 } from "@/server/qualiopi/remuneration/marge";
 import { periodeLabel, type PilotagePeriode } from "@/server/qualiopi/conformite/periode";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -93,10 +93,9 @@ function margeCls(margeCents: number): string {
 
 export default async function QualiopiCockpitFinancierPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
   const sp = await searchParams;
@@ -230,7 +229,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
       </div>
 
       {nbSansCout > 0 && (
-        <p className="mb-[var(--space-admin-6)] flex items-center gap-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
+        <p className="mb-[var(--space-admin-6)] flex items-center gap-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning-fg)]">
           <AlertTriangle className="h-4 w-4" aria-hidden />
           {/* « 1 session(s) réalisée(s) » : deux pluriels entre parenthèses dans
               l'avertissement qui dit que le chiffre affiché juste au-dessus est
@@ -287,7 +286,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
                     {euros(s.coutFormateurCents)}
                     {!s.coutCalcule ? (
                       <span
-                        className="ml-1 text-[color:var(--color-admin-warning)]"
+                        className="ml-1 text-[color:var(--color-admin-warning-fg)]"
                         title="Aucune ligne de rémunération — coût non calculé"
                       >
                         *

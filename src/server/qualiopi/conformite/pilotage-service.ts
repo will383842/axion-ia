@@ -80,6 +80,18 @@ export interface PilotageResult {
   m3_taux_completion: MetriqueValeur;
   /** M4 — Taux d'abandon */
   m4_taux_abandon: MetriqueValeur;
+  /**
+   * 🔴 M4 SANS SES MOTIFS N'EST PAS UN INDICATEUR, C'EST UN CHIFFRE.
+   *
+   * Le taux existait et s'affichait ; rien ne disait POURQUOI. Un auditeur qui
+   * demande « pourquoi abandonne-t-on chez vous, et qu'avez-vous fait ? »
+   * n'avait rien à lire — et c'est précisément ce qu'un indicateur de résultat
+   * doit permettre.
+   *
+   * Regroupé par motif et trié par fréquence : ce qui revient le plus est ce
+   * sur quoi il faut agir.
+   */
+  m4_motifs_abandon: Array<{ motif: string; nombre: number }>;
   /** M5 — Taux d'atteinte des objectifs (réussite) */
   m5_taux_reussite: MetriqueValeur;
   /** M6 — Satisfaction globale */
@@ -189,6 +201,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     nbSessionsRealisees,
     nbSessionsPlanifiees,
     nbEnrollmentsAbandons,
+    motifsBruts,
     nbEnrollmentsTotal,
     nbReclamations,
     nbReclamationsEnRetard,
@@ -217,6 +230,17 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
         statut: "abandon",
         session: sessionWhere,
       },
+    }),
+    // Les MOTIFS, sur le même périmètre que le taux. `groupBy` plutôt qu'un
+    // parcours : c'est la fréquence qui désigne ce sur quoi agir.
+    prisma.enrollment.groupBy({
+      by: ["sortieMotif"],
+      where: {
+        statut: "abandon",
+        session: sessionWhere,
+        sortieMotif: { not: null },
+      },
+      _count: { _all: true },
     }),
     prisma.enrollment.count({
       where: {
@@ -375,6 +399,15 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     unite: "%",
   };
 
+  // Les motifs, du plus fréquent au moins fréquent — c'est la fréquence qui
+  // désigne ce sur quoi agir. ⚠️ `sortieMotif` n'est jamais nul ici (la requête
+  // le filtre ET une contrainte CHECK l'impose en base), mais le type l'autorise
+  // encore : on ne fait pas confiance au type, on lit la valeur.
+  const motifsAbandon = motifsBruts
+    .filter((m): m is typeof m & { sortieMotif: string } => m.sortieMotif !== null)
+    .map((m) => ({ motif: m.sortieMotif, nombre: m._count._all }))
+    .sort((a, b) => b.nombre - a.nombre);
+
   // ── M5 — Taux d'atteinte des objectifs (réussite) ─────────────────────────
   const m5: MetriqueValeur = metriqueTaux("Taux d'atteinte des objectifs", taux.reussite);
 
@@ -456,6 +489,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     m2_taux_entree_delai: m2,
     m3_taux_completion: m3,
     m4_taux_abandon: m4,
+    m4_motifs_abandon: motifsAbandon,
     m5_taux_reussite: m5,
     m6_satisfaction: m6,
     m7_incidents: m7,
@@ -664,6 +698,7 @@ function buildEmptyPilotage(
     m1_prestations: videMetrique("Prestations ouvertes / terminées"),
     m2_taux_entree_delai: videMetriquePct("Taux d'entrée dans le délai"),
     m3_taux_completion: videMetriquePct("Taux de complétion"),
+    m4_motifs_abandon: [],
     m4_taux_abandon: videMetriquePct("Taux d'abandon"),
     m5_taux_reussite: videMetriquePct("Taux d'atteinte des objectifs"),
     m6_satisfaction: videMetriquePct("Satisfaction globale"),

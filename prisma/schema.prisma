@@ -117,9 +117,6 @@ enum InterventionType {
   claude_architecte
 }
 
-
-
-
 enum PublishStatus {
   draft
   published
@@ -242,11 +239,6 @@ enum PaymentStatus {
   cancelled
 }
 
-
-
-
-
-
 /// Sprint X.1 — provider signature (ADR 0014 : DocuSeal self-hosted V1).
 /// `physical_signed` = signature papier scannée et uploadée par Will.
 /// `interne` = canal maison (chaîne de hachage + snapshot figé), ajouté par le
@@ -296,14 +288,6 @@ enum DocumentPartieSignataire {
   responsable_pedagogique
   axionia
 }
-
-
-
-
-
-
-
-
 
 /// Sprint X.1 — origine de la transition d'état (audit BookingTransition).
 enum TransitionTriggeredBy {
@@ -559,7 +543,7 @@ model Submission {
   submittedAt        DateTime          @default(now()) @map("submitted_at")
   updatedAt          DateTime          @updatedAt @map("updated_at")
 
-  auditMissions          AuditMission[]
+  auditMissions AuditMission[]
 
   // Sprint Notif Infra 2026-05-26 / Chantier 5 — reply system admin.
   // Permet à Will de répondre directement aux contacts/leads via l'admin
@@ -1653,7 +1637,6 @@ model SiteSetting {
   @@index([category])
   @@map("site_settings")
 }
-
 
 // ============================================================
 // KB-1 — Knowledge Base unifiée (11 modèles)
@@ -5875,6 +5858,31 @@ model Enrollment {
   traineeId             String                   @map("trainee_id") @db.Uuid
   trainee               Trainee                  @relation(fields: [traineeId], references: [id], onDelete: Cascade)
   statut                EnrollmentStatut         @default(planifiee)
+  /// 🔴 LA SORTIE DU DISPOSITIF A UNE DATE ET UNE RAISON (2026-08-27).
+  ///
+  /// `statut = abandon | exclu` existait depuis toujours et était bien câblé —
+  /// sorti des inscriptions actives, des moyennes de présence, de la génération
+  /// automatique d'attestation, et compté par l'indicateur `m4_taux_abandon`.
+  /// Mais `setEnrollmentStatutAction` n'écrivait QUE le statut : ni quand, ni
+  /// pourquoi.
+  ///
+  /// Deux conséquences concrètes :
+  ///   · sans DATE, impossible de dire combien d'heures ont réellement été
+  ///     suivies — donc pas de certificat de réalisation juste, pas de
+  ///     facturation au prorata ;
+  ///   · sans MOTIF, l'indicateur rend un CHIFFRE que personne ne peut
+  ///     analyser. Un auditeur qui demande « pourquoi abandonne-t-on chez vous,
+  ///     et qu'avez-vous fait ? » n'a rien à lire.
+  ///
+  /// ⚠️ Le champ couvre `abandon` ET `exclu` — d'où `sortie` et non `abandon`.
+  /// Les deux sont des sorties du dispositif, `STATUTS_SORTIS` les traite déjà
+  /// ensemble, et n'en dater qu'un seul aurait recréé le « jumeau oublié » que
+  /// ce dépôt paie régulièrement.
+  sortieAt              DateTime?                @map("sortie_at")
+  /// Motif de la sortie. Rendu obligatoire par une contrainte CHECK dès qu'un
+  /// statut de sortie est posé : une sortie sans raison ne vaut pas mieux
+  /// qu'une sortie non datée.
+  sortieMotif           String?                  @map("sortie_motif") @db.VarChar(500)
   tauxPresencePct       Int?                     @map("taux_presence_pct")
   emargementSigneAt     DateTime?                @map("emargement_signe_at")
   adaptationsRealisees  String?                  @map("adaptations_realisees") @db.Text
@@ -5927,6 +5935,7 @@ model Enrollment {
 
   @@unique([sessionId, traineeId], map: "enrollment_unique_per_session")
   @@index([sessionId])
+  @@index([sortieAt])
   @@index([traineeId])
   @@index([statut])
   @@index([clientId])
@@ -9162,7 +9171,7 @@ model SocieteDocument {
   sizeBytes   Int    @map("size_bytes")
   hashSha256  String @map("hash_sha256") @db.VarChar(64)
 
-  dateEmission DateTime? @map("date_emission") @db.Date
+  dateEmission   DateTime? @map("date_emission") @db.Date
   /// Null = pièce sans échéance (des statuts ne périment pas). Sinon pilote
   /// l'état affiché et l'alerte de péremption. L'expiration n'est PAS un
   /// statut stocké : elle se recalcule à chaque lecture, sinon une pièce

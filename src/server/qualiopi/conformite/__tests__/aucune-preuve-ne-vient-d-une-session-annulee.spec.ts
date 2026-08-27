@@ -386,7 +386,12 @@ describe("cliquet dérivé du schéma — toute preuve session-scopée contraint
    * Il est exempté NOMMÉMENT plutôt qu'écarté par une règle floue, pour que
    * l'exemption se voie et se discute. Toute nouvelle lecture nue est refusée.
    */
-  const DETTE_DECLAREE: ReadonlyArray<string> = ["conformite/pilotage-service.ts:247"];
+  // ⚠️ 2026-08-27 : 247 → 271. La ligne n'a pas changé de nature, elle a été
+  // POUSSÉE de 24 lignes par l'ajout des motifs d'abandon (M4). Une dette
+  // indexée sur un numéro de ligne rougit à chaque édition située au-dessus
+  // d'elle — le rouge est alors juste, mais il ne désigne pas ce qu'on croit.
+  // 🔑 Lire l'EXTRAIT rapporté avant de conclure à une régression.
+  const DETTE_DECLAREE: ReadonlyArray<string> = ["conformite/pilotage-service.ts:271"];
 
   it("CONTRE-TÉMOIN : la classe est bien dérivée du schéma, et elle n'est pas vide", () => {
     const modeles = modelesSessionScopes();
