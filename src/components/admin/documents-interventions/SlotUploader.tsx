@@ -153,7 +153,7 @@ export function SlotUploader({
       <div className="flex flex-wrap items-center justify-between gap-2">
         {current ? (
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="bg-sage-soft text-success rounded px-1.5 py-0.5 font-medium">
+            <span className="bg-sage-soft text-sage rounded px-1.5 py-0.5 font-medium">
               v{current.version} publiée
             </span>
             {current.sourceUrl ? (
