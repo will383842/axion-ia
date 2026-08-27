@@ -182,7 +182,7 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
           </dl>
 
           <details className="mt-[var(--space-admin-3)]">
-            <summary className="cursor-pointer select-none text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-muted)]">
+            <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-muted)] select-none">
               Identifiants et provenance
             </summary>
             <dl className="admin-dl mt-[var(--space-admin-2)]">
@@ -194,53 +194,53 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
               <dd className="admin-dd">
                 <code className="text-xs">{event.source}</code>
               </dd>
-            <dt className="admin-dt">Identifiant Calendly</dt>
-            <dd className="admin-dd">
-              {event.inviteeUri ? (
-                /* L'URI complete fait 120 caracteres d'URL d'API et n'apprend
+              <dt className="admin-dt">Identifiant Calendly</dt>
+              <dd className="admin-dd">
+                {event.inviteeUri ? (
+                  /* L'URI complete fait 120 caracteres d'URL d'API et n'apprend
                    rien a personne : on montre l'identifiant terminal, et on garde
                    l'adresse entiere dans le `title` pour qui doit la copier. */
-                <code className="text-xs" title={event.inviteeUri}>
-                  {event.inviteeUri.split("/").pop() ?? event.inviteeUri}
-                </code>
-              ) : (
-                <span className="text-[color:var(--color-admin-fg-muted)]">
-                  absent (saisie manuelle ou capture antérieure)
-                </span>
+                  <code className="text-xs" title={event.inviteeUri}>
+                    {event.inviteeUri.split("/").pop() ?? event.inviteeUri}
+                  </code>
+                ) : (
+                  <span className="text-[color:var(--color-admin-fg-muted)]">
+                    absent (saisie manuelle ou capture antérieure)
+                  </span>
+                )}
+              </dd>
+              {event.utmSource && (
+                <>
+                  <dt className="admin-dt">UTM source</dt>
+                  <dd className="admin-dd">
+                    <code className="text-xs">{event.utmSource}</code>
+                  </dd>
+                </>
               )}
-            </dd>
-            {event.utmSource && (
-              <>
-                <dt className="admin-dt">UTM source</dt>
-                <dd className="admin-dd">
-                  <code className="text-xs">{event.utmSource}</code>
-                </dd>
-              </>
-            )}
-            {event.utmCampaign && (
-              <>
-                <dt className="admin-dt">UTM campagne</dt>
-                <dd className="admin-dd">
-                  <code className="text-xs">{event.utmCampaign}</code>
-                </dd>
-              </>
-            )}
-            {event.utmMedium && (
-              <>
-                <dt className="admin-dt">UTM support</dt>
-                <dd className="admin-dd">
-                  <code className="text-xs">{event.utmMedium}</code>
-                </dd>
-              </>
-            )}
-            {event.referrer && (
-              <>
-                <dt className="admin-dt">Provenance</dt>
-                <dd className="admin-dd">
-                  <code className="text-xs">{event.referrer}</code>
-                </dd>
-              </>
-            )}
+              {event.utmCampaign && (
+                <>
+                  <dt className="admin-dt">UTM campagne</dt>
+                  <dd className="admin-dd">
+                    <code className="text-xs">{event.utmCampaign}</code>
+                  </dd>
+                </>
+              )}
+              {event.utmMedium && (
+                <>
+                  <dt className="admin-dt">UTM support</dt>
+                  <dd className="admin-dd">
+                    <code className="text-xs">{event.utmMedium}</code>
+                  </dd>
+                </>
+              )}
+              {event.referrer && (
+                <>
+                  <dt className="admin-dt">Provenance</dt>
+                  <dd className="admin-dd">
+                    <code className="text-xs">{event.referrer}</code>
+                  </dd>
+                </>
+              )}
             </dl>
           </details>
         </div>
@@ -262,9 +262,11 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
             </summary>
             <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
               Cliché technique
-              {event.enrichedAt ? ` du ${formatDateFr(event.enrichedAt)}` : ` du ${formatDateFr(event.capturedAt)} (jamais rafraîchi)`}
-              . En cas de désaccord, ce sont les champs ci-dessus qui font foi —
-              eux seuls sont tenus à jour.
+              {event.enrichedAt
+                ? ` du ${formatDateFr(event.enrichedAt)}`
+                : ` du ${formatDateFr(event.capturedAt)} (jamais rafraîchi)`}
+              . En cas de désaccord, ce sont les champs ci-dessus qui font foi — eux seuls sont
+              tenus à jour.
             </p>
             <pre className="admin-json mt-[var(--space-admin-3)] text-xs">
               {JSON.stringify(event.rawPayload, null, 2)}

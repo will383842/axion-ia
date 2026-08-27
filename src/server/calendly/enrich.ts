@@ -228,7 +228,10 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   // lever : lire `d.raw.invitee` sans garde suffirait a violer ce contrat le
   // jour ou un appelant rendrait la forme courte.
   const brutFrais = d.raw;
-  if (brutFrais && (Object.keys(brutFrais.invitee).length > 0 || Object.keys(brutFrais.event).length > 0)) {
+  if (
+    brutFrais &&
+    (Object.keys(brutFrais.invitee).length > 0 || Object.keys(brutFrais.event).length > 0)
+  ) {
     data["rawPayload"] = {
       ...clesPrivees,
       invitee: brutFrais.invitee,
