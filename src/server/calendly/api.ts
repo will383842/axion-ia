@@ -77,6 +77,24 @@ export interface CalendlyInviteeData {
    * recevoir dans la notification, pas seulement les métadonnées du RDV.
    */
   answersText: string | null;
+  /**
+   * Les deux objets Calendry bruts, tels que l'API vient de les rendre.
+   *
+   * 🔴 EXISTE POUR UNE RAISON PRÉCISE. La fiche d'appel affiche une charge brute
+   * qui n'était écrite QU'À LA CAPTURE et jamais rafraîchie ensuite. Elle
+   * vieillissait donc sur place pendant que le statut, lui, se mettait à jour :
+   * le 2026-08-27, une fiche annoncait « Annulé » au-dessus d'un JSON qui disait
+   * encore `"status": "active"`. Deux vérités d'âges différents, côte à côte, et
+   * rien pour le dire. Signalé par Will le jour même.
+   *
+   * On remonte donc le brut à chaque enrichissement pour qu'il cesse de mentir.
+   * `event` peut être vide : sa lecture est optionnelle et son échec ne doit pas
+   * annuler les données de l'invité.
+   */
+  raw: {
+    readonly invitee: Record<string, unknown>;
+    readonly event: Record<string, unknown>;
+  };
 }
 
 export type CalendlyFetchResult =
@@ -292,6 +310,7 @@ export async function fetchCalendlyInvitee(
       rescheduleUrl: stringOrNull(invitee["reschedule_url"], 500),
       eventTypeName: stringOrNull(event["name"], 255),
       answersText: extractAnswersText(invitee["questions_and_answers"]),
+      raw: { invitee, event },
     },
   };
 }
