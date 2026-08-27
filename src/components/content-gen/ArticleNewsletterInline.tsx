@@ -29,7 +29,7 @@ export function ArticleNewsletterInline({ locale }: ArticleNewsletterInlineProps
           </p>
           <p className="text-fg-soft mt-1 text-sm leading-relaxed">
             {isFr
-              ? "Cas concrets, méthodes et veille IA pour TPE, PME et ETI. Un e-mail utile, jamais de spam, désinscription en 1 clic."
+              ? "Cas concrets, méthodes et veille IA pour PME, ETI et grands groupes. Un e-mail utile, jamais de spam, désinscription en 1 clic."
               : "Real cases, methods and AI watch for SMEs. One useful email, no spam, one-click unsubscribe."}
           </p>
           <div className="mt-4">

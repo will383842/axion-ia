@@ -170,7 +170,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
     // Résumé answer-ready (schema.org `abstract`) — excerptable par Perplexity /
     // Claude / AI Overviews (audit AEO 2026-06-25).
     abstract: isFr
-      ? "Le blog Axion-IA en 5 thématiques (formations, coaching 1-to-1, audits, implémentation, sites web augmentés) : méthodologie et cas d'usage IA testés auprès des TPE et PME françaises."
+      ? "Le blog Axion-IA en 5 thématiques (formations, coaching 1-to-1, audits, implémentation, sites web augmentés) : méthodologie et cas d'usage IA testés auprès des PME, ETI et grands groupes français."
       : "The Axion-IA blog across 5 topics (training, 1-to-1 coaching, audits, implementation, AI-enhanced websites): AI methodology and use cases tested with French SMBs.",
     // Fraîcheur (audit SEO 2026-06-25) — date du dernier article mis à jour.
     // Stub-safe : latestDate null → champs omis par la factory.
@@ -310,7 +310,7 @@ export default async function BlogCategoriesHub({ params }: Props) {
             className="text-fg text-base leading-relaxed md:text-lg"
           >
             {isFr
-              ? `Le blog Axion-IA réunit ${totalArticles} article${totalArticles > 1 ? "s" : ""} répartis en ${categories.length} thématiques IA — formations, coaching 1-to-1, audits, implémentation et sites web augmentés. Chaque thématique regroupe une méthodologie éprouvée et des cas d'usage concrets testés en mission auprès des TPE et PME françaises. Choisissez un thème pour accéder directement aux articles correspondants.`
+              ? `Le blog Axion-IA réunit ${totalArticles} article${totalArticles > 1 ? "s" : ""} répartis en ${categories.length} thématiques IA — formations, coaching 1-to-1, audits, implémentation et sites web augmentés. Chaque thématique regroupe une méthodologie éprouvée et des cas d'usage concrets testés en mission auprès des PME, ETI et grands groupes français. Choisissez un thème pour accéder directement aux articles correspondants.`
               : `The Axion-IA blog gathers ${totalArticles} article${totalArticles > 1 ? "s" : ""} across ${categories.length} AI topics — training, 1-to-1 coaching, audits, implementation and AI-enhanced websites. Each topic bundles a proven methodology and concrete use cases field-tested with French SMBs. Pick a topic to jump straight to the matching articles.`}
           </p>
           <p className="text-fg-muted mt-4 text-sm">

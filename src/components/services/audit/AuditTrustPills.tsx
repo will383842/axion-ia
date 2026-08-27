@@ -23,7 +23,7 @@ export function AuditTrustPills({ isFr }: AuditTrustPillsProps): ReactNode {
         { icon: Clock, label: "Réponse 48 h ouvrées" },
         { icon: ShieldCheck, label: "Confidentialité totale" },
         { icon: FileText, label: "Livrables actionnables" },
-        { icon: Users, label: "TPE → grandes entreprises" },
+        { icon: Users, label: "PME → grands groupes" },
       ]
     : [
         { icon: Clock, label: "Reply within 48 business hours" },

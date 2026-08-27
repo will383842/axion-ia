@@ -54,7 +54,7 @@ export const FAQ_IMAGES: Record<string, FaqImage> = {
     nameFr: "Axion-IA — cabinet IA opérationnel français",
     nameEn: "Axion-IA — French operational AI consultancy",
     altFr:
-      "Équipe Axion-IA en réunion — cabinet IA opérationnel français qui accompagne TPE, PME, ETI et grandes entreprises dans leur transformation par l'intelligence artificielle.",
+      "Équipe Axion-IA en réunion — cabinet IA opérationnel français qui accompagne PME, ETI, grands groupes et TPE dans leur transformation par l'intelligence artificielle.",
     altEn:
       "Axion-IA team in a meeting — French operational AI consultancy supporting small businesses, SMEs, mid-caps and large enterprises in their AI transformation.",
     width: W,

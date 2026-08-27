@@ -71,7 +71,7 @@ interface FounderProfileProps {
 
 const PILLS: ReadonlyArray<{ icon: LucideIcon; label: string }> = [
   { icon: MapPin, label: "Toute la France · siège à Grenoble" },
-  { icon: Users, label: "De la TPE au grand groupe" },
+  { icon: Users, label: "De la PME au grand groupe" },
   { icon: Sparkles, label: "Top 1 % des experts IA en France" },
   { icon: ShieldCheck, label: "Hébergement des données en UE" },
 ];
