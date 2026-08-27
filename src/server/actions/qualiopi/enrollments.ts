@@ -15,6 +15,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
+import { STATUTS_SORTIS } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -42,6 +43,12 @@ const updateEnrollmentPresenceSchema = z.object({
 const setEnrollmentStatutSchema = z.object({
   id: z.string().uuid(),
   statut: z.enum(ENROLLMENT_STATUTS),
+  /**
+   * Motif de SORTIE du dispositif. Obligatoire dès que `statut` est un statut
+   * de sortie, ignoré sinon — la validation croisée vit dans l'action, parce
+   * qu'elle doit dériver de `STATUTS_SORTIS` et non d'une liste recopiée ici.
+   */
+  motif: z.string().trim().max(500).optional(),
 });
 
 const setEnrollmentAdaptationsSchema = z.object({
@@ -150,22 +157,53 @@ export async function updateEnrollmentPresenceAction(input: {
 export async function setEnrollmentStatutAction(input: {
   id: string;
   statut: (typeof ENROLLMENT_STATUTS)[number];
+  motif?: string;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = setEnrollmentStatutSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { id, statut } = parsed.data;
+  const { id, statut, motif } = parsed.data;
+
+  // 🔴 UNE SORTIE A UNE DATE ET UNE RAISON (2026-08-27).
+  //
+  // Cette action n'écrivait QUE le statut. `abandon` et `exclu` étaient
+  // pourtant bien câblés partout ailleurs — hors des inscriptions actives, hors
+  // des moyennes de présence, hors de la génération automatique d'attestation,
+  // et comptés par l'indicateur `m4_taux_abandon`. Il manquait le QUAND et le
+  // POURQUOI : sans date, impossible de dire combien d'heures ont été suivies ;
+  // sans motif, l'indicateur rend un chiffre que personne ne peut analyser.
+  //
+  // 🔑 `STATUTS_SORTIS` est IMPORTÉ, jamais recopié : le jour où un statut de
+  // sortie s'ajoute à l'énumération, il est daté et motivé sans qu'on y pense.
+  // Une liste écrite ici serait invisible depuis le SSOT — c'est exactement la
+  // dérive corrigée sur les gardes de rôle le même jour.
+  const estSortie = (STATUTS_SORTIS as readonly string[]).includes(statut);
+  const motifPropre = motif?.trim() ?? "";
+
+  if (estSortie && motifPropre === "") {
+    return {
+      error:
+        "Indiquez le motif de la sortie (abandon ou exclusion) : sans lui, le taux " +
+        "d'abandon reste un chiffre que personne ne peut analyser.",
+    };
+  }
 
   await prisma.enrollment.update({
     where: { id },
-    data: { statut },
+    data: estSortie
+      ? { statut, sortieAt: new Date(), sortieMotif: motifPropre }
+      : // Retour à un statut actif : on EFFACE la date et le motif. Sans cela,
+        // une sortie annulée laisserait une date fantôme que les rapports
+        // liraient comme une sortie réelle. La contrainte CHECK de la base
+        // refuse d'ailleurs cette combinaison.
+        { statut, sortieAt: null, sortieMotif: null },
   });
 
   await logQualiopiActivity({
     action: `qualiopi.enrollment.statut.${statut}`,
     targetType: "Enrollment",
     targetId: id,
-    changes: { statut },
+    changes: estSortie ? { statut, motif: motifPropre } : { statut },
     session,
   });
 

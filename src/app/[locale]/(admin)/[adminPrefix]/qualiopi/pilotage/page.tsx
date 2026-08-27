@@ -402,6 +402,31 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
         />
       </div>
 
+      {/* 🔴 M4 SANS SES MOTIFS N'EST PAS UN INDICATEUR, C'EST UN CHIFFRE.
+          Le taux existait et s'affichait depuis toujours ; rien ne disait
+          POURQUOI. Un auditeur qui demande « pourquoi abandonne-t-on chez vous,
+          et qu'avez-vous fait ? » n'avait rien à lire. */}
+      {pilotage.m4_motifs_abandon.length > 0 && (
+        <section className="mb-[var(--space-admin-6)]">
+          <h2 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+            Pourquoi ils abandonnent
+          </h2>
+          <ul className="flex flex-col gap-[var(--space-admin-2)]">
+            {pilotage.m4_motifs_abandon.map((m) => (
+              <li
+                key={m.motif}
+                className="flex items-start gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+              >
+                <span className="min-w-[2.5rem] shrink-0 font-semibold text-[color:var(--color-admin-warning-fg)]">
+                  {m.nombre}×
+                </span>
+                <span>{m.motif}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* ── Section 2 : Résultats et satisfaction ─────────────────────── */}
       <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
         Résultats et satisfaction

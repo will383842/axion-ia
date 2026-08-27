@@ -47,6 +47,10 @@ export interface EnrollmentSerialized {
   tauxPresencePct: number | null;
   /** Adaptations réellement réalisées pour ce bénéficiaire (ind. 10) — null si non renseigné. */
   adaptationsRealisees: string | null;
+  /** Date de sortie du dispositif (abandon / exclusion), ISO — null si active. */
+  sortieAt: string | null;
+  /** Motif de la sortie — null si active. */
+  sortieMotif: string | null;
   /** Accès portail actif (non révoqué, non expiré) le plus récent — null si aucun. */
   portailAcces: PortailAccesSerialized | null;
 }
@@ -72,6 +76,8 @@ export interface EnrollmentsSectionProps {
   setStatutAction: (input: {
     id: string;
     statut: EnrollmentStatut;
+    /** Obligatoire pour une sortie (abandon / exclusion). */
+    motif?: string;
   }) => Promise<ActionResult<{ id: string }>>;
   /** Renseigne les adaptations réellement réalisées (ind. 10). */
   setAdaptationsAction: (input: {
@@ -102,6 +108,21 @@ const STATUT_OPTIONS: Array<{ value: EnrollmentStatut; label: string }> = [
   { value: "abandon", label: "Abandon" },
   { value: "exclu", label: "Exclu(e)" },
 ];
+
+/**
+ * Ce statut fait-il SORTIR du dispositif ?
+ *
+ * 🔑 Dérivé du même couple que `STATUTS_SORTIS` côté serveur. Le client ne peut
+ * pas importer le module serveur, mais la garde
+ * `sortie-date-et-motif.spec.ts` vérifie que les deux listes restent égales —
+ * une divergence ferait proposer un motif sans que le serveur l'exige, ou
+ * l'inverse.
+ */
+export const STATUTS_DE_SORTIE: ReadonlyArray<EnrollmentStatut> = ["abandon", "exclu"];
+
+function estSortie(s: EnrollmentStatut): boolean {
+  return STATUTS_DE_SORTIE.includes(s);
+}
 
 function statutColor(s: EnrollmentStatut): string {
   if (s === "presente") return "text-[color:var(--color-admin-success)]";
@@ -138,6 +159,16 @@ function EnrollmentRow({
   const [adaptError, setAdaptError] = useState<string | null>(null);
   const [adaptSaved, setAdaptSaved] = useState(false);
   const [adaptText, setAdaptText] = useState<string>(enrollment.adaptationsRealisees ?? "");
+  /**
+   * Statut de sortie en attente de son motif.
+   *
+   * 🔑 On ne pose PAS le statut d'abord pour demander le motif ensuite : une
+   * sortie non motivée serait alors enregistrable en fermant l'onglet, et le
+   * défaut qu'on corrige reviendrait par la porte de derrière. Le statut et son
+   * motif partent ensemble, ou ne partent pas.
+   */
+  const [sortieEnAttente, setSortieEnAttente] = useState<EnrollmentStatut | null>(null);
+  const [motifText, setMotifText] = useState("");
 
   const inputCls =
     "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-1 focus:ring-[color:var(--color-admin-accent)]";
@@ -145,11 +176,24 @@ function EnrollmentRow({
   function handleStatutChange(newStatut: string) {
     const statut = newStatut as EnrollmentStatut;
     setStatutError(null);
+    // Une SORTIE réclame son motif avant de partir.
+    if (estSortie(statut)) {
+      setSortieEnAttente(statut);
+      setMotifText(enrollment.sortieMotif ?? "");
+      return;
+    }
+    setSortieEnAttente(null);
+    envoyerStatut(statut);
+  }
+
+  function envoyerStatut(statut: EnrollmentStatut, motif?: string) {
     startStatut(async () => {
-      const res = await setStatutAction({ id: enrollment.id, statut });
+      const res = await setStatutAction({ id: enrollment.id, statut, ...(motif ? { motif } : {}) });
       if ("error" in res) {
         setStatutError(res.error);
       } else {
+        setSortieEnAttente(null);
+        setMotifText("");
         onMutated();
       }
     });
@@ -204,7 +248,7 @@ function EnrollmentRow({
       {/* Statut */}
       <td className={tdCls}>
         <select
-          value={enrollment.statut}
+          value={sortieEnAttente ?? enrollment.statut}
           onChange={(e) => handleStatutChange(e.target.value)}
           disabled={isPendingStatut}
           aria-label={`Statut de ${enrollment.trainee.prenom} ${enrollment.trainee.nom}`}
@@ -222,6 +266,67 @@ function EnrollmentRow({
             className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
           >
             {statutError}
+          </p>
+        )}
+
+        {/* Saisie du motif — le statut ne part qu'avec lui. */}
+        {sortieEnAttente !== null && (
+          <div className="mt-[var(--space-admin-2)]">
+            <label
+              htmlFor={`motif-${enrollment.id}`}
+              className="block text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg)]"
+            >
+              Motif de la sortie
+              <span className="text-[color:var(--color-admin-error-fg)]" aria-hidden="true">
+                {" *"}
+              </span>
+            </label>
+            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Ce que l&apos;auditeur lira à côté du taux d&apos;abandon : santé, emploi retrouvé,
+              contenu inadapté, absence prolongée…
+            </p>
+            <textarea
+              id={`motif-${enrollment.id}`}
+              value={motifText}
+              onChange={(e) => setMotifText(e.target.value)}
+              rows={2}
+              maxLength={500}
+              required
+              className={`mt-1 w-full ${inputCls}`}
+            />
+            <div className="mt-1 flex gap-[var(--space-admin-2)]">
+              <button
+                type="button"
+                disabled={isPendingStatut || motifText.trim() === ""}
+                onClick={() => envoyerStatut(sortieEnAttente, motifText.trim())}
+                className="rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-accent)] px-[var(--space-admin-3)] py-1 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent-fg)] disabled:opacity-50"
+              >
+                Enregistrer la sortie
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSortieEnAttente(null);
+                  setMotifText("");
+                }}
+                className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]"
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Sortie déjà enregistrée : la date et le motif, lisibles sans clic. */}
+        {sortieEnAttente === null && enrollment.sortieAt !== null && (
+          <p className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Sortie le{" "}
+            {new Date(enrollment.sortieAt).toLocaleDateString("fr-FR", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            })}
+            {enrollment.sortieMotif !== null && ` — ${enrollment.sortieMotif}`}
           </p>
         )}
         {/* Affichage statut coloré en complément */}
