@@ -150,9 +150,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   //      donc atteignable par qui prend la peine d'ajouter un en-tête.
   //
   // Fermer vraiment demanderait un jeton court signé, émis par la page `/appel`
-  // (le patron existe : `server/actions/content-gen/_auth.ts`). C'est un lot à
-  // part — mais il ne fallait PAS laisser croire le sujet clos : une porte qu'on
-  // croit fermée cesse d'être surveillée.
+  // — le patron existe déjà dans le dépôt, sur les Server Actions du pipeline
+  // éditorial. C'est un lot à part, mais il ne fallait PAS laisser croire le
+  // sujet clos : une porte qu'on croit fermée cesse d'être surveillée.
   //
   // ⚠️ `allowMissingOrigin: false` est indispensable : le défaut du helper est
   // `true`, et tolère l'absence d'`Origin` ET de `Referer` — avec lui, cette
