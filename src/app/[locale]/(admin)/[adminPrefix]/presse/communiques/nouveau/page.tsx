@@ -11,7 +11,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
 import { createPressRelease } from "@/server/actions/press/releases";
 import {
   PRESS_TAG_OPTIONS,
@@ -21,6 +20,8 @@ import {
 } from "@/server/actions/press/taxonomy-options";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { NewPressReleaseForm, type NewReleaseFormState } from "./NewPressReleaseForm";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -62,9 +63,9 @@ function str(v: FormDataEntryValue | null): string {
 
 export default async function NewPressReleasePage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const session = await auth();
-  if (!session?.user || (session.user.role !== "admin" && session.user.role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardePage("ecriture", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
   const base = `/${locale}/${adminPrefix}/presse`;
 

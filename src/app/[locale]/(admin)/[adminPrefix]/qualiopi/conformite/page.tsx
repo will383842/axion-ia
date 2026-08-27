@@ -4,9 +4,7 @@
 // /qualiopi/mode-auditeur reprend la vue tableau dense (défaut) et les 3
 // stat cards de cette page. Redirect 308, URL conservée (favoris, docs _AUDIT).
 
-import { permanentRedirect, redirect } from "next/navigation";
-
-import { auth } from "@/auth";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -15,11 +13,6 @@ interface PageProps {
 }
 
 export default async function LegacyConformiteRedirect({ params }: PageProps): Promise<never> {
-  const { locale, adminPrefix } = await params;
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session?.user || (role !== "admin" && role !== "super_admin")) {
-    redirect(`/${locale}/${adminPrefix}/login`);
-  }
+  const { adminPrefix } = await params;
   permanentRedirect(`/fr/${adminPrefix}/qualiopi/mode-auditeur`);
 }
