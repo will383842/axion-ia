@@ -3,6 +3,7 @@ pnpm exec lint-staged
 pnpm anti-siren:check
 pnpm anti-hex:check
 pnpm use-client:check
+pnpm radius:check
 pnpm typecheck
 
 # Audit A1 P1-3 (2026-05-15) — gitleaks local secret scan sur fichiers staged.

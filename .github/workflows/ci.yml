@@ -106,6 +106,14 @@ jobs:
         run: pnpm anti-hex:check
       - name: use-client justified
         run: pnpm use-client:check
+      # 2026-08-27 — `radius:check` existait depuis des mois, sortait en code 1
+      # sur `main` (Footer.tsx:437, `rounded-[10px]`), et n'était câblée NULLE
+      # PART : ni hook, ni gate. Elle ne vivait que dans le script `verify:all`,
+      # que rien n'exécute. Ce n'était donc pas une garde endormie — elle criait
+      # fort, dans une pièce vide. Le rouge est fermé dans le même lot, seuil
+      # aligné AVANT le blocage (doctrine AGENTS.md).
+      - name: Rayons ≤ 8px (Design.md §5)
+        run: pnpm radius:check
       # Refonte « Boîte de réception » 2026-07-29 — `buildAdminNav()` est un SSOT
       # de CHAÎNES : rien ne reliait ses href aux fichiers `page.tsx`. Un dossier
       # renommé laissait donc une entrée de menu vers un 404, sans que typecheck
