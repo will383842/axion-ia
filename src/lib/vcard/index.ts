@@ -127,7 +127,7 @@ export const WILLIAMS = {
   note:
     "Agence IA : formations, audits, accompagnement 1-to-1, implémentations " +
     "d'automatisations et plateformes web augmentées par l'IA. " +
-    "TPE, PME, ETI et grands groupes. " +
+    "PME, ETI et grands groupes — TPE comprises. " +
     "Interventions partout en France et dans la francophonie.",
   /**
    * Horodatage de dernière révision de la fiche (RFC 2426 §3.6.4).

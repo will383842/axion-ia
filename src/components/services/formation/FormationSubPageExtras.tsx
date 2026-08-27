@@ -83,7 +83,7 @@ export function FormationSubPageExtras({
     courseMode: ["Onsite"],
     duration: FORMATION_DURATION_ISO[slug],
     audienceType: isFr
-      ? "Équipes, dirigeants et collaborateurs opérationnels (TPE, PME, ETI)"
+      ? "Équipes, dirigeants et collaborateurs opérationnels (PME, ETI, grands groupes)"
       : "Teams, executives and operational staff (small businesses, SMEs, mid-caps)",
     ...(copy.priceEur ? { priceEurHt: copy.priceEur } : {}),
     about: isFr ? "IA opérationnelle" : "Operational AI",

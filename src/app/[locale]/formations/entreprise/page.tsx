@@ -348,7 +348,7 @@ export default async function FormationsEntreprise({ params }: Props) {
       icon: MapPin,
       title: isFr ? "Sur site, partout en France" : "On site, across France",
       body: isFr
-        ? "Le formateur se déplace dans vos locaux, de la TPE au grand compte."
+        ? "Le formateur se déplace dans vos locaux, de la PME au grand groupe."
         : "The trainer comes to your premises, from micro-business to large accounts.",
     },
     {
@@ -535,7 +535,7 @@ export default async function FormationsEntreprise({ params }: Props) {
         titleEm={isFr ? "en entreprise" : "training"}
         description={
           isFr
-            ? `${total} formations opérationnelles, animées sur site partout en France, pour que vos équipes produisent avec l'IA dès le lendemain. De la TPE au grand compte, tous secteurs, tous métiers.`
+            ? `${total} formations opérationnelles, animées sur site partout en France, pour que vos équipes produisent avec l'IA dès le lendemain. De la PME au grand groupe, tous secteurs, tous métiers.`
             : `${total} operational trainings, delivered on site across France, so your teams produce with AI from the very next day. From micro-business to large accounts, every sector, every role.`
         }
         media={

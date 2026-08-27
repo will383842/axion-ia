@@ -88,7 +88,7 @@ export const FOUNDER = {
     "Stratégie IA en entreprise",
     "Direction et création d'entreprise",
     "Audit et implémentation IA",
-    "Transformation digitale TPE PME ETI",
+    "Transformation digitale PME, ETI et grands groupes",
     "Conduite du changement",
   ] as const,
   /**
