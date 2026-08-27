@@ -17,6 +17,8 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
+  creerRendezVous,
+  modifierEvenement,
   listerEvenements,
   poserIndisponibilite,
   debutBlocageApres,
@@ -272,6 +274,110 @@ describe("poserIndisponibilite", () => {
       });
       // Un blocage qu'on croit posé et qui ne l'est pas produit exactement le
       // problème qu'on voulait éviter : une réservation sur un créneau occupé.
+      expect(res).toMatchObject({ ok: false, reason: "forbidden" });
+    } finally {
+      warn.mockRestore();
+    }
+  });
+});
+
+describe("creerRendezVous", () => {
+  it("écrit un rendez-vous OCCUPÉ, signé, avec contact et note", async () => {
+    let corps: Record<string, unknown> = {};
+    fetchMock.mockImplementation((url: string, init?: RequestInit) => {
+      if (url.includes("oauth2.googleapis.com/token")) {
+        return Promise.resolve(jsonRes({ access_token: "jeton-test", expires_in: 3600 }));
+      }
+      corps = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      return Promise.resolve(jsonRes({ id: "rdv-1", htmlLink: "https://cal/x" }));
+    });
+
+    const res = await creerRendezVous({
+      titre: "Point Délifrance",
+      debut: new Date("2026-09-08T10:30:00.000Z"),
+      fin: new Date("2026-09-08T11:30:00.000Z"),
+      contact: "Juliette Pechenot",
+      telephone: "+33600000000",
+      note: "Elle attend le RIB.",
+    });
+
+    expect(res.ok).toBe(true);
+    expect(corps["summary"]).toBe("Point Délifrance");
+    // `opaque` = occupé. C'est CE champ qui ferme le créneau Calendly ; un
+    // rendez-vous « transparent » s'afficherait sans rien bloquer.
+    expect(corps["transparency"]).toBe("opaque");
+    const d = String(corps["description"]);
+    // Le marqueur reste indispensable : sans lui, l'événement deviendrait
+    // impossible à modifier ou retirer depuis la console.
+    expect(d).toContain(MARQUEUR_CONSOLE);
+    expect(d).toContain("Juliette Pechenot");
+    expect(d).toContain("+33600000000");
+    expect(d).toContain("Elle attend le RIB.");
+  });
+
+  it("sans contact ni note, la description ne contient pas « undefined »", async () => {
+    let corps: Record<string, unknown> = {};
+    fetchMock.mockImplementation((url: string, init?: RequestInit) => {
+      if (url.includes("oauth2.googleapis.com/token")) {
+        return Promise.resolve(jsonRes({ access_token: "jeton-test", expires_in: 3600 }));
+      }
+      corps = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      return Promise.resolve(jsonRes({ id: "rdv-2" }));
+    });
+
+    await creerRendezVous({
+      titre: "Appel",
+      debut: new Date("2026-09-08T10:30:00.000Z"),
+      fin: new Date("2026-09-08T11:00:00.000Z"),
+    });
+    // Ce texte, Will le lit dans son agenda et sur son iPhone.
+    expect(String(corps["description"])).not.toContain("undefined");
+    expect(String(corps["description"])).not.toContain("null");
+  });
+});
+
+describe("modifierEvenement", () => {
+  it("🔴 emploie PATCH et non PUT — sinon on détruit ce qu'on ne réécrit pas", async () => {
+    // Un PUT remplacerait l'événement entier : invités, rappels et
+    // visioconférence disparaîtraient en ne changeant qu'une heure.
+    let methode = "";
+    let corps: Record<string, unknown> = {};
+    fetchMock.mockImplementation((url: string, init?: RequestInit) => {
+      if (url.includes("oauth2.googleapis.com/token")) {
+        return Promise.resolve(jsonRes({ access_token: "jeton-test", expires_in: 3600 }));
+      }
+      methode = String(init?.method);
+      corps = JSON.parse(String(init?.body)) as Record<string, unknown>;
+      return Promise.resolve(jsonRes({ id: "rdv-1" }));
+    });
+
+    const res = await modifierEvenement("rdv-1", {
+      titre: "Point reporté",
+      debut: new Date("2026-09-09T10:30:00.000Z"),
+      fin: new Date("2026-09-09T11:30:00.000Z"),
+      note: "Reporté à sa demande.",
+      phrase: "Rendez-vous posé depuis la console Axion-IA.",
+    });
+
+    expect(res.ok).toBe(true);
+    expect(methode).toBe("PATCH");
+    expect(corps["summary"]).toBe("Point reporté");
+    // La modification NE DOIT PAS effacer le marqueur : sinon l'événement
+    // deviendrait intouchable dès la première modification.
+    expect(String(corps["description"])).toContain(MARQUEUR_CONSOLE);
+    expect(String(corps["description"])).toContain("Reporté à sa demande.");
+  });
+
+  it("un échec revient avec sa cause, sans exception", async () => {
+    routeFetch(() => jsonRes({ error: { message: "Insufficient permission" } }, 403));
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const res = await modifierEvenement("rdv-1", {
+        titre: "x",
+        phrase: "y",
+        debut: new Date("2026-09-09T10:30:00.000Z"),
+        fin: new Date("2026-09-09T11:30:00.000Z"),
+      });
       expect(res).toMatchObject({ ok: false, reason: "forbidden" });
     } finally {
       warn.mockRestore();
