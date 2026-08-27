@@ -77,13 +77,27 @@ export function PoserIndisponibiliteForm({
   const [heureFin, setHeureFin] = useState("12:00");
   const [debut, setDebut] = useState("12:00");
   const [fin, setFin] = useState("18:00");
+  // Titre et note : facultatifs, mais l'action serveur les accepte depuis le
+  // premier jour (120 et 500 caracteres). Sans eux, tous les blocages
+  // s'appelaient « Indisponible » et rien ne distinguait un dejeuner client
+  // d'un conge — dans l'agenda comme dans la console.
+  const [titre, setTitre] = useState("");
+  const [note, setNote] = useState("");
   const [message, setMessage] = useState<{ ok: boolean; texte: string } | null>(null);
   const [enCours, demarrer] = useTransition();
 
   function soumettre(): void {
     setMessage(null);
     demarrer(async () => {
-      const commun = { titre: "Indisponible", depuisFinDeCreneau: false };
+      // Un titre vide retombe sur « Indisponible » : le schema serveur exige au
+      // moins un caractere, et un blocage sans nom reste un blocage valide.
+      const titrePropre = titre.trim() || "Indisponible";
+      const notePropre = note.trim();
+      const commun = {
+        titre: titrePropre,
+        depuisFinDeCreneau: false,
+        ...(notePropre ? { note: notePropre } : {}),
+      };
       let charge: Record<string, unknown>;
 
       if (mode === "journee") {
@@ -112,6 +126,11 @@ export function PoserIndisponibiliteForm({
       const res = await poserIndisponibiliteAction(charge);
       setMessage({ ok: res.ok, texte: res.message });
       if (res.ok) {
+        // On vide les deux champs libres : sans ca, le motif du blocage
+        // precedent serait repris tel quel au suivant, et un « dejeuner client »
+        // finirait sur un conge sans que personne le remarque.
+        setTitre("");
+        setNote("");
         setOuvert(false);
         router.refresh();
       }
@@ -213,6 +232,37 @@ export function PoserIndisponibiliteForm({
           </label>
         </div>
       )}
+
+      <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+        Motif <span className="text-[color:var(--color-admin-fg-muted)]">(facultatif)</span>
+        <input
+          type="text"
+          value={titre}
+          maxLength={120}
+          placeholder="Indisponible"
+          onChange={(e) => setTitre(e.target.value)}
+          className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] py-[var(--space-admin-2)]"
+        />
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          C&apos;est le titre visible dans Google Agenda et sur votre iPhone. Laisse vide pour
+          «&nbsp;Indisponible&nbsp;».
+        </span>
+      </label>
+
+      <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+        Note <span className="text-[color:var(--color-admin-fg-muted)]">(facultatif)</span>
+        <textarea
+          value={note}
+          maxLength={500}
+          rows={2}
+          onChange={(e) => setNote(e.target.value)}
+          className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] py-[var(--space-admin-2)]"
+        />
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Ajoutee a la description de l&apos;evenement, sous la mention qui permet de le retirer.
+          {note.length > 0 ? ` ${String(500 - note.length)} caracteres restants.` : ""}
+        </span>
+      </label>
 
       {message && !message.ok && (
         <p
