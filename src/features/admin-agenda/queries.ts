@@ -15,7 +15,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { dayKeyInParis } from "@/lib/calendar-grid";
+import { dayKeyInParis, fromParisLocalInput } from "@/lib/calendar-grid";
 import { listerEvenements, MARQUEUR_CONSOLE } from "@/server/google-calendar/events";
 import { isGoogleCalendarConfigured } from "@/server/google-calendar/auth";
 import type { AgendaFenetre, AgendaItem } from "./types";
@@ -157,22 +157,50 @@ export async function getAgendaFenetre(debut: Date, fin: Date): Promise<AgendaFe
   };
 }
 
-/** Bornes `[00:00, 24:00[` d'un jour civil de Paris, en instants réels. */
-export function bornesDuJourParis(jour: string): { debut: Date; fin: Date } {
-  // On part de midi UTC pour ne jamais tomber du mauvais côté d'un changement
-  // d'heure en construisant la date, puis on cadre sur le jour civil à Paris via
-  // les clés — la même mécanique que `calendar-grid.ts`, dont c'est le métier.
+/**
+ * Jour civil suivant, en clé `AAAA-MM-JJ`.
+ *
+ * Ancré à midi UTC : l'incrément se fait donc loin de toute frontière de jour,
+ * et aucun changement d'heure ne peut le faire basculer d'un cran.
+ */
+function jourSuivant(jour: string): string {
   const [a, m, j] = jour.split("-").map(Number);
-  const debut = new Date(Date.UTC(a ?? 1970, (m ?? 1) - 1, j ?? 1, 12, 0, 0));
-  // Recale sur minuit local en retirant l'écart mesuré entre l'heure UTC et
-  // l'heure de Paris ce jour-là. Robuste au 25 h et au 23 h des bascules.
-  const heureParis = Number(
-    new Intl.DateTimeFormat("fr-FR", {
-      timeZone: "Europe/Paris",
-      hour: "2-digit",
-      hour12: false,
-    }).format(debut),
-  );
-  const minuit = new Date(debut.getTime() - heureParis * 3_600_000);
-  return { debut: minuit, fin: new Date(minuit.getTime() + 24 * 3_600_000) };
+  const d = new Date(Date.UTC(a ?? 1970, (m ?? 1) - 1, j ?? 1, 12, 0, 0));
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * Bornes `[00:00, 24:00[` d'un jour civil de Paris, en instants réels.
+ *
+ * 🔴 CETTE FONCTION A RENVOYÉ `Invalid Date` EN PRODUCTION (2026-08-27).
+ * La version précédente lisait l'heure de Paris ainsi :
+ *
+ *     Number(new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", hour12: false })
+ *              .format(debut))
+ *
+ * En français, une heure SEULE se rend « 14 h » — avec le suffixe. `Number("14 h")`
+ * vaut `NaN`, `t - NaN` vaut `NaN`, et la date devient invalide. Prisma la
+ * refusait alors avec un `PrismaClientValidationError`, et la page entière
+ * tombait sur son écran d'erreur : l'agenda n'a jamais pu s'afficher une seule
+ * fois. À noter que le même appel AVEC les minutes rend « 14:30 », sans suffixe
+ * — c'est pourquoi `AgendaTimeline` faisait déjà la même chose sans casser.
+ *
+ * ✅ On dérive désormais de `fromParisLocalInput`, dont c'est exactement le
+ * métier : il lit une heure de Paris, corrige l'offset en deux passes pour les
+ * changements d'heure, et rend `null` plutôt qu'une `Invalid Date`. La borne de
+ * fin est le minuit du LENDEMAIN, pas « début + 24 h » : les 23 h et 25 h des
+ * bascules d'heure sont donc justes, alors que l'addition les faussait.
+ */
+export function bornesDuJourParis(jour: string): { debut: Date; fin: Date } {
+  // Une clé illisible retombe sur aujourd'hui plutôt que de propager une date
+  // invalide jusqu'à Prisma — la page doit toujours pouvoir s'afficher.
+  const cle = /^\d{4}-\d{2}-\d{2}$/.test(jour) ? jour : dayKeyInParis(new Date());
+  const debut = fromParisLocalInput(`${cle}T00:00`);
+  const fin = debut ? fromParisLocalInput(`${jourSuivant(cle)}T00:00`) : null;
+  if (!debut || !fin) {
+    const maintenant = new Date();
+    return { debut: maintenant, fin: new Date(maintenant.getTime() + 24 * 3_600_000) };
+  }
+  return { debut, fin };
 }
