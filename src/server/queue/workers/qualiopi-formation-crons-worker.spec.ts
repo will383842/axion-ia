@@ -621,6 +621,165 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
       tick: "2026-08-02T06:30:00Z",
     });
 
+  /**
+   * Facture échue, dont on choisit le DÉBITEUR.
+   *
+   * 🔑 La forme suit `resoudreDestinataireRelance`, pas mon idée de ce qu'est
+   * une subrogation : c'est `destinataire === "opco"` qui fait le financeur,
+   * et le contact du GESTIONNAIRE qui rend l'envoi possible.
+   */
+  const factureEchue = (subroge: boolean) => ({
+    ...factureSansEcheance(90),
+    echeanceAt: new Date(Date.now() - 45 * JOUR_MS),
+    destinataire: subroge ? "opco" : "entreprise",
+    destinataireNom: subroge ? "Atlas" : "ACME SARL",
+    dossierFinancement: subroge
+      ? {
+          financeurNom: "OPCO Atlas",
+          financeurContactNom: "M. Dupont",
+          financeurContactEmail: "gestion@atlas.example",
+          numeroDossierExterne: "OPCO-2026-42",
+          subrogation: true,
+        }
+      : null,
+    client: {
+      delaiPaiementJours: null,
+      raisonSociale: "ACME SARL",
+      opcoIdentifie: null,
+      contactNom: "Mme Martin",
+      contactEmail: "compta@acme.example",
+    },
+  });
+
+  it("🔴 M7 — en SUBROGATION, la relance vise l'OPCO et le DIT", async () => {
+    // Défaut mesuré en dev le 2026-08-26 : même facture, même palier, aucune
+    // mention du financeur. En subrogation, l'OPCO règle l'organisme
+    // DIRECTEMENT — le client ne doit rien. On proposait de le relancer.
+    //
+    // ⚠️ On ne SUPPRIME pas la proposition : la créance existe toujours,
+    // simplement l'OPCO en est le débiteur. La faire disparaître remplacerait
+    // un mauvais rappel par un impayé INVISIBLE, ce qui est pire.
+    mockPrisma.factureFormation.findMany.mockResolvedValue([factureEchue(true)]);
+
+    await lancer();
+
+    const data = mockPrisma.relanceProposee.create.mock.calls[0]?.[0]?.data;
+    expect(data?.type, "une relance subrogée doit viser le DOSSIER FINANCEUR").toBe(
+      "dossier_financeur",
+    );
+    expect(
+      String(data?.suggestion),
+      "la note d'écran doit DIRE de ne pas relancer le client — sinon la seule " +
+        "différence est un champ en base que personne ne lit",
+    ).toMatch(/SUBROGATION OPCO.*ne pas relancer le client/i);
+    expect(
+      String(data?.suggestion),
+      "le FINANCEUR — l'organisme, pas son gestionnaire — doit être nommé",
+    ).toContain("OPCO Atlas");
+    expect(
+      String(data?.suggestion),
+      "le nom du GESTIONNAIRE n'a pas sa place dans « le règlement est dû par … » : " +
+        "ce n'est pas lui qui doit, c'est son organisme",
+    ).not.toMatch(/dû par M\. Dupont/);
+    expect(String(data?.suggestion), "le dossier doit être nommé").toContain("OPCO-2026-42");
+  });
+
+  it("🔑 CONTRE-TÉMOIN — sans subrogation, la relance vise TOUJOURS le client", async () => {
+    // Sans lui, « ne jamais proposer de relance » passerait le test ci-dessus
+    // à la perfection, et la créance non subrogée cesserait d'être réclamée.
+    mockPrisma.factureFormation.findMany.mockResolvedValue([factureEchue(false)]);
+
+    await lancer();
+
+    const data = mockPrisma.relanceProposee.create.mock.calls[0]?.[0]?.data;
+    expect(data?.type).toBe("facture_retard");
+    expect(String(data?.suggestion)).not.toMatch(/SUBROGATION/i);
+  });
+
+  it("🔑 M7 — sans e-mail de gestionnaire, la proposition ANNONCE le refus", async () => {
+    // Le résolveur REFUSE d'envoyer quand le dossier ne porte aucun contact
+    // financeur (se rabattre sur le client serait la faute même qu'on corrige).
+    // La proposition doit le dire AVANT le clic : sinon l'opérateur découvre le
+    // refus au moment d'envoyer, et rien à l'écran ne lui indique que le travail
+    // réel est de renseigner le gestionnaire du dossier.
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      {
+        ...factureEchue(true),
+        dossierFinancement: {
+          financeurNom: "OPCO Atlas",
+          financeurContactNom: null,
+          financeurContactEmail: null,
+          numeroDossierExterne: "OPCO-2026-42",
+          subrogation: true,
+        },
+      },
+    ]);
+
+    await lancer();
+
+    const data = mockPrisma.relanceProposee.create.mock.calls[0]?.[0]?.data;
+    expect(data?.type).toBe("dossier_financeur");
+    expect(
+      String(data?.suggestion),
+      "la proposition doit annoncer que l'envoi sera refusé faute de gestionnaire",
+    ).toMatch(/envoi sera refusé/i);
+  });
+
+  it("🛑 ORDRE PERMANENT DE WILL — ce cron n'ENVOIE jamais une relance", async () => {
+    // « Les relances d'impayés doivent être manuelles et jamais automatiques »
+    // (Will, 2026-08-27). Le cron PROPOSE dans le hub ; l'envoi part d'une
+    // action humaine (`facturation-hub.ts`), derrière une confirmation où
+    // l'admin coche « j'ai vérifié mon relevé ».
+    //
+    // 🔑 Deux témoins, parce qu'aucun ne suffit seul :
+    //  · le COMPORTEMENT — aucun expéditeur mocké n'est appelé. Aveugle à un
+    //    expéditeur NEUF, qu'aucun `vi.mock` de ce fichier ne couvrirait ;
+    //  · la SOURCE — le corps de `handleFacturesRetard` ne contient aucun
+    //    appel d'envoi. C'est ce témoin-là qui rougira le jour où quelqu'un
+    //    ajoutera un `enqueueEmail` ici.
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      factureEchue(false),
+      factureEchue(true),
+    ]);
+
+    await lancer();
+
+    for (const [nom, envoi] of [
+      ["envoyerConvocation", envoyerConvocation],
+      ["envoyerPositionnement", envoyerPositionnement],
+      ["envoyerRappelJ7", envoyerRappelJ7],
+      ["envoyerRelanceQuestionnaire", envoyerRelanceQuestionnaire],
+      ["envoyerEnqueteEntreprise", envoyerEnqueteEntreprise],
+      ["envoyerLiensPourSession", envoyerLiensPourSession],
+    ] as const) {
+      expect(
+        envoi,
+        `${nom} a été appelé par le cron des factures en retard`,
+      ).not.toHaveBeenCalled();
+    }
+
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const source = readFileSync(
+      join(process.cwd(), "src/server/queue/workers/qualiopi-formation-crons-worker.ts"),
+      "utf8",
+    );
+    const debut = source.indexOf("async function handleFacturesRetard(");
+    expect(
+      debut,
+      "`handleFacturesRetard` a disparu — cette garde ne mesure plus rien",
+    ).toBeGreaterThan(0);
+    const suite = source.indexOf("\nasync function ", debut + 1);
+    const corps = source.slice(debut, suite > 0 ? suite : undefined);
+
+    expect(
+      corps,
+      "le corps de `handleFacturesRetard` contient un appel d'ENVOI — une " +
+        "relance d'impayé ne part JAMAIS seule : ce cron ne fait que PROPOSER " +
+        "dans le hub, l'envoi est un clic humain (`facturation-hub.ts`)",
+    ).not.toMatch(/\b(enqueueEmail|sendEmail|envoyerRelance|envoyerEmail)\b/);
+  });
+
   it("sélectionne AUSSI les factures à échéance NULLE (le trou d'origine)", async () => {
     await lancer();
 
