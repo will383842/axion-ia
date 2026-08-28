@@ -27,11 +27,61 @@ import { loginAsAdmin, ADMIN_PREFIX } from "./fixtures/admin-auth";
  * Les trois surfaces que le plan désigne (Lot 5), plus celle qui porte le
  * parcours guidé.
  */
+/**
+ * 🔴 LOT 1 D'ÉLARGISSEMENT (2026-08-28) — de 4 écrans à 18.
+ *
+ * ## Le défaut que cet élargissement ferme
+ *
+ * Cette suite couvrait **4 pages sur 305**. Les 40 violations corrigées par #864
+ * vivaient sur `/qualiopi/mode-auditeur` pendant que la suite visitait
+ * `/qualiopi/mode-auditeur/signatures` — **un répertoire d'écart**.
+ *
+ * Et `contrast:check` ne pouvait pas les voir : il compare 42 paires de jetons
+ * DÉCLARÉS, sur la palette publique, alors que la console se style avec
+ * `--color-admin-*` à 4 131 endroits. Cinq violations de contraste et 48 cibles
+ * tactiles trop petites vivaient dans cet écart (corrigées par #872).
+ *
+ * ## 🔑 Pourquoi ces 14-là et pas les 301 autres
+ *
+ * **On n'ajoute à une gate bloquante que du vert VÉRIFIÉ.** Les 14 ont été
+ * mesurés à **0 violation serious/critical** juste avant d'être inscrits ici —
+ * pas hier, pas « en principe ». Ajouter des écrans non mesurés ouvrirait un
+ * rouge que personne ne peut fermer dans sa propre PR : c'est la doctrine du
+ * dépôt, « seuil aligné d'abord, blocage ensuite ».
+ *
+ * ⚠️ Trois d'entre eux — `financements`, `alertes`, `cockpit-financier` —
+ * portaient encore des violations la veille. Leur passage à 0 est le **témoin
+ * positif** de ce lot : la mesure sait voir, elle ne rend pas 0 faute de sujet.
+ *
+ * ## Ce qui reste dehors
+ *
+ * ~287 pages. Le prochain lot devra les MESURER avant de les inscrire, et
+ * corriger ce qu'il trouve **avant** de les rendre bloquantes. Ne jamais
+ * inscrire un écran sur la foi d'un relevé ancien : le code bouge.
+ */
 const PAGES_ADMIN = [
+  // Les 4 d'origine.
   { path: `/fr/${ADMIN_PREFIX}/qualiopi/sessions`, label: "liste des sessions" },
   { path: `/fr/${ADMIN_PREFIX}/qualiopi/a-traiter`, label: "à traiter" },
   { path: `/fr/${ADMIN_PREFIX}/qualiopi/dossiers`, label: "dossiers" },
   { path: `/fr/${ADMIN_PREFIX}/qualiopi/mode-auditeur/signatures`, label: "registre auditeur" },
+  // Lot 1 — l'écran du certificateur en tête, c'est celui qu'il ouvre en premier.
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/mode-auditeur`, label: "mode auditeur" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/indicateurs`, label: "indicateurs" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/audits`, label: "audits" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/appreciations`, label: "appréciations" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/reclamations`, label: "réclamations" },
+  // Le parcours réservation.
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/devis`, label: "devis" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/clients`, label: "clients" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/formations`, label: "formations" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts`, label: "contacts" },
+  // Les finances — dont les trois corrigés par #872.
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/facturation`, label: "facturation" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/financements`, label: "financements (48 cibles corrigées)" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/alertes`, label: "alertes (4 contrastes corrigés)" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/cockpit-financier`, label: "cockpit financier (1 contraste corrigé)" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/baremes-opco`, label: "barèmes OPCO" },
 ] as const;
 
 /**
