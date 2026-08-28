@@ -78,9 +78,15 @@ const PAGES_ADMIN = [
   { path: `/fr/${ADMIN_PREFIX}/contacts`, label: "contacts" },
   // Les finances — dont les trois corrigés par #872.
   { path: `/fr/${ADMIN_PREFIX}/qualiopi/facturation`, label: "facturation" },
-  { path: `/fr/${ADMIN_PREFIX}/qualiopi/financements`, label: "financements (48 cibles corrigées)" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/qualiopi/financements`,
+    label: "financements (48 cibles corrigées)",
+  },
   { path: `/fr/${ADMIN_PREFIX}/qualiopi/alertes`, label: "alertes (4 contrastes corrigés)" },
-  { path: `/fr/${ADMIN_PREFIX}/qualiopi/cockpit-financier`, label: "cockpit financier (1 contraste corrigé)" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/qualiopi/cockpit-financier`,
+    label: "cockpit financier (1 contraste corrigé)",
+  },
   { path: `/fr/${ADMIN_PREFIX}/qualiopi/baremes-opco`, label: "barèmes OPCO" },
 ] as const;
 
