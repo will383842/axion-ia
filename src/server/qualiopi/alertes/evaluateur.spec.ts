@@ -1288,8 +1288,21 @@ describe("evaluerAlertes — OPCO", () => {
 
   it("crée opco_sans_accord si session planifiée J-7 sans accord", async () => {
     mp.trainingSession.findMany.mockImplementation(
-      ({ where }: { where?: { statut?: string; opcoStatut?: string } }) => {
-        if (where?.statut === "planifiee" && where?.opcoStatut === "non_demande") {
+      // 🔑 Ce mock aiguillait sur `where.opcoStatut === "non_demande"` — la FORME
+      // exacte du filtre. Quand M8 l'a élargi en `{ in: [...] }` pour couvrir le
+      // dossier ENVOYÉ sans réponse, le mock a cessé de reconnaître la requête
+      // et le test a rougi : il verrouillait la forme, pas la règle.
+      // On aiguille désormais sur le SENS — « ce filtre couvre-t-il
+      // `non_demande` ? » — quelle que soit son écriture.
+      ({ where }: { where?: { statut?: string; opcoStatut?: unknown } }) => {
+        const o = where?.opcoStatut;
+        const couvreNonDemande =
+          o === "non_demande" ||
+          (typeof o === "object" &&
+            o !== null &&
+            Array.isArray((o as { in?: unknown[] }).in) &&
+            (o as { in: unknown[] }).in.includes("non_demande"));
+        if (where?.statut === "planifiee" && couvreNonDemande) {
           return Promise.resolve([
             {
               id: "ses-001",
@@ -1470,7 +1483,14 @@ describe("Faux positifs — gardes sur le where émis", () => {
     await evaluerAlertes();
     // `opcoStatut: "non_demande"` est la valeur PAR DÉFAUT du schéma : filtrer
     // dessus seul faisait lever l'alerte sur toute session sans financement.
-    const w = whereEmis((x) => x["opcoStatut"] === "non_demande" && x["statut"] === "planifiee");
+    // Même correction que ci-dessus : on reconnaît le filtre à ce qu'il COUVRE.
+    const couvre = (o: unknown): boolean =>
+      o === "non_demande" ||
+      (typeof o === "object" &&
+        o !== null &&
+        Array.isArray((o as { in?: unknown[] }).in) &&
+        (o as { in: unknown[] }).in.includes("non_demande"));
+    const w = whereEmis((x) => couvre(x["opcoStatut"]) && x["statut"] === "planifiee");
     expect(w["OR"]).toEqual([{ opcoSubrogation: true }, { dossiersFinancement: { some: {} } }]);
   });
 
