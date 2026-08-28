@@ -228,7 +228,12 @@ export default async function AppelPage({ params, searchParams }: Props) {
                   <ol className="space-y-3">
                     {[
                       "Choisissez un créneau qui vous convient dans le calendrier.",
-                      "Vous recevez une confirmation par email immédiatement.",
+                      // 🔴 Disait « Vous recevez une confirmation par email
+                      // immédiatement » — vrai au sens strict (Calendly envoie
+                      // l'invitation d'agenda), mais la phrase laissait attendre
+                      // un message DE NOUS, qui n'existait pas. On annonce
+                      // désormais les deux, et le second est le nôtre.
+                      "Vous recevez la confirmation dans votre agenda, puis un rappel de notre part une heure avant.",
                       "On discute de votre projet ou tout autre besoin de renseignements.",
                     ].map((step, i) => (
                       <li key={step} className="flex gap-3">

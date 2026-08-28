@@ -887,6 +887,11 @@ export async function bootRepeatableJobs(): Promise<void> {
       // ferme le créneau en 11 s et ne prévient personne — mesuré le 2026-08-26,
       // avec 13 min de décalage constatées sur le site.
       { type: "revalidate-slots", pattern: "*/2 * * * *", jobId: "calendly-slots-revalidate-cron" },
+      // Rappel H-1 : toutes les 5 min, ZERO requete Calendly (lecture en base
+      // seulement). La fenetre cherchee est de 15 min, soit TROIS fois cette
+      // cadence : un passage saute est rattrape par les deux suivants. Une
+      // fenetre egale a la cadence perdrait le rappel au premier hoquet.
+      { type: "rappel-h1", pattern: "*/5 * * * *", jobId: "calendly-rappel-h1-cron" },
     ];
 
     // 🔴 Purge EXHAUSTIVE avant ré-enregistrement, et pas le

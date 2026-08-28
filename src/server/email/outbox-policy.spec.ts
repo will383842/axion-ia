@@ -275,6 +275,10 @@ describe("Cohérence avec les noms de jobs réels", () => {
     // Lien de signature d'une convention adressé au client (2026-08-01) :
     // pièce contractuelle → même traitement que devis et contrat.
     "convention-envoi",
+    // Rappel H-1 avant l'appel de découverte (2026-08-28) — envoyé par la passe
+    // `rappel-h1` du worker de sondage Calendly. Automatique par nature : un
+    // rappel retenu en validation manque le rendez-vous qu'il devait préparer.
+    "appel-rappel",
   ];
 
   it("chaque email « à valider » correspond à un job réel", () => {
