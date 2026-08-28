@@ -9,6 +9,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { CalendlySlotPicker } from "../CalendlySlotPicker";
 import { SUBPROCESSORS } from "@/content/subprocessors";
+import { QUALIOPI_BRAND_COLORS } from "@/server/qualiopi/brand/brand-tokens";
 
 vi.mock("@/i18n/navigation", () => ({
   Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
@@ -113,9 +114,32 @@ describe("CalendlySlotPicker", () => {
   it("chaque créneau est un lien vers sa page de confirmation, en nouvel onglet", () => {
     setup();
     const link = screen.getByRole("link", { name: /09:00/ });
-    expect(link).toHaveAttribute("href", DAYS[0].slots[0].schedulingUrl);
+    const href = link.getAttribute("href") ?? "";
+    // Le lien PART de l'URL de créneau — on ne compare plus par égalité stricte
+    // depuis qu'il porte les couleurs de la charte (voir le cas suivant).
+    expect(href.startsWith(DAYS[0].slots[0].schedulingUrl)).toBe(true);
     expect(link).toHaveAttribute("target", "_blank");
     expect(link.getAttribute("rel")).toContain("noopener");
+  });
+
+  it("le lien sortant porte les couleurs de la charte, DÉRIVÉES des jetons", () => {
+    // 🔴 Ce cas garde deux choses à la fois.
+    //
+    // 1. Que les paramètres soient là : mesuré le 2026-08-28, Calendly les
+    //    honore AUSSI sur ses pages autonomes (0 occurrence sans, 2 avec). Sans
+    //    eux, le visiteur passe d'une page à sa charte à une page grise.
+    // 2. Que la couleur soit celle des JETONS et pas une valeur recopiée. Le
+    //    `#c2410c` qui traînait dans le widget ne correspondait à aucune couleur
+    //    du site — l'audit d'accessibilité du 2026-07-26 avait déplacé le
+    //    terracotta sans que la copie suive.
+    setup();
+    const href = screen.getByRole("link", { name: /09:00/ }).getAttribute("href") ?? "";
+    const params = new URL(href).searchParams;
+    expect(params.get("primary_color")).toBe(
+      QUALIOPI_BRAND_COLORS.terracotta.replace("#", ""),
+    );
+    expect(params.get("text_color")).toBe(QUALIOPI_BRAND_COLORS.fg.replace("#", ""));
+    expect(params.get("background_color")).toBe(QUALIOPI_BRAND_COLORS.bg.replace("#", ""));
   });
 
   it("le libellé accessible porte la date complète, pas seulement l'heure", () => {
