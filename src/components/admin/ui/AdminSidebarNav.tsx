@@ -42,6 +42,7 @@ import {
   Sparkles,
   GraduationCap,
   Bot,
+  Mail,
   Megaphone,
   Gauge,
   Cog,
@@ -90,6 +91,7 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   presse: Newspaper,
   chatbot: Bot,
   engagement: Megaphone,
+  emails: Mail,
   ops: Gauge,
   system: Cog,
 };

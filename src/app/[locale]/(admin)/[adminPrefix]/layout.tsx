@@ -103,6 +103,8 @@ import {
   type QualiopiNavCounts,
 } from "@/server/admin/qualiopi-nav-counts";
 
+import { peutConsulter } from "@/server/auth/habilitations";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import "@/app/admin.css";
 import "@/app/print.css";
 
@@ -195,7 +197,47 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   // 16.2) capture à tort un alias de type déclaré DANS un module à "use server"
   // comme une valeur runtime → `ReferenceError: AdminSession is not defined`
   // (500 sur TOUTE la console admin). L'inliner supprime le binding nommé.
-  const session = (await auth()) as { user?: { email?: string | null } | null } | null;
+  // ⚠️ `role` s'ajoute au cast inline. Le commentaire ci-dessus explique pourquoi
+  // il ne faut PAS déclarer un alias de type ici : Turbopack le capture comme
+  // une valeur runtime et rend 500 sur toute la console.
+  const session = (await auth()) as {
+    user?: { email?: string | null; role?: string | null } | null;
+  } | null;
+
+  // 🔴 LA SEULE GARDE DE RÔLE DE LA CONSOLE (2026-08-28).
+  //
+  // Mesuré la veille : sur 305 pages `(admin)`, **216 ne portaient AUCUN test
+  // de rôle**. Le callback `authorized()` d'Auth.js ne vérifie que
+  // `isLoggedIn` — jamais le rôle — et aucun layout ne complétait. Un compte
+  // authentifié SANS rôle reconnu atteignait donc ces 216 écrans.
+  //
+  // Le risque était faible (tout `AdminUser` porte un rôle aujourd'hui) mais
+  // pas nul, et surtout il grandissait en silence : chaque page ajoutée sans
+  // garde élargissait la surface sans que rien ne rougisse.
+  //
+  // 🔑 POURQUOI ICI ET PAS SUR LES 216 PAGES. Ce layout enveloppe les 305.
+  // Une garde posée à un seul endroit ne peut pas être oubliée sur la page
+  // suivante — c'est exactement la leçon du 2026-08-27, où 64 pages portaient
+  // chacune leur propre liste de rôles et où trois écritures différentes
+  // coexistaient sans que personne ne le sache.
+  //
+  // ⚠️ ELLE NE SE DÉCLENCHE QUE SUR UNE SESSION EXISTANTE. La page `/login`
+  // vit DANS ce layout : refuser l'absence de session verrouillerait tout le
+  // monde dehors, connexion comprise. Sans session, ce bloc ne fait rien et
+  // `showSidebar` reste faux — le comportement d'avant, à l'identique.
+  const roleSession = session?.user?.role ?? null;
+  if (session?.user && !peutConsulter(roleSession)) {
+    return (
+      <AccesRefuse
+        motif={
+          "Votre compte n'a pas de rôle reconnu pour la console. " +
+          "Demandez à un administrateur de vous en attribuer un."
+        }
+        retourHref={`/${locale}/${adminPrefix}/login`}
+      />
+    );
+  }
+
   const showSidebar = Boolean(session?.user);
   const nav: NavItem[] = buildNav(adminPrefix);
   const adminBase = `/fr/${adminPrefix}`;

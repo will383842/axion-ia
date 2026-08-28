@@ -38,7 +38,23 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmail(...a),
 }));
 
-import { envoyerRappelsH1 } from "../rappel-h1";
+import { executerPassage, PASSAGES } from "../rappels-appel";
+
+/**
+ * Le passage cherché par son MOMENT, jamais par son index.
+ *
+ * Un index (`PASSAGES[2]`) rendrait ce fichier vert en testant le mauvais
+ * passage le jour où l'ordre du tableau change — et un test vert pour la
+ * mauvaise raison est pire qu'un test absent.
+ */
+function passageDe(moment: "confirmation" | "j1" | "h1") {
+  const p = PASSAGES.find((x) => x.moment === moment);
+  if (!p) throw new Error(`passage « ${moment} » introuvable dans PASSAGES`);
+  return p;
+}
+
+/** Les cas historiques portaient sur H-1 ; ils le testent toujours. */
+const envoyerRappelsH1 = (now: number) => executerPassage(passageDe("h1"), now);
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 
 /** 2026-08-28 10:00:00 UTC — l'horloge est injectée, jamais lue. */
@@ -192,5 +208,80 @@ describe("un cron ne rougit pas parce que la base a hoqueté", () => {
     expect(res.ok).toBe(false);
     expect(res.raison).toContain("db_read_failed");
     expect(res.envoyes).toBe(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Les trois moments (2026-08-28)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("les trois moments partagent un cœur, pas un marqueur", () => {
+  it("chaque moment a son PROPRE nom de job et son PROPRE marqueur", () => {
+    // 🔴 LE CAS QUI PROTÈGE LE PLUS. Un marqueur partagé ferait taire les deux
+    // derniers moments : le premier envoi le poserait, et les passages suivants
+    // ne verraient plus aucun candidat. Le défaut serait SILENCIEUX — aucune
+    // erreur, simplement deux e-mails qui ne partent jamais.
+    const jobs = PASSAGES.map((p) => p.job);
+    const marqueurs = PASSAGES.map((p) => p.marqueur);
+    expect(new Set(jobs).size, "deux moments partagent un nom de job").toBe(PASSAGES.length);
+    expect(new Set(marqueurs).size, "deux moments partagent un marqueur").toBe(PASSAGES.length);
+  });
+
+  it("la confirmation part SANS fenêtre, mais jamais vers le passé", async () => {
+    findMany.mockResolvedValue([rdv()]);
+    await executerPassage(passageDe("confirmation"), MAINTENANT);
+
+    const where = (findMany.mock.calls[0] as [{ where: Record<string, unknown> }])[0].where;
+    // Pas de `gte`/`lt` : aucune fenêtre. Mais une borne basse stricte, sinon
+    // l'ajout de la colonne à NULL écrirait à TOUT l'historique passé.
+    expect(where.startTime).toEqual({ gt: new Date(MAINTENANT) });
+    expect(where).toHaveProperty("confirmationEnvoyeeAt", null);
+  });
+
+  it("le rappel J-1 vise 24 h → 24 h 15, pas la même fenêtre que H-1", async () => {
+    await executerPassage(passageDe("j1"), MAINTENANT);
+    const where = (findMany.mock.calls[0] as [{ where: Record<string, unknown> }])[0].where;
+    expect(where.startTime).toEqual({
+      gte: new Date(MAINTENANT + 1440 * 60_000),
+      lt: new Date(MAINTENANT + 1455 * 60_000),
+    });
+    expect(where).toHaveProperty("rappelJ1EnvoyeAt", null);
+  });
+
+  it("transmet le MOMENT au gabarit — sans lui, il rendrait le titre H-1", async () => {
+    // Le gabarit a `moment = "h1"` par défaut (pour les jobs déjà en file avant
+    // cette version). Une confirmation qui n'enverrait pas son moment porterait
+    // donc « Votre appel a lieu dans une heure » — pour un rendez-vous dans
+    // trois semaines.
+    await executerPassage(passageDe("confirmation"), MAINTENANT);
+    const charge = (enqueueEmail.mock.calls[0] as unknown[])[3] as { moment?: string };
+    expect(charge.moment).toBe("confirmation");
+  });
+
+  it("la confirmation cite la DATE, les rappels ne la citent pas", async () => {
+    await executerPassage(passageDe("confirmation"), MAINTENANT);
+    const conf = (enqueueEmail.mock.calls[0] as unknown[])[3] as { date?: string };
+    expect(conf.date, "une confirmation sans date oblige à ouvrir Calendly").toBeTruthy();
+
+    vi.clearAllMocks();
+    findMany.mockResolvedValue([rdv()]);
+    enqueueEmail.mockResolvedValue({ enqueued: true });
+    await executerPassage(passageDe("h1"), MAINTENANT);
+    const h1 = (enqueueEmail.mock.calls[0] as unknown[])[3] as { date?: string };
+    expect(h1.date, "répéter la date à une heure de l'appel est du bruit").toBeUndefined();
+  });
+
+  it("les trois portent les liens d'annulation et de report", async () => {
+    // Un message qui ne permet pas de se décommander produit des absences
+    // plutôt que des reports. Aux TROIS moments, pas seulement au dernier.
+    for (const moment of ["confirmation", "j1", "h1"] as const) {
+      vi.clearAllMocks();
+      findMany.mockResolvedValue([rdv()]);
+      enqueueEmail.mockResolvedValue({ enqueued: true });
+      await executerPassage(passageDe(moment), MAINTENANT);
+      const charge = (enqueueEmail.mock.calls[0] as unknown[])[3] as Record<string, unknown>;
+      expect(charge.cancelUrl, `${moment} : pas de lien d'annulation`).toBeTruthy();
+      expect(charge.rescheduleUrl, `${moment} : pas de lien de report`).toBeTruthy();
+    }
   });
 });

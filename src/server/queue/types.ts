@@ -27,6 +27,13 @@ export type EmailJobName =
   // `contact-confirmed`, qui sert déjà à huit flux différents.
   | "podcast-demande-recue"
   | "rappel-confirme"
+  // Les trois messages d un appel de decouverte. Trois noms de job DISTINCTS
+  // pour un seul gabarit (`appel-rappel.tsx`, prop `moment`) : le gabarit est
+  // partage pour que les liens d annulation ne vivent qu a un endroit, mais le
+  // NOM doit distinguer les trois, sinon le journal des envois ne sait plus
+  // lequel est parti — et le rattrapage devient impossible.
+  | "appel-confirme"
+  | "appel-rappel-j1"
   // Rappel H-1 avant l appel de decouverte. Calendly gratuit n en envoie aucun.
   | "appel-rappel"
   | "chatbot-demande-transmise"
