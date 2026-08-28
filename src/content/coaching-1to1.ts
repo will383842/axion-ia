@@ -16,7 +16,7 @@
 //
 // 2026-08-15 — le module porte aussi désormais les FAITS DE VALEUR : ce qui est
 // remis au client, le déroulé réel et le suivi. Même raison que pour les chemins :
-// ces éléments (30 min d'échange préalable, journée de 7 à 8 h, livrable écrit
+// ces éléments (45 min d'échange préalable, journée de 7 à 8 h, livrable écrit
 // sous 7 jours, point à 30 jours) étaient RETAPÉS dans `un-a-un/page.tsx`,
 // `IndividualCoachingPage.tsx`, `un-a-un-subpages.ts` et `booking-catalog.ts` —
 // un délai modifié à un endroit laissait les autres périmés, sur des éléments
@@ -165,7 +165,7 @@ export const COACHING_1TO1_DEROULE: ReadonlyArray<Coaching1to1Etape> = [
   },
   {
     id: "echange-prealable",
-    title: "Échange préalable de 30 minutes",
+    title: "Échange préalable de 45 minutes",
     detail:
       "Un point court pour caler ce qu'on vise et les dossiers réels sur lesquels on travaillera le jour J.",
   },

@@ -114,7 +114,7 @@ const TEMPLATES = [
   {
     value: "audit_followup",
     label: "Suivi audit",
-    body: "Bonjour,\n\nMerci pour votre demande d'audit IA. Je reviens vers vous pour planifier un premier échange et cadrer le périmètre.\n\nQuelles sont vos disponibilités cette semaine pour un appel de 30 minutes ?\n\nCordialement,",
+    body: "Bonjour,\n\nMerci pour votre demande d'audit IA. Je reviens vers vous pour planifier un premier échange et cadrer le périmètre.\n\nQuelles sont vos disponibilités cette semaine pour un appel de 45 minutes ?\n\nCordialement,",
   },
   {
     value: "intervention_followup",

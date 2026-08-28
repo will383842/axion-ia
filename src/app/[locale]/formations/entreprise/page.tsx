@@ -232,7 +232,7 @@ export default async function FormationsEntreprise({ params }: Props) {
     },
     {
       icon: CalendarClock,
-      title: isFr ? "Échange de 30 min" : "30-min call",
+      title: isFr ? "Échange de 45 min" : "45-min call",
       body: isFr
         ? `Vos objectifs, vos équipes, votre date${ofPublic ? ", votre OPCO" : ""}.`
         : `Your goals, teams and date${ofPublic ? ", your OPCO" : ""}.`,

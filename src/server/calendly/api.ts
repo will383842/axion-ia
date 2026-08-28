@@ -68,7 +68,7 @@ export interface CalendlyInviteeData {
   noShow: boolean;
   cancelUrl: string | null;
   rescheduleUrl: string | null;
-  /** Nom humain de l'event-type (ex « Premier contact — 30 min »). */
+  /** Nom humain de l'event-type (ex « Premier contact — 45 min »). */
   eventTypeName: string | null;
   /**
    * Réponses libres du formulaire de réservation (hors question téléphone,
@@ -188,7 +188,7 @@ function extractPhone(
  * excluant la question téléphone (même regex que `extractPhone` — sinon le
  * numéro apparaîtrait deux fois dans la notification).
  */
-function extractAnswersText(questionsAndAnswers: unknown): string | null {
+export function extractAnswersText(questionsAndAnswers: unknown): string | null {
   if (!Array.isArray(questionsAndAnswers)) return null;
   const parts: string[] = [];
   for (const qa of questionsAndAnswers) {
