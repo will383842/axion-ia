@@ -63,6 +63,7 @@ import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
 import { envoyerRappelsH1 } from "@/server/calendly/rappel-h1";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import { CALENDLY_SLOTS_TAG } from "@/server/calendly/availability";
+import { CALENDLY_SLOTS_PATHS } from "@/server/calendly/revalider-creneaux";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
@@ -85,11 +86,32 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
   if (!isCalendlyApiConfigured()) return;
 
   if (job.data.type === "revalidate-slots") {
-    // `revalidateTag`/`revalidatePath` sont des no-op SILENCIEUX hors contexte
-    // de requête : dans ce worker, l'appel direct ne ferait rien du tout et
-    // rien ne le dirait. On passe donc par la route interne, qui les exécute
-    // côté Next — même patron que la publication de contenu.
-    const res = await revalidateContent({ tags: [CALENDLY_SLOTS_TAG] });
+    // ⚠️ CORRECTION 2026-08-27 : ce commentaire disait « no-op SILENCIEUX hors
+    // contexte de requête ». C'est faux — la source lève une erreur explicite
+    // (`Invariant: static generation store missing`, code E263), et trois
+    // fichiers du dépôt répétaient l'affirmation. La conclusion pratique ne
+    // change pas — on passe par la route interne, qui les exécute côté Next —
+    // mais un « no-op silencieux » se diagnostique tout autrement d'un throw.
+    // 🔴 `paths` MANQUAIT, ET C'ÉTAIT LE DÉFAUT — corrigé le 2026-08-27.
+    //
+    // Ce passage n'envoyait que l'étiquette. Or la route interne applique aux
+    // étiquettes un profil de cache, tandis qu'elle passe les CHEMINS à
+    // `revalidatePath`, qui expire en dur. Et l'entrée `fetch` des créneaux
+    // porte l'étiquette implicite du chemin (`_N_T_/fr/appel`) : la purger par
+    // le chemin la purge réellement.
+    //
+    // Autrement dit : le seul appelant VIVANT de cette chaîne était le seul à
+    // n'envoyer que la moitié qui n'expire pas. Le webhook, lui, envoyait la
+    // bonne moitié — mais il est éteint tant que le plan Calendly est gratuit.
+    //
+    // `purgeEdge: false` : `/fr/appel` répond `no-store` et sort en
+    // `cf-cache-status: BYPASS`. Sans ça, ce cron de 2 minutes émettrait 720
+    // purges Cloudflare par jour sur une page qui n'a pas de copie d'edge.
+    const res = await revalidateContent({
+      tags: [CALENDLY_SLOTS_TAG],
+      paths: [...CALENDLY_SLOTS_PATHS],
+      purgeEdge: false,
+    });
     // On ne journalise QUE l'échec : 720 lignes/jour annonçant un succès
     // noieraient les logs du worker et rendraient invisible la seule qui compte.
     // `revalidateContent` a déjà écrit son propre JSON structuré ; cette ligne
@@ -122,6 +144,32 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
 
   if (job.data.type === "discover") {
     const res = await discoverNewCalendlyEvents();
+    // 🔴 LE SIGNAL LE PLUS PRÉCOCE DONT ON DISPOSE, et il était jeté.
+    //
+    // Cette passe tourne à la MINUTE et sait exactement quand une réservation
+    // vient d'arriver — donc quand un créneau vient de fermer. Elle créait la
+    // ligne, synchronisait le CRM, envoyait l'alerte… et laissait `/appel`
+    // vendre le créneau jusqu'au prochain passage de `revalidate-slots`, deux
+    // minutes plus tard.
+    //
+    // Invalider ici ramène le délai à ~60 s sans une seule requête Calendly de
+    // plus : la découverte a déjà payé l'aller-retour.
+    //
+    // Placé dans le worker et non dans `discover.ts` : cette fonction a deux
+    // appelants, dont un hors contexte de requête, et le second invaliderait
+    // par un chemin différent.
+    if (res.created > 0) {
+      const inval = await revalidateContent({
+        tags: [CALENDLY_SLOTS_TAG],
+        paths: [...CALENDLY_SLOTS_PATHS],
+        purgeEdge: false,
+      });
+      if (!inval.ok) {
+        console.warn(
+          `[calendly-poll] réservation découverte mais créneaux NON invalidés : ${inval.reason ?? "inconnu"}`,
+        );
+      }
+    }
     // On ne journalise QUE ce qui s'est passé. Une ligne par minute annonçant
     // « 0 nouvelle réservation » noierait les logs du worker (1440 lignes/jour)
     // et rendrait invisible la seule qui compte.

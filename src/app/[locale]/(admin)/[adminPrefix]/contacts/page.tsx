@@ -16,6 +16,7 @@ import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import { listInbox } from "@/features/admin-inbox/queries";
 import { clientsParEmail } from "@/server/qualiopi/crm/entrees";
+import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import {
   INBOX_CHANNEL_LABELS,
   INBOX_CHANNEL_ORDER,
@@ -83,8 +84,16 @@ export default async function InboxPage({
   const session = await auth();
   const adminUserId = session?.user?.id ?? null;
 
+  // 🔴 La session était lue pour résoudre le « non lu », jamais pour décider de
+  // ce qui s'affiche. Le canal « appel » servait donc le nom et l'adresse de
+  // chaque prospect à tous les rôles, y compris ceux à qui la fiche du même
+  // appel est refusée depuis le 2026-08-27. Les lignes restent (compteurs et
+  // chronologie justes) ; les coordonnées, non.
+  const peutVoirAppels = peutVoirLesAppels((session?.user as { role?: string } | undefined)?.role);
+
   const result = await listInbox({
     adminUserId,
+    peutVoirAppels,
     ...(channel ? { channel } : {}),
     ...(onlyAction ? { onlyAction: true } : {}),
     page,

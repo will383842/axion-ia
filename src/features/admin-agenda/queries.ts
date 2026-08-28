@@ -43,7 +43,33 @@ function texteOuNull(v: string | null | undefined): string | null {
  * volontairement exclues d'une vue calendaire — elles restent visibles dans
  * l'onglet « Appels », qui est une liste et sait les porter.
  */
-async function chargerCalendly(debut: Date, fin: Date): Promise<AgendaItem[]> {
+/**
+ * @param peutVoirAppels — le rôle a-t-il le droit de lire les coordonnées des
+ * prospects (`peutVoirLesAppels`, `features/admin-calendly/acces`) ?
+ *
+ * 🔴 CE PARAMÈTRE FERME UN JUMEAU OUBLIÉ — ajouté le 2026-08-27.
+ *
+ * Le 2026-08-27, la lecture de `/contacts/appels` a été fermée à
+ * `super_admin | admin | editor` sur décision de Will. Cet écran-ci servait
+ * exactement les mêmes données — nom et TÉLÉPHONE du prospect, tirés de la même
+ * table — sans appeler `auth()` nulle part. Fermer une porte en laissant sa
+ * jumelle ouverte ne ferme rien ; c'est même pire, parce que ça fabrique la
+ * certitude que le sujet est clos.
+ *
+ * ⚠️ ON FILTRE, ON NE BLOQUE PAS L'ÉCRAN. L'agenda mêle les réservations
+ * Calendly aux rendez-vous personnels de l'exploitant : le fermer entièrement
+ * serait une décision de périmètre que personne n'a prise. Un rôle non habilité
+ * continue donc de voir « occupé de 14 h à 14 h 45 » — ce dont il a besoin pour
+ * planifier — mais plus le nom, ni le téléphone, ni le lien vers la fiche.
+ *
+ * Les colonnes ne sont même pas SÉLECTIONNÉES dans ce cas : une PII qu'on ne
+ * lit pas ne peut pas fuiter par un journal, une trace ou une erreur.
+ */
+async function chargerCalendly(
+  debut: Date,
+  fin: Date,
+  peutVoirAppels: boolean,
+): Promise<AgendaItem[]> {
   const lignes = await prisma.calendlyEvent.findMany({
     where: { startTime: { gte: debut, lt: fin } },
     orderBy: { startTime: "asc" },
@@ -53,9 +79,9 @@ async function chargerCalendly(debut: Date, fin: Date): Promise<AgendaItem[]> {
       status: true,
       startTime: true,
       endTime: true,
-      inviteeName: true,
-      inviteePhone: true,
-      location: true,
+      inviteeName: peutVoirAppels,
+      inviteePhone: peutVoirAppels,
+      location: peutVoirAppels,
     },
   });
 
@@ -66,16 +92,20 @@ async function chargerCalendly(debut: Date, fin: Date): Promise<AgendaItem[]> {
       {
         key: `cal_${e.id}`,
         source: "calendly",
-        titre: texteOuNull(e.inviteeName) ?? e.eventTypeName,
+        // Sans habilitation, le titre retombe sur le nom du type de rendez-vous
+        // — « Discutons de votre projet IA » — jamais sur celui du prospect.
+        titre: peutVoirAppels ? (texteOuNull(e.inviteeName) ?? e.eventTypeName) : e.eventTypeName,
         debut: e.startTime,
         fin: e.endTime,
         journeeEntiere: false,
         occupe: !annule,
         jour: dayKeyInParis(e.startTime),
-        contact: texteOuNull(e.inviteeName),
-        telephone: texteOuNull(e.inviteePhone),
-        lieu: texteOuNull(e.location),
-        detailHref: adminPath("fr", `contacts/appels/${e.id}`),
+        contact: peutVoirAppels ? texteOuNull(e.inviteeName) : null,
+        telephone: peutVoirAppels ? texteOuNull(e.inviteePhone) : null,
+        lieu: peutVoirAppels ? texteOuNull(e.location) : null,
+        // Le lien mène à la fiche, qui EST gardée : le laisser produirait un
+        // refus au clic. On le retire pour ne pas promettre ce qu'on refuse.
+        detailHref: peutVoirAppels ? adminPath("fr", `contacts/appels/${e.id}`) : null,
         googleEventId: null,
         // Une reservation Calendly n'a pas de note de console : elle a sa fiche.
         note: null,
@@ -91,8 +121,20 @@ async function chargerCalendly(debut: Date, fin: Date): Promise<AgendaItem[]> {
  * Le tri place les journées entières en tête — elles cadrent la journée, et les
  * reléguer au milieu d'une liste horaire les rendrait invisibles.
  */
-export async function getAgendaFenetre(debut: Date, fin: Date): Promise<AgendaFenetre> {
-  const calendly = await chargerCalendly(debut, fin);
+export async function getAgendaFenetre(
+  debut: Date,
+  fin: Date,
+  /**
+   * Le rôle a-t-il le droit de lire les coordonnées des prospects ?
+   *
+   * 🔴 SANS VALEUR PAR DÉFAUT, et c'est délibéré. Un défaut à `true` ferait
+   * fuiter par oubli au prochain appelant ; un défaut à `false` masquerait
+   * silencieusement les données pour un administrateur légitime. L'appelant DOIT
+   * trancher — le compilateur l'y oblige.
+   */
+  peutVoirAppels: boolean,
+): Promise<AgendaFenetre> {
+  const calendly = await chargerCalendly(debut, fin, peutVoirAppels);
 
   const googleConfigure = isGoogleCalendarConfigured();
   let google: AgendaItem[] = [];
