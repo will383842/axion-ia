@@ -50,6 +50,7 @@ export type AdminNavGroup =
   | "presse"
   | "chatbot"
   | "engagement"
+  | "emails"
   | "ops"
   | "system";
 
@@ -191,6 +192,12 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   // de péremption — or l'essentiel de ce dossier-ci périme.
   societe: "Société & conformité",
   "coaching-1to1": "Coaching 1-to-1",
+  // Pole cree le 2026-08-28. Les 44 gabarits vivaient au meme endroit dans le
+  // code depuis toujours ; ce qui manquait n etait pas la centralisation mais
+  // la VISIBILITE — savoir lesquels existent, a quoi ils ressemblent, et quand
+  // ils partent. « E-mails envoyes » etait rangee dans « ops », entre Web
+  // Vitals et les statistiques : introuvable parmi 162 entrees.
+  emails: "E-mails",
   "image-bank": "Banque d'images",
   presse: "Salle de presse",
   chatbot: "Chatbot",
@@ -330,6 +337,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "presse",
   "chatbot",
   "engagement",
+  "emails",
   "ops",
   "system",
 ];
@@ -1490,11 +1498,24 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // depuis le debut, indexee pour etre lue — et n'etait affichee nulle part.
     // A ne pas confondre avec « E-mails a valider » (Qualiopi), qui est une
     // corbeille d'approbation et ne montre que 5 gabarits sur 66.
+    // ── e-mails ──────────────────────────────────────────────────────────
+    // Les 44 gabarits, avec leur rendu reel, leur declencheur et leur
+    // destinataire. Derive de CATALOGUE — la page ne porte aucune liste.
+    {
+      href: `${base}/emails/gabarits`,
+      label: "Gabarits",
+      icon: "Mail",
+      group: "emails",
+    },
+    // Journal des e-mails reellement partis (2026-08-13). Deplacee de « ops »
+    // vers ce pole le 2026-08-28 : le href ne change pas, aucun lien ne casse.
+    // A ne pas confondre avec « E-mails a valider » (Qualiopi), qui est une
+    // corbeille d approbation et ne montre que 3 gabarits sur 44.
     {
       href: `${base}/emails-envoyes`,
-      label: "E-mails envoyés",
+      label: "Envoyés",
       icon: "MailCheck",
-      group: "ops",
+      group: "emails",
     },
     // ⚠️ Le lien vers le tableau de bord ZeptoMail (demande Will, 2026-08-16)
     // n'est VOLONTAIREMENT pas ici : `admin-nav.test.ts` verrouille l'invariant
