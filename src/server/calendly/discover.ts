@@ -45,9 +45,53 @@ import { enrichCalendlyEvent } from "./enrich";
  */
 const MAX_NEW_PER_RUN = 10;
 
-/** On regarde 2 h en arrière (rattrapage) et 60 jours en avant. */
-const LOOKBACK_MS = 2 * 3_600_000;
+/**
+ * Rattrapage minimal en arrière, quand tout va bien.
+ *
+ * 🔴 CE CHIFFRE ÉTAIT UN PLAFOND, ET IL PERDAIT DES RÉSERVATIONS.
+ *
+ * La fenêtre porte sur `start_time`, pas sur l'instant de réservation. Une
+ * réservation prise pour un rendez-vous LOINTAIN reste donc découvrable
+ * longtemps. Mais celle prise pour un rendez-vous PROCHE — quelqu'un qui réserve
+ * à 9 h pour 10 h, le meilleur signal commercial qui soit — sort de la fenêtre
+ * dès que son horaire a plus de deux heures.
+ *
+ * Conséquence mesurée le 2026-08-28 : si le worker s'arrête de 9 h à 13 h, ce
+ * rendez-vous de 10 h n'est JAMAIS découvert. Ni ligne, ni alerte, ni fiche en
+ * console. La personne se présente à un appel dont personne ne sait rien.
+ *
+ * Le remède n'est pas d'écrire un chiffre plus grand — n'importe quel chiffre
+ * fixe a le même défaut, une panne plus longue lui échappe. Il est de DÉRIVER la
+ * profondeur de l'état réel : voir `profondeurRattrapage()`.
+ */
+const LOOKBACK_MIN_MS = 2 * 3_600_000;
+
+/**
+ * Plafond de rattrapage.
+ *
+ * Une semaine couvre un arrêt de vacances ou une panne d'hébergeur. Au-delà, la
+ * fenêtre demandée deviendrait si large que la liste dépasserait la pagination,
+ * et un rendez-vous vieux d'une semaine n'a de toute façon plus d'intérêt
+ * commercial — il a eu lieu, ou pas.
+ */
+const LOOKBACK_MAX_MS = 7 * 86_400_000;
+
 const LOOKAHEAD_MS = 60 * 86_400_000;
+
+/**
+ * Nombre maximal de pages suivies sur la liste des rendez-vous.
+ *
+ * 🔴 IL N'Y AVAIT AUCUNE PAGINATION. La liste était demandée avec `count=50` et
+ * `sort=start_time:asc`, et `pagination.next_page` n'était lu nulle part.
+ * Au-delà de 50 rendez-vous actifs dans la fenêtre, ce sont les PLUS LOINTAINS
+ * qui sortaient du champ — en silence, et sans que `remaining` le signale, parce
+ * que ce compteur ne parlait que du plafond de créations.
+ *
+ * Cinq pages = 250 rendez-vous. Le plafond existe pour qu'une fenêtre élargie
+ * par un rattrapage ne fasse pas exploser le nombre de requêtes ; s'il mord, il
+ * le DIT (`pagesTronquees`).
+ */
+const MAX_PAGES = 5;
 
 const TIMEOUT_MS = 8_000;
 
@@ -59,6 +103,26 @@ export interface DiscoverOutcome {
   readonly created: number;
   /** Présent si le plafond a été atteint — jamais de troncature muette. */
   readonly remaining?: string;
+  /**
+   * Profondeur de rattrapage réellement utilisée, en minutes.
+   *
+   * 🔑 C'est ce chiffre qui rend une panne VISIBLE. En régime normal il vaut le
+   * minimum ; s'il grimpe, c'est que la passe n'avait rien vu depuis longtemps —
+   * soit aucune réservation, soit un worker arrêté. Sans lui, les deux cas se
+   * ressemblent, et le second est celui qui perd des rendez-vous.
+   *
+   * ⚠️ ABSENT quand la passe a échoué AVANT de calculer sa fenêtre — jeton
+   * absent, utilisateur non résolu, liste illisible. Ne pas le confondre avec
+   * « rattrapage nul » : dans ces cas-là, la passe n'a rien regardé du tout, et
+   * c'est `reason` qui porte l'information.
+   */
+  readonly rattrapageMinutes?: number;
+  /**
+   * Vrai si la pagination a mordu son plafond : des rendez-vous LOINTAINS n'ont
+   * pas été examinés. Silencieux jusqu'au 2026-08-28 — il n'y avait aucune
+   * pagination du tout.
+   */
+  readonly pagesTronquees?: true;
   readonly reason?: string;
 }
 
@@ -116,6 +180,38 @@ function slugify(name: string): string {
  * Ne throw jamais : le cron appelant ne doit pas rougir parce que Calendly a
  * hoqueté.
  */
+/**
+ * Jusqu'où regarder en arrière, DÉRIVÉ de la dernière découverte réussie.
+ *
+ * Un chiffre fixe ne peut pas convenir : il couvre les pannes plus courtes que
+ * lui et perd tout ce qui dépasse, sans que rien ne le dise. Celui-ci s'élargit
+ * exactement autant que le silence a duré.
+ *
+ * `capturedAt` est posé à la création de chaque ligne : c'est la trace de la
+ * dernière fois où cette passe a effectivement vu quelque chose. Si elle date de
+ * cinq heures, on rattrape cinq heures ; si elle date de trois jours parce
+ * qu'aucune réservation n'est arrivée, on rattrape trois jours — plus large que
+ * nécessaire, mais jamais faux, et le coût est une requête un peu plus longue.
+ *
+ * ⚠️ Ne throw jamais : sans base lisible, on retombe sur le minimum. Un
+ * rattrapage étroit vaut mieux qu'une passe qui n'a pas lieu.
+ */
+async function profondeurRattrapage(nowMs: number): Promise<number> {
+  try {
+    const derniere = await prisma.calendlyEvent.findFirst({
+      orderBy: { capturedAt: "desc" },
+      select: { capturedAt: true },
+    });
+    if (!derniere?.capturedAt) return LOOKBACK_MIN_MS;
+    // Marge d'une heure : la découverte suit la réservation, elle ne la précède
+    // pas — l'horodatage de capture est toujours un peu postérieur au fait.
+    const ecart = nowMs - derniere.capturedAt.getTime() + 3_600_000;
+    return Math.min(LOOKBACK_MAX_MS, Math.max(LOOKBACK_MIN_MS, ecart));
+  } catch {
+    return LOOKBACK_MIN_MS;
+  }
+}
+
 export async function discoverNewCalendlyEvents(
   nowMs: number = Date.now(),
 ): Promise<DiscoverOutcome> {
@@ -129,17 +225,36 @@ export async function discoverNewCalendlyEvents(
   const userUri = str(me?.["uri"], 255);
   if (!userUri) return { ok: false, scanned: 0, created: 0, reason: "user_unresolved" };
 
-  const listUrl =
+  const lookbackMs = await profondeurRattrapage(nowMs);
+
+  const baseUrl =
     `${CALENDLY_API_BASE}/scheduled_events` +
     `?user=${encodeURIComponent(userUri)}` +
     `&status=active` +
-    `&min_start_time=${encodeURIComponent(new Date(nowMs - LOOKBACK_MS).toISOString())}` +
+    `&min_start_time=${encodeURIComponent(new Date(nowMs - lookbackMs).toISOString())}` +
     `&max_start_time=${encodeURIComponent(new Date(nowMs + LOOKAHEAD_MS).toISOString())}` +
     `&count=50&sort=start_time:asc`;
 
-  const collection = record(await get(listUrl, token))?.["collection"];
-  if (!Array.isArray(collection)) {
-    return { ok: false, scanned: 0, created: 0, reason: "list_failed" };
+  // 🔴 PAGINATION — elle n'existait pas. `pagination.next_page` n'était lu nulle
+  // part : au-delà de 50 rendez-vous actifs dans la fenêtre, les plus lointains
+  // sortaient du champ, en silence. Le rattrapage élargi ci-dessus rend ce cas
+  // BEAUCOUP plus probable, donc les deux corrections vont ensemble.
+  const collection: unknown[] = [];
+  let pagesTronquees = false;
+  let url: string | null = baseUrl;
+  for (let page = 0; page < MAX_PAGES && url; page++) {
+    const corps = record(await get(url, token));
+    const lot = corps?.["collection"];
+    if (!Array.isArray(lot)) {
+      // Une première page illisible est un échec ; une page SUIVANTE illisible
+      // laisse ce qu'on a déjà, plutôt que de tout jeter.
+      if (page === 0) return { ok: false, scanned: 0, created: 0, reason: "list_failed" };
+      break;
+    }
+    collection.push(...lot);
+    const suivante = record(corps?.["pagination"])?.["next_page"];
+    url = typeof suivante === "string" && suivante.startsWith(CALENDLY_API_BASE) ? suivante : null;
+    if (url && page === MAX_PAGES - 1) pagesTronquees = true;
   }
 
   let created = 0;
@@ -281,8 +396,10 @@ export async function discoverNewCalendlyEvents(
     ok: true,
     scanned: collection.length,
     created,
+    rattrapageMinutes: Math.round(lookbackMs / 60_000),
     ...(truncated
       ? { remaining: "plafond atteint — augmenter MAX_NEW_PER_RUN ou la fréquence" }
       : {}),
+    ...(pagesTronquees ? { pagesTronquees: true as const } : {}),
   };
 }

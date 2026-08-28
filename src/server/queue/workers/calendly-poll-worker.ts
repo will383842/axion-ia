@@ -155,6 +155,33 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
     if (res.created > 0) {
       console.warn(`[calendly-poll] ${res.created} réservation(s) découverte(s)`);
     }
+    // 🔴 CE QUI RENDAIT UNE PANNE INVISIBLE. En régime normal, la profondeur de
+    // rattrapage vaut son minimum (120 min). Si elle grimpe, c'est que cette
+    // passe n'avait rien vu depuis longtemps — worker arrêté, base injoignable,
+    // ou simplement aucune réservation. Les trois se ressemblaient dans les
+    // journaux, et le premier est celui qui perd des rendez-vous.
+    //
+    // Le seuil est à 4 h et non au minimum : entre 2 et 4 h, l'élargissement est
+    // le fonctionnement NORMAL d'un lundi matin sans réservation du week-end.
+    // Alerter là-dessus apprendrait à ignorer la ligne.
+    //
+    // ⚠️ `undefined` = la passe a échoué avant de calculer sa fenêtre ; c'est
+    // `res.reason` qui parle alors, pas ce compteur. On ne le traite donc pas
+    // comme un zéro rassurant.
+    const rattrapage = res.rattrapageMinutes;
+    if (rattrapage !== undefined && rattrapage > 240) {
+      console.warn(
+        `[calendly-poll] rattrapage élargi à ${Math.round(rattrapage / 60)} h — ` +
+          `aucune réservation vue depuis ce délai. Normal si le flux est calme, ` +
+          `SIGNE D'ARRÊT si le worker a redémarré.`,
+      );
+    }
+    if (res.pagesTronquees) {
+      console.error(
+        "[calendly-poll] PAGINATION TRONQUÉE — des rendez-vous lointains n'ont pas été examinés. " +
+          "Augmenter MAX_PAGES ou resserrer l'horizon.",
+      );
+    }
     if (!res.ok) {
       console.warn(`[calendly-poll] découverte en échec : ${res.reason ?? "inconnu"}`);
     }
