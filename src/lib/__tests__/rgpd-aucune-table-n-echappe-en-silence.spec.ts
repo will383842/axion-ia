@@ -74,8 +74,23 @@ const SCHEMA = readFileSync(join(process.cwd(), "prisma", "schema.prisma"), "utf
  * `...Sha256` en sont exclues : une empreinte n'identifie personne, et c'est
  * précisément le traitement qu'on applique quand on doit conserver la preuve.
  */
+// 🔴 `inviteeEmail` AJOUTÉ LE 2026-08-28, et c'est tout ce qu'il fallait.
+//
+// Ce motif est ANCRÉ. `calendly_events.invitee_email` — nom, adresse en clair et
+// indexée, téléphone, réponses libres de chaque prospect — n'y correspondait
+// pas. La garde tournait, passait, et n'avait JAMAIS examiné cette table. Un
+// fichier qui s'appelle « aucune table n'échappe en silence » et qui reste vert
+// parce qu'il ne regarde pas est le pire état possible d'un garde-fou.
+//
+// ⚠️ ON AJOUTE UNE ALTERNATIVE, ON N'ÉLARGIT PAS LE MOTIF. Passer à `/email$/i`
+// ferait entrer sept tables d'un coup sous un plafond `a-instruire ≤ 0`, et
+// fabriquerait un faux positif (`ProspectionCompany.hasEmail`, un Boolean, que
+// `TYPES_NON_TEXTE` ne connaît pas). C'est la récidive exacte des « trois
+// fantômes » du 2026-08-24. Mesuré avant d'écrire cette ligne : l'ajout ciblé
+// fait passer l'inventaire de 21 à 22 modèles, et le seul delta est
+// `CalendlyEvent`.
 const COLONNE_ADRESSE =
-  /^(email|recipient|contactEmail|signataireEmail|destinataire|destinataireEmail)$/i;
+  /^(email|recipient|contactEmail|inviteeEmail|signataireEmail|destinataire|destinataireEmail)$/i;
 
 type Statut =
   /** Effacé ou anonymisé par la chaîne art. 17 — vérifié. */
@@ -91,6 +106,15 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
     modele: "Submission",
     statut: "traite",
     note: "anonymisation in-place (`eraseSubmissionsForEmail`).",
+  },
+  {
+    modele: "CalendlyEvent",
+    statut: "traite",
+    note:
+      "anonymisation in-place (`eraseCalendlyEventsForEmail`) : coordonnees, lieu, " +
+      "notes, provenance et liens d annulation neutralises, charge brute ecrasee. " +
+      "La ligne survit parce que la supprimer la ferait RECREER par le sondage " +
+      "Calendly, avec les donnees en clair.",
   },
   {
     modele: "NewsletterSubscriber",

@@ -188,7 +188,7 @@ function extractPhone(
  * excluant la question téléphone (même regex que `extractPhone` — sinon le
  * numéro apparaîtrait deux fois dans la notification).
  */
-function extractAnswersText(questionsAndAnswers: unknown): string | null {
+export function extractAnswersText(questionsAndAnswers: unknown): string | null {
   if (!Array.isArray(questionsAndAnswers)) return null;
   const parts: string[] = [];
   for (const qa of questionsAndAnswers) {

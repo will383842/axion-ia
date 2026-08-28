@@ -24,6 +24,7 @@
 // lui puisqu'il EST le serveur Next.
 
 import { prisma } from "@/lib/prisma";
+import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { enrichCalendlyEvent } from "./enrich";
 import { isCalendlyApiConfigured } from "./api";
 
@@ -105,6 +106,24 @@ export async function refreshUpcomingCalendlyEvents(): Promise<RefreshOutcome> {
         status: "scheduled",
         inviteeUri: { not: null },
         OR: [{ startTime: null }, { startTime: { gte: cutoff } }],
+        // 🔴 SANS CETTE LIGNE, L'EFFACEMENT RGPD EST DÉFAIT EN DIX MINUTES.
+        //
+        // `eraseCalendlyEventsForEmail` (art. 17) anonymise les colonnes ET
+        // écrase `rawPayload` par un marqueur `_erasedAt`. Mais `enrich`, appelé
+        // juste après par ce cron, REMPLACE `rawPayload` en entier avec ce que
+        // Calendly renvoie — nom, adresse et téléphone reviennent en clair. Et
+        // `rawPayload` est volontairement absent du journal des champs modifiés :
+        // le retour de la donnée ne produit ni trace, ni alerte.
+        //
+        // Une ligne effacée n'a plus rien à enrichir. On l'exclut ici, c'est le
+        // second des deux verrous — le test `l-effacement-resiste-au-cron`
+        // rougit si l'un des deux disparaît.
+        //
+        // Le marqueur est le nom anonymisé, IMPORTÉ de la chaîne d'effacement et
+        // jamais recopié : si quelqu'un change le placeholder là-bas, ce filtre
+        // le suit. `enrich` ne réécrit pas un champ déjà rempli (`setIfEmpty`
+        // n'écrit que sur `null`), donc le marqueur survit à tout passage.
+        NOT: { inviteeName: ERASED_PLACEHOLDER },
       },
       // Les plus proches d'abord : c'est là que l'information a le plus de valeur.
       orderBy: [{ startTime: "asc" }, { capturedAt: "desc" }],

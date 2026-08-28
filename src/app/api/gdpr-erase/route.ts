@@ -46,6 +46,7 @@ import {
   eraseClientsForEmail,
   eraseDocumentRecipientsForEmail,
   eraseCoachingSignaturesForEmail,
+  eraseCalendlyEventsForEmail,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -107,6 +108,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     clientsResult,
     destinatairesResult,
     signaturesCoachingResult,
+    appelsResult,
   ] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
@@ -179,6 +181,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eraseClientsForEmail(email),
     eraseDocumentRecipientsForEmail(email),
     eraseCoachingSignaturesForEmail(email),
+    eraseCalendlyEventsForEmail(email),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -264,6 +267,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       fichesClient: clientsResult.anonymises,
       fichesClientRetenues: clientsResult.retenusObligationComptable,
       destinatairesDocuments: destinatairesResult.anonymises,
+      // 2026-08-28 — même motif que les deux blocs ci-dessus, une table plus
+      // loin. Une réservation d'appel porte le nom, l'adresse, le TÉLÉPHONE, les
+      // réponses libres du formulaire, et les liens qui permettent d'annuler le
+      // rendez-vous sans authentification. Elle n'était dans aucun des trois
+      // mécanismes RGPD, et cette énumération ne la mentionnait pas.
+      appels: appelsResult.anonymized,
     });
   } catch (err) {
     console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);
