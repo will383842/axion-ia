@@ -149,6 +149,18 @@ const TEMPLATES: TemplateMap = {
     subject: rappelConfirmeSubject,
     component: RappelConfirmeEmail,
   },
+  // Les trois moments partagent le MEME composant et le MEME calcul d objet.
+  // C est voulu : `appelRappelSubject` lit `payload.moment` et rend l objet
+  // correspondant. Dupliquer le composant ici recreerait trois endroits ou
+  // corriger les liens d annulation.
+  "appel-confirme": {
+    subject: appelRappelSubject,
+    component: AppelRappelEmail,
+  },
+  "appel-rappel-j1": {
+    subject: appelRappelSubject,
+    component: AppelRappelEmail,
+  },
   "appel-rappel": {
     subject: appelRappelSubject,
     component: AppelRappelEmail,

@@ -4180,6 +4180,14 @@ model CalendlyEvent {
   /// est le défaut `D5-1-C1` — une trace qui affirme un envoi qui n'a pas eu lieu
   /// est pire que pas de trace, parce qu'elle empêche le rattrapage.
   rappelEnvoyeAt     DateTime?           @map("rappel_envoye_at")
+  /// Marqueur d'idempotence de la CONFIRMATION (2026-08-28). Même contrat que
+  /// `rappelEnvoyeAt` : posé UNIQUEMENT si la mise en file a réussi, sinon le
+  /// passage suivant réessaie. Une trace qui affirme un envoi qui n'a pas eu
+  /// lieu interdit le rattrapage — défaut D5-1-C1 de ce dépôt.
+  confirmationEnvoyeeAt DateTime?         @map("confirmation_envoyee_at")
+  /// Marqueur d'idempotence du rappel J-1. Distinct de `rappelEnvoyeAt` (H-1) :
+  /// un seul marqueur pour deux moments ferait taire le second.
+  rappelJ1EnvoyeAt   DateTime?           @map("rappel_j1_envoye_at")
   /// Payload complet du postMessage event (debug + future re-process).
   rawPayload         Json                @map("raw_payload")
   /// URL où l'event a été capté (ex "https://axion-ia.com/fr/appel").

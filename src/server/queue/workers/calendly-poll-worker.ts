@@ -60,7 +60,7 @@
 import { Worker, type Job } from "bullmq";
 import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
 import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
-import { envoyerRappelsH1 } from "@/server/calendly/rappel-h1";
+import { envoyerMessagesAppel } from "@/server/calendly/rappels-appel";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import { CALENDLY_SLOTS_TAG } from "@/server/calendly/availability";
 import { CALENDLY_SLOTS_PATHS } from "@/server/calendly/revalider-creneaux";
@@ -123,21 +123,31 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
   }
 
   if (job.data.type === "rappel-h1") {
-    const res = await envoyerRappelsH1();
+    // Le type de job garde son nom historique : le renommer invaliderait les
+    // jobs repetables deja poses dans Redis, et la passe cesserait de tourner
+    // jusqu'a ce que quelqu'un s'en apercoive. Il declenche desormais LES TROIS
+    // moments — confirmation, J-1, H-1.
+    const passages = await envoyerMessagesAppel();
     // On ne journalise QUE ce qui s'est passe. Une ligne toutes les 5 minutes
-    // annoncant « 0 rappel » noierait les logs et rendrait invisible la seule
+    // annoncant « 0 message » noierait les logs et rendrait invisible la seule
     // qui compte.
-    if (res.envoyes > 0) console.warn(`[appel-rappel] ${res.envoyes} rappel(s) envoye(s)`);
-    if (res.echecs > 0) {
-      console.warn(
-        `[appel-rappel] ${res.echecs} mise(s) en file REFUSEE(s) — reessai au passage suivant`,
-      );
-    }
-    if (!res.ok) console.warn(`[appel-rappel] passage en echec : ${res.raison ?? "inconnu"}`);
-    if (res.plafondAtteint) {
-      console.error(
-        "[appel-rappel] PLAFOND ATTEINT — signe d'un emballement : le marqueur d'envoi n'est probablement plus pose",
-      );
+    for (const res of passages) {
+      if (res.envoyes > 0) {
+        console.warn(`[appel-${res.moment}] ${res.envoyes} message(s) envoye(s)`);
+      }
+      if (res.echecs > 0) {
+        console.warn(
+          `[appel-${res.moment}] ${res.echecs} mise(s) en file REFUSEE(s) — reessai au passage suivant`,
+        );
+      }
+      if (!res.ok) {
+        console.warn(`[appel-${res.moment}] passage en echec : ${res.raison ?? "inconnu"}`);
+      }
+      if (res.plafondAtteint) {
+        console.error(
+          `[appel-${res.moment}] PLAFOND ATTEINT — signe d'un emballement : le marqueur d'envoi n'est probablement plus pose`,
+        );
+      }
     }
     return;
   }
