@@ -103,7 +103,8 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   offerTitle: "Piloter son activité avec l'IA",
   offre: "Piloter son activité avec l'IA",
   oppositionUrl: "https://exemple.invalid/lien-de-demonstration",
-  originalSubmissionExcerpt: "Bonjour, voici le message d'exemple utilisé pour l'aperçu de ce gabarit.",
+  originalSubmissionExcerpt:
+    "Bonjour, voici le message d'exemple utilisé pour l'aperçu de ce gabarit.",
   ouvertParOrganisme: true,
   paidAt: "28 août 2026",
   paymentType: "Audit IA",

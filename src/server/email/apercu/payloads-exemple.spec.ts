@@ -54,11 +54,13 @@ function gabarits(): ReadonlyArray<{ nom: string; source: string }> {
  */
 function champsDeclares(source: string): ReadonlyArray<{ nom: string; optionnel: boolean }> | null {
   const bloc = /(?:interface|type)\s+\w*Payload\w*\s*(?:=\s*)?\{([\s\S]*?)\n\}/.exec(source);
-  if (!bloc) return null;
+  // `bloc?.[1]` et non `bloc` seul : en mode strict, le groupe capturant est
+  // `string | undefined`. Le tester ici évite deux assertions plus bas.
+  if (!bloc?.[1]) return null;
   const champs: Array<{ nom: string; optionnel: boolean }> = [];
   for (const ligne of bloc[1].split("\n")) {
     const m = /^\s*(?:readonly\s+)?([A-Za-z_]\w*)(\??):/.exec(ligne);
-    if (m) champs.push({ nom: m[1], optionnel: m[2] === "?" });
+    if (m?.[1]) champs.push({ nom: m[1], optionnel: m[2] === "?" });
   }
   return champs;
 }
