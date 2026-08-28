@@ -20,8 +20,19 @@ vi.mock("next/cache", () => ({
   revalidatePath: (...a: unknown[]) => revalidatePath(...a),
 }));
 
+import { defaultConfig } from "next/dist/server/config-shared";
+
 import { CALENDLY_SLOTS_TAG } from "../availability";
 import { invaliderCreneaux, CALENDLY_SLOTS_PATHS } from "../revalider-creneaux";
+
+/**
+ * Les profils de cache de Next, lus dans SA configuration et non recopiés.
+ *
+ * C'est ce qui permet au test ci-dessous d'éprouver une PROPRIÉTÉ (« ce profil
+ * expire-t-il ? ») plutôt qu'une chaîne. Une valeur recopiée ici deviendrait
+ * fausse le jour où Next la change, sans que rien ne le dise.
+ */
+const PROFILS = defaultConfig.cacheLife as unknown as Record<string, { expire?: number }>;
 
 describe("invaliderCreneaux", () => {
   beforeEach(() => {
@@ -29,12 +40,42 @@ describe("invaliderCreneaux", () => {
     revalidatePath.mockReset();
   });
 
-  it("passe l'étiquette des créneaux à Next — c'est TOUT le correctif", () => {
+  it("passe l'étiquette des créneaux à Next", () => {
     invaliderCreneaux("test");
-    // Next 16 exige le profil de cacheLife en second argument. L'oublier ne
-    // provoque pas d'erreur de type ici (le mock est permissif) mais casse
-    // l'invalidation en vrai, exactement comme l'absence d'appel.
-    expect(revalidateTag).toHaveBeenCalledWith(CALENDLY_SLOTS_TAG, "default");
+    expect(revalidateTag).toHaveBeenCalledWith(CALENDLY_SLOTS_TAG, expect.anything());
+  });
+
+  it("passe un profil qui EXPIRE VRAIMENT — pas seulement « périmé »", () => {
+    // 🔴 CE CAS REMPLACE UN TEST QUI VERROUILLAIT LE DÉFAUT.
+    //
+    // Il assertait littéralement `toHaveBeenCalledWith(TAG, "default")`, sous le
+    // titre « c'est TOUT le correctif ». Or `"default"` ne purge rien : Next
+    // marque l'entrée *périmée* et sert la version périmée au visiteur suivant.
+    // Le test était donc vert précisément parce que le code était faux, et
+    // corriger le code l'aurait fait rougir — le pire état pour une garde.
+    //
+    // On ne compare plus une CHAÎNE : on résout le profil dans la configuration
+    // de Next et on éprouve la seule propriété qui compte, `expire === 0`.
+    invaliderCreneaux("test");
+    const profil = revalidateTag.mock.calls[0]?.[1];
+    const expire =
+      typeof profil === "object" && profil !== null
+        ? (profil as { expire?: number }).expire
+        : PROFILS[String(profil)]?.expire;
+
+    expect(
+      expire,
+      `le profil passé (${JSON.stringify(profil)}) n'expire pas : Next servira la ` +
+        `liste de créneaux PÉRIMÉE au visiteur suivant`,
+    ).toBe(0);
+  });
+
+  it("témoin : les profils nommés de Next n'expirent PAS", () => {
+    // Cas-témoin qui garde le précédent honnête. Si celui-ci rougit un jour,
+    // c'est Next qui a changé la sémantique de ses profils — pas nous. Sans lui,
+    // on ne saurait pas distinguer les deux causes.
+    expect(PROFILS["default"]?.expire).toBeGreaterThan(0);
+    expect(PROFILS["max"]?.expire).toBeGreaterThan(0);
   });
 
   it("invalide la page de réservation de CHAQUE locale", () => {

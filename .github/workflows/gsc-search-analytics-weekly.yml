@@ -27,7 +27,21 @@ name: GSC Search Analytics weekly export
 #
 # Si secrets absents → script fail-soft → workflow vert avec warning visible.
 #
-# Output : commit + push automatique sur `main` du CSV généré.
+# Output : ARTEFACT de run (90 jours) + résumé lisible dans l'onglet Actions.
+#
+# 🔴 CE WORKFLOW A ÉCHOUÉ EN SILENCE PENDANT TROIS SEMAINES (2026-08-27).
+# Il commitait le CSV puis faisait `git push` sur `main`. Or `main` est en
+# protection stricte : le push est refusé par `GH006: Protected branch update
+# failed`. L'export lui-même FONCTIONNAIT — les données étaient bien
+# récupérées — mais le job mourait à la dernière étape et le rapport
+# n'arrivait nulle part. Deux lundis consécutifs en `failure` (17 et 24 août),
+# sans que personne ne regarde : un cron qui échoue ne réveille personne.
+#
+# ⛔ NE PAS RÉTABLIR LE PUSH SUR `main`, ni via un jeton à privilèges élargis.
+# La protection de branche n'est pas l'obstacle à contourner, c'est la règle du
+# dépôt. Et passer par une PR hebdomadaire serait pire : chaque fusion invalide
+# TOUTES les PR en vol et leur coûte un cycle de gates (~35 min). Un rapport
+# d'audit n'a pas à encombrer la file de livraison.
 
 on:
   schedule:
@@ -44,8 +58,11 @@ on:
           - "false"
           - "true"
 
+# Lecture seule : ce workflow n'ecrit plus rien dans le depot. Reduire le
+# perimetre du jeton est la moitie du correctif — l'autre etant de ne plus
+# tenter le push du tout.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   export:
@@ -81,17 +98,40 @@ jobs:
           fi
           node scripts/perf/export-gsc-search-analytics.mjs
 
-      - name: Commit CSV if changed
+      # Le CSV part en ARTEFACT, pas dans le dépôt. Il reste téléchargeable
+      # 90 jours depuis l'onglet Actions, sans toucher à `main` ni encombrer la
+      # file de fusion.
+      - name: Publier le CSV en artefact
         if: ${{ inputs.dry_run != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gsc-search-analytics
+          path: _AUDIT/search-analytics-*.csv
+          retention-days: 90
+          if-no-files-found: warn
+
+      # 🔑 ET SURTOUT : les chiffres s'affichent DIRECTEMENT dans le résumé du
+      # run. Un artefact qu'il faut télécharger pour lire n'est pas un rapport,
+      # c'est une archive — et personne n'ouvre une archive chaque lundi. Le
+      # résumé, lui, se lit d'un coup d'œil depuis la notification.
+      - name: Résumé lisible
+        if: ${{ always() && inputs.dry_run != 'true' }}
         run: |
-          set -euo pipefail
-          git config user.name "axion-ia-bot"
-          git config user.email "bot@axion-ia.com"
-          if [ -n "$(git status --porcelain _AUDIT/search-analytics-*.csv)" ]; then
-            week=$(date -u +%G-W%V)
-            git add _AUDIT/search-analytics-*.csv
-            git commit -m "chore(audit): gsc crawl stats export $week"
-            git push
-          else
-            echo "No CSV change — skip commit"
+          set -uo pipefail
+          fichier=$(ls -1 _AUDIT/search-analytics-*.csv 2>/dev/null | tail -1 || true)
+          if [ -z "$fichier" ]; then
+            echo "### GSC — aucun export produit cette semaine" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Les secrets \`GSC_OAUTH_*\` sont-ils toujours posés ?" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
+          lignes=$(( $(wc -l < "$fichier") - 1 ))
+          echo "### GSC — performances de recherche" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Fichier \`$(basename "$fichier")\` — $lignes lignes." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Vingt premières lignes :" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```csv' >> "$GITHUB_STEP_SUMMARY"
+          head -21 "$fichier" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

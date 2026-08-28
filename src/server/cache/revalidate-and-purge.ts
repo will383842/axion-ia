@@ -141,6 +141,19 @@ export async function revalidateAndPurge(
   chemins: ReadonlyArray<string>,
   revalider: (chemin: string) => void,
   contexte = "publication",
+  /**
+   * Purger la copie d'edge Cloudflare après avoir invalidé l'origine.
+   *
+   * Vrai par défaut, et c'est le bon défaut : invalider l'origine sans purger
+   * l'edge laisse la page périmée pour le public et pour les robots (GEO-120).
+   *
+   * 🔴 À passer à FAUX quand le chemin n'a PAS de copie d'edge — une page qui
+   * répond `no-store` sort en `cf-cache-status: BYPASS`. Purger l'edge y est
+   * sans effet, et consomme le quota. Ajouté le 2026-08-27 : brancher
+   * l'invalidation des créneaux de `/fr/appel` sur un cron de 2 min aurait
+   * émis 720 purges par jour pour rien.
+   */
+  purgerLEdge = true,
 ): Promise<ResultatInvalidation> {
   const cheminsRevalides: string[] = [];
   for (const chemin of chemins) {
@@ -151,6 +164,14 @@ export async function revalidateAndPurge(
     } catch (err) {
       console.warn(`[cache] ${contexte} — revalidatePath a echoue sur ${chemin} :`, err);
     }
+  }
+
+  if (!purgerLEdge) {
+    // `edgeConfigure: false` dit ici « pas d'edge à purger pour CES chemins »,
+    // et non « secrets Cloudflare absents ». L'appelant qui passe `false` sait
+    // déjà pourquoi ; ce qui compte est qu'aucune URL ne soit comptée comme
+    // purgée ni comme écartée.
+    return { cheminsRevalides, urlsPurgees: [], edgeConfigure: false, urlsEcartees: 0 };
   }
 
   const urls = versUrlsAbsolues(cheminsRevalides);

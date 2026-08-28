@@ -5,8 +5,17 @@
 // que de réécrire des requêtes Prisma. Elles portent déjà le contrôle de
 // session, le déchiffrement des PII et les règles d'exclusion (archivés,
 // corbeille) : les redoubler ici créerait deux vérités qui divergeraient au
-// premier changement. Seul `PodcastRequest`, qui n'a pas de fonction de liste
-// dédiée, est requêté directement.
+// premier changement.
+//
+// Seul `PodcastRequest`, qui n'a pas de fonction de liste dédiée, est requêté
+// directement.
+//
+// 🔴 RECTIFIÉ LE 2026-08-27 : « elles portent déjà le contrôle de session » est
+// vrai des trois autres canaux et FAUX du canal `appel` — `listRendezVous` ne
+// contient ni `auth` ni session. Cette phrase est exactement ce qui a permis de
+// ne pas se poser la question, et de servir le nom et l'adresse de chaque
+// prospect à tous les rôles de la console. Le canal `appel` reçoit désormais son
+// habilitation explicitement (`filters.peutVoirAppels`).
 //
 // Volumétrie : on lit une fenêtre bornée par canal (`PER_CHANNEL_FETCH`) puis
 // on trie et pagine EN MÉMOIRE. C'est le même parti pris que
@@ -96,21 +105,45 @@ async function fetchMessages(): Promise<InboxItem[]> {
   }));
 }
 
-async function fetchAppels(): Promise<InboxItem[]> {
+/**
+ * @param peutVoirAppels — le rôle a-t-il le droit de lire les coordonnées des
+ * prospects (`peutVoirLesAppels`, `features/admin-calendly/acces`) ?
+ *
+ * 🔴 TROISIÈME SURFACE DU MÊME JUMEAU — fermée le 2026-08-27.
+ *
+ * Le nom et l'ADRESSE E-MAIL de chaque prospect arrivaient ici sans aucun
+ * contrôle de rôle, en même temps qu'on fermait la fiche de l'appel. Le
+ * commentaire d'en-tête de ce fichier justifiait de réutiliser les fonctions de
+ * liste parce qu'« elles portent déjà le contrôle de session » : c'est vrai des
+ * trois autres canaux, et FAUX de celui-ci — `listRendezVous` ne contient ni
+ * `auth` ni session. C'est cette phrase qui a permis de ne pas se poser la
+ * question.
+ *
+ * On garde la LIGNE (le compteur et la chronologie restent justes) et on retire
+ * les coordonnées : un rôle non habilité voit qu'un appel est arrivé, pas avec
+ * qui.
+ */
+async function fetchAppels(peutVoirAppels: boolean): Promise<InboxItem[]> {
   const { rows } = await listRendezVous({ page: 1, pageSize: PER_CHANNEL_FETCH });
   return rows.map((r) => ({
     key: r.key,
     sourceId: r.sourceRecordId,
     unread: false,
     channel: "appel" as const,
+    // Le lien est CONSERVÉ même sans habilitation, et c'est délibéré : la fiche
+    // qu'il vise est gardée et rend un refus NOMMÉ (`AccesRefuse`), qui dit
+    // quel rôle manque et pourquoi. Un lien mort ou absent laisserait croire à
+    // un bogue ; un refus explicite renseigne. Ce qui ne doit pas fuiter, ce
+    // sont les coordonnées ci-dessous — pas l'existence de la fiche, que la
+    // ligne elle-même révèle déjà.
     detailHref: r.detailHref,
     // `startTime` est souvent nul (Calendly ne le transmet pas au navigateur) :
     // on retombe sur la date de capture pour que la ligne ait toujours une
     // place dans la chronologie au lieu de disparaître.
     receivedAt: r.createdAt,
     subject: r.title,
-    contactName: r.contactName,
-    contactEmail: r.contactEmail,
+    contactName: peutVoirAppels ? r.contactName : null,
+    contactEmail: peutVoirAppels ? r.contactEmail : null,
     context:
       r.timeConfirmed && r.startTime
         ? `Créneau ${r.dayKey}`
@@ -184,6 +217,16 @@ export interface InboxFilters {
    * qui ne s'effacerait jamais.
    */
   adminUserId?: string | null;
+  /**
+   * Le rôle courant a-t-il le droit de lire les coordonnées des prospects
+   * (`peutVoirLesAppels`, `features/admin-calendly/acces`) ?
+   *
+   * 🔴 LE DÉFAUT EST `false`, ET C'EST LE SEUL DÉFAUT SÛR. Un appelant qui
+   * oublie ce champ masque les coordonnées au lieu de les divulguer — l'erreur
+   * se voit à l'écran et se corrige, là où une fuite par oubli ne se voit pas.
+   * C'est exactement l'oubli qui a laissé ce canal ouvert jusqu'au 2026-08-27.
+   */
+  peutVoirAppels?: boolean;
 }
 
 export interface InboxResult {
@@ -227,7 +270,7 @@ export async function listInbox(filters: InboxFilters = {}): Promise<InboxResult
   // pas vider la boîte entière — les autres restent lisibles. Mais l'échec est
   // désormais REMONTÉ, pas avalé (cf. `failedChannels`).
   const settled = await Promise.allSettled([
-    fetchAppels(),
+    fetchAppels(filters.peutVoirAppels === true),
     fetchMessages(),
     fetchCandidatures(),
     fetchPodcast(),
