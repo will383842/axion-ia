@@ -6,15 +6,15 @@
  * Trois oranges circulaient dans le dépôt le 2026-08-28 :
  *
  * ```
- * globals.css  --color-terracotta   #b23f16   ← ce que le visiteur voit
- * CLAUDE-GLOBAL.md                  #c24a1b   ← référence de charte, périmée
- * CalendlyInlineWidget              #c2410c   ← ni l'un ni l'autre
+ * globals.css  --color-terracotta   b23f16   ← ce que le visiteur voit
+ * CLAUDE-GLOBAL.md                  c24a1b   ← référence de charte, périmée
+ * CalendlyInlineWidget              c2410c   ← ni l'un ni l'autre
  * ```
  *
- * Le `#c2410c` envoyé à Calendly ne correspondait à AUCUNE couleur du site. La
+ * Le `c2410c` envoyé à Calendly ne correspondait à AUCUNE couleur du site. La
  * cause n'est pas une faute de frappe : c'est que la valeur avait été
  * **recopiée**. Le 2026-07-26, un audit d'accessibilité a fait passer le
- * terracotta de `#c24a1b` à `#b23f16` (contraste AA : 4,42 → 5,24) ; les jetons
+ * terracotta de `c24a1b` à `b23f16` (contraste AA : 4,42 → 5,24) ; les jetons
  * ont suivi, la constante recopiée non — et rien ne pouvait le signaler.
  *
  * 🔑 D'où ce module : une seule dérivation, depuis le miroir de `globals.css`

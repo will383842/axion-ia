@@ -129,7 +129,7 @@ describe("CalendlySlotPicker", () => {
     //    honore AUSSI sur ses pages autonomes (0 occurrence sans, 2 avec). Sans
     //    eux, le visiteur passe d'une page à sa charte à une page grise.
     // 2. Que la couleur soit celle des JETONS et pas une valeur recopiée. Le
-    //    `#c2410c` qui traînait dans le widget ne correspondait à aucune couleur
+    //    `c2410c` qui traînait dans le widget ne correspondait à aucune couleur
     //    du site — l'audit d'accessibilité du 2026-07-26 avait déplacé le
     //    terracotta sans que la copie suive.
     setup();
