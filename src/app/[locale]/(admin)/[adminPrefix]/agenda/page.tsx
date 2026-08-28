@@ -25,6 +25,8 @@
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/ui";
 import { getAgendaFenetre } from "@/features/admin-agenda/queries";
+import { auth } from "@/auth";
+import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { AgendaTimeline } from "@/components/admin/agenda/AgendaTimeline";
 import { PoserIndisponibiliteForm } from "@/components/admin/agenda/PoserIndisponibiliteForm";
 import { RendezVousForm } from "@/components/admin/agenda/RendezVousForm";
@@ -125,7 +127,14 @@ export default async function AgendaPage({
 
   const plage = plageDeLaVue(vue, jour);
   const { debut, fin } = bornesPlageParis(plage.debut, plage.finExclue);
-  const { items: bruts, diagnostics } = await getAgendaFenetre(debut, fin);
+  // 🔴 Cet écran servait le nom ET le téléphone de chaque prospect Calendly sans
+  // appeler `auth()` nulle part, pendant qu'on fermait la fiche du même appel.
+  // On ne bloque pas l'agenda — il porte aussi les rendez-vous personnels, et
+  // savoir « occupé de 14 h à 14 h 45 » n'expose personne — mais les
+  // coordonnées ne sont ni lues ni rendues sans habilitation.
+  const session = await auth();
+  const peutVoirAppels = peutVoirLesAppels((session?.user as { role?: string } | undefined)?.role);
+  const { items: bruts, diagnostics } = await getAgendaFenetre(debut, fin, peutVoirAppels);
   const items = sources.length > 0 ? bruts.filter((i) => sources.includes(i.source)) : bruts;
 
   const base = `/fr/${adminPrefix}/agenda`;

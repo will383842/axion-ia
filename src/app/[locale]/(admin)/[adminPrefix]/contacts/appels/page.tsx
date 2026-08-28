@@ -32,6 +32,8 @@ import {
 } from "@/components/admin/ui";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
@@ -57,7 +59,7 @@ const MONTHS = [
 const PAGE_SIZE = 25;
 
 interface PageProps {
-  params: Promise<{ adminPrefix: string }>;
+  params: Promise<{ locale: string; adminPrefix: string }>;
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
@@ -65,7 +67,15 @@ export default async function AppelsPage({
   params,
   searchParams,
 }: PageProps): Promise<React.ReactElement> {
-  const { adminPrefix } = await params;
+  const { locale, adminPrefix } = await params;
+  // 🔴 Cette page n'appelait `auth()` NULLE PART jusqu'au 2026-08-27 : elle
+  // listait les coordonnées de tous les prospects à quiconque atteignait l'URL.
+  // La garde vient avant `listRendezVous`, qui touche la base.
+  const acces = await gardeLectureAppels(`/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
+
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/contacts/appels`;
   const vue = sp["vue"] === "calendrier" ? "calendrier" : "liste";

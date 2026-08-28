@@ -1535,7 +1535,24 @@ async function regleOpco(now: Date): Promise<AlerteCandidate[]> {
     where: {
       statut: "planifiee",
       dateDebut: { lte: j7, gt: now },
-      opcoStatut: "non_demande",
+      // 🔴 M8 (2026-08-27) — LE TITRE ET LE FILTRE NE DISAIENT PAS LA MÊME CHOSE.
+      //
+      // L'alerte s'appelle « Session dans 7 jours SANS ACCORD OPCO ». Elle ne
+      // regardait que `non_demande` : un dossier PARTI et resté sans réponse
+      // (`demande_en_cours`) passait sous le radar — et c'est le cas le plus
+      // fréquent, les OPCO répondant rarement en une semaine.
+      //
+      // Le système REFUSE de démarrer sans accord, mais ne PRÉVENAIT pas qu'il
+      // allait refuser : la surprise tombait le matin de la formation. C'est
+      // exactement ce que M8 décrit.
+      //
+      // 🔑 Ce qui aurait dû le faire voir plus tôt : la règle JUMELLE, dix
+      // lignes plus bas (« formation démarrée sans accord »), couvre DÉJÀ
+      // `["non_demande", "demande_en_cours"]`. Les deux règles parlent du même
+      // manque à deux moments — et une seule des deux le reconnaissait.
+      // Témoin joué : une session à J-7 basculée en `demande_en_cours` levait
+      // 0 alerte avant, 1 après.
+      opcoStatut: { in: ["non_demande", "demande_en_cours"] },
       // 🔴 Vérification E2E 2026-07-26 — même défaut que F56, dans la MÊME
       // fonction, sur la requête d'à côté : `non_demande` est la valeur par
       // défaut du schéma, donc toute session à J-7 qu'aucun OPCO ne finance
