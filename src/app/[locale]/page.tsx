@@ -398,7 +398,7 @@ export default async function Home({ params }: HomeProps) {
                 {t("heroDescription")}
               </p>
               {/* Hero CTAs (2026-05-23 Will) : 2 boutons côte à côte
-                  — Primary : échanger 30 min sans engagement (/appel, widget Calendly)
+                  — Primary : échanger 45 min sans engagement (/appel, widget Calendly)
                   — Secondary : formulaire de contact (/contact, réponse 24h) */}
               <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
@@ -1570,7 +1570,7 @@ export default async function Home({ params }: HomeProps) {
           rAF dedup pour INP < 100 ms (cf. perf budget). */}
       <StickyMobileCta
         href="/appel"
-        label={isFr ? "Échanger 30 min — sans engagement" : "Talk 30 min — no commitment"}
+        label={isFr ? "Échanger 45 min — sans engagement" : "Talk 45 min — no commitment"}
         track="home-sticky-mobile"
         threshold={600}
       />

@@ -232,8 +232,8 @@ export default async function PricingPage({ params }: Props) {
       : "AI-native custom web platform or AI graft on your existing stack (RAG chatbot, semantic search, automations, agents). Any modern stack.",
     quoteLabel: isFr ? "Sur devis · cadrage offert" : "On quote · free scoping",
     detail: isFr
-      ? "Devis détaillé sous 48 h après cadrage 30 min. Périmètre variable selon stack, intégrations et complexité — c'est pourquoi nous publions un devis personnalisé plutôt qu'une fourchette."
-      : "Detailed quote within 48 h after 30-min scoping. Variable scope based on stack, integrations and complexity — that's why we publish a personalised quote rather than a range.",
+      ? "Devis détaillé sous 48 h après cadrage 45 min. Périmètre variable selon stack, intégrations et complexité — c'est pourquoi nous publions un devis personnalisé plutôt qu'une fourchette."
+      : "Detailed quote within 48 h after 45-min scoping. Variable scope based on stack, integrations and complexity — that's why we publish a personalised quote rather than a range.",
     ctaLabel: isFr ? "Voir la plateforme web/SaaS" : "See the web platform/SaaS",
   };
 
@@ -275,7 +275,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Puis-je avoir un devis personnalisé ?",
           answer:
-            "Oui — décrivez votre besoin via la page Contact, réponse personnalisée sous 48 h ouvrées. Pour les formats > 5 000 € HT, nous proposons aussi un cadrage 30 min gratuit avant devis détaillé." /* price-exempt: seuil qualification devis */,
+            "Oui — décrivez votre besoin via la page Contact, réponse personnalisée sous 48 h ouvrées. Pour les formats > 5 000 € HT, nous proposons aussi un cadrage 45 min gratuit avant devis détaillé." /* price-exempt: seuil qualification devis */,
         },
       ]
     : [
@@ -306,7 +306,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Can I get a custom quote?",
           answer:
-            "Yes — describe your need via the Contact page, personalised reply within 48 business hours. For formats > €5,000 ex. VAT, we also offer a free 30-min scoping call before detailed quote." /* price-exempt: seuil qualification devis */,
+            "Yes — describe your need via the Contact page, personalised reply within 48 business hours. For formats > €5,000 ex. VAT, we also offer a free 45-min scoping call before detailed quote." /* price-exempt: seuil qualification devis */,
         },
       ];
 

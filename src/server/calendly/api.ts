@@ -68,7 +68,7 @@ export interface CalendlyInviteeData {
   noShow: boolean;
   cancelUrl: string | null;
   rescheduleUrl: string | null;
-  /** Nom humain de l'event-type (ex « Premier contact — 30 min »). */
+  /** Nom humain de l'event-type (ex « Premier contact — 45 min »). */
   eventTypeName: string | null;
   /**
    * Réponses libres du formulaire de réservation (hors question téléphone,
