@@ -135,9 +135,7 @@ describe("CalendlySlotPicker", () => {
     setup();
     const href = screen.getByRole("link", { name: /09:00/ }).getAttribute("href") ?? "";
     const params = new URL(href).searchParams;
-    expect(params.get("primary_color")).toBe(
-      QUALIOPI_BRAND_COLORS.terracotta.replace("#", ""),
-    );
+    expect(params.get("primary_color")).toBe(QUALIOPI_BRAND_COLORS.terracotta.replace("#", ""));
     expect(params.get("text_color")).toBe(QUALIOPI_BRAND_COLORS.fg.replace("#", ""));
     expect(params.get("background_color")).toBe(QUALIOPI_BRAND_COLORS.bg.replace("#", ""));
   });

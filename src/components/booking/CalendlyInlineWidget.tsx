@@ -67,8 +67,6 @@ interface CalendlyInlineWidgetProps {
   readonly height?: number;
 }
 
-
-
 function buildCalendlyUrl(baseUrl: string): string {
   const url = new URL(baseUrl);
   url.searchParams.set("hide_event_type_details", "1");
