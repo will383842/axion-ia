@@ -20,6 +20,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { invaliderCreneaux } from "@/server/calendly/revalider-creneaux";
 import { z } from "zod";
 import { requireAdminWrite } from "@/server/actions/backups/_guards";
 import {
@@ -78,9 +79,41 @@ function phrasePour(reason: string): string {
   }
 }
 
-/** Rafraîchit la page d'agenda après une écriture réussie. */
+/**
+ * Rafraîchit ce qui dépend de l'agenda après une écriture réussie.
+ *
+ * 🔴 CETTE FONCTION NE RAFRAÎCHISSAIT QUE LA CONSOLE — corrigé le 2026-08-27.
+ *
+ * `creerRendezVousAction` affiche à l'écran, en toutes lettres : « Rendez-vous
+ * ajouté. Le créneau se ferme à la réservation en ligne **dans la minute**. »
+ * C'était faux. Les quatre actions ne revalidaient que `admin/agenda` : le site
+ * public continuait de vendre le créneau que l'exploitant venait de bloquer,
+ * jusqu'au passage du cron.
+ *
+ * Le scénario qui a déclenché tout l'audit — « un rendez-vous posé à la main
+ * ferme le créneau chez Calendly sans que personne nous prévienne » — était donc
+ * reproduit **depuis l'intérieur de notre propre produit**, avec une promesse
+ * imprimée à l'écran.
+ *
+ * ⚠️ POURQUOI UNE INVALIDATION IMMÉDIATE NE SUFFIT PAS, ET POURQUOI ON N'EN
+ * AJOUTE PAS UNE DIFFÉRÉE ICI. Google met ~11 secondes à propager la fermeture
+ * vers Calendly (mesuré le 2026-08-26). Invalider à t=0 recharge donc la liste
+ * d'AVANT et la remet en cache pour deux minutes — l'invalidation immédiate
+ * rendrait le décalage PIRE que de ne rien faire, si elle était seule.
+ *
+ * Elle ne l'est pas : le cron `revalidate-slots` repasse toutes les 2 minutes.
+ * L'invalidation immédiate sert le cas où l'exploitant recharge tout de suite
+ * (il verra son blocage pris en compte au passage suivant, pas au sien), et le
+ * cron ferme la fenêtre. Ajouter ici un job différé donnerait un troisième
+ * chemin d'invalidation à maintenir pour gagner ~90 secondes sur un geste
+ * d'administration : pas le bon compromis.
+ *
+ * `invaliderCreneaux` ne throw jamais — une écriture d'agenda réussie ne doit
+ * pas échouer parce qu'un cache a résisté.
+ */
 function rafraichir(): void {
   revalidatePath(adminPath("fr", "agenda"));
+  invaliderCreneaux("console-agenda");
 }
 
 export async function poserIndisponibiliteAction(input: unknown): Promise<ResultatAction> {
@@ -113,7 +146,7 @@ export async function poserIndisponibiliteAction(input: unknown): Promise<Result
   return {
     ok: true,
     message:
-      "Indisponibilité posée. La réservation en ligne se ferme sur cette plage en quelques secondes.",
+      "Indisponibilité posée. La réservation en ligne se ferme sur cette plage en moins de deux minutes.",
   };
 }
 
@@ -162,7 +195,7 @@ export async function retirerIndisponibiliteAction(input: unknown): Promise<Resu
   rafraichir();
   return {
     ok: true,
-    message: "Indisponibilité retirée. Les créneaux rouvrent en quelques secondes.",
+    message: "Indisponibilité retirée. Les créneaux rouvrent en moins de deux minutes.",
   };
 }
 
@@ -273,7 +306,12 @@ export async function creerRendezVousAction(input: unknown): Promise<ResultatAct
   rafraichir();
   return {
     ok: true,
-    message: "Rendez-vous ajouté. Le créneau se ferme à la réservation en ligne dans la minute.",
+    // 🔴 Disait « dans la minute ». C'était faux deux fois : rien n'invalidait
+    // le site public, et même une fois branché, Google met ~11 s à propager vers
+    // Calendly puis le cron repasse toutes les 2 min. On annonce la borne haute
+    // MESURÉE, pas l'intention — une promesse d'interface est un contrat.
+    message:
+      "Rendez-vous ajouté. Le créneau se ferme à la réservation en ligne en moins de deux minutes.",
   };
 }
 

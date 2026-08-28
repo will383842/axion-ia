@@ -26,11 +26,22 @@
  *   déclenché l'audit.
  *
  * ⚠️ POURQUOI DEUX IMPLÉMENTATIONS ET PAS UNE. `revalidateTag`/`revalidatePath`
- * exigent un contexte de requête : dans un worker BullMQ ce sont des no-op
- * silencieux (cf. l'en-tête de `shared/revalidate-content.ts`, côté pipeline
- * éditorial, qui documente ce piège en détail). Le
- * worker doit donc passer par `api/internal/revalidate`. Ce module tient les
- * deux bouts pour que la liste des chemins et l'étiquette ne divergent jamais.
+ * exigent un contexte de requête : dans un worker BullMQ ils LÈVENT une erreur
+ * explicite (`Invariant: static generation store missing`, E263) — et non des
+ * no-op silencieux comme l'affirmait ce paragraphe jusqu'au 2026-08-27. Trois
+ * fichiers du dépôt répétaient la même erreur ; la conclusion pratique ne change
+ * pas — le worker passe par `api/internal/revalidate` — mais un no-op silencieux
+ * et un throw ne se diagnostiquent pas du tout de la même façon.
+ *
+ * Ce module tient les deux bouts pour que la liste des chemins et l'étiquette ne
+ * divergent jamais.
+ *
+ * 🔴 CE QUI ÉTAIT RÉELLEMENT CASSÉ, mesuré le 2026-08-27. Ni cette fonction ni le
+ * profil de cache : le `revalidatePath` ci-dessous expire en dur et purge bien
+ * l'entrée `fetch`. Le défaut était que **le seul appelant vivant n'envoyait que
+ * la moitié qui n'expire pas** — `calendly-poll-worker.ts` passait `tags` sans
+ * `paths`. Le webhook, lui, appelait correctement cette fonction… mais il est
+ * éteint tant que le plan Calendly est gratuit.
  *
  * ⚠️ AUCUNE PURGE CLOUDFLARE ICI, délibérément. `/appel` répond
  * `Cache-Control: private, no-store` et sort en `cf-cache-status: BYPASS`
@@ -40,6 +51,7 @@
 
 import { revalidatePath, revalidateTag } from "next/cache";
 import { CALENDLY_SLOTS_TAG } from "./availability";
+import { EXPIRATION_IMMEDIATE } from "@/server/cache/expiration-immediate";
 
 /**
  * Chemins de la page de réservation, un par locale.
@@ -63,10 +75,19 @@ export const CALENDLY_SLOTS_PATHS: readonly string[] = ["/fr/appel", "/en/book-a
  */
 export function invaliderCreneaux(origine: string): void {
   try {
-    // Next 16 exige un profil de `cacheLife` en second argument ; `"default"`
-    // reproduit le comportement de `revalidateTag(tag)` des versions 14/15 —
-    // même appel que `api/internal/revalidate`.
-    revalidateTag(CALENDLY_SLOTS_TAG, "default");
+    // 🔴 CORRECTION 2026-08-27. Le commentaire retiré affirmait que `"default"`
+    // « reproduit le comportement de `revalidateTag(tag)` des versions 14/15 ».
+    // C'est l'INVERSE : `default.expire` vaut ~136 ans, l'entrée est seulement
+    // marquée périmée, et Next sert la version périmée au visiteur suivant.
+    // Voir `@/server/cache/expiration-immediate` pour la mesure.
+    //
+    // ⚠️ Cette fonction n'était PAS le défaut vivant : le `revalidatePath`
+    // ci-dessous, appelé sans profil, expire en dur — et il purge aussi
+    // l'entrée `fetch` des créneaux, qui porte l'étiquette implicite du chemin.
+    // C'est la seule chose qui marchait. Le défaut était que le webhook, seul
+    // appelant de cette fonction, est éteint sur le plan Calendly gratuit,
+    // pendant que le cron du worker n'envoyait QUE des étiquettes.
+    revalidateTag(CALENDLY_SLOTS_TAG, EXPIRATION_IMMEDIATE);
     for (const chemin of CALENDLY_SLOTS_PATHS) revalidatePath(chemin);
   } catch (e) {
     // Journalisé, jamais avalé en silence : une invalidation morte se lit

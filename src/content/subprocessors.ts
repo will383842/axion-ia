@@ -243,14 +243,20 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     name: "Calendly LLC",
     location: "Atlanta, Géorgie, États-Unis",
     serversLocation: "États-Unis (AWS) + edge Cloudflare",
+    // 🔴 RÉÉCRIT LE 2026-08-28. Cette fiche décrivait l'architecture d'avant
+    // l'ADR 0038 (2026-07-30) : « calendrier embarqué », « événements reçus côté
+    // navigateur ». Les deux sont faux depuis un mois, et surtout ils TAISENT le
+    // flux qui compte — c'est notre serveur qui interroge Calendly, avec notre
+    // jeton, et qui en RÉCUPÈRE les coordonnées du prospect. Une notice publiée
+    // au titre de l'art. 13 doit décrire le traitement réel, pas le précédent.
     purposeFr:
-      "Prise de rendez-vous en ligne — calendrier embarqué sur la page /appel, affiché uniquement après une action explicite du visiteur (art. 82 loi Informatique et Libertés). Les événements de réservation sont reçus côté navigateur puis enregistrés (cf. ADR 0030).",
+      "Prise de rendez-vous en ligne. Notre serveur interroge l'API de Calendly pour afficher les créneaux libres sur la page /appel — le navigateur du visiteur ne contacte pas Calendly à ce stade. Le visiteur qui clique un créneau est dirigé vers calendly.com, où il saisit ses coordonnées ; notre serveur récupère ensuite ces informations auprès de Calendly pour enregistrer le rendez-vous. En cas d'indisponibilité de l'API, un calendrier embarqué s'affiche à la place, après clic explicite du visiteur (art. 82 loi Informatique et Libertés).",
     purposeEn:
-      "Online appointment booking — calendar embedded on the /appel page, displayed only after an explicit visitor action (art. 82 French Data Protection Act). Booking events are received client-side then stored (see ADR 0030).",
+      "Online appointment booking. Our server queries Calendly's API to display available slots on the /appel page — the visitor's browser does not contact Calendly at that stage. A visitor who clicks a slot is taken to calendly.com to enter their details; our server then retrieves that information from Calendly to record the appointment. If the API is unavailable, an embedded calendar is shown instead, after an explicit click by the visitor (art. 82 French Data Protection Act).",
     dataCategoriesFr:
-      "Nom, adresse email, téléphone et message saisis dans le formulaire de réservation ; adresse IP, user-agent et page référente ; cookies déposés sur le domaine calendly.com, dont certains le sont par l'infrastructure edge de l'éditeur et non par l'éditeur lui-même.",
+      "Nom, adresse email, téléphone et réponses aux questions du formulaire, saisis sur calendly.com puis récupérés par notre serveur ; adresse IP et user-agent, transmis à Calendly lorsque le visiteur se rend sur son site ou lorsque le calendrier de secours est chargé ; cookies déposés sur le domaine calendly.com dans ces deux cas, dont certains le sont par l'infrastructure edge de l'éditeur et non par l'éditeur lui-même.",
     dataCategoriesEn:
-      "Name, email address, phone and message entered in the booking form; IP address, user-agent and referring page; cookies set on the calendly.com domain, some of which come from the publisher's edge infrastructure rather than from the publisher itself.",
+      "Name, email address, phone and answers to the form questions, entered on calendly.com then retrieved by our server; IP address and user-agent, disclosed to Calendly when the visitor reaches its site or when the fallback calendar is loaded; cookies set on the calendly.com domain in those two cases, some of which come from the publisher's edge infrastructure rather than from the publisher itself.",
     // 6.1.b et NON 6.1.a : réserver un appel de découverte relève des mesures
     // précontractuelles. Le consentement en jeu ici est celui de l'art. 82
     // (accès au terminal), instrument distinct — déclarer 6.1.a ouvrirait un
@@ -280,10 +286,17 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
       "Lecture et écriture de l'agenda professionnel depuis la console d'administration : afficher les rendez-vous à venir et poser des plages d'indisponibilité. L'agenda est le pivot de la disponibilité — Calendly y inscrit ses réservations, et un événement posé ici ferme le créneau correspondant.",
     purposeEn:
       "Reading and writing the business calendar from the admin console: displaying upcoming appointments and blocking unavailable periods. The calendar is the single source of availability — Calendly writes its bookings there, and an event created here closes the matching slot.",
+    // 🔴 « Aucune donnée nouvelle ne lui est transmise » ÉTAIT FAUX, et
+    // corrigé le 2026-08-28. La phrase datait du jour où la console ne savait
+    // que poser des plages d'indisponibilité — celles-là ne portent en effet
+    // aucune donnée personnelle. Depuis, la console sait AJOUTER et MODIFIER un
+    // rendez-vous, avec le nom et le téléphone du contact. Une notice publiée
+    // qui minimise un flux réel est plus grave qu'une notice absente : elle
+    // affirme.
     dataCategoriesFr:
-      "Nom et coordonnées des personnes ayant réservé un rendez-vous, tels qu'ils figurent déjà dans l'agenda ; intitulés, horaires et lieux des rendez-vous. Aucune donnée nouvelle ne lui est transmise : les plages d'indisponibilité écrites par la console ne portent aucune donnée personnelle.",
+      "Nom et coordonnées des personnes ayant réservé un rendez-vous, tels qu'ils figurent déjà dans l'agenda ; intitulés, horaires et lieux des rendez-vous. La console écrit dans cet agenda : les plages d'indisponibilité ne portent aucune donnée personnelle, mais un rendez-vous ajouté ou modifié depuis la console y inscrit le nom et le numéro de téléphone du contact.",
     dataCategoriesEn:
-      "Names and contact details of people who booked an appointment, as already present in the calendar; appointment titles, times and locations. No new data is sent: the unavailability blocks written by the console carry no personal data.",
+      "Names and contact details of people who booked an appointment, as already present in the calendar; appointment titles, times and locations. The console writes to this calendar: unavailability blocks carry no personal data, but an appointment added or edited from the console records the contact's name and phone number there.",
     // 6.1.b comme Calendly, et pour la même raison : gérer les rendez-vous de
     // découverte relève des mesures précontractuelles. Ce n'est pas un intérêt
     // légitime distinct — c'est la suite du même traitement, vue depuis l'autre
@@ -299,11 +312,21 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dpaStatus: "pending",
     transferFramework: "scc",
     category: "communications",
-    // `pending_activation` au sens strict de l'interface : le code est livré,
-    // les trois variables GOOGLE_CALENDAR_* ne sont pas posées en production,
-    // donc AUCUN flux réel n'existe à ce jour. À basculer en `active` le jour
-    // où le compte de service est branché.
-    activationStatus: "pending_activation",
+    // 🔴 PASSÉ À `active` LE 2026-08-28. Le statut disait `pending_activation`
+    // — « le code est livré, les variables ne sont pas posées, aucun flux réel
+    // n'existe ». C'était vrai à l'écriture, et faux depuis le 2026-08-27 :
+    // l'intégration a été mise en service et MESURÉE ce jour-là, événement
+    // témoin à l'appui — un événement écrit depuis la console ferme le créneau
+    // correspondant chez Calendly en 11 secondes. Un flux qui ferme un créneau
+    // en 11 secondes est un flux réel.
+    //
+    // ⚠️ Ce n'est pas une formalité d'affichage. Tant que ce sous-traitant était
+    // déclaré « non activé », son absence de DPA (compte Gmail grand public, cf.
+    // `dpaStatus` ci-dessus) pouvait se lire comme théorique. Elle ne l'est plus :
+    // des coordonnées de prospects transitent par cet agenda, sans contrat de
+    // sous-traitance au sens de l'art. 28. La sortie reste la bascule vers
+    // Google Workspace.
+    activationStatus: "active",
     documentationUrl: "https://policies.google.com/privacy",
   },
   {
