@@ -105,6 +105,15 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 > **Google Workspace** (~6 €/mois), qui ouvre le DPA et les CCT. À défaut, cette
 > ligne restera ❌ et un auditeur la trouvera.
 >
+> ✅ **DÉCISION DE WILL — 2026-08-28.** Agenda maintenu sur compte Google grand
+> public. Écart art. 28 **identifié et assumé**, non subi. Mesures compensatoires :
+> aucune donnée sensible dans les événements, volume limité (~20 événements
+> glissants), suppression à 3 ans. **Bascule Google Workspace prévue en janvier
+> 2027.** Cette ligne reste ❌ jusque-là, délibérément : la retirer rendrait le
+> tableau public de transparence (art. 13.1.e) **faux**, alors que le traitement,
+> lui, continuerait. Un écart piloté et daté se défend ; un traitement absent du
+> registre, non.
+>
 > 🔴 **STATUT PASSÉ DE ⚪ À ACTIF LE 2026-08-28.** La phrase retirée disait
 > « tant que les trois variables `GOOGLE_CALENDAR_*` ne sont pas posées en
 > production, la console n'émet aucun flux : le statut reste ⚪ ». Elles sont
