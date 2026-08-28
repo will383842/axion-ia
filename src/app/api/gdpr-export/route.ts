@@ -29,6 +29,7 @@ import { trouverDemandesPodcast } from "@/features/podcast-request/rgpd";
 import { decryptPiiObject } from "@/lib/pii-crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { extractAnswersText } from "@/server/calendly/api";
 import { verifyGdprToken } from "@/lib/gdpr-token";
 import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -249,6 +250,36 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // migration de données.
   const submissionsLisibles = submissions.map((s) => decryptPiiObject(s));
 
+  // `inviteeEmail` est en `@db.Citext` et indexé : la recherche est directe et
+  // insensible à la casse, contrairement aux candidatures dont l'adresse est
+  // chiffrée avec un IV aléatoire et exige un balayage déchiffrant borné. Aucun
+  // plafond ici, donc aucun avertissement de troncature à émettre.
+  const rendezVous = await prisma.calendlyEvent
+    .findMany({
+      where: { inviteeEmail: email },
+      orderBy: { capturedAt: "desc" },
+      select: {
+        eventTypeName: true,
+        status: true,
+        startTime: true,
+        endTime: true,
+        timezone: true,
+        inviteeName: true,
+        inviteeEmail: true,
+        inviteePhone: true,
+        location: true,
+        capturedAt: true,
+        cancelUrl: true,
+        rescheduleUrl: true,
+        pageUrl: true,
+        // Les réponses libres au formulaire ne vivent QUE là — aucune colonne
+        // ne les porte. Les omettre reviendrait à taire ce que la personne a
+        // elle-même écrit.
+        rawPayload: true,
+      },
+    })
+    .catch(() => []);
+
   return NextResponse.json({
     ok: true,
     exportedAt: new Date().toISOString(),
@@ -265,6 +296,45 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     candidatures: candidatures.candidatures,
     /** Demandes de tournage de podcast deposees via le formulaire public. */
     podcast: podcast.demandes,
+    /**
+     * Rendez-vous réservés depuis /appel.
+     *
+     * 🔴 ABSENTS DE CET EXPORT JUSQU'AU 2026-08-28 — et c'est ce qui rendait
+     * l'omission fautive plutôt que distraite : la notice ci-dessous ÉNUMÈRE ses
+     * exclusions, toutes présentées comme dépourvues de PII visiteur. Cette
+     * table n'était ni dans les données rendues, ni dans la liste des
+     * exclusions. La personne recevait donc un export qui se donne pour
+     * « complet sauf cette liste », avec une liste incomplète.
+     *
+     * `rawPayload` est volontairement écarté : il contient la charge Calendly
+     * brute, dont les réponses libres sont déjà restituées par `reponses`, et il
+     * porte des clés techniques internes. `cancelUrl` et `rescheduleUrl` SONT
+     * restituées — ce sont les liens de la personne, elle a le droit de les
+     * avoir.
+     */
+    rendezVous: rendezVous.map((r) => ({
+      type: r.eventTypeName,
+      statut: r.status,
+      debut: r.startTime,
+      fin: r.endTime,
+      fuseau: r.timezone,
+      nom: r.inviteeName,
+      email: r.inviteeEmail,
+      telephone: r.inviteePhone,
+      lieu: r.location,
+      reserveLe: r.capturedAt,
+      lienAnnulation: r.cancelUrl,
+      lienReport: r.rescheduleUrl,
+      pageOrigine: r.pageUrl,
+      // Restituées avec la MÊME fonction que celle qui les envoie dans l'alerte
+      // interne — importée, jamais recopiée : la personne reçoit exactement ce
+      // que nous lisons d'elle. Le filtre « question de téléphone » de cette
+      // fonction ne retire rien ici : le numéro est déjà rendu ci-dessus.
+      reponses: extractAnswersText(
+        (r.rawPayload as { invitee?: { questions_and_answers?: unknown } } | null)?.invitee
+          ?.questions_and_answers,
+      ),
+    })),
     ...(podcast.tronque
       ? {
           podcastAvertissement:
@@ -294,6 +364,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // exportées ci-dessus (`emailsEnvoyes`, `emailsEnAttente`) : les omettre
         // sans le dire était le défaut `D5-5-02`.
         "email_outbox.payload (corps du message : un envoi groupé peut nommer d'autres personnes ; le contenu se reconstitue depuis le gabarit, disponible sur demande)",
+        // ⚠️ Déclaré, parce que la charge brute EST écartée alors que la ligne,
+        // elle, est exportée ci-dessus. Taire une exclusion partielle sur une
+        // table présente serait exactement le défaut que cette notice existe
+        // pour éviter.
+        "calendly_events.raw_payload (charge technique renvoyée par Calendly : les réponses au formulaire y figurent, et elles sont restituées ci-dessus sous forme lisible)",
       ],
       excludedReason:
         "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence. Purgés automatiquement (cf. retention-purge-worker).",
