@@ -33,7 +33,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | online | SCC                        | 🟡 à accepter   |
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
 | 18  | LinkedIn Ireland Unlimited | Insight Tag — reciblage publicitaire | Irlande (UE) + USA      | online | SCC + EU-US DPF            | ⚪ non activé   |
-| 19  | Google Ireland Limited (Google Agenda) | Agenda de la console — lecture des rendez-vous, écriture des indisponibilités | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | ⚪ non activé — voir note |
+| 19  | Google Ireland Limited (Google Agenda) | Agenda de la console — lecture des rendez-vous, écriture des indisponibilités **et des rendez-vous** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
 > ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
@@ -103,9 +103,23 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 >
 > ⛔ **Will** : la seule sortie propre est de basculer l'agenda professionnel sur
 > **Google Workspace** (~6 €/mois), qui ouvre le DPA et les CCT. À défaut, cette
-> ligne restera ❌ et un auditeur la trouvera. Tant que les trois variables
-> `GOOGLE_CALENDAR_*` ne sont pas posées en production, la console n'émet aucun
-> flux : le statut reste ⚪.
+> ligne restera ❌ et un auditeur la trouvera.
+>
+> 🔴 **STATUT PASSÉ DE ⚪ À ACTIF LE 2026-08-28.** La phrase retirée disait
+> « tant que les trois variables `GOOGLE_CALENDAR_*` ne sont pas posées en
+> production, la console n'émet aucun flux : le statut reste ⚪ ». Elles sont
+> posées, et le flux a été **mesuré** le 2026-08-27, événement témoin à l'appui :
+> un événement écrit depuis la console ferme le créneau correspondant chez
+> Calendly en **11 secondes**.
+>
+> Tant que le statut disait « non activé », l'absence de DPA pouvait se lire
+> comme théorique — un risque en attente d'être créé. Elle ne l'est plus. Et le
+> périmètre s'est élargi dans le même mouvement : depuis le 2026-08-27, la
+> console ne pose plus seulement des plages d'indisponibilité (qui ne portent
+> aucune donnée personnelle), elle **crée et modifie des rendez-vous**, avec le
+> nom et le numéro de téléphone du contact. La colonne « Finalité » est corrigée
+> en conséquence, et la fiche publique `subprocessors.ts` aussi — elle affirmait
+> « aucune donnée nouvelle ne lui est transmise ».
 
 > 🆕 **Ligne 16 ajoutée 2026-07-26** (lot L10 / constat X2). Calendly était en
 > production depuis le 2026-05-26 — onze jours après le gel de la SSOT publique
