@@ -136,7 +136,7 @@ Mise en production en 6-8 semaines : cadrage, prototype, tests, déploiement, su
 URL : ${SITE_URL}/fr/implementation
 
 ### Module 4 — ${SERVICE_BY_ID.unAUn.officialFr} (à partir de ${coachingEntry})
-1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Cadrage 30 min gratuit, progression mesurable à chaque étape.
+1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Cadrage 45 min gratuit, progression mesurable à chaque étape.
 URL : ${SITE_URL}/fr/un-a-un
 
 ### Module 5 — ${SERVICE_BY_ID.sitesWeb.officialFr} (${sitesWebEntry})

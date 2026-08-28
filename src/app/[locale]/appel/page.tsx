@@ -53,7 +53,7 @@ interface Props {
 }
 
 /**
- * URL Calendly publique de l'event-type "Appel découverte 30min".
+ * URL Calendly publique de l'event-type "Appel découverte 45 min".
  *
  * À configurer par Will dans Coolify env vars (scope RUN) :
  *   NEXT_PUBLIC_CALENDLY_APPEL_URL=https://calendly.com/{user}/{event-slug}
@@ -78,8 +78,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/appel",
       title: titleStr,
       description: isFr
-        ? "Un premier échange de 30 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale."
-        : "Un premier échange de 30 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale.",
+        ? "Un premier échange de 45 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale."
+        : "Un premier échange de 45 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale.",
       alternates: { fr: "/appel", en: "/book-a-call" },
     })),
     title: { absolute: titleStr },
@@ -111,8 +111,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
     path: "/appel",
     name: isFr ? "Premier contact projet IA · Axion-IA" : "Premier contact projet IA · Axion-IA",
     description: isFr
-      ? "Premier échange téléphonique de 30 minutes avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement."
-      : "Premier échange téléphonique de 30 minutes avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement.",
+      ? "Premier échange téléphonique de 45 minutes avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement."
+      : "Premier échange téléphonique de 45 minutes avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -167,7 +167,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
               </h1>
               {/* Pas de sous-titre : il redisait ce que la page affiche déjà trois
                   fois — « Sans engagement » est dans le surtitre ET dans les
-                  pastilles, « 30 minutes » dans les pastilles ET en tête du
+                  pastilles, « la durée » dans les pastilles ET en tête du
                   calendrier. Retiré sur demande de Will (2026-07-31) ; le
                   calendrier remonte d'autant, ce qui sert le funnel. */}
             </div>
@@ -250,7 +250,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
                 <div className="grid grid-cols-3 gap-2">
                   <div className="bg-paper border-border rounded-xl border p-3 text-center">
                     <Clock className="text-terracotta mx-auto mb-1 h-4 w-4" aria-hidden="true" />
-                    <p className="text-fg-soft text-[11px] leading-tight">30 min</p>
+                    <p className="text-fg-soft text-[11px] leading-tight">45 min</p>
                   </div>
                   <div className="bg-paper border-border rounded-xl border p-3 text-center">
                     <Shield className="text-terracotta mx-auto mb-1 h-4 w-4" aria-hidden="true" />

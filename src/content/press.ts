@@ -409,12 +409,12 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
     fr: {
       title: "Axion-IA publie sa méthode en quatre étapes",
       dek: "Cadrage, démonstration, plan chiffré, mise en production — pour passer de l'idée IA au déploiement opérationnel sans POC perdu.",
-      body: "Axion-IA détaille pour la presse sa méthode propriétaire en quatre étapes. Étape 1 : cadrage 30 minutes gratuit pour qualifier le besoin. Étape 2 : démonstration sur site ou à distance, sur les vraies données du client. Étape 3 : plan chiffré priorisé livré sous 5 jours. Étape 4 : mise en production avec 30 jours de support inclus. Cette approche élimine les POC théoriques sans suite, traditionnellement responsables de 80 % des échecs IA en entreprise.",
+      body: "Axion-IA détaille pour la presse sa méthode propriétaire en quatre étapes. Étape 1 : cadrage 45 minutes gratuit pour qualifier le besoin. Étape 2 : démonstration sur site ou à distance, sur les vraies données du client. Étape 3 : plan chiffré priorisé livré sous 5 jours. Étape 4 : mise en production avec 30 jours de support inclus. Cette approche élimine les POC théoriques sans suite, traditionnellement responsables de 80 % des échecs IA en entreprise.",
     },
     en: {
       title: "Axion-IA publishes its four-step method",
       dek: "Scoping, demonstration, costed plan, production — to go from AI idea to operational deployment without abandoned POCs.",
-      body: "Axion-IA details its proprietary four-step method for the press. Step 1: free 30-minute scoping call to qualify the need. Step 2: on-site or remote demonstration on the client's real data. Step 3: prioritized costed plan delivered within 5 days. Step 4: production deployment with 30 days of support included. This approach eliminates the abandoned theoretical POCs traditionally responsible for 80% of enterprise AI failures.",
+      body: "Axion-IA details its proprietary four-step method for the press. Step 1: free 45-minute scoping call to qualify the need. Step 2: on-site or remote demonstration on the client's real data. Step 3: prioritized costed plan delivered within 5 days. Step 4: production deployment with 30 days of support included. This approach eliminates the abandoned theoretical POCs traditionally responsible for 80% of enterprise AI failures.",
     },
   },
   {

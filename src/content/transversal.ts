@@ -352,13 +352,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'Axion-IA ?",
       answer:
-        "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en France. Concrètement : des intervenants seniors qui viennent travailler sur vos outils, vos données et vos dossiers réels, plutôt que de livrer une présentation sur l'intelligence artificielle.\n\nL'offre tient en cinq prestations. Les Formations IA, en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants. Le Coaching IA 1-to-1, une journée de 7 à 8 heures avec une seule personne, sur son poste. L'Audit IA, qui cartographie vos process et chiffre les opportunités, sur quatre niveaux. L'Implémentation IA, qui met en production les automatisations retenues. Et les Sites web & SaaS IA, pour greffer chatbot, recherche sémantique ou agents sur votre plateforme.\n\nNous intervenons sur site dans les 13 régions métropolitaines et les 5 DROM, ou à distance. L'échange démarre par un appel de cadrage de 30 minutes, sans engagement, et le devis suit sous 48 heures ouvrées.",
+        "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en France. Concrètement : des intervenants seniors qui viennent travailler sur vos outils, vos données et vos dossiers réels, plutôt que de livrer une présentation sur l'intelligence artificielle.\n\nL'offre tient en cinq prestations. Les Formations IA, en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants. Le Coaching IA 1-to-1, une journée de 7 à 8 heures avec une seule personne, sur son poste. L'Audit IA, qui cartographie vos process et chiffre les opportunités, sur quatre niveaux. L'Implémentation IA, qui met en production les automatisations retenues. Et les Sites web & SaaS IA, pour greffer chatbot, recherche sémantique ou agents sur votre plateforme.\n\nNous intervenons sur site dans les 13 régions métropolitaines et les 5 DROM, ou à distance. L'échange démarre par un appel de cadrage de 45 minutes, sans engagement, et le devis suit sous 48 heures ouvrées.",
       keyPoints: [
         "Cabinet IA opérationnel basé en France, intervenants seniors",
         "Cinq prestations : formations, coaching 1-to-1, audit, implémentation, sites web & SaaS IA",
         "On travaille sur vos outils et vos données réelles, pas sur des cas d'école",
         "13 régions métropolitaines et 5 DROM, sur site ou à distance",
-        "Appel de cadrage de 30 minutes, devis sous 48 h ouvrées",
+        "Appel de cadrage de 45 minutes, devis sous 48 h ouvrées",
       ],
       facts: [
         { figure: "5", label: "prestations au catalogue" },
@@ -423,7 +423,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce ne sont pas des étapes obligatoires",
           detail:
-            "On peut commencer par une formation, par un audit ou directement par une implémentation. L'appel de cadrage de 30 minutes sert justement à choisir le bon point d'entrée.",
+            "On peut commencer par une formation, par un audit ou directement par une implémentation. L'appel de cadrage de 45 minutes sert justement à choisir le bon point d'entrée.",
         },
         {
           title: "Le tarif dépend du format",
@@ -649,16 +649,16 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Par où commencer avec l'IA dans mon entreprise ?",
       answer:
-        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un appel de cadrage de 30 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise et aucune installation logicielle n'est demandée de votre côté. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
+        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un appel de cadrage de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise et aucune installation logicielle n'est demandée de votre côté. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
       keyPoints: [
         "Commencer par un cas réel, pas par une stratégie IA",
-        "Appel de cadrage de 30 minutes pour choisir le point d'entrée",
+        "Appel de cadrage de 45 minutes pour choisir le point d'entrée",
         "Journée de découverte : 3 à 5 process candidats identifiés sur vos données",
         "Aucune compétence technique ni installation requise de votre côté",
         "Devis sous 48 h ouvrées, équipes opérationnelles dès le lendemain",
       ],
       facts: [
-        { figure: "30 min", label: "d'appel de cadrage" },
+        { figure: "45 min", label: "d'appel de cadrage" },
         { figure: "3-5", label: "process identifiés" },
         { figure: "48 h", label: "ouvrées pour le devis" },
         { figure: "J+1", label: "équipes opérationnelles" },
@@ -1989,7 +1989,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Périmètre écrit, devis détaillé et gains chiffrés : les pièces utiles à un dossier",
       ],
       facts: [
-        { figure: "30 min", label: "d'appel de cadrage" },
+        { figure: "45 min", label: "d'appel de cadrage" },
         { figure: "48 h", label: "ouvrées pour le devis" },
         { figure: "30 j", label: "de validité du devis" },
       ],
@@ -5018,7 +5018,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif dépend du profil accompagné",
           detail:
-            "Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Un échange préalable de 30 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
+            "Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Un échange préalable de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
         },
       ],
     },

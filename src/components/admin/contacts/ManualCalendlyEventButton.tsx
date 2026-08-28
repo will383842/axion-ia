@@ -10,7 +10,7 @@ export function ManualCalendlyEventButton(): React.ReactElement {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
-    eventTypeName: "Appel découverte 30 min",
+    eventTypeName: "Appel découverte 45 min",
     eventTypeSlug: "appel-decouverte",
     inviteeName: "",
     inviteeEmail: "",

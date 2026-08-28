@@ -54,6 +54,8 @@ import * as React from "react";
 import type { CalendlyAvailabilityDay } from "@/server/calendly/availability";
 
 interface CalendlySlotPickerProps {
+  /** Duree reelle de l event-type, en minutes, telle que Calendly la connait. */
+  readonly dureeMinutes?: number | undefined;
   readonly days: readonly CalendlyAvailabilityDay[];
   readonly isFr: boolean;
   readonly height: number;
@@ -224,7 +226,7 @@ function styleUnJourALaFois(cles: readonly string[]): string {
   return `@supports selector(:has(*)){${regles}}`;
 }
 
-export function CalendlySlotPicker({ days, isFr, height }: CalendlySlotPickerProps) {
+export function CalendlySlotPicker({ days, isFr, height, dureeMinutes }: CalendlySlotPickerProps) {
   const fmt = formatters(isFr);
   // Même boîte que le repli — voir PIÈGE 2.
   const box: React.CSSProperties = { minWidth: "320px", height: `${height}px` };
@@ -254,7 +256,27 @@ export function CalendlySlotPicker({ days, isFr, height }: CalendlySlotPickerPro
           {isFr ? "Choisissez votre créneau" : "Choose your slot"}
         </p>
         <p className="text-fg-soft mt-0.5 text-sm">
-          {isFr ? "30 minutes · heure de Paris" : "30 minutes · Paris time"}
+          {/* 🔴 CE CHIFFRE ÉTAIT ÉCRIT EN DUR, ET IL ÉTAIT FAUX. Mesuré le
+              2026-08-27 : la page annonçait « 30 minutes » pendant que
+              l'event-type Calendly durait 45. Le prospect lisait 30 et bloquait
+              45 minutes de son agenda — et Calendly affichait sa propre durée
+              deux écrans plus loin, ce qui rendait la contradiction visible.
+
+              Personne n'avait rien cassé : quelqu'un avait changé la durée dans
+              Calendly, et le site — qui la portait en dur — ne pouvait pas
+              suivre. Un chiffre recopié depuis un tableau de bord finit toujours
+              par diverger.
+
+              Il vient désormais de la MÊME réponse d'API que les créneaux :
+              changer la durée chez Calendly la change ici, sans déploiement.
+              Le repli n'invente pas de chiffre — il n'en affiche aucun. */}
+          {dureeMinutes
+            ? isFr
+              ? `${dureeMinutes} minutes · heure de Paris`
+              : `${dureeMinutes} minutes · Paris time`
+            : isFr
+              ? "heure de Paris"
+              : "Paris time"}
         </p>
       </div>
 

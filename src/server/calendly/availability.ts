@@ -165,6 +165,24 @@ export type CalendlyAvailability =
       readonly ok: true;
       readonly days: readonly CalendlyAvailabilityDay[];
       readonly diagnostics: CalendlyAvailabilityDiagnostics;
+      /**
+       * Durée réelle de l'event-type, en minutes, **telle que Calendly la
+       * connaît**.
+       *
+       * 🔴 POURQUOI ELLE EST DÉRIVÉE ET PAS ÉCRITE. Le 2026-08-27, la page
+       * annonçait « 30 minutes » à trois endroits pendant que l'event-type
+       * durait 45. Personne n'avait rien cassé : quelqu'un avait changé la durée
+       * dans Calendly, et le site — qui la portait en dur — ne pouvait pas
+       * suivre. Le prospect lisait 30 et bloquait 45 minutes de son agenda.
+       *
+       * Un chiffre recopié depuis un tableau de bord finit toujours par
+       * diverger. Celui-ci vient de la même réponse d'API que les créneaux :
+       * changer la durée chez Calendly la change sur le site, sans déploiement.
+       *
+       * Absente si Calendly ne la renvoie pas — l'appelant retombe alors sur son
+       * libellé de repli plutôt que d'afficher un chiffre inventé.
+       */
+      readonly dureeMinutes?: number;
     }
   | {
       readonly ok: false;
@@ -363,7 +381,7 @@ function record(value: unknown): Record<string, unknown> | null {
  */
 async function resolveEventTypeUri(
   schedulingUrl: string,
-): Promise<{ uri: string } | { failure: GetErr } | null> {
+): Promise<{ uri: string; dureeMinutes?: number } | { failure: GetErr } | null> {
   const me = await calendlyGet(
     `${CALENDLY_API_BASE}/users/me`,
     EVENT_TYPE_REVALIDATE_SECONDS,
@@ -393,7 +411,11 @@ async function resolveEventTypeUri(
     const uri = et["uri"];
     const sched = et["scheduling_url"];
     if (typeof uri !== "string" || typeof sched !== "string") continue;
-    if (canonicalPath(sched) === wanted) return { uri };
+    if (canonicalPath(sched) !== wanted) continue;
+    // La duree officielle de l event-type, telle que Calendly la connait. C est
+    // la SEULE source qui ne peut pas diverger de ce que le visiteur reservera.
+    const duree = et["duration"];
+    return { uri, ...(typeof duree === "number" && duree > 0 ? { dureeMinutes: duree } : {}) };
   }
   return null;
 }
@@ -562,6 +584,7 @@ export async function fetchAvailableSlots({
     return { ok: false, reason: "no_event_type" };
   }
   const eventTypeUri = resolved.uri;
+  const dureeMinutes = resolved.dureeMinutes;
 
   const debut = windowStart(nowMs, SLOTS_REVALIDATE_SECONDS * 1_000);
   const windows = buildWindows(debut);
@@ -669,5 +692,8 @@ export async function fetchAvailableSlots({
     });
   }
 
-  return { ok: true, days, diagnostics };
+  // Diffusion conditionnelle : `exactOptionalPropertyTypes` distingue « clé
+  // absente » de « clé à undefined », et l appelant teste la présence pour
+  // décider s il affiche un chiffre ou son libellé de repli.
+  return { ok: true, days, diagnostics, ...(dureeMinutes ? { dureeMinutes } : {}) };
 }
