@@ -9,7 +9,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { CalendlySlotPicker } from "../CalendlySlotPicker";
 import { SUBPROCESSORS } from "@/content/subprocessors";
-import { QUALIOPI_BRAND_COLORS } from "@/server/qualiopi/brand/brand-tokens";
+import { COULEURS_MARQUE } from "@/lib/brand/couleurs-marque";
 
 vi.mock("@/i18n/navigation", () => ({
   Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
@@ -135,9 +135,9 @@ describe("CalendlySlotPicker", () => {
     setup();
     const href = screen.getByRole("link", { name: /09:00/ }).getAttribute("href") ?? "";
     const params = new URL(href).searchParams;
-    expect(params.get("primary_color")).toBe(QUALIOPI_BRAND_COLORS.terracotta.replace("#", ""));
-    expect(params.get("text_color")).toBe(QUALIOPI_BRAND_COLORS.fg.replace("#", ""));
-    expect(params.get("background_color")).toBe(QUALIOPI_BRAND_COLORS.bg.replace("#", ""));
+    expect(params.get("primary_color")).toBe(COULEURS_MARQUE.terracotta.replace("#", ""));
+    expect(params.get("text_color")).toBe(COULEURS_MARQUE.fg.replace("#", ""));
+    expect(params.get("background_color")).toBe(COULEURS_MARQUE.bg.replace("#", ""));
   });
 
   it("le libellé accessible porte la date complète, pas seulement l'heure", () => {

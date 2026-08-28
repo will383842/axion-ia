@@ -18,29 +18,23 @@
  * Couleurs miroir de `@theme` — clé = nom du token CSS (`--color-<clé>`),
  * valeur = hex. Le test de parité compare cette map à globals.css.
  */
-export const QUALIOPI_BRAND_COLORS = {
-  bg: "#faf8f3",
-  paper: "#ffffff",
-  sand: "#f0e9da",
-  "sand-deep": "#e6dcc4",
-  mocha: "#2a2520",
-  "mocha-soft": "#3d362f",
-  "mocha-fg": "#f7f3ea",
-  fg: "#1a1815",
-  "fg-soft": "#524b41",
-  "fg-muted": "#5a4f44",
-  primary: "#1a4dd9",
-  "primary-hover": "#0f3aae",
-  "primary-fg": "#ffffff",
-  "primary-soft": "#e8efff",
-  terracotta: "#b23f16",
-  "terracotta-soft": "#f5e3d8",
-  "terracotta-deep": "#8c3010",
-  sage: "#5e6c54",
-  "sage-soft": "#e6ebe2",
-  border: "#e5ddc8",
-  "border-strong": "#c8bda0",
-} as const;
+import { COULEURS_MARQUE } from "@/lib/brand/couleurs-marque";
+
+/**
+ * 🔴 Les valeurs ont DÉMÉNAGÉ le 2026-08-28 vers `src/lib/brand/couleurs-marque.ts`.
+ *
+ * Elles n'ont pas changé : cet export reste le point d'entrée historique des
+ * gabarits PDF et e-mail Qualiopi, et le test de parité continue de le comparer
+ * à `globals.css`. Seul leur EMPLACEMENT change.
+ *
+ * Pourquoi : une couleur de marque n'appartient pas au domaine Qualiopi, et la
+ * garde de cloisonnement refusait — à raison — qu'une surface publique (le
+ * sélecteur de créneaux Calendly) importe ce domaine pour obtenir le terracotta.
+ * Les deux issues étaient d'élargir la liste d'exceptions, dont le fichier dit
+ * qu'elle « doit RÉTRÉCIR, jamais grandir », ou de ranger la couleur au bon
+ * endroit. C'est la seconde.
+ */
+export const QUALIOPI_BRAND_COLORS = COULEURS_MARQUE;
 
 export type QualiopiBrandColorToken = keyof typeof QUALIOPI_BRAND_COLORS;
 

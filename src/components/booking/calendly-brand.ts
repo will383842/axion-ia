@@ -21,10 +21,10 @@
  * que `brand-tokens.parity.spec.ts` garde déjà. Changer la charte dans
  * `globals.css` + son miroir suffit désormais à changer Calendly.
  *
- * ⚠️ L'import vient de `@/server/qualiopi/brand/brand-tokens` malgré son nom :
- * c'est l'UNIQUE miroir de `globals.css` sous test de parité dans ce dépôt, et
- * il ne porte aucun `server-only`. Créer un second miroir « pour le public »
- * recréerait exactement le problème qu'on vient de fermer.
+ * ⚠️ L'import vient de `@/lib/brand/couleurs-marque`, seul miroir de
+ * `globals.css` sous test de parité. Créer un second miroir « pour le public »
+ * recréerait exactement le problème qu'on vient de fermer — c'est d'ailleurs
+ * ainsi que le `c2410c` était né.
  *
  * ## Ces paramètres marchent AUSSI hors iframe — c'est mesuré
  *
@@ -38,18 +38,18 @@
  * règle dans le tableau de bord Calendly, la couleur par l'URL.
  */
 
-import { QUALIOPI_BRAND_COLORS } from "@/server/qualiopi/brand/brand-tokens";
+import { COULEURS_MARQUE } from "@/lib/brand/couleurs-marque";
 
 /** Calendly veut ses couleurs SANS le croisillon. */
 const sansCroisillon = (hex: string): string => hex.replace(/^#/, "");
 
 export const CALENDLY_BRAND = {
   /** L'accent éditorial du site — boutons et créneau sélectionné chez Calendly. */
-  primary: sansCroisillon(QUALIOPI_BRAND_COLORS.terracotta),
+  primary: sansCroisillon(COULEURS_MARQUE.terracotta),
   /** Le texte principal du site. */
-  text: sansCroisillon(QUALIOPI_BRAND_COLORS.fg),
+  text: sansCroisillon(COULEURS_MARQUE.fg),
   /** L'ivoire chaud du site, pour que la bascule ne change pas de fond. */
-  background: sansCroisillon(QUALIOPI_BRAND_COLORS.bg),
+  background: sansCroisillon(COULEURS_MARQUE.bg),
 } as const;
 
 /**
