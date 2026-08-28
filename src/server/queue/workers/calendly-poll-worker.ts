@@ -60,6 +60,7 @@
 import { Worker, type Job } from "bullmq";
 import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
 import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
+import { envoyerRappelsH1 } from "@/server/calendly/rappel-h1";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import { CALENDLY_SLOTS_TAG } from "@/server/calendly/availability";
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
@@ -68,7 +69,7 @@ import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 export const CALENDLY_POLL_QUEUE_NAME = "calendly-poll";
 
 /** Les trois passes, à trois cadences différentes — voir l'en-tête. */
-export type CalendlyPollJobType = "discover" | "refresh" | "revalidate-slots";
+export type CalendlyPollJobType = "discover" | "refresh" | "revalidate-slots" | "rappel-h1";
 
 export interface CalendlyPollJobData {
   readonly type: CalendlyPollJobType;
@@ -95,6 +96,26 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
     // ajoute l'identité de l'appelant, qu'il ne connaît pas.
     if (!res.ok) {
       console.warn(`[calendly-poll] créneaux non invalidés : ${res.reason ?? "inconnu"}`);
+    }
+    return;
+  }
+
+  if (job.data.type === "rappel-h1") {
+    const res = await envoyerRappelsH1();
+    // On ne journalise QUE ce qui s'est passe. Une ligne toutes les 5 minutes
+    // annoncant « 0 rappel » noierait les logs et rendrait invisible la seule
+    // qui compte.
+    if (res.envoyes > 0) console.warn(`[appel-rappel] ${res.envoyes} rappel(s) envoye(s)`);
+    if (res.echecs > 0) {
+      console.warn(
+        `[appel-rappel] ${res.echecs} mise(s) en file REFUSEE(s) — reessai au passage suivant`,
+      );
+    }
+    if (!res.ok) console.warn(`[appel-rappel] passage en echec : ${res.raison ?? "inconnu"}`);
+    if (res.plafondAtteint) {
+      console.error(
+        "[appel-rappel] PLAFOND ATTEINT — signe d'un emballement : le marqueur d'envoi n'est probablement plus pose",
+      );
     }
     return;
   }

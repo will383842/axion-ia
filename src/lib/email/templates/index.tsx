@@ -28,6 +28,7 @@ import {
 } from "./rgpd-effacement-confirme";
 import { PodcastDemandeRecueEmail, podcastDemandeRecueSubject } from "./podcast-demande-recue";
 import { RappelConfirmeEmail, rappelConfirmeSubject } from "./rappel-confirme";
+import { AppelRappelEmail, appelRappelSubject } from "./appel-rappel";
 import {
   ChatbotDemandeTransmiseEmail,
   chatbotDemandeTransmiseSubject,
@@ -147,6 +148,10 @@ const TEMPLATES: TemplateMap = {
   "rappel-confirme": {
     subject: rappelConfirmeSubject,
     component: RappelConfirmeEmail,
+  },
+  "appel-rappel": {
+    subject: appelRappelSubject,
+    component: AppelRappelEmail,
   },
   "chatbot-demande-transmise": {
     subject: chatbotDemandeTransmiseSubject,

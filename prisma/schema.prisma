@@ -4168,6 +4168,18 @@ model CalendlyEvent {
   rescheduleUrl      String?             @map("reschedule_url") @db.VarChar(500)
   /// Horodatage du dernier enrichissement API réussi (null = jamais enrichi).
   enrichedAt         DateTime?           @map("enriched_at")
+  /// Horodatage d'envoi du rappel H-1 (null = pas encore envoyé).
+  ///
+  /// 🔑 C'EST LA SEULE CHOSE QUI EMPÊCHE LE RAPPEL DE PARTIR EN BOUCLE. La passe
+  /// tourne toutes les 5 minutes sur une fenêtre de 15 : sans marqueur, le même
+  /// rendez-vous recevrait trois rappels. Même motif que `rappelJ7EnvoyeAt` de la
+  /// chaîne Qualiopi, qui a déjà fait ses preuves.
+  ///
+  /// ⚠️ Il n'est posé QUE si la mise en file a réellement réussi. `enqueueEmail`
+  /// ne lève pas : elle rend `{ enqueued }`. Écrire « envoyé » sur un retour faux
+  /// est le défaut `D5-1-C1` — une trace qui affirme un envoi qui n'a pas eu lieu
+  /// est pire que pas de trace, parce qu'elle empêche le rattrapage.
+  rappelEnvoyeAt     DateTime?           @map("rappel_envoye_at")
   /// Payload complet du postMessage event (debug + future re-process).
   rawPayload         Json                @map("raw_payload")
   /// URL où l'event a été capté (ex "https://axion-ia.com/fr/appel").
