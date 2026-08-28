@@ -82,6 +82,7 @@ export function AlertesLiveBadge({ initialCount }: AlertesLiveBadgeProps): React
       <div className="flex items-center gap-[var(--space-admin-2)]">
         {connected && (
           <span
+            role="img"
             aria-label="Connecté au flux temps réel"
             className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-admin-success)]"
           />
@@ -97,12 +98,13 @@ export function AlertesLiveBadge({ initialCount }: AlertesLiveBadgeProps): React
     <div className="flex items-center gap-[var(--space-admin-2)]">
       {connected && (
         <span
+          role="img"
           aria-label="Connecté au flux temps réel"
           className="inline-block h-2 w-2 animate-pulse rounded-full bg-[color:var(--color-admin-warning)]"
         />
       )}
       <span
-        aria-live="polite"
+        role="status"
         aria-label={`${count} alerte${count !== 1 ? "s" : ""} non lue${count !== 1 ? "s" : ""}`}
         className="inline-flex items-center gap-[var(--space-admin-1)] rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-error-subtle)] px-[var(--space-admin-2)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-error)]"
       >

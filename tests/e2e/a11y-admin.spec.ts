@@ -20,7 +20,7 @@
 // distante.
 
 import AxeBuilder from "@axe-core/playwright";
-import { test, expect } from "@playwright/test";
+import { test, expect, type BrowserContext, type Page } from "@playwright/test";
 import { loginAsAdmin, ADMIN_PREFIX } from "./fixtures/admin-auth";
 
 /**
@@ -117,8 +117,12 @@ function identifiantsFournis(): boolean {
  * pointer une base distante ferait taper des identifiants sur un environnement
  * qui n'est pas le nôtre.
  */
+function urlDeBase(): string {
+  return process.env["E2E_BASE_URL"] ?? "http://localhost:3000";
+}
+
 function cibleLocale(): boolean {
-  const base = process.env["E2E_BASE_URL"] ?? "http://localhost:3000";
+  const base = urlDeBase();
   return base.includes("localhost") || base.includes("127.0.0.1");
 }
 
@@ -140,6 +144,41 @@ test.describe("a11y console admin WCAG 2.2 AA @a11y-admin", () => {
   // être rendu. C'est précisément là où l'on débogue que la cause disparaissait.
   test.describe.configure({ timeout: 300_000 });
 
+  // 🔴 2026-08-28 — UNE CONNEXION PAR ÉCRAN A FAIT TOMBER HUIT TESTS VOISINS.
+  //
+  // Cette suite se connectait une fois PAR test. À 4 écrans, personne ne l'a
+  // remarqué. En passant à 18, elle a épuisé le limiteur anti-force-brute de
+  // l'écran de connexion — « Trop de tentatives. Réessayez dans 15 minutes. » —
+  // et les HUIT parcours Qualiopi qui tournaient après elle sont morts sur un
+  // écran verrouillé. Gate B rouge, `main` verte sur le même code : les échecs
+  // étaient entièrement notre conséquence.
+  //
+  // 🔑 Le défaut n'était pas dans le limiteur, qui a fait exactement son
+  // travail. Il était dans une suite qui consommait une ressource PARTAGÉE
+  // proportionnellement à sa taille, sans que rien ne le dise. Élargir une
+  // couverture, c'est augmenter une consommation.
+  //
+  // On se connecte donc UNE fois par worker et on réutilise la session : 4
+  // connexions au lieu de 18, et le coût cesse de croître avec la liste.
+  //
+  // ⚠️ `browser.newContext()` n'hérite PAS du `baseURL` de la configuration —
+  // seule la fixture `page` le reçoit. Sans le passer ici, tous les
+  // `goto("/fr/…")` relatifs échoueraient. On le dérive de la même source que
+  // `cibleLocale()` ci-dessus, pour qu'un changement d'URL ne puisse pas rendre
+  // les deux incohérents.
+  let contextePartage: BrowserContext | undefined;
+  let pagePartagee: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    contextePartage = await browser.newContext({ baseURL: urlDeBase() });
+    pagePartagee = await contextePartage.newPage();
+    await loginAsAdmin(pagePartagee);
+  });
+
+  test.afterAll(async () => {
+    await contextePartage?.close();
+  });
+
   test.skip(
     !cibleLocale() || !identifiantsFournis(),
     "Cible locale ET identifiants de seed requis : le nightly mesure la prod en " +
@@ -147,11 +186,11 @@ test.describe("a11y console admin WCAG 2.2 AA @a11y-admin", () => {
   );
 
   for (const { path, label } of PAGES_ADMIN) {
-    test(`${label} — 0 violation serious/critical @a11y-admin`, async ({ page }) => {
-      // Le login peut échouer si la base n'est pas seedée : on le dit
-      // explicitement plutôt que de laisser axe analyser la page de connexion
-      // et déclarer la console conforme.
-      await loginAsAdmin(page);
+    test(`${label} — 0 violation serious/critical @a11y-admin`, async () => {
+      // La session vient du `beforeAll` : une connexion par worker, pas une par
+      // écran. Si elle avait échoué (base non semée), `beforeAll` aurait déjà
+      // fait rougir la suite en nommant la cause.
+      const page = pagePartagee;
 
       const response = await page.goto(path);
       const status = response?.status() ?? 0;

@@ -94,6 +94,27 @@ describe("🛑 la couverture d'accessibilité de la console ne rétrécit pas", 
     ).toContain("/qualiopi/mode-auditeur");
   });
 
+  it("🔑 …et ne se connecte qu'UNE fois par worker, pas une fois par écran", () => {
+    // 🔴 Le 2026-08-28, cette suite se connectait une fois par test. À 4 écrans
+    // c'était invisible ; à 18 elle a épuisé le limiteur anti-force-brute et
+    // fait tomber HUIT parcours Qualiopi qui tournaient après elle.
+    //
+    // 🔑 Ce qui rend ce défaut traître : il ne se déclare pas dans le fichier
+    // qui le subit. Les huit tests morts n'avaient rien changé. Un coût qui
+    // croît avec la liste doit donc être gardé DANS le fichier qui allonge la
+    // liste — ici.
+    const src = source();
+    expect(src, "la connexion doit se faire dans un `beforeAll` — une par worker").toMatch(
+      /test\.beforeAll\([\s\S]{0,400}?loginAsAdmin\(/,
+    );
+    expect(
+      (src.match(/\bawait loginAsAdmin\(/g) ?? []).length,
+      "un seul appel à loginAsAdmin dans toute la suite : plusieurs appels " +
+        "signifient qu'on s'authentifie de nouveau à chaque écran, et le " +
+        "limiteur anti-force-brute fera tomber les suites voisines.",
+    ).toBe(1);
+  });
+
   it("⚠️ dit la VÉRITÉ sur ce qui reste dehors", () => {
     // Ce test ne garde rien : il refuse qu'on lise « 18 écrans verts » comme
     // « la console est accessible ». Il échouera le jour où la couverture
