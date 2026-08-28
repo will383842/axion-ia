@@ -12,6 +12,8 @@ import { prisma } from "@/lib/prisma";
 import { markInboxRead } from "@/features/admin-inbox/reads";
 import { auth } from "@/auth";
 import { AdminPageHeader, AdminButton } from "@/components/admin/ui";
+import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { ExternalLink } from "lucide-react";
 import { CalendlyEventEditor } from "@/components/admin/contacts/CalendlyEventEditor";
 import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCalendlyEventButton";
@@ -31,7 +33,7 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 interface PageProps {
-  params: Promise<{ adminPrefix: string; id: string }>;
+  params: Promise<{ locale: string; adminPrefix: string; id: string }>;
 }
 
 // Le sous-titre affichait « source widget » : la valeur de colonne.
@@ -42,7 +44,16 @@ const LIBELLE_SOURCE: Record<string, string> = {
 };
 
 export default async function AppelDetailPage({ params }: PageProps): Promise<React.ReactElement> {
-  const { adminPrefix, id } = await params;
+  const { locale, adminPrefix, id } = await params;
+  // 🔴 LA GARDE D'ABORD, LA BASE ENSUITE — et pas l'inverse, comme ici jusqu'au
+  // 2026-08-27. Un `notFound()` émis avant la garde renseigne un visiteur non
+  // habilité sur l'EXISTENCE d'un identifiant : la page répondait différemment
+  // selon que la fiche existait ou non, à qui n'avait le droit d'en lire aucune.
+  const acces = await gardeLectureAppels(`/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
+
   const event = await prisma.calendlyEvent.findUnique({ where: { id } });
   if (!event) notFound();
   const session = await auth();

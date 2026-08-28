@@ -20,12 +20,18 @@ import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { adminPath } from "@/lib/admin-path";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
+import { peutVoirLesAppels } from "./acces";
 
+// 🔴 LA LISTE DE RÔLES A DÉMÉNAGÉ DANS `./acces.ts` (2026-08-27) — elle était
+// écrite ici, et la LECTURE des mêmes fiches n'était gardée par rien. Deux
+// moitiés d'un même périmètre, dont une seule existait. On la CONSOMME
+// désormais, on ne la recopie pas : c'est ce qui empêche lecture et écriture de
+// diverger à nouveau.
 async function requireAdminWriteSession() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("unauthorized");
   const role = (session.user as { role?: string }).role;
-  if (role !== "super_admin" && role !== "admin" && role !== "editor") {
+  if (!peutVoirLesAppels(role)) {
     throw new Error("forbidden");
   }
   return { userId: session.user.id, role };

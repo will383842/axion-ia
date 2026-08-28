@@ -3,6 +3,7 @@
 // On mocke Prisma + rate-limit + notify + hashIp pour tester sans dependances.
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { NextRequest } from "next/server";
 
 // Mocks ---------------------------------------------------------------------
 
@@ -49,11 +50,27 @@ vi.mock("@/lib/prisma", () => ({
 
 // ---------------------------------------------------------------------------
 
-function makeRequest(body: unknown, opts: { ip?: string } = {}): Request {
-  return new Request("https://test.local/api/calendly/client-event", {
+// 🔴 `origin` ET `host` sont désormais posés par défaut, et ce n'est pas du
+// confort de test : depuis le 2026-08-27 la route exige une origine, avec
+// `allowMissingOrigin: false`. Sans ces deux en-têtes, TOUS les cas de ce
+// fichier rendraient 403 — c'est ce qui prouve que la garde mord.
+//
+// Les deux ensemble sont nécessaires : `requireSameOrigin` fait confiance à
+// l'origine égale au HÔTE de la requête (`x-forwarded-host` ?? `host`), et un
+// objet `Request` construit à la main ne porte pas d'en-tête `host`
+// automatiquement. Poser l'un sans l'autre rejetterait.
+function makeRequest(
+  body: unknown,
+  opts: { ip?: string; origin?: string | null } = {},
+): NextRequest {
+  const origin = opts.origin === undefined ? "https://test.local" : opts.origin;
+  return new NextRequest("https://test.local/api/calendly/client-event", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      host: "test.local",
+      "x-forwarded-proto": "https",
+      ...(origin ? { origin } : {}),
       ...(opts.ip ? { "x-forwarded-for": opts.ip } : {}),
     },
     body: typeof body === "string" ? body : JSON.stringify(body),
@@ -240,5 +257,132 @@ describe("capture des URI Calendly", () => {
     };
     expect(notifyArgs.payload.inviteeName).toBe("(non communiqué)");
     expect(notifyArgs.payload.eventStartTime).toBe("(voir mail Calendly)");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// La porte publique — ajouté le 2026-08-27 (constat N-2 de l'audit réservation).
+//
+// Cette route était une porte d'ÉCRITURE PUBLIQUE : aucune origine vérifiée,
+// aucune borne sur les PII, et une clé de déduplication qui ne dédoublonnait
+// rien. Chacun des quatre cas ci-dessous ÉCHOUE sur `origin/main` — c'est la
+// seule chose qui donne de la valeur à ce bloc.
+// ---------------------------------------------------------------------------
+
+describe("POST /api/calendly/client-event — la porte est fermée", () => {
+  it("refuse une origine étrangère en 403, sans rien écrire", async () => {
+    const { POST } = await import("../route");
+    const res = await POST(makeRequest(VALID_PAYLOAD, { origin: "https://attaquant.example" }));
+    expect(res.status).toBe(403);
+    // Le point qui compte : aucune ligne, aucune fiche CRM, aucune alerte.
+    expect(calendlyCreate).not.toHaveBeenCalled();
+    expect(syncCalendlyMock).not.toHaveBeenCalled();
+    expect(notifyMock).not.toHaveBeenCalled();
+  });
+
+  it("refuse une requête sans AUCUN en-tête de contexte", async () => {
+    const { POST } = await import("../route");
+    const res = await POST(makeRequest(VALID_PAYLOAD, { origin: null }));
+    // ⚠️ C'est le cœur du correctif. Le défaut de `requireSameOrigin` est
+    // `allowMissingOrigin: true`, qui TOLÈRE ce cas : avec le défaut, cette
+    // assertion rendrait 200 et la garde n'aurait rien gardé.
+    expect(res.status).toBe(403);
+    expect(calendlyCreate).not.toHaveBeenCalled();
+  });
+
+  it("TÉMOIN — un client qui POSE l'en-tête d'origine passe encore", async () => {
+    // 🔴 CE TEST DOCUMENTE UN TROU, il ne célèbre pas une garde.
+    //
+    // `TRUSTED_ORIGINS` (`src/lib/same-origin.ts`) contient `axion-ia.com` en
+    // dur : `curl -H 'Origin: https://axion-ia.com'` passe. Ce qui est fermé,
+    // c'est le CSRF navigateur et le balayage nu — pas l'appel scripté informé.
+    //
+    // Le laisser vert est délibéré : le jour où il ROUGIT, c'est qu'on a durci
+    // (jeton court-vécu émis par `/appel`), et c'est une bonne nouvelle qu'il
+    // faut alors venir constater ici.
+    const { POST } = await import("../route");
+    const res = await POST(makeRequest(VALID_PAYLOAD, { origin: "https://axion-ia.com" }));
+    expect(res.status).toBe(200);
+  });
+
+  it("un nom de 300 caractères est ÉCARTÉ, la réservation est enregistrée", async () => {
+    const { POST } = await import("../route");
+    const res = await POST(
+      makeRequest({
+        ...VALID_PAYLOAD,
+        payload: { invitee: { name: "x".repeat(300), email: "john@example.com" } },
+      }),
+    );
+    // Avant : la valeur partait telle quelle dans un `@db.VarChar(255)`,
+    // Postgres levait `22001`, que le `catch` n'interceptait pas (seul `P2002`
+    // l'était) — la route rendait 500.
+    //
+    // ⚠️ Et le remède ne doit pas coûter la réservation : un champ facultatif
+    // hors bornes est ABANDONNÉ, jamais tronqué, et surtout jamais fatal. Une
+    // première version rendait 400 ici — elle perdait le lead pour sauver un nom.
+    expect(res.status).toBe(200);
+    expect(calendlyCreate).toHaveBeenCalledOnce();
+    const data = (calendlyCreate.mock.calls[0]?.[0] as { data: { inviteeName?: string } }).data;
+    expect(data.inviteeName).toBeUndefined();
+  });
+
+  it("une adresse malformée est écartée sans faire tomber la réservation", async () => {
+    const { POST } = await import("../route");
+    const res = await POST(
+      makeRequest({
+        ...VALID_PAYLOAD,
+        payload: { invitee: { name: "John Doe", email: "pas-une-adresse" } },
+      }),
+    );
+    expect(res.status).toBe(200);
+    const data = (calendlyCreate.mock.calls[0]?.[0] as { data: { inviteeEmail?: string } }).data;
+    expect(data.inviteeEmail).toBeUndefined();
+    // Sans adresse exploitable, aucune fiche CRM ne doit être fabriquée : on
+    // n'invente pas une personne à partir d'une chaîne invalide.
+    expect(syncCalendlyMock).not.toHaveBeenCalled();
+  });
+
+  it("une chaîne VIDE ne fait pas perdre la réservation", async () => {
+    // 🔴 LE TÉMOIN QUI MANQUAIT. Le formulaire Calendly produit `""` quand un
+    // champ facultatif n'est pas rempli. La première version du correctif rendait
+    // 400 dessus : elle perdait la ligne, la synchro CRM et l'alerte, sur la
+    // seule route qui capte des prospects. Plus grave que le 500 qu'elle corrigeait.
+    const { POST } = await import("../route");
+    const res = await POST(
+      makeRequest({ ...VALID_PAYLOAD, payload: { invitee: { name: "", email: "" } } }),
+    );
+    expect(res.status).toBe(200);
+    expect(calendlyCreate).toHaveBeenCalledOnce();
+  });
+
+  it("un corps trop gros est refusé — même SANS content-length", async () => {
+    // 🔴 Le second cas est celui qui rougissait : le contrôle d'en-tête seul est
+    // sauté quand `content-length` est absent, et `req.json()` lisait alors le
+    // corps entier, qui finit dans la colonne `raw_payload` (non bornée).
+    const { POST } = await import("../route");
+    const enorme = {
+      ...VALID_PAYLOAD,
+      payload: { invitee: { name: "John" }, bourrage: "x".repeat(200_000) },
+    };
+    const res = await POST(makeRequest(enorme));
+    expect(res.status).toBe(413);
+    expect(calendlyCreate).not.toHaveBeenCalled();
+  });
+
+  it("la clé de déduplication de l'alerte est dérivée du FAIT, pas de la ligne créée", async () => {
+    const { POST } = await import("../route");
+
+    // Deux appels, deux lignes différentes en base, MÊME réservation.
+    calendlyCreate.mockResolvedValueOnce({ id: "ligne-1" });
+    await POST(makeRequest(VALID_PAYLOAD));
+    calendlyCreate.mockResolvedValueOnce({ id: "ligne-2" });
+    await POST(makeRequest(VALID_PAYLOAD));
+
+    const cles = notifyMock.mock.calls.map((c) => (c[0] as { dedupKey?: string }).dedupKey);
+    expect(cles).toHaveLength(2);
+    // Avant : `dedupKey: event.id` → "ligne-1" puis "ligne-2", donc deux clés
+    // distinctes, donc deux alertes. Le hub ne pouvait rien dédoublonner.
+    expect(cles[0]).toBe(cles[1]);
+    expect(cles[0]).not.toBe("ligne-1");
   });
 });

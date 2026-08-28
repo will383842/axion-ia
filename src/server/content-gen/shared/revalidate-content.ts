@@ -28,6 +28,14 @@
 export interface RevalidateInput {
   readonly paths?: ReadonlyArray<string>;
   readonly tags?: ReadonlyArray<string>;
+  /**
+   * Purger la copie d'edge Cloudflare après l'origine. Vrai par défaut.
+   *
+   * À passer à `false` quand la page répond `no-store` et sort donc en
+   * `cf-cache-status: BYPASS` : il n'y a rien à purger, et une purge par
+   * passage de cron consommerait le quota pour rien.
+   */
+  readonly purgeEdge?: boolean;
 }
 
 /**
@@ -80,6 +88,7 @@ export async function revalidateContent(input: RevalidateInput): Promise<Revalid
       body: JSON.stringify({
         paths: input.paths ?? [],
         tags: input.tags ?? [],
+        ...(input.purgeEdge === false ? { purgeEdge: false } : {}),
       }),
       signal: ctrl.signal,
     });
@@ -90,6 +99,39 @@ export async function revalidateContent(input: RevalidateInput): Promise<Revalid
       logRevalidateFailure(reason, input);
       return { ok: false, reason };
     }
+
+    // 🔴 UN 200 NE VOULAIT PAS DIRE « INVALIDÉ » — corrigé le 2026-08-27.
+    //
+    // La route interne rend 200 même quand `revalidateTag` a levé : l'étiquette
+    // sort simplement de `revalidated.tags`, et personne ne lisait ce tableau.
+    // On demandait donc une invalidation, on recevait un succès, et rien
+    // n'était invalidé. Une invalidation morte se lit exactement comme un cache
+    // à jour — c'est ce qui lui a permis de survivre quatre semaines.
+    //
+    // ⚠️ ON NE DÉGRADE QUE SUR UNE PREUVE POSITIVE d'étiquette manquante. Un
+    // corps illisible, un corps sans `revalidated`, ou une demande sans
+    // étiquette rendent `{ ok: true }` : les cinq workers éditoriaux n'envoient
+    // que des CHEMINS, et les faire échouer sur une lecture de corps
+    // remplacerait un silence par un faux rouge quotidien.
+    const demandees = input.tags ?? [];
+    if (demandees.length > 0) {
+      try {
+        const corps = (await res.json()) as { revalidated?: { tags?: unknown } };
+        const rendues = corps?.revalidated?.tags;
+        if (Array.isArray(rendues)) {
+          const manquantes = demandees.filter((t) => !rendues.includes(t));
+          if (manquantes.length > 0) {
+            const reason = `tags_non_invalidees:${manquantes.join(",")}`;
+            logRevalidateFailure(reason, input);
+            return { ok: false, reason };
+          }
+        }
+      } catch {
+        // Corps illisible : on ne sait pas, donc on ne dégrade pas. Le statut
+        // 200 reste le meilleur signal disponible.
+      }
+    }
+
     return { ok: true };
   } catch (err) {
     // Fix 2026-08-15 (D1) — timeout (AbortError 10 s) ou erreur réseau : même

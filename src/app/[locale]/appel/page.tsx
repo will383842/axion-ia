@@ -15,17 +15,30 @@ import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture"
 import { ArrowRight, Clock, Shield, CheckCircle, Calendar } from "lucide-react";
 
 /**
- * 15 minutes — c'est la fraîcheur des CRÉNEAUX affichés, pas celle du texte.
+ * 15 minutes — la fraîcheur des CRÉNEAUX, pas celle du texte. Aligné sur
+ * `SLOTS_REVALIDATE_SECONDS` (`src/server/calendly/availability.ts`) ; la valeur
+ * doit être un littéral, Next exige qu'elle soit analysable statiquement.
  *
- * Aligné sur `SLOTS_REVALIDATE_SECONDS` (`src/server/calendly/availability.ts`).
- * La valeur doit être écrite en littéral : Next exige qu'elle soit analysable
- * statiquement, donc l'importer ne marcherait pas.
+ * 🔴 CET EXPORT EST INERTE AUJOURD'HUI — rectifié le 2026-08-27. Le paragraphe
+ * retiré raisonnait sur une page prérendue qui n'existe pas en production.
  *
- * ⚠️ NE PAS remonter à 86400 en croyant économiser des régénérations. Hériter
- * de l'intervalle du `fetch` ne suffit pas ici : au build GitHub Actions le
- * jeton Calendly est absent, aucun appel n'a lieu, et la route conserverait son
- * intervalle d'origine — la page servirait alors le repli prérendu pendant
- * toute cette durée avant d'aller chercher le moindre créneau.
+ * Cette route est rendue DYNAMIQUEMENT, parce qu'elle `await` `searchParams`
+ * (extraction UTM, plus bas) — une API de temps de requête, qui sort la page du
+ * prérendu. Mesuré en production le 2026-08-27 :
+ * `Cache-Control: private, no-cache, no-store`, `cf-cache-status: BYPASS`,
+ * aucun `x-nextjs-cache`. Il n'y a donc AUCUNE entrée de page à revalider, et
+ * la seule fraîcheur réelle vient du cache de données du `fetch`, piloté par
+ * `CALENDLY_SLOTS_TAG` et par le chemin.
+ *
+ * ⚠️ ON LE GARDE QUAND MÊME, et c'est délibéré : il est inerte SOUS CONDITION.
+ * Le jour où quelqu'un déplace l'extraction UTM côté client, la page redevient
+ * prérendable et cet export reprend son sens — l'avoir retiré ferait alors
+ * servir un repli figé.
+ *
+ * ⚠️ RÈGLE D'ORDRE : tout lot qui touche ce fichier rejoue la mesure
+ * (`curl -I https://axion-ia.com/fr/appel`) AVANT de fusionner. La prémisse de
+ * l'invalidation des créneaux repose sur elle, et un changement de rendu la
+ * casserait sans qu'aucune gate ne le voie.
  */
 export const revalidate = 900;
 
