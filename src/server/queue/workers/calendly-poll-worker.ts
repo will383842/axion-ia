@@ -60,6 +60,7 @@
 import { Worker, type Job } from "bullmq";
 import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
 import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
+import { envoyerRappelsH1 } from "@/server/calendly/rappel-h1";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import { CALENDLY_SLOTS_TAG } from "@/server/calendly/availability";
 import { CALENDLY_SLOTS_PATHS } from "@/server/calendly/revalider-creneaux";
@@ -69,7 +70,7 @@ import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 export const CALENDLY_POLL_QUEUE_NAME = "calendly-poll";
 
 /** Les trois passes, à trois cadences différentes — voir l'en-tête. */
-export type CalendlyPollJobType = "discover" | "refresh" | "revalidate-slots";
+export type CalendlyPollJobType = "discover" | "refresh" | "revalidate-slots" | "rappel-h1";
 
 export interface CalendlyPollJobData {
   readonly type: CalendlyPollJobType;
@@ -121,6 +122,26 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
     return;
   }
 
+  if (job.data.type === "rappel-h1") {
+    const res = await envoyerRappelsH1();
+    // On ne journalise QUE ce qui s'est passe. Une ligne toutes les 5 minutes
+    // annoncant « 0 rappel » noierait les logs et rendrait invisible la seule
+    // qui compte.
+    if (res.envoyes > 0) console.warn(`[appel-rappel] ${res.envoyes} rappel(s) envoye(s)`);
+    if (res.echecs > 0) {
+      console.warn(
+        `[appel-rappel] ${res.echecs} mise(s) en file REFUSEE(s) — reessai au passage suivant`,
+      );
+    }
+    if (!res.ok) console.warn(`[appel-rappel] passage en echec : ${res.raison ?? "inconnu"}`);
+    if (res.plafondAtteint) {
+      console.error(
+        "[appel-rappel] PLAFOND ATTEINT — signe d'un emballement : le marqueur d'envoi n'est probablement plus pose",
+      );
+    }
+    return;
+  }
+
   if (job.data.type === "discover") {
     const res = await discoverNewCalendlyEvents();
     // 🔴 LE SIGNAL LE PLUS PRÉCOCE DONT ON DISPOSE, et il était jeté.
@@ -154,6 +175,33 @@ async function processJob(job: Job<CalendlyPollJobData>): Promise<void> {
     // et rendrait invisible la seule qui compte.
     if (res.created > 0) {
       console.warn(`[calendly-poll] ${res.created} réservation(s) découverte(s)`);
+    }
+    // 🔴 CE QUI RENDAIT UNE PANNE INVISIBLE. En régime normal, la profondeur de
+    // rattrapage vaut son minimum (120 min). Si elle grimpe, c'est que cette
+    // passe n'avait rien vu depuis longtemps — worker arrêté, base injoignable,
+    // ou simplement aucune réservation. Les trois se ressemblaient dans les
+    // journaux, et le premier est celui qui perd des rendez-vous.
+    //
+    // Le seuil est à 4 h et non au minimum : entre 2 et 4 h, l'élargissement est
+    // le fonctionnement NORMAL d'un lundi matin sans réservation du week-end.
+    // Alerter là-dessus apprendrait à ignorer la ligne.
+    //
+    // ⚠️ `undefined` = la passe a échoué avant de calculer sa fenêtre ; c'est
+    // `res.reason` qui parle alors, pas ce compteur. On ne le traite donc pas
+    // comme un zéro rassurant.
+    const rattrapage = res.rattrapageMinutes;
+    if (rattrapage !== undefined && rattrapage > 240) {
+      console.warn(
+        `[calendly-poll] rattrapage élargi à ${Math.round(rattrapage / 60)} h — ` +
+          `aucune réservation vue depuis ce délai. Normal si le flux est calme, ` +
+          `SIGNE D'ARRÊT si le worker a redémarré.`,
+      );
+    }
+    if (res.pagesTronquees) {
+      console.error(
+        "[calendly-poll] PAGINATION TRONQUÉE — des rendez-vous lointains n'ont pas été examinés. " +
+          "Augmenter MAX_PAGES ou resserrer l'horizon.",
+      );
     }
     if (!res.ok) {
       console.warn(`[calendly-poll] découverte en échec : ${res.reason ?? "inconnu"}`);

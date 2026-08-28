@@ -2,7 +2,7 @@
  * AuditMethodology — 4 étapes de la démarche Audit IA (Server Component).
  *
  * Sprint A · Phase 2 (Will 2026-05-25) — extrait depuis `src/app/[locale]/audit/page.tsx`
- * (l.486-527). Pipeline ProcessSteps horizontal : Cadrage 30 min → Investigation
+ * (l.486-527). Pipeline ProcessSteps horizontal : Cadrage 45 min → Investigation
  * terrain → Restitution chiffrée → Plan d'action. Universel — pas de villeContext.
  */
 
@@ -28,7 +28,7 @@ export function AuditMethodology({ isFr }: AuditMethodologyProps): ReactNode {
           steps={[
             {
               id: "step-1-cadrage",
-              title: isFr ? "Cadrage 30 min" : "30-min scoping",
+              title: isFr ? "Cadrage 45 min" : "45-min scoping",
               description: isFr
                 ? "Appel découverte gratuit. On cadre le périmètre et la date."
                 : "Free discovery call. We scope the perimeter and date.",

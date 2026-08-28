@@ -76,6 +76,9 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // fin. Même raisonnement que la convocation.
   "qualiopi-emargement-lien",
   "qualiopi-alerte-interne",
+  // Un rappel retenu en validation manque le rendez-vous qu il devait preparer :
+  // il part seul, exactement comme la convocation et le rappel J-7.
+  "appel-rappel",
 ] as const;
 
 /**
@@ -103,6 +106,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-emargement-lien": "Lien de signature de présence",
   "qualiopi-alerte-interne": "Alerte interne",
   "qualiopi-relance-impayee": "Relance d'impayé",
+  "appel-rappel": "Rappel avant un appel de découverte",
 };
 
 export function libelleTemplateEmail(template: string | null): string {

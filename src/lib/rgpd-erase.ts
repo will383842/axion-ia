@@ -27,7 +27,7 @@ import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
-const ERASED_PLACEHOLDER = "[erased-rgpd-art17]";
+export const ERASED_PLACEHOLDER = "[erased-rgpd-art17]";
 
 function hashEmail(email: string): string {
   const salt = process.env.IP_HASH_SALT ?? "axion-ia-rgpd-erase";
@@ -461,4 +461,94 @@ export async function eraseCoachingSignaturesForEmail(
   });
 
   return { anonymises: maj.count };
+}
+
+export interface EraseCalendlyResult {
+  readonly anonymized: number;
+}
+
+/**
+ * Anonymise les réservations d'appel d'une personne (art. 17).
+ *
+ * ## Le défaut que cette fonction ferme
+ *
+ * Mesuré le 2026-08-27. `calendly_events` porte `inviteeName`, `inviteeEmail`
+ * (en clair, indexé), `inviteePhone`, `location`, `notes` et `rawPayload` — qui
+ * contient les réponses libres du formulaire Calendly. La table n'apparaissait
+ * dans AUCUN des trois mécanismes : ni effacement, ni export, ni purge. Une
+ * personne qui exerçait son droit à l'effacement recevait une confirmation, et
+ * ses données de rendez-vous survivaient intactes.
+ *
+ * Contrairement aux candidatures ou aux demandes de podcast — dont l'adresse est
+ * chiffrée avec un IV aléatoire et exige un module dédié — `inviteeEmail` est en
+ * clair. L'omission n'avait aucune excuse technique.
+ *
+ * ## 🔴 POURQUOI ON ANONYMISE ET POURQUOI ON NE SUPPRIME PAS
+ *
+ * Un `DELETE` serait **recréé au passage suivant**. `discoverNewCalendlyEvents`
+ * balaie une fenêtre de [-2 h, +60 j] et dédoublonne sur `eventUri` : effacer la
+ * ligne, c'est la voir revenir dans la minute, avec les données en clair
+ * reprises chez Calendly. C'est pour cela que `eventUri` est le seul champ
+ * conservé tel quel — il est notre clé de dédoublonnage, et il n'identifie
+ * personne.
+ *
+ * ## 🔴 ET POURQUOI `rawPayload` DOIT ÊTRE ÉCRASÉ DANS LA MÊME INSTRUCTION
+ *
+ * C'est le piège de ce lot, et il est invisible à la lecture des colonnes.
+ * `enrichCalendlyEvent` ne réécrit PAS les champs déjà remplis — `setIfEmpty`
+ * n'écrit que sur `null`, donc les colonnes anonymisées seraient respectées.
+ * Mais il **remplace `rawPayload` en entier** à chaque passage, et le nom,
+ * l'adresse et le téléphone reviennent de Calendly, en clair. Le cron `refresh`
+ * repasse toutes les 10 minutes sur toute ligne encore `scheduled`. Et le
+ * commentaire de `enrich.ts` dit explicitement que `rawPayload` est absent du
+ * journal des champs modifiés : **le retour de la donnée ne produit ni trace,
+ * ni alerte.**
+ *
+ * Une anonymisation qui ne traite que les colonnes serait donc défaite en dix
+ * minutes, en silence. Deux verrous, tous deux nécessaires :
+ *
+ *   1. cette instruction écrase `rawPayload` par un marqueur `_erasedAt` ;
+ *   2. `refreshUpcomingCalendlyEvents` EXCLUT les lignes qui le portent
+ *      (`refresh.ts`) — sans quoi le marqueur serait écrasé au passage suivant.
+ *
+ * Les deux vivent dans le même lot, et le test `l-effacement-resiste-au-cron`
+ * rougit si l'un des deux disparaît.
+ *
+ * ⚠️ `_ipHash` est abandonné avec le reste, à dessein : c'est une empreinte de
+ * l'adresse IP de la personne, donc une donnée dérivée d'elle. Il servait au
+ * dédoublonnage anti-abus de `client-event` sur une fenêtre de 60 SECONDES —
+ * fenêtre depuis longtemps close pour toute ligne assez ancienne pour faire
+ * l'objet d'une demande d'effacement.
+ */
+export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseCalendlyResult> {
+  const hashedEmail = `erased:${hashEmail(email)}@erased.local`;
+
+  // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET
+  // sort de la fenêtre du cron au même instant. En deux temps, un passage de
+  // `refresh` glissé entre les deux réécrirait la charge brute.
+  const result = await prisma.calendlyEvent.updateMany({
+    where: { inviteeEmail: email },
+    data: {
+      inviteeName: ERASED_PLACEHOLDER,
+      inviteeEmail: hashedEmail,
+      inviteePhone: null,
+      location: null,
+      notes: null,
+      // Provenance : elle décrit le parcours d'une personne identifiée.
+      pageUrl: null,
+      utmSource: null,
+      utmCampaign: null,
+      utmMedium: null,
+      referrer: null,
+      // Les liens d'annulation et de report sont des URL-CAPACITÉS nominatives :
+      // elles permettent d'agir sur le rendez-vous de la personne sans aucune
+      // authentification. Elles partent avec le reste.
+      cancelUrl: null,
+      rescheduleUrl: null,
+      // Le marqueur qui tient le cron à distance — voir le bloc ci-dessus.
+      rawPayload: { _erasedAt: new Date().toISOString() } as never,
+    },
+  });
+
+  return { anonymized: result.count };
 }

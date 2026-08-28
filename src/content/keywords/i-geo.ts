@@ -400,11 +400,11 @@ export const KW_GEO_I: KeywordSeed[] = [
       h1: "Contacter Axion-IA pour une intervention sur site ou en distanciel",
       metaTitle: "Contact Axion-IA : intervention France | axion-ia.com",
       metaDescription:
-        "Axion-IA intervient sur site partout en France et en distanciel pour l'Europe. Premier échange gratuit de 30 minutes. Délai de réponse : sous 48h ouvrées.",
+        "Axion-IA intervient sur site partout en France et en distanciel pour l'Europe. Premier échange gratuit de 45 minutes. Délai de réponse : sous 48h ouvrées.",
       h2Variants: [
         "Zones d'intervention France et Europe",
         "Formats d'intervention : sur site, distanciel, hybride",
-        "Réserver un premier échange de 30 minutes",
+        "Réserver un premier échange de 45 minutes",
       ],
     },
     variables: { delai: "réponse sous 48h" },

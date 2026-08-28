@@ -27,6 +27,8 @@ export type EmailJobName =
   // `contact-confirmed`, qui sert déjà à huit flux différents.
   | "podcast-demande-recue"
   | "rappel-confirme"
+  // Rappel H-1 avant l appel de decouverte. Calendly gratuit n en envoie aucun.
+  | "appel-rappel"
   | "chatbot-demande-transmise"
   // Remplacent `contact-confirmed` sur deux flux ou il disait FAUX :
   // il promettait une reponse « sous 48 heures ouvrees » a un candidat

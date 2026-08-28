@@ -447,7 +447,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Échange préalable de 30 minutes" : "30-minute preliminary call"}
+        title={isFr ? "Échange préalable de 45 minutes" : "45-minute preliminary call"}
         description={
           isFr
             ? "On vous appelle, on comprend votre contexte et votre poste, on chiffre. Devis sous 48 h ouvrées. Aucun engagement avant signature."
