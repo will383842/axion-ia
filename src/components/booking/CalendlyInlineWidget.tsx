@@ -59,18 +59,13 @@ import { CalendlySlotPicker } from "./CalendlySlotPicker";
 // l'iframe, d'où l'ancien bug intermittent « il faut F5 »).
 
 import { CalendlyConsentGate } from "./CalendlyConsentGate";
+import { CALENDLY_BRAND } from "./calendly-brand";
 
 interface CalendlyInlineWidgetProps {
   readonly calendlyUrl: string | undefined;
   readonly isFr: boolean;
   readonly height?: number;
 }
-
-const CALENDLY_BRAND = {
-  primary: "c2410c",
-  text: "1c1917",
-  background: "fef3e6",
-} as const;
 
 function buildCalendlyUrl(baseUrl: string): string {
   const url = new URL(baseUrl);

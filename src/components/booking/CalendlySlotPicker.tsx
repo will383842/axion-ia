@@ -52,6 +52,7 @@
 
 import * as React from "react";
 import type { CalendlyAvailabilityDay } from "@/server/calendly/availability";
+import { avecCouleursAxion } from "./calendly-brand";
 
 interface CalendlySlotPickerProps {
   /** Duree reelle de l event-type, en minutes, telle que Calendly la connait. */
@@ -365,7 +366,7 @@ export function CalendlySlotPicker({ days, isFr, height, dureeMinutes }: Calendl
                     return (
                       <li key={slot.startIso}>
                         <a
-                          href={slot.schedulingUrl}
+                          href={avecCouleursAxion(slot.schedulingUrl)}
                           target="_blank"
                           rel="noopener noreferrer"
                           data-cta="appel_slot_pick"
