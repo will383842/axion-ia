@@ -264,8 +264,15 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     legalBasis: "6.1.b_contract",
     // `auto_signable_dashboard` = MÉCANISME (« DPA auto-signable »), pas
     // achèvement — même traitement que Cloudflare, Stripe et Sentry, dont le
-    // DPA s'accepte aussi au dashboard. Le geste restant de Will est tracé là
-    // où il doit l'être : ligne 16 de _AUDIT/DPA-REGISTER.md, « 🟡 à accepter ».
+    // DPA s'accepte aussi au dashboard.
+    //
+    // ✅ 2026-08-28 — WILL A ACCEPTÉ LE DPA sur calendly.com/dpa. La ligne 16 de
+    // `_AUDIT/DPA-REGISTER.md` passe de « 🟡 à accepter » à « ✅ DPA accepté ».
+    // Ce champ-ci ne bouge PAS : il nomme le mécanisme, qui reste le même
+    // qu'avant l'acceptation. C'est le registre qui porte l'achèvement, et lui
+    // seul — dupliquer l'état ici créerait deux dérivations d'un même fait, qui
+    // finissent toujours par se contredire.
+    //
     // NE PAS passer à "pending" : dans cette SSOT, "pending" n'est employé que
     // conjointement à `pending_activation`, or Calendly est bel et bien actif.
     dpaStatus: "auto_signable_dashboard",
