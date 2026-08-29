@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const RIOM_COPY: VilleCopy = {
   pitchFr:
-    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, PME du BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, PME du BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riom (63). Nous accompagnons tous types d'activités : administration sous-préfecture, PME tertiaires Clermont Métropole nord, acteurs tourisme patrimonial Renaissance, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riom (63). Nous accompagnons tous types d'activités : administration sous-préfecture, PME tertiaires Clermont Métropole nord, acteurs tourisme patrimonial Renaissance, agriculteurs Limagne, PME du BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riom (63). Nous accompagnons tous types d'activités : administration sous-préfecture, PME tertiaires Clermont Métropole nord, acteurs tourisme patrimonial Renaissance, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riom (63). Nous accompagnons tous types d'activités : administration sous-préfecture, PME tertiaires Clermont Métropole nord, acteurs tourisme patrimonial Renaissance, agriculteurs Limagne, PME du BTP, commerçants et services aux entreprises.",
   seoHook: "administration & tourisme patrimonial",
   ecosystemFr:
-    "Riom est la sous-préfecture du Puy-de-Dôme, ancienne capitale judiciaire Auvergne (patrimoine Renaissance, Sainte-Chapelle). Tissu administration, PME tertiaires, agriculture Limagne, tourisme patrimonial, TPE artisanat BTP, commerces.",
+    "Riom est la sous-préfecture du Puy-de-Dôme, ancienne capitale judiciaire Auvergne (patrimoine Renaissance, Sainte-Chapelle). Tissu administration, PME tertiaires, agriculture Limagne, tourisme patrimonial, PME du BTP, commerces.",
   ecosystemEn:
-    "Riom est la sous-préfecture du Puy-de-Dôme, ancienne capitale judiciaire Auvergne (patrimoine Renaissance, Sainte-Chapelle). Tissu administration, PME tertiaires, agriculture Limagne, tourisme patrimonial, TPE artisanat BTP, commerces.",
+    "Riom est la sous-préfecture du Puy-de-Dôme, ancienne capitale judiciaire Auvergne (patrimoine Renaissance, Sainte-Chapelle). Tissu administration, PME tertiaires, agriculture Limagne, tourisme patrimonial, PME du BTP, commerces.",
   distancesFr:
     "Clermont-Ferrand à 15 min. Aéroport Clermont-Auvergne à 10 min. Lyon à 2h. Vichy à 25 min. Volvic à 10 min.",
   distancesEn:
@@ -26,12 +26,12 @@ export const RIOM_COPY: VilleCopy = {
     "Tourisme patrimonial Renaissance",
     "Agriculture Limagne",
     "PME tertiaires Clermont nord",
-    "TPE artisanat BTP",
+    "PME du BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riom : diagnostic adapté à l'administration, PME tertiaires, acteurs tourisme Renaissance, agriculteurs Limagne, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Riom : diagnostic adapté à l'administration, PME tertiaires, acteurs tourisme Renaissance, agriculteurs Limagne, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Riom : diagnostic adapté à l'administration, PME tertiaires, acteurs tourisme Renaissance, agriculteurs Limagne, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Riom : diagnostic adapté à l'administration, PME tertiaires, acteurs tourisme Renaissance, agriculteurs Limagne, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Riom : formats adaptés à l'administration, site patrimonial, exploitation, bureau, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const RIOM_COPY: VilleCopy = {
       en: "Implémentation IA à Riom : automatisation flux administratifs, agents conversationnels visiteurs patrimoine multilingue, classification photos cultures Limagne, CRM augmentés.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Riom : sessions dans votre administration, site patrimonial, exploitation ou en visio. Administration, acteurs tourisme, agriculteurs, artisans, gérants TPE/PME riomois.",
-      en: "Coaching 1-to-1 à Riom : sessions dans votre administration, site patrimonial, exploitation ou en visio. Administration, acteurs tourisme, agriculteurs, artisans, gérants TPE/PME riomois.",
+      fr: "Coaching 1-to-1 à Riom : sessions dans votre administration, site patrimonial, exploitation ou en visio. Administration, acteurs tourisme, agriculteurs, artisans, gérants PME et ETI riomois.",
+      en: "Coaching 1-to-1 à Riom : sessions dans votre administration, site patrimonial, exploitation ou en visio. Administration, acteurs tourisme, agriculteurs, artisans, gérants PME et ETI riomois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const RIOM_COPY: VilleCopy = {
       a: "Oui, prédiction récoltes grandes cultures Limagne, classification photos cultures, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

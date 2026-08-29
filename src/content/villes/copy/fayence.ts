@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FAYENCE_COPY: VilleCopy = {
   pitchFr:
-    "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de TPE artisans, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de PME artisanales, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de TPE artisans, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de PME artisanales, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fayence (83). Nous accompagnons PME artisanales, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fayence (83). Nous accompagnons PME artisanales, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit sur place sur mesure.",
   seoHook: "tourisme rural & centre vol",
   ecosystemFr:
-    "Fayence est le chef-lieu du Pays de Fayence (9 communes), village perché provençal entre Var et Alpes-Maritimes. Centre de vol à voile mondialement reconnu, tourisme rural, oléiculture, viticulture, artisanat d'art. Tissu de TPE artisans, gîtes ruraux, restaurateurs et PME tourisme et services de l'arrière-pays.",
+    "Fayence est le chef-lieu du Pays de Fayence (9 communes), village perché provençal entre Var et Alpes-Maritimes. Centre de vol à voile mondialement reconnu, tourisme rural, oléiculture, viticulture, artisanat d'art. Tissu de PME artisanales, gîtes ruraux, restaurateurs et PME tourisme et services de l'arrière-pays.",
   ecosystemEn:
-    "Fayence est le chef-lieu du Pays de Fayence (9 communes), village perché provençal entre Var et Alpes-Maritimes. Centre de vol à voile mondialement reconnu, tourisme rural, oléiculture, viticulture, artisanat d'art. Tissu de TPE artisans, gîtes ruraux, restaurateurs et PME tourisme et services de l'arrière-pays.",
+    "Fayence est le chef-lieu du Pays de Fayence (9 communes), village perché provençal entre Var et Alpes-Maritimes. Centre de vol à voile mondialement reconnu, tourisme rural, oléiculture, viticulture, artisanat d'art. Tissu de PME artisanales, gîtes ruraux, restaurateurs et PME tourisme et services de l'arrière-pays.",
   distancesFr:
     "Cannes à 45 min par D562. Draguignan à 35 min. Grasse à 35 min. Gare TGV Saint-Raphaël à 45 min. Aéroport Nice Côte d'Azur à 55 min. Aéroport Toulon-Hyères à 1 h 15.",
   distancesEn:
@@ -42,8 +42,8 @@ export const FAYENCE_COPY: VilleCopy = {
       en: "Implémentation IA à Fayence : gestion réservations gîtes, marketing IA tourisme rural multilingue, vente directe oléiculture, agents conversationnels artisanat d'art, automatisation administrative. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fayence : sessions pour gérants de gîtes, oléiculteurs, artisans et dirigeants TPE/PME du Pays de Fayence souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Fayence : sessions pour gérants de gîtes, oléiculteurs, artisans et dirigeants TPE/PME du Pays de Fayence souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Fayence : sessions pour gérants de gîtes, oléiculteurs, artisans et dirigeants de PME et d'ETI du Pays de Fayence souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Fayence : sessions pour gérants de gîtes, oléiculteurs, artisans et dirigeants de PME et d'ETI du Pays de Fayence souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -64,8 +64,8 @@ export const FAYENCE_COPY: VilleCopy = {
       a: "Oui, nous implémentons des solutions IA pour artisans d'art : génération de visuels produits, marketing local et e-commerce, agents IA renseignement client multilingue, gestion stocks et commandes, automatisation administrative.",
     },
     {
-      q: "Comment l'IA peut-elle aider une TPE du tourisme rural à Fayence ?",
-      a: "L'IA aide les TPE locales : agents conversationnels multilingues 24/7, automatisation des réservations, marketing géolocalisé, génération de contenu touristique, traduction automatique avis, gestion administrative et fiscalité.",
+      q: "Comment l'IA peut-elle aider une PME du tourisme rural à Fayence ?",
+      a: "L'IA aide les PME locales : agents conversationnels multilingues 24/7, automatisation des réservations, marketing géolocalisé, génération de contenu touristique, traduction automatique avis, gestion administrative et fiscalité.",
     },
   ],
 };

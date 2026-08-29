@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPIGNEULLES_COPY: VilleCopy = {
   pitchFr:
-    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA collabore avec toutes les structures locales.",
+    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de PME et ETI industrie, logistique, commerce, artisanat et services. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA collabore avec toutes les structures locales.",
+    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de PME et ETI industrie, logistique, commerce, artisanat et services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champigneulles (54). Nous accompagnons PME et ETI : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champigneulles (54). Nous accompagnons PME et ETI : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit sur place sur mesure.",
   seoHook: "agglomération nancy",
   ecosystemFr:
     "Champigneulles est situé en première couronne nord de Nancy, sur l'axe Nancy-Metz. La ville est connue pour sa brasserie historique (Brasseries de Champigneulles, l'une des plus grandes de France) et ses zones d'activités industrielles et logistiques. L'économie locale repose sur l'industrie agroalimentaire, la logistique, l'artisanat BTP, le commerce et les services. Intégration à la Métropole du Grand Nancy.",
@@ -34,16 +34,16 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
       en: "Audit IA à Champigneulles : diagnostic adapté aux industriels, logisticiens, artisans, commerçants et prestataires de services de la périphérie nord de Nancy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Champigneulles : formats adaptés à l'industrie, à la PME logistique, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Champigneulles : formats adaptés à l'industrie, à la PME logistique, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Champigneulles : formats adaptés à l'industrie, à la PME logistique, au commerce ou à la PME artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      en: "Interventions IA sur site à Champigneulles : formats adaptés à l'industrie, à la PME logistique, au commerce ou à la PME artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
       fr: "Implémentation IA à Champigneulles : optimisation production agroalimentaire, prévision logistique, automatisation stocks, agents conversationnels relation client B2B, OCR documents industriels et douaniers.",
       en: "Implémentation IA à Champigneulles : optimisation production agroalimentaire, prévision logistique, automatisation stocks, agents conversationnels relation client B2B, OCR documents industriels et douaniers.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Champigneulles : sessions dans votre usine, entrepôt, atelier ou en visio. Dirigeants TPE/PME de la périphérie nancéienne souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Champigneulles : sessions dans votre usine, entrepôt, atelier ou en visio. Dirigeants TPE/PME de la périphérie nancéienne souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Champigneulles : sessions dans votre usine, entrepôt, atelier ou en visio. Dirigeants PME et ETI de la périphérie nancéienne souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Champigneulles : sessions dans votre usine, entrepôt, atelier ou en visio. Dirigeants PME et ETI de la périphérie nancéienne souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,14 +53,14 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Champigneulles  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Champigneulles et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre industrie, atelier ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Champigneulles et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre industrie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels et logisticiens de Champigneulles ?",
       a: "Oui, nous accompagnons les industriels agroalimentaires, brasseries, transformateurs et logisticiens des zones d'activités de Champigneulles. Cas IA typiques : optimisation production, prévision flux, traçabilité, maintenance prédictive et automatisation reporting.",
     },
     {
-      q: "L'IA peut-elle aider les TPE et artisans de la périphérie nancéienne ?",
+      q: "L'IA peut-elle aider les PME et artisans de la périphérie nancéienne ?",
       a: "Oui, nous accompagnons les artisans BTP, commerçants et prestataires de services de Champigneulles sur des cas concrets : devis automatisés, gestion clients, chatbots SAV, automatisation administrative et veille concurrentielle locale.",
     },
     {

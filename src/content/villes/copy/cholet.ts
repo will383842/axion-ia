@@ -8,13 +8,13 @@ import type { VilleCopy } from "./types";
 
 export const CHOLET_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME du Choletais dans l'automatisation de leurs opérations. Sous-préfecture de Maine-et-Loire (54 404 habitants en 2023, deuxième ville du département après Angers), Cholet rassemble un tissu industriel diversifié : chaussure, textile (mouchoirs, prêt-à-porter), électronique, équipement automobile, agroalimentaire. Notre équipe se déplace sur site pour cadrer chaque chantier IA avec les dirigeants locaux, dans une logique de code custom — sans no-code — et de mise en production rapide.",
+    "Axion-IA accompagne les PME et ETI du Choletais dans l'automatisation de leurs opérations. Sous-préfecture de Maine-et-Loire (54 404 habitants en 2023, deuxième ville du département après Angers), Cholet rassemble un tissu industriel diversifié : chaussure, textile (mouchoirs, prêt-à-porter), électronique, équipement automobile, agroalimentaire. Notre équipe se déplace sur site pour cadrer chaque chantier IA avec les dirigeants locaux, dans une logique de code custom — sans no-code — et de mise en production rapide.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME du Choletais dans l'automatisation de leurs opérations. Sous-préfecture de Maine-et-Loire (54 404 habitants en 2023, deuxième ville du département après Angers), Cholet rassemble un tissu industriel diversifié : chaussure, textile (mouchoirs, prêt-à-porter), électronique, équipement automobile, agroalimentaire. Notre équipe se déplace sur site pour cadrer chaque chantier IA avec les dirigeants locaux, dans une logique de code custom — sans no-code — et de mise en production rapide.",
+    "Axion-IA accompagne les PME et ETI du Choletais dans l'automatisation de leurs opérations. Sous-préfecture de Maine-et-Loire (54 404 habitants en 2023, deuxième ville du département après Angers), Cholet rassemble un tissu industriel diversifié : chaussure, textile (mouchoirs, prêt-à-porter), électronique, équipement automobile, agroalimentaire. Notre équipe se déplace sur site pour cadrer chaque chantier IA avec les dirigeants locaux, dans une logique de code custom — sans no-code — et de mise en production rapide.",
   directAnswerFr:
-    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les TPE, PME et, en complément, les ETI du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
+    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les PME, ETI et, en complément, les grands groupes du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
   directAnswerEn:
-    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les TPE, PME et, en complément, les ETI du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
+    "Axion-IA intervient à Cholet (Maine-et-Loire, Pays de la Loire) pour les PME, ETI et, en complément, les grands groupes du deuxième bassin d'emploi régional. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions ciblées (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour les secteurs historiques du Choletais : industrie de la chaussure, textile-habillement, électronique, équipement automobile, agroalimentaire. Nos consultants se déplacent sur site depuis Paris via l'A87 ou les lignes SNCF Cholet-Nantes et Cholet-Angers, dans le respect strict du RGPD et avec un code applicatif livré au client.",
   seoHook: "chaussure, textile & équipement automobile",
   ecosystemFr:
     "Le Choletais, situé aux confins du Maine-et-Loire, de la Vendée, de la Loire-Atlantique et des Deux-Sèvres, constitue un bassin industriel dense. Historiquement spécialisé dans le mouchoir et le tissage, il s'est diversifié vers la chaussure, l'électronique, l'équipement automobile et l'agroalimentaire. L'A87 et deux liaisons SNCF (vers Nantes et Angers) structurent les flux logistiques de ce deuxième bassin d'emploi des Pays de la Loire.",
@@ -46,8 +46,8 @@ export const CHOLET_COPY: VilleCopy = {
       en: "Implémentation IA sur mesure à Cholet pour les PME industrielles du Choletais : intégration ERP, suivi production, prévision de la demande — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching un-à-un d'un dirigeant de TPE-PME choletais pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
-      en: "Coaching un-à-un d'un dirigeant de TPE-PME choletais pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      fr: "Coaching un-à-un d'un dirigeant de PME et ETI choletais pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
+      en: "Coaching un-à-un d'un dirigeant de PME et ETI choletais pour identifier les premiers chantiers IA réalistes — dès {{price:intervention-dirigeants|flat}}, sessions sur site ou visio.",
     },
   },
   services: {
@@ -89,12 +89,6 @@ export const CHOLET_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté IA",
-            detail:
-              "Pour artisans, façonniers chaussure/textile, commerces et indépendants du Choletais : site vitrine ou boutique e-commerce mobile-first, fiches produit assistées par IA, chatbot simple. Devis à partir de 24-48 h selon la complexité.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme e-commerce / SaaS sur mesure",
             detail:
@@ -116,7 +110,7 @@ export const CHOLET_COPY: VilleCopy = {
         faq: [
           {
             q: "Pouvez-vous concevoir un site e-commerce omnicanal comme ceux du Groupe Éram ?",
-            a: "Oui. Cholet abrite le siège du Groupe Éram, qui opère dix sites e-commerce (Éram, Bocage, Gémo, TBS, Mellow Yellow…) et un OMS omnicanal. Nous construisons des plateformes de cette nature à l'échelle d'une TPE, PME ou ETI : e-commerce mobile-first, gestion de catalogue multi-marques (PIM), recherche et recommandation augmentées par l'IA, et intégration aux systèmes de stock et de logistique (click-and-collect, ship-from-store). Le code est custom et livré au client, sans dépendance éditeur.",
+            a: "Oui. Cholet abrite le siège du Groupe Éram, qui opère dix sites e-commerce (Éram, Bocage, Gémo, TBS, Mellow Yellow…) et un OMS omnicanal. Nous construisons des plateformes de cette nature à l'échelle d'une PME, ETI ou grands groupes : e-commerce mobile-first, gestion de catalogue multi-marques (PIM), recherche et recommandation augmentées par l'IA, et intégration aux systèmes de stock et de logistique (click-and-collect, ship-from-store). Le code est custom et livré au client, sans dépendance éditeur.",
           },
           {
             q: "Travaillez-vous avec les industriels du Choletais comme Michelin, Thales ou Jeanneau ?",
@@ -174,12 +168,6 @@ export const CHOLET_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential AI-augmented e-commerce",
-            detail:
-              "For Choletais craftspeople, footwear/textile makers, shops and freelancers: mobile-first showcase or e-commerce store, AI-assisted product sheets, simple chatbot. Quote within 24-48 h depending on complexity.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom e-commerce / SaaS platform",

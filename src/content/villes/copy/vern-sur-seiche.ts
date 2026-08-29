@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VERN_SUR_SEICHE_COPY: VilleCopy = {
   pitchFr:
-    "Vern-sur-Seiche (35), commune résidentielle du sud-est de Rennes en Ille-et-Vilaine, bénéficie de la proximité immédiate de la métropole rennaise. TPE et PME tertiaires, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels, agences immobilières. Axion-IA couvre les activités professionnelles du bassin.",
+    "Vern-sur-Seiche (35), commune résidentielle du sud-est de Rennes en Ille-et-Vilaine, bénéficie de la proximité immédiate de la métropole rennaise. PME et ETI tertiaires, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels, agences immobilières. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Vern-sur-Seiche (35), commune résidentielle du sud-est de Rennes en Ille-et-Vilaine, bénéficie de la proximité immédiate de la métropole rennaise. TPE et PME tertiaires, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels, agences immobilières. Axion-IA couvre les activités professionnelles du bassin.",
+    "Vern-sur-Seiche (35), commune résidentielle du sud-est de Rennes en Ille-et-Vilaine, bénéficie de la proximité immédiate de la métropole rennaise. PME et ETI tertiaires, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels, agences immobilières. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vern-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vern-sur-Seiche (35). Nous accompagnons PME et ETI : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vern-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vern-sur-Seiche (35). Nous accompagnons PME et ETI : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit sur place sur mesure.",
   seoHook: "services tertiaires & artisanat bâtiment",
   ecosystemFr:
-    "Vern-sur-Seiche est une commune résidentielle du sud-est de Rennes, en Ille-et-Vilaine, intégrée à la métropole rennaise. Tissu TPE/PME : tertiaire de proximité, artisanat du bâtiment, commerces et services, professions libérales et de santé, sous-traitance industrielle, agences immobilières.",
+    "Vern-sur-Seiche est une commune résidentielle du sud-est de Rennes, en Ille-et-Vilaine, intégrée à la métropole rennaise. Tissu PME et ETI : tertiaire de proximité, artisanat du bâtiment, commerces et services, professions libérales et de santé, sous-traitance industrielle, agences immobilières.",
   ecosystemEn:
-    "Vern-sur-Seiche est une commune résidentielle du sud-est de Rennes, en Ille-et-Vilaine, intégrée à la métropole rennaise. Tissu TPE/PME : tertiaire de proximité, artisanat du bâtiment, commerces et services, professions libérales et de santé, sous-traitance industrielle, agences immobilières.",
+    "Vern-sur-Seiche est une commune résidentielle du sud-est de Rennes, en Ille-et-Vilaine, intégrée à la métropole rennaise. Tissu PME et ETI : tertiaire de proximité, artisanat du bâtiment, commerces et services, professions libérales et de santé, sous-traitance industrielle, agences immobilières.",
   distancesFr:
     "Rennes centre à 15 min en voiture. Gare TGV Rennes accessible en 20 min (Paris en 1 h 25 supplémentaires). Aéroport Rennes-Saint-Jacques à 15 min. Rocade de Rennes à 5 min, axe RN999 (Rennes-Châteaubriant) à proximité.",
   distancesEn:
@@ -30,8 +30,8 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vern-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, professions libérales et de santé, sous-traitants industriels. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vern-sur-Seiche : diagnostic adapté aux TPE tertiaires périurbaines, artisans, commerces de proximité, professions libérales et de santé, sous-traitants industriels. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vern-sur-Seiche : diagnostic adapté aux PME tertiaires périurbaines, artisans, commerces de proximité, professions libérales et de santé, sous-traitants industriels. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vern-sur-Seiche : diagnostic adapté aux PME tertiaires périurbaines, artisans, commerces de proximité, professions libérales et de santé, sous-traitants industriels. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vern-sur-Seiche : formats adaptés bureau tertiaire, chantier artisan, commerce de proximité, cabinet libéral ou atelier sous-traitance. Équipes formées à l'autonomie sur les outils IA.",
@@ -42,8 +42,8 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
       en: "Implémentation IA à Vern-sur-Seiche : CRM augmenté tertiaire, devis automatisés artisans, gestion stocks commerces, prise de rendez-vous santé, suivi production sous-traitants, gestion annonces immobilières.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vern-sur-Seiche : sessions au bureau, sur chantier, en cabinet ou en visio. Dirigeants TPE/PME tertiaires, artisans, commerçants, professions libérales et de santé, sous-traitants industriels.",
-      en: "Coaching 1-to-1 à Vern-sur-Seiche : sessions au bureau, sur chantier, en cabinet ou en visio. Dirigeants TPE/PME tertiaires, artisans, commerçants, professions libérales et de santé, sous-traitants industriels.",
+      fr: "Coaching 1-to-1 à Vern-sur-Seiche : sessions au bureau, sur chantier, en cabinet ou en visio. Dirigeants PME et ETI tertiaires, artisans, commerçants, professions libérales et de santé, sous-traitants industriels.",
+      en: "Coaching 1-to-1 à Vern-sur-Seiche : sessions au bureau, sur chantier, en cabinet ou en visio. Dirigeants PME et ETI tertiaires, artisans, commerçants, professions libérales et de santé, sous-traitants industriels.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Vern-sur-Seiche  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE tertiaires, artisans et commerces de proximité du sud-est rennais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME tertiaires, artisans et commerces de proximité du sud-est rennais.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et de santé de Vern-sur-Seiche ?",

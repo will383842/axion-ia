@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRIANCON_COPY: VilleCopy = {
   pitchFr:
-    "Briançon (05), sous-préfecture des Hautes-Alpes, est la plus haute ville de France (1 326 m) avec ses fortifications Vauban classées UNESCO. Tissu TPE artisans, PME tourisme/ski (Serre Chevalier), commerçants, professionnels de santé montagne et services. Axion-IA y intervient pour tous types d'activités du Briançonnais.",
+    "Briançon (05), sous-préfecture des Hautes-Alpes, est la plus haute ville de France (1 326 m) avec ses fortifications Vauban classées UNESCO. Tissu PME artisanales, PME tourisme/ski (Serre Chevalier), commerçants, professionnels de santé montagne et services. Axion-IA y intervient pour tous types d'activités du Briançonnais.",
   pitchEn:
-    "Briançon (05), sous-préfecture des Hautes-Alpes, est la plus haute ville de France (1 326 m) avec ses fortifications Vauban classées UNESCO. Tissu TPE artisans, PME tourisme/ski (Serre Chevalier), commerçants, professionnels de santé montagne et services. Axion-IA y intervient pour tous types d'activités du Briançonnais.",
+    "Briançon (05), sous-préfecture des Hautes-Alpes, est la plus haute ville de France (1 326 m) avec ses fortifications Vauban classées UNESCO. Tissu PME artisanales, PME tourisme/ski (Serre Chevalier), commerçants, professionnels de santé montagne et services. Axion-IA y intervient pour tous types d'activités du Briançonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Briançon (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et stations de ski (Serre Chevalier, Montgenèvre), commerçants, hébergeurs, professionnels de santé montagne, indépendants et services aux entreprises du Briançonnais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Briançon (05). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et stations de ski (Serre Chevalier, Montgenèvre), commerçants, hébergeurs, professionnels de santé montagne, indépendants et services aux entreprises du Briançonnais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Briançon (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et stations de ski (Serre Chevalier, Montgenèvre), commerçants, hébergeurs, professionnels de santé montagne, indépendants et services aux entreprises du Briançonnais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Briançon (05). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et stations de ski (Serre Chevalier, Montgenèvre), commerçants, hébergeurs, professionnels de santé montagne, indépendants et services aux entreprises du Briançonnais.",
   seoHook: "tourisme ski & hôtellerie hébergement",
   ecosystemFr:
-    "Briançon est sous-préfecture des Hautes-Alpes (~11 400 hab), plus haute ville de France à 1 326 m d'altitude. Fortifications Vauban classées UNESCO (cité haute). Station Serre Chevalier (domaine 250 km pistes) et proximité Montgenèvre. Économie dominée par le tourisme hivernal/estival, PME hébergement/restauration, TPE artisans BTP montagne, commerces et centre hospitalier alpin.",
+    "Briançon est sous-préfecture des Hautes-Alpes (~11 400 hab), plus haute ville de France à 1 326 m d'altitude. Fortifications Vauban classées UNESCO (cité haute). Station Serre Chevalier (domaine 250 km pistes) et proximité Montgenèvre. Économie dominée par le tourisme hivernal/estival, PME hébergement/restauration, PME du BTP montagne, commerces et centre hospitalier alpin.",
   ecosystemEn:
-    "Briançon est sous-préfecture des Hautes-Alpes (~11 400 hab), plus haute ville de France à 1 326 m d'altitude. Fortifications Vauban classées UNESCO (cité haute). Station Serre Chevalier (domaine 250 km pistes) et proximité Montgenèvre. Économie dominée par le tourisme hivernal/estival, PME hébergement/restauration, TPE artisans BTP montagne, commerces et centre hospitalier alpin.",
+    "Briançon est sous-préfecture des Hautes-Alpes (~11 400 hab), plus haute ville de France à 1 326 m d'altitude. Fortifications Vauban classées UNESCO (cité haute). Station Serre Chevalier (domaine 250 km pistes) et proximité Montgenèvre. Économie dominée par le tourisme hivernal/estival, PME hébergement/restauration, PME du BTP montagne, commerces et centre hospitalier alpin.",
   distancesFr:
     "Gare Briançon (terminus TER Marseille-Briançon via Gap, ~4h30 Marseille). Gap à 1h15 sud. Col du Montgenèvre vers Italie (Turin 1h30). Grenoble à 2h ouest (col du Lautaret). Aéroport Turin-Caselle à 1h45.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BRIANCON_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme & ski (Serre Chevalier, Montgenèvre)",
     "Hôtellerie & hébergement montagne",
-    "TPE artisanat BTP montagne",
+    "PME du BTP montagne",
     "Santé & centre hospitalier alpin",
     "Commerce de proximité & patrimoine Vauban",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Briançon : diagnostic adapté aux PME artisanales, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Briançon : diagnostic adapté aux PME artisanales, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Briançon : formats adaptés aux hébergements montagne, gestionnaires de station, commerces ou artisans BTP altitude. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const BRIANCON_COPY: VilleCopy = {
       en: "Implémentation IA à Briançon : agents conversationnels réservation station, prédiction fréquentation domaine skiable, automatisation gestion hébergements saisonniers, classification photos patrimoine Vauban.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Briançon : sessions dans votre hébergement, commerce ou en visio. Dirigeants TPE/PME du Briançonnais souhaitant intégrer l'IA dans leur activité touristique ou montagnarde.",
-      en: "Coaching 1-to-1 à Briançon : sessions dans votre hébergement, commerce ou en visio. Dirigeants TPE/PME du Briançonnais souhaitant intégrer l'IA dans leur activité touristique ou montagnarde.",
+      fr: "Coaching 1-to-1 à Briançon : sessions dans votre hébergement, commerce ou en visio. Dirigeants PME et ETI du Briançonnais souhaitant intégrer l'IA dans leur activité touristique ou montagnarde.",
+      en: "Coaching 1-to-1 à Briançon : sessions dans votre hébergement, commerce ou en visio. Dirigeants PME et ETI du Briançonnais souhaitant intégrer l'IA dans leur activité touristique ou montagnarde.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const BRIANCON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Briançon  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME du Briançonnais. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME artisanales, hébergeurs et PME du Briançonnais. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Briançon en altitude ?",

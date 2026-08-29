@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AUTERIVE_COPY: VilleCopy = {
   pitchFr:
-    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud de la Haute-Garonne.",
+    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu PME artisanales, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud de la Haute-Garonne.",
   pitchEn:
-    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud de la Haute-Garonne.",
+    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu PME artisanales, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auterive (31). Nous accompagnons PME artisanales, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auterive (31). Nous accompagnons PME artisanales, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit sur place sur mesure.",
   seoHook: "industrie fabrication & agroalimentaire",
   ecosystemFr:
     "Auterive est un bourg structurant du sud de la Haute-Garonne, sur les bords de l'Ariège. PME industrielles, artisans BTP, entreprises agroalimentaires, commerces de centre-ville, professions libérales. Zone d'activités en développement sur l'axe Toulouse-Pamiers.",
@@ -30,8 +30,8 @@ export const AUTERIVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auterive : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Auterive : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Auterive : diagnostic adapté aux PME artisanales, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Auterive : diagnostic adapté aux PME artisanales, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auterive : formats adaptés à l'atelier industriel, à l'exploitation agroalimentaire, au commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const AUTERIVE_COPY: VilleCopy = {
       en: "Implémentation IA à Auterive : automatisation contrôle qualité, gestion stocks agroalimentaire, classification documents, optimisation logistique pour PME du sud Toulouse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Auterive : sessions dirigeants TPE artisans, gérants PME industrielles et agroalimentaires du sud Haute-Garonne.",
-      en: "Coaching 1-to-1 à Auterive : sessions dirigeants TPE artisans, gérants PME industrielles et agroalimentaires du sud Haute-Garonne.",
+      fr: "Coaching 1-to-1 à Auterive : sessions dirigeants PME artisanales, gérants PME industrielles et agroalimentaires du sud Haute-Garonne.",
+      en: "Coaching 1-to-1 à Auterive : sessions dirigeants PME artisanales, gérants PME industrielles et agroalimentaires du sud Haute-Garonne.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const AUTERIVE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Auterive  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME industrielles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME industrielles, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "L'IA peut-elle aider une PME agroalimentaire à Auterive ?",

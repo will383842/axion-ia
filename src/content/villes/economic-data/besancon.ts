@@ -367,7 +367,7 @@ export const BESANCON_ECONOMIC_DATA: VilleEconomicData = {
   // structurellement non applicable — exempté du scoring via notApplicableFields.
   // Mention factuelle dans specificitesLocales pour contexte éditorial.
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : Besançon héberge l'écosystème horloger franc-comtois
   // (Yema, Pequignet, Lip via reprises) mais les labels EPV individuels

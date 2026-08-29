@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, TPE artisans BTP, commerces. Axion-IA collabore avec toutes les structures locales.",
+    "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, PME du BTP, commerces. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, TPE artisans BTP, commerces. Axion-IA collabore avec toutes les structures locales.",
+    "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, PME du BTP, commerces. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, PME du BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, PME du BTP, commerçants et services aux entreprises.",
   seoHook: "tourisme thermal & hôtellerie golf",
   ecosystemFr:
-    "Divonne-les-Bains est une station thermale historique du pays de Gex avec casino, à la frontière suisse (vue lac Léman et Mont-Blanc). Tissu tourisme thermal haut de gamme (thermes, hôtellerie, casino, golf), économie frontalière Genève, PME tertiaires, TPE artisanat BTP, commerces.",
+    "Divonne-les-Bains est une station thermale historique du pays de Gex avec casino, à la frontière suisse (vue lac Léman et Mont-Blanc). Tissu tourisme thermal haut de gamme (thermes, hôtellerie, casino, golf), économie frontalière Genève, PME tertiaires, PME du BTP, commerces.",
   ecosystemEn:
-    "Divonne-les-Bains est une station thermale historique du pays de Gex avec casino, à la frontière suisse (vue lac Léman et Mont-Blanc). Tissu tourisme thermal haut de gamme (thermes, hôtellerie, casino, golf), économie frontalière Genève, PME tertiaires, TPE artisanat BTP, commerces.",
+    "Divonne-les-Bains est une station thermale historique du pays de Gex avec casino, à la frontière suisse (vue lac Léman et Mont-Blanc). Tissu tourisme thermal haut de gamme (thermes, hôtellerie, casino, golf), économie frontalière Genève, PME tertiaires, PME du BTP, commerces.",
   distancesFr:
     "Genève centre à 20 min. Aéroport Genève-Cointrin à 25 min. Lyon centre à 1h40. Gex à 15 min. Nyon (Suisse) à 10 min.",
   distancesEn:
@@ -26,12 +26,12 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
     "Hôtellerie & golf",
     "Économie frontalière Genève",
     "PME tertiaires pays de Gex",
-    "TPE artisanat BTP",
+    "PME du BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Divonne-les-Bains : formats adaptés à l'hôtel thermal, casino, golf, bureau. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
       en: "Implémentation IA à Divonne-les-Bains : agents conversationnels curistes/golfeurs multilingue FR/EN/DE, automatisation réservations thermes/casino/golf, classification feedback haut de gamme.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Divonne-les-Bains : sessions dans votre hôtel, casino, golf ou en visio. Acteurs tourisme thermal, hôteliers, dirigeants casino, gérants TPE/PME divonnais.",
-      en: "Coaching 1-to-1 à Divonne-les-Bains : sessions dans votre hôtel, casino, golf ou en visio. Acteurs tourisme thermal, hôteliers, dirigeants casino, gérants TPE/PME divonnais.",
+      fr: "Coaching 1-to-1 à Divonne-les-Bains : sessions dans votre hôtel, casino, golf ou en visio. Acteurs tourisme thermal, hôteliers, dirigeants casino, gérants PME et ETI divonnais.",
+      en: "Coaching 1-to-1 à Divonne-les-Bains : sessions dans votre hôtel, casino, golf ou en visio. Acteurs tourisme thermal, hôteliers, dirigeants casino, gérants PME et ETI divonnais.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
       a: "Oui, agents conversationnels multilingue, automatisation workflow transfrontalier, classification documents multi-juridiction.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

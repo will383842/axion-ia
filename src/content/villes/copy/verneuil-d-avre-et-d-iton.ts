@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
   pitchFr:
-    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
+    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu PME artisanales, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
+    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu PME artisanales, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verneuil d'Avre et d'Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et élevage Perche-Ouche, commerces centre médiéval, professions libérales, indépendants et services aux entreprises du sud de l'Eure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verneuil d'Avre et d'Iton (27). Nous accompagnons tous types d'activités : PME artisanales, PME agriculture et élevage Perche-Ouche, commerces centre médiéval, professions libérales, indépendants et services aux entreprises du sud de l'Eure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verneuil d'Avre et d'Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et élevage Perche-Ouche, commerces centre médiéval, professions libérales, indépendants et services aux entreprises du sud de l'Eure.",
-  seoHook: "TPE & PME Eure",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verneuil d'Avre et d'Iton (27). Nous accompagnons tous types d'activités : PME artisanales, PME agriculture et élevage Perche-Ouche, commerces centre médiéval, professions libérales, indépendants et services aux entreprises du sud de l'Eure.",
+  seoHook: "PME & PME Eure",
   ecosystemFr:
     "Verneuil d'Avre et d'Iton est une commune nouvelle de l'Eure issue de la fusion de Verneuil-sur-Avre et communes voisines, aux confins du Perche et du Pays d'Ouche. Riche patrimoine médiéval (tour de la Madeleine, église Notre-Dame, maisons à colombages). Économie portée par l'agriculture, l'élevage, l'artisanat, les commerces et les services.",
   ecosystemEn:
@@ -25,13 +25,13 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
     "Agriculture et élevage Perche-Ouche",
     "Agroalimentaire et produits du terroir",
     "Commerce de centre-ville et artisanat",
-    "TPE BTP et rénovation patrimoine bâti",
+    "PME BTP et rénovation patrimoine bâti",
     "Services aux entreprises et professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux PME artisanales, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux PME artisanales, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verneuil d'Avre et d'Iton : formats adaptés à l'exploitation agricole, l'atelier, le commerce, le cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
       en: "Implémentation IA à Verneuil d'Avre et d'Iton : agriculture de précision Perche, traçabilité élevage, catalogage patrimoine, automatisation comptabilité. Commune nouvelle sud Eure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Verneuil d'Avre et d'Iton : sessions dans votre exploitation, atelier, boutique ou en visio. Dirigeants TPE/PME agriculture, élevage, artisans, commerçants Perche-Ouche.",
-      en: "Coaching 1-to-1 à Verneuil d'Avre et d'Iton : sessions dans votre exploitation, atelier, boutique ou en visio. Dirigeants TPE/PME agriculture, élevage, artisans, commerçants Perche-Ouche.",
+      fr: "Coaching 1-to-1 à Verneuil d'Avre et d'Iton : sessions dans votre exploitation, atelier, boutique ou en visio. Dirigeants PME et ETI agriculture, élevage, artisans, commerçants Perche-Ouche.",
+      en: "Coaching 1-to-1 à Verneuil d'Avre et d'Iton : sessions dans votre exploitation, atelier, boutique ou en visio. Dirigeants PME et ETI agriculture, élevage, artisans, commerçants Perche-Ouche.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP spécialisés dans la rénovation du patrimoine à Verneuil sur leurs cas IA : automatisation devis, classification photos chantier, planning travaux, gestion sous-traitants, suivi réglementaire.",
     },
     {
-      q: "Quels services pour les TPE et commerçants de Verneuil ?",
-      a: "Pour les TPE et commerçants à Verneuil d'Avre et d'Iton, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, chatbot accueil, automatisation facturation, agents IA prise de RDV.",
+      q: "Quels services pour les PME et commerçants de Verneuil ?",
+      a: "Pour les PME et commerçants à Verneuil d'Avre et d'Iton, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, chatbot accueil, automatisation facturation, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",

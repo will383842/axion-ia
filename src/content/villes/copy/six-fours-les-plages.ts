@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
   pitchFr:
-    "Six-Fours-les-Plages (83), 37 109 habitants, 7ᵉ ville du Var, station balnéaire de la Métropole Toulon Provence Méditerranée. Façade méditerranéenne (Cap Sicié, Cap Nègre, îles des Embiez et du Gaou), limitrophe d'Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer. Tissu TPE commerce et restauration littoral, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne TPE saisonnières, PME services et artisans avec des solutions IA codées sur mesure.",
+    "Six-Fours-les-Plages (83), 37 109 habitants, 7ᵉ ville du Var, station balnéaire de la Métropole Toulon Provence Méditerranée. Façade méditerranéenne (Cap Sicié, Cap Nègre, îles des Embiez et du Gaou), limitrophe d'Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer. Tissu PME du commerce et restauration littoral, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne PME saisonnières, PME services et artisans avec des solutions IA codées sur mesure.",
   pitchEn:
-    "Six-Fours-les-Plages (83), 37 109 habitants, 7ᵉ ville du Var, station balnéaire de la Métropole Toulon Provence Méditerranée. Façade méditerranéenne (Cap Sicié, Cap Nègre, îles des Embiez et du Gaou), limitrophe d'Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer. Tissu TPE commerce et restauration littoral, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne TPE saisonnières, PME services et artisans avec des solutions IA codées sur mesure.",
+    "Six-Fours-les-Plages (83), 37 109 habitants, 7ᵉ ville du Var, station balnéaire de la Métropole Toulon Provence Méditerranée. Façade méditerranéenne (Cap Sicié, Cap Nègre, îles des Embiez et du Gaou), limitrophe d'Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer. Tissu PME du commerce et restauration littoral, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne PME saisonnières, PME services et artisans avec des solutions IA codées sur mesure.",
   directAnswerFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Six-Fours-les-Plages (83) pour accompagner TPE commerce et restauration littoral, PME services, artisans BTP et professions libérales du bassin toulonnais ouest. Présence sur Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer limitrophes, ainsi que Bandol et Toulon à proximité. Prestations adaptées à la saisonnalité touristique (forte affluence été, gestion équipes variables). Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Six-Fours-les-Plages (83) pour accompagner PME du commerce et restauration littoral, PME services, artisans BTP et professions libérales du bassin toulonnais ouest. Présence sur Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer limitrophes, ainsi que Bandol et Toulon à proximité. Prestations adaptées à la saisonnalité touristique (forte affluence été, gestion équipes variables). Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
   directAnswerEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Six-Fours-les-Plages (83) pour accompagner TPE commerce et restauration littoral, PME services, artisans BTP et professions libérales du bassin toulonnais ouest. Présence sur Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer limitrophes, ainsi que Bandol et Toulon à proximité. Prestations adaptées à la saisonnalité touristique (forte affluence été, gestion équipes variables). Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
-  seoHook: "TPE balnéaires, restauration & artisanat littoral",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, intervient à Six-Fours-les-Plages (83) pour accompagner PME du commerce et restauration littoral, PME services, artisans BTP et professions libérales du bassin toulonnais ouest. Présence sur Ollioules, Sanary-sur-Mer et La Seyne-sur-Mer limitrophes, ainsi que Bandol et Toulon à proximité. Prestations adaptées à la saisonnalité touristique (forte affluence été, gestion équipes variables). Tarifs publics : Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Code IA sur mesure, pas de no-code.",
+  seoHook: "PME balnéaires, restauration & artisanat littoral",
   ecosystemFr:
-    "Six-Fours-les-Plages s'étend sur 26,58 km² (1 396 hab/km²) le long du littoral méditerranéen varois, intégrée à la Métropole Toulon Provence Méditerranée. Trois communes limitrophes : Ollioules (vallée du Reppe), Sanary-sur-Mer et La Seyne-sur-Mer. Patrimoine naturel marquant : Cap Sicié, Cap Nègre (basalte volcanique), îles des Embiez et du Gaou, chapelle Notre-Dame-du-Mai (357 m), collégiale Saint-Pierre, fort XIXᵉ. Tissu économique : TPE commerce et restauration saisonnière, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence, tourisme balnéaire. Accès A50.",
+    "Six-Fours-les-Plages s'étend sur 26,58 km² (1 396 hab/km²) le long du littoral méditerranéen varois, intégrée à la Métropole Toulon Provence Méditerranée. Trois communes limitrophes : Ollioules (vallée du Reppe), Sanary-sur-Mer et La Seyne-sur-Mer. Patrimoine naturel marquant : Cap Sicié, Cap Nègre (basalte volcanique), îles des Embiez et du Gaou, chapelle Notre-Dame-du-Mai (357 m), collégiale Saint-Pierre, fort XIXᵉ. Tissu économique : PME du commerce et restauration saisonnière, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence, tourisme balnéaire. Accès A50.",
   ecosystemEn:
-    "Six-Fours-les-Plages s'étend sur 26,58 km² (1 396 hab/km²) le long du littoral méditerranéen varois, intégrée à la Métropole Toulon Provence Méditerranée. Trois communes limitrophes : Ollioules (vallée du Reppe), Sanary-sur-Mer et La Seyne-sur-Mer. Patrimoine naturel marquant : Cap Sicié, Cap Nègre (basalte volcanique), îles des Embiez et du Gaou, chapelle Notre-Dame-du-Mai (357 m), collégiale Saint-Pierre, fort XIXᵉ. Tissu économique : TPE commerce et restauration saisonnière, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence, tourisme balnéaire. Accès A50.",
+    "Six-Fours-les-Plages s'étend sur 26,58 km² (1 396 hab/km²) le long du littoral méditerranéen varois, intégrée à la Métropole Toulon Provence Méditerranée. Trois communes limitrophes : Ollioules (vallée du Reppe), Sanary-sur-Mer et La Seyne-sur-Mer. Patrimoine naturel marquant : Cap Sicié, Cap Nègre (basalte volcanique), îles des Embiez et du Gaou, chapelle Notre-Dame-du-Mai (357 m), collégiale Saint-Pierre, fort XIXᵉ. Tissu économique : PME du commerce et restauration saisonnière, PME services et BTP résidentiel, viticulture AOC Côtes-de-Provence, tourisme balnéaire. Accès A50.",
   distancesFr:
     "Toulon centre à 15 min par A50. Gare SNCF Toulon (TGV Paris) à 12 km. Aéroport Toulon-Hyères à 35 km. La Seyne-sur-Mer limitrophe à 5 min, Sanary-sur-Mer limitrophe à 8 min, Ollioules limitrophe à 10 min. Bandol à 15 min, Marseille à 60 min par A50.",
   distancesEn:
     "Toulon centre à 15 min par A50. Gare SNCF Toulon (TGV Paris) à 12 km. Aéroport Toulon-Hyères à 35 km. La Seyne-sur-Mer limitrophe à 5 min, Sanary-sur-Mer limitrophe à 8 min, Ollioules limitrophe à 10 min. Bandol à 15 min, Marseille à 60 min par A50.",
   topSectorsNaf: [
-    "TPE commerce de proximité & balnéaire",
+    "PME du commerce & balnéaire",
     "Restauration & hôtellerie saisonnière",
     "Artisanat BTP & rénovation résidentielle",
     "Viticulture AOC Côtes-de-Provence",
@@ -30,20 +30,20 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Six-Fours-les-Plages : diagnostic pour TPE commerce balnéaire, restaurateurs, artisans BTP et PME services du bassin toulonnais ouest. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré, prise en compte saisonnalité touristique.",
-      en: "Audit IA à Six-Fours-les-Plages : diagnostic pour TPE commerce balnéaire, restaurateurs, artisans BTP et PME services du bassin toulonnais ouest. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré, prise en compte saisonnalité touristique.",
+      fr: "Audit IA à Six-Fours-les-Plages : diagnostic pour PME du commerce balnéaire, restaurateurs, artisans BTP et PME services du bassin toulonnais ouest. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré, prise en compte saisonnalité touristique.",
+      en: "Audit IA à Six-Fours-les-Plages : diagnostic pour PME du commerce balnéaire, restaurateurs, artisans BTP et PME services du bassin toulonnais ouest. Audit sur place 4 h à {{price:audit-flash|flat}}, livrable ROI chiffré, prise en compte saisonnalité touristique.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Six-Fours-les-Plages : ateliers pour TPE commerce, restauration, artisans BTP et professions libérales. Automatisation devis, planning saisonnier, gestion stocks, chatbot client. Formation 4 h à {{price:intervention-4h|flat}}.",
-      en: "Interventions IA sur site à Six-Fours-les-Plages : ateliers pour TPE commerce, restauration, artisans BTP et professions libérales. Automatisation devis, planning saisonnier, gestion stocks, chatbot client. Formation 4 h à {{price:intervention-4h|flat}}.",
+      fr: "Interventions IA sur site à Six-Fours-les-Plages : ateliers pour PME du commerce, restauration, artisans BTP et professions libérales. Automatisation devis, planning saisonnier, gestion stocks, chatbot client. Formation 4 h à {{price:intervention-4h|flat}}.",
+      en: "Interventions IA sur site à Six-Fours-les-Plages : ateliers pour PME du commerce, restauration, artisans BTP et professions libérales. Automatisation devis, planning saisonnier, gestion stocks, chatbot client. Formation 4 h à {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Six-Fours-les-Plages : intégration outils existants (logiciel caisse, planning, ERP), automatisation back-office pour TPE commerce, restauration, artisans et PME services. Code propriétaire client, pas de no-code. À partir de {{price:impl-poc|entry}}.",
-      en: "Implémentation IA à Six-Fours-les-Plages : intégration outils existants (logiciel caisse, planning, ERP), automatisation back-office pour TPE commerce, restauration, artisans et PME services. Code propriétaire client, pas de no-code. À partir de {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA à Six-Fours-les-Plages : intégration outils existants (logiciel caisse, planning, ERP), automatisation back-office pour PME du commerce, restauration, artisans et PME services. Code propriétaire client, pas de no-code. À partir de {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Six-Fours-les-Plages : intégration outils existants (logiciel caisse, planning, ERP), automatisation back-office pour PME du commerce, restauration, artisans et PME services. Code propriétaire client, pas de no-code. À partir de {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Six-Fours-les-Plages : sessions sur site ou en visio pour dirigeants TPE balnéaires, restaurateurs, artisans et gérants PME. Stratégie IA adaptée aux cycles saisonniers du Var littoral. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Coaching 1-to-1 à Six-Fours-les-Plages : sessions sur site ou en visio pour dirigeants TPE balnéaires, restaurateurs, artisans et gérants PME. Stratégie IA adaptée aux cycles saisonniers du Var littoral. À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Coaching 1-to-1 à Six-Fours-les-Plages : sessions sur site ou en visio pour dirigeants de PME et d'ETI balnéaires, restaurateurs, artisans et gérants PME. Stratégie IA adaptée aux cycles saisonniers du Var littoral. À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Coaching 1-to-1 à Six-Fours-les-Plages : sessions sur site ou en visio pour dirigeants de PME et d'ETI balnéaires, restaurateurs, artisans et gérants PME. Stratégie IA adaptée aux cycles saisonniers du Var littoral. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -51,7 +51,7 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
       fr: {
         hero: "Six-Fours-les-Plages compte 747 créations d'établissements en 2024, un noyau IT bien réel au Parc d'Activités des Playes (Sopra Steria I2S, conseil en systèmes et logiciels, NAF 62.02A, 225 avenue de l'Europe) et une économie littorale très saisonnière : location nautique et plaisance des ports de La Coudoulière, du Brusc et du Gaou, restauration de bord de mer, hôtellerie, navettes vers les îles des Embiez. Axion-IA conçoit ici des sites web et plateformes SaaS augmentés par l'IA pour ces deux mondes — réservation et e-commerce saisonniers d'un côté, applicatifs métier B2B des Playes et de La Millonne de l'autre. Code sur mesure, hébergement UE conforme RGPD, zéro dépendance éditeur.",
         whyHere: [
-          "Double tissu à servir : un noyau numérique/tertiaire au Parc d'Activités des Playes (Sopra Steria I2S et autres prestataires IT) et une économie balnéaire de TPE — bases nautiques de La Coudoulière (445 places), Le Brusc, Le Gaou, restaurants et hôtels du littoral — qui ont besoin de réservation en ligne et d'e-commerce taillés pour la saison.",
+          "Double tissu à servir : un noyau numérique/tertiaire au Parc d'Activités des Playes (Sopra Steria I2S et autres prestataires IT) et une économie balnéaire de PME — bases nautiques de La Coudoulière (445 places), Le Brusc, Le Gaou, restaurants et hôtels du littoral — qui ont besoin de réservation en ligne et d'e-commerce taillés pour la saison.",
           "Saisonnalité extrême du Var littoral : un site Six-Fours doit absorber le pic juillet-août (réservations, paiements, multilingue) sans casser hors-saison. Nous concevons des plateformes qui montent en charge l'été puis basculent en mode léger, plutôt qu'un site générique calibré pour une fréquentation constante.",
           "Écosystème industriel et artisanal proche : le P.A. de la Millonne (~315 entreprises) et le Pôle d'activités de Toulon Ouest (~1 400 entreprises, ~15 000 emplois sur Six-Fours, La Seyne-sur-Mer et Ollioules) concentrent des PME BTP, négoce et services qui ont des besoins d'applicatifs métier, de portails clients et d'automatisation back-office.",
           "Acteurs spécifiques du territoire : nautisme et plaisance (loueurs, clubs, chantiers), tourisme des Embiez et de l'Institut océanographique Paul Ricard, viticulture AOC Côtes-de-Provence — autant de filières où un site avec recherche sémantique, configurateur ou chatbot RAG fait une différence concrète, à condition d'être codé pour leur réalité et non recyclé.",
@@ -84,12 +84,6 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou réservation IA",
-            detail:
-              "Pour loueurs nautiques, restaurants du Brusc, chambres d'hôtes, cavistes AOC Côtes-de-Provence et artisans : site mobile-first avec réservation/paiement en ligne, chatbot saisonnier et fiches optimisées, calibré pour le pic juillet-août.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier",
@@ -171,12 +165,6 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or booking AI site",
-            detail:
-              "For boat rental firms, Le Brusc restaurants, guesthouses, AOC Côtes-de-Provence wine sellers and craftspeople: mobile-first site with online booking/payment, seasonal chatbot and optimized listings, sized for the July-August peak.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or business portal",
             detail:
@@ -246,7 +234,7 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne à Six-Fours-les-Plages ?",
-      a: "Cœur de cible : TPE commerce balnéaire et restauration, artisans BTP (rénovation résidentielle, second œuvre), PME services, professions libérales, exploitants viticoles AOC Côtes-de-Provence et acteurs du tourisme local.",
+      a: "Cœur de cible : PME du commerce balnéaire et restauration, artisans BTP (rénovation résidentielle, second œuvre), PME services, professions libérales, exploitants viticoles AOC Côtes-de-Provence et acteurs du tourisme local.",
     },
   ],
 };

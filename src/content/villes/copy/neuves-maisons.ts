@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const NEUVES_MAISONS_COPY: VilleCopy = {
   pitchFr:
-    "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de TPE/PME industrie, métallurgie, artisanat, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de PME et ETI industrie, métallurgie, artisanat, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de TPE/PME industrie, métallurgie, artisanat, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de PME et ETI industrie, métallurgie, artisanat, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuves-Maisons (54). Nous accompagnons PME et ETI : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Neuves-Maisons (54). Nous accompagnons PME et ETI : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit sur place sur mesure.",
   seoHook: "vallée moselle",
   ecosystemFr:
     "Neuves-Maisons est située dans la vallée de la Moselle, à 15 km au sud de Nancy. Ancienne ville sidérurgique, elle a reconverti son tissu vers la métallurgie spécialisée (aciérie électrique encore active), la mécanique, l'artisanat et les services. L'économie locale repose sur l'industrie métallurgique, l'artisanat BTP, le commerce de proximité et les services aux entreprises. Intégration à la Communauté de communes Moselle et Madon.",
@@ -34,16 +34,16 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
       en: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
-      en: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      fr: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la PME artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la PME artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Neuves-Maisons : maintenance prédictive métallurgie, optimisation production aciérie, automatisation devis mécanique, agents conversationnels relation client B2B industriel.",
       en: "Implémentation IA à Neuves-Maisons : maintenance prédictive métallurgie, optimisation production aciérie, automatisation devis mécanique, agents conversationnels relation client B2B industriel.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Neuves-Maisons : sessions dans votre usine, atelier mécanique, commerce ou en visio. Dirigeants TPE/PME de la vallée de la Moselle souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Neuves-Maisons : sessions dans votre usine, atelier mécanique, commerce ou en visio. Dirigeants TPE/PME de la vallée de la Moselle souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Neuves-Maisons : sessions dans votre usine, atelier mécanique, commerce ou en visio. Dirigeants PME et ETI de la vallée de la Moselle souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Neuves-Maisons : sessions dans votre usine, atelier mécanique, commerce ou en visio. Dirigeants PME et ETI de la vallée de la Moselle souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,14 +53,14 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Neuves-Maisons  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Neuves-Maisons et de la vallée de la Moselle, il identifie les cas d'usage IA à fort ROI pour votre aciérie, atelier ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Neuves-Maisons et de la vallée de la Moselle, il identifie les cas d'usage IA à fort ROI pour votre aciérie, atelier ou commerce.",
     },
     {
       q: "Accompagnez-vous les industriels métallurgistes de Neuves-Maisons ?",
       a: "Oui, nous accompagnons les acteurs de la métallurgie et de la mécanique industrielle de Neuves-Maisons. Cas IA typiques : maintenance prédictive, optimisation production, traçabilité matière, automatisation reporting QHSE et prévision énergétique.",
     },
     {
-      q: "L'IA peut-elle aider les TPE et artisans de la vallée de la Moselle ?",
+      q: "L'IA peut-elle aider les PME et artisans de la vallée de la Moselle ?",
       a: "Oui, nous accompagnons les artisans BTP, commerçants et prestataires de services de Neuves-Maisons sur des cas concrets : devis automatisés, gestion clients, chatbots SAV, automatisation administrative et veille concurrentielle locale.",
     },
     {

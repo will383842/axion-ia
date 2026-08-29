@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const POITIERS_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Poitiers — services, tertiaire, assurance, numérique et tourisme dans le sillage du Futuroscope et de l'une des plus anciennes universités de France. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Poitiers — services, tertiaire, assurance, numérique et tourisme dans le sillage du Futuroscope et de l'une des plus anciennes universités de France. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Poitiers — services, tertiaire, assurance, numérique et tourisme dans le sillage du Futuroscope et de l'une des plus anciennes universités de France. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Poitiers — services, tertiaire, assurance, numérique et tourisme dans le sillage du Futuroscope et de l'une des plus anciennes universités de France. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Poitiers, ville universitaire de la Vienne marquée par le Futuroscope, son patrimoine roman et un fort pôle tertiaire et d'assurance (MAAF, MACIF à proximité). Nous nous déplaçons sur site auprès des entreprises de services, du numérique et du tourisme pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Poitiers, ville universitaire de la Vienne marquée par le Futuroscope, son patrimoine roman et un fort pôle tertiaire et d'assurance (MAAF, MACIF à proximité). Nous nous déplaçons sur site auprès des entreprises de services, du numérique et du tourisme pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Poitiers, ville universitaire de la Vienne marquée par le Futuroscope, son patrimoine roman et un fort pôle tertiaire et d'assurance (MAAF, MACIF à proximité). Nous nous déplaçons sur site auprès des entreprises de services, du numérique et du tourisme pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Poitiers, ville universitaire de la Vienne marquée par le Futuroscope, son patrimoine roman et un fort pôle tertiaire et d'assurance (MAAF, MACIF à proximité). Nous nous déplaçons sur site auprès des entreprises de services, du numérique et du tourisme pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les grands groupes complètent ce socle.",
   seoHook: "assurance, numérique & tourisme",
   ecosystemFr:
-    "Poitiers conjugue une université parmi les plus anciennes de France, un riche patrimoine roman et la locomotive touristique du Futuroscope, qui irrigue tout un écosystème de loisirs et de numérique. La ville est un pôle tertiaire reconnu, au cœur d'un bassin d'assurances et de mutuelles (MAAF, MACIF à proximité immédiate) qui structure l'emploi de services. Pour ces TPE et PME de services, de tourisme et de numérique, l'IA bien dosée allège la relation client, la gestion de dossiers et la production de contenu sans alourdir des organisations agiles.",
+    "Poitiers conjugue une université parmi les plus anciennes de France, un riche patrimoine roman et la locomotive touristique du Futuroscope, qui irrigue tout un écosystème de loisirs et de numérique. La ville est un pôle tertiaire reconnu, au cœur d'un bassin d'assurances et de mutuelles (MAAF, MACIF à proximité immédiate) qui structure l'emploi de services. Pour ces PME et ETI de services, de tourisme et de numérique, l'IA bien dosée allège la relation client, la gestion de dossiers et la production de contenu sans alourdir des organisations agiles.",
   ecosystemEn:
-    "Poitiers conjugue une université parmi les plus anciennes de France, un riche patrimoine roman et la locomotive touristique du Futuroscope, qui irrigue tout un écosystème de loisirs et de numérique. La ville est un pôle tertiaire reconnu, au cœur d'un bassin d'assurances et de mutuelles (MAAF, MACIF à proximité immédiate) qui structure l'emploi de services. Pour ces TPE et PME de services, de tourisme et de numérique, l'IA bien dosée allège la relation client, la gestion de dossiers et la production de contenu sans alourdir des organisations agiles.",
+    "Poitiers conjugue une université parmi les plus anciennes de France, un riche patrimoine roman et la locomotive touristique du Futuroscope, qui irrigue tout un écosystème de loisirs et de numérique. La ville est un pôle tertiaire reconnu, au cœur d'un bassin d'assurances et de mutuelles (MAAF, MACIF à proximité immédiate) qui structure l'emploi de services. Pour ces PME et ETI de services, de tourisme et de numérique, l'IA bien dosée allège la relation client, la gestion de dossiers et la production de contenu sans alourdir des organisations agiles.",
   distancesFr:
     "Poitiers est reliée par sa gare LGV au cœur de ville, qui place Paris à environ 1h20 et Bordeaux à 1h. L'autoroute A10 traverse le département et l'aéroport de Poitiers-Biard dessert quelques liaisons régionales. Le Futuroscope, au nord de la ville, concentre un pôle d'activités numériques et touristiques. Nos experts se déplacent sur site dans toute la Vienne.",
   distancesEn:
@@ -34,16 +34,16 @@ export const POITIERS_COPY: VilleCopy = {
       en: "Auditer à Poitiers les processus d'une PME de services, d'assurance ou du numérique — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir sur site à Poitiers pour automatiser la gestion de dossiers, la relation client et la production de contenu des TPE/PME, sans alourdir le quotidien des équipes.",
-      en: "Intervenir sur site à Poitiers pour automatiser la gestion de dossiers, la relation client et la production de contenu des TPE/PME, sans alourdir le quotidien des équipes.",
+      fr: "Intervenir sur site à Poitiers pour automatiser la gestion de dossiers, la relation client et la production de contenu des PME et ETI, sans alourdir le quotidien des équipes.",
+      en: "Intervenir sur site à Poitiers pour automatiser la gestion de dossiers, la relation client et la production de contenu des PME et ETI, sans alourdir le quotidien des équipes.",
     },
     implementation: {
       fr: "Implémenter à Poitiers des outils IA durables et documentés — assistants de traitement de dossiers et de support client conçus pour rester maîtrisés en interne après notre départ.",
       en: "Implémenter à Poitiers des outils IA durables et documentés — assistants de traitement de dossiers et de support client conçus pour rester maîtrisés en interne après notre départ.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE/PME poitevines pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
-      en: "Accompagner en un-à-un les dirigeants de TPE/PME poitevines pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et ETI poitevines pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      en: "Accompagner en un-à-un les dirigeants de PME et ETI poitevines pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
     },
     sitesWeb: {
       fr: "Concevoir à Poitiers un site ou une plateforme web augmentée par l'IA pour une PME de services ou du tourisme — réservation, support client et contenu enrichis intelligemment.",
@@ -90,12 +90,6 @@ export const POITIERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 15 personnes)",
-            detail:
-              "Idéal pour les indépendants, cabinets, agences numériques et petites structures du centre de Poitiers : une demi-journée pour installer les premiers outils IA et lever les blocages, sans immobiliser l'équipe une journée entière.",
-          },
           {
             sizeLabel: "PME",
             price: "Essentielle (1 jour, 2 à 15 personnes) ou Gagner du temps (1 jour)",
@@ -183,12 +177,6 @@ export const POITIERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 15 personnes)",
-            detail:
-              "Idéal pour les indépendants, cabinets, agences numériques et petites structures du centre de Poitiers : une demi-journée pour installer les premiers outils IA et lever les blocages, sans immobiliser l'équipe une journée entière.",
-          },
-          {
             sizeLabel: "PME",
             price: "Essentielle (1 jour, 2 à 15 personnes) ou Gagner du temps (1 jour)",
             detail:
@@ -244,7 +232,7 @@ export const POITIERS_COPY: VilleCopy = {
           "Poitiers est la capitale française des centres de contact : sur le Futuroscope, Armatis, Arvato, CCA International, Carglass, Chronopost et Groupama gèrent des millions d'interactions par an. Nous augmentons ces parcours web et SaaS par l'IA — chatbots RAG, suggestion de réponse agent, qualification automatique, FAQ dynamiques — pour déflechir les volumes simples sans casser la qualité de service.",
           "L'économie locale est tournée vers le tourisme et l'edtech : dans le sillage du parc du Futuroscope et de l'écosystème EdTech de la Technopole Grand Poitiers (projet Dem'UP, Université de Poitiers, CHU), nous bâtissons des plateformes de réservation, de billetterie et d'apprentissage en ligne où l'IA personnalise les recommandations et la recherche.",
           "Le tissu scientifique et industriel — Eurofins Cerep (bioanalyse, drug screening), ISAE-ENSMA et le campus aéronautique mutualisé Université/CNRS, Mecafi et SEFI en sous-traitance — réclame des portails SaaS et des espaces clients sur mesure : extranets de résultats d'analyses, documentation technique consultable par IA, gestion documentaire aéronautique.",
-          "De la TPE du centre roman de Poitiers à l'industrie créative comme Libellud (Dixit) ou l'écoproduit Novamex/L'Arbre Vert (Saint-Benoît), nous couvrons toute la chaîne : UX/UI, mobile, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, headless) et brique IA, en nous déplaçant dans toute la Vienne.",
+          "De la PME du centre roman de Poitiers à l'industrie créative comme Libellud (Dixit) ou l'écoproduit Novamex/L'Arbre Vert (Saint-Benoît), nous couvrons toute la chaîne : UX/UI, mobile, e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop, headless) et brique IA, en nous déplaçant dans toute la Vienne.",
         ],
         methodology: [
           {
@@ -255,7 +243,7 @@ export const POITIERS_COPY: VilleCopy = {
           {
             step: "Conception UX/UI et architecture",
             detail:
-              "Maquettes et arborescence pensées mobile-first, choix du socle (CMS, headless, framework custom) et de l'architecture IA (RAG sur vos contenus, recherche sémantique, agents). On dimensionne pour vos volumes — du site vitrine d'une TPE poitevine au portail d'un centre de contact du Futuroscope.",
+              "Maquettes et arborescence pensées mobile-first, choix du socle (CMS, headless, framework custom) et de l'architecture IA (RAG sur vos contenus, recherche sémantique, agents). On dimensionne pour vos volumes — du site vitrine d'une PME poitevine au portail d'un centre de contact du Futuroscope.",
           },
           {
             step: "Développement et intégration IA",
@@ -274,12 +262,6 @@ export const POITIERS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-augmenté",
-            detail:
-              "Pour les indépendants, artisans et petites structures du centre historique de Poitiers ou de la Vienne : site vitrine ou boutique e-commerce (Shopify, WooCommerce) avec chatbot FAQ et recherche assistée par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web ou SaaS métier",
@@ -361,12 +343,6 @@ export const POITIERS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase or e-commerce site",
-            detail:
-              "For freelancers, craftspeople and small firms in the historic heart of Poitiers or the Vienne: a showcase site or e-commerce store (Shopify, WooCommerce) with a FAQ chatbot and AI-assisted search.",
-          },
-          {
             sizeLabel: "PME",
             price: "Web or business SaaS platform",
             detail:
@@ -423,8 +399,8 @@ export const POITIERS_COPY: VilleCopy = {
       a: "Oui. Nous aidons les acteurs des services, de l'assurance et du numérique poitevins à automatiser la gestion de dossiers, la relation client et la production de contenu, avec des outils proportionnés à leur taille.",
     },
     {
-      q: "L'IA est-elle accessible à une TPE de Poitiers ?",
-      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites structures, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
+      q: "L'IA est-elle accessible à une PME de Poitiers ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les PME, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
       q: "Connaît-on les tarifs à l'avance ?",

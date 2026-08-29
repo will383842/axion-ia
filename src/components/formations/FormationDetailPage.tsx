@@ -295,7 +295,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       courseMode: [...getFormationCourseModes(f)],
       duration: formationDureeIso(f.duree),
       audienceType:
-        "Équipes, dirigeants et collaborateurs opérationnels (TPE, PME, ETI, grandes entreprises)",
+        "Équipes, dirigeants et collaborateurs opérationnels (PME, ETI, grande entreprise)",
       about: "IA opérationnelle (ChatGPT, Claude, Gemini, assistants IA, agents, automatisations)",
       ...(typeof entryPrice === "number" ? { priceEurHt: entryPrice } : {}),
     }),

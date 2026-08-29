@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
   pitchFr:
-    "Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir aux portes de la Beauce et du Perche, est traversée par le Loir et ses affluents. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs du tourisme vert composent son tissu économique rural dynamique. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Loir.",
+    "Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir aux portes de la Beauce et du Perche, est traversée par le Loir et ses affluents. PME artisanales, PME agricoles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs du tourisme vert composent son tissu économique rural dynamique. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Loir.",
   pitchEn:
-    "Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir aux portes de la Beauce et du Perche, est traversée par le Loir et ses affluents. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs du tourisme vert composent son tissu économique rural dynamique. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Loir.",
+    "Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir aux portes de la Beauce et du Perche, est traversée par le Loir et ses affluents. PME artisanales, PME agricoles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs du tourisme vert composent son tissu économique rural dynamique. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Loir.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir. Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, commerçants, acteurs du tourisme vert, professions libérales et indépendants de la vallée du Loir.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir. Nous accompagnons tous types d'activités : PME artisanales, PME agricoles et agroalimentaires, commerçants, acteurs du tourisme vert, professions libérales et indépendants de la vallée du Loir.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir. Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, commerçants, acteurs du tourisme vert, professions libérales et indépendants de la vallée du Loir.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir. Nous accompagnons tous types d'activités : PME artisanales, PME agricoles et agroalimentaires, commerçants, acteurs du tourisme vert, professions libérales et indépendants de la vallée du Loir.",
   seoHook: "agriculture céréalière & artisanat services",
   ecosystemFr:
     "Cloyes-les-Trois-Rivières est une commune nouvelle née de la fusion de Cloyes-sur-le-Loir et communes voisines, aux confins de la Beauce et du Perche. L'économie locale repose sur l'agriculture céréalière (grande culture Beauce), l'agroalimentaire, l'artisanat BTP, le commerce rural, les services aux particuliers et le tourisme vert le long du Loir (randonnée, pêche, patrimoine).",
@@ -23,27 +23,27 @@ export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
     "Châteaudun à 20 min. Vendôme à 30 min. Chartres à 50 min. Tours à 1h15. Blois à 1h. Paris à 1h50 via A10/N10. Gare TER la plus proche : Cloyes-sur-le-Loir (ligne Paris-Vendôme).",
   topSectorsNaf: [
     "Agriculture céréalière & grande culture Beauce",
-    "TPE artisanat BTP & services",
+    "PME du BTP & services",
     "Agroalimentaire & négoce agricole",
     "Commerce rural & professions libérales",
     "Tourisme vert & hébergement vallée du Loir",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux PME artisanales, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux PME artisanales, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cloyes-les-Trois-Rivières : formats adaptés aux exploitations agricoles, PME agroalimentaires, TPE artisans et commerces ruraux. Vos équipes repartent autonomes sur les outils IA métier.",
-      en: "Interventions IA sur site à Cloyes-les-Trois-Rivières : formats adaptés aux exploitations agricoles, PME agroalimentaires, TPE artisans et commerces ruraux. Vos équipes repartent autonomes sur les outils IA métier.",
+      fr: "Interventions IA sur site à Cloyes-les-Trois-Rivières : formats adaptés aux exploitations agricoles, PME agroalimentaires, PME de l'artisanat et du commerce ruraux. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Cloyes-les-Trois-Rivières : formats adaptés aux exploitations agricoles, PME agroalimentaires, PME de l'artisanat et du commerce ruraux. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
       fr: "Implémentation IA à Cloyes-les-Trois-Rivières : agents conversationnels gestion parcellaire, automatisation traçabilité agroalimentaire, optimisation stocks négoce agricole, classification documents exploitation. Adapté au tissu rural de la vallée du Loir.",
       en: "Implémentation IA à Cloyes-les-Trois-Rivières : agents conversationnels gestion parcellaire, automatisation traçabilité agroalimentaire, optimisation stocks négoce agricole, classification documents exploitation. Adapté au tissu rural de la vallée du Loir.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cloyes-les-Trois-Rivières : sessions sur site ou en visio. Dirigeants PME agricoles, artisans, gérants TPE, commerçants et indépendants de la vallée du Loir souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Cloyes-les-Trois-Rivières : sessions sur site ou en visio. Dirigeants PME agricoles, artisans, gérants TPE, commerçants et indépendants de la vallée du Loir souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Cloyes-les-Trois-Rivières : sessions sur site ou en visio. Dirigeants PME agricoles, artisans, gérants PME, commerçants et indépendants de la vallée du Loir souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Cloyes-les-Trois-Rivières : sessions sur site ou en visio. Dirigeants PME agricoles, artisans, gérants PME, commerçants et indépendants de la vallée du Loir souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles et PME agroalimentaires de la Beauce eurélienne sur leurs cas IA : optimisation gestion parcellaire, traçabilité automatisée, agents conversationnels documentation technique, planification récoltes et gestion stocks céréales.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants de Cloyes-les-Trois-Rivières ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Cloyes-les-Trois-Rivières sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce de Cloyes-les-Trois-Rivières ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce de Cloyes-les-Trois-Rivières sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quels services pour le tourisme vert de la vallée du Loir ?",

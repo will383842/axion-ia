@@ -189,7 +189,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le sur-site n'est pas obligatoire",
           detail:
-            "Beaucoup de missions se tiennent très bien à distance, et c'est souvent plus rentable pour une petite structure. Le format se décide au cadrage, pas d'après la géographie.",
+            "Beaucoup de missions se tiennent très bien à distance, et c'est souvent plus rentable pour une PME. Le format se décide au cadrage, pas d'après la géographie.",
         },
         {
           title: "Les frais de déplacement ne sont pas inclus",
@@ -240,7 +240,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Les grandes villes ne passent pas devant",
           detail:
-            "Une TPE d'une commune de trois mille habitants est accompagnée dans les mêmes conditions et par le même profil senior qu'une PME lyonnaise.",
+            "Une PME d'une commune de trois mille habitants est accompagnée dans les mêmes conditions et par le même profil senior qu'une PME lyonnaise.",
         },
       ],
     },
@@ -260,11 +260,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-08-12",
     related: ["geo-france", "geo-metropoles", "tpe-ia"],
     fr: {
-      question: "Et pour les TPE, PME et artisans en zone rurale ou petites villes ?",
+      question: "Et pour les PME, ETI et artisans en zone rurale ou petites villes ?",
       answer:
-        "Oui, sans réserve. Artisans, commerçants, TPE, PME et ETI sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les tarifs publics affichés : ils sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
+        "Oui, sans réserve. Artisans, commerçants, PME, ETI et grands groupes sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les tarifs publics affichés : ils sont identiques d'un bout à l'autre du territoire.\n\nPour une PME, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
       keyPoints: [
-        "Artisans, commerçants, TPE, PME et ETI, partout en France",
+        "Artisans, commerçants, PME, ETI et grands groupes, partout en France",
         "Zones rurales et petites villes incluses, sans condition de taille",
         "Tarifs publics identiques quelle que soit la commune",
         "Le distanciel évite les frais de déplacement, à qualité égale",
@@ -280,12 +280,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas une version allégée",
           detail:
-            "Une TPE rurale reçoit le même intervenant senior et les mêmes livrables qu'une entreprise de grande ville. Seul le périmètre change, jamais le niveau d'exigence.",
+            "Une PME rurale reçoit le même intervenant senior et les mêmes livrables qu'une entreprise de grande ville. Seul le périmètre change, jamais le niveau d'exigence.",
         },
         {
           title: "Le distanciel n'est pas un pis-aller",
           detail:
-            "Pour une petite structure, c'est souvent le format le plus rentable : pas de frais de trajet, pas de demi-journée perdue sur la route, et on travaille sur vos vrais dossiers.",
+            "Pour une PME, c'est souvent le format le plus rentable : pas de frais de trajet, pas de demi-journée perdue sur la route, et on travaille sur vos vrais dossiers.",
         },
         {
           title: "Ce n'est pas réservé aux entreprises déjà équipées",
@@ -1077,11 +1077,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'un audit IA d'entreprise ?",
       answer:
-        "Un audit IA d'entreprise est un diagnostic qui cartographie vos processus existants, identifie les opportunités d'automatisation ou d'assistance par l'IA, les score sur deux axes — ROI estimé et complexité technique —, chiffre chacune en effort, coût et délai, puis livre un plan d'implémentation priorisé. Un audit Axion-IA identifie typiquement 8 à 15 opportunités.\n\nIl existe quatre niveaux, calibrés sur la taille et le périmètre. L'audit sur place tient en une journée complète dans vos locaux et s'adresse aux TPE. L'audit Ciblé couvre un département sur trois à quatre semaines. Le Stratégique PME couvre deux à quatre services sur cinq à six semaines, avec restitution en COMEX. Le Stratégique ETI est transverse et multi-BU, sur neuf semaines, avec un volet gouvernance et des livrables board-ready.\n\nLe livrable est toujours un document écrit — de 8 à 15 pages pour l'audit sur place, jusqu'à 60 à 80 pages pour l'ETI — accompagné d'une restitution orale. Chaque recommandation est cadrée RGPD (où sont les données, qui y accède, sur quelle base juridique) et vérifiée au regard de l'AI Act 2026.",
+        "Un audit IA d'entreprise est un diagnostic qui cartographie vos processus existants, identifie les opportunités d'automatisation ou d'assistance par l'IA, les score sur deux axes — ROI estimé et complexité technique —, chiffre chacune en effort, coût et délai, puis livre un plan d'implémentation priorisé. Un audit Axion-IA identifie typiquement 8 à 15 opportunités.\n\nIl existe quatre niveaux, calibrés sur la taille et le périmètre. L'audit sur place tient en une journée complète dans vos locaux et s'adresse aux PME. L'audit Ciblé couvre un département sur trois à quatre semaines. Le Stratégique PME couvre deux à quatre services sur cinq à six semaines, avec restitution en COMEX. Le Stratégique ETI est transverse et multi-BU, sur neuf semaines, avec un volet gouvernance et des livrables board-ready.\n\nLe livrable est toujours un document écrit — de 8 à 15 pages pour l'audit sur place, jusqu'à 60 à 80 pages pour l'ETI — accompagné d'une restitution orale. Chaque recommandation est cadrée RGPD (où sont les données, qui y accède, sur quelle base juridique) et vérifiée au regard de l'AI Act 2026.",
       keyPoints: [
         "Cartographie des processus, puis scoring ROI et complexité de chaque opportunité",
         "8 à 15 opportunités identifiées, chacune chiffrée en effort, coût et délai",
-        "Quatre niveaux : sur place (TPE), Ciblé, Stratégique PME, Stratégique ETI",
+        "Quatre niveaux : sur place (1 jour), Ciblé, Stratégique PME, Stratégique ETI",
         "Livrable écrit de 8-15 à 60-80 pages selon le niveau, plus une restitution",
         "Chaque recommandation cadrée RGPD et vérifiée au regard de l'AI Act 2026",
       ],
@@ -1095,7 +1095,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Cadrage du périmètre",
           detail:
-            "Un appel de cadrage fixe le niveau et le périmètre : une TPE entière, un département, plusieurs services ou un groupe multi-BU.",
+            "Un appel de cadrage fixe le niveau et le périmètre : une PME entière, un département, plusieurs services ou un groupe multi-BU.",
         },
         {
           title: "Cartographie des processus",
@@ -1212,9 +1212,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA travaille-t-il avec les ETI et grands comptes ?",
       answer:
-        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des TPE aux ETI et aux grands comptes. Pour ces dernières, l'offre prend une forme différente : programmes multi-sites sur devis, audits stratégiques approfondis et implémentations à large envergure avec gouvernance des données.\n\nL'Audit Stratégique ETI est conçu pour les structures de 250 à 5 000 salariés : cartographie multi-directions, 20 à 30 entretiens, restitution en COMEX et devant le conseil, plan de 60 à 80 pages exploitable en instance, puis 30 jours d'accompagnement après la remise. Le cadre AI Act et RGPD y est traité par défaut, avec mise en place d'un comité IA, d'une charte interne et des rôles associés.\n\nCôté implémentation, les missions ETI et les programmes annuels sont sur devis. Le principe reste celui des autres prestations : un intervenant senior, le même du cadrage à la livraison, et des livrables actionnables plutôt qu'un rapport de plus.",
+        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des PME aux ETI et aux grands comptes. Pour ces dernières, l'offre prend une forme différente : programmes multi-sites sur devis, audits stratégiques approfondis et implémentations à large envergure avec gouvernance des données.\n\nL'Audit Stratégique ETI est conçu pour les structures de 250 à 5 000 salariés : cartographie multi-directions, 20 à 30 entretiens, restitution en COMEX et devant le conseil, plan de 60 à 80 pages exploitable en instance, puis 30 jours d'accompagnement après la remise. Le cadre AI Act et RGPD y est traité par défaut, avec mise en place d'un comité IA, d'une charte interne et des rôles associés.\n\nCôté implémentation, les missions ETI et les programmes annuels sont sur devis. Le principe reste celui des autres prestations : un intervenant senior, le même du cadrage à la livraison, et des livrables actionnables plutôt qu'un rapport de plus.",
       keyPoints: [
-        "Toutes les tailles, des TPE aux ETI et grands comptes",
+        "Toutes les tailles, des PME aux ETI et grands comptes",
         "Programmes multi-sites et programmes annuels sur devis",
         "Audit Stratégique ETI : 250 à 5 000 salariés, 20 à 30 entretiens",
         "Restitution COMEX et conseil, plan de 60 à 80 pages, 30 jours d'accompagnement",
@@ -1517,7 +1517,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-08-12",
     related: ["audit-ia-tpe-pme", "comment-commencer", "budget-demarrer-ia"],
     fr: {
-      question: "L'implémentation IA est-elle adaptée aux TPE ?",
+      question: "L'implémentation IA est-elle adaptée aux PME ?",
       answer:
         "Oui, et c'est souvent plus simple qu'en grande entreprise : moins de couches de validation, un dirigeant qui décide vite, des processus qu'on tient encore en tête. Le seul vrai prérequis, c'est d'avoir une tâche répétitive ou un agacement quotidien à traiter.\n\nTrois formats servent de porte d'entrée. La formation collective, sur une journée sur site, fait monter l'équipe en compétence sur ses propres cas. L'audit sur place cartographie l'entreprise en une journée et priorise ce qui rapporte le plus vite. Le Pilote IA, lui, teste l'IA sur un seul processus ciblé et prouve la valeur avant tout déploiement large.\n\nAucune compétence technique n'est requise pour démarrer, et il n'y a ni équipe data ni culture IA préalable à constituer : on part de vos outils actuels et de vos vraies tâches. Chaque prestation est chiffrée en forfait fixe, avec un devis ferme envoyé sous 48 heures ouvrées — pas de régie, pas de dépassement.",
       keyPoints: [
@@ -1678,7 +1678,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Combien coûte un projet IA pour une PME ?",
       answer:
-        "Cela dépend du format, et les prix d'entrée sont publics. Une journée de coaching 1-to-1 avec un collaborateur : {{price:intervention-membre-equipe|flat}} ; la même journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Une journée collective en intra, pour un groupe de 2 à 15 participants : {{price:intervention-essentielle|flat}} — un prix par groupe, jamais par personne. L'audit IA d'une journée sur site, calibré pour une TPE : {{price:audit-flash|from}} ; les niveaux ciblé et stratégique : {{price:audit-cible|range}}.\n\nL'implémentation se chiffre au périmètre. Le pilote, concentré sur un seul cas d'usage prioritaire, est annoncé en fourchette publique : {{price:impl-poc|full}} ; les déploiements multi-cas en PME ou en ETI passent par un devis détaillé, parce que le nombre d'intégrations et de connexions à vos outils change tout. Dans tous les cas, le principe est le même : un devis fixe sous 48 h ouvrées, un périmètre écrit avant de commencer, et le montant validé qui devient celui de la facture. Une PME démarre presque toujours par une seule journée, pas par un programme.",
+        "Cela dépend du format, et les prix d'entrée sont publics. Une journée de coaching 1-to-1 avec un collaborateur : {{price:intervention-membre-equipe|flat}} ; la même journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Une journée collective en intra, pour un groupe de 2 à 15 participants : {{price:intervention-essentielle|flat}} — un prix par groupe, jamais par personne. L'audit IA d'une journée sur site, calibré pour une PME : {{price:audit-flash|from}} ; les niveaux ciblé et stratégique : {{price:audit-cible|range}}.\n\nL'implémentation se chiffre au périmètre. Le pilote, concentré sur un seul cas d'usage prioritaire, est annoncé en fourchette publique : {{price:impl-poc|full}} ; les déploiements multi-cas en PME ou en ETI passent par un devis détaillé, parce que le nombre d'intégrations et de connexions à vos outils change tout. Dans tous les cas, le principe est le même : un devis fixe sous 48 h ouvrées, un périmètre écrit avant de commencer, et le montant validé qui devient celui de la facture. Une PME démarre presque toujours par une seule journée, pas par un programme.",
       keyPoints: [
         "Cinq prestations, chacune avec un prix d'entrée public",
         "Formats collectifs facturés par groupe de 2 à 15 participants, jamais par personne",
@@ -2091,7 +2091,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Combien de temps dure un audit IA ?",
       answer:
-        "Cela dépend du niveau d'audit : d'une seule journée à neuf semaines. L'audit sur place, destiné aux TPE, tient en une journée complète dans vos locaux, de 9 h à 17 h ; le rapport de synthèse suit sous 48 heures ouvrées, au plus tard sous sept jours.\n\nLes niveaux supérieurs sont des missions. L'audit Ciblé, qui couvre un département, se déroule sur trois à quatre semaines — parfois deux pour un périmètre simple traité à distance. L'audit Stratégique PME couvre deux à quatre services sur cinq à six semaines, restitution en COMEX comprise. L'audit Stratégique ETI, transverse et multi-BU, demande neuf semaines et vingt à trente entretiens.\n\nLa vraie question n'est pas la durée de la mission mais votre charge interne, et elle reste faible : six à dix heures cumulées sur trois semaines pour un audit Ciblé, huit à quinze heures sur cinq à six semaines pour un Stratégique PME. Les entretiens sont planifiés au fil de l'eau, sans gel d'activité. Comptez enfin deux à trois semaines entre la signature et le démarrage, le temps de caler les disponibilités.",
+        "Cela dépend du niveau d'audit : d'une seule journée à neuf semaines. L'audit sur place, destiné aux PME, tient en une journée complète dans vos locaux, de 9 h à 17 h ; le rapport de synthèse suit sous 48 heures ouvrées, au plus tard sous sept jours.\n\nLes niveaux supérieurs sont des missions. L'audit Ciblé, qui couvre un département, se déroule sur trois à quatre semaines — parfois deux pour un périmètre simple traité à distance. L'audit Stratégique PME couvre deux à quatre services sur cinq à six semaines, restitution en COMEX comprise. L'audit Stratégique ETI, transverse et multi-BU, demande neuf semaines et vingt à trente entretiens.\n\nLa vraie question n'est pas la durée de la mission mais votre charge interne, et elle reste faible : six à dix heures cumulées sur trois semaines pour un audit Ciblé, huit à quinze heures sur cinq à six semaines pour un Stratégique PME. Les entretiens sont planifiés au fil de l'eau, sans gel d'activité. Comptez enfin deux à trois semaines entre la signature et le démarrage, le temps de caler les disponibilités.",
       keyPoints: [
         "Audit sur place : 1 journée complète (9 h-17 h), rapport sous 48 h ouvrées",
         "Audit Ciblé : 3 à 4 semaines sur un département",
@@ -2136,7 +2136,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Une journée sur site n'est pas une version au rabais",
           detail:
-            "L'audit sur place couvre toute l'activité d'une TPE. Ce n'est pas un extrait d'un audit plus long : c'est le format calibré pour une entreprise de 1 à 19 salariés.",
+            "L'audit sur place couvre toute l'activité d'une PME. Ce n'est pas un extrait d'un audit plus long : c'est le format calibré pour une entreprise de 1 à 19 salariés.",
         },
       ],
     },
@@ -2153,7 +2153,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Que contient le rapport d'un audit IA ?",
       answer:
-        "Le rapport d'audit IA Axion-IA contient cinq blocs : la cartographie de vos processus et de leurs points de friction ; une liste priorisée de cas d'usage IA concrets ; pour chacun, une estimation du ROI et du temps gagné ; les outils et l'architecture recommandés, cadrés RGPD et souveraineté ; enfin une feuille de route séquencée. C'est un document fait pour arbitrer, pas un rapport théorique.\n\nSon volume suit le niveau d'audit : 8 à 15 pages pour l'audit sur place d'une TPE, jusqu'à 60 à 80 pages board-ready pour un audit Stratégique ETI. S'y ajoutent des livrables annexes selon le format — la bibliothèque des prompts testés en direct pendant la journée sur site, 3 à 5 quick-wins priorisés, une roadmap stratégique 12-24 mois pour les PME, un cadre de gouvernance IA et 30 jours d'accompagnement post-audit pour les ETI.\n\nTout est remis avec une restitution orale, et tout vous appartient : le plan est écrit pour que vos équipes puissent l'exécuter seules si vous le décidez.",
+        "Le rapport d'audit IA Axion-IA contient cinq blocs : la cartographie de vos processus et de leurs points de friction ; une liste priorisée de cas d'usage IA concrets ; pour chacun, une estimation du ROI et du temps gagné ; les outils et l'architecture recommandés, cadrés RGPD et souveraineté ; enfin une feuille de route séquencée. C'est un document fait pour arbitrer, pas un rapport théorique.\n\nSon volume suit le niveau d'audit : 8 à 15 pages pour l'audit sur place d'une PME, jusqu'à 60 à 80 pages board-ready pour un audit Stratégique ETI. S'y ajoutent des livrables annexes selon le format — la bibliothèque des prompts testés en direct pendant la journée sur site, 3 à 5 quick-wins priorisés, une roadmap stratégique 12-24 mois pour les PME, un cadre de gouvernance IA et 30 jours d'accompagnement post-audit pour les ETI.\n\nTout est remis avec une restitution orale, et tout vous appartient : le plan est écrit pour que vos équipes puissent l'exécuter seules si vous le décidez.",
       keyPoints: [
         "Cartographie des processus et des points de friction",
         "Cas d'usage priorisés, chacun avec ROI et temps gagné estimés",
@@ -2771,7 +2771,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux grandes enseignes",
           detail:
-            "Les formats d'entrée, session collective sur site et audit sur place, sont accessibles à une TPE. Un commerce indépendant démarre sur un seul cas d'usage, pas sur un programme d'enseigne.",
+            "Les formats d'entrée, session collective sur site et audit sur place, sont accessibles à une PME. Un commerce indépendant démarre sur un seul cas d'usage, pas sur un programme d'enseigne.",
         },
       ],
     },
@@ -2838,7 +2838,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux groupes hôteliers",
           detail:
-            "Un restaurant indépendant ou un hôtel familial démarre sur un seul cas d'usage. Les formats d'entrée, audit sur place et session collective, sont accessibles à une TPE.",
+            "Un restaurant indépendant ou un hôtel familial démarre sur un seul cas d'usage. Les formats d'entrée, audit sur place et session collective, sont accessibles à une PME.",
         },
       ],
     },
@@ -2976,7 +2976,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux réseaux nationaux",
           detail:
-            "Une agence indépendante démarre sur un seul cas d'usage, souvent les annonces. Les formats d'entrée, audit sur place et session collective, conviennent à une TPE.",
+            "Une agence indépendante démarre sur un seul cas d'usage, souvent les annonces. Les formats d'entrée, audit sur place et session collective, conviennent à une PME.",
         },
       ],
     },
@@ -3043,7 +3043,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux grands cabinets",
           detail:
-            "Un cabinet de quelques collaborateurs démarre sur un flux unique. L'audit sur place et la session collective sont les formats d'entrée, y compris pour une TPE.",
+            "Un cabinet de quelques collaborateurs démarre sur un flux unique. L'audit sur place et la session collective sont les formats d'entrée, y compris pour une PME.",
         },
       ],
     },
@@ -3790,7 +3790,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qui doit piloter l'IA dans l'entreprise ?",
       answer:
-        "Trois rôles, et surtout pas un service informatique dédié. La direction donne la vision et arbitre les priorités. Un référent métier motivé — le « champion » interne — porte l'usage au quotidien et sert de premier recours pour ses collègues. Un accompagnement externe apporte le cadrage et la montée en compétence, le temps que l'autonomie s'installe.\n\nDans les TPE et PME, c'est souvent le dirigeant lui-même qui impulse, et c'est une bonne nouvelle : les décisions se prennent vite. L'essentiel tient alors en deux conditions. Un sponsor clairement identifié à la direction, parce qu'un projet IA sans arbitre s'enlise dès qu'il touche à un process partagé entre plusieurs services. Et un premier cas d'usage concret, parce que rien n'embarque une équipe comme un collègue qui gagne des heures chaque semaine.\n\nLe référent n'a pas besoin d'être technicien. Il doit connaître le process, avoir envie d'essayer, et disposer de temps reconnu pour le faire. Une journée de cartographie terrain suffit généralement à désigner les bons candidats et à fixer le premier périmètre.",
+        "Trois rôles, et surtout pas un service informatique dédié. La direction donne la vision et arbitre les priorités. Un référent métier motivé — le « champion » interne — porte l'usage au quotidien et sert de premier recours pour ses collègues. Un accompagnement externe apporte le cadrage et la montée en compétence, le temps que l'autonomie s'installe.\n\nDans les PME et ETI, c'est souvent le dirigeant lui-même qui impulse, et c'est une bonne nouvelle : les décisions se prennent vite. L'essentiel tient alors en deux conditions. Un sponsor clairement identifié à la direction, parce qu'un projet IA sans arbitre s'enlise dès qu'il touche à un process partagé entre plusieurs services. Et un premier cas d'usage concret, parce que rien n'embarque une équipe comme un collègue qui gagne des heures chaque semaine.\n\nLe référent n'a pas besoin d'être technicien. Il doit connaître le process, avoir envie d'essayer, et disposer de temps reconnu pour le faire. Une journée de cartographie terrain suffit généralement à désigner les bons candidats et à fixer le premier périmètre.",
       keyPoints: [
         "Trois rôles : direction, référent métier, accompagnement externe",
         "Aucun service informatique dédié n'est nécessaire",
@@ -3824,7 +3824,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Qui doit piloter l'IA dans l'entreprise ?",
       answer:
-        "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les TPE/PME, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
+        "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les PME/ETI, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
     },
   },
   // ── Batch FAQ #3 — par service (keyword-rich, EN = clone FR car EN désactivé).
@@ -3836,19 +3836,19 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-08-12",
     related: ["audit-ia-definition", "cout-audit-ia-entreprise", "premier-diagnostic-ia"],
     fr: {
-      question: "Quel audit IA pour une TPE ou une PME ?",
+      question: "Quel audit IA pour une PME ou une ETI ?",
       answer:
-        "Cela dépend surtout de votre effectif. Une TPE de 1 à 19 salariés — artisan, commerçant, profession libérale, indépendant — relève de l'audit sur place : une journée complète dans vos locaux, de 9 h à 17 h. On cartographie toute l'activité, on teste l'IA en direct sur deux ou trois de vos vrais cas, et le rapport de synthèse suit sous 48 heures ouvrées.\n\nUne PME s'oriente vers l'audit Ciblé quand un seul département est concerné — marketing, RH, opérations, finance, juridique ou support — sur trois à quatre semaines. Quand plusieurs services le sont, c'est l'audit Stratégique PME : deux à quatre services cartographiés sur cinq à six semaines, avec une roadmap 12-24 mois et une restitution en COMEX.\n\nDans tous les cas, vous repartez avec une feuille de route priorisée et chiffrée, calibrée sur votre taille et votre secteur — pas un rapport théorique. Un appel de cadrage permet de choisir le bon niveau avant tout devis : c'est le point de départ le plus sûr pour démarrer l'IA sans se disperser.",
+        "Cela dépend surtout de votre effectif. Une PME mono-site relève de l'audit sur place : une journée complète dans vos locaux, de 9 h à 17 h. On cartographie toute l'activité, on teste l'IA en direct sur deux ou trois de vos vrais cas, et le rapport de synthèse suit sous 48 heures ouvrées.\n\nUne PME s'oriente vers l'audit Ciblé quand un seul département est concerné — marketing, RH, opérations, finance, juridique ou support — sur trois à quatre semaines. Quand plusieurs services le sont, c'est l'audit Stratégique PME : deux à quatre services cartographiés sur cinq à six semaines, avec une roadmap 12-24 mois et une restitution en COMEX.\n\nDans tous les cas, vous repartez avec une feuille de route priorisée et chiffrée, calibrée sur votre taille et votre secteur — pas un rapport théorique. Un appel de cadrage permet de choisir le bon niveau avant tout devis : c'est le point de départ le plus sûr pour démarrer l'IA sans se disperser.",
       keyPoints: [
-        "TPE de 1 à 19 salariés : audit sur place, 1 journée complète dans vos locaux",
+        "PME mono-site : audit sur place, 1 journée complète dans vos locaux",
         "PME, un seul département concerné : audit Ciblé, 3 à 4 semaines",
         "PME, plusieurs services : Stratégique PME, 5 à 6 semaines et roadmap 12-24 mois",
         "Rapport de synthèse sous 48 h ouvrées pour l'audit sur place",
         "Un appel de cadrage fixe le bon niveau avant tout devis",
       ],
       facts: [
-        { figure: "1-19", label: "salariés pour l'audit TPE" },
-        { figure: "1 j", label: "sur site pour une TPE" },
+        { figure: "1 j", label: "sur site pour l'audit d'entrée" },
+        { figure: "4", label: "niveaux d'audit selon le périmètre" },
         { figure: "2-4", label: "services en Stratégique PME" },
         { figure: "12-24 mois", label: "de roadmap PME" },
       ],
@@ -3861,7 +3861,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le terrain",
           detail:
-            "Une journée complète sur site pour une TPE, ou des entretiens répartis sur trois à six semaines pour une PME, selon le nombre de services concernés.",
+            "Une journée complète sur site pour une PME, ou des entretiens répartis sur trois à six semaines pour une PME, selon le nombre de services concernés.",
         },
         {
           title: "Le rapport et la restitution",
@@ -3883,14 +3883,14 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas un forfait unique",
           detail:
-            "Quatre niveaux existent selon la taille et le périmètre. L'audit d'une TPE et celui d'une PME multi-services ne mobilisent pas le même travail.",
+            "Quatre niveaux existent selon la taille et le périmètre. L'audit d'une PME mono-site et celui d'une ETI multi-services ne mobilisent pas le même travail.",
         },
       ],
     },
     en: {
-      question: "Quel audit IA pour une TPE ou une PME ?",
+      question: "Quel audit IA pour une PME ou une ETI ?",
       answer:
-        "L'audit IA Axion-IA s'adapte aux TPE et PME : en une demi-journée à une journée, on cartographie vos processus, on identifie les cas d'usage IA les plus rentables pour votre taille et votre secteur, et on chiffre le ROI. Vous repartez avec une feuille de route concrète et priorisée — pas un rapport théorique. C'est le point de départ idéal pour démarrer l'IA sans se disperser.",
+        "L'audit IA Axion-IA s'adapte aux PME et ETI : en une demi-journée à une journée, on cartographie vos processus, on identifie les cas d'usage IA les plus rentables pour votre taille et votre secteur, et on chiffre le ROI. Vous repartez avec une feuille de route concrète et priorisée — pas un rapport théorique. C'est le point de départ idéal pour démarrer l'IA sans se disperser.",
     },
   },
   {
@@ -3922,7 +3922,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux grandes entreprises",
           detail:
-            "Une TPE a une maturité IA comme une ETI. L'audit sur place d'une journée couvre exactement ce même terrain, à l'échelle d'une petite structure.",
+            "Une PME a une maturité IA comme une ETI. L'audit sur place d'une journée couvre exactement ce même terrain, à l'échelle d'une PME.",
         },
         {
           title: "Ce n'est pas une prestation distincte",
@@ -3944,10 +3944,10 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Combien coûte un audit IA pour une entreprise ?",
       answer:
-        "Les tarifs d'audit sont publics et affichés, sans devis opaque ni prix caché. Ils s'annoncent toujours comme un plancher, le chiffrage réel se faisant au cas par cas selon le périmètre couvert. Audit sur place pour une TPE, une journée complète dans vos locaux : {{price:audit-flash}}. Audit Ciblé sur un département : {{price:audit-cible}}. Audits Stratégiques, PME comme ETI : {{price:audit-strategique-pme}}.\n\nCe qui fait varier le montant, ce n'est pas votre effectif en soi mais le périmètre réel : le nombre de services cartographiés, le nombre d'entretiens terrain, la profondeur des livrables, et la présence ou non d'un volet gouvernance. Un département simple traité à distance et un groupe multi-BU ne mobilisent pas le même travail.\n\nLe devis détaillé arrive sous 48 heures ouvrées après l'appel de cadrage, et il est ferme : vous savez exactement ce que vous payez, et pourquoi, avant tout engagement. Pour les groupes très grands, une phase de cadrage précède le devis afin de figer le périmètre.",
+        "Les tarifs d'audit sont publics et affichés, sans devis opaque ni prix caché. Ils s'annoncent toujours comme un plancher, le chiffrage réel se faisant au cas par cas selon le périmètre couvert. Audit sur place pour une PME, une journée complète dans vos locaux : {{price:audit-flash}}. Audit Ciblé sur un département : {{price:audit-cible}}. Audits Stratégiques, PME comme ETI : {{price:audit-strategique-pme}}.\n\nCe qui fait varier le montant, ce n'est pas votre effectif en soi mais le périmètre réel : le nombre de services cartographiés, le nombre d'entretiens terrain, la profondeur des livrables, et la présence ou non d'un volet gouvernance. Un département simple traité à distance et un groupe multi-BU ne mobilisent pas le même travail.\n\nLe devis détaillé arrive sous 48 heures ouvrées après l'appel de cadrage, et il est ferme : vous savez exactement ce que vous payez, et pourquoi, avant tout engagement. Pour les groupes très grands, une phase de cadrage précède le devis afin de figer le périmètre.",
       keyPoints: [
         "Tarifs publics et affichés, annoncés comme un plancher",
-        "Audit sur place pour une TPE : {{price:audit-flash}}",
+        "Audit sur place pour une PME : {{price:audit-flash}}",
         "Audit Ciblé sur un département : {{price:audit-cible}}",
         "Audits Stratégiques PME et ETI : {{price:audit-strategique-pme}}",
         "Devis détaillé et ferme sous 48 h ouvrées",
@@ -3955,13 +3955,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "4", label: "niveaux tarifés" },
         { figure: "48 h", label: "pour le devis détaillé" },
-        { figure: "1 j", label: "sur site, niveau TPE" },
+        { figure: "1 j", label: "sur site, niveau PME" },
       ],
       nuances: [
         {
           title: "Ce n'est pas un forfait unique",
           detail:
-            "Quatre niveaux existent, du format TPE d'une journée à l'audit transverse multi-BU. Un montant annoncé sans périmètre défini ne veut rien dire.",
+            "Quatre niveaux existent, du format PME d'une journée à l'audit transverse multi-BU. Un montant annoncé sans périmètre défini ne veut rien dire.",
         },
         {
           title: "Un tarif d'entrée n'est pas le prix final",
@@ -3988,7 +3988,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se passe un premier diagnostic IA ?",
       answer:
-        "Tout commence par un appel de cadrage, court et sans engagement : vous décrivez votre activité, vos irritants et vos objectifs, et on détermine ensemble le niveau adapté. Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière, avec livrable écrit.\n\nIl se déroule ensuite en trois temps. On observe vos processus et vos outils tels qu'ils fonctionnent réellement, en entretiens terrain ou sur une journée complète dans vos locaux pour une TPE. On repère les tâches chronophages automatisables et on teste l'IA en direct sur deux ou trois de vos vrais cas, jamais sur une démonstration générique. On identifie enfin les cas d'usage à fort impact pour démarrer vite, chacun scoré par ROI estimé et complexité technique.\n\nVous ressortez avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions : ce qui s'active tout de suite, ce qui peut attendre, ce qu'il vaut mieux abandonner. Le plan est rédigé pour que vos équipes puissent l'exécuter seules.",
+        "Tout commence par un appel de cadrage, court et sans engagement : vous décrivez votre activité, vos irritants et vos objectifs, et on détermine ensemble le niveau adapté. Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière, avec livrable écrit.\n\nIl se déroule ensuite en trois temps. On observe vos processus et vos outils tels qu'ils fonctionnent réellement, en entretiens terrain ou sur une journée complète dans vos locaux pour une PME. On repère les tâches chronophages automatisables et on teste l'IA en direct sur deux ou trois de vos vrais cas, jamais sur une démonstration générique. On identifie enfin les cas d'usage à fort impact pour démarrer vite, chacun scoré par ROI estimé et complexité technique.\n\nVous ressortez avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions : ce qui s'active tout de suite, ce qui peut attendre, ce qu'il vaut mieux abandonner. Le plan est rédigé pour que vos équipes puissent l'exécuter seules.",
       keyPoints: [
         "Un appel de cadrage d'abord, pour caler le périmètre et le niveau",
         "Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière",
@@ -3999,7 +3999,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "3", label: "temps du diagnostic" },
         { figure: "2-3", label: "cas d'usage prioritaires" },
-        { figure: "1 j", label: "sur site pour une TPE" },
+        { figure: "1 j", label: "sur site pour une PME" },
       ],
       steps: [
         {

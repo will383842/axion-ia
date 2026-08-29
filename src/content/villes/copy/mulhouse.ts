@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -24,7 +24,7 @@ import type { VilleCopy } from "./types";
 
 export const MULHOUSE_COPY: VilleCopy = {
   pitchFr:
-    "Mulhouse regroupe 3 724 établissements actifs, une position trinationale unique (France-Suisse-Allemagne), le Pôle Véhicule du Futur, l'usine Stellantis historique depuis 1962, le siège Clemessy (Eiffage) et un campus numérique KMØ actif. Axion-IA y intervient sur site, des TPE alsaciennes aux ETI industrielles et aux groupes transfrontaliers du bassin rhénan.",
+    "Mulhouse regroupe 3 724 établissements actifs, une position trinationale unique (France-Suisse-Allemagne), le Pôle Véhicule du Futur, l'usine Stellantis historique depuis 1962, le siège Clemessy (Eiffage) et un campus numérique KMØ actif. Axion-IA y intervient sur site, des PME alsaciennes aux ETI industrielles et aux groupes transfrontaliers du bassin rhénan.",
   pitchEn:
     "Mulhouse hosts 3,724 active businesses, a unique tri-national position (France-Switzerland-Germany), the Pôle Véhicule du Futur, the historic Stellantis plant since 1962, Clemessy's HQ (Eiffage) and an active KMØ digital campus. Axion-IA delivers on site, from Alsatian micro-businesses to industrial mid-caps and cross-border groups across the Rhine basin.",
 
@@ -52,7 +52,7 @@ export const MULHOUSE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulhouse (68) sur site — centre-ville, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon et communes du bassin (Riedisheim, Kingersheim, Illzach, Pfastatt). Nous accompagnons les TPE, PME, ETI et grandes entreprises mulhousiennes (automobile, industrie, chimie, numérique, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Position trinationale et contraintes RGPD transfrontalières maîtrisées.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mulhouse (68) sur site — centre-ville, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon et communes du bassin (Riedisheim, Kingersheim, Illzach, Pfastatt). Nous accompagnons les PME, ETI et grands groupes mulhousiens (automobile, industrie, chimie, numérique, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Position trinationale et contraintes RGPD transfrontalières maîtrisées.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Mulhouse (68) on site — city centre, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon and basin communes (Riedisheim, Kingersheim, Illzach, Pfastatt). We support Mulhouse micro-businesses, SMEs, mid-caps and large enterprises (automotive, industry, chemicals, digital, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Tri-national position and cross-border GDPR constraints handled.",
 
@@ -80,7 +80,7 @@ export const MULHOUSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Mulhouse ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Mulhouse et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Mulhouse et partout en France.",
     },
     {
       q: "Axion-IA intervient-il dans les entreprises industrielles du bassin Haut-Rhin ?",
@@ -114,7 +114,7 @@ export const MULHOUSE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise mulhousienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI automobiles de l'Île Napoléon, aux ingénieries industrielles de Bourtzwiller et aux acteurs chimie et matériaux du Haut-Rhin.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise mulhousienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du centre-ville aux ETI automobiles de l'Île Napoléon, aux ingénieries industrielles de Bourtzwiller et aux acteurs chimie et matériaux du Haut-Rhin.",
         whyHere: [
           "Mulhouse concentre un tissu industriel dense et diversifié — automobile (Stellantis, Pôle Véhicule du Futur), ingénierie électrique et industrielle (Clemessy), chimie et matériaux (ENSCMu, IS2M), numérique (KMØ) — qui génère une forte demande d'audits IA opérationnels ciblés.",
           "Position trinationale maîtrisée : nos audits intègrent les contraintes RGPD transfrontalières France-Suisse-Allemagne, la sélection de modèles IA compatibles souveraineté et la gestion des flux de données vers Bâle ou Fribourg.",
@@ -151,12 +151,6 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets mulhousiens jusqu'à une dizaine de collaborateurs — centre-ville, Quartier DMC, Bourtzwiller.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -257,12 +251,6 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Mulhouse freelancers, micro-firms and practices up to about ten staff — city centre, Quartier DMC, Bourtzwiller.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -366,12 +354,6 @@ export const MULHOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, cabinets et petites structures mulhousiennes jusqu'à une dizaine de collaborateurs — centre-ville, Quartier DMC, Bourtzwiller.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -471,12 +453,6 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group training",
-            detail:
-              "Ideal for Mulhouse freelancers, practices and small firms up to about ten staff — city centre, Quartier DMC, Bourtzwiller.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -580,12 +556,6 @@ export const MULHOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants mulhousiens.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -621,7 +591,7 @@ export const MULHOUSE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Mulhouse ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -685,12 +655,6 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks — quote automation, meeting minutes, lead qualification for Mulhouse micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -794,12 +758,6 @@ export const MULHOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Programme Essentiel",
-            detail:
-              "Pour dirigeants et indépendants mulhousiens souhaitant structurer leur usage IA personnel et identifier les premiers gains concrets dans leur activité.",
-          },
-          {
             sizeLabel: "PME",
             price: "Programme PME",
             detail:
@@ -899,12 +857,6 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Essentiel programme",
-            detail:
-              "For Mulhouse micro-business owners and freelancers looking to structure their personal AI use and identify first concrete gains in their activity.",
-          },
           {
             sizeLabel: "SME",
             price: "SME programme",
@@ -1006,12 +958,6 @@ export const MULHOUSE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1091,12 +1037,6 @@ export const MULHOUSE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / app",

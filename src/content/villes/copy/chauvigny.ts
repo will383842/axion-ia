@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const CHAUVIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations du Chauvinois.",
+    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu PME artisanales (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations du Chauvinois.",
   pitchEn:
-    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations du Chauvinois.",
+    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu PME artisanales (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations du Chauvinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chauvigny (86). Nous accompagnons tous types d'activités : TPE artisans pierre/BTP, PME industrielles et carriers, acteurs tourisme patrimonial (5 châteaux médiévaux), commerçants, professions libérales et services aux entreprises de l'est Vienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chauvigny (86). Nous accompagnons tous types d'activités : PME artisanales pierre/BTP, PME industrielles et carriers, acteurs tourisme patrimonial (5 châteaux médiévaux), commerçants, professions libérales et services aux entreprises de l'est Vienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chauvigny (86). Nous accompagnons tous types d'activités : TPE artisans pierre/BTP, PME industrielles et carriers, acteurs tourisme patrimonial (5 châteaux médiévaux), commerçants, professions libérales et services aux entreprises de l'est Vienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chauvigny (86). Nous accompagnons tous types d'activités : PME artisanales pierre/BTP, PME industrielles et carriers, acteurs tourisme patrimonial (5 châteaux médiévaux), commerçants, professions libérales et services aux entreprises de l'est Vienne.",
   seoHook: "artisanat pierre & industrielles carrières",
   ecosystemFr:
-    "Chauvigny est une cité médiévale exceptionnelle de la vallée de la Vienne, célèbre pour ses cinq châteaux (dont le château baronnial et l'évêché) et ses carrières de pierre calcaire blanche. Tissu économique diversifié : TPE artisans pierre de taille/BTP, PME industrielles/carrières, tourisme patrimonial (spectacles Géants du Ciel), commerces, professions libérales.",
+    "Chauvigny est une cité médiévale exceptionnelle de la vallée de la Vienne, célèbre pour ses cinq châteaux (dont le château baronnial et l'évêché) et ses carrières de pierre calcaire blanche. Tissu économique diversifié : PME artisanales pierre de taille/BTP, PME industrielles/carrières, tourisme patrimonial (spectacles Géants du Ciel), commerces, professions libérales.",
   ecosystemEn:
-    "Chauvigny est une cité médiévale exceptionnelle de la vallée de la Vienne, célèbre pour ses cinq châteaux (dont le château baronnial et l'évêché) et ses carrières de pierre calcaire blanche. Tissu économique diversifié : TPE artisans pierre de taille/BTP, PME industrielles/carrières, tourisme patrimonial (spectacles Géants du Ciel), commerces, professions libérales.",
+    "Chauvigny est une cité médiévale exceptionnelle de la vallée de la Vienne, célèbre pour ses cinq châteaux (dont le château baronnial et l'évêché) et ses carrières de pierre calcaire blanche. Tissu économique diversifié : PME artisanales pierre de taille/BTP, PME industrielles/carrières, tourisme patrimonial (spectacles Géants du Ciel), commerces, professions libérales.",
   distancesFr:
     "Poitiers centre à 25 min. Gare Poitiers TGV (Paris 1h40). Montmorillon à 40 min. Saint-Savin-sur-Gartempe à 15 min. Axe D951 vallée de la Vienne. Aéroport Poitiers-Biard à 35 min.",
   distancesEn:
     "Poitiers centre à 25 min. Gare Poitiers TGV (Paris 1h40). Montmorillon à 40 min. Saint-Savin-sur-Gartempe à 15 min. Axe D951 vallée de la Vienne. Aéroport Poitiers-Biard à 35 min.",
   topSectorsNaf: [
-    "TPE artisanat pierre de Chauvigny & BTP",
+    "PME de l'artisanat pierre de Chauvigny & BTP",
     "PME industrielles & carrières de pierre",
     "Tourisme patrimonial & spectacles (5 châteaux)",
     "Commerces de proximité & services",
@@ -30,8 +30,8 @@ export const CHAUVIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Chauvigny : diagnostic adapté aux PME artisanales pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Chauvigny : diagnostic adapté aux PME artisanales pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chauvigny : formats adaptés aux ateliers de taille de pierre, exploitations carrières, sites touristiques ou commerces. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const CHAUVIGNY_COPY: VilleCopy = {
       en: "Implémentation IA à Chauvigny : agents conversationnels visiteurs multilingue, classification photos patrimoine, optimisation flux carrières, automatisation devis BTP/pierre, CRM augmenté artisans. Est Vienne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chauvigny : sessions dans votre atelier, carrière, office de tourisme ou en visio. Dirigeants carriers, artisans pierre, acteurs tourisme, gérants TPE/PME chauvinois souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Chauvigny : sessions dans votre atelier, carrière, office de tourisme ou en visio. Dirigeants carriers, artisans pierre, acteurs tourisme, gérants TPE/PME chauvinois souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Chauvigny : sessions dans votre atelier, carrière, office de tourisme ou en visio. Dirigeants carriers, artisans pierre, acteurs tourisme, gérants PME et ETI chauvinois souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Chauvigny : sessions dans votre atelier, carrière, office de tourisme ou en visio. Dirigeants carriers, artisans pierre, acteurs tourisme, gérants PME et ETI chauvinois souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const CHAUVIGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs tourisme patrimonial de Chauvigny (châteaux, spectacles Géants du Ciel, musées) sur leurs cas IA : agents conversationnels visiteurs multilingue, classification avis clients, revenue management billetterie, marketing digital.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chauvigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, classification photos chantiers.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Chauvigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, classification photos chantiers.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

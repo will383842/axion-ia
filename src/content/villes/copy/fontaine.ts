@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const FONTAINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Fontaine (38600, Isère, 22 020 habitants en 2023), commune limitrophe de Grenoble dans l'agglomération grenobloise. Située entre le Drac et les falaises du Vercors, Fontaine s'organise autour de trois zones d'activités — Vouillants, Les Plans et L'Argentière — accueillant un tissu de PME industrielles, de services et de commerces. La proximité immédiate de Grenoble (2,5 km de la gare) et du pôle scientifique Presqu'île offre un terrain favorable au déploiement d'IA opérationnelle en code custom, conforme RGPD.",
+    "Axion-IA accompagne les PME et ETI de Fontaine (38600, Isère, 22 020 habitants en 2023), commune limitrophe de Grenoble dans l'agglomération grenobloise. Située entre le Drac et les falaises du Vercors, Fontaine s'organise autour de trois zones d'activités — Vouillants, Les Plans et L'Argentière — accueillant un tissu de PME industrielles, de services et de commerces. La proximité immédiate de Grenoble (2,5 km de la gare) et du pôle scientifique Presqu'île offre un terrain favorable au déploiement d'IA opérationnelle en code custom, conforme RGPD.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Fontaine (38600, Isère, 22 020 habitants en 2023), commune limitrophe de Grenoble dans l'agglomération grenobloise. Située entre le Drac et les falaises du Vercors, Fontaine s'organise autour de trois zones d'activités — Vouillants, Les Plans et L'Argentière — accueillant un tissu de PME industrielles, de services et de commerces. La proximité immédiate de Grenoble (2,5 km de la gare) et du pôle scientifique Presqu'île offre un terrain favorable au déploiement d'IA opérationnelle en code custom, conforme RGPD.",
+    "Axion-IA accompagne les PME et ETI de Fontaine (38600, Isère, 22 020 habitants en 2023), commune limitrophe de Grenoble dans l'agglomération grenobloise. Située entre le Drac et les falaises du Vercors, Fontaine s'organise autour de trois zones d'activités — Vouillants, Les Plans et L'Argentière — accueillant un tissu de PME industrielles, de services et de commerces. La proximité immédiate de Grenoble (2,5 km de la gare) et du pôle scientifique Presqu'île offre un terrain favorable au déploiement d'IA opérationnelle en code custom, conforme RGPD.",
   directAnswerFr:
-    "Axion-IA se déplace à Fontaine pour accompagner les TPE, PME et ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par la ligne A du tramway de Grenoble (5 stations à Fontaine) ou par l'A480. Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous intervenons en priorité auprès des PME industrielles des zones Vouillants, Les Plans et L'Argentière, des commerces de gros, des artisans BTP et des cabinets de services. Tous les livrables sont en code custom (pas de no-code) et documentés RGPD.",
+    "Axion-IA se déplace à Fontaine pour accompagner les PME, ETI et ponctuellement les grands groupes dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par la ligne A du tramway de Grenoble (5 stations à Fontaine) ou par l'A480. Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous intervenons en priorité auprès des PME industrielles des zones Vouillants, Les Plans et L'Argentière, des commerces de gros, des artisans BTP et des cabinets de services. Tous les livrables sont en code custom (pas de no-code) et documentés RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Fontaine pour accompagner les TPE, PME et ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par la ligne A du tramway de Grenoble (5 stations à Fontaine) ou par l'A480. Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous intervenons en priorité auprès des PME industrielles des zones Vouillants, Les Plans et L'Argentière, des commerces de gros, des artisans BTP et des cabinets de services. Tous les livrables sont en code custom (pas de no-code) et documentés RGPD.",
+    "Axion-IA se déplace à Fontaine pour accompagner les PME, ETI et ponctuellement les grands groupes dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par la ligne A du tramway de Grenoble (5 stations à Fontaine) ou par l'A480. Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Nous intervenons en priorité auprès des PME industrielles des zones Vouillants, Les Plans et L'Argentière, des commerces de gros, des artisans BTP et des cabinets de services. Tous les livrables sont en code custom (pas de no-code) et documentés RGPD.",
   seoHook: "PME industrielles & commerce gros",
   ecosystemFr:
-    "Fontaine bénéficie de son intégration à la métropole grenobloise et de trois zones d'activités structurantes : Vouillants, Les Plans et L'Argentière. Le tissu local est dominé par des TPE et PME industrielles (produits métalliques, fabrication), des commerces de gros, des entreprises de construction et des services. La densité (3 267 hab/km² sur 6,74 km²) facilite les déplacements consultants. La ville est reliée à Grenoble par la ligne A du tramway (5 stations à Fontaine) et par les bus 19, 20, 50 et 53 vers les communes voisines.",
+    "Fontaine bénéficie de son intégration à la métropole grenobloise et de trois zones d'activités structurantes : Vouillants, Les Plans et L'Argentière. Le tissu local est dominé par des PME et ETI industrielles (produits métalliques, fabrication), des commerces de gros, des entreprises de construction et des services. La densité (3 267 hab/km² sur 6,74 km²) facilite les déplacements consultants. La ville est reliée à Grenoble par la ligne A du tramway (5 stations à Fontaine) et par les bus 19, 20, 50 et 53 vers les communes voisines.",
   ecosystemEn:
-    "Fontaine bénéficie de son intégration à la métropole grenobloise et de trois zones d'activités structurantes : Vouillants, Les Plans et L'Argentière. Le tissu local est dominé par des TPE et PME industrielles (produits métalliques, fabrication), des commerces de gros, des entreprises de construction et des services. La densité (3 267 hab/km² sur 6,74 km²) facilite les déplacements consultants. La ville est reliée à Grenoble par la ligne A du tramway (5 stations à Fontaine) et par les bus 19, 20, 50 et 53 vers les communes voisines.",
+    "Fontaine bénéficie de son intégration à la métropole grenobloise et de trois zones d'activités structurantes : Vouillants, Les Plans et L'Argentière. Le tissu local est dominé par des PME et ETI industrielles (produits métalliques, fabrication), des commerces de gros, des entreprises de construction et des services. La densité (3 267 hab/km² sur 6,74 km²) facilite les déplacements consultants. La ville est reliée à Grenoble par la ligne A du tramway (5 stations à Fontaine) et par les bus 19, 20, 50 et 53 vers les communes voisines.",
   distancesFr:
     "Fontaine est à 2,5 km de la gare de Grenoble (TGV Paris en 3h00), 35 km de l'aéroport Grenoble-Alpes-Isère et 85 km de l'aéroport Lyon-Saint-Exupéry, accessible par l'A480 et la ligne A du tramway de Grenoble.",
   distancesEn:
@@ -36,16 +36,16 @@ export const FONTAINE_COPY: VilleCopy = {
       en: "Audit sur place à Fontaine pour les PME industrielles des zones Vouillants, Les Plans et L'Argentière : cartographie des processus à automatiser, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Formation collective à Fontaine pour automatiser devis, suivi de production et facturation des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
-      en: "Formation collective à Fontaine pour automatiser devis, suivi de production et facturation des TPE/PME locales, dès {{price:intervention-4h|flat}}.",
+      fr: "Formation collective à Fontaine pour automatiser devis, suivi de production et facturation des PME et ETI locales, dès {{price:intervention-4h|flat}}.",
+      en: "Formation collective à Fontaine pour automatiser devis, suivi de production et facturation des PME et ETI locales, dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation à Fontaine d'agents IA en code custom reliés à votre ERP métier, dès {{price:impl-poc|entry}}.",
       en: "Implémentation à Fontaine d'agents IA en code custom reliés à votre ERP métier, dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Fontaine pour dirigeants de TPE/PME industrielles ou tertiaires : feuille de route IA et arbitrages stratégiques, dès {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions 1-to-1 à Fontaine pour dirigeants de TPE/PME industrielles ou tertiaires : feuille de route IA et arbitrages stratégiques, dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions 1-to-1 à Fontaine pour dirigeants de PME et ETI industrielles ou tertiaires : feuille de route IA et arbitrages stratégiques, dès {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Fontaine pour dirigeants de PME et ETI industrielles ou tertiaires : feuille de route IA et arbitrages stratégiques, dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const FONTAINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, configurateur de devis) sur le site existant d'un artisan BTP, d'un commerce de détail ou d'un atelier des zones Vouillants ou Les Plans, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -173,12 +167,6 @@ export const FONTAINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, configurateur de devis) sur le site existant d'un artisan BTP, d'un commerce de détail ou d'un atelier des zones Vouillants ou Les Plans, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -244,7 +232,7 @@ export const FONTAINE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité à Fontaine ?",
-      a: "TPE et PME de fabrication de produits métalliques, commerce de gros, construction, commerce de détail et services aux entreprises. Nous accompagnons aussi des ETI sur des projets ciblés.",
+      a: "PME et ETI de fabrication de produits métalliques, commerce de gros, construction, commerce de détail et services aux entreprises. Nous accompagnons aussi des ETI sur des projets ciblés.",
     },
     {
       q: "Proposez-vous des sessions IA pour dirigeants à Fontaine ?",

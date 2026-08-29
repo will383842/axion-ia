@@ -1350,7 +1350,7 @@ export const IMPL_FR_OVERRIDES: Record<ImplementationSlug, ImplementationFrOverr
         quote:
           "Ils ont posé la vraie question dès le départ : no-code ou sur-mesure. Pour cette première brique, la greffe sur nos outils actuels suffisait, et ils ont prévu la sortie au cas où on grandirait.",
         author: "Aurélie P.",
-        role: "Gérante, organisme de formation, TPE",
+        role: "Gérante, organisme de formation, PME",
         avatar: "/images/reviews/avis-impl-nadia.webp",
         photographer: "Christina @ wocintechchat.com",
         photographerUrl: "https://unsplash.com/@wocintechchat",

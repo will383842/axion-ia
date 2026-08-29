@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
   pitchFr:
-    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu PME agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu PME agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carentan-les-Marais (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs des marais du Cotentin, PME agroalimentaires (lait, viande), commerçants de bourg, prestataires tourisme mémoriel D-Day, artisans et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carentan-les-Marais (50). Nous accompagnons tous types d'activités : PME éleveurs et agriculteurs des marais du Cotentin, PME agroalimentaires (lait, viande), commerçants de bourg, prestataires tourisme mémoriel D-Day, artisans et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carentan-les-Marais (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs des marais du Cotentin, PME agroalimentaires (lait, viande), commerçants de bourg, prestataires tourisme mémoriel D-Day, artisans et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carentan-les-Marais (50). Nous accompagnons tous types d'activités : PME éleveurs et agriculteurs des marais du Cotentin, PME agroalimentaires (lait, viande), commerçants de bourg, prestataires tourisme mémoriel D-Day, artisans et professions libérales.",
   seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Carentan-les-Marais est un bourg-centre historique au carrefour des marais du Cotentin et du Bessin. L'économie repose sur l'élevage bovin laitier et allaitant (prairies humides AOC), l'agroalimentaire (laiteries, transformation viande), le tourisme mémoriel (Débarquement 1944, musées, plages Utah et Omaha proches), les commerces de proximité et l'artisanat. Carrefour routier N13/N174, entre Cherbourg (45 min) et Saint-Lô (25 min).",
@@ -22,7 +22,7 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
   distancesEn:
     "Gare de Carentan (TER Cherbourg-Caen-Paris, 2 h 30 Paris). Saint-Lô à 25 min. Cherbourg à 45 min. Bayeux à 30 min. Caen à 1 h. Utah Beach à 15 min. Aéroport Caen-Carpiquet à 1 h 10.",
   topSectorsNaf: [
-    "TPE élevage bovin laitier et allaitant (AOC marais)",
+    "PME élevage bovin laitier et allaitant (AOC marais)",
     "PME agroalimentaire (laiteries, viande)",
     "Tourisme mémoriel Débarquement 1944",
     "Commerce de bourg et artisanat",
@@ -30,8 +30,8 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Carentan-les-Marais : diagnostic adapté aux PME éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Carentan-les-Marais : diagnostic adapté aux PME éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carentan-les-Marais : formats adaptés à l'exploitation laitière, la laiterie, le musée, le commerce. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
       en: "Implémentation IA à Carentan-les-Marais : automatisation traçabilité laitière AOC, prédiction rendements élevage, agents IA accueil tourisme mémoriel, gestion stocks commerce, CRM prestataires D-Day.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Carentan-les-Marais : sessions dans votre exploitation, laiterie, commerce ou en visio. Dirigeants TPE/PME, éleveurs, gérants tourisme mémoriel, commerçants du Cotentin.",
-      en: "Coaching 1-to-1 à Carentan-les-Marais : sessions dans votre exploitation, laiterie, commerce ou en visio. Dirigeants TPE/PME, éleveurs, gérants tourisme mémoriel, commerçants du Cotentin.",
+      fr: "Coaching 1-to-1 à Carentan-les-Marais : sessions dans votre exploitation, laiterie, commerce ou en visio. Dirigeants PME et ETI, éleveurs, gérants tourisme mémoriel, commerçants du Cotentin.",
+      en: "Coaching 1-to-1 à Carentan-les-Marais : sessions dans votre exploitation, laiterie, commerce ou en visio. Dirigeants PME et ETI, éleveurs, gérants tourisme mémoriel, commerçants du Cotentin.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les éleveurs et agriculteurs des marais du Cotentin ?",
-      a: "Oui, nous accompagnons les TPE éleveurs bovins laitiers et allaitants du Cotentin : traçabilité troupeau AOC, prédiction rendements laitiers, automatisation PAC, optimisation pâturage prairies humides. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME éleveurs bovins laitiers et allaitants du Cotentin : traçabilité troupeau AOC, prédiction rendements laitiers, automatisation PAC, optimisation pâturage prairies humides. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour le tourisme mémoriel D-Day ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const USTARITZ_COPY: VilleCopy = {
   pitchFr:
-    "Ustaritz (64), commune du Labourd en Pays Basque intérieur, 7 897 habitants. Berceau de la pelote basque, tissu de TPE agricoles, artisans, PME agroalimentaires et commerces locaux. Axion-IA opère pour toutes les structures économiques de la commune du Labourd intérieur.",
+    "Ustaritz (64), commune du Labourd en Pays Basque intérieur, 7 897 habitants. Berceau de la pelote basque, tissu de PME agricoles, artisans, PME agroalimentaires et commerces locaux. Axion-IA opère pour toutes les structures économiques de la commune du Labourd intérieur.",
   pitchEn:
-    "Ustaritz (64), commune du Labourd en Pays Basque intérieur, 7 897 habitants. Berceau de la pelote basque, tissu de TPE agricoles, artisans, PME agroalimentaires et commerces locaux. Axion-IA opère pour toutes les structures économiques de la commune du Labourd intérieur.",
+    "Ustaritz (64), commune du Labourd en Pays Basque intérieur, 7 897 habitants. Berceau de la pelote basque, tissu de PME agricoles, artisans, PME agroalimentaires et commerces locaux. Axion-IA opère pour toutes les structures économiques de la commune du Labourd intérieur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ustaritz (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : agriculture basque, agroalimentaire, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ustaritz (64). Nous accompagnons PME, ETI et artisans du Labourd intérieur : agriculture basque, agroalimentaire, artisanat, commerces. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ustaritz (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : agriculture basque, agroalimentaire, artisanat, commerces. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ustaritz (64). Nous accompagnons PME, ETI et artisans du Labourd intérieur : agriculture basque, agroalimentaire, artisanat, commerces. Audit sur place sur mesure.",
   seoHook: "agriculture basque & agroalimentaire",
   ecosystemFr:
-    "Ustaritz est une commune du Labourd intérieur, 7 897 habitants, réputée berceau de la pelote basque. Tissu de TPE agricoles (élevage, maraîchage), artisans du terroir basque, PME agroalimentaires (fromages, conserves), commerces locaux et professions libérales. À 15 min de Bayonne.",
+    "Ustaritz est une commune du Labourd intérieur, 7 897 habitants, réputée berceau de la pelote basque. Tissu de PME agricoles (élevage, maraîchage), artisans du terroir basque, PME agroalimentaires (fromages, conserves), commerces locaux et professions libérales. À 15 min de Bayonne.",
   ecosystemEn:
-    "Ustaritz est une commune du Labourd intérieur, 7 897 habitants, réputée berceau de la pelote basque. Tissu de TPE agricoles (élevage, maraîchage), artisans du terroir basque, PME agroalimentaires (fromages, conserves), commerces locaux et professions libérales. À 15 min de Bayonne.",
+    "Ustaritz est une commune du Labourd intérieur, 7 897 habitants, réputée berceau de la pelote basque. Tissu de PME agricoles (élevage, maraîchage), artisans du terroir basque, PME agroalimentaires (fromages, conserves), commerces locaux et professions libérales. À 15 min de Bayonne.",
   distancesFr:
     "Bayonne centre à 15 min voiture. Gare de Bayonne (TGV Paris 4h30 direct) à 15 min. Biarritz à 20 min. Aéroport Biarritz Pays Basque à 20 min. Cambo-les-Bains à 10 min. Accès D932 (Bayonne-Cambo).",
   distancesEn:
@@ -30,8 +30,8 @@ export const USTARITZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ustaritz : diagnostic adapté aux TPE agricoles basques, PME agroalimentaires, artisans du terroir et commerçants du Labourd intérieur. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ustaritz : diagnostic adapté aux TPE agricoles basques, PME agroalimentaires, artisans du terroir et commerçants du Labourd intérieur. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ustaritz : diagnostic adapté aux PME agricoles basques, PME agroalimentaires, artisans du terroir et commerçants du Labourd intérieur. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ustaritz : diagnostic adapté aux PME agricoles basques, PME agroalimentaires, artisans du terroir et commerçants du Labourd intérieur. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ustaritz : déploiement outils IA dans vos exploitations agricoles, ateliers artisanaux ou commerces. Vos équipes repartent autonomes sur outils configurés métier.",

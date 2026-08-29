@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
   pitchFr:
-    "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de TPE viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de PME viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de TPE viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de PME viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bormes-les-Mimosas (83). Nous accompagnons PME viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bormes-les-Mimosas (83). Nous accompagnons PME viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & culture mimosa",
   ecosystemFr:
-    "Bormes-les-Mimosas est une station classée tourisme et l'un des plus beaux villages fleuris de France. Économie tirée par la viticulture Côtes de Provence, la culture du mimosa (route du mimosa), le tourisme haut de gamme (port La Favière, plages, fort de Brégançon), la restauration et l'artisanat. Tissu de TPE/PME tourisme et patrimoine.",
+    "Bormes-les-Mimosas est une station classée tourisme et l'un des plus beaux villages fleuris de France. Économie tirée par la viticulture Côtes de Provence, la culture du mimosa (route du mimosa), le tourisme haut de gamme (port La Favière, plages, fort de Brégançon), la restauration et l'artisanat. Tissu de PME et ETI tourisme et patrimoine.",
   ecosystemEn:
-    "Bormes-les-Mimosas est une station classée tourisme et l'un des plus beaux villages fleuris de France. Économie tirée par la viticulture Côtes de Provence, la culture du mimosa (route du mimosa), le tourisme haut de gamme (port La Favière, plages, fort de Brégançon), la restauration et l'artisanat. Tissu de TPE/PME tourisme et patrimoine.",
+    "Bormes-les-Mimosas est une station classée tourisme et l'un des plus beaux villages fleuris de France. Économie tirée par la viticulture Côtes de Provence, la culture du mimosa (route du mimosa), le tourisme haut de gamme (port La Favière, plages, fort de Brégançon), la restauration et l'artisanat. Tissu de PME et ETI tourisme et patrimoine.",
   distancesFr:
     "Hyères à 25 min. Le Lavandou à 5 min. Toulon à 50 min. Aéroport Toulon-Hyères à 30 min. Saint-Tropez à 50 min. Gare SNCF Hyères à 30 min. Marseille à 1 h 45 par A57.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
       en: "Implémentation IA à Bormes-les-Mimosas : gestion parcellaire viticole, vente directe mimosa, yield management hôtelier, agents IA réservation multilingues, marketing IA tourisme premium. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bormes-les-Mimosas : sessions pour vignerons, mimosistes, restaurateurs et dirigeants TPE/PME tourisme du littoral varois oriental.",
-      en: "Coaching 1-to-1 à Bormes-les-Mimosas : sessions pour vignerons, mimosistes, restaurateurs et dirigeants TPE/PME tourisme du littoral varois oriental.",
+      fr: "Coaching 1-to-1 à Bormes-les-Mimosas : sessions pour vignerons, mimosistes, restaurateurs et dirigeants de PME et d'ETI tourisme du littoral varois oriental.",
+      en: "Coaching 1-to-1 à Bormes-les-Mimosas : sessions pour vignerons, mimosistes, restaurateurs et dirigeants de PME et d'ETI tourisme du littoral varois oriental.",
     },
   },
   faqGeolocalisee: [
@@ -64,7 +64,7 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
       a: "Oui, nous implémentons des solutions IA pour hôtels et résidences de tourisme premium : yield management, agents conversationnels conciergerie multilingues, personnalisation expérience client, automatisation check-in.",
     },
     {
-      q: "Comment l'IA peut-elle aider les TPE du tourisme balnéaire borméen ?",
+      q: "Comment l'IA peut-elle aider les PME du tourisme balnéaire borméen ?",
       a: "L'IA optimise la saisonnalité : prévision de fréquentation, yield management, marketing ciblé basse saison, automatisation gestion saisonniers, agents IA réservation port La Favière et locations touristiques.",
     },
   ],

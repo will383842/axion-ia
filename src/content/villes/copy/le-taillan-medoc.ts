@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
   pitchFr:
-    "Le Taillan-Médoc (33), commune du nord-ouest de Bordeaux Métropole à l'entrée du Médoc, allie tissu résidentiel de qualité, PME tertiaires, artisanat et vignoble. Axion-IA y conduit ses missions auprès des entreprises locales : TPE viticoles, PME de services, artisans BTP, commerces et professions libérales.",
+    "Le Taillan-Médoc (33), commune du nord-ouest de Bordeaux Métropole à l'entrée du Médoc, allie tissu résidentiel de qualité, PME tertiaires, artisanat et vignoble. Axion-IA y conduit ses missions auprès des entreprises locales : PME viticoles, PME de services, artisans BTP, commerces et professions libérales.",
   pitchEn:
-    "Le Taillan-Médoc (33), commune du nord-ouest de Bordeaux Métropole à l'entrée du Médoc, allie tissu résidentiel de qualité, PME tertiaires, artisanat et vignoble. Axion-IA y conduit ses missions auprès des entreprises locales : TPE viticoles, PME de services, artisans BTP, commerces et professions libérales.",
+    "Le Taillan-Médoc (33), commune du nord-ouest de Bordeaux Métropole à l'entrée du Médoc, allie tissu résidentiel de qualité, PME tertiaires, artisanat et vignoble. Axion-IA y conduit ses missions auprès des entreprises locales : PME viticoles, PME de services, artisans BTP, commerces et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Taillan-Médoc (33). Nous accompagnons TPE et PME du nord-ouest Bordeaux-Médoc : vignerons, PME tertiaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Taillan-Médoc (33). Nous accompagnons PME et ETI du nord-ouest Bordeaux-Médoc : vignerons, PME tertiaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Taillan-Médoc (33). Nous accompagnons TPE et PME du nord-ouest Bordeaux-Médoc : vignerons, PME tertiaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Taillan-Médoc (33). Nous accompagnons PME et ETI du nord-ouest Bordeaux-Médoc : vignerons, PME tertiaires, artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture haut-médoc & tertiaires services",
   ecosystemFr:
     "Le Taillan-Médoc se situe à l'entrée du Médoc, en limite nord-ouest de Bordeaux Métropole. Commune résidentielle avec vignoble AOC Haut-Médoc, tissu PME tertiaires, artisanat BTP et commerces de proximité. Tramway D en développement, accès rocade et route du Médoc.",
@@ -24,14 +24,14 @@ export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture AOC Haut-Médoc",
     "PME tertiaires & services",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Taillan-Médoc : diagnostic pour vignerons, PME tertiaires, TPE artisans et commerces du nord-ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Taillan-Médoc : diagnostic pour vignerons, PME tertiaires, TPE artisans et commerces du nord-ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Taillan-Médoc : diagnostic pour vignerons, PME tertiaires, PME de l'artisanat et du commerce du nord-ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Taillan-Médoc : diagnostic pour vignerons, PME tertiaires, PME de l'artisanat et du commerce du nord-ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Taillan-Médoc : ateliers adaptés aux chais, bureaux, ateliers et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Taillan-Médoc ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et PME tertiaires du nord-ouest bordelais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME viticoles et PME tertiaires du nord-ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les vignerons du Médoc ?",

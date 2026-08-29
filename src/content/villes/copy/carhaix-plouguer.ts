@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
   pitchFr:
-    "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu TPE artisans, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y travaille avec les organisations du territoire.",
+    "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu PME artisanales, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu TPE artisans, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y travaille avec les organisations du territoire.",
+    "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu PME artisanales, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit sur place à",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités: PME artisanales, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit sur place à",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités: TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit sur place à",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités: PME artisanales, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit sur place à",
   seoHook: "agroalimentaire & événementiel tourisme",
   ecosystemFr:
-    "Carhaix-Plouguer est la sous-préfecture du centre Finistère et le bourg-centre du Poher. La ville est mondialement connue pour le festival des Vieilles Charrues, plus grand festival de musique de France (280 000 festivaliers). Tissu économique: PME agroalimentaires (laiteries, filière porcine), TPE artisans BTP, commerces, services publics, professions libérales et tourisme événementiel.",
+    "Carhaix-Plouguer est la sous-préfecture du centre Finistère et le bourg-centre du Poher. La ville est mondialement connue pour le festival des Vieilles Charrues, plus grand festival de musique de France (280 000 festivaliers). Tissu économique: PME agroalimentaires (laiteries, filière porcine), PME du BTP, commerces, services publics, professions libérales et tourisme événementiel.",
   ecosystemEn:
-    "Carhaix-Plouguer est la sous-préfecture du centre Finistère et le bourg-centre du Poher. La ville est mondialement connue pour le festival des Vieilles Charrues, plus grand festival de musique de France (280 000 festivaliers). Tissu économique: PME agroalimentaires (laiteries, filière porcine), TPE artisans BTP, commerces, services publics, professions libérales et tourisme événementiel.",
+    "Carhaix-Plouguer est la sous-préfecture du centre Finistère et le bourg-centre du Poher. La ville est mondialement connue pour le festival des Vieilles Charrues, plus grand festival de musique de France (280 000 festivaliers). Tissu économique: PME agroalimentaires (laiteries, filière porcine), PME du BTP, commerces, services publics, professions libérales et tourisme événementiel.",
   distancesFr:
     "Gare Carhaix (TER vers Guingamp, correspondance TGV Paris 3h30). Brest à 1h voiture (N164). Quimper à 55 min. Lorient à 1h10. Aéroport Brest Bretagne à 1h10. Situation centre Bretagne.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire (laiteries, filière porcine)",
     "Événementiel & tourisme (Vieilles Charrues)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité & services publics",
     "Agriculture & élevage centre Finistère",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carhaix-Plouguer : formats adaptés à la laiterie, l'atelier artisan, le commerce ou l'organisation événementielle. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
       en: "Implémentation IA à Carhaix-Plouguer : automatisation traçabilité laitière, gestion logistique festival, agents conversationnels, prédiction stocks. Adapté agroalimentaire + événementiel centre Finistère.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Carhaix-Plouguer : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME, artisans, commerçants et professionnels de l'événementiel du Poher.",
-      en: "Coaching 1-to-1 à Carhaix-Plouguer : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME, artisans, commerçants et professionnels de l'événementiel du Poher.",
+      fr: "Coaching 1-to-1 à Carhaix-Plouguer : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI, artisans, commerçants et professionnels de l'événementiel du Poher.",
+      en: "Coaching 1-to-1 à Carhaix-Plouguer : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI, artisans, commerçants et professionnels de l'événementiel du Poher.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs de l'événementiel et du tourisme à Carhaix sur leurs cas IA : gestion logistique festival, automatisation billetterie, prédiction affluence, agents conversationnels festivaliers.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants carhaisiens ?",
-      a: "Pour les TPE artisans BTP et commerçants à Carhaix-Plouguer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce carhaisiens ?",
+      a: "Pour les PME du BTP et du commerce à Carhaix-Plouguer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Carhaix-Plouguer ?",

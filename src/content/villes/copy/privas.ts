@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PRIVAS_COPY: VilleCopy = {
   pitchFr:
-    "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
+    "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), PME du BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   pitchEn:
-    "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
+    "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), PME du BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, PME du BTP, commerçants et services aux entreprises ardéchois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, PME du BTP, commerçants et services aux entreprises ardéchois.",
   seoHook: "administration & confiserie",
   ecosystemFr:
-    "Privas est la préfecture de l'Ardèche. Réputation : marrons glacés (confiserie artisanale locale historique, spécialité ardéchoise). Tissu administration/services publics, agriculture (châtaigneraie), TPE artisanat BTP, commerces.",
+    "Privas est la préfecture de l'Ardèche. Réputation : marrons glacés (confiserie artisanale locale historique, spécialité ardéchoise). Tissu administration/services publics, agriculture (châtaigneraie), PME du BTP, commerces.",
   ecosystemEn:
-    "Privas est la préfecture de l'Ardèche. Réputation : marrons glacés (confiserie artisanale locale historique, spécialité ardéchoise). Tissu administration/services publics, agriculture (châtaigneraie), TPE artisanat BTP, commerces.",
+    "Privas est la préfecture de l'Ardèche. Réputation : marrons glacés (confiserie artisanale locale historique, spécialité ardéchoise). Tissu administration/services publics, agriculture (châtaigneraie), PME du BTP, commerces.",
   distancesFr:
     "Valence à 40 min. Lyon à 1h45. Montélimar à 30 min. Aubenas à 30 min. Aéroport Lyon-Saint-Exupéry à 1h30.",
   distancesEn:
@@ -25,13 +25,13 @@ export const PRIVAS_COPY: VilleCopy = {
     "Administration (préfecture Ardèche)",
     "Confiserie (marrons glacés)",
     "Agriculture châtaigneraie",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Privas : diagnostic adapté à l'administration, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Privas : diagnostic adapté à l'administration, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Privas : diagnostic adapté à l'administration, confiseurs marrons glacés, agriculteurs châtaigneraie, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Privas : diagnostic adapté à l'administration, confiseurs marrons glacés, agriculteurs châtaigneraie, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Privas : formats adaptés à l'administration, atelier confiserie, exploitation, commerce. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const PRIVAS_COPY: VilleCopy = {
       en: "Implémentation IA à Privas : automatisation flux administratifs, traçabilité marrons glacés/AOC, classification photos châtaigneraie, agents conversationnels gastronomie.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Privas : sessions dans votre administration, atelier confiserie, exploitation ou en visio. Administration, confiseurs, agriculteurs, artisans, gérants TPE/PME privadois.",
-      en: "Coaching 1-to-1 à Privas : sessions dans votre administration, atelier confiserie, exploitation ou en visio. Administration, confiseurs, agriculteurs, artisans, gérants TPE/PME privadois.",
+      fr: "Coaching 1-to-1 à Privas : sessions dans votre administration, atelier confiserie, exploitation ou en visio. Administration, confiseurs, agriculteurs, artisans, gérants PME et ETI privadois.",
+      en: "Coaching 1-to-1 à Privas : sessions dans votre administration, atelier confiserie, exploitation ou en visio. Administration, confiseurs, agriculteurs, artisans, gérants PME et ETI privadois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const PRIVAS_COPY: VilleCopy = {
       a: "Oui, automatisation flux administratifs (RGPD strict), agents conversationnels usagers, classification dossiers.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

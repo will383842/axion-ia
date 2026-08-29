@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BIDART_COPY: VilleCopy = {
   pitchFr:
-    "Bidart (64), commune de la Côte Basque entre Biarritz et Guéthary, 7 689 habitants. Spot de surf réputé, piment d'Espelette, tourisme balnéaire haut de gamme, TPE artisans et hébergeurs saisonniers. Axion-IA répond aux besoins de toutes les entreprises de la Côte Basque.",
+    "Bidart (64), commune de la Côte Basque entre Biarritz et Guéthary, 7 689 habitants. Spot de surf réputé, piment d'Espelette, tourisme balnéaire haut de gamme, PME artisanales et hébergeurs saisonniers. Axion-IA répond aux besoins de toutes les entreprises de la Côte Basque.",
   pitchEn:
-    "Bidart (64), commune de la Côte Basque entre Biarritz et Guéthary, 7 689 habitants. Spot de surf réputé, piment d'Espelette, tourisme balnéaire haut de gamme, TPE artisans et hébergeurs saisonniers. Axion-IA répond aux besoins de toutes les entreprises de la Côte Basque.",
+    "Bidart (64), commune de la Côte Basque entre Biarritz et Guéthary, 7 689 habitants. Spot de surf réputé, piment d'Espelette, tourisme balnéaire haut de gamme, PME artisanales et hébergeurs saisonniers. Axion-IA répond aux besoins de toutes les entreprises de la Côte Basque.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bidart (64). Nous accompagnons TPE, PME et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bidart (64). Nous accompagnons PME, ETI et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bidart (64). Nous accompagnons TPE, PME et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bidart (64). Nous accompagnons PME, ETI et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & produits terroir",
   ecosystemFr:
-    "Bidart est une commune balnéaire de 7 689 habitants sur la Côte Basque, entre Biarritz et Guéthary. Spots de surf mondialement connus (Parlementia, Pavillon Royal), filière piment d'Espelette AOP (Atelier du Piment), hébergements haut de gamme, TPE artisans du terroir, restauration et commerces saisonniers.",
+    "Bidart est une commune balnéaire de 7 689 habitants sur la Côte Basque, entre Biarritz et Guéthary. Spots de surf mondialement connus (Parlementia, Pavillon Royal), filière piment d'Espelette AOP (Atelier du Piment), hébergements haut de gamme, PME artisanales du terroir, restauration et commerces saisonniers.",
   ecosystemEn:
-    "Bidart est une commune balnéaire de 7 689 habitants sur la Côte Basque, entre Biarritz et Guéthary. Spots de surf mondialement connus (Parlementia, Pavillon Royal), filière piment d'Espelette AOP (Atelier du Piment), hébergements haut de gamme, TPE artisans du terroir, restauration et commerces saisonniers.",
+    "Bidart est une commune balnéaire de 7 689 habitants sur la Côte Basque, entre Biarritz et Guéthary. Spots de surf mondialement connus (Parlementia, Pavillon Royal), filière piment d'Espelette AOP (Atelier du Piment), hébergements haut de gamme, PME artisanales du terroir, restauration et commerces saisonniers.",
   distancesFr:
     "Biarritz centre à 5 min voiture. Bayonne à 15 min. Gare de Biarritz à 8 min. Aéroport Biarritz Pays Basque à 5 min. Saint-Jean-de-Luz à 10 min. Espelette à 15 min. Accès A63 immédiat.",
   distancesEn:

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PARMAIN_COPY: VilleCopy = {
   pitchFr:
-    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parmain (95). Nous accompagnons PME et ETI : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parmain (95). Nous accompagnons PME et ETI : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Parmain est une commune résidentielle verdoyante des bords de l'Oise, voisine de L'Isle-Adam, appréciée pour son cadre de vie boisé et sa qualité de vie. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
+    "Parmain est une commune résidentielle verdoyante des bords de l'Oise, voisine de L'Isle-Adam, appréciée pour son cadre de vie boisé et sa qualité de vie. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne.",
   ecosystemEn:
-    "Parmain est une commune résidentielle verdoyante des bords de l'Oise, voisine de L'Isle-Adam, appréciée pour son cadre de vie boisé et sa qualité de vie. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
+    "Parmain est une commune résidentielle verdoyante des bords de l'Oise, voisine de L'Isle-Adam, appréciée pour son cadre de vie boisé et sa qualité de vie. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne.",
   distancesFr:
     "L'Isle-Adam à 3 min. Beaumont-sur-Oise à 10 min. Cergy-Pontoise à 25 min. Gare Transilien L'Isle-Adam–Parmain. Paris centre à 45 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const PARMAIN_COPY: VilleCopy = {
       en: "Implémentation IA à Parmain : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, facturation intelligente PME services vallée de l'Oise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Parmain : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME parmainois, professions libérales, artisans vallée de l'Oise.",
-      en: "Coaching 1-to-1 à Parmain : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME parmainois, professions libérales, artisans vallée de l'Oise.",
+      fr: "Coaching 1-to-1 à Parmain : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI parmainois, professions libérales, artisans vallée de l'Oise.",
+      en: "Coaching 1-to-1 à Parmain : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI parmainois, professions libérales, artisans vallée de l'Oise.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const PARMAIN_COPY: VilleCopy = {
       a: "Oui, automatisation gestion cabinet, secrétariat IA, CRM patients/clients, facturation automatisée, outils de pilotage activité pour les professionnels des bords de l'Oise.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu PME et ETI services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu PME et ETI services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Souffelweyersheim (67). Nous accompagnons tous types d'activités : TPE/PME services et logistique, commerce de gros, artisans BTP, commerces de proximité et entrepreneurs des zones d'activités de l'eurométropole nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Souffelweyersheim (67). Nous accompagnons tous types d'activités : PME et ETI services et logistique, commerce de gros, artisans BTP, commerces de proximité et entrepreneurs des zones d'activités de l'eurométropole nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Souffelweyersheim (67). Nous accompagnons tous types d'activités : TPE/PME services et logistique, commerce de gros, artisans BTP, commerces de proximité et entrepreneurs des zones d'activités de l'eurométropole nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Souffelweyersheim (67). Nous accompagnons tous types d'activités : PME et ETI services et logistique, commerce de gros, artisans BTP, commerces de proximité et entrepreneurs des zones d'activités de l'eurométropole nord.",
   ecosystemFr:
-    "Souffelweyersheim est une commune de l'eurométropole strasbourgeoise au nord de Strasbourg, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, commerces, artisanat. Dynamique économique portée par l'intégration directe à la métropole strasbourgeoise.",
+    "Souffelweyersheim est une commune de l'eurométropole strasbourgeoise au nord de Strasbourg, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu PME et ETI services, logistique, commerce de gros, BTP, commerces, artisanat. Dynamique économique portée par l'intégration directe à la métropole strasbourgeoise.",
   ecosystemEn:
-    "Souffelweyersheim est une commune de l'eurométropole strasbourgeoise au nord de Strasbourg, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, commerces, artisanat. Dynamique économique portée par l'intégration directe à la métropole strasbourgeoise.",
+    "Souffelweyersheim est une commune de l'eurométropole strasbourgeoise au nord de Strasbourg, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu PME et ETI services, logistique, commerce de gros, BTP, commerces, artisanat. Dynamique économique portée par l'intégration directe à la métropole strasbourgeoise.",
   distancesFr:
     "Strasbourg centre à 10 min. Schiltigheim à 5 min. Bischheim à 5 min. Tramway CTS ligne B (Strasbourg–Hoenheim) accessible. Autoroute A35 accès direct. Aéroport Strasbourg-Entzheim à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Souffelweyersheim : diagnostic adapté aux PME et ETI logistique, commerce de gros, services, artisans BTP et commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Souffelweyersheim : diagnostic adapté aux PME et ETI logistique, commerce de gros, services, artisans BTP et commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Souffelweyersheim : formats adaptés à l'entrepôt logistique, bureau, chantier ou commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
       en: "Implémentation IA à Souffelweyersheim : optimisation flux logistiques, gestion stocks et fournisseurs, automatisation devis BTP, agents conversationnels B2B, CRM commerce de gros.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Souffelweyersheim : sessions dans votre entrepôt, bureau, chantier ou en visio. Logisticiens, grossistes, artisans BTP, commerçants, gérants TPE/PME souffelweyersheimois.",
-      en: "Coaching 1-to-1 à Souffelweyersheim : sessions dans votre entrepôt, bureau, chantier ou en visio. Logisticiens, grossistes, artisans BTP, commerçants, gérants TPE/PME souffelweyersheimois.",
+      fr: "Coaching 1-to-1 à Souffelweyersheim : sessions dans votre entrepôt, bureau, chantier ou en visio. Logisticiens, grossistes, artisans BTP, commerçants, gérants PME et ETI souffelweyersheimois.",
+      en: "Coaching 1-to-1 à Souffelweyersheim : sessions dans votre entrepôt, bureau, chantier ou en visio. Logisticiens, grossistes, artisans BTP, commerçants, gérants PME et ETI souffelweyersheimois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises de logistique et commerce de gros ?",
-      a: "Oui, nous accompagnons les TPE/PME logistique et commerce de gros de Souffelweyersheim : optimisation flux, gestion stocks, traçabilité commandes, automatisation EDI, agents conversationnels fournisseurs.",
+      a: "Oui, nous accompagnons les PME et ETI logistique et commerce de gros de Souffelweyersheim : optimisation flux, gestion stocks, traçabilité commandes, automatisation EDI, agents conversationnels fournisseurs.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et services tertiaires ?",
@@ -61,7 +61,7 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Souffelweyersheim ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Souffelweyersheim ?",

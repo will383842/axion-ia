@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const FREYMING_MERLEBACH_COPY: VilleCopy = {
   pitchFr:
-    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu PME et ETI industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu PME et ETI industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Freyming-Merlebach (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, acteurs logistique transfrontalière, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Sarre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Freyming-Merlebach (57). Nous accompagnons tous types d'activités : PME et ETI industrie et sous-traitance, acteurs logistique transfrontalière, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Sarre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Freyming-Merlebach (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, acteurs logistique transfrontalière, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Sarre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Freyming-Merlebach (57). Nous accompagnons tous types d'activités : PME et ETI industrie et sous-traitance, acteurs logistique transfrontalière, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Sarre.",
   ecosystemFr:
-    "Freyming-Merlebach est une commune mosellane du bassin houiller, en reconversion économique et frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière vers Sarrebruck et la Sarre.",
+    "Freyming-Merlebach est une commune mosellane du bassin houiller, en reconversion économique et frontalière de la Sarre allemande. Tissu PME et ETI industrie, sous-traitance, logistique, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière vers Sarrebruck et la Sarre.",
   ecosystemEn:
-    "Freyming-Merlebach est une commune mosellane du bassin houiller, en reconversion économique et frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière vers Sarrebruck et la Sarre.",
+    "Freyming-Merlebach est une commune mosellane du bassin houiller, en reconversion économique et frontalière de la Sarre allemande. Tissu PME et ETI industrie, sous-traitance, logistique, BTP, commerces de proximité, services, artisanat. Forte dynamique frontalière vers Sarrebruck et la Sarre.",
   distancesFr:
     "Forbach à 10 min. Sarrebruck (Allemagne) à 25 min. Saint-Avold à 15 min. Metz à 55 min. Gare SNCF Freyming-Merlebach (ligne Metz–Forbach). Autoroute A4 accès direct. Aéroport Sarrebruck à 35 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Freyming-Merlebach : diagnostic adapté aux PME et ETI industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Freyming-Merlebach : diagnostic adapté aux PME et ETI industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Freyming-Merlebach : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
       en: "Implémentation IA à Freyming-Merlebach : contrôle qualité production, traçabilité supply chain transfrontalière, automatisation devis BTP, agents conversationnels B2B multilingues, gestion fournisseurs Sarre.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Freyming-Merlebach : sessions dans votre atelier, entrepôt, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, frontaliers, gérants TPE/PME locaux.",
-      en: "Coaching 1-to-1 à Freyming-Merlebach : sessions dans votre atelier, entrepôt, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, frontaliers, gérants TPE/PME locaux.",
+      fr: "Coaching 1-to-1 à Freyming-Merlebach : sessions dans votre atelier, entrepôt, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, frontaliers, gérants PME et ETI locaux.",
+      en: "Coaching 1-to-1 à Freyming-Merlebach : sessions dans votre atelier, entrepôt, chantier, bureau ou en visio. Industriels, sous-traitants, artisans BTP, commerçants, frontaliers, gérants PME et ETI locaux.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
-      a: "Oui, nous accompagnons les TPE/PME industrielles et sous-traitants du bassin houiller : contrôle qualité, traçabilité production, automatisation workflow, optimisation relations donneurs d'ordres français et allemands.",
+      a: "Oui, nous accompagnons les PME et ETI industrielles et sous-traitants du bassin houiller : contrôle qualité, traçabilité production, automatisation workflow, optimisation relations donneurs d'ordres français et allemands.",
     },
     {
       q: "Accompagnez-vous les frontaliers et entrepreneurs vers la Sarre ?",
@@ -61,7 +61,7 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Freyming-Merlebach ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Freyming-Merlebach ?",

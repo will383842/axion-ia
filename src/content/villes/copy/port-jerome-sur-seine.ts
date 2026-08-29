@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const PORT_JEROME_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Port-Jerome-sur-Seine (76), commune nouvelle de Seine-Maritime en bord de Seine, reunit pres de 10 620 habitants. Pole petrochimique et de raffinage majeur, elle accueille des TPE sous-traitantes, des PME industrielles, des commerces et des prestataires de services lies a l'industrie. Axion-IA y intervient pour tous types d'activites.",
+    "Port-Jerome-sur-Seine (76), commune nouvelle de Seine-Maritime en bord de Seine, reunit pres de 10 620 habitants. Pole petrochimique et de raffinage majeur, elle accueille des PME sous-traitantes, des PME industrielles, des commerces et des prestataires de services lies a l'industrie. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Port-Jerome-sur-Seine (76), commune nouvelle de Seine-Maritime en bord de Seine, reunit pres de 10 620 habitants. Pole petrochimique et de raffinage majeur, elle accueille des TPE sous-traitantes, des PME industrielles, des commerces et des prestataires de services lies a l'industrie. Axion-IA y intervient pour tous types d'activites.",
+    "Port-Jerome-sur-Seine (76), commune nouvelle de Seine-Maritime en bord de Seine, reunit pres de 10 620 habitants. Pole petrochimique et de raffinage majeur, elle accueille des PME sous-traitantes, des PME industrielles, des commerces et des prestataires de services lies a l'industrie. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "petrochimie, industrie & sous-traitance",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Port-Jerome-sur-Seine (76). Nous accompagnons les TPE, PME et sous-traitants du pole petrochimique : maintenance industrielle, services, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Port-Jerome-sur-Seine (76). Nous accompagnons les PME, ETI et sous-traitants du pole petrochimique : maintenance industrielle, services, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Port-Jerome-sur-Seine (76). Nous accompagnons les TPE, PME et sous-traitants du pole petrochimique : maintenance industrielle, services, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Port-Jerome-sur-Seine (76). Nous accompagnons les PME, ETI et sous-traitants du pole petrochimique : maintenance industrielle, services, artisans, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Port-Jerome-sur-Seine est une commune nouvelle issue de la fusion de Notre-Dame-de-Gravenchon, Auberville-la-Campagne et Touffreville-la-Cable. Pole petrochimique de premier plan (raffinage, chimie), l'economie locale repose sur les sous-traitants industriels, TPE de maintenance, PME de services et commerces.",
+    "Port-Jerome-sur-Seine est une commune nouvelle issue de la fusion de Notre-Dame-de-Gravenchon, Auberville-la-Campagne et Touffreville-la-Cable. Pole petrochimique de premier plan (raffinage, chimie), l'economie locale repose sur les sous-traitants industriels, PME de maintenance, PME de services et commerces.",
   ecosystemEn:
-    "Port-Jerome-sur-Seine est une commune nouvelle issue de la fusion de Notre-Dame-de-Gravenchon, Auberville-la-Campagne et Touffreville-la-Cable. Pole petrochimique de premier plan (raffinage, chimie), l'economie locale repose sur les sous-traitants industriels, TPE de maintenance, PME de services et commerces.",
+    "Port-Jerome-sur-Seine est une commune nouvelle issue de la fusion de Notre-Dame-de-Gravenchon, Auberville-la-Campagne et Touffreville-la-Cable. Pole petrochimique de premier plan (raffinage, chimie), l'economie locale repose sur les sous-traitants industriels, PME de maintenance, PME de services et commerces.",
   distancesFr:
     "A13 Paris-Caen a 15 min via Tancarville. Le Havre a 30 min. Rouen a 50 min. Pont de Tancarville a 10 min. Paris a 2h par A13. Lillebonne a 5 min.",
   distancesEn:
     "A13 Paris-Caen a 15 min via Tancarville. Le Havre a 30 min. Rouen a 50 min. Pont de Tancarville a 10 min. Paris a 2h par A13. Lillebonne a 5 min.",
   topSectorsNaf: [
     "Industrie petrochimique & raffinage",
-    "TPE sous-traitance industrielle & maintenance",
+    "PME sous-traitance industrielle & maintenance",
     "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat BTP & tuyauterie industrielle",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Port-Jerome-sur-Seine : diagnostic adapte aux TPE sous-traitantes, PME industrielles et prestataires de maintenance du pole petrochimique. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Port-Jerome-sur-Seine : diagnostic adapte aux TPE sous-traitantes, PME industrielles et prestataires de maintenance du pole petrochimique. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Port-Jerome-sur-Seine : diagnostic adapte aux PME sous-traitantes, PME industrielles et prestataires de maintenance du pole petrochimique. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Port-Jerome-sur-Seine : diagnostic adapte aux PME sous-traitantes, PME industrielles et prestataires de maintenance du pole petrochimique. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Port-Jerome-sur-Seine : formations adaptees aux sous-traitants industriels, PME de maintenance, commerces et artisans. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const PORT_JEROME_SUR_SEINE_COPY: VilleCopy = {
       en: "Implementation IA a Port-Jerome-sur-Seine : maintenance predictive, automatisation rapports HSE, agents IA planification, optimisation supply chain industrielle.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Port-Jerome-sur-Seine : accompagnement personnalise dirigeants TPE sous-traitantes, gerants PME industrielles et responsables maintenance du pole petrochimique.",
-      en: "Coaching 1-to-1 a Port-Jerome-sur-Seine : accompagnement personnalise dirigeants TPE sous-traitantes, gerants PME industrielles et responsables maintenance du pole petrochimique.",
+      fr: "Coaching 1-to-1 a Port-Jerome-sur-Seine : accompagnement personnalise dirigeants de PME et d'ETI sous-traitantes, gerants PME industrielles et responsables maintenance du pole petrochimique.",
+      en: "Coaching 1-to-1 a Port-Jerome-sur-Seine : accompagnement personnalise dirigeants de PME et d'ETI sous-traitantes, gerants PME industrielles et responsables maintenance du pole petrochimique.",
     },
   },
   faqGeolocalisee: [

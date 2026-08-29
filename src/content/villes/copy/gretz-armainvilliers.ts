@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gretz-Armainvilliers (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gretz-Armainvilliers (77). Nous accompagnons PME et ETI : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gretz-Armainvilliers (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gretz-Armainvilliers (77). Nous accompagnons PME et ETI : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
-    "Gretz-Armainvilliers est une commune résidentielle de l'est de la Seine-et-Marne, en lisière de la forêt d'Armainvilliers. Son tissu économique associe TPE artisans du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité avec Tournan-en-Brie, Ozoir-la-Ferrière, Pontault-Combault et Roissy-en-Brie.",
+    "Gretz-Armainvilliers est une commune résidentielle de l'est de la Seine-et-Marne, en lisière de la forêt d'Armainvilliers. Son tissu économique associe PME artisanales du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité avec Tournan-en-Brie, Ozoir-la-Ferrière, Pontault-Combault et Roissy-en-Brie.",
   ecosystemEn:
-    "Gretz-Armainvilliers est une commune résidentielle de l'est de la Seine-et-Marne, en lisière de la forêt d'Armainvilliers. Son tissu économique associe TPE artisans du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité avec Tournan-en-Brie, Ozoir-la-Ferrière, Pontault-Combault et Roissy-en-Brie.",
+    "Gretz-Armainvilliers est une commune résidentielle de l'est de la Seine-et-Marne, en lisière de la forêt d'Armainvilliers. Son tissu économique associe PME artisanales du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité avec Tournan-en-Brie, Ozoir-la-Ferrière, Pontault-Combault et Roissy-en-Brie.",
   distancesFr:
     "Gare de Gretz-Armainvilliers sur Transilien P. Paris Gare de l'Est à 45 min. Ozoir-la-Ferrière à 5 min. Tournan-en-Brie à 10 min. A4 à 15 min. Aéroport Orly à 45 min.",
   distancesEn:
     "Gare de Gretz-Armainvilliers sur Transilien P. Paris Gare de l'Est à 45 min. Ozoir-la-Ferrière à 5 min. Tournan-en-Brie à 10 min. A4 à 15 min. Aéroport Orly à 45 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Commerce de proximité",
     "Services aux entreprises",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Gretz-Armainvilliers : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de l'est Seine-et-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gretz-Armainvilliers : formats adaptés au cabinet, commerce ou atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
       en: "Implémentation IA à Gretz-Armainvilliers : automatisation devis artisans, gestion relation client PME, facturation automatisée, digitalisation cabinets professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gretz-Armainvilliers : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME services, professions libérales de l'est seine-et-marnais.",
-      en: "Coaching 1-to-1 à Gretz-Armainvilliers : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME services, professions libérales de l'est seine-et-marnais.",
+      fr: "Coaching 1-to-1 à Gretz-Armainvilliers : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME services, professions libérales de l'est seine-et-marnais.",
+      en: "Coaching 1-to-1 à Gretz-Armainvilliers : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME services, professions libérales de l'est seine-et-marnais.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
       a: "L'Audit sur place IA à Gretz-Armainvilliers démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans à Gretz-Armainvilliers ?",
-      a: "Oui, nous accompagnons les TPE artisans du bâtiment et de la rénovation à Gretz-Armainvilliers : automatisation devis, planification chantiers, gestion relation client, suivi facturation par IA.",
+      q: "Accompagnez-vous les PME artisanales à Gretz-Armainvilliers ?",
+      a: "Oui, nous accompagnons les PME artisanales du bâtiment et de la rénovation à Gretz-Armainvilliers : automatisation devis, planification chantiers, gestion relation client, suivi facturation par IA.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME de l'est 77 ?",
@@ -65,7 +65,7 @@ export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching IA individuel à Gretz-Armainvilliers ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Gretz-Armainvilliers ou en visio. Sessions de 2h à la demi-journée pour dirigeants TPE, gérants PME ou professions libérales. Prise en main d'outils IA concrets.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Gretz-Armainvilliers ou en visio. Sessions de 2h à la demi-journée pour dirigeants de PME et d'ETI, gérants PME ou professions libérales. Prise en main d'outils IA concrets.",
     },
   ],
 };

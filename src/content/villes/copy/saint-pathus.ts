@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PATHUS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pathus (77), commune résidentielle du nord Seine-et-Marne proche de Dammartin-en-Goële et de l'aéroport Roissy-CDG, accueille des TPE artisanales, PME de services et de transport, commerçants de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pathus (77), commune résidentielle du nord Seine-et-Marne proche de Dammartin-en-Goële et de l'aéroport Roissy-CDG, accueille des PME artisanales, PME de services et de transport, commerçants de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Saint-Pathus (77), commune résidentielle du nord Seine-et-Marne proche de Dammartin-en-Goële et de l'aéroport Roissy-CDG, accueille des TPE artisanales, PME de services et de transport, commerçants de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pathus (77), commune résidentielle du nord Seine-et-Marne proche de Dammartin-en-Goële et de l'aéroport Roissy-CDG, accueille des PME artisanales, PME de services et de transport, commerçants de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pathus (77). Nous accompagnons TPE et PME : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pathus (77). Nous accompagnons PME et ETI : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pathus (77). Nous accompagnons TPE et PME : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pathus (77). Nous accompagnons PME et ETI : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
   seoHook: "artisanat rénovation & transport logistique",
   ecosystemFr:
-    "Saint-Pathus est une commune résidentielle du nord Seine-et-Marne, limitrophe de Dammartin-en-Goële, Oissery et Marchémoret. Commune à forte croissance démographique, semi-rurale. Tissu économique de TPE artisanales BTP, PME de transport et logistique (proximité Roissy-CDG), commerces de centre-bourg, professions libérales et services à la personne. Accès N2 et N330 vers Paris et Roissy.",
+    "Saint-Pathus est une commune résidentielle du nord Seine-et-Marne, limitrophe de Dammartin-en-Goële, Oissery et Marchémoret. Commune à forte croissance démographique, semi-rurale. Tissu économique de PME du BTP, PME de transport et logistique (proximité Roissy-CDG), commerces de centre-bourg, professions libérales et services à la personne. Accès N2 et N330 vers Paris et Roissy.",
   ecosystemEn:
-    "Saint-Pathus est une commune résidentielle du nord Seine-et-Marne, limitrophe de Dammartin-en-Goële, Oissery et Marchémoret. Commune à forte croissance démographique, semi-rurale. Tissu économique de TPE artisanales BTP, PME de transport et logistique (proximité Roissy-CDG), commerces de centre-bourg, professions libérales et services à la personne. Accès N2 et N330 vers Paris et Roissy.",
+    "Saint-Pathus est une commune résidentielle du nord Seine-et-Marne, limitrophe de Dammartin-en-Goële, Oissery et Marchémoret. Commune à forte croissance démographique, semi-rurale. Tissu économique de PME du BTP, PME de transport et logistique (proximité Roissy-CDG), commerces de centre-bourg, professions libérales et services à la personne. Accès N2 et N330 vers Paris et Roissy.",
   distancesFr:
     "Aéroport Paris-Charles de Gaulle à 20 min. Gare RER B Aéroport CDG à 25 min en voiture. Paris Gare du Nord à 50 min. Dammartin-en-Goële à 5 min. Meaux à 20 min. N2 à 5 min, A1 à 15 min. Aéroport Paris-Orly à 55 min.",
   distancesEn:
     "Aéroport Paris-Charles de Gaulle à 20 min. Gare RER B Aéroport CDG à 25 min en voiture. Paris Gare du Nord à 50 min. Dammartin-en-Goële à 5 min. Meaux à 20 min. N2 à 5 min, A1 à 15 min. Aéroport Paris-Orly à 55 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Transport & logistique (axe Roissy-CDG)",
     "Commerce de proximité & services à la personne",
     "Professions libérales (santé, paramédical)",
@@ -30,8 +30,8 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pathus : diagnostic adapté aux TPE artisanales, PME de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Pathus : diagnostic adapté aux TPE artisanales, PME de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Pathus : diagnostic adapté aux PME artisanales, PME de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Pathus : diagnostic adapté aux PME artisanales, PME de transport, commerçants et professions libérales du nord Seine-et-Marne / bassin Roissy. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pathus : formats adaptés à l'artisan, au transporteur, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Pathus : optimisation tournées transport, automatisation devis BTP, agents conversationnels, gestion planning artisans, classification documents comptables.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Pathus : sessions dans vos locaux ou en visio. Gérants TPE/PME, responsables logistique, artisans et professions libérales du nord Seine-et-Marne souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Saint-Pathus : sessions dans vos locaux ou en visio. Gérants TPE/PME, responsables logistique, artisans et professions libérales du nord Seine-et-Marne souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Pathus : sessions dans vos locaux ou en visio. Gérants PME et ETI, responsables logistique, artisans et professions libérales du nord Seine-et-Marne souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Saint-Pathus : sessions dans vos locaux ou en visio. Gérants PME et ETI, responsables logistique, artisans et professions libérales du nord Seine-et-Marne souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Pathus ?",
-      a: "Oui, nous accompagnons les TPE artisanales BTP de Saint-Pathus (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME du BTP de Saint-Pathus (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Pathus  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité (BTP, transport, commerce, services). Tarifs publics et transparents.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du nord Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité (BTP, transport, commerce, services). Tarifs publics et transparents.",
     },
     {
       q: "Travaillez-vous avec les PME de transport du bassin Roissy ?",

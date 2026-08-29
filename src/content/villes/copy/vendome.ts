@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VENDOME_COPY: VilleCopy = {
   pitchFr:
-    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu PME et ETI diversifié. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu PME et ETI diversifié. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, PME du BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, PME du BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
   seoHook: "vallée du",
   ecosystemFr:
-    "Vendôme est la sous-préfecture du Loir-et-Cher (15 758 habitants), traversée par le Loir. La gare TGV Vendôme-Villiers (LGV Atlantique) place Paris à 42 min, atout majeur pour l'attractivité économique. Abbaye de la Trinité (XIe siècle), patrimoine médiéval remarquable. Tissu PME industrielles (agroalimentaire, équipementiers), TPE artisans BTP, commerces centre-ville, tourisme patrimonial, professions libérales, services.",
+    "Vendôme est la sous-préfecture du Loir-et-Cher (15 758 habitants), traversée par le Loir. La gare TGV Vendôme-Villiers (LGV Atlantique) place Paris à 42 min, atout majeur pour l'attractivité économique. Abbaye de la Trinité (XIe siècle), patrimoine médiéval remarquable. Tissu PME industrielles (agroalimentaire, équipementiers), PME du BTP, commerces centre-ville, tourisme patrimonial, professions libérales, services.",
   ecosystemEn:
-    "Vendôme est la sous-préfecture du Loir-et-Cher (15 758 habitants), traversée par le Loir. La gare TGV Vendôme-Villiers (LGV Atlantique) place Paris à 42 min, atout majeur pour l'attractivité économique. Abbaye de la Trinité (XIe siècle), patrimoine médiéval remarquable. Tissu PME industrielles (agroalimentaire, équipementiers), TPE artisans BTP, commerces centre-ville, tourisme patrimonial, professions libérales, services.",
+    "Vendôme est la sous-préfecture du Loir-et-Cher (15 758 habitants), traversée par le Loir. La gare TGV Vendôme-Villiers (LGV Atlantique) place Paris à 42 min, atout majeur pour l'attractivité économique. Abbaye de la Trinité (XIe siècle), patrimoine médiéval remarquable. Tissu PME industrielles (agroalimentaire, équipementiers), PME du BTP, commerces centre-ville, tourisme patrimonial, professions libérales, services.",
   distancesFr:
     "Paris Montparnasse à 42 min TGV (gare Vendôme-Villiers). Blois à 30 min. Tours à 45 min. Orléans à 1h. Chartres à 1h. A10 Paris-Tours à 20 min (sortie Château-Renault).",
   distancesEn:
@@ -25,13 +25,13 @@ export const VENDOME_COPY: VilleCopy = {
     "Industrie & agroalimentaire Vendômois",
     "Tourisme patrimonial (abbaye Trinité, vieux Vendôme)",
     "Commerce de proximité centre-ville",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales & services (attractivité TGV Paris)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vendôme : diagnostic adapté aux PME industrielles du Vendômois, TPE artisans, commerçants centre-ville, acteurs tourisme patrimonial et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vendôme : diagnostic adapté aux PME industrielles du Vendômois, TPE artisans, commerçants centre-ville, acteurs tourisme patrimonial et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vendôme : diagnostic adapté aux PME industrielles du Vendômois, PME artisanales, commerçants centre-ville, acteurs tourisme patrimonial et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vendôme : diagnostic adapté aux PME industrielles du Vendômois, PME artisanales, commerçants centre-ville, acteurs tourisme patrimonial et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vendôme : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const VENDOME_COPY: VilleCopy = {
       en: "Implémentation IA à Vendôme : automatisation production agroalimentaire, agents conversationnels tourisme patrimonial, classification documents administratifs, optimisation gestion cabinet libéral. Atout TGV Paris 42 min.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vendôme : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME industrielles, artisans, hébergeurs, professions libérales, gérants TPE/PME vendômoises.",
-      en: "Coaching 1-to-1 à Vendôme : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME industrielles, artisans, hébergeurs, professions libérales, gérants TPE/PME vendômoises.",
+      fr: "Coaching 1-to-1 à Vendôme : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME industrielles, artisans, hébergeurs, professions libérales, gérants PME et ETI vendômoises.",
+      en: "Coaching 1-to-1 à Vendôme : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME industrielles, artisans, hébergeurs, professions libérales, gérants PME et ETI vendômoises.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const VENDOME_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles et agroalimentaires du Vendômois sur leurs cas IA : automatisation production, prédiction maintenance, contrôle qualité par vision, optimisation supply chain, classification documents techniques.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants vendômois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Vendôme, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
+      q: "Quels services pour les PME de l'artisanat et du commerce vendômois ?",
+      a: "Pour les PME du BTP et du commerce à Vendôme, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
       q: "Comment se déroule une mission à Vendôme ?",

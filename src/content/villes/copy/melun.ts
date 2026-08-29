@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const MELUN_COPY: VilleCopy = {
   pitchFr:
-    "Melun (77), 45 995 habitants en 2023, préfecture de Seine-et-Marne, située à 41 km au sud-est de Paris dans une boucle de la Seine. Troisième commune du département après Meaux et Chelles. Tissu mêlant TPE commerçants centre-ville, PME services et BTP, professions libérales, administrations et secteur hospitalier. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
+    "Melun (77), 45 995 habitants en 2023, préfecture de Seine-et-Marne, située à 41 km au sud-est de Paris dans une boucle de la Seine. Troisième commune du département après Meaux et Chelles. Tissu mêlant PME du commerce centre-ville, PME services et BTP, professions libérales, administrations et secteur hospitalier. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   pitchEn:
-    "Melun (77), 45 995 habitants en 2023, préfecture de Seine-et-Marne, située à 41 km au sud-est de Paris dans une boucle de la Seine. Troisième commune du département après Meaux et Chelles. Tissu mêlant TPE commerçants centre-ville, PME services et BTP, professions libérales, administrations et secteur hospitalier. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
+    "Melun (77), 45 995 habitants en 2023, préfecture de Seine-et-Marne, située à 41 km au sud-est de Paris dans une boucle de la Seine. Troisième commune du département après Meaux et Chelles. Tissu mêlant PME du commerce centre-ville, PME services et BTP, professions libérales, administrations et secteur hospitalier. Axion-IA accompagne ces structures sur leurs cas IA concrets.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Melun (77). Nous accompagnons en priorité les TPE commerçants et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Melun (77). Nous accompagnons en priorité les PME du commerce et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Melun (77). Nous accompagnons en priorité les TPE commerçants et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Melun (77). Nous accompagnons en priorité les PME du commerce et artisans du centre-ville et de Vaux-le-Pénil, puis les PME services, BTP et logistique, professions libérales, administrations et acteurs du secteur hospitalier. Les ETI restent éligibles. Audit sur place dès {{price:audit-flash|flat}}, tarifs publics consultables en ligne.",
   seoHook: "préfecture 77, services & administrations Seine-et-Marne",
   ecosystemFr:
     "Melun, préfecture de Seine-et-Marne, structure l'économie du sud du département. La ville polarise commerces de centre-ville, services administratifs, secteur hospitalier en expansion (depuis 2018), professions libérales et BTP. Les zones d'activités voisines, notamment à Vaux-le-Pénil, accueillent PME services, logistique et industrie légère. Position stratégique sur les axes Paris-Lyon-Marseille (rail) et A5/A6 (route).",
@@ -31,8 +31,8 @@ export const MELUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Melun : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
-      en: "Audit IA à Melun : diagnostic pour TPE commerçants, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      fr: "Audit IA à Melun : diagnostic pour PME du commerce, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
+      en: "Audit IA à Melun : diagnostic pour PME du commerce, PME services et BTP, professions libérales et administrations de Seine-et-Marne sud. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livré sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Melun : ateliers adaptés aux commerces centre-ville, cabinets libéraux, PME services et acteurs hospitaliers. Vos équipes repartent autonomes sur outils IA métier.",
@@ -43,8 +43,8 @@ export const MELUN_COPY: VilleCopy = {
       en: "Implémentation IA à Melun : code custom pour automatiser gestion patients (santé), classification documents administratifs, agents IA accueil PME, optimisation devis BTP. Pas de no-code, livrables sur mesure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Melun : sessions sur site (centre-ville, Vaux-le-Pénil) ou en visio pour dirigeants TPE, gérants PME, professions libérales et responsables administratifs.",
-      en: "Coaching 1-to-1 à Melun : sessions sur site (centre-ville, Vaux-le-Pénil) ou en visio pour dirigeants TPE, gérants PME, professions libérales et responsables administratifs.",
+      fr: "Coaching 1-to-1 à Melun : sessions sur site (centre-ville, Vaux-le-Pénil) ou en visio pour dirigeants de PME et d'ETI, gérants PME, professions libérales et responsables administratifs.",
+      en: "Coaching 1-to-1 à Melun : sessions sur site (centre-ville, Vaux-le-Pénil) ou en visio pour dirigeants de PME et d'ETI, gérants PME, professions libérales et responsables administratifs.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const MELUN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte — idéal pour commerçants du centre-ville melunais et artisans de Vaux-le-Pénil.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -171,12 +165,6 @@ export const MELUN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site within a few weeks, no rebuild — ideal for Melun town-centre retailers and Vaux-le-Pénil tradespeople.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",

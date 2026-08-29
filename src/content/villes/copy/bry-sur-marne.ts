@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRY_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Bry-sur-Marne (94), commune des bords de Marne en Val-de-Marne, desservie par le RER A et connue pour ses studios audiovisuels et le site historique de l'INA. Tissu TPE prestataires audiovisuels, PME de services et numérique, commerçants, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'est Val-de-Marnais.",
+    "Bry-sur-Marne (94), commune des bords de Marne en Val-de-Marne, desservie par le RER A et connue pour ses studios audiovisuels et le site historique de l'INA. Tissu PME prestataires audiovisuels, PME de services et numérique, commerçants, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'est Val-de-Marnais.",
   pitchEn:
-    "Bry-sur-Marne (94), commune des bords de Marne en Val-de-Marne, desservie par le RER A et connue pour ses studios audiovisuels et le site historique de l'INA. Tissu TPE prestataires audiovisuels, PME de services et numérique, commerçants, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'est Val-de-Marnais.",
+    "Bry-sur-Marne (94), commune des bords de Marne en Val-de-Marne, desservie par le RER A et connue pour ses studios audiovisuels et le site historique de l'INA. Tissu PME prestataires audiovisuels, PME de services et numérique, commerçants, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'est Val-de-Marnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : PME prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : PME prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "audiovisuel production & services numériques",
   ecosystemFr:
-    "Bry-sur-Marne est une commune des bords de Marne connue pour ses studios audiovisuels et le site historique de l'INA. Son tissu économique associe TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerces de proximité et professions libérales. Proximité directe avec Villiers-sur-Marne, Noisy-le-Grand, Champigny-sur-Marne et Chennevières.",
+    "Bry-sur-Marne est une commune des bords de Marne connue pour ses studios audiovisuels et le site historique de l'INA. Son tissu économique associe PME prestataires audiovisuels et créatifs, PME de services et numérique, commerces de proximité et professions libérales. Proximité directe avec Villiers-sur-Marne, Noisy-le-Grand, Champigny-sur-Marne et Chennevières.",
   ecosystemEn:
-    "Bry-sur-Marne est une commune des bords de Marne connue pour ses studios audiovisuels et le site historique de l'INA. Son tissu économique associe TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerces de proximité et professions libérales. Proximité directe avec Villiers-sur-Marne, Noisy-le-Grand, Champigny-sur-Marne et Chennevières.",
+    "Bry-sur-Marne est une commune des bords de Marne connue pour ses studios audiovisuels et le site historique de l'INA. Son tissu économique associe PME prestataires audiovisuels et créatifs, PME de services et numérique, commerces de proximité et professions libérales. Proximité directe avec Villiers-sur-Marne, Noisy-le-Grand, Champigny-sur-Marne et Chennevières.",
   distancesFr:
     "RER A Bry-sur-Marne (Paris Nation 20 min, Châtelet 25 min). A4 accès direct. Aéroport Orly à 30 min. Aéroport Roissy-CDG à 40 min. Gare de Lyon à 25 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Audiovisuel & production cinéma",
     "Services numériques & IT",
-    "TPE prestataires créatifs",
+    "PME prestataires créatifs",
     "Commerce de proximité",
     "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bry-sur-Marne : diagnostic adapté aux TPE audiovisuels, PME de services numériques, commerçants et professions libérales de l'est Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bry-sur-Marne : diagnostic adapté aux TPE audiovisuels, PME de services numériques, commerçants et professions libérales de l'est Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bry-sur-Marne : diagnostic adapté aux PME audiovisuels, PME de services numériques, commerçants et professions libérales de l'est Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bry-sur-Marne : diagnostic adapté aux PME audiovisuels, PME de services numériques, commerçants et professions libérales de l'est Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bry-sur-Marne : formats adaptés au studio, agence, commerce ou cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
       en: "Implémentation IA à Bry-sur-Marne : automatisation post-production audiovisuelle, agents conversationnels PME numériques, gestion relation client commerces, digitalisation cabinets. Écosystème studios et créatifs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bry-sur-Marne : sessions dans vos locaux ou en visio. Dirigeants TPE audiovisuel, gérants PME numériques, professions libérales, indépendants créatifs de l'est Val-de-Marne.",
-      en: "Coaching 1-to-1 à Bry-sur-Marne : sessions dans vos locaux ou en visio. Dirigeants TPE audiovisuel, gérants PME numériques, professions libérales, indépendants créatifs de l'est Val-de-Marne.",
+      fr: "Coaching 1-to-1 à Bry-sur-Marne : sessions dans vos locaux ou en visio. Dirigeants PME audiovisuel, gérants PME numériques, professions libérales, indépendants créatifs de l'est Val-de-Marne.",
+      en: "Coaching 1-to-1 à Bry-sur-Marne : sessions dans vos locaux ou en visio. Dirigeants PME audiovisuel, gérants PME numériques, professions libérales, indépendants créatifs de l'est Val-de-Marne.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises audiovisuelles à Bry-sur-Marne ?",
-      a: "Oui, nous accompagnons les TPE et PME de l'audiovisuel et du numérique à Bry-sur-Marne sur leurs cas IA : automatisation post-production, classification archives, génération sous-titres, optimisation workflows créatifs.",
+      a: "Oui, nous accompagnons les PME et ETI de l'audiovisuel et du numérique à Bry-sur-Marne sur leurs cas IA : automatisation post-production, classification archives, génération sous-titres, optimisation workflows créatifs.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME à Bry-sur-Marne ?",
@@ -65,7 +65,7 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching individuel IA à Bry-sur-Marne ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Bry-sur-Marne ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant TPE, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Bry-sur-Marne ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeants de PME et d'ETI, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
     },
   ],
 };

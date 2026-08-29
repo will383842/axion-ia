@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Just-en-Chaussée (60), commune de 5 810 habitants dans l'Oise, est un bourg-centre du plateau picard entre Clermont et Breteuil. Carrefour routier historique, la ville concentre un tissu de TPE/PME : agriculture et agroalimentaire (grandes cultures Beauce picarde), industrie mécanique, artisanat BTP, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Saint-Just-en-Chaussée (60), commune de 5 810 habitants dans l'Oise, est un bourg-centre du plateau picard entre Clermont et Breteuil. Carrefour routier historique, la ville concentre un tissu de PME et ETI : agriculture et agroalimentaire (grandes cultures Beauce picarde), industrie mécanique, artisanat BTP, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Saint-Just-en-Chaussée (60), commune de 5 810 habitants dans l'Oise, est un bourg-centre du plateau picard entre Clermont et Breteuil. Carrefour routier historique, la ville concentre un tissu de TPE/PME : agriculture et agroalimentaire (grandes cultures Beauce picarde), industrie mécanique, artisanat BTP, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Saint-Just-en-Chaussée (60), commune de 5 810 habitants dans l'Oise, est un bourg-centre du plateau picard entre Clermont et Breteuil. Carrefour routier historique, la ville concentre un tissu de PME et ETI : agriculture et agroalimentaire (grandes cultures Beauce picarde), industrie mécanique, artisanat BTP, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons PME et ETI du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons PME et ETI du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit sur place sur mesure.",
   ecosystemFr:
     "Saint-Just-en-Chaussée est un bourg-centre du plateau picard, carrefour routier entre Clermont-de-l'Oise, Breteuil et Montdidier. L'économie locale repose sur l'agriculture céréalière (Beauce picarde, grandes cultures), l'agroalimentaire (stockage, négoce céréales), la mécanique agricole, l'artisanat BTP et le commerce de proximité. Le bassin d'emploi s'articule avec Clermont, Maignelay-Montigny et Estrées-Saint-Denis.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux PME et ETI agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Just-en-Chaussée : diagnostic adapté aux PME et ETI agriculture, agroalimentaire, mécanique, artisanat BTP et commerce du plateau picard. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Just-en-Chaussée : formats adaptés à l'exploitation agricole, au silo céréalier, à l'atelier mécanique ou au commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Just-en-Chaussée : agriculture de précision (capteurs, prévision récoltes), traçabilité céréales, maintenance prédictive machines agricoles, automatisation devis BTP et OCR facturation.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Just-en-Chaussée : sessions dans votre exploitation, silo, atelier, commerce ou en visio. Dirigeants TPE/PME du plateau picard souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Saint-Just-en-Chaussée : sessions dans votre exploitation, silo, atelier, commerce ou en visio. Dirigeants TPE/PME du plateau picard souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Saint-Just-en-Chaussée : sessions dans votre exploitation, silo, atelier, commerce ou en visio. Dirigeants PME et ETI du plateau picard souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Saint-Just-en-Chaussée : sessions dans votre exploitation, silo, atelier, commerce ou en visio. Dirigeants PME et ETI du plateau picard souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Saint-Just-en-Chaussée  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME saint-justois : exploitants agricoles, agroalimentaires, mécaniciens, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI saint-justois : exploitants agricoles, agroalimentaires, mécaniciens, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
     },
     {
       q: "L'IA peut-elle aider les exploitants agricoles du plateau picard ?",
@@ -61,7 +61,7 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises agroalimentaires et négoce céréales ?",
-      a: "Oui, nous accompagnons les TPE/PME agroalimentaire et négoce de céréales du bassin picard : traçabilité lots, gestion stocks silos, prévision cours, automatisation logistique et facturation.",
+      a: "Oui, nous accompagnons les PME et ETI agroalimentaire et négoce de céréales du bassin picard : traçabilité lots, gestion stocks silos, prévision cours, automatisation logistique et facturation.",
     },
     {
       q: "Proposez-vous des formations IA à Saint-Just-en-Chaussée ?",

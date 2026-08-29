@@ -6,14 +6,14 @@ import type { VilleCopy } from "./types";
 
 export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Villiers-sur-Marne, commune de 33 162 habitants (2023) dans le Val-de-Marne, à environ 15 km à l'est de Paris. La ville fait partie de l'établissement public territorial Paris-Est-Marne et Bois au sein de la Métropole du Grand Paris. Le tissu économique combine commerces de détail (zones commerciales avec Ikea, Bricorama), entreprises de construction, services et logistique. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
+    "Axion-IA accompagne les PME et ETI de Villiers-sur-Marne, commune de 33 162 habitants (2023) dans le Val-de-Marne, à environ 15 km à l'est de Paris. La ville fait partie de l'établissement public territorial Paris-Est-Marne et Bois au sein de la Métropole du Grand Paris. Le tissu économique combine commerces de détail (zones commerciales avec Ikea, Bricorama), entreprises de construction, services et logistique. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Villiers-sur-Marne, commune de 33 162 habitants (2023) dans le Val-de-Marne, à environ 15 km à l'est de Paris. La ville fait partie de l'établissement public territorial Paris-Est-Marne et Bois au sein de la Métropole du Grand Paris. Le tissu économique combine commerces de détail (zones commerciales avec Ikea, Bricorama), entreprises de construction, services et logistique. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
+    "Axion-IA accompagne les PME et ETI de Villiers-sur-Marne, commune de 33 162 habitants (2023) dans le Val-de-Marne, à environ 15 km à l'est de Paris. La ville fait partie de l'établissement public territorial Paris-Est-Marne et Bois au sein de la Métropole du Grand Paris. Le tissu économique combine commerces de détail (zones commerciales avec Ikea, Bricorama), entreprises de construction, services et logistique. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   directAnswerFr:
-    "Axion-IA intervient à Villiers-sur-Marne auprès des TPE et PME du territoire Paris-Est-Marne et Bois, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare RER E Villiers-sur-Marne — Le Plessis-Trévise (18 à 32 minutes depuis Magenta selon les arrêts) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+    "Axion-IA intervient à Villiers-sur-Marne auprès des PME et ETI du territoire Paris-Est-Marne et Bois, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare RER E Villiers-sur-Marne — Le Plessis-Trévise (18 à 32 minutes depuis Magenta selon les arrêts) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "Axion-IA intervient à Villiers-sur-Marne auprès des TPE et PME du territoire Paris-Est-Marne et Bois, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare RER E Villiers-sur-Marne — Le Plessis-Trévise (18 à 32 minutes depuis Magenta selon les arrêts) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
-  seoHook: "TPE & PME · Paris-Est-Marne et Bois · IA opérationnelle code custom",
+    "Axion-IA intervient à Villiers-sur-Marne auprès des PME et ETI du territoire Paris-Est-Marne et Bois, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare RER E Villiers-sur-Marne — Le Plessis-Trévise (18 à 32 minutes depuis Magenta selon les arrêts) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+  seoHook: "PME & PME · Paris-Est-Marne et Bois · IA opérationnelle code custom",
   ecosystemFr:
     "Villiers-sur-Marne s'insère dans l'établissement public territorial Paris-Est-Marne et Bois, en lien direct avec Bry-sur-Marne, Champigny-sur-Marne, Noisy-le-Grand et Le Plessis-Trévise. La ville accueille des zones commerciales actives (Ikea, Bricorama, centres commerciaux), des PME du BTP et de la construction, des activités logistiques et des commerces de proximité dans les quartiers des Hautes-Noues, des Boutareines, des Perroquets et du Bois de Gaumont.",
   ecosystemEn:
@@ -32,8 +32,8 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "À Villiers-sur-Marne, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) permet à un dirigeant de TPE ou PME du commerce, du BTP ou de la logistique de cartographier les processus automatisables et de chiffrer un plan d'action concret.",
-      en: "À Villiers-sur-Marne, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) permet à un dirigeant de TPE ou PME du commerce, du BTP ou de la logistique de cartographier les processus automatisables et de chiffrer un plan d'action concret.",
+      fr: "À Villiers-sur-Marne, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) permet à un dirigeant de PME ou ETI du commerce, du BTP ou de la logistique de cartographier les processus automatisables et de chiffrer un plan d'action concret.",
+      en: "À Villiers-sur-Marne, un Audit sur place sur site ({{price:audit-flash|flat}}, 4 h) permet à un dirigeant de PME ou ETI du commerce, du BTP ou de la logistique de cartographier les processus automatisables et de chiffrer un plan d'action concret.",
     },
     interventions: {
       fr: "Nos interventions à Villiers-sur-Marne (à partir de {{price:intervention-4h|flat}}) automatisent les flux opérationnels : devis BTP, suivi de chantier, gestion des stocks pour le commerce de détail, ou agents internes branchés sur les outils existants.",
@@ -44,8 +44,8 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
       en: "Sur les projets d'implémentation à Villiers-sur-Marne, Axion-IA code en TypeScript, Python ou Node.js et raccorde les briques IA aux ERP de gestion de chantier, aux back-offices commerce et aux outils logistiques des PME locales.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Villiers-sur-Marne (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de TPE et PME qui veulent prioriser leurs investissements IA et arbitrer entre automatisation, formation des équipes et refonte d'outils.",
-      en: "L'accompagnement un-à-un à Villiers-sur-Marne (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de TPE et PME qui veulent prioriser leurs investissements IA et arbitrer entre automatisation, formation des équipes et refonte d'outils.",
+      fr: "L'accompagnement un-à-un à Villiers-sur-Marne (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de PME et d'ETI qui veulent prioriser leurs investissements IA et arbitrer entre automatisation, formation des équipes et refonte d'outils.",
+      en: "L'accompagnement un-à-un à Villiers-sur-Marne (dès {{price:intervention-dirigeants|flat}}) s'adresse aux dirigeants de PME et d'ETI qui veulent prioriser leurs investissements IA et arbitrer entre automatisation, formation des équipes et refonte d'outils.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           "Pôle Image et Son de l'Est parisien (INA, Studios de Bry, École Georges Méliès) à cheval Villiers/Bry : nous concevons des plateformes SaaS pour la gestion d'archives audiovisuelles, le catalogage assisté par IA, les médiathèques et les sites des sociétés de production et prestataires techniques du cluster.",
           "ZAC Marne Europe (EPAMARNE, 80 000 m² de bureaux, 17 000 m² de commerces, palais des congrès) sur l'ancienne emprise VDO : nous accompagnons les futures implantations tertiaires, l'événementiel et les commerces neufs avec des sites et back-offices IA-native prêts pour l'ouverture de la gare ligne 15.",
           "Zones d'activité grande distribution (IKEA, Bricorama, zones créées de 1977 à 1999) et logistique e-commerce de Marne-la-Vallée au carrefour A4/A104 : nous bâtissons des sites e-commerce multi-CMS et des plateformes de suivi logistique pour le retail, la cosmétique, le dispositif médical et l'événementiel.",
-          "Tissu de ~4 388 entreprises majoritairement TPE/PME (commerce de détail, BTP, transport, conseil) : nous livrons des sites vitrines et e-commerce performants (UX/UI, mobile, Web Vitals) accessibles depuis Paris en RER E (gare Villiers-sur-Marne — Le Plessis-Trévise, ~18-32 min) ou par l'A4.",
+          "Tissu de ~4 388 entreprises majoritairement PME et ETI (commerce de détail, BTP, transport, conseil) : nous livrons des sites vitrines et e-commerce performants (UX/UI, mobile, Web Vitals) accessibles depuis Paris en RER E (gare Villiers-sur-Marne — Le Plessis-Trévise, ~18-32 min) ou par l'A4.",
         ],
         methodology: [
           {
@@ -86,12 +86,6 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA-ready",
-            detail:
-              "Pour indépendants, commerces de centre-ville et artisans BTP de Villiers-sur-Marne : site vitrine ou boutique en ligne multi-CMS, optimisé mobile et Web Vitals, avec assistant IA optionnel.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web sur mesure + briques IA",
@@ -172,12 +166,6 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "AI-ready showcase or e-commerce site",
-            detail:
-              "For freelancers, town-centre shops and construction tradespeople in Villiers-sur-Marne: showcase site or multi-CMS online store, mobile- and Web Vitals-optimized, with optional AI assistant.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke web platform + AI building blocks",

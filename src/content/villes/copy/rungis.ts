@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const RUNGIS_COPY: VilleCopy = {
   pitchFr:
-    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, PME de l'artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, PME de l'artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rungis (94). Nous accompagnons PME et ETI : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rungis (94). Nous accompagnons PME et ETI : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit sur place sur mesure.",
   seoHook: "grossistes négoce & logistique frigorifique",
   ecosystemFr:
-    "Rungis est le siège du Marché international de Rungis (MIN), premier marché de produits frais au monde. Tissu grossistes alimentaires, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle.",
+    "Rungis est le siège du Marché international de Rungis (MIN), premier marché de produits frais au monde. Tissu grossistes alimentaires, logistique frigorifique, PME de l'artisanat alimentaire, PME transport et distribution, restauration professionnelle.",
   ecosystemEn:
-    "Rungis est le siège du Marché international de Rungis (MIN), premier marché de produits frais au monde. Tissu grossistes alimentaires, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle.",
+    "Rungis est le siège du Marché international de Rungis (MIN), premier marché de produits frais au monde. Tissu grossistes alimentaires, logistique frigorifique, PME de l'artisanat alimentaire, PME transport et distribution, restauration professionnelle.",
   distancesFr:
     "Aéroport Orly à 5 min. Thiais à 5 min. Créteil à 15 min. Paris-Denfert-Rochereau à 20 min via RER B (Pont de Rungis). Paris-centre à 25 min.",
   distancesEn:
@@ -24,7 +24,7 @@ export const RUNGIS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Grossistes / négoce alimentaire",
     "Logistique frigorifique",
-    "TPE artisanat alimentaire",
+    "PME de l'artisanat alimentaire",
     "PME transport et distribution",
     "Restauration professionnelle",
   ],
@@ -42,8 +42,8 @@ export const RUNGIS_COPY: VilleCopy = {
       en: "Implémentation IA à Rungis : automatisation traçabilité produits frais, gestion stocks frigorifiques, optimisation tournées livraison, prédiction demande saisonnière, facturation grossistes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rungis : sessions dans votre pavillon MIN, entrepôt, bureau ou en visio. Dirigeants TPE/PME rungissois, grossistes, logisticiens, restaurateurs professionnels.",
-      en: "Coaching 1-to-1 à Rungis : sessions dans votre pavillon MIN, entrepôt, bureau ou en visio. Dirigeants TPE/PME rungissois, grossistes, logisticiens, restaurateurs professionnels.",
+      fr: "Coaching 1-to-1 à Rungis : sessions dans votre pavillon MIN, entrepôt, bureau ou en visio. Dirigeants PME et ETI rungissois, grossistes, logisticiens, restaurateurs professionnels.",
+      en: "Coaching 1-to-1 à Rungis : sessions dans votre pavillon MIN, entrepôt, bureau ou en visio. Dirigeants PME et ETI rungissois, grossistes, logisticiens, restaurateurs professionnels.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const RUNGIS_COPY: VilleCopy = {
       a: "Oui, optimisation tournées livraison, suivi température IA, gestion entrepôts frigorifiques, planification ressources, reporting conformité chaîne du froid.",
     },
     {
-      q: "Quels services pour les TPE artisans alimentaires et restaurateurs ?",
+      q: "Quels services pour les PME artisanales alimentaires et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier alimentaire.",
     },
     {

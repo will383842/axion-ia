@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const SURESNES_COPY: VilleCopy = {
   pitchFr:
-    "Suresnes (92, Hauts-de-Seine) compte 48 956 habitants (recensement 2023), à 12 km à l'ouest de Notre-Dame de Paris, en bordure du Bois de Boulogne. La commune fait partie de l'Établissement public territorial Paris Ouest La Défense (11 communes, environ 563 000 habitants) et de la Métropole du Grand Paris. Économie tirée par les sièges sociaux, les services aux entreprises, la programmation informatique, les activités financières et un commerce de proximité dense. Patrimoine : Mont-Valérien (mémorial national). Axion-IA accompagne TPE et PME suresnoises en code custom.",
+    "Suresnes (92, Hauts-de-Seine) compte 48 956 habitants (recensement 2023), à 12 km à l'ouest de Notre-Dame de Paris, en bordure du Bois de Boulogne. La commune fait partie de l'Établissement public territorial Paris Ouest La Défense (11 communes, environ 563 000 habitants) et de la Métropole du Grand Paris. Économie tirée par les sièges sociaux, les services aux entreprises, la programmation informatique, les activités financières et un commerce de proximité dense. Patrimoine : Mont-Valérien (mémorial national). Axion-IA accompagne PME et ETI suresnoises en code custom.",
   pitchEn:
-    "Suresnes (92, Hauts-de-Seine) compte 48 956 habitants (recensement 2023), à 12 km à l'ouest de Notre-Dame de Paris, en bordure du Bois de Boulogne. La commune fait partie de l'Établissement public territorial Paris Ouest La Défense (11 communes, environ 563 000 habitants) et de la Métropole du Grand Paris. Économie tirée par les sièges sociaux, les services aux entreprises, la programmation informatique, les activités financières et un commerce de proximité dense. Patrimoine : Mont-Valérien (mémorial national). Axion-IA accompagne TPE et PME suresnoises en code custom.",
+    "Suresnes (92, Hauts-de-Seine) compte 48 956 habitants (recensement 2023), à 12 km à l'ouest de Notre-Dame de Paris, en bordure du Bois de Boulogne. La commune fait partie de l'Établissement public territorial Paris Ouest La Défense (11 communes, environ 563 000 habitants) et de la Métropole du Grand Paris. Économie tirée par les sièges sociaux, les services aux entreprises, la programmation informatique, les activités financières et un commerce de proximité dense. Patrimoine : Mont-Valérien (mémorial national). Axion-IA accompagne PME et ETI suresnoises en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Suresnes (92) et dans tout l'ouest parisien (Paris Ouest La Défense). Nous accompagnons en priorité les TPE et PME locales (éditeurs logiciels, agences conseil, cabinets RH/financiers, commerces de proximité, artisans BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique. Accès direct via Tramway T2 et Transilien L/U.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Suresnes (92) et dans tout l'ouest parisien (Paris Ouest La Défense). Nous accompagnons en priorité les PME et ETI locales (éditeurs logiciels, agences conseil, cabinets RH/financiers, commerces de proximité, artisans BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique. Accès direct via Tramway T2 et Transilien L/U.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Suresnes (92) et dans tout l'ouest parisien (Paris Ouest La Défense). Nous accompagnons en priorité les TPE et PME locales (éditeurs logiciels, agences conseil, cabinets RH/financiers, commerces de proximité, artisans BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique. Accès direct via Tramway T2 et Transilien L/U.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Suresnes (92) et dans tout l'ouest parisien (Paris Ouest La Défense). Nous accompagnons en priorité les PME et ETI locales (éditeurs logiciels, agences conseil, cabinets RH/financiers, commerces de proximité, artisans BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique. Accès direct via Tramway T2 et Transilien L/U.",
   seoHook: "sièges sociaux, programmation & services paris ouest",
   ecosystemFr:
     "Suresnes s'inscrit dans l'EPT Paris Ouest La Défense (Puteaux, Nanterre, Courbevoie, Levallois, Neuilly...) qui regroupe environ 563 000 habitants et concentre une part majeure des sièges et fonctions tertiaires d'Île-de-France. La commune est limitrophe de Puteaux, Nanterre (nord), Saint-Cloud (sud), Rueil-Malmaison (ouest) et Paris-Bois de Boulogne (est). Économie tirée par la programmation informatique, les sièges sociaux, les services financiers, la R&D, les activités juridiques et un commerce de centre-ville actif. La proximité immédiate de La Défense (1er quartier d'affaires européen) structure le bassin.",
@@ -33,8 +33,8 @@ export const SURESNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Suresnes : diagnostic adapté aux TPE et PME de l'ouest parisien (éditeurs logiciels, agences, cabinets conseil, commerces). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
-      en: "Audit IA à Suresnes : diagnostic adapté aux TPE et PME de l'ouest parisien (éditeurs logiciels, agences, cabinets conseil, commerces). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      fr: "Audit IA à Suresnes : diagnostic adapté aux PME et ETI de l'ouest parisien (éditeurs logiciels, agences, cabinets conseil, commerces). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
+      en: "Audit IA à Suresnes : diagnostic adapté aux PME et ETI de l'ouest parisien (éditeurs logiciels, agences, cabinets conseil, commerces). Audit sur place {{price:audit-flash|flat}}, ROI quantifié sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Suresnes : formats adaptés à vos bureaux ouest parisien, votre cabinet, votre boutique ou en visio. Atelier 1 journée pour vos équipes opérationnelles.",
@@ -45,8 +45,8 @@ export const SURESNES_COPY: VilleCopy = {
       en: "Implémentation IA code custom à Suresnes : assistants conversationnels métier, automatisation pipelines commerciaux, OCR factures & contrats, classification documentaire RH/juridique, dashboards décisionnels.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Suresnes : sessions dans vos bureaux, votre cabinet ou en visio. Format dédié aux gérants TPE/PME éditeurs logiciels, agences, cabinets conseil, commerces et artisans suresnois.",
-      en: "Coaching 1-to-1 à Suresnes : sessions dans vos bureaux, votre cabinet ou en visio. Format dédié aux gérants TPE/PME éditeurs logiciels, agences, cabinets conseil, commerces et artisans suresnois.",
+      fr: "Coaching 1-to-1 à Suresnes : sessions dans vos bureaux, votre cabinet ou en visio. Format dédié aux gérants PME et ETI éditeurs logiciels, agences, cabinets conseil, commerces et artisans suresnois.",
+      en: "Coaching 1-to-1 à Suresnes : sessions dans vos bureaux, votre cabinet ou en visio. Format dédié aux gérants PME et ETI éditeurs logiciels, agences, cabinets conseil, commerces et artisans suresnois.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const SURESNES_COPY: VilleCopy = {
           "Pôle santé / pharma surpondéré : avec le siège mondial de Servier et l'hôpital Foch — qui déploie déjà DAX Copilot avec Microsoft, des solutions d'imagerie INCEPTO et des patients synthétiques avec BOTdesign — le bassin suresnois concentre une demande réelle de plateformes médicales conformes (portails patients, prise de RDV, outils de recherche clinique).",
           "Tissu agroalimentaire de marque : le Groupe Bel (allée de Longchamp), MRS Groupe, Griffith Foods et Eat Sentive structurent une demande de sites e-commerce, portails B2B distributeurs et configurateurs produit où la donnée marque et la qualité priment.",
           "Économie de la communication, du marketing et de la data : Suresnes héberge un pôle communication-marketing-data dense et des acteurs IA / digital workplace ; nous y construisons des SaaS internes, des outils de génération de contenu et des dashboards data pour agences et annonceurs.",
-          "Tissu ultra-atomisé : 44,1 % des entreprises suresnoises ont 1 à 2 salariés et près des deux tiers moins de dix — nous calibrons des sites vitrines et e-commerce IA légers et autonomes pour ces TPE, sans dépendance à un éditeur ni à Axion-IA.",
+          "Tissu ultra-atomisé : 44,1 % des entreprises suresnoises ont 1 à 2 salariés et près des deux tiers moins de dix — nous calibrons des sites vitrines et e-commerce IA légers et autonomes pour ces PME, sans dépendance à un éditeur ni à Axion-IA.",
         ],
         methodology: [
           {
@@ -87,12 +87,6 @@ export const SURESNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA essentiel",
-            detail:
-              "Pour les indépendants, cabinets et commerces suresnois de moins de dix salariés (les deux tiers du tissu local) : site vitrine ou boutique e-commerce avec assistant IA, prise de RDV et SEO local — autour de l'hôpital Foch, du centre-ville et de Longchamp.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web ou SaaS sur mesure",
@@ -131,7 +125,7 @@ export const SURESNES_COPY: VilleCopy = {
           },
           {
             q: "Faites-vous l'UX/UI, le mobile et l'e-commerce, ou seulement l'IA ?",
-            a: "Nous faisons les deux. UX/UI, design mobile-first, e-commerce multi-CMS et briques IA (chatbot RAG, search sémantique, génération de contenu) forment une seule prestation. Pour les TPE suresnoises — qui représentent près des deux tiers du tissu local avec moins de dix salariés — nous livrons des sites légers et autonomes ; pour les agences et ETI, des plateformes SaaS sur mesure.",
+            a: "Nous faisons les deux. UX/UI, design mobile-first, e-commerce multi-CMS et briques IA (chatbot RAG, search sémantique, génération de contenu) forment une seule prestation. Pour les PME suresnoises — qui représentent près des deux tiers du tissu local avec moins de dix salariés — nous livrons des sites légers et autonomes ; pour les agences et ETI, des plateformes SaaS sur mesure.",
           },
         ],
         guarantees:
@@ -173,12 +167,6 @@ export const SURESNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Essential AI showcase or e-commerce site",
-            detail:
-              "For Suresnes freelancers, practices and shops under ten staff (two thirds of the local fabric): showcase site or e-commerce store with AI assistant, booking and local SEO — around Hôpital Foch, downtown and Longchamp.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom web or SaaS platform",
@@ -245,11 +233,11 @@ export const SURESNES_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les éditeurs logiciels et agences conseil de Suresnes ?",
-      a: "Oui. Pour les TPE/PME programmation informatique, agences conseil, cabinets RH/financiers, nous déployons assistants IA métier, automatisation pipelines commerciaux et intégrations LLM dans vos workflows internes — toujours en code custom.",
+      a: "Oui. Pour les PME et ETI programmation informatique, agences conseil, cabinets RH/financiers, nous déployons assistants IA métier, automatisation pipelines commerciaux et intégrations LLM dans vos workflows internes — toujours en code custom.",
     },
     {
       q: "Accompagnez-vous les commerçants et artisans suresnois ?",
-      a: "Oui. Pour les TPE commerce de détail centre-ville (rue de la République, marché), restauration et artisans BTP de Suresnes, nous proposons agents conversationnels clientèle, automatisation devis et factures, gestion stocks et reporting de gestion.",
+      a: "Oui. Pour les PME du commerce centre-ville (rue de la République, marché), restauration et artisans BTP de Suresnes, nous proposons agents conversationnels clientèle, automatisation devis et factures, gestion stocks et reporting de gestion.",
     },
   ],
 };

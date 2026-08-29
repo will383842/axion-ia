@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MIRIBEL_COPY: VilleCopy = {
   pitchFr:
-    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local.",
+    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, PME du BTP, commerces. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local.",
+    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, PME du BTP, commerces. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Miribel (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, acteurs loisirs Grand Parc Miribel Jonage, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Miribel (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, acteurs loisirs Grand Parc Miribel Jonage, PME du BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Miribel (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, acteurs loisirs Grand Parc Miribel Jonage, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Miribel (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, acteurs loisirs Grand Parc Miribel Jonage, PME du BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "tertiaires côtière & loisirs grand",
   ecosystemFr:
-    "Miribel est positionnée sur la Côtière de l'Ain, en banlieue NE immédiate de Lyon. Grand Parc Miribel Jonage (2 200 ha, espace naturel / loisirs majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisanat BTP, commerces.",
+    "Miribel est positionnée sur la Côtière de l'Ain, en banlieue NE immédiate de Lyon. Grand Parc Miribel Jonage (2 200 ha, espace naturel / loisirs majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, PME du BTP, commerces.",
   ecosystemEn:
-    "Miribel est positionnée sur la Côtière de l'Ain, en banlieue NE immédiate de Lyon. Grand Parc Miribel Jonage (2 200 ha, espace naturel / loisirs majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisanat BTP, commerces.",
+    "Miribel est positionnée sur la Côtière de l'Ain, en banlieue NE immédiate de Lyon. Grand Parc Miribel Jonage (2 200 ha, espace naturel / loisirs majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, PME du BTP, commerces.",
   distancesFr:
     "Lyon centre à 20 min. Aéroport Lyon-Saint-Exupéry à 25 min. Rillieux-la-Pape limitrophe à 5 min. Beynost à 5 min. Meximieux à 20 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MIRIBEL_COPY: VilleCopy = {
     "PME tertiaires Côtière Ain",
     "Loisirs Grand Parc Miribel Jonage",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Miribel : formats adaptés au bureau, atelier, site loisirs, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const MIRIBEL_COPY: VilleCopy = {
       en: "Implémentation IA à Miribel : agents conversationnels B2B/visiteurs, prédiction maintenance industrielle, automatisation workflow, classification documents. Côtière Ain.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Miribel : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants tertiaires, industriels, acteurs loisirs, artisans, gérants TPE/PME miribellans.",
-      en: "Coaching 1-to-1 à Miribel : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants tertiaires, industriels, acteurs loisirs, artisans, gérants TPE/PME miribellans.",
+      fr: "Coaching 1-to-1 à Miribel : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants tertiaires, industriels, acteurs loisirs, artisans, gérants PME et ETI miribellans.",
+      en: "Coaching 1-to-1 à Miribel : sessions dans votre bureau, atelier, commerce ou en visio. Dirigeants tertiaires, industriels, acteurs loisirs, artisans, gérants PME et ETI miribellans.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MIRIBEL_COPY: VilleCopy = {
       a: "Oui, agents conversationnels visiteurs multilingue, automatisation réservations activités, classification feedback.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

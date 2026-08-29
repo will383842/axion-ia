@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
   pitchFr:
-    "Châtillon-sur-Chalaronne (01), commune de la Dombes dans l'Ain, est une cité médiévale pittoresque (halles médiévales, château, centre historique préservé). Tissu tourisme patrimonial, agriculture Dombes (pisciculture étangs, volaille Bresse proche), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Châtillon-sur-Chalaronne (01), commune de la Dombes dans l'Ain, est une cité médiévale pittoresque (halles médiévales, château, centre historique préservé). Tissu tourisme patrimonial, agriculture Dombes (pisciculture étangs, volaille Bresse proche), PME du BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Châtillon-sur-Chalaronne (01), commune de la Dombes dans l'Ain, est une cité médiévale pittoresque (halles médiévales, château, centre historique préservé). Tissu tourisme patrimonial, agriculture Dombes (pisciculture étangs, volaille Bresse proche), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Châtillon-sur-Chalaronne (01), commune de la Dombes dans l'Ain, est une cité médiévale pittoresque (halles médiévales, château, centre historique préservé). Tissu tourisme patrimonial, agriculture Dombes (pisciculture étangs, volaille Bresse proche), PME du BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtillon-sur-Chalaronne (01). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial cité médiévale, agriculteurs/pisciculteurs Dombes, TPE artisans BTP, commerçants et services aux entreprises de la Dombes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtillon-sur-Chalaronne (01). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial cité médiévale, agriculteurs/pisciculteurs Dombes, PME du BTP, commerçants et services aux entreprises de la Dombes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtillon-sur-Chalaronne (01). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial cité médiévale, agriculteurs/pisciculteurs Dombes, TPE artisans BTP, commerçants et services aux entreprises de la Dombes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtillon-sur-Chalaronne (01). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial cité médiévale, agriculteurs/pisciculteurs Dombes, PME du BTP, commerçants et services aux entreprises de la Dombes.",
   seoHook: "tourisme patrimonial & pisciculture étangs",
   ecosystemFr:
-    "Châtillon-sur-Chalaronne est une cité médiévale pittoresque de la Dombes (halles médiévales classées, château, centre historique). Tissu tourisme patrimonial, agriculture Dombes (pisciculture en étangs — tradition séculaire, volaille Bresse proche), TPE artisanat BTP, commerces.",
+    "Châtillon-sur-Chalaronne est une cité médiévale pittoresque de la Dombes (halles médiévales classées, château, centre historique). Tissu tourisme patrimonial, agriculture Dombes (pisciculture en étangs — tradition séculaire, volaille Bresse proche), PME du BTP, commerces.",
   ecosystemEn:
-    "Châtillon-sur-Chalaronne est une cité médiévale pittoresque de la Dombes (halles médiévales classées, château, centre historique). Tissu tourisme patrimonial, agriculture Dombes (pisciculture en étangs — tradition séculaire, volaille Bresse proche), TPE artisanat BTP, commerces.",
+    "Châtillon-sur-Chalaronne est une cité médiévale pittoresque de la Dombes (halles médiévales classées, château, centre historique). Tissu tourisme patrimonial, agriculture Dombes (pisciculture en étangs — tradition séculaire, volaille Bresse proche), PME du BTP, commerces.",
   distancesFr:
     "Lyon centre à 50 min. Bourg-en-Bresse à 30 min. Villefranche-sur-Saône à 25 min. Aéroport Lyon-Saint-Exupéry à 50 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
     "Tourisme patrimonial (cité médiévale)",
     "Pisciculture étangs Dombes",
     "Agriculture Dombes/Bresse",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, PME artisanales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, PME artisanales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtillon-sur-Chalaronne : formats adaptés au site patrimonial, exploitation piscicole/agricole, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Châtillon-sur-Chalaronne : agents conversationnels visiteurs patrimoine médiéval multilingue, classification photos pisciculture, traçabilité poissons Dombes, automatisation réservations.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châtillon-sur-Chalaronne : sessions dans votre site patrimonial, exploitation, commerce ou en visio. Acteurs tourisme, pisciculteurs, agriculteurs, artisans, gérants TPE/PME châtillonnais.",
-      en: "Coaching 1-to-1 à Châtillon-sur-Chalaronne : sessions dans votre site patrimonial, exploitation, commerce ou en visio. Acteurs tourisme, pisciculteurs, agriculteurs, artisans, gérants TPE/PME châtillonnais.",
+      fr: "Coaching 1-to-1 à Châtillon-sur-Chalaronne : sessions dans votre site patrimonial, exploitation, commerce ou en visio. Acteurs tourisme, pisciculteurs, agriculteurs, artisans, gérants PME et ETI châtillonnais.",
+      en: "Coaching 1-to-1 à Châtillon-sur-Chalaronne : sessions dans votre site patrimonial, exploitation, commerce ou en visio. Acteurs tourisme, pisciculteurs, agriculteurs, artisans, gérants PME et ETI châtillonnais.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels visiteurs multilingue, automatisation réservations, classification feedback, recommandations parcours médiévaux.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

@@ -290,7 +290,7 @@ export const ANNECY_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : pas de liste consolidée publique par ville sans extraction
   // dataset officiel. Champ vide en V1 pour respecter zéro invention. À

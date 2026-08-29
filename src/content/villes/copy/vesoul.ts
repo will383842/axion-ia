@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const VESOUL_COPY: VilleCopy = {
   pitchFr:
-    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants.",
+    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de PME et ETI de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants.",
+    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de PME et ETI de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vesoul (70). Nous accompagnons PME et ETI : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Hte-Saône",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vesoul (70). Nous accompagnons PME et ETI : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit sur place sur mesure.",
+  seoHook: "PME & PME Hte-Saône",
   ecosystemFr:
     "Vesoul est la préfecture de la Haute-Saône, ville administrative et commerciale au pied de la colline de la Motte. Tissu économique structuré autour de l'industrie automobile (centre logistique pièces de rechange majeur en Europe), de la sous-traitance mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics départementaux.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const VESOUL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vesoul : diagnostic adapté aux PME sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vesoul : diagnostic adapté aux PME sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vesoul : formats adaptés à l'atelier mécanique, au commerce de centre-ville, au bureau PME ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const VESOUL_COPY: VilleCopy = {
       en: "Implémentation IA à Vesoul : maintenance prédictive automobile, gestion stocks pièces détachées, CRM augmenté commerce, automatisation devis BTP, outils IA professions libérales et services administratifs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vesoul : sessions dans vos locaux (atelier, commerce, bureau, cabinet) ou en visio. Dirigeants TPE/PME haut-saônois souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Vesoul : sessions dans vos locaux (atelier, commerce, bureau, cabinet) ou en visio. Dirigeants TPE/PME haut-saônois souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Vesoul : sessions dans vos locaux (atelier, commerce, bureau, cabinet) ou en visio. Dirigeants PME et ETI haut-saônois souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Vesoul : sessions dans vos locaux (atelier, commerce, bureau, cabinet) ou en visio. Dirigeants PME et ETI haut-saônois souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const VESOUL_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile de Vesoul ?",
-      a: "Oui, nous accompagnons les TPE et PME de l'industrie automobile vésulienne : maintenance prédictive IA, gestion stocks pièces, automatisation qualité, planification production, traçabilité logistique. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME et ETI de l'industrie automobile vésulienne : maintenance prédictive IA, gestion stocks pièces, automatisation qualité, planification production, traçabilité logistique. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Vesoul  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de la préfecture haut-saônoise, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de la préfecture haut-saônoise, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Proposez-vous des formations IA pour les commerçants de Vesoul ?",

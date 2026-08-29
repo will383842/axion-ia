@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const SEVREMONT_COPY: VilleCopy = {
   pitchFr:
-    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de PME artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de PME artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
-  seoHook: "TPE & PME Vendée",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
+  seoHook: "PME & PME Vendée",
   ecosystemFr:
     "Sèvremont est une commune nouvelle du haut bocage vendéen (fusion 2016 de La Flocellière, Saint-Michel-Mont-Mercure, La Pommeraie-sur-Sèvre et Le Boupère). Point culminant de la Vendée (Mont Mercure, 290 m). Industries, agriculture, artisanat. Les Herbiers à 15 min, Pouzauges à 10 min.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const SEVREMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Sèvremont : diagnostic adapté aux PME artisanales, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Sèvremont : diagnostic adapté aux PME artisanales, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sèvremont : formats adaptés aux exploitations agricoles, PME industrielles, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Sèvremont : formats adaptés aux exploitations agricoles, PME industrielles, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Sèvremont : optimisation élevage prédictif, automatisation PME industrielles, gestion exploitation agricole, outils artisans BTP. Adapté TPE/PME haut bocage vendéen.",
-      en: "Implémentation IA à Sèvremont : optimisation élevage prédictif, automatisation PME industrielles, gestion exploitation agricole, outils artisans BTP. Adapté TPE/PME haut bocage vendéen.",
+      fr: "Implémentation IA à Sèvremont : optimisation élevage prédictif, automatisation PME industrielles, gestion exploitation agricole, outils artisans BTP. Adapté PME et ETI haut bocage vendéen.",
+      en: "Implémentation IA à Sèvremont : optimisation élevage prédictif, automatisation PME industrielles, gestion exploitation agricole, outils artisans BTP. Adapté PME et ETI haut bocage vendéen.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sèvremont : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME agriculture, industrie, artisanat bocage vendéen.",
-      en: "Coaching 1-to-1 à Sèvremont : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME agriculture, industrie, artisanat bocage vendéen.",
+      fr: "Coaching 1-to-1 à Sèvremont : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI agriculture, industrie, artisanat bocage vendéen.",
+      en: "Coaching 1-to-1 à Sèvremont : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI agriculture, industrie, artisanat bocage vendéen.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SEVREMONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Sèvremont  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Sèvremont ?",

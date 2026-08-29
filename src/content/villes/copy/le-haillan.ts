@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const LE_HAILLAN_COPY: VilleCopy = {
   pitchFr:
-    "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, TPE artisans, commerces, professions libérales et entreprises de services.",
+    "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, PME artisanales, commerces, professions libérales et entreprises de services.",
   pitchEn:
-    "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, TPE artisans, commerces, professions libérales et entreprises de services.",
+    "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, PME artisanales, commerces, professions libérales et entreprises de services.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Haillan (33). Nous accompagnons PME et ETI de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Haillan (33). Nous accompagnons PME et ETI de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit sur place sur mesure.",
   seoHook: "proche bordeaux",
   ecosystemFr:
-    "Le Haillan fait partie de l'arc ouest de Bordeaux Métropole. Zones d'activités tertiaires (sièges entreprises, cabinets conseil, agences communication), proximité Mérignac (aéroport, centre commercial), tissu TPE résidentiel et commerces de proximité.",
+    "Le Haillan fait partie de l'arc ouest de Bordeaux Métropole. Zones d'activités tertiaires (sièges entreprises, cabinets conseil, agences communication), proximité Mérignac (aéroport, centre commercial), tissu PME résidentiel et commerces de proximité.",
   ecosystemEn:
-    "Le Haillan fait partie de l'arc ouest de Bordeaux Métropole. Zones d'activités tertiaires (sièges entreprises, cabinets conseil, agences communication), proximité Mérignac (aéroport, centre commercial), tissu TPE résidentiel et commerces de proximité.",
+    "Le Haillan fait partie de l'arc ouest de Bordeaux Métropole. Zones d'activités tertiaires (sièges entreprises, cabinets conseil, agences communication), proximité Mérignac (aéroport, centre commercial), tissu PME résidentiel et commerces de proximité.",
   distancesFr:
     "Bordeaux centre à 15 min (rocade). Aéroport Bordeaux-Mérignac à 10 min. Gare Bordeaux Saint-Jean à 20 min. Accès rocade A630 et route du Médoc.",
   distancesEn:
     "Bordeaux centre à 15 min (rocade). Aéroport Bordeaux-Mérignac à 10 min. Gare Bordeaux Saint-Jean à 20 min. Accès rocade A630 et route du Médoc.",
   topSectorsNaf: [
     "PME tertiaires (conseil, IT, communication)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, TPE artisans et commerces de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, TPE artisans et commerces de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, PME de l'artisanat et du commerce de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, PME de l'artisanat et du commerce de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Haillan : ateliers adaptés aux bureaux tertiaires, cabinets et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -53,7 +53,7 @@ export const LE_HAILLAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Haillan ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME tertiaires et TPE de l'ouest bordelais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME tertiaires et PME de l'ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires au Haillan ?",

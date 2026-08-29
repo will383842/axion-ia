@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
   pitchFr:
-    "Noyal-sur-Vilaine (35), commune de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, accueille un tissu économique dynamique de TPE artisanales, PME de services, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Noyal-sur-Vilaine (35), commune de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, accueille un tissu économique dynamique de PME artisanales, PME de services, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Noyal-sur-Vilaine (35), commune de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, accueille un tissu économique dynamique de TPE artisanales, PME de services, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Noyal-sur-Vilaine (35), commune de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, accueille un tissu économique dynamique de PME artisanales, PME de services, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyal-sur-Vilaine (35). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et exploitants agricoles de l'est rennais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyal-sur-Vilaine (35). Nous accompagnons PME et ETI : artisans, commerces de proximité, PME de services, professions libérales et exploitants agricoles de l'est rennais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyal-sur-Vilaine (35). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et exploitants agricoles de l'est rennais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noyal-sur-Vilaine (35). Nous accompagnons PME et ETI : artisans, commerces de proximité, PME de services, professions libérales et exploitants agricoles de l'est rennais. Audit sur place sur mesure.",
   ecosystemFr:
     "Noyal-sur-Vilaine est une commune résidentielle dynamique de l'est de Rennes Métropole (Ille-et-Vilaine), traversée par la Vilaine. Son économie repose sur l'artisanat, les commerces de proximité, les services aux entreprises, l'agriculture périurbaine et les professions libérales qui profitent de la proximité immédiate de Rennes.",
   ecosystemEn:
@@ -22,7 +22,7 @@ export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
     "Rennes centre à 15 min (D463). Gare de Rennes à 20 min (TGV Paris 1h25). Gare de Noyal-sur-Vilaine (TER). Aéroport Rennes-Saint-Jacques à 30 min. Vitré à 25 min.",
   seoHook: "artisanat & services est-rennais",
   topSectorsNaf: [
-    "TPE artisanat et bâtiment",
+    "PME de l'artisanat et bâtiment",
     "Commerces de proximité",
     "PME services aux entreprises",
     "Agriculture et exploitations périurbaines",
@@ -30,8 +30,8 @@ export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noyal-sur-Vilaine : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales de l'est rennais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Noyal-sur-Vilaine : diagnostic adapté aux TPE artisans, commerces de proximité, PME de services et professions libérales de l'est rennais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Noyal-sur-Vilaine : diagnostic adapté aux PME artisanales, commerces de proximité, PME de services et professions libérales de l'est rennais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Noyal-sur-Vilaine : diagnostic adapté aux PME artisanales, commerces de proximité, PME de services et professions libérales de l'est rennais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Noyal-sur-Vilaine : formations pratiques adaptées artisans, commerçants, PME de services et exploitants agricoles. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
       en: "Implémentation IA à Noyal-sur-Vilaine : automatisation devis artisans, CRM commerces de proximité, gestion planning professions libérales, outils prédictifs agricoles, agents conversationnels PME services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Noyal-sur-Vilaine : sessions sur site ou en visio pour dirigeants TPE/PME noyalais, artisans, commerçants et professions libérales de la vallée de la Vilaine.",
-      en: "Coaching 1-to-1 à Noyal-sur-Vilaine : sessions sur site ou en visio pour dirigeants TPE/PME noyalais, artisans, commerçants et professions libérales de la vallée de la Vilaine.",
+      fr: "Coaching 1-to-1 à Noyal-sur-Vilaine : sessions sur site ou en visio pour dirigeants de PME et d'ETI noyalais, artisans, commerçants et professions libérales de la vallée de la Vilaine.",
+      en: "Coaching 1-to-1 à Noyal-sur-Vilaine : sessions sur site ou en visio pour dirigeants de PME et d'ETI noyalais, artisans, commerçants et professions libérales de la vallée de la Vilaine.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const NOYAL_SUR_VILAINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Noyal-sur-Vilaine et dans tout l'est de Rennes Métropole (Châteaugiron, Cesson-Sévigné, Acigné, Vitré). Nos consultants rejoignent Rennes en 1h25 depuis Paris (TGV) puis Noyal en 15 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Noyal-sur-Vilaine ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour les TPE noyalaises. Il comprend un diagnostic complet de vos processus, l'identification des cas d'usage IA prioritaires et une feuille de route chiffrée avec ROI estimé.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Noyal-sur-Vilaine ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour les PME noyalaises. Il comprend un diagnostic complet de vos processus, l'identification des cas d'usage IA prioritaires et une feuille de route chiffrée avec ROI estimé.",
     },
     {
       q: "Accompagnez-vous les artisans et commerces de proximité ?",

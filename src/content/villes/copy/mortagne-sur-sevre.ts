@@ -9,10 +9,10 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
   pitchEn:
     "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mortagne-sur-Sèvre (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, acteurs tourisme vert et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mortagne-sur-Sèvre (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles du bocage, exploitations agricoles, acteurs tourisme vert et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mortagne-sur-Sèvre (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, acteurs tourisme vert et professions libérales.",
-  seoHook: "TPE & PME Vendée",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mortagne-sur-Sèvre (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles du bocage, exploitations agricoles, acteurs tourisme vert et professions libérales.",
+  seoHook: "PME & PME Vendée",
   ecosystemFr:
     "Mortagne-sur-Sèvre est une commune du bocage vendéen, bâtie au-dessus des gorges de la Sèvre nantaise. Pôle industriel (mécanique, agroalimentaire), artisanat, agriculture bocagère et tourisme vert. Cholet à 20 min, Les Herbiers à 15 min, Nantes à 1h.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux PME artisanales, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux PME artisanales, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mortagne-sur-Sèvre : formats adaptés aux PME industrielles, ateliers agroalimentaires, artisans et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
       en: "Interventions IA sur site à Mortagne-sur-Sèvre : formats adaptés aux PME industrielles, ateliers agroalimentaires, artisans et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Mortagne-sur-Sèvre : maintenance prédictive industrie, automatisation agroalimentaire, gestion exploitation agricole, outils artisans. Adapté TPE/PME bocage vendéen.",
-      en: "Implémentation IA à Mortagne-sur-Sèvre : maintenance prédictive industrie, automatisation agroalimentaire, gestion exploitation agricole, outils artisans. Adapté TPE/PME bocage vendéen.",
+      fr: "Implémentation IA à Mortagne-sur-Sèvre : maintenance prédictive industrie, automatisation agroalimentaire, gestion exploitation agricole, outils artisans. Adapté PME et ETI bocage vendéen.",
+      en: "Implémentation IA à Mortagne-sur-Sèvre : maintenance prédictive industrie, automatisation agroalimentaire, gestion exploitation agricole, outils artisans. Adapté PME et ETI bocage vendéen.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mortagne-sur-Sèvre : sessions dans vos locaux industriels, atelier ou en visio. Dirigeants TPE/PME mécanique, agroalimentaire, artisanat bocage vendéen.",
-      en: "Coaching 1-to-1 à Mortagne-sur-Sèvre : sessions dans vos locaux industriels, atelier ou en visio. Dirigeants TPE/PME mécanique, agroalimentaire, artisanat bocage vendéen.",
+      fr: "Coaching 1-to-1 à Mortagne-sur-Sèvre : sessions dans vos locaux industriels, atelier ou en visio. Dirigeants PME et ETI mécanique, agroalimentaire, artisanat bocage vendéen.",
+      en: "Coaching 1-to-1 à Mortagne-sur-Sèvre : sessions dans vos locaux industriels, atelier ou en visio. Dirigeants PME et ETI mécanique, agroalimentaire, artisanat bocage vendéen.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Mortagne-sur-Sèvre  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Mortagne-sur-Sèvre ?",

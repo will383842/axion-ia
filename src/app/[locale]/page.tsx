@@ -227,31 +227,25 @@ export default async function Home({ params }: HomeProps) {
     },
   ];
 
-  // ─── Cible (4 segments TPE/PME/ETI/Grande) — Blueprint Section 8 ───
+  // ─── Cible (3 segments PME/ETI/grands groupes) — Blueprint Section 8 ───
   const audienceSegments = [
     {
-      id: "tpe",
+      id: "pme",
       title: t("audience1Title"),
       lead: t("audience1Lead"),
       detail: t("audience1Detail"),
     },
     {
-      id: "pme",
+      id: "eti",
       title: t("audience2Title"),
       lead: t("audience2Lead"),
       detail: t("audience2Detail"),
     },
     {
-      id: "eti",
+      id: "large",
       title: t("audience3Title"),
       lead: t("audience3Lead"),
       detail: t("audience3Detail"),
-    },
-    {
-      id: "large",
-      title: t("audience4Title"),
-      lead: t("audience4Lead"),
-      detail: t("audience4Detail"),
     },
   ];
 
@@ -687,7 +681,7 @@ export default async function Home({ params }: HomeProps) {
 
             {/* Stats bar — mobile-first (Will 2026-08-10) : 1 colonne empilée avec
                 dividers HORIZONTAUX sous 640 px (avant : grid-cols-3 en dur, les
-                3 stats se compressaient dès 320 px et « TPE → CAC40 » cassait),
+                3 stats se compressaient dès 320 px et « PME → CAC40 » cassait),
                 puis 3 colonnes + dividers verticaux à partir de sm. */}
             <div
               className="border-border-strong mt-16 grid grid-cols-1 divide-y border-t pt-10 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
@@ -1311,7 +1305,7 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       {/* ───────────── AUDIENCE + SECTEURS (Blueprint §11) ─────────────
-          4 segments TPE/PME/ETI/Grande + nuage des secteurs. Texte
+          3 segments PME/ETI/grands groupes + nuage des secteurs. Texte
           riche en keywords pour AEO ("IA pour PME françaises", "cabinet
           IA grandes entreprises"…). */}
       <section

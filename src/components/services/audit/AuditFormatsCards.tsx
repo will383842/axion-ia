@@ -6,7 +6,7 @@
  * le modèle sur-devis). Calqué sur le pattern 2 cartes de `/un-a-un` et
  * `/interventions/collectives` :
  *
- *   1. Audit sur place    → 1 journée complète, prix fixe (TPE/artisans/commerçants)
+ *   1. Audit sur place    → 1 journée complète, prix fixe (PME mono-site)
  *   2. Audit complet      → PME / ETI / grande entreprise, SUR DEVIS
  *
  * Prix dérivé de la SSOT pricing.ts (audit-flash : 1190 € HT présentiel, 1
@@ -47,7 +47,7 @@ export function AuditFormatsCards({ isFr: _isFr }: AuditFormatsCardsProps) {
     {
       href: "/audit/tpe-1-jour",
       icon: Zap,
-      eyebrow: "TPE, artisans & commerçants",
+      eyebrow: "PME mono-site",
       title: "Audit sur place",
       tagline:
         "On audite toute votre entreprise en une journée complète sur site, pour révéler tout ce que l'IA peut y changer. Recommandations chiffrées à la clé.",

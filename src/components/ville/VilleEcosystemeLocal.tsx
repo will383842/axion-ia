@@ -106,7 +106,7 @@ function getVerticaleSentence(
   if (isFr) {
     switch (verticale) {
       case "audits":
-        return `Audits IA réalisables dans le tissu économique de ${villeName} — PME, ETI, grands groupes et TPE inclus.`;
+        return `Audits IA réalisables dans le tissu économique de ${villeName} — PME, ETI et grands groupes inclus.`;
       case "implementations":
         return `Projets d'implémentation IA typiques pour les organisations de ${villeName} et de son bassin économique.`;
       case "interventions":

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_VERRIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud des Yvelines.",
+    "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de PME artisanales, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud des Yvelines.",
   pitchEn:
-    "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud des Yvelines.",
+    "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de PME artisanales, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud des Yvelines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Verrière (78). Nous accompagnons PME et ETI : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Verrière (78). Nous accompagnons PME et ETI : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit sur place sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
-    "La Verrière est une commune résidentielle de Saint-Quentin-en-Yvelines, bénéficiant de la dynamique économique de ce pôle majeur francilien. Tissu local : TPE artisans bâtiment, commerces de proximité, PME de services, professions libérales, prestataires tertiaires. Communes voisines : Trappes, Élancourt, Coignières, Le Mesnil-Saint-Denis, Maurepas.",
+    "La Verrière est une commune résidentielle de Saint-Quentin-en-Yvelines, bénéficiant de la dynamique économique de ce pôle majeur francilien. Tissu local : PME artisanales bâtiment, commerces de proximité, PME de services, professions libérales, prestataires tertiaires. Communes voisines : Trappes, Élancourt, Coignières, Le Mesnil-Saint-Denis, Maurepas.",
   ecosystemEn:
-    "La Verrière est une commune résidentielle de Saint-Quentin-en-Yvelines, bénéficiant de la dynamique économique de ce pôle majeur francilien. Tissu local : TPE artisans bâtiment, commerces de proximité, PME de services, professions libérales, prestataires tertiaires. Communes voisines : Trappes, Élancourt, Coignières, Le Mesnil-Saint-Denis, Maurepas.",
+    "La Verrière est une commune résidentielle de Saint-Quentin-en-Yvelines, bénéficiant de la dynamique économique de ce pôle majeur francilien. Tissu local : PME artisanales bâtiment, commerces de proximité, PME de services, professions libérales, prestataires tertiaires. Communes voisines : Trappes, Élancourt, Coignières, Le Mesnil-Saint-Denis, Maurepas.",
   distancesFr:
     "Gare de La Verrière (Transilien N et U, 40 min Paris-Montparnasse). A12 et N10 à proximité. Trappes à 3 min, Saint-Quentin-en-Yvelines à 5 min, Versailles à 15 min, La Défense à 35 min. Aéroport Orly à 30 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const LA_VERRIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Verrière : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin SQY. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Verrière : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin SQY. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Verrière : diagnostic adapté aux PME artisanales, PME de services, commerces et professions libérales du bassin SQY. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Verrière : diagnostic adapté aux PME artisanales, PME de services, commerces et professions libérales du bassin SQY. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Verrière : formats adaptés au bureau, au commerce ou à l'atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à La Verrière : formats adaptés au bureau, au commerce ou à l'atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à La Verrière : automatisation gestion clients, agents conversationnels, CRM augmenté, gestion documentaire. Solutions sur mesure pour TPE et PME locales.",
-      en: "Implémentation IA à La Verrière : automatisation gestion clients, agents conversationnels, CRM augmenté, gestion documentaire. Solutions sur mesure pour TPE et PME locales.",
+      fr: "Implémentation IA à La Verrière : automatisation gestion clients, agents conversationnels, CRM augmenté, gestion documentaire. Solutions sur mesure pour PME et ETI locales.",
+      en: "Implémentation IA à La Verrière : automatisation gestion clients, agents conversationnels, CRM augmenté, gestion documentaire. Solutions sur mesure pour PME et ETI locales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Verrière : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et prestataires du bassin SQY.",
-      en: "Coaching 1-to-1 à La Verrière : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et prestataires du bassin SQY.",
+      fr: "Coaching 1-to-1 à La Verrière : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et prestataires du bassin SQY.",
+      en: "Coaching 1-to-1 à La Verrière : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et prestataires du bassin SQY.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_VERRIERE_COPY: VilleCopy = {
       a: "L'Audit sur place IA à La Verrière démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME à La Verrière ?",
-      a: "Oui, nous accompagnons les TPE artisans, PME de services et commerces de La Verrière sur leurs cas IA : automatisation administrative, gestion clients, relation client, planification intelligente. Formats adaptés demi-journée ou journée.",
+      q: "Accompagnez-vous les PME et ETI à La Verrière ?",
+      a: "Oui, nous accompagnons les PME artisanales, PME de services et commerces de La Verrière sur leurs cas IA : automatisation administrative, gestion clients, relation client, planification intelligente. Formats adaptés demi-journée ou journée.",
     },
     {
       q: "Proposez-vous des formations IA pour les entreprises à La Verrière ?",

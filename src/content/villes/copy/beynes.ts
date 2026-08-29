@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BEYNES_COPY: VilleCopy = {
   pitchFr:
-    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA collabore avec toutes les structures locales de l'ouest yvelinois.",
+    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de PME artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA collabore avec toutes les structures locales de l'ouest yvelinois.",
   pitchEn:
-    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA collabore avec toutes les structures locales de l'ouest yvelinois.",
+    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de PME artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA collabore avec toutes les structures locales de l'ouest yvelinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beynes (78). Nous accompagnons PME et ETI : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beynes (78). Nous accompagnons PME et ETI : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
   seoHook: "artisanat bâtiment & professions libérales",
   ecosystemFr:
-    "Beynes est une commune résidentielle semi-rurale de la plaine de Versailles ouest, entre Plaisir et Thiverval-Grignon (campus AgroParisTech historique). Tissu économique local : TPE artisanales (bâtiment, espaces verts, services à la personne), professions libérales, PME de services aux entreprises, commerces de centre-bourg. Cadre attractif pour télétravail et indépendants.",
+    "Beynes est une commune résidentielle semi-rurale de la plaine de Versailles ouest, entre Plaisir et Thiverval-Grignon (campus AgroParisTech historique). Tissu économique local : PME artisanales (bâtiment, espaces verts, services à la personne), professions libérales, PME de services aux entreprises, commerces de centre-bourg. Cadre attractif pour télétravail et indépendants.",
   ecosystemEn:
-    "Beynes est une commune résidentielle semi-rurale de la plaine de Versailles ouest, entre Plaisir et Thiverval-Grignon (campus AgroParisTech historique). Tissu économique local : TPE artisanales (bâtiment, espaces verts, services à la personne), professions libérales, PME de services aux entreprises, commerces de centre-bourg. Cadre attractif pour télétravail et indépendants.",
+    "Beynes est une commune résidentielle semi-rurale de la plaine de Versailles ouest, entre Plaisir et Thiverval-Grignon (campus AgroParisTech historique). Tissu économique local : PME artisanales (bâtiment, espaces verts, services à la personne), professions libérales, PME de services aux entreprises, commerces de centre-bourg. Cadre attractif pour télétravail et indépendants.",
   distancesFr:
     "Gare de Beynes (Transilien N Paris-Montparnasse, 55 min). Plaisir à 10 min. Versailles à 20 min. La Défense à 35 min via A12/A13. Paris centre à 45 min. Aéroport Paris-Orly à 40 min.",
   distancesEn:
     "Gare de Beynes (Transilien N Paris-Montparnasse, 55 min). Plaisir à 10 min. Versailles à 20 min. La Défense à 35 min via A12/A13. Paris centre à 45 min. Aéroport Paris-Orly à 40 min.",
   topSectorsNaf: [
-    "TPE artisanat bâtiment & espaces verts",
+    "PME de l'artisanat bâtiment & espaces verts",
     "Professions libérales (santé, juridique)",
     "PME services aux entreprises",
     "Services à la personne",
@@ -30,16 +30,16 @@ export const BEYNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Beynes : diagnostic adapté aux PME artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Beynes : diagnostic adapté aux PME artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beynes : formats adaptés aux artisans, professions libérales et PME de services de l'ouest Yvelines. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
       en: "Interventions IA sur site à Beynes : formats adaptés aux artisans, professions libérales et PME de services de l'ouest Yvelines. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
-      fr: "Implémentation IA à Beynes : automatisation devis et facturation artisans, CRM augmenté PME, gestion planning services à la personne, outils IA sur mesure pour TPE et PME de la plaine de Versailles.",
-      en: "Implémentation IA à Beynes : automatisation devis et facturation artisans, CRM augmenté PME, gestion planning services à la personne, outils IA sur mesure pour TPE et PME de la plaine de Versailles.",
+      fr: "Implémentation IA à Beynes : automatisation devis et facturation artisans, CRM augmenté PME, gestion planning services à la personne, outils IA sur mesure pour PME et ETI de la plaine de Versailles.",
+      en: "Implémentation IA à Beynes : automatisation devis et facturation artisans, CRM augmenté PME, gestion planning services à la personne, outils IA sur mesure pour PME et ETI de la plaine de Versailles.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Beynes : sessions dans vos locaux ou en visio. Artisans, professions libérales, gérants PME et indépendants de la plaine de Versailles souhaitant intégrer l'IA dans leur quotidien professionnel.",
@@ -52,12 +52,12 @@ export const BEYNES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Beynes et dans toute la plaine de Versailles ouest (Plaisir à 10 min, Thiverval-Grignon, Jouars-Pontchartrain, Versailles à 20 min). Couverture ouest Yvelines et accès Paris via Transilien N (55 min).",
     },
     {
-      q: "Accompagnez-vous les artisans et TPE à Beynes ?",
-      a: "Oui, nous accompagnons les TPE et artisans de Beynes et de la plaine de Versailles sur leurs cas IA concrets : automatisation devis et facturation, gestion planning, CRM client, suivi chantiers. Formats courts adaptés aux petites structures.",
+      q: "Accompagnez-vous les artisans et PME à Beynes ?",
+      a: "Oui, nous accompagnons les PME et artisans de Beynes et de la plaine de Versailles sur leurs cas IA concrets : automatisation devis et facturation, gestion planning, CRM client, suivi chantiers. Formats courts adaptés aux PME.",
     },
     {
       q: "Tarifs audit IA à Beynes  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de l'ouest Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
     },
     {
       q: "Intervenez-vous en présentiel à Beynes ?",

@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const MARQUISE_COPY: VilleCopy = {
   pitchFr:
-    "Marquise (62), commune du Boulonnais dans le Pas-de-Calais, reunit pres de 5 220 habitants. Connue pour ses carrieres de marbre et sa position entre Boulogne-sur-Mer et Calais, son economie associe PME industrielles (extraction, transformation), TPE artisanales, commerces et agriculture. Axion-IA y intervient pour tous types d'activites.",
+    "Marquise (62), commune du Boulonnais dans le Pas-de-Calais, reunit pres de 5 220 habitants. Connue pour ses carrieres de marbre et sa position entre Boulogne-sur-Mer et Calais, son economie associe PME industrielles (extraction, transformation), PME artisanales, commerces et agriculture. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Marquise (62), commune du Boulonnais dans le Pas-de-Calais, reunit pres de 5 220 habitants. Connue pour ses carrieres de marbre et sa position entre Boulogne-sur-Mer et Calais, son economie associe PME industrielles (extraction, transformation), TPE artisanales, commerces et agriculture. Axion-IA y intervient pour tous types d'activites.",
+    "Marquise (62), commune du Boulonnais dans le Pas-de-Calais, reunit pres de 5 220 habitants. Connue pour ses carrieres de marbre et sa position entre Boulogne-sur-Mer et Calais, son economie associe PME industrielles (extraction, transformation), PME artisanales, commerces et agriculture. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "carrieres marbre, industrie & Boulonnais",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Marquise (62). Nous accompagnons les PME, ETI et grands groupes du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Marquise (62). Nous accompagnons les TPE, PME et ETI du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Marquise (62). Nous accompagnons les PME, ETI et grands groupes du Boulonnais : industriels carriers, artisans, commercants, agriculteurs et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Marquise est situee dans le Boulonnais entre Boulogne-sur-Mer (15 km) et Calais (20 km). Tissu economique marque par les carrieres de marbre (extraction, transformation, granulats). Egalement TPE artisanales, commerces, agriculture et services. Proximite du tunnel sous la Manche.",
+    "Marquise est situee dans le Boulonnais entre Boulogne-sur-Mer (15 km) et Calais (20 km). Tissu economique marque par les carrieres de marbre (extraction, transformation, granulats). Egalement PME artisanales, commerces, agriculture et services. Proximite du tunnel sous la Manche.",
   ecosystemEn:
-    "Marquise est situee dans le Boulonnais entre Boulogne-sur-Mer (15 km) et Calais (20 km). Tissu economique marque par les carrieres de marbre (extraction, transformation, granulats). Egalement TPE artisanales, commerces, agriculture et services. Proximite du tunnel sous la Manche.",
+    "Marquise est situee dans le Boulonnais entre Boulogne-sur-Mer (15 km) et Calais (20 km). Tissu economique marque par les carrieres de marbre (extraction, transformation, granulats). Egalement PME artisanales, commerces, agriculture et services. Proximite du tunnel sous la Manche.",
   distancesFr:
     "Gare de Marquise-Rinxent (TER Boulogne-Calais). Boulogne-sur-Mer a 15 min. Calais a 20 min. Gare Calais-Frethun (Eurostar) a 15 min. Lille Europe (TGV) a 1h25 en TER.",
   distancesEn:
     "Gare de Marquise-Rinxent (TER Boulogne-Calais). Boulogne-sur-Mer a 15 min. Calais a 20 min. Gare Calais-Frethun (Eurostar) a 15 min. Lille Europe (TGV) a 1h25 en TER.",
   topSectorsNaf: [
     "Industrie extractive & carrieres",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture & elevage",
     "Commerce de proximite",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Marquise : diagnostic adapte aux PME industrielles carriers, TPE artisanales et agriculteurs du Boulonnais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Marquise : diagnostic adapte aux PME industrielles carriers, TPE artisanales et agriculteurs du Boulonnais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Marquise : diagnostic adapte aux PME industrielles carriers, PME artisanales et agriculteurs du Boulonnais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Marquise : diagnostic adapte aux PME industrielles carriers, PME artisanales et agriculteurs du Boulonnais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Marquise : formations adaptees aux sites carriers, ateliers artisanaux, exploitations agricoles et commerces. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const MARQUISE_COPY: VilleCopy = {
       en: "Implementation IA a Marquise : optimisation production carriere, maintenance predictive equipements, automatisation logistique granulats, CRM augmentes pour PME du Boulonnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Marquise : accompagnement personnalise dirigeants industriels, exploitants agricoles, gerants TPE et artisans du Boulonnais.",
-      en: "Coaching 1-to-1 a Marquise : accompagnement personnalise dirigeants industriels, exploitants agricoles, gerants TPE et artisans du Boulonnais.",
+      fr: "Coaching 1-to-1 a Marquise : accompagnement personnalise dirigeants industriels, exploitants agricoles, gerants PME et artisans du Boulonnais.",
+      en: "Coaching 1-to-1 a Marquise : accompagnement personnalise dirigeants industriels, exploitants agricoles, gerants PME et artisans du Boulonnais.",
     },
   },
   faqGeolocalisee: [

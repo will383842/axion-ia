@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLEREST_COPY: VilleCopy = {
   pitchFr:
-    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, PME du BTP, tourisme, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, PME du BTP, tourisme, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), TPE artisans BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), PME du BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), TPE artisans BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), PME du BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
   seoHook: "tourisme loisirs & tertiaires roannais",
   ecosystemFr:
-    "Villerest est intégrée à Roannais Agglomération (~99 000 hab), en banlieue sud-ouest de Roanne. Position remarquable : barrage de Villerest (grand aménagement hydraulique sur la Loire avec plan d'eau, site touristique régional). Tissu PME tertiaires, TPE artisanat BTP, tourisme/loisirs, commerces.",
+    "Villerest est intégrée à Roannais Agglomération (~99 000 hab), en banlieue sud-ouest de Roanne. Position remarquable : barrage de Villerest (grand aménagement hydraulique sur la Loire avec plan d'eau, site touristique régional). Tissu PME tertiaires, PME du BTP, tourisme/loisirs, commerces.",
   ecosystemEn:
-    "Villerest est intégrée à Roannais Agglomération (~99 000 hab), en banlieue sud-ouest de Roanne. Position remarquable : barrage de Villerest (grand aménagement hydraulique sur la Loire avec plan d'eau, site touristique régional). Tissu PME tertiaires, TPE artisanat BTP, tourisme/loisirs, commerces.",
+    "Villerest est intégrée à Roannais Agglomération (~99 000 hab), en banlieue sud-ouest de Roanne. Position remarquable : barrage de Villerest (grand aménagement hydraulique sur la Loire avec plan d'eau, site touristique régional). Tissu PME tertiaires, PME du BTP, tourisme/loisirs, commerces.",
   distancesFr:
     "Roanne centre à 10 min. Aéroport Lyon-Saint-Exupéry à 1h30. Lyon centre à 1h30. Saint-Étienne à 1h.",
   distancesEn:
@@ -24,14 +24,14 @@ export const VILLEREST_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme & loisirs (plan d'eau de Villerest)",
     "PME tertiaires Roannais",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villerest : formats adaptés au site touristique, bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const VILLEREST_COPY: VilleCopy = {
       en: "Implémentation IA à Villerest : agents conversationnels touristes multilingue (plan d'eau, loisirs), automatisation réservations activités, classification feedback, recommandations parcours.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villerest : sessions dans votre site touristique, bureau, commerce ou en visio. Acteurs tourisme, dirigeants tertiaires, artisans, gérants TPE/PME villerestois.",
-      en: "Coaching 1-to-1 à Villerest : sessions dans votre site touristique, bureau, commerce ou en visio. Acteurs tourisme, dirigeants tertiaires, artisans, gérants TPE/PME villerestois.",
+      fr: "Coaching 1-to-1 à Villerest : sessions dans votre site touristique, bureau, commerce ou en visio. Acteurs tourisme, dirigeants tertiaires, artisans, gérants PME et ETI villerestois.",
+      en: "Coaching 1-to-1 à Villerest : sessions dans votre site touristique, bureau, commerce ou en visio. Acteurs tourisme, dirigeants tertiaires, artisans, gérants PME et ETI villerestois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const VILLEREST_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires Roannais sur leurs cas IA : agents conversationnels client, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Villerest, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Villerest, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ARLES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Arles, cité romaine classée UNESCO, capitale de la photographie et porte de la Camargue. Tourisme culturel, hôtellerie, événementiel photo, riziculture et agriculture camarguaise, commerce et artisanat : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Arles, cité romaine classée UNESCO, capitale de la photographie et porte de la Camargue. Tourisme culturel, hôtellerie, événementiel photo, riziculture et agriculture camarguaise, commerce et artisanat : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Arles, cité romaine classée UNESCO, capitale de la photographie et porte de la Camargue. Tourisme culturel, hôtellerie, événementiel photo, riziculture et agriculture camarguaise, commerce et artisanat : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Arles, cité romaine classée UNESCO, capitale de la photographie et porte de la Camargue. Tourisme culturel, hôtellerie, événementiel photo, riziculture et agriculture camarguaise, commerce et artisanat : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arles auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arles auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arles auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Arles auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tourisme culturel et patrimonial (arènes romaines, Rencontres de la photographie), l'hôtellerie, l'agriculture camarguaise, le commerce et l'artisanat d'art. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "patrimoine romain & photographie",
   ecosystemFr:
-    "Arles, plus vaste commune de France métropolitaine, conjugue un patrimoine romain classé UNESCO (arènes, théâtre antique), un rayonnement culturel mondial via les Rencontres de la photographie et la fondation LUMA, et une économie agricole camarguaise (riziculture, élevage taurin, sel). Le tissu de TPE et PME couvre le tourisme, l'hôtellerie, l'artisanat d'art, l'agroalimentaire et le commerce.",
+    "Arles, plus vaste commune de France métropolitaine, conjugue un patrimoine romain classé UNESCO (arènes, théâtre antique), un rayonnement culturel mondial via les Rencontres de la photographie et la fondation LUMA, et une économie agricole camarguaise (riziculture, élevage taurin, sel). Le tissu de PME et ETI couvre le tourisme, l'hôtellerie, l'artisanat d'art, l'agroalimentaire et le commerce.",
   ecosystemEn:
-    "Arles, plus vaste commune de France métropolitaine, conjugue un patrimoine romain classé UNESCO (arènes, théâtre antique), un rayonnement culturel mondial via les Rencontres de la photographie et la fondation LUMA, et une économie agricole camarguaise (riziculture, élevage taurin, sel). Le tissu de TPE et PME couvre le tourisme, l'hôtellerie, l'artisanat d'art, l'agroalimentaire et le commerce.",
+    "Arles, plus vaste commune de France métropolitaine, conjugue un patrimoine romain classé UNESCO (arènes, théâtre antique), un rayonnement culturel mondial via les Rencontres de la photographie et la fondation LUMA, et une économie agricole camarguaise (riziculture, élevage taurin, sel). Le tissu de PME et ETI couvre le tourisme, l'hôtellerie, l'artisanat d'art, l'agroalimentaire et le commerce.",
   distancesFr:
     "La gare d'Avignon TGV est à environ 35 km et Nîmes à environ 30 km. L'aéroport de Nîmes-Garons est proche, et l'A54 relie Arles à Marseille (environ 1h) et Montpellier.",
   distancesEn:
@@ -42,8 +42,8 @@ export const ARLES_COPY: VilleCopy = {
       en: "Implémentation IA à Arles : gestion des réservations et de la billetterie, agents conversationnels multilingues pour le tourisme, classification d'images pour l'événementiel photo, traçabilité agricole camarguaise et automatisation administrative.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Arles pour dirigeants de TPE et PME du tourisme, de la culture, de l'agriculture ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
-      en: "Coaching 1-to-1 à Arles pour dirigeants de TPE et PME du tourisme, de la culture, de l'agriculture ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      fr: "Coaching 1-to-1 à Arles pour dirigeants de PME et d'ETI du tourisme, de la culture, de l'agriculture ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      en: "Coaching 1-to-1 à Arles pour dirigeants de PME et d'ETI du tourisme, de la culture, de l'agriculture ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Arles : plateformes de réservation et de billetterie, portfolios et catalogues photo IA, vitrines multilingues pour le tourisme culturel et l'artisanat d'art.",
@@ -89,12 +89,6 @@ export const ARLES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou portfolio augmenté",
-            detail:
-              "Pour indépendants, photographes, artisans d'art et petits hôtels arlésiens : site vitrine ou portfolio multilingue avec galerie indexée par l'IA et prise de réservation, adapté à la saison des Rencontres et au tourisme patrimonial UNESCO.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou réservation sur mesure",
             detail:
@@ -128,7 +122,7 @@ export const ARLES_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises du port fluvial et des zones d'activités d'Arles ?",
-            a: "Oui. Le port fluvial d'Arles, seul du Rhône à recevoir des navires de 3000 tonnes, et la Z.I. Nord (200 entreprises sur 45 ha) ont des besoins de portails clients, de suivi documentaire douanier et logistique, et d'automatisation des devis. Nous développons des plateformes métier sur mesure pour ces TPE, PME et ETI.",
+            a: "Oui. Le port fluvial d'Arles, seul du Rhône à recevoir des navires de 3000 tonnes, et la Z.I. Nord (200 entreprises sur 45 ha) ont des besoins de portails clients, de suivi documentaire douanier et logistique, et d'automatisation des devis. Nous développons des plateformes métier sur mesure pour ces PME, ETI et grands groupes.",
           },
           {
             q: "Le site et les données restent-ils notre propriété ?",
@@ -174,12 +168,6 @@ export const ARLES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or augmented portfolio",
-            detail:
-              "For freelancers, photographers, art crafts and small Arles hotels: a multilingual showcase site or portfolio with an AI-indexed gallery and booking, geared to the Rencontres season and UNESCO heritage tourism.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom e-commerce or booking platform",
@@ -230,7 +218,7 @@ export const ARLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arles et en Camargue ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Arles et de son vaste territoire camarguais. Nous nous déplaçons sur site et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les PME et ETI d'Arles et de son vaste territoire camarguais. Nous nous déplaçons sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un hôtel ou un acteur culturel arlésien ?",
@@ -242,7 +230,7 @@ export const ARLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les exploitations agricoles camarguaises ?",
-      a: "Oui, riziculture, élevage taurin et production de sel : nous travaillons la traçabilité, la prévision de récolte, la classification de photos de cultures et la vente directe pour les TPE et PME agricoles de Camargue.",
+      a: "Oui, riziculture, élevage taurin et production de sel : nous travaillons la traçabilité, la prévision de récolte, la classification de photos de cultures et la vente directe pour les PME et ETI agricoles de Camargue.",
     },
     {
       q: "Vos solutions IA sont-elles conformes au RGPD ?",

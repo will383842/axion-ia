@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const RIVESALTES_COPY: VilleCopy = {
   pitchFr:
-    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA collabore avec toutes les structures locales de la vallée de l'Agly.",
+    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA collabore avec toutes les structures locales de la vallée de l'Agly.",
   pitchEn:
-    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA collabore avec toutes les structures locales de la vallée de l'Agly.",
+    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA collabore avec toutes les structures locales de la vallée de l'Agly.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : PME artisanales, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : PME artisanales, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
   seoHook: "viticulture négoce & zones d'activités",
   ecosystemFr:
-    "Rivesaltes est une cité viticole historique au nord de Perpignan, à la confluence de l'Agly et de la Têt. AOC Muscat de Rivesaltes et Rivesaltes (vins doux naturels). Zones d'activités économiques, proximité aéroport Perpignan-Rivesaltes, négoce viticole, TPE artisanat, commerces.",
+    "Rivesaltes est une cité viticole historique au nord de Perpignan, à la confluence de l'Agly et de la Têt. AOC Muscat de Rivesaltes et Rivesaltes (vins doux naturels). Zones d'activités économiques, proximité aéroport Perpignan-Rivesaltes, négoce viticole, PME de l'artisanat, commerces.",
   ecosystemEn:
-    "Rivesaltes est une cité viticole historique au nord de Perpignan, à la confluence de l'Agly et de la Têt. AOC Muscat de Rivesaltes et Rivesaltes (vins doux naturels). Zones d'activités économiques, proximité aéroport Perpignan-Rivesaltes, négoce viticole, TPE artisanat, commerces.",
+    "Rivesaltes est une cité viticole historique au nord de Perpignan, à la confluence de l'Agly et de la Têt. AOC Muscat de Rivesaltes et Rivesaltes (vins doux naturels). Zones d'activités économiques, proximité aéroport Perpignan-Rivesaltes, négoce viticole, PME de l'artisanat, commerces.",
   distancesFr:
     "Perpignan centre à 10 min. Aéroport Perpignan-Rivesaltes à 3 min. Gare TGV Perpignan à 12 min. Saint-Estève à 5 min. Narbonne à 50 min A9.",
   distancesEn:
@@ -24,14 +24,14 @@ export const RIVESALTES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture & négoce (AOC Muscat Rivesaltes)",
     "Zones d'activités économiques",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Logistique & transport",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rivesaltes : diagnostic adapté aux TPE artisans, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rivesaltes : diagnostic adapté aux TPE artisans, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rivesaltes : diagnostic adapté aux PME artisanales, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rivesaltes : diagnostic adapté aux PME artisanales, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rivesaltes : formats adaptés à la cave viticole, négoce, entrepôt, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const RIVESALTES_COPY: VilleCopy = {
       en: "Implémentation IA à Rivesaltes : gestion cave et stocks viticoles, classification qualité raisin, automatisation négoce export, optimisation logistique. Perpignan Méditerranée Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rivesaltes : sessions dans votre cave, négoce, bureau ou en visio. Dirigeants viticulteurs, négociants, artisans, commerçants, gérants TPE/PME rivesaltais.",
-      en: "Coaching 1-to-1 à Rivesaltes : sessions dans votre cave, négoce, bureau ou en visio. Dirigeants viticulteurs, négociants, artisans, commerçants, gérants TPE/PME rivesaltais.",
+      fr: "Coaching 1-to-1 à Rivesaltes : sessions dans votre cave, négoce, bureau ou en visio. Dirigeants viticulteurs, négociants, artisans, commerçants, gérants PME et ETI rivesaltais.",
+      en: "Coaching 1-to-1 à Rivesaltes : sessions dans votre cave, négoce, bureau ou en visio. Dirigeants viticulteurs, négociants, artisans, commerçants, gérants PME et ETI rivesaltais.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const RIVESALTES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les entreprises des zones d'activités ?",
-      a: "Oui, nous accompagnons les PME et TPE des zones d'activités de Rivesaltes : automatisation workflow, optimisation logistique, agents conversationnels B2B, CRM augmentés, facturation automatisée.",
+      a: "Oui, nous accompagnons les PME et ETI des zones d'activités de Rivesaltes : automatisation workflow, optimisation logistique, agents conversationnels B2B, CRM augmentés, facturation automatisée.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Rivesaltes, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce à Rivesaltes, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission à Rivesaltes ?",

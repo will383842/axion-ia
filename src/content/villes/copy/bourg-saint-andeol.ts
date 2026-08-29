@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
   pitchFr:
-    "Bourg-Saint-Andéol (07, Ardèche) compte 7 661 habitants (recensement 2023) sur la rive droite du Rhône, face à Pierrelatte. La commune appartient à la Communauté de communes Du Rhône aux Gorges de l'Ardèche. Son tissu économique repose sur la viticulture (côtes-du-rhône), la production d'huile d'olive, le tourisme patrimonial (église romane Saint-Andéol, sarcophage paléochrétien, réplique grotte Chauvet à proximité) et un réseau dense de TPE artisans BTP, commerçants et services aux entreprises. Axion-IA accompagne les dirigeants bourguésans dans le déploiement d'IA opérationnelle pragmatique.",
+    "Bourg-Saint-Andéol (07, Ardèche) compte 7 661 habitants (recensement 2023) sur la rive droite du Rhône, face à Pierrelatte. La commune appartient à la Communauté de communes Du Rhône aux Gorges de l'Ardèche. Son tissu économique repose sur la viticulture (côtes-du-rhône), la production d'huile d'olive, le tourisme patrimonial (église romane Saint-Andéol, sarcophage paléochrétien, réplique grotte Chauvet à proximité) et un réseau dense de PME du BTP, commerçants et services aux entreprises. Axion-IA accompagne les dirigeants bourguésans dans le déploiement d'IA opérationnelle pragmatique.",
   pitchEn:
-    "Bourg-Saint-Andéol (07, Ardèche) compte 7 661 habitants (recensement 2023) sur la rive droite du Rhône, face à Pierrelatte. La commune appartient à la Communauté de communes Du Rhône aux Gorges de l'Ardèche. Son tissu économique repose sur la viticulture (côtes-du-rhône), la production d'huile d'olive, le tourisme patrimonial (église romane Saint-Andéol, sarcophage paléochrétien, réplique grotte Chauvet à proximité) et un réseau dense de TPE artisans BTP, commerçants et services aux entreprises. Axion-IA accompagne les dirigeants bourguésans dans le déploiement d'IA opérationnelle pragmatique.",
+    "Bourg-Saint-Andéol (07, Ardèche) compte 7 661 habitants (recensement 2023) sur la rive droite du Rhône, face à Pierrelatte. La commune appartient à la Communauté de communes Du Rhône aux Gorges de l'Ardèche. Son tissu économique repose sur la viticulture (côtes-du-rhône), la production d'huile d'olive, le tourisme patrimonial (église romane Saint-Andéol, sarcophage paléochrétien, réplique grotte Chauvet à proximité) et un réseau dense de PME du BTP, commerçants et services aux entreprises. Axion-IA accompagne les dirigeants bourguésans dans le déploiement d'IA opérationnelle pragmatique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle basé en France qui intervient à Bourg-Saint-Andéol (07) et dans tout le sud-Ardèche. Nous accompagnons en priorité les TPE et PME locales (viticulteurs côtes-du-rhône, oléiculteurs, artisans BTP, hôteliers, commerçants, acteurs du tourisme patrimonial) avec du code custom — sans no-code — adapté à leur réalité de terrain. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site ou visio, conformité RGPD systématique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle basé en France qui intervient à Bourg-Saint-Andéol (07) et dans tout le sud-Ardèche. Nous accompagnons en priorité les PME et ETI locales (viticulteurs côtes-du-rhône, oléiculteurs, artisans BTP, hôteliers, commerçants, acteurs du tourisme patrimonial) avec du code custom — sans no-code — adapté à leur réalité de terrain. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site ou visio, conformité RGPD systématique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle basé en France qui intervient à Bourg-Saint-Andéol (07) et dans tout le sud-Ardèche. Nous accompagnons en priorité les TPE et PME locales (viticulteurs côtes-du-rhône, oléiculteurs, artisans BTP, hôteliers, commerçants, acteurs du tourisme patrimonial) avec du code custom — sans no-code — adapté à leur réalité de terrain. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site ou visio, conformité RGPD systématique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle basé en France qui intervient à Bourg-Saint-Andéol (07) et dans tout le sud-Ardèche. Nous accompagnons en priorité les PME et ETI locales (viticulteurs côtes-du-rhône, oléiculteurs, artisans BTP, hôteliers, commerçants, acteurs du tourisme patrimonial) avec du code custom — sans no-code — adapté à leur réalité de terrain. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site ou visio, conformité RGPD systématique.",
   seoHook: "viticulture, oléiculture & tourisme roman sud-ardèche",
   ecosystemFr:
-    "Bourg-Saint-Andéol s'inscrit dans la vallée du Rhône sud-Ardèche, à 43,74 km² et 2 600 h/an d'ensoleillement. L'économie locale combine viticulture côtes-du-rhône, oléiculture méditerranéenne, tourisme patrimonial (église romane XIIe, La Cascade pôle national arts du cirque) et un réseau de TPE artisanat BTP, commerces de proximité et services. Les communes limitrophes Pierrelatte, Saint-Marcel-d'Ardèche, Donzère, Gras, Bidon et Saint-Montan forment un bassin d'environ 30 000 habitants où Axion-IA peut intervenir.",
+    "Bourg-Saint-Andéol s'inscrit dans la vallée du Rhône sud-Ardèche, à 43,74 km² et 2 600 h/an d'ensoleillement. L'économie locale combine viticulture côtes-du-rhône, oléiculture méditerranéenne, tourisme patrimonial (église romane XIIe, La Cascade pôle national arts du cirque) et un réseau de PME du BTP, commerces de proximité et services. Les communes limitrophes Pierrelatte, Saint-Marcel-d'Ardèche, Donzère, Gras, Bidon et Saint-Montan forment un bassin d'environ 30 000 habitants où Axion-IA peut intervenir.",
   ecosystemEn:
-    "Bourg-Saint-Andéol s'inscrit dans la vallée du Rhône sud-Ardèche, à 43,74 km² et 2 600 h/an d'ensoleillement. L'économie locale combine viticulture côtes-du-rhône, oléiculture méditerranéenne, tourisme patrimonial (église romane XIIe, La Cascade pôle national arts du cirque) et un réseau de TPE artisanat BTP, commerces de proximité et services. Les communes limitrophes Pierrelatte, Saint-Marcel-d'Ardèche, Donzère, Gras, Bidon et Saint-Montan forment un bassin d'environ 30 000 habitants où Axion-IA peut intervenir.",
+    "Bourg-Saint-Andéol s'inscrit dans la vallée du Rhône sud-Ardèche, à 43,74 km² et 2 600 h/an d'ensoleillement. L'économie locale combine viticulture côtes-du-rhône, oléiculture méditerranéenne, tourisme patrimonial (église romane XIIe, La Cascade pôle national arts du cirque) et un réseau de PME du BTP, commerces de proximité et services. Les communes limitrophes Pierrelatte, Saint-Marcel-d'Ardèche, Donzère, Gras, Bidon et Saint-Montan forment un bassin d'environ 30 000 habitants où Axion-IA peut intervenir.",
   distancesFr: "Pierrelatte 15 min, Montélimar 30 min, Avignon 1h, Valence 1h, Lyon 2h.",
   distancesEn: "Pierrelatte 15 min, Montélimar 30 min, Avignon 1h, Valence 1h, Lyon 2h.",
   topSectorsNaf: [
@@ -31,8 +31,8 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-Saint-Andéol : diagnostic de terrain adapté aux TPE viticoles, oléicoles, artisans BTP et commerçants du sud-Ardèche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié sous 5 jours ouvrés.",
-      en: "Audit IA à Bourg-Saint-Andéol : diagnostic de terrain adapté aux TPE viticoles, oléicoles, artisans BTP et commerçants du sud-Ardèche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié sous 5 jours ouvrés.",
+      fr: "Audit IA à Bourg-Saint-Andéol : diagnostic de terrain adapté aux PME viticoles, oléicoles, artisans BTP et commerçants du sud-Ardèche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié sous 5 jours ouvrés.",
+      en: "Audit IA à Bourg-Saint-Andéol : diagnostic de terrain adapté aux PME viticoles, oléicoles, artisans BTP et commerçants du sud-Ardèche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié sous 5 jours ouvrés.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-Saint-Andéol : formats adaptés à votre exploitation viticole, votre moulin oléicole, votre chantier BTP ou votre commerce. Format atelier 1 journée pour vos équipes terrain.",
@@ -43,8 +43,8 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
       en: "Implémentation IA code custom à Bourg-Saint-Andéol : traçabilité parcellaire viticole, classification photos cultures, agents conversationnels visiteurs patrimoine roman multilingue, automatisation devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bourg-Saint-Andéol : sessions dans votre exploitation, votre bureau ou en visio. Format dédié aux gérants TPE viticoles, oléicoles, artisans BTP et commerçants bourguésans.",
-      en: "Coaching 1-to-1 à Bourg-Saint-Andéol : sessions dans votre exploitation, votre bureau ou en visio. Format dédié aux gérants TPE viticoles, oléicoles, artisans BTP et commerçants bourguésans.",
+      fr: "Coaching 1-to-1 à Bourg-Saint-Andéol : sessions dans votre exploitation, votre bureau ou en visio. Format dédié aux gérants PME viticoles, oléicoles, artisans BTP et commerçants bourguésans.",
+      en: "Coaching 1-to-1 à Bourg-Saint-Andéol : sessions dans votre exploitation, votre bureau ou en visio. Format dédié aux gérants PME viticoles, oléicoles, artisans BTP et commerçants bourguésans.",
     },
   },
   faqGeolocalisee: [
@@ -66,7 +66,7 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les viticulteurs et oléiculteurs du sud-Ardèche ?",
-      a: "Oui. Pour les TPE viticoles côtes-du-rhône et les moulins oléicoles, nous déployons traçabilité parcellaire, prédiction de récoltes, classification photos cultures, automatisation administrative vente directe et e-commerce circuits courts.",
+      a: "Oui. Pour les PME viticoles côtes-du-rhône et les moulins oléicoles, nous déployons traçabilité parcellaire, prédiction de récoltes, classification photos cultures, automatisation administrative vente directe et e-commerce circuits courts.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial bourguésan ?",

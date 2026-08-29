@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTARGIS_COPY: VilleCopy = {
   pitchFr:
-    "Montargis (45), sous-prefecture du Loiret surnommee la Venise du Gatinais pour ses canaux, est un pole economique du sud de l'Ile-de-France elargie. Tissu de TPE et PME du commerce, de l'agroalimentaire, des services aux entreprises, de l'artisanat et du tourisme fluvial. Axion-IA y intervient pour tous types d'activites.",
+    "Montargis (45), sous-prefecture du Loiret surnommee la Venise du Gatinais pour ses canaux, est un pole economique du sud de l'Ile-de-France elargie. Tissu de PME et ETI du commerce, de l'agroalimentaire, des services aux entreprises, de l'artisanat et du tourisme fluvial. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Montargis (45), sous-prefecture du Loiret surnommee la Venise du Gatinais pour ses canaux, est un pole economique du sud de l'Ile-de-France elargie. Tissu de TPE et PME du commerce, de l'agroalimentaire, des services aux entreprises, de l'artisanat et du tourisme fluvial. Axion-IA y intervient pour tous types d'activites.",
+    "Montargis (45), sous-prefecture du Loiret surnommee la Venise du Gatinais pour ses canaux, est un pole economique du sud de l'Ile-de-France elargie. Tissu de PME et ETI du commerce, de l'agroalimentaire, des services aux entreprises, de l'artisanat et du tourisme fluvial. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Montargis (45). Nous accompagnons PME et ETI : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Montargis (45). Nous accompagnons TPE et PME : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Montargis (45). Nous accompagnons PME et ETI : commercants, artisans, PME agroalimentaires, prestataires de services et acteurs du tourisme de cette sous-prefecture du Loiret. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Montargis est la sous-prefecture du Loiret, surnommee la Venise du Gatinais grace a ses 131 ponts et passerelles enjambant canaux et rivieres. Pole economique du Gatinais, son tissu repose sur le commerce de centre-ville, l'agroalimentaire (celebres pralines de Montargis), les services aux entreprises, l'artisanat et le tourisme fluvial. Communes voisines : Amilly, Chalette-sur-Loing, Villemandeur, Pannes, Conflans-sur-Loing.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const MONTARGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Montargis : diagnostic adapte aux TPE commerces, PME agroalimentaires, artisans et prestataires de services du Gatinais. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Montargis : diagnostic adapte aux TPE commerces, PME agroalimentaires, artisans et prestataires de services du Gatinais. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Montargis : diagnostic adapte aux PME du commerce, PME agroalimentaires, artisans et prestataires de services du Gatinais. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Montargis : diagnostic adapte aux PME du commerce, PME agroalimentaires, artisans et prestataires de services du Gatinais. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Montargis : formats adaptes aux commerces de centre-ville, entreprises agroalimentaires, structures touristiques et PME de services du bassin montargois.",
       en: "Interventions IA sur site a Montargis : formats adaptes aux commerces de centre-ville, entreprises agroalimentaires, structures touristiques et PME de services du bassin montargois.",
     },
     implementation: {
-      fr: "Implementation IA a Montargis : automatisation gestion commerciale, optimisation chaine agroalimentaire, agents conversationnels tourisme, CRM et outils de fidelisation pour TPE et PME du Gatinais.",
-      en: "Implementation IA a Montargis : automatisation gestion commerciale, optimisation chaine agroalimentaire, agents conversationnels tourisme, CRM et outils de fidelisation pour TPE et PME du Gatinais.",
+      fr: "Implementation IA a Montargis : automatisation gestion commerciale, optimisation chaine agroalimentaire, agents conversationnels tourisme, CRM et outils de fidelisation pour PME et ETI du Gatinais.",
+      en: "Implementation IA a Montargis : automatisation gestion commerciale, optimisation chaine agroalimentaire, agents conversationnels tourisme, CRM et outils de fidelisation pour PME et ETI du Gatinais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Montargis : sessions dans vos locaux ou en visio. Dirigeants TPE, gerants commerces, artisans et PME de services du bassin montargois.",
-      en: "Coaching 1-to-1 a Montargis : sessions dans vos locaux ou en visio. Dirigeants TPE, gerants commerces, artisans et PME de services du bassin montargois.",
+      fr: "Coaching 1-to-1 a Montargis : sessions dans vos locaux ou en visio. Dirigeants PME, gerants commerces, artisans et PME de services du bassin montargois.",
+      en: "Coaching 1-to-1 a Montargis : sessions dans vos locaux ou en visio. Dirigeants PME, gerants commerces, artisans et PME de services du bassin montargois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MONTARGIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires du Gatinais : optimisation chaine de production, tracabilite, prevision de la demande, automatisation qualite et gestion des stocks. Formats adaptes demi-journee ou journee.",
     },
     {
-      q: "Proposez-vous des formations IA pour les TPE a Montargis ?",
+      q: "Proposez-vous des formations IA pour les PME a Montargis ?",
       a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Montargis a partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux, en centre-ville ou en visio, adaptees a votre secteur d'activite.",
     },
     {

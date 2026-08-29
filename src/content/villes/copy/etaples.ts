@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ETAPLES_COPY: VilleCopy = {
   pitchFr:
-    "Étaples (62), port de pêche historique de la Côte d'Opale dans le Pas-de-Calais, mêle activités maritimes, tourisme côtier, TPE artisanales et PME de services. Axion-IA y intervient pour tous types d'activités de l'estuaire de la Canche.",
+    "Étaples (62), port de pêche historique de la Côte d'Opale dans le Pas-de-Calais, mêle activités maritimes, tourisme côtier, PME artisanales et PME de services. Axion-IA y intervient pour tous types d'activités de l'estuaire de la Canche.",
   pitchEn:
-    "Étaples (62), port de pêche historique de la Côte d'Opale dans le Pas-de-Calais, mêle activités maritimes, tourisme côtier, TPE artisanales et PME de services. Axion-IA y intervient pour tous types d'activités de l'estuaire de la Canche.",
+    "Étaples (62), port de pêche historique de la Côte d'Opale dans le Pas-de-Calais, mêle activités maritimes, tourisme côtier, PME artisanales et PME de services. Axion-IA y intervient pour tous types d'activités de l'estuaire de la Canche.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Étaples (62). Nous accompagnons TPE de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Étaples (62). Nous accompagnons PME de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Étaples (62). Nous accompagnons TPE de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Étaples (62). Nous accompagnons PME de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "côte d'opale",
   ecosystemFr:
-    "Étaples est un port de pêche artisanale actif sur l'estuaire de la Canche, face au Touquet-Paris-Plage. Économie mêlant filière halieutique, tourisme côtier saisonnier, TPE artisanales, commerces de proximité et professions libérales. La proximité du Touquet dynamise les activités de services.",
+    "Étaples est un port de pêche artisanale actif sur l'estuaire de la Canche, face au Touquet-Paris-Plage. Économie mêlant filière halieutique, tourisme côtier saisonnier, PME artisanales, commerces de proximité et professions libérales. La proximité du Touquet dynamise les activités de services.",
   ecosystemEn:
-    "Étaples est un port de pêche artisanale actif sur l'estuaire de la Canche, face au Touquet-Paris-Plage. Économie mêlant filière halieutique, tourisme côtier saisonnier, TPE artisanales, commerces de proximité et professions libérales. La proximité du Touquet dynamise les activités de services.",
+    "Étaples est un port de pêche artisanale actif sur l'estuaire de la Canche, face au Touquet-Paris-Plage. Économie mêlant filière halieutique, tourisme côtier saisonnier, PME artisanales, commerces de proximité et professions libérales. La proximité du Touquet dynamise les activités de services.",
   distancesFr:
     "Le Touquet à 5 min. Boulogne-sur-Mer à 25 min A16. Gare d'Étaples-Le Touquet (TER vers Lille, Paris-Nord direct en saison). Aéroport Lille-Lesquin à 1h30. Calais à 45 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const ETAPLES_COPY: VilleCopy = {
     "Pêche & filière halieutique",
     "Tourisme & hôtellerie-restauration",
     "Commerce de détail & artisanat",
-    "TPE services aux particuliers",
+    "PME services aux particuliers",
     "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Étaples : diagnostic adapté aux TPE de la pêche, du tourisme côtier, artisans et PME de services de la Côte d'Opale. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Étaples : diagnostic adapté aux TPE de la pêche, du tourisme côtier, artisans et PME de services de la Côte d'Opale. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Étaples : diagnostic adapté aux PME de la pêche, du tourisme côtier, artisans et PME de services de la Côte d'Opale. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Étaples : diagnostic adapté aux PME de la pêche, du tourisme côtier, artisans et PME de services de la Côte d'Opale. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Étaples : formations pratiques adaptées au commerce, à la filière pêche ou au tourisme. Équipes autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const ETAPLES_COPY: VilleCopy = {
       en: "Implémentation IA à Étaples : automatisation réservations touristiques, gestion stocks marée, agents conversationnels clients, optimisation planning saisonnier.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Étaples : sessions adaptées dirigeants TPE pêche, tourisme, gérants commerces et professions libérales de la Côte d'Opale.",
-      en: "Coaching 1-to-1 à Étaples : sessions adaptées dirigeants TPE pêche, tourisme, gérants commerces et professions libérales de la Côte d'Opale.",
+      fr: "Coaching 1-to-1 à Étaples : sessions adaptées dirigeants PME pêche, tourisme, gérants commerces et professions libérales de la Côte d'Opale.",
+      en: "Coaching 1-to-1 à Étaples : sessions adaptées dirigeants PME pêche, tourisme, gérants commerces et professions libérales de la Côte d'Opale.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const ETAPLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Étaples  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME étaploises. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME et ETI étaploises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les entreprises du tourisme à Étaples ?",

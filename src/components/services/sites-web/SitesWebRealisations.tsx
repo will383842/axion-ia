@@ -4,7 +4,7 @@
  *
  * Fusion 2026-06-01 (Will) — calqué sur `AuditRealisations` (template /audit).
  * Absorbe les anciens « scénarios » texte (SaaS B2B / app existante / portail)
- * et les enrichit en cartes visuelles + métrique. Couvre TPE / PME / ETI, sans
+ * et les enrichit en cartes visuelles + métrique. Couvre PME / ETI / grands groupes, sans
  * nom de marque : profil de plateforme + secteur + résultat mesurable.
  *
  * Marquee 100 % CSS (anim `caseScrollX`, track dupliqué, pause au survol,
@@ -16,7 +16,7 @@ import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import { Container } from "@/components/layout/Container";
 
-type Segment = "TPE" | "PME" | "ETI";
+type Segment = "PME" | "ETI";
 
 interface Realisation {
   readonly segment: Segment;
@@ -34,7 +34,6 @@ interface Realisation {
 }
 
 const SEGMENT_LABEL: Record<Segment, { fr: string; en: string }> = {
-  TPE: { fr: "TPE", en: "Small business" },
   PME: { fr: "PME", en: "SME" },
   ETI: { fr: "ETI & grands comptes", en: "Mid-cap & key accounts" },
 };
@@ -58,7 +57,7 @@ const REALISATIONS: ReadonlyArray<Realisation> = [
     imageAltEn: "AI-native B2B SaaS platform with AI-automated pipeline and scoring",
   },
   {
-    segment: "TPE",
+    segment: "PME",
     sectorFr: "Site vitrine & service client",
     sectorEn: "Showcase site & customer service",
     titleFr: "Chatbot RAG greffé sur l'existant",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FLEURANCE_COPY: VilleCopy = {
   pitchFr:
-    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y travaille avec les organisations du territoire.",
+    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de PME de l'artisanat et du commerce, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y travaille avec les organisations du territoire.",
+    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de PME de l'artisanat et du commerce, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleurance (32). Nous accompagnons TPE et PME de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleurance (32). Nous accompagnons PME et ETI de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleurance (32). Nous accompagnons TPE et PME de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fleurance (32). Nous accompagnons PME et ETI de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit sur place sur mesure.",
   ecosystemFr:
     "Fleurance est une bastide du XIIIe siècle au cœur de la Lomagne gersoise, célèbre pour son festival d'astronomie estival. Son économie s'appuie sur l'agriculture (céréales, tournesol, élevage), l'agroalimentaire, le commerce de centre-bourg, l'artisanat, les professions libérales et le tourisme culturel et de nature. Laboratoire pharmaceutique et cosmétique (nutrition bio) également présent.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const FLEURANCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fleurance : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la bastide lomagnolle. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Fleurance : diagnostic adapté aux TPE/PME agricoles, agroalimentaires, commerçants et artisans de la bastide lomagnolle. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Fleurance : diagnostic adapté aux PME et ETI agricoles, agroalimentaires, commerçants et artisans de la bastide lomagnolle. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Fleurance : diagnostic adapté aux PME et ETI agricoles, agroalimentaires, commerçants et artisans de la bastide lomagnolle. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fleurance : formats adaptés à l'exploitation agricole, au commerce, au laboratoire ou à l'entreprise agroalimentaire. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const FLEURANCE_COPY: VilleCopy = {
       en: "Implémentation IA à Fleurance : automatisation traçabilité parcelles, gestion stocks agricoles, CRM clients, facturation OCR, optimisation logistique récoltes et plannings.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fleurance : sessions sur site ou en visio pour dirigeants TPE/PME de la Lomagne souhaitant maîtriser l'IA appliquée à leur métier agricole, artisanal ou commercial.",
-      en: "Coaching 1-to-1 à Fleurance : sessions sur site ou en visio pour dirigeants TPE/PME de la Lomagne souhaitant maîtriser l'IA appliquée à leur métier agricole, artisanal ou commercial.",
+      fr: "Coaching 1-to-1 à Fleurance : sessions sur site ou en visio pour dirigeants de PME et d'ETI de la Lomagne souhaitant maîtriser l'IA appliquée à leur métier agricole, artisanal ou commercial.",
+      en: "Coaching 1-to-1 à Fleurance : sessions sur site ou en visio pour dirigeants de PME et d'ETI de la Lomagne souhaitant maîtriser l'IA appliquée à leur métier agricole, artisanal ou commercial.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const FLEURANCE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fleurance  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Fleurance : agriculteurs, artisans, commerçants, laboratoires et professionnels du tourisme culturel. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Fleurance : agriculteurs, artisans, commerçants, laboratoires et professionnels du tourisme culturel. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles de Fleurance ?",

@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const MAUBEUGE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Maubeuge, ville-porte du parc naturel régional de l'Avesnois et héritière d'une longue tradition métallurgique et de machine-outil. Les zones d'activités du Champ de l'Abbesse et de la Petite Savate rassemblent 36 entreprises industrielles, à 7 km de la frontière belge.",
+    "Axion-IA accompagne les PME et ETI de Maubeuge, ville-porte du parc naturel régional de l'Avesnois et héritière d'une longue tradition métallurgique et de machine-outil. Les zones d'activités du Champ de l'Abbesse et de la Petite Savate rassemblent 36 entreprises industrielles, à 7 km de la frontière belge.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Maubeuge, ville-porte du parc naturel régional de l'Avesnois et héritière d'une longue tradition métallurgique et de machine-outil. Les zones d'activités du Champ de l'Abbesse et de la Petite Savate rassemblent 36 entreprises industrielles, à 7 km de la frontière belge.",
+    "Axion-IA accompagne les PME et ETI de Maubeuge, ville-porte du parc naturel régional de l'Avesnois et héritière d'une longue tradition métallurgique et de machine-outil. Les zones d'activités du Champ de l'Abbesse et de la Petite Savate rassemblent 36 entreprises industrielles, à 7 km de la frontière belge.",
   directAnswerFr:
-    "À Maubeuge, Axion-IA aide les TPE, PME et ETI à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'héritage métallurgique, la mécanique de précision et la position transfrontalière vers la Belgique structurent un tissu industriel concret. Nous y mobilisons des compétences techniques formées à l'IUT informatique de Douzies (campus de Valenciennes), avec des tarifs publics et un code custom hébergé en Europe.",
+    "À Maubeuge, Axion-IA aide les PME, ETI et grands groupes à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'héritage métallurgique, la mécanique de précision et la position transfrontalière vers la Belgique structurent un tissu industriel concret. Nous y mobilisons des compétences techniques formées à l'IUT informatique de Douzies (campus de Valenciennes), avec des tarifs publics et un code custom hébergé en Europe.",
   directAnswerEn:
-    "À Maubeuge, Axion-IA aide les TPE, PME et ETI à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'héritage métallurgique, la mécanique de précision et la position transfrontalière vers la Belgique structurent un tissu industriel concret. Nous y mobilisons des compétences techniques formées à l'IUT informatique de Douzies (campus de Valenciennes), avec des tarifs publics et un code custom hébergé en Europe.",
+    "À Maubeuge, Axion-IA aide les PME, ETI et grands groupes à intégrer l'IA sur leurs processus métiers : audits sur site, automatisations administratives, formations dirigeants. L'héritage métallurgique, la mécanique de précision et la position transfrontalière vers la Belgique structurent un tissu industriel concret. Nous y mobilisons des compétences techniques formées à l'IUT informatique de Douzies (campus de Valenciennes), avec des tarifs publics et un code custom hébergé en Europe.",
   seoHook: "métallurgie & machine-outil transfrontalière",
   ecosystemFr:
     "Maubeuge forme avec 22 communes une unité urbaine d'environ 108 000 habitants, centre intermédiaire d'un bassin d'emploi de 65 communes. Les zones du Champ de l'Abbesse et de la Petite Savate accueillent 36 entreprises industrielles, tandis que le quartier de Douzies héberge un campus universitaire rattaché à Valenciennes (IUT informatique, école d'ingénieurs).",
@@ -32,26 +32,26 @@ export const MAUBEUGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Maubeuge pour une TPE ou PME industrielle des zones Champ de l'Abbesse et Petite Savate — identifier les gisements d'automatisation côté production et administration.",
-      en: "Réaliser un audit IA à Maubeuge pour une TPE ou PME industrielle des zones Champ de l'Abbesse et Petite Savate — identifier les gisements d'automatisation côté production et administration.",
+      fr: "Réaliser un audit IA à Maubeuge pour une PME ou ETI industrielle des zones Champ de l'Abbesse et Petite Savate — identifier les gisements d'automatisation côté production et administration.",
+      en: "Réaliser un audit IA à Maubeuge pour une PME ou ETI industrielle des zones Champ de l'Abbesse et Petite Savate — identifier les gisements d'automatisation côté production et administration.",
     },
     interventions: {
-      fr: "Intervenir à Maubeuge et dans les communes voisines (Louvroil, Feignies, Rousies, Assevent) pour automatiser saisies, devis et reportings des TPE-PME industrielles et de services.",
-      en: "Intervenir à Maubeuge et dans les communes voisines (Louvroil, Feignies, Rousies, Assevent) pour automatiser saisies, devis et reportings des TPE-PME industrielles et de services.",
+      fr: "Intervenir à Maubeuge et dans les communes voisines (Louvroil, Feignies, Rousies, Assevent) pour automatiser saisies, devis et reportings des PME et ETI industrielles et de services.",
+      en: "Intervenir à Maubeuge et dans les communes voisines (Louvroil, Feignies, Rousies, Assevent) pour automatiser saisies, devis et reportings des PME et ETI industrielles et de services.",
     },
     implementation: {
       fr: "Implémenter des solutions IA sur mesure à Maubeuge, code custom intégré aux ERP et outils métiers, en mobilisant les compétences formées au campus de Douzies.",
       en: "Implémenter des solutions IA sur mesure à Maubeuge, code custom intégré aux ERP et outils métiers, en mobilisant les compétences formées au campus de Douzies.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de Maubeuge pour cadrer une stratégie IA pragmatique adaptée au tissu industriel et transfrontalier local.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de Maubeuge pour cadrer une stratégie IA pragmatique adaptée au tissu industriel et transfrontalier local.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Maubeuge pour cadrer une stratégie IA pragmatique adaptée au tissu industriel et transfrontalier local.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Maubeuge pour cadrer une stratégie IA pragmatique adaptée au tissu industriel et transfrontalier local.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et déploie des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Maubeuge et du Val de Sambre, un bassin structuré par l'automobile électrique de la Manufacture Renault de Maubeuge (MCA, cluster ElectriCity) et la métallurgie de tubes sans soudure de Vallourec. Nous travaillons aussi bien pour les équipementiers et sous-traitants du parc d'activités de Grévaux-les-Guides (Framatome, DAHER Technologies, Sumitomo Electric Wiring Systems Europe) que pour les TPE-PME de services, de commerce et d'industrie de l'agglomération : portails clients, configurateurs de devis, e-commerce B2B multi-CMS, chatbots RAG sur documentation technique — code custom, UX/UI et mobile soignés, hébergement en Union européenne conforme RGPD, zéro verrou éditeur.",
+        hero: "Axion-IA conçoit et déploie des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Maubeuge et du Val de Sambre, un bassin structuré par l'automobile électrique de la Manufacture Renault de Maubeuge (MCA, cluster ElectriCity) et la métallurgie de tubes sans soudure de Vallourec. Nous travaillons aussi bien pour les équipementiers et sous-traitants du parc d'activités de Grévaux-les-Guides (Framatome, DAHER Technologies, Sumitomo Electric Wiring Systems Europe) que pour les PME et ETI de services, de commerce et d'industrie de l'agglomération : portails clients, configurateurs de devis, e-commerce B2B multi-CMS, chatbots RAG sur documentation technique — code custom, UX/UI et mobile soignés, hébergement en Union européenne conforme RGPD, zéro verrou éditeur.",
         whyHere: [
           "La supply-chain automobile autour de la Manufacture Renault de Maubeuge (Kangoo E-TECH Electric, R4 E-Tech) génère un besoin réel de portails fournisseurs, de configurateurs de pièces et de suivi de commandes en ligne pour les sous-traitants de rang 1 et 2 du Val de Sambre.",
           "La filière métallurgie-énergie (Vallourec et ses tubes sans soudure à Aulnoye-Aymeries, Interfit, Cerec à Recquignies) et le nucléaire (Framatome, SRMS sur Grévaux-les-Guides) imposent des plateformes capables d'indexer de la documentation technique dense : nous y déployons du search sémantique et des chatbots RAG sur normes, fiches matières et procédures.",
@@ -86,12 +86,6 @@ export const MAUBEUGE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté IA",
-            detail:
-              "Pour artisans, commerces et petites structures de Maubeuge et de l'Avesnois : site vitrine ou boutique multi-CMS, formulaire de devis intelligent, chatbot FAQ. UX/UI mobile-first, hébergement UE RGPD.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce B2B sur mesure",
@@ -173,12 +167,6 @@ export const MAUBEUGE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-augmented brochure or essential e-commerce site",
-            detail:
-              "For craftspeople, retailers and small structures in Maubeuge and the Avesnois: brochure site or multi-CMS shop, smart quote form, FAQ chatbot. Mobile-first UX/UI, EU GDPR hosting.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business platform or B2B e-commerce",
             detail:
@@ -243,12 +231,12 @@ export const MAUBEUGE_COPY: VilleCopy = {
       a: "Oui, toutes nos interventions à Maubeuge respectent strictement le RGPD : code custom hébergé en Europe, traitements documentés et registre fourni au client.",
     },
     {
-      q: "Axion-IA travaille-t-elle avec les TPE industrielles de Maubeuge ?",
-      a: "Oui, la métallurgie, la mécanique et la fabrication de machines sont des terrains prioritaires. Nous automatisons devis, suivi production et reportings qualité pour les TPE et PME industrielles.",
+      q: "Axion-IA travaille-t-elle avec les PME industrielles de Maubeuge ?",
+      a: "Oui, la métallurgie, la mécanique et la fabrication de machines sont des terrains prioritaires. Nous automatisons devis, suivi production et reportings qualité pour les PME et ETI industrielles.",
     },
     {
       q: "Proposez-vous des formations IA pour les dirigeants à Maubeuge ?",
-      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de TPE et PME de Maubeuge, à partir de {{price:intervention-dirigeants|flat}}, pour bâtir une feuille de route IA concrète.",
+      a: "Oui, nous proposons des sessions un-à-un pour dirigeants de PME et d'ETI de Maubeuge, à partir de {{price:intervention-dirigeants|flat}}, pour bâtir une feuille de route IA concrète.",
     },
   ],
 };

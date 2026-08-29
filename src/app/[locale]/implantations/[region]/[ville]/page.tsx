@@ -12,7 +12,7 @@
  *
  * Anti-doorway HCU 2024 : villes sans `ville.copy` → stub `noindex` + absence
  * du sitemap (`buildImplantationsSitemap` filtre sur `getIndexableVilles`).
- * Wording mentionne explicitement TPE / PME / ETI / grandes entreprises.
+ * Wording mentionne explicitement PME / ETI / grands groupes.
  */
 
 import type { Metadata } from "next";
@@ -244,7 +244,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       slug: "interventions",
       labelFr: "Formations et interventions sur site",
       labelEn: "On-site interventions",
-      descFr: `Ateliers et formations IA sur site à ${v} — demi-journée à 2 jours, sur vos données réelles, avec vos équipes. PME, ETI, grands groupes et TPE.`,
+      descFr: `Ateliers et formations IA sur site à ${v} — demi-journée à 2 jours, sur vos données réelles, avec vos équipes. PME, ETI et grands groupes.`,
       descEn: `On-site AI workshops in ${v} — half-day to 2 days, on your real data, with your teams. Micro-businesses, SMBs, mid-market, large enterprises.`,
       mainServiceHref: "/formations",
     },
@@ -260,7 +260,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       slug: "audits",
       labelFr: "Audit IA",
       labelEn: "AI Audit",
-      descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). PME, ETI, grands groupes et TPE.`,
+      descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). PME, ETI et grands groupes.`,
       descEn: `AI audit in ${v} — 3 costed projects, 6-month roadmap, same-day result (Flash) or 2-4 weeks (Strategic). Micro-businesses, SMBs, mid-market, large enterprises.`,
       mainServiceHref: "/audit",
     },
@@ -753,7 +753,7 @@ export default async function VilleHubPage({ params }: Props) {
             </h2>
             <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-base leading-relaxed sm:text-lg">
               {isFr
-                ? "Audit IA, formations et interventions sur site, implémentation, accompagnement 1-to-1 dirigeants, sites web et plateformes SaaS IA. Adapté aux PME, ETI, grands groupes et TPE."
+                ? "Audit IA, formations et interventions sur site, implémentation, accompagnement 1-to-1 dirigeants, sites web et plateformes SaaS IA. Adapté aux PME, ETI et grands groupes."
                 : "Audit, on-site engagement, implementation, 1-to-1 coaching, AI-augmented websites. Adapted to micro-businesses, SMBs, mid-market and large enterprises."}
             </p>
           </div>

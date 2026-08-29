@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CONDOM_COPY: VilleCopy = {
   pitchFr:
-    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA accompagne tout le tissu professionnel local.",
+    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de PME viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA accompagne tout le tissu professionnel local.",
+    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de PME viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condom (32). Nous accompagnons TPE et PME de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condom (32). Nous accompagnons PME et ETI de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condom (32). Nous accompagnons TPE et PME de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Condom (32). Nous accompagnons PME et ETI de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit sur place sur mesure.",
   ecosystemFr:
     "Condom est la capitale de l'Armagnac, sous-préfecture du Gers baignée par la Baïse. Son économie s'appuie sur la viticulture et le négoce d'Armagnac, l'agroalimentaire (foie gras, conserves), le tourisme patrimonial et fluvial (navigation sur la Baïse), les commerces de centre-bourg, l'artisanat et les professions libérales. Cathédrale Saint-Pierre classée.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CONDOM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Condom : diagnostic adapté aux TPE/PME viticoles, agroalimentaires, touristiques et commerçantes de la capitale de l'Armagnac. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Condom : diagnostic adapté aux TPE/PME viticoles, agroalimentaires, touristiques et commerçantes de la capitale de l'Armagnac. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Condom : diagnostic adapté aux PME et ETI viticoles, agroalimentaires, touristiques et commerçantes de la capitale de l'Armagnac. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Condom : diagnostic adapté aux PME et ETI viticoles, agroalimentaires, touristiques et commerçantes de la capitale de l'Armagnac. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Condom : formats adaptés au domaine viticole, au négoce, à l'entreprise agroalimentaire ou au commerce. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const CONDOM_COPY: VilleCopy = {
       en: "Implémentation IA à Condom : automatisation traçabilité lots Armagnac, gestion stocks chai, CRM négoce, réservation tourisme fluvial, facturation OCR et optimisation logistique.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Condom : sessions sur site ou en visio pour dirigeants TPE/PME de l'Armagnac souhaitant maîtriser l'IA appliquée à leur métier viticole, agroalimentaire ou touristique.",
-      en: "Coaching 1-to-1 à Condom : sessions sur site ou en visio pour dirigeants TPE/PME de l'Armagnac souhaitant maîtriser l'IA appliquée à leur métier viticole, agroalimentaire ou touristique.",
+      fr: "Coaching 1-to-1 à Condom : sessions sur site ou en visio pour dirigeants de PME et d'ETI de l'Armagnac souhaitant maîtriser l'IA appliquée à leur métier viticole, agroalimentaire ou touristique.",
+      en: "Coaching 1-to-1 à Condom : sessions sur site ou en visio pour dirigeants de PME et d'ETI de l'Armagnac souhaitant maîtriser l'IA appliquée à leur métier viticole, agroalimentaire ou touristique.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CONDOM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Condom  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Condom : domaines viticoles, négoce Armagnac, agroalimentaire, commerces et professionnels du tourisme. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Condom : domaines viticoles, négoce Armagnac, agroalimentaire, commerces et professionnels du tourisme. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Quels services IA pour les domaines viticoles de Condom ?",

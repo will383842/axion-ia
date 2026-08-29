@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const TARNOS_COPY: VilleCopy = {
   pitchFr:
-    "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, TPE artisans, PME sous-traitance industrielle, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, PME artisanales, PME sous-traitance industrielle, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, TPE artisans, PME sous-traitance industrielle, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, PME artisanales, PME sous-traitance industrielle, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarnos (40). Nous accompagnons TPE et PME de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarnos (40). Nous accompagnons PME et ETI de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarnos (40). Nous accompagnons TPE et PME de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarnos (40). Nous accompagnons PME et ETI de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
   seoHook: "industrie, logistique & agglo Bayonne",
   ecosystemFr:
-    "Tarnos est une commune industrielle historique du sud des Landes, intégrée à l'agglomération Pays Basque (ex-agglomération Bayonne). Zone industrielle importante : chimie, métallurgie, logistique portuaire (proximité port de Bayonne), sous-traitance aéronautique. Tissu TPE artisans BTP, PME services industriels, commerces. Accès A63, proche frontière espagnole.",
+    "Tarnos est une commune industrielle historique du sud des Landes, intégrée à l'agglomération Pays Basque (ex-agglomération Bayonne). Zone industrielle importante : chimie, métallurgie, logistique portuaire (proximité port de Bayonne), sous-traitance aéronautique. Tissu PME du BTP, PME services industriels, commerces. Accès A63, proche frontière espagnole.",
   ecosystemEn:
-    "Tarnos est une commune industrielle historique du sud des Landes, intégrée à l'agglomération Pays Basque (ex-agglomération Bayonne). Zone industrielle importante : chimie, métallurgie, logistique portuaire (proximité port de Bayonne), sous-traitance aéronautique. Tissu TPE artisans BTP, PME services industriels, commerces. Accès A63, proche frontière espagnole.",
+    "Tarnos est une commune industrielle historique du sud des Landes, intégrée à l'agglomération Pays Basque (ex-agglomération Bayonne). Zone industrielle importante : chimie, métallurgie, logistique portuaire (proximité port de Bayonne), sous-traitance aéronautique. Tissu PME du BTP, PME services industriels, commerces. Accès A63, proche frontière espagnole.",
   distancesFr:
     "Bayonne centre à 10 min. Biarritz à 20 min. Dax à 35 min par A63. Bordeaux à 1h40 par A63. San Sebastián (Espagne) à 45 min par A63. Aéroport Biarritz-Pays Basque à 20 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const TARNOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, PME du BTP et du commerce du sud des Landes. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, PME du BTP et du commerce du sud des Landes. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tarnos : formations adaptées aux ateliers industriels, entrepôts logistiques, TPE artisans et commerces. Vos équipes repartent autonomes sur les outils IA configurés métier.",
-      en: "Interventions IA sur site à Tarnos : formations adaptées aux ateliers industriels, entrepôts logistiques, TPE artisans et commerces. Vos équipes repartent autonomes sur les outils IA configurés métier.",
+      fr: "Interventions IA sur site à Tarnos : formations adaptées aux ateliers industriels, entrepôts logistiques, PME de l'artisanat et du commerce. Vos équipes repartent autonomes sur les outils IA configurés métier.",
+      en: "Interventions IA sur site à Tarnos : formations adaptées aux ateliers industriels, entrepôts logistiques, PME de l'artisanat et du commerce. Vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
       fr: "Implémentation IA à Tarnos : prédiction maintenance industrielle, contrôle qualité par vision, optimisation flux logistiques, automatisation documents production, classification incidents QHSE. Adapté industrie et logistique.",
       en: "Implémentation IA à Tarnos : prédiction maintenance industrielle, contrôle qualité par vision, optimisation flux logistiques, automatisation documents production, classification incidents QHSE. Adapté industrie et logistique.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tarnos : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants industriels, responsables logistique, gérants TPE/PME, artisans BTP du sud Landes et agglo Bayonne.",
-      en: "Coaching 1-to-1 à Tarnos : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants industriels, responsables logistique, gérants TPE/PME, artisans BTP du sud Landes et agglo Bayonne.",
+      fr: "Coaching 1-to-1 à Tarnos : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants industriels, responsables logistique, gérants PME et ETI, artisans BTP du sud Landes et agglo Bayonne.",
+      en: "Coaching 1-to-1 à Tarnos : sessions dans votre atelier, entrepôt, bureau ou en visio. Dirigeants industriels, responsables logistique, gérants PME et ETI, artisans BTP du sud Landes et agglo Bayonne.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const TARNOS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises logistiques de Tarnos et du port de Bayonne : optimisation tournées, prédiction volumes, automatisation documents douaniers, gestion stocks prédictive, classification incidents transport.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants de Tarnos ?",
-      a: "Pour les TPE artisans BTP et commerçants à Tarnos, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation 1 journée. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
+      q: "Quels services pour les PME de l'artisanat et du commerce de Tarnos ?",
+      a: "Pour les PME du BTP et du commerce à Tarnos, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation 1 journée. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatisée.",
     },
     {
       q: "Comment se passe une mission à Tarnos depuis Bayonne ?",

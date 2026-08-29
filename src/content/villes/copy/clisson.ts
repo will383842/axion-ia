@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CLISSON_COPY: VilleCopy = {
   pitchFr:
-    "Clisson (44), cité de caractère du vignoble nantais en Loire-Atlantique, connue pour le Hellfest et son château médiéval. Tissu TPE viticulteurs et artisans, PME tourisme et événementiel, commerces de centre-bourg, restauration, professions libérales. Axion-IA y travaille avec les organisations du territoire du vignoble nantais.",
+    "Clisson (44), cité de caractère du vignoble nantais en Loire-Atlantique, connue pour le Hellfest et son château médiéval. Tissu PME viticulteurs et artisans, PME tourisme et événementiel, commerces de centre-bourg, restauration, professions libérales. Axion-IA y travaille avec les organisations du territoire du vignoble nantais.",
   pitchEn:
-    "Clisson (44), cité de caractère du vignoble nantais en Loire-Atlantique, connue pour le Hellfest et son château médiéval. Tissu TPE viticulteurs et artisans, PME tourisme et événementiel, commerces de centre-bourg, restauration, professions libérales. Axion-IA y travaille avec les organisations du territoire du vignoble nantais.",
+    "Clisson (44), cité de caractère du vignoble nantais en Loire-Atlantique, connue pour le Hellfest et son château médiéval. Tissu PME viticulteurs et artisans, PME tourisme et événementiel, commerces de centre-bourg, restauration, professions libérales. Axion-IA y travaille avec les organisations du territoire du vignoble nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clisson (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tourisme et événementiel (dont l'écosystème Hellfest), commerces de centre-bourg, restauration, professions libérales et entreprises du vignoble nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clisson (44). Nous accompagnons tous types d'activités : PME viticulteurs et artisans du Muscadet, PME tourisme et événementiel (dont l'écosystème Hellfest), commerces de centre-bourg, restauration, professions libérales et entreprises du vignoble nantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clisson (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tourisme et événementiel (dont l'écosystème Hellfest), commerces de centre-bourg, restauration, professions libérales et entreprises du vignoble nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Clisson (44). Nous accompagnons tous types d'activités : PME viticulteurs et artisans du Muscadet, PME tourisme et événementiel (dont l'écosystème Hellfest), commerces de centre-bourg, restauration, professions libérales et entreprises du vignoble nantais.",
   seoHook: "vignoble nantais",
   ecosystemFr:
-    "Clisson est une cité de caractère du vignoble Muscadet à 30 km au sud-est de Nantes. Le Hellfest (festival metal international) génère un écosystème événementiel et touristique majeur. Tissu TPE viticulteurs, artisans, commerces patrimoine, restauration, professions libérales. Château médiéval classé, architecture italianisante.",
+    "Clisson est une cité de caractère du vignoble Muscadet à 30 km au sud-est de Nantes. Le Hellfest (festival metal international) génère un écosystème événementiel et touristique majeur. Tissu PME viticulteurs, artisans, commerces patrimoine, restauration, professions libérales. Château médiéval classé, architecture italianisante.",
   ecosystemEn:
-    "Clisson est une cité de caractère du vignoble Muscadet à 30 km au sud-est de Nantes. Le Hellfest (festival metal international) génère un écosystème événementiel et touristique majeur. Tissu TPE viticulteurs, artisans, commerces patrimoine, restauration, professions libérales. Château médiéval classé, architecture italianisante.",
+    "Clisson est une cité de caractère du vignoble Muscadet à 30 km au sud-est de Nantes. Le Hellfest (festival metal international) génère un écosystème événementiel et touristique majeur. Tissu PME viticulteurs, artisans, commerces patrimoine, restauration, professions libérales. Château médiéval classé, architecture italianisante.",
   distancesFr:
     "Nantes centre à 30 min. Gare de Clisson (TER Nantes-Cholet). Gare Nantes TGV à 35 min. Aéroport Nantes-Atlantique à 40 min. Cholet à 30 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CLISSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Clisson : diagnostic adapté aux TPE viticulteurs, PME tourisme/événementiel, commerces et restauration du vignoble nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Clisson : diagnostic adapté aux TPE viticulteurs, PME tourisme/événementiel, commerces et restauration du vignoble nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Clisson : diagnostic adapté aux PME viticulteurs, PME tourisme/événementiel, commerces et restauration du vignoble nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Clisson : diagnostic adapté aux PME viticulteurs, PME tourisme/événementiel, commerces et restauration du vignoble nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Clisson : formations adaptées au domaine viticole, au commerce, à la restauration ou au bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const CLISSON_COPY: VilleCopy = {
       en: "Implémentation IA à Clisson : automatisation gestion vignoble, agents conversationnels tourisme, optimisation réservations événementiel, extraction données commerciales. Vignoble nantais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Clisson : sessions dans votre domaine viticole, commerce, restaurant ou en visio. Dirigeants TPE/PME du vignoble nantais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Clisson : sessions dans votre domaine viticole, commerce, restaurant ou en visio. Dirigeants TPE/PME du vignoble nantais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Clisson : sessions dans votre domaine viticole, commerce, restaurant ou en visio. Dirigeants PME et ETI du vignoble nantais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Clisson : sessions dans votre domaine viticole, commerce, restaurant ou en visio. Dirigeants PME et ETI du vignoble nantais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CLISSON_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les viticulteurs et domaines du Muscadet ?",
-      a: "Oui, nous accompagnons les TPE viticulteurs du Muscadet sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks et commandes, agents IA relation client export, optimisation logistique vendanges. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME viticulteurs du Muscadet sur des cas IA pratiques : automatisation traçabilité parcellaire, gestion stocks et commandes, agents IA relation client export, optimisation logistique vendanges. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME tourisme et événementiel à Clisson ?",
@@ -61,7 +61,7 @@ export const CLISSON_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Clisson  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du vignoble nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du vignoble nantais.",
     },
     {
       q: "Intervenez-vous sur site dans les domaines viticoles ?",

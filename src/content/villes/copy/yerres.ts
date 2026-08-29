@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const YERRES_COPY: VilleCopy = {
   pitchFr:
-    "À Yerres (91), ville résidentielle verte de l'Essonne célèbre pour la propriété Caillebotte, où vécut le peintre impressionniste, Axion-IA accompagne les TPE et PME locales. Commerces de centre-ville, artisans, professions libérales, acteurs du tourisme culturel autour de la maison-musée et de la vallée de l'Yerres, restauration et services : nous concevons des usages IA concrets pour alléger la gestion et valoriser l'accueil.",
+    "À Yerres (91), ville résidentielle verte de l'Essonne célèbre pour la propriété Caillebotte, où vécut le peintre impressionniste, Axion-IA accompagne les PME et ETI locales. Commerces de centre-ville, artisans, professions libérales, acteurs du tourisme culturel autour de la maison-musée et de la vallée de l'Yerres, restauration et services : nous concevons des usages IA concrets pour alléger la gestion et valoriser l'accueil.",
   pitchEn:
-    "À Yerres (91), ville résidentielle verte de l'Essonne célèbre pour la propriété Caillebotte, où vécut le peintre impressionniste, Axion-IA accompagne les TPE et PME locales. Commerces de centre-ville, artisans, professions libérales, acteurs du tourisme culturel autour de la maison-musée et de la vallée de l'Yerres, restauration et services : nous concevons des usages IA concrets pour alléger la gestion et valoriser l'accueil.",
+    "À Yerres (91), ville résidentielle verte de l'Essonne célèbre pour la propriété Caillebotte, où vécut le peintre impressionniste, Axion-IA accompagne les PME et ETI locales. Commerces de centre-ville, artisans, professions libérales, acteurs du tourisme culturel autour de la maison-musée et de la vallée de l'Yerres, restauration et services : nous concevons des usages IA concrets pour alléger la gestion et valoriser l'accueil.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yerres (Essonne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les commerces de centre-ville, les artisans, les professions libérales, les acteurs du tourisme culturel autour de la propriété Caillebotte et la restauration de cette commune résidentielle verte. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yerres (Essonne) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les commerces de centre-ville, les artisans, les professions libérales, les acteurs du tourisme culturel autour de la propriété Caillebotte et la restauration de cette commune résidentielle verte. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yerres (Essonne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les commerces de centre-ville, les artisans, les professions libérales, les acteurs du tourisme culturel autour de la propriété Caillebotte et la restauration de cette commune résidentielle verte. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yerres (Essonne) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les commerces de centre-ville, les artisans, les professions libérales, les acteurs du tourisme culturel autour de la propriété Caillebotte et la restauration de cette commune résidentielle verte. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "commerce & tourisme culturel",
   ecosystemFr:
-    "Yerres est une commune résidentielle verte de l'Essonne, traversée par la rivière du même nom et réputée pour la propriété Caillebotte, demeure du peintre impressionniste devenue maison-musée et parc fréquenté. Son économie s'appuie sur un tissu de TPE et PME de proximité : commerces de centre-ville, artisans, professions libérales et restauration, complétés par un tourisme culturel de week-end. Bien reliée à Paris par le RER D, la ville offre un cadre propice aux usages IA simples qui font gagner du temps aux petites structures et soignent la relation client.",
+    "Yerres est une commune résidentielle verte de l'Essonne, traversée par la rivière du même nom et réputée pour la propriété Caillebotte, demeure du peintre impressionniste devenue maison-musée et parc fréquenté. Son économie s'appuie sur un tissu de PME et ETI de proximité : commerces de centre-ville, artisans, professions libérales et restauration, complétés par un tourisme culturel de week-end. Bien reliée à Paris par le RER D, la ville offre un cadre propice aux usages IA simples qui font gagner du temps aux PME et soignent la relation client.",
   ecosystemEn:
-    "Yerres est une commune résidentielle verte de l'Essonne, traversée par la rivière du même nom et réputée pour la propriété Caillebotte, demeure du peintre impressionniste devenue maison-musée et parc fréquenté. Son économie s'appuie sur un tissu de TPE et PME de proximité : commerces de centre-ville, artisans, professions libérales et restauration, complétés par un tourisme culturel de week-end. Bien reliée à Paris par le RER D, la ville offre un cadre propice aux usages IA simples qui font gagner du temps aux petites structures et soignent la relation client.",
+    "Yerres est une commune résidentielle verte de l'Essonne, traversée par la rivière du même nom et réputée pour la propriété Caillebotte, demeure du peintre impressionniste devenue maison-musée et parc fréquenté. Son économie s'appuie sur un tissu de PME et ETI de proximité : commerces de centre-ville, artisans, professions libérales et restauration, complétés par un tourisme culturel de week-end. Bien reliée à Paris par le RER D, la ville offre un cadre propice aux usages IA simples qui font gagner du temps aux PME et soignent la relation client.",
   distancesFr:
     "Yerres est reliée à Paris-Gare de Lyon en 25 minutes par le RER D (gare de Yerres). L'aéroport de Paris-Orly est à 15 minutes, Brunoy et Montgeron à moins de 5 minutes, et l'autoroute A5 est accessible à proximité.",
   distancesEn:
@@ -42,8 +42,8 @@ export const YERRES_COPY: VilleCopy = {
       en: "Implémentation IA à Yerres : automatisation de la prise de rendez-vous, fidélisation client des commerces, gestion des demandes touristiques et culturelles et reporting pour professions libérales.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Yerres : sessions individuelles pour dirigeants de TPE et PME, en boutique, au cabinet ou en visio, pour adopter l'IA dans la gestion et la communication.",
-      en: "Accompagnement un-à-un à Yerres : sessions individuelles pour dirigeants de TPE et PME, en boutique, au cabinet ou en visio, pour adopter l'IA dans la gestion et la communication.",
+      fr: "Accompagnement un-à-un à Yerres : sessions individuelles pour dirigeants de PME et d'ETI, en boutique, au cabinet ou en visio, pour adopter l'IA dans la gestion et la communication.",
+      en: "Accompagnement un-à-un à Yerres : sessions individuelles pour dirigeants de PME et d'ETI, en boutique, au cabinet ou en visio, pour adopter l'IA dans la gestion et la communication.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Yerres : plateformes pour commerces, professions libérales et acteurs culturels, avec prise de rendez-vous intelligente, billetterie et contenu valorisant le patrimoine local.",
@@ -57,7 +57,7 @@ export const YERRES_COPY: VilleCopy = {
         whyHere: [
           "Tourisme culturel patrimonial : sites de réservation, billetterie et médiation numérique pour la Maison Caillebotte (Maison des Illustres, atelier de Gustave Caillebotte), la Ferme Ornée, l'Orangerie et le parc de 11 hectares au bord de la rivière Yerres.",
           "Commerce de proximité : vitrines et e-commerce multi-CMS pour les ~106 détaillants spécialisés, 55 restaurants et 86 commerces de bouche et services, en lien avec l'Association Commerciale Yerroise (ACY) et le marché couvert de la Place du Marché.",
-          "Artisans et TPE de la Zone Artisanale du Mont Griffon : sites de devis et de prise de rendez-vous (garages, BTP, services aux entreprises type Vast RH ou le centre d'affaires L'Arche), pensés pour des équipes sans informaticien dédié.",
+          "Artisans et PME de la Zone Artisanale du Mont Griffon : sites de devis et de prise de rendez-vous (garages, BTP, services aux entreprises type Vast RH ou le centre d'affaires L'Arche), pensés pour des équipes sans informaticien dédié.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA, avec hébergement UE strict et conformité RGPD.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const YERRES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Vitrine ou brique IA greffée",
-            detail:
-              "Site vitrine ou ajout d'un module IA (prise de rendez-vous, chatbot, fiche commerce optimisée) pour un artisan, un restaurant ou un commerce du centre-ville de Yerres, en quelques semaines.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
@@ -175,12 +169,6 @@ export const YERRES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Storefront or grafted AI brick",
-            detail:
-              "Showcase site or an added AI module (booking, chatbot, optimised business listing) for a craftsperson, restaurant or town-centre shop in Yerres, in a few weeks.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / store",
             detail:
@@ -230,7 +218,7 @@ export const YERRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Yerres et en Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Yerres, Brunoy et Montgeron. Nos consultants se déplacent sur site, à 25 minutes de Paris-Gare de Lyon par le RER D, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Yerres, Brunoy et Montgeron. Nos consultants se déplacent sur site, à 25 minutes de Paris-Gare de Lyon par le RER D, ou interviennent en visio selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec les commerces et artisans yerrois ?",

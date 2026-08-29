@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MORDELLES_COPY: VilleCopy = {
   pitchFr:
-    "Mordelles (35), commune de l'ouest de Rennes Métropole peuplée de 7 911 habitants, allie cadre résidentiel verdoyant et tissu économique de proximité. TPE, PME, artisans, commerces et professions libérales y constituent le coeur de l'activité. Axion-IA y intervient pour tous types d'activités de l'ouest rennais.",
+    "Mordelles (35), commune de l'ouest de Rennes Métropole peuplée de 7 911 habitants, allie cadre résidentiel verdoyant et tissu économique de proximité. PME, ETI, artisans, commerces et professions libérales y constituent le coeur de l'activité. Axion-IA y intervient pour tous types d'activités de l'ouest rennais.",
   pitchEn:
-    "Mordelles (35), commune de l'ouest de Rennes Métropole peuplée de 7 911 habitants, allie cadre résidentiel verdoyant et tissu économique de proximité. TPE, PME, artisans, commerces et professions libérales y constituent le coeur de l'activité. Axion-IA y intervient pour tous types d'activités de l'ouest rennais.",
+    "Mordelles (35), commune de l'ouest de Rennes Métropole peuplée de 7 911 habitants, allie cadre résidentiel verdoyant et tissu économique de proximité. PME, ETI, artisans, commerces et professions libérales y constituent le coeur de l'activité. Axion-IA y intervient pour tous types d'activités de l'ouest rennais.",
   seoHook: "résidentiel & proximité ouest Rennes",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mordelles (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales de l'ouest de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mordelles (35). Nous accompagnons tous types d'activités : PME et ETI locales, artisans, commerçants et professions libérales de l'ouest de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mordelles (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales de l'ouest de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mordelles (35). Nous accompagnons tous types d'activités : PME et ETI locales, artisans, commerçants et professions libérales de l'ouest de Rennes Métropole. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
-    "Mordelles est l'une des 43 communes de Rennes Métropole, située à l'ouest de Rennes. Ancien chef-lieu de canton jusqu'en 2015, la commune conserve une vocation résidentielle marquée avec son tissu de pavillons et son centre-bourg dynamique. L'économie locale s'appuie sur l'artisanat, le commerce de proximité, les services aux particuliers, les TPE/PME et les professions libérales.",
+    "Mordelles est l'une des 43 communes de Rennes Métropole, située à l'ouest de Rennes. Ancien chef-lieu de canton jusqu'en 2015, la commune conserve une vocation résidentielle marquée avec son tissu de pavillons et son centre-bourg dynamique. L'économie locale s'appuie sur l'artisanat, le commerce de proximité, les services aux particuliers, les PME et ETI et les professions libérales.",
   ecosystemEn:
-    "Mordelles est l'une des 43 communes de Rennes Métropole, située à l'ouest de Rennes. Ancien chef-lieu de canton jusqu'en 2015, la commune conserve une vocation résidentielle marquée avec son tissu de pavillons et son centre-bourg dynamique. L'économie locale s'appuie sur l'artisanat, le commerce de proximité, les services aux particuliers, les TPE/PME et les professions libérales.",
+    "Mordelles est l'une des 43 communes de Rennes Métropole, située à l'ouest de Rennes. Ancien chef-lieu de canton jusqu'en 2015, la commune conserve une vocation résidentielle marquée avec son tissu de pavillons et son centre-bourg dynamique. L'économie locale s'appuie sur l'artisanat, le commerce de proximité, les services aux particuliers, les PME et ETI et les professions libérales.",
   distancesFr:
     "Rennes centre à 20 min via N24. Gare de Rennes TGV à 25 min (TGV Paris 1h25). Aéroport Rennes-Saint-Jacques à 25 min. Saint-Malo à 1h. Ligne bus 53 Rennes-Mordelles.",
   distancesEn:
@@ -25,25 +25,25 @@ export const MORDELLES_COPY: VilleCopy = {
     "Artisanat & BTP (couverture, plomberie, paysagisme)",
     "Commerce de proximité & services aux particuliers",
     "Professions libérales (santé, juridique, conseil)",
-    "TPE & PME résidentielles",
+    "PME & PME résidentielles",
     "Industrie légère & sous-traitance",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mordelles : diagnostic adapté aux TPE/PME, artisans et professions libérales de l'ouest rennais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}, démarrage sous 5 jours.",
-      en: "Audit IA à Mordelles : diagnostic adapté aux TPE/PME, artisans et professions libérales de l'ouest rennais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      fr: "Audit IA à Mordelles : diagnostic adapté aux PME et ETI, artisans et professions libérales de l'ouest rennais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}, démarrage sous 5 jours.",
+      en: "Audit IA à Mordelles : diagnostic adapté aux PME et ETI, artisans et professions libérales de l'ouest rennais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}, démarrage sous 5 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mordelles : formations adaptées aux équipes TPE/PME, artisans et commerçants locaux. Vos collaborateurs repartent autonomes sur les outils IA configurés pour votre métier.",
-      en: "Interventions IA sur site à Mordelles : formations adaptées aux équipes TPE/PME, artisans et commerçants locaux. Vos collaborateurs repartent autonomes sur les outils IA configurés pour votre métier.",
+      fr: "Interventions IA sur site à Mordelles : formations adaptées aux équipes PME et ETI, artisans et commerçants locaux. Vos collaborateurs repartent autonomes sur les outils IA configurés pour votre métier.",
+      en: "Interventions IA sur site à Mordelles : formations adaptées aux équipes PME et ETI, artisans et commerçants locaux. Vos collaborateurs repartent autonomes sur les outils IA configurés pour votre métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Mordelles : agents conversationnels, automatisation devis et facturation, gestion clients, prise de rendez-vous et outils IA métier adaptés aux TPE/PME de l'ouest rennais.",
-      en: "Implémentation IA à Mordelles : agents conversationnels, automatisation devis et facturation, gestion clients, prise de rendez-vous et outils IA métier adaptés aux TPE/PME de l'ouest rennais.",
+      fr: "Implémentation IA à Mordelles : agents conversationnels, automatisation devis et facturation, gestion clients, prise de rendez-vous et outils IA métier adaptés aux PME et ETI de l'ouest rennais.",
+      en: "Implémentation IA à Mordelles : agents conversationnels, automatisation devis et facturation, gestion clients, prise de rendez-vous et outils IA métier adaptés aux PME et ETI de l'ouest rennais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mordelles : sessions individuelles pour dirigeants TPE/PME, artisans, professions libérales et indépendants de l'ouest rennais souhaitant intégrer l'IA dans leur pratique.",
-      en: "Coaching 1-to-1 à Mordelles : sessions individuelles pour dirigeants TPE/PME, artisans, professions libérales et indépendants de l'ouest rennais souhaitant intégrer l'IA dans leur pratique.",
+      fr: "Coaching 1-to-1 à Mordelles : sessions individuelles pour dirigeants de PME et d'ETI, artisans, professions libérales et indépendants de l'ouest rennais souhaitant intégrer l'IA dans leur pratique.",
+      en: "Coaching 1-to-1 à Mordelles : sessions individuelles pour dirigeants de PME et d'ETI, artisans, professions libérales et indépendants de l'ouest rennais souhaitant intégrer l'IA dans leur pratique.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MORDELLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mordelles  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE, PME, artisans et professions libérales mordelaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME, ETI, artisans et professions libérales mordelaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les artisans et commerçants de Mordelles ?",

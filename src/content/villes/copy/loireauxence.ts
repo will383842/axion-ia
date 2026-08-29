@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LOIREAUXENCE_COPY: VilleCopy = {
   pitchFr:
-    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA collabore avec toutes les structures locales du bassin nantais est.",
+    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe PME artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA collabore avec toutes les structures locales du bassin nantais est.",
   pitchEn:
-    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA collabore avec toutes les structures locales du bassin nantais est.",
+    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe PME artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA collabore avec toutes les structures locales du bassin nantais est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loireauxence (44). Nous accompagnons les PME artisanales, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loireauxence (44). Nous accompagnons les PME artisanales, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit sur place sur mesure.",
   seoHook: "artisanat & agriculture élevage",
   ecosystemFr:
-    "Loireauxence est une commune nouvelle (fusion 2016 de Varades, Belligné, La Chapelle-Saint-Sauveur, La Rouxière) en bords de Loire entre Nantes et Ancenis. Tissu TPE artisans, commerces de centre-bourg, PME tertiaires, professions libérales et exploitations agricoles.",
+    "Loireauxence est une commune nouvelle (fusion 2016 de Varades, Belligné, La Chapelle-Saint-Sauveur, La Rouxière) en bords de Loire entre Nantes et Ancenis. Tissu PME artisanales, commerces de centre-bourg, PME tertiaires, professions libérales et exploitations agricoles.",
   ecosystemEn:
-    "Loireauxence est une commune nouvelle (fusion 2016 de Varades, Belligné, La Chapelle-Saint-Sauveur, La Rouxière) en bords de Loire entre Nantes et Ancenis. Tissu TPE artisans, commerces de centre-bourg, PME tertiaires, professions libérales et exploitations agricoles.",
+    "Loireauxence est une commune nouvelle (fusion 2016 de Varades, Belligné, La Chapelle-Saint-Sauveur, La Rouxière) en bords de Loire entre Nantes et Ancenis. Tissu PME artisanales, commerces de centre-bourg, PME tertiaires, professions libérales et exploitations agricoles.",
   distancesFr:
     "Ancenis à 10 min. Nantes centre à 40 min par N23. Gare Ancenis (TER Nantes-Angers) à 10 min. Gare Nantes (TGV Paris 2h15) à 45 min. Aéroport Nantes-Atlantique à 50 min. Angers à 50 min.",
   distancesEn:
     "Ancenis à 10 min. Nantes centre à 40 min par N23. Gare Ancenis (TER Nantes-Angers) à 10 min. Gare Nantes (TGV Paris 2h15) à 45 min. Aéroport Nantes-Atlantique à 50 min. Angers à 50 min.",
   topSectorsNaf: [
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Agriculture & élevage",
     "Commerce de proximité",
     "PME services aux entreprises",
@@ -30,8 +30,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Loireauxence : diagnostic adapté aux PME artisanales, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Loireauxence : diagnostic adapté aux PME artisanales, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loireauxence : formats courts adaptés atelier, exploitation, bureau ou commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
       en: "Implémentation IA à Loireauxence : agents conversationnels, automatisation devis/facturation, gestion documentaire, CRM augmentés. Adapté aux PME et cabinets en bords de Loire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Loireauxence : sessions dans vos locaux (bureau, exploitation, atelier) ou en visio. Dirigeants TPE/PME, artisans et professions libérales souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Loireauxence : sessions dans vos locaux (bureau, exploitation, atelier) ou en visio. Dirigeants TPE/PME, artisans et professions libérales souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Loireauxence : sessions dans vos locaux (bureau, exploitation, atelier) ou en visio. Dirigeants PME et ETI, artisans et professions libérales souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Loireauxence : sessions dans vos locaux (bureau, exploitation, atelier) ou en visio. Dirigeants PME et ETI, artisans et professions libérales souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Loireauxence et dans tout l'est Loire-Atlantique (Ancenis à 10 min, Oudon, Ligné, Le Loroux-Bottereau). Gare Ancenis TER Nantes-Angers desservie. Couverture complète département 44.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et exploitants agricoles ?",
-      a: "Oui, nous accompagnons les TPE artisanales et exploitants agricoles de Loireauxence sur des cas IA concrets : automatisation devis/factures, gestion parcellaire, traçabilité, agents IA relation client. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME artisanales et exploitants agricoles ?",
+      a: "Oui, nous accompagnons les PME artisanales et exploitants agricoles de Loireauxence sur des cas IA concrets : automatisation devis/factures, gestion parcellaire, traçabilité, agents IA relation client. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME du bassin Ancenis-Nantes ?",
@@ -64,8 +64,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
       a: "Nos consultants se déplacent sur site à Loireauxence (40 min depuis Nantes, gare Ancenis TER à 10 min). Hébergement local pour missions multi-jours.",
     },
     {
-      q: "L'audit sur place {{price:audit-flash|flat}} convient-il aux petites structures ?",
-      a: "Oui, l'audit sur place {{price:audit-flash|flat}} est conçu pour les TPE, indépendants et professions libérales. En 4 heures, diagnostic de 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
+      q: "L'audit sur place {{price:audit-flash|flat}} convient-il aux PME ?",
+      a: "Oui, l'audit sur place {{price:audit-flash|flat}} est conçu pour les PME, indépendants et professions libérales. En 4 heures, diagnostic de 3 à 5 cas IA concrets pour votre activité avec ROI chiffré et plan d'action priorisé.",
     },
   ],
 };

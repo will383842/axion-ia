@@ -3,7 +3,7 @@
 // (cf. `[locale]/page.tsx` Audience section) mais avec :
 //   - H2 régionalisé (« en {region} »)
 //   - Paragraphe lead hand-crafted par région (`region.audienceLocalFr`)
-//   - 4 cards TPE/PME/ETI/Grandes réutilisées via i18n home (clés audience{N}{Title,Lead,Detail})
+//   - 3 cards PME/ETI/grands groupes reprises via i18n home (clés audience{N}{Title,Lead,Detail})
 //
 // Anti-duplicate-content : chaque région a un paragraphe lead unique
 // mentionnant son tissu B2B local (cf. regions.ts champs `audienceLocalFr`).
@@ -22,14 +22,13 @@ interface RegionAudienceSectionProps {
 export async function RegionAudienceSection({ region, isFr }: RegionAudienceSectionProps) {
   const t = await getTranslations("home");
 
-  // 4 cards génériques (TPE/PME/ETI/Grande) + 1 card cas concret régional
+  // 3 cards génériques (PME/ETI/grands groupes) + 1 card cas concret régional
   // hand-crafted (Will 2026-05-26 perfection 2026, anti-duplicate-content).
   type Segment = { title: string; lead: string; detail: string };
   const segments: ReadonlyArray<Segment> = [
     { title: t("audience1Title"), lead: t("audience1Lead"), detail: t("audience1Detail") },
     { title: t("audience2Title"), lead: t("audience2Lead"), detail: t("audience2Detail") },
     { title: t("audience3Title"), lead: t("audience3Lead"), detail: t("audience3Detail") },
-    { title: t("audience4Title"), lead: t("audience4Lead"), detail: t("audience4Detail") },
     ...(region.audienceCaseStudyFr
       ? [
           {

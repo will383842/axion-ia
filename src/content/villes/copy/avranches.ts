@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const AVRANCHES_COPY: VilleCopy = {
   pitchFr:
-    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre les activités professionnelles du bassin.",
+    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu PME du commerce et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre les activités professionnelles du bassin.",
+    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu PME du commerce et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avranches (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre-ville, PME agroalimentaires du bocage avranchin, prestataires tourisme Mont-Saint-Michel, professions libérales, services publics et associations.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avranches (50). Nous accompagnons tous types d'activités : PME du commerce et artisans du centre-ville, PME agroalimentaires du bocage avranchin, prestataires tourisme Mont-Saint-Michel, professions libérales, services publics et associations.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avranches (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre-ville, PME agroalimentaires du bocage avranchin, prestataires tourisme Mont-Saint-Michel, professions libérales, services publics et associations.",
-  seoHook: "TPE & PME Manche",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avranches (50). Nous accompagnons tous types d'activités : PME du commerce et artisans du centre-ville, PME agroalimentaires du bocage avranchin, prestataires tourisme Mont-Saint-Michel, professions libérales, services publics et associations.",
+  seoHook: "PME & PME Manche",
   ecosystemFr:
     "Avranches est la sous-préfecture sud de la Manche, porte d'entrée du Mont-Saint-Michel et centre du bocage avranchin. L'économie repose sur les services publics (sous-préfecture, hôpital, tribunal), l'agroalimentaire (élevage bovin, cidre, produits laitiers), le tourisme (flux Mont-Saint-Michel, manuscrits médiévaux Scriptorial), le commerce de centre-ville et l'artisanat. Accès A84 vers Rennes (55 min) et Caen (1 h 20).",
   ecosystemEn:
@@ -22,7 +22,7 @@ export const AVRANCHES_COPY: VilleCopy = {
   distancesEn:
     "Gare d'Avranches (TER vers Caen via Granville). Granville à 25 min. Saint-Lô à 50 min. Rennes à 55 min (A84). Caen à 1 h 20. Mont-Saint-Michel à 25 min. Aéroport Rennes à 1 h 10.",
   topSectorsNaf: [
-    "TPE/PME agroalimentaire bocage (élevage, cidre, laitier)",
+    "PME et ETI agroalimentaire bocage (élevage, cidre, laitier)",
     "Tourisme Mont-Saint-Michel et patrimoine",
     "Commerce de centre-ville et artisanat",
     "Services publics sous-préfecture et santé",
@@ -30,8 +30,8 @@ export const AVRANCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Avranches : diagnostic adapté aux PME du commerce et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Avranches : diagnostic adapté aux PME du commerce et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avranches : formats adaptés au commerce, à l'exploitation agricole, à l'hôtel, au cabinet. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const AVRANCHES_COPY: VilleCopy = {
       en: "Implémentation IA à Avranches : automatisation traçabilité agroalimentaire, agents IA accueil tourisme, gestion réservations Mont-Saint-Michel, prédiction flux visiteurs, CRM commerce centre-ville.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Avranches : sessions dans votre entreprise, exploitation, hôtel ou en visio. Dirigeants TPE/PME, gérants agroalimentaire, prestataires tourisme, commerçants et indépendants du bocage avranchin.",
-      en: "Coaching 1-to-1 à Avranches : sessions dans votre entreprise, exploitation, hôtel ou en visio. Dirigeants TPE/PME, gérants agroalimentaire, prestataires tourisme, commerçants et indépendants du bocage avranchin.",
+      fr: "Coaching 1-to-1 à Avranches : sessions dans votre entreprise, exploitation, hôtel ou en visio. Dirigeants PME et ETI, gérants agroalimentaire, prestataires tourisme, commerçants et indépendants du bocage avranchin.",
+      en: "Coaching 1-to-1 à Avranches : sessions dans votre entreprise, exploitation, hôtel ou en visio. Dirigeants PME et ETI, gérants agroalimentaire, prestataires tourisme, commerçants et indépendants du bocage avranchin.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const AVRANCHES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Avranches et dans tout le bocage avranchin (Granville, Villedieu-les-Poêles, Pontorson, Mont-Saint-Michel). Nos consultants se déplacent depuis Rennes (55 min A84) ou Caen (1 h 20), ou en visio.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME agroalimentaires du bocage ?",
-      a: "Oui, nous accompagnons les TPE et PME agroalimentaires du bocage avranchin : automatisation traçabilité élevage, prédiction rendements laitiers, optimisation logistique cidre, contrôle qualité. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et ETI agroalimentaires du bocage ?",
+      a: "Oui, nous accompagnons les PME et ETI agroalimentaires du bocage avranchin : automatisation traçabilité élevage, prédiction rendements laitiers, optimisation logistique cidre, contrôle qualité. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les prestataires tourisme Mont-Saint-Michel ?",

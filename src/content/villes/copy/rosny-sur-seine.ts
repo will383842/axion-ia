@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin mantois.",
+    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille PME artisanales, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin mantois.",
   pitchEn:
-    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin mantois.",
+    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille PME artisanales, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin mantois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosny-sur-Seine (78). Nous accompagnons TPE et PME : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosny-sur-Seine (78). Nous accompagnons PME et ETI : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosny-sur-Seine (78). Nous accompagnons TPE et PME : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rosny-sur-Seine (78). Nous accompagnons PME et ETI : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
   seoHook: "artisanat bâtiment & industrie logistique",
   ecosystemFr:
-    "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : TPE artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Proximité des zones d'activités mantaises et de l'axe A13.",
+    "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : PME de l'artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Proximité des zones d'activités mantaises et de l'axe A13.",
   ecosystemEn:
-    "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : TPE artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Proximité des zones d'activités mantaises et de l'axe A13.",
+    "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : PME de l'artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Proximité des zones d'activités mantaises et de l'axe A13.",
   distancesFr:
     "Mantes-la-Jolie à 5 min, Gare de Rosny-sur-Seine (Transilien J Paris Saint-Lazare ~55 min). A13 accès direct, Les Mureaux à 15 min, Poissy à 25 min. Paris La Défense à 45 min par A13.",
   distancesEn:
     "Mantes-la-Jolie à 5 min, Gare de Rosny-sur-Seine (Transilien J Paris Saint-Lazare ~55 min). A13 accès direct, Les Mureaux à 15 min, Poissy à 25 min. Paris La Défense à 45 min par A13.",
   topSectorsNaf: [
-    "TPE artisanat bâtiment & services",
+    "PME de l'artisanat bâtiment & services",
     "PME industrie & logistique axe Seine",
     "Commerce de proximité & centre-bourg",
     "Professions libérales & services à la personne",
@@ -30,8 +30,8 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux PME artisanales, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux PME artisanales, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rosny-sur-Seine : formats adaptés à l'atelier artisan, l'entrepôt logistique, le commerce ou le cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -57,11 +57,11 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rosny-sur-Seine  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, industrie, commerce, services). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du bassin mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, industrie, commerce, services). Tarifs publics.",
     },
     {
       q: "Intervenez-vous auprès des artisans et commerçants de Rosny-sur-Seine ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants de Rosny-sur-Seine sur leurs cas IA : devis automatisé, gestion planning, agents conversationnels clients, CRM augmenté, facturation intelligente. Solutions simples et concrètes.",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de Rosny-sur-Seine sur leurs cas IA : devis automatisé, gestion planning, agents conversationnels clients, CRM augmenté, facturation intelligente. Solutions simples et concrètes.",
     },
     {
       q: "Comment se déroule une mission à Rosny-sur-Seine ?",

@@ -91,8 +91,8 @@ export default async function ImplantationsHub({ params }: Props) {
       sameAs: "https://www.wikidata.org/wiki/Q142",
     },
     description: isFr
-      ? "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. PME, ETI, grands groupes et TPE."
-      : "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. PME, ETI, grands groupes et TPE.",
+      ? "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. PME, ETI et grands groupes."
+      : "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. PME, ETI et grands groupes.",
   };
   const serviceNationalJsonLd = buildServiceJsonLd({
     locale: loc,
@@ -596,7 +596,7 @@ export default async function ImplantationsHub({ params }: Props) {
         titleEm={isFr ? "Parlons-en." : "Let's talk."}
         description={
           isFr
-            ? "PME, ETI, grand groupe ou TPE — partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous."
+            ? "PME, ETI ou grand groupe — partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous."
             : "Micro-business, SMB, mid-market or large enterprise — everywhere in France, you get the same premium senior standard. Public pricing, real-time calendar, your data stays yours."
         }
         cta={

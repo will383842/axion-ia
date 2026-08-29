@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const HOUILLES_COPY: VilleCopy = {
   pitchFr:
-    "Houilles (78), commune des Yvelines située dans une boucle de la Seine à 7 km au nord-ouest de Paris, 33 983 habitants (Ovillois). Tissu économique tertiaire urbain : nombreuses TPE de services, PME du bâtiment, commerces de proximité, professions libérales, artisans. La gare de Houilles–Carrières-sur-Seine (RER A + Transilien L et J) draine 24 000 voyageurs/jour, plaçant la ville parmi les pôles résidentiels les plus actifs de l'ouest parisien. Axion-IA y accompagne les structures locales et celles des communes voisines Sartrouville, Carrières-sur-Seine et Bezons.",
+    "Houilles (78), commune des Yvelines située dans une boucle de la Seine à 7 km au nord-ouest de Paris, 33 983 habitants (Ovillois). Tissu économique tertiaire urbain : nombreuses PME de services, PME du bâtiment, commerces de proximité, professions libérales, artisans. La gare de Houilles–Carrières-sur-Seine (RER A + Transilien L et J) draine 24 000 voyageurs/jour, plaçant la ville parmi les pôles résidentiels les plus actifs de l'ouest parisien. Axion-IA y accompagne les structures locales et celles des communes voisines Sartrouville, Carrières-sur-Seine et Bezons.",
   pitchEn:
-    "Houilles (78), commune des Yvelines située dans une boucle de la Seine à 7 km au nord-ouest de Paris, 33 983 habitants (Ovillois). Tissu économique tertiaire urbain : nombreuses TPE de services, PME du bâtiment, commerces de proximité, professions libérales, artisans. La gare de Houilles–Carrières-sur-Seine (RER A + Transilien L et J) draine 24 000 voyageurs/jour, plaçant la ville parmi les pôles résidentiels les plus actifs de l'ouest parisien. Axion-IA y accompagne les structures locales et celles des communes voisines Sartrouville, Carrières-sur-Seine et Bezons.",
+    "Houilles (78), commune des Yvelines située dans une boucle de la Seine à 7 km au nord-ouest de Paris, 33 983 habitants (Ovillois). Tissu économique tertiaire urbain : nombreuses PME de services, PME du bâtiment, commerces de proximité, professions libérales, artisans. La gare de Houilles–Carrières-sur-Seine (RER A + Transilien L et J) draine 24 000 voyageurs/jour, plaçant la ville parmi les pôles résidentiels les plus actifs de l'ouest parisien. Axion-IA y accompagne les structures locales et celles des communes voisines Sartrouville, Carrières-sur-Seine et Bezons.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit sur place dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houilles (78) auprès des PME et ETI locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et PME de services des Yvelines nord, ainsi que les PME en croissance. Audit sur place dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houilles (78) auprès des TPE et PME locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et petites structures de services des Yvelines nord, ainsi que les PME en croissance. Audit sur place dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houilles (78) auprès des PME et ETI locales. Nous accompagnons en priorité les artisans, commerçants, professions libérales et PME de services des Yvelines nord, ainsi que les PME en croissance. Audit sur place dès {{price:audit-flash|flat}}, interventions sur site dès {{price:intervention-4h|flat}}. Nos consultants se déplacent en 25 min depuis Paris via le RER A (gare Houilles–Carrières-sur-Seine) ou en voiture par l'A14.",
   seoHook: "services aux entreprises & commerce de proximité",
   ecosystemFr:
-    "Houilles est une ville résidentielle dense de la boucle de Seine, organisée autour d'une gare RER A très fréquentée. Le tissu local est dominé par les services aux entreprises (cadres et professions intermédiaires représentent plus de 38 % des actifs), le commerce de proximité, la restauration, le BTP de second œuvre et les artisans. Peu d'industrie lourde, mais une dense population de TPE familiales, professions libérales (santé, juridique, conseil) et petites PME tertiaires. La proximité immédiate de La Défense (6 min en RER A) attire de nombreux indépendants et structures de service.",
+    "Houilles est une ville résidentielle dense de la boucle de Seine, organisée autour d'une gare RER A très fréquentée. Le tissu local est dominé par les services aux entreprises (cadres et professions intermédiaires représentent plus de 38 % des actifs), le commerce de proximité, la restauration, le BTP de second œuvre et les artisans. Peu d'industrie lourde, mais une dense population de PME familiales, professions libérales (santé, juridique, conseil) et petites PME tertiaires. La proximité immédiate de La Défense (6 min en RER A) attire de nombreux indépendants et structures de service.",
   ecosystemEn:
-    "Houilles est une ville résidentielle dense de la boucle de Seine, organisée autour d'une gare RER A très fréquentée. Le tissu local est dominé par les services aux entreprises (cadres et professions intermédiaires représentent plus de 38 % des actifs), le commerce de proximité, la restauration, le BTP de second œuvre et les artisans. Peu d'industrie lourde, mais une dense population de TPE familiales, professions libérales (santé, juridique, conseil) et petites PME tertiaires. La proximité immédiate de La Défense (6 min en RER A) attire de nombreux indépendants et structures de service.",
+    "Houilles est une ville résidentielle dense de la boucle de Seine, organisée autour d'une gare RER A très fréquentée. Le tissu local est dominé par les services aux entreprises (cadres et professions intermédiaires représentent plus de 38 % des actifs), le commerce de proximité, la restauration, le BTP de second œuvre et les artisans. Peu d'industrie lourde, mais une dense population de PME familiales, professions libérales (santé, juridique, conseil) et petites PME tertiaires. La proximité immédiate de La Défense (6 min en RER A) attire de nombreux indépendants et structures de service.",
   distancesFr:
     "Paris Saint-Lazare à 18 min (Transilien L). La Défense à 6 min (RER A). Sartrouville à 5 min. Carrières-sur-Seine 3 min. Bezons 7 min. Roissy CDG 45 min via A86+A1.",
   distancesEn:
@@ -31,26 +31,26 @@ export const HOUILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Houilles : diagnostic 4 heures adapté aux TPE de services, professions libérales, commerçants et petites PME de la boucle de Seine. Audit sur place dès {{price:audit-flash|flat}}. Livrable concret : 3 cas d'usage IA prioritaires + estimation ROI 12 mois.",
-      en: "Audit IA à Houilles : diagnostic 4 heures adapté aux TPE de services, professions libérales, commerçants et petites PME de la boucle de Seine. Audit sur place dès {{price:audit-flash|flat}}. Livrable concret : 3 cas d'usage IA prioritaires + estimation ROI 12 mois.",
+      fr: "Audit IA à Houilles : diagnostic 4 heures adapté aux PME de services, professions libérales, commerçants et petites PME de la boucle de Seine. Audit sur place dès {{price:audit-flash|flat}}. Livrable concret : 3 cas d'usage IA prioritaires + estimation ROI 12 mois.",
+      en: "Audit IA à Houilles : diagnostic 4 heures adapté aux PME de services, professions libérales, commerçants et petites PME de la boucle de Seine. Audit sur place dès {{price:audit-flash|flat}}. Livrable concret : 3 cas d'usage IA prioritaires + estimation ROI 12 mois.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Houilles : ateliers pratiques chez vous, formats adaptés au cabinet libéral, à la TPE de service, au commerce. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs maîtrisent ensuite les outils en autonomie, sans dépendance prestataire.",
-      en: "Interventions IA sur site à Houilles : ateliers pratiques chez vous, formats adaptés au cabinet libéral, à la TPE de service, au commerce. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs maîtrisent ensuite les outils en autonomie, sans dépendance prestataire.",
+      fr: "Interventions IA sur site à Houilles : ateliers pratiques chez vous, formats adaptés au cabinet libéral, à la PME de service, au commerce. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs maîtrisent ensuite les outils en autonomie, sans dépendance prestataire.",
+      en: "Interventions IA sur site à Houilles : ateliers pratiques chez vous, formats adaptés au cabinet libéral, à la PME de service, au commerce. Intervention dès {{price:intervention-4h|flat}}. Vos collaborateurs maîtrisent ensuite les outils en autonomie, sans dépendance prestataire.",
     },
     implementation: {
       fr: "Implémentation IA à Houilles : automatisation devis-relances, classification email, agents conversationnels internes, OCR factures, planning de RDV. Code custom (pas no-code), hébergement Europe, conformité RGPD by design. Dès {{price:impl-poc|entry}}.",
       en: "Implémentation IA à Houilles : automatisation devis-relances, classification email, agents conversationnels internes, OCR factures, planning de RDV. Code custom (pas no-code), hébergement Europe, conformité RGPD by design. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Houilles : sessions dirigeants TPE, professions libérales, gérants commerçants pour intégrer l'IA dans le quotidien opérationnel. Adapté aux indépendants et petites équipes de la boucle de Seine.",
-      en: "Coaching 1-to-1 à Houilles : sessions dirigeants TPE, professions libérales, gérants commerçants pour intégrer l'IA dans le quotidien opérationnel. Adapté aux indépendants et petites équipes de la boucle de Seine.",
+      fr: "Coaching 1-to-1 à Houilles : sessions dirigeants de PME et d'ETI, professions libérales, gérants commerçants pour intégrer l'IA dans le quotidien opérationnel. Adapté aux indépendants et petites équipes de la boucle de Seine.",
+      en: "Coaching 1-to-1 à Houilles : sessions dirigeants de PME et d'ETI, professions libérales, gérants commerçants pour intégrer l'IA dans le quotidien opérationnel. Adapté aux indépendants et petites équipes de la boucle de Seine.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit à Houilles des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique singulier : ici, l'activité tourne autour du commerce de proximité à très forte densité — le marché couvert de l'avenue Carnot (160 commerçants sur 5 000 m², l'un des plus grands d'Île-de-France) et la Braderie de Houilles du premier dimanche d'octobre, deuxième plus grande de France après Lille. Nous construisons des vitrines e-commerce, des programmes de fidélité numériques et des plateformes de réservation pour les commerçants, artisans d'art, professions libérales et TPE de services de la boucle de Seine — code custom, UX/UI soignée, mobile-first, hébergement Union européenne conforme RGPD, zéro dépendance éditeur.",
+        hero: "Axion-IA conçoit à Houilles des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique singulier : ici, l'activité tourne autour du commerce de proximité à très forte densité — le marché couvert de l'avenue Carnot (160 commerçants sur 5 000 m², l'un des plus grands d'Île-de-France) et la Braderie de Houilles du premier dimanche d'octobre, deuxième plus grande de France après Lille. Nous construisons des vitrines e-commerce, des programmes de fidélité numériques et des plateformes de réservation pour les commerçants, artisans d'art, professions libérales et PME de services de la boucle de Seine — code custom, UX/UI soignée, mobile-first, hébergement Union européenne conforme RGPD, zéro dépendance éditeur.",
         whyHere: [
           "Le commerce de proximité est le moteur de Houilles : l'Association des commerçants et artisans de Houilles (ACAH) compte plus de 200 adhérents et le marché du centre-ville réunit 160 commerçants — une base idéale pour des sites e-commerce click-and-collect, des fiches produit générées par IA et des programmes de fidélité numériques dans la lignée de la carte Myloope.",
           "La Braderie de Houilles (1 500 à 2 000 exposants, 25 000 à 30 000 visiteurs au Parc Charles-de-Gaulle) appelle des plateformes web événementielles concrètes : inscription exposants, plan interactif, billetterie, communication multicanale — autant de cas d'usage SaaS que nous savons livrer.",
@@ -85,12 +85,6 @@ export const HOUILLES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les commerçants du marché et du centre-ville, artisans d'art du collectif local, professions libérales et indépendants ovillois : vitrine mobile-first, catalogue click-and-collect, prise de rendez-vous en ligne, premiers automatismes IA (fiches produit, réponses fréquentes).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce et fidélité",
@@ -172,12 +166,6 @@ export const HOUILLES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or essential e-commerce site",
-            detail:
-              "For market and downtown traders, art craftspeople from the local collective, liberal professions and Houilles freelancers: mobile-first storefront, click-and-collect catalog, online booking, first AI automations (product listings, frequent answers).",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce and loyalty platform",
             detail:
@@ -239,7 +227,7 @@ export const HOUILLES_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches de Houilles accompagnez-vous ?",
-      a: "Nous accompagnons les TPE et PME de toute la boucle de Seine : Sartrouville, Carrières-sur-Seine, Bezons, ainsi que Chatou, Maisons-Laffitte, Le Vésinet, Montesson, Nanterre et le secteur de La Défense.",
+      a: "Nous accompagnons les PME et ETI de toute la boucle de Seine : Sartrouville, Carrières-sur-Seine, Bezons, ainsi que Chatou, Maisons-Laffitte, Le Vésinet, Montesson, Nanterre et le secteur de La Défense.",
     },
     {
       q: "Comment Axion-IA gère-t-il la conformité RGPD pour les entreprises de Houilles ?",
@@ -247,7 +235,7 @@ export const HOUILLES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Houilles ?",
-      a: "Nous accompagnons en priorité les TPE de services (artisans, commerçants, restauration), les professions libérales (santé, juridique, conseil, expertise comptable) et les petites PME tertiaires de la boucle de Seine. Aucun secteur exclu.",
+      a: "Nous accompagnons en priorité les PME de services (artisans, commerçants, restauration), les professions libérales (santé, juridique, conseil, expertise comptable) et les petites PME tertiaires de la boucle de Seine. Aucun secteur exclu.",
     },
   ],
 };

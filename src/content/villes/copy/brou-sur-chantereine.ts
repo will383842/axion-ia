@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
   pitchFr:
-    "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. TPE artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. PME de l'artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. TPE artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. PME de l'artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brou-sur-Chantereine (77). Nous accompagnons PME et ETI : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brou-sur-Chantereine (77). Nous accompagnons PME et ETI : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit sur place sur mesure.",
   seoHook: "services & logistique entreposage",
   ecosystemFr:
-    "Brou-sur-Chantereine est une commune résidentielle limitrophe de Chelles, bien connectée par le RER E et la Francilienne. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités logistiques.",
+    "Brou-sur-Chantereine est une commune résidentielle limitrophe de Chelles, bien connectée par le RER E et la Francilienne. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, activités logistiques.",
   ecosystemEn:
-    "Brou-sur-Chantereine est une commune résidentielle limitrophe de Chelles, bien connectée par le RER E et la Francilienne. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités logistiques.",
+    "Brou-sur-Chantereine est une commune résidentielle limitrophe de Chelles, bien connectée par le RER E et la Francilienne. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, activités logistiques.",
   distancesFr:
     "Chelles centre à 5 min. Gare RER E Chelles–Gournay à 8 min. Marne-la-Vallée à 15 min. Paris Gare de l'Est à 30 min.",
   distancesEn:
     "Chelles centre à 5 min. Gare RER E Chelles–Gournay à 8 min. Marne-la-Vallée à 15 min. Paris Gare de l'Est à 30 min.",
   topSectorsNaf: [
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
     "PME services",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brou-sur-Chantereine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises logistique. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Brou-sur-Chantereine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises logistique. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Brou-sur-Chantereine : diagnostic adapté aux PME de l'artisanat, commerces de proximité, PME services, professions libérales, entreprises logistique. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Brou-sur-Chantereine : diagnostic adapté aux PME de l'artisanat, commerces de proximité, PME services, professions libérales, entreprises logistique. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brou-sur-Chantereine : formats adaptés atelier artisan, commerce, bureau PME, cabinet libéral, entrepôt logistique. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
       en: "Implémentation IA à Brou-sur-Chantereine : automatisation devis artisans, gestion stocks commerce, CRM augmenté PME, planning professions libérales, optimisation flux logistiques.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Brou-sur-Chantereine : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME, artisans, professions libérales de l'agglomération chelloise.",
-      en: "Coaching 1-to-1 à Brou-sur-Chantereine : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME, artisans, professions libérales de l'agglomération chelloise.",
+      fr: "Coaching 1-to-1 à Brou-sur-Chantereine : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI, artisans, professions libérales de l'agglomération chelloise.",
+      en: "Coaching 1-to-1 à Brou-sur-Chantereine : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI, artisans, professions libérales de l'agglomération chelloise.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",
-      a: "Oui, automatisation devis et facturation, gestion stocks, relances clients, planning équipes. Solutions adaptées TPE artisanales et commerces de proximité.",
+      a: "Oui, automatisation devis et facturation, gestion stocks, relances clients, planning équipes. Solutions adaptées PME de l'artisanat et du commerce.",
     },
     {
       q: "Quels services pour les entreprises logistique ?",

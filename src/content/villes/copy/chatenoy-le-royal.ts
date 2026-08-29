@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
   pitchFr:
-    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA accompagne tout le tissu professionnel local.",
+    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu PME et ETI commerce, logistique, services aux entreprises, artisans BTP. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA accompagne tout le tissu professionnel local.",
+    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu PME et ETI commerce, logistique, services aux entreprises, artisans BTP. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtenoy-le-Royal (71). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales et tertiaires Grand Chalon, enseignes retail, logisticiens, artisans BTP et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtenoy-le-Royal (71). Nous accompagnons tous types d'activités : PME et ETI des zones commerciales et tertiaires Grand Chalon, enseignes retail, logisticiens, artisans BTP et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtenoy-le-Royal (71). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales et tertiaires Grand Chalon, enseignes retail, logisticiens, artisans BTP et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtenoy-le-Royal (71). Nous accompagnons tous types d'activités : PME et ETI des zones commerciales et tertiaires Grand Chalon, enseignes retail, logisticiens, artisans BTP et services aux entreprises.",
   seoHook: "commerce retail & logistique distribution",
   ecosystemFr:
-    "Châtenoy-le-Royal est une commune dynamique de l'agglomération Chalon-sur-Saône dotée de zones d'activités commerciales et tertiaires majeures. Tissu TPE/PME commerce, retail, logistique, services aux entreprises, artisanat BTP.",
+    "Châtenoy-le-Royal est une commune dynamique de l'agglomération Chalon-sur-Saône dotée de zones d'activités commerciales et tertiaires majeures. Tissu PME et ETI commerce, retail, logistique, services aux entreprises, artisanat BTP.",
   ecosystemEn:
-    "Châtenoy-le-Royal est une commune dynamique de l'agglomération Chalon-sur-Saône dotée de zones d'activités commerciales et tertiaires majeures. Tissu TPE/PME commerce, retail, logistique, services aux entreprises, artisanat BTP.",
+    "Châtenoy-le-Royal est une commune dynamique de l'agglomération Chalon-sur-Saône dotée de zones d'activités commerciales et tertiaires majeures. Tissu PME et ETI commerce, retail, logistique, services aux entreprises, artisanat BTP.",
   distancesFr:
     "Chalon-sur-Saône centre à 5 min. Gare TGV Le Creusot à 25 min. Beaune à 30 min. Dijon à 55 min. Lyon à 1h30.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
     "Commerce retail zones d'activités",
     "Logistique et distribution",
     "Services aux entreprises",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Tertiaire Grand Chalon",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux PME et ETI zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux PME et ETI zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtenoy-le-Royal : formats adaptés au point de vente, entrepôt, bureau. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
       en: "Implémentation IA à Châtenoy-le-Royal : automatisation gestion stocks retail, agents conversationnels clients, optimisation logistique, workflow services aux entreprises Grand Chalon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châtenoy-le-Royal : sessions dans votre point de vente, entrepôt, bureau ou en visio. Commerçants, logisticiens, artisans, gérants TPE/PME châtenoyens.",
-      en: "Coaching 1-to-1 à Châtenoy-le-Royal : sessions dans votre point de vente, entrepôt, bureau ou en visio. Commerçants, logisticiens, artisans, gérants TPE/PME châtenoyens.",
+      fr: "Coaching 1-to-1 à Châtenoy-le-Royal : sessions dans votre point de vente, entrepôt, bureau ou en visio. Commerçants, logisticiens, artisans, gérants PME et ETI châtenoyens.",
+      en: "Coaching 1-to-1 à Châtenoy-le-Royal : sessions dans votre point de vente, entrepôt, bureau ou en visio. Commerçants, logisticiens, artisans, gérants PME et ETI châtenoyens.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Châtenoy-le-Royal ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Châtenoy-le-Royal ?",

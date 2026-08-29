@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   pitchFr:
-    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants.",
+    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu PME et ETI artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants.",
+    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu PME et ETI artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Roquette-sur-Siagne (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et petites industries de l'arrière-pays cannois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Roquette-sur-Siagne (06). Nous accompagnons tous types d'activités : PME du BTP, commerçants, professions libérales, PME services et petites industries de l'arrière-pays cannois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Roquette-sur-Siagne (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et petites industries de l'arrière-pays cannois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Roquette-sur-Siagne (06). Nous accompagnons tous types d'activités : PME du BTP, commerçants, professions libérales, PME services et petites industries de l'arrière-pays cannois.",
   seoHook: "petite industrie",
   ecosystemFr:
     "La Roquette-sur-Siagne est une commune de l'arrière-pays cannois, traversée par la Siagne. Tissu d'artisans BTP, petite industrie, commerces de proximité et professions libérales. Cadre résidentiel prisé entre Cannes (10 min) et Grasse (15 min). Zone artisanale active avec PME diversifiées.",
@@ -22,7 +22,7 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   distancesEn:
     "Cannes à 10 min. Grasse à 15 min. Nice centre à 35 min (A8). Aéroport Nice-Côte d'Azur à 30 min. Pégomas à 5 min. Gare La Bocca (Cannes ouest) à 10 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Petite industrie & zone artisanale",
     "Commerce de proximité",
     "Professions libérales",
@@ -30,16 +30,16 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux PME du BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
+      en: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux PME du BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Roquette-sur-Siagne : formats adaptés à l'atelier artisan, PME zone artisanale ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à La Roquette-sur-Siagne : formats adaptés à l'atelier artisan, PME zone artisanale ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à La Roquette-sur-Siagne : automatisation devis BTP, gestion production artisanale, agents conversationnels client, CRM augmenté, classification documents. Adapté aux TPE/PME arrière-pays cannois.",
-      en: "Implémentation IA à La Roquette-sur-Siagne : automatisation devis BTP, gestion production artisanale, agents conversationnels client, CRM augmenté, classification documents. Adapté aux TPE/PME arrière-pays cannois.",
+      fr: "Implémentation IA à La Roquette-sur-Siagne : automatisation devis BTP, gestion production artisanale, agents conversationnels client, CRM augmenté, classification documents. Adapté aux PME et ETI arrière-pays cannois.",
+      en: "Implémentation IA à La Roquette-sur-Siagne : automatisation devis BTP, gestion production artisanale, agents conversationnels client, CRM augmenté, classification documents. Adapté aux PME et ETI arrière-pays cannois.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à La Roquette-sur-Siagne : sessions dans votre atelier, zone artisanale, commerce ou en visio. Artisans BTP, gérants PME et professions libérales souhaitant maîtriser l'IA.",
@@ -52,8 +52,8 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Roquette-sur-Siagne et dans toute la vallée de la Siagne (Pégomas, Mouans-Sartoux, Auribeau-sur-Siagne). Couverture arrière-pays cannois et accès rapide depuis Cannes (10 min) ou Grasse (15 min).",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans BTP de la commune ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de La Roquette-sur-Siagne sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Travaillez-vous avec les PME du BTP de la commune ?",
+      a: "Oui, nous accompagnons les PME du BTP de La Roquette-sur-Siagne sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les PME de la zone artisanale ?",

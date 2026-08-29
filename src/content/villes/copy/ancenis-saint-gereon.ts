@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
   pitchFr:
-    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA répond aux besoins de toutes les entreprises du bassin ancenien.",
+    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu PME artisanales, PME viticoles et industrielles. Axion-IA répond aux besoins de toutes les entreprises du bassin ancenien.",
   pitchEn:
-    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA répond aux besoins de toutes les entreprises du bassin ancenien.",
+    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu PME artisanales, PME viticoles et industrielles. Axion-IA répond aux besoins de toutes les entreprises du bassin ancenien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons PME artisanales, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons PME artisanales, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit sur place sur mesure.",
   seoHook: "bassin ancenien",
   ecosystemFr:
     "Ancenis-Saint-Géréon (11 600 hab) est une commune nouvelle en bords de Loire, sous-préfecture historique de Loire-Atlantique est. Vignoble (coteaux d'Ancenis), agroalimentaire, industrie, logistique (axe Nantes-Angers), commerces et professions libérales. Proximité Nantes (40 min), Angers (45 min). Carrefour fluvial et routier dynamique (A11/N23).",
@@ -30,8 +30,8 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ancenis-Saint-Géréon : diagnostic adapté aux TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis en bords de Loire. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ancenis-Saint-Géréon : diagnostic adapté aux TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis en bords de Loire. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ancenis-Saint-Géréon : diagnostic adapté aux PME artisanales, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis en bords de Loire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ancenis-Saint-Géréon : diagnostic adapté aux PME artisanales, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis en bords de Loire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ancenis-Saint-Géréon : formats adaptés aux domaines viticoles, PME agroalimentaires, sociétés de logistique et commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
       en: "Implémentation IA à Ancenis-Saint-Géréon : traçabilité viticole, gestion qualité agroalimentaire, optimisation logistique, CRM clients et agents conversationnels pour les PME du pays d'Ancenis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ancenis-Saint-Géréon : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, viticulteurs, gérants PME agroalimentaires et professions libérales du pays d'Ancenis.",
-      en: "Coaching 1-to-1 à Ancenis-Saint-Géréon : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, viticulteurs, gérants PME agroalimentaires et professions libérales du pays d'Ancenis.",
+      fr: "Coaching 1-to-1 à Ancenis-Saint-Géréon : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, viticulteurs, gérants PME agroalimentaires et professions libérales du pays d'Ancenis.",
+      en: "Coaching 1-to-1 à Ancenis-Saint-Géréon : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, viticulteurs, gérants PME agroalimentaires et professions libérales du pays d'Ancenis.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ancenis  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE d'Ancenis-Saint-Géréon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME d'Ancenis-Saint-Géréon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles du pays d'Ancenis ?",
@@ -65,7 +65,7 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Ancenis ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Ancenis-Saint-Géréon. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Ancenis-Saint-Géréon. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

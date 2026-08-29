@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BELLEVIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
+    "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de PME artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
+    "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de PME artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
   seoHook: "industrielles zones & artisanat construction",
   ecosystemFr:
     "Bellevigny est une commune nouvelle vendéenne (fusion 2019 Belleville-sur-Vie / Saligny), en périphérie nord de La Roche-sur-Yon. Zones d'activités artisanales et industrielles, agriculture bocagère, commerces. Croissance démographique dynamique. La Roche centre à 10 min, Nantes à 50 min.",
@@ -30,20 +30,20 @@ export const BELLEVIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bellevigny : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Bellevigny : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Bellevigny : diagnostic adapté aux PME artisanales, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Bellevigny : diagnostic adapté aux PME artisanales, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bellevigny : formats adaptés aux PME industrielles, artisans BTP, exploitations agricoles et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
       en: "Interventions IA sur site à Bellevigny : formats adaptés aux PME industrielles, artisans BTP, exploitations agricoles et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Bellevigny : automatisation PME industrielles, gestion chantiers BTP, optimisation exploitation agricole, outils prédictifs commerces. Adapté TPE/PME agglo yonnaise.",
-      en: "Implémentation IA à Bellevigny : automatisation PME industrielles, gestion chantiers BTP, optimisation exploitation agricole, outils prédictifs commerces. Adapté TPE/PME agglo yonnaise.",
+      fr: "Implémentation IA à Bellevigny : automatisation PME industrielles, gestion chantiers BTP, optimisation exploitation agricole, outils prédictifs commerces. Adapté PME et ETI agglo yonnaise.",
+      en: "Implémentation IA à Bellevigny : automatisation PME industrielles, gestion chantiers BTP, optimisation exploitation agricole, outils prédictifs commerces. Adapté PME et ETI agglo yonnaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bellevigny : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie, artisanat, agriculture et commerce agglo La Roche-sur-Yon.",
-      en: "Coaching 1-to-1 à Bellevigny : sessions dans vos locaux ou en visio. Dirigeants TPE/PME industrie, artisanat, agriculture et commerce agglo La Roche-sur-Yon.",
+      fr: "Coaching 1-to-1 à Bellevigny : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie, artisanat, agriculture et commerce agglo La Roche-sur-Yon.",
+      en: "Coaching 1-to-1 à Bellevigny : sessions dans vos locaux ou en visio. Dirigeants PME et ETI industrie, artisanat, agriculture et commerce agglo La Roche-sur-Yon.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const BELLEVIGNY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bellevigny et dans toute l'agglomération de La Roche-sur-Yon. Centre-ville à 10 min. Déplacements sur site couvrent l'agglo et le bocage vendéen.",
     },
     {
-      q: "Quels services IA pour les TPE et PME de Bellevigny ?",
+      q: "Quels services IA pour les PME et ETI de Bellevigny ?",
       a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux PME industrielles, artisans, exploitants agricoles et commerçants.",
     },
     {
@@ -61,7 +61,7 @@ export const BELLEVIGNY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bellevigny  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Bellevigny ?",

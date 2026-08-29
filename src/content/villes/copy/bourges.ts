@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOURGES_COPY: VilleCopy = {
   pitchFr:
-    "Bourges (18, Cher), préfecture au patrimoine majeur — cathédrale Saint-Étienne classée UNESCO et palais Jacques Cœur — est aussi un pôle national de l'armement terrestre et missilier (MBDA, KNDS/Nexter) et la ville du festival Printemps de Bourges. Autour de ces grands donneurs d'ordre gravite un dense réseau de TPE et PME : sous-traitants industriels, services, commerce, tourisme culturel. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
+    "Bourges (18, Cher), préfecture au patrimoine majeur — cathédrale Saint-Étienne classée UNESCO et palais Jacques Cœur — est aussi un pôle national de l'armement terrestre et missilier (MBDA, KNDS/Nexter) et la ville du festival Printemps de Bourges. Autour de ces grands donneurs d'ordre gravite un dense réseau de PME et ETI : sous-traitants industriels, services, commerce, tourisme culturel. Axion-IA accompagne en priorité ces les PME puis les ETI, les grands groupes en complément.",
   pitchEn:
-    "Bourges (18, Cher), préfecture au patrimoine majeur — cathédrale Saint-Étienne classée UNESCO et palais Jacques Cœur — est aussi un pôle national de l'armement terrestre et missilier (MBDA, KNDS/Nexter) et la ville du festival Printemps de Bourges. Autour de ces grands donneurs d'ordre gravite un dense réseau de TPE et PME : sous-traitants industriels, services, commerce, tourisme culturel. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
+    "Bourges (18, Cher), préfecture au patrimoine majeur — cathédrale Saint-Étienne classée UNESCO et palais Jacques Cœur — est aussi un pôle national de l'armement terrestre et missilier (MBDA, KNDS/Nexter) et la ville du festival Printemps de Bourges. Autour de ces grands donneurs d'ordre gravite un dense réseau de PME et ETI : sous-traitants industriels, services, commerce, tourisme culturel. Axion-IA accompagne en priorité ces les PME puis les ETI, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourges (18) et dans le Cher. Nous accompagnons en priorité les TPE — sous-traitants industriels, artisans, commerces, tourisme culturel — puis les PME de la mécanique de précision et des services, l'IA des grands groupes défense (MBDA, KNDS/Nexter) restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, devis, relation client — avant tout déploiement, sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourges (18) et dans le Cher. Nous accompagnons en priorité les PME — sous-traitants industriels, artisans, commerces, tourisme culturel — puis les PME de la mécanique de précision et des services, l'IA des grands groupes défense (MBDA, KNDS/Nexter) restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, devis, relation client — avant tout déploiement, sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourges (18) et dans le Cher. Nous accompagnons en priorité les TPE — sous-traitants industriels, artisans, commerces, tourisme culturel — puis les PME de la mécanique de précision et des services, l'IA des grands groupes défense (MBDA, KNDS/Nexter) restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, devis, relation client — avant tout déploiement, sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bourges (18) et dans le Cher. Nous accompagnons en priorité les PME — sous-traitants industriels, artisans, commerces, tourisme culturel — puis les PME de la mécanique de précision et des services, l'IA des grands groupes défense (MBDA, KNDS/Nexter) restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, devis, relation client — avant tout déploiement, sur site ou en visio.",
   seoHook: "défense, industrie & patrimoine",
   ecosystemFr:
-    "Bourges est un pôle français de l'armement terrestre et missilier (MBDA, KNDS/Nexter, site d'essais), entouré de PME et TPE de mécanique de précision, métallurgie et services techniques. La ville cultive un fort attrait patrimonial et culturel : cathédrale UNESCO, palais Jacques Cœur, festival Printemps de Bourges, qui irrigue commerce, hôtellerie et tourisme. Le technopôle Lahitolle et le pôle S2E2 soutiennent l'innovation locale.",
+    "Bourges est un pôle français de l'armement terrestre et missilier (MBDA, KNDS/Nexter, site d'essais), entouré de PME et ETI de mécanique de précision, métallurgie et services techniques. La ville cultive un fort attrait patrimonial et culturel : cathédrale UNESCO, palais Jacques Cœur, festival Printemps de Bourges, qui irrigue commerce, hôtellerie et tourisme. Le technopôle Lahitolle et le pôle S2E2 soutiennent l'innovation locale.",
   ecosystemEn:
-    "Bourges est un pôle français de l'armement terrestre et missilier (MBDA, KNDS/Nexter, site d'essais), entouré de PME et TPE de mécanique de précision, métallurgie et services techniques. La ville cultive un fort attrait patrimonial et culturel : cathédrale UNESCO, palais Jacques Cœur, festival Printemps de Bourges, qui irrigue commerce, hôtellerie et tourisme. Le technopôle Lahitolle et le pôle S2E2 soutiennent l'innovation locale.",
+    "Bourges est un pôle français de l'armement terrestre et missilier (MBDA, KNDS/Nexter, site d'essais), entouré de PME et ETI de mécanique de précision, métallurgie et services techniques. La ville cultive un fort attrait patrimonial et culturel : cathédrale UNESCO, palais Jacques Cœur, festival Printemps de Bourges, qui irrigue commerce, hôtellerie et tourisme. Le technopôle Lahitolle et le pôle S2E2 soutiennent l'innovation locale.",
   distancesFr:
     "Paris à 2h par la route. Gare de Bourges reliée à Paris-Bercy en 2h env. Gare TGV de Vierzon à 35 min. Aéroport de Châteauroux-Centre à 1h. A71 vers Orléans et Clermont-Ferrand.",
   distancesEn:
@@ -30,20 +30,20 @@ export const BOURGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourges : diagnostic ciblé pour TPE sous-traitantes industrielles, PME de mécanique de précision et acteurs du tourisme culturel, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
-      en: "Audit IA à Bourges : diagnostic ciblé pour TPE sous-traitantes industrielles, PME de mécanique de précision et acteurs du tourisme culturel, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      fr: "Audit IA à Bourges : diagnostic ciblé pour PME sous-traitantes industrielles, PME de mécanique de précision et acteurs du tourisme culturel, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
+      en: "Audit IA à Bourges : diagnostic ciblé pour PME sous-traitantes industrielles, PME de mécanique de précision et acteurs du tourisme culturel, aboutissant à un cas d'usage prioritaire et un ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourges : ateliers pratiques pour l'atelier industriel, le sous-traitant défense, le commerce ou l'acteur touristique. Vos collaborateurs sont autonomes ensuite.",
       en: "Interventions IA sur site à Bourges : ateliers pratiques pour l'atelier industriel, le sous-traitant défense, le commerce ou l'acteur touristique. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémentation IA à Bourges : contrôle qualité visuel, gestion documentaire technique et conformité, devis, agents conversationnels et CRM augmentés pour TPE-PME du Cher.",
-      en: "Implémentation IA à Bourges : contrôle qualité visuel, gestion documentaire technique et conformité, devis, agents conversationnels et CRM augmentés pour TPE-PME du Cher.",
+      fr: "Implémentation IA à Bourges : contrôle qualité visuel, gestion documentaire technique et conformité, devis, agents conversationnels et CRM augmentés pour PME et ETI du Cher.",
+      en: "Implémentation IA à Bourges : contrôle qualité visuel, gestion documentaire technique et conformité, devis, agents conversationnels et CRM augmentés pour PME et ETI du Cher.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bourges : sessions pour dirigeants de TPE industrielles, PME de précision et acteurs du tourisme culturel, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Bourges : sessions pour dirigeants de TPE industrielles, PME de précision et acteurs du tourisme culturel, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Bourges : sessions pour dirigeants de PME industrielles, PME de précision et acteurs du tourisme culturel, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Bourges : sessions pour dirigeants de PME industrielles, PME de précision et acteurs du tourisme culturel, dans vos locaux ou en visio.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Bourges : vitrines industrielles, portails de réservation touristique et billetterie événementielle enrichis d'IA — contenus patrimoniaux automatisés, devis et prise de contact qualifiée.",
@@ -88,12 +88,6 @@ export const BOURGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de contact qualifiée) sur le site existant d'un artisan, commerçant du centre-ville ou hôtelier-restaurateur de Bourges, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -175,12 +169,6 @@ export const BOURGES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, qualified contact) onto the existing site of a Bourges craftsperson, city-centre shop or hotel-restaurant, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / application",
             detail:
@@ -234,7 +222,7 @@ export const BOURGES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les sous-traitants de la défense à Bourges ?",
-      a: "Oui. Autour de MBDA et KNDS/Nexter gravitent de nombreuses TPE et PME de mécanique de précision. L'IA y sert le contrôle qualité visuel, la gestion documentaire technique, la conformité et les devis. Les grands groupes eux-mêmes restent un complément.",
+      a: "Oui. Autour de MBDA et KNDS/Nexter gravitent de nombreuses PME et ETI de mécanique de précision. L'IA y sert le contrôle qualité visuel, la gestion documentaire technique, la conformité et les devis. Les grands groupes eux-mêmes restent un complément.",
     },
     {
       q: "Aidez-vous les acteurs du tourisme et de la culture à Bourges ?",
@@ -242,7 +230,7 @@ export const BOURGES_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Bourges ?",
-      a: "Nos tarifs sont publics et calibrés selon la taille, de la TPE à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
+      a: "Nos tarifs sont publics et calibrés selon la taille, de la PME à la PME. L'audit livre un cas d'usage prioritaire et un ROI chiffré avant tout déploiement.",
     },
     {
       q: "Comment se déroule une intervention IA à Bourges ?",

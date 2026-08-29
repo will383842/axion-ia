@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const EU_COPY: VilleCopy = {
   pitchFr:
-    "Eu (76), cite historique de Seine-Maritime, reunit pres de 6 500 habitants. Dotee de son chateau royal et de sa foret domaniale, la ville est un pole de services et de tourisme patrimonial aux portes du Treport. TPE de services, PME commerciales, artisans et acteurs du tourisme. Axion-IA y intervient pour tous types d'activites.",
+    "Eu (76), cite historique de Seine-Maritime, reunit pres de 6 500 habitants. Dotee de son chateau royal et de sa foret domaniale, la ville est un pole de services et de tourisme patrimonial aux portes du Treport. PME de services, PME commerciales, artisans et acteurs du tourisme. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Eu (76), cite historique de Seine-Maritime, reunit pres de 6 500 habitants. Dotee de son chateau royal et de sa foret domaniale, la ville est un pole de services et de tourisme patrimonial aux portes du Treport. TPE de services, PME commerciales, artisans et acteurs du tourisme. Axion-IA y intervient pour tous types d'activites.",
+    "Eu (76), cite historique de Seine-Maritime, reunit pres de 6 500 habitants. Dotee de son chateau royal et de sa foret domaniale, la ville est un pole de services et de tourisme patrimonial aux portes du Treport. PME de services, PME commerciales, artisans et acteurs du tourisme. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "patrimoine, tourisme & foret",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Eu (76). Nous accompagnons les TPE, PME et independants de la cote du Treport : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Eu (76). Nous accompagnons les PME, ETI et independants de la cote du Treport : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Eu (76). Nous accompagnons les TPE, PME et independants de la cote du Treport : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Eu (76). Nous accompagnons les PME, ETI et independants de la cote du Treport : commercants, artisans, acteurs du tourisme patrimonial et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Eu est une cite historique situee aux portes du Treport et de Mers-les-Bains, dotee d'un chateau royal (musee Louis-Philippe) et d'une foret domaniale. Pole de services pour le bassin local : commerces, professions liberales, TPE de services, artisanat, tourisme patrimonial et balneaire.",
+    "Eu est une cite historique situee aux portes du Treport et de Mers-les-Bains, dotee d'un chateau royal (musee Louis-Philippe) et d'une foret domaniale. Pole de services pour le bassin local : commerces, professions liberales, PME de services, artisanat, tourisme patrimonial et balneaire.",
   ecosystemEn:
-    "Eu est une cite historique situee aux portes du Treport et de Mers-les-Bains, dotee d'un chateau royal (musee Louis-Philippe) et d'une foret domaniale. Pole de services pour le bassin local : commerces, professions liberales, TPE de services, artisanat, tourisme patrimonial et balneaire.",
+    "Eu est une cite historique situee aux portes du Treport et de Mers-les-Bains, dotee d'un chateau royal (musee Louis-Philippe) et d'une foret domaniale. Pole de services pour le bassin local : commerces, professions liberales, PME de services, artisanat, tourisme patrimonial et balneaire.",
   distancesFr:
     "Le Treport a 5 min. Dieppe a 30 min. Abbeville a 30 min. Gare d'Eu (TER Le Treport-Paris 3h). Rouen a 1h30. Amiens a 1h15. Paris a 2h30 par A28/A16.",
   distancesEn:
@@ -24,14 +24,14 @@ export const EU_COPY: VilleCopy = {
   topSectorsNaf: [
     "Tourisme & patrimoine",
     "Commerce de proximite & detail",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Artisanat BTP & renovation",
     "Professions liberales & sante",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Eu : diagnostic adapte aux TPE de services, commercants et acteurs du tourisme patrimonial de la cote du Treport. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Eu : diagnostic adapte aux TPE de services, commercants et acteurs du tourisme patrimonial de la cote du Treport. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Eu : diagnostic adapte aux PME de services, commercants et acteurs du tourisme patrimonial de la cote du Treport. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Eu : diagnostic adapte aux PME de services, commercants et acteurs du tourisme patrimonial de la cote du Treport. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Eu : formations adaptees aux commercants, hebergeurs touristiques, artisans et professions liberales. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const EU_COPY: VilleCopy = {
       en: "Implementation IA a Eu : automatisation reservations tourisme, agents IA accueil visiteurs, CRM augmentes pour commercants et PME du bassin Eu-Treport.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Eu : accompagnement personnalise dirigeants TPE, gerants hebergements, commercants et professions liberales de la cote du Treport.",
-      en: "Coaching 1-to-1 a Eu : accompagnement personnalise dirigeants TPE, gerants hebergements, commercants et professions liberales de la cote du Treport.",
+      fr: "Coaching 1-to-1 a Eu : accompagnement personnalise dirigeants de PME et d'ETI, gerants hebergements, commercants et professions liberales de la cote du Treport.",
+      en: "Coaching 1-to-1 a Eu : accompagnement personnalise dirigeants de PME et d'ETI, gerants hebergements, commercants et professions liberales de la cote du Treport.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const EU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commercants d'Eu ?",
-      a: "Oui, nous accompagnons les commercants d'Eu : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Solutions adaptees petites structures.",
+      a: "Oui, nous accompagnons les commercants d'Eu : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Solutions adaptees PME.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Eu ?",

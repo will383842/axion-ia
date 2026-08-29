@@ -9,29 +9,29 @@ export const LE_PIAN_MEDOC_COPY: VilleCopy = {
   pitchEn:
     "Le Pian-Médoc (33), commune résidentielle entre Bordeaux Métropole nord et le Médoc viticole, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces de proximité et professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'entrée du Médoc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pian-Médoc (33). Nous accompagnons PME et ETI de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pian-Médoc (33). Nous accompagnons PME et ETI de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit sur place sur mesure.",
   seoHook: "viticulture haut-médoc & services",
   ecosystemFr:
-    "Le Pian-Médoc se situe à l'entrée du Médoc viticole. Vignoble AOC Haut-Médoc, tissu TPE artisanat BTP (croissance résidentielle), commerces de proximité et professions libérales. Accès rocade A630 et route du Médoc D1215.",
+    "Le Pian-Médoc se situe à l'entrée du Médoc viticole. Vignoble AOC Haut-Médoc, tissu PME du BTP (croissance résidentielle), commerces de proximité et professions libérales. Accès rocade A630 et route du Médoc D1215.",
   ecosystemEn:
-    "Le Pian-Médoc se situe à l'entrée du Médoc viticole. Vignoble AOC Haut-Médoc, tissu TPE artisanat BTP (croissance résidentielle), commerces de proximité et professions libérales. Accès rocade A630 et route du Médoc D1215.",
+    "Le Pian-Médoc se situe à l'entrée du Médoc viticole. Vignoble AOC Haut-Médoc, tissu PME du BTP (croissance résidentielle), commerces de proximité et professions libérales. Accès rocade A630 et route du Médoc D1215.",
   distancesFr:
     "Bordeaux centre à 25 min (rocade). Aéroport Bordeaux-Mérignac à 20 min. Gare Bordeaux Saint-Jean à 30 min. Le Taillan-Médoc à 10 min.",
   distancesEn:
     "Bordeaux centre à 25 min (rocade). Aéroport Bordeaux-Mérignac à 20 min. Gare Bordeaux Saint-Jean à 30 min. Le Taillan-Médoc à 10 min.",
   topSectorsNaf: [
     "Viticulture AOC Haut-Médoc",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
     "PME de services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pian-Médoc : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales de l'entrée du Médoc. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA au Pian-Médoc : diagnostic pour vignerons, TPE artisans BTP, commerçants et professions libérales de l'entrée du Médoc. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Pian-Médoc : diagnostic pour vignerons, PME du BTP, commerçants et professions libérales de l'entrée du Médoc. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA au Pian-Médoc : diagnostic pour vignerons, PME du BTP, commerçants et professions libérales de l'entrée du Médoc. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pian-Médoc : ateliers adaptés aux chais, ateliers BTP et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,7 +53,7 @@ export const LE_PIAN_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Pian-Médoc ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et artisans de l'entrée du Médoc.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME viticoles et artisans de l'entrée du Médoc.",
     },
     {
       q: "Accompagnez-vous les vignerons du Haut-Médoc ?",
@@ -61,7 +61,7 @@ export const LE_PIAN_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans BTP ?",
-      a: "Pour les TPE artisans BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
+      a: "Pour les PME du BTP : audit sur place {{price:audit-flash|flat}}, intervention 1 journée, coaching 1-to-1. Automatisation devis, gestion planning, agents IA relance clients.",
     },
     {
       q: "Comment se déroule une mission au Pian-Médoc ?",

@@ -6,7 +6,7 @@
 //   - Aucune mention de frais de déplacement, logement, repas ou trajet.
 //   - Durée minimale = 1 journée.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //
@@ -20,7 +20,7 @@ import type { VilleCopy } from "./types";
 
 export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Boulogne-Billancourt regroupe 21 158 établissements actifs, le siège mondial de Renault (fondé ici en 1898), celui de TF1 et de Boursorama, le quartier d'affaires du Trapèze — première ZAC tertiaire d'Île-de-France hors La Défense — et un district médias/finance au Quai du Point-du-Jour. Axion-IA y intervient sur site, des TPE boulonnaises aux grandes directions IA des sièges de la proche couronne parisienne.",
+    "Boulogne-Billancourt regroupe 21 158 établissements actifs, le siège mondial de Renault (fondé ici en 1898), celui de TF1 et de Boursorama, le quartier d'affaires du Trapèze — première ZAC tertiaire d'Île-de-France hors La Défense — et un district médias/finance au Quai du Point-du-Jour. Axion-IA y intervient sur site, des PME boulonnaises aux grandes directions IA des sièges de la proche couronne parisienne.",
   pitchEn:
     "Boulogne-Billancourt hosts 21,158 active businesses, the worldwide HQ of Renault (founded here in 1898), TF1 and Boursorama HQs, the Trapèze business district — Île-de-France's leading business zone outside La Défense — and a media/finance cluster at Quai du Point-du-Jour. Axion-IA delivers on site, from Boulogne micro-businesses to large-enterprise AI leadership at the Paris inner-ring HQs.",
 
@@ -48,7 +48,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boulogne-Billancourt (92) sur site — quartier Trapèze, Île Seguin, Quai du Point-du-Jour, centre-ville et communes limitrophes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves). Nous accompagnons les TPE, PME, ETI et grandes entreprises boulonnaises (automobile, audiovisuel, finance, conseil, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boulogne-Billancourt (92) sur site — quartier Trapèze, Île Seguin, Quai du Point-du-Jour, centre-ville et communes limitrophes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves). Nous accompagnons les PME, ETI et grands groupes boulonnais (automobile, audiovisuel, finance, conseil, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Boulogne-Billancourt (92) on site — Trapèze district, Île Seguin, Quai du Point-du-Jour, town centre and surrounding communes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves). We support Boulogne micro-businesses, SMEs, mid-caps and large enterprises (automotive, media, finance, consulting, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -78,7 +78,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise boulonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux directions IA des sièges du Trapèze, de TF1 et de Renault Group.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise boulonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du centre-ville aux directions IA des sièges du Trapèze, de TF1 et de Renault Group.",
         whyHere: [
           "Boulogne-Billancourt est l'un de nos principaux terrains d'intervention en proche couronne parisienne : la concentration de sièges de grands groupes (Renault, TF1, Boursorama) et de PME conseil génère une forte demande d'audits IA opérationnels.",
           "Tissu B2B très sectorisé dans nos missions boulonnaises : grands groupes du Trapèze et du Quai du Point-du-Jour, PME conseil et services informatiques, startups et scale-ups numériques, cabinets de conseil proches Paris 15e/16e.",
@@ -115,12 +115,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises et cabinets boulonnais jusqu'à une dizaine de collaborateurs — centre-ville, quartiers résidentiels, Pont-de-Sèvres.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -221,12 +215,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Boulogne freelancers, micro-firms and practices up to about ten staff — town centre, residential districts, Pont-de-Sèvres.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -330,12 +318,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, cabinets et petites agences boulonnaises jusqu'à une dizaine de collaborateurs — centre-ville, Pont-de-Sèvres, quartiers résidentiels.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -435,12 +417,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group training",
-            detail:
-              "Ideal Boulogne freelancers, practices and small agencies up to about ten staff — town centre, Pont-de-Sèvres, residential districts.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -544,12 +520,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants boulonnais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -585,7 +555,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Boulogne-Billancourt ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -649,12 +619,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks — quote automation, meeting minutes, lead qualification for Boulogne micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -758,12 +722,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Session individuelle ou pack",
-            detail:
-              "Idéal pour indépendants, consultants et dirigeants de TPE boulonnaises qui veulent intégrer l'IA dans leur pratique sans passer par un programme collectif.",
-          },
-          {
             sizeLabel: "PME",
             price: "Pack dirigeant ou manager clé",
             detail:
@@ -863,12 +821,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Individual session or pack",
-            detail:
-              "Ideal for Boulogne freelancers, consultants and micro-business owners who want to integrate AI into their practice without going through a group programme.",
-          },
           {
             sizeLabel: "SME",
             price: "Executive or key manager pack",
@@ -970,12 +922,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1056,12 +1002,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -1111,7 +1051,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Boulogne-Billancourt ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Boulogne-Billancourt et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Boulogne-Billancourt et partout en France.",
     },
     {
       q: "Avez-vous des cas clients à Boulogne-Billancourt ou dans le bassin ouest parisien ?",

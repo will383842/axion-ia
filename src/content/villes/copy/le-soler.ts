@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const LE_SOLER_COPY: VilleCopy = {
   pitchFr:
-    "Le Soler (66), commune résidentielle en périphérie sud de Perpignan sur la vallée de la Têt, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, agriculture. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération perpignanaise.",
+    "Le Soler (66), commune résidentielle en périphérie sud de Perpignan sur la vallée de la Têt, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME tertiaires, commerces, zones d'activités, agriculture. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération perpignanaise.",
   pitchEn:
-    "Le Soler (66), commune résidentielle en périphérie sud de Perpignan sur la vallée de la Têt, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, agriculture. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération perpignanaise.",
+    "Le Soler (66), commune résidentielle en périphérie sud de Perpignan sur la vallée de la Têt, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME tertiaires, commerces, zones d'activités, agriculture. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération perpignanaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Soler (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Soler (66). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Soler (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Soler (66). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   seoHook: "vallée têt",
   ecosystemFr:
-    "Le Soler est une commune résidentielle dynamique au sud de Perpignan, en bordure de la Têt. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME tertiaires, TPE artisanat BTP, agriculture (arboriculture, maraîchage), commerces de proximité.",
+    "Le Soler est une commune résidentielle dynamique au sud de Perpignan, en bordure de la Têt. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME tertiaires, PME du BTP, agriculture (arboriculture, maraîchage), commerces de proximité.",
   ecosystemEn:
-    "Le Soler est une commune résidentielle dynamique au sud de Perpignan, en bordure de la Têt. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME tertiaires, TPE artisanat BTP, agriculture (arboriculture, maraîchage), commerces de proximité.",
+    "Le Soler est une commune résidentielle dynamique au sud de Perpignan, en bordure de la Têt. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME tertiaires, PME du BTP, agriculture (arboriculture, maraîchage), commerces de proximité.",
   distancesFr:
     "Perpignan centre à 10 min. Thuir à 8 min. Aéroport Perpignan-Rivesaltes à 15 min. Gare TGV Perpignan à 12 min. Toulouges à 5 min.",
   distancesEn:
     "Perpignan centre à 10 min. Thuir à 8 min. Aéroport Perpignan-Rivesaltes à 15 min. Gare TGV Perpignan à 12 min. Toulouges à 5 min.",
   topSectorsNaf: [
     "PME tertiaires périurbaines",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture & arboriculture",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Soler : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA au Soler : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA au Soler : diagnostic adapté aux PME artisanales, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA au Soler : diagnostic adapté aux PME artisanales, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Soler : formats adaptés au bureau, atelier, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LE_SOLER_COPY: VilleCopy = {
       en: "Implémentation IA au Soler : agents conversationnels B2B, automatisation devis BTP, classification photos cultures, CRM augmentés. Perpignan Méditerranée Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Soler : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants PME, artisans, agriculteurs, commerçants, gérants TPE de l'agglo Perpignan sud.",
-      en: "Coaching 1-to-1 au Soler : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants PME, artisans, agriculteurs, commerçants, gérants TPE de l'agglo Perpignan sud.",
+      fr: "Coaching 1-to-1 au Soler : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants PME, artisans, agriculteurs, commerçants, gérants PME de l'agglo Perpignan sud.",
+      en: "Coaching 1-to-1 au Soler : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants PME, artisans, agriculteurs, commerçants, gérants PME de l'agglo Perpignan sud.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LE_SOLER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs et arboriculteurs du Soler et de la vallée de la Têt : tri qualité fruits par vision, prédiction récoltes, traçabilité, vente directe e-commerce.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants au Soler, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce au Soler, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion planning.",
     },
     {
       q: "Comment se déroule une mission au Soler ?",

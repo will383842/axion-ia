@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATELLERAULT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Châtellerault (86). Héritière de la Manufacture d'armes (MAC), la ville vit aujourd'hui de l'équipement automobile, de la fonderie et de la sous-traitance aéronautique. Nous outillons ateliers, bureaux d'études et commerces du bassin de la Vienne avec une IA concrète et mesurée.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Châtellerault (86). Héritière de la Manufacture d'armes (MAC), la ville vit aujourd'hui de l'équipement automobile, de la fonderie et de la sous-traitance aéronautique. Nous outillons ateliers, bureaux d'études et commerces du bassin de la Vienne avec une IA concrète et mesurée.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Châtellerault (86). Héritière de la Manufacture d'armes (MAC), la ville vit aujourd'hui de l'équipement automobile, de la fonderie et de la sous-traitance aéronautique. Nous outillons ateliers, bureaux d'études et commerces du bassin de la Vienne avec une IA concrète et mesurée.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Châtellerault (86). Héritière de la Manufacture d'armes (MAC), la ville vit aujourd'hui de l'équipement automobile, de la fonderie et de la sous-traitance aéronautique. Nous outillons ateliers, bureaux d'études et commerces du bassin de la Vienne avec une IA concrète et mesurée.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les TPE puis les PME de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Poitiers. Les ETI restent un cas plus marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les PME puis les ETI de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Poitiers. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les TPE puis les PME de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Poitiers. Les ETI restent un cas plus marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtellerault (86), dans la Vienne. Nous accompagnons en priorité les PME puis les ETI de la ville et de la zone industrielle Nord : fonderies, équipementiers automobile, sous-traitants aéronautique, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Poitiers. Les grands groupes complètent ce socle.",
   seoHook: "automobile & fonderie",
   ecosystemFr:
-    "Châtellerault, deuxième ville de la Vienne, conserve un fort ADN industriel hérité de la Manufacture d'armes. La zone industrielle Nord concentre fonderies, équipementiers automobile et sous-traitants aéronautique, autour d'un tissu dense de TPE artisanales, de bureaux d'études et de commerces. Le site de l'ancienne MAC et la reconversion tertiaire ouvrent un terrain idéal pour des automatisations IA pragmatiques au service des petites structures locales.",
+    "Châtellerault, deuxième ville de la Vienne, conserve un fort ADN industriel hérité de la Manufacture d'armes. La zone industrielle Nord concentre fonderies, équipementiers automobile et sous-traitants aéronautique, autour d'un tissu dense de PME artisanales, de bureaux d'études et de commerces. Le site de l'ancienne MAC et la reconversion tertiaire ouvrent un terrain idéal pour des automatisations IA pragmatiques au service des PME locales.",
   ecosystemEn:
-    "Châtellerault, deuxième ville de la Vienne, conserve un fort ADN industriel hérité de la Manufacture d'armes. La zone industrielle Nord concentre fonderies, équipementiers automobile et sous-traitants aéronautique, autour d'un tissu dense de TPE artisanales, de bureaux d'études et de commerces. Le site de l'ancienne MAC et la reconversion tertiaire ouvrent un terrain idéal pour des automatisations IA pragmatiques au service des petites structures locales.",
+    "Châtellerault, deuxième ville de la Vienne, conserve un fort ADN industriel hérité de la Manufacture d'armes. La zone industrielle Nord concentre fonderies, équipementiers automobile et sous-traitants aéronautique, autour d'un tissu dense de PME artisanales, de bureaux d'études et de commerces. Le site de l'ancienne MAC et la reconversion tertiaire ouvrent un terrain idéal pour des automatisations IA pragmatiques au service des PME locales.",
   distancesFr:
     "Gare de Châtellerault sur la ligne Paris-Bordeaux (TGV Paris-Montparnasse ~1h40). Poitiers et sa gare TGV à 35 km (A10). Aéroport de Poitiers-Biard à 40 km. Accès direct A10, sortie Châtellerault Nord vers la zone industrielle.",
   distancesEn:
@@ -30,20 +30,20 @@ export const CHATELLERAULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtellerault : diagnostic 4h pour fonderies, équipementiers automobile, sous-traitants aéronautique et TPE de la zone industrielle Nord. On repère les tâches ateliers et bureaux d'études à automatiser en priorité.",
-      en: "Audit IA à Châtellerault : diagnostic 4h pour fonderies, équipementiers automobile, sous-traitants aéronautique et TPE de la zone industrielle Nord. On repère les tâches ateliers et bureaux d'études à automatiser en priorité.",
+      fr: "Audit IA à Châtellerault : diagnostic 4h pour fonderies, équipementiers automobile, sous-traitants aéronautique et PME de la zone industrielle Nord. On repère les tâches ateliers et bureaux d'études à automatiser en priorité.",
+      en: "Audit IA à Châtellerault : diagnostic 4h pour fonderies, équipementiers automobile, sous-traitants aéronautique et PME de la zone industrielle Nord. On repère les tâches ateliers et bureaux d'études à automatiser en priorité.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Châtellerault : ateliers concrets pour rendre vos équipes autonomes sur des outils IA configurés pour la fonderie, l'usinage et la gestion d'atelier. Format adapté aux TPE et PME industrielles.",
-      en: "Interventions IA sur site à Châtellerault : ateliers concrets pour rendre vos équipes autonomes sur des outils IA configurés pour la fonderie, l'usinage et la gestion d'atelier. Format adapté aux TPE et PME industrielles.",
+      fr: "Interventions IA sur site à Châtellerault : ateliers concrets pour rendre vos équipes autonomes sur des outils IA configurés pour la fonderie, l'usinage et la gestion d'atelier. Format adapté aux PME et ETI industrielles.",
+      en: "Interventions IA sur site à Châtellerault : ateliers concrets pour rendre vos équipes autonomes sur des outils IA configurés pour la fonderie, l'usinage et la gestion d'atelier. Format adapté aux PME et ETI industrielles.",
     },
     implementation: {
       fr: "Implémentation IA à Châtellerault : automatisation devis et chiffrage, contrôle qualité assisté, agents conversationnels, gestion documentaire pour sous-traitants automobile et aéronautique de la Vienne.",
       en: "Implémentation IA à Châtellerault : automatisation devis et chiffrage, contrôle qualité assisté, agents conversationnels, gestion documentaire pour sous-traitants automobile et aéronautique de la Vienne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châtellerault : sessions individuelles pour dirigeants de TPE et PME industrielles, en atelier ou en visio, pour piloter l'IA sans dépendre d'un prestataire externe.",
-      en: "Coaching 1-to-1 à Châtellerault : sessions individuelles pour dirigeants de TPE et PME industrielles, en atelier ou en visio, pour piloter l'IA sans dépendre d'un prestataire externe.",
+      fr: "Coaching 1-to-1 à Châtellerault : sessions individuelles pour dirigeants de PME et d'ETI industrielles, en atelier ou en visio, pour piloter l'IA sans dépendre d'un prestataire externe.",
+      en: "Coaching 1-to-1 à Châtellerault : sessions individuelles pour dirigeants de PME et d'ETI industrielles, en atelier ou en visio, pour piloter l'IA sans dépendre d'un prestataire externe.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Châtellerault : plateformes et SaaS IA sur mesure pour équipementiers et artisans — configurateurs de devis, portails sous-traitance, suivi commandes connecté à vos outils.",
@@ -88,12 +88,6 @@ export const CHATELLERAULT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté + agent IA",
-            detail:
-              "Pour les artisans, ateliers indépendants et commerces du centre de Châtellerault et des communes du Grand Châtellerault : site mobile-first, prise de contact qualifiée et premières automatisations de devis.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -175,12 +169,6 @@ export const CHATELLERAULT_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase site + AI agent",
-            detail:
-              "For craftspeople, independent workshops and shops in central Châtellerault and Grand Châtellerault communes: mobile-first site, qualified inbound contact and first quote automations.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom trade platform",
             detail:
@@ -230,19 +218,19 @@ export const CHATELLERAULT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtellerault ?",
-      a: "Oui, Axion-IA intervient à Châtellerault et dans tout le bassin de la Vienne. Nos consultants se déplacent depuis Poitiers (35 min) ou Paris (TGV 1h40) pour rencontrer TPE, PME industrielles et artisans sur site.",
+      a: "Oui, Axion-IA intervient à Châtellerault et dans tout le bassin de la Vienne. Nos consultants se déplacent depuis Poitiers (35 min) ou Paris (TGV 1h40) pour rencontrer PME, ETI industrielles et artisans sur site.",
     },
     {
       q: "Combien coûte un audit IA à Châtellerault ?",
-      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. Il s'agit d'un diagnostic court adapté aux TPE et PME de la zone industrielle Nord, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. Il s'agit d'un diagnostic court adapté aux PME et ETI de la zone industrielle Nord, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous les équipementiers automobile et la fonderie ?",
       a: "Oui. Pour les fonderies, équipementiers automobile et sous-traitants aéronautique de Châtellerault, nous automatisons devis, contrôle qualité, gestion documentaire et reporting d'atelier avec une IA fiable.",
     },
     {
-      q: "Quels services pour les TPE artisans de Châtellerault ?",
-      a: "Les TPE artisans et commerçants bénéficient de l'Audit sur place, d'interventions d'une journée et du coaching 1-to-1 : automatisation des devis, relances clients et gestion du planning.",
+      q: "Quels services pour les PME artisanales de Châtellerault ?",
+      a: "Les PME de l'artisanat et du commerce bénéficient de l'Audit sur place, d'interventions d'une journée et du coaching 1-to-1 : automatisation des devis, relances clients et gestion du planning.",
     },
     {
       q: "Comment se déroule une mission à Châtellerault ?",

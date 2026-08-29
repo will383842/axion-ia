@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
   pitchFr:
-    "L'Isle-d'Espagnac (16), commune de l'agglomération d'Angoulême en Charente, pôle commercial majeur du GrandAngoulême avec ses grandes zones d'activités. Tissu de TPE artisans, PME commerciales, enseignes et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
+    "L'Isle-d'Espagnac (16), commune de l'agglomération d'Angoulême en Charente, pôle commercial majeur du GrandAngoulême avec ses grandes zones d'activités. Tissu de PME artisanales, PME commerciales, enseignes et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
   pitchEn:
-    "L'Isle-d'Espagnac (16), commune de l'agglomération d'Angoulême en Charente, pôle commercial majeur du GrandAngoulême avec ses grandes zones d'activités. Tissu de TPE artisans, PME commerciales, enseignes et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
+    "L'Isle-d'Espagnac (16), commune de l'agglomération d'Angoulême en Charente, pôle commercial majeur du GrandAngoulême avec ses grandes zones d'activités. Tissu de PME artisanales, PME commerciales, enseignes et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à L'Isle-d'Espagnac (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, enseignes de distribution, prestataires de services et indépendants de ce pôle commercial stratégique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à L'Isle-d'Espagnac (16). Nous accompagnons tous types d'activités : PME artisanales, PME commerciales, enseignes de distribution, prestataires de services et indépendants de ce pôle commercial stratégique de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à L'Isle-d'Espagnac (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, enseignes de distribution, prestataires de services et indépendants de ce pôle commercial stratégique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à L'Isle-d'Espagnac (16). Nous accompagnons tous types d'activités : PME artisanales, PME commerciales, enseignes de distribution, prestataires de services et indépendants de ce pôle commercial stratégique de l'agglomération d'Angoulême.",
   seoHook: "commerce grande & services aux",
   ecosystemFr:
-    "L'Isle-d'Espagnac est un pôle commercial majeur de l'agglomération GrandAngoulême. Grandes zones d'activités commerciales, enseignes de distribution, PME services et tertiaire, TPE artisans, professions libérales. Position stratégique sur l'axe Angoulême-Limoges, fort dynamisme commercial.",
+    "L'Isle-d'Espagnac est un pôle commercial majeur de l'agglomération GrandAngoulême. Grandes zones d'activités commerciales, enseignes de distribution, PME services et tertiaire, PME artisanales, professions libérales. Position stratégique sur l'axe Angoulême-Limoges, fort dynamisme commercial.",
   ecosystemEn:
-    "L'Isle-d'Espagnac est un pôle commercial majeur de l'agglomération GrandAngoulême. Grandes zones d'activités commerciales, enseignes de distribution, PME services et tertiaire, TPE artisans, professions libérales. Position stratégique sur l'axe Angoulême-Limoges, fort dynamisme commercial.",
+    "L'Isle-d'Espagnac est un pôle commercial majeur de l'agglomération GrandAngoulême. Grandes zones d'activités commerciales, enseignes de distribution, PME services et tertiaire, PME artisanales, professions libérales. Position stratégique sur l'axe Angoulême-Limoges, fort dynamisme commercial.",
   distancesFr:
     "L'Isle-d'Espagnac est à 5 min d'Angoulême centre. Gare TGV d'Angoulême à 10 min (Paris Montparnasse 2h05, Bordeaux 55 min). Aéroport Angoulême-Cognac à 20 min. Axe N141 Angoulême-Limoges.",
   distancesEn:
@@ -24,14 +24,14 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce & grande distribution",
     "Services aux entreprises & tertiaire",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Logistique & transport",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, TPE artisans et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, TPE artisans et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, PME artisanales et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, PME artisanales et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Isle-d'Espagnac : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
       en: "Implémentation IA à L'Isle-d'Espagnac : automatisation gestion stocks distribution, agents conversationnels accueil client, prédiction fréquentation zones commerciales, optimisation logistique livraison.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à L'Isle-d'Espagnac : sessions dans vos locaux commerciaux ou en visio. Dirigeants TPE/PME, responsables enseignes et commerçants de l'agglomération angoumoisine souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à L'Isle-d'Espagnac : sessions dans vos locaux commerciaux ou en visio. Dirigeants TPE/PME, responsables enseignes et commerçants de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à L'Isle-d'Espagnac : sessions dans vos locaux commerciaux ou en visio. Dirigeants PME et ETI, responsables enseignes et commerçants de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à L'Isle-d'Espagnac : sessions dans vos locaux commerciaux ou en visio. Dirigeants PME et ETI, responsables enseignes et commerçants de l'agglomération angoumoisine souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
       a: "Nous accompagnons les enseignes et commerces de L'Isle-d'Espagnac : automatisation gestion stocks, agents conversationnels accueil client, prédiction fréquentation, marketing IA personnalisé et optimisation merchandising.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME à L'Isle-d'Espagnac ?",
-      a: "Oui, nous accompagnons les TPE artisans, PME commerciales et services de L'Isle-d'Espagnac : automatisation gestion administrative, agents IA relation client, optimisation logistique et outils IA productivité.",
+      q: "Accompagnez-vous les PME et ETI à L'Isle-d'Espagnac ?",
+      a: "Oui, nous accompagnons les PME artisanales, PME commerciales et services de L'Isle-d'Espagnac : automatisation gestion administrative, agents IA relation client, optimisation logistique et outils IA productivité.",
     },
     {
       q: "Quel est le tarif pour un audit IA à L'Isle-d'Espagnac ?",

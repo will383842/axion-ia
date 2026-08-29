@@ -10,7 +10,7 @@
 //     sur les formats interventions.
 //   - Durée minimale : 1 journée. Pas de demi-journée.
 //   - Aucun prix hardcodé : libellés contextuels uniquement.
-//   - Tailles entreprises : TPE / PME / ETI / Grande entreprise (INSEE).
+//   - Tailles entreprises : PME/ETI/grands groupes / Grande entreprise (INSEE).
 //   - ~95 % Axion-IA-centric. ~5 % data INSEE anti-doorway HCU 2024.
 //   - Acteurs réels Dijon : URGO, Amora, BSB, Institut Agro, uB, Vitagora,
 //     ToasterLab, Cité Gastronomie, Climat UNESCO, French Tech BFC.
@@ -20,7 +20,7 @@ import type { VilleCopy } from "./types";
 
 export const DIJON_COPY: VilleCopy = {
   pitchFr:
-    "Dijon regroupe 14 946 établissements actifs, une capitale French Tech labellisée 2023, des sièges industriels (URGO, Amora) et un pôle agroalimentaire/foodtech unique en France centré sur la Cité Internationale de la Gastronomie et du Vin. Axion-IA y intervient sur site, des TPE dijonnaises aux ETI du bassin bourguignon.",
+    "Dijon regroupe 14 946 établissements actifs, une capitale French Tech labellisée 2023, des sièges industriels (URGO, Amora) et un pôle agroalimentaire/foodtech unique en France centré sur la Cité Internationale de la Gastronomie et du Vin. Axion-IA y intervient sur site, des PME dijonnaises aux ETI du bassin bourguignon.",
   pitchEn:
     "Dijon hosts 14,946 active establishments, a 2023-labelled French Tech capital, industrial HQs (URGO, Amora) and France's unique agri-food/foodtech hub built around the International City of Gastronomy and Wine. Axion-IA delivers on site, from Dijon micro-businesses to mid-caps across the Burgundy basin.",
 
@@ -48,7 +48,7 @@ export const DIJON_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dijon (21) sur site dans la métropole dijonnaise et le bassin bourguignon (Chenôve, Talant, Quetigny, Saint-Apollinaire). Nous accompagnons les TPE, PME, ETI et grandes entreprises de Côte-d'Or sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : agroalimentaire, pharmacie-santé, viticulture, conseil, formation. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dijon (21) sur site dans la métropole dijonnaise et le bassin bourguignon (Chenôve, Talant, Quetigny, Saint-Apollinaire). Nous accompagnons les PME, ETI et grands groupes de Côte-d'Or sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : agroalimentaire, pharmacie-santé, viticulture, conseil, formation. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is a senior AI experts consultancy that intervenes in Dijon (21) on site across the Dijon metropolitan area and the Burgundy basin (Chenôve, Talant, Quetigny, Saint-Apollinaire). We support Côte-d'Or micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: agri-food, pharma-healthcare, viticulture, consulting, training. No tech lock-in, your teams stay in control.",
 
@@ -69,7 +69,7 @@ export const DIJON_COPY: VilleCopy = {
     "Dijon-Ville station: LGV Rhin-Rhône, Paris in ~1h34, Lyon in ~1h50, Strasbourg in ~2h. Divia tram lines T1 and T2 to reach your offices across the Dijon metropolitan area. Dijon-Bourgogne Airport (DIJ) 6 km away.",
 
   ecosystemFr:
-    "14 946 établissements actifs — TPE artisanales et cabinets dijonnais, PME industrielles Côte-d'Or, ETI agroalimentaires (URGO Chenôve, Amora siège), pôle académique (Université de Bourgogne, BSB, Institut Agro Dijon, ESIREM), capitale French Tech BFC labellisée 2023, accélérateur ToasterLab / Vitagora, Village by CA, Cité Internationale de la Gastronomie et du Vin.",
+    "14 946 établissements actifs — PME artisanales et cabinets dijonnais, PME industrielles Côte-d'Or, ETI agroalimentaires (URGO Chenôve, Amora siège), pôle académique (Université de Bourgogne, BSB, Institut Agro Dijon, ESIREM), capitale French Tech BFC labellisée 2023, accélérateur ToasterLab / Vitagora, Village by CA, Cité Internationale de la Gastronomie et du Vin.",
   ecosystemEn:
     "14,946 active establishments — artisan micro-businesses and Dijon practices, Côte-d'Or industrial SMEs, agri-food mid-caps (URGO Chenôve HQ, Amora HQ), academic hub (Université de Bourgogne, BSB, Institut Agro Dijon, ESIREM), 2023-labelled French Tech BFC capital, ToasterLab / Vitagora accelerator, Village by CA, International City of Gastronomy and Wine.",
 
@@ -80,7 +80,7 @@ export const DIJON_COPY: VilleCopy = {
     // ────────────────────────────────────────────────────────────
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Dijon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE artisanales dijonnaises aux sièges industriels de Côte-d'Or (URGO, Amora) et aux cabinets de la Burgundy School of Business. Intervention sur site dans la métropole dijonnaise et dans tout le bassin bourguignon.",
+        hero: "L'audit IA Axion-IA à Dijon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME artisanales dijonnaises aux sièges industriels de Côte-d'Or (URGO, Amora) et aux cabinets de la Burgundy School of Business. Intervention sur site dans la métropole dijonnaise et dans tout le bassin bourguignon.",
         whyHere: [
           "Dijon est une capitale French Tech labellisée 2023 (~450 organisations membres) avec un tissu PME/ETI dense sur des secteurs où l'IA génère un ROI démontrable : agroalimentaire, viticulture, santé, logistique.",
           "Le pôle agroalimentaire bourguignon — Vitagora, ToasterLab, Institut Agro Dijon, INRAE BFC — constitue un terrain d'audit IA particulièrement fertile : traçabilité, contrôle qualité, optimisation formulations, qualification leads B2B.",
@@ -117,12 +117,6 @@ export const DIJON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, artisans, cabinets dijonnais et petites structures de la métropole jusqu'à une dizaine de collaborateurs.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -223,12 +217,6 @@ export const DIJON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Dijon freelancers, artisans, practices and small metropolitan structures up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -336,12 +324,6 @@ export const DIJON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal indépendants, artisans, cabinets dijonnais et petites structures jusqu'à une dizaine de collaborateurs.",
-          },
-          {
             sizeLabel: "PME",
             price: "Formation collective ou Équipes",
             detail:
@@ -441,12 +423,6 @@ export const DIJON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Dijon freelancers, artisans, practices and small structures up to about ten staff.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -554,12 +530,6 @@ export const DIJON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple (lecture factures, rédaction fiche produit, scoring leads) pour indépendants et petites structures dijonnaises.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -595,7 +565,7 @@ export const DIJON_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Dijon ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -659,12 +629,6 @@ export const DIJON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case (invoice reading, product sheet writing, lead scoring) for Dijon freelancers and small structures.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -769,12 +733,6 @@ export const DIJON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "À partir de {{price:intervention-dirigeants|flat}}",
-            detail:
-              "Coaching individuel entrée pour dirigeants TPE, artisans, indépendants et petits domaines viticoles de la métropole dijonnaise — une journée, un consultant dédié.",
-          },
-          {
             sizeLabel: "PME",
             price: "Sur devis",
             detail:
@@ -870,12 +828,6 @@ export const DIJON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "From {{price:intervention-dirigeants|compact}} excl. VAT",
-            detail:
-              "Entry individual coaching for Dijon metropolitan micro-business executives, artisans, freelancers and small wine estates — one day, one dedicated consultant.",
-          },
           {
             sizeLabel: "SME",
             price: "On request",
@@ -977,12 +929,6 @@ export const DIJON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / boutique sur mesure",
             detail:
@@ -1063,12 +1009,6 @@ export const DIJON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / shop",
             detail:
@@ -1118,7 +1058,7 @@ export const DIJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Dijon ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Dijon et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Dijon et partout en France.",
     },
     {
       q: "Axion-IA intervient-il dans toute la métropole dijonnaise ?",

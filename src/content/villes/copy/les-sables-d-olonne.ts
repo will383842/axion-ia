@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
   pitchFr:
-    "Les Sables-d'Olonne (85), station balnéaire emblématique de Vendée, est mondialement connue comme ville de départ du Vendée Globe, le tour du monde à la voile en solitaire. Pêche, nautisme, tourisme et thermalisme y structurent une économie très saisonnière, portée par un dense tissu de TPE — hôtels, restaurants, commerces, services nautiques, loueurs — et de PME du tourisme et des loisirs. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME sablaises, l'ETI restant marginale.",
+    "Les Sables-d'Olonne (85), station balnéaire emblématique de Vendée, est mondialement connue comme ville de départ du Vendée Globe, le tour du monde à la voile en solitaire. Pêche, nautisme, tourisme et thermalisme y structurent une économie très saisonnière, portée par un dense tissu de PME — hôtels, restaurants, commerces, services nautiques, loueurs — et de PME du tourisme et des loisirs. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI sablaises, les grands groupes venant en complément.",
   pitchEn:
-    "Les Sables-d'Olonne (85), station balnéaire emblématique de Vendée, est mondialement connue comme ville de départ du Vendée Globe, le tour du monde à la voile en solitaire. Pêche, nautisme, tourisme et thermalisme y structurent une économie très saisonnière, portée par un dense tissu de TPE — hôtels, restaurants, commerces, services nautiques, loueurs — et de PME du tourisme et des loisirs. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME sablaises, l'ETI restant marginale.",
+    "Les Sables-d'Olonne (85), station balnéaire emblématique de Vendée, est mondialement connue comme ville de départ du Vendée Globe, le tour du monde à la voile en solitaire. Pêche, nautisme, tourisme et thermalisme y structurent une économie très saisonnière, portée par un dense tissu de PME — hôtels, restaurants, commerces, services nautiques, loueurs — et de PME du tourisme et des loisirs. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI sablaises, les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Sables-d'Olonne (85). Nous accompagnons en priorité les TPE — hôtels, restaurants, commerces, services nautiques, loueurs, indépendants — puis les PME du tourisme, de la pêche et des loisirs, et plus marginalement les ETI. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations utiles (réservations, relation client, devis, reporting saisonnier). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Sables-d'Olonne (85). Nous accompagnons en priorité les PME — hôtels, restaurants, commerces, services nautiques, loueurs, indépendants — puis les PME du tourisme, de la pêche et des loisirs, et plus marginalement les grands groupes. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations utiles (réservations, relation client, devis, reporting saisonnier). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Sables-d'Olonne (85). Nous accompagnons en priorité les TPE — hôtels, restaurants, commerces, services nautiques, loueurs, indépendants — puis les PME du tourisme, de la pêche et des loisirs, et plus marginalement les ETI. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations utiles (réservations, relation client, devis, reporting saisonnier). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Sables-d'Olonne (85). Nous accompagnons en priorité les PME — hôtels, restaurants, commerces, services nautiques, loueurs, indépendants — puis les PME du tourisme, de la pêche et des loisirs, et plus marginalement les grands groupes. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations utiles (réservations, relation client, devis, reporting saisonnier). Tarifs publics, frais de déplacement transparents.",
   seoHook: "Vendée Globe, nautisme & tourisme",
   ecosystemFr:
-    "L'économie des Sables-d'Olonne tourne autour de la mer : la ville accueille le départ du Vendée Globe, course au large mondiale qui rythme sa notoriété, ainsi qu'un port de pêche actif, une filière nautique (chantiers, services, plaisance) et une saison touristique intense l'été. Le tissu local est dominé par les TPE — hôtellerie, restauration, commerces, loueurs, services nautiques — et des PME du tourisme et des loisirs, soumises à de forts pics d'activité estivaux. L'IA aide à absorber ces pics. Axion-IA y privilégie les TPE et PME, pour qui automatiser la relation client et l'administratif libère un temps décisif en haute saison.",
+    "L'économie des Sables-d'Olonne tourne autour de la mer : la ville accueille le départ du Vendée Globe, course au large mondiale qui rythme sa notoriété, ainsi qu'un port de pêche actif, une filière nautique (chantiers, services, plaisance) et une saison touristique intense l'été. Le tissu local est dominé par les PME — hôtellerie, restauration, commerces, loueurs, services nautiques — et des PME du tourisme et des loisirs, soumises à de forts pics d'activité estivaux. L'IA aide à absorber ces pics. Axion-IA y privilégie les PME et ETI, pour qui automatiser la relation client et l'administratif libère un temps décisif en haute saison.",
   ecosystemEn:
-    "L'économie des Sables-d'Olonne tourne autour de la mer : la ville accueille le départ du Vendée Globe, course au large mondiale qui rythme sa notoriété, ainsi qu'un port de pêche actif, une filière nautique (chantiers, services, plaisance) et une saison touristique intense l'été. Le tissu local est dominé par les TPE — hôtellerie, restauration, commerces, loueurs, services nautiques — et des PME du tourisme et des loisirs, soumises à de forts pics d'activité estivaux. L'IA aide à absorber ces pics. Axion-IA y privilégie les TPE et PME, pour qui automatiser la relation client et l'administratif libère un temps décisif en haute saison.",
+    "L'économie des Sables-d'Olonne tourne autour de la mer : la ville accueille le départ du Vendée Globe, course au large mondiale qui rythme sa notoriété, ainsi qu'un port de pêche actif, une filière nautique (chantiers, services, plaisance) et une saison touristique intense l'été. Le tissu local est dominé par les PME — hôtellerie, restauration, commerces, loueurs, services nautiques — et des PME du tourisme et des loisirs, soumises à de forts pics d'activité estivaux. L'IA aide à absorber ces pics. Axion-IA y privilégie les PME et ETI, pour qui automatiser la relation client et l'administratif libère un temps décisif en haute saison.",
   distancesFr:
     "Gare des Sables-d'Olonne reliée à Nantes et au TGV via La Roche-sur-Yon (à 38 km). Aéroport de Nantes Atlantique à ~107 km, La Roche-sur-Yon à 38 km, Nantes à 100 km. Nos consultants se déplacent sur site dans toute l'agglomération sablaise.",
   distancesEn:
@@ -34,16 +34,16 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
       en: "Audit IA aux Sables-d'Olonne : diagnostic adapté à la saisonnalité balnéaire et nautique. Nous repérons les tâches qui saturent les équipes l'été (réservations, devis, relance) et chiffrons les gains.",
     },
     interventions: {
-      fr: "Interventions IA sur site aux Sables-d'Olonne : formats courts pour TPE du tourisme, du nautisme et du commerce. Vos équipes maîtrisent les outils IA pour la relation client et la rédaction, et repartent autonomes.",
-      en: "Interventions IA sur site aux Sables-d'Olonne : formats courts pour TPE du tourisme, du nautisme et du commerce. Vos équipes maîtrisent les outils IA pour la relation client et la rédaction, et repartent autonomes.",
+      fr: "Interventions IA sur site aux Sables-d'Olonne : formats courts pour PME du tourisme, du nautisme et du commerce. Vos équipes maîtrisent les outils IA pour la relation client et la rédaction, et repartent autonomes.",
+      en: "Interventions IA sur site aux Sables-d'Olonne : formats courts pour PME du tourisme, du nautisme et du commerce. Vos équipes maîtrisent les outils IA pour la relation client et la rédaction, et repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA aux Sables-d'Olonne : agents de réservation et de relation client multilingues, automatisation des devis nautiques, gestion des avis, reporting d'occupation saisonnier. Solutions RGPD-conformes.",
       en: "Implémentation IA aux Sables-d'Olonne : agents de réservation et de relation client multilingues, automatisation des devis nautiques, gestion des avis, reporting d'occupation saisonnier. Solutions RGPD-conformes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 aux Sables-d'Olonne : sessions dans votre établissement, chantier, commerce ou en visio. Pour dirigeants de TPE/PME touristiques, nautiques et de la pêche souhaitant piloter l'IA eux-mêmes.",
-      en: "Coaching 1-to-1 aux Sables-d'Olonne : sessions dans votre établissement, chantier, commerce ou en visio. Pour dirigeants de TPE/PME touristiques, nautiques et de la pêche souhaitant piloter l'IA eux-mêmes.",
+      fr: "Coaching 1-to-1 aux Sables-d'Olonne : sessions dans votre établissement, chantier, commerce ou en visio. Pour dirigeants de PME et ETI touristiques, nautiques et de la pêche souhaitant piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 aux Sables-d'Olonne : sessions dans votre établissement, chantier, commerce ou en visio. Pour dirigeants de PME et ETI touristiques, nautiques et de la pêche souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
       fr: "Sites web & SaaS IA aux Sables-d'Olonne : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques avec assistants intelligents, devis automatisés et contenus optimisés pour le référencement balnéaire.",
@@ -88,12 +88,6 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine IA + réservation",
-            detail:
-              "Pour les indépendants et TPE sablais — loueurs nautiques de Port Olona, restaurants du remblai, commerces de la vieille ville, hôtels familiaux : site mobile-first avec moteur de réservation et assistant de réponse multilingue.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce / réservation augmentée",
@@ -174,12 +168,6 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "AI showcase site + booking",
-            detail:
-              "For Sables freelancers and micro-businesses — Port Olona rental firms, seafront restaurants, old-town shops, family hotels: mobile-first site with a booking engine and a multilingual reply assistant.",
-          },
           {
             sizeLabel: "PME",
             price: "Augmented e-commerce / booking platform",

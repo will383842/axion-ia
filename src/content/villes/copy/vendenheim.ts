@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const VENDENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA collabore avec toutes les structures locales.",
+    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu PME et ETI logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA collabore avec toutes les structures locales.",
+    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu PME et ETI logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendenheim (67). Nous accompagnons tous types d'activités : TPE/PME logistique et services aux entreprises du nord strasbourgeois, artisans, commerces, industriels légers et acteurs économiques des zones d'activités de l'Eurométropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendenheim (67). Nous accompagnons tous types d'activités : PME et ETI logistique et services aux entreprises du nord strasbourgeois, artisans, commerces, industriels légers et acteurs économiques des zones d'activités de l'Eurométropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendenheim (67). Nous accompagnons tous types d'activités : TPE/PME logistique et services aux entreprises du nord strasbourgeois, artisans, commerces, industriels légers et acteurs économiques des zones d'activités de l'Eurométropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vendenheim (67). Nous accompagnons tous types d'activités : PME et ETI logistique et services aux entreprises du nord strasbourgeois, artisans, commerces, industriels légers et acteurs économiques des zones d'activités de l'Eurométropole.",
   ecosystemFr:
-    "Vendenheim est une commune de l'Eurométropole de Strasbourg située au nord, marquée par d'importantes zones d'activités économiques, logistique, commerce de gros et industrie légère. Tissu TPE/PME logistique, services aux entreprises, artisanat, commerces de proximité, intégré au bassin de vie strasbourgeois.",
+    "Vendenheim est une commune de l'Eurométropole de Strasbourg située au nord, marquée par d'importantes zones d'activités économiques, logistique, commerce de gros et industrie légère. Tissu PME et ETI logistique, services aux entreprises, artisanat, commerces de proximité, intégré au bassin de vie strasbourgeois.",
   ecosystemEn:
-    "Vendenheim est une commune de l'Eurométropole de Strasbourg située au nord, marquée par d'importantes zones d'activités économiques, logistique, commerce de gros et industrie légère. Tissu TPE/PME logistique, services aux entreprises, artisanat, commerces de proximité, intégré au bassin de vie strasbourgeois.",
+    "Vendenheim est une commune de l'Eurométropole de Strasbourg située au nord, marquée par d'importantes zones d'activités économiques, logistique, commerce de gros et industrie légère. Tissu PME et ETI logistique, services aux entreprises, artisanat, commerces de proximité, intégré au bassin de vie strasbourgeois.",
   distancesFr:
     "Strasbourg centre à 15 min. Gare TGV de Strasbourg à 15 min. Aéroport Strasbourg-Entzheim à 25 min. Autoroute A4/A35 accès direct à 5 min. Haguenau à 25 min. Allemagne (Kehl) à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const VENDENHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vendenheim : diagnostic adapté aux PME et ETI logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vendenheim : diagnostic adapté aux PME et ETI logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vendenheim : formats adaptés à l'entrepôt logistique, au commerce de gros, à l'atelier industriel, au bureau de services. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const VENDENHEIM_COPY: VilleCopy = {
       en: "Implémentation IA à Vendenheim : automatisation gestion d'entrepôt, traçabilité logistique, optimisation tournées, agents conversationnels B2B, gestion commerciale, ERP et workflow douanier.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vendenheim : sessions dans votre entrepôt, atelier, bureau ou en visio. Logisticiens, commerçants en gros, industriels, artisans, gérants TPE/PME des zones d'activités du nord strasbourgeois.",
-      en: "Coaching 1-to-1 à Vendenheim : sessions dans votre entrepôt, atelier, bureau ou en visio. Logisticiens, commerçants en gros, industriels, artisans, gérants TPE/PME des zones d'activités du nord strasbourgeois.",
+      fr: "Coaching 1-to-1 à Vendenheim : sessions dans votre entrepôt, atelier, bureau ou en visio. Logisticiens, commerçants en gros, industriels, artisans, gérants PME et ETI des zones d'activités du nord strasbourgeois.",
+      en: "Coaching 1-to-1 à Vendenheim : sessions dans votre entrepôt, atelier, bureau ou en visio. Logisticiens, commerçants en gros, industriels, artisans, gérants PME et ETI des zones d'activités du nord strasbourgeois.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const VENDENHEIM_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Vendenheim et dans le nord de l'Eurométropole strasbourgeoise (Strasbourg, Schiltigheim, Reichstett, Mundolsheim). Consultants via A4/A35 ou tram. Accès direct aux zones d'activités.",
     },
     {
-      q: "Travaillez-vous avec les TPE/PME logistique et commerce de gros ?",
-      a: "Oui, nous accompagnons les TPE/PME logistique et commerce de gros vendenheimois : gestion d'entrepôt, traçabilité, optimisation tournées, automatisation administrative, agents conversationnels B2B.",
+      q: "Travaillez-vous avec les PME et ETI logistique et commerce de gros ?",
+      a: "Oui, nous accompagnons les PME et ETI logistique et commerce de gros vendenheimois : gestion d'entrepôt, traçabilité, optimisation tournées, automatisation administrative, agents conversationnels B2B.",
     },
     {
       q: "Accompagnez-vous les artisans et industriels de Vendenheim ?",
@@ -61,7 +61,7 @@ export const VENDENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Vendenheim ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Vendenheim ?",

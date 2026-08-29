@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ANNONAY_COPY: VilleCopy = {
   pitchFr:
-    "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
+    "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, PME du BTP, commerces, agriculture montagne. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   pitchEn:
-    "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
+    "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, PME du BTP, commerces, agriculture montagne. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, PME du BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, PME du BTP, commerçants, indépendants et services aux entreprises.",
   seoHook: "industrielles & agriculture montagne",
   ecosystemFr:
-    "Annonay est la sous-préfecture du nord-Ardèche, berceau des frères Montgolfier (invention montgolfière 1783). Héritage industriel papetier et tanneur (savoir-faire local historique). Tissu PME industrielles diversifiées, agriculture montagne ardéchoise, TPE artisanat BTP, commerces.",
+    "Annonay est la sous-préfecture du nord-Ardèche, berceau des frères Montgolfier (invention montgolfière 1783). Héritage industriel papetier et tanneur (savoir-faire local historique). Tissu PME industrielles diversifiées, agriculture montagne ardéchoise, PME du BTP, commerces.",
   ecosystemEn:
-    "Annonay est la sous-préfecture du nord-Ardèche, berceau des frères Montgolfier (invention montgolfière 1783). Héritage industriel papetier et tanneur (savoir-faire local historique). Tissu PME industrielles diversifiées, agriculture montagne ardéchoise, TPE artisanat BTP, commerces.",
+    "Annonay est la sous-préfecture du nord-Ardèche, berceau des frères Montgolfier (invention montgolfière 1783). Héritage industriel papetier et tanneur (savoir-faire local historique). Tissu PME industrielles diversifiées, agriculture montagne ardéchoise, PME du BTP, commerces.",
   distancesFr:
     "Saint-Étienne à 45 min. Lyon centre à 1h15. Valence à 50 min. Tournon-sur-Rhône à 30 min. Aéroport Lyon-Saint-Exupéry à 1h.",
   distancesEn:
@@ -25,13 +25,13 @@ export const ANNONAY_COPY: VilleCopy = {
     "PME industrielles (héritage papetier/tanneur Montgolfier)",
     "Agriculture montagne Ardèche",
     "Tourisme patrimoine (Montgolfier)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Annonay : formats adaptés à l'atelier industriel, exploitation agricole, site patrimonial, commerce. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const ANNONAY_COPY: VilleCopy = {
       en: "Implémentation IA à Annonay : prédiction maintenance industrielle, classification photos cultures montagne, agents conversationnels visiteurs Montgolfier multilingue, automatisation workflow.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Annonay : sessions dans votre atelier, exploitation, site ou en visio. Industriels, agriculteurs, acteurs tourisme, artisans, gérants TPE/PME annonéens.",
-      en: "Coaching 1-to-1 à Annonay : sessions dans votre atelier, exploitation, site ou en visio. Industriels, agriculteurs, acteurs tourisme, artisans, gérants TPE/PME annonéens.",
+      fr: "Coaching 1-to-1 à Annonay : sessions dans votre atelier, exploitation, site ou en visio. Industriels, agriculteurs, acteurs tourisme, artisans, gérants PME et ETI annonéens.",
+      en: "Coaching 1-to-1 à Annonay : sessions dans votre atelier, exploitation, site ou en visio. Industriels, agriculteurs, acteurs tourisme, artisans, gérants PME et ETI annonéens.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const ANNONAY_COPY: VilleCopy = {
       a: "Oui, prédiction récoltes, classification photos cultures/animaux, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CARCASSONNE_COPY: VilleCopy = {
   pitchFr:
-    "Carcassonne (11), célèbre pour sa Cité médiévale classée au patrimoine mondial de l'UNESCO, vit du tourisme patrimonial, de la viticulture audoise (Minervois, Corbières), de l'hôtellerie-restauration et du commerce. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME carcassonnaises, les ETI en complément.",
+    "Carcassonne (11), célèbre pour sa Cité médiévale classée au patrimoine mondial de l'UNESCO, vit du tourisme patrimonial, de la viticulture audoise (Minervois, Corbières), de l'hôtellerie-restauration et du commerce. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI carcassonnaises, les grands groupes en complément.",
   pitchEn:
-    "Carcassonne (11), célèbre pour sa Cité médiévale classée au patrimoine mondial de l'UNESCO, vit du tourisme patrimonial, de la viticulture audoise (Minervois, Corbières), de l'hôtellerie-restauration et du commerce. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME carcassonnaises, les ETI en complément.",
+    "Carcassonne (11), célèbre pour sa Cité médiévale classée au patrimoine mondial de l'UNESCO, vit du tourisme patrimonial, de la viticulture audoise (Minervois, Corbières), de l'hôtellerie-restauration et du commerce. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI carcassonnaises, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Carcassonne et dans tout l'Aude. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine de la Cité, domaines viticoles du Minervois et des Corbières, hôtellerie-restauration, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Carcassonne et dans tout l'Aude. Nous accompagnons en priorité les PME et ETI locales — acteurs du tourisme et du patrimoine de la Cité, domaines viticoles du Minervois et des Corbières, hôtellerie-restauration, commerces et artisans — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Carcassonne et dans tout l'Aude. Nous accompagnons en priorité les TPE et PME locales — acteurs du tourisme et du patrimoine de la Cité, domaines viticoles du Minervois et des Corbières, hôtellerie-restauration, commerces et artisans — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Carcassonne et dans tout l'Aude. Nous accompagnons en priorité les PME et ETI locales — acteurs du tourisme et du patrimoine de la Cité, domaines viticoles du Minervois et des Corbières, hôtellerie-restauration, commerces et artisans — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "Cité UNESCO, tourisme & viticulture",
   ecosystemFr:
-    "Carcassonne s'appuie sur le tourisme patrimonial autour de la Cité médiévale UNESCO, la viticulture audoise (Minervois, Corbières, Cabardès), l'hôtellerie-restauration et le commerce. Le tissu est dominé par les TPE/PME et les domaines viticoles familiaux.",
+    "Carcassonne s'appuie sur le tourisme patrimonial autour de la Cité médiévale UNESCO, la viticulture audoise (Minervois, Corbières, Cabardès), l'hôtellerie-restauration et le commerce. Le tissu est dominé par les PME et ETI et les domaines viticoles familiaux.",
   ecosystemEn:
-    "Carcassonne s'appuie sur le tourisme patrimonial autour de la Cité médiévale UNESCO, la viticulture audoise (Minervois, Corbières, Cabardès), l'hôtellerie-restauration et le commerce. Le tissu est dominé par les TPE/PME et les domaines viticoles familiaux.",
+    "Carcassonne s'appuie sur le tourisme patrimonial autour de la Cité médiévale UNESCO, la viticulture audoise (Minervois, Corbières, Cabardès), l'hôtellerie-restauration et le commerce. Le tissu est dominé par les PME et ETI et les domaines viticoles familiaux.",
   distancesFr:
     "Aéroport de Carcassonne-Salvaza à 4 km. Gare de Carcassonne sur la ligne Bordeaux-Marseille ; gare TGV de Narbonne à 53 km. Toulouse à 1h, Narbonne à 45 min, Castelnaudary à 30 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const CARCASSONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Carcassonne : agents de réservation multilingues pour le tourisme, vente en ligne et relation client pour les domaines viticoles, optimisation du remplissage et gestion des avis pour l'hôtellerie.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Carcassonne : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — hôteliers, vignerons, restaurateurs, commerçants et artisans de l'Aude.",
-      en: "Coaching un-à-un à Carcassonne : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — hôteliers, vignerons, restaurateurs, commerçants et artisans de l'Aude.",
+      fr: "Coaching un-à-un à Carcassonne : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI — hôteliers, vignerons, restaurateurs, commerçants et artisans de l'Aude.",
+      en: "Coaching un-à-un à Carcassonne : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI — hôteliers, vignerons, restaurateurs, commerçants et artisans de l'Aude.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Carcassonne : sites de réservation et boutiques en ligne avec IA intégrée pour le tourisme et les domaines viticoles — réservation, vente de vin, recommandation, multilingue FR/EN/ES.",
@@ -58,7 +58,7 @@ export const CARCASSONNE_COPY: VilleCopy = {
           "Le tourisme patrimonial international structure la demande : avec une Cité UNESCO 3e monument national de France, plus de 4 millions de visiteurs sur le territoire et un aéroport Salvaza 100% Ryanair (London Stansted, Manchester, Bruxelles-Charleroi, Dublin), hôtels, gîtes et sites de visite ont besoin de moteurs de réservation et de boutiques multilingues FR/EN/ES pilotés par l'IA.",
           "La filière vin encercle la ville — AOC Minervois, Corbières, Cabardès, Malepère : nous construisons des boutiques de vente de vin en ligne avec recommandation IA, conformité expédition d'alcool et oenotourisme (réservation de dégustations), sans alourdir le travail au domaine.",
           "Carcassonne abrite un savoir-faire de maroquinerie de luxe rare (Algo / Groupe AS, client Maison Goyard, ateliers La Manufacture et La Malleterie, ZA de Béragne à Trèbes) : pour ce type d'acteur et ses sous-traitants, nous livrons des vitrines premium, des portails B2B et des SaaS internes de suivi de production augmentés par l'IA.",
-          "Le tissu local est dominé par les TPE/PME (sur ~4 365 entreprises, ~2 078 TPE et ~224 PME) et l'économie de services : nos sites et SaaS sont calibrés pour des budgets d'indépendants, de commerçants et de domaines familiaux, pas pour des DSI de grands comptes.",
+          "Le tissu local est dominé par les PME et ETI (sur ~4 365 entreprises, ~2 078 PME et ~224 PME) et l'économie de services : nos sites et SaaS sont calibrés pour des budgets d'indépendants, de commerçants et de domaines familiaux, pas pour des DSI de grands comptes.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const CARCASSONNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou réservation augmenté",
-            detail:
-              "Pour un gîte, une chambre d'hôtes près de la Cité, un restaurant, un caveau du Minervois ou un commerce du centre : site mobile-first multilingue avec moteur de réservation ou prise de contact assistée par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Boutique e-commerce ou SaaS métier",
@@ -144,7 +138,7 @@ export const CARCASSONNE_COPY: VilleCopy = {
           "International heritage tourism drives demand: with a UNESCO Cité ranked France's 3rd national monument, over 4 million visitors across the area and a Ryanair-only Salvaza airport (London Stansted, Manchester, Brussels-Charleroi, Dublin), hotels, gîtes and visitor sites need AI-driven booking engines and multilingual FR/EN/ES shops.",
           "The wine sector rings the city — AOC Minervois, Corbières, Cabardès, Malepère: we build online wine shops with AI recommendation, alcohol-shipping compliance and wine-tourism booking (tastings), without adding workload at the estate.",
           "Carcassonne is home to rare luxury leather-goods know-how (Algo / Groupe AS, client Maison Goyard, La Manufacture and La Malleterie workshops, Béragne business park in Trèbes): for such players and their subcontractors we deliver premium showcases, B2B portals and AI-augmented internal production-tracking SaaS.",
-          "The local fabric is TPE/SME-dominated (of ~4,365 businesses, ~2,078 micro-firms and ~224 SMEs) and service-driven: our sites and SaaS are sized for freelancers, shopkeepers and family estates, not large-account IT departments.",
+          "The local fabric is PME/SME-dominated (of ~4,365 businesses, ~2,078 micro-firms and ~224 SMEs) and service-driven: our sites and SaaS are sized for freelancers, shopkeepers and family estates, not large-account IT departments.",
         ],
         methodology: [
           {
@@ -174,12 +168,6 @@ export const CARCASSONNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase or booking site",
-            detail:
-              "For a gîte, a guest house near the Cité, a restaurant, a Minervois cellar door or a downtown shop: mobile-first multilingual site with an AI-assisted booking or contact engine.",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce shop or business SaaS",
@@ -230,7 +218,7 @@ export const CARCASSONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carcassonne et dans l'Aude ?",
-      a: "Oui, Axion-IA se déplace sur site à Carcassonne, Narbonne, Castelnaudary et dans tout l'Aude. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Carcassonne, Narbonne, Castelnaudary et dans tout l'Aude. Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme et de la Cité ?",
@@ -246,7 +234,7 @@ export const CARCASSONNE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Carcassonne ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME locales et les domaines familiaux. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les PME et ETI locales et les domaines familiaux. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Carcassonne ?",

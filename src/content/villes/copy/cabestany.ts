@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CABESTANY_COPY: VilleCopy = {
   pitchFr:
-    "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones commerciales, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération perpignanaise.",
+    "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME zones commerciales, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération perpignanaise.",
   pitchEn:
-    "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones commerciales, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération perpignanaise.",
+    "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME zones commerciales, commerces, professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération perpignanaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : PME artisanales, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : PME artisanales, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   seoHook: "commerce zones & tertiaires périurbaines",
   ecosystemFr:
-    "Cabestany est une commune dynamique à l'est de Perpignan, intégrée à Perpignan Méditerranée Métropole. Importantes zones commerciales (Porte d'Espagne), PME tertiaires, TPE artisanat, commerces, professions libérales santé. Proximité directe Perpignan et accès littoral.",
+    "Cabestany est une commune dynamique à l'est de Perpignan, intégrée à Perpignan Méditerranée Métropole. Importantes zones commerciales (Porte d'Espagne), PME tertiaires, PME de l'artisanat, commerces, professions libérales santé. Proximité directe Perpignan et accès littoral.",
   ecosystemEn:
-    "Cabestany est une commune dynamique à l'est de Perpignan, intégrée à Perpignan Méditerranée Métropole. Importantes zones commerciales (Porte d'Espagne), PME tertiaires, TPE artisanat, commerces, professions libérales santé. Proximité directe Perpignan et accès littoral.",
+    "Cabestany est une commune dynamique à l'est de Perpignan, intégrée à Perpignan Méditerranée Métropole. Importantes zones commerciales (Porte d'Espagne), PME tertiaires, PME de l'artisanat, commerces, professions libérales santé. Proximité directe Perpignan et accès littoral.",
   distancesFr:
     "Perpignan centre à 7 min. Canet-en-Roussillon à 10 min. Aéroport Perpignan-Rivesaltes à 15 min. Gare TGV Perpignan à 10 min. Narbonne à 50 min A9.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CABESTANY_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce & zones commerciales",
     "PME tertiaires périurbaines",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales santé",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Cabestany : diagnostic adapté aux PME artisanales, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Cabestany : diagnostic adapté aux PME artisanales, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cabestany : formats adaptés au commerce, bureau, cabinet, atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const CABESTANY_COPY: VilleCopy = {
       en: "Implémentation IA à Cabestany : agents conversationnels commerce, gestion stocks zones commerciales, automatisation facturation, CRM augmentés. Perpignan Méditerranée Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cabestany : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME, commerçants, professions libérales, artisans, gérants TPE cabestanyencs.",
-      en: "Coaching 1-to-1 à Cabestany : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME, commerçants, professions libérales, artisans, gérants TPE cabestanyencs.",
+      fr: "Coaching 1-to-1 à Cabestany : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME, commerçants, professions libérales, artisans, gérants PME cabestanyencs.",
+      en: "Coaching 1-to-1 à Cabestany : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME, commerçants, professions libérales, artisans, gérants PME cabestanyencs.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const CABESTANY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales de santé à Cabestany sur leurs cas IA : automatisation prise de rendez-vous, classification documents médicaux, agents IA accueil patients, gestion planning.",
     },
     {
-      q: "Quels services pour les TPE artisans et PME ?",
-      a: "Pour les TPE artisans et PME à Cabestany, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, CRM augmenté, facturation automatisée, agents IA.",
+      q: "Quels services pour les PME artisanales et PME ?",
+      a: "Pour les PME artisanales et PME à Cabestany, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, CRM augmenté, facturation automatisée, agents IA.",
     },
     {
       q: "Comment se déroule une mission à Cabestany ?",

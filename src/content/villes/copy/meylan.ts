@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MEYLAN_COPY: VilleCopy = {
   pitchFr:
-    "Meylan (38), banlieue est de Grenoble, abrite le parc technologique Inovallée (cluster deep-tech français reconnu : microélectronique, logiciel, médical). Tissu PME tech, startups deep-tech, sièges entreprises innovation, TPE services et professions libérales. Axion-IA y intervient pour scale-ups, R&D, PME et TPE meylanaises.",
+    "Meylan (38), banlieue est de Grenoble, abrite le parc technologique Inovallée (cluster deep-tech français reconnu : microélectronique, logiciel, médical). Tissu PME tech, startups deep-tech, sièges entreprises innovation, PME services et professions libérales. Axion-IA y intervient pour scale-ups, R&D, PME et ETI meylanaises.",
   pitchEn:
-    "Meylan (38), banlieue est de Grenoble, abrite le parc technologique Inovallée (cluster deep-tech français reconnu : microélectronique, logiciel, médical). Tissu PME tech, startups deep-tech, sièges entreprises innovation, TPE services et professions libérales. Axion-IA y intervient pour scale-ups, R&D, PME et TPE meylanaises.",
+    "Meylan (38), banlieue est de Grenoble, abrite le parc technologique Inovallée (cluster deep-tech français reconnu : microélectronique, logiciel, médical). Tissu PME tech, startups deep-tech, sièges entreprises innovation, PME services et professions libérales. Axion-IA y intervient pour scale-ups, R&D, PME et ETI meylanaises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meylan (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D microélectronique/médical, TPE artisans, commerçants, professions libérales (cabinets médicaux, juridiques) et services aux entreprises du bassin grenoblois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meylan (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D microélectronique/médical, PME artisanales, commerçants, professions libérales (cabinets médicaux, juridiques) et services aux entreprises du bassin grenoblois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meylan (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D microélectronique/médical, TPE artisans, commerçants, professions libérales (cabinets médicaux, juridiques) et services aux entreprises du bassin grenoblois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meylan (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D microélectronique/médical, PME artisanales, commerçants, professions libérales (cabinets médicaux, juridiques) et services aux entreprises du bassin grenoblois.",
   seoHook: "proche grenoble",
   ecosystemFr:
-    "Meylan est l'un des poumons innovation de Grenoble-Alpes Métropole (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti Grenoble), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, TPE artisans haut de gamme, professions libérales et commerces résidentiels.",
+    "Meylan est l'un des poumons innovation de Grenoble-Alpes Métropole (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti Grenoble), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, PME artisanales haut de gamme, professions libérales et commerces résidentiels.",
   ecosystemEn:
-    "Meylan est l'un des poumons innovation de Grenoble-Alpes Métropole (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti Grenoble), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, TPE artisans haut de gamme, professions libérales et commerces résidentiels.",
+    "Meylan est l'un des poumons innovation de Grenoble-Alpes Métropole (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti Grenoble), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, PME artisanales haut de gamme, professions libérales et commerces résidentiels.",
   distancesFr:
     "Tramway B vers Grenoble centre (15 min). Gare Grenoble à 20 min (TGV Paris 3h). Aéroport Lyon-Saint-Exupéry à 1h15. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A41 vers Chambéry et Genève (1h45).",
   distancesEn:
@@ -26,12 +26,12 @@ export const MEYLAN_COPY: VilleCopy = {
     "Édition logicielle & SaaS",
     "Dispositifs médicaux & instrumentation",
     "PME tertiaires & services aux entreprises",
-    "TPE artisanat & professions libérales",
+    "PME de l'artisanat & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Meylan : diagnostic adapté aux scale-ups deep-tech Inovallée, PME logiciel/médical, TPE artisans et professions libérales du bassin grenoblois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Meylan : diagnostic adapté aux scale-ups deep-tech Inovallée, PME logiciel/médical, TPE artisans et professions libérales du bassin grenoblois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Meylan : diagnostic adapté aux scale-ups deep-tech Inovallée, PME logiciel/médical, PME artisanales et professions libérales du bassin grenoblois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Meylan : diagnostic adapté aux scale-ups deep-tech Inovallée, PME logiciel/médical, PME artisanales et professions libérales du bassin grenoblois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Meylan : formats adaptés aux ingénieurs Inovallée et équipes tech, ou aux PME tertiaires. Vos équipes R&D, commerciales et back-office repartent autonomes sur outils IA.",
@@ -56,8 +56,8 @@ export const MEYLAN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les scale-ups deep-tech d'Inovallée (microélectronique héritière CEA-Leti, dispositifs médicaux, instrumentation scientifique) sur leurs cas IA : agents conversationnels documents techniques, classification brevets, automatisation workflow R&D, support client B2B.",
     },
     {
-      q: "Accompagnez-vous les TPE et professions libérales meylanaises ?",
-      a: "Oui, nous accompagnons les TPE artisans et professions libérales à Meylan (médecins, avocats, expert-comptables) sur des cas IA accessibles : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. Audit sur place {{price:audit-flash|flat}} adapté.",
+      q: "Accompagnez-vous les PME et professions libérales meylanaises ?",
+      a: "Oui, nous accompagnons les PME artisanales et professions libérales à Meylan (médecins, avocats, expert-comptables) sur des cas IA accessibles : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME logiciel et SaaS meylanaises ?",

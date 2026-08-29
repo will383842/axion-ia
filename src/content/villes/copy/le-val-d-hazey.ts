@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
   pitchFr:
-    "Le Val d'Hazey (27), commune nouvelle de l'Eure dans la vallée de la Seine entre Gaillon et Les Andelys. Tissu TPE artisans, PME industrie et logistique vallée de Seine, agriculture, commerces de proximité, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Le Val d'Hazey (27), commune nouvelle de l'Eure dans la vallée de la Seine entre Gaillon et Les Andelys. Tissu PME artisanales, PME industrie et logistique vallée de Seine, agriculture, commerces de proximité, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Le Val d'Hazey (27), commune nouvelle de l'Eure dans la vallée de la Seine entre Gaillon et Les Andelys. Tissu TPE artisans, PME industrie et logistique vallée de Seine, agriculture, commerces de proximité, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Le Val d'Hazey (27), commune nouvelle de l'Eure dans la vallée de la Seine entre Gaillon et Les Andelys. Tissu PME artisanales, PME industrie et logistique vallée de Seine, agriculture, commerces de proximité, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Val d'Hazey (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces, indépendants et services aux entreprises de Seine Normandie Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Val d'Hazey (27). Nous accompagnons tous types d'activités : PME artisanales, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Val d'Hazey (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces, indépendants et services aux entreprises de Seine Normandie Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Val d'Hazey (27). Nous accompagnons tous types d'activités : PME artisanales, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   seoHook: "industrie logistique & agriculture grandes",
   ecosystemFr:
     "Le Val d'Hazey est une commune nouvelle de l'Eure issue de la fusion d'Aubevoye et communes voisines, dans la vallée de la Seine entre Gaillon et Les Andelys. Position stratégique axe Seine (A13), zones d'activité industrielles et logistiques. Agriculture, artisanat, commerces de proximité, services aux entreprises.",
@@ -24,14 +24,14 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie et logistique vallée de Seine",
     "Agriculture et grandes cultures",
-    "TPE artisanat BTP et second œuvre",
+    "PME du BTP et second œuvre",
     "Commerce de proximité et grande distribution",
     "Services aux entreprises et professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA au Val d'Hazey : diagnostic adapté aux PME artisanales, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA au Val d'Hazey : diagnostic adapté aux PME artisanales, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Val d'Hazey : formats adaptés à l'usine, l'entrepôt logistique, l'exploitation agricole, le commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
       en: "Implémentation IA au Val d'Hazey : optimisation supply chain Seine A13, prédiction maintenance industrielle, agriculture de précision, automatisation comptabilité. Seine Normandie Agglo.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Val d'Hazey : sessions dans votre usine, entrepôt, exploitation ou en visio. Dirigeants TPE/PME industrie, logistique, agriculture, artisans vallée de Seine.",
-      en: "Coaching 1-to-1 au Val d'Hazey : sessions dans votre usine, entrepôt, exploitation ou en visio. Dirigeants TPE/PME industrie, logistique, agriculture, artisans vallée de Seine.",
+      fr: "Coaching 1-to-1 au Val d'Hazey : sessions dans votre usine, entrepôt, exploitation ou en visio. Dirigeants PME et ETI industrie, logistique, agriculture, artisans vallée de Seine.",
+      en: "Coaching 1-to-1 au Val d'Hazey : sessions dans votre usine, entrepôt, exploitation ou en visio. Dirigeants PME et ETI industrie, logistique, agriculture, artisans vallée de Seine.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles du secteur Gaillon-Les Andelys sur leurs cas IA : agriculture de précision, prédiction rendements, classification images parcelles, traçabilité récoltes, optimisation intrants.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants du Val d'Hazey ?",
-      a: "Pour les TPE artisans et commerçants au Val d'Hazey, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
+      q: "Quels services pour les PME de l'artisanat et du commerce du Val d'Hazey ?",
+      a: "Pour les PME de l'artisanat et du commerce au Val d'Hazey, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const MOUROUX_COPY: VilleCopy = {
   pitchFr:
-    "Mouroux (77), commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et acteurs de l'agroalimentaire briard. Axion-IA opère pour toutes les structures économiques de la commune de l'est francilien.",
+    "Mouroux (77), commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, accueille un tissu de PME artisanales, commerces de proximité, PME de services, professions libérales et acteurs de l'agroalimentaire briard. Axion-IA opère pour toutes les structures économiques de la commune de l'est francilien.",
   pitchEn:
-    "Mouroux (77), commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et acteurs de l'agroalimentaire briard. Axion-IA opère pour toutes les structures économiques de la commune de l'est francilien.",
+    "Mouroux (77), commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, accueille un tissu de PME artisanales, commerces de proximité, PME de services, professions libérales et acteurs de l'agroalimentaire briard. Axion-IA opère pour toutes les structures économiques de la commune de l'est francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mouroux (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services de l'agglomération Coulommiers, professions libérales et acteurs agroalimentaires de la Brie laitière.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mouroux (77). Nous accompagnons PME et ETI : artisans, commerçants, PME de services de l'agglomération Coulommiers, professions libérales et acteurs agroalimentaires de la Brie laitière.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mouroux (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services de l'agglomération Coulommiers, professions libérales et acteurs agroalimentaires de la Brie laitière.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mouroux (77). Nous accompagnons PME et ETI : artisans, commerçants, PME de services de l'agglomération Coulommiers, professions libérales et acteurs agroalimentaires de la Brie laitière.",
   seoHook: "artisanat bâtiment & commerce proximité",
   ecosystemFr:
-    "Mouroux est une commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, au coeur de la Brie laitière (brie de Coulommiers AOP). Tissu économique : TPE artisanat bâtiment et services, commerces de proximité, PME prestataires de services, professions libérales (santé, immobilier), agroalimentaire et filière laitière. Gare de Mouroux sur le Transilien P reliant Paris Est.",
+    "Mouroux est une commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, au coeur de la Brie laitière (brie de Coulommiers AOP). Tissu économique : PME de l'artisanat bâtiment et services, commerces de proximité, PME prestataires de services, professions libérales (santé, immobilier), agroalimentaire et filière laitière. Gare de Mouroux sur le Transilien P reliant Paris Est.",
   ecosystemEn:
-    "Mouroux est une commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, au coeur de la Brie laitière (brie de Coulommiers AOP). Tissu économique : TPE artisanat bâtiment et services, commerces de proximité, PME prestataires de services, professions libérales (santé, immobilier), agroalimentaire et filière laitière. Gare de Mouroux sur le Transilien P reliant Paris Est.",
+    "Mouroux est une commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, au coeur de la Brie laitière (brie de Coulommiers AOP). Tissu économique : PME de l'artisanat bâtiment et services, commerces de proximité, PME prestataires de services, professions libérales (santé, immobilier), agroalimentaire et filière laitière. Gare de Mouroux sur le Transilien P reliant Paris Est.",
   distancesFr:
     "Coulommiers à 5 min, Meaux à 25 min, Paris Est à 55 min via Transilien P (gare de Mouroux). La Ferté-sous-Jouarre à 20 min. A4 accessible en 20 min via N34. Aéroport Roissy-CDG à 50 min, Paris-Orly à 1h.",
   distancesEn:
     "Coulommiers à 5 min, Meaux à 25 min, Paris Est à 55 min via Transilien P (gare de Mouroux). La Ferté-sous-Jouarre à 20 min. A4 accessible en 20 min via N34. Aéroport Roissy-CDG à 50 min, Paris-Orly à 1h.",
   topSectorsNaf: [
-    "TPE artisanat bâtiment & services",
+    "PME de l'artisanat bâtiment & services",
     "Commerce de proximité & détail",
     "PME prestataires de services",
     "Agroalimentaire & filière laitière (Brie)",
@@ -30,20 +30,20 @@ export const MOUROUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouroux : diagnostic adapté aux TPE artisans, commerces, PME de services et acteurs agroalimentaires de l'agglomération Coulommiers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mouroux : diagnostic adapté aux TPE artisans, commerces, PME de services et acteurs agroalimentaires de l'agglomération Coulommiers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mouroux : diagnostic adapté aux PME artisanales, commerces, PME de services et acteurs agroalimentaires de l'agglomération Coulommiers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mouroux : diagnostic adapté aux PME artisanales, commerces, PME de services et acteurs agroalimentaires de l'agglomération Coulommiers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mouroux : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME de services de l'agglomération Coulommiers. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
-      en: "Interventions IA sur site à Mouroux : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME de services de l'agglomération Coulommiers. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      fr: "Interventions IA sur site à Mouroux : formats adaptés au commerce, cabinet libéral, PME artisanale ou PME de services de l'agglomération Coulommiers. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Mouroux : formats adaptés au commerce, cabinet libéral, PME artisanale ou PME de services de l'agglomération Coulommiers. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Mouroux : automatisation gestion commerciale, agents conversationnels clients, CRM augmenté PME, traçabilité et qualité agroalimentaire, facturation automatisée artisans.",
       en: "Implémentation IA à Mouroux : automatisation gestion commerciale, agents conversationnels clients, CRM augmenté PME, traçabilité et qualité agroalimentaire, facturation automatisée artisans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mouroux : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et acteurs agroalimentaires de la Brie souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Mouroux : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et acteurs agroalimentaires de la Brie souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Mouroux : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et acteurs agroalimentaires de la Brie souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Mouroux : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et acteurs agroalimentaires de la Brie souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MOUROUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Mouroux  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Mouroux et de l'agglomération Coulommiers, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Mouroux et de l'agglomération Coulommiers, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les acteurs agroalimentaires de la Brie ?",
@@ -61,7 +61,7 @@ export const MOUROUX_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans et commerçants de Mouroux ?",
-      a: "Oui, nous intervenons auprès des TPE artisans et commerçants de Mouroux et de l'agglomération Coulommiers : automatisation devis et facturation, gestion planning, communication digitale, fidélisation clients. Formats courts adaptés.",
+      a: "Oui, nous intervenons auprès des PME de l'artisanat et du commerce de Mouroux et de l'agglomération Coulommiers : automatisation devis et facturation, gestion planning, communication digitale, fidélisation clients. Formats courts adaptés.",
     },
     {
       q: "Comment se déroule une mission à Mouroux ?",

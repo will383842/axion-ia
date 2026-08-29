@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FACHES_THUMESNIL_COPY: VilleCopy = {
   pitchFr:
-    "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. TPE, PME, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. PME, ETI, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. TPE, PME, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. PME, ETI, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faches-Thumesnil (59). Nous accompagnons PME et ETI : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Faches-Thumesnil (59). Nous accompagnons PME et ETI : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit sur place sur mesure.",
   seoHook: "commerce détail & artisanat second",
   ecosystemFr:
-    "Faches-Thumesnil est une commune périurbaine intégrée à la Métropole Européenne de Lille, marquée par son axe commercial RN17 (concessions auto, retail, restauration), ses ZA, son tissu de TPE/PME de services et d'artisans, et une population active travaillant en partie à Lille. Connectée par le métro ligne 1 (Porte des Postes), proche de l'aéroport Lille-Lesquin et du CHR Lille.",
+    "Faches-Thumesnil est une commune périurbaine intégrée à la Métropole Européenne de Lille, marquée par son axe commercial RN17 (concessions auto, retail, restauration), ses ZA, son tissu de PME et ETI de services et d'artisans, et une population active travaillant en partie à Lille. Connectée par le métro ligne 1 (Porte des Postes), proche de l'aéroport Lille-Lesquin et du CHR Lille.",
   ecosystemEn:
-    "Faches-Thumesnil est une commune périurbaine intégrée à la Métropole Européenne de Lille, marquée par son axe commercial RN17 (concessions auto, retail, restauration), ses ZA, son tissu de TPE/PME de services et d'artisans, et une population active travaillant en partie à Lille. Connectée par le métro ligne 1 (Porte des Postes), proche de l'aéroport Lille-Lesquin et du CHR Lille.",
+    "Faches-Thumesnil est une commune périurbaine intégrée à la Métropole Européenne de Lille, marquée par son axe commercial RN17 (concessions auto, retail, restauration), ses ZA, son tissu de PME et ETI de services et d'artisans, et une population active travaillant en partie à Lille. Connectée par le métro ligne 1 (Porte des Postes), proche de l'aéroport Lille-Lesquin et du CHR Lille.",
   distancesFr:
     "Lille centre à 10 min via métro ou A1. Aéroport Lille-Lesquin à 10 min. Gare Lille Flandres à 15 min. Roubaix à 25 min. Bruxelles à 1h via A22. Paris à 1h en TGV depuis Lille.",
   distancesEn:
@@ -42,8 +42,8 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
       en: "Implémentation IA à Faches-Thumesnil : automatisation devis et commandes, chatbot accueil et SAV, gestion stocks et planning, agents conversationnels concessions auto, marketing local IA pour commerces et PME de l'agglomération lilloise sud.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Faches-Thumesnil : sessions dans vos locaux, en zone commerciale ou en visio. Dirigeants TPE/PME, commerçants, artisans et professions libérales de l'agglomération lilloise sud souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Faches-Thumesnil : sessions dans vos locaux, en zone commerciale ou en visio. Dirigeants TPE/PME, commerçants, artisans et professions libérales de l'agglomération lilloise sud souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Faches-Thumesnil : sessions dans vos locaux, en zone commerciale ou en visio. Dirigeants PME et ETI, commerçants, artisans et professions libérales de l'agglomération lilloise sud souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Faches-Thumesnil : sessions dans vos locaux, en zone commerciale ou en visio. Dirigeants PME et ETI, commerçants, artisans et professions libérales de l'agglomération lilloise sud souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Faches-Thumesnil  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Faches-Thumesnil et du Nord, il identifie les cas d'usage IA à fort ROI pour votre commerce, atelier artisan, PME de services ou cabinet libéral.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Faches-Thumesnil et du Nord, il identifie les cas d'usage IA à fort ROI pour votre commerce, atelier artisan, PME de services ou cabinet libéral.",
     },
     {
       q: "Accompagnez-vous les commerçants de la RN17 et les concessions auto ?",

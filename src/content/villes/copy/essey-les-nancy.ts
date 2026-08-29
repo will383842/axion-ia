@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const ESSEY_LES_NANCY_COPY: VilleCopy = {
   pitchFr:
-    "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. TPE et PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. PME et ETI tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. TPE et PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. PME et ETI tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essey-lès-Nancy (54). Nous accompagnons PME et ETI : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Essey-lès-Nancy (54). Nous accompagnons PME et ETI : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit sur place sur mesure.",
   seoHook: "commerce zone & tertiaires",
   ecosystemFr:
-    "Essey-lès-Nancy est une commune de la Métropole du Grand Nancy (Meurthe-et-Moselle) structurée autour de la zone commerciale Saint-Sébastien. Tissu TPE/PME commerce de zone et de proximité, sociétés tertiaires, services aux entreprises, artisanat BTP, professions libérales adossés au bassin nancéien.",
+    "Essey-lès-Nancy est une commune de la Métropole du Grand Nancy (Meurthe-et-Moselle) structurée autour de la zone commerciale Saint-Sébastien. Tissu PME et ETI commerce de zone et de proximité, sociétés tertiaires, services aux entreprises, artisanat BTP, professions libérales adossés au bassin nancéien.",
   ecosystemEn:
-    "Essey-lès-Nancy est une commune de la Métropole du Grand Nancy (Meurthe-et-Moselle) structurée autour de la zone commerciale Saint-Sébastien. Tissu TPE/PME commerce de zone et de proximité, sociétés tertiaires, services aux entreprises, artisanat BTP, professions libérales adossés au bassin nancéien.",
+    "Essey-lès-Nancy est une commune de la Métropole du Grand Nancy (Meurthe-et-Moselle) structurée autour de la zone commerciale Saint-Sébastien. Tissu PME et ETI commerce de zone et de proximité, sociétés tertiaires, services aux entreprises, artisanat BTP, professions libérales adossés au bassin nancéien.",
   distancesFr:
     "Nancy centre à 10 min. Gare Nancy à 15 min. Metz à 50 min. Strasbourg à 1 h 40. Luxembourg à 1 h 40. Paris-Est à 1 h 30 (TGV via Nancy). Autoroute A33 accessible en 5 min.",
   distancesEn:
     "Nancy centre à 10 min. Gare Nancy à 15 min. Metz à 50 min. Strasbourg à 1 h 40. Luxembourg à 1 h 40. Paris-Est à 1 h 30 (TGV via Nancy). Autoroute A33 accessible en 5 min.",
   topSectorsNaf: [
     "Commerce de zone (Saint-Sébastien)",
-    "TPE/PME tertiaires (Métropole Grand Nancy)",
+    "PME et ETI tertiaires (Métropole Grand Nancy)",
     "Services aux entreprises",
     "Artisanat BTP",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux TPE/PME commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux PME et ETI commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Essey-lès-Nancy : diagnostic adapté aux PME et ETI commerce de zone Saint-Sébastien, sociétés tertiaires, artisans BTP, professions libérales. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Essey-lès-Nancy : formats adaptés au commerce de zone, bureau tertiaire, atelier BTP, cabinet libéral. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
       en: "Implémentation IA à Essey-lès-Nancy : agents conversationnels retail zone Saint-Sébastien, automatisation workflow tertiaire, CRM augmenté, devis intelligents BTP, gestion documentaire professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Essey-lès-Nancy : sessions dans votre commerce zone Saint-Sébastien, bureau, atelier ou en visio. Dirigeants TPE/PME, commerçants, artisans, professions libérales de l'est nancéien.",
-      en: "Coaching 1-to-1 à Essey-lès-Nancy : sessions dans votre commerce zone Saint-Sébastien, bureau, atelier ou en visio. Dirigeants TPE/PME, commerçants, artisans, professions libérales de l'est nancéien.",
+      fr: "Coaching 1-to-1 à Essey-lès-Nancy : sessions dans votre commerce zone Saint-Sébastien, bureau, atelier ou en visio. Dirigeants PME et ETI, commerçants, artisans, professions libérales de l'est nancéien.",
+      en: "Coaching 1-to-1 à Essey-lès-Nancy : sessions dans votre commerce zone Saint-Sébastien, bureau, atelier ou en visio. Dirigeants PME et ETI, commerçants, artisans, professions libérales de l'est nancéien.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Essey-lès-Nancy  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME commerce de zone, tertiaires, artisans et professions libérales de l'est nancéien.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME et ETI commerce de zone, tertiaires, artisans et professions libérales de l'est nancéien.",
     },
     {
       q: "Accompagnez-vous les commerces de la zone Saint-Sébastien ?",
       a: "Oui, agents conversationnels visiteurs, gestion stocks, programmes fidélité augmentés, CRM commerçant, devis intelligents, automatisation merchandising pour commerces de zone et retail.",
     },
     {
-      q: "Travaillez-vous avec les TPE/PME tertiaires et artisans BTP ?",
-      a: "Oui, automatisation workflow, CRM augmenté, classification documents, devis intelligents, planning chantiers, gestion administrative pour TPE tertiaires et artisans BTP de l'est nancéien.",
+      q: "Travaillez-vous avec les PME et ETI tertiaires et artisans BTP ?",
+      a: "Oui, automatisation workflow, CRM augmenté, classification documents, devis intelligents, planning chantiers, gestion administrative pour PME tertiaires et artisans BTP de l'est nancéien.",
     },
     {
       q: "Comment accéder à Essey-lès-Nancy depuis Paris ?",

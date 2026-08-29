@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MERIEL_COPY: VilleCopy = {
   pitchFr:
-    "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mériel (95). Nous accompagnons PME et ETI : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mériel (95). Nous accompagnons PME et ETI : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Mériel est une commune résidentielle en bord d'Oise, entre la forêt de L'Isle-Adam et Auvers-sur-Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne.",
+    "Mériel est une commune résidentielle en bord d'Oise, entre la forêt de L'Isle-Adam et Auvers-sur-Oise. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne.",
   ecosystemEn:
-    "Mériel est une commune résidentielle en bord d'Oise, entre la forêt de L'Isle-Adam et Auvers-sur-Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne.",
+    "Mériel est une commune résidentielle en bord d'Oise, entre la forêt de L'Isle-Adam et Auvers-sur-Oise. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, services à la personne.",
   distancesFr:
     "L'Isle-Adam à 5 min. Auvers-sur-Oise à 10 min. Gare Transilien H Mériel. Cergy-Pontoise à 20 min. Paris Gare du Nord à 40 min. Aéroport Paris-CDG à 30 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const MERIEL_COPY: VilleCopy = {
       en: "Implémentation IA à Mériel : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, facturation intelligente PME services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mériel : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME mériellois, professions libérales, artisans.",
-      en: "Coaching 1-to-1 à Mériel : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME mériellois, professions libérales, artisans.",
+      fr: "Coaching 1-to-1 à Mériel : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI mériellois, professions libérales, artisans.",
+      en: "Coaching 1-to-1 à Mériel : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI mériellois, professions libérales, artisans.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MERIEL_COPY: VilleCopy = {
       a: "Oui, automatisation gestion cabinet, secrétariat IA, CRM patients/clients, facturation automatisée, outils de pilotage activité.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

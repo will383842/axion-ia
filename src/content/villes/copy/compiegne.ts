@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const COMPIEGNE_COPY: VilleCopy = {
   pitchFr:
-    "Compiègne, sous-préfecture de l'Oise (40 761 habitants en 2023), est un pôle universitaire et touristique à 71 km au nord de Paris. Axion-IA y accompagne les TPE et PME locales — commerces du centre-ville historique, prestataires de services autour du Château et de la Forêt domaniale, sous-traitants industriels du bassin de Margny-lès-Compiègne — dans la mise en place d'automatisations IA sur mesure : devis, relances, suivi client, reporting. Notre approche reste artisanale et codée maison, sans no-code, pour des dirigeants qui veulent garder la main sur leurs données.",
+    "Compiègne, sous-préfecture de l'Oise (40 761 habitants en 2023), est un pôle universitaire et touristique à 71 km au nord de Paris. Axion-IA y accompagne les PME et ETI locales — commerces du centre-ville historique, prestataires de services autour du Château et de la Forêt domaniale, sous-traitants industriels du bassin de Margny-lès-Compiègne — dans la mise en place d'automatisations IA sur mesure : devis, relances, suivi client, reporting. Notre approche reste artisanale et codée maison, sans no-code, pour des dirigeants qui veulent garder la main sur leurs données.",
   pitchEn:
-    "Compiègne, sous-préfecture de l'Oise (40 761 habitants en 2023), est un pôle universitaire et touristique à 71 km au nord de Paris. Axion-IA y accompagne les TPE et PME locales — commerces du centre-ville historique, prestataires de services autour du Château et de la Forêt domaniale, sous-traitants industriels du bassin de Margny-lès-Compiègne — dans la mise en place d'automatisations IA sur mesure : devis, relances, suivi client, reporting. Notre approche reste artisanale et codée maison, sans no-code, pour des dirigeants qui veulent garder la main sur leurs données.",
+    "Compiègne, sous-préfecture de l'Oise (40 761 habitants en 2023), est un pôle universitaire et touristique à 71 km au nord de Paris. Axion-IA y accompagne les PME et ETI locales — commerces du centre-ville historique, prestataires de services autour du Château et de la Forêt domaniale, sous-traitants industriels du bassin de Margny-lès-Compiègne — dans la mise en place d'automatisations IA sur mesure : devis, relances, suivi client, reporting. Notre approche reste artisanale et codée maison, sans no-code, pour des dirigeants qui veulent garder la main sur leurs données.",
   directAnswerFr:
-    "Axion-IA intervient à Compiègne (Oise, Hauts-de-France) auprès des TPE et PME, et plus marginalement des ETI, du bassin compiégnois. La présence de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial (Château impérial, Forêt domaniale, Clairière de l'Armistice) et de l'activité tertiaire crée un terrain favorable aux projets IA mesurés. Williams se déplace sur site depuis Paris pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées et des accompagnements 1-à-1 entièrement codés maison, sans plateforme no-code propriétaire.",
+    "Axion-IA intervient à Compiègne (Oise, Hauts-de-France) auprès des PME et ETI, et plus marginalement les grands groupes, du bassin compiégnois. La présence de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial (Château impérial, Forêt domaniale, Clairière de l'Armistice) et de l'activité tertiaire crée un terrain favorable aux projets IA mesurés. Williams se déplace sur site depuis Paris pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées et des accompagnements 1-à-1 entièrement codés maison, sans plateforme no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Compiègne (Oise, Hauts-de-France) auprès des TPE et PME, et plus marginalement des ETI, du bassin compiégnois. La présence de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial (Château impérial, Forêt domaniale, Clairière de l'Armistice) et de l'activité tertiaire crée un terrain favorable aux projets IA mesurés. Williams se déplace sur site depuis Paris pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées et des accompagnements 1-à-1 entièrement codés maison, sans plateforme no-code propriétaire.",
+    "Axion-IA intervient à Compiègne (Oise, Hauts-de-France) auprès des PME et ETI, et plus marginalement les grands groupes, du bassin compiégnois. La présence de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial (Château impérial, Forêt domaniale, Clairière de l'Armistice) et de l'activité tertiaire crée un terrain favorable aux projets IA mesurés. Williams se déplace sur site depuis Paris pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées et des accompagnements 1-à-1 entièrement codés maison, sans plateforme no-code propriétaire.",
   seoHook: "UTC & tourisme patrimonial",
   ecosystemFr:
-    "Le tissu économique compiégnois s'articule autour de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial lié au Château et à la Forêt domaniale (5ᵉ plus grande forêt d'État de France), et d'un réseau dense de TPE/PME dans le commerce, les services aux entreprises et la sous-traitance. Margny-lès-Compiègne, Venette, Clairoix, Choisy-au-Bac et Jaux complètent l'agglomération.",
+    "Le tissu économique compiégnois s'articule autour de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial lié au Château et à la Forêt domaniale (5ᵉ plus grande forêt d'État de France), et d'un réseau dense de PME et ETI dans le commerce, les services aux entreprises et la sous-traitance. Margny-lès-Compiègne, Venette, Clairoix, Choisy-au-Bac et Jaux complètent l'agglomération.",
   ecosystemEn:
-    "Le tissu économique compiégnois s'articule autour de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial lié au Château et à la Forêt domaniale (5ᵉ plus grande forêt d'État de France), et d'un réseau dense de TPE/PME dans le commerce, les services aux entreprises et la sous-traitance. Margny-lès-Compiègne, Venette, Clairoix, Choisy-au-Bac et Jaux complètent l'agglomération.",
+    "Le tissu économique compiégnois s'articule autour de l'Université de Technologie de Compiègne (UTC), du tourisme patrimonial lié au Château et à la Forêt domaniale (5ᵉ plus grande forêt d'État de France), et d'un réseau dense de PME et ETI dans le commerce, les services aux entreprises et la sous-traitance. Margny-lès-Compiègne, Venette, Clairoix, Choisy-au-Bac et Jaux complètent l'agglomération.",
   distancesFr:
     "Compiègne est à 71 km de Paris, 49 km de l'aéroport Paris-CDG. La gare de Compiègne dessert Paris-Nord en TER (environ 50 min) et Amiens via la ligne Creil-Jeumont.",
   distancesEn:
@@ -32,20 +32,20 @@ export const COMPIEGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place à Compiègne pour les TPE/PME du centre-ville historique ou du bassin de Margny-lès-Compiègne : cartographie des processus, identification des tâches automatisables (devis, relances, reporting), priorisation à 30/60/90 jours.",
-      en: "Audit sur place à Compiègne pour les TPE/PME du centre-ville historique ou du bassin de Margny-lès-Compiègne : cartographie des processus, identification des tâches automatisables (devis, relances, reporting), priorisation à 30/60/90 jours.",
+      fr: "Audit sur place à Compiègne pour les PME et ETI du centre-ville historique ou du bassin de Margny-lès-Compiègne : cartographie des processus, identification des tâches automatisables (devis, relances, reporting), priorisation à 30/60/90 jours.",
+      en: "Audit sur place à Compiègne pour les PME et ETI du centre-ville historique ou du bassin de Margny-lès-Compiègne : cartographie des processus, identification des tâches automatisables (devis, relances, reporting), priorisation à 30/60/90 jours.",
     },
     interventions: {
       fr: "Interventions ciblées à Compiègne pour les hôteliers, restaurateurs et commerçants du quartier du Château, ou pour les sous-traitants industriels de l'agglomération : assistants email, génération de devis, suivi qualité client.",
       en: "Interventions ciblées à Compiègne pour les hôteliers, restaurateurs et commerçants du quartier du Château, ou pour les sous-traitants industriels de l'agglomération : assistants email, génération de devis, suivi qualité client.",
     },
     implementation: {
-      fr: "Implémentation de solutions IA codées maison à Compiègne, hébergées en France, intégrées aux outils existants des TPE/PME — sans dépendance à une plateforme no-code propriétaire, code livré et documenté.",
-      en: "Implémentation de solutions IA codées maison à Compiègne, hébergées en France, intégrées aux outils existants des TPE/PME — sans dépendance à une plateforme no-code propriétaire, code livré et documenté.",
+      fr: "Implémentation de solutions IA codées maison à Compiègne, hébergées en France, intégrées aux outils existants des PME et ETI — sans dépendance à une plateforme no-code propriétaire, code livré et documenté.",
+      en: "Implémentation de solutions IA codées maison à Compiègne, hébergées en France, intégrées aux outils existants des PME et ETI — sans dépendance à une plateforme no-code propriétaire, code livré et documenté.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Compiègne pour les dirigeants de TPE/PME : 2 heures de coaching IA opérationnel, cas concrets, prompts adaptés à leur métier, sensibilisation RGPD et AI Act.",
-      en: "Accompagnement 1-à-1 à Compiègne pour les dirigeants de TPE/PME : 2 heures de coaching IA opérationnel, cas concrets, prompts adaptés à leur métier, sensibilisation RGPD et AI Act.",
+      fr: "Accompagnement 1-à-1 à Compiègne pour les dirigeants de PME et ETI : 2 heures de coaching IA opérationnel, cas concrets, prompts adaptés à leur métier, sensibilisation RGPD et AI Act.",
+      en: "Accompagnement 1-à-1 à Compiègne pour les dirigeants de PME et ETI : 2 heures de coaching IA opérationnel, cas concrets, prompts adaptés à leur métier, sensibilisation RGPD et AI Act.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const COMPIEGNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine + brique IA",
-            detail:
-              "Site responsive avec un assistant IA pour commerçants du centre historique, indépendants, hôteliers ou restaurateurs autour du Château impérial et de la Forêt domaniale.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce / portail métier",
@@ -173,12 +167,6 @@ export const COMPIEGNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site + AI block",
-            detail:
-              "Responsive site with an AI assistant for historic-center retailers, freelancers, hoteliers or restaurateurs around the Imperial Château and the state forest.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce site / business portal",
             detail:
@@ -244,7 +232,7 @@ export const COMPIEGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Compiègne ?",
-      a: "Principalement les TPE et PME du commerce de détail, de l'hôtellerie-restauration autour du Château, des services aux entreprises, et les sous-traitants industriels du bassin compiégnois. Plus marginalement, quelques ETI locales.",
+      a: "Principalement les PME et ETI du commerce de détail, de l'hôtellerie-restauration autour du Château, des services aux entreprises, et les sous-traitants industriels du bassin compiégnois. Plus marginalement, quelques ETI locales.",
     },
     {
       q: "Pourquoi pas de no-code chez Axion-IA à Compiègne ?",

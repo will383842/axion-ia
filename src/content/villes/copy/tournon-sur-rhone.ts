@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, PME du BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, PME du BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, PME du BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, PME du BTP, commerçants et services aux entreprises.",
   seoHook: "vallée du",
   ecosystemFr:
-    "Tournon-sur-Rhône est la sous-préfecture de l'Ardèche, face à Tain-l'Hermitage (rive droite du Rhône). Viticulture AOC Saint-Joseph (grands crus septentrionaux Rhône). Tissu oenotourisme, administration, PME tertiaires, TPE artisanat BTP, commerces.",
+    "Tournon-sur-Rhône est la sous-préfecture de l'Ardèche, face à Tain-l'Hermitage (rive droite du Rhône). Viticulture AOC Saint-Joseph (grands crus septentrionaux Rhône). Tissu oenotourisme, administration, PME tertiaires, PME du BTP, commerces.",
   ecosystemEn:
-    "Tournon-sur-Rhône est la sous-préfecture de l'Ardèche, face à Tain-l'Hermitage (rive droite du Rhône). Viticulture AOC Saint-Joseph (grands crus septentrionaux Rhône). Tissu oenotourisme, administration, PME tertiaires, TPE artisanat BTP, commerces.",
+    "Tournon-sur-Rhône est la sous-préfecture de l'Ardèche, face à Tain-l'Hermitage (rive droite du Rhône). Viticulture AOC Saint-Joseph (grands crus septentrionaux Rhône). Tissu oenotourisme, administration, PME tertiaires, PME du BTP, commerces.",
   distancesFr:
     "Gare Tain-Tournon à 5 min (TER Lyon-Avignon). Lyon à 1h A7. Valence à 20 min. Annonay à 30 min. Aéroport Lyon-Saint-Exupéry à 1h.",
   distancesEn:
@@ -26,12 +26,12 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
     "Oenotourisme vallée Rhône",
     "Administration (sous-préfecture)",
     "PME tertiaires",
-    "TPE artisanat BTP",
+    "PME du BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tournon-sur-Rhône : formats adaptés au domaine viticole, site oenotouristique, administration, commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
       en: "Implémentation IA à Tournon-sur-Rhône : prédiction vendanges Saint-Joseph, classification photos cépages, traçabilité AOC, agents conversationnels oenotourisme multilingue.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tournon-sur-Rhône : sessions dans votre domaine viticole, administration, commerce ou en visio. Viticulteurs AOC, acteurs tourisme, administration, artisans, gérants TPE/PME tournonais.",
-      en: "Coaching 1-to-1 à Tournon-sur-Rhône : sessions dans votre domaine viticole, administration, commerce ou en visio. Viticulteurs AOC, acteurs tourisme, administration, artisans, gérants TPE/PME tournonais.",
+      fr: "Coaching 1-to-1 à Tournon-sur-Rhône : sessions dans votre domaine viticole, administration, commerce ou en visio. Viticulteurs AOC, acteurs tourisme, administration, artisans, gérants PME et ETI tournonais.",
+      en: "Coaching 1-to-1 à Tournon-sur-Rhône : sessions dans votre domaine viticole, administration, commerce ou en visio. Viticulteurs AOC, acteurs tourisme, administration, artisans, gérants PME et ETI tournonais.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels visiteurs multilingue, automatisation réservations dégustations, classification feedback.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

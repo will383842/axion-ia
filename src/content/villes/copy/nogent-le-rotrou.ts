@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
   pitchFr:
-    "Nogent-le-Rotrou (28), sous-préfecture d'Eure-et-Loir et capitale du Perche, est une ville industrielle historique dominée par le château Saint-Jean. Tissu TPE/PME industrie mécanique, agroalimentaire, artisanat, commerces centre-ville et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Nogent-le-Rotrou (28), sous-préfecture d'Eure-et-Loir et capitale du Perche, est une ville industrielle historique dominée par le château Saint-Jean. Tissu PME et ETI industrie mécanique, agroalimentaire, artisanat, commerces centre-ville et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Nogent-le-Rotrou (28), sous-préfecture d'Eure-et-Loir et capitale du Perche, est une ville industrielle historique dominée par le château Saint-Jean. Tissu TPE/PME industrie mécanique, agroalimentaire, artisanat, commerces centre-ville et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Nogent-le-Rotrou (28), sous-préfecture d'Eure-et-Loir et capitale du Perche, est une ville industrielle historique dominée par le château Saint-Jean. Tissu PME et ETI industrie mécanique, agroalimentaire, artisanat, commerces centre-ville et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, TPE artisans, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, PME artisanales, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, TPE artisans, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, PME artisanales, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
   seoHook: "industrie mécanique & agroalimentaire perche",
   ecosystemFr:
     "Nogent-le-Rotrou est la sous-préfecture d'Eure-et-Loir et la capitale historique du Perche, dominée par le château Saint-Jean (XIe siècle). L'économie locale repose sur l'industrie mécanique (sous-traitance automobile, métallurgie), l'agroalimentaire, l'artisanat BTP, les commerces de centre-ville et les exploitations agricoles percheronnes.",
@@ -26,12 +26,12 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
     "Agroalimentaire Perche",
     "Agriculture & élevage percheron",
     "Commerce de centre-ville",
-    "TPE artisanat BTP",
+    "PME du BTP",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nogent-le-Rotrou : diagnostic adapté aux PME industrielles mécanique/métallurgie, TPE artisans, commerçants centre-ville, exploitants agricoles du Perche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Nogent-le-Rotrou : diagnostic adapté aux PME industrielles mécanique/métallurgie, TPE artisans, commerçants centre-ville, exploitants agricoles du Perche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Nogent-le-Rotrou : diagnostic adapté aux PME industrielles mécanique/métallurgie, PME artisanales, commerçants centre-ville, exploitants agricoles du Perche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Nogent-le-Rotrou : diagnostic adapté aux PME industrielles mécanique/métallurgie, PME artisanales, commerçants centre-ville, exploitants agricoles du Perche. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nogent-le-Rotrou : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -57,7 +57,7 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Nogent-le-Rotrou ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du Perche ?",

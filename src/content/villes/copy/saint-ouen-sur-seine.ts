@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Ouen-sur-Seine (93), commune de 53 615 habitants en bord de Seine, est limitrophe des 17e et 18e arrondissements de Paris. Très bien desservie par les métros 13 et 14 (prolongée en décembre 2020), le RER C et le tramway T3b. Tissu de TPE artisans, PME industrielles et tertiaires, sièges sociaux (Alstom) et marché aux puces historique. Axion-IA accompagne ces entreprises dans leur transition IA.",
+    "Saint-Ouen-sur-Seine (93), commune de 53 615 habitants en bord de Seine, est limitrophe des 17e et 18e arrondissements de Paris. Très bien desservie par les métros 13 et 14 (prolongée en décembre 2020), le RER C et le tramway T3b. Tissu de PME artisanales, PME industrielles et tertiaires, sièges sociaux (Alstom) et marché aux puces historique. Axion-IA accompagne ces entreprises dans leur transition IA.",
   pitchEn:
-    "Saint-Ouen-sur-Seine (93), commune de 53 615 habitants en bord de Seine, est limitrophe des 17e et 18e arrondissements de Paris. Très bien desservie par les métros 13 et 14 (prolongée en décembre 2020), le RER C et le tramway T3b. Tissu de TPE artisans, PME industrielles et tertiaires, sièges sociaux (Alstom) et marché aux puces historique. Axion-IA accompagne ces entreprises dans leur transition IA.",
+    "Saint-Ouen-sur-Seine (93), commune de 53 615 habitants en bord de Seine, est limitrophe des 17e et 18e arrondissements de Paris. Très bien desservie par les métros 13 et 14 (prolongée en décembre 2020), le RER C et le tramway T3b. Tissu de PME artisanales, PME industrielles et tertiaires, sièges sociaux (Alstom) et marché aux puces historique. Axion-IA accompagne ces entreprises dans leur transition IA.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ouen-sur-Seine et dans tout le secteur nord de la Métropole du Grand Paris. Nos consultants se déplacent sur site pour accompagner TPE artisans et commerçants des Puces, PME industrielles, structures tertiaires installées aux Docks, ainsi que professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, sur tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ouen-sur-Seine et dans tout le secteur nord de la Métropole du Grand Paris. Nos consultants se déplacent sur site pour accompagner PME de l'artisanat et du commerce des Puces, PME industrielles, structures tertiaires installées aux Docks, ainsi que professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, sur tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ouen-sur-Seine et dans tout le secteur nord de la Métropole du Grand Paris. Nos consultants se déplacent sur site pour accompagner TPE artisans et commerçants des Puces, PME industrielles, structures tertiaires installées aux Docks, ainsi que professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, sur tarifs publics.",
-  seoHook: "TPE & PME nord Paris — Docks, Puces & Alstom",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ouen-sur-Seine et dans tout le secteur nord de la Métropole du Grand Paris. Nos consultants se déplacent sur site pour accompagner PME de l'artisanat et du commerce des Puces, PME industrielles, structures tertiaires installées aux Docks, ainsi que professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, sur tarifs publics.",
+  seoHook: "PME & PME nord Paris — Docks, Puces & Alstom",
   ecosystemFr:
-    "Saint-Ouen-sur-Seine concentre plusieurs pôles économiques distincts. Le siège social d'Alstom y est implanté. La ZAC des Docks, ancien secteur industriel de 100 hectares, accueille un éco-quartier mixte avec un parc de 12 hectares et de nouveaux bureaux. Le Marché aux Puces (plus grand marché d'antiquités au monde) regroupe des centaines de commerçants TPE. Depuis 2018, le Conseil régional d'Île-de-France a installé son siège à Saint-Ouen. Les ateliers de maintenance de la ligne 4 du métro complètent ce tissu.",
+    "Saint-Ouen-sur-Seine concentre plusieurs pôles économiques distincts. Le siège social d'Alstom y est implanté. La ZAC des Docks, ancien secteur industriel de 100 hectares, accueille un éco-quartier mixte avec un parc de 12 hectares et de nouveaux bureaux. Le Marché aux Puces (plus grand marché d'antiquités au monde) regroupe des centaines de commerçants PME. Depuis 2018, le Conseil régional d'Île-de-France a installé son siège à Saint-Ouen. Les ateliers de maintenance de la ligne 4 du métro complètent ce tissu.",
   ecosystemEn:
-    "Saint-Ouen-sur-Seine concentre plusieurs pôles économiques distincts. Le siège social d'Alstom y est implanté. La ZAC des Docks, ancien secteur industriel de 100 hectares, accueille un éco-quartier mixte avec un parc de 12 hectares et de nouveaux bureaux. Le Marché aux Puces (plus grand marché d'antiquités au monde) regroupe des centaines de commerçants TPE. Depuis 2018, le Conseil régional d'Île-de-France a installé son siège à Saint-Ouen. Les ateliers de maintenance de la ligne 4 du métro complètent ce tissu.",
+    "Saint-Ouen-sur-Seine concentre plusieurs pôles économiques distincts. Le siège social d'Alstom y est implanté. La ZAC des Docks, ancien secteur industriel de 100 hectares, accueille un éco-quartier mixte avec un parc de 12 hectares et de nouveaux bureaux. Le Marché aux Puces (plus grand marché d'antiquités au monde) regroupe des centaines de commerçants PME. Depuis 2018, le Conseil régional d'Île-de-France a installé son siège à Saint-Ouen. Les ateliers de maintenance de la ligne 4 du métro complètent ce tissu.",
   distancesFr:
     "Saint-Ouen-sur-Seine est limitrophe de Paris (17e et 18e arrondissements). Communes voisines : Saint-Denis (La Plaine-Saint-Denis), L'Île-Saint-Denis, Asnières-sur-Seine et Clichy. Accès par les métros 13 et 14, le RER C et le tramway T3b. Aéroport Paris-Charles-de-Gaulle à environ 18 km, gare de Paris-Nord à 6 km.",
   distancesEn:
@@ -32,8 +32,8 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Ouen-sur-Seine : diagnostic pour TPE des Puces, PME industrielles, structures tertiaires des Docks et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI chiffré.",
-      en: "Audit IA à Saint-Ouen-sur-Seine : diagnostic pour TPE des Puces, PME industrielles, structures tertiaires des Docks et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI chiffré.",
+      fr: "Audit IA à Saint-Ouen-sur-Seine : diagnostic pour PME des Puces, PME industrielles, structures tertiaires des Docks et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI chiffré.",
+      en: "Audit IA à Saint-Ouen-sur-Seine : diagnostic pour PME des Puces, PME industrielles, structures tertiaires des Docks et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Ouen-sur-Seine : automatisation gestion stock antiquités, facturation BTP, suivi commercial PME industrielles, transcription réunions tertiaires.",
@@ -44,8 +44,8 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Ouen-sur-Seine : code custom Python/TypeScript pour PME des Docks, intégration outils ERP industriels, automatisation back-office. Code source livré, pas de no-code.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Ouen-sur-Seine : sessions sur site ou en visio pour dirigeants TPE/PME, commerçants des Puces, gérants industriels et professions libérales.",
-      en: "Coaching 1-to-1 à Saint-Ouen-sur-Seine : sessions sur site ou en visio pour dirigeants TPE/PME, commerçants des Puces, gérants industriels et professions libérales.",
+      fr: "Coaching 1-to-1 à Saint-Ouen-sur-Seine : sessions sur site ou en visio pour dirigeants de PME et d'ETI, commerçants des Puces, gérants industriels et professions libérales.",
+      en: "Coaching 1-to-1 à Saint-Ouen-sur-Seine : sessions sur site ou en visio pour dirigeants de PME et d'ETI, commerçants des Puces, gérants industriels et professions libérales.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA-augmentée",
-            detail:
-              "Pour les antiquaires et galeristes des Puces, artisans et indépendants altoséquanais : site vitrine ou boutique e-commerce avec catalogage photo assisté par IA et traduction multilingue pour clientèle internationale.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou SaaS métier",
@@ -173,12 +167,6 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase or shop",
-            detail:
-              "For Flea Market antique dealers and gallerists, craftspeople and freelancers: showcase site or e-commerce shop with AI-assisted photo cataloguing and multilingual translation for an international clientele.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce or business SaaS platform",
             detail:
@@ -236,7 +224,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Saint-Ouen ?",
-      a: "Nous accompagnons en priorité les TPE des Puces (antiquaires, brocanteurs), les PME industrielles et artisans, les structures tertiaires de la ZAC des Docks, et les professions libérales installées sur la commune.",
+      a: "Nous accompagnons en priorité les PME des Puces (antiquaires, brocanteurs), les PME industrielles et artisans, les structures tertiaires de la ZAC des Docks, et les professions libérales installées sur la commune.",
     },
     {
       q: "Quels délais d'intervention sur site à Saint-Ouen-sur-Seine ?",
@@ -248,7 +236,7 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour les commerçants des Puces ?",
-      a: "Oui, ateliers sur site adaptés aux commerçants TPE des Puces de Saint-Ouen : gestion stock photo IA, automatisation annonces en ligne, traduction multilingue pour clientèle internationale. Format demi-journée ou journée.",
+      a: "Oui, ateliers sur site adaptés aux commerçants PME des Puces de Saint-Ouen : gestion stock photo IA, automatisation annonces en ligne, traduction multilingue pour clientèle internationale. Format demi-journée ou journée.",
     },
   ],
 };

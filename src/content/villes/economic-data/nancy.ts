@@ -326,7 +326,7 @@ export const NANCY_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : sans annuaire officiel cross-référencé par entreprise Nancy
   // confirmée, champ honnêtement vide pour respecter zéro invention.

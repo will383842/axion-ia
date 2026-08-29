@@ -293,7 +293,7 @@ export const GRENOBLE_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // EPV Grenoble : pas d'extraction CSV individuelle confirmée à ce jour
   // (annuaire data.economie.gouv.fr/entreprises-du-patrimoine-vivant-epv à

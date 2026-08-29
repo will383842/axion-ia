@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AVALLON_COPY: VilleCopy = {
   pitchFr:
-    "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. TPE artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. PME de l'artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. TPE artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. PME de l'artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avallon (89). Nous accompagnons PME et ETI : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Yonne",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Avallon (89). Nous accompagnons PME et ETI : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit sur place sur mesure.",
+  seoHook: "PME & PME Yonne",
   ecosystemFr:
-    "Avallon est sous-préfecture de l'Yonne, cité médiévale perchée sur un éperon rocheux à la porte nord du parc naturel régional du Morvan. Tissu TPE hôtellerie-restauration, artisanat et commerce de centre-bourg, PME agroalimentaires et viticoles (Chablisien tout proche), professions libérales, prestataires tourisme vert.",
+    "Avallon est sous-préfecture de l'Yonne, cité médiévale perchée sur un éperon rocheux à la porte nord du parc naturel régional du Morvan. Tissu PME hôtellerie-restauration, artisanat et commerce de centre-bourg, PME agroalimentaires et viticoles (Chablisien tout proche), professions libérales, prestataires tourisme vert.",
   ecosystemEn:
-    "Avallon est sous-préfecture de l'Yonne, cité médiévale perchée sur un éperon rocheux à la porte nord du parc naturel régional du Morvan. Tissu TPE hôtellerie-restauration, artisanat et commerce de centre-bourg, PME agroalimentaires et viticoles (Chablisien tout proche), professions libérales, prestataires tourisme vert.",
+    "Avallon est sous-préfecture de l'Yonne, cité médiévale perchée sur un éperon rocheux à la porte nord du parc naturel régional du Morvan. Tissu PME hôtellerie-restauration, artisanat et commerce de centre-bourg, PME agroalimentaires et viticoles (Chablisien tout proche), professions libérales, prestataires tourisme vert.",
   distancesFr:
     "Avallon (gare SNCF) sur l'axe Paris-Dijon. Auxerre à 50 min. Dijon à 1h15. Paris-Bercy à 2h en train. A6 sortie 22 à 5 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const AVALLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Avallon : diagnostic adapté aux PME hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Avallon : diagnostic adapté aux PME hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avallon : formats adaptés hôtel, restaurant, commerce, cabinet, exploitation viticole. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const AVALLON_COPY: VilleCopy = {
       en: "Implémentation IA à Avallon : gestion réservations et avis clients tourisme, CRM augmenté hôtellerie-restauration, automatisation traçabilité agroalimentaire, outils viticulture, prise de rendez-vous IA professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Avallon : sessions dans votre établissement, commerce, cabinet ou en visio. Dirigeants TPE/PME avallonais, hôteliers-restaurateurs, viticulteurs, artisans.",
-      en: "Coaching 1-to-1 à Avallon : sessions dans votre établissement, commerce, cabinet ou en visio. Dirigeants TPE/PME avallonais, hôteliers-restaurateurs, viticulteurs, artisans.",
+      fr: "Coaching 1-to-1 à Avallon : sessions dans votre établissement, commerce, cabinet ou en visio. Dirigeants PME et ETI avallonais, hôteliers-restaurateurs, viticulteurs, artisans.",
+      en: "Coaching 1-to-1 à Avallon : sessions dans votre établissement, commerce, cabinet ou en visio. Dirigeants PME et ETI avallonais, hôteliers-restaurateurs, viticulteurs, artisans.",
     },
   },
   faqGeolocalisee: [
@@ -56,7 +56,7 @@ export const AVALLON_COPY: VilleCopy = {
       a: "Oui, audit sur place {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, outils relation client multilingue.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants du centre-bourg ?",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce du centre-bourg ?",
       a: "Oui, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente, marketing local et fidélisation pour artisans et commerçants avallonais.",
     },
     {

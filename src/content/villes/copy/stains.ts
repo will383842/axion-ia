@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const STAINS_COPY: VilleCopy = {
   pitchFr:
-    "Stains, ville du nord de la Seine-Saint-Denis (93), concentre PME services, économie sociale et solidaire, logistique de proximité et tissu artisanal. Axion-IA y intervient pour les TPE/PME franciliennes, structures de l'ESS et entreprises de services du bassin Plaine Commune.",
+    "Stains, ville du nord de la Seine-Saint-Denis (93), concentre PME services, économie sociale et solidaire, logistique de proximité et tissu artisanal. Axion-IA y intervient pour les PME et ETI franciliennes, structures de l'ESS et entreprises de services du bassin Plaine Commune.",
   pitchEn:
-    "Stains, ville du nord de la Seine-Saint-Denis (93), concentre PME services, économie sociale et solidaire, logistique de proximité et tissu artisanal. Axion-IA y intervient pour les TPE/PME franciliennes, structures de l'ESS et entreprises de services du bassin Plaine Commune.",
+    "Stains, ville du nord de la Seine-Saint-Denis (93), concentre PME services, économie sociale et solidaire, logistique de proximité et tissu artisanal. Axion-IA y intervient pour les PME et ETI franciliennes, structures de l'ESS et entreprises de services du bassin Plaine Commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Stains (93) en banlieue nord parisienne. Nous accompagnons les TPE/PME stanoises, structures d'économie sociale et solidaire, entreprises de logistique et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos sur données réelles, plan d'action concret sans verrou technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Stains (93) en banlieue nord parisienne. Nous accompagnons les PME et ETI stanoises, structures d'économie sociale et solidaire, entreprises de logistique et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos sur données réelles, plan d'action concret sans verrou technologique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Stains (93) en banlieue nord parisienne. Nous accompagnons les TPE/PME stanoises, structures d'économie sociale et solidaire, entreprises de logistique et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos sur données réelles, plan d'action concret sans verrou technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Stains (93) en banlieue nord parisienne. Nous accompagnons les PME et ETI stanoises, structures d'économie sociale et solidaire, entreprises de logistique et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos sur données réelles, plan d'action concret sans verrou technologique.",
   seoHook: "services aux & économie sociale",
   ecosystemFr:
     "Stains s'intègre au territoire Plaine Commune (Saint-Denis, Aubervilliers, Pierrefitte), un des pôles économiques majeurs de Seine-Saint-Denis. Tissu d'artisans, PME de services, structures d'économie sociale (associations, entreprises d'insertion), logistique métropolitaine. Proximité immédiate avec le pôle tertiaire de La Plaine-Saint-Denis.",
@@ -30,20 +30,20 @@ export const STAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Stains : diagnostic adapté aux TPE/PME franciliennes et structures ESS. 4 niveaux du Sur place au Stratégique, ROI chiffré avant mission, plan d'action exécutable par vos équipes ou tout prestataire.",
-      en: "Audit IA à Stains : diagnostic adapté aux TPE/PME franciliennes et structures ESS. 4 niveaux du Sur place au Stratégique, ROI chiffré avant mission, plan d'action exécutable par vos équipes ou tout prestataire.",
+      fr: "Audit IA à Stains : diagnostic adapté aux PME et ETI franciliennes et structures ESS. 4 niveaux du Sur place au Stratégique, ROI chiffré avant mission, plan d'action exécutable par vos équipes ou tout prestataire.",
+      en: "Audit IA à Stains : diagnostic adapté aux PME et ETI franciliennes et structures ESS. 4 niveaux du Sur place au Stratégique, ROI chiffré avant mission, plan d'action exécutable par vos équipes ou tout prestataire.",
     },
     interventions: {
       fr: "Interventions IA sur site à Stains : formats demi-journée à 2 jours dans vos locaux ou en visio. Vos collaborateurs repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel.",
       en: "Interventions IA sur site à Stains : formats demi-journée à 2 jours dans vos locaux ou en visio. Vos collaborateurs repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel.",
     },
     implementation: {
-      fr: "Implémentation IA à Stains : agents IA, automatisations back-office, CRM/ERP augmentés. Spécialement adapté aux structures de services franciliennes et TPE/PME du 93.",
-      en: "Implémentation IA à Stains : agents IA, automatisations back-office, CRM/ERP augmentés. Spécialement adapté aux structures de services franciliennes et TPE/PME du 93.",
+      fr: "Implémentation IA à Stains : agents IA, automatisations back-office, CRM/ERP augmentés. Spécialement adapté aux structures de services franciliennes et PME et ETI du 93.",
+      en: "Implémentation IA à Stains : agents IA, automatisations back-office, CRM/ERP augmentés. Spécialement adapté aux structures de services franciliennes et PME et ETI du 93.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Stains : sessions confidentielles à Stains ou Paris, ou en visio. Dirigeants TPE/PME, responsables associations ESS, gérants entreprises de services souhaitant monter en compétence IA.",
-      en: "Coaching 1-to-1 à Stains : sessions confidentielles à Stains ou Paris, ou en visio. Dirigeants TPE/PME, responsables associations ESS, gérants entreprises de services souhaitant monter en compétence IA.",
+      fr: "Coaching 1-to-1 à Stains : sessions confidentielles à Stains ou Paris, ou en visio. Dirigeants PME et ETI, responsables associations ESS, gérants entreprises de services souhaitant monter en compétence IA.",
+      en: "Coaching 1-to-1 à Stains : sessions confidentielles à Stains ou Paris, ou en visio. Dirigeants PME et ETI, responsables associations ESS, gérants entreprises de services souhaitant monter en compétence IA.",
     },
   },
   services: {
@@ -52,7 +52,7 @@ export const STAINS_COPY: VilleCopy = {
         hero: "Axion-IA conçoit et augmente à Stains des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Nous adressons aussi bien les structures de l'économie sociale et solidaire du pôle Thorez (Clos Saint-Lazare) que les PME des zones d'activité de la Cerisaie, des Tartres et Gambetta. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Stains, itérations à distance.",
         whyHere: [
           "Projets web & SaaS stanois : structures ESS du pôle Thorez (associations, entreprises d'insertion), acteurs de l'agriculture urbaine type Novaedia (Ferme des Possibles) ou Les Alchimistes, et PME des Z.A. de la Cerisaie, Tartres Nord et Gambetta.",
-          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA ; budgets calibrés pour des TPE/PME et des structures à but non lucratif.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA ; budgets calibrés pour des PME et ETI et des structures à but non lucratif.",
           "Augmentation de l'existant (widget, API, plugin sur un site WordPress ou WooCommerce) ou plateforme IA-native sur mesure, selon le meilleur ROI à 18 mois pour une organisation du bassin Plaine Commune.",
           "Données sociales et bénéficiaires sensibles (insertion, accompagnement) : hébergement UE strict, chaîne IA souveraine RGPD — un point clé pour les acteurs de l'ESS stanoise.",
         ],
@@ -84,12 +84,6 @@ export const STAINS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, formulaire intelligent) sur un site existant en quelques semaines, sans refonte — adapté à un artisan, un commerce de proximité ou une petite association du Clos Saint-Lazare.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -171,12 +165,6 @@ export const STAINS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, smart form) to an existing site within a few weeks, without a rebuild — suited to a craftsperson, a local shop or a small nonprofit of the Clos Saint-Lazare.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / application",
             detail:
@@ -230,7 +218,7 @@ export const STAINS_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Stains ?",
-      a: "Nous accompagnons à Stains les TPE/PME services aux entreprises, structures d'économie sociale et solidaire (associations, coopératives, entreprises d'insertion), entreprises logistiques et artisans-commerçants. Tarifs adaptés à toutes les tailles d'organisations.",
+      a: "Nous accompagnons à Stains les PME et ETI services aux entreprises, structures d'économie sociale et solidaire (associations, coopératives, entreprises d'insertion), entreprises logistiques et artisans-commerçants. Tarifs adaptés à toutes les tailles d'organisations.",
     },
     {
       q: "Quels services Axion-IA propose-t-il à Stains ?",

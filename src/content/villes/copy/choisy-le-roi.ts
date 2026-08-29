@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const CHOISY_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Choisy-le-Roi (45 946 habitants, Val-de-Marne) dans l'automatisation de leurs processus métiers. La commune, traversée par la Seine et desservie par le RER C, la ligne 9 du tramway et plusieurs lignes de bus dont le TVM, concentre un tissu de petites entreprises de commerce, transport et construction. Nous intervenons sur site, à 12 km de Paris, pour structurer devis, relances, reporting et traitement de documents avec du code IA sur mesure.",
+    "Axion-IA accompagne les PME et ETI de Choisy-le-Roi (45 946 habitants, Val-de-Marne) dans l'automatisation de leurs processus métiers. La commune, traversée par la Seine et desservie par le RER C, la ligne 9 du tramway et plusieurs lignes de bus dont le TVM, concentre un tissu de PME de commerce, transport et construction. Nous intervenons sur site, à 12 km de Paris, pour structurer devis, relances, reporting et traitement de documents avec du code IA sur mesure.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Choisy-le-Roi (45 946 habitants, Val-de-Marne) dans l'automatisation de leurs processus métiers. La commune, traversée par la Seine et desservie par le RER C, la ligne 9 du tramway et plusieurs lignes de bus dont le TVM, concentre un tissu de petites entreprises de commerce, transport et construction. Nous intervenons sur site, à 12 km de Paris, pour structurer devis, relances, reporting et traitement de documents avec du code IA sur mesure.",
+    "Axion-IA accompagne les PME et ETI de Choisy-le-Roi (45 946 habitants, Val-de-Marne) dans l'automatisation de leurs processus métiers. La commune, traversée par la Seine et desservie par le RER C, la ligne 9 du tramway et plusieurs lignes de bus dont le TVM, concentre un tissu de PME de commerce, transport et construction. Nous intervenons sur site, à 12 km de Paris, pour structurer devis, relances, reporting et traitement de documents avec du code IA sur mesure.",
   directAnswerFr:
-    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une intervention en format collectif, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
+    "À Choisy-le-Roi, Axion-IA propose aux PME et ETI locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une intervention en format collectif, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
   directAnswerEn:
-    "À Choisy-le-Roi, Axion-IA propose aux TPE et PME locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une intervention en format collectif, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
+    "À Choisy-le-Roi, Axion-IA propose aux PME et ETI locales (commerce, transport terrestre, construction, services) des audits IA sur site, des interventions ciblées d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, accessible via le RER C et la ligne 9 du tramway. Notre offre, à partir de {{price:intervention-4h|flat}} pour une intervention en format collectif, est calibrée pour les structures de 1 à 50 salariés qui dominent le tissu économique local. Pas de no-code générique : du code propriétaire, conforme RGPD, livré clé en main.",
   seoHook: "transports terrestres & commerce gros",
   ecosystemFr:
     "Choisy-le-Roi (Val-de-Marne, 5,43 km², 8 462 habitants/km²) est limitrophe d'Alfortville, Créteil, Orly, Thiais, Valenton, Villeneuve-Saint-Georges et Vitry-sur-Seine. Le tissu économique mélange commerces de détail, transport routier, construction et services aux entreprises. La ville accueille le siège de la Fédération française de volley-ball et conserve une mémoire industrielle (faïencerie Boulenger, tuileries). La proximité immédiate du MIN de Rungis et de l'aéroport de Paris-Orly structure une partie de l'activité logistique locale.",
@@ -31,8 +31,8 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
-      en: "Audit IA sur site à Choisy-le-Roi pour TPE/PME du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
+      fr: "Audit IA sur site à Choisy-le-Roi pour PME et ETI du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
+      en: "Audit IA sur site à Choisy-le-Roi pour PME et ETI du commerce, transport ou construction — identification des processus automatisables (devis, relances, reporting, suivi chantier) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
       fr: "Intervention ciblée à Choisy-le-Roi (RER C ou ligne 9 du tramway) pour automatiser un workflow critique : génération de devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -43,8 +43,8 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
       en: "Implémentation de solutions IA sur mesure à Choisy-le-Roi — code propriétaire intégré à vos outils existants (ERP, CRM, comptabilité). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME à Choisy-le-Roi — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME à Choisy-le-Roi — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI à Choisy-le-Roi — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI à Choisy-le-Roi — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -52,7 +52,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
       fr: {
         hero: "Axion-IA conçoit et augmente à Choisy-le-Roi des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ville à cheval sur la Seine dans l'EPT Grand-Orly Seine Bièvre, tournée vers la logistique fluviale, le génie technique et les services à l'environnement — de l'usine d'eau potable du SEDIF aux entreprises du Parc d'Activités Val de Seine. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Choisy-le-Roi, itérations à distance.",
         whyHere: [
-          "Tissu local Choisy : industriels et fournisseurs techniques du Parc d'Activités Val de Seine (Fedrigoni France pour les papiers spéciaux, Cegelec pour le génie électrique et CVC), TPE/PME du transport terrestre, du commerce de gros et du BTP — portails clients, catalogues et e-commerce B2B augmentés par l'IA.",
+          "Tissu local Choisy : industriels et fournisseurs techniques du Parc d'Activités Val de Seine (Fedrigoni France pour les papiers spéciaux, Cegelec pour le génie électrique et CVC), PME et ETI du transport terrestre, du commerce de gros et du BTP — portails clients, catalogues et e-commerce B2B augmentés par l'IA.",
           "Services à l'eau et à l'environnement structurants : avec l'usine d'eau potable Edmond-Pépin du SEDIF exploitée par Veolia (La Franciliane) et les obligations de reporting réglementaire (rejets en Seine), nous construisons des plateformes de suivi de données, d'extraction de documents techniques et de génération de rapports de conformité.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA, pour les commerçants de gros, transporteurs et bureaux d'études implantés entre la darse, le RER C et le tramway T9.",
           "Logistique Seine / Rungis / Orly : à 6 km du MIN de Rungis et 7 km de Paris-Orly, les flux de bons de commande, lettres de voiture et factures fournisseurs sont massifs — l'IA greffée sur vos outils existants les traite sans refonte, hébergement UE strict, données à vous.",
@@ -85,12 +85,6 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, formulaire intelligent) sur le site existant d'un commerçant, transporteur ou artisan du BTP de Choisy, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -172,12 +166,6 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, smart form) onto the existing site of a Choisy retailer, haulier or construction tradesperson in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / app",
             detail:
@@ -243,7 +231,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne-t-il à Choisy-le-Roi ?",
-      a: "Le tissu local de Choisy-le-Roi (transport terrestre, commerce de gros et de détail, travaux de construction, services aux entreprises) correspond à notre cœur de cible : TPE et PME de 1 à 50 salariés qui veulent industrialiser leurs processus administratifs.",
+      a: "Le tissu local de Choisy-le-Roi (transport terrestre, commerce de gros et de détail, travaux de construction, services aux entreprises) correspond à notre cœur de cible : PME et ETI de 1 à 50 salariés qui veulent industrialiser leurs processus administratifs.",
     },
     {
       q: "Intervenez-vous aussi dans les communes limitrophes de Choisy-le-Roi ?",

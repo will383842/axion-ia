@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PIERREFEU_DU_VAR_COPY: VilleCopy = {
   pitchFr:
-    "Pierrefeu-du-Var (83), commune du centre-Var au cœur du vignoble Côtes-de-Provence, est reconnue pour ses domaines viticoles et son patrimoine rural provençal. Tissu de TPE viticulteurs, oléiculteurs, artisans, commerçants et PME services et BTP du bassin hyérois. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Pierrefeu-du-Var (83), commune du centre-Var au cœur du vignoble Côtes-de-Provence, est reconnue pour ses domaines viticoles et son patrimoine rural provençal. Tissu de PME viticulteurs, oléiculteurs, artisans, commerçants et PME services et BTP du bassin hyérois. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Pierrefeu-du-Var (83), commune du centre-Var au cœur du vignoble Côtes-de-Provence, est reconnue pour ses domaines viticoles et son patrimoine rural provençal. Tissu de TPE viticulteurs, oléiculteurs, artisans, commerçants et PME services et BTP du bassin hyérois. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Pierrefeu-du-Var (83), commune du centre-Var au cœur du vignoble Côtes-de-Provence, est reconnue pour ses domaines viticoles et son patrimoine rural provençal. Tissu de PME viticulteurs, oléiculteurs, artisans, commerçants et PME services et BTP du bassin hyérois. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrefeu-du-Var (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrefeu-du-Var (83). Nous accompagnons PME viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrefeu-du-Var (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pierrefeu-du-Var (83). Nous accompagnons PME viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit sur place sur mesure.",
   seoHook: "bassin hyérois",
   ecosystemFr:
-    "Pierrefeu-du-Var est ancrée dans le centre-Var, en pleine zone AOC Côtes-de-Provence. Économie agricole forte : viticulture, oléiculture, maraîchage. Bassin résidentiel à proximité d'Hyères et du Luc, avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de l'arrière-pays varois.",
+    "Pierrefeu-du-Var est ancrée dans le centre-Var, en pleine zone AOC Côtes-de-Provence. Économie agricole forte : viticulture, oléiculture, maraîchage. Bassin résidentiel à proximité d'Hyères et du Luc, avec un tissu de PME artisanales, commerces de proximité et PME services et BTP de l'arrière-pays varois.",
   ecosystemEn:
-    "Pierrefeu-du-Var est ancrée dans le centre-Var, en pleine zone AOC Côtes-de-Provence. Économie agricole forte : viticulture, oléiculture, maraîchage. Bassin résidentiel à proximité d'Hyères et du Luc, avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de l'arrière-pays varois.",
+    "Pierrefeu-du-Var est ancrée dans le centre-Var, en pleine zone AOC Côtes-de-Provence. Économie agricole forte : viticulture, oléiculture, maraîchage. Bassin résidentiel à proximité d'Hyères et du Luc, avec un tissu de PME artisanales, commerces de proximité et PME services et BTP de l'arrière-pays varois.",
   distancesFr:
     "Hyères à 25 min par D12/D14. Toulon à 35 min. Le Luc à 25 min. Cuers à 10 min. Gare TGV Toulon à 40 min. Aéroport Toulon-Hyères à 30 min. A57 à 15 min via Cuers.",
   distancesEn:
@@ -42,8 +42,8 @@ export const PIERREFEU_DU_VAR_COPY: VilleCopy = {
       en: "Implémentation IA à Pierrefeu-du-Var : gestion parcellaire viticole, traçabilité vendanges, marketing IA vente directe caveau, agents conversationnels œnotourisme, automatisation devis BTP. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pierrefeu-du-Var : sessions pour vignerons AOC, oléiculteurs et gérants TPE/PME artisanat et services souhaitant maîtriser l'IA dans leur quotidien.",
-      en: "Coaching 1-to-1 à Pierrefeu-du-Var : sessions pour vignerons AOC, oléiculteurs et gérants TPE/PME artisanat et services souhaitant maîtriser l'IA dans leur quotidien.",
+      fr: "Coaching 1-to-1 à Pierrefeu-du-Var : sessions pour vignerons AOC, oléiculteurs et gérants PME et ETI artisanat et services souhaitant maîtriser l'IA dans leur quotidien.",
+      en: "Coaching 1-to-1 à Pierrefeu-du-Var : sessions pour vignerons AOC, oléiculteurs et gérants PME et ETI artisanat et services souhaitant maîtriser l'IA dans leur quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -64,8 +64,8 @@ export const PIERREFEU_DU_VAR_COPY: VilleCopy = {
       a: "Oui, nous implémentons des solutions IA pour artisans BTP : automatisation devis, gestion chantiers, planification équipes, agents IA accueil client, marketing local géolocalisé, suivi facturation et fiscalité.",
     },
     {
-      q: "Comment l'IA peut-elle aider une TPE de Pierrefeu-du-Var ?",
-      a: "L'IA aide les TPE locales : génération automatique de devis, agents IA pour répondre aux clients hors horaires, traduction multilingue, gestion stocks prédictive, marketing local géolocalisé et automatisation administrative.",
+      q: "Comment l'IA peut-elle aider une PME de Pierrefeu-du-Var ?",
+      a: "L'IA aide les PME locales : génération automatique de devis, agents IA pour répondre aux clients hors horaires, traduction multilingue, gestion stocks prédictive, marketing local géolocalisé et automatisation administrative.",
     },
   ],
 };

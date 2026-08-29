@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const BARENTIN_COPY: VilleCopy = {
   pitchFr:
-    "Barentin (76), commune de la vallee du Commerce en Seine-Maritime, reunit plus de 12 000 habitants. Ancienne cite textile reconvertie, son economie repose sur les TPE de services, les PME industrielles et logistiques, le commerce de centre-ville et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
+    "Barentin (76), commune de la vallee du Commerce en Seine-Maritime, reunit plus de 12 000 habitants. Ancienne cite textile reconvertie, son economie repose sur les PME de services, les PME industrielles et logistiques, le commerce de centre-ville et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Barentin (76), commune de la vallee du Commerce en Seine-Maritime, reunit plus de 12 000 habitants. Ancienne cite textile reconvertie, son economie repose sur les TPE de services, les PME industrielles et logistiques, le commerce de centre-ville et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
+    "Barentin (76), commune de la vallee du Commerce en Seine-Maritime, reunit plus de 12 000 habitants. Ancienne cite textile reconvertie, son economie repose sur les PME de services, les PME industrielles et logistiques, le commerce de centre-ville et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "industrie reconvertie, commerce & tertiaire",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Barentin (76). Nous accompagnons les PME, ETI et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Barentin (76). Nous accompagnons les TPE, PME et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Barentin (76). Nous accompagnons les PME, ETI et collectivites de la vallee du Commerce : commercants, artisans, prestataires de services, professions liberales et acteurs industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Barentin est situee dans la vallee du Commerce, a 20 km au nord-ouest de Rouen. Ancienne capitale du textile normand, la ville a reussi sa reconversion vers les services, le commerce de centre-ville, la logistique et les PME industrielles diversifiees. Acces rapide A150 vers Rouen et Le Havre.",
   ecosystemEn:
@@ -23,15 +23,15 @@ export const BARENTIN_COPY: VilleCopy = {
     "Gare de Barentin (TER Rouen 15 min, Le Havre 45 min). A150 Rouen-Le Havre a 5 min. Rouen centre a 20 min. Paris Saint-Lazare a 1h30 via Rouen. Aeroport Rouen-Boos a 30 min.",
   topSectorsNaf: [
     "Commerce de centre-ville & detail",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "PME industrie & logistique",
     "Artisanat BTP & renovation",
     "Professions liberales & sante",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Barentin : diagnostic adapte aux TPE de services, PME industrielles et commercants de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Barentin : diagnostic adapte aux TPE de services, PME industrielles et commercants de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Barentin : diagnostic adapte aux PME de services, PME industrielles et commercants de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Barentin : diagnostic adapte aux PME de services, PME industrielles et commercants de la vallee du Commerce. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Barentin : formations adaptees aux commerces, PME industrielles, cabinets et ateliers artisanaux de la vallee du Commerce. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BARENTIN_COPY: VilleCopy = {
       en: "Implementation IA a Barentin : automatisation logistique, agents conversationnels clients, CRM augmentes pour PME et commerces du bassin rouennais nord.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Barentin : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de la vallee du Commerce.",
-      en: "Coaching 1-to-1 a Barentin : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de la vallee du Commerce.",
+      fr: "Coaching 1-to-1 a Barentin : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales de la vallee du Commerce.",
+      en: "Coaching 1-to-1 a Barentin : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professions liberales de la vallee du Commerce.",
     },
   },
   faqGeolocalisee: [

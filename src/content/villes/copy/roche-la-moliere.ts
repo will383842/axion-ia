@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
   pitchFr:
-    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local stéphanoises.",
+    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, PME du BTP, commerces. Axion-IA accompagne tout le tissu professionnel local stéphanoises.",
   pitchEn:
-    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local stéphanoises.",
+    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, PME du BTP, commerces. Axion-IA accompagne tout le tissu professionnel local stéphanoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
   seoHook: "industrielles diversifiées & héritage minier",
   ecosystemFr:
-    "Roche-la-Molière est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Héritage minier (ancien bassin charbonnier stéphanois historique). Reconversion vers tissu PME industrielles diversifiées contemporaines, tertiaires, TPE artisanat BTP, commerces de proximité.",
+    "Roche-la-Molière est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Héritage minier (ancien bassin charbonnier stéphanois historique). Reconversion vers tissu PME industrielles diversifiées contemporaines, tertiaires, PME du BTP, commerces de proximité.",
   ecosystemEn:
-    "Roche-la-Molière est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Héritage minier (ancien bassin charbonnier stéphanois historique). Reconversion vers tissu PME industrielles diversifiées contemporaines, tertiaires, TPE artisanat BTP, commerces de proximité.",
+    "Roche-la-Molière est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Héritage minier (ancien bassin charbonnier stéphanois historique). Reconversion vers tissu PME industrielles diversifiées contemporaines, tertiaires, PME du BTP, commerces de proximité.",
   distancesFr:
     "Saint-Étienne centre à 10 min. Aéroport Saint-Étienne-Bouthéon à 15 min. Lyon centre à 1h. Firminy à 10 min. Le Chambon-Feugerolles à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrielles diversifiées",
     "Héritage minier (reconversion)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, PME artisanales, commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, PME artisanales, commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roche-la-Molière : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
       en: "Implémentation IA à Roche-la-Molière : prédiction maintenance industrielle, agents conversationnels B2B, automatisation workflow, classification documents. Saint-Étienne Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Roche-la-Molière : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, artisans, gérants TPE/PME rochois.",
-      en: "Coaching 1-to-1 à Roche-la-Molière : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, artisans, gérants TPE/PME rochois.",
+      fr: "Coaching 1-to-1 à Roche-la-Molière : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, artisans, gérants PME et ETI rochois.",
+      en: "Coaching 1-to-1 à Roche-la-Molière : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants industriels, artisans, gérants PME et ETI rochois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles diversifiées de Saint-Étienne Métropole sur leurs cas IA : prédiction maintenance, contrôle qualité par vision, optimisation production, classification documents techniques.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants à Roche-la-Molière sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce à Roche-la-Molière sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
       q: "Quels services pour les indépendants rochois ?",

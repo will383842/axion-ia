@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BAGNEUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Bagneux, commune des Hauts-de-Seine au sud de Paris, désormais reliée par le prolongement de la ligne 4 et le Grand Paris Express. Services aux entreprises, BTP, commerce, artisanat et tertiaire : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bagneux auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bagneux auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bagneux auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons le tissu urbain des Hauts-de-Seine sud : services aux entreprises, BTP et travaux spécialisés, commerce, artisanat et tertiaire. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "tertiaire & BTP Grand Paris",
   ecosystemFr:
-    "Bagneux, dans les Hauts-de-Seine au sud immédiat de Paris, connaît une forte mutation urbaine portée par le prolongement de la ligne 4 et l'arrivée du Grand Paris Express (ligne 15). Ses zones d'activités et quartiers en renouvellement accueillent un tissu de TPE et PME de services aux entreprises, de BTP et travaux spécialisés, de commerce de proximité et d'artisanat très bien connecté à Paris.",
+    "Bagneux, dans les Hauts-de-Seine au sud immédiat de Paris, connaît une forte mutation urbaine portée par le prolongement de la ligne 4 et l'arrivée du Grand Paris Express (ligne 15). Ses zones d'activités et quartiers en renouvellement accueillent un tissu de PME et ETI de services aux entreprises, de BTP et travaux spécialisés, de commerce de proximité et d'artisanat très bien connecté à Paris.",
   ecosystemEn:
-    "Bagneux, dans les Hauts-de-Seine au sud immédiat de Paris, connaît une forte mutation urbaine portée par le prolongement de la ligne 4 et l'arrivée du Grand Paris Express (ligne 15). Ses zones d'activités et quartiers en renouvellement accueillent un tissu de TPE et PME de services aux entreprises, de BTP et travaux spécialisés, de commerce de proximité et d'artisanat très bien connecté à Paris.",
+    "Bagneux, dans les Hauts-de-Seine au sud immédiat de Paris, connaît une forte mutation urbaine portée par le prolongement de la ligne 4 et l'arrivée du Grand Paris Express (ligne 15). Ses zones d'activités et quartiers en renouvellement accueillent un tissu de PME et ETI de services aux entreprises, de BTP et travaux spécialisés, de commerce de proximité et d'artisanat très bien connecté à Paris.",
   distancesFr:
     "Bagneux est desservie par la ligne 4 du métro (prolongée) et le RER B voisin. La gare Montparnasse est à environ 8 km et Paris-Orly à environ 12 km, avec accès direct au périphérique.",
   distancesEn:
@@ -38,12 +38,12 @@ export const BAGNEUX_COPY: VilleCopy = {
       en: "Interventions IA sur site à Bagneux : formats adaptés à l'entreprise de BTP, au bureau tertiaire ou au commerce. Vos collaborateurs prennent ensuite la main sur les outils en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Bagneux : chiffrage automatisé de devis, optimisation de planning de chantier, copilotes administratifs et commerciaux, agents conversationnels de support et automatisation des workflows des TPE et PME urbaines.",
-      en: "Implémentation IA à Bagneux : chiffrage automatisé de devis, optimisation de planning de chantier, copilotes administratifs et commerciaux, agents conversationnels de support et automatisation des workflows des TPE et PME urbaines.",
+      fr: "Implémentation IA à Bagneux : chiffrage automatisé de devis, optimisation de planning de chantier, copilotes administratifs et commerciaux, agents conversationnels de support et automatisation des workflows des PME et ETI urbaines.",
+      en: "Implémentation IA à Bagneux : chiffrage automatisé de devis, optimisation de planning de chantier, copilotes administratifs et commerciaux, agents conversationnels de support et automatisation des workflows des PME et ETI urbaines.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bagneux pour dirigeants de TPE et PME du BTP, des services ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
-      en: "Coaching 1-to-1 à Bagneux pour dirigeants de TPE et PME du BTP, des services ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      fr: "Coaching 1-to-1 à Bagneux pour dirigeants de PME et d'ETI du BTP, des services ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Bagneux pour dirigeants de PME et d'ETI du BTP, des services ou du commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Bagneux : portails de devis, espaces clients et outils IA sur mesure pour le BTP, les services aux entreprises et le commerce du Grand Paris sud.",
@@ -53,9 +53,9 @@ export const BAGNEUX_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Bagneux change d'échelle : la mise en service de la ligne 15 Sud du Grand Paris Express à la gare Bagneux–Lucie Aubrac — l'une des plus profondes du réseau — et le prolongement de la ligne 4 depuis 2022 font émerger 119 000 m² de bureaux neufs dans les ZAC dont l'éco-quartier Victor-Hugo. Axion-IA conçoit à Bagneux des sites web et plateformes SaaS augmentés par l'IA pour ce tissu réel : TPE de mécanique industrielle et d'usinage, éditeurs de logiciels professionnels, entreprises de travaux électriques industriels et de BTP, commerces et acteurs tertiaires, aux côtés d'employeurs nommés comme le site d'administration centrale de la DGA (rue des Mathurins) et l'implantation Orange de l'avenue Henri Ravera.",
+        hero: "Bagneux change d'échelle : la mise en service de la ligne 15 Sud du Grand Paris Express à la gare Bagneux–Lucie Aubrac — l'une des plus profondes du réseau — et le prolongement de la ligne 4 depuis 2022 font émerger 119 000 m² de bureaux neufs dans les ZAC dont l'éco-quartier Victor-Hugo. Axion-IA conçoit à Bagneux des sites web et plateformes SaaS augmentés par l'IA pour ce tissu réel : PME de mécanique industrielle et d'usinage, éditeurs de logiciels professionnels, entreprises de travaux électriques industriels et de BTP, commerces et acteurs tertiaires, aux côtés d'employeurs nommés comme le site d'administration centrale de la DGA (rue des Mathurins) et l'implantation Orange de l'avenue Henri Ravera.",
         whyHere: [
-          "Le tissu balnéolais est dominé par la TPE technique : mécanique industrielle, usinage, fabrication d'outillages et d'articles métalliques, travaux électriques industriels — des activités où un site vitrine sérieux, un configurateur de devis et un portail client IA pèsent davantage qu'une plaquette générique.",
+          "Le tissu balnéolais est dominé par la PME technique : mécanique industrielle, usinage, fabrication d'outillages et d'articles métalliques, travaux électriques industriels — des activités où un site vitrine sérieux, un configurateur de devis et un portail client IA pèsent davantage qu'une plaquette générique.",
           "Bagneux compte une vraie poche d'édition de logiciels professionnels et d'activités informatiques : pour ces éditeurs, nous concevons des plateformes SaaS IA-native (chatbot RAG sur la doc produit, recherche sémantique, agents support) en code maîtrisé, sans lock-in éditeur.",
           "L'arrivée de bureaux neufs autour de la gare Bagneux–Lucie Aubrac (ZAC Victor-Hugo, SADEV 94, promotion bois Woodeum) attire des PME tertiaires qui ont besoin de sites performants et d'outils IA dès leur installation, pas après deux ans.",
           "Des employeurs structurants sont nommés et identifiables localement — site d'administration centrale de la DGA rue des Mathurins, implantation Orange avenue Henri Ravera — ce qui ancre une demande de prestataires rigoureux sur la donnée, la confidentialité et la conformité RGPD.",
@@ -89,12 +89,6 @@ export const BAGNEUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté + portail devis",
-            detail:
-              "Pour artisans, ateliers d'usinage, entreprises de travaux électriques industriels et commerces balnéolais : site mobile-first, configurateur de devis et assistant IA de premier niveau, hébergement UE RGPD.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site e-commerce / plateforme métier IA",
             detail:
@@ -115,7 +109,7 @@ export const BAGNEUX_COPY: VilleCopy = {
         ],
         faq: [
           {
-            q: "Concevez-vous des sites adaptés aux TPE de mécanique et d'usinage de Bagneux ?",
+            q: "Concevez-vous des sites adaptés aux PME de mécanique et d'usinage de Bagneux ?",
             a: "Oui. C'est l'un des cœurs du tissu balnéolais : mécanique industrielle, usinage, fabrication d'outillages et d'articles métalliques. Nous livrons des sites vitrines avec configurateur de devis, mise en avant des capacités machine et assistant IA pour qualifier les demandes entrantes, le tout hébergé en UE et conforme RGPD.",
           },
           {
@@ -175,12 +169,6 @@ export const BAGNEUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase site + quote portal",
-            detail:
-              "For Bagneux craftsmen, machining workshops, industrial electrical firms and retailers: mobile-first site, quote configurator and first-level AI assistant, EU GDPR hosting.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce site / AI trade platform",
             detail:
@@ -230,7 +218,7 @@ export const BAGNEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagneux ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bagneux et du sud des Hauts-de-Seine. Desservis par la ligne 4 prolongée et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Bagneux et du sud des Hauts-de-Seine. Desservis par la ligne 4 prolongée et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un artisan BTP ou un commerce balnéolais ?",

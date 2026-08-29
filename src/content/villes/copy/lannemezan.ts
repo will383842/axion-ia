@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LANNEMEZAN_COPY: VilleCopy = {
   pitchFr:
-    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu PME artisanales, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu PME artisanales, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannemezan (65). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre-ville, professions libérales, acteurs de l'agriculture et de l'élevage du plateau pyrénéen.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannemezan (65). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, commerçants du centre-ville, professions libérales, acteurs de l'agriculture et de l'élevage du plateau pyrénéen.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannemezan (65). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre-ville, professions libérales, acteurs de l'agriculture et de l'élevage du plateau pyrénéen.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannemezan (65). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, commerçants du centre-ville, professions libérales, acteurs de l'agriculture et de l'élevage du plateau pyrénéen.",
   seoHook: "agriculture élevage & agroalimentaire filière",
   ecosystemFr:
-    "Lannemezan est une sous-préfecture des Hautes-Pyrénées, située sur le plateau de Lannemezan au piémont pyrénéen. Carrefour routier (N117, D817) entre Tarbes et Saint-Gaudens. Tissu TPE artisans BTP, PME agroalimentaires, commerces de proximité, services publics (sous-préfecture, hôpital), agriculture et élevage bovin piémont.",
+    "Lannemezan est une sous-préfecture des Hautes-Pyrénées, située sur le plateau de Lannemezan au piémont pyrénéen. Carrefour routier (N117, D817) entre Tarbes et Saint-Gaudens. Tissu PME du BTP, PME agroalimentaires, commerces de proximité, services publics (sous-préfecture, hôpital), agriculture et élevage bovin piémont.",
   ecosystemEn:
-    "Lannemezan est une sous-préfecture des Hautes-Pyrénées, située sur le plateau de Lannemezan au piémont pyrénéen. Carrefour routier (N117, D817) entre Tarbes et Saint-Gaudens. Tissu TPE artisans BTP, PME agroalimentaires, commerces de proximité, services publics (sous-préfecture, hôpital), agriculture et élevage bovin piémont.",
+    "Lannemezan est une sous-préfecture des Hautes-Pyrénées, située sur le plateau de Lannemezan au piémont pyrénéen. Carrefour routier (N117, D817) entre Tarbes et Saint-Gaudens. Tissu PME du BTP, PME agroalimentaires, commerces de proximité, services publics (sous-préfecture, hôpital), agriculture et élevage bovin piémont.",
   distancesFr:
     "Tarbes à 30 min N117. Saint-Gaudens à 30 min N117. Toulouse à 1h30 A64+N117. Lourdes à 40 min. Aéroport Tarbes-Lourdes-Pyrénées à 35 min. Gare SNCF Lannemezan (ligne Toulouse-Bayonne).",
   distancesEn:
@@ -24,14 +24,14 @@ export const LANNEMEZAN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture & élevage bovin piémont",
     "Agroalimentaire & filière viande",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité & services publics",
     "Professions libérales & santé (hôpital)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Lannemezan : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Lannemezan : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lannemezan : formats adaptés aux PME agroalimentaires, exploitations agricoles, commerces ou cabinets. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const LANNEMEZAN_COPY: VilleCopy = {
       en: "Implémentation IA à Lannemezan : traçabilité filière viande automatisée, prédiction rendements agricoles, classification documents administratifs, chatbot services publics. Adapté agroalimentaire + agriculture + services.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lannemezan : sessions dans votre exploitation, entreprise, commerce ou en visio. Éleveurs, dirigeants PME agroalimentaires, artisans, commerçants, gérants TPE/PME du plateau.",
-      en: "Coaching 1-to-1 à Lannemezan : sessions dans votre exploitation, entreprise, commerce ou en visio. Éleveurs, dirigeants PME agroalimentaires, artisans, commerçants, gérants TPE/PME du plateau.",
+      fr: "Coaching 1-to-1 à Lannemezan : sessions dans votre exploitation, entreprise, commerce ou en visio. Éleveurs, dirigeants PME agroalimentaires, artisans, commerçants, gérants PME et ETI du plateau.",
+      en: "Coaching 1-to-1 à Lannemezan : sessions dans votre exploitation, entreprise, commerce ou en visio. Éleveurs, dirigeants PME agroalimentaires, artisans, commerçants, gérants PME et ETI du plateau.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LANNEMEZAN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires et exploitations agricoles sur leurs cas IA : traçabilité filière viande, prédiction rendements, classification documents conformité sanitaire, optimisation logistique distribution circuits courts.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants lannemezanais ?",
-      a: "Pour les TPE artisans et commerçants à Lannemezan, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
+      q: "Quels services pour les PME de l'artisanat et du commerce lannemezanais ?",
+      a: "Pour les PME de l'artisanat et du commerce à Lannemezan, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, visibilité web locale.",
     },
     {
       q: "Accompagnez-vous les services publics et de santé ?",

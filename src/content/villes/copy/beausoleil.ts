@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEAUSOLEIL_COPY: VilleCopy = {
   pitchFr:
-    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu PME et ETI commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu PME et ETI commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beausoleil (06). Nous accompagnons tous types d'activités : TPE commerces de proximité, professions libérales, services à la personne, PME hôtellerie-restauration et entreprises liées à l'économie transfrontalière Monaco-France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beausoleil (06). Nous accompagnons tous types d'activités : PME du commerce, professions libérales, services à la personne, PME hôtellerie-restauration et entreprises liées à l'économie transfrontalière Monaco-France.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beausoleil (06). Nous accompagnons tous types d'activités : TPE commerces de proximité, professions libérales, services à la personne, PME hôtellerie-restauration et entreprises liées à l'économie transfrontalière Monaco-France.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beausoleil (06). Nous accompagnons tous types d'activités : PME du commerce, professions libérales, services à la personne, PME hôtellerie-restauration et entreprises liées à l'économie transfrontalière Monaco-France.",
   seoHook: "commerce proximité & services personne",
   ecosystemFr:
     "Beausoleil est la ville française la plus proche de Monaco, séparée de la Principauté par le boulevard de la Turbie (frontière ouverte). Économie fortement liée à Monaco : commerces de proximité pour résidents et travailleurs transfrontaliers, services à la personne, professions libérales, hôtellerie abordable. Forte densité urbaine sur un relief pentu (Mont Agel, 1 148 m).",
@@ -30,20 +30,20 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux petites structures.",
-      en: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux petites structures.",
+      fr: "Audit IA à Beausoleil : diagnostic adapté aux PME du commerce, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux PME.",
+      en: "Audit IA à Beausoleil : diagnostic adapté aux PME du commerce, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beausoleil : formats adaptés au commerce, cabinet libéral ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier, contexte bilingue FR/IT fréquent.",
       en: "Interventions IA sur site à Beausoleil : formats adaptés au commerce, cabinet libéral ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier, contexte bilingue FR/IT fréquent.",
     },
     implementation: {
-      fr: "Implémentation IA à Beausoleil : agents conversationnels multilingues (clientèle Monaco internationale), automatisation gestion locative, CRM augmenté, classification documents. Adapté aux TPE/PME transfrontalières.",
-      en: "Implémentation IA à Beausoleil : agents conversationnels multilingues (clientèle Monaco internationale), automatisation gestion locative, CRM augmenté, classification documents. Adapté aux TPE/PME transfrontalières.",
+      fr: "Implémentation IA à Beausoleil : agents conversationnels multilingues (clientèle Monaco internationale), automatisation gestion locative, CRM augmenté, classification documents. Adapté aux PME et ETI transfrontalières.",
+      en: "Implémentation IA à Beausoleil : agents conversationnels multilingues (clientèle Monaco internationale), automatisation gestion locative, CRM augmenté, classification documents. Adapté aux PME et ETI transfrontalières.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Beausoleil : sessions dans votre commerce, cabinet ou en visio. Commerçants, professions libérales, gérants TPE/PME liées à Monaco souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Beausoleil : sessions dans votre commerce, cabinet ou en visio. Commerçants, professions libérales, gérants TPE/PME liées à Monaco souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Beausoleil : sessions dans votre commerce, cabinet ou en visio. Commerçants, professions libérales, gérants PME et ETI liées à Monaco souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Beausoleil : sessions dans votre commerce, cabinet ou en visio. Commerçants, professions libérales, gérants PME et ETI liées à Monaco souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerces de proximité de Beausoleil ?",
-      a: "Oui, nous accompagnons les TPE commerces de proximité de Beausoleil sur leurs cas IA : automatisation gestion stocks, agents IA prise de commandes, fidélisation client, gestion caisse augmentée. Audit sur place {{price:audit-flash|flat}} adapté aux petits commerces.",
+      a: "Oui, nous accompagnons les PME du commerce de Beausoleil sur leurs cas IA : automatisation gestion stocks, agents IA prise de commandes, fidélisation client, gestion caisse augmentée. Audit sur place {{price:audit-flash|flat}} adapté aux petits commerces.",
     },
     {
       q: "Accompagnez-vous les professions libérales et services à la personne ?",
@@ -61,7 +61,7 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les entreprises liées à Monaco ?",
-      a: "Pour les TPE/PME de Beausoleil liées à l'économie monégasque (services, immobilier, hôtellerie, restauration), nous proposons : agents conversationnels multilingues, automatisation gestion locative, CRM international, classification documents transfrontaliers.",
+      a: "Pour les PME et ETI de Beausoleil liées à l'économie monégasque (services, immobilier, hôtellerie, restauration), nous proposons : agents conversationnels multilingues, automatisation gestion locative, CRM international, classification documents transfrontaliers.",
     },
     {
       q: "Comment se déroule une mission à Beausoleil ?",

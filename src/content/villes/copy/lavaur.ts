@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LAVAUR_COPY: VilleCopy = {
   pitchFr:
-    "Lavaur (81), sous-préfecture du Tarn sur les bords de l'Agout, près de 11 000 habitants. Ville patrimoniale (cathédrale, orgue classé), pôle de services et commerces du Vaurais. Tissu TPE artisans, PME services, commerces, agriculture et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin vauréen.",
+    "Lavaur (81), sous-préfecture du Tarn sur les bords de l'Agout, près de 11 000 habitants. Ville patrimoniale (cathédrale, orgue classé), pôle de services et commerces du Vaurais. Tissu PME artisanales, PME services, commerces, agriculture et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin vauréen.",
   pitchEn:
-    "Lavaur (81), sous-préfecture du Tarn sur les bords de l'Agout, près de 11 000 habitants. Ville patrimoniale (cathédrale, orgue classé), pôle de services et commerces du Vaurais. Tissu TPE artisans, PME services, commerces, agriculture et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin vauréen.",
+    "Lavaur (81), sous-préfecture du Tarn sur les bords de l'Agout, près de 11 000 habitants. Ville patrimoniale (cathédrale, orgue classé), pôle de services et commerces du Vaurais. Tissu PME artisanales, PME services, commerces, agriculture et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin vauréen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lavaur (81). Nous accompagnons TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lavaur (81). Nous accompagnons PME artisanales, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lavaur (81). Nous accompagnons TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lavaur (81). Nous accompagnons PME artisanales, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place sur mesure.",
   seoHook: "commerce détail & agriculture grandes",
   ecosystemFr:
     "Lavaur (10 965 hab) est la sous-préfecture du Tarn et le pôle économique du pays vauréen, sur les bords de l'Agout. Économie de services, commerces de centre-ville, agriculture (grandes cultures, élevage), artisanat du bâtiment. Proximité Toulouse (45 min A68), carrefour entre Albi, Castres et Toulouse. Zone d'activités de la Cavalière.",
@@ -30,8 +30,8 @@ export const LAVAUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lavaur : diagnostic adapté aux TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lavaur : diagnostic adapté aux TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lavaur : diagnostic adapté aux PME artisanales, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lavaur : diagnostic adapté aux PME artisanales, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lavaur : formats adaptés au commerce de centre-ville, cabinet libéral, exploitation agricole ou PME de services. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const LAVAUR_COPY: VilleCopy = {
       en: "Implémentation IA à Lavaur : automatisation gestion documentaire, CRM clients, classification courriers, gestion planning, agents conversationnels pour les PME et professions libérales du Vaurais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lavaur : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME, commerçants et professions libérales du bassin vauréen souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Lavaur : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME, commerçants et professions libérales du bassin vauréen souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Lavaur : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME, commerçants et professions libérales du bassin vauréen souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Lavaur : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME, commerçants et professions libérales du bassin vauréen souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const LAVAUR_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lavaur et dans tout le pays vauréen (Saint-Sulpice-la-Pointe, Graulhet, Puylaurens, Saïx). Nos consultants se déplacent depuis Toulouse (45 min A68) ou Albi (40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Lavaur ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Lavaur. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur d'activité.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Lavaur ?",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Lavaur. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur d'activité.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du Vaurais ?",
@@ -65,7 +65,7 @@ export const LAVAUR_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Lavaur ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Lavaur. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Lavaur. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

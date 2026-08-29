@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
   pitchFr:
-    "Le Kremlin-Bicêtre, 24 110 habitants dans le Val-de-Marne, jouxte Paris au sud-est près de la porte d'Italie. La commune accueille l'hôpital Bicêtre (AP-HP) et sa faculté de médecine rattachée à Paris-Saclay, ainsi que les écoles d'ingénieurs EPITA et EPITECH. Desservie par les lignes de métro 7 (Le Kremlin-Bicêtre) et 14 (Hôpital Bicêtre), la ville mêle tissu résidentiel dense et activités tertiaires. Axion-IA y intervient pour les TPE et PME locales — cabinets de santé, professions libérales, commerces, agences, ESN — avec du code custom (Python/TypeScript) plutôt que du no-code.",
+    "Le Kremlin-Bicêtre, 24 110 habitants dans le Val-de-Marne, jouxte Paris au sud-est près de la porte d'Italie. La commune accueille l'hôpital Bicêtre (AP-HP) et sa faculté de médecine rattachée à Paris-Saclay, ainsi que les écoles d'ingénieurs EPITA et EPITECH. Desservie par les lignes de métro 7 (Le Kremlin-Bicêtre) et 14 (Hôpital Bicêtre), la ville mêle tissu résidentiel dense et activités tertiaires. Axion-IA y intervient pour les PME et ETI locales — cabinets de santé, professions libérales, commerces, agences, ESN — avec du code custom (Python/TypeScript) plutôt que du no-code.",
   pitchEn:
-    "Le Kremlin-Bicêtre, 24 110 habitants dans le Val-de-Marne, jouxte Paris au sud-est près de la porte d'Italie. La commune accueille l'hôpital Bicêtre (AP-HP) et sa faculté de médecine rattachée à Paris-Saclay, ainsi que les écoles d'ingénieurs EPITA et EPITECH. Desservie par les lignes de métro 7 (Le Kremlin-Bicêtre) et 14 (Hôpital Bicêtre), la ville mêle tissu résidentiel dense et activités tertiaires. Axion-IA y intervient pour les TPE et PME locales — cabinets de santé, professions libérales, commerces, agences, ESN — avec du code custom (Python/TypeScript) plutôt que du no-code.",
+    "Le Kremlin-Bicêtre, 24 110 habitants dans le Val-de-Marne, jouxte Paris au sud-est près de la porte d'Italie. La commune accueille l'hôpital Bicêtre (AP-HP) et sa faculté de médecine rattachée à Paris-Saclay, ainsi que les écoles d'ingénieurs EPITA et EPITECH. Desservie par les lignes de métro 7 (Le Kremlin-Bicêtre) et 14 (Hôpital Bicêtre), la ville mêle tissu résidentiel dense et activités tertiaires. Axion-IA y intervient pour les PME et ETI locales — cabinets de santé, professions libérales, commerces, agences, ESN — avec du code custom (Python/TypeScript) plutôt que du no-code.",
   directAnswerFr:
-    "Axion-IA intervient au Kremlin-Bicêtre (Val-de-Marne, 24 110 hab.) pour les TPE et PME implantées autour de l'hôpital Bicêtre et des écoles d'ingénieurs EPITA et EPITECH : cabinets médicaux et paramédicaux, prestataires de santé, commerces, agences, jeunes ESN. Nos consultants se déplacent depuis Paris (la commune jouxte la porte d'Italie, accessible par les lignes de métro 7 et 14) pour des audits, interventions et implémentations sur site, à partir de {{price:intervention-4h|flat}} pour une intervention. Les ETI peuvent aussi nous solliciter, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
+    "Axion-IA intervient au Kremlin-Bicêtre (Val-de-Marne, 24 110 hab.) pour les PME et ETI implantées autour de l'hôpital Bicêtre et des écoles d'ingénieurs EPITA et EPITECH : cabinets médicaux et paramédicaux, prestataires de santé, commerces, agences, jeunes ESN. Nos consultants se déplacent depuis Paris (la commune jouxte la porte d'Italie, accessible par les lignes de métro 7 et 14) pour des audits, interventions et implémentations sur site, à partir de {{price:intervention-4h|flat}} pour une intervention. Les ETI peuvent aussi nous solliciter, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
   directAnswerEn:
-    "Axion-IA intervient au Kremlin-Bicêtre (Val-de-Marne, 24 110 hab.) pour les TPE et PME implantées autour de l'hôpital Bicêtre et des écoles d'ingénieurs EPITA et EPITECH : cabinets médicaux et paramédicaux, prestataires de santé, commerces, agences, jeunes ESN. Nos consultants se déplacent depuis Paris (la commune jouxte la porte d'Italie, accessible par les lignes de métro 7 et 14) pour des audits, interventions et implémentations sur site, à partir de {{price:intervention-4h|flat}} pour une intervention. Les ETI peuvent aussi nous solliciter, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
-  seoHook: "santé libérale, formation & TPE/PME",
+    "Axion-IA intervient au Kremlin-Bicêtre (Val-de-Marne, 24 110 hab.) pour les PME et ETI implantées autour de l'hôpital Bicêtre et des écoles d'ingénieurs EPITA et EPITECH : cabinets médicaux et paramédicaux, prestataires de santé, commerces, agences, jeunes ESN. Nos consultants se déplacent depuis Paris (la commune jouxte la porte d'Italie, accessible par les lignes de métro 7 et 14) pour des audits, interventions et implémentations sur site, à partir de {{price:intervention-4h|flat}} pour une intervention. Les ETI peuvent aussi nous solliciter, mais notre cœur de cible reste les structures de 1 à 50 salariés.",
+  seoHook: "santé libérale, formation & PME et ETI",
   ecosystemFr:
-    "Le Kremlin-Bicêtre est dominé par l'hôpital Bicêtre (AP-HP), gros employeur public, et sa faculté de médecine rattachée à l'université Paris-Saclay. À côté, les écoles d'ingénieurs EPITA et EPITECH attirent un écosystème de jeunes développeurs et de startups. Le tissu de TPE/PME est très dense : cabinets médicaux et paramédicaux gravitant autour de l'hôpital, professions libérales, commerces du centre-ville, agences de services. La proximité immédiate de Paris (porte d'Italie) et les métros 7 et 14 facilitent à la fois la clientèle et l'accès des consultants Axion-IA.",
+    "Le Kremlin-Bicêtre est dominé par l'hôpital Bicêtre (AP-HP), gros employeur public, et sa faculté de médecine rattachée à l'université Paris-Saclay. À côté, les écoles d'ingénieurs EPITA et EPITECH attirent un écosystème de jeunes développeurs et de startups. Le tissu de PME et ETI est très dense : cabinets médicaux et paramédicaux gravitant autour de l'hôpital, professions libérales, commerces du centre-ville, agences de services. La proximité immédiate de Paris (porte d'Italie) et les métros 7 et 14 facilitent à la fois la clientèle et l'accès des consultants Axion-IA.",
   ecosystemEn:
-    "Le Kremlin-Bicêtre est dominé par l'hôpital Bicêtre (AP-HP), gros employeur public, et sa faculté de médecine rattachée à l'université Paris-Saclay. À côté, les écoles d'ingénieurs EPITA et EPITECH attirent un écosystème de jeunes développeurs et de startups. Le tissu de TPE/PME est très dense : cabinets médicaux et paramédicaux gravitant autour de l'hôpital, professions libérales, commerces du centre-ville, agences de services. La proximité immédiate de Paris (porte d'Italie) et les métros 7 et 14 facilitent à la fois la clientèle et l'accès des consultants Axion-IA.",
+    "Le Kremlin-Bicêtre est dominé par l'hôpital Bicêtre (AP-HP), gros employeur public, et sa faculté de médecine rattachée à l'université Paris-Saclay. À côté, les écoles d'ingénieurs EPITA et EPITECH attirent un écosystème de jeunes développeurs et de startups. Le tissu de PME et ETI est très dense : cabinets médicaux et paramédicaux gravitant autour de l'hôpital, professions libérales, commerces du centre-ville, agences de services. La proximité immédiate de Paris (porte d'Italie) et les métros 7 et 14 facilitent à la fois la clientèle et l'accès des consultants Axion-IA.",
   distancesFr:
     "Le Kremlin-Bicêtre jouxte Paris au sud-est, à la porte d'Italie. La ligne 7 du métro dessert la station Le Kremlin-Bicêtre, la ligne 14 dessert Hôpital Bicêtre. Paris intra-muros est à 1 station, Gare de Lyon à environ 7 km, l'aéroport d'Orly à environ 10 km via l'A6.",
   distancesEn:
@@ -44,8 +44,8 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
       en: "Implémentation au Kremlin-Bicêtre de briques IA durables : connecteurs entre vos outils (compta, CRM, agenda), agents internes pour le support et la qualification, pipelines de reporting. Architecture pensée pour rester maintenable, sans dépendance no-code propriétaire.",
     },
     unAUn: {
-      fr: "Sessions un-à-un au Kremlin-Bicêtre pour dirigeants de TPE/PME, chefs de cabinets libéraux et responsables d'agences : 3 à 5 cas d'usage IA examinés sur vos process réels, avec quick wins identifiés et pièges signalés.",
-      en: "Sessions un-à-un au Kremlin-Bicêtre pour dirigeants de TPE/PME, chefs de cabinets libéraux et responsables d'agences : 3 à 5 cas d'usage IA examinés sur vos process réels, avec quick wins identifiés et pièges signalés.",
+      fr: "Sessions un-à-un au Kremlin-Bicêtre pour dirigeants de PME et ETI, chefs de cabinets libéraux et responsables d'agences : 3 à 5 cas d'usage IA examinés sur vos process réels, avec quick wins identifiés et pièges signalés.",
+      en: "Sessions un-à-un au Kremlin-Bicêtre pour dirigeants de PME et ETI, chefs de cabinets libéraux et responsables d'agences : 3 à 5 cas d'usage IA examinés sur vos process réels, avec quick wins identifiés et pièges signalés.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
         whyHere: [
           "Pôle santé hospitalo-universitaire : autour de l'hôpital Bicêtre (AP-HP), l'un des plus gros employeurs publics de la commune, et de sa faculté de médecine rattachée à Paris-Saclay gravite une nuée de cabinets médicaux et paramédicaux. Terrain idéal pour des portails de prise de rendez-vous, des espaces patients et des chatbots RAG ancrés sur vos protocoles, avec RGPD et secret médical respectés de bout en bout.",
           "Vivier de développeurs EPITA et EPITECH : ces deux écoles d'ingénieurs implantées au Kremlin-Bicêtre alimentent un écosystème de jeunes ESN et de startups tech qui ont besoin de plateformes SaaS IA-native, d'agents sur mesure et de recherche sémantique. On construit en code custom Python/TypeScript, transférable, sans dépendance no-code propriétaire ni verrou d'éditeur.",
-          "Tissu de commerces et de professions libérales le long de la RN7 : sur l'avenue de Fontainebleau et au centre-ville, commerces de détail, restaurants, agences de services et cabinets libéraux forment un maillage dense de TPE/PME. On greffe l'IA sur l'existant — widget, plugin WordPress, API — ou on monte une vitrine e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), sans refonte coûteuse ni interruption d'activité.",
+          "Tissu de commerces et de professions libérales le long de la RN7 : sur l'avenue de Fontainebleau et au centre-ville, commerces de détail, restaurants, agences de services et cabinets libéraux forment un maillage dense de PME et ETI. On greffe l'IA sur l'existant — widget, plugin WordPress, API — ou on monte une vitrine e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), sans refonte coûteuse ni interruption d'activité.",
           "Adossement immédiat à Paris à la porte d'Italie : nos consultants arrivent en une station de métro (lignes 7 et 14) pour les ateliers, et la commune est limitrophe de Gentilly, Villejuif, Ivry-sur-Seine et du 13e arrondissement. Toute la chaîne IA est hébergeable en UE — vos données patients, clients et de réservation restent maîtrisées sur le territoire, propriété totale côté client.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous en ligne) sur le site existant d'un cabinet libéral, d'un commerce de l'avenue de Fontainebleau ou d'une agence du Kremlin-Bicêtre, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -141,7 +135,7 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
         whyHere: [
           "Pôle santé hospitalo-universitaire : autour de l'hôpital Bicêtre (AP-HP), l'un des plus gros employeurs publics de la commune, et de sa faculté de médecine rattachée à Paris-Saclay gravite une nuée de cabinets médicaux et paramédicaux. Terrain idéal pour des portails de prise de rendez-vous, des espaces patients et des chatbots RAG ancrés sur vos protocoles, avec RGPD et secret médical respectés de bout en bout.",
           "Vivier de développeurs EPITA et EPITECH : ces deux écoles d'ingénieurs implantées au Kremlin-Bicêtre alimentent un écosystème de jeunes ESN et de startups tech qui ont besoin de plateformes SaaS IA-native, d'agents sur mesure et de recherche sémantique. On construit en code custom Python/TypeScript, transférable, sans dépendance no-code propriétaire ni verrou d'éditeur.",
-          "Tissu de commerces et de professions libérales le long de la RN7 : sur l'avenue de Fontainebleau et au centre-ville, commerces de détail, restaurants, agences de services et cabinets libéraux forment un maillage dense de TPE/PME. On greffe l'IA sur l'existant — widget, plugin WordPress, API — ou on monte une vitrine e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), sans refonte coûteuse ni interruption d'activité.",
+          "Tissu de commerces et de professions libérales le long de la RN7 : sur l'avenue de Fontainebleau et au centre-ville, commerces de détail, restaurants, agences de services et cabinets libéraux forment un maillage dense de PME et ETI. On greffe l'IA sur l'existant — widget, plugin WordPress, API — ou on monte une vitrine e-commerce multi-CMS (Shopify, WooCommerce, PrestaShop), sans refonte coûteuse ni interruption d'activité.",
           "Adossement immédiat à Paris à la porte d'Italie : nos consultants arrivent en une station de métro (lignes 7 et 14) pour les ateliers, et la commune est limitrophe de Gentilly, Villejuif, Ivry-sur-Seine et du 13e arrondissement. Toute la chaîne IA est hébergeable en UE — vos données patients, clients et de réservation restent maîtrisées sur le territoire, propriété totale côté client.",
         ],
         methodology: [
@@ -172,12 +166,6 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous en ligne) sur le site existant d'un cabinet libéral, d'un commerce de l'avenue de Fontainebleau ou d'une agence du Kremlin-Bicêtre, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

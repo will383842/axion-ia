@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ELBEUF_COPY: VilleCopy = {
   pitchFr:
-    "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
+    "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu PME artisanales, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
   pitchEn:
-    "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
+    "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu PME artisanales, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit sur place sur mesure.",
   seoHook: "industrie reconvertie & boucle de Seine",
   ecosystemFr:
-    "Elbeuf est dans la boucle de Seine, membre de la Métropole Rouen Normandie. Ancienne capitale du drap reconvertie vers l'industrie légère et les services. Tissu TPE artisans, PME industrielles, commerces de centre-ville et professions libérales.",
+    "Elbeuf est dans la boucle de Seine, membre de la Métropole Rouen Normandie. Ancienne capitale du drap reconvertie vers l'industrie légère et les services. Tissu PME artisanales, PME industrielles, commerces de centre-ville et professions libérales.",
   ecosystemEn:
-    "Elbeuf est dans la boucle de Seine, membre de la Métropole Rouen Normandie. Ancienne capitale du drap reconvertie vers l'industrie légère et les services. Tissu TPE artisans, PME industrielles, commerces de centre-ville et professions libérales.",
+    "Elbeuf est dans la boucle de Seine, membre de la Métropole Rouen Normandie. Ancienne capitale du drap reconvertie vers l'industrie légère et les services. Tissu PME artisanales, PME industrielles, commerces de centre-ville et professions libérales.",
   distancesFr:
     "Rouen centre à 20 km (25 min). Gare de Rouen (TGV Paris 1h15). Louviers à 15 km. Oissel à 8 km. Paris à 130 km (1h40 voiture).",
   distancesEn:
@@ -24,14 +24,14 @@ export const ELBEUF_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie légère & reconversion textile",
     "PME tertiaires Métropole Rouen",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de centre-ville",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Elbeuf : diagnostic adapté aux PME artisanales, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Elbeuf : diagnostic adapté aux PME artisanales, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Elbeuf : formats adaptés à l'atelier, bureau PME, commerce. Vos équipes de la boucle de Seine repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const ELBEUF_COPY: VilleCopy = {
       en: "Implémentation IA à Elbeuf : automatisation production industrielle, prédiction maintenance, agents conversationnels B2B, classification documents. Métropole Rouen Normandie.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Elbeuf : sessions dans votre atelier, bureau ou en visio. Dirigeants PME industrielles, artisans, commerçants, gérants TPE elbeuviens souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Elbeuf : sessions dans votre atelier, bureau ou en visio. Dirigeants PME industrielles, artisans, commerçants, gérants TPE elbeuviens souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Elbeuf : sessions dans votre atelier, bureau ou en visio. Dirigeants PME industrielles, artisans, commerçants, gérants PME elbeuviens souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Elbeuf : sessions dans votre atelier, bureau ou en visio. Dirigeants PME industrielles, artisans, commerçants, gérants PME elbeuviens souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const ELBEUF_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles reconverties d'Elbeuf sur leurs cas IA : automatisation production, prédiction maintenance, classification documents techniques, agents IA service client B2B. ROI chiffré contractuel.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans elbeuviens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Elbeuf sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et artisans elbeuviens ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce d'Elbeuf sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Elbeuf ?",
-      a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place débute selon la taille de votre activité pour les PME. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

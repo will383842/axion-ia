@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DECINES_CHARPIEU_COPY: VilleCopy = {
   pitchFr:
-    "À Décines-Charpieu, dans l'est lyonnais, Axion-IA accompagne les TPE et PME de l'industrie, de la logistique et de l'événementiel. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leurs tâches administratives et à fiabiliser leurs processus, du devis à la facturation, sans complexité technique.",
+    "À Décines-Charpieu, dans l'est lyonnais, Axion-IA accompagne les PME et ETI de l'industrie, de la logistique et de l'événementiel. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leurs tâches administratives et à fiabiliser leurs processus, du devis à la facturation, sans complexité technique.",
   pitchEn:
-    "À Décines-Charpieu, dans l'est lyonnais, Axion-IA accompagne les TPE et PME de l'industrie, de la logistique et de l'événementiel. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leurs tâches administratives et à fiabiliser leurs processus, du devis à la facturation, sans complexité technique.",
+    "À Décines-Charpieu, dans l'est lyonnais, Axion-IA accompagne les PME et ETI de l'industrie, de la logistique et de l'événementiel. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leurs tâches administratives et à fiabiliser leurs processus, du devis à la facturation, sans complexité technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Décines-Charpieu pour accompagner les TPE et PME locales. Autour du Groupama Stadium, du Parc d'activités de la Soie et des entreprises de l'événementiel et de la logistique, nous réalisons des audits opérationnels, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent un cas marginal. Chaque mission part d'un diagnostic terrain, sans jargon ni dépendance technologique imposée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Décines-Charpieu pour accompagner les PME et ETI locales. Autour du Groupama Stadium, du Parc d'activités de la Soie et des entreprises de l'événementiel et de la logistique, nous réalisons des audits opérationnels, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain, sans jargon ni dépendance technologique imposée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Décines-Charpieu pour accompagner les TPE et PME locales. Autour du Groupama Stadium, du Parc d'activités de la Soie et des entreprises de l'événementiel et de la logistique, nous réalisons des audits opérationnels, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent un cas marginal. Chaque mission part d'un diagnostic terrain, sans jargon ni dépendance technologique imposée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Décines-Charpieu pour accompagner les PME et ETI locales. Autour du Groupama Stadium, du Parc d'activités de la Soie et des entreprises de l'événementiel et de la logistique, nous réalisons des audits opérationnels, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain, sans jargon ni dépendance technologique imposée.",
   seoHook: "événementiel, logistique & industrie",
   ecosystemFr:
-    "Décines-Charpieu s'inscrit dans la dynamique de l'est lyonnais, marquée par le Groupama Stadium et l'écosystème événementiel qui l'entoure, le Parc d'activités de la Soie et la proximité du quartier d'affaires de la Part-Dieu. La commune mêle PME industrielles, prestataires logistiques, artisans et commerces de proximité. Ce tissu de TPE et PME, souvent en croissance mais peu outillé en IA, trouve dans Axion-IA un partenaire pragmatique pour automatiser les tâches répétitives, structurer la relation client et gagner du temps sur l'administratif quotidien.",
+    "Décines-Charpieu s'inscrit dans la dynamique de l'est lyonnais, marquée par le Groupama Stadium et l'écosystème événementiel qui l'entoure, le Parc d'activités de la Soie et la proximité du quartier d'affaires de la Part-Dieu. La commune mêle PME industrielles, prestataires logistiques, artisans et commerces de proximité. Ce tissu de PME et ETI, souvent en croissance mais peu outillé en IA, trouve dans Axion-IA un partenaire pragmatique pour automatiser les tâches répétitives, structurer la relation client et gagner du temps sur l'administratif quotidien.",
   ecosystemEn:
-    "Décines-Charpieu s'inscrit dans la dynamique de l'est lyonnais, marquée par le Groupama Stadium et l'écosystème événementiel qui l'entoure, le Parc d'activités de la Soie et la proximité du quartier d'affaires de la Part-Dieu. La commune mêle PME industrielles, prestataires logistiques, artisans et commerces de proximité. Ce tissu de TPE et PME, souvent en croissance mais peu outillé en IA, trouve dans Axion-IA un partenaire pragmatique pour automatiser les tâches répétitives, structurer la relation client et gagner du temps sur l'administratif quotidien.",
+    "Décines-Charpieu s'inscrit dans la dynamique de l'est lyonnais, marquée par le Groupama Stadium et l'écosystème événementiel qui l'entoure, le Parc d'activités de la Soie et la proximité du quartier d'affaires de la Part-Dieu. La commune mêle PME industrielles, prestataires logistiques, artisans et commerces de proximité. Ce tissu de PME et ETI, souvent en croissance mais peu outillé en IA, trouve dans Axion-IA un partenaire pragmatique pour automatiser les tâches répétitives, structurer la relation client et gagner du temps sur l'administratif quotidien.",
   distancesFr:
     "La gare TGV Lyon Part-Dieu est à environ 12 km, soit 20 minutes par le tramway T3 qui relie directement Décines au centre lyonnais. L'aéroport Lyon-Saint-Exupéry se situe à 15 km par la Rocade Est, ce qui place la commune à moins de 25 minutes des liaisons nationales et internationales. La proximité de l'A43 et de l'A46 facilite les déplacements de nos consultants vers les zones d'activités voisines de Meyzieu, Chassieu et Vaulx-en-Velin.",
   distancesEn:
@@ -30,8 +30,8 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Un audit IA à Décines-Charpieu commence par une journée sur site, dans vos locaux du Parc de la Soie ou des zones d'activités voisines, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
-      en: "Un audit IA à Décines-Charpieu commence par une journée sur site, dans vos locaux du Parc de la Soie ou des zones d'activités voisines, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une PME.",
+      fr: "Un audit IA à Décines-Charpieu commence par une journée sur site, dans vos locaux du Parc de la Soie ou des zones d'activités voisines, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une PME ou une PME.",
+      en: "Un audit IA à Décines-Charpieu commence par une journée sur site, dans vos locaux du Parc de la Soie ou des zones d'activités voisines, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une PME ou une PME.",
     },
     interventions: {
       fr: "Nos interventions à Décines-Charpieu ciblent les tâches chronophages des PME locales : relances clients, planification logistique, gestion des plannings événementiels et traitement des documents administratifs, automatisés sans bouleverser vos outils existants.",
@@ -42,8 +42,8 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
       en: "L'implémentation à Décines-Charpieu déploie des solutions IA durables pour les entreprises industrielles et logistiques de l'est lyonnais, avec une attention particulière à la traçabilité et à la conformité RGPD des données traitées.",
     },
     unAUn: {
-      fr: "Nos sessions un-à-un à Décines-Charpieu forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets tirés de leur propre activité plutôt que des démonstrations génériques.",
-      en: "Nos sessions un-à-un à Décines-Charpieu forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets tirés de leur propre activité plutôt que des démonstrations génériques.",
+      fr: "Nos sessions un-à-un à Décines-Charpieu forment les dirigeants de PME et d'ETI à utiliser l'IA au quotidien, avec des cas concrets tirés de leur propre activité plutôt que des démonstrations génériques.",
+      en: "Nos sessions un-à-un à Décines-Charpieu forment les dirigeants de PME et d'ETI à utiliser l'IA au quotidien, avec des cas concrets tirés de leur propre activité plutôt que des démonstrations génériques.",
     },
     sitesWeb: {
       fr: "Pour les entreprises de Décines-Charpieu, nous concevons des sites web et plateformes augmentés par l'IA : prise de rendez-vous événementiels, devis logistiques en ligne et assistants qualifiant les demandes entrantes.",
@@ -57,7 +57,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
         whyHere: [
           "Pôle événementiel hors norme : autour du Groupama Stadium et de la LDLC Arena (12 000 à 16 000 places, ASVEL EuroLeague, concerts, esport), les prestataires matchday — traiteurs, hospitalité, sécurité, logistique d'événements — ont besoin de sites de réservation, de devis en ligne et de calendriers d'affluence que peu d'agences savent outiller.",
           "Cœur logistique et industriel : la ZI La Rize, située entièrement sur Décines, et le Parc des Pivolles (textile/habillement, distribution pharmaceutique, usinage plastique, blanchisserie industrielle) regroupent des PME aux flux complexes qui gagnent à digitaliser devis, suivi de commandes et portails clients.",
-          "Employeurs nommés et exigeants : Gifrer, Essilor International, Zodiac Pool Care, Métro Cash and Carry ou IPO Technologie côtoient des TPE de moins de 10 salariés — nous adaptons l'ambition technique de chaque plateforme à la taille réelle de la structure.",
+          "Employeurs nommés et exigeants : Gifrer, Essilor International, Zodiac Pool Care, Métro Cash and Carry ou IPO Technologie côtoient des PME de moins de 10 salariés — nous adaptons l'ambition technique de chaque plateforme à la taille réelle de la structure.",
           "Carrefour de l'est lyonnais : raccordée au centre de Lyon par les tramways T3 et T7 et au Carré de Soie (antenne Est de la CCI), Décines combine commerce de proximité et e-commerce — un terrain idéal pour des vitrines marchandes multi-CMS pilotées par l'IA.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou prise de rendez-vous augmenté IA",
-            detail:
-              "Pour les indépendants, commerces et petits prestataires de Décines — artisans, traiteurs et services de proximité gravitant autour du Carré de Soie et d'OL Vallée. Vitrine mobile-first avec formulaire intelligent ou réservation en ligne.",
-          },
           {
             price: "Plateforme e-commerce ou portail client multi-CMS",
             sizeLabel: "PME",
@@ -175,12 +169,6 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or AI-augmented booking",
-            detail:
-              "For Décines freelancers, retailers and small providers — craftspeople, caterers and local services around the Carré de Soie and OL Vallée. Mobile-first showcase with a smart form or online booking.",
-          },
-          {
             price: "E-commerce platform or multi-CMS client portal",
             sizeLabel: "SME",
             detail:
@@ -234,7 +222,7 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Décines-Charpieu ?",
-      a: "Nous accompagnons en priorité les TPE et PME : industrie, logistique, événementiel, commerce et artisanat. Les ETI restent un cas marginal. Notre approche est calibrée pour des structures aux ressources limitées qui veulent un retour rapide.",
+      a: "Nous accompagnons en priorité les PME et ETI : industrie, logistique, événementiel, commerce et artisanat. Les grands groupes complètent ce socle. Notre approche est calibrée pour des structures aux ressources limitées qui veulent un retour rapide.",
     },
     {
       q: "Par quoi commence une mission IA à Décines-Charpieu ?",

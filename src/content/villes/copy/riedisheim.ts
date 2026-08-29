@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const RIEDISHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu TPE/PME services, professions libérales, commerces, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu PME et ETI services, professions libérales, commerces, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu TPE/PME services, professions libérales, commerces, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu PME et ETI services, professions libérales, commerces, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : TPE/PME services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : PME et ETI services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : TPE/PME services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : PME et ETI services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
   ecosystemFr:
-    "Riedisheim est une commune résidentielle de l'agglomération mulhousienne est, orientée services de proximité, professions libérales, artisanat et commerce. Tissu TPE/PME services, santé, professions libérales, artisans. Bassin de vie connecté à Mulhouse et au sud-Alsace.",
+    "Riedisheim est une commune résidentielle de l'agglomération mulhousienne est, orientée services de proximité, professions libérales, artisanat et commerce. Tissu PME et ETI services, santé, professions libérales, artisans. Bassin de vie connecté à Mulhouse et au sud-Alsace.",
   ecosystemEn:
-    "Riedisheim est une commune résidentielle de l'agglomération mulhousienne est, orientée services de proximité, professions libérales, artisanat et commerce. Tissu TPE/PME services, santé, professions libérales, artisans. Bassin de vie connecté à Mulhouse et au sud-Alsace.",
+    "Riedisheim est une commune résidentielle de l'agglomération mulhousienne est, orientée services de proximité, professions libérales, artisanat et commerce. Tissu PME et ETI services, santé, professions libérales, artisans. Bassin de vie connecté à Mulhouse et au sud-Alsace.",
   distancesFr:
     "Mulhouse centre à 5 min. Autoroute A36 accès à 10 min. Bâle (Suisse) à 35 min. Colmar à 40 min. Aéroport Bâle-Mulhouse-Fribourg à 20 min. Gare Mulhouse-Ville à 10 min. Strasbourg à 1h15.",
   distancesEn:
@@ -30,8 +30,8 @@ export const RIEDISHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Riedisheim : diagnostic adapté aux PME et ETI services, professions libérales, santé, artisans, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Riedisheim : diagnostic adapté aux PME et ETI services, professions libérales, santé, artisans, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Riedisheim : formats adaptés au cabinet, au commerce, à l'atelier d'artisan, au bureau. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const RIEDISHEIM_COPY: VilleCopy = {
       en: "Implémentation IA à Riedisheim : automatisation prise de rendez-vous, gestion clients libérales, agents conversationnels, workflow administratif, comptabilité.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Riedisheim : sessions dans votre cabinet, commerce, atelier, bureau ou en visio. Professions libérales, commerçants, artisans, gérants TPE/PME de l'agglomération mulhousienne est.",
-      en: "Coaching 1-to-1 à Riedisheim : sessions dans votre cabinet, commerce, atelier, bureau ou en visio. Professions libérales, commerçants, artisans, gérants TPE/PME de l'agglomération mulhousienne est.",
+      fr: "Coaching 1-to-1 à Riedisheim : sessions dans votre cabinet, commerce, atelier, bureau ou en visio. Professions libérales, commerçants, artisans, gérants PME et ETI de l'agglomération mulhousienne est.",
+      en: "Coaching 1-to-1 à Riedisheim : sessions dans votre cabinet, commerce, atelier, bureau ou en visio. Professions libérales, commerçants, artisans, gérants PME et ETI de l'agglomération mulhousienne est.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const RIEDISHEIM_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Riedisheim et dans l'agglomération mulhousienne est (Mulhouse, Rixheim, Brunstatt). Consultants via A36 ou gare de Mulhouse-Ville (10 min). Proximité de l'aéroport Bâle-Mulhouse (20 min) et de la Suisse.",
     },
     {
-      q: "Travaillez-vous avec les TPE/PME services et professions libérales ?",
-      a: "Oui, nous accompagnons les TPE/PME services et professions libérales riedisheimoises : gestion rendez-vous, relation client, automatisation comptabilité, dossiers patients/clients, agents conversationnels.",
+      q: "Travaillez-vous avec les PME et ETI services et professions libérales ?",
+      a: "Oui, nous accompagnons les PME et ETI services et professions libérales riedisheimoises : gestion rendez-vous, relation client, automatisation comptabilité, dossiers patients/clients, agents conversationnels.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Riedisheim ?",
@@ -61,7 +61,7 @@ export const RIEDISHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Riedisheim ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Riedisheim ?",

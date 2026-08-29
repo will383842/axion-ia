@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AMNEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Amnéville (57), commune française du département de la Moselle (région Grand Est) située entre Metz et Thionville, est un pôle touristique majeur du Nord-Est avec son centre thermal (Amnéville-les-Thermes), son casino, son zoo (parc Amnéville) et Walygator. Tissu TPE hôtellerie/restauration, PME tourisme et loisirs, commerces, artisans BTP, services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Amnéville (57), commune française du département de la Moselle (région Grand Est) située entre Metz et Thionville, est un pôle touristique majeur du Nord-Est avec son centre thermal (Amnéville-les-Thermes), son casino, son zoo (parc Amnéville) et Walygator. Tissu PME hôtellerie/restauration, PME tourisme et loisirs, commerces, artisans BTP, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Amnéville (57), commune française du département de la Moselle (région Grand Est) située entre Metz et Thionville, est un pôle touristique majeur du Nord-Est avec son centre thermal (Amnéville-les-Thermes), son casino, son zoo (parc Amnéville) et Walygator. Tissu TPE hôtellerie/restauration, PME tourisme et loisirs, commerces, artisans BTP, services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Amnéville (57), commune française du département de la Moselle (région Grand Est) située entre Metz et Thionville, est un pôle touristique majeur du Nord-Est avec son centre thermal (Amnéville-les-Thermes), son casino, son zoo (parc Amnéville) et Walygator. Tissu PME hôtellerie/restauration, PME tourisme et loisirs, commerces, artisans BTP, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amnéville (57). Nous accompagnons tous types d'activités : TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme (parc zoologique, parc d'attractions, centre thermal, casino), commerçants, artisans BTP, services aux entreprises du sillon mosellan entre Metz et Thionville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amnéville (57). Nous accompagnons tous types d'activités : PME hôtels/restaurants pôle thermal, PME loisirs et tourisme (parc zoologique, parc d'attractions, centre thermal, casino), commerçants, artisans BTP, services aux entreprises du sillon mosellan entre Metz et Thionville.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amnéville (57). Nous accompagnons tous types d'activités : TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme (parc zoologique, parc d'attractions, centre thermal, casino), commerçants, artisans BTP, services aux entreprises du sillon mosellan entre Metz et Thionville.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Amnéville (57). Nous accompagnons tous types d'activités : PME hôtels/restaurants pôle thermal, PME loisirs et tourisme (parc zoologique, parc d'attractions, centre thermal, casino), commerçants, artisans BTP, services aux entreprises du sillon mosellan entre Metz et Thionville.",
   seoHook: "tourisme thermal & hôtellerie restauration",
   ecosystemFr:
-    "Amnéville est positionnée dans le sillon mosellan entre Metz (20 min sud) et Thionville (15 min nord), à proximité de l'A31. Pôle touristique régional structuré autour d'Amnéville-les-Thermes (bois de Coulange) : centre thermal, casino, parc zoologique, parc d'attractions Walygator, golf, cinéma multiplexe, salle de spectacle Galaxie. Tissu TPE/PME hôtellerie/restauration/loisirs, commerces, artisans, services. L'ancienne commune de Malancourt-la-Montagne lui est rattachée depuis 1973.",
+    "Amnéville est positionnée dans le sillon mosellan entre Metz (20 min sud) et Thionville (15 min nord), à proximité de l'A31. Pôle touristique régional structuré autour d'Amnéville-les-Thermes (bois de Coulange) : centre thermal, casino, parc zoologique, parc d'attractions Walygator, golf, cinéma multiplexe, salle de spectacle Galaxie. Tissu PME et ETI hôtellerie/restauration/loisirs, commerces, artisans, services. L'ancienne commune de Malancourt-la-Montagne lui est rattachée depuis 1973.",
   ecosystemEn:
-    "Amnéville est positionnée dans le sillon mosellan entre Metz (20 min sud) et Thionville (15 min nord), à proximité de l'A31. Pôle touristique régional structuré autour d'Amnéville-les-Thermes (bois de Coulange) : centre thermal, casino, parc zoologique, parc d'attractions Walygator, golf, cinéma multiplexe, salle de spectacle Galaxie. Tissu TPE/PME hôtellerie/restauration/loisirs, commerces, artisans, services. L'ancienne commune de Malancourt-la-Montagne lui est rattachée depuis 1973.",
+    "Amnéville est positionnée dans le sillon mosellan entre Metz (20 min sud) et Thionville (15 min nord), à proximité de l'A31. Pôle touristique régional structuré autour d'Amnéville-les-Thermes (bois de Coulange) : centre thermal, casino, parc zoologique, parc d'attractions Walygator, golf, cinéma multiplexe, salle de spectacle Galaxie. Tissu PME et ETI hôtellerie/restauration/loisirs, commerces, artisans, services. L'ancienne commune de Malancourt-la-Montagne lui est rattachée depuis 1973.",
   distancesFr:
     "Gare Hagondange à 5 min, Metz à 20 min A31, Thionville à 15 min A31, Luxembourg-Ville à 50 min, aéroport Metz-Nancy-Lorraine à 25 min, aéroport Luxembourg à 50 min. Axe A31 vers Nancy / Luxembourg.",
   distancesEn:
@@ -25,13 +25,13 @@ export const AMNEVILLE_COPY: VilleCopy = {
     "Tourisme thermal et loisirs (casino, zoo, Walygator)",
     "Hôtellerie / restauration",
     "Commerce de proximité",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Services aux entreprises sillon mosellan",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Amnéville : diagnostic adapté aux TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Amnéville : diagnostic adapté aux TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Amnéville : diagnostic adapté aux PME hôtels/restaurants pôle thermal, PME loisirs et tourisme, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Amnéville : diagnostic adapté aux PME hôtels/restaurants pôle thermal, PME loisirs et tourisme, commerces, artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Amnéville : formats adaptés à l'hôtel, restaurant, parc de loisirs, commerce. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -42,8 +42,8 @@ export const AMNEVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Amnéville : agents conversationnels multilingues réservation thermes/hôtel, prédiction affluence parcs loisirs, recommandation visiteurs, automatisation devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Amnéville : sessions dans votre hôtel, restaurant, parc, commerce ou en visio. Dirigeants tourisme/loisirs, hôteliers, restaurateurs, commerçants, artisans, gérants TPE/PME mosellans.",
-      en: "Coaching 1-to-1 à Amnéville : sessions dans votre hôtel, restaurant, parc, commerce ou en visio. Dirigeants tourisme/loisirs, hôteliers, restaurateurs, commerçants, artisans, gérants TPE/PME mosellans.",
+      fr: "Coaching 1-to-1 à Amnéville : sessions dans votre hôtel, restaurant, parc, commerce ou en visio. Dirigeants tourisme/loisirs, hôteliers, restaurateurs, commerçants, artisans, gérants PME et ETI mosellans.",
+      en: "Coaching 1-to-1 à Amnéville : sessions dans votre hôtel, restaurant, parc, commerce ou en visio. Dirigeants tourisme/loisirs, hôteliers, restaurateurs, commerçants, artisans, gérants PME et ETI mosellans.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const AMNEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants du pôle thermal ?",
-      a: "Oui, nous accompagnons les TPE hôtellerie/restauration d'Amnéville-les-Thermes sur leurs cas IA : agents conversationnels multilingues réservation, recommandation menus/séjours, automatisation tâches administratives, analyse avis clients FR/EN/DE/LU.",
+      a: "Oui, nous accompagnons les PME hôtellerie/restauration d'Amnéville-les-Thermes sur leurs cas IA : agents conversationnels multilingues réservation, recommandation menus/séjours, automatisation tâches administratives, analyse avis clients FR/EN/DE/LU.",
     },
     {
       q: "Travaillez-vous avec les parcs de loisirs Walygator et zoo ?",
       a: "Oui, nous accompagnons les PME tourisme et loisirs amnévilloises (parc zoologique, Walygator, casino, centre thermal) sur leurs cas IA : prédiction affluence, optimisation planning, agents IA visiteurs, recommandation attractions/animaux, analyse sentiment réseaux sociaux.",
     },
     {
-      q: "Quels services pour les TPE artisans amnévillois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Amnéville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
+      q: "Quels services pour les PME artisanales amnévillois ?",
+      a: "Pour les PME du BTP et du commerce à Amnéville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
     },
     {
       q: "Comment se passe une mission depuis Metz ou Luxembourg ?",

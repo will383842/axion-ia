@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BLAYE_COPY: VilleCopy = {
   pitchFr:
-    "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y mène ses missions auprès des organisations locales : TPE viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
+    "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y mène ses missions auprès des organisations locales : PME viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
   pitchEn:
-    "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y mène ses missions auprès des organisations locales : TPE viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
+    "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y mène ses missions auprès des organisations locales : PME viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Blaye (33). Nous accompagnons PME et ETI du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Blaye (33). Nous accompagnons PME et ETI du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "viticulture côtes & tourisme patrimonial",
   ecosystemFr:
     "Blaye est une cité fortifiée sur l'estuaire de la Gironde. Citadelle Vauban (patrimoine mondial UNESCO), vignoble AOC Côtes de Blaye et Côtes de Bourg, tourisme patrimonial et fluvial, commerces de centre-bourg et professions libérales. Bac Blaye-Lamarque (liaison Médoc).",
@@ -25,13 +25,13 @@ export const BLAYE_COPY: VilleCopy = {
     "Viticulture AOC Côtes de Blaye",
     "Tourisme patrimonial (citadelle UNESCO)",
     "Commerce de centre-bourg",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et TPE artisans du Blayais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et PME artisanales du Blayais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Blaye : diagnostic pour vignerons de Côtes de Blaye, hébergeurs touristiques, commerçants et PME artisanales du Blayais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blaye : ateliers adaptés aux chais, hébergements touristiques et commerces de bourg. Équipes autonomes sur outils IA.",

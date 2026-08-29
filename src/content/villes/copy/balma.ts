@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BALMA_COPY: VilleCopy = {
   pitchFr:
-    "Balma (31), commune résidentielle et tertiaire de l'est toulousain avec près de 18 000 habitants. Tissu TPE conseil et services, PME tertiaires, professions libérales, commerces de quartier. Axion-IA y intervient pour tous types d'activités de la première couronne est de Toulouse.",
+    "Balma (31), commune résidentielle et tertiaire de l'est toulousain avec près de 18 000 habitants. Tissu PME conseil et services, PME tertiaires, professions libérales, commerces de quartier. Axion-IA y intervient pour tous types d'activités de la première couronne est de Toulouse.",
   pitchEn:
-    "Balma (31), commune résidentielle et tertiaire de l'est toulousain avec près de 18 000 habitants. Tissu TPE conseil et services, PME tertiaires, professions libérales, commerces de quartier. Axion-IA y intervient pour tous types d'activités de la première couronne est de Toulouse.",
+    "Balma (31), commune résidentielle et tertiaire de l'est toulousain avec près de 18 000 habitants. Tissu PME conseil et services, PME tertiaires, professions libérales, commerces de quartier. Axion-IA y intervient pour tous types d'activités de la première couronne est de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Balma (31). Nous accompagnons TPE de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Balma (31). Nous accompagnons PME de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Balma (31). Nous accompagnons TPE de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Balma (31). Nous accompagnons PME de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit sur place sur mesure.",
   seoHook: "conseil gestion & programmation informatique",
   ecosystemFr:
-    "Balma est une commune résidentielle prisée de l'est de Toulouse, au tissu économique orienté tertiaire et services. TPE de conseil, cabinets de professions libérales, PME en informatique et services aux entreprises, commerces de proximité le long de la route de Castres. Proximité immédiate de la zone Balma-Gramont.",
+    "Balma est une commune résidentielle prisée de l'est de Toulouse, au tissu économique orienté tertiaire et services. PME de conseil, cabinets de professions libérales, PME en informatique et services aux entreprises, commerces de proximité le long de la route de Castres. Proximité immédiate de la zone Balma-Gramont.",
   ecosystemEn:
-    "Balma est une commune résidentielle prisée de l'est de Toulouse, au tissu économique orienté tertiaire et services. TPE de conseil, cabinets de professions libérales, PME en informatique et services aux entreprises, commerces de proximité le long de la route de Castres. Proximité immédiate de la zone Balma-Gramont.",
+    "Balma est une commune résidentielle prisée de l'est de Toulouse, au tissu économique orienté tertiaire et services. PME de conseil, cabinets de professions libérales, PME en informatique et services aux entreprises, commerces de proximité le long de la route de Castres. Proximité immédiate de la zone Balma-Gramont.",
   distancesFr:
     "Toulouse centre à 10 min (métro Balma-Gramont). Gare Matabiau à 15 min. Aéroport Toulouse-Blagnac à 25 min. L'Union à 5 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const BALMA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Balma : diagnostic adapté aux TPE de conseil, PME tertiaires, cabinets libéraux et commerces de l'est toulousain. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Balma : diagnostic adapté aux TPE de conseil, PME tertiaires, cabinets libéraux et commerces de l'est toulousain. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Balma : diagnostic adapté aux PME de conseil, PME tertiaires, cabinets libéraux et commerces de l'est toulousain. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Balma : diagnostic adapté aux PME de conseil, PME tertiaires, cabinets libéraux et commerces de l'est toulousain. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Balma : formats adaptés au cabinet de conseil, au commerce de quartier, au siège PME tertiaire. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const BALMA_COPY: VilleCopy = {
       en: "Implémentation IA à Balma : automatisation gestion documentaire, agents conversationnels clients, classification courriers, pilotage reporting pour les PME tertiaires de l'est toulousain.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Balma : sessions dans vos locaux ou en visio. Dirigeants TPE conseil, gérants PME tertiaires, professions libérales de l'est Toulouse.",
-      en: "Coaching 1-to-1 à Balma : sessions dans vos locaux ou en visio. Dirigeants TPE conseil, gérants PME tertiaires, professions libérales de l'est Toulouse.",
+      fr: "Coaching 1-to-1 à Balma : sessions dans vos locaux ou en visio. Dirigeants PME conseil, gérants PME tertiaires, professions libérales de l'est Toulouse.",
+      en: "Coaching 1-to-1 à Balma : sessions dans vos locaux ou en visio. Dirigeants PME conseil, gérants PME tertiaires, professions libérales de l'est Toulouse.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const BALMA_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Balma ?",
-      a: "Nous accompagnons tous types d'activités : TPE de conseil, PME tertiaires et informatiques, professions libérales, commerces de proximité, artisans, services aux entreprises. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : PME de conseil, PME tertiaires et informatiques, professions libérales, commerces de proximité, artisans, services aux entreprises. Aucun secteur exclu.",
     },
     {
       q: "Combien coûte un audit IA à Balma  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME tertiaires, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME tertiaires, un audit approfondi est proposé entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}} selon la complexité des process. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se déroule une intervention IA sur site à Balma ?",
@@ -65,7 +65,7 @@ export const BALMA_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Balma ?",
-      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants de TPE et PME à Balma. Format flexible : dans vos locaux, en visio ou en espace de coworking. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants de PME et d'ETI à Balma. Format flexible : dans vos locaux, en visio ou en espace de coworking. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

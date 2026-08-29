@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BETTON_COPY: VilleCopy = {
   pitchFr:
-    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu PME et ETI de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu PME et ETI de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Betton (35). Nous accompagnons tous types d'activités : PME et ETI de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Betton (35). Nous accompagnons tous types d'activités : PME et ETI de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
   seoHook: "professions libérales & activités tertiaires",
   ecosystemFr:
-    "Betton est une commune résidentielle dynamique du nord de Rennes Métropole, traversée par le canal d'Ille-et-Rance. Tissu économique principalement tertiaire et de services, complété par TPE artisanat BTP, commerces de proximité et professions libérales. Cadre de vie attractif, population en croissance continue, bien connectée au centre de Rennes par bus et voies express.",
+    "Betton est une commune résidentielle dynamique du nord de Rennes Métropole, traversée par le canal d'Ille-et-Rance. Tissu économique principalement tertiaire et de services, complété par PME du BTP, commerces de proximité et professions libérales. Cadre de vie attractif, population en croissance continue, bien connectée au centre de Rennes par bus et voies express.",
   ecosystemEn:
-    "Betton est une commune résidentielle dynamique du nord de Rennes Métropole, traversée par le canal d'Ille-et-Rance. Tissu économique principalement tertiaire et de services, complété par TPE artisanat BTP, commerces de proximité et professions libérales. Cadre de vie attractif, population en croissance continue, bien connectée au centre de Rennes par bus et voies express.",
+    "Betton est une commune résidentielle dynamique du nord de Rennes Métropole, traversée par le canal d'Ille-et-Rance. Tissu économique principalement tertiaire et de services, complété par PME du BTP, commerces de proximité et professions libérales. Cadre de vie attractif, population en croissance continue, bien connectée au centre de Rennes par bus et voies express.",
   distancesFr:
     "Betton à 10 min du centre de Rennes (D175). Gare Rennes TGV à 15 min. Aéroport Rennes-Bretagne à 30 min. Bus réseau STAR direct centre Rennes. Accès rocade nord N136.",
   distancesEn:
@@ -24,26 +24,26 @@ export const BETTON_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises",
     "Professions libérales et santé",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Activités tertiaires périurbaines",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Betton : diagnostic adapté aux PME et ETI de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Betton : diagnostic adapté aux PME et ETI de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Betton : formats adaptés aux cabinets, TPE de services, commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
-      en: "Interventions IA sur site à Betton : formats adaptés aux cabinets, TPE de services, commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      fr: "Interventions IA sur site à Betton : formats adaptés aux cabinets, PME de services, commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Betton : formats adaptés aux cabinets, PME de services, commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Betton : automatisation tâches administratives, agents conversationnels, RAG documentaire, outils productivité, gestion planning. Nord Rennes Métropole.",
       en: "Implémentation IA à Betton : automatisation tâches administratives, agents conversationnels, RAG documentaire, outils productivité, gestion planning. Nord Rennes Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Betton : sessions dans vos bureaux, cabinet ou en visio. Dirigeants TPE/PME, professions libérales, gérants commerces du nord Rennes Métropole.",
-      en: "Coaching 1-to-1 à Betton : sessions dans vos bureaux, cabinet ou en visio. Dirigeants TPE/PME, professions libérales, gérants commerces du nord Rennes Métropole.",
+      fr: "Coaching 1-to-1 à Betton : sessions dans vos bureaux, cabinet ou en visio. Dirigeants PME et ETI, professions libérales, gérants commerces du nord Rennes Métropole.",
+      en: "Coaching 1-to-1 à Betton : sessions dans vos bureaux, cabinet ou en visio. Dirigeants PME et ETI, professions libérales, gérants commerces du nord Rennes Métropole.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const BETTON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales (avocats, experts-comptables, médecins, architectes) de Betton sur leurs cas IA : automatisation rédaction, RAG documentaire juridique/comptable, agents IA prise de RDV, outils productivité.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans bettonnais ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de Betton sur leurs cas IA. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents conversationnels.",
+      q: "Accompagnez-vous les PME et artisans bettonnais ?",
+      a: "Oui, nous accompagnons les PME du BTP, commerçants et indépendants de Betton sur leurs cas IA. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents conversationnels.",
     },
     {
       q: "Quels services pour les PME de services du nord Rennes ?",

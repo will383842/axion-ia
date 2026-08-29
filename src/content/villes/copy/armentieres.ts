@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const ARMENTIERES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Armentières, ancienne « Cité de la Toile » du Nord située à 15 km de Lille et frontalière de la Belgique. Notre cabinet conçoit du code IA custom (pas de no-code) pour automatiser les tâches répétitives des commerçants, artisans, ateliers textiles reconvertis, sociétés agroalimentaires et logisticiens présents le long de la Lys et autour de l'A25. Les ETI locales peuvent également solliciter nos audits, mais notre cœur de cible reste les structures de moins de 250 salariés cherchant un retour sur investissement rapide et mesurable.",
+    "Axion-IA accompagne les PME et ETI d'Armentières, ancienne « Cité de la Toile » du Nord située à 15 km de Lille et frontalière de la Belgique. Notre cabinet conçoit du code IA custom (pas de no-code) pour automatiser les tâches répétitives des commerçants, artisans, ateliers textiles reconvertis, sociétés agroalimentaires et logisticiens présents le long de la Lys et autour de l'A25. Les ETI locales peuvent également solliciter nos audits, mais notre cœur de cible reste les structures de moins de 250 salariés cherchant un retour sur investissement rapide et mesurable.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Armentières, ancienne « Cité de la Toile » du Nord située à 15 km de Lille et frontalière de la Belgique. Notre cabinet conçoit du code IA custom (pas de no-code) pour automatiser les tâches répétitives des commerçants, artisans, ateliers textiles reconvertis, sociétés agroalimentaires et logisticiens présents le long de la Lys et autour de l'A25. Les ETI locales peuvent également solliciter nos audits, mais notre cœur de cible reste les structures de moins de 250 salariés cherchant un retour sur investissement rapide et mesurable.",
+    "Axion-IA accompagne les PME et ETI d'Armentières, ancienne « Cité de la Toile » du Nord située à 15 km de Lille et frontalière de la Belgique. Notre cabinet conçoit du code IA custom (pas de no-code) pour automatiser les tâches répétitives des commerçants, artisans, ateliers textiles reconvertis, sociétés agroalimentaires et logisticiens présents le long de la Lys et autour de l'A25. Les ETI locales peuvent également solliciter nos audits, mais notre cœur de cible reste les structures de moins de 250 salariés cherchant un retour sur investissement rapide et mesurable.",
   directAnswerFr:
-    "Axion-IA se déplace à Armentières (Nord, Hauts-de-France, 27 000 habitants) pour auditer, former et implémenter des solutions IA sur mesure auprès des TPE et PME locales. Nous intervenons depuis Lille via l'A25 ou la ligne TER Lille-Calais qui dessert la gare d'Armentières, deuxième gare TER de la métropole lilloise. Notre offre couvre l'audit sur place, l'implémentation de code custom, la formation un-à-un et les sites web augmentés, avec une grille tarifaire publique débutant à {{price:audit-flash|flat}}. Les ETI transfrontalières belges (Comines-Warneton) figurent aussi parmi nos prospects, mais le tissu armentiérois reste majoritairement composé de TPE.",
+    "Axion-IA se déplace à Armentières (Nord, Hauts-de-France, 27 000 habitants) pour auditer, former et implémenter des solutions IA sur mesure auprès des PME et ETI locales. Nous intervenons depuis Lille via l'A25 ou la ligne TER Lille-Calais qui dessert la gare d'Armentières, deuxième gare TER de la métropole lilloise. Notre offre couvre l'audit sur place, l'implémentation de code custom, la formation un-à-un et les sites web augmentés, avec une grille tarifaire publique débutant à {{price:audit-flash|flat}}. Les ETI transfrontalières belges (Comines-Warneton) figurent aussi parmi nos prospects, mais le tissu armentiérois reste majoritairement composé de PME.",
   directAnswerEn:
-    "Axion-IA se déplace à Armentières (Nord, Hauts-de-France, 27 000 habitants) pour auditer, former et implémenter des solutions IA sur mesure auprès des TPE et PME locales. Nous intervenons depuis Lille via l'A25 ou la ligne TER Lille-Calais qui dessert la gare d'Armentières, deuxième gare TER de la métropole lilloise. Notre offre couvre l'audit sur place, l'implémentation de code custom, la formation un-à-un et les sites web augmentés, avec une grille tarifaire publique débutant à {{price:audit-flash|flat}}. Les ETI transfrontalières belges (Comines-Warneton) figurent aussi parmi nos prospects, mais le tissu armentiérois reste majoritairement composé de TPE.",
-  seoHook: "héritage textile reconverti & TPE/PME frontalières",
+    "Axion-IA se déplace à Armentières (Nord, Hauts-de-France, 27 000 habitants) pour auditer, former et implémenter des solutions IA sur mesure auprès des PME et ETI locales. Nous intervenons depuis Lille via l'A25 ou la ligne TER Lille-Calais qui dessert la gare d'Armentières, deuxième gare TER de la métropole lilloise. Notre offre couvre l'audit sur place, l'implémentation de code custom, la formation un-à-un et les sites web augmentés, avec une grille tarifaire publique débutant à {{price:audit-flash|flat}}. Les ETI transfrontalières belges (Comines-Warneton) figurent aussi parmi nos prospects, mais le tissu armentiérois reste majoritairement composé de PME.",
+  seoHook: "héritage textile reconverti & PME et ETI frontalières",
   ecosystemFr:
-    "Le tissu économique d'Armentières s'est restructuré après le déclin de l'industrie textile dans les années 1980. Les TPE et PME locales se concentrent aujourd'hui sur le commerce de détail du centre-ville, l'agroalimentaire, la logistique liée au canal de la Lys, l'artisanat du bâtiment et les services aux entreprises de la métropole lilloise. La proximité immédiate de La Chapelle-d'Armentières, Houplines, Erquinghem-Lys, Nieppe et de la Belgique (Comines-Warneton) crée un bassin transfrontalier de PME que nous accompagnons depuis nos déplacements sur site.",
+    "Le tissu économique d'Armentières s'est restructuré après le déclin de l'industrie textile dans les années 1980. Les PME et ETI locales se concentrent aujourd'hui sur le commerce de détail du centre-ville, l'agroalimentaire, la logistique liée au canal de la Lys, l'artisanat du bâtiment et les services aux entreprises de la métropole lilloise. La proximité immédiate de La Chapelle-d'Armentières, Houplines, Erquinghem-Lys, Nieppe et de la Belgique (Comines-Warneton) crée un bassin transfrontalier de PME que nous accompagnons depuis nos déplacements sur site.",
   ecosystemEn:
-    "Le tissu économique d'Armentières s'est restructuré après le déclin de l'industrie textile dans les années 1980. Les TPE et PME locales se concentrent aujourd'hui sur le commerce de détail du centre-ville, l'agroalimentaire, la logistique liée au canal de la Lys, l'artisanat du bâtiment et les services aux entreprises de la métropole lilloise. La proximité immédiate de La Chapelle-d'Armentières, Houplines, Erquinghem-Lys, Nieppe et de la Belgique (Comines-Warneton) crée un bassin transfrontalier de PME que nous accompagnons depuis nos déplacements sur site.",
+    "Le tissu économique d'Armentières s'est restructuré après le déclin de l'industrie textile dans les années 1980. Les PME et ETI locales se concentrent aujourd'hui sur le commerce de détail du centre-ville, l'agroalimentaire, la logistique liée au canal de la Lys, l'artisanat du bâtiment et les services aux entreprises de la métropole lilloise. La proximité immédiate de La Chapelle-d'Armentières, Houplines, Erquinghem-Lys, Nieppe et de la Belgique (Comines-Warneton) crée un bassin transfrontalier de PME que nous accompagnons depuis nos déplacements sur site.",
   distancesFr:
     "Armentières est desservie par sa propre gare TER (ligne Lille-Calais, 2e gare TER de la métropole lilloise), par l'A25 sorties 8 et 9, et par sept lignes de bus Ilévia dont trois rejoignent le terminus métro Saint-Philibert. L'aéroport de Lille-Lesquin est à environ 25 km au sud-est, et la gare Lille-Europe (Eurostar, TGV) à 18 km via l'A25.",
   distancesEn:
@@ -32,28 +32,28 @@ export const ARMENTIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Nos audits IA sur place à Armentières ciblent en priorité les TPE et PME du commerce de détail, de l'agroalimentaire et de l'artisanat du bâtiment, secteurs majoritaires du bassin armentiérois.",
-      en: "Nos audits IA sur place à Armentières ciblent en priorité les TPE et PME du commerce de détail, de l'agroalimentaire et de l'artisanat du bâtiment, secteurs majoritaires du bassin armentiérois.",
+      fr: "Nos audits IA sur place à Armentières ciblent en priorité les PME et ETI du commerce de détail, de l'agroalimentaire et de l'artisanat du bâtiment, secteurs majoritaires du bassin armentiérois.",
+      en: "Nos audits IA sur place à Armentières ciblent en priorité les PME et ETI du commerce de détail, de l'agroalimentaire et de l'artisanat du bâtiment, secteurs majoritaires du bassin armentiérois.",
     },
     interventions: {
       fr: "Nous intervenons sur site à Armentières et dans les communes voisines (Houplines, Nieppe, Erquinghem-Lys) pour automatiser facturation, devis, reporting et suivi commercial des PME locales.",
       en: "Nous intervenons sur site à Armentières et dans les communes voisines (Houplines, Nieppe, Erquinghem-Lys) pour automatiser facturation, devis, reporting et suivi commercial des PME locales.",
     },
     implementation: {
-      fr: "Nos implémentations IA sur mesure à Armentières s'adressent aux TPE/PME logistiques du canal de la Lys et aux ateliers reconvertis du textile : code custom, pas de no-code.",
-      en: "Nos implémentations IA sur mesure à Armentières s'adressent aux TPE/PME logistiques du canal de la Lys et aux ateliers reconvertis du textile : code custom, pas de no-code.",
+      fr: "Nos implémentations IA sur mesure à Armentières s'adressent aux PME et ETI logistiques du canal de la Lys et aux ateliers reconvertis du textile : code custom, pas de no-code.",
+      en: "Nos implémentations IA sur mesure à Armentières s'adressent aux PME et ETI logistiques du canal de la Lys et aux ateliers reconvertis du textile : code custom, pas de no-code.",
     },
     unAUn: {
-      fr: "Nos formations un-à-un à Armentières accompagnent les dirigeants de TPE et PME du Nord dans la prise en main des outils d'IA générative dans leur activité quotidienne.",
-      en: "Nos formations un-à-un à Armentières accompagnent les dirigeants de TPE et PME du Nord dans la prise en main des outils d'IA générative dans leur activité quotidienne.",
+      fr: "Nos formations un-à-un à Armentières accompagnent les dirigeants de PME et d'ETI du Nord dans la prise en main des outils d'IA générative dans leur activité quotidienne.",
+      en: "Nos formations un-à-un à Armentières accompagnent les dirigeants de PME et d'ETI du Nord dans la prise en main des outils d'IA générative dans leur activité quotidienne.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Armentières des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre cœur de cible reste les TPE et PME armentiéroises — commerçants de la Grand'Place, ateliers reconvertis de la Ruche des 2 Lys, agroalimentaire et logistique de la zone Eurolys — sans exclure les audits pour les ETI industrielles locales comme Beck-Crespel. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Armentières, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Armentières des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Notre cœur de cible reste les PME et ETI armentiéroises — commerçants de la Grand'Place, ateliers reconvertis de la Ruche des 2 Lys, agroalimentaire et logistique de la zone Eurolys — sans exclure les audits pour les ETI industrielles locales comme Beck-Crespel. Devis à partir de 24-48 h selon la complexité, hébergement UE/RGPD, code et données à vous. Kick-off en présentiel à Armentières, itérations à distance.",
         whyHere: [
-          "Tissu armentiérois cible : TPE commerçantes du centre-ville (plus d'une centaine de commerçants autour de la Grand'Place), jeunes pousses de la Ruche des 2 Lys — plus grand incubateur du Nord, ancienne usine textile reconvertie — et PME agroalimentaires comme Gelpass (surgelés bio AB).",
+          "Tissu armentiérois cible : PME du commerce du centre-ville (plus d'une centaine de commerçants autour de la Grand'Place), jeunes pousses de la Ruche des 2 Lys — plus grand incubateur du Nord, ancienne usine textile reconvertie — et PME agroalimentaires comme Gelpass (surgelés bio AB).",
           "Pour la mécanique de précision exportatrice type Beck-Crespel (décolletage, attaches de sécurité nucléaire et pétrochimie), nous construisons portails clients, configurateurs et catalogues techniques branchés sur l'ERP, pas de simples vitrines.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — et e-commerce sur tout CMS (WordPress/WooCommerce, Shopify, PrestaShop, Magento) pour les commerçants et artisans du bassin de la Lys, pas seulement la brique IA.",
           "Données sensibles santé/social : pour l'écosystème médico-social local (EPSM Lille-Métropole et ses 1 836 professionnels, réemploi de matériel médical hébergé à la Ruche), hébergement UE strict et chaîne IA souveraine RGPD.",
@@ -86,12 +86,6 @@ export const ARMENTIERES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de commande) sur le site existant d'un commerçant de la Grand'Place ou d'un artisan du bassin de la Lys, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / e-commerce sur mesure",
@@ -173,12 +167,6 @@ export const ARMENTIERES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, order taking) onto the existing site of a Grand'Place retailer or a Lys-basin craftsperson, in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / e-commerce",
             detail:
@@ -232,7 +220,7 @@ export const ARMENTIERES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Armentières ?",
-      a: "Notre délai standard à Armentières est de 5 jours ouvrés après validation de la demande. Pour les TPE en urgence (panne d'outil métier), nous proposons un créneau prioritaire sous 48 h.",
+      a: "Notre délai standard à Armentières est de 5 jours ouvrés après validation de la demande. Pour les PME en urgence (panne d'outil métier), nous proposons un créneau prioritaire sous 48 h.",
     },
     {
       q: "Quelles communes proches d'Armentières sont couvertes par Axion-IA ?",
@@ -240,14 +228,14 @@ export const ARMENTIERES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Armentières ?",
-      a: "Nous travaillons principalement avec les TPE et PME du commerce de détail du centre-ville, de l'agroalimentaire, de la logistique liée à la Lys, de l'artisanat du bâtiment et de la reconversion des friches textiles.",
+      a: "Nous travaillons principalement avec les PME et ETI du commerce de détail du centre-ville, de l'agroalimentaire, de la logistique liée à la Lys, de l'artisanat du bâtiment et de la reconversion des friches textiles.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD pour ses clients d'Armentières ?",
       a: "Oui, toutes nos prestations à Armentières sont conformes au RGPD : hébergement UE, registres de traitement fournis et clauses de sous-traitance signées avant tout démarrage opérationnel.",
     },
     {
-      q: "Axion-IA propose-t-il du no-code aux TPE armentiéroises ?",
+      q: "Axion-IA propose-t-il du no-code aux PME armentiéroises ?",
       a: "Non. Notre approche par défaut est le code custom maintenable, conçu pour durer plusieurs années. Nous n'utilisons pas de plateformes no-code propriétaires qui créent une dépendance technique chez nos clients.",
     },
   ],

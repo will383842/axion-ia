@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const QUIMPERLE_COPY: VilleCopy = {
   pitchFr:
-    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA collabore avec toutes les structures locales du Pays de Quimperlé et du sud Finistère.",
+    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu PME artisanales, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA collabore avec toutes les structures locales du Pays de Quimperlé et du sud Finistère.",
   pitchEn:
-    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA collabore avec toutes les structures locales du Pays de Quimperlé et du sud Finistère.",
+    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu PME artisanales, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA collabore avec toutes les structures locales du Pays de Quimperlé et du sud Finistère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
   seoHook: "agroalimentaire breton & industrie papetière",
   ecosystemFr:
-    "Quimperlé (12 469 hab) est le pôle économique du sud Finistère, au confluent de l'Ellé et de l'Isole formant la Laïta. Héritage industriel papetier (anciens moulins à papier reconvertis), tissu PME agroalimentaires bretonnes, TPE artisans BTP, commerces de centre-ville historique et tourisme patrimonial (abbaye Sainte-Croix romane). Communauté d'agglomération Quimperlé Communauté (~57 000 hab).",
+    "Quimperlé (12 469 hab) est le pôle économique du sud Finistère, au confluent de l'Ellé et de l'Isole formant la Laïta. Héritage industriel papetier (anciens moulins à papier reconvertis), tissu PME agroalimentaires bretonnes, PME du BTP, commerces de centre-ville historique et tourisme patrimonial (abbaye Sainte-Croix romane). Communauté d'agglomération Quimperlé Communauté (~57 000 hab).",
   ecosystemEn:
-    "Quimperlé (12 469 hab) est le pôle économique du sud Finistère, au confluent de l'Ellé et de l'Isole formant la Laïta. Héritage industriel papetier (anciens moulins à papier reconvertis), tissu PME agroalimentaires bretonnes, TPE artisans BTP, commerces de centre-ville historique et tourisme patrimonial (abbaye Sainte-Croix romane). Communauté d'agglomération Quimperlé Communauté (~57 000 hab).",
+    "Quimperlé (12 469 hab) est le pôle économique du sud Finistère, au confluent de l'Ellé et de l'Isole formant la Laïta. Héritage industriel papetier (anciens moulins à papier reconvertis), tissu PME agroalimentaires bretonnes, PME du BTP, commerces de centre-ville historique et tourisme patrimonial (abbaye Sainte-Croix romane). Communauté d'agglomération Quimperlé Communauté (~57 000 hab).",
   distancesFr:
     "Gare de Quimperlé (TGV Paris-Quimper, 3h40 Paris). Lorient à 20 min via N165. Quimper à 40 min via N165. Aéroport Lorient Bretagne Sud à 25 min. Concarneau à 30 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const QUIMPERLE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agroalimentaire breton",
     "Industrie papetière & reconversion",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de centre-ville & proximité",
     "Tourisme patrimonial & hôtellerie",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quimperlé : diagnostic adapté aux TPE artisans, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Quimperlé : diagnostic adapté aux TPE artisans, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Quimperlé : diagnostic adapté aux PME artisanales, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Quimperlé : diagnostic adapté aux PME artisanales, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quimperlé : formats adaptés à l'atelier agroalimentaire, l'usine, le commerce ou l'établissement touristique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const QUIMPERLE_COPY: VilleCopy = {
       en: "Implémentation IA à Quimperlé : contrôle qualité agroalimentaire par vision, automatisation traçabilité, agents conversationnels, gestion stocks, optimisation planning production. Pays de Quimperlé et sud Finistère.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Quimperlé : sessions dans vos locaux, atelier ou en visio. Dirigeants TPE/PME agroalimentaires, commerçants, artisans et acteurs du tourisme du sud Finistère souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Quimperlé : sessions dans vos locaux, atelier ou en visio. Dirigeants TPE/PME agroalimentaires, commerçants, artisans et acteurs du tourisme du sud Finistère souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Quimperlé : sessions dans vos locaux, atelier ou en visio. Dirigeants PME et ETI agroalimentaires, commerçants, artisans et acteurs du tourisme du sud Finistère souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Quimperlé : sessions dans vos locaux, atelier ou en visio. Dirigeants PME et ETI agroalimentaires, commerçants, artisans et acteurs du tourisme du sud Finistère souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const QUIMPERLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commerçants et artisans de Quimperlé ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Quimperlé centre-ville sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce de Quimperlé centre-ville sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Proposez-vous des solutions IA pour le tourisme à Quimperlé ?",

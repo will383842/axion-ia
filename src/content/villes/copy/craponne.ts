@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CRAPONNE_COPY: VilleCopy = {
   pitchFr:
-    "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'ouest lyonnais.",
+    "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'ouest lyonnais.",
   pitchEn:
-    "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'ouest lyonnais.",
+    "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'ouest lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires ouest & professions libérales",
   ecosystemFr:
-    "Craponne est intégrée à la Métropole de Lyon, en banlieue ouest (entre Francheville et Tassin-la-Demi-Lune). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces, professions libérales installées, agriculture résiduelle.",
+    "Craponne est intégrée à la Métropole de Lyon, en banlieue ouest (entre Francheville et Tassin-la-Demi-Lune). Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales installées, agriculture résiduelle.",
   ecosystemEn:
-    "Craponne est intégrée à la Métropole de Lyon, en banlieue ouest (entre Francheville et Tassin-la-Demi-Lune). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces, professions libérales installées, agriculture résiduelle.",
+    "Craponne est intégrée à la Métropole de Lyon, en banlieue ouest (entre Francheville et Tassin-la-Demi-Lune). Tissu péri-urbain résidentiel : PME tertiaires, PME du BTP, commerces, professions libérales installées, agriculture résiduelle.",
   distancesFr:
     "Lyon centre à 20 min. Aéroport Lyon-Saint-Exupéry à 45 min. Francheville limitrophe à 5 min. Tassin-la-Demi-Lune à 10 min. Brignais à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CRAPONNE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires ouest lyonnais",
     "Professions libérales (santé, juridique)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Craponne : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const CRAPONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Craponne : agents conversationnels patient/client, automatisation workflow, classification dossiers, CRM augmentés. Métropole de Lyon ouest.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Craponne : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants TPE/PME craponnois.",
-      en: "Coaching 1-to-1 à Craponne : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants TPE/PME craponnois.",
+      fr: "Coaching 1-to-1 à Craponne : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants PME et ETI craponnois.",
+      en: "Coaching 1-to-1 à Craponne : sessions dans votre cabinet, bureau, commerce ou en visio. Médecins, avocats, dirigeants tertiaires, artisans, gérants PME et ETI craponnois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const CRAPONNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires ouest lyonnais sur leurs cas IA : agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Craponne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Craponne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

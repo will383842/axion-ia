@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const SEICHAMPS_COPY: VilleCopy = {
   pitchFr:
-    "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu TPE/PME commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu PME et ETI commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu TPE/PME commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu PME et ETI commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : PME et ETI commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : PME et ETI commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
   ecosystemFr:
-    "Seichamps est une commune périurbaine résidentielle à l'est immédiat de Nancy, à dominante pavillonnaire. Tissu TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales, santé, BTP, dynamique familiale.",
+    "Seichamps est une commune périurbaine résidentielle à l'est immédiat de Nancy, à dominante pavillonnaire. Tissu PME et ETI commerces de proximité, artisans, services aux particuliers, professions libérales, santé, BTP, dynamique familiale.",
   ecosystemEn:
-    "Seichamps est une commune périurbaine résidentielle à l'est immédiat de Nancy, à dominante pavillonnaire. Tissu TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales, santé, BTP, dynamique familiale.",
+    "Seichamps est une commune périurbaine résidentielle à l'est immédiat de Nancy, à dominante pavillonnaire. Tissu PME et ETI commerces de proximité, artisans, services aux particuliers, professions libérales, santé, BTP, dynamique familiale.",
   distancesFr:
     "Nancy centre à 10 min. Autoroute A33 accès direct. Gare SNCF Nancy à 15 min. Metz à 55 min. Aéroport Metz-Nancy-Lorraine à 30 min. Luxembourg à 1h45.",
   distancesEn:
@@ -30,20 +30,20 @@ export const SEICHAMPS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Seichamps : diagnostic adapté aux PME et ETI commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Seichamps : diagnostic adapté aux PME et ETI commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Seichamps : formats adaptés au commerce, au cabinet, à l'atelier, au bureau. Vos collaborateurs sont autonomes ensuite.",
       en: "Interventions IA sur site à Seichamps : formats adaptés au commerce, au cabinet, à l'atelier, au bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémentation IA à Seichamps : automatisation gestion commerciale, relation client, présence en ligne, agents conversationnels TPE/PME, workflow professions libérales.",
-      en: "Implémentation IA à Seichamps : automatisation gestion commerciale, relation client, présence en ligne, agents conversationnels TPE/PME, workflow professions libérales.",
+      fr: "Implémentation IA à Seichamps : automatisation gestion commerciale, relation client, présence en ligne, agents conversationnels PME et ETI, workflow professions libérales.",
+      en: "Implémentation IA à Seichamps : automatisation gestion commerciale, relation client, présence en ligne, agents conversationnels PME et ETI, workflow professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Seichamps : sessions dans votre commerce, cabinet, atelier ou en visio. Commerçants, artisans, professions libérales, gérants TPE/PME, acteurs du BTP seichampois.",
-      en: "Coaching 1-to-1 à Seichamps : sessions dans votre commerce, cabinet, atelier ou en visio. Commerçants, artisans, professions libérales, gérants TPE/PME, acteurs du BTP seichampois.",
+      fr: "Coaching 1-to-1 à Seichamps : sessions dans votre commerce, cabinet, atelier ou en visio. Commerçants, artisans, professions libérales, gérants PME et ETI, acteurs du BTP seichampois.",
+      en: "Coaching 1-to-1 à Seichamps : sessions dans votre commerce, cabinet, atelier ou en visio. Commerçants, artisans, professions libérales, gérants PME et ETI, acteurs du BTP seichampois.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SEICHAMPS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerces et artisans seichampois ?",
-      a: "Oui, nous accompagnons les TPE/PME commerces de proximité, artisans et acteurs du BTP seichampois : gestion stocks, relation client, automatisation comptabilité, présence en ligne, devis.",
+      a: "Oui, nous accompagnons les PME et ETI commerces de proximité, artisans et acteurs du BTP seichampois : gestion stocks, relation client, automatisation comptabilité, présence en ligne, devis.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
@@ -61,7 +61,7 @@ export const SEICHAMPS_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Seichamps ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Seichamps ?",

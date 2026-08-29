@@ -5,25 +5,25 @@ import type { VilleCopy } from "./types";
 
 export const VALLEIRY_COPY: VilleCopy = {
   pitchFr:
-    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA collabore avec toutes les structures locales du Genevois français.",
+    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de PME et ETI de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA collabore avec toutes les structures locales du Genevois français.",
   pitchEn:
-    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA collabore avec toutes les structures locales du Genevois français.",
+    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de PME et ETI de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA collabore avec toutes les structures locales du Genevois français.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valleiry (74). Nous accompagnons PME et ETI : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valleiry (74). Nous accompagnons PME et ETI : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
   seoHook: "agglomération genève",
   ecosystemFr:
-    "Valleiry est une commune frontalière du Grand Genève, à quelques minutes de la douane suisse. Forte croissance résidentielle portée par les travailleurs frontaliers. Tissu économique : PME de services tertiaires (conseil, comptabilité, IT), TPE artisanat BTP, commerces de proximité, professions libérales et activités liées au transit transfrontalier. Zone commerciale locale dynamique.",
+    "Valleiry est une commune frontalière du Grand Genève, à quelques minutes de la douane suisse. Forte croissance résidentielle portée par les travailleurs frontaliers. Tissu économique : PME de services tertiaires (conseil, comptabilité, IT), PME du BTP, commerces de proximité, professions libérales et activités liées au transit transfrontalier. Zone commerciale locale dynamique.",
   ecosystemEn:
-    "Valleiry est une commune frontalière du Grand Genève, à quelques minutes de la douane suisse. Forte croissance résidentielle portée par les travailleurs frontaliers. Tissu économique : PME de services tertiaires (conseil, comptabilité, IT), TPE artisanat BTP, commerces de proximité, professions libérales et activités liées au transit transfrontalier. Zone commerciale locale dynamique.",
+    "Valleiry est une commune frontalière du Grand Genève, à quelques minutes de la douane suisse. Forte croissance résidentielle portée par les travailleurs frontaliers. Tissu économique : PME de services tertiaires (conseil, comptabilité, IT), PME du BTP, commerces de proximité, professions libérales et activités liées au transit transfrontalier. Zone commerciale locale dynamique.",
   distancesFr:
     "Genève centre à 20 min, Aéroport international de Genève à 25 min, Saint-Julien-en-Genevois à 10 min, Annecy à 35 min. Douane de Viry à proximité immédiate. Axe D1206 vers Annecy et Genève.",
   distancesEn:
     "Genève centre à 20 min, Aéroport international de Genève à 25 min, Saint-Julien-en-Genevois à 10 min, Annecy à 35 min. Douane de Viry à proximité immédiate. Axe D1206 vers Annecy et Genève.",
   topSectorsNaf: [
     "Services transfrontaliers Grand Genève",
-    "TPE artisanat BTP & construction résidentielle",
+    "PME du BTP & construction résidentielle",
     "Commerce de proximité & zone commerciale",
     "Professions libérales (santé, juridique)",
     "PME tertiaires (conseil, comptabilité, IT)",
@@ -42,8 +42,8 @@ export const VALLEIRY_COPY: VilleCopy = {
       en: "Implémentation IA à Valleiry : automatisation comptabilité transfrontalière EUR/CHF, agents conversationnels bilingues FR/EN, CRM augmenté clientèle franco-suisse, gestion devis BTP, outils IA cabinets professionnels.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Valleiry : sessions dans vos locaux, cabinet ou en visio. Dirigeants TPE/PME du Grand Genève français souhaitant maîtriser l'IA dans leur activité transfrontalière, artisanale ou commerciale.",
-      en: "Coaching 1-to-1 à Valleiry : sessions dans vos locaux, cabinet ou en visio. Dirigeants TPE/PME du Grand Genève français souhaitant maîtriser l'IA dans leur activité transfrontalière, artisanale ou commerciale.",
+      fr: "Coaching 1-to-1 à Valleiry : sessions dans vos locaux, cabinet ou en visio. Dirigeants PME et ETI du Grand Genève français souhaitant maîtriser l'IA dans leur activité transfrontalière, artisanale ou commerciale.",
+      en: "Coaching 1-to-1 à Valleiry : sessions dans vos locaux, cabinet ou en visio. Dirigeants PME et ETI du Grand Genève français souhaitant maîtriser l'IA dans leur activité transfrontalière, artisanale ou commerciale.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const VALLEIRY_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Valleiry  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Genevois français, il identifie les cas d'usage IA à fort ROI pour votre activité (services transfrontaliers, BTP, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du Genevois français, il identifie les cas d'usage IA à fort ROI pour votre activité (services transfrontaliers, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Valleiry ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Valleiry (construction résidentielle, rénovation, second œuvre) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, suivi photos chantier, gestion planning. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME du BTP à Valleiry (construction résidentielle, rénovation, second œuvre) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, suivi photos chantier, gestion planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Valleiry ?",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
   pitchFr:
-    "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu TPE/PME commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu PME et ETI commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu TPE/PME commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu PME et ETI commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : TPE/PME du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : PME et ETI du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : TPE/PME du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : PME et ETI du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit sur place sur mesure.",
   ecosystemFr:
     "Pont-Sainte-Maxence est une commune des bords de l'Oise en lisière de la forêt d'Halatte, à mi-chemin entre Senlis, Creil et Compiègne. Économie diversifiée : commerce, artisanat, BTP, logistique fluviale (port sur l'Oise) et routière (RN17), industries légères, services. Position de carrefour attractif pour les entreprises.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux TPE/PME du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux TPE/PME du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux PME et ETI du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux PME et ETI du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Sainte-Maxence : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce et le bureau. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
       en: "Implémentation IA à Pont-Sainte-Maxence : automatisation logistique fluviale, planification transport, gestion stock commerce, devis BTP, agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pont-Sainte-Maxence : sessions dans votre entrepôt, atelier, commerce ou en visio. Logisticiens, industriels, commerçants, artisans BTP et gérants TPE/PME du bassin Oise.",
-      en: "Coaching 1-to-1 à Pont-Sainte-Maxence : sessions dans votre entrepôt, atelier, commerce ou en visio. Logisticiens, industriels, commerçants, artisans BTP et gérants TPE/PME du bassin Oise.",
+      fr: "Coaching 1-to-1 à Pont-Sainte-Maxence : sessions dans votre entrepôt, atelier, commerce ou en visio. Logisticiens, industriels, commerçants, artisans BTP et gérants PME et ETI du bassin Oise.",
+      en: "Coaching 1-to-1 à Pont-Sainte-Maxence : sessions dans votre entrepôt, atelier, commerce ou en visio. Logisticiens, industriels, commerçants, artisans BTP et gérants PME et ETI du bassin Oise.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Pont-Sainte-Maxence ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
       q: "Accompagnez-vous les entreprises de logistique fluviale ?",

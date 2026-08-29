@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GRENADE_COPY: VilleCopy = {
   pitchFr:
-    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du nord de la Haute-Garonne.",
+    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu PME artisanales, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du nord de la Haute-Garonne.",
   pitchEn:
-    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du nord de la Haute-Garonne.",
+    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu PME artisanales, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du nord de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grenade (31). Nous accompagnons PME artisanales, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grenade (31). Nous accompagnons PME artisanales, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit sur place sur mesure.",
   seoHook: "vallée garonne",
   ecosystemFr:
-    "Grenade est une bastide du XIIIe siècle sur les bords de Garonne, pôle économique du nord de la Haute-Garonne. TPE artisans, PME agroalimentaires, commerces de la halle, professions libérales, exploitations agricoles. Marché traditionnel actif.",
+    "Grenade est une bastide du XIIIe siècle sur les bords de Garonne, pôle économique du nord de la Haute-Garonne. PME artisanales, PME agroalimentaires, commerces de la halle, professions libérales, exploitations agricoles. Marché traditionnel actif.",
   ecosystemEn:
-    "Grenade est une bastide du XIIIe siècle sur les bords de Garonne, pôle économique du nord de la Haute-Garonne. TPE artisans, PME agroalimentaires, commerces de la halle, professions libérales, exploitations agricoles. Marché traditionnel actif.",
+    "Grenade est une bastide du XIIIe siècle sur les bords de Garonne, pôle économique du nord de la Haute-Garonne. PME artisanales, PME agroalimentaires, commerces de la halle, professions libérales, exploitations agricoles. Marché traditionnel actif.",
   distancesFr:
     "Toulouse centre à 30 min (D17/A62). Gare Matabiau à 35 min. Aéroport Toulouse-Blagnac à 25 min. Fronton à 15 min. Castelnau-d'Estrétefonds à 10 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const GRENADE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grenade : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Grenade : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Grenade : diagnostic adapté aux PME artisanales, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Grenade : diagnostic adapté aux PME artisanales, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grenade : formats adaptés à l'exploitation agricole, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
       en: "Interventions IA sur site à Grenade : formats adaptés à l'exploitation agricole, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Grenade : automatisation traçabilité agroalimentaire, gestion stocks commerce, classification documents, agents conversationnels pour TPE-PME du nord 31.",
-      en: "Implémentation IA à Grenade : automatisation traçabilité agroalimentaire, gestion stocks commerce, classification documents, agents conversationnels pour TPE-PME du nord 31.",
+      fr: "Implémentation IA à Grenade : automatisation traçabilité agroalimentaire, gestion stocks commerce, classification documents, agents conversationnels pour PME et ETI du nord 31.",
+      en: "Implémentation IA à Grenade : automatisation traçabilité agroalimentaire, gestion stocks commerce, classification documents, agents conversationnels pour PME et ETI du nord 31.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Grenade : sessions dirigeants TPE artisans, gérants PME agroalimentaires, commerçants du nord Haute-Garonne.",
-      en: "Coaching 1-to-1 à Grenade : sessions dirigeants TPE artisans, gérants PME agroalimentaires, commerçants du nord Haute-Garonne.",
+      fr: "Coaching 1-to-1 à Grenade : sessions dirigeants PME artisanales, gérants PME agroalimentaires, commerçants du nord Haute-Garonne.",
+      en: "Coaching 1-to-1 à Grenade : sessions dirigeants PME artisanales, gérants PME agroalimentaires, commerçants du nord Haute-Garonne.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const GRENADE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Grenade ?",
-      a: "Nous accompagnons tous types d'activités : PME agroalimentaires, TPE artisans, commerces, professions libérales, agriculture. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : PME agroalimentaires, PME artisanales, commerces, professions libérales, agriculture. Aucun secteur exclu.",
     },
     {
       q: "Combien coûte un audit IA à Grenade  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "L'IA peut-elle aider une PME agroalimentaire à Grenade ?",

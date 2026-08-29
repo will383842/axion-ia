@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const POUSSAN_COPY: VilleCopy = {
   pitchFr:
-    "Poussan (34), bourg viticole de l'agglomération de Sète, entre garrigue et étang de Thau. Vignoble AOC Languedoc, patrimoine médiéval, traditions locales. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Poussan (34), bourg viticole de l'agglomération de Sète, entre garrigue et étang de Thau. Vignoble AOC Languedoc, patrimoine médiéval, traditions locales. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Poussan (34), bourg viticole de l'agglomération de Sète, entre garrigue et étang de Thau. Vignoble AOC Languedoc, patrimoine médiéval, traditions locales. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Poussan (34), bourg viticole de l'agglomération de Sète, entre garrigue et étang de Thau. Vignoble AOC Languedoc, patrimoine médiéval, traditions locales. Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Poussan (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises du bassin de Thau.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Poussan (34). Nous accompagnons PME du commerce, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises du bassin de Thau.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Poussan (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises du bassin de Thau.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Poussan (34). Nous accompagnons PME du commerce, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises du bassin de Thau.",
   ecosystemFr:
-    "Poussan est un bourg viticole de l'agglomération de Sète, entre garrigue et étang de Thau. Vignoble AOC Languedoc, patrimoine médiéval (tour, église fortifiée), traditions (fête du poulain). Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
+    "Poussan est un bourg viticole de l'agglomération de Sète, entre garrigue et étang de Thau. Vignoble AOC Languedoc, patrimoine médiéval (tour, église fortifiée), traditions (fête du poulain). Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales.",
   ecosystemEn:
-    "Poussan est un bourg viticole de l'agglomération de Sète, entre garrigue et étang de Thau. Vignoble AOC Languedoc, patrimoine médiéval (tour, église fortifiée), traditions (fête du poulain). Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales.",
+    "Poussan est un bourg viticole de l'agglomération de Sète, entre garrigue et étang de Thau. Vignoble AOC Languedoc, patrimoine médiéval (tour, église fortifiée), traditions (fête du poulain). Tissu PME du commerce, PME viticoles, artisans BTP, professions libérales.",
   distancesFr:
     "Sète à 15 min. Montpellier à 30 min par A9. Balaruc-les-Bains à 5 min. Gare SNCF Sète à 15 min. Aéroport Montpellier-Méditerranée à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const POUSSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Poussan : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Poussan : diagnostic pour PME viticoles, TPE commerçants, artisans BTP et professions libérales du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Poussan : diagnostic pour PME viticoles, PME du commerce, artisans BTP et professions libérales du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Poussan : diagnostic pour PME viticoles, PME du commerce, artisans BTP et professions libérales du bassin de Thau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Poussan : ateliers adaptés domaine viticole, atelier artisan, commerce ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const POUSSAN_COPY: VilleCopy = {
       en: "Implémentation IA à Poussan : automatisation gestion vignoble, devis artisans BTP, chatbot client, classification documents bassin de Thau.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Poussan : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants TPE/PME du bassin de Thau.",
-      en: "Coaching 1-to-1 à Poussan : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants TPE/PME du bassin de Thau.",
+      fr: "Coaching 1-to-1 à Poussan : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants PME et ETI du bassin de Thau.",
+      en: "Coaching 1-to-1 à Poussan : sessions sur site ou en visio pour viticulteurs, artisans, commerçants et gérants PME et ETI du bassin de Thau.",
     },
   },
   faqGeolocalisee: [

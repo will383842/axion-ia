@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const CORTE_COPY: VilleCopy = {
   pitchFr:
-    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre les activités professionnelles du bassin du centre Corse.",
+    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. PME artisanales, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre les activités professionnelles du bassin du centre Corse.",
   pitchEn:
-    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre les activités professionnelles du bassin du centre Corse.",
+    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. PME artisanales, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre les activités professionnelles du bassin du centre Corse.",
   seoHook: "université, tourisme & artisanat corse",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Corte (2B). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Corte (2B). Nous accompagnons tous types d'activités : PME artisanales, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Corte (2B). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Corte (2B). Nous accompagnons tous types d'activités : PME artisanales, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Corte est la capitale historique de la Corse et siège de l'Université de Corse Pasquale Paoli (environ 4 700 étudiants). Sous-préfecture de Haute-Corse, la ville domine le centre montagneux de l'île. L'économie repose sur les services universitaires, le tourisme culturel et de montagne (citadelle, gorges de la Restonica, vallée du Tavignano), le commerce de proximité, l'artisanat et les services publics.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const CORTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Corte : diagnostic adapté aux TPE artisans, PME de services, commerçants, acteurs touristiques et structures universitaires du centre Corse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Corte : diagnostic adapté aux TPE artisans, PME de services, commerçants, acteurs touristiques et structures universitaires du centre Corse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Corte : diagnostic adapté aux PME artisanales, PME de services, commerçants, acteurs touristiques et structures universitaires du centre Corse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Corte : diagnostic adapté aux PME artisanales, PME de services, commerçants, acteurs touristiques et structures universitaires du centre Corse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Corte : formations pratiques pour équipes tourisme, commerçants, artisans et professions libérales du centre Corse. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const CORTE_COPY: VilleCopy = {
       en: "Implémentation IA à Corte : agents conversationnels accueil touristique, automatisation gestion locative saisonnière, outils pédagogiques universitaires, gestion documentaire professions libérales. Adapté au tissu centre Corse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Corte : sessions individuelles pour dirigeants TPE/PME, artisans, commerçants et professions libérales du centre Corse souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Corte : sessions individuelles pour dirigeants TPE/PME, artisans, commerçants et professions libérales du centre Corse souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Corte : sessions individuelles pour dirigeants de PME et d'ETI, artisans, commerçants et professions libérales du centre Corse souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Corte : sessions individuelles pour dirigeants de PME et d'ETI, artisans, commerçants et professions libérales du centre Corse souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const CORTE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Corte  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME cortenaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI cortenaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs touristiques de Corte ?",

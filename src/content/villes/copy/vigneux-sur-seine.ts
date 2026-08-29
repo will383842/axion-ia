@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "À Vigneux-sur-Seine (91), commune des bords de Seine de l'Essonne, proche d'Orly et dotée de zones d'activité logistiques, Axion-IA accompagne les TPE et PME locales. Entrepôts et prestataires logistiques, PME de transport, artisans du bâtiment, commerces de proximité, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, tournées et reporting et libérer du temps aux dirigeants.",
+    "À Vigneux-sur-Seine (91), commune des bords de Seine de l'Essonne, proche d'Orly et dotée de zones d'activité logistiques, Axion-IA accompagne les PME et ETI locales. Entrepôts et prestataires logistiques, PME de transport, artisans du bâtiment, commerces de proximité, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, tournées et reporting et libérer du temps aux dirigeants.",
   pitchEn:
-    "À Vigneux-sur-Seine (91), commune des bords de Seine de l'Essonne, proche d'Orly et dotée de zones d'activité logistiques, Axion-IA accompagne les TPE et PME locales. Entrepôts et prestataires logistiques, PME de transport, artisans du bâtiment, commerces de proximité, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, tournées et reporting et libérer du temps aux dirigeants.",
+    "À Vigneux-sur-Seine (91), commune des bords de Seine de l'Essonne, proche d'Orly et dotée de zones d'activité logistiques, Axion-IA accompagne les PME et ETI locales. Entrepôts et prestataires logistiques, PME de transport, artisans du bâtiment, commerces de proximité, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, tournées et reporting et libérer du temps aux dirigeants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-sur-Seine (Essonne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les prestataires logistiques et de transport des zones d'activité, les artisans du bâtiment, les commerces de proximité et les professions libérales de cette commune des bords de Seine proche d'Orly. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-sur-Seine (Essonne) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les prestataires logistiques et de transport des zones d'activité, les artisans du bâtiment, les commerces de proximité et les professions libérales de cette commune des bords de Seine proche d'Orly. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-sur-Seine (Essonne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les prestataires logistiques et de transport des zones d'activité, les artisans du bâtiment, les commerces de proximité et les professions libérales de cette commune des bords de Seine proche d'Orly. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-sur-Seine (Essonne) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les prestataires logistiques et de transport des zones d'activité, les artisans du bâtiment, les commerces de proximité et les professions libérales de cette commune des bords de Seine proche d'Orly. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "logistique & commerce de proximité",
   ecosystemFr:
-    "Vigneux-sur-Seine est une commune résidentielle de l'Essonne installée sur les bords de Seine, à quelques minutes d'Orly. Son économie s'appuie sur des zones d'activité logistiques et un tissu de TPE et PME de proximité : prestataires logistiques, transporteurs, artisans du bâtiment, commerces et professions libérales. La desserte par le RER D et la proximité immédiate de l'aéroport favorisent les flux de marchandises. Ce maillage de petites structures trouve dans l'IA un levier concret pour optimiser tournées, devis et gestion administrative au quotidien.",
+    "Vigneux-sur-Seine est une commune résidentielle de l'Essonne installée sur les bords de Seine, à quelques minutes d'Orly. Son économie s'appuie sur des zones d'activité logistiques et un tissu de PME et ETI de proximité : prestataires logistiques, transporteurs, artisans du bâtiment, commerces et professions libérales. La desserte par le RER D et la proximité immédiate de l'aéroport favorisent les flux de marchandises. Ce maillage de PME trouve dans l'IA un levier concret pour optimiser tournées, devis et gestion administrative au quotidien.",
   ecosystemEn:
-    "Vigneux-sur-Seine est une commune résidentielle de l'Essonne installée sur les bords de Seine, à quelques minutes d'Orly. Son économie s'appuie sur des zones d'activité logistiques et un tissu de TPE et PME de proximité : prestataires logistiques, transporteurs, artisans du bâtiment, commerces et professions libérales. La desserte par le RER D et la proximité immédiate de l'aéroport favorisent les flux de marchandises. Ce maillage de petites structures trouve dans l'IA un levier concret pour optimiser tournées, devis et gestion administrative au quotidien.",
+    "Vigneux-sur-Seine est une commune résidentielle de l'Essonne installée sur les bords de Seine, à quelques minutes d'Orly. Son économie s'appuie sur des zones d'activité logistiques et un tissu de PME et ETI de proximité : prestataires logistiques, transporteurs, artisans du bâtiment, commerces et professions libérales. La desserte par le RER D et la proximité immédiate de l'aéroport favorisent les flux de marchandises. Ce maillage de PME trouve dans l'IA un levier concret pour optimiser tournées, devis et gestion administrative au quotidien.",
   distancesFr:
     "Vigneux-sur-Seine est reliée à Paris-Gare de Lyon en 25 minutes par le RER D (gare de Vigneux-sur-Seine). L'aéroport de Paris-Orly est à 10 minutes, Évry-Courcouronnes à 15 minutes et l'autoroute A6 est accessible à proximité.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation IA à Vigneux-sur-Seine : optimisation des tournées logistiques, automatisation des devis et factures, suivi des expéditions et reporting pour PME de transport et artisans.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Vigneux-sur-Seine : sessions individuelles pour dirigeants de TPE et PME, en entrepôt, en boutique ou en visio, pour adopter l'IA dans la gestion quotidienne.",
-      en: "Accompagnement un-à-un à Vigneux-sur-Seine : sessions individuelles pour dirigeants de TPE et PME, en entrepôt, en boutique ou en visio, pour adopter l'IA dans la gestion quotidienne.",
+      fr: "Accompagnement un-à-un à Vigneux-sur-Seine : sessions individuelles pour dirigeants de PME et d'ETI, en entrepôt, en boutique ou en visio, pour adopter l'IA dans la gestion quotidienne.",
+      en: "Accompagnement un-à-un à Vigneux-sur-Seine : sessions individuelles pour dirigeants de PME et d'ETI, en entrepôt, en boutique ou en visio, pour adopter l'IA dans la gestion quotidienne.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Vigneux-sur-Seine : plateformes pour PME logistiques, transporteurs, artisans et commerces, avec demande de devis intelligente, suivi de commande et prise de rendez-vous automatisée.",
@@ -53,9 +53,9 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Vigneux-sur-Seine (91270), commune des bords de Seine de l'agglomération Val d'Yerres Val de Seine, le tissu économique est fait de TPE et PME de proximité : artisans et entreprises du bâtiment, transport et logistique des zones d'activité du Bac d'Ablon et du Clos de la Régale, commerces, restauration et professions libérales, sur fond de renouvellement urbain de la Croix-Blanche et d'une économie de loisirs autour de l'Île du Port-aux-Cerises. Axion-IA conçoit pour ces structures des sites web et plateformes SaaS augmentés par l'IA — devis intelligents, prise de rendez-vous, suivi de commande, e-commerce — hébergés en Union européenne, conformes RGPD, sans verrou éditeur.",
+        hero: "À Vigneux-sur-Seine (91270), commune des bords de Seine de l'agglomération Val d'Yerres Val de Seine, le tissu économique est fait de PME et ETI de proximité : artisans et entreprises du bâtiment, transport et logistique des zones d'activité du Bac d'Ablon et du Clos de la Régale, commerces, restauration et professions libérales, sur fond de renouvellement urbain de la Croix-Blanche et d'une économie de loisirs autour de l'Île du Port-aux-Cerises. Axion-IA conçoit pour ces structures des sites web et plateformes SaaS augmentés par l'IA — devis intelligents, prise de rendez-vous, suivi de commande, e-commerce — hébergés en Union européenne, conformes RGPD, sans verrou éditeur.",
         whyHere: [
-          "Le tissu de Vigneux est dominé par les TPE/PME de proximité — artisans du bâtiment, transporteurs et prestataires logistiques des ZA du Bac d'Ablon et du Clos de la Régale, commerces et restauration : nous construisons des sites vitrines et e-commerce avec demande de devis intelligente et prise de rendez-vous, calibrés pour des équipes réduites.",
+          "Le tissu de Vigneux est dominé par les PME et ETI de proximité — artisans du bâtiment, transporteurs et prestataires logistiques des ZA du Bac d'Ablon et du Clos de la Régale, commerces et restauration : nous construisons des sites vitrines et e-commerce avec demande de devis intelligente et prise de rendez-vous, calibrés pour des équipes réduites.",
           "Le renouvellement urbain de la Croix-Blanche (opération ANRU pilotée par l'agglomération Val d'Yerres Val de Seine, création/réhabilitation d'environ 400 logements, commerces et place végétalisée à l'horizon 2031) recompose l'offre commerciale locale : nous outillons commerçants et services pour exister en ligne face à cette nouvelle centralité.",
           "L'économie de loisirs fluviale — Île de loisirs du Port-aux-Cerises (plus d'un million de visiteurs par an, port de plaisance de 128 anneaux) et Port Premier sur la darse de la Seine — génère des besoins de réservation en ligne, billetterie et gestion de saisonnalité que nous intégrons nativement.",
           "La gare RER D de Vigneux (Paris-Gare de Lyon à ~25 minutes) et la proximité d'Orly placent la commune sur des flux logistiques et de services : nous concevons des plateformes de suivi de commande, de planification de tournées et de portails clients pour les PME de transport et de services aux entreprises.",
@@ -89,12 +89,6 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour artisans du bâtiment, commerces et professions libérales de Vigneux : site vitrine mobile-first avec demande de devis intelligente, prise de rendez-vous et chatbot de premier contact.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site + e-commerce ou portail métier",
             detail:
@@ -116,7 +110,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Réalisez-vous des sites web et e-commerce à Vigneux-sur-Seine et dans le Val d'Yerres Val de Seine ?",
-            a: "Oui. Axion-IA conçoit sites vitrines, boutiques e-commerce et plateformes SaaS augmentées par l'IA pour les TPE et PME de Vigneux-sur-Seine et des communes voisines de l'agglomération Val d'Yerres Val de Seine. Nous nous déplaçons sur site (atelier, boutique, entrepôt des ZA du Bac d'Ablon ou du Clos de la Régale) ou travaillons à distance via le RER D, à 25 minutes de Paris.",
+            a: "Oui. Axion-IA conçoit sites vitrines, boutiques e-commerce et plateformes SaaS augmentées par l'IA pour les PME et ETI de Vigneux-sur-Seine et des communes voisines de l'agglomération Val d'Yerres Val de Seine. Nous nous déplaçons sur site (atelier, boutique, entrepôt des ZA du Bac d'Ablon ou du Clos de la Régale) ou travaillons à distance via le RER D, à 25 minutes de Paris.",
           },
           {
             q: "Travaillez-vous avec les artisans et les acteurs du bâtiment de Vigneux ?",
@@ -175,12 +169,6 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase site",
-            detail:
-              "For Vigneux building-trade craftspeople, shops and professional services: mobile-first showcase site with smart quote requests, online booking and a first-contact chatbot.",
-          },
-          {
             sizeLabel: "SME",
             price: "Site + e-commerce or trade portal",
             detail:
@@ -230,7 +218,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vigneux-sur-Seine et en Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Vigneux-sur-Seine et du nord de l'Essonne. Nos consultants se déplacent sur site, à 25 minutes de Paris par le RER D, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Vigneux-sur-Seine et du nord de l'Essonne. Nos consultants se déplacent sur site, à 25 minutes de Paris par le RER D, ou interviennent en visio selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec les prestataires logistiques et transporteurs de Vigneux ?",
@@ -242,7 +230,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les commerces et restaurants de proximité ?",
-      a: "Oui, les TPE sont notre priorité. Pour commerces et restauration, nous déployons fidélisation client automatisée, gestion des réservations, optimisation des stocks et reporting clair adaptés aux petites structures.",
+      a: "Oui, les PME sont notre priorité. Pour commerces et restauration, nous déployons fidélisation client automatisée, gestion des réservations, optimisation des stocks et reporting clair adaptés aux PME.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Orly ?",

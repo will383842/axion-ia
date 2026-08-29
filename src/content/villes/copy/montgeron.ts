@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTGERON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Montgeron (24 022 habitants, Essonne), commune située à 19 km au sud-est de Paris, intégrée à la Communauté d'agglomération Val d'Yerres Val de Seine. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour le tissu de commerces de proximité, services aux particuliers, professions libérales et artisans du sud-est francilien, dans une commune dont une partie du territoire est couverte par la forêt de Sénart et bordée à l'est par l'Yerres.",
+    "Axion-IA intervient à Montgeron (24 022 habitants, Essonne), commune située à 19 km au sud-est de Paris, intégrée à la Communauté d'agglomération Val d'Yerres Val de Seine. Cabinet IA dédié aux PME et ETI francophones, nous concevons du code custom (pas de no-code) pour le tissu de commerces de proximité, services aux particuliers, professions libérales et artisans du sud-est francilien, dans une commune dont une partie du territoire est couverte par la forêt de Sénart et bordée à l'est par l'Yerres.",
   pitchEn:
-    "Axion-IA intervient à Montgeron (24 022 habitants, Essonne), commune située à 19 km au sud-est de Paris, intégrée à la Communauté d'agglomération Val d'Yerres Val de Seine. Cabinet IA dédié aux TPE et PME francophones, nous concevons du code custom (pas de no-code) pour le tissu de commerces de proximité, services aux particuliers, professions libérales et artisans du sud-est francilien, dans une commune dont une partie du territoire est couverte par la forêt de Sénart et bordée à l'est par l'Yerres.",
+    "Axion-IA intervient à Montgeron (24 022 habitants, Essonne), commune située à 19 km au sud-est de Paris, intégrée à la Communauté d'agglomération Val d'Yerres Val de Seine. Cabinet IA dédié aux PME et ETI francophones, nous concevons du code custom (pas de no-code) pour le tissu de commerces de proximité, services aux particuliers, professions libérales et artisans du sud-est francilien, dans une commune dont une partie du territoire est couverte par la forêt de Sénart et bordée à l'est par l'Yerres.",
   directAnswerFr:
-    "À Montgeron, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous nous déplaçons via la gare RER D Montgeron-Crosne, la RN6, et l'aéroport Paris-Orly distant de 8 km. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché.",
+    "À Montgeron, Axion-IA accompagne en priorité les PME puis les ETI (et ponctuellement les grands groupes) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous nous déplaçons via la gare RER D Montgeron-Crosne, la RN6, et l'aéroport Paris-Orly distant de 8 km. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché.",
   directAnswerEn:
-    "À Montgeron, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous nous déplaçons via la gare RER D Montgeron-Crosne, la RN6, et l'aéroport Paris-Orly distant de 8 km. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché.",
+    "À Montgeron, Axion-IA accompagne en priorité les PME puis les ETI (et ponctuellement les grands groupes) du Val d'Yerres Val de Seine : commerces du centre-ville, cabinets de santé et professions libérales, agences immobilières, artisans BTP, sociétés de services présentes dans le sud-est francilien. Nous nous déplaçons via la gare RER D Montgeron-Crosne, la RN6, et l'aéroport Paris-Orly distant de 8 km. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}, sans devis caché.",
   seoHook: "commerces de proximité & services franciliens",
   ecosystemFr:
     "Le tissu économique de Montgeron est principalement résidentiel et tertiaire de proximité : commerces de centre-ville le long de la RN6, professions libérales (santé, juridique, expertise comptable), agences immobilières et artisans BTP. La Communauté d'agglomération Val d'Yerres Val de Seine fédère plusieurs communes du sud-est francilien (Yerres, Crosne, Brunoy, Vigneux-sur-Seine, Draveil). Le restaurant historique \"Au réveil matin\" a accueilli en 1903 le départ du premier Tour de France, marquant une identité patrimoniale forte.",
@@ -31,20 +31,20 @@ export const MONTGERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA sur site à Montgeron dès {{price:audit-flash|flat}} : nous identifions chez les TPE/PME locales (commerces RN6, cabinets santé, agences immo) 3 à 5 cas d'usage IA prioritaires, en code custom, sans dépendance no-code.",
-      en: "Audit sur place IA sur site à Montgeron dès {{price:audit-flash|flat}} : nous identifions chez les TPE/PME locales (commerces RN6, cabinets santé, agences immo) 3 à 5 cas d'usage IA prioritaires, en code custom, sans dépendance no-code.",
+      fr: "Audit sur place IA sur site à Montgeron dès {{price:audit-flash|flat}} : nous identifions chez les PME et ETI locales (commerces RN6, cabinets santé, agences immo) 3 à 5 cas d'usage IA prioritaires, en code custom, sans dépendance no-code.",
+      en: "Audit sur place IA sur site à Montgeron dès {{price:audit-flash|flat}} : nous identifions chez les PME et ETI locales (commerces RN6, cabinets santé, agences immo) 3 à 5 cas d'usage IA prioritaires, en code custom, sans dépendance no-code.",
     },
     interventions: {
       fr: "Interventions IA à Montgeron dès {{price:intervention-4h|flat}} : automatisation devis-relances pour artisans BTP, agendas et rappels pour professions libérales, qualification de leads pour agences immobilières du Val d'Yerres Val de Seine.",
       en: "Interventions IA à Montgeron dès {{price:intervention-4h|flat}} : automatisation devis-relances pour artisans BTP, agendas et rappels pour professions libérales, qualification de leads pour agences immobilières du Val d'Yerres Val de Seine.",
     },
     implementation: {
-      fr: "Implémentation IA à Montgeron dès {{price:impl-poc|entry}} : intégration d'assistants codés sur mesure chez les TPE/PME franciliennes, connectés à leurs outils existants (CRM, agendas, comptabilité), 8 km de Paris-Orly.",
-      en: "Implémentation IA à Montgeron dès {{price:impl-poc|entry}} : intégration d'assistants codés sur mesure chez les TPE/PME franciliennes, connectés à leurs outils existants (CRM, agendas, comptabilité), 8 km de Paris-Orly.",
+      fr: "Implémentation IA à Montgeron dès {{price:impl-poc|entry}} : intégration d'assistants codés sur mesure chez les PME et ETI franciliennes, connectés à leurs outils existants (CRM, agendas, comptabilité), 8 km de Paris-Orly.",
+      en: "Implémentation IA à Montgeron dès {{price:impl-poc|entry}} : intégration d'assistants codés sur mesure chez les PME et ETI franciliennes, connectés à leurs outils existants (CRM, agendas, comptabilité), 8 km de Paris-Orly.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Montgeron dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME franciliennes : montée en compétences IA appliquée à leur métier réel, sur site ou en hybride via RER D.",
-      en: "Accompagnement 1-à-1 à Montgeron dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME franciliennes : montée en compétences IA appliquée à leur métier réel, sur site ou en hybride via RER D.",
+      fr: "Accompagnement 1-à-1 à Montgeron dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI franciliennes : montée en compétences IA appliquée à leur métier réel, sur site ou en hybride via RER D.",
+      en: "Accompagnement 1-à-1 à Montgeron dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI franciliennes : montée en compétences IA appliquée à leur métier réel, sur site ou en hybride via RER D.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const MONTGERON_COPY: VilleCopy = {
           "Commerce de proximité dense le long de la RN6 et zone commerciale Maurice Guérin (13,78 ha, hypermarché Auchan en tête de gondole locale) : nous concevons des vitrines et des boutiques e-commerce mobile-first, click-and-collect, fiches produits et recherche sémantique de catalogue, pour capter une clientèle résidentielle qui cherche d'abord sur smartphone avant de pousser la porte du magasin.",
           "Forte présence de cabinets de santé et de professions libérales (juridique, expertise comptable) très sensibles au RGPD, concentrés au centre-ville et autour de la gare : nos prises de rendez-vous en ligne, agents de qualification et assistants documentaires RAG sont hébergeables en UE, conformes AI Act, sans transit de données hors d'Europe ni dépendance à un éditeur tiers.",
           "Réseau d'agences immobilières actif sur tout le Val d'Yerres Val de Seine (Yerres, Crosne, Brunoy, Draveil, Vigneux-sur-Seine) : nous greffons recherche sémantique de biens, alertes intelligentes et qualification automatique des leads sur les portails existants, ou bâtissons un SaaS sur mesure connecté à vos logiciels de transaction, sans refonte lourde de l'existant.",
-          "Zone industrielle du Bac d'Ablon (7,06 ha, une soixantaine d'entreprises : négoce, services auto, BTP, imprimerie) et centre d'affaires du Réveil Matin, à 8 km de Paris-Orly : pour ces TPE/PME et les artisans du sud-est francilien, on automatise devis, relances et prise de contact, branchés sur vos outils métier (CRM, agendas, comptabilité) via agents et workflows codés sur mesure.",
+          "Zone industrielle du Bac d'Ablon (7,06 ha, une soixantaine d'entreprises : négoce, services auto, BTP, imprimerie) et centre d'affaires du Réveil Matin, à 8 km de Paris-Orly : pour ces PME et ETI et les artisans du sud-est francilien, on automatise devis, relances et prise de contact, branchés sur vos outils métier (CRM, agendas, comptabilité) via agents et workflows codés sur mesure.",
         ],
         methodology: [
           {
@@ -85,12 +85,6 @@ export const MONTGERON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site d'un commerce de la RN6, d'un cabinet de santé, d'un artisan BTP ou d'une entreprise de la Z.A. du Bac d'Ablon, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -125,7 +119,7 @@ export const MONTGERON_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises des zones d'activité de Montgeron ?",
-            a: "Oui. La Z.A. du Bac d'Ablon (négoce, services auto, BTP, imprimerie) et le centre d'affaires du Réveil Matin concentrent des TPE/PME pour qui on automatise devis-relances, prise de contact et suivi commercial via agents et workflows codés sur mesure, branchés sur leurs outils métier (CRM, agendas, comptabilité), à 8 km de Paris-Orly.",
+            a: "Oui. La Z.A. du Bac d'Ablon (négoce, services auto, BTP, imprimerie) et le centre d'affaires du Réveil Matin concentrent des PME et ETI pour qui on automatise devis-relances, prise de contact et suivi commercial via agents et workflows codés sur mesure, branchés sur leurs outils métier (CRM, agendas, comptabilité), à 8 km de Paris-Orly.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -141,7 +135,7 @@ export const MONTGERON_COPY: VilleCopy = {
           "Commerce de proximité dense le long de la RN6 et zone commerciale Maurice Guérin (13,78 ha, hypermarché Auchan en tête de gondole locale) : nous concevons des vitrines et des boutiques e-commerce mobile-first, click-and-collect, fiches produits et recherche sémantique de catalogue, pour capter une clientèle résidentielle qui cherche d'abord sur smartphone avant de pousser la porte du magasin.",
           "Forte présence de cabinets de santé et de professions libérales (juridique, expertise comptable) très sensibles au RGPD, concentrés au centre-ville et autour de la gare : nos prises de rendez-vous en ligne, agents de qualification et assistants documentaires RAG sont hébergeables en UE, conformes AI Act, sans transit de données hors d'Europe ni dépendance à un éditeur tiers.",
           "Réseau d'agences immobilières actif sur tout le Val d'Yerres Val de Seine (Yerres, Crosne, Brunoy, Draveil, Vigneux-sur-Seine) : nous greffons recherche sémantique de biens, alertes intelligentes et qualification automatique des leads sur les portails existants, ou bâtissons un SaaS sur mesure connecté à vos logiciels de transaction, sans refonte lourde de l'existant.",
-          "Zone industrielle du Bac d'Ablon (7,06 ha, une soixantaine d'entreprises : négoce, services auto, BTP, imprimerie) et centre d'affaires du Réveil Matin, à 8 km de Paris-Orly : pour ces TPE/PME et les artisans du sud-est francilien, on automatise devis, relances et prise de contact, branchés sur vos outils métier (CRM, agendas, comptabilité) via agents et workflows codés sur mesure.",
+          "Zone industrielle du Bac d'Ablon (7,06 ha, une soixantaine d'entreprises : négoce, services auto, BTP, imprimerie) et centre d'affaires du Réveil Matin, à 8 km de Paris-Orly : pour ces PME et ETI et les artisans du sud-est francilien, on automatise devis, relances et prise de contact, branchés sur vos outils métier (CRM, agendas, comptabilité) via agents et workflows codés sur mesure.",
         ],
         methodology: [
           {
@@ -171,12 +165,6 @@ export const MONTGERON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site d'un commerce de la RN6, d'un cabinet de santé, d'un artisan BTP ou d'une entreprise de la Z.A. du Bac d'Ablon, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -211,7 +199,7 @@ export const MONTGERON_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les entreprises des zones d'activité de Montgeron ?",
-            a: "Oui. La Z.A. du Bac d'Ablon (négoce, services auto, BTP, imprimerie) et le centre d'affaires du Réveil Matin concentrent des TPE/PME pour qui on automatise devis-relances, prise de contact et suivi commercial via agents et workflows codés sur mesure, branchés sur leurs outils métier (CRM, agendas, comptabilité), à 8 km de Paris-Orly.",
+            a: "Oui. La Z.A. du Bac d'Ablon (négoce, services auto, BTP, imprimerie) et le centre d'affaires du Réveil Matin concentrent des PME et ETI pour qui on automatise devis-relances, prise de contact et suivi commercial via agents et workflows codés sur mesure, branchés sur leurs outils métier (CRM, agendas, comptabilité), à 8 km de Paris-Orly.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -243,7 +231,7 @@ export const MONTGERON_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux profitent le plus de l'IA à Montgeron ?",
-      a: "Les TPE et PME des commerces de proximité (RN6, centre-ville), les cabinets de santé et professions libérales, les agences immobilières et les artisans BTP du Val d'Yerres Val de Seine tirent un bénéfice direct des automatisations IA en code custom.",
+      a: "Les PME et ETI des commerces de proximité (RN6, centre-ville), les cabinets de santé et professions libérales, les agences immobilières et les artisans BTP du Val d'Yerres Val de Seine tirent un bénéfice direct des automatisations IA en code custom.",
     },
     {
       q: "Williams se déplace-t-il vraiment sur site à Montgeron ?",

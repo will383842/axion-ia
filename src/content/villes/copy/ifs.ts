@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const IFS_COPY: VilleCopy = {
   pitchFr:
-    "Ifs (14), commune de l'agglomération de Caen sud dans le Calvados, est une ville résidentielle dynamique en forte croissance démographique. Tissu TPE artisans BTP, PME services aux entreprises, commerces zones commerciales, professions libérales, indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Ifs (14), commune de l'agglomération de Caen sud dans le Calvados, est une ville résidentielle dynamique en forte croissance démographique. Tissu PME du BTP, PME services aux entreprises, commerces zones commerciales, professions libérales, indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Ifs (14), commune de l'agglomération de Caen sud dans le Calvados, est une ville résidentielle dynamique en forte croissance démographique. Tissu TPE artisans BTP, PME services aux entreprises, commerces zones commerciales, professions libérales, indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Ifs (14), commune de l'agglomération de Caen sud dans le Calvados, est une ville résidentielle dynamique en forte croissance démographique. Tissu PME du BTP, PME services aux entreprises, commerces zones commerciales, professions libérales, indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ifs (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services aux entreprises de l'agglomération caennaise, commerçants zones commerciales sud Caen, professions libérales, indépendants et prestataires du secteur tertiaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ifs (14). Nous accompagnons tous types d'activités : PME du BTP, PME services aux entreprises de l'agglomération caennaise, commerçants zones commerciales sud Caen, professions libérales, indépendants et prestataires du secteur tertiaire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ifs (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services aux entreprises de l'agglomération caennaise, commerçants zones commerciales sud Caen, professions libérales, indépendants et prestataires du secteur tertiaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ifs (14). Nous accompagnons tous types d'activités : PME du BTP, PME services aux entreprises de l'agglomération caennaise, commerçants zones commerciales sud Caen, professions libérales, indépendants et prestataires du secteur tertiaire.",
   seoHook: "services aux & commerce zones",
   ecosystemFr:
-    "Ifs est une commune de l'agglomération caennaise sud, en forte croissance démographique. Zones commerciales et d'activités attractives (Ifs–Fleury). Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, indépendants. Proximité immédiate Caen centre et campus universitaire.",
+    "Ifs est une commune de l'agglomération caennaise sud, en forte croissance démographique. Zones commerciales et d'activités attractives (Ifs–Fleury). Tissu PME du BTP, PME services aux entreprises, commerces, professions libérales, indépendants. Proximité immédiate Caen centre et campus universitaire.",
   ecosystemEn:
-    "Ifs est une commune de l'agglomération caennaise sud, en forte croissance démographique. Zones commerciales et d'activités attractives (Ifs–Fleury). Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, indépendants. Proximité immédiate Caen centre et campus universitaire.",
+    "Ifs est une commune de l'agglomération caennaise sud, en forte croissance démographique. Zones commerciales et d'activités attractives (Ifs–Fleury). Tissu PME du BTP, PME services aux entreprises, commerces, professions libérales, indépendants. Proximité immédiate Caen centre et campus universitaire.",
   distancesFr:
     "Caen centre à 10 min. Périphérique Caen sud immédiat. Gare SNCF Caen à 15 min. Aéroport Caen-Carpiquet à 20 min. Tramway T1 Ifs–Jean Vilar.",
   distancesEn:
@@ -24,26 +24,26 @@ export const IFS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services aux entreprises agglomération Caen",
     "Commerce zones commerciales sud Caen",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales & indépendants",
     "Secteur tertiaire & prestataires",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, PME du BTP, commerçants zones d'activités sud Caen et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, PME du BTP, commerçants zones d'activités sud Caen et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ifs : formats adaptés au bureau tertiaire, atelier BTP, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Ifs : formats adaptés au bureau tertiaire, atelier BTP, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Ifs : automatisation processus tertiaires, agents conversationnels service client, classification documents, gestion leads zones commerciales. Adapté TPE/PME agglo Caen.",
-      en: "Implémentation IA à Ifs : automatisation processus tertiaires, agents conversationnels service client, classification documents, gestion leads zones commerciales. Adapté TPE/PME agglo Caen.",
+      fr: "Implémentation IA à Ifs : automatisation processus tertiaires, agents conversationnels service client, classification documents, gestion leads zones commerciales. Adapté PME et ETI agglo Caen.",
+      en: "Implémentation IA à Ifs : automatisation processus tertiaires, agents conversationnels service client, classification documents, gestion leads zones commerciales. Adapté PME et ETI agglo Caen.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ifs : sessions dans votre bureau, commerce ou en visio. Dirigeants PME services, artisans BTP, professions libérales, gérants TPE agglomération caennaise.",
-      en: "Coaching 1-to-1 à Ifs : sessions dans votre bureau, commerce ou en visio. Dirigeants PME services, artisans BTP, professions libérales, gérants TPE agglomération caennaise.",
+      fr: "Coaching 1-to-1 à Ifs : sessions dans votre bureau, commerce ou en visio. Dirigeants PME services, artisans BTP, professions libérales, gérants PME agglomération caennaise.",
+      en: "Coaching 1-to-1 à Ifs : sessions dans votre bureau, commerce ou en visio. Dirigeants PME services, artisans BTP, professions libérales, gérants PME agglomération caennaise.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const IFS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME du tertiaire caennais sur leurs cas IA : automatisation processus administratifs, agents conversationnels service client, classification documents, gestion commerciale, prédiction churn.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ifois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Ifs, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ifois ?",
+      a: "Pour les PME du BTP et du commerce à Ifs, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Combien coûte un audit IA à Ifs  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Êtes-vous accessibles en transport en commun depuis Ifs ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const HENNEBONT_COPY: VilleCopy = {
   pitchFr:
-    "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. TPE et PME industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. PME et ETI industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. TPE et PME industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. PME et ETI industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hennebont (56). Nous accompagnons PME et ETI : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hennebont (56). Nous accompagnons PME et ETI : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit sur place sur mesure.",
   seoHook: "industrie métallurgie & commerce centre-ville",
   ecosystemFr:
-    "Hennebont est une commune morbihannaise des bords du Blavet, intégrée à Lorient Agglomération. Cité médiévale (basilique Notre-Dame-du-Paradis, remparts, haras national) et tissu TPE/PME : industrie, commerce de centre-ville historique, artisanat, services à la personne, tourisme.",
+    "Hennebont est une commune morbihannaise des bords du Blavet, intégrée à Lorient Agglomération. Cité médiévale (basilique Notre-Dame-du-Paradis, remparts, haras national) et tissu PME et ETI : industrie, commerce de centre-ville historique, artisanat, services à la personne, tourisme.",
   ecosystemEn:
-    "Hennebont est une commune morbihannaise des bords du Blavet, intégrée à Lorient Agglomération. Cité médiévale (basilique Notre-Dame-du-Paradis, remparts, haras national) et tissu TPE/PME : industrie, commerce de centre-ville historique, artisanat, services à la personne, tourisme.",
+    "Hennebont est une commune morbihannaise des bords du Blavet, intégrée à Lorient Agglomération. Cité médiévale (basilique Notre-Dame-du-Paradis, remparts, haras national) et tissu PME et ETI : industrie, commerce de centre-ville historique, artisanat, services à la personne, tourisme.",
   distancesFr:
     "Gare SNCF d'Hennebont (TER Rennes-Quimper). Lorient centre à 15 min. Aéroport Lorient Bretagne Sud à 20 min. Vannes à 50 min. Rennes à 1 h 45. Nantes à 2 h. Voie express RN 165 sur place.",
   distancesEn:
@@ -30,8 +30,8 @@ export const HENNEBONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hennebont : diagnostic adapté aux TPE artisans, PME industrie des bords du Blavet, commerces du centre médiéval, services à la personne, acteurs du tourisme patrimonial. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Hennebont : diagnostic adapté aux TPE artisans, PME industrie des bords du Blavet, commerces du centre médiéval, services à la personne, acteurs du tourisme patrimonial. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Hennebont : diagnostic adapté aux PME artisanales, PME industrie des bords du Blavet, commerces du centre médiéval, services à la personne, acteurs du tourisme patrimonial. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hennebont : diagnostic adapté aux PME artisanales, PME industrie des bords du Blavet, commerces du centre médiéval, services à la personne, acteurs du tourisme patrimonial. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hennebont : formats adaptés atelier industriel, boutique de centre-ville, cabinet de services. Équipes formées à l'autonomie sur les outils IA.",
@@ -42,8 +42,8 @@ export const HENNEBONT_COPY: VilleCopy = {
       en: "Implémentation IA à Hennebont : automatisation production industrie, CRM commerces, gestion devis artisanat, planification services à la personne, billetterie tourisme.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Hennebont : sessions dans vos locaux bords du Blavet, boutique du centre médiéval ou en visio. Dirigeants TPE/PME industrie, commerçants, artisans, responsables tourisme.",
-      en: "Coaching 1-to-1 à Hennebont : sessions dans vos locaux bords du Blavet, boutique du centre médiéval ou en visio. Dirigeants TPE/PME industrie, commerçants, artisans, responsables tourisme.",
+      fr: "Coaching 1-to-1 à Hennebont : sessions dans vos locaux bords du Blavet, boutique du centre médiéval ou en visio. Dirigeants PME et ETI industrie, commerçants, artisans, responsables tourisme.",
+      en: "Coaching 1-to-1 à Hennebont : sessions dans vos locaux bords du Blavet, boutique du centre médiéval ou en visio. Dirigeants PME et ETI industrie, commerçants, artisans, responsables tourisme.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const HENNEBONT_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Hennebont  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME industrie des bords du Blavet.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME artisanales et PME industrie des bords du Blavet.",
     },
     {
       q: "Travaillez-vous avec les commerces du centre médiéval ?",

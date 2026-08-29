@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const BEDARIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Bédarieux (34), commune des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (textile, charbon), Voie Verte (Passa Païs), tourisme nature. Tissu TPE commerçants, artisans BTP, professions libérales, services publics, PME services. Axion-IA accompagne entreprises et indépendants.",
+    "Bédarieux (34), commune des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (textile, charbon), Voie Verte (Passa Païs), tourisme nature. Tissu PME du commerce, artisans BTP, professions libérales, services publics, PME services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Bédarieux (34), commune des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (textile, charbon), Voie Verte (Passa Païs), tourisme nature. Tissu TPE commerçants, artisans BTP, professions libérales, services publics, PME services. Axion-IA accompagne entreprises et indépendants.",
+    "Bédarieux (34), commune des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (textile, charbon), Voie Verte (Passa Païs), tourisme nature. Tissu PME du commerce, artisans BTP, professions libérales, services publics, PME services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bédarieux (34). Nous accompagnons TPE commerçants, artisans BTP, professions libérales, services publics et acteurs du tourisme nature des hauts cantons de l'Hérault.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bédarieux (34). Nous accompagnons PME du commerce, artisans BTP, professions libérales, services publics et acteurs du tourisme nature des hauts cantons de l'Hérault.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bédarieux (34). Nous accompagnons TPE commerçants, artisans BTP, professions libérales, services publics et acteurs du tourisme nature des hauts cantons de l'Hérault.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bédarieux (34). Nous accompagnons PME du commerce, artisans BTP, professions libérales, services publics et acteurs du tourisme nature des hauts cantons de l'Hérault.",
   ecosystemFr:
-    "Bédarieux est la ville principale des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (ancienne industrie textile et charbonnière), Voie Verte Passa Païs (cyclotourisme), tourisme nature (Haut-Languedoc). Tissu TPE commerçants, artisans BTP, professions libérales (santé, juridique), services publics.",
+    "Bédarieux est la ville principale des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (ancienne industrie textile et charbonnière), Voie Verte Passa Païs (cyclotourisme), tourisme nature (Haut-Languedoc). Tissu PME du commerce, artisans BTP, professions libérales (santé, juridique), services publics.",
   ecosystemEn:
-    "Bédarieux est la ville principale des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (ancienne industrie textile et charbonnière), Voie Verte Passa Païs (cyclotourisme), tourisme nature (Haut-Languedoc). Tissu TPE commerçants, artisans BTP, professions libérales (santé, juridique), services publics.",
+    "Bédarieux est la ville principale des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (ancienne industrie textile et charbonnière), Voie Verte Passa Païs (cyclotourisme), tourisme nature (Haut-Languedoc). Tissu PME du commerce, artisans BTP, professions libérales (santé, juridique), services publics.",
   distancesFr:
     "Béziers à 35 min par D909. Montpellier à 1h10 par A750/A75. Clermont-l'Hérault à 30 min. Gare SNCF Bédarieux (TER Montpellier-Bédarieux). Parc naturel Haut-Languedoc à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const BEDARIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bédarieux : diagnostic pour TPE commerçants, artisans BTP, professions libérales, acteurs tourisme nature et services publics des hauts cantons. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Bédarieux : diagnostic pour TPE commerçants, artisans BTP, professions libérales, acteurs tourisme nature et services publics des hauts cantons. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Bédarieux : diagnostic pour PME du commerce, artisans BTP, professions libérales, acteurs tourisme nature et services publics des hauts cantons. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Bédarieux : diagnostic pour PME du commerce, artisans BTP, professions libérales, acteurs tourisme nature et services publics des hauts cantons. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bédarieux : ateliers adaptés commerce, atelier artisan, hébergement touristique ou cabinet libéral. Équipes autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const BEDARIEUX_COPY: VilleCopy = {
       en: "Implémentation IA à Bédarieux : chatbot touristique Haut-Languedoc multilingue, automatisation devis artisans, classification dossiers services publics, optimisation commerces centre-ville.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bédarieux : sessions sur site ou en visio pour commerçants, artisans, professions libérales et gérants TPE/PME des hauts cantons.",
-      en: "Coaching 1-to-1 à Bédarieux : sessions sur site ou en visio pour commerçants, artisans, professions libérales et gérants TPE/PME des hauts cantons.",
+      fr: "Coaching 1-to-1 à Bédarieux : sessions sur site ou en visio pour commerçants, artisans, professions libérales et gérants PME et ETI des hauts cantons.",
+      en: "Coaching 1-to-1 à Bédarieux : sessions sur site ou en visio pour commerçants, artisans, professions libérales et gérants PME et ETI des hauts cantons.",
     },
   },
   faqGeolocalisee: [

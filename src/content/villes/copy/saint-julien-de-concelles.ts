@@ -9,14 +9,14 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y déploie son expertise pour toutes les organisations du vignoble et du maraîchage nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les TPE maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les PME maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les TPE maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les PME maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "bassin maraîcher de",
   ecosystemFr:
-    "Saint-Julien-de-Concelles est au coeur du premier bassin maraîcher de France (mâche nantaise, muguet) et du vignoble Muscadet. Tissu TPE agricoles et maraîchères, vignerons, artisans, commerces de proximité, PME agroalimentaires. Nantes Métropole est à 20 min.",
+    "Saint-Julien-de-Concelles est au coeur du premier bassin maraîcher de France (mâche nantaise, muguet) et du vignoble Muscadet. Tissu PME agricoles et maraîchères, vignerons, artisans, commerces de proximité, PME agroalimentaires. Nantes Métropole est à 20 min.",
   ecosystemEn:
-    "Saint-Julien-de-Concelles est au coeur du premier bassin maraîcher de France (mâche nantaise, muguet) et du vignoble Muscadet. Tissu TPE agricoles et maraîchères, vignerons, artisans, commerces de proximité, PME agroalimentaires. Nantes Métropole est à 20 min.",
+    "Saint-Julien-de-Concelles est au coeur du premier bassin maraîcher de France (mâche nantaise, muguet) et du vignoble Muscadet. Tissu PME agricoles et maraîchères, vignerons, artisans, commerces de proximité, PME agroalimentaires. Nantes Métropole est à 20 min.",
   distancesFr:
     "Nantes centre à 20 min par D751. Basse-Goulaine à 10 min. Vertou à 15 min. Gare Nantes (TGV Paris 2h15) à 25 min. Aéroport Nantes-Atlantique à 30 min. Clisson à 25 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Maraîchage & horticulture",
     "Viticulture & vinification Muscadet",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "PME agroalimentaire",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux PME maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux PME maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Julien-de-Concelles : formats courts adaptés exploitations maraîchères, domaines viticoles, ateliers artisans et PME. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Julien-de-Concelles : automatisation traçabilité parcellaire, gestion stocks maraîchage, agents conversationnels clients, facturation et logistique agroalimentaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Julien-de-Concelles : sessions sur votre exploitation, atelier ou en visio. Maraîchers, vignerons, artisans et gérants TPE/PME souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Saint-Julien-de-Concelles : sessions sur votre exploitation, atelier ou en visio. Maraîchers, vignerons, artisans et gérants TPE/PME souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Julien-de-Concelles : sessions sur votre exploitation, atelier ou en visio. Maraîchers, vignerons, artisans et gérants PME et ETI souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Saint-Julien-de-Concelles : sessions sur votre exploitation, atelier ou en visio. Maraîchers, vignerons, artisans et gérants PME et ETI souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les maraîchers et vignerons ?",
-      a: "Oui, nous accompagnons les TPE maraîchères et vignerons de Saint-Julien-de-Concelles sur des cas IA concrets : automatisation traçabilité, gestion parcellaire, prévision récoltes, facturation, agents IA relation client. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME maraîchères et vignerons de Saint-Julien-de-Concelles sur des cas IA concrets : automatisation traçabilité, gestion parcellaire, prévision récoltes, facturation, agents IA relation client. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "L'IA est-elle utile pour le maraîchage nantais ?",

@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const COLOMBES_COPY: VilleCopy = {
   pitchFr:
-    "Colombes, 91 053 habitants au nord-ouest des Hauts-de-Seine, accueille un tissu mixte de TPE de services et de quelques sièges (Oracle France y est implanté depuis 2001, Snecma et Thales y opèrent des sites). La ville est à environ 10 km de Paris, desservie par les gares Transilien J (Colombes, Le Stade) et L (La Garenne-Colombes, Les Vallées) ainsi que les tramways T1 et T2. Axion-IA y accompagne les TPE et PME locales (artisans, commerces, cabinets, agences) avec du code Python/TypeScript sur mesure, sans no-code, pour automatiser facturation, devis, relances et reporting.",
+    "Colombes, 91 053 habitants au nord-ouest des Hauts-de-Seine, accueille un tissu mixte de PME de services et de quelques sièges (Oracle France y est implanté depuis 2001, Snecma et Thales y opèrent des sites). La ville est à environ 10 km de Paris, desservie par les gares Transilien J (Colombes, Le Stade) et L (La Garenne-Colombes, Les Vallées) ainsi que les tramways T1 et T2. Axion-IA y accompagne les PME et ETI locales (artisans, commerces, cabinets, agences) avec du code Python/TypeScript sur mesure, sans no-code, pour automatiser facturation, devis, relances et reporting.",
   pitchEn:
-    "Colombes, 91 053 habitants au nord-ouest des Hauts-de-Seine, accueille un tissu mixte de TPE de services et de quelques sièges (Oracle France y est implanté depuis 2001, Snecma et Thales y opèrent des sites). La ville est à environ 10 km de Paris, desservie par les gares Transilien J (Colombes, Le Stade) et L (La Garenne-Colombes, Les Vallées) ainsi que les tramways T1 et T2. Axion-IA y accompagne les TPE et PME locales (artisans, commerces, cabinets, agences) avec du code Python/TypeScript sur mesure, sans no-code, pour automatiser facturation, devis, relances et reporting.",
+    "Colombes, 91 053 habitants au nord-ouest des Hauts-de-Seine, accueille un tissu mixte de PME de services et de quelques sièges (Oracle France y est implanté depuis 2001, Snecma et Thales y opèrent des sites). La ville est à environ 10 km de Paris, desservie par les gares Transilien J (Colombes, Le Stade) et L (La Garenne-Colombes, Les Vallées) ainsi que les tramways T1 et T2. Axion-IA y accompagne les PME et ETI locales (artisans, commerces, cabinets, agences) avec du code Python/TypeScript sur mesure, sans no-code, pour automatiser facturation, devis, relances et reporting.",
   directAnswerFr:
-    "Axion-IA intervient à Colombes (Hauts-de-Seine, 91 053 hab.) pour les TPE et PME locales — artisans, commerces, cabinets, agences, petites industries — qui veulent automatiser leurs opérations avec du code custom (Python/TypeScript), sans no-code. Nos consultants se déplacent depuis Paris (environ 10 km, accessible via T1, T2, Transilien J et L) pour réaliser audits, interventions et implémentations sur site. Nos tarifs publics démarrent à {{price:intervention-4h|flat}} pour une intervention ; les ETI implantées localement (Oracle France, sites Snecma et Thales) peuvent aussi nous solliciter en complément.",
+    "Axion-IA intervient à Colombes (Hauts-de-Seine, 91 053 hab.) pour les PME et ETI locales — artisans, commerces, cabinets, agences, petites industries — qui veulent automatiser leurs opérations avec du code custom (Python/TypeScript), sans no-code. Nos consultants se déplacent depuis Paris (environ 10 km, accessible via T1, T2, Transilien J et L) pour réaliser audits, interventions et implémentations sur site. Nos tarifs publics démarrent à {{price:intervention-4h|flat}} pour une intervention ; les ETI implantées localement (Oracle France, sites Snecma et Thales) peuvent aussi nous solliciter en complément.",
   directAnswerEn:
-    "Axion-IA intervient à Colombes (Hauts-de-Seine, 91 053 hab.) pour les TPE et PME locales — artisans, commerces, cabinets, agences, petites industries — qui veulent automatiser leurs opérations avec du code custom (Python/TypeScript), sans no-code. Nos consultants se déplacent depuis Paris (environ 10 km, accessible via T1, T2, Transilien J et L) pour réaliser audits, interventions et implémentations sur site. Nos tarifs publics démarrent à {{price:intervention-4h|flat}} pour une intervention ; les ETI implantées localement (Oracle France, sites Snecma et Thales) peuvent aussi nous solliciter en complément.",
-  seoHook: "TPE & PME · IA opérationnelle code custom",
+    "Axion-IA intervient à Colombes (Hauts-de-Seine, 91 053 hab.) pour les PME et ETI locales — artisans, commerces, cabinets, agences, petites industries — qui veulent automatiser leurs opérations avec du code custom (Python/TypeScript), sans no-code. Nos consultants se déplacent depuis Paris (environ 10 km, accessible via T1, T2, Transilien J et L) pour réaliser audits, interventions et implémentations sur site. Nos tarifs publics démarrent à {{price:intervention-4h|flat}} pour une intervention ; les ETI implantées localement (Oracle France, sites Snecma et Thales) peuvent aussi nous solliciter en complément.",
+  seoHook: "PME & PME · IA opérationnelle code custom",
   ecosystemFr:
-    "Colombes mélange tissu résidentiel dense et zones d'activité : siège d'Oracle France depuis 2001, sites de production Snecma et Thales, héritage industriel (anciennes usines Kléber-Colombes, Gnome et Rhône, Guerlain). À côté de ces grands comptes, on trouve un maillage dense de TPE/PME — commerces du centre-ville, artisans du bâtiment, agences de communication, cabinets libéraux, ESN de petite taille — qui constituent le cœur de cible Axion-IA. La desserte par T1, T2, Transilien J et L facilite nos interventions sur site depuis Paris.",
+    "Colombes mélange tissu résidentiel dense et zones d'activité : siège d'Oracle France depuis 2001, sites de production Snecma et Thales, héritage industriel (anciennes usines Kléber-Colombes, Gnome et Rhône, Guerlain). À côté de ces grands comptes, on trouve un maillage dense de PME et ETI — commerces du centre-ville, artisans du bâtiment, agences de communication, cabinets libéraux, ESN de petite taille — qui constituent le cœur de cible Axion-IA. La desserte par T1, T2, Transilien J et L facilite nos interventions sur site depuis Paris.",
   ecosystemEn:
-    "Colombes mélange tissu résidentiel dense et zones d'activité : siège d'Oracle France depuis 2001, sites de production Snecma et Thales, héritage industriel (anciennes usines Kléber-Colombes, Gnome et Rhône, Guerlain). À côté de ces grands comptes, on trouve un maillage dense de TPE/PME — commerces du centre-ville, artisans du bâtiment, agences de communication, cabinets libéraux, ESN de petite taille — qui constituent le cœur de cible Axion-IA. La desserte par T1, T2, Transilien J et L facilite nos interventions sur site depuis Paris.",
+    "Colombes mélange tissu résidentiel dense et zones d'activité : siège d'Oracle France depuis 2001, sites de production Snecma et Thales, héritage industriel (anciennes usines Kléber-Colombes, Gnome et Rhône, Guerlain). À côté de ces grands comptes, on trouve un maillage dense de PME et ETI — commerces du centre-ville, artisans du bâtiment, agences de communication, cabinets libéraux, ESN de petite taille — qui constituent le cœur de cible Axion-IA. La desserte par T1, T2, Transilien J et L facilite nos interventions sur site depuis Paris.",
   distancesFr:
     "Colombes est à environ 10 km au nord-ouest du centre de Paris. Quatre gares Transilien desservent la ville : Colombes et Le Stade sur la ligne J, La Garenne-Colombes et Les Vallées sur la ligne L. Les tramways T1 et T2 complètent la desserte. L'aéroport Paris-Charles-de-Gaulle est à environ 30 km par l'A86 puis l'A1, l'aéroport d'Orly à environ 25 km via l'A86.",
   distancesEn:
@@ -32,8 +32,8 @@ export const COLOMBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place à Colombes pour TPE/PME locales : cartographie des tâches répétitives (facturation, devis, relances, reporting), évaluation des outils déjà en place (Sage, EBP, Excel, CRM) et roadmap d'automatisation 30/60/90 jours avec code custom plutôt que no-code.",
-      en: "Audit sur place à Colombes pour TPE/PME locales : cartographie des tâches répétitives (facturation, devis, relances, reporting), évaluation des outils déjà en place (Sage, EBP, Excel, CRM) et roadmap d'automatisation 30/60/90 jours avec code custom plutôt que no-code.",
+      fr: "Audit sur place à Colombes pour PME et ETI locales : cartographie des tâches répétitives (facturation, devis, relances, reporting), évaluation des outils déjà en place (Sage, EBP, Excel, CRM) et roadmap d'automatisation 30/60/90 jours avec code custom plutôt que no-code.",
+      en: "Audit sur place à Colombes pour PME et ETI locales : cartographie des tâches répétitives (facturation, devis, relances, reporting), évaluation des outils déjà en place (Sage, EBP, Excel, CRM) et roadmap d'automatisation 30/60/90 jours avec code custom plutôt que no-code.",
     },
     interventions: {
       fr: "Interventions sur site à Colombes pour automatiser des cas concrets : extraction et classement de PDF, enrichissement CRM, génération de devis depuis Excel, relances clients par email, exports comptables vers Sage ou EBP. Code Python/TypeScript versionné et documenté, livré à votre équipe.",
@@ -44,17 +44,17 @@ export const COLOMBES_COPY: VilleCopy = {
       en: "Implémentation à Colombes de briques IA durables : connecteurs entre vos outils existants (compta, CRM, messagerie), agents internes pour le support et la qualification, pipelines de reporting hebdo. Architecture pensée pour rester maintenable par votre équipe ou un prestataire tiers.",
     },
     unAUn: {
-      fr: "Sessions un-à-un à Colombes pour dirigeants de TPE/PME et responsables d'agences : passer en revue 3 à 5 cas d'usage IA concrets sur vos process réels, identifier les quick wins et les pièges, sans jargon ni démo générique.",
-      en: "Sessions un-à-un à Colombes pour dirigeants de TPE/PME et responsables d'agences : passer en revue 3 à 5 cas d'usage IA concrets sur vos process réels, identifier les quick wins et les pièges, sans jargon ni démo générique.",
+      fr: "Sessions un-à-un à Colombes pour dirigeants de PME et ETI et responsables d'agences : passer en revue 3 à 5 cas d'usage IA concrets sur vos process réels, identifier les quick wins et les pièges, sans jargon ni démo générique.",
+      en: "Sessions un-à-un à Colombes pour dirigeants de PME et ETI et responsables d'agences : passer en revue 3 à 5 cas d'usage IA concrets sur vos process réels, identifier les quick wins et les pièges, sans jargon ni démo générique.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Colombes, Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique singulier : les sièges et établissements tertiaires adossés à La Défense — Arkema et UCB Pharma rue d'Estienne d'Orves, Shell dans l'immeuble Les Portes de la Défense, Oracle, Tetra Pak, PepsiCo, Biogaran, Snef, fédérés par le Club Colombes Expansion — et le maillage dense de PME et TPE (94 % de moins de 10 salariés) des parcs Kléber, Equilibre et du parc technologique des Fossés-Jean. Nous construisons des plateformes IA-native sur mesure : portails clients, e-commerce multi-CMS, espaces SaaS métier avec chatbot RAG et recherche sémantique — code custom, UX/UI et mobile, hébergement Union européenne conforme RGPD, sans verrou éditeur.",
+        hero: "À Colombes, Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique singulier : les sièges et établissements tertiaires adossés à La Défense — Arkema et UCB Pharma rue d'Estienne d'Orves, Shell dans l'immeuble Les Portes de la Défense, Oracle, Tetra Pak, PepsiCo, Biogaran, Snef, fédérés par le Club Colombes Expansion — et le maillage dense de PME et ETI (94 % de moins de 10 salariés) des parcs Kléber, Equilibre et du parc technologique des Fossés-Jean. Nous construisons des plateformes IA-native sur mesure : portails clients, e-commerce multi-CMS, espaces SaaS métier avec chatbot RAG et recherche sémantique — code custom, UX/UI et mobile, hébergement Union européenne conforme RGPD, sans verrou éditeur.",
         whyHere: [
           "Colombes concentre des établissements de grands groupes attirés par la proximité immédiate de La Défense : chimie de spécialité (Arkema, historiquement au 420 rue d'Estienne d'Orves), biopharma immunologie/neurologie (UCB Pharma), énergie (Shell, Engie voisin à La Garenne-Colombes) et agroalimentaire (PepsiCo, Tetra Pak) — autant de directions métier qui ont besoin de portails et d'outils SaaS internes solides.",
-          "Le tissu réel de Colombes, ce sont surtout des PME et TPE : 94 % des entreprises ont moins de 10 salariés, réparties dans le secteur Charles-de-Gaulle au sud (Portes de la Défense, Perspective Défense, West Plaza) et au nord dans le parc Kléber, le programme Equilibre, le parc technologique des Fossés-Jean et la ZI de la Prairie. Nous concevons pour elles des sites et e-commerce qui n'exigent pas une DSI interne.",
+          "Le tissu réel de Colombes, ce sont surtout des PME et ETI : 94 % des entreprises ont moins de 10 salariés, réparties dans le secteur Charles-de-Gaulle au sud (Portes de la Défense, Perspective Défense, West Plaza) et au nord dans le parc Kléber, le programme Equilibre, le parc technologique des Fossés-Jean et la ZI de la Prairie. Nous concevons pour elles des sites et e-commerce qui n'exigent pas une DSI interne.",
           "Le pôle pharmaceutique et santé colombien (UCB Pharma, génériques Biogaran) impose des contraintes de conformité et de souveraineté des données : nous traitons ces sujets dès l'architecture — hébergement UE, journalisation, minimisation — au lieu de les ajouter après coup.",
           "Colombes est un site olympique vivant : le stade Yves-du-Manoir, théâtre des Jeux de 1924 et du hockey sur gazon de Paris 2024, accueille désormais le centre national de la Fédération Française de Hockey. Clubs, fédérations et acteurs événementiels du nord des Hauts-de-Seine ont des besoins concrets de billetterie, d'inscriptions et d'espaces membres que nous savons outiller.",
         ],
@@ -87,12 +87,6 @@ export const COLOMBES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les commerces, artisans, cabinets et indépendants de Colombes (centre-ville, abords du stade Yves-du-Manoir) : site vitrine ou boutique e-commerce sur CMS, responsive mobile, formulaire et premières automatisations IA légères.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme web sur mesure",
             detail:
@@ -114,7 +108,7 @@ export const COLOMBES_COPY: VilleCopy = {
         faq: [
           {
             q: "Pour quels types d'entreprises de Colombes concevez-vous des sites et plateformes SaaS ?",
-            a: "Pour tout le spectre : les TPE et commerces du centre-ville et des abords du stade Yves-du-Manoir, les PME des parcs Kléber, Equilibre et du parc technologique des Fossés-Jean, et les directions métier des établissements tertiaires du secteur Charles-de-Gaulle / Portes de la Défense (Arkema, UCB Pharma, Shell, Oracle, Tetra Pak, PepsiCo, Biogaran). Nous regardons surtout la nature du besoin — vitrine, e-commerce, espace client ou SaaS métier — pas la taille.",
+            a: "Pour tout le spectre : les PME et commerces du centre-ville et des abords du stade Yves-du-Manoir, les PME des parcs Kléber, Equilibre et du parc technologique des Fossés-Jean, et les directions métier des établissements tertiaires du secteur Charles-de-Gaulle / Portes de la Défense (Arkema, UCB Pharma, Shell, Oracle, Tetra Pak, PepsiCo, Biogaran). Nous regardons surtout la nature du besoin — vitrine, e-commerce, espace client ou SaaS métier — pas la taille.",
           },
           {
             q: "Gérez-vous les contraintes de conformité des acteurs pharma et santé de Colombes ?",
@@ -172,12 +166,6 @@ export const COLOMBES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For Colombes shops, craftspeople, firms and freelancers (town centre, around the Yves-du-Manoir stadium): showcase site or e-commerce store on a CMS, mobile-responsive, contact form and first lightweight AI automations.",
-          },
           {
             sizeLabel: "PME",
             price: "Bespoke web platform",
@@ -240,7 +228,7 @@ export const COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs de Colombes accompagnez-vous le plus ?",
-      a: "Principalement les TPE et PME des services aux entreprises (agences, cabinets, ESN), du commerce, du bâtiment et de la santé libérale, plus quelques ETI industrielles héritières du tissu local (Oracle France, sites Snecma et Thales). Nous ne ciblons pas un secteur en particulier : nous regardons surtout le caractère répétitif et structuré des tâches à automatiser.",
+      a: "Principalement les PME et ETI des services aux entreprises (agences, cabinets, ESN), du commerce, du bâtiment et de la santé libérale, plus quelques ETI industrielles héritières du tissu local (Oracle France, sites Snecma et Thales). Nous ne ciblons pas un secteur en particulier : nous regardons surtout le caractère répétitif et structuré des tâches à automatiser.",
     },
     {
       q: "Comment Axion-IA gère-t-il le RGPD pour une mission à Colombes ?",

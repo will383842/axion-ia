@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
   pitchFr:
-    "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de TPE/PME : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de PME et ETI : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de TPE/PME : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de PME et ETI : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons PME et ETI de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons PME et ETI de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit sur place sur mesure.",
   ecosystemFr:
     "Lacroix-Saint-Ouen est une commune résidentielle en lisière sud de la forêt de Compiègne, dans l'agglomération compiégnoise. Son économie associe artisanat BTP, services aux entreprises, commerces de proximité et activités liées à la forêt (filière bois, tourisme vert, randonnée). Le bassin d'emploi s'articule avec Compiègne, Margny-lès-Compiègne et Choisy-au-Bac, et bénéficie de la proximité de l'UTC et du pôle de compétitivité.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux TPE/PME artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux TPE/PME artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux PME et ETI artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux PME et ETI artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lacroix-Saint-Ouen : formats adaptés au chantier BTP, au bureau services, au commerce ou à l'atelier bois. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
       en: "Implémentation IA à Lacroix-Saint-Ouen : automatisation devis et planification chantiers BTP, CRM et facturation PME services, gestion stocks commerce, optimisation découpe bois et réservation tourisme vert.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lacroix-Saint-Ouen : sessions dans votre bureau, chantier, atelier ou en visio. Dirigeants TPE/PME de l'agglomération compiégnoise souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Lacroix-Saint-Ouen : sessions dans votre bureau, chantier, atelier ou en visio. Dirigeants TPE/PME de l'agglomération compiégnoise souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Lacroix-Saint-Ouen : sessions dans votre bureau, chantier, atelier ou en visio. Dirigeants PME et ETI de l'agglomération compiégnoise souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Lacroix-Saint-Ouen : sessions dans votre bureau, chantier, atelier ou en visio. Dirigeants PME et ETI de l'agglomération compiégnoise souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lacroix-Saint-Ouen  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME lacroisiennes : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI lacroisiennes : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et la filière bois ?",
-      a: "Oui, nous accompagnons les TPE/PME artisanat BTP et filière bois de l'agglomération compiégnoise : automatisation devis, planification chantiers, optimisation découpe, gestion stocks matériaux, comptabilité OCR et suivi clientèle.",
+      a: "Oui, nous accompagnons les PME et ETI artisanat BTP et filière bois de l'agglomération compiégnoise : automatisation devis, planification chantiers, optimisation découpe, gestion stocks matériaux, comptabilité OCR et suivi clientèle.",
     },
     {
       q: "L'IA peut-elle aider les activités de tourisme vert et loisirs ?",

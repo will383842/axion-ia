@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ALES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Alès, ancien bassin minier devenu pôle industriel et porte des Cévennes. Industrie, sous-traitance, BTP, commerce et tourisme vert : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Alès auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Alès auprès des TPE et PME en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Alès auprès des PME et ETI en priorité, des PME ensuite. Nous ciblons l'industrie et la sous-traitance issues de la reconversion du bassin minier, le BTP, le commerce et le tourisme cévenol. Audit sur place sur mesure avec ROI chiffré, puis interventions sur site, vos équipes restant autonomes.",
   seoHook: "industrie & Cévennes",
   ecosystemFr:
     "Alès, ancien coeur du bassin houiller cévenol, s'est reconvertie en pôle industriel et technologique appuyé par l'École des Mines d'Alès (IMT Mines Alès) et le parc scientifique de l'Arche. Le tissu mêle PME industrielles et de sous-traitance, BTP, mécanique, plasturgie, commerce et tourisme vert au pied des Cévennes, avec un fort besoin de modernisation des process.",
@@ -42,8 +42,8 @@ export const ALES_COPY: VilleCopy = {
       en: "Implémentation IA à Alès : maintenance prédictive, contrôle qualité visuel, optimisation de production et de planning, chiffrage automatisé de devis et agents conversationnels B2B pour les PME industrielles.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Alès pour dirigeants de TPE et PME industrielles, BTP ou commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
-      en: "Coaching 1-to-1 à Alès pour dirigeants de TPE et PME industrielles, BTP ou commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      fr: "Coaching 1-to-1 à Alès pour dirigeants de PME et d'ETI industrielles, BTP ou commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Alès pour dirigeants de PME et d'ETI industrielles, BTP ou commerce : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA sans dépendre d'un prestataire.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Alès : portails B2B, configurateurs et outils IA sur mesure pour l'industrie, la sous-traitance et le tourisme vert cévenol.",
@@ -88,12 +88,6 @@ export const ALES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour les indépendants, artisans, producteurs cévenols et commerces du centre-ville d'Alès : site vitrine ou boutique en ligne avec assistant IA de réponse aux clients et descriptifs produits générés. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail B2B & configurateur IA",
@@ -175,12 +169,6 @@ export const ALES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or augmented e-commerce",
-            detail:
-              "For freelancers, craftspeople, Cévennes producers and Alès town-centre shops: showcase site or online store with an AI customer-response assistant and generated product descriptions. Quote from 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "PME",
             price: "B2B portal & AI configurator",
             detail:
@@ -230,7 +218,7 @@ export const ALES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA accompagne-t-il les PME industrielles d'Alès ?",
-      a: "Oui, l'industrie et la sous-traitance issues de la reconversion du bassin minier sont au coeur de notre cible alésienne, ainsi que le BTP et le commerce. Nous travaillons en priorité avec les TPE et PME, l'accompagnement des ETI restant marginal.",
+      a: "Oui, l'industrie et la sous-traitance issues de la reconversion du bassin minier sont au coeur de notre cible alésienne, ainsi que le BTP et le commerce. Nous travaillons en priorité avec les PME et ETI, les grands groupes venant en complément.",
     },
     {
       q: "Quels gains IA pour un sous-traitant ou industriel alésien ?",

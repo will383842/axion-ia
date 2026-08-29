@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const PORDIC_COPY: VilleCopy = {
   pitchFr:
-    "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y travaille avec les organisations du territoire.",
+    "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. PME du BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y travaille avec les organisations du territoire.",
+    "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. PME du BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pordic (22). Nous accompagnons PME et ETI : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pordic (22). Nous accompagnons PME et ETI : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce bourg",
   ecosystemFr:
-    "Pordic est une commune littorale résidentielle de l'agglomération de Saint-Brieuc, entre Binic-Étables-sur-Mer et Saint-Brieuc. Tissu TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, hébergements touristiques et activités nautiques.",
+    "Pordic est une commune littorale résidentielle de l'agglomération de Saint-Brieuc, entre Binic-Étables-sur-Mer et Saint-Brieuc. Tissu PME du BTP et services, PME tertiaires, commerces de bourg, professions libérales, hébergements touristiques et activités nautiques.",
   ecosystemEn:
-    "Pordic est une commune littorale résidentielle de l'agglomération de Saint-Brieuc, entre Binic-Étables-sur-Mer et Saint-Brieuc. Tissu TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, hébergements touristiques et activités nautiques.",
+    "Pordic est une commune littorale résidentielle de l'agglomération de Saint-Brieuc, entre Binic-Étables-sur-Mer et Saint-Brieuc. Tissu PME du BTP et services, PME tertiaires, commerces de bourg, professions libérales, hébergements touristiques et activités nautiques.",
   distancesFr:
     "Saint-Brieuc centre à 10 min. Gare de Saint-Brieuc à 15 min (TGV Paris 2h45). Binic-Étables-sur-Mer à 10 min. Aéroport Saint-Brieuc-Armor à 25 min. Rennes à 1h10.",
   distancesEn:
     "Saint-Brieuc centre à 10 min. Gare de Saint-Brieuc à 15 min (TGV Paris 2h45). Binic-Étables-sur-Mer à 10 min. Aéroport Saint-Brieuc-Armor à 25 min. Rennes à 1h10.",
   topSectorsNaf: [
-    "TPE artisanat BTP et services",
+    "PME du BTP et services",
     "PME tertiaires",
     "Commerce de bourg",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const PORDIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pordic : diagnostic adapté aux PME du BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pordic : diagnostic adapté aux PME du BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pordic : formats adaptés chantier BTP, bureau, commerce, hébergement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const PORDIC_COPY: VilleCopy = {
       en: "Implémentation IA à Pordic : automatisation devis BTP, CRM augmenté commerces, prise de rendez-vous IA professions libérales, gestion réservations tourisme, agents conversationnels PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pordic : sessions dans votre bureau, commerce, hébergement ou en visio. Dirigeants TPE/PME pordicais, artisans BTP, commerçants, professions libérales, hébergeurs.",
-      en: "Coaching 1-to-1 à Pordic : sessions dans votre bureau, commerce, hébergement ou en visio. Dirigeants TPE/PME pordicais, artisans BTP, commerçants, professions libérales, hébergeurs.",
+      fr: "Coaching 1-to-1 à Pordic : sessions dans votre bureau, commerce, hébergement ou en visio. Dirigeants PME et ETI pordicais, artisans BTP, commerçants, professions libérales, hébergeurs.",
+      en: "Coaching 1-to-1 à Pordic : sessions dans votre bureau, commerce, hébergement ou en visio. Dirigeants PME et ETI pordicais, artisans BTP, commerçants, professions libérales, hébergeurs.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const PORDIC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pordic et tout le littoral briochin (Binic-Étables-sur-Mer, Plérin, Saint-Brieuc). Nos consultants se déplacent en 2h45 depuis Paris (TGV Saint-Brieuc) puis 15 min.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans BTP de Pordic ?",
+      q: "Travaillez-vous avec les PME du BTP de Pordic ?",
       a: "Oui, audit sur place {{price:audit-flash|flat}}, automatisation devis et métrés, gestion planning IA, suivi chantiers augmenté, facturation intelligente pour artisans et entreprises BTP.",
     },
     {

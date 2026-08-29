@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MAGNY_LES_HAMEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Magny-les-Hameaux (78), commune résidentielle au cœur de la vallée de Chevreuse dans les Yvelines, à 27 km au sud-ouest de Paris. Tissu de TPE artisans, PME tertiaires, professions libérales, consultants indépendants et commerces de proximité adossés au parc naturel régional. Axion-IA répond aux besoins des activités professionnelles présentes du plateau de Saclay et de la haute vallée de Chevreuse.",
+    "Magny-les-Hameaux (78), commune résidentielle au cœur de la vallée de Chevreuse dans les Yvelines, à 27 km au sud-ouest de Paris. Tissu de PME artisanales, PME tertiaires, professions libérales, consultants indépendants et commerces de proximité adossés au parc naturel régional. Axion-IA répond aux besoins des activités professionnelles présentes du plateau de Saclay et de la haute vallée de Chevreuse.",
   pitchEn:
-    "Magny-les-Hameaux (78), commune résidentielle au cœur de la vallée de Chevreuse dans les Yvelines, à 27 km au sud-ouest de Paris. Tissu de TPE artisans, PME tertiaires, professions libérales, consultants indépendants et commerces de proximité adossés au parc naturel régional. Axion-IA répond aux besoins des activités professionnelles présentes du plateau de Saclay et de la haute vallée de Chevreuse.",
+    "Magny-les-Hameaux (78), commune résidentielle au cœur de la vallée de Chevreuse dans les Yvelines, à 27 km au sud-ouest de Paris. Tissu de PME artisanales, PME tertiaires, professions libérales, consultants indépendants et commerces de proximité adossés au parc naturel régional. Axion-IA répond aux besoins des activités professionnelles présentes du plateau de Saclay et de la haute vallée de Chevreuse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magny-les-Hameaux (78). Nous accompagnons TPE et PME : consultants, professions libérales, PME tertiaires, artisans et commerces de cette commune résidentielle de la vallée de Chevreuse, proche du plateau de Saclay. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magny-les-Hameaux (78). Nous accompagnons PME et ETI : consultants, professions libérales, PME tertiaires, artisans et commerces de cette commune résidentielle de la vallée de Chevreuse, proche du plateau de Saclay. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magny-les-Hameaux (78). Nous accompagnons TPE et PME : consultants, professions libérales, PME tertiaires, artisans et commerces de cette commune résidentielle de la vallée de Chevreuse, proche du plateau de Saclay. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magny-les-Hameaux (78). Nous accompagnons PME et ETI : consultants, professions libérales, PME tertiaires, artisans et commerces de cette commune résidentielle de la vallée de Chevreuse, proche du plateau de Saclay. Audit sur place sur mesure.",
   seoHook: "conseil services & professions libérales",
   ecosystemFr:
-    "Magny-les-Hameaux est une commune résidentielle verdoyante de la haute vallée de Chevreuse, dans le parc naturel régional. Présence du site historique de Port-Royal-des-Champs. Tissu économique : TPE artisans, PME tertiaires et consultants, professions libérales, commerces de proximité. Proximité du plateau de Saclay (pôle scientifique Paris-Saclay). Communes voisines : Saint-Rémy-lès-Chevreuse, Voisins-le-Bretonneux, Châteaufort, Chevreuse.",
+    "Magny-les-Hameaux est une commune résidentielle verdoyante de la haute vallée de Chevreuse, dans le parc naturel régional. Présence du site historique de Port-Royal-des-Champs. Tissu économique : PME artisanales, PME tertiaires et consultants, professions libérales, commerces de proximité. Proximité du plateau de Saclay (pôle scientifique Paris-Saclay). Communes voisines : Saint-Rémy-lès-Chevreuse, Voisins-le-Bretonneux, Châteaufort, Chevreuse.",
   ecosystemEn:
-    "Magny-les-Hameaux est une commune résidentielle verdoyante de la haute vallée de Chevreuse, dans le parc naturel régional. Présence du site historique de Port-Royal-des-Champs. Tissu économique : TPE artisans, PME tertiaires et consultants, professions libérales, commerces de proximité. Proximité du plateau de Saclay (pôle scientifique Paris-Saclay). Communes voisines : Saint-Rémy-lès-Chevreuse, Voisins-le-Bretonneux, Châteaufort, Chevreuse.",
+    "Magny-les-Hameaux est une commune résidentielle verdoyante de la haute vallée de Chevreuse, dans le parc naturel régional. Présence du site historique de Port-Royal-des-Champs. Tissu économique : PME artisanales, PME tertiaires et consultants, professions libérales, commerces de proximité. Proximité du plateau de Saclay (pôle scientifique Paris-Saclay). Communes voisines : Saint-Rémy-lès-Chevreuse, Voisins-le-Bretonneux, Châteaufort, Chevreuse.",
   distancesFr:
     "Saint-Rémy-lès-Chevreuse à 5 min (terminus RER B, 45 min Paris). Versailles à 20 min, plateau de Saclay à 15 min. A12/N10 à proximité. Aéroport Paris-Orly à 30 min, Roissy-CDG à 55 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const MAGNY_LES_HAMEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Magny-les-Hameaux : diagnostic adapté aux consultants, PME tertiaires, professions libérales et TPE artisans de la vallée de Chevreuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Magny-les-Hameaux : diagnostic adapté aux consultants, PME tertiaires, professions libérales et TPE artisans de la vallée de Chevreuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Magny-les-Hameaux : diagnostic adapté aux consultants, PME tertiaires, professions libérales et PME artisanales de la vallée de Chevreuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Magny-les-Hameaux : diagnostic adapté aux consultants, PME tertiaires, professions libérales et PME artisanales de la vallée de Chevreuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Magny-les-Hameaux : formats adaptés au cabinet, au bureau ou en visio. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Magny-les-Hameaux : formats adaptés au cabinet, au bureau ou en visio. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Magny-les-Hameaux : automatisation gestion clients, agents conversationnels, reporting augmenté, CRM intelligent. Solutions sur mesure pour TPE, PME et consultants.",
-      en: "Implémentation IA à Magny-les-Hameaux : automatisation gestion clients, agents conversationnels, reporting augmenté, CRM intelligent. Solutions sur mesure pour TPE, PME et consultants.",
+      fr: "Implémentation IA à Magny-les-Hameaux : automatisation gestion clients, agents conversationnels, reporting augmenté, CRM intelligent. Solutions sur mesure pour PME, ETI et consultants.",
+      en: "Implémentation IA à Magny-les-Hameaux : automatisation gestion clients, agents conversationnels, reporting augmenté, CRM intelligent. Solutions sur mesure pour PME, ETI et consultants.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Magny-les-Hameaux : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et consultants indépendants de la vallée de Chevreuse.",
-      en: "Coaching 1-to-1 à Magny-les-Hameaux : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et consultants indépendants de la vallée de Chevreuse.",
+      fr: "Coaching 1-to-1 à Magny-les-Hameaux : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et consultants indépendants de la vallée de Chevreuse.",
+      en: "Coaching 1-to-1 à Magny-les-Hameaux : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et consultants indépendants de la vallée de Chevreuse.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const MAGNY_LES_HAMEAUX_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les consultants et professions libérales de Magny-les-Hameaux sur leurs cas IA : automatisation administrative, rédaction assistée, gestion clients, veille sectorielle, reporting augmenté.",
     },
     {
-      q: "Proposez-vous des formations IA pour les TPE à Magny-les-Hameaux ?",
-      a: "Oui, nos interventions IA sur site à Magny-les-Hameaux sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée, vos équipes repartent autonomes sur les outils IA configurés métier.",
+      q: "Proposez-vous des formations IA pour les PME à Magny-les-Hameaux ?",
+      a: "Oui, nos interventions IA sur site à Magny-les-Hameaux sont adaptées aux PME de l'artisanat et du commerce. Formats demi-journée ou journée, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
       q: "Comment se déroule une mission IA à Magny-les-Hameaux ?",

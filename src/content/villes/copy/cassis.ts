@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CASSIS_COPY: VilleCopy = {
   pitchFr:
-    "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de TPE viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de PME viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de TPE viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de PME viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cassis (13). Nous accompagnons PME viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cassis (13). Nous accompagnons PME viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit sur place sur mesure.",
   seoHook: "viticulture cassis & tourisme haut",
   ecosystemFr:
-    "Cassis est une station balnéaire prestigieuse aux portes du Parc national des Calanques. Viticulture AOC Cassis (l'une des plus anciennes AOC de France, vin blanc renommé), tourisme haut de gamme, restauration gastronomique, nautisme et plongée. Économie saisonnière forte avec un tissu de TPE/PME tourisme et artisanat.",
+    "Cassis est une station balnéaire prestigieuse aux portes du Parc national des Calanques. Viticulture AOC Cassis (l'une des plus anciennes AOC de France, vin blanc renommé), tourisme haut de gamme, restauration gastronomique, nautisme et plongée. Économie saisonnière forte avec un tissu de PME et ETI tourisme et artisanat.",
   ecosystemEn:
-    "Cassis est une station balnéaire prestigieuse aux portes du Parc national des Calanques. Viticulture AOC Cassis (l'une des plus anciennes AOC de France, vin blanc renommé), tourisme haut de gamme, restauration gastronomique, nautisme et plongée. Économie saisonnière forte avec un tissu de TPE/PME tourisme et artisanat.",
+    "Cassis est une station balnéaire prestigieuse aux portes du Parc national des Calanques. Viticulture AOC Cassis (l'une des plus anciennes AOC de France, vin blanc renommé), tourisme haut de gamme, restauration gastronomique, nautisme et plongée. Économie saisonnière forte avec un tissu de PME et ETI tourisme et artisanat.",
   distancesFr:
     "Marseille centre à 25 min par A50. Aubagne à 15 min. La Ciotat à 10 min. Gare TGV Aix-en-Provence à 50 min. Aéroport Marseille-Provence à 45 min. Port de plaisance local et navettes maritimes vers Marseille.",
   distancesEn:
@@ -42,8 +42,8 @@ export const CASSIS_COPY: VilleCopy = {
       en: "Implémentation IA à Cassis : gestion parcellaire viticole, yield management hôtelier, agents conversationnels réservation multilingues, marketing IA tourisme premium. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cassis : sessions pour vignerons AOC, restaurateurs, hôteliers et gérants TPE/PME du tourisme cassidain souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Cassis : sessions pour vignerons AOC, restaurateurs, hôteliers et gérants TPE/PME du tourisme cassidain souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Cassis : sessions pour vignerons AOC, restaurateurs, hôteliers et gérants PME et ETI du tourisme cassidain souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Cassis : sessions pour vignerons AOC, restaurateurs, hôteliers et gérants PME et ETI du tourisme cassidain souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [

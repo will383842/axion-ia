@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const TOURNUS_COPY: VilleCopy = {
   pitchFr:
-    "Tournus (71), cité romane en bord de Saône, est un pôle gastronomique et touristique de la Saône-et-Loire. Tissu de TPE/PME restauration, hôtellerie, viticulture, commerce de proximité et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
+    "Tournus (71), cité romane en bord de Saône, est un pôle gastronomique et touristique de la Saône-et-Loire. Tissu de PME et ETI restauration, hôtellerie, viticulture, commerce de proximité et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Tournus (71), cité romane en bord de Saône, est un pôle gastronomique et touristique de la Saône-et-Loire. Tissu de TPE/PME restauration, hôtellerie, viticulture, commerce de proximité et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
+    "Tournus (71), cité romane en bord de Saône, est un pôle gastronomique et touristique de la Saône-et-Loire. Tissu de PME et ETI restauration, hôtellerie, viticulture, commerce de proximité et artisanat. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournus (71). Nous accompagnons TPE et PME : restaurateurs, hôteliers, viticulteurs, commerçants de centre-ville et artisans du bord de Saône en Saône-et-Loire. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournus (71). Nous accompagnons PME et ETI : restaurateurs, hôteliers, viticulteurs, commerçants de centre-ville et artisans du bord de Saône en Saône-et-Loire. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournus (71). Nous accompagnons TPE et PME : restaurateurs, hôteliers, viticulteurs, commerçants de centre-ville et artisans du bord de Saône en Saône-et-Loire. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Saône-et-Loire",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tournus (71). Nous accompagnons PME et ETI : restaurateurs, hôteliers, viticulteurs, commerçants de centre-ville et artisans du bord de Saône en Saône-et-Loire. Audit sur place sur mesure.",
+  seoHook: "PME & PME Saône-et-Loire",
   ecosystemFr:
     "Tournus est une cité romane en bord de Saône, célèbre pour son abbaye Saint-Philibert, joyau de l'art roman. La ville est un pôle gastronomique reconnu (restaurants étoilés, producteurs locaux). L'économie repose sur la restauration, l'hôtellerie, la viticulture bourguignonne, le commerce de centre-ville et les services. Proximité de Chalon-sur-Saône (30 min) et Mâcon (25 min).",
   ecosystemEn:
@@ -42,8 +42,8 @@ export const TOURNUS_COPY: VilleCopy = {
       en: "Implémentation IA à Tournus : prévision réservations restauration et hôtellerie, gestion stocks viticoles, agents conversationnels accueil touristique, optimisation planning saisonnier.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tournus : sessions dans votre restaurant, hôtel, domaine viticole ou en visio. Dirigeants TPE/PME restauration, hôtellerie et commerce du bord de Saône souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Tournus : sessions dans votre restaurant, hôtel, domaine viticole ou en visio. Dirigeants TPE/PME restauration, hôtellerie et commerce du bord de Saône souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Tournus : sessions dans votre restaurant, hôtel, domaine viticole ou en visio. Dirigeants PME et ETI restauration, hôtellerie et commerce du bord de Saône souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Tournus : sessions dans votre restaurant, hôtel, domaine viticole ou en visio. Dirigeants PME et ETI restauration, hôtellerie et commerce du bord de Saône souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const TOURNUS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Tournus  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Tournus, il identifie les cas d'usage IA à fort ROI pour votre restaurant, hôtel, domaine ou commerce.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Tournus, il identifie les cas d'usage IA à fort ROI pour votre restaurant, hôtel, domaine ou commerce.",
     },
     {
       q: "Accompagnez-vous les restaurateurs et hôteliers de Tournus ?",

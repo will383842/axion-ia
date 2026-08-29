@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   pitchFr:
-    "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA collabore avec toutes les structures locales.",
+    "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA collabore avec toutes les structures locales.",
+    "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champagne-sur-Oise (95). Nous accompagnons PME et ETI : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Champagne-sur-Oise (95). Nous accompagnons PME et ETI : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Champagne-sur-Oise est une commune résidentielle du nord du Val-d'Oise, en bord d'Oise à proximité immédiate de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
+    "Champagne-sur-Oise est une commune résidentielle du nord du Val-d'Oise, en bord d'Oise à proximité immédiate de L'Isle-Adam. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
   ecosystemEn:
-    "Champagne-sur-Oise est une commune résidentielle du nord du Val-d'Oise, en bord d'Oise à proximité immédiate de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
+    "Champagne-sur-Oise est une commune résidentielle du nord du Val-d'Oise, en bord d'Oise à proximité immédiate de L'Isle-Adam. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
   distancesFr:
     "L'Isle-Adam à 3 min. Persan-Beaumont à 5 min. Gare Transilien H Champagne-sur-Oise. Cergy-Pontoise à 25 min. Paris Gare du Nord à 45 min. Aéroport Paris-CDG à 35 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
       en: "Implémentation IA à Champagne-sur-Oise : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, planification chantier BTP, facturation intelligente PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Champagne-sur-Oise : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME champenois, professions libérales, artisans BTP.",
-      en: "Coaching 1-to-1 à Champagne-sur-Oise : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME champenois, professions libérales, artisans BTP.",
+      fr: "Coaching 1-to-1 à Champagne-sur-Oise : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI champenois, professions libérales, artisans BTP.",
+      en: "Coaching 1-to-1 à Champagne-sur-Oise : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI champenois, professions libérales, artisans BTP.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
       a: "Oui, automatisation gestion cabinet, secrétariat IA, CRM patients/clients, facturation automatisée, outils de pilotage activité.",
     },
     {
-      q: "Quels services pour les TPE et prestataires BTP ?",
+      q: "Quels services pour les PME et prestataires BTP ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {

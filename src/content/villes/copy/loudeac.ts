@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LOUDEAC_COPY: VilleCopy = {
   pitchFr:
-    "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de TPE et PME agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y mène ses missions auprès des organisations locales du pays de Loudéac.",
+    "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de PME et ETI agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y mène ses missions auprès des organisations locales du pays de Loudéac.",
   pitchEn:
-    "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de TPE et PME agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y mène ses missions auprès des organisations locales du pays de Loudéac.",
+    "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de PME et ETI agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y mène ses missions auprès des organisations locales du pays de Loudéac.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loudéac (22). Nous accompagnons PME et ETI : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Loudéac (22). Nous accompagnons PME et ETI : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & agriculture filières",
   ecosystemFr:
-    "Loudéac est la ville-centre du Centre Bretagne, pôle agroalimentaire majeur des Côtes-d'Armor spécialisé dans les filières porcine et avicole. Hippodrome de Loudéac réputé, marché agricole historique. Tissu économique : PME agroalimentaires, TPE artisans, exploitants agricoles, commerces de centre-bourg, professions libérales. Communes voisines : La Motte, Hémonstoir, Saint-Barnabé, Trévé, Grâce-Uzel.",
+    "Loudéac est la ville-centre du Centre Bretagne, pôle agroalimentaire majeur des Côtes-d'Armor spécialisé dans les filières porcine et avicole. Hippodrome de Loudéac réputé, marché agricole historique. Tissu économique : PME agroalimentaires, PME artisanales, exploitants agricoles, commerces de centre-bourg, professions libérales. Communes voisines : La Motte, Hémonstoir, Saint-Barnabé, Trévé, Grâce-Uzel.",
   ecosystemEn:
-    "Loudéac est la ville-centre du Centre Bretagne, pôle agroalimentaire majeur des Côtes-d'Armor spécialisé dans les filières porcine et avicole. Hippodrome de Loudéac réputé, marché agricole historique. Tissu économique : PME agroalimentaires, TPE artisans, exploitants agricoles, commerces de centre-bourg, professions libérales. Communes voisines : La Motte, Hémonstoir, Saint-Barnabé, Trévé, Grâce-Uzel.",
+    "Loudéac est la ville-centre du Centre Bretagne, pôle agroalimentaire majeur des Côtes-d'Armor spécialisé dans les filières porcine et avicole. Hippodrome de Loudéac réputé, marché agricole historique. Tissu économique : PME agroalimentaires, PME artisanales, exploitants agricoles, commerces de centre-bourg, professions libérales. Communes voisines : La Motte, Hémonstoir, Saint-Barnabé, Trévé, Grâce-Uzel.",
   distancesFr:
     "Saint-Brieuc à 40 min, Pontivy à 25 min, Rennes à 1 h 10, Vannes à 1 h. Accès RN164 axe Rennes — Châteaulin. Gare SNCF de Loudéac (TER Saint-Brieuc — Pontivy). Aéroport Rennes-Bretagne à 1 h 15.",
   distancesEn:
@@ -30,20 +30,20 @@ export const LOUDEAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loudéac : diagnostic adapté aux PME agroalimentaires, TPE artisans, exploitants agricoles et professions libérales du Centre Bretagne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Loudéac : diagnostic adapté aux PME agroalimentaires, TPE artisans, exploitants agricoles et professions libérales du Centre Bretagne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Loudéac : diagnostic adapté aux PME agroalimentaires, PME artisanales, exploitants agricoles et professions libérales du Centre Bretagne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Loudéac : diagnostic adapté aux PME agroalimentaires, PME artisanales, exploitants agricoles et professions libérales du Centre Bretagne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loudéac : formats adaptés à l'usine agroalimentaire, à l'exploitation agricole, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Loudéac : formats adaptés à l'usine agroalimentaire, à l'exploitation agricole, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Loudéac : automatisation traçabilité filière animale, gestion production, agents conversationnels, CRM augmenté. Solutions sur mesure pour TPE et PME du pays de Loudéac.",
-      en: "Implémentation IA à Loudéac : automatisation traçabilité filière animale, gestion production, agents conversationnels, CRM augmenté. Solutions sur mesure pour TPE et PME du pays de Loudéac.",
+      fr: "Implémentation IA à Loudéac : automatisation traçabilité filière animale, gestion production, agents conversationnels, CRM augmenté. Solutions sur mesure pour PME et ETI du pays de Loudéac.",
+      en: "Implémentation IA à Loudéac : automatisation traçabilité filière animale, gestion production, agents conversationnels, CRM augmenté. Solutions sur mesure pour PME et ETI du pays de Loudéac.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Loudéac : sessions dans vos locaux ou en visio. Dirigeants TPE, responsables production agroalimentaire, exploitants agricoles et professions libérales du Centre Bretagne.",
-      en: "Coaching 1-to-1 à Loudéac : sessions dans vos locaux ou en visio. Dirigeants TPE, responsables production agroalimentaire, exploitants agricoles et professions libérales du Centre Bretagne.",
+      fr: "Coaching 1-to-1 à Loudéac : sessions dans vos locaux ou en visio. Dirigeants PME, responsables production agroalimentaire, exploitants agricoles et professions libérales du Centre Bretagne.",
+      en: "Coaching 1-to-1 à Loudéac : sessions dans vos locaux ou en visio. Dirigeants PME, responsables production agroalimentaire, exploitants agricoles et professions libérales du Centre Bretagne.",
     },
   },
   faqGeolocalisee: [

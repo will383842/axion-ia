@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const CAHORS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Cahors, préfecture du Lot (20 050 habitants, 2023) installée sur une presqu'île formée par un méandre du Lot. L'écosystème local mêle viticulture AOC Cahors, commerce de centre-ville, restauration touristique (UNESCO : pont Valentré, cathédrale Saint-Étienne) et services administratifs liés au statut de préfecture. Williams intervient depuis Paris pour automatiser devis, relances clients, suivi de stock et reporting comptable, avec du code Python/TypeScript sur mesure — pas de no-code à l'année. La gratuité des transports urbains depuis novembre 2019 facilite les rendez-vous in situ chez les commerçants du Vieux-Cahors.",
+    "Axion-IA accompagne les PME et ETI de Cahors, préfecture du Lot (20 050 habitants, 2023) installée sur une presqu'île formée par un méandre du Lot. L'écosystème local mêle viticulture AOC Cahors, commerce de centre-ville, restauration touristique (UNESCO : pont Valentré, cathédrale Saint-Étienne) et services administratifs liés au statut de préfecture. Williams intervient depuis Paris pour automatiser devis, relances clients, suivi de stock et reporting comptable, avec du code Python/TypeScript sur mesure — pas de no-code à l'année. La gratuité des transports urbains depuis novembre 2019 facilite les rendez-vous in situ chez les commerçants du Vieux-Cahors.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Cahors, préfecture du Lot (20 050 habitants, 2023) installée sur une presqu'île formée par un méandre du Lot. L'écosystème local mêle viticulture AOC Cahors, commerce de centre-ville, restauration touristique (UNESCO : pont Valentré, cathédrale Saint-Étienne) et services administratifs liés au statut de préfecture. Williams intervient depuis Paris pour automatiser devis, relances clients, suivi de stock et reporting comptable, avec du code Python/TypeScript sur mesure — pas de no-code à l'année. La gratuité des transports urbains depuis novembre 2019 facilite les rendez-vous in situ chez les commerçants du Vieux-Cahors.",
+    "Axion-IA accompagne les PME et ETI de Cahors, préfecture du Lot (20 050 habitants, 2023) installée sur une presqu'île formée par un méandre du Lot. L'écosystème local mêle viticulture AOC Cahors, commerce de centre-ville, restauration touristique (UNESCO : pont Valentré, cathédrale Saint-Étienne) et services administratifs liés au statut de préfecture. Williams intervient depuis Paris pour automatiser devis, relances clients, suivi de stock et reporting comptable, avec du code Python/TypeScript sur mesure — pas de no-code à l'année. La gratuité des transports urbains depuis novembre 2019 facilite les rendez-vous in situ chez les commerçants du Vieux-Cahors.",
   directAnswerFr:
-    "Axion-IA est un cabinet IA basé en France qui sert les TPE et PME de Cahors et du Grand Cahors (24 478 habitants sur l'agglomération). Williams se déplace sur site dans le Lot pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : devis viticoles, relances restauration, reporting commerce) et Implémentation longue (intégration code dans la stack existante). Tous les tarifs sont publics. Conformité RGPD assurée par contrat DPA, données hébergées en UE.",
+    "Axion-IA est un cabinet IA basé en France qui sert les PME et ETI de Cahors et du Grand Cahors (24 478 habitants sur l'agglomération). Williams se déplace sur site dans le Lot pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : devis viticoles, relances restauration, reporting commerce) et Implémentation longue (intégration code dans la stack existante). Tous les tarifs sont publics. Conformité RGPD assurée par contrat DPA, données hébergées en UE.",
   directAnswerEn:
-    "Axion-IA est un cabinet IA basé en France qui sert les TPE et PME de Cahors et du Grand Cahors (24 478 habitants sur l'agglomération). Williams se déplace sur site dans le Lot pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : devis viticoles, relances restauration, reporting commerce) et Implémentation longue (intégration code dans la stack existante). Tous les tarifs sont publics. Conformité RGPD assurée par contrat DPA, données hébergées en UE.",
+    "Axion-IA est un cabinet IA basé en France qui sert les PME et ETI de Cahors et du Grand Cahors (24 478 habitants sur l'agglomération). Williams se déplace sur site dans le Lot pour livrer trois prestations : Audit sur place 4h à {{price:audit-flash|flat}} (cartographie des processus automatisables), Formation 4 h à {{price:intervention-4h|flat}} (automatisation d'un workflow ciblé : devis viticoles, relances restauration, reporting commerce) et Implémentation longue (intégration code dans la stack existante). Tous les tarifs sont publics. Conformité RGPD assurée par contrat DPA, données hébergées en UE.",
   seoHook: "viticulture AOC, commerce et restauration touristique",
   ecosystemFr:
     "Cahors structure son économie autour de l'AOC Cahors (vin rouge historique exporté depuis le Moyen Âge), du commerce de proximité dans le secteur sauvegardé UNESCO, de la restauration alimentée par le tourisme estival, et des services publics liés à la préfecture du Lot. L'aérodrome Cahors-Lalbenque dessert l'aviation d'affaires ; l'A20 connecte la ville à Toulouse (1h30) et Brive (1h). Les domaines viticoles du vignoble de Cahors (Côtes du Lot) sont des PME-cibles classiques pour des automatisations de gestion de cave et de e-commerce.",
@@ -43,18 +43,18 @@ export const CAHORS_COPY: VilleCopy = {
       en: "L'implémentation à Cahors raccorde les outils IA à la stack existante d'une PME du Lot (Sage, EBP, Shopify viticole, caisse Lightspeed) sans dépendance à un éditeur SaaS no-code.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Cahors s'adresse aux dirigeants TPE/PME du Grand Cahors qui souhaitent monter en compétence sur les usages IA opérationnels avant de déployer en interne.",
-      en: "L'accompagnement un-à-un à Cahors s'adresse aux dirigeants TPE/PME du Grand Cahors qui souhaitent monter en compétence sur les usages IA opérationnels avant de déployer en interne.",
+      fr: "L'accompagnement un-à-un à Cahors s'adresse aux dirigeants de PME et d'ETI du Grand Cahors qui souhaitent monter en compétence sur les usages IA opérationnels avant de déployer en interne.",
+      en: "L'accompagnement un-à-un à Cahors s'adresse aux dirigeants de PME et d'ETI du Grand Cahors qui souhaitent monter en compétence sur les usages IA opérationnels avant de déployer en interne.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Cahors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe de vin, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de préfecture du Lot bâtie sur une presqu'île formée par un méandre du Lot, où l'AOC Cahors, le commerce du secteur sauvegardé UNESCO autour du pont Valentré, la restauration touristique et les zones d'activité de Regourd et Cahors Sud font tourner un tissu dense de TPE viticoles, artisanales et de services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cahors, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cahors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe de vin, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de préfecture du Lot bâtie sur une presqu'île formée par un méandre du Lot, où l'AOC Cahors, le commerce du secteur sauvegardé UNESCO autour du pont Valentré, la restauration touristique et les zones d'activité de Regourd et Cahors Sud font tourner un tissu dense de PME viticoles, artisanales et de services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cahors, itérations à distance.",
         whyHere: [
           "Vignoble AOC Cahors historique (vin rouge de Malbec exporté depuis le Moyen Âge), animé par l'Union interprofessionnelle des vins de Cahors et la Villa Malbec allées Fénelon : un terrain idéal pour des boutiques e-commerce de domaine, des systèmes d'allocation de cuvées, de la gestion de cave et des fiches produit multilingues optimisées pour l'export vers l'Europe du Nord et l'Amérique.",
           "Centre sauvegardé UNESCO et clientèle touristique estivale (pont Valentré, cathédrale Saint-Étienne, route vers Saint-Cirq-Lapopie classé Plus Beaux Villages, festival Cahors Juin Jardins) : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour la restauration, l'hôtellerie et le commerce du Vieux-Cahors, avec réservation et conciergerie automatisées.",
-          "Tissu 100 % TPE/PME, zones d'activité de Regourd et Cahors Sud, et gratuité des transports urbains depuis 2019 facilitant les rendez-vous in situ : on greffe l'IA sur l'existant (widget, API, plugin Shopify ou WooCommerce) sans refonte coûteuse, ou on construit une vitrine e-commerce de produits du Lot pour artisans, primeurs et négoce.",
+          "Tissu 100 % PME et ETI, zones d'activité de Regourd et Cahors Sud, et gratuité des transports urbains depuis 2019 facilitant les rendez-vous in situ : on greffe l'IA sur l'existant (widget, API, plugin Shopify ou WooCommerce) sans refonte coûteuse, ou on construit une vitrine e-commerce de produits du Lot pour artisans, primeurs et négoce.",
           "Préfecture excentrée mais connectée par l'A20 sortie 57 et la ligne Paris-Orléans-Limoges-Toulouse, avec gros employeurs publics comme le Centre Hospitalier de Cahors et exigence d'hébergement UE strict : toute la chaîne IA est hébergeable en Europe (OVHcloud, Scaleway), conforme RGPD — vos données clients, réservations et commandes restent maîtrisées.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const CAHORS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de réservation) sur le site d'un domaine viticole des Côtes du Lot, d'un restaurant du centre historique ou d'un commerce des allées Fénelon, sans refonte ni changement de CMS.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -136,11 +130,11 @@ export const CAHORS_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pic touristique estival ou en pleine campagne de primeurs. Web Vitals (LCP, INP, CLS nul) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local du Lot ou d'Occitanie ou repris en interne par vos équipes du Grand Cahors.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Cahors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe de vin, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de préfecture du Lot bâtie sur une presqu'île formée par un méandre du Lot, où l'AOC Cahors, le commerce du secteur sauvegardé UNESCO autour du pont Valentré, la restauration touristique et les zones d'activité de Regourd et Cahors Sud font tourner un tissu dense de TPE viticoles, artisanales et de services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cahors, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Cahors des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, vente directe de vin, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de préfecture du Lot bâtie sur une presqu'île formée par un méandre du Lot, où l'AOC Cahors, le commerce du secteur sauvegardé UNESCO autour du pont Valentré, la restauration touristique et les zones d'activité de Regourd et Cahors Sud font tourner un tissu dense de PME viticoles, artisanales et de services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Cahors, itérations à distance.",
         whyHere: [
           "Vignoble AOC Cahors historique (vin rouge de Malbec exporté depuis le Moyen Âge), animé par l'Union interprofessionnelle des vins de Cahors et la Villa Malbec allées Fénelon : un terrain idéal pour des boutiques e-commerce de domaine, des systèmes d'allocation de cuvées, de la gestion de cave et des fiches produit multilingues optimisées pour l'export vers l'Europe du Nord et l'Amérique.",
           "Centre sauvegardé UNESCO et clientèle touristique estivale (pont Valentré, cathédrale Saint-Étienne, route vers Saint-Cirq-Lapopie classé Plus Beaux Villages, festival Cahors Juin Jardins) : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour la restauration, l'hôtellerie et le commerce du Vieux-Cahors, avec réservation et conciergerie automatisées.",
-          "Tissu 100 % TPE/PME, zones d'activité de Regourd et Cahors Sud, et gratuité des transports urbains depuis 2019 facilitant les rendez-vous in situ : on greffe l'IA sur l'existant (widget, API, plugin Shopify ou WooCommerce) sans refonte coûteuse, ou on construit une vitrine e-commerce de produits du Lot pour artisans, primeurs et négoce.",
+          "Tissu 100 % PME et ETI, zones d'activité de Regourd et Cahors Sud, et gratuité des transports urbains depuis 2019 facilitant les rendez-vous in situ : on greffe l'IA sur l'existant (widget, API, plugin Shopify ou WooCommerce) sans refonte coûteuse, ou on construit une vitrine e-commerce de produits du Lot pour artisans, primeurs et négoce.",
           "Préfecture excentrée mais connectée par l'A20 sortie 57 et la ligne Paris-Orléans-Limoges-Toulouse, avec gros employeurs publics comme le Centre Hospitalier de Cahors et exigence d'hébergement UE strict : toute la chaîne IA est hébergeable en Europe (OVHcloud, Scaleway), conforme RGPD — vos données clients, réservations et commandes restent maîtrisées.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const CAHORS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de réservation) sur le site d'un domaine viticole des Côtes du Lot, d'un restaurant du centre historique ou d'un commerce des allées Fénelon, sans refonte ni changement de CMS.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",

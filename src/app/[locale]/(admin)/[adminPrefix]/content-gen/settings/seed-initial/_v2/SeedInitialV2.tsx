@@ -36,8 +36,8 @@ export function SeedInitialV2(): React.ReactElement {
           </li>
           <li>
             <strong>Modèles de campagne</strong> — couvrant les cinq services et toutes les tailles
-            d&apos;entreprise (TPE, PME, ETI, grande entreprise). Ils apparaissent dans
-            l&apos;assistant de nouvelle campagne.
+            d&apos;entreprise (PME, ETI, grand groupe). Ils apparaissent dans l&apos;assistant de
+            nouvelle campagne.
           </li>
         </ul>
         <p className="admin-meta-block">

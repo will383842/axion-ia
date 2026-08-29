@@ -3,18 +3,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_FARLEDE_COPY: VilleCopy = {
   pitchFr:
-    "La Farlède (83, Var), commune de la vallée du Gapeau membre de la Métropole Toulon-Provence-Méditerranée, accueille TPE artisanales, PME maraîchères et agroalimentaires, commerces, zones d'activités et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Gapeau.",
+    "La Farlède (83, Var), commune de la vallée du Gapeau membre de la Métropole Toulon-Provence-Méditerranée, accueille PME artisanales, PME maraîchères et agroalimentaires, commerces, zones d'activités et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Gapeau.",
   pitchEn:
-    "La Farlède (83, Var), commune de la vallée du Gapeau membre de la Métropole Toulon-Provence-Méditerranée, accueille TPE artisanales, PME maraîchères et agroalimentaires, commerces, zones d'activités et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Gapeau.",
+    "La Farlède (83, Var), commune de la vallée du Gapeau membre de la Métropole Toulon-Provence-Méditerranée, accueille PME artisanales, PME maraîchères et agroalimentaires, commerces, zones d'activités et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Gapeau.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Farlède (83). Nous accompagnons TPE artisanales, PME maraîchères, commerces et professions libérales de la vallée du Gapeau (agglo toulonnaise). Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Farlède (83). Nous accompagnons PME artisanales, PME maraîchères, commerces et professions libérales de la vallée du Gapeau (agglo toulonnaise). Audit sur place sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Farlède (83). Nous accompagnons TPE artisanales, PME maraîchères, commerces et professions libérales de la vallée du Gapeau (agglo toulonnaise). Audit sur place sur mesure, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Farlède (83). Nous accompagnons PME artisanales, PME maraîchères, commerces et professions libérales de la vallée du Gapeau (agglo toulonnaise). Audit sur place sur mesure, intervention sur site ou en visio.",
   seoHook: "vallée du",
   ecosystemFr:
-    "La Farlède est une commune de la vallée du Gapeau au pied du Coudon, membre de la Métropole Toulon-Provence-Méditerranée. Tissu de TPE artisanales, PME maraîchères et agroalimentaires (tradition Solliès), commerces, zones d'activités (Roumagayrol, Garrigues), professions libérales et résidentiel péri-urbain.",
+    "La Farlède est une commune de la vallée du Gapeau au pied du Coudon, membre de la Métropole Toulon-Provence-Méditerranée. Tissu de PME artisanales, PME maraîchères et agroalimentaires (tradition Solliès), commerces, zones d'activités (Roumagayrol, Garrigues), professions libérales et résidentiel péri-urbain.",
   ecosystemEn:
-    "La Farlède est une commune de la vallée du Gapeau au pied du Coudon, membre de la Métropole Toulon-Provence-Méditerranée. Tissu de TPE artisanales, PME maraîchères et agroalimentaires (tradition Solliès), commerces, zones d'activités (Roumagayrol, Garrigues), professions libérales et résidentiel péri-urbain.",
+    "La Farlède est une commune de la vallée du Gapeau au pied du Coudon, membre de la Métropole Toulon-Provence-Méditerranée. Tissu de PME artisanales, PME maraîchères et agroalimentaires (tradition Solliès), commerces, zones d'activités (Roumagayrol, Garrigues), professions libérales et résidentiel péri-urbain.",
   distancesFr:
     "Toulon centre à 15 min. La Garde à 10 min. Solliès-Pont à 5 min. Hyères à 15 min. Gare TGV de Toulon à 20 min (Paris 3h50). Aéroport Toulon-Hyères à 20 min. Marseille à 1h A50.",
   distancesEn:
@@ -23,13 +23,13 @@ export const LA_FARLEDE_COPY: VilleCopy = {
     "Agriculture & maraîchage",
     "Agroalimentaire & PME industrielles",
     "Commerce & zones d'activités",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Farlède : diagnostic adapté aux TPE artisanales, PME maraîchères-agroalimentaires et commerces de la vallée du Gapeau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à La Farlède : diagnostic adapté aux TPE artisanales, PME maraîchères-agroalimentaires et commerces de la vallée du Gapeau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à La Farlède : diagnostic adapté aux PME artisanales, PME maraîchères-agroalimentaires et commerces de la vallée du Gapeau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à La Farlède : diagnostic adapté aux PME artisanales, PME maraîchères-agroalimentaires et commerces de la vallée du Gapeau. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Farlède : formations pratiques adaptées maraîchage, agroalimentaire, artisanat, commerces et professions libérales. Équipes autonomes outils IA métier.",
@@ -40,8 +40,8 @@ export const LA_FARLEDE_COPY: VilleCopy = {
       en: "Implémentation IA à La Farlède : automatisation traçabilité, gestion stocks PME agroalimentaires, agents IA commerciaux, CRM, classification documents. Vallée Gapeau, agglo TPM.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Farlède : sessions adaptées dirigeants TPE/PME, maraîchers, gérants agroalimentaires et professions libérales de la vallée du Gapeau.",
-      en: "Coaching 1-to-1 à La Farlède : sessions adaptées dirigeants TPE/PME, maraîchers, gérants agroalimentaires et professions libérales de la vallée du Gapeau.",
+      fr: "Coaching 1-to-1 à La Farlède : sessions adaptées dirigeants de PME et d'ETI, maraîchers, gérants agroalimentaires et professions libérales de la vallée du Gapeau.",
+      en: "Coaching 1-to-1 à La Farlède : sessions adaptées dirigeants de PME et d'ETI, maraîchers, gérants agroalimentaires et professions libérales de la vallée du Gapeau.",
     },
   },
   faqGeolocalisee: [
@@ -51,7 +51,7 @@ export const LA_FARLEDE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à La Farlède  : quel budget prévoir ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME et ETI varoises. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous le maraîchage et l'agroalimentaire à La Farlède ?",
@@ -59,7 +59,7 @@ export const LA_FARLEDE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching IA pour dirigeants à La Farlède ?",
-      a: "Oui, sessions 1-to-1 adaptées dirigeants TPE/PME, maraîchers et gérants agroalimentaires de la vallée du Gapeau. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA métier.",
+      a: "Oui, sessions 1-to-1 adaptées dirigeants de PME et d'ETI, maraîchers et gérants agroalimentaires de la vallée du Gapeau. Sur site ou visio, dès {{price:intervention-dirigeants|flat}}. Prise en main outils IA métier.",
     },
     {
       q: "Quels délais pour une mission à La Farlède ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AUCH_COPY: VilleCopy = {
   pitchFr:
-    "Auch (32), préfecture du Gers et capitale historique de la Gascogne (~22 400 hab.), à 69 km à l'ouest de Toulouse. Tissu de TPE commerçants, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans et professions libérales. Axion-IA accompagne ces structures sur leurs cas d'usage IA opérationnels, sans no-code, en code custom.",
+    "Auch (32), préfecture du Gers et capitale historique de la Gascogne (~22 400 hab.), à 69 km à l'ouest de Toulouse. Tissu de PME du commerce, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans et professions libérales. Axion-IA accompagne ces structures sur leurs cas d'usage IA opérationnels, sans no-code, en code custom.",
   pitchEn:
-    "Auch (32), préfecture du Gers et capitale historique de la Gascogne (~22 400 hab.), à 69 km à l'ouest de Toulouse. Tissu de TPE commerçants, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans et professions libérales. Axion-IA accompagne ces structures sur leurs cas d'usage IA opérationnels, sans no-code, en code custom.",
+    "Auch (32), préfecture du Gers et capitale historique de la Gascogne (~22 400 hab.), à 69 km à l'ouest de Toulouse. Tissu de PME du commerce, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans et professions libérales. Axion-IA accompagne ces structures sur leurs cas d'usage IA opérationnels, sans no-code, en code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auch (32) pour les TPE, PME et ETI auscitaines. Nous accompagnons en priorité les TPE commerçantes du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit sur place à {{price:audit-flash|flat}}, code custom et conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auch (32) pour les PME, ETI et grands groupes auscitains. Nous accompagnons en priorité les PME du commerce du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit sur place à {{price:audit-flash|flat}}, code custom et conformité RGPD.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auch (32) pour les TPE, PME et ETI auscitaines. Nous accompagnons en priorité les TPE commerçantes du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit sur place à {{price:audit-flash|flat}}, code custom et conformité RGPD.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auch (32) pour les PME, ETI et grands groupes auscitains. Nous accompagnons en priorité les PME du commerce du centre-ville, les PME agroalimentaires, les viticulteurs Armagnac, les producteurs céréaliers et les professions libérales du Grand Auch Cœur de Gascogne. Déplacement sur site depuis Toulouse, audit sur place à {{price:audit-flash|flat}}, code custom et conformité RGPD.",
   seoHook: "Armagnac, agroalimentaire & commerce gascon",
   ecosystemFr:
-    "Auch concentre l'économie du Gers autour de l'Armagnac, de la gastronomie gasconne, de l'agriculture céréalière et viticole, du commerce de proximité et des services. L'intercommunalité Grand Auch Cœur de Gascogne regroupe une majorité de TPE et PME, complétées par des artisans et des professions libérales actifs dans tout le bassin auscitain.",
+    "Auch concentre l'économie du Gers autour de l'Armagnac, de la gastronomie gasconne, de l'agriculture céréalière et viticole, du commerce de proximité et des services. L'intercommunalité Grand Auch Cœur de Gascogne regroupe une majorité de PME et ETI, complétées par des artisans et des professions libérales actifs dans tout le bassin auscitain.",
   ecosystemEn:
-    "Auch concentre l'économie du Gers autour de l'Armagnac, de la gastronomie gasconne, de l'agriculture céréalière et viticole, du commerce de proximité et des services. L'intercommunalité Grand Auch Cœur de Gascogne regroupe une majorité de TPE et PME, complétées par des artisans et des professions libérales actifs dans tout le bassin auscitain.",
+    "Auch concentre l'économie du Gers autour de l'Armagnac, de la gastronomie gasconne, de l'agriculture céréalière et viticole, du commerce de proximité et des services. L'intercommunalité Grand Auch Cœur de Gascogne regroupe une majorité de PME et ETI, complétées par des artisans et des professions libérales actifs dans tout le bassin auscitain.",
   distancesFr:
     "Toulouse à 69 km (~1 h). Gare TER Auch reliée à Toulouse-Matabiau. Aéroport Toulouse-Blagnac à ~75 km. Aérodrome Auch-Gers sur place. Liaisons cars liO vers Tarbes, Agen, Montauban, Mont-de-Marsan et Condom.",
   distancesEn:
@@ -30,29 +30,29 @@ export const AUCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auch : diagnostic pour TPE commerçantes, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
-      en: "Audit IA à Auch : diagnostic pour TPE commerçantes, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
+      fr: "Audit IA à Auch : diagnostic pour PME du commerce, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
+      en: "Audit IA à Auch : diagnostic pour PME du commerce, PME agroalimentaires, viticulteurs Armagnac et professions libérales du Grand Auch. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, sans no-code.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auch : ateliers adaptés au commerce de proximité, au domaine viticole, à l'agroalimentaire et aux cabinets libéraux. Déplacement depuis Toulouse, équipes autonomes en sortie.",
       en: "Interventions IA sur site à Auch : ateliers adaptés au commerce de proximité, au domaine viticole, à l'agroalimentaire et aux cabinets libéraux. Déplacement depuis Toulouse, équipes autonomes en sortie.",
     },
     implementation: {
-      fr: "Implémentation IA à Auch : automatisation devis, gestion stocks commerce, traçabilité Armagnac, classification documents, chatbot client pour TPE et PME du Gers, en code custom.",
-      en: "Implémentation IA à Auch : automatisation devis, gestion stocks commerce, traçabilité Armagnac, classification documents, chatbot client pour TPE et PME du Gers, en code custom.",
+      fr: "Implémentation IA à Auch : automatisation devis, gestion stocks commerce, traçabilité Armagnac, classification documents, chatbot client pour PME et ETI du Gers, en code custom.",
+      en: "Implémentation IA à Auch : automatisation devis, gestion stocks commerce, traçabilité Armagnac, classification documents, chatbot client pour PME et ETI du Gers, en code custom.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Auch : sessions sur site ou en visio pour dirigeants TPE, viticulteurs, gérants PME agroalimentaires et professions libérales du Grand Auch Cœur de Gascogne.",
-      en: "Coaching 1-to-1 à Auch : sessions sur site ou en visio pour dirigeants TPE, viticulteurs, gérants PME agroalimentaires et professions libérales du Grand Auch Cœur de Gascogne.",
+      fr: "Coaching 1-to-1 à Auch : sessions sur site ou en visio pour dirigeants de PME et d'ETI, viticulteurs, gérants PME agroalimentaires et professions libérales du Grand Auch Cœur de Gascogne.",
+      en: "Coaching 1-to-1 à Auch : sessions sur site ou en visio pour dirigeants de PME et d'ETI, viticulteurs, gérants PME agroalimentaires et professions libérales du Grand Auch Cœur de Gascogne.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Auch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale gasconne du Gers, où le tissu mêle TPE commerçantes du centre ancien, PME agroalimentaires, domaines viticoles et maisons d'Armagnac, producteurs céréaliers, industriels des zones d'activité (Mouliot, Engachies, Clarac, Lamothe) et professions libérales du Grand Auch Cœur de Gascogne. Industrie présente aussi avec l'aéronautique de JCB Aéro et les connecteurs de Positronic Industries, sans oublier la grande distribution du Grand Chêne et l'agroalimentaire type Nataïs. Qu'on parte de zéro, qu'on reprenne un site WordPress ou Shopify ou qu'on greffe une brique IA sur l'existant, on couvre toute la chaîne — design, dev, e-commerce et IA. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Auch, à 69 km de Toulouse, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Auch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale gasconne du Gers, où le tissu mêle PME du commerce du centre ancien, PME agroalimentaires, domaines viticoles et maisons d'Armagnac, producteurs céréaliers, industriels des zones d'activité (Mouliot, Engachies, Clarac, Lamothe) et professions libérales du Grand Auch Cœur de Gascogne. Industrie présente aussi avec l'aéronautique de JCB Aéro et les connecteurs de Positronic Industries, sans oublier la grande distribution du Grand Chêne et l'agroalimentaire type Nataïs. Qu'on parte de zéro, qu'on reprenne un site WordPress ou Shopify ou qu'on greffe une brique IA sur l'existant, on couvre toute la chaîne — design, dev, e-commerce et IA. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Auch, à 69 km de Toulouse, puis itérations à distance.",
         whyHere: [
           "Filière Armagnac et agroalimentaire gasconne : pour les domaines, maisons d'eaux-de-vie et conserveries du Gers — dans la lignée des Ducs de Gascogne ou de Comtesse du Barry — on construit des boutiques e-commerce sur mesure (WooCommerce, Shopify, PrestaShop) pour la vente directe, les abonnements et les expéditions, plus des parcours de traçabilité parcelle-à-bouteille augmentés à l'IA et reliés à vos outils de cave.",
-          "Commerce de centre-ville sous la cathédrale Sainte-Marie et l'escalier monumental, et grandes surfaces de la zone du Grand Chêne au Mouliot (E.Leclerc / Auch Hyper Distribution) : on greffe sur les sites des TPE et enseignes auscitaines un chatbot multilingue et une recherche sémantique pour servir aussi bien la clientèle locale que les visiteurs de passage en Gascogne, avec prise de contact et click-and-collect.",
+          "Commerce de centre-ville sous la cathédrale Sainte-Marie et l'escalier monumental, et grandes surfaces de la zone du Grand Chêne au Mouliot (E.Leclerc / Auch Hyper Distribution) : on greffe sur les sites des PME et enseignes auscitaines un chatbot multilingue et une recherche sémantique pour servir aussi bien la clientèle locale que les visiteurs de passage en Gascogne, avec prise de contact et click-and-collect.",
           "Industrie et savoir-faire technique des zones d'activité (Engachies, Clarac, Lamothe, hippodrome, Pavie-Sousson) : pour des acteurs comme l'aéronautique JCB Aéro ou les connecteurs Positronic Industries, on développe des portails clients, des configurateurs produit et des plateformes SaaS IA-native branchées sur l'ERP, le PLM et la documentation technique.",
           "Bassin agricole céréalier et viticole étendu sur tout le Grand Auch, et industrie agroalimentaire type Nataïs (maïs / popcorn) : on automatise devis, gestion de stocks, classification de documents et suivi de production, le tout hébergé en UE, conforme RGPD et AI Act, sans imposer de refonte coûteuse de votre SI existant.",
         ],
@@ -84,12 +84,6 @@ export const AUCH_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site existant d'un commerce du centre-ville, d'un restaurant gascon, d'un artisan des zones d'Engachies ou Lamothe, ou d'un cabinet libéral auscitain, sans refonte ni interruption de service.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -135,10 +129,10 @@ export const AUCH_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison commerciale au Mouliot ou de ventes d'Armagnac. Web Vitals, performance et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement ni lock-in imposé, projet entièrement transférable à tout prestataire du Gers ou de la région toulousaine, ou repris en interne par vos équipes auscitaines.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Auch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale gasconne du Gers, où le tissu mêle TPE commerçantes du centre ancien, PME agroalimentaires, domaines viticoles et maisons d'Armagnac, producteurs céréaliers, industriels des zones d'activité (Mouliot, Engachies, Clarac, Lamothe) et professions libérales du Grand Auch Cœur de Gascogne. Industrie présente aussi avec l'aéronautique de JCB Aéro et les connecteurs de Positronic Industries, sans oublier la grande distribution du Grand Chêne et l'agroalimentaire type Nataïs. Qu'on parte de zéro, qu'on reprenne un site WordPress ou Shopify ou qu'on greffe une brique IA sur l'existant, on couvre toute la chaîne — design, dev, e-commerce et IA. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Auch, à 69 km de Toulouse, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Auch des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, boutiques e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale gasconne du Gers, où le tissu mêle PME du commerce du centre ancien, PME agroalimentaires, domaines viticoles et maisons d'Armagnac, producteurs céréaliers, industriels des zones d'activité (Mouliot, Engachies, Clarac, Lamothe) et professions libérales du Grand Auch Cœur de Gascogne. Industrie présente aussi avec l'aéronautique de JCB Aéro et les connecteurs de Positronic Industries, sans oublier la grande distribution du Grand Chêne et l'agroalimentaire type Nataïs. Qu'on parte de zéro, qu'on reprenne un site WordPress ou Shopify ou qu'on greffe une brique IA sur l'existant, on couvre toute la chaîne — design, dev, e-commerce et IA. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Auch, à 69 km de Toulouse, puis itérations à distance.",
         whyHere: [
           "Filière Armagnac et agroalimentaire gasconne : pour les domaines, maisons d'eaux-de-vie et conserveries du Gers — dans la lignée des Ducs de Gascogne ou de Comtesse du Barry — on construit des boutiques e-commerce sur mesure (WooCommerce, Shopify, PrestaShop) pour la vente directe, les abonnements et les expéditions, plus des parcours de traçabilité parcelle-à-bouteille augmentés à l'IA et reliés à vos outils de cave.",
-          "Commerce de centre-ville sous la cathédrale Sainte-Marie et l'escalier monumental, et grandes surfaces de la zone du Grand Chêne au Mouliot (E.Leclerc / Auch Hyper Distribution) : on greffe sur les sites des TPE et enseignes auscitaines un chatbot multilingue et une recherche sémantique pour servir aussi bien la clientèle locale que les visiteurs de passage en Gascogne, avec prise de contact et click-and-collect.",
+          "Commerce de centre-ville sous la cathédrale Sainte-Marie et l'escalier monumental, et grandes surfaces de la zone du Grand Chêne au Mouliot (E.Leclerc / Auch Hyper Distribution) : on greffe sur les sites des PME et enseignes auscitaines un chatbot multilingue et une recherche sémantique pour servir aussi bien la clientèle locale que les visiteurs de passage en Gascogne, avec prise de contact et click-and-collect.",
           "Industrie et savoir-faire technique des zones d'activité (Engachies, Clarac, Lamothe, hippodrome, Pavie-Sousson) : pour des acteurs comme l'aéronautique JCB Aéro ou les connecteurs Positronic Industries, on développe des portails clients, des configurateurs produit et des plateformes SaaS IA-native branchées sur l'ERP, le PLM et la documentation technique.",
           "Bassin agricole céréalier et viticole étendu sur tout le Grand Auch, et industrie agroalimentaire type Nataïs (maïs / popcorn) : on automatise devis, gestion de stocks, classification de documents et suivi de production, le tout hébergé en UE, conforme RGPD et AI Act, sans imposer de refonte coûteuse de votre SI existant.",
         ],
@@ -170,12 +164,6 @@ export const AUCH_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis) sur le site existant d'un commerce du centre-ville, d'un restaurant gascon, d'un artisan des zones d'Engachies ou Lamothe, ou d'un cabinet libéral auscitain, sans refonte ni interruption de service.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -234,7 +222,7 @@ export const AUCH_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Auch ?",
-      a: "TPE commerçantes du centre-ville, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans BTP, restaurateurs et professions libérales. Tous les secteurs représentés dans le Gers.",
+      a: "PME du commerce du centre-ville, PME agroalimentaires, viticulteurs Armagnac, producteurs céréaliers, artisans BTP, restaurateurs et professions libérales. Tous les secteurs représentés dans le Gers.",
     },
     {
       q: "Quels délais d'intervention IA à Auch ?",

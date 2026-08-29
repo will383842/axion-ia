@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ISSOUDUN_COPY: VilleCopy = {
   pitchFr:
-    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants du bassin issoldunois.",
+    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. PME artisanales, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants du bassin issoldunois.",
   pitchEn:
-    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants du bassin issoldunois.",
+    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. PME artisanales, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants du bassin issoldunois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
   seoHook: "industrie mécanique, & artisanat services",
   ecosystemFr:
     "Issoudun, sous-préfecture de l'Indre, est un pôle industriel et de services au coeur du Berry. L'économie locale repose sur l'industrie (métallurgie, mécanique, aéronautique avec le site Safran), l'agroalimentaire, l'artisanat BTP, le commerce de centre-ville, les services publics et de santé, et un patrimoine culturel notable (musée de l'Hospice Saint-Roch, tour Blanche médiévale).",
@@ -23,27 +23,27 @@ export const ISSOUDUN_COPY: VilleCopy = {
     "Gare d'Issoudun (TER Vierzon-Châteauroux). Châteauroux à 30 min. Bourges à 40 min. Vierzon à 30 min. Tours à 1h30. Paris à 2h30 via A20. Limoges à 2h via A20.",
   topSectorsNaf: [
     "Industrie mécanique, métallurgie & aéronautique",
-    "TPE artisanat BTP & services",
+    "PME du BTP & services",
     "Agroalimentaire & négoce agricole Berry",
     "Commerce de centre-ville & professions libérales",
     "Services publics, santé & collectivités",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Issoudun : diagnostic adapté aux PME artisanales, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Issoudun : diagnostic adapté aux PME artisanales, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Issoudun : formats adaptés aux ateliers industriels, PME agroalimentaires, TPE artisans BTP et commerces de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
-      en: "Interventions IA sur site à Issoudun : formats adaptés aux ateliers industriels, PME agroalimentaires, TPE artisans BTP et commerces de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
+      fr: "Interventions IA sur site à Issoudun : formats adaptés aux ateliers industriels, PME agroalimentaires, PME du BTP et commerces de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
+      en: "Interventions IA sur site à Issoudun : formats adaptés aux ateliers industriels, PME agroalimentaires, PME du BTP et commerces de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",
     },
     implementation: {
       fr: "Implémentation IA à Issoudun : agents conversationnels gestion production industrielle, automatisation contrôle qualité mécanique, optimisation stocks agroalimentaire, classification documents techniques. Adapté au tissu berrichon.",
       en: "Implémentation IA à Issoudun : agents conversationnels gestion production industrielle, automatisation contrôle qualité mécanique, optimisation stocks agroalimentaire, classification documents techniques. Adapté au tissu berrichon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Issoudun : sessions sur site ou en visio. Dirigeants PME industrielles, artisans, gérants TPE, commerçants et cadres de collectivités du Berry souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Issoudun : sessions sur site ou en visio. Dirigeants PME industrielles, artisans, gérants TPE, commerçants et cadres de collectivités du Berry souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Issoudun : sessions sur site ou en visio. Dirigeants PME industrielles, artisans, gérants PME, commerçants et cadres de collectivités du Berry souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Issoudun : sessions sur site ou en visio. Dirigeants PME industrielles, artisans, gérants PME, commerçants et cadres de collectivités du Berry souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const ISSOUDUN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles (mécanique, métallurgie, aéronautique) d'Issoudun sur leurs cas IA : automatisation contrôle qualité pièces, agents conversationnels documentation technique, optimisation planification production, maintenance prédictive et gestion stocks.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants issoldunois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants d'Issoudun sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce issoldunois ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce d'Issoudun sur des cas IA pratiques : automatisation devis, agents IA prise de rendez-vous, gestion stocks, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quels services pour l'agroalimentaire et le négoce agricole du Berry ?",

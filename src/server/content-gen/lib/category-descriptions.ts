@@ -6,7 +6,7 @@ import type { Locale } from "@/i18n/routing";
 
 export const CATEGORY_DESCRIPTIONS: Record<string, { readonly fr: string; readonly en: string }> = {
   "blog-formations-ia": {
-    fr: "Monter en compétence sur l'IA : méthodologie de formation, quick-wins et cas d'usage testés en mission auprès des TPE et PME.",
+    fr: "Monter en compétence sur l'IA : méthodologie de formation, quick-wins et cas d'usage testés en mission auprès des PME et ETI.",
     en: "Upskilling on AI: training methodology, quick-wins and field-tested use cases for small and mid-sized businesses.",
   },
   "blog-coaching-1-to-1": {

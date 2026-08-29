@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Ormesson-sur-Marne (94), commune résidentielle verdoyante des bords de Marne, allie cadre de vie privilégié et tissu économique de proximité. TPE services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier. Axion-IA y intervient pour tous types d'activités.",
+    "Ormesson-sur-Marne (94), commune résidentielle verdoyante des bords de Marne, allie cadre de vie privilégié et tissu économique de proximité. PME services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Ormesson-sur-Marne (94), commune résidentielle verdoyante des bords de Marne, allie cadre de vie privilégié et tissu économique de proximité. TPE services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier. Axion-IA y intervient pour tous types d'activités.",
+    "Ormesson-sur-Marne (94), commune résidentielle verdoyante des bords de Marne, allie cadre de vie privilégié et tissu économique de proximité. PME services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ormesson-sur-Marne (94). Nous accompagnons PME et ETI : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ormesson-sur-Marne (94). Nous accompagnons TPE et PME : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ormesson-sur-Marne (94). Nous accompagnons PME et ETI : prestataires de services et artisans, cabinets conseil, commerçants de centre-ville, professions libérales santé, agences immobilières. Audit sur place sur mesure.",
   seoHook: "services artisanat & conseil",
   ecosystemFr:
-    "Ormesson-sur-Marne est une commune résidentielle verdoyante des bords de Marne, entre Sucy-en-Brie et Noiseau. Tissu TPE services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier.",
+    "Ormesson-sur-Marne est une commune résidentielle verdoyante des bords de Marne, entre Sucy-en-Brie et Noiseau. Tissu PME services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier.",
   ecosystemEn:
-    "Ormesson-sur-Marne est une commune résidentielle verdoyante des bords de Marne, entre Sucy-en-Brie et Noiseau. Tissu TPE services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier.",
+    "Ormesson-sur-Marne est une commune résidentielle verdoyante des bords de Marne, entre Sucy-en-Brie et Noiseau. Tissu PME services et artisanat, PME conseil, commerces de centre-ville, professions libérales santé, immobilier.",
   distancesFr:
     "Sucy-Bonneuil (RER A) à 10 min. Créteil à 15 min. Paris-Gare de Lyon à 35 min via RER A. Aéroport Orly à 25 min.",
   distancesEn:
     "Sucy-Bonneuil (RER A) à 10 min. Créteil à 15 min. Paris-Gare de Lyon à 35 min via RER A. Aéroport Orly à 25 min.",
   topSectorsNaf: [
-    "TPE services et artisanat",
+    "PME services et artisanat",
     "PME conseil",
     "Commerce de centre-ville",
     "Professions libérales santé",
@@ -30,8 +30,8 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ormesson-sur-Marne : diagnostic adapté aux TPE services et artisans, cabinets conseil, commerces de centre-ville, professions santé, agences immobilières. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ormesson-sur-Marne : diagnostic adapté aux TPE services et artisans, cabinets conseil, commerces de centre-ville, professions santé, agences immobilières. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ormesson-sur-Marne : diagnostic adapté aux PME services et artisans, cabinets conseil, commerces de centre-ville, professions santé, agences immobilières. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ormesson-sur-Marne : diagnostic adapté aux PME services et artisans, cabinets conseil, commerces de centre-ville, professions santé, agences immobilières. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ormesson-sur-Marne : formats adaptés cabinet, commerce, bureau, agence. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
       en: "Implémentation IA à Ormesson-sur-Marne : automatisation gestion clients cabinets conseil, CRM augmenté commerces, prise de rendez-vous IA professions santé, estimation automatisée immobilier.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ormesson-sur-Marne : sessions dans votre cabinet, bureau, agence ou en visio. Dirigeants TPE/PME ormessonnais, consultants, commerçants, professionnels de santé.",
-      en: "Coaching 1-to-1 à Ormesson-sur-Marne : sessions dans votre cabinet, bureau, agence ou en visio. Dirigeants TPE/PME ormessonnais, consultants, commerçants, professionnels de santé.",
+      fr: "Coaching 1-to-1 à Ormesson-sur-Marne : sessions dans votre cabinet, bureau, agence ou en visio. Dirigeants PME et ETI ormessonnais, consultants, commerçants, professionnels de santé.",
+      en: "Coaching 1-to-1 à Ormesson-sur-Marne : sessions dans votre cabinet, bureau, agence ou en visio. Dirigeants PME et ETI ormessonnais, consultants, commerçants, professionnels de santé.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ormesson-sur-Marne et tout le secteur bords de Marne (Sucy-en-Brie, Noiseau, Créteil à 15 min, Paris à 35 min). Aéroport Orly à 25 min.",
     },
     {
-      q: "Travaillez-vous avec les TPE et artisans d'Ormesson-sur-Marne ?",
+      q: "Travaillez-vous avec les PME et artisans d'Ormesson-sur-Marne ?",
       a: "Oui, audit sur place {{price:audit-flash|flat}}, outils devis automatisés, gestion planning IA, CRM simplifié, facturation intelligente pour artisans et prestataires.",
     },
     {

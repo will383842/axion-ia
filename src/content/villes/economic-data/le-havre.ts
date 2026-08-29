@@ -328,7 +328,7 @@ export const LE_HAVRE_ECONOMIC_DATA: VilleEconomicData = {
   // produitsIgpAop. Champ honnêtement vide.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : sans source individuelle confirmée par entreprise du Havre,
   // champ honnêtement vide pour respecter zéro invention. Annuaire officiel :

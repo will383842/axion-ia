@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
   pitchFr:
-    "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de TPE artisans, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la station châtelaillonnaise.",
+    "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de PME artisanales, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la station châtelaillonnaise.",
   pitchEn:
-    "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de TPE artisans, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la station châtelaillonnaise.",
+    "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de PME artisanales, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA répond aux besoins de toutes les entreprises de la station châtelaillonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : PME artisanales, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
   seoHook: "station balnéaire",
   ecosystemFr:
-    "Châtelaillon-Plage est une station balnéaire familiale du littoral charentais, entre La Rochelle et Rochefort. Économie touristique saisonnière (hôtellerie, restauration, campings, plages), commerces de centre-ville, TPE artisans BTP, professions libérales. Casino et thalasso contribuent à l'activité annuelle.",
+    "Châtelaillon-Plage est une station balnéaire familiale du littoral charentais, entre La Rochelle et Rochefort. Économie touristique saisonnière (hôtellerie, restauration, campings, plages), commerces de centre-ville, PME du BTP, professions libérales. Casino et thalasso contribuent à l'activité annuelle.",
   ecosystemEn:
-    "Châtelaillon-Plage est une station balnéaire familiale du littoral charentais, entre La Rochelle et Rochefort. Économie touristique saisonnière (hôtellerie, restauration, campings, plages), commerces de centre-ville, TPE artisans BTP, professions libérales. Casino et thalasso contribuent à l'activité annuelle.",
+    "Châtelaillon-Plage est une station balnéaire familiale du littoral charentais, entre La Rochelle et Rochefort. Économie touristique saisonnière (hôtellerie, restauration, campings, plages), commerces de centre-ville, PME du BTP, professions libérales. Casino et thalasso contribuent à l'activité annuelle.",
   distancesFr:
     "Gare de Châtelaillon-Plage (TER La Rochelle-Rochefort, La Rochelle 15 min). La Rochelle à 15 min voiture (N137). Rochefort à 15 min. Aéroport La Rochelle-Île de Ré à 25 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
     "Tourisme & hôtellerie-restauration",
     "Commerce saisonnier & de centre-ville",
     "Thalasso & bien-être",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtelaillon-Plage : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme et TPE/PME de la station balnéaire. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Châtelaillon-Plage : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme et TPE/PME de la station balnéaire. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Châtelaillon-Plage : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme et PME et ETI de la station balnéaire. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Châtelaillon-Plage : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme et PME et ETI de la station balnéaire. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtelaillon-Plage : formats adaptés à l'hôtel, au restaurant, au commerce saisonnier ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
       en: "Implémentation IA à Châtelaillon-Plage : automatisation yield management hôtelier, agents conversationnels accueil touristique, prédiction fréquentation saisonnière, gestion stocks restauration, marketing IA ciblé vacanciers.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châtelaillon-Plage : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE/PME tourisme, hôteliers et commerçants de la station souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Châtelaillon-Plage : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE/PME tourisme, hôteliers et commerçants de la station souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Châtelaillon-Plage : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants PME et ETI tourisme, hôteliers et commerçants de la station souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Châtelaillon-Plage : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants PME et ETI tourisme, hôteliers et commerçants de la station souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

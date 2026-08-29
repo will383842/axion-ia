@@ -285,7 +285,7 @@ export const SAINT_ETIENNE_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : sans source individuelle confirmée par entreprise stéphanoise,
   // champ vide pour respecter zéro invention. À compléter en cross-référençant

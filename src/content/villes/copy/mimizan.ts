@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MIMIZAN_COPY: VilleCopy = {
   pitchFr:
-    "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, TPE camping/hébergement, commerces saisonniers, artisans. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, PME camping/hébergement, commerces saisonniers, artisans. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, TPE camping/hébergement, commerces saisonniers, artisans. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, PME camping/hébergement, commerces saisonniers, artisans. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mimizan (40). Nous accompagnons TPE et PME du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mimizan (40). Nous accompagnons PME et ETI du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mimizan (40). Nous accompagnons TPE et PME du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mimizan (40). Nous accompagnons PME et ETI du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
   seoHook: "surf, papeterie & tourisme balnéaire",
   ecosystemFr:
-    "Mimizan est une station balnéaire majeure de la côte d'Argent, dans le pays de Born. La commune se partage entre Mimizan-Bourg (commerce, services, papeterie industrielle) et Mimizan-Plage (surf, tourisme balnéaire). Le lac d'Aureilhan permet des activités nautiques douces. Économie portée par l'industrie papetière, le tourisme saisonnier, les campings, l'exploitation forestière landaise, TPE artisans et commerces.",
+    "Mimizan est une station balnéaire majeure de la côte d'Argent, dans le pays de Born. La commune se partage entre Mimizan-Bourg (commerce, services, papeterie industrielle) et Mimizan-Plage (surf, tourisme balnéaire). Le lac d'Aureilhan permet des activités nautiques douces. Économie portée par l'industrie papetière, le tourisme saisonnier, les campings, l'exploitation forestière landaise, PME de l'artisanat et du commerce.",
   ecosystemEn:
-    "Mimizan est une station balnéaire majeure de la côte d'Argent, dans le pays de Born. La commune se partage entre Mimizan-Bourg (commerce, services, papeterie industrielle) et Mimizan-Plage (surf, tourisme balnéaire). Le lac d'Aureilhan permet des activités nautiques douces. Économie portée par l'industrie papetière, le tourisme saisonnier, les campings, l'exploitation forestière landaise, TPE artisans et commerces.",
+    "Mimizan est une station balnéaire majeure de la côte d'Argent, dans le pays de Born. La commune se partage entre Mimizan-Bourg (commerce, services, papeterie industrielle) et Mimizan-Plage (surf, tourisme balnéaire). Le lac d'Aureilhan permet des activités nautiques douces. Économie portée par l'industrie papetière, le tourisme saisonnier, les campings, l'exploitation forestière landaise, PME de l'artisanat et du commerce.",
   distancesFr:
     "Biscarrosse à 35 min par D626. Bordeaux à 1h30 par D626+A63. Mont-de-Marsan à 1h15. Arcachon à 1h. Parentis-en-Born à 25 min. Aéroport Bordeaux-Mérignac à 1h30.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MIMIZAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Mimizan : diagnostic adapté aux PME du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Mimizan : diagnostic adapté aux PME du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mimizan : formations adaptées aux campings, hébergeurs, industrie papetière, commerces et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const MIMIZAN_COPY: VilleCopy = {
       en: "Implémentation IA à Mimizan : prédiction maintenance papetière, chatbot réservation camping multilingue, optimisation logistique bois, automatisation gestion saisonnière hébergements, classification documents production.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mimizan : sessions dans votre camping, usine, commerce ou en visio. Dirigeants papeterie/forestière, gérants TPE tourisme, commerçants saisonniers et artisans du pays de Born.",
-      en: "Coaching 1-to-1 à Mimizan : sessions dans votre camping, usine, commerce ou en visio. Dirigeants papeterie/forestière, gérants TPE tourisme, commerçants saisonniers et artisans du pays de Born.",
+      fr: "Coaching 1-to-1 à Mimizan : sessions dans votre camping, usine, commerce ou en visio. Dirigeants papeterie/forestière, gérants PME tourisme, commerçants saisonniers et artisans du pays de Born.",
+      en: "Coaching 1-to-1 à Mimizan : sessions dans votre camping, usine, commerce ou en visio. Dirigeants papeterie/forestière, gérants PME tourisme, commerçants saisonniers et artisans du pays de Born.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const MIMIZAN_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les commerçants et artisans mimizannais ?",
-      a: "Pour les TPE commerçants et artisans à Mimizan, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks saisonniers, agents IA communication, facturation automatisée.",
+      a: "Pour les PME du commerce et artisans à Mimizan, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks saisonniers, agents IA communication, facturation automatisée.",
     },
     {
       q: "Comment se déroule une mission depuis Bordeaux ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHEVREUSE_COPY: VilleCopy = {
   pitchFr:
-    "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de TPE artisans et commerçants, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA accompagne entreprises et indépendants.",
+    "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de PME de l'artisanat et du commerce, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de TPE artisans et commerçants, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA accompagne entreprises et indépendants.",
+    "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de PME de l'artisanat et du commerce, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevreuse (78). Nous accompagnons PME et ETI : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevreuse (78). Nous accompagnons PME et ETI : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit sur place sur mesure.",
   seoHook: "commerce proximité & tourisme vert",
   ecosystemFr:
-    "Chevreuse est un bourg historique des Yvelines au cœur du PNR de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Cadre naturel préservé, tourisme vert actif. Tissu économique : TPE artisans et commerçants, PME de services, professions libérales, hébergement touristique, agriculture et maraîchage. Communes voisines : Saint-Rémy-lès-Chevreuse, Cernay-la-Ville, Dampierre-en-Yvelines, Gif-sur-Yvette.",
+    "Chevreuse est un bourg historique des Yvelines au cœur du PNR de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Cadre naturel préservé, tourisme vert actif. Tissu économique : PME de l'artisanat et du commerce, PME de services, professions libérales, hébergement touristique, agriculture et maraîchage. Communes voisines : Saint-Rémy-lès-Chevreuse, Cernay-la-Ville, Dampierre-en-Yvelines, Gif-sur-Yvette.",
   ecosystemEn:
-    "Chevreuse est un bourg historique des Yvelines au cœur du PNR de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Cadre naturel préservé, tourisme vert actif. Tissu économique : TPE artisans et commerçants, PME de services, professions libérales, hébergement touristique, agriculture et maraîchage. Communes voisines : Saint-Rémy-lès-Chevreuse, Cernay-la-Ville, Dampierre-en-Yvelines, Gif-sur-Yvette.",
+    "Chevreuse est un bourg historique des Yvelines au cœur du PNR de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Cadre naturel préservé, tourisme vert actif. Tissu économique : PME de l'artisanat et du commerce, PME de services, professions libérales, hébergement touristique, agriculture et maraîchage. Communes voisines : Saint-Rémy-lès-Chevreuse, Cernay-la-Ville, Dampierre-en-Yvelines, Gif-sur-Yvette.",
   distancesFr:
     "Gare RER B Saint-Rémy-lès-Chevreuse à 5 min (40 min Paris). Gif-sur-Yvette à 10 min. Versailles à 25 min. Paris Porte d'Orléans à 40 min. A10/N118 à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const CHEVREUSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chevreuse : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme vert du PNR Haute Vallée de Chevreuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chevreuse : diagnostic adapté aux TPE artisans, PME de services, professions libérales et acteurs du tourisme vert du PNR Haute Vallée de Chevreuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chevreuse : diagnostic adapté aux PME artisanales, PME de services, professions libérales et acteurs du tourisme vert du PNR Haute Vallée de Chevreuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chevreuse : diagnostic adapté aux PME artisanales, PME de services, professions libérales et acteurs du tourisme vert du PNR Haute Vallée de Chevreuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chevreuse : formats adaptés commerce, bureau, gîte ou exploitation agricole. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const CHEVREUSE_COPY: VilleCopy = {
       en: "Implémentation IA à Chevreuse : CRM augmenté commerçants, gestion réservations hébergement, automatisation back-office PME, outils pilotage exploitation agricole, solutions sur mesure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chevreuse : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et acteurs du tourisme vallée de Chevreuse.",
-      en: "Coaching 1-to-1 à Chevreuse : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et acteurs du tourisme vallée de Chevreuse.",
+      fr: "Coaching 1-to-1 à Chevreuse : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et acteurs du tourisme vallée de Chevreuse.",
+      en: "Coaching 1-to-1 à Chevreuse : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et acteurs du tourisme vallée de Chevreuse.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const CHEVREUSE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hébergeurs, gîtes et structures touristiques de Chevreuse : gestion réservations IA, CRM clients, automatisation communication, outils de pilotage activité saisonnière.",
     },
     {
-      q: "Proposez-vous des formations IA pour les TPE et PME à Chevreuse ?",
-      a: "Oui, nos interventions IA sur site à Chevreuse sont adaptées aux TPE artisans, commerçants et PME de services locales. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
+      q: "Proposez-vous des formations IA pour les PME et ETI à Chevreuse ?",
+      a: "Oui, nos interventions IA sur site à Chevreuse sont adaptées aux PME artisanales, commerçants et PME de services locales. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     {
       q: "Comment se déroule une mission IA à Chevreuse ?",

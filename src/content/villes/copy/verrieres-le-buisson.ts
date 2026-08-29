@@ -5,25 +5,25 @@ import type { VilleCopy } from "./types";
 
 export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   pitchFr:
-    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, PME conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, PME conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verrières-le-Buisson (91). Nous accompagnons PME et ETI : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Essonne",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Verrières-le-Buisson (91). Nous accompagnons PME et ETI : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit sur place sur mesure.",
+  seoHook: "PME & PME Essonne",
   ecosystemFr:
-    "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Proximité Massy TGV et pôle Paris-Saclay. Tissu professions libérales, TPE conseil, PME tertiaires, commerces, artisanat.",
+    "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Proximité Massy TGV et pôle Paris-Saclay. Tissu professions libérales, PME conseil, PME tertiaires, commerces, artisanat.",
   ecosystemEn:
-    "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Proximité Massy TGV et pôle Paris-Saclay. Tissu professions libérales, TPE conseil, PME tertiaires, commerces, artisanat.",
+    "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Proximité Massy TGV et pôle Paris-Saclay. Tissu professions libérales, PME conseil, PME tertiaires, commerces, artisanat.",
   distancesFr:
     "Antony à 5 min. Massy TGV à 10 min. Paris centre à 25 min. Aéroport Paris-Orly à 15 min.",
   distancesEn:
     "Antony à 5 min. Massy TGV à 10 min. Paris centre à 25 min. Aéroport Paris-Orly à 15 min.",
   topSectorsNaf: [
     "Professions libérales",
-    "TPE conseil et services",
+    "PME conseil et services",
     "PME tertiaires",
     "Commerce de proximité",
     "Artisanat",
@@ -42,8 +42,8 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
       en: "Implémentation IA à Verrières-le-Buisson : automatisation gestion cabinet, CRM professions libérales, facturation intelligente PME, outils pilotage activité, digitalisation artisans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Verrières-le-Buisson : sessions dans votre cabinet, bureau, commerce ou en visio. Dirigeants TPE/PME, professions libérales, artisans verriérois.",
-      en: "Coaching 1-to-1 à Verrières-le-Buisson : sessions dans votre cabinet, bureau, commerce ou en visio. Dirigeants TPE/PME, professions libérales, artisans verriérois.",
+      fr: "Coaching 1-to-1 à Verrières-le-Buisson : sessions dans votre cabinet, bureau, commerce ou en visio. Dirigeants PME et ETI, professions libérales, artisans verriérois.",
+      en: "Coaching 1-to-1 à Verrières-le-Buisson : sessions dans votre cabinet, bureau, commerce ou en visio. Dirigeants PME et ETI, professions libérales, artisans verriérois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
       a: "Oui, CRM augmenté, automatisation processus administratifs, facturation intelligente, outils reporting IA, intégrations sur mesure.",
     },
     {
-      q: "Quels services pour les TPE commerçants et artisans ?",
+      q: "Quels services pour les PME du commerce et artisans ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

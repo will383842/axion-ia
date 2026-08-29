@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FOUGERES_COPY: VilleCopy = {
   pitchFr:
-    "Fougères (35), porte de la Bretagne en Ille-et-Vilaine, est dominée par l'un des plus grands châteaux forts médiévaux d'Europe et porte un riche héritage industriel : capitale historique de la chaussure, elle s'est reconvertie dans la sous-traitance électronique et l'agroalimentaire. Le tissu local mêle PME industrielles, TPE artisanales, commerces et acteurs du tourisme patrimonial. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les TPE puis les PME pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
+    "Fougères (35), porte de la Bretagne en Ille-et-Vilaine, est dominée par l'un des plus grands châteaux forts médiévaux d'Europe et porte un riche héritage industriel : capitale historique de la chaussure, elle s'est reconvertie dans la sous-traitance électronique et l'agroalimentaire. Le tissu local mêle PME industrielles, PME artisanales, commerces et acteurs du tourisme patrimonial. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME puis les ETI pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
   pitchEn:
-    "Fougères (35), porte de la Bretagne en Ille-et-Vilaine, est dominée par l'un des plus grands châteaux forts médiévaux d'Europe et porte un riche héritage industriel : capitale historique de la chaussure, elle s'est reconvertie dans la sous-traitance électronique et l'agroalimentaire. Le tissu local mêle PME industrielles, TPE artisanales, commerces et acteurs du tourisme patrimonial. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les TPE puis les PME pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
+    "Fougères (35), porte de la Bretagne en Ille-et-Vilaine, est dominée par l'un des plus grands châteaux forts médiévaux d'Europe et porte un riche héritage industriel : capitale historique de la chaussure, elle s'est reconvertie dans la sous-traitance électronique et l'agroalimentaire. Le tissu local mêle PME industrielles, PME artisanales, commerces et acteurs du tourisme patrimonial. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME puis les ETI pour automatiser les tâches répétitives et fiabiliser leurs opérations, avec un retour sur investissement mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fougères (35, Ille-et-Vilaine) et dans l'est de la Bretagne. Nous accompagnons en priorité les TPE artisanales, commerçantes et touristiques, puis les PME de sous-traitance électronique et d'agroalimentaire héritières du passé industriel de la ville. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fougères (35, Ille-et-Vilaine) et dans l'est de la Bretagne. Nous accompagnons en priorité les PME artisanales, commerçantes et touristiques, puis les PME de sous-traitance électronique et d'agroalimentaire héritières du passé industriel de la ville. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fougères (35, Ille-et-Vilaine) et dans l'est de la Bretagne. Nous accompagnons en priorité les TPE artisanales, commerçantes et touristiques, puis les PME de sous-traitance électronique et d'agroalimentaire héritières du passé industriel de la ville. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fougères (35, Ille-et-Vilaine) et dans l'est de la Bretagne. Nous accompagnons en priorité les PME artisanales, commerçantes et touristiques, puis les PME de sous-traitance électronique et d'agroalimentaire héritières du passé industriel de la ville. Notre approche : un audit ciblé des irritants, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "électronique & patrimoine breton",
   ecosystemFr:
-    "Fougères, sous-préfecture d'Ille-et-Vilaine aux portes de la Normandie et du Maine, conjugue patrimoine et industrie. Sa cité médiévale et son château fort en font une destination touristique, tandis que son tissu économique, hérité de la grande tradition de la chaussure, s'est tourné vers la sous-traitance électronique, la plasturgie et l'agroalimentaire. Autour de ces PME gravitent des TPE artisanales, des commerces de centre-ville et des acteurs du tourisme. Ce profil de petites structures, souvent dirigées par leur fondateur, est idéal pour des automatisations IA ciblées et un gain de temps concret.",
+    "Fougères, sous-préfecture d'Ille-et-Vilaine aux portes de la Normandie et du Maine, conjugue patrimoine et industrie. Sa cité médiévale et son château fort en font une destination touristique, tandis que son tissu économique, hérité de la grande tradition de la chaussure, s'est tourné vers la sous-traitance électronique, la plasturgie et l'agroalimentaire. Autour de ces PME gravitent des PME artisanales, des commerces de centre-ville et des acteurs du tourisme. Ce profil de PME, souvent dirigées par leur fondateur, est idéal pour des automatisations IA ciblées et un gain de temps concret.",
   ecosystemEn:
-    "Fougères, sous-préfecture d'Ille-et-Vilaine aux portes de la Normandie et du Maine, conjugue patrimoine et industrie. Sa cité médiévale et son château fort en font une destination touristique, tandis que son tissu économique, hérité de la grande tradition de la chaussure, s'est tourné vers la sous-traitance électronique, la plasturgie et l'agroalimentaire. Autour de ces PME gravitent des TPE artisanales, des commerces de centre-ville et des acteurs du tourisme. Ce profil de petites structures, souvent dirigées par leur fondateur, est idéal pour des automatisations IA ciblées et un gain de temps concret.",
+    "Fougères, sous-préfecture d'Ille-et-Vilaine aux portes de la Normandie et du Maine, conjugue patrimoine et industrie. Sa cité médiévale et son château fort en font une destination touristique, tandis que son tissu économique, hérité de la grande tradition de la chaussure, s'est tourné vers la sous-traitance électronique, la plasturgie et l'agroalimentaire. Autour de ces PME gravitent des PME artisanales, des commerces de centre-ville et des acteurs du tourisme. Ce profil de PME, souvent dirigées par leur fondateur, est idéal pour des automatisations IA ciblées et un gain de temps concret.",
   distancesFr:
     "Rennes et sa gare TGV à 1h (55 km), Saint-Malo à 1h, Le Mont-Saint-Michel à 45 min, Laval à 50 min. Aéroport de Rennes à 60 km. Paris à 3h15 via Rennes. Nos consultants se déplacent sur site depuis Rennes, frais indiqués séparément, ou interviennent en visio.",
   distancesEn:
@@ -42,8 +42,8 @@ export const FOUGERES_COPY: VilleCopy = {
       en: "Implémentation IA à Fougères : contrôle qualité par vision pour l'électronique, classification de documents techniques, automatisation de la traçabilité agroalimentaire, agents conversationnels pour le tourisme, intégrés à vos outils existants.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Fougères : sessions individuelles avec le dirigeant ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les TPE qui veulent gagner du temps sans bouleverser leur organisation.",
-      en: "Coaching un-à-un à Fougères : sessions individuelles avec le dirigeant ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les TPE qui veulent gagner du temps sans bouleverser leur organisation.",
+      fr: "Coaching un-à-un à Fougères : sessions individuelles avec le dirigeant ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les PME qui veulent gagner du temps sans bouleverser leur organisation.",
+      en: "Coaching un-à-un à Fougères : sessions individuelles avec le dirigeant ou le responsable de production, dans votre atelier, commerce ou en visio. Idéal pour les PME qui veulent gagner du temps sans bouleverser leur organisation.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Fougères : site vitrine ou outil métier sur mesure dopé à l'IA pour artisans, commerces et acteurs touristiques de la cité médiévale — réservations en ligne, demandes de devis intelligentes, visibilité locale et patrimoniale renforcée.",
@@ -53,12 +53,12 @@ export const FOUGERES_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Fougères des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture d'Ille-et-Vilaine où le château fort médiéval — l'un des plus vastes d'Europe — attire les visiteurs, et où l'économie mêle sous-traitance électronique, agroalimentaire (premier employeur du bassin), plasturgie, artisanat et commerce de centre-ville. On travaille aussi bien les TPE de la cité médiévale et de la rue Nationale que les PME du parc d'activités de l'Aumaillerie, à La Selle-en-Luitré, et les acteurs touristiques. On fait tout : UX/UI, e-commerce multi-CMS, applications métier et plateformes IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fougères, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Fougères des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture d'Ille-et-Vilaine où le château fort médiéval — l'un des plus vastes d'Europe — attire les visiteurs, et où l'économie mêle sous-traitance électronique, agroalimentaire (premier employeur du bassin), plasturgie, artisanat et commerce de centre-ville. On travaille aussi bien les PME de la cité médiévale et de la rue Nationale que les PME du parc d'activités de l'Aumaillerie, à La Selle-en-Luitré, et les acteurs touristiques. On fait tout : UX/UI, e-commerce multi-CMS, applications métier et plateformes IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fougères, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Héritage industriel reconverti dans la sous-traitance électronique et la plasturgie, héritier de la capitale historique de la chaussure : pour ces PME d'atelier, souvent implantées au parc de l'Aumaillerie, on construit des portails de suivi de production, des outils de devis et de traçabilité, et on greffe du contrôle qualité par vision et de la classification de documents techniques sur l'existant, sans bouleverser leur SI.",
           "Agroalimentaire, premier employeur du pays de Fougères : pour ces sites de production et leurs filières, on développe des plateformes de traçabilité, des portails fournisseurs et des e-commerce B2B, et on automatise les flux documentaires (fiches techniques, certificats) avec de la recherche sémantique branchée sur vos référentiels qualité.",
           "Tourisme patrimonial autour du château fort, de la cité médiévale et du jardin public : nos sites vitrines et nos chatbots RAG sont multilingues par défaut, taillés pour l'hôtellerie-restauration, les gîtes et les acteurs culturels qui accueillent une clientèle de passage venue de Saint-Malo, du Mont-Saint-Michel ou de Rennes.",
-          "Tissu dense de TPE artisanales, de BTP-second œuvre et de commerce de détail de centre-ville, souvent dirigées par leur fondateur : on greffe l'IA sans refonte coûteuse (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pour vendre au-delà du pays de Fougères, jusqu'aux portes de la Normandie et du Maine.",
+          "Tissu dense de PME artisanales, de BTP-second œuvre et de commerce de détail de centre-ville, souvent dirigées par leur fondateur : on greffe l'IA sans refonte coûteuse (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pour vendre au-delà du pays de Fougères, jusqu'aux portes de la Normandie et du Maine.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const FOUGERES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, réservation en ligne, demande de devis intelligente) sur le site existant d'un artisan, d'un commerce de la rue Nationale ou d'un hôtel-restaurant de la cité médiévale, sans refonte. Mise en ligne sans downtime.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,12 +133,12 @@ export const FOUGERES_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison touristique ou en plein cycle de commandes d'atelier. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Tout reste transférable à un prestataire local — Fougères, Vitré, Rennes — ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Fougères des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture d'Ille-et-Vilaine où le château fort médiéval — l'un des plus vastes d'Europe — attire les visiteurs, et où l'économie mêle sous-traitance électronique, agroalimentaire (premier employeur du bassin), plasturgie, artisanat et commerce de centre-ville. On travaille aussi bien les TPE de la cité médiévale et de la rue Nationale que les PME du parc d'activités de l'Aumaillerie, à La Selle-en-Luitré, et les acteurs touristiques. On fait tout : UX/UI, e-commerce multi-CMS, applications métier et plateformes IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fougères, itérations à distance, sans verrou ni abonnement imposé.",
+        hero: "Axion-IA conçoit et augmente à Fougères des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une sous-préfecture d'Ille-et-Vilaine où le château fort médiéval — l'un des plus vastes d'Europe — attire les visiteurs, et où l'économie mêle sous-traitance électronique, agroalimentaire (premier employeur du bassin), plasturgie, artisanat et commerce de centre-ville. On travaille aussi bien les PME de la cité médiévale et de la rue Nationale que les PME du parc d'activités de l'Aumaillerie, à La Selle-en-Luitré, et les acteurs touristiques. On fait tout : UX/UI, e-commerce multi-CMS, applications métier et plateformes IA-native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fougères, itérations à distance, sans verrou ni abonnement imposé.",
         whyHere: [
           "Héritage industriel reconverti dans la sous-traitance électronique et la plasturgie, héritier de la capitale historique de la chaussure : pour ces PME d'atelier, souvent implantées au parc de l'Aumaillerie, on construit des portails de suivi de production, des outils de devis et de traçabilité, et on greffe du contrôle qualité par vision et de la classification de documents techniques sur l'existant, sans bouleverser leur SI.",
           "Agroalimentaire, premier employeur du pays de Fougères : pour ces sites de production et leurs filières, on développe des plateformes de traçabilité, des portails fournisseurs et des e-commerce B2B, et on automatise les flux documentaires (fiches techniques, certificats) avec de la recherche sémantique branchée sur vos référentiels qualité.",
           "Tourisme patrimonial autour du château fort, de la cité médiévale et du jardin public : nos sites vitrines et nos chatbots RAG sont multilingues par défaut, taillés pour l'hôtellerie-restauration, les gîtes et les acteurs culturels qui accueillent une clientèle de passage venue de Saint-Malo, du Mont-Saint-Michel ou de Rennes.",
-          "Tissu dense de TPE artisanales, de BTP-second œuvre et de commerce de détail de centre-ville, souvent dirigées par leur fondateur : on greffe l'IA sans refonte coûteuse (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pour vendre au-delà du pays de Fougères, jusqu'aux portes de la Normandie et du Maine.",
+          "Tissu dense de PME artisanales, de BTP-second œuvre et de commerce de détail de centre-ville, souvent dirigées par leur fondateur : on greffe l'IA sans refonte coûteuse (widget, plugin, API) ou on monte une boutique e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop, Magento — pour vendre au-delà du pays de Fougères, jusqu'aux portes de la Normandie et du Maine.",
         ],
         methodology: [
           {
@@ -174,12 +168,6 @@ export const FOUGERES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, réservation en ligne, demande de devis intelligente) sur le site existant d'un artisan, d'un commerce de la rue Nationale ou d'un hôtel-restaurant de la cité médiévale, sans refonte. Mise en ligne sans downtime.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -233,7 +221,7 @@ export const FOUGERES_COPY: VilleCopy = {
       a: "Oui. Nous couvrons Fougères et son pays (Vitré, Saint-Aubin-du-Cormier) jusqu'aux portes de la Normandie. Nos consultants se déplacent sur site depuis Rennes, à 1h, ou interviennent en visio selon votre besoin.",
     },
     {
-      q: "Accompagnez-vous les TPE artisanales, commerces et acteurs du tourisme ?",
+      q: "Accompagnez-vous les PME artisanales, commerces et acteurs du tourisme ?",
       a: "C'est notre priorité. Pour les artisans, commerçants et hôtels-restaurants de la cité médiévale, nous automatisons réservations, devis et relances, et nous formons le dirigeant à piloter ces outils sans dépendance à un prestataire.",
     },
     {
@@ -242,7 +230,7 @@ export const FOUGERES_COPY: VilleCopy = {
     },
     {
       q: "Faut-il un gros budget informatique pour démarrer à Fougères ?",
-      a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un grand chantier coûteux.",
+      a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une PME comme à une PME, pas un grand chantier coûteux.",
     },
     {
       q: "Comment se passe une mission depuis Rennes ?",

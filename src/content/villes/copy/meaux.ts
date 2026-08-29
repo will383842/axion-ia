@@ -9,13 +9,13 @@ import type { VilleCopy } from "./types";
 
 export const MEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Meaux (56 905 habitants, sous-préfecture de Seine-et-Marne) dans l'adoption concrète de l'IA. Ancienne capitale de la Brie, la ville reste liée au terroir fromager du brie de Meaux et concentre commerces, industries, services aux entreprises et activités agroalimentaires à 41 km à l'est de Paris. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi production et reporting. Notre approche s'adapte aussi aux ETI du bassin meldois.",
+    "Axion-IA accompagne les PME et ETI de Meaux (56 905 habitants, sous-préfecture de Seine-et-Marne) dans l'adoption concrète de l'IA. Ancienne capitale de la Brie, la ville reste liée au terroir fromager du brie de Meaux et concentre commerces, industries, services aux entreprises et activités agroalimentaires à 41 km à l'est de Paris. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi production et reporting. Notre approche s'adapte aussi aux ETI du bassin meldois.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Meaux (56 905 habitants, sous-préfecture de Seine-et-Marne) dans l'adoption concrète de l'IA. Ancienne capitale de la Brie, la ville reste liée au terroir fromager du brie de Meaux et concentre commerces, industries, services aux entreprises et activités agroalimentaires à 41 km à l'est de Paris. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi production et reporting. Notre approche s'adapte aussi aux ETI du bassin meldois.",
+    "Axion-IA accompagne les PME et ETI de Meaux (56 905 habitants, sous-préfecture de Seine-et-Marne) dans l'adoption concrète de l'IA. Ancienne capitale de la Brie, la ville reste liée au terroir fromager du brie de Meaux et concentre commerces, industries, services aux entreprises et activités agroalimentaires à 41 km à l'est de Paris. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi production et reporting. Notre approche s'adapte aussi aux ETI du bassin meldois.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Meaux (sous-préfecture de Seine-et-Marne) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (gestion commandes agroalimentaires, devis artisans, suivi production, relances clients) avant toute Formation 4 h dès {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   seoHook: "agroalimentaire briard & commerce de proximité",
   ecosystemFr:
     "Sous-préfecture de Seine-et-Marne, Meaux structure le bassin économique briard avec une économie diversifiée mêlant filière agroalimentaire (brie de Meaux AOP, moutarde), commerce, industrie légère, construction et services aux entreprises. La ligne P du Transilien relie Meaux à Paris-Est en 25 minutes et l'autoroute A4 dessert la zone via la bretelle A140, ouvrant le territoire vers Marne-la-Vallée et la métropole parisienne. Le port fluvial sur la Marne complète l'offre logistique.",
@@ -47,8 +47,8 @@ export const MEAUX_COPY: VilleCopy = {
       en: "Implémentation IA sur site à Meaux à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Session 1-to-1 dirigeant TPE/PME à Meaux dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
-      en: "Session 1-to-1 dirigeant TPE/PME à Meaux dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      fr: "Session 1-to-1 dirigeants de PME et d'ETI à Meaux dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeants de PME et d'ETI à Meaux dès {{price:intervention-dirigeants|flat}} : feuille de route IA priorisée sur 90 jours, sans jargon.",
     },
   },
   services: {
@@ -59,7 +59,7 @@ export const MEAUX_COPY: VilleCopy = {
           "Filière agroalimentaire briarde AOP : pour des producteurs comme la Société Fromagère de Meaux Saint-Faron (Brie de Meaux et Brie de Melun AOP) ou la Moutarderie Pommery, nous bâtissons des sites vitrine et e-commerce avec traçabilité lot/affinage, fiches produit enrichies IA et tunnel de vente conforme aux mentions AOP — multi-CMS (WooCommerce, Shopify, Prestashop) ou plateforme custom.",
           "Pôle santé GHEF : autour du Grand Hôpital de l'Est Francilien (siège rue Saint-Fiacre, plusieurs milliers de salariés), nous outillons prestataires médicaux, cliniques et sous-traitants avec des portails et SaaS à recherche sémantique et chatbot RAG, en respectant l'hébergement de données de santé et le RGPD.",
           "Logistique et e-commerce du Parc d'Activités du Pays de Meaux : pour les acteurs de la RN3/A140 (Gaches Chimie, plateformes C&A et Prologis, enseignes des Saisons de Meaux), nous développons portails B2B, suivi de commandes, devis automatisés et intégrations ERP/WMS pilotées par l'IA.",
-          "Artisans, commerçants et TPE/PME du bassin meldois : pour les entreprises de la ZAE La Hayette à Mareuil-lès-Meaux et du centre-ville, nous créons des sites mobiles-first rapides (UX/UI soignée, CLS nul) avec prise de rendez-vous, devis et relances clients automatisés.",
+          "Artisans, commerçants et PME et ETI du bassin meldois : pour les entreprises de la ZAE La Hayette à Mareuil-lès-Meaux et du centre-ville, nous créons des sites mobiles-first rapides (UX/UI soignée, CLS nul) avec prise de rendez-vous, devis et relances clients automatisés.",
         ],
         methodology: [
           {
@@ -89,12 +89,6 @@ export const MEAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA essentiel",
-            detail:
-              "Pour artisans, commerçants et producteurs du centre-ville de Meaux ou de la ZAE La Hayette : site mobile-first, boutique multi-CMS, chatbot FAQ, prise de rendez-vous et devis automatisés.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
@@ -176,12 +170,6 @@ export const MEAUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Essential showcase or AI e-commerce site",
-            detail:
-              "For craftspeople, retailers and producers in Meaux town center or the La Hayette business zone: mobile-first site, multi-CMS shop, FAQ chatbot, booking and automated quotes.",
-          },
-          {
             sizeLabel: "PME",
             price: "Business platform or advanced e-commerce",
             detail:
@@ -235,7 +223,7 @@ export const MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Meaux ?",
-      a: "Pour les TPE et PME de Meaux, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les PME et ETI de Meaux, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous Trilport, Villenoy et Nanteuil-lès-Meaux depuis Meaux ?",
@@ -251,7 +239,7 @@ export const MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des sessions IA pour dirigeants à Meaux ?",
-      a: "Oui, nos sessions 1-to-1 dirigeants à Meaux démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Meaux démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de PME ou ETI.",
     },
   ],
 };

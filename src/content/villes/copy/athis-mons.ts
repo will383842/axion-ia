@@ -9,13 +9,13 @@ import type { VilleCopy } from "./types";
 
 export const ATHIS_MONS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Athis-Mons (36 613 habitants, Essonne) dans l'adoption concrète de l'IA. Située à 12 km au sud de Paris, la commune accueille 13,6 % de l'emprise de l'aéroport Paris-Orly sur son territoire et regroupe commerces de proximité, logistique aéroportuaire et services. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi client et reporting. Notre approche s'adapte aussi aux ETI implantées dans le territoire Grand-Orly Seine Bièvre.",
+    "Axion-IA accompagne les PME et ETI d'Athis-Mons (36 613 habitants, Essonne) dans l'adoption concrète de l'IA. Située à 12 km au sud de Paris, la commune accueille 13,6 % de l'emprise de l'aéroport Paris-Orly sur son territoire et regroupe commerces de proximité, logistique aéroportuaire et services. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi client et reporting. Notre approche s'adapte aussi aux ETI implantées dans le territoire Grand-Orly Seine Bièvre.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Athis-Mons (36 613 habitants, Essonne) dans l'adoption concrète de l'IA. Située à 12 km au sud de Paris, la commune accueille 13,6 % de l'emprise de l'aéroport Paris-Orly sur son territoire et regroupe commerces de proximité, logistique aéroportuaire et services. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi client et reporting. Notre approche s'adapte aussi aux ETI implantées dans le territoire Grand-Orly Seine Bièvre.",
+    "Axion-IA accompagne les PME et ETI d'Athis-Mons (36 613 habitants, Essonne) dans l'adoption concrète de l'IA. Située à 12 km au sud de Paris, la commune accueille 13,6 % de l'emprise de l'aéroport Paris-Orly sur son territoire et regroupe commerces de proximité, logistique aéroportuaire et services. Nous intervenons sur site, en code custom, pour automatiser devis, relances, suivi client et reporting. Notre approche s'adapte aussi aux ETI implantées dans le territoire Grand-Orly Seine Bièvre.",
   directAnswerFr:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Formation 4 h à partir de {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Formation 4 h à partir de {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   directAnswerEn:
-    "Axion-IA, cabinet IA pour TPE et PME francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Formation 4 h à partir de {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
+    "Axion-IA, cabinet IA pour PME et ETI francophones, se déplace à Athis-Mons (Essonne, métropole du Grand Paris) pour des audits, interventions ciblées et implémentations sur mesure. Nous démarrons par un Audit sur place 4 h à {{price:audit-flash|flat}} qui cartographie les processus automatisables (saisie commandes, suivi logistique aéroportuaire Orly, planning équipes terrain) avant toute Formation 4 h à partir de {{price:intervention-4h|flat}}. Nos livrables sont en code custom — pas de no-code — et respectent strictement le RGPD.",
   seoHook: "commerce détail & logistique aéroportuaire",
   ecosystemFr:
     "Athis-Mons s'étend sur 8,56 km² avec une densité de 4 277 hab/km² et appartient à l'Établissement public territorial Grand-Orly Seine Bièvre, au sein de la métropole du Grand Paris. Son tissu économique combine commerces de proximité, restauration, services aux entreprises et un poids important de la logistique liée à l'aéroport Paris-Orly. La gare d'Athis-Mons sur le RER C et l'arrivée du tramway T7 en 2013 ouvrent le bassin d'emploi vers Villejuif et Paris.",
@@ -47,8 +47,8 @@ export const ATHIS_MONS_COPY: VilleCopy = {
       en: "Implémentation IA sur site à Athis-Mons à partir de {{price:impl-poc|entry}} : intégration aux outils existants (CRM, ERP, comptabilité) avec passation à l'équipe.",
     },
     unAUn: {
-      fr: "Session 1-to-1 dirigeant TPE/PME à Athis-Mons dès {{price:intervention-dirigeants|flat}} : feuille de route IA prioritisée sur 90 jours, sans jargon.",
-      en: "Session 1-to-1 dirigeant TPE/PME à Athis-Mons dès {{price:intervention-dirigeants|flat}} : feuille de route IA prioritisée sur 90 jours, sans jargon.",
+      fr: "Session 1-to-1 dirigeants de PME et d'ETI à Athis-Mons dès {{price:intervention-dirigeants|flat}} : feuille de route IA prioritisée sur 90 jours, sans jargon.",
+      en: "Session 1-to-1 dirigeants de PME et d'ETI à Athis-Mons dès {{price:intervention-dirigeants|flat}} : feuille de route IA prioritisée sur 90 jours, sans jargon.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
         hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA à Athis-Mons (Essonne, EPT Grand-Orly Seine Bièvre), une commune dont la signature économique est unique en Île-de-France : elle accueille au 9 rue de Champagne le CRNA Nord (Centre en route de la navigation aérienne, DSNA/DGAC), la DSAC-Nord et le SNA Région Parisienne, à côté de l'emprise de Paris-Orly dont 13,6 % se trouve sur son territoire. Autour de ce pôle gravitent sous-traitants aéronautiques, services aéroportuaires, et un tissu de commerce de détail (centre commercial Carrefour Athis-Mons, commerces du Pont d'Athis). Nous construisons pour ces acteurs des portails métier, des e-commerces multi-CMS et des outils internes avec chatbot RAG, recherche sémantique et agents — code custom, hébergement UE/RGPD, zéro lock-in éditeur.",
         whyHere: [
           "Athis-Mons est un point de gouvernance du ciel français : CRNA Nord, DSAC-Nord et SNA Région Parisienne y sont co-implantés. L'écosystème de prestataires, bureaux d'études et services tournés vers l'aviation civile et Orly a des besoins de portails documentaires et d'outils internes que nous savons sécuriser et structurer.",
-          "13,6 % de l'emprise de l'aéroport Paris-Orly (Groupe ADP) est sur la commune : les TPE/PME de la logistique, du fret, de l'assistance et des services aéroportuaires ont besoin de plateformes de suivi opérationnel, de prise de rendez-vous et de devis en ligne adaptées à des flux 24/7.",
+          "13,6 % de l'emprise de l'aéroport Paris-Orly (Groupe ADP) est sur la commune : les PME et ETI de la logistique, du fret, de l'assistance et des services aéroportuaires ont besoin de plateformes de suivi opérationnel, de prise de rendez-vous et de devis en ligne adaptées à des flux 24/7.",
           "Le commerce de détail local — centre commercial Carrefour Athis-Mons et ses ~40 enseignes, commerçants du Pont d'Athis et des quartiers — relève d'e-commerce multi-CMS (WooCommerce, PrestaShop, Shopify) et de vitrines mobiles rapides, avec click-and-collect et IA de recommandation.",
           "Desserte RER C (gare d'Athis-Mons) et tramway T7 vers Villejuif : nous intervenons sur site sans surcoût dans tout le bassin Grand-Orly Seine Bièvre (Juvisy-sur-Orge, Paray-Vieille-Poste, Savigny-sur-Orge, Ablon-sur-Seine, Villeneuve-le-Roi).",
         ],
@@ -90,12 +90,6 @@ export const ATHIS_MONS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Vitrine ou e-commerce mono-CMS",
-            detail:
-              "Pour commerçants du centre commercial Carrefour Athis-Mons, indépendants du Pont d'Athis et petits prestataires : site vitrine ou boutique WooCommerce/Shopify mobile-first, prise de rendez-vous, premiers automatismes IA (FAQ, recommandation).",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier + e-commerce avancé",
             detail:
@@ -117,7 +111,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
         faq: [
           {
             q: "Travaillez-vous avec les prestataires liés au pôle aviation civile et à Orly d'Athis-Mons ?",
-            a: "Oui. Athis-Mons accueille le CRNA Nord, la DSAC-Nord et le SNA Région Parisienne (9 rue de Champagne), et 13,6 % de l'emprise de Paris-Orly est sur la commune. Nous concevons des portails documentaires, outils de suivi et SaaS pour les TPE/PME de cet écosystème — bureaux d'études, sous-traitants, services aéroportuaires — en isolant les données sensibles et en hébergeant en UE.",
+            a: "Oui. Athis-Mons accueille le CRNA Nord, la DSAC-Nord et le SNA Région Parisienne (9 rue de Champagne), et 13,6 % de l'emprise de Paris-Orly est sur la commune. Nous concevons des portails documentaires, outils de suivi et SaaS pour les PME et ETI de cet écosystème — bureaux d'études, sous-traitants, services aéroportuaires — en isolant les données sensibles et en hébergeant en UE.",
           },
           {
             q: "Pouvez-vous créer un e-commerce pour un commerce d'Athis-Mons ?",
@@ -176,12 +170,6 @@ export const ATHIS_MONS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Storefront or single-CMS e-commerce",
-            detail:
-              "For Carrefour Athis-Mons merchants, Pont d'Athis freelancers and small providers: mobile-first storefront or WooCommerce/Shopify shop, booking, first AI automations (FAQ, recommendation).",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform + advanced e-commerce",
             detail:
@@ -235,7 +223,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Athis-Mons ?",
-      a: "Pour les TPE et PME d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les PME et ETI d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
     },
     {
       q: "Couvrez-vous aussi Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine depuis Athis-Mons ?",
@@ -247,11 +235,11 @@ export const ATHIS_MONS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les entreprises liées à l'aéroport Paris-Orly ?",
-      a: "Oui, l'aéroport Paris-Orly couvre 13,6 % du territoire d'Athis-Mons. Nous accompagnons régulièrement des TPE et PME de la logistique, de la restauration aéroportuaire et des services connexes sur l'automatisation de leurs flux opérationnels.",
+      a: "Oui, l'aéroport Paris-Orly couvre 13,6 % du territoire d'Athis-Mons. Nous accompagnons régulièrement des PME et ETI de la logistique, de la restauration aéroportuaire et des services connexes sur l'automatisation de leurs flux opérationnels.",
     },
     {
       q: "Proposez-vous des sessions IA pour dirigeants à Athis-Mons ?",
-      a: "Oui, nos sessions 1-to-1 dirigeants à Athis-Mons démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de TPE ou PME.",
+      a: "Oui, nos sessions 1-to-1 dirigeants à Athis-Mons démarrent à {{price:intervention-dirigeants|flat}} et débouchent sur une feuille de route IA priorisée sur 90 jours, alignée sur vos contraintes de PME ou ETI.",
     },
   ],
 };

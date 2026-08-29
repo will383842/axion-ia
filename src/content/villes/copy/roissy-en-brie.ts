@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const ROISSY_EN_BRIE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Roissy-en-Brie (23 229 habitants, Seine-et-Marne), commune de Paris-Vallée de la Marne située à 25 km au sud-est de Paris. Le recensement 2019 a dénombré 1 107 unités économiques locales, principalement en commerce, transport, hôtellerie-restauration, construction et industrie légère. Nous intervenons sur site pour automatiser devis, relances, reporting et suivi de chantier avec du code IA sur mesure, sans no-code générique.",
+    "Axion-IA accompagne les PME et ETI de Roissy-en-Brie (23 229 habitants, Seine-et-Marne), commune de Paris-Vallée de la Marne située à 25 km au sud-est de Paris. Le recensement 2019 a dénombré 1 107 unités économiques locales, principalement en commerce, transport, hôtellerie-restauration, construction et industrie légère. Nous intervenons sur site pour automatiser devis, relances, reporting et suivi de chantier avec du code IA sur mesure, sans no-code générique.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Roissy-en-Brie (23 229 habitants, Seine-et-Marne), commune de Paris-Vallée de la Marne située à 25 km au sud-est de Paris. Le recensement 2019 a dénombré 1 107 unités économiques locales, principalement en commerce, transport, hôtellerie-restauration, construction et industrie légère. Nous intervenons sur site pour automatiser devis, relances, reporting et suivi de chantier avec du code IA sur mesure, sans no-code générique.",
+    "Axion-IA accompagne les PME et ETI de Roissy-en-Brie (23 229 habitants, Seine-et-Marne), commune de Paris-Vallée de la Marne située à 25 km au sud-est de Paris. Le recensement 2019 a dénombré 1 107 unités économiques locales, principalement en commerce, transport, hôtellerie-restauration, construction et industrie légère. Nous intervenons sur site pour automatiser devis, relances, reporting et suivi de chantier avec du code IA sur mesure, sans no-code générique.",
   directAnswerFr:
-    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à {{price:intervention-4h|flat}} pour le format collectif (1 journée), adapté aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
+    "À Roissy-en-Brie, Axion-IA propose aux PME et ETI locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à {{price:intervention-4h|flat}} pour le format collectif (1 journée), adapté aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
   directAnswerEn:
-    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à {{price:intervention-4h|flat}} pour le format collectif (1 journée), adapté aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
+    "À Roissy-en-Brie, Axion-IA propose aux PME et ETI locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à {{price:intervention-4h|flat}} pour le format collectif (1 journée), adapté aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Roissy-en-Brie est limitrophe d'Émerainville, Croissy-Beaubourg, Pontault-Combault, Pontcarré et Ozoir-la-Ferrière. La commune fait partie de l'agglomération Paris-Vallée de la Marne. 45 % du territoire reste couvert par les bois et forêts, ce qui structure une urbanisation maîtrisée. Une importante station de transformation électrique EDF-RTE (400 kV / 225 kV) est implantée sur la commune. Le tissu économique local repose sur le commerce, le transport routier, la restauration et la construction, en lien direct avec les zones d'activités de Pontault-Combault et Émerainville.",
@@ -31,8 +31,8 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
-      en: "Audit IA sur site à Roissy-en-Brie pour TPE/PME du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
+      fr: "Audit IA sur site à Roissy-en-Brie pour PME et ETI du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
+      en: "Audit IA sur site à Roissy-en-Brie pour PME et ETI du commerce, transport ou construction — cartographie des processus automatisables (devis, planning chantier, relances, reporting) avec ROI chiffré. Audit sur place dès {{price:audit-flash|flat}} (4 h).",
     },
     interventions: {
       fr: "Intervention ciblée à Roissy-en-Brie (RER E branche Tournan ou A4/RN 104) pour automatiser un workflow critique : devis, relances clients, extraction de bons de commande. Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -43,8 +43,8 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
       en: "Implémentation de solutions IA sur mesure à Roissy-en-Brie — code propriétaire intégré à vos outils existants (ERP, CRM, logiciel métier BTP ou transport). Pas de no-code, pas de dépendance fournisseur tiers. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI à Roissy-en-Brie — stratégie IA, cadrage roadmap, formation aux outils. Sessions sur site dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
         whyHere: [
           "Commerce de détail dominant et clientèle de proximité reliée par le RER E (gare de Roissy-en-Brie, branche Tournan) : entre le centre-ville et le parc commercial Gecko, le terrain est idéal pour des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et des parcours click-and-collect augmentés à l'IA, plutôt que des sites vitrines figés qui ne convertissent pas la demande locale.",
           "Forte densité de transporteurs routiers, de logisticiens et d'artisans du BTP, ancrée sur la Z.I. des 50 Arpents (pôle logistique d'une dizaine d'hectares, plus d'une centaine d'entreprises) et les zones voisines de Pontault-Combault et Émerainville : on greffe des automatisations métier — extraction de bons de commande, suivi de chantier, suivi de tournées, devis — directement sur vos logiciels existants, sans refonte coûteuse.",
-          "Tissu quasi exclusivement TPE/PME de 1 à 50 salariés (commerce, restauration, industrie légère du Techniparc de la ZAC de la Vallée) : on branche une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous) sur l'existant via widget, API ou plugin, ou on reconstruit une plateforme IA-native sur mesure selon l'ambition et le budget.",
+          "Tissu quasi exclusivement PME et ETI de 1 à 50 salariés (commerce, restauration, industrie légère du Techniparc de la ZAC de la Vallée) : on branche une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous) sur l'existant via widget, API ou plugin, ou on reconstruit une plateforme IA-native sur mesure selon l'ambition et le budget.",
           "Proximité immédiate du pôle Marne-la-Vallée-Chessy (à environ 10 km) et de l'A4/RN 104 : flux de visiteurs, de touristes et de clients à capter — nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour le commerce, l'hôtellerie-restauration et les services de proximité qui captent cette clientèle de passage.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce du centre-ville, d'un restaurant ou d'un artisan roisséen, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -140,7 +134,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
         whyHere: [
           "Commerce de détail dominant et clientèle de proximité reliée par le RER E (gare de Roissy-en-Brie, branche Tournan) : entre le centre-ville et le parc commercial Gecko, le terrain est idéal pour des boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop) et des parcours click-and-collect augmentés à l'IA, plutôt que des sites vitrines figés qui ne convertissent pas la demande locale.",
           "Forte densité de transporteurs routiers, de logisticiens et d'artisans du BTP, ancrée sur la Z.I. des 50 Arpents (pôle logistique d'une dizaine d'hectares, plus d'une centaine d'entreprises) et les zones voisines de Pontault-Combault et Émerainville : on greffe des automatisations métier — extraction de bons de commande, suivi de chantier, suivi de tournées, devis — directement sur vos logiciels existants, sans refonte coûteuse.",
-          "Tissu quasi exclusivement TPE/PME de 1 à 50 salariés (commerce, restauration, industrie légère du Techniparc de la ZAC de la Vallée) : on branche une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous) sur l'existant via widget, API ou plugin, ou on reconstruit une plateforme IA-native sur mesure selon l'ambition et le budget.",
+          "Tissu quasi exclusivement PME et ETI de 1 à 50 salariés (commerce, restauration, industrie légère du Techniparc de la ZAC de la Vallée) : on branche une brique IA (chatbot RAG, recherche sémantique, prise de rendez-vous) sur l'existant via widget, API ou plugin, ou on reconstruit une plateforme IA-native sur mesure selon l'ambition et le budget.",
           "Proximité immédiate du pôle Marne-la-Vallée-Chessy (à environ 10 km) et de l'A4/RN 104 : flux de visiteurs, de touristes et de clients à capter — nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour le commerce, l'hôtellerie-restauration et les services de proximité qui captent cette clientèle de passage.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, click-and-collect) sur le site existant d'un commerce du centre-ville, d'un restaurant ou d'un artisan roisséen, en quelques semaines et sans refonte de l'existant.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -243,7 +231,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne-t-il à Roissy-en-Brie ?",
-      a: "Le tissu local de Roissy-en-Brie (commerce de détail, transport terrestre, travaux de construction, restauration, industrie manufacturière) correspond à notre cœur de cible : TPE et PME de 1 à 50 salariés cherchant à industrialiser leurs processus.",
+      a: "Le tissu local de Roissy-en-Brie (commerce de détail, transport terrestre, travaux de construction, restauration, industrie manufacturière) correspond à notre cœur de cible : PME et ETI de 1 à 50 salariés cherchant à industrialiser leurs processus.",
     },
     {
       q: "Intervenez-vous dans les communes limitrophes de Roissy-en-Brie ?",

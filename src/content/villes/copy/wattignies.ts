@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const WATTIGNIES_COPY: VilleCopy = {
   pitchFr:
-    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole lilloise sud.",
+    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : PME et ETI de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole lilloise sud.",
   pitchEn:
-    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole lilloise sud.",
+    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : PME et ETI de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole lilloise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattignies (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattignies (59). Nous accompagnons PME et ETI : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattignies (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattignies (59). Nous accompagnons PME et ETI : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
   seoHook: "artisanat bâtiment & professions libérales",
   ecosystemFr:
-    "Wattignies est une commune résidentielle de la banlieue sud de Lille (MEL), entre Faches-Thumesnil et Seclin. L'économie locale repose sur un tissu de TPE/PME de services aux entreprises (comptabilité, conseil, IT), des commerces de proximité bien implantés (centre-ville et zones commerciales), des artisans du bâtiment, des professions libérales (santé, juridique) et des prestataires B2B desservant la métropole lilloise. La proximité de l'autoroute A1 et de l'aéroport Lille-Lesquin facilite la mobilité professionnelle.",
+    "Wattignies est une commune résidentielle de la banlieue sud de Lille (MEL), entre Faches-Thumesnil et Seclin. L'économie locale repose sur un tissu de PME et ETI de services aux entreprises (comptabilité, conseil, IT), des commerces de proximité bien implantés (centre-ville et zones commerciales), des artisans du bâtiment, des professions libérales (santé, juridique) et des prestataires B2B desservant la métropole lilloise. La proximité de l'autoroute A1 et de l'aéroport Lille-Lesquin facilite la mobilité professionnelle.",
   ecosystemEn:
-    "Wattignies est une commune résidentielle de la banlieue sud de Lille (MEL), entre Faches-Thumesnil et Seclin. L'économie locale repose sur un tissu de TPE/PME de services aux entreprises (comptabilité, conseil, IT), des commerces de proximité bien implantés (centre-ville et zones commerciales), des artisans du bâtiment, des professions libérales (santé, juridique) et des prestataires B2B desservant la métropole lilloise. La proximité de l'autoroute A1 et de l'aéroport Lille-Lesquin facilite la mobilité professionnelle.",
+    "Wattignies est une commune résidentielle de la banlieue sud de Lille (MEL), entre Faches-Thumesnil et Seclin. L'économie locale repose sur un tissu de PME et ETI de services aux entreprises (comptabilité, conseil, IT), des commerces de proximité bien implantés (centre-ville et zones commerciales), des artisans du bâtiment, des professions libérales (santé, juridique) et des prestataires B2B desservant la métropole lilloise. La proximité de l'autoroute A1 et de l'aéroport Lille-Lesquin facilite la mobilité professionnelle.",
   distancesFr:
     "Lille centre à 12 min, Gare Lille-Flandres à 15 min, Gare Lille-Europe à 18 min, Aéroport Lille-Lesquin à 12 min, Seclin à 8 min. Accès A1 (Paris 1h TGV). Bus Ilévia vers Lille et communes voisines.",
   distancesEn:
@@ -30,20 +30,20 @@ export const WATTIGNIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Wattignies : diagnostic adapté aux PME et ETI de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Wattignies : diagnostic adapté aux PME et ETI de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wattignies : formats adaptés à la PME de services, au commerce, à l'artisan du bâtiment ou au professionnel libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
       en: "Interventions IA sur site à Wattignies : formats adaptés à la PME de services, au commerce, à l'artisan du bâtiment ou au professionnel libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Wattignies : copilotes comptabilité et gestion TPE, automatisation devis-facturation artisans bâtiment, agents IA secrétariat médical et juridique, CRM augmenté prestataires B2B, chatbots accueil et prise de rendez-vous commerces.",
-      en: "Implémentation IA à Wattignies : copilotes comptabilité et gestion TPE, automatisation devis-facturation artisans bâtiment, agents IA secrétariat médical et juridique, CRM augmenté prestataires B2B, chatbots accueil et prise de rendez-vous commerces.",
+      fr: "Implémentation IA à Wattignies : copilotes comptabilité et gestion PME, automatisation devis-facturation artisans bâtiment, agents IA secrétariat médical et juridique, CRM augmenté prestataires B2B, chatbots accueil et prise de rendez-vous commerces.",
+      en: "Implémentation IA à Wattignies : copilotes comptabilité et gestion PME, automatisation devis-facturation artisans bâtiment, agents IA secrétariat médical et juridique, CRM augmenté prestataires B2B, chatbots accueil et prise de rendez-vous commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Wattignies : sessions dans vos locaux professionnels ou en visio. Dirigeants TPE/PME de la banlieue sud lilloise souhaitant maîtriser l'IA dans leur activité quotidienne.",
-      en: "Coaching 1-to-1 à Wattignies : sessions dans vos locaux professionnels ou en visio. Dirigeants TPE/PME de la banlieue sud lilloise souhaitant maîtriser l'IA dans leur activité quotidienne.",
+      fr: "Coaching 1-to-1 à Wattignies : sessions dans vos locaux professionnels ou en visio. Dirigeants PME et ETI de la banlieue sud lilloise souhaitant maîtriser l'IA dans leur activité quotidienne.",
+      en: "Coaching 1-to-1 à Wattignies : sessions dans vos locaux professionnels ou en visio. Dirigeants PME et ETI de la banlieue sud lilloise souhaitant maîtriser l'IA dans leur activité quotidienne.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const WATTIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Wattignies  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Wattignies et de l'agglomération lilloise sud, il identifie les cas d'usage IA à fort ROI pour votre activité (services, commerce, artisanat, professions libérales). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Wattignies et de l'agglomération lilloise sud, il identifie les cas d'usage IA à fort ROI pour votre activité (services, commerce, artisanat, professions libérales). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wattignies ?",
@@ -65,7 +65,7 @@ export const WATTIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA individuelles pour dirigeants à Wattignies ?",
-      a: "Oui, notre coaching 1-to-1 est ouvert aux dirigeants TPE/PME de Wattignies. Sessions en présentiel dans vos locaux ou en visio, programme personnalisé selon votre secteur d'activité et vos cas d'usage IA prioritaires. Rythme et durée adaptés à votre agenda.",
+      a: "Oui, notre coaching 1-to-1 est ouvert aux dirigeants de PME et d'ETI de Wattignies. Sessions en présentiel dans vos locaux ou en visio, programme personnalisé selon votre secteur d'activité et vos cas d'usage IA prioritaires. Rythme et durée adaptés à votre agenda.",
     },
   ],
 };

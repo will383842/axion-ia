@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const MIGNE_AUXANCES_COPY: VilleCopy = {
   pitchFr:
-    "Migné-Auxances (86), commune de l'agglomération de Poitiers nord-ouest en Vienne, est une commune résidentielle dynamique du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales, exploitations agricoles (grandes cultures, maraîchage) et associations. Axion-IA y conduit ses missions auprès des entreprises locales du nord-ouest de l'agglomération poitevine.",
+    "Migné-Auxances (86), commune de l'agglomération de Poitiers nord-ouest en Vienne, est une commune résidentielle dynamique du Grand Poitiers. Tissu PME artisanales, commerces de proximité, PME tertiaires/services, professions libérales, exploitations agricoles (grandes cultures, maraîchage) et associations. Axion-IA y conduit ses missions auprès des entreprises locales du nord-ouest de l'agglomération poitevine.",
   pitchEn:
-    "Migné-Auxances (86), commune de l'agglomération de Poitiers nord-ouest en Vienne, est une commune résidentielle dynamique du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales, exploitations agricoles (grandes cultures, maraîchage) et associations. Axion-IA y conduit ses missions auprès des entreprises locales du nord-ouest de l'agglomération poitevine.",
+    "Migné-Auxances (86), commune de l'agglomération de Poitiers nord-ouest en Vienne, est une commune résidentielle dynamique du Grand Poitiers. Tissu PME artisanales, commerces de proximité, PME tertiaires/services, professions libérales, exploitations agricoles (grandes cultures, maraîchage) et associations. Axion-IA y conduit ses missions auprès des entreprises locales du nord-ouest de l'agglomération poitevine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migné-Auxances (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (santé, droit), exploitants agricoles, services aux entreprises et associations du Grand Poitiers nord-ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migné-Auxances (86). Nous accompagnons tous types d'activités : PME artisanales, commerçants de proximité, PME tertiaires, professions libérales (santé, droit), exploitants agricoles, services aux entreprises et associations du Grand Poitiers nord-ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migné-Auxances (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (santé, droit), exploitants agricoles, services aux entreprises et associations du Grand Poitiers nord-ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Migné-Auxances (86). Nous accompagnons tous types d'activités : PME artisanales, commerçants de proximité, PME tertiaires, professions libérales (santé, droit), exploitants agricoles, services aux entreprises et associations du Grand Poitiers nord-ouest.",
   seoHook: "artisanat services & tertiaires services",
   ecosystemFr:
-    "Migné-Auxances est une commune résidentielle dynamique du nord-ouest de l'agglomération Grand Poitiers. Tissu économique périurbain diversifié : TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, droit, gestion), exploitations agricoles (grandes cultures, maraîchage vallée de l'Auxance), associations culturelles et sportives.",
+    "Migné-Auxances est une commune résidentielle dynamique du nord-ouest de l'agglomération Grand Poitiers. Tissu économique périurbain diversifié : PME artisanales, commerces de proximité, PME tertiaires/services, professions libérales (santé, droit, gestion), exploitations agricoles (grandes cultures, maraîchage vallée de l'Auxance), associations culturelles et sportives.",
   ecosystemEn:
-    "Migné-Auxances est une commune résidentielle dynamique du nord-ouest de l'agglomération Grand Poitiers. Tissu économique périurbain diversifié : TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, droit, gestion), exploitations agricoles (grandes cultures, maraîchage vallée de l'Auxance), associations culturelles et sportives.",
+    "Migné-Auxances est une commune résidentielle dynamique du nord-ouest de l'agglomération Grand Poitiers. Tissu économique périurbain diversifié : PME artisanales, commerces de proximité, PME tertiaires/services, professions libérales (santé, droit, gestion), exploitations agricoles (grandes cultures, maraîchage vallée de l'Auxance), associations culturelles et sportives.",
   distancesFr:
     "Poitiers centre à 10 min. Gare Poitiers TGV (Paris 1h40, Bordeaux 1h45). Futuroscope à 15 min. Aéroport Poitiers-Biard à 15 min. Axe N147 vers Parthenay. Neuville-de-Poitou à 10 min.",
   distancesEn:
     "Poitiers centre à 10 min. Gare Poitiers TGV (Paris 1h40, Bordeaux 1h45). Futuroscope à 15 min. Aéroport Poitiers-Biard à 15 min. Axe N147 vers Parthenay. Neuville-de-Poitou à 10 min.",
   topSectorsNaf: [
-    "TPE artisanat & services de proximité",
+    "PME de l'artisanat & services de proximité",
     "PME tertiaires & services aux entreprises",
     "Professions libérales santé/droit/gestion",
     "Agriculture grandes cultures & maraîchage",
@@ -30,8 +30,8 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Migné-Auxances : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales, agriculteurs et commerçants du Grand Poitiers nord-ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Migné-Auxances : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales, agriculteurs et commerçants du Grand Poitiers nord-ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Migné-Auxances : diagnostic adapté aux PME artisanales, PME tertiaires, professions libérales, agriculteurs et commerçants du Grand Poitiers nord-ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Migné-Auxances : diagnostic adapté aux PME artisanales, PME tertiaires, professions libérales, agriculteurs et commerçants du Grand Poitiers nord-ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Migné-Auxances : formats adaptés aux cabinets libéraux, PME tertiaires, exploitations agricoles ou commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
       en: "Implémentation IA à Migné-Auxances : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers, CRM augmenté PME, prédiction rendements agricoles. Grand Poitiers nord-ouest.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Migné-Auxances : sessions dans votre cabinet, bureau PME, exploitation ou en visio. Praticiens libéraux, dirigeants PME, agriculteurs, gérants TPE mignalais souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Migné-Auxances : sessions dans votre cabinet, bureau PME, exploitation ou en visio. Praticiens libéraux, dirigeants PME, agriculteurs, gérants TPE mignalais souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Migné-Auxances : sessions dans votre cabinet, bureau PME, exploitation ou en visio. Praticiens libéraux, dirigeants PME, agriculteurs, gérants PME mignalais souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Migné-Auxances : sessions dans votre cabinet, bureau PME, exploitation ou en visio. Praticiens libéraux, dirigeants PME, agriculteurs, gérants PME mignalais souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const MIGNE_AUXANCES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles de Migné-Auxances et vallée de l'Auxance (grandes cultures, maraîchage) sur leurs cas IA : prédiction rendements, classification images parcelles, traçabilité récoltes, optimisation assolement, agents conversationnels vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Migné-Auxances, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital local.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce à Migné-Auxances, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital local.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

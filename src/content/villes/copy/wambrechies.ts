@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const WAMBRECHIES_COPY: VilleCopy = {
   pitchFr:
-    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu PME et ETI services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu PME et ETI services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wambrechies (59). Nous accompagnons TPE et PME : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wambrechies (59). Nous accompagnons PME et ETI : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wambrechies (59). Nous accompagnons TPE et PME : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wambrechies (59). Nous accompagnons PME et ETI : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
   ecosystemFr:
     "Wambrechies est une commune résidentielle prisée au nord de Lille, intégrée à la Métropole Européenne de Lille (MEL), sur les bords de la Deûle. Connue pour sa distillerie de genièvre historique et son marché aux puces. L'économie locale associe services aux entreprises, conseil, professions libérales, artisanat agroalimentaire, commerces de proximité et prestataires B2B de la métropole lilloise.",
   ecosystemEn:
@@ -42,8 +42,8 @@ export const WAMBRECHIES_COPY: VilleCopy = {
       en: "Implémentation IA à Wambrechies : automatisation reporting conseil, copilotes IA professions libérales, CRM augmenté prestataires B2B, agents conversationnels clients, gestion documentaire intelligente.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Wambrechies : sessions dans votre cabinet, bureau, commerce ou en visio. Dirigeants TPE/PME du nord lillois souhaitant maîtriser l'IA dans leur activité de conseil, libérale ou B2B.",
-      en: "Coaching 1-to-1 à Wambrechies : sessions dans votre cabinet, bureau, commerce ou en visio. Dirigeants TPE/PME du nord lillois souhaitant maîtriser l'IA dans leur activité de conseil, libérale ou B2B.",
+      fr: "Coaching 1-to-1 à Wambrechies : sessions dans votre cabinet, bureau, commerce ou en visio. Dirigeants PME et ETI du nord lillois souhaitant maîtriser l'IA dans leur activité de conseil, libérale ou B2B.",
+      en: "Coaching 1-to-1 à Wambrechies : sessions dans votre cabinet, bureau, commerce ou en visio. Dirigeants PME et ETI du nord lillois souhaitant maîtriser l'IA dans leur activité de conseil, libérale ou B2B.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const WAMBRECHIES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Wambrechies  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord lillois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du nord lillois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services IA pour les prestataires B2B de la MEL ?",

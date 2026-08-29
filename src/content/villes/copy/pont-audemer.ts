@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const PONT_AUDEMER_COPY: VilleCopy = {
   pitchFr:
-    "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu TPE artisans, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
+    "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu PME artisanales, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu TPE artisans, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
+    "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu PME artisanales, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : PME artisanales, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
-  seoHook: "TPE & PME Eure",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : PME artisanales, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
+  seoHook: "PME & PME Eure",
   ecosystemFr:
     "Pont-Audemer est une sous-préfecture de l'Eure surnommée la « Venise normande » grâce aux canaux de la Risle qui traversent son centre médiéval. Économie historiquement liée à la tannerie et au cuir, aujourd'hui diversifiée : industrie, commerces de centre-ville labellisé, tourisme fluvial et patrimonial, artisanat, services aux entreprises.",
   ecosystemEn:
@@ -25,13 +25,13 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
     "Industrie et reconversion tannerie-cuir",
     "Commerce de centre-ville labellisé",
     "Tourisme fluvial et patrimonial",
-    "TPE artisanat et métiers d'art",
+    "PME de l'artisanat et métiers d'art",
     "Services aux entreprises et professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Pont-Audemer : diagnostic adapté aux PME artisanales, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Pont-Audemer : diagnostic adapté aux PME artisanales, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Audemer : formats adaptés à l'atelier, la boutique centre-ville, l'office tourisme, le cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
       en: "Implémentation IA à Pont-Audemer : chatbot tourisme multilingue, automatisation commerce centre-ville, contrôle qualité industriel, classification patrimoine. Sous-préfecture Eure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pont-Audemer : sessions dans votre atelier, boutique, bureau ou en visio. Dirigeants TPE/PME industrie, artisans, commerçants, acteurs tourisme Pays Risle-Charentonne.",
-      en: "Coaching 1-to-1 à Pont-Audemer : sessions dans votre atelier, boutique, bureau ou en visio. Dirigeants TPE/PME industrie, artisans, commerçants, acteurs tourisme Pays Risle-Charentonne.",
+      fr: "Coaching 1-to-1 à Pont-Audemer : sessions dans votre atelier, boutique, bureau ou en visio. Dirigeants PME et ETI industrie, artisans, commerçants, acteurs tourisme Pays Risle-Charentonne.",
+      en: "Coaching 1-to-1 à Pont-Audemer : sessions dans votre atelier, boutique, bureau ou en visio. Dirigeants PME et ETI industrie, artisans, commerçants, acteurs tourisme Pays Risle-Charentonne.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme fluvial et patrimonial de Pont-Audemer sur leurs cas IA : chatbot multilingue, automatisation réservations, agents conversationnels visite guidée, analyse avis clients, yield management.",
     },
     {
-      q: "Quels services pour les TPE artisans pont-audemériens ?",
-      a: "Pour les TPE artisans à Pont-Audemer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, gestion commandes, agents IA prise de RDV.",
+      q: "Quels services pour les PME artisanales pont-audemériens ?",
+      a: "Pour les PME artisanales à Pont-Audemer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos, gestion commandes, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Le Havre ?",

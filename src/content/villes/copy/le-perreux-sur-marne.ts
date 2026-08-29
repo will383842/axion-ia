@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Le Perreux-sur-Marne, surnommée la « Perle de l'Est parisien », est une commune résidentielle du Val-de-Marne (35 260 habitants en 2023) située à 2 km du Bois de Vincennes. Axion-IA y accompagne les TPE et PME — environ 350 commerçants répartis en quatre zones commerciales, professions libérales, cabinets juridiques et indépendants — dans la mise en place d'automatisations IA codées maison : devis, relances clients, prises de rendez-vous, reporting. Approche artisanale, code livré au client, sans plateforme no-code propriétaire.",
+    "Le Perreux-sur-Marne, surnommée la « Perle de l'Est parisien », est une commune résidentielle du Val-de-Marne (35 260 habitants en 2023) située à 2 km du Bois de Vincennes. Axion-IA y accompagne les PME et ETI — environ 350 commerçants répartis en quatre zones commerciales, professions libérales, cabinets juridiques et indépendants — dans la mise en place d'automatisations IA codées maison : devis, relances clients, prises de rendez-vous, reporting. Approche artisanale, code livré au client, sans plateforme no-code propriétaire.",
   pitchEn:
-    "Le Perreux-sur-Marne, surnommée la « Perle de l'Est parisien », est une commune résidentielle du Val-de-Marne (35 260 habitants en 2023) située à 2 km du Bois de Vincennes. Axion-IA y accompagne les TPE et PME — environ 350 commerçants répartis en quatre zones commerciales, professions libérales, cabinets juridiques et indépendants — dans la mise en place d'automatisations IA codées maison : devis, relances clients, prises de rendez-vous, reporting. Approche artisanale, code livré au client, sans plateforme no-code propriétaire.",
+    "Le Perreux-sur-Marne, surnommée la « Perle de l'Est parisien », est une commune résidentielle du Val-de-Marne (35 260 habitants en 2023) située à 2 km du Bois de Vincennes. Axion-IA y accompagne les PME et ETI — environ 350 commerçants répartis en quatre zones commerciales, professions libérales, cabinets juridiques et indépendants — dans la mise en place d'automatisations IA codées maison : devis, relances clients, prises de rendez-vous, reporting. Approche artisanale, code livré au client, sans plateforme no-code propriétaire.",
   directAnswerFr:
-    "Axion-IA intervient au Perreux-sur-Marne (Val-de-Marne, Île-de-France) auprès des TPE et PME, et plus marginalement des ETI, de cette commune résidentielle aisée de l'Est parisien. Williams se déplace sur site pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées sur l'automatisation des devis, relances et prises de rendez-vous, et des accompagnements 1-à-1. Le tissu local — 350 commerçants, marchés tri-hebdomadaires, professions libérales — est particulièrement adapté à des projets IA sobres, codés maison et hébergés en France.",
+    "Axion-IA intervient au Perreux-sur-Marne (Val-de-Marne, Île-de-France) auprès des PME et ETI, et plus marginalement les grands groupes, de cette commune résidentielle aisée de l'Est parisien. Williams se déplace sur site pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées sur l'automatisation des devis, relances et prises de rendez-vous, et des accompagnements 1-à-1. Le tissu local — 350 commerçants, marchés tri-hebdomadaires, professions libérales — est particulièrement adapté à des projets IA sobres, codés maison et hébergés en France.",
   directAnswerEn:
-    "Axion-IA intervient au Perreux-sur-Marne (Val-de-Marne, Île-de-France) auprès des TPE et PME, et plus marginalement des ETI, de cette commune résidentielle aisée de l'Est parisien. Williams se déplace sur site pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées sur l'automatisation des devis, relances et prises de rendez-vous, et des accompagnements 1-à-1. Le tissu local — 350 commerçants, marchés tri-hebdomadaires, professions libérales — est particulièrement adapté à des projets IA sobres, codés maison et hébergés en France.",
+    "Axion-IA intervient au Perreux-sur-Marne (Val-de-Marne, Île-de-France) auprès des PME et ETI, et plus marginalement les grands groupes, de cette commune résidentielle aisée de l'Est parisien. Williams se déplace sur site pour des audits Sur place à {{price:audit-flash|flat}}, des interventions ciblées sur l'automatisation des devis, relances et prises de rendez-vous, et des accompagnements 1-à-1. Le tissu local — 350 commerçants, marchés tri-hebdomadaires, professions libérales — est particulièrement adapté à des projets IA sobres, codés maison et hébergés en France.",
   seoHook: "commerces de proximité & professions libérales",
   ecosystemFr:
     "Le Perreux-sur-Marne compte environ 350 commerçants concentrés sur quatre zones commerciales et un marché les mercredis, vendredis et dimanches. La commune figurait en 2016 parmi les 2 % françaises au revenu médian le plus élevé. Le tissu est dominé par les commerces de proximité, les professions libérales, les cabinets juridiques et les services aux particuliers, complétés par les communes voisines Nogent-sur-Marne, Bry-sur-Marne, Fontenay-sous-Bois, Neuilly-Plaisance et Champigny-sur-Marne.",
@@ -36,16 +36,16 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
       en: "Audit sur place au Perreux-sur-Marne pour commerçants, cabinets et professions libérales : cartographie des tâches répétitives (devis, RDV, relances), opportunités IA priorisées à 30/60/90 jours.",
     },
     interventions: {
-      fr: "Interventions ciblées au Perreux-sur-Marne pour les TPE des quatre zones commerciales : assistant de prise de RDV, génération automatisée de devis, suivi client multicanal.",
-      en: "Interventions ciblées au Perreux-sur-Marne pour les TPE des quatre zones commerciales : assistant de prise de RDV, génération automatisée de devis, suivi client multicanal.",
+      fr: "Interventions ciblées au Perreux-sur-Marne pour les PME des quatre zones commerciales : assistant de prise de RDV, génération automatisée de devis, suivi client multicanal.",
+      en: "Interventions ciblées au Perreux-sur-Marne pour les PME des quatre zones commerciales : assistant de prise de RDV, génération automatisée de devis, suivi client multicanal.",
     },
     implementation: {
       fr: "Implémentation de solutions IA codées maison au Perreux-sur-Marne, hébergées en France, intégrées aux outils métier existants (caisse, agenda, CRM) sans verrou no-code.",
       en: "Implémentation de solutions IA codées maison au Perreux-sur-Marne, hébergées en France, intégrées aux outils métier existants (caisse, agenda, CRM) sans verrou no-code.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 au Perreux-sur-Marne pour dirigeants de TPE/PME et professions libérales : 2 heures de coaching IA, cas concrets, prompts adaptés au métier, sensibilisation RGPD et AI Act.",
-      en: "Accompagnement 1-à-1 au Perreux-sur-Marne pour dirigeants de TPE/PME et professions libérales : 2 heures de coaching IA, cas concrets, prompts adaptés au métier, sensibilisation RGPD et AI Act.",
+      fr: "Accompagnement 1-à-1 au Perreux-sur-Marne pour dirigeants de PME et ETI et professions libérales : 2 heures de coaching IA, cas concrets, prompts adaptés au métier, sensibilisation RGPD et AI Act.",
+      en: "Accompagnement 1-à-1 au Perreux-sur-Marne pour dirigeants de PME et ETI et professions libérales : 2 heures de coaching IA, cas concrets, prompts adaptés au métier, sensibilisation RGPD et AI Act.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou prise de RDV en ligne",
-            detail:
-              "Pour les commerçants des quatre quartiers, artisans et professions libérales du Perreux : vitrine mobile-first, prise de rendez-vous ou réservation, référencement local Perreux/Nogent-sur-Marne.",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce de proximité + assistant IA",
@@ -173,12 +167,6 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Storefront site or online booking",
-            detail:
-              "For the four districts' retailers, craftspeople and independent professionals of Le Perreux: mobile-first storefront, booking or reservation, local SEO across Le Perreux/Nogent-sur-Marne.",
-          },
-          {
             sizeLabel: "SME",
             price: "Neighbourhood e-commerce + AI assistant",
             detail:
@@ -244,7 +232,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous au Perreux-sur-Marne ?",
-      a: "Principalement les TPE et PME des commerces de proximité (350 commerçants), des professions libérales, des cabinets juridiques et des services aux particuliers. Plus marginalement, quelques ETI locales.",
+      a: "Principalement les PME et ETI des commerces de proximité (350 commerçants), des professions libérales, des cabinets juridiques et des services aux particuliers. Plus marginalement, quelques ETI locales.",
     },
     {
       q: "Pourquoi Axion-IA refuse les outils no-code au Perreux-sur-Marne ?",

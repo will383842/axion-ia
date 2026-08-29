@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Yrieix-sur-Charente (16), commune de l'agglomération d'Angoulême en Charente, pôle résidentiel et tertiaire du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, zones commerciales, services de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération angoumoisine.",
+    "Saint-Yrieix-sur-Charente (16), commune de l'agglomération d'Angoulême en Charente, pôle résidentiel et tertiaire du GrandAngoulême. Tissu de PME artisanales, PME tertiaires, zones commerciales, services de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération angoumoisine.",
   pitchEn:
-    "Saint-Yrieix-sur-Charente (16), commune de l'agglomération d'Angoulême en Charente, pôle résidentiel et tertiaire du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, zones commerciales, services de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération angoumoisine.",
+    "Saint-Yrieix-sur-Charente (16), commune de l'agglomération d'Angoulême en Charente, pôle résidentiel et tertiaire du GrandAngoulême. Tissu de PME artisanales, PME tertiaires, zones commerciales, services de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Yrieix-sur-Charente (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professionnels des zones commerciales, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Yrieix-sur-Charente (16). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, professionnels des zones commerciales, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Yrieix-sur-Charente (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professionnels des zones commerciales, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Yrieix-sur-Charente (16). Nous accompagnons tous types d'activités : PME artisanales, PME tertiaires, professionnels des zones commerciales, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   seoHook: "commerce zones & services aux",
   ecosystemFr:
-    "Saint-Yrieix-sur-Charente est une commune résidentielle et tertiaire de l'agglomération GrandAngoulême. Zones commerciales dynamiques, PME tertiaires et de services, TPE artisans BTP, professions libérales et de santé, commerces de proximité. Cadre verdoyant en bords de Charente.",
+    "Saint-Yrieix-sur-Charente est une commune résidentielle et tertiaire de l'agglomération GrandAngoulême. Zones commerciales dynamiques, PME tertiaires et de services, PME du BTP, professions libérales et de santé, commerces de proximité. Cadre verdoyant en bords de Charente.",
   ecosystemEn:
-    "Saint-Yrieix-sur-Charente est une commune résidentielle et tertiaire de l'agglomération GrandAngoulême. Zones commerciales dynamiques, PME tertiaires et de services, TPE artisans BTP, professions libérales et de santé, commerces de proximité. Cadre verdoyant en bords de Charente.",
+    "Saint-Yrieix-sur-Charente est une commune résidentielle et tertiaire de l'agglomération GrandAngoulême. Zones commerciales dynamiques, PME tertiaires et de services, PME du BTP, professions libérales et de santé, commerces de proximité. Cadre verdoyant en bords de Charente.",
   distancesFr:
     "Saint-Yrieix-sur-Charente est à 5 min d'Angoulême centre. Gare TGV d'Angoulême à 8 min (Paris Montparnasse 2h05, Bordeaux 55 min). Aéroport Angoulême-Cognac à 15 min. Axes N10/N141.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce & zones commerciales",
     "Services aux entreprises & tertiaire",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales & santé",
     "Services à la personne",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Yrieix-sur-Charente : diagnostic adapté aux PME tertiaires, TPE artisans, professionnels des zones commerciales et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Yrieix-sur-Charente : diagnostic adapté aux PME tertiaires, TPE artisans, professionnels des zones commerciales et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Yrieix-sur-Charente : diagnostic adapté aux PME tertiaires, PME artisanales, professionnels des zones commerciales et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Yrieix-sur-Charente : diagnostic adapté aux PME tertiaires, PME artisanales, professionnels des zones commerciales et services de l'agglomération GrandAngoulême. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Yrieix-sur-Charente : formats adaptés au cabinet, au bureau, au commerce ou à l'atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const SAINT_YRIEIX_SUR_CHARENTE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Yrieix-sur-Charente : automatisation gestion administrative, agents conversationnels accueil client zones commerciales, classification documents, optimisation planification rendez-vous santé.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Yrieix-sur-Charente : sessions dans vos locaux ou en visio. Dirigeants TPE/PME tertiaires, commerçants, professions libérales de l'agglomération angoumoisine souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Saint-Yrieix-sur-Charente : sessions dans vos locaux ou en visio. Dirigeants TPE/PME tertiaires, commerçants, professions libérales de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Yrieix-sur-Charente : sessions dans vos locaux ou en visio. Dirigeants PME et ETI tertiaires, commerçants, professions libérales de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Saint-Yrieix-sur-Charente : sessions dans vos locaux ou en visio. Dirigeants PME et ETI tertiaires, commerçants, professions libérales de l'agglomération angoumoisine souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

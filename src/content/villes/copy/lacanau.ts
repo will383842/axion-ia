@@ -9,9 +9,9 @@ export const LACANAU_COPY: VilleCopy = {
   pitchEn:
     "Lacanau (33), station balnéaire océane réputée pour le surf et son lac, allie tourisme de plein air, hôtellerie-restauration saisonnière, artisanat BTP et commerces. Axion-IA y intervient pour tous types d'activités de la côte médocaine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lacanau (33). Nous accompagnons TPE et PME de la station balnéaire : écoles de surf, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lacanau (33). Nous accompagnons PME et ETI de la station balnéaire : écoles de surf, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lacanau (33). Nous accompagnons TPE et PME de la station balnéaire : écoles de surf, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lacanau (33). Nous accompagnons PME et ETI de la station balnéaire : écoles de surf, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit sur place sur mesure.",
   seoHook: "tourisme surf & hébergement saisonnier",
   ecosystemFr:
     "Lacanau est une station balnéaire océane du Médoc, célèbre pour le Lacanau Pro (surf). Économie saisonnière : surf schools, campings, résidences touristiques, restaurants, commerces de plage. Lac de Lacanau (activités nautiques). Artisanat BTP et professions libérales toute l'année.",
@@ -25,13 +25,13 @@ export const LACANAU_COPY: VilleCopy = {
     "Tourisme & surf (écoles, événements)",
     "Hébergement saisonnier (campings, résidences)",
     "Restauration & commerce de plage",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lacanau : diagnostic pour écoles de surf, hébergeurs, restaurateurs, commerçants saisonniers et TPE artisans de la côte médocaine. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lacanau : diagnostic pour écoles de surf, hébergeurs, restaurateurs, commerçants saisonniers et TPE artisans de la côte médocaine. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lacanau : diagnostic pour écoles de surf, hébergeurs, restaurateurs, commerçants saisonniers et PME artisanales de la côte médocaine. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lacanau : diagnostic pour écoles de surf, hébergeurs, restaurateurs, commerçants saisonniers et PME artisanales de la côte médocaine. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lacanau : ateliers adaptés aux hébergements, surf schools, restaurants et commerces. Équipes autonomes sur outils IA.",
@@ -53,7 +53,7 @@ export const LACANAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Lacanau  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux TPE touristiques et saisonnières de la côte médocaine.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics. Adapté aux PME touristiques et saisonnières de la côte médocaine.",
     },
     {
       q: "Accompagnez-vous les écoles de surf et hébergeurs ?",

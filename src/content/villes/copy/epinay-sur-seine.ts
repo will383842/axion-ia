@@ -7,14 +7,14 @@ import type { VilleCopy } from "./types";
 
 export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Épinay-sur-Seine (93), commune de 52 833 habitants au nord-ouest de Paris, est intégrée à Plaine Commune et à la Métropole du Grand Paris. Desservie par les tramways T8 et T11, le RER C et la ligne H du Transilien, à proximité de l'A86 et de l'A15. Tissu de TPE commerçantes, PME de services, artisans BTP et activités historiques liées à la production audiovisuelle. Axion-IA accompagne ces structures dans leurs projets d'intelligence artificielle.",
+    "Épinay-sur-Seine (93), commune de 52 833 habitants au nord-ouest de Paris, est intégrée à Plaine Commune et à la Métropole du Grand Paris. Desservie par les tramways T8 et T11, le RER C et la ligne H du Transilien, à proximité de l'A86 et de l'A15. Tissu de PME du commerce, PME de services, artisans BTP et activités historiques liées à la production audiovisuelle. Axion-IA accompagne ces structures dans leurs projets d'intelligence artificielle.",
   pitchEn:
-    "Épinay-sur-Seine (93), commune de 52 833 habitants au nord-ouest de Paris, est intégrée à Plaine Commune et à la Métropole du Grand Paris. Desservie par les tramways T8 et T11, le RER C et la ligne H du Transilien, à proximité de l'A86 et de l'A15. Tissu de TPE commerçantes, PME de services, artisans BTP et activités historiques liées à la production audiovisuelle. Axion-IA accompagne ces structures dans leurs projets d'intelligence artificielle.",
+    "Épinay-sur-Seine (93), commune de 52 833 habitants au nord-ouest de Paris, est intégrée à Plaine Commune et à la Métropole du Grand Paris. Desservie par les tramways T8 et T11, le RER C et la ligne H du Transilien, à proximité de l'A86 et de l'A15. Tissu de PME du commerce, PME de services, artisans BTP et activités historiques liées à la production audiovisuelle. Axion-IA accompagne ces structures dans leurs projets d'intelligence artificielle.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner TPE de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner PME de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner TPE de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics.",
-  seoHook: "TPE & PME Plaine Commune nord-ouest 93",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Épinay-sur-Seine et dans tout le secteur de Plaine Commune. Nos consultants se déplacent sur site pour accompagner PME de commerce, PME tertiaires et industrielles, artisans du BTP, structures de production audiovisuelle et professions libérales. Audit sur place à partir de {{price:audit-flash|flat}}, interventions à partir de {{price:intervention-4h|flat}}, sur tarifs publics.",
+  seoHook: "PME & PME Plaine Commune nord-ouest 93",
   ecosystemFr:
     "Épinay-sur-Seine accueille des activités historiques de cinéma et télévision avec les Laboratoires Éclair (post-production, environ 400 salariés) et conserve une présence industrielle ancienne (Verreries de la gare créées en 1913). La commune fait partie de l'EPT Plaine Commune, qui structure le développement économique du territoire avec Saint-Denis et Villetaneuse. Tissu local : commerce de détail, restauration, services à la personne, BTP et logistique de proximité.",
   ecosystemEn:
@@ -32,8 +32,8 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Épinay-sur-Seine : diagnostic pour TPE commerçantes, PME BTP, structures audiovisuelles et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Épinay-sur-Seine : diagnostic pour PME du commerce, PME BTP, structures audiovisuelles et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Épinay-sur-Seine : diagnostic pour PME du commerce, PME BTP, structures audiovisuelles et professions libérales. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épinay-sur-Seine : automatisation devis BTP, gestion documentaire, transcription audiovisuelle, prise de commande commerce. Formation 4 h dès {{price:intervention-4h|flat}}.",
@@ -44,8 +44,8 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation IA à Épinay-sur-Seine : code custom Python/TypeScript pour PME locales, intégration outils métier BTP, automatisation back-office. Pas de no-code, code source livré.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Épinay-sur-Seine : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, gérants de commerce et professions libérales du territoire Plaine Commune.",
-      en: "Coaching 1-to-1 à Épinay-sur-Seine : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, gérants de commerce et professions libérales du territoire Plaine Commune.",
+      fr: "Coaching 1-to-1 à Épinay-sur-Seine : sessions sur site ou en visio pour dirigeants de PME et d'ETI, artisans, gérants de commerce et professions libérales du territoire Plaine Commune.",
+      en: "Coaching 1-to-1 à Épinay-sur-Seine : sessions sur site ou en visio pour dirigeants de PME et d'ETI, artisans, gérants de commerce et professions libérales du territoire Plaine Commune.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
           "Logistique last-mile à fort volume : Star's Service (siège épinaysien, milliers de tournées colis et repas par jour) et les transporteurs du territoire ont besoin de portails de suivi de livraison, de tableaux de bord de flotte et d'agents IA de gestion d'incidents — pas d'un site vitrine générique.",
           "Retail et e-commerce de proximité : autour de l'hypermarché Auchan De Lattre de Tassigny et des commerces du centre-ville rénové, nous bâtissons des boutiques en ligne multi-CMS (Shopify, WooCommerce, PrestaShop, Medusa) avec recherche sémantique et recommandations produit.",
           "Filière image et audiovisuel : héritage des Studios d'Épinay et des Laboratoires Éclair, dans le cluster « Territoire de la culture et de la création » de Plaine Commune — sites portfolio performants, catalogues de plateaux, plateformes de gestion de production et transcription/sous-titrage assistés par IA.",
-          "Tissu de TPE, PME de services et artisans BTP du secteur Orgemont / centre-ville / site Paris-Joffre, desservi par les tramways T8 et T11, le RER C et l'A86 — sites rapides, mobile-first, conformes RGPD, avec prise de rendez-vous et devis automatisés.",
+          "Tissu de PME, ETI de services et artisans BTP du secteur Orgemont / centre-ville / site Paris-Joffre, desservi par les tramways T8 et T11, le RER C et l'A86 — sites rapides, mobile-first, conformes RGPD, avec prise de rendez-vous et devis automatisés.",
         ],
         methodology: [
           {
@@ -86,12 +86,6 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique e-commerce IA-ready",
-            detail:
-              "Pour les commerçants du centre-ville rénové, artisans BTP du quartier Orgemont et indépendants de la filière image : site mobile-first, prise de rendez-vous ou tunnel d'achat, chatbot FAQ, hébergement UE.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web métier sur mesure",
@@ -173,12 +167,6 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-ready brochure site or e-commerce store",
-            detail:
-              "For renovated town-centre shops, Orgemont construction trades and independents in the image sector: mobile-first site, booking or checkout funnel, FAQ chatbot, EU hosting.",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business web platform",
             detail:
@@ -236,7 +224,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Épinay-sur-Seine ?",
-      a: "Nous accompagnons en priorité les TPE de commerce et restauration, les PME du BTP et artisans, les structures audiovisuelles présentes sur la commune, ainsi que les professions libérales et services à la personne.",
+      a: "Nous accompagnons en priorité les PME de commerce et restauration, les PME du BTP et artisans, les structures audiovisuelles présentes sur la commune, ainsi que les professions libérales et services à la personne.",
     },
     {
       q: "Quels délais pour une intervention sur site à Épinay-sur-Seine ?",

@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const GRANDE_SYNTHE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Grande-Synthe, commune de 20 239 habitants du département du Nord, située à 6 km à l'ouest de Dunkerque et intégrée au Grand Port Maritime. Nous accompagnons les sous-traitants industriels, prestataires logistiques et PME du tissu portuaire qui gravitent autour d'ArcelorMittal et des activités du port. Notre code custom automatise les flux administratifs, les bons de livraison et les relances client des structures de moins de 50 salariés. Les ETI peuvent également bénéficier de nos services, mais notre cœur de cible reste TPE et PME.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour PME et ETI francophones, intervient à Grande-Synthe, commune de 20 239 habitants du département du Nord, située à 6 km à l'ouest de Dunkerque et intégrée au Grand Port Maritime. Nous accompagnons les sous-traitants industriels, prestataires logistiques et PME du tissu portuaire qui gravitent autour d'ArcelorMittal et des activités du port. Notre code custom automatise les flux administratifs, les bons de livraison et les relances client des structures de moins de 50 salariés. Les ETI peuvent également bénéficier de nos services, mais notre cœur de cible reste les PME et les ETI.",
   pitchEn:
-    "Axion-IA, cabinet de conseil en intelligence artificielle pour TPE et PME francophones, intervient à Grande-Synthe, commune de 20 239 habitants du département du Nord, située à 6 km à l'ouest de Dunkerque et intégrée au Grand Port Maritime. Nous accompagnons les sous-traitants industriels, prestataires logistiques et PME du tissu portuaire qui gravitent autour d'ArcelorMittal et des activités du port. Notre code custom automatise les flux administratifs, les bons de livraison et les relances client des structures de moins de 50 salariés. Les ETI peuvent également bénéficier de nos services, mais notre cœur de cible reste TPE et PME.",
+    "Axion-IA, cabinet de conseil en intelligence artificielle pour PME et ETI francophones, intervient à Grande-Synthe, commune de 20 239 habitants du département du Nord, située à 6 km à l'ouest de Dunkerque et intégrée au Grand Port Maritime. Nous accompagnons les sous-traitants industriels, prestataires logistiques et PME du tissu portuaire qui gravitent autour d'ArcelorMittal et des activités du port. Notre code custom automatise les flux administratifs, les bons de livraison et les relances client des structures de moins de 50 salariés. Les ETI peuvent également bénéficier de nos services, mais notre cœur de cible reste les PME et les ETI.",
   directAnswerFr:
-    "Axion-IA accompagne les TPE et PME de Grande-Synthe (Nord, 20 239 habitants) — sous-traitants industriels, transporteurs, entrepôts et prestataires de services gravitant autour du Grand Port Maritime de Dunkerque et d'ArcelorMittal. Nous automatisons en code custom (Python, Node.js, pas de no-code) la gestion documentaire, les bons de livraison, les relances client et la qualification de prospects. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les ETI sont également servies, mais notre cœur de cible reste les structures de moins de 50 salariés.",
+    "Axion-IA accompagne les PME et ETI de Grande-Synthe (Nord, 20 239 habitants) — sous-traitants industriels, transporteurs, entrepôts et prestataires de services gravitant autour du Grand Port Maritime de Dunkerque et d'ArcelorMittal. Nous automatisons en code custom (Python, Node.js, pas de no-code) la gestion documentaire, les bons de livraison, les relances client et la qualification de prospects. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les grands groupes sont également servis, mais notre cœur de cible reste les structures de moins de 50 salariés.",
   directAnswerEn:
-    "Axion-IA accompagne les TPE et PME de Grande-Synthe (Nord, 20 239 habitants) — sous-traitants industriels, transporteurs, entrepôts et prestataires de services gravitant autour du Grand Port Maritime de Dunkerque et d'ArcelorMittal. Nous automatisons en code custom (Python, Node.js, pas de no-code) la gestion documentaire, les bons de livraison, les relances client et la qualification de prospects. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les ETI sont également servies, mais notre cœur de cible reste les structures de moins de 50 salariés.",
+    "Axion-IA accompagne les PME et ETI de Grande-Synthe (Nord, 20 239 habitants) — sous-traitants industriels, transporteurs, entrepôts et prestataires de services gravitant autour du Grand Port Maritime de Dunkerque et d'ArcelorMittal. Nous automatisons en code custom (Python, Node.js, pas de no-code) la gestion documentaire, les bons de livraison, les relances client et la qualification de prospects. Notre équipe se déplace sur site dans un délai de 5 jours ouvrés. Les grands groupes sont également servis, mais notre cœur de cible reste les structures de moins de 50 salariés.",
   seoHook: "métallurgie & logistique portuaire",
   ecosystemFr:
-    "Grande-Synthe est intégrée à la Communauté urbaine de Dunkerque et abrite une partie du Grand Port Maritime de Dunkerque, troisième port français. L'écosystème économique local est dominé par la métallurgie (ArcelorMittal), les activités portuaires, la logistique et l'entreposage. Autour de ces grands donneurs d'ordres gravite un dense tissu de sous-traitants industriels, transporteurs et prestataires de services aux entreprises — autant de TPE et PME potentiellement clientes Axion-IA.",
+    "Grande-Synthe est intégrée à la Communauté urbaine de Dunkerque et abrite une partie du Grand Port Maritime de Dunkerque, troisième port français. L'écosystème économique local est dominé par la métallurgie (ArcelorMittal), les activités portuaires, la logistique et l'entreposage. Autour de ces grands donneurs d'ordres gravite un dense tissu de sous-traitants industriels, transporteurs et prestataires de services aux entreprises — autant de PME et ETI potentiellement clientes Axion-IA.",
   ecosystemEn:
-    "Grande-Synthe est intégrée à la Communauté urbaine de Dunkerque et abrite une partie du Grand Port Maritime de Dunkerque, troisième port français. L'écosystème économique local est dominé par la métallurgie (ArcelorMittal), les activités portuaires, la logistique et l'entreposage. Autour de ces grands donneurs d'ordres gravite un dense tissu de sous-traitants industriels, transporteurs et prestataires de services aux entreprises — autant de TPE et PME potentiellement clientes Axion-IA.",
+    "Grande-Synthe est intégrée à la Communauté urbaine de Dunkerque et abrite une partie du Grand Port Maritime de Dunkerque, troisième port français. L'écosystème économique local est dominé par la métallurgie (ArcelorMittal), les activités portuaires, la logistique et l'entreposage. Autour de ces grands donneurs d'ordres gravite un dense tissu de sous-traitants industriels, transporteurs et prestataires de services aux entreprises — autant de PME et ETI potentiellement clientes Axion-IA.",
   distancesFr:
     "Grande-Synthe est à 6 km de la gare de Dunkerque (TGV vers Paris en 1 h 30), à 85 km de l'aéroport de Lille-Lesquin, et à 25 km du tunnel sous la Manche via l'A16.",
   distancesEn:
@@ -36,16 +36,16 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
       en: "Audit sur place IA à Grande-Synthe (4 h sur site) dès {{price:audit-flash|flat}} : cartographie des automatisations possibles pour sous-traitants industriels, transporteurs et PME logistiques.",
     },
     interventions: {
-      fr: "Interventions à Grande-Synthe dès {{price:intervention-4h|flat}} pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
-      en: "Interventions à Grande-Synthe dès {{price:intervention-4h|flat}} pour automatiser bons de livraison, ordres de fabrication, relances et reporting des TPE industrielles — code custom.",
+      fr: "Interventions à Grande-Synthe dès {{price:intervention-4h|flat}} pour automatiser bons de livraison, ordres de fabrication, relances et reporting des PME industrielles — code custom.",
+      en: "Interventions à Grande-Synthe dès {{price:intervention-4h|flat}} pour automatiser bons de livraison, ordres de fabrication, relances et reporting des PME industrielles — code custom.",
     },
     implementation: {
       fr: "Implémentation IA à Grande-Synthe dès {{price:impl-poc|entry}} : intégration sur-mesure avec ERP industriels, GMAO et systèmes de gestion documentaire portuaire, conformité RGPD.",
       en: "Implémentation IA à Grande-Synthe dès {{price:impl-poc|entry}} : intégration sur-mesure avec ERP industriels, GMAO et systèmes de gestion documentaire portuaire, conformité RGPD.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Grande-Synthe dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
-      en: "Accompagnement un-à-un à Grande-Synthe dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
+      fr: "Accompagnement un-à-un à Grande-Synthe dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
+      en: "Accompagnement un-à-un à Grande-Synthe dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI industrielles ou logistiques : prise en main des outils IA, sessions sur site ou visio.",
     },
   },
   services: {
@@ -55,7 +55,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
         whyHere: [
           "Économie adossée au Grand Port Maritime de Dunkerque, troisième port français : pour les transporteurs, transitaires et prestataires logistiques implantés dans les zones portuaires de Grande-Synthe, on construit des portails de suivi d'expédition, des extranets clients et des bons de livraison dématérialisés augmentés à l'IA, branchés sur vos systèmes de gestion documentaire existants.",
           "Pôle métallurgie et sidérurgie de premier plan : autour d'ArcelorMittal Dunkerque, d'Aluminium Dunkerque (550 salariés, électrolyse), d'Industeel et de Bozel Europe gravite un dense réseau de sous-traitants et de maintenance industrielle. On greffe l'IA sur l'existant (widget, API, plugin) pour qualifier les demandes de devis, structurer les ordres de fabrication et automatiser les relances, sans refonte coûteuse de votre SI.",
-          "Tissu dense de TPE du commerce et de l'artisanat de la Communauté urbaine de Dunkerque, du cœur de ville de Grande-Synthe au quartier du Courghain : on conçoit des vitrines et des boutiques e-commerce sur mesure (WordPress, Shopify, WooCommerce, PrestaShop) avec un parcours d'achat mobile-first, une recherche sémantique de catalogue et un chatbot d'aide à la commande.",
+          "Tissu dense de PME du commerce et de l'artisanat de la Communauté urbaine de Dunkerque, du cœur de ville de Grande-Synthe au quartier du Courghain : on conçoit des vitrines et des boutiques e-commerce sur mesure (WordPress, Shopify, WooCommerce, PrestaShop) avec un parcours d'achat mobile-first, une recherche sémantique de catalogue et un chatbot d'aide à la commande.",
           "Contexte transfrontalier flamand et proximité du tunnel sous la Manche (25 km via l'A16) : nos chatbots et agents conversationnels sont multilingues par défaut (français, néerlandais, anglais), et toute la chaîne IA est hébergeable en Europe, conforme RGPD et AI Act — vos données de production, de logistique et clients restent maîtrisées sur le sol européen.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique de catalogue, relances automatisées) sur le site existant d'un artisan, d'un commerçant du centre de Grande-Synthe ou d'un sous-traitant industriel, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -141,7 +135,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
         whyHere: [
           "Économie adossée au Grand Port Maritime de Dunkerque, troisième port français : pour les transporteurs, transitaires et prestataires logistiques implantés dans les zones portuaires de Grande-Synthe, on construit des portails de suivi d'expédition, des extranets clients et des bons de livraison dématérialisés augmentés à l'IA, branchés sur vos systèmes de gestion documentaire existants.",
           "Pôle métallurgie et sidérurgie de premier plan : autour d'ArcelorMittal Dunkerque, d'Aluminium Dunkerque (550 salariés, électrolyse), d'Industeel et de Bozel Europe gravite un dense réseau de sous-traitants et de maintenance industrielle. On greffe l'IA sur l'existant (widget, API, plugin) pour qualifier les demandes de devis, structurer les ordres de fabrication et automatiser les relances, sans refonte coûteuse de votre SI.",
-          "Tissu dense de TPE du commerce et de l'artisanat de la Communauté urbaine de Dunkerque, du cœur de ville de Grande-Synthe au quartier du Courghain : on conçoit des vitrines et des boutiques e-commerce sur mesure (WordPress, Shopify, WooCommerce, PrestaShop) avec un parcours d'achat mobile-first, une recherche sémantique de catalogue et un chatbot d'aide à la commande.",
+          "Tissu dense de PME du commerce et de l'artisanat de la Communauté urbaine de Dunkerque, du cœur de ville de Grande-Synthe au quartier du Courghain : on conçoit des vitrines et des boutiques e-commerce sur mesure (WordPress, Shopify, WooCommerce, PrestaShop) avec un parcours d'achat mobile-first, une recherche sémantique de catalogue et un chatbot d'aide à la commande.",
           "Contexte transfrontalier flamand et proximité du tunnel sous la Manche (25 km via l'A16) : nos chatbots et agents conversationnels sont multilingues par défaut (français, néerlandais, anglais), et toute la chaîne IA est hébergeable en Europe, conforme RGPD et AI Act — vos données de production, de logistique et clients restent maîtrisées sur le sol européen.",
         ],
         methodology: [
@@ -172,12 +166,6 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique de catalogue, relances automatisées) sur le site existant d'un artisan, d'un commerçant du centre de Grande-Synthe ou d'un sous-traitant industriel, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -244,7 +232,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA cible-t-elle à Grande-Synthe ?",
-      a: "Nous accompagnons en priorité les TPE et PME de Grande-Synthe : sous-traitants métallurgie, transporteurs, entrepôts, maintenance industrielle, commerce de gros. Les ETI restent marginales.",
+      a: "Nous accompagnons en priorité les PME et ETI de Grande-Synthe : sous-traitants métallurgie, transporteurs, entrepôts, maintenance industrielle, commerce de gros. Les grands groupes complètent ce socle.",
     },
     {
       q: "Proposez-vous des solutions no-code à Grande-Synthe ?",

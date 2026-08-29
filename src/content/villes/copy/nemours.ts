@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const NEMOURS_COPY: VilleCopy = {
   pitchFr:
-    "Nemours (77), ville historique du sud de la Seine-et-Marne sur les bords du Loing, abrite un chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France. Tissu TPE/PME industrie, commerce de centre-ville, artisanat, tourisme patrimonial, services. Axion-IA y intervient pour tous types d'activites.",
+    "Nemours (77), ville historique du sud de la Seine-et-Marne sur les bords du Loing, abrite un chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France. Tissu PME et ETI industrie, commerce de centre-ville, artisanat, tourisme patrimonial, services. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Nemours (77), ville historique du sud de la Seine-et-Marne sur les bords du Loing, abrite un chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France. Tissu TPE/PME industrie, commerce de centre-ville, artisanat, tourisme patrimonial, services. Axion-IA y intervient pour tous types d'activites.",
+    "Nemours (77), ville historique du sud de la Seine-et-Marne sur les bords du Loing, abrite un chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France. Tissu PME et ETI industrie, commerce de centre-ville, artisanat, tourisme patrimonial, services. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Nemours (77). Nous accompagnons TPE et PME : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Nemours (77). Nous accompagnons PME et ETI : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Nemours (77). Nous accompagnons TPE et PME : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Nemours (77). Nous accompagnons PME et ETI : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "vallée du",
   ecosystemFr:
-    "Nemours est une ville historique du sud de la Seine-et-Marne, traversee par le Loing. Le chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France attirent un tourisme culturel. L'economie locale repose sur un tissu de TPE/PME industrie, commerce de centre-ville, artisanat et services, avec un acces A6 vers Paris et Fontainebleau.",
+    "Nemours est une ville historique du sud de la Seine-et-Marne, traversee par le Loing. Le chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France attirent un tourisme culturel. L'economie locale repose sur un tissu de PME et ETI industrie, commerce de centre-ville, artisanat et services, avec un acces A6 vers Paris et Fontainebleau.",
   ecosystemEn:
-    "Nemours est une ville historique du sud de la Seine-et-Marne, traversee par le Loing. Le chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France attirent un tourisme culturel. L'economie locale repose sur un tissu de TPE/PME industrie, commerce de centre-ville, artisanat et services, avec un acces A6 vers Paris et Fontainebleau.",
+    "Nemours est une ville historique du sud de la Seine-et-Marne, traversee par le Loing. Le chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France attirent un tourisme culturel. L'economie locale repose sur un tissu de PME et ETI industrie, commerce de centre-ville, artisanat et services, avec un acces A6 vers Paris et Fontainebleau.",
   distancesFr:
     "Paris a 1h15 A6. Fontainebleau a 15 min. Montargis a 30 min. Sens a 45 min. Gare SNCF Nemours - Saint-Pierre ligne Transilien R Paris-Montargis.",
   distancesEn:
@@ -42,8 +42,8 @@ export const NEMOURS_COPY: VilleCopy = {
       en: "Implementation IA a Nemours : maintenance predictive industrie, gestion stocks commerce, automatisation devis artisanat, billetterie et accueil IA pour sites patrimoniaux.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Nemours : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME du sud Seine-et-Marne, gerants commerce et industrie.",
-      en: "Coaching 1-to-1 a Nemours : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME du sud Seine-et-Marne, gerants commerce et industrie.",
+      fr: "Coaching 1-to-1 a Nemours : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI du sud Seine-et-Marne, gerants commerce et industrie.",
+      en: "Coaching 1-to-1 a Nemours : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI du sud Seine-et-Marne, gerants commerce et industrie.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const NEMOURS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Nemours ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Nemours, nous proposons des audits approfondis adaptes aux enjeux industrie, commerce ou tourisme patrimonial.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Nemours, nous proposons des audits approfondis adaptes aux enjeux industrie, commerce ou tourisme patrimonial.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial ?",

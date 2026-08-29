@@ -9,9 +9,9 @@ export const HOUPLINES_COPY: VilleCopy = {
   pitchEn:
     "Houplines (59), commune de l'agglomération d'Armentières sur les bords de la Lys et à la frontière belge, est intégrée à la Métropole Européenne de Lille. Tissu économique : PME textile et industrie héritières du bassin armentiérois, services de proximité, commerce, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA opère pour toutes les structures économiques de la commune du bassin armentiérois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houplines (59). Nous accompagnons TPE et PME : PME textile et industrie du bassin armentiérois, prestataires B2B transfrontaliers franco-belges (Lys), commerçants, artisans et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houplines (59). Nous accompagnons PME et ETI : PME textile et industrie du bassin armentiérois, prestataires B2B transfrontaliers franco-belges (Lys), commerçants, artisans et professions libérales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houplines (59). Nous accompagnons TPE et PME : PME textile et industrie du bassin armentiérois, prestataires B2B transfrontaliers franco-belges (Lys), commerçants, artisans et professions libérales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Houplines (59). Nous accompagnons PME et ETI : PME textile et industrie du bassin armentiérois, prestataires B2B transfrontaliers franco-belges (Lys), commerçants, artisans et professions libérales.",
   seoHook: "bassin armentiérois",
   ecosystemFr:
     "Houplines est une commune périurbaine de l'agglomération d'Armentières (intégrée à la MEL), située sur les bords de la Lys à la frontière belge. L'économie locale combine PME textile et industrie héritières du bassin armentiérois (longue tradition manufacturière du tissu lillois), services aux entreprises transfrontaliers franco-belges (proximité Comines-Belgique et Ploegsteert), commerces de proximité et artisanat. Tissu PME diffus typique des Flandres françaises.",
@@ -42,8 +42,8 @@ export const HOUPLINES_COPY: VilleCopy = {
       en: "Implémentation IA à Houplines : génération fiches produits textile, maintenance prédictive industrie, agents conversationnels multilingues FR-NL-EN transfrontaliers, CRM augmenté PME B2B, automatisation devis-facturation cross-border Lys.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Houplines : sessions dans votre atelier textile, usine, commerce ou en visio. Dirigeants TPE/PME du bassin armentiérois et frontaliers belges souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Houplines : sessions dans votre atelier textile, usine, commerce ou en visio. Dirigeants TPE/PME du bassin armentiérois et frontaliers belges souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Houplines : sessions dans votre atelier textile, usine, commerce ou en visio. Dirigeants PME et ETI du bassin armentiérois et frontaliers belges souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Houplines : sessions dans votre atelier textile, usine, commerce ou en visio. Dirigeants PME et ETI du bassin armentiérois et frontaliers belges souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const HOUPLINES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Houplines  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin armentiérois et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile-industrie, B2B transfrontalier, commerce, artisanat). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du bassin armentiérois et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile-industrie, B2B transfrontalier, commerce, artisanat). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les prestataires B2B transfrontaliers de la Lys ?",

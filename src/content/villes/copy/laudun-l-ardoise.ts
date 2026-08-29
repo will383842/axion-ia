@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LAUDUN_L_ARDOISE_COPY: VilleCopy = {
   pitchFr:
-    "Laudun-l'Ardoise (30), commune du nord Gard entre vallée du Rhône et garrigue, reconnue pour son vignoble Laudun (Côtes du Rhône Villages) et la proximité du site nucléaire de Marcoule. Tissu TPE/PME viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y déploie son expertise pour toutes les organisations du nord Gard rhodanien.",
+    "Laudun-l'Ardoise (30), commune du nord Gard entre vallée du Rhône et garrigue, reconnue pour son vignoble Laudun (Côtes du Rhône Villages) et la proximité du site nucléaire de Marcoule. Tissu PME et ETI viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y déploie son expertise pour toutes les organisations du nord Gard rhodanien.",
   pitchEn:
-    "Laudun-l'Ardoise (30), commune du nord Gard entre vallée du Rhône et garrigue, reconnue pour son vignoble Laudun (Côtes du Rhône Villages) et la proximité du site nucléaire de Marcoule. Tissu TPE/PME viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y déploie son expertise pour toutes les organisations du nord Gard rhodanien.",
+    "Laudun-l'Ardoise (30), commune du nord Gard entre vallée du Rhône et garrigue, reconnue pour son vignoble Laudun (Côtes du Rhône Villages) et la proximité du site nucléaire de Marcoule. Tissu PME et ETI viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y déploie son expertise pour toutes les organisations du nord Gard rhodanien.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Laudun-l'Ardoise (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône Villages Laudun, sous-traitants nucléaire Marcoule, commerçants, artisans BTP et professions libérales du nord Gard. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Laudun-l'Ardoise (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Côtes du Rhône Villages Laudun, sous-traitants nucléaire Marcoule, commerçants, artisans BTP et professions libérales du nord Gard. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Laudun-l'Ardoise (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône Villages Laudun, sous-traitants nucléaire Marcoule, commerçants, artisans BTP et professions libérales du nord Gard. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Laudun-l'Ardoise (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Côtes du Rhône Villages Laudun, sous-traitants nucléaire Marcoule, commerçants, artisans BTP et professions libérales du nord Gard. Audit sur place sur mesure.",
   seoHook: "vallée du",
   ecosystemFr:
     "Laudun-l'Ardoise (~6 800 hab) est une commune viticole du nord Gard (AOP Côtes du Rhône Villages Laudun). Proximité site nucléaire Marcoule (CEA/Orano), sous-traitance industrielle, artisanat BTP, commerces et services. Double économie viticole et nucléaire structurante.",
@@ -30,8 +30,8 @@ export const LAUDUN_L_ARDOISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laudun-l'Ardoise : diagnostic adapté aux TPE/PME viticoles Laudun, sous-traitants nucléaire, commerçants et artisans BTP nord Gard. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Laudun-l'Ardoise : diagnostic adapté aux TPE/PME viticoles Laudun, sous-traitants nucléaire, commerçants et artisans BTP nord Gard. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Laudun-l'Ardoise : diagnostic adapté aux PME et ETI viticoles Laudun, sous-traitants nucléaire, commerçants et artisans BTP nord Gard. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Laudun-l'Ardoise : diagnostic adapté aux PME et ETI viticoles Laudun, sous-traitants nucléaire, commerçants et artisans BTP nord Gard. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laudun-l'Ardoise : formats adaptés aux caves viticoles, sous-traitants industriels, commerces et artisans nord Gard rhodanien.",
@@ -42,8 +42,8 @@ export const LAUDUN_L_ARDOISE_COPY: VilleCopy = {
       en: "Implémentation IA à Laudun-l'Ardoise : prédiction vendanges Laudun, automatisation reporting nucléaire, gestion parcellaire viticole, agents conversationnels commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Laudun-l'Ardoise : sessions dirigeants TPE/PME viticoles, sous-traitants industriels et commerçants souhaitant intégrer l'IA nord Gard.",
-      en: "Coaching 1-to-1 à Laudun-l'Ardoise : sessions dirigeants TPE/PME viticoles, sous-traitants industriels et commerçants souhaitant intégrer l'IA nord Gard.",
+      fr: "Coaching 1-to-1 à Laudun-l'Ardoise : sessions dirigeants de PME et d'ETI viticoles, sous-traitants industriels et commerçants souhaitant intégrer l'IA nord Gard.",
+      en: "Coaching 1-to-1 à Laudun-l'Ardoise : sessions dirigeants de PME et d'ETI viticoles, sous-traitants industriels et commerçants souhaitant intégrer l'IA nord Gard.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const LAUDUN_L_ARDOISE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les sous-traitants nucléaire Marcoule ?",
-      a: "Oui, nous accompagnons les TPE/PME sous-traitantes Marcoule : automatisation reporting qualité, classification documents techniques, prédiction maintenance, conformité réglementaire.",
+      a: "Oui, nous accompagnons les PME et ETI sous-traitantes Marcoule : automatisation reporting qualité, classification documents techniques, prédiction maintenance, conformité réglementaire.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Laudun-l'Ardoise ?",

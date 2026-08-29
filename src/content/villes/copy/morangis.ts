@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MORANGIS_COPY: VilleCopy = {
   pitchFr:
-    "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, TPE artisanat BTP, commerces, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, PME du BTP, commerces, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, TPE artisanat BTP, commerces, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, PME du BTP, commerces, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morangis (91). Nous accompagnons PME et ETI : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Morangis (91). Nous accompagnons PME et ETI : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit sur place sur mesure.",
   seoHook: "logistique transport & industrielles",
   ecosystemFr:
-    "Morangis est une commune de l'Essonne proche d'Orly, avec des zones d'activités orientées logistique, transport et industrie. Tissu logistique aéroportuaire, PME industrielles, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
+    "Morangis est une commune de l'Essonne proche d'Orly, avec des zones d'activités orientées logistique, transport et industrie. Tissu logistique aéroportuaire, PME industrielles, PME du BTP, commerces de proximité, services aux entreprises.",
   ecosystemEn:
-    "Morangis est une commune de l'Essonne proche d'Orly, avec des zones d'activités orientées logistique, transport et industrie. Tissu logistique aéroportuaire, PME industrielles, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
+    "Morangis est une commune de l'Essonne proche d'Orly, avec des zones d'activités orientées logistique, transport et industrie. Tissu logistique aéroportuaire, PME industrielles, PME du BTP, commerces de proximité, services aux entreprises.",
   distancesFr:
     "Aéroport Paris-Orly à 5 min. Chilly-Mazarin à 5 min. Massy TGV à 15 min. Paris centre à 25 min.",
   distancesEn:
@@ -24,7 +24,7 @@ export const MORANGIS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique et transport aérien / zone Orly",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
@@ -60,7 +60,7 @@ export const MORANGIS_COPY: VilleCopy = {
       a: "Oui, maintenance prédictive machines, contrôle qualité automatisé, optimisation production, gestion commandes IA, planification ressources.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BAYONNE_COPY: VilleCopy = {
   pitchFr:
-    "Bayonne (64), capitale économique du Pays basque à la confluence de la Nive et de l'Adour, conjugue port, agroalimentaire de terroir (jambon, chocolat), commerce, tourisme et sous-traitance aéronautique du bassin Pau-Bayonne. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME bayonnaises, les ETI en complément.",
+    "Bayonne (64), capitale économique du Pays basque à la confluence de la Nive et de l'Adour, conjugue port, agroalimentaire de terroir (jambon, chocolat), commerce, tourisme et sous-traitance aéronautique du bassin Pau-Bayonne. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI bayonnaises, les grands groupes en complément.",
   pitchEn:
-    "Bayonne (64), capitale économique du Pays basque à la confluence de la Nive et de l'Adour, conjugue port, agroalimentaire de terroir (jambon, chocolat), commerce, tourisme et sous-traitance aéronautique du bassin Pau-Bayonne. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME bayonnaises, les ETI en complément.",
+    "Bayonne (64), capitale économique du Pays basque à la confluence de la Nive et de l'Adour, conjugue port, agroalimentaire de terroir (jambon, chocolat), commerce, tourisme et sous-traitance aéronautique du bassin Pau-Bayonne. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI bayonnaises, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Bayonne et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — artisans de bouche et chocolatiers, négoce du port de l'Adour, commerces du Petit Bayonne, hôtellerie-restauration et sous-traitants aéronautiques — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Bayonne et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les PME et ETI locales — artisans de bouche et chocolatiers, négoce du port de l'Adour, commerces du Petit Bayonne, hôtellerie-restauration et sous-traitants aéronautiques — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Bayonne et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les TPE et PME locales — artisans de bouche et chocolatiers, négoce du port de l'Adour, commerces du Petit Bayonne, hôtellerie-restauration et sous-traitants aéronautiques — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Bayonne et dans tout le BAB (Bayonne-Anglet-Biarritz). Nous accompagnons en priorité les PME et ETI locales — artisans de bouche et chocolatiers, négoce du port de l'Adour, commerces du Petit Bayonne, hôtellerie-restauration et sous-traitants aéronautiques — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "port, agroalimentaire & aéronautique",
   ecosystemFr:
-    "Le tissu bayonnais mêle agroalimentaire de terroir (jambon de Bayonne, chocolat), port de commerce et de pêche sur l'Adour, commerce et tourisme, et sous-traitance aéronautique du bassin Pau-Bayonne. Une majorité de TPE et PME familiales, quelques ETI industrielles.",
+    "Le tissu bayonnais mêle agroalimentaire de terroir (jambon de Bayonne, chocolat), port de commerce et de pêche sur l'Adour, commerce et tourisme, et sous-traitance aéronautique du bassin Pau-Bayonne. Une majorité de PME et ETI familiales, quelques ETI industrielles.",
   ecosystemEn:
-    "Le tissu bayonnais mêle agroalimentaire de terroir (jambon de Bayonne, chocolat), port de commerce et de pêche sur l'Adour, commerce et tourisme, et sous-traitance aéronautique du bassin Pau-Bayonne. Une majorité de TPE et PME familiales, quelques ETI industrielles.",
+    "Le tissu bayonnais mêle agroalimentaire de terroir (jambon de Bayonne, chocolat), port de commerce et de pêche sur l'Adour, commerce et tourisme, et sous-traitance aéronautique du bassin Pau-Bayonne. Une majorité de PME et ETI familiales, quelques ETI industrielles.",
   distancesFr:
     "Gare de Bayonne en centre-ville sur la ligne Paris-Hendaye. Aéroport de Biarritz-Pays basque à 8 km. Anglet et Biarritz à 10 min, Saint-Jean-de-Luz à 25 min, frontière espagnole à 30 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BAYONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Bayonne : agents de réservation et de relation client pour l'hôtellerie-restauration, prévision des stocks pour l'agroalimentaire, automatisation administrative du négoce portuaire.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Bayonne : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME bayonnaises — artisans, négociants, hôteliers, gérants de commerce du Pays basque.",
-      en: "Coaching un-à-un à Bayonne : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME bayonnaises — artisans, négociants, hôteliers, gérants de commerce du Pays basque.",
+      fr: "Coaching un-à-un à Bayonne : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI bayonnaises — artisans, négociants, hôteliers, gérants de commerce du Pays basque.",
+      en: "Coaching un-à-un à Bayonne : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI bayonnaises — artisans, négociants, hôteliers, gérants de commerce du Pays basque.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Bayonne : plateformes et boutiques en ligne avec IA intégrée pour les chocolatiers, conserveries, hôtels et commerces du BAB — réservation, recommandation, multilingue FR/ES/basque.",
@@ -88,12 +88,6 @@ export const BAYONNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique e-commerce augmentée",
-            detail:
-              "Pour artisans de bouche, chocolatiers, maisons de salaison IGP, commerçants du Petit Bayonne et indépendants du BAB : boutique en ligne mobile-first, multilingue FR/ES, recommandation IA et réponses automatiques clients.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé multi-CMS",
@@ -175,12 +169,6 @@ export const BAYONNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or augmented e-commerce store",
-            detail:
-              "For food artisans, chocolatiers, PGI curing houses, Petit Bayonne shops and BAB freelancers: mobile-first online store, FR/ES multilingual, AI recommendation and automated customer replies.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or advanced multi-CMS e-commerce",
             detail:
@@ -230,7 +218,7 @@ export const BAYONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bayonne et dans le BAB ?",
-      a: "Oui, Axion-IA se déplace sur site à Bayonne, Anglet, Biarritz et dans tout le Pays basque. Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Bayonne, Anglet, Biarritz et dans tout le Pays basque. Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les artisans de bouche et chocolatiers bayonnais ?",
@@ -246,7 +234,7 @@ export const BAYONNE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Bayonne ?",
-      a: "Non. Notre cœur de cible, ce sont les TPE et PME bayonnaises. Un Audit sur place permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
+      a: "Non. Notre cœur de cible, ce sont les PME et ETI bayonnaises. Un Audit sur place permet de démarrer petit, à tarif public, avec un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Bayonne ?",

@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
   pitchFr:
-    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams se déplace sur site, depuis Paris, pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
+    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de PME et ETI organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams se déplace sur site, depuis Paris, pour des missions ciblées PME et ETI en priorité, puis PME et ETI.",
   pitchEn:
-    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de TPE et PME organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams se déplace sur site, depuis Paris, pour des missions ciblées TPE/PME en priorité, puis PME et ETI.",
+    "Carrières-sous-Poissy, commune des Yvelines de 20 825 habitants située à une dizaine de kilomètres au nord-ouest de Saint-Germain-en-Laye, accueille un tissu de PME et ETI organisé autour des zones d'activité du bord de Seine et du quartier des Trois Cèdres (environ 15 hectares). Axion-IA accompagne les dirigeants locaux dans l'intégration concrète de l'IA opérationnelle : automatisation des relances, des devis, du traitement administratif. Williams se déplace sur site, depuis Paris, pour des missions ciblées PME et ETI en priorité, puis PME et ETI.",
   directAnswerFr:
-    "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les TPE et PME des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
+    "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les PME et ETI des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
   directAnswerEn:
-    "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les TPE et PME des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
+    "À Carrières-sous-Poissy, Axion-IA intervient sur site pour les PME et ETI des zones d'activité du bord de Seine et du quartier des Trois Cèdres. Le territoire compte le centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, qui structure une partie de l'écosystème industriel local. Nos missions couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les interventions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et l'accompagnement un-à-un des dirigeants — code custom Python/TypeScript, jamais de no-code.",
   seoHook: "commerce véhicules & commerce gros",
   ecosystemFr:
     "L'économie de Carrières-sous-Poissy s'appuie sur le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et sur les zones d'activité du bord de Seine et du quartier des Trois Cèdres, qui couvrent environ 15 hectares. La ville est rattachée à la communauté urbaine Grand Paris Seine et Oise et bénéficie d'une desserte ferroviaire via la gare de Poissy (RER A et Transilien J).",
@@ -32,30 +32,30 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit sur place à Carrières-sous-Poissy permet aux TPE et PME des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
-      en: "Réaliser un audit sur place à Carrières-sous-Poissy permet aux TPE et PME des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
+      fr: "Réaliser un audit sur place à Carrières-sous-Poissy permet aux PME et ETI des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit sur place à Carrières-sous-Poissy permet aux PME et ETI des zones d'activité du bord de Seine d'identifier rapidement les processus administratifs à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir à Carrières-sous-Poissy pour automatiser les relances clients, la génération de devis et le suivi commercial dans le quartier des Trois Cèdres et les zones d'activité riveraines. Williams se déplace depuis Paris.",
       en: "Intervenir à Carrières-sous-Poissy pour automatiser les relances clients, la génération de devis et le suivi commercial dans le quartier des Trois Cèdres et les zones d'activité riveraines. Williams se déplace depuis Paris.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA clés en main à Carrières-sous-Poissy pour les TPE et PME, avec code custom Python/TypeScript et intégration aux outils existants (CRM, comptabilité, ERP).",
-      en: "Implémenter des solutions IA clés en main à Carrières-sous-Poissy pour les TPE et PME, avec code custom Python/TypeScript et intégration aux outils existants (CRM, comptabilité, ERP).",
+      fr: "Implémenter des solutions IA clés en main à Carrières-sous-Poissy pour les PME et ETI, avec code custom Python/TypeScript et intégration aux outils existants (CRM, comptabilité, ERP).",
+      en: "Implémenter des solutions IA clés en main à Carrières-sous-Poissy pour les PME et ETI, avec code custom Python/TypeScript et intégration aux outils existants (CRM, comptabilité, ERP).",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de Carrières-sous-Poissy pour une adoption sereine de l'IA, sans no-code, avec transfert de compétences progressif.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de Carrières-sous-Poissy pour une adoption sereine de l'IA, sans no-code, avec transfert de compétences progressif.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Carrières-sous-Poissy pour une adoption sereine de l'IA, sans no-code, avec transfert de compétences progressif.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Carrières-sous-Poissy pour une adoption sereine de l'IA, sans no-code, avec transfert de compétences progressif.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de TPE du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de PME du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
         whyHere: [
           "Filière automobile et R&D : autour du centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, gravitent sous-traitants et bureaux d'études. Terrain idéal pour des portails fournisseurs, des plateformes SaaS métier et des agents qui pilotent devis, documentation technique et homologation — branchés sur vos CRM et ERP, avec une recherche sémantique qui retrouve une référence pièce en quelques mots.",
           "Logistique et commerce de gros le long du bord de Seine : nos automatisations et notre recherche sémantique fluidifient suivi de commandes, catalogues produits et relances, avec des interfaces mobile-first pensées pour les caristes et équipes terrain des entrepôts riverains. Un chatbot RAG multilingue répond aux clients sur les délais, les stocks et le transport fluvial sans mobiliser le back-office.",
-          "Tissu majoritairement TPE/PME des Trois Cèdres et des zones d'activité riveraines : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur Shopify, WooCommerce, PrestaShop ou Magento pour un commerçant, un artisan du bâtiment ou un négociant de gros. UX/UI sur mesure, design system à votre marque, le tout transférable.",
+          "Tissu majoritairement PME et ETI des Trois Cèdres et des zones d'activité riveraines : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur Shopify, WooCommerce, PrestaShop ou Magento pour un commerçant, un artisan du bâtiment ou un négociant de gros. UX/UI sur mesure, design system à votre marque, le tout transférable.",
           "Ancrage Grand Paris Seine et Oise et desserte par la gare de Poissy (RER A, Transilien J) : à 30 km de Paris et 10 km de Saint-Germain-en-Laye, la commune capte une clientèle francilienne exigeante sur la performance et la conformité. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act ; vos données clients et fournisseurs restent maîtrisées, sans transit hors UE sans DPA.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation des relances et devis — sur le site existant d'un commerçant, d'un artisan du bâtiment ou d'un négociant des Trois Cèdres, sans refonte. Idéal pour le commerce de détail et les services de proximité du bord de Seine.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,11 +131,11 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre et prix actés avant le premier sprint. Mise en ligne sans downtime quand on augmente un site déjà en exploitation. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure, hébergement UE possible, conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technique. Solution transférable à tout prestataire des Yvelines ou d'Île-de-France, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de TPE du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Carrières-sous-Poissy des sites web, des applications et des plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie de bord de Seine où le centre technique PSA Peugeot Citroën (recherche autoroutière, moteurs électriques) et les zones d'activité des Trois Cèdres (environ 15 hectares) côtoient un tissu dense de PME du commerce, de la logistique et de la construction. Cette commune des Yvelines de 20 825 habitants, rattachée à la communauté urbaine Grand Paris Seine et Oise, combine proximité de Paris et exigence RGPD stricte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carrières-sous-Poissy, itérations à distance.",
         whyHere: [
           "Filière automobile et R&D : autour du centre technique PSA Peugeot Citroën, spécialisé dans la recherche autoroutière et le développement de moteurs électriques, gravitent sous-traitants et bureaux d'études. Terrain idéal pour des portails fournisseurs, des plateformes SaaS métier et des agents qui pilotent devis, documentation technique et homologation — branchés sur vos CRM et ERP, avec une recherche sémantique qui retrouve une référence pièce en quelques mots.",
           "Logistique et commerce de gros le long du bord de Seine : nos automatisations et notre recherche sémantique fluidifient suivi de commandes, catalogues produits et relances, avec des interfaces mobile-first pensées pour les caristes et équipes terrain des entrepôts riverains. Un chatbot RAG multilingue répond aux clients sur les délais, les stocks et le transport fluvial sans mobiliser le back-office.",
-          "Tissu majoritairement TPE/PME des Trois Cèdres et des zones d'activité riveraines : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur Shopify, WooCommerce, PrestaShop ou Magento pour un commerçant, un artisan du bâtiment ou un négociant de gros. UX/UI sur mesure, design system à votre marque, le tout transférable.",
+          "Tissu majoritairement PME et ETI des Trois Cèdres et des zones d'activité riveraines : on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on bâtit une vitrine e-commerce sur Shopify, WooCommerce, PrestaShop ou Magento pour un commerçant, un artisan du bâtiment ou un négociant de gros. UX/UI sur mesure, design system à votre marque, le tout transférable.",
           "Ancrage Grand Paris Seine et Oise et desserte par la gare de Poissy (RER A, Transilien J) : à 30 km de Paris et 10 km de Saint-Germain-en-Laye, la commune capte une clientèle francilienne exigeante sur la performance et la conformité. Toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act ; vos données clients et fournisseurs restent maîtrisées, sans transit hors UE sans DPA.",
         ],
         methodology: [
@@ -172,12 +166,6 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, automatisation des relances et devis — sur le site existant d'un commerçant, d'un artisan du bâtiment ou d'un négociant des Trois Cèdres, sans refonte. Idéal pour le commerce de détail et les services de proximité du bord de Seine.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -244,7 +232,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Carrières-sous-Poissy ?",
-      a: "Nous accompagnons en priorité les TPE et PME de la construction automobile (autour du centre technique PSA), du commerce de gros et de détail, de la logistique et de la construction implantées dans les zones d'activité du bord de Seine et des Trois Cèdres.",
+      a: "Nous accompagnons en priorité les PME et ETI de la construction automobile (autour du centre technique PSA), du commerce de gros et de détail, de la logistique et de la construction implantées dans les zones d'activité du bord de Seine et des Trois Cèdres.",
     },
     {
       q: "Williams se déplace-t-il sur site à Carrières-sous-Poissy ?",

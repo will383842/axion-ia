@@ -186,7 +186,7 @@ export interface AuditDetailConfig {
 }
 
 // ============================================================================
-// AUDIT SUR PLACE (TPE/artisans/commerçants) — 1 journée complète sur site,
+// AUDIT SUR PLACE (PME mono-site) — 1 journée complète sur site,
 // 1190 € HT présentiel (Will 2026-05-31 : suppression du 490 € distanciel).
 // ============================================================================
 
@@ -273,7 +273,7 @@ const FLASH_FAQ: ReadonlyArray<AuditFaq> = [
   {
     qFr: "Pour qui est-ce vraiment fait ?",
     qEn: "Who is this really for?",
-    aFr: `TPE (1-19 salariés), indépendant·e·s, freelances, professions libérales. Si vous avez plus de 20 salariés et plusieurs services concernés, l'audit Ciblé (${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE} €) ou Stratégique PME (${PRICE_PME_20_50}-${PRICE_PME_50_250} €) est mieux calibré.`,
+    aFr: `PME (1-19 salariés), indépendant·e·s, freelances, professions libérales. Si vous avez plus de 20 salariés et plusieurs services concernés, l'audit Ciblé (${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE} €) ou Stratégique PME (${PRICE_PME_20_50}-${PRICE_PME_50_250} €) est mieux calibré.`,
     aEn: `Small businesses (1-19 staff), independents, freelancers. If you have 20+ staff and multiple departments concerned, the Targeted audit (€${PRICE_CIBLE_SOLO}-${PRICE_CIBLE_AVANCE}) or Strategic SME (€${PRICE_PME_20_50}-${PRICE_PME_50_250}) is better calibrated.`,
   },
   {
@@ -725,14 +725,14 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
       durationEn: "1 full day (9 a.m.-5 p.m.)",
       formatFr: "Présentiel dans vos locaux",
       formatEn: "On site, at your premises",
-      audienceFr: "TPE 1-19 salariés · artisans · commerçants · indépendants",
+      audienceFr: "PME 1-19 salariés · artisans · commerçants · indépendants",
       audienceEn: "Small businesses 1-19 staff · artisans · retailers · freelancers",
       deliverableFr:
         "Rapport 8-15 pages : cartographie, outils chiffrés, prompts testés, 3-5 quick-wins classés — sous 48 h ouvrées (7 jours max)",
       deliverableEn:
         "8-15 page report: mapping, costed tools, tested prompts, 3-5 ranked quick-wins — within 48 working hours (7 days max)",
     },
-    promiseFr: `Audit IA complet pour TPE, artisan ou commerçant. Une journée complète sur place : on cartographie toute votre activité, on teste l'IA en live sur vos vrais cas, et vous recevez sous 48 h ouvrées (7 jours au plus tard) un rapport écrit de 8 à 15 pages — outils chiffrés, prompts testés, 3 à 5 quick-wins classés par impact. De quoi décider seul·e par quoi commencer. Réservation directe au calendrier (${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })}).`,
+    promiseFr: `Audit IA complet pour PME ou ETI. Une journée complète sur place : on cartographie toute votre activité, on teste l'IA en live sur vos vrais cas, et vous recevez sous 48 h ouvrées (7 jours au plus tard) un rapport écrit de 8 à 15 pages — outils chiffrés, prompts testés, 3 à 5 quick-wins classés par impact. De quoi décider seul·e par quoi commencer. Réservation directe au calendrier (${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })}).`,
     promiseEn: `Complete AI audit for a small business, artisan or retailer. One full day on site: we map your entire activity, test AI live on your real cases, and within 48 business hours (7 days at the latest) you receive a written 8 to 15 page report — costed tools, tested prompts, 3 to 5 quick-wins ranked by impact. Enough to decide on your own where to start. Direct calendar booking (${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })}).`,
     chipsFr: ["Rapport écrit sous 7 j max", "Prompts testés remis", "Confidentialité totale"],
     chipsEn: [
@@ -755,7 +755,7 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     heroImage: {
       src: "/images/axion-ia-audit-ia-entreprise-prete-intelligence-artificielle-banniere.webp",
       altFr:
-        "Audit IA sur place pour TPE — une journée complète dans vos locaux pour rendre votre entreprise prête à l'IA, avec cartographie des usages et plan d'action chiffré.",
+        "Audit IA sur place pour PME — une journée complète dans vos locaux pour rendre votre entreprise prête à l'IA, avec cartographie des usages et plan d'action chiffré.",
       altEn:
         "On-site AI audit for small businesses — one full day on your premises to make your company AI-ready, with use-case mapping and a costed action plan.",
     },
@@ -764,7 +764,7 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
     heroMetaEn:
       "1 day on site · 9 a.m.-5 p.m. · written report and costed plan within 48 business hours (7 days max)",
     forWhomFr: [
-      "TPE de 1 à 19 salariés",
+      "PME mono-site",
       "Artisans, commerçants, professions libérales",
       "Indépendant·e·s & freelances qui veulent un cap clair",
     ],

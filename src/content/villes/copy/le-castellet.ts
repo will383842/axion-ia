@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_CASTELLET_COPY: VilleCopy = {
   pitchFr:
-    "Le Castellet (83), village perché du sud-Var, est mondialement reconnu pour le circuit Paul Ricard (sports mécaniques) et son vignoble AOC Bandol. Tissu de TPE viticulteurs Bandol, restaurateurs, hôteliers, artisans et PME tourisme, sports mécaniques et services. Axion-IA y intervient pour tous types d'activités.",
+    "Le Castellet (83), village perché du sud-Var, est mondialement reconnu pour le circuit Paul Ricard (sports mécaniques) et son vignoble AOC Bandol. Tissu de PME viticulteurs Bandol, restaurateurs, hôteliers, artisans et PME tourisme, sports mécaniques et services. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Le Castellet (83), village perché du sud-Var, est mondialement reconnu pour le circuit Paul Ricard (sports mécaniques) et son vignoble AOC Bandol. Tissu de TPE viticulteurs Bandol, restaurateurs, hôteliers, artisans et PME tourisme, sports mécaniques et services. Axion-IA y intervient pour tous types d'activités.",
+    "Le Castellet (83), village perché du sud-Var, est mondialement reconnu pour le circuit Paul Ricard (sports mécaniques) et son vignoble AOC Bandol. Tissu de PME viticulteurs Bandol, restaurateurs, hôteliers, artisans et PME tourisme, sports mécaniques et services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Castellet (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Castellet (83). Nous accompagnons PME viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Castellet (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Castellet (83). Nous accompagnons PME viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit sur place sur mesure.",
   seoHook: "viticulture bandol & sports mécaniques",
   ecosystemFr:
-    "Le Castellet est un village perché provençal du sud-Var, célèbre pour son circuit Paul Ricard (sports mécaniques, événements internationaux F1, Grand Prix) et son vignoble AOC Bandol prestigieux. Tourisme premium, viticulture renommée, hôtellerie haut de gamme, restauration. Tissu de TPE/PME tourisme, viticulture et services aux événements.",
+    "Le Castellet est un village perché provençal du sud-Var, célèbre pour son circuit Paul Ricard (sports mécaniques, événements internationaux F1, Grand Prix) et son vignoble AOC Bandol prestigieux. Tourisme premium, viticulture renommée, hôtellerie haut de gamme, restauration. Tissu de PME et ETI tourisme, viticulture et services aux événements.",
   ecosystemEn:
-    "Le Castellet est un village perché provençal du sud-Var, célèbre pour son circuit Paul Ricard (sports mécaniques, événements internationaux F1, Grand Prix) et son vignoble AOC Bandol prestigieux. Tourisme premium, viticulture renommée, hôtellerie haut de gamme, restauration. Tissu de TPE/PME tourisme, viticulture et services aux événements.",
+    "Le Castellet est un village perché provençal du sud-Var, célèbre pour son circuit Paul Ricard (sports mécaniques, événements internationaux F1, Grand Prix) et son vignoble AOC Bandol prestigieux. Tourisme premium, viticulture renommée, hôtellerie haut de gamme, restauration. Tissu de PME et ETI tourisme, viticulture et services aux événements.",
   distancesFr:
     "Bandol à 15 min par D26. Toulon à 30 min. La Ciotat à 25 min. Marseille à 50 min par A50. Gare TGV Toulon à 35 min. Aéroport Toulon-Hyères à 40 min. Aéroport Marseille-Provence à 50 min. Aérodrome du Castellet à 5 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const LE_CASTELLET_COPY: VilleCopy = {
       en: "Implémentation IA au Castellet : gestion parcellaire viticole AOC, yield management hôtelier, agents conversationnels œnotourisme multilingues, marketing IA tourisme premium F1, automatisation événementiel. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Castellet : sessions pour vignerons AOC Bandol, hôteliers, restaurateurs et dirigeants TPE/PME du sud-Var souhaitant maîtriser l'IA pour leur activité premium.",
-      en: "Coaching 1-to-1 au Castellet : sessions pour vignerons AOC Bandol, hôteliers, restaurateurs et dirigeants TPE/PME du sud-Var souhaitant maîtriser l'IA pour leur activité premium.",
+      fr: "Coaching 1-to-1 au Castellet : sessions pour vignerons AOC Bandol, hôteliers, restaurateurs et dirigeants de PME et d'ETI du sud-Var souhaitant maîtriser l'IA pour leur activité premium.",
+      en: "Coaching 1-to-1 au Castellet : sessions pour vignerons AOC Bandol, hôteliers, restaurateurs et dirigeants de PME et d'ETI du sud-Var souhaitant maîtriser l'IA pour leur activité premium.",
     },
   },
   faqGeolocalisee: [

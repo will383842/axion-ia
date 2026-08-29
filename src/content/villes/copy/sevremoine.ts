@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const SEVREMOINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Sèvremoine (25 797 habitants, Maine-et-Loire, Pays de la Loire), commune nouvelle créée le 15 décembre 2015 par la fusion de dix communes déléguées dont Saint-Macaire-en-Mauges (chef-lieu). Située dans l'arrondissement de Cholet, au cœur des Mauges, Sèvremoine accueille notamment le Groupe Grimaud, leader mondial de la sélection génétique animale. Notre cabinet national s'y déplace pour mener audits IA et automatisations en code custom adaptés au tissu agroalimentaire et industriel local.",
+    "Axion-IA accompagne les PME et ETI de Sèvremoine (25 797 habitants, Maine-et-Loire, Pays de la Loire), commune nouvelle créée le 15 décembre 2015 par la fusion de dix communes déléguées dont Saint-Macaire-en-Mauges (chef-lieu). Située dans l'arrondissement de Cholet, au cœur des Mauges, Sèvremoine accueille notamment le Groupe Grimaud, leader mondial de la sélection génétique animale. Notre cabinet national s'y déplace pour mener audits IA et automatisations en code custom adaptés au tissu agroalimentaire et industriel local.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Sèvremoine (25 797 habitants, Maine-et-Loire, Pays de la Loire), commune nouvelle créée le 15 décembre 2015 par la fusion de dix communes déléguées dont Saint-Macaire-en-Mauges (chef-lieu). Située dans l'arrondissement de Cholet, au cœur des Mauges, Sèvremoine accueille notamment le Groupe Grimaud, leader mondial de la sélection génétique animale. Notre cabinet national s'y déplace pour mener audits IA et automatisations en code custom adaptés au tissu agroalimentaire et industriel local.",
+    "Axion-IA accompagne les PME et ETI de Sèvremoine (25 797 habitants, Maine-et-Loire, Pays de la Loire), commune nouvelle créée le 15 décembre 2015 par la fusion de dix communes déléguées dont Saint-Macaire-en-Mauges (chef-lieu). Située dans l'arrondissement de Cholet, au cœur des Mauges, Sèvremoine accueille notamment le Groupe Grimaud, leader mondial de la sélection génétique animale. Notre cabinet national s'y déplace pour mener audits IA et automatisations en code custom adaptés au tissu agroalimentaire et industriel local.",
   directAnswerFr:
-    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des PME et ETI, et complémentairement des grands groupes comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   directAnswerEn:
-    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des TPE et PME, et complémentairement des ETI comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
+    "À Sèvremoine (49230 / 49450 / 49660 / 49710, Maine-et-Loire, 25 797 habitants), Axion-IA intervient sur site auprès des PME et ETI, et complémentairement des grands groupes comme le Groupe Grimaud. Nos consultants accèdent à la commune via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou le réseau Aléop. Nous proposons des audits IA, des automatisations métier en code custom (jamais no-code) et un accompagnement un-à-un des dirigeants, avec un premier tarif public à {{price:intervention-4h|flat}}, dans le respect du RGPD et de l'AI Act.",
   seoHook: "Groupe Grimaud, Mauges agroalimentaires & gare TER Torfou",
   ecosystemFr:
-    "Sèvremoine, commune nouvelle des Mauges, regroupe dix communes déléguées (Saint-Macaire-en-Mauges siège administratif, plus Torfou et huit autres). Elle s'inscrit dans le bassin économique de Cholet, marqué par l'agroalimentaire, la fabrication de produits métalliques et la sous-traitance industrielle. Le Groupe Grimaud, spécialiste mondial de la biologie humaine et animale, y est un employeur majeur. La commune borde Beaupréau-en-Mauges, Bégrolles-en-Mauges et La Séguinière, formant un bassin de TPE et PME industrielles dense.",
+    "Sèvremoine, commune nouvelle des Mauges, regroupe dix communes déléguées (Saint-Macaire-en-Mauges siège administratif, plus Torfou et huit autres). Elle s'inscrit dans le bassin économique de Cholet, marqué par l'agroalimentaire, la fabrication de produits métalliques et la sous-traitance industrielle. Le Groupe Grimaud, spécialiste mondial de la biologie humaine et animale, y est un employeur majeur. La commune borde Beaupréau-en-Mauges, Bégrolles-en-Mauges et La Séguinière, formant un bassin de PME et ETI industrielles dense.",
   ecosystemEn:
-    "Sèvremoine, commune nouvelle des Mauges, regroupe dix communes déléguées (Saint-Macaire-en-Mauges siège administratif, plus Torfou et huit autres). Elle s'inscrit dans le bassin économique de Cholet, marqué par l'agroalimentaire, la fabrication de produits métalliques et la sous-traitance industrielle. Le Groupe Grimaud, spécialiste mondial de la biologie humaine et animale, y est un employeur majeur. La commune borde Beaupréau-en-Mauges, Bégrolles-en-Mauges et La Séguinière, formant un bassin de TPE et PME industrielles dense.",
+    "Sèvremoine, commune nouvelle des Mauges, regroupe dix communes déléguées (Saint-Macaire-en-Mauges siège administratif, plus Torfou et huit autres). Elle s'inscrit dans le bassin économique de Cholet, marqué par l'agroalimentaire, la fabrication de produits métalliques et la sous-traitance industrielle. Le Groupe Grimaud, spécialiste mondial de la biologie humaine et animale, y est un employeur majeur. La commune borde Beaupréau-en-Mauges, Bégrolles-en-Mauges et La Séguinière, formant un bassin de PME et ETI industrielles dense.",
   distancesFr:
     "Sèvremoine est dans l'arrondissement de Cholet, à environ 20 km de Cholet et 50 km au sud-est de Nantes ; la gare TER de Torfou la dessert sur la ligne Nantes-Cholet via Clisson, complétée par le réseau Aléop.",
   distancesEn:
@@ -32,29 +32,29 @@ export const SEVREMOINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA sur site à Sèvremoine pour les TPE et PME agroalimentaires et industrielles des Mauges — Audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA sur site à Sèvremoine pour les PME et ETI agroalimentaires et industrielles des Mauges — Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA sur site à Sèvremoine pour les PME et ETI agroalimentaires et industrielles des Mauges — Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès {{price:intervention-4h|flat}}.",
-      en: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des TPE et PME en code custom — dès {{price:intervention-4h|flat}}.",
+      fr: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des PME et ETI en code custom — dès {{price:intervention-4h|flat}}.",
+      en: "Interventions à Sèvremoine pour automatiser relances clients, suivi production et logistique des PME et ETI en code custom — dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
       fr: "Implémentation de solutions IA à Sèvremoine pour PME et ETI agroalimentaires et métallurgiques (Groupe Grimaud et son écosystème) — dès {{price:impl-poc|entry}}.",
       en: "Implémentation de solutions IA à Sèvremoine pour PME et ETI agroalimentaires et métallurgiques (Groupe Grimaud et son écosystème) — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE et PME sèvremoinaises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement un-à-un des dirigeants de TPE et PME sèvremoinaises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et d'ETI sèvremoinaises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un des dirigeants de PME et d'ETI sèvremoinaises pour cadrer leur stratégie IA — sessions dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Sèvremoine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensée pour les Mauges, ce bassin industriel dense de TPE et PME né de la fusion de dix communes déléguées en 2015 (chef-lieu Saint-Macaire-en-Mauges), où l'agroalimentaire, la sélection génétique animale du Groupe Grimaud et la fabrication de produits métalliques structurent l'emploi de ses 25 797 habitants. On sert aussi le négoce et la logistique tournés vers l'arrondissement de Cholet. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Macaire-en-Mauges, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Sèvremoine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensée pour les Mauges, ce bassin industriel dense de PME et ETI né de la fusion de dix communes déléguées en 2015 (chef-lieu Saint-Macaire-en-Mauges), où l'agroalimentaire, la sélection génétique animale du Groupe Grimaud et la fabrication de produits métalliques structurent l'emploi de ses 25 797 habitants. On sert aussi le négoce et la logistique tournés vers l'arrondissement de Cholet. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Macaire-en-Mauges, itérations à distance.",
         whyHere: [
           "Sèvremoine accueille le Groupe Grimaud, acteur mondial de la sélection génétique animale et de la biologie, employeur majeur des Mauges : pour ce type d'ETI exportatrice, on construit des portails clients multilingues, des plateformes SaaS branchées sur le SI (ERP, traçabilité) et de la recherche sémantique sur catalogues techniques et fiches souches, indexés et interrogeables en langage naturel.",
-          "Tissu agroalimentaire et industriel dense entre Saint-Macaire-en-Mauges et Torfou (élevage, transformation, sous-traitance métallique, négoce) : on greffe l'IA sur l'existant — suivi de production, relances clients, traçabilité de lots — via widget, API ou plugin WordPress/WooCommerce, sans refonte coûteuse, pour des TPE et PME souvent encore équipées de sites vitrines vieillissants.",
+          "Tissu agroalimentaire et industriel dense entre Saint-Macaire-en-Mauges et Torfou (élevage, transformation, sous-traitance métallique, négoce) : on greffe l'IA sur l'existant — suivi de production, relances clients, traçabilité de lots — via widget, API ou plugin WordPress/WooCommerce, sans refonte coûteuse, pour des PME et ETI souvent encore équipées de sites vitrines vieillissants.",
           "Bassin de Cholet tourné vers l'export, le commerce de gros et l'héritage textile-chaussure : nos boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Magento) et nos chatbots multilingues ouvrent des canaux de vente directe BtoB et BtoC aux fabricants, façonniers et négociants de Sèvremoine et de Beaupréau-en-Mauges voisine.",
           "Commune nouvelle de dix bourgs accessible par la gare TER de Torfou (ligne Nantes-Cholet via Clisson) et le réseau Aléop : on cadre en présentiel à Saint-Macaire-en-Mauges puis on itère à distance, avec toute la chaîne IA hébergeable en UE, conforme RGPD et AI Act — vos données de production, vos catalogues et vos modèles restent maîtrisés et localisés.",
         ],
@@ -86,12 +86,6 @@ export const SEVREMOINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, relance client automatisée) sur le site existant d'un artisan, commerçant, éleveur ou sous-traitant métallique des Mauges, en quelques semaines et sans refonte ni interruption d'activité.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,10 +131,10 @@ export const SEVREMOINE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper une chaîne de commandes ou un flux de production des Mauges. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Projet transférable à tout prestataire local des Mauges ou de l'arrondissement de Cholet, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Sèvremoine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensée pour les Mauges, ce bassin industriel dense de TPE et PME né de la fusion de dix communes déléguées en 2015 (chef-lieu Saint-Macaire-en-Mauges), où l'agroalimentaire, la sélection génétique animale du Groupe Grimaud et la fabrication de produits métalliques structurent l'emploi de ses 25 797 habitants. On sert aussi le négoce et la logistique tournés vers l'arrondissement de Cholet. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Macaire-en-Mauges, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Sèvremoine des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, boutiques e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations métier. Pensée pour les Mauges, ce bassin industriel dense de PME et ETI né de la fusion de dix communes déléguées en 2015 (chef-lieu Saint-Macaire-en-Mauges), où l'agroalimentaire, la sélection génétique animale du Groupe Grimaud et la fabrication de produits métalliques structurent l'emploi de ses 25 797 habitants. On sert aussi le négoce et la logistique tournés vers l'arrondissement de Cholet. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Macaire-en-Mauges, itérations à distance.",
         whyHere: [
           "Sèvremoine accueille le Groupe Grimaud, acteur mondial de la sélection génétique animale et de la biologie, employeur majeur des Mauges : pour ce type d'ETI exportatrice, on construit des portails clients multilingues, des plateformes SaaS branchées sur le SI (ERP, traçabilité) et de la recherche sémantique sur catalogues techniques et fiches souches, indexés et interrogeables en langage naturel.",
-          "Tissu agroalimentaire et industriel dense entre Saint-Macaire-en-Mauges et Torfou (élevage, transformation, sous-traitance métallique, négoce) : on greffe l'IA sur l'existant — suivi de production, relances clients, traçabilité de lots — via widget, API ou plugin WordPress/WooCommerce, sans refonte coûteuse, pour des TPE et PME souvent encore équipées de sites vitrines vieillissants.",
+          "Tissu agroalimentaire et industriel dense entre Saint-Macaire-en-Mauges et Torfou (élevage, transformation, sous-traitance métallique, négoce) : on greffe l'IA sur l'existant — suivi de production, relances clients, traçabilité de lots — via widget, API ou plugin WordPress/WooCommerce, sans refonte coûteuse, pour des PME et ETI souvent encore équipées de sites vitrines vieillissants.",
           "Bassin de Cholet tourné vers l'export, le commerce de gros et l'héritage textile-chaussure : nos boutiques e-commerce multi-CMS (WooCommerce, Shopify, PrestaShop, Magento) et nos chatbots multilingues ouvrent des canaux de vente directe BtoB et BtoC aux fabricants, façonniers et négociants de Sèvremoine et de Beaupréau-en-Mauges voisine.",
           "Commune nouvelle de dix bourgs accessible par la gare TER de Torfou (ligne Nantes-Cholet via Clisson) et le réseau Aléop : on cadre en présentiel à Saint-Macaire-en-Mauges puis on itère à distance, avec toute la chaîne IA hébergeable en UE, conforme RGPD et AI Act — vos données de production, vos catalogues et vos modèles restent maîtrisés et localisés.",
         ],
@@ -172,12 +166,6 @@ export const SEVREMOINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, relance client automatisée) sur le site existant d'un artisan, commerçant, éleveur ou sous-traitant métallique des Mauges, en quelques semaines et sans refonte ni interruption d'activité.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -248,7 +236,7 @@ export const SEVREMOINE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux de Sèvremoine accompagnez-vous en priorité ?",
-      a: "Nous priorisons les TPE et PME de l'agroalimentaire, de la fabrication de produits métalliques, du commerce de gros et du transport — l'ADN industriel des Mauges et de l'arrondissement de Cholet.",
+      a: "Nous priorisons les PME et ETI de l'agroalimentaire, de la fabrication de produits métalliques, du commerce de gros et du transport — l'ADN industriel des Mauges et de l'arrondissement de Cholet.",
     },
   ],
 };

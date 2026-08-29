@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VALLET_COPY: VilleCopy = {
   pitchFr:
-    "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA couvre les activités professionnelles du bassin.",
+    "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de PME viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA couvre les activités professionnelles du bassin.",
+    "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de PME viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vallet (44). Nous accompagnons tous types d'activités : TPE viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vallet (44). Nous accompagnons tous types d'activités : PME viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vallet (44). Nous accompagnons tous types d'activités : TPE viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vallet (44). Nous accompagnons tous types d'activités : PME viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
   seoHook: "viticulture muscadet & négoce vins",
   ecosystemFr:
-    "Vallet est la « capitale du Muscadet », coeur de l'appellation AOC Muscadet Sèvre-et-Maine (premier vignoble nantais en surface). Foire du Muscadet (rendez-vous oenotouristique annuel). Filière viticole complète : viticulteurs, négoce, tonnellerie, embouteillage. Tissu TPE viticoles, PME négoce/agroalimentaire, commerces de bourg, artisanat, tourisme vitivinicole.",
+    "Vallet est la « capitale du Muscadet », coeur de l'appellation AOC Muscadet Sèvre-et-Maine (premier vignoble nantais en surface). Foire du Muscadet (rendez-vous oenotouristique annuel). Filière viticole complète : viticulteurs, négoce, tonnellerie, embouteillage. Tissu PME viticoles, PME négoce/agroalimentaire, commerces de bourg, artisanat, tourisme vitivinicole.",
   ecosystemEn:
-    "Vallet est la « capitale du Muscadet », coeur de l'appellation AOC Muscadet Sèvre-et-Maine (premier vignoble nantais en surface). Foire du Muscadet (rendez-vous oenotouristique annuel). Filière viticole complète : viticulteurs, négoce, tonnellerie, embouteillage. Tissu TPE viticoles, PME négoce/agroalimentaire, commerces de bourg, artisanat, tourisme vitivinicole.",
+    "Vallet est la « capitale du Muscadet », coeur de l'appellation AOC Muscadet Sèvre-et-Maine (premier vignoble nantais en surface). Foire du Muscadet (rendez-vous oenotouristique annuel). Filière viticole complète : viticulteurs, négoce, tonnellerie, embouteillage. Tissu PME viticoles, PME négoce/agroalimentaire, commerces de bourg, artisanat, tourisme vitivinicole.",
   distancesFr:
     "Nantes centre à 30 min (D763). Clisson à 10 min. Cholet à 40 min. Aéroport Nantes-Atlantique à 40 min. Gare de Clisson (TER Nantes-Cholet) à 10 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const VALLET_COPY: VilleCopy = {
     "Viticulture Muscadet Sèvre-et-Maine (AOC)",
     "Négoce vins & agroalimentaire",
     "Oenotourisme & événementiel viticole",
-    "TPE artisanat (tonnellerie, BTP)",
+    "PME de l'artisanat (tonnellerie, BTP)",
     "Commerce de centre-bourg",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Vallet : diagnostic adapté aux PME viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Vallet : diagnostic adapté aux PME viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vallet : formats adaptés au chai viticole, négoce, tonnellerie ou commerce de bourg. Vos équipes acquièrent l'autonomie sur les outils IA déployés viticole.",
@@ -42,8 +42,8 @@ export const VALLET_COPY: VilleCopy = {
       en: "Implémentation IA à Vallet : traçabilité parcelles/cuvées Muscadet, prédiction vendanges, classification cépages par vision, agents conversationnels oenotourisme, automatisation négoce/facturation.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vallet : sessions dans votre chai, négoce, atelier ou en visio. Viticulteurs, dirigeants PME négoce, tonneliers, commerçants, gérants TPE du vignoble nantais.",
-      en: "Coaching 1-to-1 à Vallet : sessions dans votre chai, négoce, atelier ou en visio. Viticulteurs, dirigeants PME négoce, tonneliers, commerçants, gérants TPE du vignoble nantais.",
+      fr: "Coaching 1-to-1 à Vallet : sessions dans votre chai, négoce, atelier ou en visio. Viticulteurs, dirigeants PME négoce, tonneliers, commerçants, gérants PME du vignoble nantais.",
+      en: "Coaching 1-to-1 à Vallet : sessions dans votre chai, négoce, atelier ou en visio. Viticulteurs, dirigeants PME négoce, tonneliers, commerçants, gérants PME du vignoble nantais.",
     },
   },
   faqGeolocalisee: [

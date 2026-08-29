@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
   pitchFr:
-    "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA accompagne tout le tissu professionnel local.",
+    "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. PME du commerce et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA accompagne tout le tissu professionnel local.",
+    "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. PME du commerce et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brie-Comte-Robert (77). Nous accompagnons PME et ETI : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brie-Comte-Robert (77). Nous accompagnons PME et ETI : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit sur place sur mesure.",
   seoHook: "commerce détail & tertiaire logistique",
   ecosystemFr:
-    "Brie-Comte-Robert est la capitale historique de la Brie française, au carrefour de la Francilienne et de l'A5. Tissu économique diversifié : TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, agriculture céréalière.",
+    "Brie-Comte-Robert est la capitale historique de la Brie française, au carrefour de la Francilienne et de l'A5. Tissu économique diversifié : PME du commerce et artisanat, PME tertiaire et logistique, professions libérales, restauration, agriculture céréalière.",
   ecosystemEn:
-    "Brie-Comte-Robert est la capitale historique de la Brie française, au carrefour de la Francilienne et de l'A5. Tissu économique diversifié : TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, agriculture céréalière.",
+    "Brie-Comte-Robert est la capitale historique de la Brie française, au carrefour de la Francilienne et de l'A5. Tissu économique diversifié : PME du commerce et artisanat, PME tertiaire et logistique, professions libérales, restauration, agriculture céréalière.",
   distancesFr:
     "Melun à 20 min. Créteil à 20 min. Paris centre à 35 min (A5/Francilienne). Aéroport Paris-Orly à 20 min. Gare RER D Combs-la-Ville à 10 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
       en: "Implémentation IA à Brie-Comte-Robert : CRM augmenté commerçants, automatisation back-office PME, outils réservation restauration, optimisation flux logistique, gestion exploitation agricole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Brie-Comte-Robert : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME briards, gérants zone logistique, professions libérales, exploitants agricoles.",
-      en: "Coaching 1-to-1 à Brie-Comte-Robert : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME briards, gérants zone logistique, professions libérales, exploitants agricoles.",
+      fr: "Coaching 1-to-1 à Brie-Comte-Robert : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI briards, gérants zone logistique, professions libérales, exploitants agricoles.",
+      en: "Coaching 1-to-1 à Brie-Comte-Robert : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI briards, gérants zone logistique, professions libérales, exploitants agricoles.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
       a: "Oui, automatisation back-office, optimisation flux entrepôt, CRM clients, facturation automatisée, outils de pilotage activité, intégrations sur mesure.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

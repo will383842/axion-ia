@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
   pitchFr:
-    "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA opère pour toutes les structures économiques de la commune du bocage bressuirais.",
+    "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. PME artisanales, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA opère pour toutes les structures économiques de la commune du bocage bressuirais.",
   pitchEn:
-    "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA opère pour toutes les structures économiques de la commune du bocage bressuirais.",
+    "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. PME artisanales, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA opère pour toutes les structures économiques de la commune du bocage bressuirais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
   seoHook: "industrielles & artisanat services",
   ecosystemFr:
-    "Nueil-les-Aubiers se situe dans le bocage bressuirais, territoire rural industrieux du nord des Deux-Sèvres. Tissu PME industrielles (métallurgie, agroalimentaire), TPE artisans, exploitations agricoles (élevage bovin, polyculture), commerces de proximité. Proximité de Bressuire, pôle économique du bocage.",
+    "Nueil-les-Aubiers se situe dans le bocage bressuirais, territoire rural industrieux du nord des Deux-Sèvres. Tissu PME industrielles (métallurgie, agroalimentaire), PME artisanales, exploitations agricoles (élevage bovin, polyculture), commerces de proximité. Proximité de Bressuire, pôle économique du bocage.",
   ecosystemEn:
-    "Nueil-les-Aubiers se situe dans le bocage bressuirais, territoire rural industrieux du nord des Deux-Sèvres. Tissu PME industrielles (métallurgie, agroalimentaire), TPE artisans, exploitations agricoles (élevage bovin, polyculture), commerces de proximité. Proximité de Bressuire, pôle économique du bocage.",
+    "Nueil-les-Aubiers se situe dans le bocage bressuirais, territoire rural industrieux du nord des Deux-Sèvres. Tissu PME industrielles (métallurgie, agroalimentaire), PME artisanales, exploitations agricoles (élevage bovin, polyculture), commerces de proximité. Proximité de Bressuire, pôle économique du bocage.",
   distancesFr:
     "Bressuire à 10 min. Cholet à 30 min. Niort à 50 min. Gare Bressuire (TER Niort-Thouars). Poitiers à 1h20. Nantes à 1h30.",
   distancesEn:
     "Bressuire à 10 min. Cholet à 30 min. Niort à 50 min. Gare Bressuire (TER Niort-Thouars). Poitiers à 1h20. Nantes à 1h30.",
   topSectorsNaf: [
     "PME industrielles (métallurgie, agroalimentaire)",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "Agriculture & élevage bovin",
     "Commerce de proximité",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux PME artisanales, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux PME artisanales, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nueil-les-Aubiers : formats adaptés à l'atelier industriel, l'exploitation agricole, le commerce ou le bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
       en: "Implémentation IA à Nueil-les-Aubiers : prédiction maintenance industrielle, optimisation logistique agroalimentaire, agents conversationnels fournisseurs, classification documents techniques. Bocage bressuirais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Nueil-les-Aubiers : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME industrielles, agriculteurs, artisans et gérants TPE du bocage bressuirais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Nueil-les-Aubiers : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME industrielles, agriculteurs, artisans et gérants TPE du bocage bressuirais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Nueil-les-Aubiers : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME industrielles, agriculteurs, artisans et gérants PME du bocage bressuirais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Nueil-les-Aubiers : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME industrielles, agriculteurs, artisans et gérants PME du bocage bressuirais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles du bocage (élevage bovin, polyculture) sur des cas IA : prédiction rendements, optimisation alimentaire troupeaux, agents IA gestion administrative, classification documents PAC. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants de Nueil-les-Aubiers, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1, et plateformes web/SaaS IA sur mesure.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce de Nueil-les-Aubiers, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1, et plateformes web/SaaS IA sur mesure.",
     },
     {
       q: "Comment se passe une mission dans le nord Deux-Sèvres ?",

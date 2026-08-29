@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
   pitchFr:
-    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de PME artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de PME artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquebrune-sur-Argens (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration et campings, domaines viticoles, professionnels du tourisme et services Var est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquebrune-sur-Argens (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME hôtellerie-restauration et campings, domaines viticoles, professionnels du tourisme et services Var est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquebrune-sur-Argens (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration et campings, domaines viticoles, professionnels du tourisme et services Var est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roquebrune-sur-Argens (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME hôtellerie-restauration et campings, domaines viticoles, professionnels du tourisme et services Var est.",
   seoHook: "vallée argens",
   ecosystemFr:
-    "Roquebrune-sur-Argens est un pôle économique du Var est, marqué par son rocher emblématique, la vallée de l'Argens et ses plages de Saint-Aygulf. Tissu de TPE artisanales, PME hôtellerie-camping, domaines viticoles et commerces. Fréjus à 10 min, Saint-Raphaël à 15 min, A8 directe.",
+    "Roquebrune-sur-Argens est un pôle économique du Var est, marqué par son rocher emblématique, la vallée de l'Argens et ses plages de Saint-Aygulf. Tissu de PME artisanales, PME hôtellerie-camping, domaines viticoles et commerces. Fréjus à 10 min, Saint-Raphaël à 15 min, A8 directe.",
   ecosystemEn:
-    "Roquebrune-sur-Argens est un pôle économique du Var est, marqué par son rocher emblématique, la vallée de l'Argens et ses plages de Saint-Aygulf. Tissu de TPE artisanales, PME hôtellerie-camping, domaines viticoles et commerces. Fréjus à 10 min, Saint-Raphaël à 15 min, A8 directe.",
+    "Roquebrune-sur-Argens est un pôle économique du Var est, marqué par son rocher emblématique, la vallée de l'Argens et ses plages de Saint-Aygulf. Tissu de PME artisanales, PME hôtellerie-camping, domaines viticoles et commerces. Fréjus à 10 min, Saint-Raphaël à 15 min, A8 directe.",
   distancesFr:
     "Fréjus à 10 min. Saint-Raphaël à 15 min. Cannes à 30 min. Aéroport Nice Côte d'Azur à 45 min. A8 directe.",
   distancesEn:
@@ -30,20 +30,20 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux TPE hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux TPE hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux PME hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux PME hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roquebrune-sur-Argens : formats adaptés aux hôtels, campings, restaurants, domaines viticoles et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à Roquebrune-sur-Argens : formats adaptés aux hôtels, campings, restaurants, domaines viticoles et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Roquebrune-sur-Argens : gestion réservations hôtelières et campings, optimisation occupation saisonnière, traçabilité viticole, automatisation devis artisans. Adapté TPE/PME Var est.",
-      en: "Implémentation IA à Roquebrune-sur-Argens : gestion réservations hôtelières et campings, optimisation occupation saisonnière, traçabilité viticole, automatisation devis artisans. Adapté TPE/PME Var est.",
+      fr: "Implémentation IA à Roquebrune-sur-Argens : gestion réservations hôtelières et campings, optimisation occupation saisonnière, traçabilité viticole, automatisation devis artisans. Adapté PME et ETI Var est.",
+      en: "Implémentation IA à Roquebrune-sur-Argens : gestion réservations hôtelières et campings, optimisation occupation saisonnière, traçabilité viticole, automatisation devis artisans. Adapté PME et ETI Var est.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Roquebrune-sur-Argens : sessions dans vos locaux ou en visio. Dirigeants TPE/PME hôtellerie-camping, viticulture, artisanat et commerce Var est.",
-      en: "Coaching 1-to-1 à Roquebrune-sur-Argens : sessions dans vos locaux ou en visio. Dirigeants TPE/PME hôtellerie-camping, viticulture, artisanat et commerce Var est.",
+      fr: "Coaching 1-to-1 à Roquebrune-sur-Argens : sessions dans vos locaux ou en visio. Dirigeants PME et ETI hôtellerie-camping, viticulture, artisanat et commerce Var est.",
+      en: "Coaching 1-to-1 à Roquebrune-sur-Argens : sessions dans vos locaux ou en visio. Dirigeants PME et ETI hôtellerie-camping, viticulture, artisanat et commerce Var est.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Roquebrune-sur-Argens  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Roquebrune-sur-Argens ?",

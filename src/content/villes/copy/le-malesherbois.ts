@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_MALESHERBOIS_COPY: VilleCopy = {
   pitchFr:
-    "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu TPE artisans, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu PME artisanales, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu TPE artisans, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu PME artisanales, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit sur place sur mesure.",
   seoHook: "logistique, agro-alimentaire & Gâtinais",
   ecosystemFr:
-    "Le Malesherbois est une commune nouvelle du sud Loiret (8 016 hab.), aux portes du Gâtinais entre Pithiviers (15 km) et Fontainebleau (30 km). Tissu TPE artisans et commerçants du centre-bourg, PME logistiques positionnées sur l'axe A19, agro-alimentaires, exploitants agricoles céréaliers Beauce-Gâtinais. Proximité Île-de-France (Étampes 20 km) favorisant navetteurs et activités de services.",
+    "Le Malesherbois est une commune nouvelle du sud Loiret (8 016 hab.), aux portes du Gâtinais entre Pithiviers (15 km) et Fontainebleau (30 km). Tissu PME de l'artisanat et du commerce du centre-bourg, PME logistiques positionnées sur l'axe A19, agro-alimentaires, exploitants agricoles céréaliers Beauce-Gâtinais. Proximité Île-de-France (Étampes 20 km) favorisant navetteurs et activités de services.",
   ecosystemEn:
-    "Le Malesherbois est une commune nouvelle du sud Loiret (8 016 hab.), aux portes du Gâtinais entre Pithiviers (15 km) et Fontainebleau (30 km). Tissu TPE artisans et commerçants du centre-bourg, PME logistiques positionnées sur l'axe A19, agro-alimentaires, exploitants agricoles céréaliers Beauce-Gâtinais. Proximité Île-de-France (Étampes 20 km) favorisant navetteurs et activités de services.",
+    "Le Malesherbois est une commune nouvelle du sud Loiret (8 016 hab.), aux portes du Gâtinais entre Pithiviers (15 km) et Fontainebleau (30 km). Tissu PME de l'artisanat et du commerce du centre-bourg, PME logistiques positionnées sur l'axe A19, agro-alimentaires, exploitants agricoles céréaliers Beauce-Gâtinais. Proximité Île-de-France (Étampes 20 km) favorisant navetteurs et activités de services.",
   distancesFr:
     "Gare de Malesherbes (RER D terminus, 1h15 Paris-Gare de Lyon). Aéroport Paris-Orly à 1h10. A19 vers Orléans (50 min). Pithiviers à 15 km, Étampes à 20 km.",
   distancesEn:
@@ -30,20 +30,20 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
-      en: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux petites structures.",
+      fr: "Audit IA au Malesherbois : diagnostic adapté aux PME du commerce, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux PME.",
+      en: "Audit IA au Malesherbois : diagnostic adapté aux PME du commerce, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site au Malesherbois : formats adaptés à l'entrepôt logistique, au bureau PME, au commerce ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site au Malesherbois : formats adaptés à l'entrepôt logistique, au bureau PME, au commerce ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA au Malesherbois : automatisation supply chain, prédiction stocks, agents conversationnels client, CRM augmentés, outils IA agricoles. Adapté aux TPE/PME du Gâtinais et navetteurs Île-de-France.",
-      en: "Implémentation IA au Malesherbois : automatisation supply chain, prédiction stocks, agents conversationnels client, CRM augmentés, outils IA agricoles. Adapté aux TPE/PME du Gâtinais et navetteurs Île-de-France.",
+      fr: "Implémentation IA au Malesherbois : automatisation supply chain, prédiction stocks, agents conversationnels client, CRM augmentés, outils IA agricoles. Adapté aux PME et ETI du Gâtinais et navetteurs Île-de-France.",
+      en: "Implémentation IA au Malesherbois : automatisation supply chain, prédiction stocks, agents conversationnels client, CRM augmentés, outils IA agricoles. Adapté aux PME et ETI du Gâtinais et navetteurs Île-de-France.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Malesherbois : sessions dans votre commerce, entrepôt, bureau ou exploitation. Artisans, commerçants, gérants TPE/PME et agriculteurs du Gâtinais souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 au Malesherbois : sessions dans votre commerce, entrepôt, bureau ou exploitation. Artisans, commerçants, gérants TPE/PME et agriculteurs du Gâtinais souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 au Malesherbois : sessions dans votre commerce, entrepôt, bureau ou exploitation. Artisans, commerçants, gérants PME et ETI et agriculteurs du Gâtinais souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 au Malesherbois : sessions dans votre commerce, entrepôt, bureau ou exploitation. Artisans, commerçants, gérants PME et ETI et agriculteurs du Gâtinais souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient au Malesherbois et dans tout le Gâtinais sud-Loiret (Pithiviers, Puiseaux, Beaune-la-Rolande). Couverture nationale, déplacement sur site inclus dans le forfait mission. Accès direct Paris via RER D (terminus Malesherbes).",
     },
     {
-      q: "Travaillez-vous avec les TPE et artisans du Malesherbois ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants du Malesherbois sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, planification chantier BTP, facturation automatisée. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Travaillez-vous avec les PME et artisans du Malesherbois ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce du Malesherbois sur des cas IA concrets : automatisation gestion stocks, agents IA accueil client, planification chantier BTP, facturation automatisée. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Accompagnez-vous les PME logistiques de l'axe A19 ?",

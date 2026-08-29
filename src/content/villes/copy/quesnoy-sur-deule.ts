@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
   pitchFr:
-    "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu TPE artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu PME de l'artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu TPE artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu PME de l'artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : TPE artisans et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : PME artisanales et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : TPE artisans et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : PME artisanales et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
   ecosystemFr:
-    "Quesnoy-sur-Deûle est une commune résidentielle et commerçante du nord de la métropole lilloise, traversée par la Deûle. Tissu TPE/PME artisanat, services, transport fluvial et logistique, commerces de centre-bourg, professions libérales. Proximité immédiate de Lille, Wambrechies et Marquette-lez-Lille. Accès A25 et A22, bassin d'emploi métropolitain lillois.",
+    "Quesnoy-sur-Deûle est une commune résidentielle et commerçante du nord de la métropole lilloise, traversée par la Deûle. Tissu PME et ETI artisanat, services, transport fluvial et logistique, commerces de centre-bourg, professions libérales. Proximité immédiate de Lille, Wambrechies et Marquette-lez-Lille. Accès A25 et A22, bassin d'emploi métropolitain lillois.",
   ecosystemEn:
-    "Quesnoy-sur-Deûle est une commune résidentielle et commerçante du nord de la métropole lilloise, traversée par la Deûle. Tissu TPE/PME artisanat, services, transport fluvial et logistique, commerces de centre-bourg, professions libérales. Proximité immédiate de Lille, Wambrechies et Marquette-lez-Lille. Accès A25 et A22, bassin d'emploi métropolitain lillois.",
+    "Quesnoy-sur-Deûle est une commune résidentielle et commerçante du nord de la métropole lilloise, traversée par la Deûle. Tissu PME et ETI artisanat, services, transport fluvial et logistique, commerces de centre-bourg, professions libérales. Proximité immédiate de Lille, Wambrechies et Marquette-lez-Lille. Accès A25 et A22, bassin d'emploi métropolitain lillois.",
   distancesFr:
     "Lille centre à 15 min, Wambrechies à 5 min, Marquette-lez-Lille à 8 min, Tourcoing à 20 min, gare Lille Flandres à 15 min, gare Lille Europe TGV à 18 min, aéroport Lille-Lesquin à 30 min. Axes A25 et A22.",
   distancesEn:
     "Lille centre à 15 min, Wambrechies à 5 min, Marquette-lez-Lille à 8 min, Tourcoing à 20 min, gare Lille Flandres à 15 min, gare Lille Europe TGV à 18 min, aéroport Lille-Lesquin à 30 min. Axes A25 et A22.",
   seoHook: "bords de Deûle & métropole lilloise",
   topSectorsNaf: [
-    "TPE artisanat et services de proximité",
+    "PME de l'artisanat et services de proximité",
     "Transport et logistique fluviale (Deûle)",
     "Commerce de centre-bourg",
     "Professions libérales et conseil",
@@ -30,8 +30,8 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux PME artisanales, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux PME artisanales, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quesnoy-sur-Deûle : formats adaptés au bureau, commerce, entrepôt logistique. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -42,8 +42,8 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
       en: "Implémentation IA à Quesnoy-sur-Deûle : automatisation gestion transport fluvial, agents IA service client, optimisation stocks commerce, outils planification BTP, digitalisation professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Quesnoy-sur-Deûle : sessions dans votre bureau, commerce, entrepôt ou en visio. Dirigeants TPE/PME, commerçants, professions libérales et entrepreneurs du bassin lillois nord.",
-      en: "Coaching 1-to-1 à Quesnoy-sur-Deûle : sessions dans votre bureau, commerce, entrepôt ou en visio. Dirigeants TPE/PME, commerçants, professions libérales et entrepreneurs du bassin lillois nord.",
+      fr: "Coaching 1-to-1 à Quesnoy-sur-Deûle : sessions dans votre bureau, commerce, entrepôt ou en visio. Dirigeants PME et ETI, commerçants, professions libérales et entrepreneurs du bassin lillois nord.",
+      en: "Coaching 1-to-1 à Quesnoy-sur-Deûle : sessions dans votre bureau, commerce, entrepôt ou en visio. Dirigeants PME et ETI, commerçants, professions libérales et entrepreneurs du bassin lillois nord.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Quesnoy-sur-Deûle ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial, sans engagement de suite.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerçants de Quesnoy-sur-Deûle ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerçants quesnoyens : automatisation devis et factures, agents IA prise de rendez-vous, gestion stocks, marketing local, outils de planification et fidélisation client.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce de Quesnoy-sur-Deûle ?",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce quesnoyens : automatisation devis et factures, agents IA prise de rendez-vous, gestion stocks, marketing local, outils de planification et fidélisation client.",
     },
     {
       q: "Travaillez-vous avec les PME transport et logistique de la Deûle ?",

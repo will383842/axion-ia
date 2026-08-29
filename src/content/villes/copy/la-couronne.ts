@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LA_COURONNE_COPY: VilleCopy = {
   pitchFr:
-    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
+    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de PME artisanales, PME industrielles, papeterie, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
   pitchEn:
-    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
+    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de PME artisanales, PME industrielles, papeterie, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   seoHook: "industrie papetière & industrielles",
   ecosystemFr:
-    "La Couronne est une commune industrielle et résidentielle du sud de l'agglomération GrandAngoulême. Héritage papetier charentais (industrie du papier), PME industrielles, TPE artisans BTP, zones d'activités économiques, commerces de proximité. Proximité de la N10 et des zones logistiques.",
+    "La Couronne est une commune industrielle et résidentielle du sud de l'agglomération GrandAngoulême. Héritage papetier charentais (industrie du papier), PME industrielles, PME du BTP, zones d'activités économiques, commerces de proximité. Proximité de la N10 et des zones logistiques.",
   ecosystemEn:
-    "La Couronne est une commune industrielle et résidentielle du sud de l'agglomération GrandAngoulême. Héritage papetier charentais (industrie du papier), PME industrielles, TPE artisans BTP, zones d'activités économiques, commerces de proximité. Proximité de la N10 et des zones logistiques.",
+    "La Couronne est une commune industrielle et résidentielle du sud de l'agglomération GrandAngoulême. Héritage papetier charentais (industrie du papier), PME industrielles, PME du BTP, zones d'activités économiques, commerces de proximité. Proximité de la N10 et des zones logistiques.",
   distancesFr:
     "La Couronne est à 8 min d'Angoulême centre (N10). Gare TGV d'Angoulême à 12 min (Paris Montparnasse 2h05, Bordeaux 55 min). Aéroport Angoulême-Cognac à 25 min. Axe N10 Bordeaux-Paris.",
   distancesEn:
@@ -24,14 +24,14 @@ export const LA_COURONNE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie papetière & imprimerie",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Logistique & transport",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, TPE artisans, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, TPE artisans, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, PME artisanales, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, PME artisanales, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Couronne : formats adaptés à l'atelier industriel, à l'imprimerie, au bureau ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const LA_COURONNE_COPY: VilleCopy = {
       en: "Implémentation IA à La Couronne : automatisation contrôle qualité papeterie, optimisation flux production industrielle, gestion stocks prédictive, agents conversationnels relation client.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Couronne : sessions dans vos locaux industriels, bureau ou en visio. Dirigeants TPE/PME industrielles, artisans et commerçants du sud de l'agglomération angoumoisine souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à La Couronne : sessions dans vos locaux industriels, bureau ou en visio. Dirigeants TPE/PME industrielles, artisans et commerçants du sud de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à La Couronne : sessions dans vos locaux industriels, bureau ou en visio. Dirigeants PME et ETI industrielles, artisans et commerçants du sud de l'agglomération angoumoisine souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à La Couronne : sessions dans vos locaux industriels, bureau ou en visio. Dirigeants PME et ETI industrielles, artisans et commerçants du sud de l'agglomération angoumoisine souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_COURONNE_COPY: VilleCopy = {
       a: "Nous accompagnons les PME industrielles de La Couronne : automatisation contrôle qualité, optimisation flux production, maintenance prédictive équipements, gestion stocks IA et traçabilité lots de fabrication.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans à La Couronne ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commerçants et indépendants de La Couronne : automatisation devis et facturation, gestion planning chantiers, agents IA relation client et optimisation gestion stocks.",
+      q: "Accompagnez-vous les PME artisanales à La Couronne ?",
+      a: "Oui, nous accompagnons les PME du BTP, commerçants et indépendants de La Couronne : automatisation devis et facturation, gestion planning chantiers, agents IA relation client et optimisation gestion stocks.",
     },
     {
       q: "Quel est le tarif pour un audit IA à La Couronne ?",

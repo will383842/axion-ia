@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const OLIVET_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME d'Olivet, au sud d'Orléans — acteurs de la Cosmetic Valley, horticulture et pépinières, services et commerce de la métropole orléanaise. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI d'Olivet, au sud d'Orléans — acteurs de la Cosmetic Valley, horticulture et pépinières, services et commerce de la métropole orléanaise. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME d'Olivet, au sud d'Orléans — acteurs de la Cosmetic Valley, horticulture et pépinières, services et commerce de la métropole orléanaise. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI d'Olivet, au sud d'Orléans — acteurs de la Cosmetic Valley, horticulture et pépinières, services et commerce de la métropole orléanaise. Nous concevons des automatisations sobres et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME d'Olivet, commune résidentielle et économique du sud d'Orléans, dans le Loiret. Au cœur d'un territoire structuré par la Cosmetic Valley, une longue tradition horticole et un tissu de services, nous nous déplaçons sur site pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI d'Olivet, commune résidentielle et économique du sud d'Orléans, dans le Loiret. Au cœur d'un territoire structuré par la Cosmetic Valley, une longue tradition horticole et un tissu de services, nous nous déplaçons sur site pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME d'Olivet, commune résidentielle et économique du sud d'Orléans, dans le Loiret. Au cœur d'un territoire structuré par la Cosmetic Valley, une longue tradition horticole et un tissu de services, nous nous déplaçons sur site pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI d'Olivet, commune résidentielle et économique du sud d'Orléans, dans le Loiret. Au cœur d'un territoire structuré par la Cosmetic Valley, une longue tradition horticole et un tissu de services, nous nous déplaçons sur site pour cartographier les tâches automatisables, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les grands groupes complètent ce socle.",
   seoHook: "Cosmetic Valley & horticulture",
   ecosystemFr:
-    "Olivet, au sud d'Orléans, conjugue un cadre verdoyant le long du Loiret, une tradition horticole et de pépinières réputée, et l'appartenance au territoire de la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique. La commune accueille des entreprises de services, des laboratoires, du commerce et des PME industrielles dans le sillage de la métropole orléanaise. Pour ces TPE et PME, l'IA bien dosée fluidifie la gestion commerciale, le suivi qualité et la relation client sans alourdir des structures à taille humaine.",
+    "Olivet, au sud d'Orléans, conjugue un cadre verdoyant le long du Loiret, une tradition horticole et de pépinières réputée, et l'appartenance au territoire de la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique. La commune accueille des entreprises de services, des laboratoires, du commerce et des PME industrielles dans le sillage de la métropole orléanaise. Pour ces PME et ETI, l'IA bien dosée fluidifie la gestion commerciale, le suivi qualité et la relation client sans alourdir des structures à taille humaine.",
   ecosystemEn:
-    "Olivet, au sud d'Orléans, conjugue un cadre verdoyant le long du Loiret, une tradition horticole et de pépinières réputée, et l'appartenance au territoire de la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique. La commune accueille des entreprises de services, des laboratoires, du commerce et des PME industrielles dans le sillage de la métropole orléanaise. Pour ces TPE et PME, l'IA bien dosée fluidifie la gestion commerciale, le suivi qualité et la relation client sans alourdir des structures à taille humaine.",
+    "Olivet, au sud d'Orléans, conjugue un cadre verdoyant le long du Loiret, une tradition horticole et de pépinières réputée, et l'appartenance au territoire de la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique. La commune accueille des entreprises de services, des laboratoires, du commerce et des PME industrielles dans le sillage de la métropole orléanaise. Pour ces PME et ETI, l'IA bien dosée fluidifie la gestion commerciale, le suivi qualité et la relation client sans alourdir des structures à taille humaine.",
   distancesFr:
     "Olivet jouxte Orléans : la gare d'Orléans est à environ 7 km et la gare des Aubrais voisine offre des liaisons rapides vers Paris en une heure. L'autoroute A71 dessert l'agglomération et l'aéroport Paris-Orly est accessible en moins d'une heure et demie de route. Nos experts se déplacent sur site dans toute la métropole orléanaise et le Loiret.",
   distancesEn:
@@ -34,16 +34,16 @@ export const OLIVET_COPY: VilleCopy = {
       en: "Auditer à Olivet les processus d'une PME de la cosmétique, d'une pépinière ou d'un prestataire de services — cartographie des tâches automatisables et feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir sur site à Olivet pour automatiser devis, suivi qualité et relances clients des TPE/PME, sans alourdir le quotidien des équipes.",
-      en: "Intervenir sur site à Olivet pour automatiser devis, suivi qualité et relances clients des TPE/PME, sans alourdir le quotidien des équipes.",
+      fr: "Intervenir sur site à Olivet pour automatiser devis, suivi qualité et relances clients des PME et ETI, sans alourdir le quotidien des équipes.",
+      en: "Intervenir sur site à Olivet pour automatiser devis, suivi qualité et relances clients des PME et ETI, sans alourdir le quotidien des équipes.",
     },
     implementation: {
       fr: "Implémenter à Olivet des outils IA durables et documentés — assistants de gestion commerciale et de relation client conçus pour rester maîtrisés en interne après notre départ.",
       en: "Implémenter à Olivet des outils IA durables et documentés — assistants de gestion commerciale et de relation client conçus pour rester maîtrisés en interne après notre départ.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE/PME d'Olivet pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
-      en: "Accompagner en un-à-un les dirigeants de TPE/PME d'Olivet pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et ETI d'Olivet pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
+      en: "Accompagner en un-à-un les dirigeants de PME et ETI d'Olivet pour comprendre l'IA, choisir les bons cas d'usage et garder la main sur leur stratégie d'automatisation.",
     },
     sitesWeb: {
       fr: "Concevoir à Olivet un site ou une plateforme web augmentée par l'IA pour une PME de la cosmétique ou de l'horticulture — vente en ligne, catalogue et relation client enrichis intelligemment.",
@@ -53,10 +53,10 @@ export const OLIVET_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de TPE de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de PME de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
         whyHere: [
           "Territoire Cosmetic Valley : laboratoires, façonniers et marques de parfumerie-cosmétique gravitent autour d'Orléans et de son réseau de PME industrielles — on construit des vitrines e-commerce premium sous Shopify ou WooCommerce, des catalogues produits multilingues et des portails de suivi qualité augmentés par l'IA, branchés sur vos référentiels formulation et réglementaires.",
-          "Tradition horticole et pépinières le long du Loiret : pour ces TPE saisonnières héritières des cultures maraîchères et ornementales de la vallée, on greffe un catalogue variétés en ligne, un configurateur de commande PrestaShop et un chatbot conseil planté sur vos fiches plantes, avec recherche sémantique par usage et exposition, sans refonte lourde.",
+          "Tradition horticole et pépinières le long du Loiret : pour ces PME saisonnières héritières des cultures maraîchères et ornementales de la vallée, on greffe un catalogue variétés en ligne, un configurateur de commande PrestaShop et un chatbot conseil planté sur vos fiches plantes, avec recherche sémantique par usage et exposition, sans refonte lourde.",
           "Tissu de services et commerce de proximité dans le sillage de la métropole orléanaise, des commerces du bourg aux libéraux et acteurs de la santé : recherche sémantique, prise de rendez-vous en ligne et automatisation des devis et relances, calibrées pour des structures à taille humaine qui veulent rester maîtresses de leur outil.",
           "Proximité d'Orléans, de Saran et de la gare des Aubrais (Paris à une heure, A71 à portée) : clientèle exigeante et mobile, en partie résidentielle et navetteuse — UX/UI mobile-first, Web Vitals soignés et hébergement UE conforme RGPD pour des données cosmétiques, horticoles et clients pleinement maîtrisées.",
         ],
@@ -89,12 +89,6 @@ export const OLIVET_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot conseil, recherche sémantique, prise de rendez-vous, relance de devis) sur le site d'une pépinière, d'un commerce du bourg, d'un libéral ou d'un prestataire de services d'Olivet, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -124,7 +118,7 @@ export const OLIVET_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une TPE de services ou une pépinière qui pilote sa trésorerie au plus juste.",
+            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une PME de services ou une pépinière qui pilote sa trésorerie au plus juste.",
           },
           {
             q: "Gérez-vous la saisonnalité d'une pépinière ou d'un horticulteur ?",
@@ -139,10 +133,10 @@ export const OLIVET_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie ouverte. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de vente horticole ou de lancement cosmétique. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), documentés et conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou technologique. Le projet est transférable à tout prestataire de la métropole orléanaise et du Loiret, ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de TPE de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Olivet des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune du sud d'Orléans tournée vers la Cosmetic Valley, premier pôle mondial de la parfumerie-cosmétique, une tradition horticole et de pépinières le long du Loiret, les moulins et guinguettes des bords de rivière, et un tissu dense de PME de services et de commerce de la métropole orléanaise. On fait tout : conception UX/UI, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), plateforme SaaS IA-native, agents métier. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Olivet, des bords du Loiret aux zones d'activité du sud d'Orléans, puis itérations à distance.",
         whyHere: [
           "Territoire Cosmetic Valley : laboratoires, façonniers et marques de parfumerie-cosmétique gravitent autour d'Orléans et de son réseau de PME industrielles — on construit des vitrines e-commerce premium sous Shopify ou WooCommerce, des catalogues produits multilingues et des portails de suivi qualité augmentés par l'IA, branchés sur vos référentiels formulation et réglementaires.",
-          "Tradition horticole et pépinières le long du Loiret : pour ces TPE saisonnières héritières des cultures maraîchères et ornementales de la vallée, on greffe un catalogue variétés en ligne, un configurateur de commande PrestaShop et un chatbot conseil planté sur vos fiches plantes, avec recherche sémantique par usage et exposition, sans refonte lourde.",
+          "Tradition horticole et pépinières le long du Loiret : pour ces PME saisonnières héritières des cultures maraîchères et ornementales de la vallée, on greffe un catalogue variétés en ligne, un configurateur de commande PrestaShop et un chatbot conseil planté sur vos fiches plantes, avec recherche sémantique par usage et exposition, sans refonte lourde.",
           "Tissu de services et commerce de proximité dans le sillage de la métropole orléanaise, des commerces du bourg aux libéraux et acteurs de la santé : recherche sémantique, prise de rendez-vous en ligne et automatisation des devis et relances, calibrées pour des structures à taille humaine qui veulent rester maîtresses de leur outil.",
           "Proximité d'Orléans, de Saran et de la gare des Aubrais (Paris à une heure, A71 à portée) : clientèle exigeante et mobile, en partie résidentielle et navetteuse — UX/UI mobile-first, Web Vitals soignés et hébergement UE conforme RGPD pour des données cosmétiques, horticoles et clients pleinement maîtrisées.",
         ],
@@ -175,12 +169,6 @@ export const OLIVET_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot conseil, recherche sémantique, prise de rendez-vous, relance de devis) sur le site d'une pépinière, d'un commerce du bourg, d'un libéral ou d'un prestataire de services d'Olivet, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -210,7 +198,7 @@ export const OLIVET_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une TPE de services ou une pépinière qui pilote sa trésorerie au plus juste.",
+            a: "Oui. Après le cadrage sur site à Olivet, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée : vous savez ce que vous payez avant de vous engager, ce qui rassure une PME de services ou une pépinière qui pilote sa trésorerie au plus juste.",
           },
           {
             q: "Gérez-vous la saisonnalité d'une pépinière ou d'un horticulteur ?",
@@ -237,8 +225,8 @@ export const OLIVET_COPY: VilleCopy = {
       a: "Oui. Nous aidons les acteurs de la cosmétique, de l'horticulture et des services à automatiser leurs devis, leur suivi qualité et leur relation client, avec des outils proportionnés à leur taille.",
     },
     {
-      q: "L'IA est-elle accessible à une TPE d'Olivet ?",
-      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les petites structures, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
+      q: "L'IA est-elle accessible à une PME d'Olivet ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, pensées pour les PME, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
       q: "Connaît-on les tarifs à l'avance ?",

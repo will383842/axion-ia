@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BEAUVAIS_COPY: VilleCopy = {
   pitchFr:
-    "Beauvais (60), préfecture de l'Oise au nord de l'Île-de-France, conjugue un héritage gothique célèbre (cathédrale Saint-Pierre, au chœur le plus haut du monde) avec une économie tournée vers l'agroalimentaire, l'aéroport Beauvais-Tillé (plateforme low-cost majeure, Ryanair) et la logistique. Son tissu repose d'abord sur les TPE — artisans BTP, commerçants, professions libérales — puis sur des PME industrielles, agroalimentaires et de services aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE et PME beauvaisiennes pour intégrer l'intelligence artificielle dans leurs opérations, des plus modestes ateliers aux PME structurées de l'agglomération de l'Oise.",
+    "Beauvais (60), préfecture de l'Oise au nord de l'Île-de-France, conjugue un héritage gothique célèbre (cathédrale Saint-Pierre, au chœur le plus haut du monde) avec une économie tournée vers l'agroalimentaire, l'aéroport Beauvais-Tillé (plateforme low-cost majeure, Ryanair) et la logistique. Son tissu repose d'abord sur les PME — artisans BTP, commerçants, professions libérales — puis sur des PME industrielles, agroalimentaires et de services aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces PME et ETI beauvaisiennes pour intégrer l'intelligence artificielle dans leurs opérations, des plus modestes ateliers aux PME structurées de l'agglomération de l'Oise.",
   pitchEn:
-    "Beauvais (60), préfecture de l'Oise au nord de l'Île-de-France, conjugue un héritage gothique célèbre (cathédrale Saint-Pierre, au chœur le plus haut du monde) avec une économie tournée vers l'agroalimentaire, l'aéroport Beauvais-Tillé (plateforme low-cost majeure, Ryanair) et la logistique. Son tissu repose d'abord sur les TPE — artisans BTP, commerçants, professions libérales — puis sur des PME industrielles, agroalimentaires et de services aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE et PME beauvaisiennes pour intégrer l'intelligence artificielle dans leurs opérations, des plus modestes ateliers aux PME structurées de l'agglomération de l'Oise.",
+    "Beauvais (60), préfecture de l'Oise au nord de l'Île-de-France, conjugue un héritage gothique célèbre (cathédrale Saint-Pierre, au chœur le plus haut du monde) avec une économie tournée vers l'agroalimentaire, l'aéroport Beauvais-Tillé (plateforme low-cost majeure, Ryanair) et la logistique. Son tissu repose d'abord sur les PME — artisans BTP, commerçants, professions libérales — puis sur des PME industrielles, agroalimentaires et de services aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces PME et ETI beauvaisiennes pour intégrer l'intelligence artificielle dans leurs opérations, des plus modestes ateliers aux PME structurées de l'agglomération de l'Oise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauvais (60). Nous accompagnons en priorité les TPE puis les PME beauvaisiennes : artisans BTP, commerçants, professions libérales, PME agroalimentaires, industrielles, logistiques (proximité aéroport Beauvais-Tillé) et services aux entreprises. Diagnostic, formation et implémentation sur site, ROI mesurable, grille tarifaire publique. Les ETI restent accompagnées à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauvais (60). Nous accompagnons en priorité les PME puis les ETI beauvaisiennes : artisans BTP, commerçants, professions libérales, PME agroalimentaires, industrielles, logistiques (proximité aéroport Beauvais-Tillé) et services aux entreprises. Diagnostic, formation et implémentation sur site, ROI mesurable, grille tarifaire publique. Les ETI restent accompagnées à la marge.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauvais (60). Nous accompagnons en priorité les TPE puis les PME beauvaisiennes : artisans BTP, commerçants, professions libérales, PME agroalimentaires, industrielles, logistiques (proximité aéroport Beauvais-Tillé) et services aux entreprises. Diagnostic, formation et implémentation sur site, ROI mesurable, grille tarifaire publique. Les ETI restent accompagnées à la marge.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauvais (60). Nous accompagnons en priorité les PME puis les ETI beauvaisiennes : artisans BTP, commerçants, professions libérales, PME agroalimentaires, industrielles, logistiques (proximité aéroport Beauvais-Tillé) et services aux entreprises. Diagnostic, formation et implémentation sur site, ROI mesurable, grille tarifaire publique. Les ETI restent accompagnées à la marge.",
   seoHook: "agroalimentaire & logistique aéroport",
   ecosystemFr:
-    "Beauvais, préfecture de l'Oise, structure son économie autour de l'aéroport Beauvais-Tillé (hub low-cost Ryanair, source d'activités logistiques et de services), de l'agroalimentaire et d'une longue tradition manufacturière, dont la tapisserie historique. Le tissu est avant tout composé de TPE — artisans BTP, commerçants, professions libérales — complétées par des PME industrielles, agroalimentaires et logistiques. Zones d'activités du Haut-Villé et de Ther. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
+    "Beauvais, préfecture de l'Oise, structure son économie autour de l'aéroport Beauvais-Tillé (hub low-cost Ryanair, source d'activités logistiques et de services), de l'agroalimentaire et d'une longue tradition manufacturière, dont la tapisserie historique. Le tissu est avant tout composé de PME — artisans BTP, commerçants, professions libérales — complétées par des PME industrielles, agroalimentaires et logistiques. Zones d'activités du Haut-Villé et de Ther. Axion-IA cible d'abord ces PME et ETI, les grands groupes venant en complément.",
   ecosystemEn:
-    "Beauvais, préfecture de l'Oise, structure son économie autour de l'aéroport Beauvais-Tillé (hub low-cost Ryanair, source d'activités logistiques et de services), de l'agroalimentaire et d'une longue tradition manufacturière, dont la tapisserie historique. Le tissu est avant tout composé de TPE — artisans BTP, commerçants, professions libérales — complétées par des PME industrielles, agroalimentaires et logistiques. Zones d'activités du Haut-Villé et de Ther. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
+    "Beauvais, préfecture de l'Oise, structure son économie autour de l'aéroport Beauvais-Tillé (hub low-cost Ryanair, source d'activités logistiques et de services), de l'agroalimentaire et d'une longue tradition manufacturière, dont la tapisserie historique. Le tissu est avant tout composé de PME — artisans BTP, commerçants, professions libérales — complétées par des PME industrielles, agroalimentaires et logistiques. Zones d'activités du Haut-Villé et de Ther. Axion-IA cible d'abord ces PME et ETI, les grands groupes venant en complément.",
   distancesFr:
     "Aéroport Beauvais-Tillé à 4 km (hub low-cost Ryanair). Paris à 1h15 (A16). Gare de Beauvais vers Paris-Nord en 1h15. Amiens à 50 min. Rouen à 1h15. Compiègne à 50 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const BEAUVAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beauvais : diagnostic adapté aux TPE artisans, commerçants et professions libérales, puis aux PME agroalimentaires, industrielles et logistiques de l'Oise. ROI quantifié, audit sur place 4h.",
-      en: "Audit IA à Beauvais : diagnostic adapté aux TPE artisans, commerçants et professions libérales, puis aux PME agroalimentaires, industrielles et logistiques de l'Oise. ROI quantifié, audit sur place 4h.",
+      fr: "Audit IA à Beauvais : diagnostic adapté aux PME artisanales, commerçants et professions libérales, puis aux PME agroalimentaires, industrielles et logistiques de l'Oise. ROI quantifié, audit sur place 4h.",
+      en: "Audit IA à Beauvais : diagnostic adapté aux PME artisanales, commerçants et professions libérales, puis aux PME agroalimentaires, industrielles et logistiques de l'Oise. ROI quantifié, audit sur place 4h.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beauvais : formats adaptés à l'atelier, au commerce, au cabinet ou à l'entrepôt logistique. Vos équipes repartent autonomes sur leurs outils IA.",
@@ -42,23 +42,23 @@ export const BEAUVAIS_COPY: VilleCopy = {
       en: "Implémentation IA à Beauvais : automatisation de la traçabilité agroalimentaire, optimisation logistique aéroportuaire, agents conversationnels B2B, classification documentaire, devis automatisés BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Beauvais : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE et PME beauvaisiens : artisans, commerçants, professions libérales, industriels agroalimentaires.",
-      en: "Coaching 1-to-1 à Beauvais : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE et PME beauvaisiens : artisans, commerçants, professions libérales, industriels agroalimentaires.",
+      fr: "Coaching 1-to-1 à Beauvais : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME et ETI beauvaisiens : artisans, commerçants, professions libérales, industriels agroalimentaires.",
+      en: "Coaching 1-to-1 à Beauvais : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME et ETI beauvaisiens : artisans, commerçants, professions libérales, industriels agroalimentaires.",
     },
     sitesWeb: {
-      fr: "Sites web & SaaS IA à Beauvais : plateformes sur mesure pour TPE et PME de l'Oise — réservation, devis en ligne, agents conversationnels intégrés, automatisation du suivi client.",
-      en: "Sites web & SaaS IA à Beauvais : plateformes sur mesure pour TPE et PME de l'Oise — réservation, devis en ligne, agents conversationnels intégrés, automatisation du suivi client.",
+      fr: "Sites web & SaaS IA à Beauvais : plateformes sur mesure pour PME et ETI de l'Oise — réservation, devis en ligne, agents conversationnels intégrés, automatisation du suivi client.",
+      en: "Sites web & SaaS IA à Beauvais : plateformes sur mesure pour PME et ETI de l'Oise — réservation, devis en ligne, agents conversationnels intégrés, automatisation du suivi client.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit à Beauvais des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique à dominante agritech et agroéquipement unique en France : la plus grande usine de tracteurs d'Europe (Massey Ferguson / AGCO, Centre d'Excellence de ~54 ha, plus de 2 500 salariés, export vers 70 pays), les transmissions GIMA, l'éditeur de logiciels agricoles Isagri (né en 1983 au sein de l'ISAB, devenu UniLaSalle, ~1 000 personnes au siège beauvaisien), l'école d'ingénieurs UniLaSalle et son laboratoire d'open innovation AgriLab, le tout fédéré par le pôle territorial « Innovation, Agritech et Numérique agricole » du Beauvaisis. Nous servons d'abord les TPE et PME de l'Oise — constructeurs et sous-traitants d'agroéquipement, coopératives et négoces agricoles, PME agroalimentaires (Nestlé Grand Froid / Froneri, Paris Caramels), industrie (Spontex, Biocodex), logistique de l'aéroport Beauvais-Tillé, artisans BTP et commerçants — avec du code sur mesure, hébergé en Europe et conforme RGPD.",
+        hero: "Axion-IA conçoit à Beauvais des sites web et plateformes SaaS augmentés par l'IA pour un tissu économique à dominante agritech et agroéquipement unique en France : la plus grande usine de tracteurs d'Europe (Massey Ferguson / AGCO, Centre d'Excellence de ~54 ha, plus de 2 500 salariés, export vers 70 pays), les transmissions GIMA, l'éditeur de logiciels agricoles Isagri (né en 1983 au sein de l'ISAB, devenu UniLaSalle, ~1 000 personnes au siège beauvaisien), l'école d'ingénieurs UniLaSalle et son laboratoire d'open innovation AgriLab, le tout fédéré par le pôle territorial « Innovation, Agritech et Numérique agricole » du Beauvaisis. Nous servons d'abord les PME et ETI de l'Oise — constructeurs et sous-traitants d'agroéquipement, coopératives et négoces agricoles, PME agroalimentaires (Nestlé Grand Froid / Froneri, Paris Caramels), industrie (Spontex, Biocodex), logistique de l'aéroport Beauvais-Tillé, artisans BTP et commerçants — avec du code sur mesure, hébergé en Europe et conforme RGPD.",
         whyHere: [
           "Capitale française du machinisme agricole : nous concevons des plateformes pour les constructeurs et sous-traitants d'agroéquipement de l'écosystème Massey Ferguson / AGCO et GIMA — portails de configuration et de pièces détachées, catalogues techniques multilingues (l'usine de Beauvais exporte vers 70 pays), espaces concessionnaires et SAV augmentés par l'IA.",
           "Terre d'édition de logiciels agricoles : dans le sillage d'Isagri (fondé à Beauvais en 1983, ~1 000 personnes au siège), nous accompagnons coopératives, négoces et éditeurs agricoles de l'Oise sur des produits SaaS IA-native — recherche sémantique sur la documentation agronomique, agents conversationnels pour exploitants, copilotes de saisie pour conseillers de terrain.",
           "Agroalimentaire et industrie de l'Oise : sites et back-offices augmentés pour les PME agroalimentaires (Nestlé Grand Froid / Froneri, Paris Caramels, charcuterie, cidre) et industrielles (Spontex / Hutchinson, Biocodex pharmaceutique) — portails fournisseurs, traçabilité documentaire, devis et fiches produits générés assistés par IA.",
-          "Logistique aéroportuaire et services : à 4 km de l'aéroport low-cost Beauvais-Tillé et des zones du Haut-Villé et de l'Éco-Parc de Beauvais-Tillé, nous outillons les acteurs logistiques et de services — réservation en ligne, agents conversationnels multilingues, automatisation administrative pour TPE, commerçants et professions libérales beauvaisiens.",
+          "Logistique aéroportuaire et services : à 4 km de l'aéroport low-cost Beauvais-Tillé et des zones du Haut-Villé et de l'Éco-Parc de Beauvais-Tillé, nous outillons les acteurs logistiques et de services — réservation en ligne, agents conversationnels multilingues, automatisation administrative pour PME, commerçants et professions libérales beauvaisiens.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const BEAUVAIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté IA",
-            detail:
-              "Pour artisans BTP, commerçants, professions libérales et petits négoces agricoles de Beauvais : site rapide, mobile, avec prise de rendez-vous, devis en ligne et agent conversationnel intégré.",
-          },
           {
             price: "Plateforme métier ou boutique de pièces",
             sizeLabel: "PME",
@@ -175,12 +169,6 @@ export const BEAUVAIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or AI-augmented e-commerce",
-            detail:
-              "For Beauvais building trades, retailers, independent professionals and small agricultural traders: a fast, mobile site with booking, online quoting and an integrated conversational agent.",
-          },
-          {
             price: "Business platform or parts shop",
             sizeLabel: "SME",
             detail:
@@ -233,8 +221,8 @@ export const BEAUVAIS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Beauvais et dans tout le sud de l'Oise (Compiègne à 50 min, Creil, Clermont). Nos consultants se déplacent depuis Paris (1h15 par l'A16) ou via l'aéroport Beauvais-Tillé.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans beauvaisiens ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis, gestion du planning, réponse client.",
+      q: "Accompagnez-vous les PME et artisans beauvaisiens ?",
+      a: "Oui, les PME sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis, gestion du planning, réponse client.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Beauvais ?",

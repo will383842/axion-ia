@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VALENCE_82_COPY: VilleCopy = {
   pitchFr:
-    "Valence (82), commune de Lomagne dans le Tarn-et-Garonne, environ 5 300 habitants. Bourg agricole et de services entre Montauban et Agen sur l'axe A62. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin valencien tarn-et-garonnais.",
+    "Valence (82), commune de Lomagne dans le Tarn-et-Garonne, environ 5 300 habitants. Bourg agricole et de services entre Montauban et Agen sur l'axe A62. Tissu PME artisanales, PME agroalimentaires, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin valencien tarn-et-garonnais.",
   pitchEn:
-    "Valence (82), commune de Lomagne dans le Tarn-et-Garonne, environ 5 300 habitants. Bourg agricole et de services entre Montauban et Agen sur l'axe A62. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin valencien tarn-et-garonnais.",
+    "Valence (82), commune de Lomagne dans le Tarn-et-Garonne, environ 5 300 habitants. Bourg agricole et de services entre Montauban et Agen sur l'axe A62. Tissu PME artisanales, PME agroalimentaires, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin valencien tarn-et-garonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons PME artisanales, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons PME artisanales, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit sur place sur mesure.",
   seoHook: "bassin valencien tarn-et-garonnais",
   ecosystemFr:
     "Valence (5 289 hab) est un bourg de Lomagne dans le Tarn-et-Garonne, sur l'axe Montauban-Agen (A62/canal de Garonne). Économie locale : agriculture (fruits, céréales, élevage), agroalimentaire, artisanat du bâtiment, commerces de centre-bourg et professions libérales. Proximité Castelsarrasin (15 min), Moissac (10 min), Agen (25 min), Montauban (35 min).",
@@ -30,20 +30,20 @@ export const VALENCE_82_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valence (82) : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du bourg de Lomagne entre Montauban et Agen. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Valence (82) : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du bourg de Lomagne entre Montauban et Agen. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Valence (82) : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et professions libérales du bourg de Lomagne entre Montauban et Agen. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Valence (82) : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerçants et professions libérales du bourg de Lomagne entre Montauban et Agen. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valence (82) : formats adaptés à la PME agroalimentaire, exploitation agricole, artisan du bâtiment ou cabinet libéral de Lomagne. Vos équipes repartent autonomes sur outils IA métier.",
       en: "Interventions IA sur site à Valence (82) : formats adaptés à la PME agroalimentaire, exploitation agricole, artisan du bâtiment ou cabinet libéral de Lomagne. Vos équipes repartent autonomes sur outils IA métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Valence (82) : traçabilité récoltes, gestion qualité agroalimentaire, CRM clients, automatisation facturation et agents conversationnels pour les TPE/PME du canal de Garonne.",
-      en: "Implémentation IA à Valence (82) : traçabilité récoltes, gestion qualité agroalimentaire, CRM clients, automatisation facturation et agents conversationnels pour les TPE/PME du canal de Garonne.",
+      fr: "Implémentation IA à Valence (82) : traçabilité récoltes, gestion qualité agroalimentaire, CRM clients, automatisation facturation et agents conversationnels pour les PME et ETI du canal de Garonne.",
+      en: "Implémentation IA à Valence (82) : traçabilité récoltes, gestion qualité agroalimentaire, CRM clients, automatisation facturation et agents conversationnels pour les PME et ETI du canal de Garonne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Valence (82) : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires et professions libérales de la Lomagne tarn-et-garonnaise.",
-      en: "Coaching 1-to-1 à Valence (82) : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires et professions libérales de la Lomagne tarn-et-garonnaise.",
+      fr: "Coaching 1-to-1 à Valence (82) : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME agroalimentaires et professions libérales de la Lomagne tarn-et-garonnaise.",
+      en: "Coaching 1-to-1 à Valence (82) : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME agroalimentaires et professions libérales de la Lomagne tarn-et-garonnaise.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const VALENCE_82_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Valence (82)  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Valence-d'Agen. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Valence-d'Agen. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles du Tarn-et-Garonne ?",
@@ -65,7 +65,7 @@ export const VALENCE_82_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Valence (82) ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Valence-d'Agen. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Valence-d'Agen. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

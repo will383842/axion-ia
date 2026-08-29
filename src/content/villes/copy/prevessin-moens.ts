@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PREVESSIN_MOENS_COPY: VilleCopy = {
   pitchFr:
-    "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, PME du BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, PME du BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, PME du BTP, commerçants et services aux entreprises pays de Gex.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, PME du BTP, commerçants et services aux entreprises pays de Gex.",
   seoHook: "technologiques & économie frontalière",
   ecosystemFr:
-    "Prévessin-Moëns est positionnée dans le pays de Gex, à la frontière suisse. Proximité immédiate du CERN (site principal côté français à Prévessin). Économie frontalière dynamique : PME technologiques et tertiaires, commerces transfrontaliers, TPE artisanat BTP.",
+    "Prévessin-Moëns est positionnée dans le pays de Gex, à la frontière suisse. Proximité immédiate du CERN (site principal côté français à Prévessin). Économie frontalière dynamique : PME technologiques et tertiaires, commerces transfrontaliers, PME du BTP.",
   ecosystemEn:
-    "Prévessin-Moëns est positionnée dans le pays de Gex, à la frontière suisse. Proximité immédiate du CERN (site principal côté français à Prévessin). Économie frontalière dynamique : PME technologiques et tertiaires, commerces transfrontaliers, TPE artisanat BTP.",
+    "Prévessin-Moëns est positionnée dans le pays de Gex, à la frontière suisse. Proximité immédiate du CERN (site principal côté français à Prévessin). Économie frontalière dynamique : PME technologiques et tertiaires, commerces transfrontaliers, PME du BTP.",
   distancesFr:
     "CERN site Prévessin sur place. Genève centre à 15 min. Aéroport Genève-Cointrin à 20 min. Lyon centre à 1h30. Saint-Genis-Pouilly à 5 min. Ferney-Voltaire à 5 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
     "PME technologiques (CERN site Prévessin)",
     "Économie frontalière Genève",
     "PME tertiaires pays de Gex",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce transfrontalier",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Prévessin-Moëns : formats adaptés au bureau tech, commerce transfrontalier, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
       en: "Implémentation IA à Prévessin-Moëns : agents conversationnels multilingue FR/EN/DE (économie frontalière CERN/Genève), automatisation workflow R&D, classification documents scientifiques.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Prévessin-Moëns : sessions dans votre bureau tech, commerce ou en visio. Dirigeants tech/frontaliers, artisans, gérants TPE/PME prévessinois.",
-      en: "Coaching 1-to-1 à Prévessin-Moëns : sessions dans votre bureau tech, commerce ou en visio. Dirigeants tech/frontaliers, artisans, gérants TPE/PME prévessinois.",
+      fr: "Coaching 1-to-1 à Prévessin-Moëns : sessions dans votre bureau tech, commerce ou en visio. Dirigeants tech/frontaliers, artisans, gérants PME et ETI prévessinois.",
+      en: "Coaching 1-to-1 à Prévessin-Moëns : sessions dans votre bureau tech, commerce ou en visio. Dirigeants tech/frontaliers, artisans, gérants PME et ETI prévessinois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
       a: "Oui, automatisation workflow transfrontalier, classification documents multi-juridiction, agents conversationnels multilingue.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

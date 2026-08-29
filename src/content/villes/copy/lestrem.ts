@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LESTREM_COPY: VilleCopy = {
   pitchFr:
-    "Lestrem (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit environ 5 010 habitants. Situee entre Bethune et Armentieres dans la plaine de la Lys, son economie associe TPE artisanales, PME industrielles (agroalimentaire, chimie), agriculture et commerces. Axion-IA y intervient pour tous types d'activites.",
+    "Lestrem (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit environ 5 010 habitants. Situee entre Bethune et Armentieres dans la plaine de la Lys, son economie associe PME artisanales, PME industrielles (agroalimentaire, chimie), agriculture et commerces. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Lestrem (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit environ 5 010 habitants. Situee entre Bethune et Armentieres dans la plaine de la Lys, son economie associe TPE artisanales, PME industrielles (agroalimentaire, chimie), agriculture et commerces. Axion-IA y intervient pour tous types d'activites.",
+    "Lestrem (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit environ 5 010 habitants. Situee entre Bethune et Armentieres dans la plaine de la Lys, son economie associe PME artisanales, PME industrielles (agroalimentaire, chimie), agriculture et commerces. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agroalimentaire, chimie & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Lestrem (62). Nous accompagnons les PME, ETI et grands groupes de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Lestrem (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Lestrem (62). Nous accompagnons les PME, ETI et grands groupes de la Flandre artesienne : industriels de l'agroalimentaire et de la chimie, exploitants agricoles, artisans et commercants du bassin de la Lys. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Lestrem est situee dans la plaine de la Lys, entre Bethune (15 km) et Armentieres (20 km). Tissu economique mixte : PME agroalimentaires (Roquette Freres historiquement implantee), chimie fine, TPE artisanat BTP, exploitations agricoles (grandes cultures, betteraves), commerces de bourg et services.",
+    "Lestrem est situee dans la plaine de la Lys, entre Bethune (15 km) et Armentieres (20 km). Tissu economique mixte : PME agroalimentaires (Roquette Freres historiquement implantee), chimie fine, PME du BTP, exploitations agricoles (grandes cultures, betteraves), commerces de bourg et services.",
   ecosystemEn:
-    "Lestrem est situee dans la plaine de la Lys, entre Bethune (15 km) et Armentieres (20 km). Tissu economique mixte : PME agroalimentaires (Roquette Freres historiquement implantee), chimie fine, TPE artisanat BTP, exploitations agricoles (grandes cultures, betteraves), commerces de bourg et services.",
+    "Lestrem est situee dans la plaine de la Lys, entre Bethune (15 km) et Armentieres (20 km). Tissu economique mixte : PME agroalimentaires (Roquette Freres historiquement implantee), chimie fine, PME du BTP, exploitations agricoles (grandes cultures, betteraves), commerces de bourg et services.",
   distancesFr:
     "Bethune a 15 min. Armentieres a 20 min. Gare Lille Flandres (TER) a 45 min. Gare Lille Europe (TGV) a 50 min. Aeroport Lille-Lesquin a 50 min. Paris-Nord a 1h (TGV depuis Lille).",
   distancesEn:
@@ -25,7 +25,7 @@ export const LESTREM_COPY: VilleCopy = {
     "Industrie agroalimentaire",
     "Chimie & pharmacie",
     "Agriculture & grandes cultures",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
   ],
   servicesContext: {
@@ -42,8 +42,8 @@ export const LESTREM_COPY: VilleCopy = {
       en: "Implementation IA a Lestrem : automatisation processus industriels, IA predictive agroalimentaire, agents conversationnels clients, CRM augmentes pour PME de Flandre artesienne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Lestrem : sessions individuelles pour dirigeants d'usines, exploitants agricoles, gerants TPE/PME et cadres industriels du bassin de la Lys.",
-      en: "Coaching 1-to-1 a Lestrem : sessions individuelles pour dirigeants d'usines, exploitants agricoles, gerants TPE/PME et cadres industriels du bassin de la Lys.",
+      fr: "Coaching 1-to-1 a Lestrem : sessions individuelles pour dirigeants d'usines, exploitants agricoles, gerants PME et ETI et cadres industriels du bassin de la Lys.",
+      en: "Coaching 1-to-1 a Lestrem : sessions individuelles pour dirigeants d'usines, exploitants agricoles, gerants PME et ETI et cadres industriels du bassin de la Lys.",
     },
   },
   faqGeolocalisee: [

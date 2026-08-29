@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VAL_DE_REUIL_COPY: VilleCopy = {
   pitchFr:
-    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
+    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu PME artisanales, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
+    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu PME artisanales, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : PME artisanales, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : PME artisanales, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   seoHook: "industrie pharmaceutique & logistique vallée",
   ecosystemFr:
-    "Val-de-Reuil est une ville nouvelle de l'Eure, conçue dans les années 1970, devenue un pôle industriel majeur de Normandie. Industrie pharmaceutique (grands sites de production), chimie, logistique vallée de Seine. Centre Gymnique national, agglomération Seine-Eure dynamique. Tissu TPE/PME en croissance, commerces et services.",
+    "Val-de-Reuil est une ville nouvelle de l'Eure, conçue dans les années 1970, devenue un pôle industriel majeur de Normandie. Industrie pharmaceutique (grands sites de production), chimie, logistique vallée de Seine. Centre Gymnique national, agglomération Seine-Eure dynamique. Tissu PME et ETI en croissance, commerces et services.",
   ecosystemEn:
-    "Val-de-Reuil est une ville nouvelle de l'Eure, conçue dans les années 1970, devenue un pôle industriel majeur de Normandie. Industrie pharmaceutique (grands sites de production), chimie, logistique vallée de Seine. Centre Gymnique national, agglomération Seine-Eure dynamique. Tissu TPE/PME en croissance, commerces et services.",
+    "Val-de-Reuil est une ville nouvelle de l'Eure, conçue dans les années 1970, devenue un pôle industriel majeur de Normandie. Industrie pharmaceutique (grands sites de production), chimie, logistique vallée de Seine. Centre Gymnique national, agglomération Seine-Eure dynamique. Tissu PME et ETI en croissance, commerces et services.",
   distancesFr:
     "Gare Val-de-Reuil (ligne Paris-Rouen). Rouen à 25 min A13. Évreux à 30 min. Paris à 1h20 train direct. Aéroport Paris-CDG à 1h40.",
   distancesEn:
@@ -24,14 +24,14 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie pharmaceutique et chimie",
     "Logistique vallée de Seine",
-    "TPE artisanat et BTP",
+    "PME de l'artisanat et BTP",
     "Commerce et grande distribution",
     "Services aux entreprises et tertiaire",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Val-de-Reuil : diagnostic adapté aux PME artisanales, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Val-de-Reuil : diagnostic adapté aux PME artisanales, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Val-de-Reuil : formats adaptés au site pharmaceutique, à l'entrepôt logistique, à l'atelier, au commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
       en: "Implémentation IA à Val-de-Reuil : traçabilité pharma, contrôle qualité chimie, optimisation supply chain Seine, automatisation rapports réglementaires. Agglo Seine-Eure.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Val-de-Reuil : sessions dans votre site industriel, entrepôt, bureau ou en visio. Dirigeants TPE/PME pharma, chimie, logistique, artisans agglo Seine-Eure.",
-      en: "Coaching 1-to-1 à Val-de-Reuil : sessions dans votre site industriel, entrepôt, bureau ou en visio. Dirigeants TPE/PME pharma, chimie, logistique, artisans agglo Seine-Eure.",
+      fr: "Coaching 1-to-1 à Val-de-Reuil : sessions dans votre site industriel, entrepôt, bureau ou en visio. Dirigeants PME et ETI pharma, chimie, logistique, artisans agglo Seine-Eure.",
+      en: "Coaching 1-to-1 à Val-de-Reuil : sessions dans votre site industriel, entrepôt, bureau ou en visio. Dirigeants PME et ETI pharma, chimie, logistique, artisans agglo Seine-Eure.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises logistiques de la vallée de Seine sur leurs cas IA : optimisation tournées, prédiction stocks, classification documents transport, automatisation facturation, agents IA suivi colis.",
     },
     {
-      q: "Quels services pour les TPE et artisans de Val-de-Reuil ?",
-      a: "Pour les TPE et artisans à Val-de-Reuil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, classification photos chantier, facturation.",
+      q: "Quels services pour les PME et artisans de Val-de-Reuil ?",
+      a: "Pour les PME et artisans à Val-de-Reuil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, classification photos chantier, facturation.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

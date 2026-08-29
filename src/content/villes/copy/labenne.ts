@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LABENNE_COPY: VilleCopy = {
   pitchFr:
-    "Labenne (40), commune littorale du sud des Landes dans l'agglomération bayonnaise, se situe entre océan Atlantique et forêt landaise. Tourisme balnéaire, zoo, centre commercial, TPE hébergement/restauration, artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Labenne (40), commune littorale du sud des Landes dans l'agglomération bayonnaise, se situe entre océan Atlantique et forêt landaise. Tourisme balnéaire, zoo, centre commercial, PME hébergement/restauration, artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Labenne (40), commune littorale du sud des Landes dans l'agglomération bayonnaise, se situe entre océan Atlantique et forêt landaise. Tourisme balnéaire, zoo, centre commercial, TPE hébergement/restauration, artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Labenne (40), commune littorale du sud des Landes dans l'agglomération bayonnaise, se situe entre océan Atlantique et forêt landaise. Tourisme balnéaire, zoo, centre commercial, PME hébergement/restauration, artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Labenne (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs, restaurateurs, commerçants de la zone commerciale, artisans BTP, agriculteurs et prestataires de services du sud des Landes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Labenne (40). Nous accompagnons PME et ETI du tourisme balnéaire, hébergeurs, restaurateurs, commerçants de la zone commerciale, artisans BTP, agriculteurs et prestataires de services du sud des Landes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Labenne (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs, restaurateurs, commerçants de la zone commerciale, artisans BTP, agriculteurs et prestataires de services du sud des Landes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Labenne (40). Nous accompagnons PME et ETI du tourisme balnéaire, hébergeurs, restaurateurs, commerçants de la zone commerciale, artisans BTP, agriculteurs et prestataires de services du sud des Landes.",
   seoHook: "littoral, tourisme & agglo Bayonne",
   ecosystemFr:
-    "Labenne est une commune littorale du sud des Landes, entre océan et forêt, intégrée à l'agglomération bayonnaise. La ville dispose d'une plage océane, d'un zoo (Labenne Océan) et d'une zone commerciale active. Tissu TPE tourisme balnéaire, campings, hébergement saisonnier, restauration, artisans BTP, commerces, agriculture. Axe A63 (sortie Labenne) facilite l'accès Bayonne-Dax.",
+    "Labenne est une commune littorale du sud des Landes, entre océan et forêt, intégrée à l'agglomération bayonnaise. La ville dispose d'une plage océane, d'un zoo (Labenne Océan) et d'une zone commerciale active. Tissu PME tourisme balnéaire, campings, hébergement saisonnier, restauration, artisans BTP, commerces, agriculture. Axe A63 (sortie Labenne) facilite l'accès Bayonne-Dax.",
   ecosystemEn:
-    "Labenne est une commune littorale du sud des Landes, entre océan et forêt, intégrée à l'agglomération bayonnaise. La ville dispose d'une plage océane, d'un zoo (Labenne Océan) et d'une zone commerciale active. Tissu TPE tourisme balnéaire, campings, hébergement saisonnier, restauration, artisans BTP, commerces, agriculture. Axe A63 (sortie Labenne) facilite l'accès Bayonne-Dax.",
+    "Labenne est une commune littorale du sud des Landes, entre océan et forêt, intégrée à l'agglomération bayonnaise. La ville dispose d'une plage océane, d'un zoo (Labenne Océan) et d'une zone commerciale active. Tissu PME tourisme balnéaire, campings, hébergement saisonnier, restauration, artisans BTP, commerces, agriculture. Axe A63 (sortie Labenne) facilite l'accès Bayonne-Dax.",
   distancesFr:
     "Bayonne à 15 min par A63. Capbreton à 10 min. Biarritz à 20 min. Dax à 35 min par A63. Bordeaux à 1h45 par A63. Aéroport Biarritz-Pays Basque à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LABENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Labenne : diagnostic adapté aux PME du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Labenne : diagnostic adapté aux PME du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Labenne : formations adaptées aux commerces, campings, hébergeurs, restaurateurs et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LABENNE_COPY: VilleCopy = {
       en: "Implémentation IA à Labenne : chatbot réservation multilingue campings, gestion stocks commerce, automatisation facturation hébergeurs, prédiction affluence saisonnière, classification avis clients.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Labenne : sessions dans votre commerce, camping, restaurant ou en visio. Gérants TPE tourisme, commerçants, artisans BTP, hébergeurs et restaurateurs du sud Landes.",
-      en: "Coaching 1-to-1 à Labenne : sessions dans votre commerce, camping, restaurant ou en visio. Gérants TPE tourisme, commerçants, artisans BTP, hébergeurs et restaurateurs du sud Landes.",
+      fr: "Coaching 1-to-1 à Labenne : sessions dans votre commerce, camping, restaurant ou en visio. Gérants PME tourisme, commerçants, artisans BTP, hébergeurs et restaurateurs du sud Landes.",
+      en: "Coaching 1-to-1 à Labenne : sessions dans votre commerce, camping, restaurant ou en visio. Gérants PME tourisme, commerçants, artisans BTP, hébergeurs et restaurateurs du sud Landes.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const LABENNE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les artisans et restaurateurs labennais ?",
-      a: "Pour les TPE artisans BTP et restaurateurs à Labenne, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion réservations, classification avis clients, facturation.",
+      a: "Pour les PME du BTP et restaurateurs à Labenne, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion réservations, classification avis clients, facturation.",
     },
     {
       q: "Comment se passe une mission à Labenne depuis Bayonne ?",

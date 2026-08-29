@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const MALAKOFF_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Malakoff (Hauts-de-Seine, environ 30 500 habitants), commune limitrophe des 14e et 15e arrondissements de Paris. Le tissu local s'est largement converti du secteur industriel vers les services tertiaires, avec une forte densité de cabinets professionnels, agences, sièges sociaux de PME et acteurs du numérique. Nous y proposons des audits, formations et implémentations IA en code custom, à destination des dirigeants des Hauts-de-Seine sud.",
+    "Axion-IA accompagne les PME et ETI de Malakoff (Hauts-de-Seine, environ 30 500 habitants), commune limitrophe des 14e et 15e arrondissements de Paris. Le tissu local s'est largement converti du secteur industriel vers les services tertiaires, avec une forte densité de cabinets professionnels, agences, sièges sociaux de PME et acteurs du numérique. Nous y proposons des audits, formations et implémentations IA en code custom, à destination des dirigeants des Hauts-de-Seine sud.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Malakoff (Hauts-de-Seine, environ 30 500 habitants), commune limitrophe des 14e et 15e arrondissements de Paris. Le tissu local s'est largement converti du secteur industriel vers les services tertiaires, avec une forte densité de cabinets professionnels, agences, sièges sociaux de PME et acteurs du numérique. Nous y proposons des audits, formations et implémentations IA en code custom, à destination des dirigeants des Hauts-de-Seine sud.",
+    "Axion-IA accompagne les PME et ETI de Malakoff (Hauts-de-Seine, environ 30 500 habitants), commune limitrophe des 14e et 15e arrondissements de Paris. Le tissu local s'est largement converti du secteur industriel vers les services tertiaires, avec une forte densité de cabinets professionnels, agences, sièges sociaux de PME et acteurs du numérique. Nous y proposons des audits, formations et implémentations IA en code custom, à destination des dirigeants des Hauts-de-Seine sud.",
   directAnswerFr:
-    "À Malakoff, Axion-IA accompagne les TPE et PME franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place, {{price:intervention-4h|flat}} pour une intervention et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par Williams et l'équipe Axion-IA.",
+    "À Malakoff, Axion-IA accompagne les PME et ETI franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place, {{price:intervention-4h|flat}} pour une intervention et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par Williams et l'équipe Axion-IA.",
   directAnswerEn:
-    "À Malakoff, Axion-IA accompagne les TPE et PME franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place, {{price:intervention-4h|flat}} pour une intervention et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par Williams et l'équipe Axion-IA.",
+    "À Malakoff, Axion-IA accompagne les PME et ETI franciliennes dans l'intégration concrète de l'intelligence artificielle, avec un accent fort sur les cabinets professionnels, agences créatives, ESN et PME tertiaires installées autour de la ligne 13 du métro et de la gare Transilien de Vanves-Malakoff. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place, {{price:intervention-4h|flat}} pour une intervention et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un. Toutes nos missions sont menées en code custom, en français, par Williams et l'équipe Axion-IA.",
   seoHook: "tertiaire & services aux entreprises",
   ecosystemFr:
     "Malakoff présente une trame urbaine mixte (pavillonnaire et collectif) et un tissu économique tertiarisé depuis la fermeture du site Thomson-CSF en 1993. La commune accueille des cabinets professionnels, agences, ESN, PME tertiaires et sièges sociaux à taille humaine, bénéficiant de la proximité immédiate de Paris. L'environnement reste à dimension humaine, avec quatre stations de la ligne 13, deux axes ferroviaires majeurs (Paris-Versailles et LGV Atlantique), et la frontière directe avec Vanves, Montrouge, Châtillon et Clamart.",
@@ -33,8 +33,8 @@ export const MALAKOFF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Malakoff pour TPE et PME tertiaires : cartographie des processus (back-office, relation client, production documentaire) et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
-      en: "Audit IA à Malakoff pour TPE et PME tertiaires : cartographie des processus (back-office, relation client, production documentaire) et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Malakoff pour PME et ETI tertiaires : cartographie des processus (back-office, relation client, production documentaire) et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
+      en: "Audit IA à Malakoff pour PME et ETI tertiaires : cartographie des processus (back-office, relation client, production documentaire) et identification des cas d'usage prioritaires — à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site à Malakoff : automatisation administrative, traitement documentaire, assistants métier pour cabinets, agences et ESN locales — dès {{price:intervention-4h|flat}}.",
@@ -56,7 +56,7 @@ export const MALAKOFF_COPY: VilleCopy = {
         whyHere: [
           "Filière audiovisuelle/postproduction sur-représentée localement : Malakoff Studio, Time-Line Factory (rue Paul Vaillant-Couturier), Black Snow Production (rue de la Tour), McFly Prod, Teslart et Le Magasin génèrent des besoins très concrets — catalogues d'assets vidéo, transcription/dérushage, sous-titrage et doublage, devis et plannings de tournage — où l'IA apporte un gain mesurable.",
           "Écosystème coopératif et ESS dense : le tiers-lieu CASACO (SCIC, ~45 postes, une centaine de coworkers) et la démarche MALACOOP (CASACO, la Ressourcerie, le tiers-lieu La Tréso artisanat/numérique/fabrication) concentrent indépendants, télétravailleurs et équipes de startups qui ont besoin de plateformes légères et d'outils mutualisés plutôt que d'usines à gaz.",
-          "Tissu de très petites structures : ~5 800 entreprises majoritairement en entreprise individuelle, effectif moyen autour de 5 salariés ; le premier secteur de créations 2024 est « activités spécialisées, scientifiques et techniques » — un public d'agences, cabinets et freelances pour qui un site rapide et un SaaS sobre comptent plus qu'un site vitrine surdimensionné.",
+          "Tissu de très PME : ~5 800 entreprises majoritairement en entreprise individuelle, effectif moyen autour de 5 salariés ; le premier secteur de créations 2024 est « activités spécialisées, scientifiques et techniques » — un public d'agences, cabinets et freelances pour qui un site rapide et un SaaS sobre comptent plus qu'un site vitrine surdimensionné.",
           "Proximité immédiate de Paris sans les coûts parisiens : quatre stations de la ligne 13 et la gare Transilien Vanves-Malakoff (ligne N) placent Montparnasse à ~4 km ; nous nous déplaçons sur site à Malakoff, Vanves, Montrouge, Châtillon, Clamart, Bagneux et les 14e/15e arrondissements limitrophes.",
         ],
         methodology: [
@@ -87,12 +87,6 @@ export const MALAKOFF_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou portail simple IA-augmenté",
-            detail:
-              "Pour les indépendants, freelances et microstudios de Malakoff (un monteur, un petit studio audiovisuel, un coworker CASACO) : site rapide, mobile-first, avec une brique IA utile — formulaire intelligent, chatbot FAQ, génération de devis. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce IA",
@@ -174,12 +168,6 @@ export const MALAKOFF_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase site or simple portal",
-            detail:
-              "For Malakoff freelancers and micro-studios (a single editor, a small audiovisual studio, a CASACO coworker): a fast, mobile-first site with one useful AI block — smart form, FAQ chatbot, quote generation. Quote within 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "PME",
             price: "Business platform or AI e-commerce",
             detail:
@@ -229,7 +217,7 @@ export const MALAKOFF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Malakoff ?",
-      a: "À Malakoff, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un destiné aux dirigeants de TPE et PME.",
+      a: "À Malakoff, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un destiné aux dirigeants de PME et d'ETI.",
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Malakoff ?",
@@ -237,7 +225,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour un audit IA à Malakoff ?",
-      a: "Notre Audit sur place de 4 heures peut être planifié sous quelques jours ouvrés à Malakoff. Il fournit un livrable actionnable identifiant les cas d'usage IA prioritaires pour votre TPE ou PME.",
+      a: "Notre Audit sur place de 4 heures peut être planifié sous quelques jours ouvrés à Malakoff. Il fournit un livrable actionnable identifiant les cas d'usage IA prioritaires pour votre PME ou ETI.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Malakoff ?",
@@ -249,7 +237,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux servez-vous à Malakoff ?",
-      a: "Nous accompagnons en priorité les TPE et PME tertiaires de Malakoff : cabinets professionnels (juridique, comptable, conseil), agences de communication, ESN, commerces de proximité et acteurs de la santé.",
+      a: "Nous accompagnons en priorité les PME et ETI tertiaires de Malakoff : cabinets professionnels (juridique, comptable, conseil), agences de communication, ESN, commerces de proximité et acteurs de la santé.",
     },
   ],
 };

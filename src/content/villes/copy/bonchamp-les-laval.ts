@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
   pitchFr:
-    "Bonchamp-lès-Laval (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités industrielles et commerciales qui concentrent TPE artisans, PME industrielles, commerces, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
+    "Bonchamp-lès-Laval (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités industrielles et commerciales qui concentrent PME artisanales, PME industrielles, commerces, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Bonchamp-lès-Laval (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités industrielles et commerciales qui concentrent TPE artisans, PME industrielles, commerces, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
+    "Bonchamp-lès-Laval (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités industrielles et commerciales qui concentrent PME artisanales, PME industrielles, commerces, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonchamp-lès-Laval (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'est de l'agglomération lavalloise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonchamp-lès-Laval (53). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et agroalimentaires, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'est de l'agglomération lavalloise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonchamp-lès-Laval (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'est de l'agglomération lavalloise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonchamp-lès-Laval (53). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et agroalimentaires, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'est de l'agglomération lavalloise.",
   seoHook: "industrie fabrication & agroalimentaire",
   ecosystemFr:
     "Bonchamp-lès-Laval est une commune résidentielle et économique de l'est de Laval Agglomération. Zones d'activités industrielles et commerciales le long de l'A81. Tissu PME : industrie, agroalimentaire, services aux entreprises, BTP, logistique. Accès direct autoroute A81 Rennes-Le Mans.",
@@ -30,8 +30,8 @@ export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bonchamp-lès-Laval : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et prestataires B2B de l'est lavallois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bonchamp-lès-Laval : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et prestataires B2B de l'est lavallois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bonchamp-lès-Laval : diagnostic adapté aux PME artisanales, PME industrielles, agroalimentaires et prestataires B2B de l'est lavallois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bonchamp-lès-Laval : diagnostic adapté aux PME artisanales, PME industrielles, agroalimentaires et prestataires B2B de l'est lavallois. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bonchamp-lès-Laval : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bassin lavallois est. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
       en: "Implémentation IA à Bonchamp-lès-Laval : automatisation processus industriels, contrôle qualité agroalimentaire, optimisation logistique A81, agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bonchamp-lès-Laval : sessions dans vos locaux en zone d'activités ou en visio. Dirigeants TPE/PME industrielles, agroalimentaires, artisans, prestataires B2B.",
-      en: "Coaching 1-to-1 à Bonchamp-lès-Laval : sessions dans vos locaux en zone d'activités ou en visio. Dirigeants TPE/PME industrielles, agroalimentaires, artisans, prestataires B2B.",
+      fr: "Coaching 1-to-1 à Bonchamp-lès-Laval : sessions dans vos locaux en zone d'activités ou en visio. Dirigeants PME et ETI industrielles, agroalimentaires, artisans, prestataires B2B.",
+      en: "Coaching 1-to-1 à Bonchamp-lès-Laval : sessions dans vos locaux en zone d'activités ou en visio. Dirigeants PME et ETI industrielles, agroalimentaires, artisans, prestataires B2B.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Bonchamp-lès-Laval  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et prestataires B2B du bassin lavallois. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME industrielles et prestataires B2B du bassin lavallois. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour la logistique ?",

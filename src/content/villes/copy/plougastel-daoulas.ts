@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
   pitchFr:
-    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations de la presqu'île et de l'agglomération brestoise.",
+    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu PME agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations de la presqu'île et de l'agglomération brestoise.",
   pitchEn:
-    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations de la presqu'île et de l'agglomération brestoise.",
+    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu PME agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations de la presqu'île et de l'agglomération brestoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plougastel-Daoulas (29). Nous accompagnons tous types d'activités : TPE maraîchères et horticoles (fraises AOC), PME ostréicoles et maritimes, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la presqu'île et de Brest Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plougastel-Daoulas (29). Nous accompagnons tous types d'activités : PME maraîchères et horticoles (fraises AOC), PME ostréicoles et maritimes, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la presqu'île et de Brest Métropole.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plougastel-Daoulas (29). Nous accompagnons tous types d'activités : TPE maraîchères et horticoles (fraises AOC), PME ostréicoles et maritimes, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la presqu'île et de Brest Métropole.",
-  seoHook: "TPE & PME Finistère",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plougastel-Daoulas (29). Nous accompagnons tous types d'activités : PME maraîchères et horticoles (fraises AOC), PME ostréicoles et maritimes, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la presqu'île et de Brest Métropole.",
+  seoHook: "PME & PME Finistère",
   ecosystemFr:
-    "Plougastel-Daoulas (13 434 hab) est une presqu'île rattachée à Brest Métropole, reliée par le pont Albert-Louppe et le pont de l'Iroise. Économie caractérisée par la culture fraisière AOC (premier producteur historique de France), l'ostréiculture en rade de Brest, le maraîchage, l'horticulture et un tissu TPE artisans BTP / commerces soutenu par la proximité de Brest (15 min).",
+    "Plougastel-Daoulas (13 434 hab) est une presqu'île rattachée à Brest Métropole, reliée par le pont Albert-Louppe et le pont de l'Iroise. Économie caractérisée par la culture fraisière AOC (premier producteur historique de France), l'ostréiculture en rade de Brest, le maraîchage, l'horticulture et un tissu PME du BTP / commerces soutenu par la proximité de Brest (15 min).",
   ecosystemEn:
-    "Plougastel-Daoulas (13 434 hab) est une presqu'île rattachée à Brest Métropole, reliée par le pont Albert-Louppe et le pont de l'Iroise. Économie caractérisée par la culture fraisière AOC (premier producteur historique de France), l'ostréiculture en rade de Brest, le maraîchage, l'horticulture et un tissu TPE artisans BTP / commerces soutenu par la proximité de Brest (15 min).",
+    "Plougastel-Daoulas (13 434 hab) est une presqu'île rattachée à Brest Métropole, reliée par le pont Albert-Louppe et le pont de l'Iroise. Économie caractérisée par la culture fraisière AOC (premier producteur historique de France), l'ostréiculture en rade de Brest, le maraîchage, l'horticulture et un tissu PME du BTP / commerces soutenu par la proximité de Brest (15 min).",
   distancesFr:
     "Brest centre à 15 min via pont de l'Iroise / N165. Gare de Brest à 20 min (TGV Paris 3h30). Aéroport Brest Bretagne à 30 min. Quimper à 1h10 via N165. Landerneau à 20 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture & maraîchage (fraises AOC)",
     "Ostréiculture & économie maritime",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité & tourisme",
     "PME services aux entreprises (agglo Brest)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux PME maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
+      en: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux PME maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plougastel-Daoulas : formats adaptés à l'exploitation agricole, l'atelier ostréicole ou le commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
       en: "Implémentation IA à Plougastel-Daoulas : classification photos cultures, traçabilité ostréicole, automatisation devis BTP, prédiction météo récolte, agents conversationnels. Presqu'île et Brest Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Plougastel-Daoulas : sessions dans votre exploitation, atelier ou en visio. Dirigeants TPE/PME de la presqu'île, maraîchers, ostréiculteurs et artisans souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Plougastel-Daoulas : sessions dans votre exploitation, atelier ou en visio. Dirigeants TPE/PME de la presqu'île, maraîchers, ostréiculteurs et artisans souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Plougastel-Daoulas : sessions dans votre exploitation, atelier ou en visio. Dirigeants PME et ETI de la presqu'île, maraîchers, ostréiculteurs et artisans souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Plougastel-Daoulas : sessions dans votre exploitation, atelier ou en visio. Dirigeants PME et ETI de la presqu'île, maraîchers, ostréiculteurs et artisans souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les ostréiculteurs et professionnels maritimes de la rade de Brest sur leurs cas IA : traçabilité lots, prédiction qualité eau, automatisation commandes B2B, agents conversationnels vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants de la presqu'île ?",
-      a: "Pour les TPE artisans BTP et commerçants à Plougastel-Daoulas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce de la presqu'île ?",
+      a: "Pour les PME du BTP et du commerce à Plougastel-Daoulas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission sur la presqu'île depuis Brest ?",

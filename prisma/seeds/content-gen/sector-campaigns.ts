@@ -74,9 +74,8 @@ const CAMPAIGNS: ReadonlyArray<SectorCampaignSeed> = [
 // Audience mix par défaut : majorité PME/ETI privés (cible cabinet B2B).
 // Will peut surcharger depuis /admin/content-gen/coverage/[id] après seed.
 const DEFAULT_AUDIENCE_MIX: Record<string, number> = {
-  "PME:entreprise_privee": 35,
-  "ETI:entreprise_privee": 25,
-  "TPE:entreprise_privee": 20,
+  "PME:entreprise_privee": 45,
+  "ETI:entreprise_privee": 35,
   "grande_entreprise:entreprise_privee": 10,
   "PME:etablissement_public": 5,
   "ETI:etablissement_public": 5,

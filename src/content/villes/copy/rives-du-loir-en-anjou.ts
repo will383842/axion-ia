@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA accompagne tout le tissu professionnel local.",
+    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de PME artisanales, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA accompagne tout le tissu professionnel local.",
+    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de PME artisanales, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : PME artisanales, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : PME artisanales, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
   seoHook: "agriculture polyculture-élevage & viticulture",
   ecosystemFr:
     "Rives-du-Loir-en-Anjou est une commune nouvelle issue de la fusion de Lézigné, Seiches-sur-le-Loir et Matheflon, le long du Loir entre Angers et La Flèche. Économie rurale diversifiée : agriculture (polyculture, élevage), viticulture, maraîchage, artisanat, commerces de proximité.",
@@ -30,8 +30,8 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux PME artisanales, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux PME artisanales, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rives-du-Loir-en-Anjou : formations adaptées aux exploitations agricoles, viticoles, artisans et commerces du bassin du Loir. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
       en: "Implémentation IA à Rives-du-Loir-en-Anjou : traçabilité parcellaire, optimisation irrigation maraîchère, gestion cave viticole, automatisation devis artisans et agents conversationnels.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rives-du-Loir-en-Anjou : sessions dans votre exploitation, cave, commerce ou en visio. Dirigeants TPE/PME agricoles, viticulteurs, artisans, gérants.",
-      en: "Coaching 1-to-1 à Rives-du-Loir-en-Anjou : sessions dans votre exploitation, cave, commerce ou en visio. Dirigeants TPE/PME agricoles, viticulteurs, artisans, gérants.",
+      fr: "Coaching 1-to-1 à Rives-du-Loir-en-Anjou : sessions dans votre exploitation, cave, commerce ou en visio. Dirigeants PME et ETI agricoles, viticulteurs, artisans, gérants.",
+      en: "Coaching 1-to-1 à Rives-du-Loir-en-Anjou : sessions dans votre exploitation, cave, commerce ou en visio. Dirigeants PME et ETI agricoles, viticulteurs, artisans, gérants.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Rives-du-Loir-en-Anjou  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et viticulteurs du bassin du Loir. Tarifs publics, sans surprise.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME agricoles et viticulteurs du bassin du Loir. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME agricoles ?",

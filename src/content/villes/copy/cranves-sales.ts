@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CRANVES_SALES_COPY: VilleCopy = {
   pitchFr:
-    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie son expertise pour toutes les organisations du bassin genevois nord.",
+    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de PME et ETI tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie son expertise pour toutes les organisations du bassin genevois nord.",
   pitchEn:
-    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie son expertise pour toutes les organisations du bassin genevois nord.",
+    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de PME et ETI tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie son expertise pour toutes les organisations du bassin genevois nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cranves-Sales (74). Nous accompagnons PME et ETI : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cranves-Sales (74). Nous accompagnons PME et ETI : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
   seoHook: "services transfrontaliers & tertiaires",
   ecosystemFr:
-    "Cranves-Sales se situe à la jonction entre Annemasse et le Grand Genève, bénéficiant pleinement de la dynamique transfrontalière franco-suisse. Tissu économique résidentiel et tertiaire : PME de services (conseil, IT, comptabilité), TPE artisanat BTP portées par la construction résidentielle, commerces de proximité et professions libérales. Proximité immédiate de Genève (15 min) et de son bassin d'emploi.",
+    "Cranves-Sales se situe à la jonction entre Annemasse et le Grand Genève, bénéficiant pleinement de la dynamique transfrontalière franco-suisse. Tissu économique résidentiel et tertiaire : PME de services (conseil, IT, comptabilité), PME du BTP portées par la construction résidentielle, commerces de proximité et professions libérales. Proximité immédiate de Genève (15 min) et de son bassin d'emploi.",
   ecosystemEn:
-    "Cranves-Sales se situe à la jonction entre Annemasse et le Grand Genève, bénéficiant pleinement de la dynamique transfrontalière franco-suisse. Tissu économique résidentiel et tertiaire : PME de services (conseil, IT, comptabilité), TPE artisanat BTP portées par la construction résidentielle, commerces de proximité et professions libérales. Proximité immédiate de Genève (15 min) et de son bassin d'emploi.",
+    "Cranves-Sales se situe à la jonction entre Annemasse et le Grand Genève, bénéficiant pleinement de la dynamique transfrontalière franco-suisse. Tissu économique résidentiel et tertiaire : PME de services (conseil, IT, comptabilité), PME du BTP portées par la construction résidentielle, commerces de proximité et professions libérales. Proximité immédiate de Genève (15 min) et de son bassin d'emploi.",
   distancesFr:
     "Annemasse à 10 min, Genève centre à 15 min, Aéroport international de Genève à 25 min, Annecy à 40 min. Axe autoroutier A40 vers Lyon et Chamonix.",
   distancesEn:
@@ -24,7 +24,7 @@ export const CRANVES_SALES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Services transfrontaliers Grand Genève",
     "PME tertiaires (conseil, IT, comptabilité)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
   ],
@@ -42,8 +42,8 @@ export const CRANVES_SALES_COPY: VilleCopy = {
       en: "Implémentation IA à Cranves-Sales : automatisation comptabilité transfrontalière, agents conversationnels client bilingue FR/EN, CRM augmenté, gestion devis BTP, outils IA cabinets professionnels.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cranves-Sales : sessions dans vos locaux, cabinet ou en visio. Dirigeants TPE/PME du Grand Genève souhaitant maîtriser l'IA dans leur activité tertiaire ou artisanale.",
-      en: "Coaching 1-to-1 à Cranves-Sales : sessions dans vos locaux, cabinet ou en visio. Dirigeants TPE/PME du Grand Genève souhaitant maîtriser l'IA dans leur activité tertiaire ou artisanale.",
+      fr: "Coaching 1-to-1 à Cranves-Sales : sessions dans vos locaux, cabinet ou en visio. Dirigeants PME et ETI du Grand Genève souhaitant maîtriser l'IA dans leur activité tertiaire ou artisanale.",
+      en: "Coaching 1-to-1 à Cranves-Sales : sessions dans vos locaux, cabinet ou en visio. Dirigeants PME et ETI du Grand Genève souhaitant maîtriser l'IA dans leur activité tertiaire ou artisanale.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const CRANVES_SALES_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Cranves-Sales  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin annémassien, il identifie les cas d'usage IA à fort ROI pour votre activité (services, BTP, commerce, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du bassin annémassien, il identifie les cas d'usage IA à fort ROI pour votre activité (services, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Cranves-Sales ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Cranves-Sales (construction résidentielle, second oeuvre, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, suivi de chantier photo, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME du BTP à Cranves-Sales (construction résidentielle, second oeuvre, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, suivi de chantier photo, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Comment se déroule une mission à Cranves-Sales ?",

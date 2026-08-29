@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUNEUF_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Chateauneuf-sur-Loire (45), commune historique en bords de Loire a l'est d'Orleans, est reputee pour son chateau, son parc aux rhododendrons et son patrimoine ligérien. Tissu TPE/PME tourisme, commerce, artisanat, services, agriculture. Axion-IA y intervient pour tous types d'activites.",
+    "Chateauneuf-sur-Loire (45), commune historique en bords de Loire a l'est d'Orleans, est reputee pour son chateau, son parc aux rhododendrons et son patrimoine ligérien. Tissu PME et ETI tourisme, commerce, artisanat, services, agriculture. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Chateauneuf-sur-Loire (45), commune historique en bords de Loire a l'est d'Orleans, est reputee pour son chateau, son parc aux rhododendrons et son patrimoine ligérien. Tissu TPE/PME tourisme, commerce, artisanat, services, agriculture. Axion-IA y intervient pour tous types d'activites.",
+    "Chateauneuf-sur-Loire (45), commune historique en bords de Loire a l'est d'Orleans, est reputee pour son chateau, son parc aux rhododendrons et son patrimoine ligérien. Tissu PME et ETI tourisme, commerce, artisanat, services, agriculture. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Chateauneuf-sur-Loire (45). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial, commercants, artisans, prestataires de services et exploitants agricoles du Val de Loire. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Chateauneuf-sur-Loire (45). Nous accompagnons PME et ETI : acteurs du tourisme patrimonial, commercants, artisans, prestataires de services et exploitants agricoles du Val de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Chateauneuf-sur-Loire (45). Nous accompagnons TPE et PME : acteurs du tourisme patrimonial, commercants, artisans, prestataires de services et exploitants agricoles du Val de Loire. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Chateauneuf-sur-Loire (45). Nous accompagnons PME et ETI : acteurs du tourisme patrimonial, commercants, artisans, prestataires de services et exploitants agricoles du Val de Loire. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Chateauneuf-sur-Loire est une commune ligerienne historique a l'est d'Orleans, inscrite dans le Val de Loire UNESCO. L'economie locale s'appuie sur le tourisme patrimonial (chateau, parc aux rhododendrons, musee de la Marine de Loire), le commerce, l'artisanat, les services et l'agriculture en plaine de Beauce et Val de Loire.",
   ecosystemEn:
@@ -42,8 +42,8 @@ export const CHATEAUNEUF_SUR_LOIRE_COPY: VilleCopy = {
       en: "Implementation IA a Chateauneuf-sur-Loire : chatbots tourisme multilingues, gestion reservations hebergement, optimisation stocks commerce, automatisation devis artisans, agriculture de precision.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Chateauneuf-sur-Loire : sessions dans vos locaux professionnels ou en visio. Dirigeants TPE/PME du Val de Loire, gerants tourisme, commerce et agriculture.",
-      en: "Coaching 1-to-1 a Chateauneuf-sur-Loire : sessions dans vos locaux professionnels ou en visio. Dirigeants TPE/PME du Val de Loire, gerants tourisme, commerce et agriculture.",
+      fr: "Coaching 1-to-1 a Chateauneuf-sur-Loire : sessions dans vos locaux professionnels ou en visio. Dirigeants PME et ETI du Val de Loire, gerants tourisme, commerce et agriculture.",
+      en: "Coaching 1-to-1 a Chateauneuf-sur-Loire : sessions dans vos locaux professionnels ou en visio. Dirigeants PME et ETI du Val de Loire, gerants tourisme, commerce et agriculture.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CHATEAUNEUF_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Chateauneuf-sur-Loire ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Chateauneuf-sur-Loire, nous proposons des audits approfondis adaptes aux enjeux tourisme, commerce ou agriculture.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Chateauneuf-sur-Loire, nous proposons des audits approfondis adaptes aux enjeux tourisme, commerce ou agriculture.",
     },
     {
       q: "L'IA peut-elle aider les acteurs du tourisme a Chateauneuf-sur-Loire ?",

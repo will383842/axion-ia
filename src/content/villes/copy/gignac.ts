@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const GIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Gignac (34), bourg de la vallée de l'Hérault entre Montpellier et Lodève, connu pour son pont classé et son vignoble AOC Languedoc (Terrasses du Larzac). Carrefour commercial A750. Tissu TPE commerçants, PME viticoles, artisans, professions libérales, services. Axion-IA collabore avec toutes les structures locales.",
+    "Gignac (34), bourg de la vallée de l'Hérault entre Montpellier et Lodève, connu pour son pont classé et son vignoble AOC Languedoc (Terrasses du Larzac). Carrefour commercial A750. Tissu PME du commerce, PME viticoles, artisans, professions libérales, services. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Gignac (34), bourg de la vallée de l'Hérault entre Montpellier et Lodève, connu pour son pont classé et son vignoble AOC Languedoc (Terrasses du Larzac). Carrefour commercial A750. Tissu TPE commerçants, PME viticoles, artisans, professions libérales, services. Axion-IA collabore avec toutes les structures locales.",
+    "Gignac (34), bourg de la vallée de l'Hérault entre Montpellier et Lodève, connu pour son pont classé et son vignoble AOC Languedoc (Terrasses du Larzac). Carrefour commercial A750. Tissu PME du commerce, PME viticoles, artisans, professions libérales, services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gignac (34). Nous accompagnons TPE commerçants, PME viticoles Terrasses du Larzac, artisans, professions libérales et services de la vallée de l'Hérault.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gignac (34). Nous accompagnons PME du commerce, PME viticoles Terrasses du Larzac, artisans, professions libérales et services de la vallée de l'Hérault.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gignac (34). Nous accompagnons TPE commerçants, PME viticoles Terrasses du Larzac, artisans, professions libérales et services de la vallée de l'Hérault.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gignac (34). Nous accompagnons PME du commerce, PME viticoles Terrasses du Larzac, artisans, professions libérales et services de la vallée de l'Hérault.",
   ecosystemFr:
-    "Gignac est un bourg de la vallée de l'Hérault, carrefour entre Montpellier et Lodève (A750). Pont de Gignac classé Monument Historique. Vignoble AOC Terrasses du Larzac réputé. Zone commerciale active, marché hebdomadaire. Tissu TPE commerçants, PME viticoles, artisans, professions libérales.",
+    "Gignac est un bourg de la vallée de l'Hérault, carrefour entre Montpellier et Lodève (A750). Pont de Gignac classé Monument Historique. Vignoble AOC Terrasses du Larzac réputé. Zone commerciale active, marché hebdomadaire. Tissu PME du commerce, PME viticoles, artisans, professions libérales.",
   ecosystemEn:
-    "Gignac est un bourg de la vallée de l'Hérault, carrefour entre Montpellier et Lodève (A750). Pont de Gignac classé Monument Historique. Vignoble AOC Terrasses du Larzac réputé. Zone commerciale active, marché hebdomadaire. Tissu TPE commerçants, PME viticoles, artisans, professions libérales.",
+    "Gignac est un bourg de la vallée de l'Hérault, carrefour entre Montpellier et Lodève (A750). Pont de Gignac classé Monument Historique. Vignoble AOC Terrasses du Larzac réputé. Zone commerciale active, marché hebdomadaire. Tissu PME du commerce, PME viticoles, artisans, professions libérales.",
   distancesFr:
     "Montpellier à 35 min par A750. Clermont-l'Hérault à 15 min. Lodève à 30 min. Saint-André-de-Sangonis à 5 min. A750 accès direct.",
   distancesEn:
@@ -30,8 +30,8 @@ export const GIGNAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gignac : diagnostic pour PME viticoles Terrasses du Larzac, TPE commerçants, artisans et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Gignac : diagnostic pour PME viticoles Terrasses du Larzac, TPE commerçants, artisans et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Gignac : diagnostic pour PME viticoles Terrasses du Larzac, PME du commerce, artisans et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gignac : diagnostic pour PME viticoles Terrasses du Larzac, PME du commerce, artisans et professions libérales de la vallée de l'Hérault. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gignac : ateliers adaptés domaine viticole, commerce, cabinet libéral ou artisan. Équipes autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const GIGNAC_COPY: VilleCopy = {
       en: "Implémentation IA à Gignac : automatisation gestion vignoble Terrasses du Larzac, chatbot client, classification documents, optimisation commerces vallée Hérault.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gignac : sessions sur site ou en visio pour viticulteurs, commerçants, artisans et gérants TPE/PME de la vallée de l'Hérault.",
-      en: "Coaching 1-to-1 à Gignac : sessions sur site ou en visio pour viticulteurs, commerçants, artisans et gérants TPE/PME de la vallée de l'Hérault.",
+      fr: "Coaching 1-to-1 à Gignac : sessions sur site ou en visio pour viticulteurs, commerçants, artisans et gérants PME et ETI de la vallée de l'Hérault.",
+      en: "Coaching 1-to-1 à Gignac : sessions sur site ou en visio pour viticulteurs, commerçants, artisans et gérants PME et ETI de la vallée de l'Hérault.",
     },
   },
   faqGeolocalisee: [

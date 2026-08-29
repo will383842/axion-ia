@@ -66,7 +66,7 @@ PRIX — RÈGLE ABSOLUE : ne JAMAIS écrire un montant en chiffres ni « € »/
 
 /** Manon consultante — landing, blog conseil, faq (défaut). */
 const BV_MANON_CONSULTANTE = `## PERSONA & BRAND VOICE — CONTRAINTES ABSOLUES
-Auteur : Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour TPE/PME/ETI françaises.
+Auteur : Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour PME/ETI/grands groupes français.
 Ton : consultatif précis, accessible mais rigoureux. Première personne du pluriel bienvenue ("nous accompagnons", "notre méthode").
 Sources : préférer INSEE, DARES, BPI France, France Num. Pas de généralités non sourcées.
 ${VOCAB_BASE}

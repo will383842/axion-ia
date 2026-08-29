@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_TEIL_COPY: VilleCopy = {
   pitchFr:
-    "Le Teil (07), commune du sud de l'Ardèche dans la vallée du Rhône, face à Montélimar sur la rive droite, porte un fort héritage industriel autour de la cimenterie Lafarge historique et des carrières de pierre. Son économie associe l'industrie des matériaux, l'agriculture de la vallée du Rhône, l'artisanat et le commerce. Le tissu repose d'abord sur les TPE — artisans BTP, agriculteurs, commerçants, professions libérales — puis sur des PME industrielles et de services aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE et PME teilloises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, de l'atelier industriel à l'exploitation agricole.",
+    "Le Teil (07), commune du sud de l'Ardèche dans la vallée du Rhône, face à Montélimar sur la rive droite, porte un fort héritage industriel autour de la cimenterie Lafarge historique et des carrières de pierre. Son économie associe l'industrie des matériaux, l'agriculture de la vallée du Rhône, l'artisanat et le commerce. Le tissu repose d'abord sur les PME — artisans BTP, agriculteurs, commerçants, professions libérales — puis sur des PME industrielles et de services aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces PME et ETI teilloises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, de l'atelier industriel à l'exploitation agricole.",
   pitchEn:
-    "Le Teil (07), commune du sud de l'Ardèche dans la vallée du Rhône, face à Montélimar sur la rive droite, porte un fort héritage industriel autour de la cimenterie Lafarge historique et des carrières de pierre. Son économie associe l'industrie des matériaux, l'agriculture de la vallée du Rhône, l'artisanat et le commerce. Le tissu repose d'abord sur les TPE — artisans BTP, agriculteurs, commerçants, professions libérales — puis sur des PME industrielles et de services aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE et PME teilloises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, de l'atelier industriel à l'exploitation agricole.",
+    "Le Teil (07), commune du sud de l'Ardèche dans la vallée du Rhône, face à Montélimar sur la rive droite, porte un fort héritage industriel autour de la cimenterie Lafarge historique et des carrières de pierre. Son économie associe l'industrie des matériaux, l'agriculture de la vallée du Rhône, l'artisanat et le commerce. Le tissu repose d'abord sur les PME — artisans BTP, agriculteurs, commerçants, professions libérales — puis sur des PME industrielles et de services aux entreprises. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces PME et ETI teilloises pour intégrer concrètement l'intelligence artificielle dans leurs opérations, de l'atelier industriel à l'exploitation agricole.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Teil (07). Nous accompagnons en priorité les TPE puis les PME : artisans BTP, agriculteurs de la vallée du Rhône, commerçants, professions libérales, PME industrielles (matériaux, cimenterie, carrières) et services aux entreprises du sud-Ardèche. Diagnostic, formation et implémentation sur site, grille tarifaire publique. L'accompagnement des ETI reste marginal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Teil (07). Nous accompagnons en priorité les PME puis les ETI : artisans BTP, agriculteurs de la vallée du Rhône, commerçants, professions libérales, PME industrielles (matériaux, cimenterie, carrières) et services aux entreprises du sud-Ardèche. Diagnostic, formation et implémentation sur site, grille tarifaire publique. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Teil (07). Nous accompagnons en priorité les TPE puis les PME : artisans BTP, agriculteurs de la vallée du Rhône, commerçants, professions libérales, PME industrielles (matériaux, cimenterie, carrières) et services aux entreprises du sud-Ardèche. Diagnostic, formation et implémentation sur site, grille tarifaire publique. L'accompagnement des ETI reste marginal.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Teil (07). Nous accompagnons en priorité les PME puis les ETI : artisans BTP, agriculteurs de la vallée du Rhône, commerçants, professions libérales, PME industrielles (matériaux, cimenterie, carrières) et services aux entreprises du sud-Ardèche. Diagnostic, formation et implémentation sur site, grille tarifaire publique. Les grands groupes complètent ce socle.",
   seoHook: "industrie matériaux & agriculture Rhône",
   ecosystemFr:
-    "Le Teil, dans le sud de l'Ardèche et la vallée du Rhône, structure son économie autour de son héritage industriel (cimenterie Lafarge historique, carrières de pierre), de l'agriculture de la vallée du Rhône, de l'artisanat et du commerce. Le tissu local est avant tout composé de TPE — artisans BTP, agriculteurs, commerçants, professions libérales — complétées par des PME industrielles et de services. Proximité de Montélimar sur la rive opposée. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
+    "Le Teil, dans le sud de l'Ardèche et la vallée du Rhône, structure son économie autour de son héritage industriel (cimenterie Lafarge historique, carrières de pierre), de l'agriculture de la vallée du Rhône, de l'artisanat et du commerce. Le tissu local est avant tout composé de PME — artisans BTP, agriculteurs, commerçants, professions libérales — complétées par des PME industrielles et de services. Proximité de Montélimar sur la rive opposée. Axion-IA cible d'abord ces PME et ETI, les grands groupes venant en complément.",
   ecosystemEn:
-    "Le Teil, dans le sud de l'Ardèche et la vallée du Rhône, structure son économie autour de son héritage industriel (cimenterie Lafarge historique, carrières de pierre), de l'agriculture de la vallée du Rhône, de l'artisanat et du commerce. Le tissu local est avant tout composé de TPE — artisans BTP, agriculteurs, commerçants, professions libérales — complétées par des PME industrielles et de services. Proximité de Montélimar sur la rive opposée. Axion-IA cible d'abord ces TPE et PME, l'accompagnement des ETI restant marginal.",
+    "Le Teil, dans le sud de l'Ardèche et la vallée du Rhône, structure son économie autour de son héritage industriel (cimenterie Lafarge historique, carrières de pierre), de l'agriculture de la vallée du Rhône, de l'artisanat et du commerce. Le tissu local est avant tout composé de PME — artisans BTP, agriculteurs, commerçants, professions libérales — complétées par des PME industrielles et de services. Proximité de Montélimar sur la rive opposée. Axion-IA cible d'abord ces PME et ETI, les grands groupes venant en complément.",
   distancesFr:
     "Montélimar sur la rive opposée à 5 min. Valence à 40 min. Aubenas à 30 min. Lyon à 1h30. Aéroport Lyon-Saint-Exupéry à 1h15. Viviers et Alba-la-Romaine à proximité.",
   distancesEn:
@@ -42,12 +42,12 @@ export const LE_TEIL_COPY: VilleCopy = {
       en: "Implémentation IA au Teil : prédiction de maintenance industrielle, contrôle qualité par vision pour les matériaux, classification de photos de cultures, agents conversationnels B2B, automatisation des workflows.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Teil : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants TPE et PME teillois : industriels, agriculteurs, artisans, commerçants, professions libérales.",
-      en: "Coaching 1-to-1 au Teil : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants TPE et PME teillois : industriels, agriculteurs, artisans, commerçants, professions libérales.",
+      fr: "Coaching 1-to-1 au Teil : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME et ETI teillois : industriels, agriculteurs, artisans, commerçants, professions libérales.",
+      en: "Coaching 1-to-1 au Teil : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants PME et ETI teillois : industriels, agriculteurs, artisans, commerçants, professions libérales.",
     },
     sitesWeb: {
-      fr: "Sites web & SaaS IA au Teil : plateformes sur mesure pour TPE et PME du sud-Ardèche — devis en ligne BTP, vente directe agricole, agents conversationnels intégrés, automatisation du suivi client.",
-      en: "Sites web & SaaS IA au Teil : plateformes sur mesure pour TPE et PME du sud-Ardèche — devis en ligne BTP, vente directe agricole, agents conversationnels intégrés, automatisation du suivi client.",
+      fr: "Sites web & SaaS IA au Teil : plateformes sur mesure pour PME et ETI du sud-Ardèche — devis en ligne BTP, vente directe agricole, agents conversationnels intégrés, automatisation du suivi client.",
+      en: "Sites web & SaaS IA au Teil : plateformes sur mesure pour PME et ETI du sud-Ardèche — devis en ligne BTP, vente directe agricole, agents conversationnels intégrés, automatisation du suivi client.",
     },
   },
   faqGeolocalisee: [
@@ -64,8 +64,8 @@ export const LE_TEIL_COPY: VilleCopy = {
       a: "Oui, pour les agriculteurs : prédiction des récoltes, classification de photos de cultures, automatisation de la traçabilité, vente directe en ligne et relation client.",
     },
     {
-      q: "Accompagnez-vous les TPE, artisans et commerçants teillois ?",
-      a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
+      q: "Accompagnez-vous les PME, artisans et commerçants teillois ?",
+      a: "Oui, les PME sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
       q: "Comment se déroule une mission depuis Lyon ou Valence ?",

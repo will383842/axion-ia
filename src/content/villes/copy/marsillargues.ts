@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const MARSILLARGUES_COPY: VilleCopy = {
   pitchFr:
-    "Marsillargues (34), commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises (taureau, cheval), viticulture, riziculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Marsillargues (34), commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises (taureau, cheval), viticulture, riziculture. Tissu PME du commerce, PME viticoles et agricoles, artisans, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Marsillargues (34), commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises (taureau, cheval), viticulture, riziculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Marsillargues (34), commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises (taureau, cheval), viticulture, riziculture. Tissu PME du commerce, PME viticoles et agricoles, artisans, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsillargues (34). Nous accompagnons TPE commerçants, PME viticoles et agricoles, artisans, professions libérales et acteurs du tourisme camarguais. Tarifs publics dès {{price:audit-flash|flat}}, code custom sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsillargues (34). Nous accompagnons PME du commerce, PME viticoles et agricoles, artisans, professions libérales et acteurs du tourisme camarguais. Tarifs publics dès {{price:audit-flash|flat}}, code custom sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsillargues (34). Nous accompagnons TPE commerçants, PME viticoles et agricoles, artisans, professions libérales et acteurs du tourisme camarguais. Tarifs publics dès {{price:audit-flash|flat}}, code custom sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsillargues (34). Nous accompagnons PME du commerce, PME viticoles et agricoles, artisans, professions libérales et acteurs du tourisme camarguais. Tarifs publics dès {{price:audit-flash|flat}}, code custom sur mesure.",
   ecosystemFr:
-    "Marsillargues est une commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises vivantes (manades, taureau Camargue, cheval Camargue, fêtes votives). Viticulture, riziculture, agriculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans BTP, professions libérales.",
+    "Marsillargues est une commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises vivantes (manades, taureau Camargue, cheval Camargue, fêtes votives). Viticulture, riziculture, agriculture. Tissu PME du commerce, PME viticoles et agricoles, artisans BTP, professions libérales.",
   ecosystemEn:
-    "Marsillargues est une commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises vivantes (manades, taureau Camargue, cheval Camargue, fêtes votives). Viticulture, riziculture, agriculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans BTP, professions libérales.",
+    "Marsillargues est une commune de la Petite Camargue héraultaise, entre vignoble et marais. Traditions camarguaises vivantes (manades, taureau Camargue, cheval Camargue, fêtes votives). Viticulture, riziculture, agriculture. Tissu PME du commerce, PME viticoles et agricoles, artisans BTP, professions libérales.",
   distancesFr:
     "Montpellier à 30 min par D34. Aigues-Mortes à 15 min. Lunel à 10 min. Nîmes à 30 min. La Grande-Motte à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MARSILLARGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marsillargues : diagnostic pour PME viticoles et agricoles, TPE commerçants, artisans et acteurs du tourisme camarguais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Marsillargues : diagnostic pour PME viticoles et agricoles, TPE commerçants, artisans et acteurs du tourisme camarguais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Marsillargues : diagnostic pour PME viticoles et agricoles, PME du commerce, artisans et acteurs du tourisme camarguais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Marsillargues : diagnostic pour PME viticoles et agricoles, PME du commerce, artisans et acteurs du tourisme camarguais. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marsillargues : ateliers adaptés exploitation viticole/agricole, manade, commerce ou artisan. Équipes autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const MARSILLARGUES_COPY: VilleCopy = {
       en: "Implémentation IA à Marsillargues : automatisation gestion vignoble, traçabilité agricole, chatbot touristique Camargue, optimisation vente directe producteurs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Marsillargues : sessions sur site ou en visio pour viticulteurs, agriculteurs, éleveurs, commerçants et gérants TPE/PME de la Petite Camargue.",
-      en: "Coaching 1-to-1 à Marsillargues : sessions sur site ou en visio pour viticulteurs, agriculteurs, éleveurs, commerçants et gérants TPE/PME de la Petite Camargue.",
+      fr: "Coaching 1-to-1 à Marsillargues : sessions sur site ou en visio pour viticulteurs, agriculteurs, éleveurs, commerçants et gérants PME et ETI de la Petite Camargue.",
+      en: "Coaching 1-to-1 à Marsillargues : sessions sur site ou en visio pour viticulteurs, agriculteurs, éleveurs, commerçants et gérants PME et ETI de la Petite Camargue.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const MARSILLARGUES_COPY: VilleCopy = {
       a: "Oui, nous réalisons des audits IA adaptés aux exploitations viticoles et agricoles : optimisation gestion parcelles, traçabilité, automatisation vente directe, prédiction récoltes. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
-      q: "Quels services pour les TPE et commerces ?",
-      a: "Pour les TPE et commerces à Marsillargues, audit sur place {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
+      q: "Quels services pour les PME et commerces ?",
+      a: "Pour les PME et commerces à Marsillargues, audit sur place {{price:audit-flash|flat}}, intervention formation et coaching 1-to-1. Cas typiques : chatbot client, gestion stocks, automatisation commandes, marketing digital.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme camarguais ?",

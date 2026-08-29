@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VAULX_EN_VELIN_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Vaulx-en-Velin, dans l'est de la métropole lyonnaise — ateliers industriels, artisanat, BTP, commerce et services. Nous concevons des automatisations utiles et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Vaulx-en-Velin, dans l'est de la métropole lyonnaise — ateliers industriels, artisanat, BTP, commerce et services. Nous concevons des automatisations utiles et durables, sans enfermement technologique.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Vaulx-en-Velin, dans l'est de la métropole lyonnaise — ateliers industriels, artisanat, BTP, commerce et services. Nous concevons des automatisations utiles et durables, sans enfermement technologique.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Vaulx-en-Velin, dans l'est de la métropole lyonnaise — ateliers industriels, artisanat, BTP, commerce et services. Nous concevons des automatisations utiles et durables, sans enfermement technologique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Vaulx-en-Velin, commune de l'est lyonnais marquée par une longue reconversion industrielle et la présence de l'école d'ingénieurs ENTPE. Nous nous déplaçons sur site, au plus près des ateliers, du BTP, du commerce et des services, pour identifier les tâches répétitives, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Vaulx-en-Velin, commune de l'est lyonnais marquée par une longue reconversion industrielle et la présence de l'école d'ingénieurs ENTPE. Nous nous déplaçons sur site, au plus près des ateliers, du BTP, du commerce et des services, pour identifier les tâches répétitives, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les TPE puis les PME de Vaulx-en-Velin, commune de l'est lyonnais marquée par une longue reconversion industrielle et la présence de l'école d'ingénieurs ENTPE. Nous nous déplaçons sur site, au plus près des ateliers, du BTP, du commerce et des services, pour identifier les tâches répétitives, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les ETI ne sont qu'un complément marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne en priorité les PME puis les ETI de Vaulx-en-Velin, commune de l'est lyonnais marquée par une longue reconversion industrielle et la présence de l'école d'ingénieurs ENTPE. Nous nous déplaçons sur site, au plus près des ateliers, du BTP, du commerce et des services, pour identifier les tâches répétitives, prioriser celles à fort retour et implémenter des outils maîtrisés. Tarifs publics, sans abonnement caché ni dépendance à un éditeur ; les grands groupes complètent ce socle.",
   seoHook: "industrie & BTP de l'est lyonnais",
   ecosystemFr:
-    "Vaulx-en-Velin a transformé son passé industriel en un tissu varié d'ateliers, d'entreprises du BTP, de logistique et de services, dans le sillage de la dynamique de la métropole de Lyon. La présence de l'école d'ingénieurs ENTPE et d'équipements comme le planétarium ancre une culture technique et scientifique, tandis que les quartiers en renouvellement urbain attirent de nouvelles activités. Pour ces TPE et PME souvent jeunes, l'IA opérationnelle simplifie la gestion administrative, les devis et le suivi de chantier sans surdimensionner les outils.",
+    "Vaulx-en-Velin a transformé son passé industriel en un tissu varié d'ateliers, d'entreprises du BTP, de logistique et de services, dans le sillage de la dynamique de la métropole de Lyon. La présence de l'école d'ingénieurs ENTPE et d'équipements comme le planétarium ancre une culture technique et scientifique, tandis que les quartiers en renouvellement urbain attirent de nouvelles activités. Pour ces PME et ETI souvent jeunes, l'IA opérationnelle simplifie la gestion administrative, les devis et le suivi de chantier sans surdimensionner les outils.",
   ecosystemEn:
-    "Vaulx-en-Velin a transformé son passé industriel en un tissu varié d'ateliers, d'entreprises du BTP, de logistique et de services, dans le sillage de la dynamique de la métropole de Lyon. La présence de l'école d'ingénieurs ENTPE et d'équipements comme le planétarium ancre une culture technique et scientifique, tandis que les quartiers en renouvellement urbain attirent de nouvelles activités. Pour ces TPE et PME souvent jeunes, l'IA opérationnelle simplifie la gestion administrative, les devis et le suivi de chantier sans surdimensionner les outils.",
+    "Vaulx-en-Velin a transformé son passé industriel en un tissu varié d'ateliers, d'entreprises du BTP, de logistique et de services, dans le sillage de la dynamique de la métropole de Lyon. La présence de l'école d'ingénieurs ENTPE et d'équipements comme le planétarium ancre une culture technique et scientifique, tandis que les quartiers en renouvellement urbain attirent de nouvelles activités. Pour ces PME et ETI souvent jeunes, l'IA opérationnelle simplifie la gestion administrative, les devis et le suivi de chantier sans surdimensionner les outils.",
   distancesFr:
     "Vaulx-en-Velin est intégrée à la métropole de Lyon : la gare TGV de Lyon Part-Dieu se trouve à une dizaine de kilomètres et l'aéroport Lyon-Saint Exupéry à une vingtaine, accessibles par le périphérique et les transports en commun. Le quartier du Carré de Soie, à la limite de la commune, renforce sa connexion au cœur lyonnais. Nos experts se déplacent sur tout l'est lyonnais.",
   distancesEn:
@@ -34,16 +34,16 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
       en: "Auditer à Vaulx-en-Velin les processus d'un atelier industriel ou d'une entreprise du BTP — repérer les tâches répétitives et bâtir une feuille de route IA priorisée par retour réel.",
     },
     interventions: {
-      fr: "Intervenir sur site dans l'est lyonnais pour automatiser devis, suivi de chantier et tâches administratives des TPE/PME, sans alourdir le quotidien des équipes.",
-      en: "Intervenir sur site dans l'est lyonnais pour automatiser devis, suivi de chantier et tâches administratives des TPE/PME, sans alourdir le quotidien des équipes.",
+      fr: "Intervenir sur site dans l'est lyonnais pour automatiser devis, suivi de chantier et tâches administratives des PME et ETI, sans alourdir le quotidien des équipes.",
+      en: "Intervenir sur site dans l'est lyonnais pour automatiser devis, suivi de chantier et tâches administratives des PME et ETI, sans alourdir le quotidien des équipes.",
     },
     implementation: {
       fr: "Implémenter à Vaulx-en-Velin des outils IA durables, intégrés aux logiciels métier existants et documentés pour rester maîtrisés en interne après notre intervention.",
       en: "Implémenter à Vaulx-en-Velin des outils IA durables, intégrés aux logiciels métier existants et documentés pour rester maîtrisés en interne après notre intervention.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE/PME de Vaulx-en-Velin pour démystifier l'IA, choisir les bons cas d'usage et garder la main sur leurs décisions.",
-      en: "Accompagner en un-à-un les dirigeants de TPE/PME de Vaulx-en-Velin pour démystifier l'IA, choisir les bons cas d'usage et garder la main sur leurs décisions.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et ETI de Vaulx-en-Velin pour démystifier l'IA, choisir les bons cas d'usage et garder la main sur leurs décisions.",
+      en: "Accompagner en un-à-un les dirigeants de PME et ETI de Vaulx-en-Velin pour démystifier l'IA, choisir les bons cas d'usage et garder la main sur leurs décisions.",
     },
     sitesWeb: {
       fr: "Concevoir à Vaulx-en-Velin un site ou une plateforme web augmentée par l'IA pour une PME industrielle ou de services — devis en ligne, suivi client et contenu enrichis intelligemment.",
@@ -53,7 +53,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Vaulx-en-Velin, dans l'est de la Métropole de Lyon, concentre près de 2 500 entreprises sur quatre zones d'activité — ZI La Rize (86 ha, négoce de gros, fabrication, ingénierie technique), ZI La Soie (70 ha, négoce de composants et matériaux), et le Carré de Soie, ancien site de l'usine de soie TASE devenu quartier d'affaires avec le siège électronique ferroviaire d'Alstom Transport (~800 ingénieurs), Veolia, EDF et Technip. Axion-IA conçoit pour ces TPE et PME des sites web et plateformes SaaS augmentés par l'IA — devis en ligne, configurateurs techniques, recherche sémantique catalogue, agents conversationnels — en code maîtrisé, hébergé en UE et conforme RGPD, sans verrou éditeur.",
+        hero: "Vaulx-en-Velin, dans l'est de la Métropole de Lyon, concentre près de 2 500 entreprises sur quatre zones d'activité — ZI La Rize (86 ha, négoce de gros, fabrication, ingénierie technique), ZI La Soie (70 ha, négoce de composants et matériaux), et le Carré de Soie, ancien site de l'usine de soie TASE devenu quartier d'affaires avec le siège électronique ferroviaire d'Alstom Transport (~800 ingénieurs), Veolia, EDF et Technip. Axion-IA conçoit pour ces PME et ETI des sites web et plateformes SaaS augmentés par l'IA — devis en ligne, configurateurs techniques, recherche sémantique catalogue, agents conversationnels — en code maîtrisé, hébergé en UE et conforme RGPD, sans verrou éditeur.",
         whyHere: [
           "Le négoce de gros de composants et matériaux qui structure les ZI La Rize et La Soie a besoin de catalogues web exploitables : nous construisons des sites e-commerce B2B multi-CMS avec recherche sémantique par référence technique, devis en ligne et portail revendeur, là où un site vitrine statique ne suffit plus.",
           "Le tissu d'ingénierie technique et industrielle gravitant autour du Carré de Soie (signalisation ferroviaire Alstom, environnement Veolia, énergie EDF/Technip) attire des PME sous-traitantes qui ont besoin de plateformes de documentation, configurateurs produit et espaces clients sécurisés plutôt que de simples pages institutionnelles.",
@@ -88,12 +88,6 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour les artisans, commerçants du pôle Carré de Soie et petites structures vaudaises : site mobile-first avec prise de contact intelligente, click & collect ou catalogue simple, et chatbot relié à vos informations.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce B2B ou portail métier",
@@ -175,12 +169,6 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented storefront or e-commerce site",
-            detail:
-              "For artisans, Carré de Soie retail-hub merchants and small Vaulx-en-Velin structures: mobile-first site with smart contact capture, click & collect or simple catalogue, and a chatbot connected to your information.",
-          },
-          {
             sizeLabel: "SME",
             price: "B2B e-commerce platform or business portal",
             detail:
@@ -237,8 +225,8 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
       a: "Oui. Nous aidons les ateliers et entreprises du BTP à automatiser la gestion administrative, les devis et le suivi de production, avec des outils proportionnés à la taille de votre structure.",
     },
     {
-      q: "L'IA est-elle accessible à une TPE de Vaulx-en-Velin ?",
-      a: "C'est notre priorité. Nous concevons des automatisations sobres, conçues pour les petites entreprises, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
+      q: "L'IA est-elle accessible à une PME de Vaulx-en-Velin ?",
+      a: "C'est notre priorité. Nous concevons des automatisations sobres, conçues pour les PME, qui font gagner du temps sans imposer de coûts récurrents disproportionnés.",
     },
     {
       q: "Connaît-on les tarifs avant de s'engager ?",

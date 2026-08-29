@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LANNILIS_COPY: VilleCopy = {
   pitchFr:
-    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA collabore avec toutes les structures locales.",
+    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. PME et ETI agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA collabore avec toutes les structures locales.",
+    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. PME et ETI agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannilis (29). Nous accompagnons PME et ETI : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lannilis (29). Nous accompagnons PME et ETI : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchage & conchyliculture",
   ecosystemFr:
-    "Lannilis est une commune du Pays des Abers, en Finistère nord, à proximité immédiate de l'Aber Wrac'h et de l'Aber Benoît. Tissu TPE/PME : agriculture (maraîchage, élevage laitier), conchyliculture (huîtres, moules), artisanat du bâtiment, commerces de bourg, hébergement touristique, services à la personne.",
+    "Lannilis est une commune du Pays des Abers, en Finistère nord, à proximité immédiate de l'Aber Wrac'h et de l'Aber Benoît. Tissu PME et ETI : agriculture (maraîchage, élevage laitier), conchyliculture (huîtres, moules), artisanat du bâtiment, commerces de bourg, hébergement touristique, services à la personne.",
   ecosystemEn:
-    "Lannilis est une commune du Pays des Abers, en Finistère nord, à proximité immédiate de l'Aber Wrac'h et de l'Aber Benoît. Tissu TPE/PME : agriculture (maraîchage, élevage laitier), conchyliculture (huîtres, moules), artisanat du bâtiment, commerces de bourg, hébergement touristique, services à la personne.",
+    "Lannilis est une commune du Pays des Abers, en Finistère nord, à proximité immédiate de l'Aber Wrac'h et de l'Aber Benoît. Tissu PME et ETI : agriculture (maraîchage, élevage laitier), conchyliculture (huîtres, moules), artisanat du bâtiment, commerces de bourg, hébergement touristique, services à la personne.",
   distancesFr:
     "Brest à 25 min en voiture. Gare TGV Brest accessible en 30 min. Aéroport Brest-Bretagne à 25 min. Plages de l'Aber Wrac'h à 10 min. Quatre-voies RN12 (axe Brest-Morlaix) à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LANNILIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lannilis : diagnostic adapté aux TPE agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Lannilis : diagnostic adapté aux TPE agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Lannilis : diagnostic adapté aux PME agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Lannilis : diagnostic adapté aux PME agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs touristiques. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lannilis : formats adaptés exploitation agricole, atelier ostréicole, chantier artisan, commerce de bourg, gîte ou hôtel. Équipes formées à l'autonomie sur les outils IA.",
@@ -53,7 +53,7 @@ export const LANNILIS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lannilis  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE agricoles, ostréiculteurs et artisans du Pays des Abers.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME agricoles, ostréiculteurs et artisans du Pays des Abers.",
     },
     {
       q: "Travaillez-vous avec les ostréiculteurs et exploitations agricoles ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille TPE artisanales, commerces, PME tertiaires et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin nantais nord-ouest.",
+    "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille PME artisanales, commerces, PME tertiaires et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin nantais nord-ouest.",
   pitchEn:
-    "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille TPE artisanales, commerces, PME tertiaires et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin nantais nord-ouest.",
+    "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille PME artisanales, commerces, PME tertiaires et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin nantais nord-ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les PME, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les PME, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit sur place sur mesure.",
   seoHook: "artisanat & services aux",
   ecosystemFr:
-    "Saint-Étienne-de-Montluc est une commune périurbaine du nord-ouest nantais, entre estuaire de la Loire et bocage. Tissu TPE artisanales, commerces de centre-bourg, PME tertiaires, professions libérales. Gare TER desservie, accès rapide Nantes et Savenay.",
+    "Saint-Étienne-de-Montluc est une commune périurbaine du nord-ouest nantais, entre estuaire de la Loire et bocage. Tissu PME artisanales, commerces de centre-bourg, PME tertiaires, professions libérales. Gare TER desservie, accès rapide Nantes et Savenay.",
   ecosystemEn:
-    "Saint-Étienne-de-Montluc est une commune périurbaine du nord-ouest nantais, entre estuaire de la Loire et bocage. Tissu TPE artisanales, commerces de centre-bourg, PME tertiaires, professions libérales. Gare TER desservie, accès rapide Nantes et Savenay.",
+    "Saint-Étienne-de-Montluc est une commune périurbaine du nord-ouest nantais, entre estuaire de la Loire et bocage. Tissu PME artisanales, commerces de centre-bourg, PME tertiaires, professions libérales. Gare TER desservie, accès rapide Nantes et Savenay.",
   distancesFr:
     "Nantes centre à 20 min par D17. Gare Saint-Étienne-de-Montluc (TER Nantes-Saint-Nazaire) desservie. Savenay à 15 min. Couëron à 10 min. Aéroport Nantes-Atlantique à 30 min. Saint-Nazaire à 35 min.",
   distancesEn:
     "Nantes centre à 20 min par D17. Gare Saint-Étienne-de-Montluc (TER Nantes-Saint-Nazaire) desservie. Savenay à 15 min. Couëron à 10 min. Aéroport Nantes-Atlantique à 30 min. Saint-Nazaire à 35 min.",
   topSectorsNaf: [
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Commerce de proximité",
     "PME services aux entreprises",
     "Professions libérales (santé, conseil)",
@@ -30,20 +30,20 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Étienne-de-Montluc : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du nord-ouest nantais. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Étienne-de-Montluc : diagnostic adapté aux TPE artisans, PME tertiaires et professions libérales du nord-ouest nantais. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Étienne-de-Montluc : diagnostic adapté aux PME artisanales, PME tertiaires et professions libérales du nord-ouest nantais. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Étienne-de-Montluc : diagnostic adapté aux PME artisanales, PME tertiaires et professions libérales du nord-ouest nantais. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Étienne-de-Montluc : formats courts adaptés TPE/PME. Vos équipes repartent avec outils IA configurés métier, demi-journée à 2 jours.",
-      en: "Interventions IA sur site à Saint-Étienne-de-Montluc : formats courts adaptés TPE/PME. Vos équipes repartent avec outils IA configurés métier, demi-journée à 2 jours.",
+      fr: "Interventions IA sur site à Saint-Étienne-de-Montluc : formats courts adaptés PME et ETI. Vos équipes repartent avec outils IA configurés métier, demi-journée à 2 jours.",
+      en: "Interventions IA sur site à Saint-Étienne-de-Montluc : formats courts adaptés PME et ETI. Vos équipes repartent avec outils IA configurés métier, demi-journée à 2 jours.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Étienne-de-Montluc : agents conversationnels, automatisation devis/facturation, classification documents. Adapté aux PME tertiaires et cabinets du nord-ouest nantais.",
       en: "Implémentation IA à Saint-Étienne-de-Montluc : agents conversationnels, automatisation devis/facturation, classification documents. Adapté aux PME tertiaires et cabinets du nord-ouest nantais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Étienne-de-Montluc : sessions dans vos bureaux ou en visio. Dirigeants TPE/PME, professions libérales et artisans du nord-ouest nantais souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Saint-Étienne-de-Montluc : sessions dans vos bureaux ou en visio. Dirigeants TPE/PME, professions libérales et artisans du nord-ouest nantais souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Étienne-de-Montluc : sessions dans vos bureaux ou en visio. Dirigeants PME et ETI, professions libérales et artisans du nord-ouest nantais souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Saint-Étienne-de-Montluc : sessions dans vos bureaux ou en visio. Dirigeants PME et ETI, professions libérales et artisans du nord-ouest nantais souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Étienne-de-Montluc et dans le nord-ouest nantais (Couëron, Savenay, Le Temple-de-Bretagne). Gare TER desservie. Couverture complète Loire-Atlantique, Nantes à 20 min.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans de Saint-Étienne-de-Montluc ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants de Saint-Étienne-de-Montluc sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et artisans de Saint-Étienne-de-Montluc ?",
+      a: "Oui, nous accompagnons les PME artisanales et indépendants de Saint-Étienne-de-Montluc sur des cas IA pratiques : automatisation devis/factures, agents IA relation client, gestion planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les PME du nord-ouest nantais ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DOLE_COPY: VilleCopy = {
   pitchFr:
-    "Dole (39), sous-préfecture du Jura et ville natale de Louis Pasteur, conjugue patrimoine et industrie. Adossée au canal du Rhône au Rhin, son économie repose sur l'agroalimentaire, la métallurgie, la plasturgie et un tissu dense de TPE artisanales et commerces. Axion-IA accompagne en priorité les TPE puis les PME doloises.",
+    "Dole (39), sous-préfecture du Jura et ville natale de Louis Pasteur, conjugue patrimoine et industrie. Adossée au canal du Rhône au Rhin, son économie repose sur l'agroalimentaire, la métallurgie, la plasturgie et un tissu dense de PME de l'artisanat et du commerce. Axion-IA accompagne en priorité les PME puis les ETI doloises.",
   pitchEn:
-    "Dole (39), sous-préfecture du Jura et ville natale de Louis Pasteur, conjugue patrimoine et industrie. Adossée au canal du Rhône au Rhin, son économie repose sur l'agroalimentaire, la métallurgie, la plasturgie et un tissu dense de TPE artisanales et commerces. Axion-IA accompagne en priorité les TPE puis les PME doloises.",
+    "Dole (39), sous-préfecture du Jura et ville natale de Louis Pasteur, conjugue patrimoine et industrie. Adossée au canal du Rhône au Rhin, son économie repose sur l'agroalimentaire, la métallurgie, la plasturgie et un tissu dense de PME de l'artisanat et du commerce. Axion-IA accompagne en priorité les PME puis les ETI doloises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dole (39) auprès des TPE en priorité, puis des PME : agroalimentaire jurassien, métallurgie, plasturgie, artisans du BTP, commerces et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dole (39) auprès des PME en priorité, puis des PME : agroalimentaire jurassien, métallurgie, plasturgie, artisans du BTP, commerces et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dole (39) auprès des TPE en priorité, puis des PME : agroalimentaire jurassien, métallurgie, plasturgie, artisans du BTP, commerces et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Dole (39) auprès des PME en priorité, puis des PME : agroalimentaire jurassien, métallurgie, plasturgie, artisans du BTP, commerces et professions libérales. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences à vos équipes, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   seoHook: "agroalimentaire & métallurgie jura",
   ecosystemFr:
-    "Dole est le premier pôle économique du Jura, structuré autour du canal du Rhône au Rhin et de ses zones industrielles. Le tissu local mêle PME agroalimentaires, métallurgie, plasturgie et un réseau dense de TPE artisanales, commerces de centre historique et professions libérales. L'héritage pastorien ancre une culture d'innovation et de rigueur scientifique dans le bassin dolois.",
+    "Dole est le premier pôle économique du Jura, structuré autour du canal du Rhône au Rhin et de ses zones industrielles. Le tissu local mêle PME agroalimentaires, métallurgie, plasturgie et un réseau dense de PME artisanales, commerces de centre historique et professions libérales. L'héritage pastorien ancre une culture d'innovation et de rigueur scientifique dans le bassin dolois.",
   ecosystemEn:
-    "Dole est le premier pôle économique du Jura, structuré autour du canal du Rhône au Rhin et de ses zones industrielles. Le tissu local mêle PME agroalimentaires, métallurgie, plasturgie et un réseau dense de TPE artisanales, commerces de centre historique et professions libérales. L'héritage pastorien ancre une culture d'innovation et de rigueur scientifique dans le bassin dolois.",
+    "Dole est le premier pôle économique du Jura, structuré autour du canal du Rhône au Rhin et de ses zones industrielles. Le tissu local mêle PME agroalimentaires, métallurgie, plasturgie et un réseau dense de PME artisanales, commerces de centre historique et professions libérales. L'héritage pastorien ancre une culture d'innovation et de rigueur scientifique dans le bassin dolois.",
   distancesFr:
     "Gare TGV Dole-Ville (liaison Paris et Lyon directe). Besançon à 45 min. Dijon à 50 min. Lyon à 1h45. Aéroport Dole-Jura à 10 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const DOLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dole : diagnostic pour PME agroalimentaires, métallurgie et TPE artisanes. Identification des gains sur la production, la qualité et l'administratif, avec ROI chiffré avant tout engagement.",
-      en: "Audit IA à Dole : diagnostic pour PME agroalimentaires, métallurgie et TPE artisanes. Identification des gains sur la production, la qualité et l'administratif, avec ROI chiffré avant tout engagement.",
+      fr: "Audit IA à Dole : diagnostic pour PME agroalimentaires, métallurgie et PME artisanales. Identification des gains sur la production, la qualité et l'administratif, avec ROI chiffré avant tout engagement.",
+      en: "Audit IA à Dole : diagnostic pour PME agroalimentaires, métallurgie et PME artisanales. Identification des gains sur la production, la qualité et l'administratif, avec ROI chiffré avant tout engagement.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dole : formats adaptés à l'atelier industriel, au commerce ou au cabinet. Vos collaborateurs maîtrisent ensuite les outils en autonomie.",
@@ -42,8 +42,8 @@ export const DOLE_COPY: VilleCopy = {
       en: "Implémentation IA à Dole : contrôle qualité par vision en agroalimentaire et métallurgie, prédiction de maintenance, traçabilité, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Dole : sessions dans votre atelier, bureau, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME du bassin dolois.",
-      en: "Coaching 1-to-1 à Dole : sessions dans votre atelier, bureau, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME du bassin dolois.",
+      fr: "Coaching 1-to-1 à Dole : sessions dans votre atelier, bureau, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME du bassin dolois.",
+      en: "Coaching 1-to-1 à Dole : sessions dans votre atelier, bureau, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME du bassin dolois.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Dole : plateformes et outils SaaS IA sur mesure — vente directe agroalimentaire, portails clients, prise de RDV et devis en ligne connectés à vos process.",
@@ -53,12 +53,12 @@ export const DOLE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Dole des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le premier pôle économique du Jura — agroalimentaire jurassien, métallurgie et plasturgie autour du parc Innovia (70 hectares d'éco-activités) et du complexe chimique de Tavaux où INOVYN emploie environ 630 personnes, sans oublier le tissu dense de TPE artisanales et de commerces du centre historique, ville natale de Louis Pasteur. Adossés au canal du Rhône au Rhin et à l'échangeur autoroutier, vos flux logistiques méritent des outils en ligne à la hauteur. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dole, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dole des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le premier pôle économique du Jura — agroalimentaire jurassien, métallurgie et plasturgie autour du parc Innovia (70 hectares d'éco-activités) et du complexe chimique de Tavaux où INOVYN emploie environ 630 personnes, sans oublier le tissu dense de PME artisanales et de commerces du centre historique, ville natale de Louis Pasteur. Adossés au canal du Rhône au Rhin et à l'échangeur autoroutier, vos flux logistiques méritent des outils en ligne à la hauteur. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dole, itérations à distance.",
         whyHere: [
           "Pôle agroalimentaire jurassien structurant, fédéré par le Grand Dole autour de ses producteurs et transformateurs : ces acteurs ont besoin de vente directe en ligne, de portails B2B revendeurs et de traçabilité amont-aval. On construit la boutique e-commerce (WooCommerce, Shopify ou PrestaShop) ou on greffe une recherche sémantique sur vos fiches produits et appellations.",
           "Écosystème industriel d'avant-garde sur le parc Innovia — 70 hectares dédiés aux éco-activités, à la biotech et aux nouvelles énergies, avec Ynsect et sa filière de protéines d'insectes pour l'alimentation animale : pour ces acteurs technologiques, on développe des plateformes SaaS IA-native branchées sur le SI (ERP, MES, qualité, R&D).",
           "Chimie et métallurgie autour de Tavaux, où INOVYN (~630 salariés) ancre une plateforme chimique majeure, et travail des métaux et plasturgie dans le bassin dolois : on greffe l'IA sur l'existant — portail client, configurateur de devis, agents d'automatisation administrative et documentaire — sans imposer de refonte lourde aux PME industrielles.",
-          "Tissu très majoritairement composé de TPE artisanales, de commerces du centre historique et de professions libérales, dans une ville natale de Louis Pasteur attachée à la rigueur : vitrines mobile-first, prise de RDV et devis en ligne, chatbot ancré sur vos contenus et fiche Google — le tout hébergeable en UE et conforme RGPD.",
+          "Tissu très majoritairement composé de PME artisanales, de commerces du centre historique et de professions libérales, dans une ville natale de Louis Pasteur attachée à la rigueur : vitrines mobile-first, prise de RDV et devis en ligne, chatbot ancré sur vos contenus et fiche Google — le tout hébergeable en UE et conforme RGPD.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const DOLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, devis ou RDV en ligne — sur le site existant d'un artisan du BTP, d'un commerce du centre historique ou d'un cabinet libéral dolois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,12 +133,12 @@ export const DOLE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison de production agroalimentaire ou d'activité du centre dolois. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé. Solution transférable à tout prestataire de Bourgogne-Franche-Comté ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Dole des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le premier pôle économique du Jura — agroalimentaire jurassien, métallurgie et plasturgie autour du parc Innovia (70 hectares d'éco-activités) et du complexe chimique de Tavaux où INOVYN emploie environ 630 personnes, sans oublier le tissu dense de TPE artisanales et de commerces du centre historique, ville natale de Louis Pasteur. Adossés au canal du Rhône au Rhin et à l'échangeur autoroutier, vos flux logistiques méritent des outils en ligne à la hauteur. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dole, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Dole des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour le premier pôle économique du Jura — agroalimentaire jurassien, métallurgie et plasturgie autour du parc Innovia (70 hectares d'éco-activités) et du complexe chimique de Tavaux où INOVYN emploie environ 630 personnes, sans oublier le tissu dense de PME artisanales et de commerces du centre historique, ville natale de Louis Pasteur. Adossés au canal du Rhône au Rhin et à l'échangeur autoroutier, vos flux logistiques méritent des outils en ligne à la hauteur. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Dole, itérations à distance.",
         whyHere: [
           "Pôle agroalimentaire jurassien structurant, fédéré par le Grand Dole autour de ses producteurs et transformateurs : ces acteurs ont besoin de vente directe en ligne, de portails B2B revendeurs et de traçabilité amont-aval. On construit la boutique e-commerce (WooCommerce, Shopify ou PrestaShop) ou on greffe une recherche sémantique sur vos fiches produits et appellations.",
           "Écosystème industriel d'avant-garde sur le parc Innovia — 70 hectares dédiés aux éco-activités, à la biotech et aux nouvelles énergies, avec Ynsect et sa filière de protéines d'insectes pour l'alimentation animale : pour ces acteurs technologiques, on développe des plateformes SaaS IA-native branchées sur le SI (ERP, MES, qualité, R&D).",
           "Chimie et métallurgie autour de Tavaux, où INOVYN (~630 salariés) ancre une plateforme chimique majeure, et travail des métaux et plasturgie dans le bassin dolois : on greffe l'IA sur l'existant — portail client, configurateur de devis, agents d'automatisation administrative et documentaire — sans imposer de refonte lourde aux PME industrielles.",
-          "Tissu très majoritairement composé de TPE artisanales, de commerces du centre historique et de professions libérales, dans une ville natale de Louis Pasteur attachée à la rigueur : vitrines mobile-first, prise de RDV et devis en ligne, chatbot ancré sur vos contenus et fiche Google — le tout hébergeable en UE et conforme RGPD.",
+          "Tissu très majoritairement composé de PME artisanales, de commerces du centre historique et de professions libérales, dans une ville natale de Louis Pasteur attachée à la rigueur : vitrines mobile-first, prise de RDV et devis en ligne, chatbot ancré sur vos contenus et fiche Google — le tout hébergeable en UE et conforme RGPD.",
         ],
         methodology: [
           {
@@ -174,12 +168,6 @@ export const DOLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, devis ou RDV en ligne — sur le site existant d'un artisan du BTP, d'un commerce du centre historique ou d'un cabinet libéral dolois, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -237,8 +225,8 @@ export const DOLE_COPY: VilleCopy = {
       a: "Oui, contrôle qualité par vision, traçabilité, prédiction de maintenance et automatisation administrative pour les industries agroalimentaires du Jura.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans et commerces de Dole ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
+      q: "Travaillez-vous avec les PME de l'artisanat et du commerce de Dole ?",
+      a: "Oui, les PME sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Quels services pour la métallurgie et la plasturgie ?",

@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const GARDANNE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Gardanne (21 597 habitants, Bouches-du-Rhône), commune située à 15 km au sud d'Aix-en-Provence et 25 km au nord de Marseille, intégrée à la Métropole d'Aix-Marseille-Provence. Cabinet IA dédié aux TPE et PME francophones, nous codons en custom (pas de no-code) pour le tissu industriel hérité de la mine de charbon (fermée en 2003) et de l'alumine Alteo (ex-Pechiney depuis 1893), ainsi que pour les services aux entreprises gravitant autour des zones d'activité Morandat, Bompertuis, Avon, La Palun et Novactis.",
+    "Axion-IA intervient à Gardanne (21 597 habitants, Bouches-du-Rhône), commune située à 15 km au sud d'Aix-en-Provence et 25 km au nord de Marseille, intégrée à la Métropole d'Aix-Marseille-Provence. Cabinet IA dédié aux PME et ETI francophones, nous codons en custom (pas de no-code) pour le tissu industriel hérité de la mine de charbon (fermée en 2003) et de l'alumine Alteo (ex-Pechiney depuis 1893), ainsi que pour les services aux entreprises gravitant autour des zones d'activité Morandat, Bompertuis, Avon, La Palun et Novactis.",
   pitchEn:
-    "Axion-IA intervient à Gardanne (21 597 habitants, Bouches-du-Rhône), commune située à 15 km au sud d'Aix-en-Provence et 25 km au nord de Marseille, intégrée à la Métropole d'Aix-Marseille-Provence. Cabinet IA dédié aux TPE et PME francophones, nous codons en custom (pas de no-code) pour le tissu industriel hérité de la mine de charbon (fermée en 2003) et de l'alumine Alteo (ex-Pechiney depuis 1893), ainsi que pour les services aux entreprises gravitant autour des zones d'activité Morandat, Bompertuis, Avon, La Palun et Novactis.",
+    "Axion-IA intervient à Gardanne (21 597 habitants, Bouches-du-Rhône), commune située à 15 km au sud d'Aix-en-Provence et 25 km au nord de Marseille, intégrée à la Métropole d'Aix-Marseille-Provence. Cabinet IA dédié aux PME et ETI francophones, nous codons en custom (pas de no-code) pour le tissu industriel hérité de la mine de charbon (fermée en 2003) et de l'alumine Alteo (ex-Pechiney depuis 1893), ainsi que pour les services aux entreprises gravitant autour des zones d'activité Morandat, Bompertuis, Avon, La Palun et Novactis.",
   directAnswerFr:
-    "À Gardanne, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin minier reconverti et de l'écosystème industriel-tech autour d'Alteo (400 salariés, 250 sous-traitants), de la centrale thermique biomasse (150 MW) et du campus École des Mines de Saint-Étienne (microélectronique). Nous concevons des outils sur mesure pour la sous-traitance industrielle, les bureaux d'études, les artisans BTP et les services tertiaires métropolitains. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}.",
+    "À Gardanne, Axion-IA accompagne en priorité les PME puis les ETI (et ponctuellement les grands groupes) du bassin minier reconverti et de l'écosystème industriel-tech autour d'Alteo (400 salariés, 250 sous-traitants), de la centrale thermique biomasse (150 MW) et du campus École des Mines de Saint-Étienne (microélectronique). Nous concevons des outils sur mesure pour la sous-traitance industrielle, les bureaux d'études, les artisans BTP et les services tertiaires métropolitains. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "À Gardanne, Axion-IA accompagne en priorité les TPE puis les PME (et ponctuellement les ETI) du bassin minier reconverti et de l'écosystème industriel-tech autour d'Alteo (400 salariés, 250 sous-traitants), de la centrale thermique biomasse (150 MW) et du campus École des Mines de Saint-Étienne (microélectronique). Nous concevons des outils sur mesure pour la sous-traitance industrielle, les bureaux d'études, les artisans BTP et les services tertiaires métropolitains. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}.",
+    "À Gardanne, Axion-IA accompagne en priorité les PME puis les ETI (et ponctuellement les grands groupes) du bassin minier reconverti et de l'écosystème industriel-tech autour d'Alteo (400 salariés, 250 sous-traitants), de la centrale thermique biomasse (150 MW) et du campus École des Mines de Saint-Étienne (microélectronique). Nous concevons des outils sur mesure pour la sous-traitance industrielle, les bureaux d'études, les artisans BTP et les services tertiaires métropolitains. Tarifs publics : Audit sur place dès {{price:audit-flash|flat}}, intervention dès {{price:intervention-4h|flat}}, implémentation dès {{price:intervention-dirigeants|flat}}.",
   seoHook: "industrie reconvertie & microélectronique",
   ecosystemFr:
-    "Gardanne combine un héritage minier-industriel (Alteo et son procédé d'alumine depuis 1893, centrale biomasse 150 MW) et une orientation tech via le campus École des Mines de Saint-Étienne dédié à la microélectronique. Cinq zones d'activité structurent le tissu local : Morandat (reconversion de l'ancien puits), Bompertuis, Avon, La Palun et Novactis. L'intégration à la Métropole Aix-Marseille-Provence ouvre l'accès à des donneurs d'ordre régionaux. Indies (mode, 50 salariés) et Traction Levage illustrent la diversification des TPE/PME locales.",
+    "Gardanne combine un héritage minier-industriel (Alteo et son procédé d'alumine depuis 1893, centrale biomasse 150 MW) et une orientation tech via le campus École des Mines de Saint-Étienne dédié à la microélectronique. Cinq zones d'activité structurent le tissu local : Morandat (reconversion de l'ancien puits), Bompertuis, Avon, La Palun et Novactis. L'intégration à la Métropole Aix-Marseille-Provence ouvre l'accès à des donneurs d'ordre régionaux. Indies (mode, 50 salariés) et Traction Levage illustrent la diversification des PME et ETI locales.",
   ecosystemEn:
-    "Gardanne combine un héritage minier-industriel (Alteo et son procédé d'alumine depuis 1893, centrale biomasse 150 MW) et une orientation tech via le campus École des Mines de Saint-Étienne dédié à la microélectronique. Cinq zones d'activité structurent le tissu local : Morandat (reconversion de l'ancien puits), Bompertuis, Avon, La Palun et Novactis. L'intégration à la Métropole Aix-Marseille-Provence ouvre l'accès à des donneurs d'ordre régionaux. Indies (mode, 50 salariés) et Traction Levage illustrent la diversification des TPE/PME locales.",
+    "Gardanne combine un héritage minier-industriel (Alteo et son procédé d'alumine depuis 1893, centrale biomasse 150 MW) et une orientation tech via le campus École des Mines de Saint-Étienne dédié à la microélectronique. Cinq zones d'activité structurent le tissu local : Morandat (reconversion de l'ancien puits), Bompertuis, Avon, La Palun et Novactis. L'intégration à la Métropole Aix-Marseille-Provence ouvre l'accès à des donneurs d'ordre régionaux. Indies (mode, 50 salariés) et Traction Levage illustrent la diversification des PME et ETI locales.",
   distancesFr:
     "Gardanne dispose de sa gare SNCF (liaisons Marseille et Aix-en-Provence). L'aéroport Marseille-Provence est à 25 minutes en voiture, la gare TGV d'Aix-en-Provence à 20 minutes. Les autoroutes A51, A8, A52 et A50 desservent le bassin minier.",
   distancesEn:
@@ -31,30 +31,30 @@ export const GARDANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA sur site à Gardanne dès {{price:audit-flash|flat}} : analyse des process des TPE et PME industrielles (sous-traitants Alteo, BTP, bureaux d'études microélectronique) pour cibler 3 à 5 cas d'usage prioritaires en code custom.",
-      en: "Audit sur place IA sur site à Gardanne dès {{price:audit-flash|flat}} : analyse des process des TPE et PME industrielles (sous-traitants Alteo, BTP, bureaux d'études microélectronique) pour cibler 3 à 5 cas d'usage prioritaires en code custom.",
+      fr: "Audit sur place IA sur site à Gardanne dès {{price:audit-flash|flat}} : analyse des process des PME et ETI industrielles (sous-traitants Alteo, BTP, bureaux d'études microélectronique) pour cibler 3 à 5 cas d'usage prioritaires en code custom.",
+      en: "Audit sur place IA sur site à Gardanne dès {{price:audit-flash|flat}} : analyse des process des PME et ETI industrielles (sous-traitants Alteo, BTP, bureaux d'études microélectronique) pour cibler 3 à 5 cas d'usage prioritaires en code custom.",
     },
     interventions: {
-      fr: "Interventions IA à Gardanne dès {{price:intervention-4h|flat}} : automatisation devis-commandes pour la sous-traitance industrielle, outils de suivi pour artisans BTP des ZA Morandat-Bompertuis-Novactis, assistants tertiaires pour TPE métropolitaines.",
-      en: "Interventions IA à Gardanne dès {{price:intervention-4h|flat}} : automatisation devis-commandes pour la sous-traitance industrielle, outils de suivi pour artisans BTP des ZA Morandat-Bompertuis-Novactis, assistants tertiaires pour TPE métropolitaines.",
+      fr: "Interventions IA à Gardanne dès {{price:intervention-4h|flat}} : automatisation devis-commandes pour la sous-traitance industrielle, outils de suivi pour artisans BTP des ZA Morandat-Bompertuis-Novactis, assistants tertiaires pour PME métropolitaines.",
+      en: "Interventions IA à Gardanne dès {{price:intervention-4h|flat}} : automatisation devis-commandes pour la sous-traitance industrielle, outils de suivi pour artisans BTP des ZA Morandat-Bompertuis-Novactis, assistants tertiaires pour PME métropolitaines.",
     },
     implementation: {
       fr: "Implémentation IA à Gardanne dès {{price:impl-poc|entry}} : intégration d'agents codés sur mesure pour PME industrielles et tertiaires, connectés à leurs ERP/CRM existants, sans no-code, dans le bassin Aix-Marseille-Gardanne.",
       en: "Implémentation IA à Gardanne dès {{price:impl-poc|entry}} : intégration d'agents codés sur mesure pour PME industrielles et tertiaires, connectés à leurs ERP/CRM existants, sans no-code, dans le bassin Aix-Marseille-Gardanne.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Gardanne dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : montée en compétences IA pratique, ancrée sur des cas réels du bassin minier reconverti et de la métropole Aix-Marseille-Provence.",
-      en: "Accompagnement 1-à-1 à Gardanne dès {{price:intervention-dirigeants|flat}} pour dirigeants de TPE et PME : montée en compétences IA pratique, ancrée sur des cas réels du bassin minier reconverti et de la métropole Aix-Marseille-Provence.",
+      fr: "Accompagnement 1-à-1 à Gardanne dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI : montée en compétences IA pratique, ancrée sur des cas réels du bassin minier reconverti et de la métropole Aix-Marseille-Provence.",
+      en: "Accompagnement 1-à-1 à Gardanne dès {{price:intervention-dirigeants|flat}} pour dirigeants de PME et d'ETI : montée en compétences IA pratique, ancrée sur des cas réels du bassin minier reconverti et de la métropole Aix-Marseille-Provence.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Gardanne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin minier reconverti où l'industrie lourde — Alteo et son alumine depuis 1893, centrale biomasse Gazel Énergie de 150 MW sur le site de Meyreuil-Gardanne — côtoie la microélectronique du campus Georges Charpak Provence de l'École des Mines de Saint-Étienne et un tissu dense de TPE-PME de la sous-traitance, du BTP et des services métropolitains répartis sur les ZA Morandat, Bompertuis, Avon, La Palun et Novactis. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gardanne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Gardanne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin minier reconverti où l'industrie lourde — Alteo et son alumine depuis 1893, centrale biomasse Gazel Énergie de 150 MW sur le site de Meyreuil-Gardanne — côtoie la microélectronique du campus Georges Charpak Provence de l'École des Mines de Saint-Étienne et un tissu dense de PME et ETI de la sous-traitance, du BTP et des services métropolitains répartis sur les ZA Morandat, Bompertuis, Avon, La Palun et Novactis. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gardanne, itérations à distance.",
         whyHere: [
           "Sous-traitance industrielle gravitant autour d'Alteo (alumine de spécialité depuis 1893, 400 salariés, 250 sous-traitants) et de la centrale Gazel Énergie : on construit des portails fournisseurs, configurateurs de devis et suivis de commandes augmentés à l'IA, branchés sur vos ERP/MES, pour fluidifier la chaîne donneur d'ordre et tracer chaque pièce du bassin minier reconverti.",
           "Bureaux d'études et R&D microélectronique liés au campus Georges Charpak Provence de l'École des Mines : interfaces techniques exigeantes, recherche sémantique sur documentation, brevets et data de caractérisation, et applications métier sur mesure pensées pour des équipes d'ingénieurs et de chercheurs habituées aux salles blanches et aux flux de prototypage.",
-          "Tissu de TPE du commerce, de l'artisanat et du BTP réparti sur les ZA Morandat (reconversion de l'ancien puits Yvon Morandat), Bompertuis, Avon, La Palun et Novactis : on greffe l'IA sur l'existant (widget, plugin, API) ou on construit une vitrine ou boutique e-commerce mobile-first sans refonte coûteuse, du devis en ligne au paiement, en passant par le catalogue multilingue.",
+          "Tissu de PME du commerce, de l'artisanat et du BTP réparti sur les ZA Morandat (reconversion de l'ancien puits Yvon Morandat), Bompertuis, Avon, La Palun et Novactis : on greffe l'IA sur l'existant (widget, plugin, API) ou on construit une vitrine ou boutique e-commerce mobile-first sans refonte coûteuse, du devis en ligne au paiement, en passant par le catalogue multilingue.",
           "Intégration à la Métropole Aix-Marseille-Provence et aux donneurs d'ordre régionaux d'Aix (15 km) et Marseille (25 km) : hébergement UE strict et conformité RGPD/AI Act, vos données industrielles, vos plans et vos fichiers clients restent maîtrisés, sans transit hors UE, avec un code livré chez vous et transférable à tout moment.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const GARDANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, configurateur de devis) ou d'une mini-vitrine sur le site existant d'un artisan BTP, d'un commerçant du cœur de ville ou d'une TPE des ZA Morandat-Bompertuis, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -125,7 +119,7 @@ export const GARDANNE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les artisans BTP et commerçants des ZA de Gardanne ?",
-            a: "Oui, c'est même un cœur de cible. Pour un artisan BTP, un commerçant du centre-ville ou une TPE des ZA Morandat, Bompertuis, Avon, La Palun ou Novactis, on construit une vitrine ou une boutique e-commerce mobile-first, on ajoute un devis en ligne, un chatbot multilingue ou une prise de rendez-vous, sans refonte lourde et avec un budget cadré dès le devis.",
+            a: "Oui, c'est même un cœur de cible. Pour un artisan BTP, un commerçant du centre-ville ou une PME des ZA Morandat, Bompertuis, Avon, La Palun ou Novactis, on construit une vitrine ou une boutique e-commerce mobile-first, on ajoute un devis en ligne, un chatbot multilingue ou une prise de rendez-vous, sans refonte lourde et avec un budget cadré dès le devis.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -136,11 +130,11 @@ export const GARDANNE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, vous savez ce que vous payez avant de signer. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine production. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun lock-in, transférable à tout prestataire de la Métropole Aix-Marseille-Provence ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Gardanne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin minier reconverti où l'industrie lourde — Alteo et son alumine depuis 1893, centrale biomasse Gazel Énergie de 150 MW sur le site de Meyreuil-Gardanne — côtoie la microélectronique du campus Georges Charpak Provence de l'École des Mines de Saint-Étienne et un tissu dense de TPE-PME de la sous-traitance, du BTP et des services métropolitains répartis sur les ZA Morandat, Bompertuis, Avon, La Palun et Novactis. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gardanne, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Gardanne des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour ce bassin minier reconverti où l'industrie lourde — Alteo et son alumine depuis 1893, centrale biomasse Gazel Énergie de 150 MW sur le site de Meyreuil-Gardanne — côtoie la microélectronique du campus Georges Charpak Provence de l'École des Mines de Saint-Étienne et un tissu dense de PME et ETI de la sous-traitance, du BTP et des services métropolitains répartis sur les ZA Morandat, Bompertuis, Avon, La Palun et Novactis. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Gardanne, itérations à distance.",
         whyHere: [
           "Sous-traitance industrielle gravitant autour d'Alteo (alumine de spécialité depuis 1893, 400 salariés, 250 sous-traitants) et de la centrale Gazel Énergie : on construit des portails fournisseurs, configurateurs de devis et suivis de commandes augmentés à l'IA, branchés sur vos ERP/MES, pour fluidifier la chaîne donneur d'ordre et tracer chaque pièce du bassin minier reconverti.",
           "Bureaux d'études et R&D microélectronique liés au campus Georges Charpak Provence de l'École des Mines : interfaces techniques exigeantes, recherche sémantique sur documentation, brevets et data de caractérisation, et applications métier sur mesure pensées pour des équipes d'ingénieurs et de chercheurs habituées aux salles blanches et aux flux de prototypage.",
-          "Tissu de TPE du commerce, de l'artisanat et du BTP réparti sur les ZA Morandat (reconversion de l'ancien puits Yvon Morandat), Bompertuis, Avon, La Palun et Novactis : on greffe l'IA sur l'existant (widget, plugin, API) ou on construit une vitrine ou boutique e-commerce mobile-first sans refonte coûteuse, du devis en ligne au paiement, en passant par le catalogue multilingue.",
+          "Tissu de PME du commerce, de l'artisanat et du BTP réparti sur les ZA Morandat (reconversion de l'ancien puits Yvon Morandat), Bompertuis, Avon, La Palun et Novactis : on greffe l'IA sur l'existant (widget, plugin, API) ou on construit une vitrine ou boutique e-commerce mobile-first sans refonte coûteuse, du devis en ligne au paiement, en passant par le catalogue multilingue.",
           "Intégration à la Métropole Aix-Marseille-Provence et aux donneurs d'ordre régionaux d'Aix (15 km) et Marseille (25 km) : hébergement UE strict et conformité RGPD/AI Act, vos données industrielles, vos plans et vos fichiers clients restent maîtrisés, sans transit hors UE, avec un code livré chez vous et transférable à tout moment.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const GARDANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, configurateur de devis) ou d'une mini-vitrine sur le site existant d'un artisan BTP, d'un commerçant du cœur de ville ou d'une TPE des ZA Morandat-Bompertuis, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -211,7 +199,7 @@ export const GARDANNE_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les artisans BTP et commerçants des ZA de Gardanne ?",
-            a: "Oui, c'est même un cœur de cible. Pour un artisan BTP, un commerçant du centre-ville ou une TPE des ZA Morandat, Bompertuis, Avon, La Palun ou Novactis, on construit une vitrine ou une boutique e-commerce mobile-first, on ajoute un devis en ligne, un chatbot multilingue ou une prise de rendez-vous, sans refonte lourde et avec un budget cadré dès le devis.",
+            a: "Oui, c'est même un cœur de cible. Pour un artisan BTP, un commerçant du centre-ville ou une PME des ZA Morandat, Bompertuis, Avon, La Palun ou Novactis, on construit une vitrine ou une boutique e-commerce mobile-first, on ajoute un devis en ligne, un chatbot multilingue ou une prise de rendez-vous, sans refonte lourde et avec un budget cadré dès le devis.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -243,7 +231,7 @@ export const GARDANNE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux profitent le plus de l'IA à Gardanne ?",
-      a: "Les TPE et PME de la sous-traitance industrielle (gravitant autour d'Alteo), les artisans BTP, les bureaux d'études microélectronique liés à l'École des Mines, et les services tertiaires métropolitains gagnent le plus en automatisation IA custom.",
+      a: "Les PME et ETI de la sous-traitance industrielle (gravitant autour d'Alteo), les artisans BTP, les bureaux d'études microélectronique liés à l'École des Mines, et les services tertiaires métropolitains gagnent le plus en automatisation IA custom.",
     },
     {
       q: "Williams se déplace-t-il sur site à Gardanne ?",

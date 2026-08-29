@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const MOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu TPE/PME industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu PME et ETI industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu TPE/PME industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu PME et ETI industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : PME et ETI industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : PME et ETI industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
   ecosystemFr:
-    "Molsheim est une sous-préfecture bas-rhinoise située sur la route des Vins d'Alsace, à l'ouest de Strasbourg. Tissu TPE/PME industrie haut de gamme, viticulture, oenotourisme, BTP, commerces, services et artisanat. Dynamique économique portée par le patrimoine, l'industrie de précision et l'attractivité touristique.",
+    "Molsheim est une sous-préfecture bas-rhinoise située sur la route des Vins d'Alsace, à l'ouest de Strasbourg. Tissu PME et ETI industrie haut de gamme, viticulture, oenotourisme, BTP, commerces, services et artisanat. Dynamique économique portée par le patrimoine, l'industrie de précision et l'attractivité touristique.",
   ecosystemEn:
-    "Molsheim est une sous-préfecture bas-rhinoise située sur la route des Vins d'Alsace, à l'ouest de Strasbourg. Tissu TPE/PME industrie haut de gamme, viticulture, oenotourisme, BTP, commerces, services et artisanat. Dynamique économique portée par le patrimoine, l'industrie de précision et l'attractivité touristique.",
+    "Molsheim est une sous-préfecture bas-rhinoise située sur la route des Vins d'Alsace, à l'ouest de Strasbourg. Tissu PME et ETI industrie haut de gamme, viticulture, oenotourisme, BTP, commerces, services et artisanat. Dynamique économique portée par le patrimoine, l'industrie de précision et l'attractivité touristique.",
   distancesFr:
     "Strasbourg à 25 min. Obernai à 15 min. Sélestat à 30 min. Gare SNCF Molsheim (ligne Strasbourg–Saint-Dié). Autoroute A352 accès direct. Aéroport Strasbourg-Entzheim à 20 min. Bâle-Mulhouse à 1h15.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Molsheim : diagnostic adapté aux TPE/PME industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Molsheim : diagnostic adapté aux TPE/PME industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Molsheim : diagnostic adapté aux PME et ETI industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Molsheim : diagnostic adapté aux PME et ETI industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Molsheim : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const MOLSHEIM_COPY: VilleCopy = {
       en: "Implémentation IA à Molsheim : contrôle qualité industrie de précision, gestion vendanges et stocks viticoles, automatisation réservations tourisme, agents conversationnels B2B et B2C.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Molsheim : sessions dans votre atelier, domaine, hôtel-restaurant ou en visio. Industriels, viticulteurs, professionnels du tourisme, artisans, gérants TPE/PME molshémiens.",
-      en: "Coaching 1-to-1 à Molsheim : sessions dans votre atelier, domaine, hôtel-restaurant ou en visio. Industriels, viticulteurs, professionnels du tourisme, artisans, gérants TPE/PME molshémiens.",
+      fr: "Coaching 1-to-1 à Molsheim : sessions dans votre atelier, domaine, hôtel-restaurant ou en visio. Industriels, viticulteurs, professionnels du tourisme, artisans, gérants PME et ETI molshémiens.",
+      en: "Coaching 1-to-1 à Molsheim : sessions dans votre atelier, domaine, hôtel-restaurant ou en visio. Industriels, viticulteurs, professionnels du tourisme, artisans, gérants PME et ETI molshémiens.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const MOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Molsheim ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Molsheim ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ORAISON_COPY: VilleCopy = {
   pitchFr:
-    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Durance.",
+    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu PME artisanales, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Durance.",
   pitchEn:
-    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Durance.",
+    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu PME artisanales, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Durance.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oraison (04). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oraison (04). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
   seoHook: "agriculture vergers & lavande plantes",
   ecosystemFr:
-    "Oraison est commune de la Moyenne Durance (~6 150 hab), bassin agricole dynamique entre Manosque et Sisteron. Vergers (pommes, poires), lavande, maraîchage, PME agroalimentaires locales. TPE artisans BTP, commerces de proximité, services. Marché provençal mardi reconnu.",
+    "Oraison est commune de la Moyenne Durance (~6 150 hab), bassin agricole dynamique entre Manosque et Sisteron. Vergers (pommes, poires), lavande, maraîchage, PME agroalimentaires locales. PME du BTP, commerces de proximité, services. Marché provençal mardi reconnu.",
   ecosystemEn:
-    "Oraison est commune de la Moyenne Durance (~6 150 hab), bassin agricole dynamique entre Manosque et Sisteron. Vergers (pommes, poires), lavande, maraîchage, PME agroalimentaires locales. TPE artisans BTP, commerces de proximité, services. Marché provençal mardi reconnu.",
+    "Oraison est commune de la Moyenne Durance (~6 150 hab), bassin agricole dynamique entre Manosque et Sisteron. Vergers (pommes, poires), lavande, maraîchage, PME agroalimentaires locales. PME du BTP, commerces de proximité, services. Marché provençal mardi reconnu.",
   distancesFr:
     "Gare Oraison (TER Marseille-Briançon). Manosque à 20 min sud. Digne-les-Bains à 30 min nord. Accès A51 vers Aix-en-Provence (1h15). Aéroport Marseille-Provence à 1h30.",
   distancesEn:
@@ -25,13 +25,13 @@ export const ORAISON_COPY: VilleCopy = {
     "Agriculture & vergers (pommes, poires)",
     "Lavande & plantes aromatiques",
     "PME agroalimentaires",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Oraison : diagnostic adapté aux PME artisanales, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Oraison : diagnostic adapté aux PME artisanales, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oraison : formats adaptés aux exploitations fruitières, ateliers agroalimentaires, commerces ou artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const ORAISON_COPY: VilleCopy = {
       en: "Implémentation IA à Oraison : classification qualité fruits par vision, prédiction récolte lavande, automatisation traçabilité verger-à-expédition, agents e-commerce vente directe producteur.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Oraison : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans, gérants TPE/PME de la Moyenne Durance souhaitant intégrer l'IA dans leur métier.",
-      en: "Coaching 1-to-1 à Oraison : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans, gérants TPE/PME de la Moyenne Durance souhaitant intégrer l'IA dans leur métier.",
+      fr: "Coaching 1-to-1 à Oraison : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans, gérants PME et ETI de la Moyenne Durance souhaitant intégrer l'IA dans leur métier.",
+      en: "Coaching 1-to-1 à Oraison : sessions dans votre exploitation, atelier ou en visio. Agriculteurs, artisans, gérants PME et ETI de la Moyenne Durance souhaitant intégrer l'IA dans leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const ORAISON_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Oraison  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, agriculteurs et PME de la Moyenne Durance. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME artisanales, agriculteurs et PME de la Moyenne Durance. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Oraison ?",

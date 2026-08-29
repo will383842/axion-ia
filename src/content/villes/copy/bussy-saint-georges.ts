@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Bussy-Saint-Georges, commune de 27 498 habitants en Seine-et-Marne (secteur 3 de Marne-la-Vallée). Notre cabinet déploie du code IA sur mesure pour les artisans, commerces et sociétés de services implantés autour du parc Gustave-Eiffel, de la ZAC du Sycomore et de la zone d'activité de la Rucherie. En complément, nos interventions répondent aux besoins d'automatisation des ETI locales du commerce de gros, du transport et de l'hébergement-restauration (652 unités légales recensées en 2019).",
+    "Axion-IA accompagne les PME et ETI de Bussy-Saint-Georges, commune de 27 498 habitants en Seine-et-Marne (secteur 3 de Marne-la-Vallée). Notre cabinet déploie du code IA sur mesure pour les artisans, commerces et sociétés de services implantés autour du parc Gustave-Eiffel, de la ZAC du Sycomore et de la zone d'activité de la Rucherie. En complément, nos interventions répondent aux besoins d'automatisation des ETI locales du commerce de gros, du transport et de l'hébergement-restauration (652 unités légales recensées en 2019).",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Bussy-Saint-Georges, commune de 27 498 habitants en Seine-et-Marne (secteur 3 de Marne-la-Vallée). Notre cabinet déploie du code IA sur mesure pour les artisans, commerces et sociétés de services implantés autour du parc Gustave-Eiffel, de la ZAC du Sycomore et de la zone d'activité de la Rucherie. En complément, nos interventions répondent aux besoins d'automatisation des ETI locales du commerce de gros, du transport et de l'hébergement-restauration (652 unités légales recensées en 2019).",
+    "Axion-IA accompagne les PME et ETI de Bussy-Saint-Georges, commune de 27 498 habitants en Seine-et-Marne (secteur 3 de Marne-la-Vallée). Notre cabinet déploie du code IA sur mesure pour les artisans, commerces et sociétés de services implantés autour du parc Gustave-Eiffel, de la ZAC du Sycomore et de la zone d'activité de la Rucherie. En complément, nos interventions répondent aux besoins d'automatisation des ETI locales du commerce de gros, du transport et de l'hébergement-restauration (652 unités légales recensées en 2019).",
   directAnswerFr:
-    "Axion-IA intervient à Bussy-Saint-Georges pour automatiser les processus métier des TPE et PME locales : devis, facturation, relances clients, gestion administrative. Notre cabinet conçoit du code IA sur mesure (pas de no-code) adapté au tissu économique de la communauté d'agglomération Marne et Gondoire. Les PME du parc Gustave-Eiffel et les commerces du centre-ville bénéficient d'un Audit sur place à {{price:audit-flash|flat}}, suivi d'interventions ciblées. Les ETI locales (transport, logistique, hébergement) sont également couvertes.",
+    "Axion-IA intervient à Bussy-Saint-Georges pour automatiser les processus métier des PME et ETI locales : devis, facturation, relances clients, gestion administrative. Notre cabinet conçoit du code IA sur mesure (pas de no-code) adapté au tissu économique de la communauté d'agglomération Marne et Gondoire. Les PME du parc Gustave-Eiffel et les commerces du centre-ville bénéficient d'un Audit sur place à {{price:audit-flash|flat}}, suivi d'interventions ciblées. Les ETI locales (transport, logistique, hébergement) sont également couvertes.",
   directAnswerEn:
-    "Axion-IA intervient à Bussy-Saint-Georges pour automatiser les processus métier des TPE et PME locales : devis, facturation, relances clients, gestion administrative. Notre cabinet conçoit du code IA sur mesure (pas de no-code) adapté au tissu économique de la communauté d'agglomération Marne et Gondoire. Les PME du parc Gustave-Eiffel et les commerces du centre-ville bénéficient d'un Audit sur place à {{price:audit-flash|flat}}, suivi d'interventions ciblées. Les ETI locales (transport, logistique, hébergement) sont également couvertes.",
+    "Axion-IA intervient à Bussy-Saint-Georges pour automatiser les processus métier des PME et ETI locales : devis, facturation, relances clients, gestion administrative. Notre cabinet conçoit du code IA sur mesure (pas de no-code) adapté au tissu économique de la communauté d'agglomération Marne et Gondoire. Les PME du parc Gustave-Eiffel et les commerces du centre-ville bénéficient d'un Audit sur place à {{price:audit-flash|flat}}, suivi d'interventions ciblées. Les ETI locales (transport, logistique, hébergement) sont également couvertes.",
   seoHook: "commerce, transport & services aux PME",
   ecosystemFr:
     "Bussy-Saint-Georges s'appuie sur le parc Gustave-Eiffel au sud de la commune et la ZAC du Sycomore, dans la communauté d'agglomération Marne et Gondoire. La zone Léonard-de-Vinci et le secteur de la Rucherie (80 hectares) prolongent l'offre foncière pour PME. En 2020, 457 entreprises ont été créées sur la commune, traduisant un tissu entrepreneurial actif autour du commerce, du transport et des services.",
@@ -31,20 +31,20 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4h sur site à Bussy-Saint-Georges pour les TPE et PME du parc Gustave-Eiffel ou du centre-ville — {{price:audit-flash|flat}}.",
-      en: "Audit sur place 4h sur site à Bussy-Saint-Georges pour les TPE et PME du parc Gustave-Eiffel ou du centre-ville — {{price:audit-flash|flat}}.",
+      fr: "Audit sur place 4h sur site à Bussy-Saint-Georges pour les PME et ETI du parc Gustave-Eiffel ou du centre-ville — {{price:audit-flash|flat}}.",
+      en: "Audit sur place 4h sur site à Bussy-Saint-Georges pour les PME et ETI du parc Gustave-Eiffel ou du centre-ville — {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions Axion-IA à Bussy-Saint-Georges pour automatiser devis, facturation, relances et tâches administratives des TPE/PME.",
-      en: "Interventions Axion-IA à Bussy-Saint-Georges pour automatiser devis, facturation, relances et tâches administratives des TPE/PME.",
+      fr: "Interventions Axion-IA à Bussy-Saint-Georges pour automatiser devis, facturation, relances et tâches administratives des PME et ETI.",
+      en: "Interventions Axion-IA à Bussy-Saint-Georges pour automatiser devis, facturation, relances et tâches administratives des PME et ETI.",
     },
     implementation: {
       fr: "Implémentation de code IA sur mesure à Bussy-Saint-Georges pour les PME de la ZAC du Sycomore ou de la Rucherie — pas de no-code.",
       en: "Implémentation de code IA sur mesure à Bussy-Saint-Georges pour les PME de la ZAC du Sycomore ou de la Rucherie — pas de no-code.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants de TPE/PME à Bussy-Saint-Georges pour cadrer leur feuille de route IA.",
-      en: "Accompagnement un-à-un des dirigeants de TPE/PME à Bussy-Saint-Georges pour cadrer leur feuille de route IA.",
+      fr: "Accompagnement un-à-un des dirigeants de PME et ETI à Bussy-Saint-Georges pour cadrer leur feuille de route IA.",
+      en: "Accompagnement un-à-un des dirigeants de PME et ETI à Bussy-Saint-Georges pour cadrer leur feuille de route IA.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les commerces de proximité de la ZAC du Sycomore (Agora Parc II) et indépendants de Bussy : vitrine mobile-first, prise de rendez-vous, petite boutique en ligne multi-CMS.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -172,12 +166,6 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For Sycomore eco-district local retailers (Agora Parc II) and Bussy freelancers: mobile-first showcase, online booking, small multi-CMS online store.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke business platform",
             detail:
@@ -243,7 +231,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux profitent le plus de vos services à Bussy-Saint-Georges ?",
-      a: "Les TPE du commerce de détail du centre-ville, les PME du parc Gustave-Eiffel (commerce de gros, services) et les ETI logistiques liées à l'A4/A104 utilisent surtout nos automatisations de facturation, relances clients et reporting.",
+      a: "Les PME du commerce de détail du centre-ville, les PME du parc Gustave-Eiffel (commerce de gros, services) et les ETI logistiques liées à l'A4/A104 utilisent surtout nos automatisations de facturation, relances clients et reporting.",
     },
   ],
 };

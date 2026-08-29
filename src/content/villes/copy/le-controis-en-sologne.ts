@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
   pitchFr:
-    "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de TPE et PME entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y mène ses missions auprès des organisations locales du sud blésois.",
+    "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de PME et ETI entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y mène ses missions auprès des organisations locales du sud blésois.",
   pitchEn:
-    "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de TPE et PME entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y mène ses missions auprès des organisations locales du sud blésois.",
+    "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de PME et ETI entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y mène ses missions auprès des organisations locales du sud blésois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Controis-en-Sologne (41). Nous accompagnons PME viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit sur place sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit sur place sur mesure, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Controis-en-Sologne (41). Nous accompagnons PME viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit sur place sur mesure, démarrage sous 10 jours.",
   seoHook: "viticulture touraine & agriculture céréalière",
   ecosystemFr:
     "Le Controis-en-Sologne est une commune nouvelle née de la fusion de plusieurs bourgs en Sologne viticole. Viticulture AOC Touraine, agriculture céréalière, tourisme vert (châteaux de la Loire proches), artisanat BTP et commerces de proximité.",
@@ -30,8 +30,8 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Controis-en-Sologne : diagnostic adapté aux TPE viticoles, PME agricoles, hébergeurs et artisans du sud blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Controis-en-Sologne : diagnostic adapté aux TPE viticoles, PME agricoles, hébergeurs et artisans du sud blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Controis-en-Sologne : diagnostic adapté aux PME viticoles, PME agricoles, hébergeurs et artisans du sud blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Controis-en-Sologne : diagnostic adapté aux PME viticoles, PME agricoles, hébergeurs et artisans du sud blésois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Controis-en-Sologne : formations dans votre exploitation viticole, bureau ou commerce. Vos équipes repartent autonomes.",
@@ -65,7 +65,7 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA dans une commune rurale ?",
-      a: "Déplacement sur site inclus. Formats adaptés : demi-journée pour TPE, journée complète pour PME. Visio complémentaire possible.",
+      a: "Déplacement sur site inclus. Formats adaptés : demi-journée pour PME, journée complète pour PME. Visio complémentaire possible.",
     },
   ],
 };

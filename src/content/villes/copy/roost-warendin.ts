@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const ROOST_WARENDIN_COPY: VilleCopy = {
   pitchFr:
-    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu PME artisanales, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu PME artisanales, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roost-Warendin (59). Nous accompagnons PME artisanales, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Roost-Warendin (59). Nous accompagnons PME artisanales, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin minier unesco",
   ecosystemFr:
-    "Roost-Warendin est située en périphérie est de Douai, intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière dynamique avec le parc Arkeos (archéologie et tourisme), zones d'activités tertiaires et éco-quartiers. Tissu TPE artisans BTP, PME services aux entreprises et sous-traitance, commerces de proximité, professions libérales. Bassin minier UNESCO à proximité immédiate.",
+    "Roost-Warendin est située en périphérie est de Douai, intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière dynamique avec le parc Arkeos (archéologie et tourisme), zones d'activités tertiaires et éco-quartiers. Tissu PME du BTP, PME services aux entreprises et sous-traitance, commerces de proximité, professions libérales. Bassin minier UNESCO à proximité immédiate.",
   ecosystemEn:
-    "Roost-Warendin est située en périphérie est de Douai, intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière dynamique avec le parc Arkeos (archéologie et tourisme), zones d'activités tertiaires et éco-quartiers. Tissu TPE artisans BTP, PME services aux entreprises et sous-traitance, commerces de proximité, professions libérales. Bassin minier UNESCO à proximité immédiate.",
+    "Roost-Warendin est située en périphérie est de Douai, intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière dynamique avec le parc Arkeos (archéologie et tourisme), zones d'activités tertiaires et éco-quartiers. Tissu PME du BTP, PME services aux entreprises et sous-traitance, commerces de proximité, professions libérales. Bassin minier UNESCO à proximité immédiate.",
   distancesFr:
     "Douai centre à 8 min. Gare TGV Douai à 10 min (Paris en 1h05, Lille en 20 min). Lille à 35 min via A21. Valenciennes à 25 min. Sin-le-Noble à 5 min. Aéroport Lille-Lesquin à 40 min.",
   distancesEn:
     "Douai centre à 8 min. Gare TGV Douai à 10 min (Paris en 1h05, Lille en 20 min). Lille à 35 min via A21. Valenciennes à 25 min. Sin-le-Noble à 5 min. Aéroport Lille-Lesquin à 40 min.",
   topSectorsNaf: [
     "Services aux entreprises",
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Sous-traitance industrielle",
     "Commerce de proximité",
     "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roost-Warendin : diagnostic adapté aux TPE artisans, PME services et sous-traitance, professions libérales de l'agglomération douaisienne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA à Roost-Warendin : diagnostic adapté aux TPE artisans, PME services et sous-traitance, professions libérales de l'agglomération douaisienne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA à Roost-Warendin : diagnostic adapté aux PME artisanales, PME services et sous-traitance, professions libérales de l'agglomération douaisienne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA à Roost-Warendin : diagnostic adapté aux PME artisanales, PME services et sous-traitance, professions libérales de l'agglomération douaisienne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Roost-Warendin : formations pratiques adaptées TPE/PME du Douaisis, ateliers outils IA métier services et sous-traitance. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Roost-Warendin : formations pratiques adaptées TPE/PME du Douaisis, ateliers outils IA métier services et sous-traitance. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Roost-Warendin : formations pratiques adaptées PME et ETI du Douaisis, ateliers outils IA métier services et sous-traitance. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Roost-Warendin : formations pratiques adaptées PME et ETI du Douaisis, ateliers outils IA métier services et sous-traitance. Vos équipes repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA à Roost-Warendin : automatisation devis BTP, classification documents professions libérales, agents conversationnels commerce, optimisation planning PME services du Douaisis.",
       en: "Implémentation IA à Roost-Warendin : automatisation devis BTP, classification documents professions libérales, agents conversationnels commerce, optimisation planning PME services du Douaisis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Roost-Warendin : sessions sur site ou en visio pour dirigeants TPE artisans, gérants PME services et sous-traitance, professions libérales du bassin douaisien.",
-      en: "Coaching 1-to-1 à Roost-Warendin : sessions sur site ou en visio pour dirigeants TPE artisans, gérants PME services et sous-traitance, professions libérales du bassin douaisien.",
+      fr: "Coaching 1-to-1 à Roost-Warendin : sessions sur site ou en visio pour dirigeants PME artisanales, gérants PME services et sous-traitance, professions libérales du bassin douaisien.",
+      en: "Coaching 1-to-1 à Roost-Warendin : sessions sur site ou en visio pour dirigeants PME artisanales, gérants PME services et sous-traitance, professions libérales du bassin douaisien.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const ROOST_WARENDIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Roost-Warendin  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME de Roost-Warendin souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les PME et ETI de Roost-Warendin souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Roost-Warendin ?",
       a: "Oui, nous accompagnons les professions libérales de Roost-Warendin (santé, juridique, conseil, immobilier). Cas typiques IA : classification documents, rédaction assistée, agents conversationnels patients/clients, automatisation facturation.",
     },
     {
-      q: "Quels formats d'intervention pour les TPE du Douaisis ?",
-      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants.",
+      q: "Quels formats d'intervention pour les PME du Douaisis ?",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des PME de l'artisanat et du commerce.",
     },
     {
       q: "Comment se déroule une mission Axion-IA à Roost-Warendin ?",

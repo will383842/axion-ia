@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FUVEAU_COPY: VilleCopy = {
   pitchFr:
-    "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. TPE artisans, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. PME artisanales, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. TPE artisans, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. PME artisanales, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fuveau (13). Nous accompagnons PME artisanales, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fuveau (13). Nous accompagnons PME artisanales, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit sur place sur mesure.",
   seoHook: "bassin minier reconverti",
   ecosystemFr:
     "Fuveau est à l'est d'Aix-en-Provence, au pied de la Sainte-Victoire. Ancien bassin minier (charbon, fermeture années 2000) reconverti vers le résidentiel haut de gamme, le tertiaire et des zones d'activités (ZA Saint-Estève, parc d'activités). Viticulture AOC Côtes-de-Provence Sainte-Victoire, PME tertiaires, artisanat BTP, professions libérales travaillant à Aix ou Marseille.",
@@ -24,14 +24,14 @@ export const FUVEAU_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture AOC Sainte-Victoire",
     "Professions libérales & conseil",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Commerce de proximité",
     "PME tertiaires & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fuveau : diagnostic adapté aux viticulteurs AOC, professions libérales, TPE artisans, PME tertiaires et commerces de l'est aixois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fuveau : diagnostic adapté aux viticulteurs AOC, professions libérales, TPE artisans, PME tertiaires et commerces de l'est aixois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fuveau : diagnostic adapté aux viticulteurs AOC, professions libérales, PME artisanales, PME tertiaires et commerces de l'est aixois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fuveau : diagnostic adapté aux viticulteurs AOC, professions libérales, PME artisanales, PME tertiaires et commerces de l'est aixois. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fuveau : ateliers pour domaines viticoles, cabinets libéraux, équipes PME tertiaires et artisans. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const FUVEAU_COPY: VilleCopy = {
       en: "Implémentation IA à Fuveau : gestion parcellaire viticole, automatisation cabinet libéral, CRM augmentés, agents conversationnels caveau, marketing digital local. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fuveau : sessions pour vignerons AOC, professions libérales et dirigeants TPE/PME de l'est aixois souhaitant maîtriser l'IA opérationnelle.",
-      en: "Coaching 1-to-1 à Fuveau : sessions pour vignerons AOC, professions libérales et dirigeants TPE/PME de l'est aixois souhaitant maîtriser l'IA opérationnelle.",
+      fr: "Coaching 1-to-1 à Fuveau : sessions pour vignerons AOC, professions libérales et dirigeants de PME et d'ETI de l'est aixois souhaitant maîtriser l'IA opérationnelle.",
+      en: "Coaching 1-to-1 à Fuveau : sessions pour vignerons AOC, professions libérales et dirigeants de PME et d'ETI de l'est aixois souhaitant maîtriser l'IA opérationnelle.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const FUVEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Fuveau  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, viticulteurs AOC et PME tertiaires fuvelains. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, viticulteurs AOC et PME tertiaires fuvelains. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles AOC Sainte-Victoire ?",

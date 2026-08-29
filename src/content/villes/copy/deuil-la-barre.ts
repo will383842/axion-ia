@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const DEUIL_LA_BARRE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Deuil-la-Barre, commune de 23 099 habitants du Val-d'Oise située à environ 9 km au nord de Paris. Notre cabinet intervient sur site dans la ZAC du Moutier et auprès des professions libérales, commerces de proximité et acteurs de santé locaux. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées au tissu de proximité d'Enghien-les-Bains, Montmorency et Épinay-sur-Seine. Les ETI sont également accompagnées en complément.",
+    "Axion-IA accompagne les PME et ETI de Deuil-la-Barre, commune de 23 099 habitants du Val-d'Oise située à environ 9 km au nord de Paris. Notre cabinet intervient sur site dans la ZAC du Moutier et auprès des professions libérales, commerces de proximité et acteurs de santé locaux. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées au tissu de proximité d'Enghien-les-Bains, Montmorency et Épinay-sur-Seine. Les grands groupes sont accompagnés en complément.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Deuil-la-Barre, commune de 23 099 habitants du Val-d'Oise située à environ 9 km au nord de Paris. Notre cabinet intervient sur site dans la ZAC du Moutier et auprès des professions libérales, commerces de proximité et acteurs de santé locaux. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées au tissu de proximité d'Enghien-les-Bains, Montmorency et Épinay-sur-Seine. Les ETI sont également accompagnées en complément.",
+    "Axion-IA accompagne les PME et ETI de Deuil-la-Barre, commune de 23 099 habitants du Val-d'Oise située à environ 9 km au nord de Paris. Notre cabinet intervient sur site dans la ZAC du Moutier et auprès des professions libérales, commerces de proximité et acteurs de santé locaux. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées au tissu de proximité d'Enghien-les-Bains, Montmorency et Épinay-sur-Seine. Les grands groupes sont accompagnés en complément.",
   directAnswerFr:
-    "À Deuil-la-Barre (Val-d'Oise, 23 099 habitants), Axion-IA accompagne en priorité les TPE et PME locales — commerces de la ZAC du Moutier, restaurateurs, professions libérales et les 50 professionnels de santé du territoire. Nos consultants se déplacent depuis Paris (13 minutes via la ligne H Transilien depuis Paris-Nord) pour réaliser des audits IA, automatiser les processus métiers et déployer des outils en code custom. Les ETI viennent en complément. Aucun lien avec Cap Digital ou Station F : nous restons un cabinet indépendant centré sur le tissu francophone de proximité.",
+    "À Deuil-la-Barre (Val-d'Oise, 23 099 habitants), Axion-IA accompagne en priorité les PME et ETI locales — commerces de la ZAC du Moutier, restaurateurs, professions libérales et les 50 professionnels de santé du territoire. Nos consultants se déplacent depuis Paris (13 minutes via la ligne H Transilien depuis Paris-Nord) pour réaliser des audits IA, automatiser les processus métiers et déployer des outils en code custom. Les grands groupes viennent en complément. Aucun lien avec Cap Digital ou Station F : nous restons un cabinet indépendant centré sur le tissu francophone de proximité.",
   directAnswerEn:
-    "À Deuil-la-Barre (Val-d'Oise, 23 099 habitants), Axion-IA accompagne en priorité les TPE et PME locales — commerces de la ZAC du Moutier, restaurateurs, professions libérales et les 50 professionnels de santé du territoire. Nos consultants se déplacent depuis Paris (13 minutes via la ligne H Transilien depuis Paris-Nord) pour réaliser des audits IA, automatiser les processus métiers et déployer des outils en code custom. Les ETI viennent en complément. Aucun lien avec Cap Digital ou Station F : nous restons un cabinet indépendant centré sur le tissu francophone de proximité.",
+    "À Deuil-la-Barre (Val-d'Oise, 23 099 habitants), Axion-IA accompagne en priorité les PME et ETI locales — commerces de la ZAC du Moutier, restaurateurs, professions libérales et les 50 professionnels de santé du territoire. Nos consultants se déplacent depuis Paris (13 minutes via la ligne H Transilien depuis Paris-Nord) pour réaliser des audits IA, automatiser les processus métiers et déployer des outils en code custom. Les grands groupes viennent en complément. Aucun lien avec Cap Digital ou Station F : nous restons un cabinet indépendant centré sur le tissu francophone de proximité.",
   seoHook: "commerces de proximité & santé",
   ecosystemFr:
-    "Deuil-la-Barre s'insère dans l'agglomération Plaine Vallée, à 9 km au nord de Paris. La commune compte la ZAC du Moutier (environ 20 entreprises), un marché couvert à Mortefontaines, plusieurs supermarchés, restaurants et un centre d'imagerie médicale. Les communes limitrophes — Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine — élargissent le bassin économique accessible à nos clients TPE et PME.",
+    "Deuil-la-Barre s'insère dans l'agglomération Plaine Vallée, à 9 km au nord de Paris. La commune compte la ZAC du Moutier (environ 20 entreprises), un marché couvert à Mortefontaines, plusieurs supermarchés, restaurants et un centre d'imagerie médicale. Les communes limitrophes — Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine — élargissent le bassin économique accessible à nos clients PME et ETI.",
   ecosystemEn:
-    "Deuil-la-Barre s'insère dans l'agglomération Plaine Vallée, à 9 km au nord de Paris. La commune compte la ZAC du Moutier (environ 20 entreprises), un marché couvert à Mortefontaines, plusieurs supermarchés, restaurants et un centre d'imagerie médicale. Les communes limitrophes — Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine — élargissent le bassin économique accessible à nos clients TPE et PME.",
+    "Deuil-la-Barre s'insère dans l'agglomération Plaine Vallée, à 9 km au nord de Paris. La commune compte la ZAC du Moutier (environ 20 entreprises), un marché couvert à Mortefontaines, plusieurs supermarchés, restaurants et un centre d'imagerie médicale. Les communes limitrophes — Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine — élargissent le bassin économique accessible à nos clients PME et ETI.",
   distancesFr:
     "Deuil-la-Barre est à environ 9 km au nord de Paris. Trajet 13-14 minutes en Transilien ligne H depuis les gares de Deuil-Montmagny ou La Barre-Ormesson vers Paris-Nord.",
   distancesEn:
@@ -35,22 +35,22 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
       en: "Audit IA Sur place sur site à Deuil-la-Barre ({{price:audit-flash|flat}}, 4 h) : cartographie des processus pour commerces de la ZAC du Moutier, cabinets libéraux et acteurs de santé locaux, avec trois chantiers prioritaires identifiés.",
     },
     interventions: {
-      fr: "Interventions à Deuil-la-Barre dès {{price:intervention-4h|flat}} : automatisation de la facturation, prise de rendez-vous et relances pour TPE et PME du commerce, de la restauration et des professions libérales.",
-      en: "Interventions à Deuil-la-Barre dès {{price:intervention-4h|flat}} : automatisation de la facturation, prise de rendez-vous et relances pour TPE et PME du commerce, de la restauration et des professions libérales.",
+      fr: "Interventions à Deuil-la-Barre dès {{price:intervention-4h|flat}} : automatisation de la facturation, prise de rendez-vous et relances pour PME et ETI du commerce, de la restauration et des professions libérales.",
+      en: "Interventions à Deuil-la-Barre dès {{price:intervention-4h|flat}} : automatisation de la facturation, prise de rendez-vous et relances pour PME et ETI du commerce, de la restauration et des professions libérales.",
     },
     implementation: {
       fr: "Implémentation IA à Deuil-la-Barre dès {{price:impl-poc|entry}} : développement de modules sur-mesure en code custom (pas de no-code) pour PME locales du Val-d'Oise — gestion documentaire, CRM, planning.",
       en: "Implémentation IA à Deuil-la-Barre dès {{price:impl-poc|entry}} : développement de modules sur-mesure en code custom (pas de no-code) pour PME locales du Val-d'Oise — gestion documentaire, CRM, planning.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Deuil-la-Barre dès {{price:intervention-dirigeants|flat}} : coaching des dirigeants de TPE et PME pour prioriser les cas d'usage IA et structurer leur feuille de route.",
-      en: "Sessions 1-to-1 à Deuil-la-Barre dès {{price:intervention-dirigeants|flat}} : coaching des dirigeants de TPE et PME pour prioriser les cas d'usage IA et structurer leur feuille de route.",
+      fr: "Sessions 1-to-1 à Deuil-la-Barre dès {{price:intervention-dirigeants|flat}} : coaching des dirigeants de PME et d'ETI pour prioriser les cas d'usage IA et structurer leur feuille de route.",
+      en: "Sessions 1-to-1 à Deuil-la-Barre dès {{price:intervention-dirigeants|flat}} : coaching des dirigeants de PME et d'ETI pour prioriser les cas d'usage IA et structurer leur feuille de route.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Deuil-la-Barre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 099 habitants du Val-d'Oise, à 9 km au nord de Paris, où l'économie repose sur un tissu dense de TPE : les quelque 88 entreprises de la ZAC du Moutier (rue Galliéni), les commerçants du marché des Mortefontaines, les restaurateurs, les professions libérales et les acteurs de santé du territoire. Deux pôles commerçants se côtoient depuis l'ouverture de la halte La Barre-Ormesson en 1891. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Deuil-la-Barre, itérations à distance — Paris à 13 minutes en Transilien ligne H.",
+        hero: "Axion-IA conçoit et augmente à Deuil-la-Barre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 099 habitants du Val-d'Oise, à 9 km au nord de Paris, où l'économie repose sur un tissu dense de PME : les quelque 88 entreprises de la ZAC du Moutier (rue Galliéni), les commerçants du marché des Mortefontaines, les restaurateurs, les professions libérales et les acteurs de santé du territoire. Deux pôles commerçants se côtoient depuis l'ouverture de la halte La Barre-Ormesson en 1891. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Deuil-la-Barre, itérations à distance — Paris à 13 minutes en Transilien ligne H.",
         whyHere: [
           "Tissu de proximité piloté par le commerce de détail : la ZAC du Moutier (2,24 ha, rue Galliéni, environ 88 entreprises) côtoie le marché des Mortefontaines et ses quelque vingt commerçants alimentaires présents trois fois par semaine. On construit des vitrines e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop — et des parcours d'achat mobile-first calibrés pour cette clientèle de proximité du Val-d'Oise.",
           "Acteurs de santé présents sur la commune (centre d'imagerie médicale, professionnels de santé du territoire) : nos formulaires de prise de rendez-vous, espaces patients et chatbots restent hébergeables en UE et conformes RGPD pour les données sensibles, sans transit hors Europe sans DPA, avec chiffrement et registre des traitements à l'appui des cabinets libéraux deuillois.",
@@ -86,12 +86,6 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous en ligne, automatisation de facturation) sur le site existant d'un commerçant du marché des Mortefontaines, d'un artisan de la ZAC du Moutier, d'un restaurant ou d'une profession libérale, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -125,7 +119,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous les communes autour de Deuil-la-Barre dans l'agglomération Plaine Vallée ?",
-            a: "Oui. Depuis Deuil-la-Barre, on accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
+            a: "Oui. Depuis Deuil-la-Barre, on accompagne aussi les PME, ETI et grands groupes de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -136,7 +130,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant d'un commerce de la ZAC du Moutier ou d'un cabinet de santé en activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, solution transférable à tout prestataire local du Val-d'Oise ou de l'agglomération Plaine Vallée, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Deuil-la-Barre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 099 habitants du Val-d'Oise, à 9 km au nord de Paris, où l'économie repose sur un tissu dense de TPE : les quelque 88 entreprises de la ZAC du Moutier (rue Galliéni), les commerçants du marché des Mortefontaines, les restaurateurs, les professions libérales et les acteurs de santé du territoire. Deux pôles commerçants se côtoient depuis l'ouverture de la halte La Barre-Ormesson en 1891. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Deuil-la-Barre, itérations à distance — Paris à 13 minutes en Transilien ligne H.",
+        hero: "Axion-IA conçoit et augmente à Deuil-la-Barre des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune de 23 099 habitants du Val-d'Oise, à 9 km au nord de Paris, où l'économie repose sur un tissu dense de PME : les quelque 88 entreprises de la ZAC du Moutier (rue Galliéni), les commerçants du marché des Mortefontaines, les restaurateurs, les professions libérales et les acteurs de santé du territoire. Deux pôles commerçants se côtoient depuis l'ouverture de la halte La Barre-Ormesson en 1891. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Deuil-la-Barre, itérations à distance — Paris à 13 minutes en Transilien ligne H.",
         whyHere: [
           "Tissu de proximité piloté par le commerce de détail : la ZAC du Moutier (2,24 ha, rue Galliéni, environ 88 entreprises) côtoie le marché des Mortefontaines et ses quelque vingt commerçants alimentaires présents trois fois par semaine. On construit des vitrines e-commerce multi-CMS — WordPress, Shopify, WooCommerce, PrestaShop — et des parcours d'achat mobile-first calibrés pour cette clientèle de proximité du Val-d'Oise.",
           "Acteurs de santé présents sur la commune (centre d'imagerie médicale, professionnels de santé du territoire) : nos formulaires de prise de rendez-vous, espaces patients et chatbots restent hébergeables en UE et conformes RGPD pour les données sensibles, sans transit hors Europe sans DPA, avec chiffrement et registre des traitements à l'appui des cabinets libéraux deuillois.",
@@ -172,12 +166,6 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous en ligne, automatisation de facturation) sur le site existant d'un commerçant du marché des Mortefontaines, d'un artisan de la ZAC du Moutier, d'un restaurant ou d'une profession libérale, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -211,7 +199,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous les communes autour de Deuil-la-Barre dans l'agglomération Plaine Vallée ?",
-            a: "Oui. Depuis Deuil-la-Barre, on accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
+            a: "Oui. Depuis Deuil-la-Barre, on accompagne aussi les PME, ETI et grands groupes de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -243,11 +231,11 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux sont prioritaires pour Axion-IA à Deuil-la-Barre ?",
-      a: "Nous travaillons avec les TPE et PME du commerce de détail (ZAC du Moutier), de la restauration, des professions libérales et des acteurs de santé. Les ETI sont accompagnées en complément.",
+      a: "Nous travaillons avec les PME et ETI du commerce de détail (ZAC du Moutier), de la restauration, des professions libérales et des acteurs de santé. Les grands groupes sont accompagnés en complément.",
     },
     {
       q: "Axion-IA fait-il du no-code à Deuil-la-Barre ?",
-      a: "Non. Axion-IA développe exclusivement en code custom, garantissant la maîtrise complète du code source, l'absence de dépendance fournisseur et la conformité RGPD pour nos clients TPE et PME.",
+      a: "Non. Axion-IA développe exclusivement en code custom, garantissant la maîtrise complète du code source, l'absence de dépendance fournisseur et la conformité RGPD pour nos clients PME et ETI.",
     },
   ],
 };

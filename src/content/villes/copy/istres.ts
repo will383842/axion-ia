@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ISTRES_COPY: VilleCopy = {
   pitchFr:
-    "Istres (13), ville des Bouches-du-Rhône au bord de l'étang de Berre, abrite la base aérienne 125 et son centre d'essais en vol, cœur de l'aéronautique militaire française. Son tissu mêle PME de sous-traitance aéro et défense, logistique du pourtour de l'étang, TPE artisanales, commerces et services. Axion-IA accompagne en priorité les TPE puis les PME istréennes.",
+    "Istres (13), ville des Bouches-du-Rhône au bord de l'étang de Berre, abrite la base aérienne 125 et son centre d'essais en vol, cœur de l'aéronautique militaire française. Son tissu mêle PME de sous-traitance aéro et défense, logistique du pourtour de l'étang, PME artisanales, commerces et services. Axion-IA accompagne en priorité les PME puis les ETI istréennes.",
   pitchEn:
-    "Istres (13), ville des Bouches-du-Rhône au bord de l'étang de Berre, abrite la base aérienne 125 et son centre d'essais en vol, cœur de l'aéronautique militaire française. Son tissu mêle PME de sous-traitance aéro et défense, logistique du pourtour de l'étang, TPE artisanales, commerces et services. Axion-IA accompagne en priorité les TPE puis les PME istréennes.",
+    "Istres (13), ville des Bouches-du-Rhône au bord de l'étang de Berre, abrite la base aérienne 125 et son centre d'essais en vol, cœur de l'aéronautique militaire française. Son tissu mêle PME de sous-traitance aéro et défense, logistique du pourtour de l'étang, PME artisanales, commerces et services. Axion-IA accompagne en priorité les PME puis les ETI istréennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Istres (13) auprès des TPE en priorité, puis des PME : sous-traitance aéronautique et défense gravitant autour de la base 125, logistique de l'étang de Berre, artisans du BTP, commerces et services aux entreprises. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Istres (13) auprès des PME en priorité, puis des PME : sous-traitance aéronautique et défense gravitant autour de la base 125, logistique de l'étang de Berre, artisans du BTP, commerces et services aux entreprises. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Istres (13) auprès des TPE en priorité, puis des PME : sous-traitance aéronautique et défense gravitant autour de la base 125, logistique de l'étang de Berre, artisans du BTP, commerces et services aux entreprises. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Istres (13) auprès des PME en priorité, puis des PME : sous-traitance aéronautique et défense gravitant autour de la base 125, logistique de l'étang de Berre, artisans du BTP, commerces et services aux entreprises. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   seoHook: "aéronautique défense & logistique",
   ecosystemFr:
     "Istres est structurée par la base aérienne 125 et son centre d'essais en vol, qui irriguent un écosystème de PME de sous-traitance aéronautique et défense. Le pourtour de l'étang de Berre concentre logistique et industrie, tandis que le centre-ville réunit commerces, artisans du BTP et services aux entreprises. Bassin à forte culture technique et industrielle.",
@@ -30,8 +30,8 @@ export const ISTRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Istres : diagnostic pour PME de sous-traitance aéro-défense, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
-      en: "Audit IA à Istres : diagnostic pour PME de sous-traitance aéro-défense, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      fr: "Audit IA à Istres : diagnostic pour PME de sous-traitance aéro-défense, acteurs logistiques et PME artisanales. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Istres : diagnostic pour PME de sous-traitance aéro-défense, acteurs logistiques et PME artisanales. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
       fr: "Interventions IA sur site à Istres : formats adaptés à l'atelier, l'entrepôt, le commerce ou le bureau. Vos équipes prennent ensuite la main sur les outils en autonomie.",
@@ -42,8 +42,8 @@ export const ISTRES_COPY: VilleCopy = {
       en: "Implémentation IA à Istres : contrôle qualité par vision pour la sous-traitance aéro, traçabilité documentaire, optimisation logistique, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Istres : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME istréennes.",
-      en: "Coaching 1-to-1 à Istres : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME istréennes.",
+      fr: "Coaching 1-to-1 à Istres : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME istréennes.",
+      en: "Coaching 1-to-1 à Istres : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME istréennes.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Istres : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, suivi logistique et catalogues techniques connectés à vos process.",
@@ -58,7 +58,7 @@ export const ISTRES_COPY: VilleCopy = {
           "Le tissu istréen est dominé par la sous-traitance aéronautique et défense gravitant autour de la BA 125 et du technopôle Jean Sarrail (7 entreprises, ~1 525 emplois, pôle SAFE) : nous construisons des portails clients industriels, des configurateurs de pièces et des espaces documentaires reliés à vos process qualité et à votre traçabilité dossier de navigabilité.",
           "La proximité du Centre d'essais en vol et des campagnes Dassault/Thales/Safran/DGA impose une gestion documentaire lourde : nous développons des plateformes de recherche sémantique sur comptes rendus d'essais, normes et fiches techniques, avec contrôle d'accès fin et journalisation.",
           "La logistique de l'étang de Berre et de CLÉSUD (720 000 m² d'entrepôts, 2e triage ferroviaire de France, ID Logistics, STEF, GEODIS, GXO à Miramas) appelle des outils de suivi de livraison, portails transporteurs et tableaux de bord temps réel que nous savons interfacer avec vos WMS et TMS.",
-          "Les TPE et PME istréennes — artisans du BTP des zones Négron, Tubé et Trigance, commerces du centre, services aux entreprises — ont besoin de sites vitrines rapides, de devis en ligne et de boutiques e-commerce multi-CMS : nous livrons un front mobile-first, accessible et augmenté par un agent conversationnel maison.",
+          "Les PME et ETI istréennes — artisans du BTP des zones Négron, Tubé et Trigance, commerces du centre, services aux entreprises — ont besoin de sites vitrines rapides, de devis en ligne et de boutiques e-commerce multi-CMS : nous livrons un front mobile-first, accessible et augmenté par un agent conversationnel maison.",
         ],
         methodology: [
           {
@@ -88,12 +88,6 @@ export const ISTRES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour les artisans du BTP, commerces du centre-ville et indépendants istréens des zones Négron, Tubé ou Trigance : site mobile-first, devis en ligne ou boutique e-commerce multi-CMS, avec agent conversationnel répondant aux demandes courantes.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail métier ou plateforme SaaS sur mesure",
@@ -127,7 +121,7 @@ export const ISTRES_COPY: VilleCopy = {
             a: "Pour les prestataires logistiques du pourtour de l'étang de Berre et de la plateforme CLÉSUD (Miramas), nous construisons des portails transporteurs, du suivi de livraison en temps réel et des tableaux de bord interfacés avec vos WMS et TMS, augmentés par des automatisations IA pour le tri documentaire et la qualification des demandes.",
           },
           {
-            q: "Faites-vous aussi des sites e-commerce et des sites vitrines pour les TPE istréennes ?",
+            q: "Faites-vous aussi des sites e-commerce et des sites vitrines pour les PME istréennes ?",
             a: "Oui, c'est une part importante de notre activité à Istres. Nous livrons des sites vitrines mobile-first, des devis en ligne et des boutiques e-commerce sur les principaux CMS (ou en développement sur mesure) pour les artisans du BTP, commerces et services du centre et des zones Négron, Tubé et Trigance, avec un agent conversationnel pour traiter les demandes récurrentes.",
           },
           {
@@ -174,12 +168,6 @@ export const ISTRES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase or e-commerce site",
-            detail:
-              "For Istres construction trades, town-centre shops and freelancers in the Négron, Tubé or Trigance zones: mobile-first site, online quotes or multi-CMS e-commerce store, with a conversational agent answering common requests.",
-          },
           {
             sizeLabel: "SME",
             price: "Business portal or custom SaaS platform",
@@ -237,8 +225,8 @@ export const ISTRES_COPY: VilleCopy = {
       a: "Oui, contrôle qualité par vision, traçabilité documentaire, automatisation des flux et agents conversationnels B2B pour les PME fournisseurs gravitant autour de la base 125.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans et commerces d'Istres ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
+      q: "Travaillez-vous avec les PME de l'artisanat et du commerce d'Istres ?",
+      a: "Oui, les PME sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Quels services pour la logistique de l'étang de Berre ?",

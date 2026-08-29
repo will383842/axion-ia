@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const VIF_COPY: VilleCopy = {
   pitchFr:
-    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
+    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de PME et ETI. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
   pitchEn:
-    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
+    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de PME et ETI. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vif (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vif (38). Nous accompagnons tous types d'activités : PME du BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vif (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vif (38). Nous accompagnons tous types d'activités : PME du BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
   seoHook: "agriculture élevage & services aux",
   ecosystemFr:
-    "Vif est positionnée dans la partie haute de la vallée de la Gresse, au sud immédiat de la Métropole grenobloise. Tissu économique péri-urbain mixte : TPE artisanat BTP (BTP rural, second œuvre), commerces de proximité, professions libérales installées, activité agricole résiduelle (élevage bovin, pâtures alpines périphériques). Position géographique vers Vercors et Trièves.",
+    "Vif est positionnée dans la partie haute de la vallée de la Gresse, au sud immédiat de la Métropole grenobloise. Tissu économique péri-urbain mixte : PME du BTP (BTP rural, second œuvre), commerces de proximité, professions libérales installées, activité agricole résiduelle (élevage bovin, pâtures alpines périphériques). Position géographique vers Vercors et Trièves.",
   ecosystemEn:
-    "Vif est positionnée dans la partie haute de la vallée de la Gresse, au sud immédiat de la Métropole grenobloise. Tissu économique péri-urbain mixte : TPE artisanat BTP (BTP rural, second œuvre), commerces de proximité, professions libérales installées, activité agricole résiduelle (élevage bovin, pâtures alpines périphériques). Position géographique vers Vercors et Trièves.",
+    "Vif est positionnée dans la partie haute de la vallée de la Gresse, au sud immédiat de la Métropole grenobloise. Tissu économique péri-urbain mixte : PME du BTP (BTP rural, second œuvre), commerces de proximité, professions libérales installées, activité agricole résiduelle (élevage bovin, pâtures alpines périphériques). Position géographique vers Vercors et Trièves.",
   distancesFr:
     "Grenoble centre à 25 min voiture N75/A480. Pont-de-Claix à 10 min. Aéroport Grenoble-Alpes-Isère à 1h15. Axe vers Trièves (Monestier-de-Clermont 30 min) et Vercors.",
   distancesEn:
     "Grenoble centre à 25 min voiture N75/A480. Pont-de-Claix à 10 min. Aéroport Grenoble-Alpes-Isère à 1h15. Axe vers Trièves (Monestier-de-Clermont 30 min) et Vercors.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture & élevage (vallée Gresse)",
     "Commerce de proximité",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const VIF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Vif : diagnostic adapté aux PME artisanales, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Vif : diagnostic adapté aux PME artisanales, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vif : formats adaptés au commerce, atelier artisan, exploitation agricole ou cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const VIF_COPY: VilleCopy = {
       en: "Implémentation IA à Vif : agents conversationnels client, automatisation devis BTP, classification photos cultures/animaux, gestion RDV, CRM augmentés. Adapté tissu rural péri-urbain.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vif : sessions dans votre exploitation, commerce, atelier ou en visio. Agriculteurs, éleveurs, artisans, gérants TPE/PME vifards souhaitant maîtriser l'IA dans leur métier.",
-      en: "Coaching 1-to-1 à Vif : sessions dans votre exploitation, commerce, atelier ou en visio. Agriculteurs, éleveurs, artisans, gérants TPE/PME vifards souhaitant maîtriser l'IA dans leur métier.",
+      fr: "Coaching 1-to-1 à Vif : sessions dans votre exploitation, commerce, atelier ou en visio. Agriculteurs, éleveurs, artisans, gérants PME et ETI vifards souhaitant maîtriser l'IA dans leur métier.",
+      en: "Coaching 1-to-1 à Vif : sessions dans votre exploitation, commerce, atelier ou en visio. Agriculteurs, éleveurs, artisans, gérants PME et ETI vifards souhaitant maîtriser l'IA dans leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const VIF_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs et éleveurs autour de Vif (élevage bovin, pâtures, agriculture résiduelle) sur leurs cas IA spécifiques : prédiction météo locale, classification photos animaux/cultures, automatisation traçabilité, agents conversationnels vente directe.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans BTP vifards ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Vif (BTP rural, plombiers, électriciens, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning saisonnier. Audit sur place {{price:audit-flash|flat}} adapté.",
+      q: "Travaillez-vous avec les PME du BTP vifards ?",
+      a: "Oui, nous accompagnons les PME du BTP à Vif (BTP rural, plombiers, électriciens, paysagistes) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning saisonnier. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les commerces et professions libérales locales ?",

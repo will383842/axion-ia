@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const CHALON_SUR_SAONE_COPY: VilleCopy = {
   pitchFr:
-    "Chalon-sur-Saône (71), sous-préfecture de Saône-et-Loire (45 102 habitants), est un pôle industriel et logistique de Bourgogne-Franche-Comté entre Dijon et Lyon. Tissu historique métallurgie, mécanique et verrerie (Saint-Gobain, Framatome, Pinette Emidecau). Axion-IA accompagne en priorité les TPE et PME chalonnaises — commerce, artisanat, sous-traitance industrielle, services — puis les ETI locales.",
+    "Chalon-sur-Saône (71), sous-préfecture de Saône-et-Loire (45 102 habitants), est un pôle industriel et logistique de Bourgogne-Franche-Comté entre Dijon et Lyon. Tissu historique métallurgie, mécanique et verrerie (Saint-Gobain, Framatome, Pinette Emidecau). Axion-IA accompagne en priorité les PME et ETI chalonnaises — commerce, artisanat, sous-traitance industrielle, services — puis les ETI locales.",
   pitchEn:
-    "Chalon-sur-Saône (71), sous-préfecture de Saône-et-Loire (45 102 habitants), est un pôle industriel et logistique de Bourgogne-Franche-Comté entre Dijon et Lyon. Tissu historique métallurgie, mécanique et verrerie (Saint-Gobain, Framatome, Pinette Emidecau). Axion-IA accompagne en priorité les TPE et PME chalonnaises — commerce, artisanat, sous-traitance industrielle, services — puis les ETI locales.",
+    "Chalon-sur-Saône (71), sous-préfecture de Saône-et-Loire (45 102 habitants), est un pôle industriel et logistique de Bourgogne-Franche-Comté entre Dijon et Lyon. Tissu historique métallurgie, mécanique et verrerie (Saint-Gobain, Framatome, Pinette Emidecau). Axion-IA accompagne en priorité les PME et ETI chalonnaises — commerce, artisanat, sous-traitance industrielle, services — puis les ETI locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les TPE et PME chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit sur place {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les PME et ETI chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit sur place {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les TPE et PME chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit sur place {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chalon-sur-Saône (71) et dans son agglomération (Champforgeuil, Saint-Marcel, Châtenoy-le-Royal, Crissey, Fragnes-La Loyère). Nous accompagnons en priorité les PME et ETI chalonnaises de la sous-traitance mécanique, du commerce, de l'artisanat et des services, ainsi que les ETI implantées en Zone Nord ou Zone Sud. Audit sur place {{price:audit-flash|flat}}, intervention {{price:intervention-4h|flat}}, code sur mesure — pas de no-code.",
   seoHook: "sous-traitance mécanique, commerce & services",
   ecosystemFr:
-    "Chalon-sur-Saône est structurée autour de deux zones industrielles historiques : Zone Nord (post-1950) et Zone Sud (1974). Le tissu économique mélange mécanique et métallurgie (héritage Kodak Pathé, présence Saint-Gobain, Framatome, Pinette Emidecau Industries), commerce de centre-ville, artisanat et services. Le canal du Centre relie la Saône et l'agglo bénéficie de l'axe A6 Paris-Lyon. Les TPE-PME locales dominent largement le nombre d'établissements.",
+    "Chalon-sur-Saône est structurée autour de deux zones industrielles historiques : Zone Nord (post-1950) et Zone Sud (1974). Le tissu économique mélange mécanique et métallurgie (héritage Kodak Pathé, présence Saint-Gobain, Framatome, Pinette Emidecau Industries), commerce de centre-ville, artisanat et services. Le canal du Centre relie la Saône et l'agglo bénéficie de l'axe A6 Paris-Lyon. Les PME et ETI locales dominent largement le nombre d'établissements.",
   ecosystemEn:
-    "Chalon-sur-Saône est structurée autour de deux zones industrielles historiques : Zone Nord (post-1950) et Zone Sud (1974). Le tissu économique mélange mécanique et métallurgie (héritage Kodak Pathé, présence Saint-Gobain, Framatome, Pinette Emidecau Industries), commerce de centre-ville, artisanat et services. Le canal du Centre relie la Saône et l'agglo bénéficie de l'axe A6 Paris-Lyon. Les TPE-PME locales dominent largement le nombre d'établissements.",
+    "Chalon-sur-Saône est structurée autour de deux zones industrielles historiques : Zone Nord (post-1950) et Zone Sud (1974). Le tissu économique mélange mécanique et métallurgie (héritage Kodak Pathé, présence Saint-Gobain, Framatome, Pinette Emidecau Industries), commerce de centre-ville, artisanat et services. Le canal du Centre relie la Saône et l'agglo bénéficie de l'axe A6 Paris-Lyon. Les PME et ETI locales dominent largement le nombre d'établissements.",
   distancesFr:
     "Gare de Chalon-sur-Saône sur ligne PLM (TGV directs Paris-Gare-de-Lyon ~1h30). Autoroute A6 sortie Chalon-Nord/Chalon-Sud. Gare TGV Le Creusot Montchanin à 35 km. Aéroport Lyon-Saint-Exupéry à 130 km. Dijon à 65 km, Lyon à 130 km, Paris à 296 km.",
   distancesEn:
@@ -32,8 +32,8 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chalon-sur-Saône : diagnostic 4h pour TPE et PME de la sous-traitance mécanique, du commerce, de l'artisanat et des services. ROI chiffré, plan d'action priorisé. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chalon-sur-Saône : diagnostic 4h pour TPE et PME de la sous-traitance mécanique, du commerce, de l'artisanat et des services. ROI chiffré, plan d'action priorisé. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chalon-sur-Saône : diagnostic 4h pour PME et ETI de la sous-traitance mécanique, du commerce, de l'artisanat et des services. ROI chiffré, plan d'action priorisé. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chalon-sur-Saône : diagnostic 4h pour PME et ETI de la sous-traitance mécanique, du commerce, de l'artisanat et des services. ROI chiffré, plan d'action priorisé. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions sur site à Chalon-sur-Saône (Zone Nord, Zone Sud, centre) : automatisation devis, gestion qualité atelier, traitement documents fournisseurs, agents IA support client. Formation 4 h {{price:intervention-4h|flat}}.",
@@ -44,8 +44,8 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
       en: "Implémentation IA chalonnaise : intégration sur mesure aux ERP industriels, automatisation flux logistiques Saône/A6, classification documents conformité, code Python/TypeScript livré. Dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chalon-sur-Saône : sessions sur site ou en visio pour dirigeants TPE-PME, artisans et chefs d'atelier de l'agglo. Cadrage stratégique IA, montée en compétence interne.",
-      en: "Coaching 1-to-1 à Chalon-sur-Saône : sessions sur site ou en visio pour dirigeants TPE-PME, artisans et chefs d'atelier de l'agglo. Cadrage stratégique IA, montée en compétence interne.",
+      fr: "Coaching 1-to-1 à Chalon-sur-Saône : sessions sur site ou en visio pour dirigeants PME et ETI, artisans et chefs d'atelier de l'agglo. Cadrage stratégique IA, montée en compétence interne.",
+      en: "Coaching 1-to-1 à Chalon-sur-Saône : sessions sur site ou en visio pour dirigeants PME et ETI, artisans et chefs d'atelier de l'agglo. Cadrage stratégique IA, montée en compétence interne.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur le site existant d'un commerce, artisan ou atelier chalonnais, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
@@ -173,12 +167,6 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto the existing site of a Chalon shop, craftsperson or workshop, in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / app",
             detail:
@@ -244,7 +232,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs chalonnais bénéficient le plus de l'IA ?",
-      a: "À Chalon-sur-Saône : la sous-traitance mécanique (devis, qualité, maintenance prédictive), le commerce de centre-ville (chatbot, gestion stocks), l'artisanat BTP (devis, planning) et les services aux entreprises (traitement documents, agents IA). TPE et PME prioritaires.",
+      a: "À Chalon-sur-Saône : la sous-traitance mécanique (devis, qualité, maintenance prédictive), le commerce de centre-ville (chatbot, gestion stocks), l'artisanat BTP (devis, planning) et les services aux entreprises (traitement documents, agents IA). PME et ETI prioritaires.",
     },
     {
       q: "Faites-vous du no-code ou du code sur mesure ?",

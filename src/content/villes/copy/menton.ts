@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MENTON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Menton, Perle de la France à la frontière italienne. Nos experts IA seniors se déplacent sur la Côte d'Azur pour outiller hôtellerie de prestige, commerce du centre historique, restauration méditerranéenne et professionnels frontaliers Monaco.",
+    "Axion-IA accompagne les PME et ETI de Menton, Perle de la France à la frontière italienne. Nos experts IA seniors se déplacent sur la Côte d'Azur pour outiller hôtellerie de prestige, commerce du centre historique, restauration méditerranéenne et professionnels frontaliers Monaco.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Menton, Perle de la France à la frontière italienne. Nos experts IA seniors se déplacent sur la Côte d'Azur pour outiller hôtellerie de prestige, commerce du centre historique, restauration méditerranéenne et professionnels frontaliers Monaco.",
+    "Axion-IA accompagne les PME et ETI de Menton, Perle de la France à la frontière italienne. Nos experts IA seniors se déplacent sur la Côte d'Azur pour outiller hôtellerie de prestige, commerce du centre historique, restauration méditerranéenne et professionnels frontaliers Monaco.",
   directAnswerFr:
-    "À Menton (06, 30 000 habitants), Axion-IA est un cabinet d'architectes seniors en intelligence artificielle. Nous accompagnons en priorité les TPE et PME locales — hôtellerie 4/5 étoiles, commerces du Vieux Menton, restaurants gastronomiques, artisans BTP rénovation Belle Époque, services aux frontaliers Monaco — sur audits, interventions sur site et implémentations IA. ETI servies en complément. Cadre RGPD strict, déplacement Côte d'Azur sous 5 jours ouvrés.",
+    "À Menton (06, 30 000 habitants), Axion-IA est un cabinet d'architectes seniors en intelligence artificielle. Nous accompagnons en priorité les PME et ETI locales — hôtellerie 4/5 étoiles, commerces du Vieux Menton, restaurants gastronomiques, artisans BTP rénovation Belle Époque, services aux frontaliers Monaco — sur audits, interventions sur site et implémentations IA. ETI servies en complément. Cadre RGPD strict, déplacement Côte d'Azur sous 5 jours ouvrés.",
   directAnswerEn:
-    "À Menton (06, 30 000 habitants), Axion-IA est un cabinet d'architectes seniors en intelligence artificielle. Nous accompagnons en priorité les TPE et PME locales — hôtellerie 4/5 étoiles, commerces du Vieux Menton, restaurants gastronomiques, artisans BTP rénovation Belle Époque, services aux frontaliers Monaco — sur audits, interventions sur site et implémentations IA. ETI servies en complément. Cadre RGPD strict, déplacement Côte d'Azur sous 5 jours ouvrés.",
+    "À Menton (06, 30 000 habitants), Axion-IA est un cabinet d'architectes seniors en intelligence artificielle. Nous accompagnons en priorité les PME et ETI locales — hôtellerie 4/5 étoiles, commerces du Vieux Menton, restaurants gastronomiques, artisans BTP rénovation Belle Époque, services aux frontaliers Monaco — sur audits, interventions sur site et implémentations IA. ETI servies en complément. Cadre RGPD strict, déplacement Côte d'Azur sous 5 jours ouvrés.",
   seoHook: "hôtellerie prestige & frontaliers Monaco",
   ecosystemFr:
-    "Menton conjugue tourisme de prestige (Royal Riviera, palaces 4/5 étoiles), commerce du centre historique baroque et marchés bi-nationaux, restauration gastronomique méditerranéenne, et un tissu unique de travailleurs frontaliers Monaco (près de 40 % de la population active). Le Citron de Menton IGP et la Fête du Citron (200 000 visiteurs depuis 1934) structurent l'économie saisonnière. Microclimat sub-tropical, jardins botaniques (Val Rahmeh, Serre de la Madone) et résidentiel Belle Époque haut de gamme complètent l'écosystème TPE/PME.",
+    "Menton conjugue tourisme de prestige (Royal Riviera, palaces 4/5 étoiles), commerce du centre historique baroque et marchés bi-nationaux, restauration gastronomique méditerranéenne, et un tissu unique de travailleurs frontaliers Monaco (près de 40 % de la population active). Le Citron de Menton IGP et la Fête du Citron (200 000 visiteurs depuis 1934) structurent l'économie saisonnière. Microclimat sub-tropical, jardins botaniques (Val Rahmeh, Serre de la Madone) et résidentiel Belle Époque haut de gamme complètent l'écosystème PME et ETI.",
   ecosystemEn:
-    "Menton conjugue tourisme de prestige (Royal Riviera, palaces 4/5 étoiles), commerce du centre historique baroque et marchés bi-nationaux, restauration gastronomique méditerranéenne, et un tissu unique de travailleurs frontaliers Monaco (près de 40 % de la population active). Le Citron de Menton IGP et la Fête du Citron (200 000 visiteurs depuis 1934) structurent l'économie saisonnière. Microclimat sub-tropical, jardins botaniques (Val Rahmeh, Serre de la Madone) et résidentiel Belle Époque haut de gamme complètent l'écosystème TPE/PME.",
+    "Menton conjugue tourisme de prestige (Royal Riviera, palaces 4/5 étoiles), commerce du centre historique baroque et marchés bi-nationaux, restauration gastronomique méditerranéenne, et un tissu unique de travailleurs frontaliers Monaco (près de 40 % de la population active). Le Citron de Menton IGP et la Fête du Citron (200 000 visiteurs depuis 1934) structurent l'économie saisonnière. Microclimat sub-tropical, jardins botaniques (Val Rahmeh, Serre de la Madone) et résidentiel Belle Époque haut de gamme complètent l'écosystème PME et ETI.",
   distancesFr:
     "Menton est à 7 km de Vintimille (frontière italienne), 10 km de Monaco, 30 km de Nice et 32 km de l'aéroport Nice-Côte d'Azur. Gare SNCF Menton, TGV via Nice-Ville.",
   distancesEn:
@@ -30,30 +30,30 @@ export const MENTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audits IA Menton ciblés TPE/PME hôtelières et commerciales : cartographier les flux saisonniers (Fête du Citron, haute saison estivale) et identifier les automatisations à fort ROI (réservations, multilingue FR/IT/EN, gestion frontaliers).",
-      en: "Audits IA Menton ciblés TPE/PME hôtelières et commerciales : cartographier les flux saisonniers (Fête du Citron, haute saison estivale) et identifier les automatisations à fort ROI (réservations, multilingue FR/IT/EN, gestion frontaliers).",
+      fr: "Audits IA Menton ciblés PME et ETI hôtelières et commerciales : cartographier les flux saisonniers (Fête du Citron, haute saison estivale) et identifier les automatisations à fort ROI (réservations, multilingue FR/IT/EN, gestion frontaliers).",
+      en: "Audits IA Menton ciblés PME et ETI hôtelières et commerciales : cartographier les flux saisonniers (Fête du Citron, haute saison estivale) et identifier les automatisations à fort ROI (réservations, multilingue FR/IT/EN, gestion frontaliers).",
     },
     interventions: {
-      fr: "Interventions sur site à Menton pour TPE/PME : assistants multilingues hôtellerie (FR/IT/EN/RU), automatisation devis BTP rénovation Belle Époque, outils paie frontaliers Monaco, déplacement Côte d'Azur sous 5 jours.",
-      en: "Interventions sur site à Menton pour TPE/PME : assistants multilingues hôtellerie (FR/IT/EN/RU), automatisation devis BTP rénovation Belle Époque, outils paie frontaliers Monaco, déplacement Côte d'Azur sous 5 jours.",
+      fr: "Interventions sur site à Menton pour PME et ETI : assistants multilingues hôtellerie (FR/IT/EN/RU), automatisation devis BTP rénovation Belle Époque, outils paie frontaliers Monaco, déplacement Côte d'Azur sous 5 jours.",
+      en: "Interventions sur site à Menton pour PME et ETI : assistants multilingues hôtellerie (FR/IT/EN/RU), automatisation devis BTP rénovation Belle Époque, outils paie frontaliers Monaco, déplacement Côte d'Azur sous 5 jours.",
     },
     implementation: {
-      fr: "Implémentation IA à Menton pour PME (et ETI en complément) : connecter PMS hôteliers, ERP restauration, outils CRM commerces, modules conformité bi-nationale France-Monaco-Italie, dans un cadre RGPD strict.",
-      en: "Implémentation IA à Menton pour PME (et ETI en complément) : connecter PMS hôteliers, ERP restauration, outils CRM commerces, modules conformité bi-nationale France-Monaco-Italie, dans un cadre RGPD strict.",
+      fr: "Implémentation IA à Menton pour PME (et grands groupes en complément) : connecter PMS hôteliers, ERP restauration, outils CRM commerces, modules conformité bi-nationale France-Monaco-Italie, dans un cadre RGPD strict.",
+      en: "Implémentation IA à Menton pour PME (et grands groupes en complément) : connecter PMS hôteliers, ERP restauration, outils CRM commerces, modules conformité bi-nationale France-Monaco-Italie, dans un cadre RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching un-à-un des dirigeants TPE/PME mentonnais : hôteliers, restaurateurs, gestionnaires d'agences immobilières prestige, experts-comptables spécialisés frontaliers — adoption IA mesurée, sans jargon, en français.",
-      en: "Coaching un-à-un des dirigeants TPE/PME mentonnais : hôteliers, restaurateurs, gestionnaires d'agences immobilières prestige, experts-comptables spécialisés frontaliers — adoption IA mesurée, sans jargon, en français.",
+      fr: "Coaching un-à-un des dirigeants de PME et d'ETI mentonnais : hôteliers, restaurateurs, gestionnaires d'agences immobilières prestige, experts-comptables spécialisés frontaliers — adoption IA mesurée, sans jargon, en français.",
+      en: "Coaching un-à-un des dirigeants de PME et d'ETI mentonnais : hôteliers, restaurateurs, gestionnaires d'agences immobilières prestige, experts-comptables spécialisés frontaliers — adoption IA mesurée, sans jargon, en français.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés par IA pour TPE/PME de Menton : hôtels et restaurants avec moteur de réservation multilingue FR/IT/EN, vitrines commerce Vieux Menton, plateformes services frontaliers Monaco — SEO local Côte d'Azur et conformité RGPD.",
-      en: "Sites web augmentés par IA pour TPE/PME de Menton : hôtels et restaurants avec moteur de réservation multilingue FR/IT/EN, vitrines commerce Vieux Menton, plateformes services frontaliers Monaco — SEO local Côte d'Azur et conformité RGPD.",
+      fr: "Sites web augmentés par IA pour PME et ETI de Menton : hôtels et restaurants avec moteur de réservation multilingue FR/IT/EN, vitrines commerce Vieux Menton, plateformes services frontaliers Monaco — SEO local Côte d'Azur et conformité RGPD.",
+      en: "Sites web augmentés par IA pour PME et ETI de Menton : hôtels et restaurants avec moteur de réservation multilingue FR/IT/EN, vitrines commerce Vieux Menton, plateformes services frontaliers Monaco — SEO local Côte d'Azur et conformité RGPD.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les TPE et PME de Menton, à la frontière italienne. Le tissu local est singulier : hôtellerie de prestige adossée aux palaces de Monaco (Menton fournit 15,5 % des salariés de l'hébergement-restauration monégasque), services aux 40 % d'actifs frontaliers, écosystème étudiant international de Sciences Po campus Méditerranée Moyen-Orient (~400 étudiants, 40 pays), filière Citron de Menton IGP et commerces du Port de Garavan. Nous bâtissons des sites multilingues FR/IT/EN, des moteurs de réservation, des vitrines e-commerce et des plateformes métier — UX/UI, mobile, multi-CMS et IA — en code maîtrisé, hébergement UE/RGPD, sans verrou éditeur.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les PME et ETI de Menton, à la frontière italienne. Le tissu local est singulier : hôtellerie de prestige adossée aux palaces de Monaco (Menton fournit 15,5 % des salariés de l'hébergement-restauration monégasque), services aux 40 % d'actifs frontaliers, écosystème étudiant international de Sciences Po campus Méditerranée Moyen-Orient (~400 étudiants, 40 pays), filière Citron de Menton IGP et commerces du Port de Garavan. Nous bâtissons des sites multilingues FR/IT/EN, des moteurs de réservation, des vitrines e-commerce et des plateformes métier — UX/UI, mobile, multi-CMS et IA — en code maîtrisé, hébergement UE/RGPD, sans verrou éditeur.",
         whyHere: [
           "Hôtellerie et clientèle frontalière Monaco : nous outillons les hôtels et résidences de prestige mentonnais et les services aux frontaliers (paie, fiscalité bi-nationale, conciergerie) avec des moteurs de réservation et assistants IA multilingues FR/IT/EN/RU, adaptés à une clientèle internationale et à la proximité des palaces de la Société des Bains de Mer.",
           "Saisonnalité Fête du Citron et commerce de centre : la Fête du Citron (jardins Biovès, ~140 tonnes d'agrumes, du 14 février au 3 mars en 2026) et les 8 marchés de la ville, dont le Marché des Halles du Quai de Monléon, génèrent des pics de fréquentation hivernaux que nous absorbons via billetterie en ligne, e-commerce saisonnier et chatbots multilingues.",
@@ -89,12 +89,6 @@ export const MENTON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les indépendants et petits commerces mentonnais — chambre d'hôtes, restaurant du Vieux Menton, producteur Citron IGP, artisan : site vitrine ou boutique e-commerce mono-CMS, multilingue FR/IT, mobile-first et réservation/commande en ligne.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier augmentée IA",
             detail:
@@ -124,7 +118,7 @@ export const MENTON_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous avec les commerces du Port de Garavan et du centre de Menton ?",
-            a: "Oui. Le Port de Garavan (770 anneaux, ~30 commerces créés depuis 2018 par la SPL Ports de Menton, à 700 m de la frontière italienne) et le Marché des Halles du Quai de Monléon réunissent des TPE — location de vélos électriques, shipchandlers, restauration, primeurs — pour lesquelles nous concevons sites vitrines, e-commerce mobile et réservation en ligne, en bilingue FR/IT.",
+            a: "Oui. Le Port de Garavan (770 anneaux, ~30 commerces créés depuis 2018 par la SPL Ports de Menton, à 700 m de la frontière italienne) et le Marché des Halles du Quai de Monléon réunissent des PME — location de vélos électriques, shipchandlers, restauration, primeurs — pour lesquelles nous concevons sites vitrines, e-commerce mobile et réservation en ligne, en bilingue FR/IT.",
           },
           {
             q: "Gérez-vous le multilingue pour l'écosystème étudiant international de Sciences Po Menton ?",
@@ -175,12 +169,6 @@ export const MENTON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For Menton freelancers and small shops — guest house, Vieux Menton restaurant, PGI Lemon producer, artisan: showcase site or single-CMS e-commerce store, FR/IT multilingual, mobile-first with online booking/ordering.",
-          },
-          {
             sizeLabel: "SME",
             price: "AI-augmented business platform",
             detail:
@@ -230,7 +218,7 @@ export const MENTON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA travaille-t-il avec les hôtels et palaces de Menton ?",
-      a: "Oui, l'hôtellerie de prestige 4/5 étoiles est un secteur prioritaire à Menton compte tenu de la proximité Monaco et de la clientèle internationale. Nous outillons les TPE et PME hôtelières sur le multilingue (FR/IT/EN/RU), l'optimisation des réservations en haute saison et la gestion des flux Fête du Citron, dans un cadre RGPD strict.",
+      a: "Oui, l'hôtellerie de prestige 4/5 étoiles est un secteur prioritaire à Menton compte tenu de la proximité Monaco et de la clientèle internationale. Nous outillons les PME et ETI hôtelières sur le multilingue (FR/IT/EN/RU), l'optimisation des réservations en haute saison et la gestion des flux Fête du Citron, dans un cadre RGPD strict.",
     },
     {
       q: "Pouvez-vous accompagner les entreprises de services aux frontaliers Monaco ?",
@@ -238,15 +226,15 @@ export const MENTON_COPY: VilleCopy = {
     },
     {
       q: "Sous combien de temps intervenez-vous sur la Côte d'Azur depuis Menton ?",
-      a: "Nos experts IA seniors se déplacent sur Menton et l'ensemble de la Côte d'Azur (Monaco, Nice, Cap-d'Ail, Roquebrune-Cap-Martin) sous 5 jours ouvrés en moyenne. Pour les TPE et PME du Vieux Menton ou du front de mer, nous combinons visites sur site et travail distant sécurisé.",
+      a: "Nos experts IA seniors se déplacent sur Menton et l'ensemble de la Côte d'Azur (Monaco, Nice, Cap-d'Ail, Roquebrune-Cap-Martin) sous 5 jours ouvrés en moyenne. Pour les PME et ETI du Vieux Menton ou du front de mer, nous combinons visites sur site et travail distant sécurisé.",
     },
     {
       q: "Travaillez-vous avec les commerces et restaurants du centre historique de Menton ?",
-      a: "Oui, les commerces du Vieux Menton, marchés bi-nationaux et restaurants gastronomiques méditerranéens sont un de nos secteurs prioritaires. Nous accompagnons les TPE/PME sur la digitalisation des commandes, la gestion multilingue (clientèle italienne et internationale) et la valorisation du Citron de Menton IGP en ligne.",
+      a: "Oui, les commerces du Vieux Menton, marchés bi-nationaux et restaurants gastronomiques méditerranéens sont un de nos secteurs prioritaires. Nous accompagnons les PME et ETI sur la digitalisation des commandes, la gestion multilingue (clientèle italienne et internationale) et la valorisation du Citron de Menton IGP en ligne.",
     },
     {
       q: "Les ETI sont-elles aussi accompagnées par Axion-IA à Menton ?",
-      a: "Oui, en complément. Notre cœur d'activité reste les TPE et PME locales — hôtellerie, commerce, restauration, BTP, services frontaliers. Nous travaillons aussi avec des ETI installées dans les Alpes-Maritimes lorsque le besoin IA correspond à notre savoir-faire d'experts seniors et à un cadre RGPD strict.",
+      a: "Oui, en complément. Notre cœur d'activité reste les PME et ETI locales — hôtellerie, commerce, restauration, BTP, services frontaliers. Nous travaillons aussi avec des ETI installées dans les Alpes-Maritimes lorsque le besoin IA correspond à notre savoir-faire d'experts seniors et à un cadre RGPD strict.",
     },
     {
       q: "Vos prestations à Menton respectent-elles le RGPD et la spécificité bi-nationale ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AYTRE_COPY: VilleCopy = {
   pitchFr:
-    "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de TPE artisans, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
+    "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de PME artisanales, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
   pitchEn:
-    "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de TPE artisans, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
+    "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de PME artisanales, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aytré (17). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aytré (17). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
   seoHook: "industrie ferroviaire & industrielles",
   ecosystemFr:
-    "Aytré est une commune industrielle de l'agglomération de La Rochelle, connue pour son site Alstom (construction de TGV et trains régionaux). PME industrielles et sous-traitants ferroviaires, TPE artisans BTP, commerces de proximité, professions libérales. Accès plage (Plage d'Aytré-Plage du Platin) et littoral.",
+    "Aytré est une commune industrielle de l'agglomération de La Rochelle, connue pour son site Alstom (construction de TGV et trains régionaux). PME industrielles et sous-traitants ferroviaires, PME du BTP, commerces de proximité, professions libérales. Accès plage (Plage d'Aytré-Plage du Platin) et littoral.",
   ecosystemEn:
-    "Aytré est une commune industrielle de l'agglomération de La Rochelle, connue pour son site Alstom (construction de TGV et trains régionaux). PME industrielles et sous-traitants ferroviaires, TPE artisans BTP, commerces de proximité, professions libérales. Accès plage (Plage d'Aytré-Plage du Platin) et littoral.",
+    "Aytré est une commune industrielle de l'agglomération de La Rochelle, connue pour son site Alstom (construction de TGV et trains régionaux). PME industrielles et sous-traitants ferroviaires, PME du BTP, commerces de proximité, professions libérales. Accès plage (Plage d'Aytré-Plage du Platin) et littoral.",
   distancesFr:
     "Aytré est à 5 min de La Rochelle centre (sud). Gare TGV de La Rochelle à 10 min (Paris Montparnasse 2h50, Bordeaux 2h). Aéroport La Rochelle-Île de Ré à 20 min. Axe N137/A10.",
   distancesEn:
@@ -24,14 +24,14 @@ export const AYTRE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie ferroviaire & sous-traitance Alstom",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aytré : diagnostic adapté aux PME industrielles ferroviaires, sous-traitants, TPE artisans et commerces de l'agglomération de La Rochelle sud. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Aytré : diagnostic adapté aux PME industrielles ferroviaires, sous-traitants, TPE artisans et commerces de l'agglomération de La Rochelle sud. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Aytré : diagnostic adapté aux PME industrielles ferroviaires, sous-traitants, PME de l'artisanat et du commerce de l'agglomération de La Rochelle sud. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Aytré : diagnostic adapté aux PME industrielles ferroviaires, sous-traitants, PME de l'artisanat et du commerce de l'agglomération de La Rochelle sud. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aytré : formats adaptés à l'atelier industriel, au bureau d'études, au commerce ou au cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const AYTRE_COPY: VilleCopy = {
       en: "Implémentation IA à Aytré : maintenance prédictive équipements ferroviaires, contrôle qualité pièces industrielles, traçabilité production, automatisation documentation technique et reporting.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aytré : sessions dans vos locaux industriels, bureau ou en visio. Dirigeants TPE/PME industrielles, sous-traitants ferroviaires et artisans de l'agglomération rochelaise souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Aytré : sessions dans vos locaux industriels, bureau ou en visio. Dirigeants TPE/PME industrielles, sous-traitants ferroviaires et artisans de l'agglomération rochelaise souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Aytré : sessions dans vos locaux industriels, bureau ou en visio. Dirigeants PME et ETI industrielles, sous-traitants ferroviaires et artisans de l'agglomération rochelaise souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Aytré : sessions dans vos locaux industriels, bureau ou en visio. Dirigeants PME et ETI industrielles, sous-traitants ferroviaires et artisans de l'agglomération rochelaise souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const AYTRE_COPY: VilleCopy = {
       a: "Nous accompagnons les PME industrielles et sous-traitants ferroviaires d'Aytré : maintenance prédictive matériel roulant, contrôle qualité pièces, traçabilité production, automatisation documentation technique et optimisation processus fabrication.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME à Aytré ?",
-      a: "Oui, nous accompagnons les TPE artisans, PME industrielles, commerçants et professions libérales d'Aytré : automatisation gestion administrative, agents IA relation client, optimisation processus et outils IA productivité.",
+      q: "Accompagnez-vous les PME et ETI à Aytré ?",
+      a: "Oui, nous accompagnons les PME artisanales, PME industrielles, commerçants et professions libérales d'Aytré : automatisation gestion administrative, agents IA relation client, optimisation processus et outils IA productivité.",
     },
     {
       q: "Quel est le tarif pour un audit IA à Aytré ?",

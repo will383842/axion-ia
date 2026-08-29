@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const DRAP_COPY: VilleCopy = {
   pitchFr:
-    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA accompagne entreprises et indépendants.",
+    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu PME et ETI artisanat BTP, commerces de proximité, services à la personne, professions libérales et PME. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA accompagne entreprises et indépendants.",
+    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu PME et ETI artisanat BTP, commerces de proximité, services à la personne, professions libérales et PME. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Drap (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises de la vallée du Paillon entre Nice et Contes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Drap (06). Nous accompagnons tous types d'activités : PME du BTP, commerçants, professions libérales, PME services et entreprises de la vallée du Paillon entre Nice et Contes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Drap (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises de la vallée du Paillon entre Nice et Contes.",
-  seoHook: "services personne & petites entreprises",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Drap (06). Nous accompagnons tous types d'activités : PME du BTP, commerçants, professions libérales, PME services et entreprises de la vallée du Paillon entre Nice et Contes.",
+  seoHook: "services personne & PME",
   ecosystemFr:
     "Drap est une commune résidentielle de la vallée du Paillon, entre Nice (15 min) et Contes (10 min). Cadre verdoyant en retrait du littoral, attractif pour les familles. Tissu d'artisans BTP, commerces de proximité, services à la personne et professions libérales. Membre de la Métropole Nice Côte d'Azur, la commune bénéficie de la proximité du bassin d'emploi niçois.",
   ecosystemEn:
@@ -22,7 +22,7 @@ export const DRAP_COPY: VilleCopy = {
   distancesEn:
     "Nice centre à 15 min (D2204). Contes à 10 min. La Trinité à 5 min. Aéroport Nice-Côte d'Azur à 20 min. Monaco à 30 min. Gare Nice-Ville à 20 min. Bus Lignes d'Azur.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services à la personne",
     "Professions libérales",
@@ -30,20 +30,20 @@ export const DRAP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à Drap : diagnostic adapté aux PME du BTP, commerçants et professions libérales de la vallée du Paillon. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux PME.",
+      en: "Audit IA à Drap : diagnostic adapté aux PME du BTP, commerçants et professions libérales de la vallée du Paillon. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Drap : formats adaptés à l'atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à Drap : formats adaptés à l'atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Drap : automatisation devis BTP, agents conversationnels client, CRM augmenté, classification documents, gestion planning. Adapté aux TPE/PME de la vallée du Paillon.",
-      en: "Implémentation IA à Drap : automatisation devis BTP, agents conversationnels client, CRM augmenté, classification documents, gestion planning. Adapté aux TPE/PME de la vallée du Paillon.",
+      fr: "Implémentation IA à Drap : automatisation devis BTP, agents conversationnels client, CRM augmenté, classification documents, gestion planning. Adapté aux PME et ETI de la vallée du Paillon.",
+      en: "Implémentation IA à Drap : automatisation devis BTP, agents conversationnels client, CRM augmenté, classification documents, gestion planning. Adapté aux PME et ETI de la vallée du Paillon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Drap : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans BTP, commerçants et gérants TPE/PME de la vallée du Paillon souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Drap : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans BTP, commerçants et gérants TPE/PME de la vallée du Paillon souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Drap : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans BTP, commerçants et gérants PME et ETI de la vallée du Paillon souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Drap : sessions dans votre atelier, commerce, cabinet ou en visio. Artisans BTP, commerçants et gérants PME et ETI de la vallée du Paillon souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const DRAP_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Drap et dans toute la vallée du Paillon (La Trinité, Contes, Peillon, Cantaron). Couverture Métropole Nice Côte d'Azur et accès rapide depuis Nice centre (15 min D2204).",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans BTP de Drap ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Drap sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
+      q: "Travaillez-vous avec les PME du BTP de Drap ?",
+      a: "Oui, nous accompagnons les PME du BTP de Drap sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Accompagnez-vous les commerces et services de proximité ?",

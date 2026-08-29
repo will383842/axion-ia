@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pée-sur-Nivelle (64), commune du Labourd en Pays Basque, 7 264 habitants. Village basque au pied de la Rhune, lac de Saint-Pée, tourisme vert, TPE agricoles, artisans du terroir et commerces locaux. Axion-IA y mène ses missions auprès des organisations locales du Labourd.",
+    "Saint-Pée-sur-Nivelle (64), commune du Labourd en Pays Basque, 7 264 habitants. Village basque au pied de la Rhune, lac de Saint-Pée, tourisme vert, PME agricoles, artisans du terroir et commerces locaux. Axion-IA y mène ses missions auprès des organisations locales du Labourd.",
   pitchEn:
-    "Saint-Pée-sur-Nivelle (64), commune du Labourd en Pays Basque, 7 264 habitants. Village basque au pied de la Rhune, lac de Saint-Pée, tourisme vert, TPE agricoles, artisans du terroir et commerces locaux. Axion-IA y mène ses missions auprès des organisations locales du Labourd.",
+    "Saint-Pée-sur-Nivelle (64), commune du Labourd en Pays Basque, 7 264 habitants. Village basque au pied de la Rhune, lac de Saint-Pée, tourisme vert, PME agricoles, artisans du terroir et commerces locaux. Axion-IA y mène ses missions auprès des organisations locales du Labourd.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pée-sur-Nivelle (64). Nous accompagnons TPE, PME et artisans du Labourd : agriculture basque, tourisme vert, produits du terroir, hébergements. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pée-sur-Nivelle (64). Nous accompagnons PME, ETI et artisans du Labourd : agriculture basque, tourisme vert, produits du terroir, hébergements. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pée-sur-Nivelle (64). Nous accompagnons TPE, PME et artisans du Labourd : agriculture basque, tourisme vert, produits du terroir, hébergements. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pée-sur-Nivelle (64). Nous accompagnons PME, ETI et artisans du Labourd : agriculture basque, tourisme vert, produits du terroir, hébergements. Audit sur place sur mesure.",
   seoHook: "agriculture basque & tourisme vert",
   ecosystemFr:
-    "Saint-Pée-sur-Nivelle est un village du Labourd au pied de la Rhune, 7 264 habitants. Lac de loisirs (base nautique), tourisme vert (petit train de la Rhune), TPE agricoles basques (élevage, piment d'Espelette), artisans du terroir, hébergements ruraux (gîtes, campings) et commerces de village.",
+    "Saint-Pée-sur-Nivelle est un village du Labourd au pied de la Rhune, 7 264 habitants. Lac de loisirs (base nautique), tourisme vert (petit train de la Rhune), PME agricoles basques (élevage, piment d'Espelette), artisans du terroir, hébergements ruraux (gîtes, campings) et commerces de village.",
   ecosystemEn:
-    "Saint-Pée-sur-Nivelle est un village du Labourd au pied de la Rhune, 7 264 habitants. Lac de loisirs (base nautique), tourisme vert (petit train de la Rhune), TPE agricoles basques (élevage, piment d'Espelette), artisans du terroir, hébergements ruraux (gîtes, campings) et commerces de village.",
+    "Saint-Pée-sur-Nivelle est un village du Labourd au pied de la Rhune, 7 264 habitants. Lac de loisirs (base nautique), tourisme vert (petit train de la Rhune), PME agricoles basques (élevage, piment d'Espelette), artisans du terroir, hébergements ruraux (gîtes, campings) et commerces de village.",
   distancesFr:
     "Saint-Jean-de-Luz à 10 min voiture. Bayonne à 25 min. Biarritz à 20 min. Gare de Saint-Jean-de-Luz (TER) à 10 min. Aéroport Biarritz Pays Basque à 20 min. Espelette à 10 min. Frontière Espagne à 20 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pée-sur-Nivelle : diagnostic adapté aux TPE agricoles basques, hébergeurs ruraux, producteurs piment d'Espelette et commerçants du Labourd. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Pée-sur-Nivelle : diagnostic adapté aux TPE agricoles basques, hébergeurs ruraux, producteurs piment d'Espelette et commerçants du Labourd. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Pée-sur-Nivelle : diagnostic adapté aux PME agricoles basques, hébergeurs ruraux, producteurs piment d'Espelette et commerçants du Labourd. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pée-sur-Nivelle : diagnostic adapté aux PME agricoles basques, hébergeurs ruraux, producteurs piment d'Espelette et commerçants du Labourd. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pée-sur-Nivelle : déploiement outils IA dans vos exploitations, gîtes, campings ou commerces. Automatisation réservations, gestion saisonnière et marketing terroir.",

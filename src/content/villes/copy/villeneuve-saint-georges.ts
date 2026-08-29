@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-Saint-Georges (36 221 habitants en 2023, Val-de-Marne) est située à environ 16 km au sud de Paris, dans la région naturelle de la Brie. Historiquement structurée autour du rail — la commune a abrité la plus grande gare de triage d'Europe — elle conserve aujourd'hui des dépôts SNCF importants (locomotives, TGV) et des zones d'activités industrielles et commerciales, notamment Val Pompadour. Axion-IA y accompagne en priorité les TPE et PME locales.",
+    "Villeneuve-Saint-Georges (36 221 habitants en 2023, Val-de-Marne) est située à environ 16 km au sud de Paris, dans la région naturelle de la Brie. Historiquement structurée autour du rail — la commune a abrité la plus grande gare de triage d'Europe — elle conserve aujourd'hui des dépôts SNCF importants (locomotives, TGV) et des zones d'activités industrielles et commerciales, notamment Val Pompadour. Axion-IA y accompagne en priorité les PME et ETI locales.",
   pitchEn:
-    "Villeneuve-Saint-Georges (36 221 habitants en 2023, Val-de-Marne) est située à environ 16 km au sud de Paris, dans la région naturelle de la Brie. Historiquement structurée autour du rail — la commune a abrité la plus grande gare de triage d'Europe — elle conserve aujourd'hui des dépôts SNCF importants (locomotives, TGV) et des zones d'activités industrielles et commerciales, notamment Val Pompadour. Axion-IA y accompagne en priorité les TPE et PME locales.",
+    "Villeneuve-Saint-Georges (36 221 habitants en 2023, Val-de-Marne) est située à environ 16 km au sud de Paris, dans la région naturelle de la Brie. Historiquement structurée autour du rail — la commune a abrité la plus grande gare de triage d'Europe — elle conserve aujourd'hui des dépôts SNCF importants (locomotives, TGV) et des zones d'activités industrielles et commerciales, notamment Val Pompadour. Axion-IA y accompagne en priorité les PME et ETI locales.",
   directAnswerFr:
-    "Axion-IA se déplace à Villeneuve-Saint-Georges (Val-de-Marne, 36 221 habitants) pour accompagner les TPE et PME locales dans l'intégration d'une IA opérationnelle utile et durable. La commune (8,75 km², 7 quartiers, densité de 4 140 hab/km²) reste fortement marquée par l'activité ferroviaire SNCF et les zones d'activités commerciales et logistiques de Val Pompadour. Notre cible : commerces de proximité, ateliers, garages, prestataires B2B, PME du transport ou de la construction. Les ETI sont accompagnées plus ponctuellement.",
+    "Axion-IA se déplace à Villeneuve-Saint-Georges (Val-de-Marne, 36 221 habitants) pour accompagner les PME et ETI locales dans l'intégration d'une IA opérationnelle utile et durable. La commune (8,75 km², 7 quartiers, densité de 4 140 hab/km²) reste fortement marquée par l'activité ferroviaire SNCF et les zones d'activités commerciales et logistiques de Val Pompadour. Notre cible : commerces de proximité, ateliers, garages, prestataires B2B, PME du transport ou de la construction. Les grands groupes sont accompagnés plus ponctuellement.",
   directAnswerEn:
-    "Axion-IA se déplace à Villeneuve-Saint-Georges (Val-de-Marne, 36 221 habitants) pour accompagner les TPE et PME locales dans l'intégration d'une IA opérationnelle utile et durable. La commune (8,75 km², 7 quartiers, densité de 4 140 hab/km²) reste fortement marquée par l'activité ferroviaire SNCF et les zones d'activités commerciales et logistiques de Val Pompadour. Notre cible : commerces de proximité, ateliers, garages, prestataires B2B, PME du transport ou de la construction. Les ETI sont accompagnées plus ponctuellement.",
-  seoHook: "TPE PME ferroviaire & logistique Val Pompadour",
+    "Axion-IA se déplace à Villeneuve-Saint-Georges (Val-de-Marne, 36 221 habitants) pour accompagner les PME et ETI locales dans l'intégration d'une IA opérationnelle utile et durable. La commune (8,75 km², 7 quartiers, densité de 4 140 hab/km²) reste fortement marquée par l'activité ferroviaire SNCF et les zones d'activités commerciales et logistiques de Val Pompadour. Notre cible : commerces de proximité, ateliers, garages, prestataires B2B, PME du transport ou de la construction. Les grands groupes sont accompagnés plus ponctuellement.",
+  seoHook: "PME PME ferroviaire & logistique Val Pompadour",
   ecosystemFr:
-    "Le tissu économique de Villeneuve-Saint-Georges reste marqué par son passé de grand carrefour ferroviaire : la SNCF y maintient d'importantes infrastructures (dépôts de locomotives et TGV). Les zones industrielles et le pôle commercial de Val Pompadour concentrent une activité logistique et de commerce de gros. Autour de ces ancres, le tissu local repose largement sur des TPE et PME — commerces de proximité dans les 7 quartiers, artisans du bâtiment, garages, prestataires B2B — qui constituent notre cible principale.",
+    "Le tissu économique de Villeneuve-Saint-Georges reste marqué par son passé de grand carrefour ferroviaire : la SNCF y maintient d'importantes infrastructures (dépôts de locomotives et TGV). Les zones industrielles et le pôle commercial de Val Pompadour concentrent une activité logistique et de commerce de gros. Autour de ces ancres, le tissu local repose largement sur des PME et ETI — commerces de proximité dans les 7 quartiers, artisans du bâtiment, garages, prestataires B2B — qui constituent notre cible principale.",
   ecosystemEn:
-    "Le tissu économique de Villeneuve-Saint-Georges reste marqué par son passé de grand carrefour ferroviaire : la SNCF y maintient d'importantes infrastructures (dépôts de locomotives et TGV). Les zones industrielles et le pôle commercial de Val Pompadour concentrent une activité logistique et de commerce de gros. Autour de ces ancres, le tissu local repose largement sur des TPE et PME — commerces de proximité dans les 7 quartiers, artisans du bâtiment, garages, prestataires B2B — qui constituent notre cible principale.",
+    "Le tissu économique de Villeneuve-Saint-Georges reste marqué par son passé de grand carrefour ferroviaire : la SNCF y maintient d'importantes infrastructures (dépôts de locomotives et TGV). Les zones industrielles et le pôle commercial de Val Pompadour concentrent une activité logistique et de commerce de gros. Autour de ces ancres, le tissu local repose largement sur des PME et ETI — commerces de proximité dans les 7 quartiers, artisans du bâtiment, garages, prestataires B2B — qui constituent notre cible principale.",
   distancesFr:
     "Villeneuve-Saint-Georges est desservie par deux gares du RER D et reliée à la ligne 8 du métro (via le Câble 1, téléphérique urbain, en environ 14 minutes via les communes voisines). La RN6 et la proximité de l'A86 facilitent l'accès routier. Paris est à environ 16 km, l'aéroport Paris-Orly à environ 10 km.",
   distancesEn:
@@ -32,30 +32,30 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-Saint-Georges pour TPE et PME : identifier les automatisations utiles dans le transport, la logistique, le commerce ou le bâtiment — Audit sur place 4h dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Villeneuve-Saint-Georges pour TPE et PME : identifier les automatisations utiles dans le transport, la logistique, le commerce ou le bâtiment — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Villeneuve-Saint-Georges pour PME et ETI : identifier les automatisations utiles dans le transport, la logistique, le commerce ou le bâtiment — Audit sur place 4h dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Villeneuve-Saint-Georges pour PME et ETI : identifier les automatisations utiles dans le transport, la logistique, le commerce ou le bâtiment — Audit sur place 4h dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention sur site à Villeneuve-Saint-Georges : automatisation devis, factures, planning, suivi flotte ou stocks — Formation 4 h dès {{price:intervention-4h|flat}}.",
       en: "Intervention sur site à Villeneuve-Saint-Georges : automatisation devis, factures, planning, suivi flotte ou stocks — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Villeneuve-Saint-Georges : code custom intégré à vos outils existants (sans no-code), pour TPE et PME du transport, de la logistique ou du commerce — dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA à Villeneuve-Saint-Georges : code custom intégré à vos outils existants (sans no-code), pour TPE et PME du transport, de la logistique ou du commerce — dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA à Villeneuve-Saint-Georges : code custom intégré à vos outils existants (sans no-code), pour PME et ETI du transport, de la logistique ou du commerce — dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Villeneuve-Saint-Georges : code custom intégré à vos outils existants (sans no-code), pour PME et ETI du transport, de la logistique ou du commerce — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagnement 1-to-1 à Villeneuve-Saint-Georges : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-to-1 à Villeneuve-Saint-Georges : sessions individuelles pour dirigeants de TPE et PME souhaitant cadrer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-to-1 à Villeneuve-Saint-Georges : sessions individuelles pour dirigeants de PME et d'ETI souhaitant cadrer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-to-1 à Villeneuve-Saint-Georges : sessions individuelles pour dirigeants de PME et d'ETI souhaitant cadrer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit à Villeneuve-Saint-Georges des sites web et des plateformes SaaS augmentés par l'IA pour un tissu très majoritairement composé de TPE et PME : sous-traitants ferroviaires gravitant autour du Technicentre de Maintenance de Villeneuve (TMV) SNCF, artisans et industriels des zones d'activités des Flandres, des Graviers, du Plateau et de Triage (BTP, chaudronnerie, chimie, transport, agroalimentaire), commerces du pôle Val Pompadour et prestataires de santé liés au Centre Hospitalier Intercommunal Lucie & Raymond Aubrac. UX/UI sur mesure, mobile-first, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, automatisation devis et documents) — code propriétaire, hébergement Union européenne conforme RGPD, sans verrou éditeur.",
+        hero: "Axion-IA conçoit à Villeneuve-Saint-Georges des sites web et des plateformes SaaS augmentés par l'IA pour un tissu très majoritairement composé de PME et ETI : sous-traitants ferroviaires gravitant autour du Technicentre de Maintenance de Villeneuve (TMV) SNCF, artisans et industriels des zones d'activités des Flandres, des Graviers, du Plateau et de Triage (BTP, chaudronnerie, chimie, transport, agroalimentaire), commerces du pôle Val Pompadour et prestataires de santé liés au Centre Hospitalier Intercommunal Lucie & Raymond Aubrac. UX/UI sur mesure, mobile-first, e-commerce multi-CMS et briques IA (chatbot RAG, recherche sémantique, automatisation devis et documents) — code propriétaire, hébergement Union européenne conforme RGPD, sans verrou éditeur.",
         whyHere: [
           "Autour du Technicentre SNCF (TMV, env. 850 salariés, ouvert 24h/24, ligne R et RER D) gravite un écosystème dense de sous-traitants ferroviaires, métallurgie et maintenance : nous leur construisons des portails fournisseurs, des catalogues techniques et des espaces de suivi d'intervention plutôt que des sites vitrine génériques.",
           "Le chantier « Villeneuve Demain » (~685 M€, Eiffage et l'agence d'architecture LA/BA, première pierre en juin 2024, pour les Regio 2N et RER NG) attire BTP, ingénierie et logistique : nous outillons ces PME avec des plateformes de gestion d'appels d'offres et de pièces assistées par l'IA.",
-          "Les cinq zones d'activités locales (Flandres et ses ~60 entreprises en BTP, chaudronnerie, chimie, événementiel et agroalimentaire ; Graviers en construction et transport ; Plateau ; Triage) concentrent des TPE artisanales : nous y déployons des sites e-commerce B2B et des devis automatisés, pas du design hors-sol.",
+          "Les cinq zones d'activités locales (Flandres et ses ~60 entreprises en BTP, chaudronnerie, chimie, événementiel et agroalimentaire ; Graviers en construction et transport ; Plateau ; Triage) concentrent des PME artisanales : nous y déployons des sites e-commerce B2B et des devis automatisés, pas du design hors-sol.",
           "Le commerce de Val Pompadour, les enseignes comme Conforama et le pôle santé du CHIV Lucie & Raymond Aubrac (Hôpitaux Confluence) génèrent un besoin de e-commerce, de prise de rendez-vous et de moteurs de recherche internes : nous les traitons avec des intégrations IA concrètes et conformes RGPD.",
         ],
         methodology: [
@@ -86,12 +86,6 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel + brique IA",
-            detail:
-              "Pour artisans, garages, commerces de Val Pompadour et TPE des ZA Flandres ou Graviers : site mobile-first, mini-boutique ou prise de contact, et un chatbot ou un module de devis assisté par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier + e-commerce B2B + automatisations IA",
@@ -130,7 +124,7 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
           },
           {
             q: "Quels sont les délais pour un devis de site web ou SaaS à Villeneuve-Saint-Georges ?",
-            a: "Nous remettons un devis à partir de 24-48 h selon la complexité du projet. Après cadrage sur site à Villeneuve-Saint-Georges, nous calons un calendrier précis : un site vitrine TPE va plus vite qu'une plateforme SaaS IA-native multi-sites pour une ETI logistique ou de santé.",
+            a: "Nous remettons un devis à partir de 24-48 h selon la complexité du projet. Après cadrage sur site à Villeneuve-Saint-Georges, nous calons un calendrier précis : un site vitrine PME va plus vite qu'une plateforme SaaS IA-native multi-sites pour une ETI logistique ou de santé.",
           },
         ],
         guarantees:
@@ -172,12 +166,6 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase or essential e-commerce site + AI block",
-            detail:
-              "For tradespeople, garages, Val Pompadour shops and micro-businesses in the Flandres or Graviers zones: mobile-first site, mini-store or contact flow, plus an AI chatbot or assisted quote module.",
-          },
           {
             sizeLabel: "SME",
             price: "Business platform + B2B e-commerce + AI automations",
@@ -240,7 +228,7 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Villeneuve-Saint-Georges ?",
-      a: "Priorité aux TPE et PME du transport et entreposage, du commerce de gros et de détail (notamment autour du pôle Val Pompadour), de la construction, de la réparation automobile et des services aux entreprises. Les ETI ferroviaires ou logistiques sont accompagnées plus ponctuellement.",
+      a: "Priorité aux PME et ETI du transport et entreposage, du commerce de gros et de détail (notamment autour du pôle Val Pompadour), de la construction, de la réparation automobile et des services aux entreprises. Les ETI ferroviaires ou logistiques sont accompagnées plus ponctuellement.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Villeneuve-Saint-Georges ?",

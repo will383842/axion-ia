@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VIDAUBAN_COPY: VilleCopy = {
   pitchFr:
-    "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
+    "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de PME artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
+    "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de PME artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
   seoHook: "viticulture côtes & agriculture coopératives",
   ecosystemFr:
-    "Vidauban est un pôle viticole majeur du centre-Var, terroir reconnu de grands crus Côtes de Provence. Tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces de proximité. Le Luc à 10 min, Brignoles à 25 min, Draguignan à 25 min, A8 directe.",
+    "Vidauban est un pôle viticole majeur du centre-Var, terroir reconnu de grands crus Côtes de Provence. Tissu de PME artisanales, PME viticoles et agroalimentaires, commerces de proximité. Le Luc à 10 min, Brignoles à 25 min, Draguignan à 25 min, A8 directe.",
   ecosystemEn:
-    "Vidauban est un pôle viticole majeur du centre-Var, terroir reconnu de grands crus Côtes de Provence. Tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces de proximité. Le Luc à 10 min, Brignoles à 25 min, Draguignan à 25 min, A8 directe.",
+    "Vidauban est un pôle viticole majeur du centre-Var, terroir reconnu de grands crus Côtes de Provence. Tissu de PME artisanales, PME viticoles et agroalimentaires, commerces de proximité. Le Luc à 10 min, Brignoles à 25 min, Draguignan à 25 min, A8 directe.",
   distancesFr:
     "Le Luc à 10 min. Brignoles à 25 min. Draguignan à 25 min. Toulon à 50 min. A8 directe.",
   distancesEn:
@@ -30,20 +30,20 @@ export const VIDAUBAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vidauban : diagnostic adapté aux TPE artisans, domaines viticoles grands crus, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vidauban : diagnostic adapté aux TPE artisans, domaines viticoles grands crus, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vidauban : diagnostic adapté aux PME artisanales, domaines viticoles grands crus, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vidauban : diagnostic adapté aux PME artisanales, domaines viticoles grands crus, PME agroalimentaires et commerces du centre-Var. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vidauban : formats adaptés aux domaines viticoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
       en: "Interventions IA sur site à Vidauban : formats adaptés aux domaines viticoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
-      fr: "Implémentation IA à Vidauban : traçabilité viticole Côtes de Provence, gestion vendanges grands crus, optimisation cave, automatisation devis artisans, œnotourisme et relation client B2B export. Adapté TPE/PME centre-Var.",
-      en: "Implémentation IA à Vidauban : traçabilité viticole Côtes de Provence, gestion vendanges grands crus, optimisation cave, automatisation devis artisans, œnotourisme et relation client B2B export. Adapté TPE/PME centre-Var.",
+      fr: "Implémentation IA à Vidauban : traçabilité viticole Côtes de Provence, gestion vendanges grands crus, optimisation cave, automatisation devis artisans, œnotourisme et relation client B2B export. Adapté PME et ETI centre-Var.",
+      en: "Implémentation IA à Vidauban : traçabilité viticole Côtes de Provence, gestion vendanges grands crus, optimisation cave, automatisation devis artisans, œnotourisme et relation client B2B export. Adapté PME et ETI centre-Var.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vidauban : sessions dans vos locaux ou en visio. Dirigeants TPE/PME viticulture, agroalimentaire, artisanat et commerce centre-Var.",
-      en: "Coaching 1-to-1 à Vidauban : sessions dans vos locaux ou en visio. Dirigeants TPE/PME viticulture, agroalimentaire, artisanat et commerce centre-Var.",
+      fr: "Coaching 1-to-1 à Vidauban : sessions dans vos locaux ou en visio. Dirigeants PME et ETI viticulture, agroalimentaire, artisanat et commerce centre-Var.",
+      en: "Coaching 1-to-1 à Vidauban : sessions dans vos locaux ou en visio. Dirigeants PME et ETI viticulture, agroalimentaire, artisanat et commerce centre-Var.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const VIDAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Vidauban  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Vidauban ?",

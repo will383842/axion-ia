@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const LAVENTIE_COPY: VilleCopy = {
   pitchFr:
-    "Laventie (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit pres de 5 040 habitants. Situee entre Bethune et La Bassee, son economie associe agriculture, TPE artisanales, PME de services, commerces de centre-bourg et petites industries. Axion-IA y intervient pour tous types d'activites.",
+    "Laventie (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit pres de 5 040 habitants. Situee entre Bethune et La Bassee, son economie associe agriculture, PME artisanales, PME de services, commerces de centre-bourg et petites industries. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Laventie (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit pres de 5 040 habitants. Situee entre Bethune et La Bassee, son economie associe agriculture, TPE artisanales, PME de services, commerces de centre-bourg et petites industries. Axion-IA y intervient pour tous types d'activites.",
+    "Laventie (62), commune de la Flandre artesienne dans le Pas-de-Calais, reunit pres de 5 040 habitants. Situee entre Bethune et La Bassee, son economie associe agriculture, PME artisanales, PME de services, commerces de centre-bourg et petites industries. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "Flandre artesienne, agriculture & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Laventie (62). Nous accompagnons les PME, ETI et grands groupes de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Laventie (62). Nous accompagnons les TPE, PME et ETI de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Laventie (62). Nous accompagnons les PME, ETI et grands groupes de la Flandre artesienne : agriculteurs, artisans, commercants, prestataires de services et petits industriels. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Laventie est situee en Flandre artesienne entre Bethune (15 km) et La Bassee (8 km). Tissu economique rural dynamique : agriculture (polyculture, elevage), TPE artisanales BTP, PME de services, commerces de centre-bourg et petites industries agroalimentaires.",
+    "Laventie est situee en Flandre artesienne entre Bethune (15 km) et La Bassee (8 km). Tissu economique rural dynamique : agriculture (polyculture, elevage), PME du BTP, PME de services, commerces de centre-bourg et petites industries agroalimentaires.",
   ecosystemEn:
-    "Laventie est situee en Flandre artesienne entre Bethune (15 km) et La Bassee (8 km). Tissu economique rural dynamique : agriculture (polyculture, elevage), TPE artisanales BTP, PME de services, commerces de centre-bourg et petites industries agroalimentaires.",
+    "Laventie est situee en Flandre artesienne entre Bethune (15 km) et La Bassee (8 km). Tissu economique rural dynamique : agriculture (polyculture, elevage), PME du BTP, PME de services, commerces de centre-bourg et petites industries agroalimentaires.",
   distancesFr:
     "Gare de La Bassee-Violaines a 10 min. Bethune a 15 min. Lille Europe (TGV) a 40 min en TER. Aeroport Lille-Lesquin a 30 min. Paris-Nord a 1h30 via TGV Lens.",
   distancesEn:
     "Gare de La Bassee-Violaines a 10 min. Bethune a 15 min. Lille Europe (TGV) a 40 min en TER. Aeroport Lille-Lesquin a 30 min. Paris-Nord a 1h30 via TGV Lens.",
   topSectorsNaf: [
     "Agriculture & agroalimentaire",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Services aux entreprises",
     "Petite industrie",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Laventie : diagnostic adapte aux agriculteurs, TPE artisanales et commercants de la Flandre artesienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Laventie : diagnostic adapte aux agriculteurs, TPE artisanales et commercants de la Flandre artesienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Laventie : diagnostic adapte aux agriculteurs, PME de l'artisanat et du commerce de la Flandre artesienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Laventie : diagnostic adapte aux agriculteurs, PME de l'artisanat et du commerce de la Flandre artesienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Laventie : formations adaptees aux exploitations agricoles, ateliers artisanaux, commerces et bureaux PME. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LAVENTIE_COPY: VilleCopy = {
       en: "Implementation IA a Laventie : IA predictive agriculture, automatisation gestion artisanale, agents conversationnels commerce, CRM augmentes pour PME de Flandre artesienne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Laventie : accompagnement personnalise exploitants agricoles, dirigeants artisans et gerants TPE/PME de la Flandre artesienne.",
-      en: "Coaching 1-to-1 a Laventie : accompagnement personnalise exploitants agricoles, dirigeants artisans et gerants TPE/PME de la Flandre artesienne.",
+      fr: "Coaching 1-to-1 a Laventie : accompagnement personnalise exploitants agricoles, dirigeants artisans et gerants PME et ETI de la Flandre artesienne.",
+      en: "Coaching 1-to-1 a Laventie : accompagnement personnalise exploitants agricoles, dirigeants artisans et gerants PME et ETI de la Flandre artesienne.",
     },
   },
   faqGeolocalisee: [

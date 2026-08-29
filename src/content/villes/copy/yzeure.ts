@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const YZEURE_COPY: VilleCopy = {
   pitchFr:
-    "Yzeure (03), commune en banlieue immédiate de Moulins dans l'Allier, est positionnée en Bourbonnais. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture bourbonnaise. Axion-IA collabore avec toutes les structures locales de l'agglomération moulinoise.",
+    "Yzeure (03), commune en banlieue immédiate de Moulins dans l'Allier, est positionnée en Bourbonnais. Tissu PME tertiaires et industrielles, PME du BTP, commerces, agriculture bourbonnaise. Axion-IA collabore avec toutes les structures locales de l'agglomération moulinoise.",
   pitchEn:
-    "Yzeure (03), commune en banlieue immédiate de Moulins dans l'Allier, est positionnée en Bourbonnais. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture bourbonnaise. Axion-IA collabore avec toutes les structures locales de l'agglomération moulinoise.",
+    "Yzeure (03), commune en banlieue immédiate de Moulins dans l'Allier, est positionnée en Bourbonnais. Tissu PME tertiaires et industrielles, PME du BTP, commerces, agriculture bourbonnaise. Axion-IA collabore avec toutes les structures locales de l'agglomération moulinoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, PME du BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
-  seoHook: "TPE & PME Allier",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, PME du BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
+  seoHook: "PME & PME Allier",
   ecosystemFr:
-    "Yzeure est en banlieue de Moulins, Bourbonnais. Tissu PME tertiaires/industrielles, agriculture bourbonnaise (élevage charolais, grandes cultures), TPE artisanat BTP, commerces.",
+    "Yzeure est en banlieue de Moulins, Bourbonnais. Tissu PME tertiaires/industrielles, agriculture bourbonnaise (élevage charolais, grandes cultures), PME du BTP, commerces.",
   ecosystemEn:
-    "Yzeure est en banlieue de Moulins, Bourbonnais. Tissu PME tertiaires/industrielles, agriculture bourbonnaise (élevage charolais, grandes cultures), TPE artisanat BTP, commerces.",
+    "Yzeure est en banlieue de Moulins, Bourbonnais. Tissu PME tertiaires/industrielles, agriculture bourbonnaise (élevage charolais, grandes cultures), PME du BTP, commerces.",
   distancesFr:
     "Moulins centre à 5 min. Gare Moulins à 10 min. Lyon centre à 2h. Clermont-Ferrand à 1h30. Vichy à 35 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const YZEURE_COPY: VilleCopy = {
     "PME tertiaires agglomération Moulins",
     "Agriculture bourbonnaise (élevage charolais)",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Yzeure : diagnostic adapté aux PME tertiaires/industrielles Bourbonnais, éleveurs/agriculteurs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Yzeure : diagnostic adapté aux PME tertiaires/industrielles Bourbonnais, éleveurs/agriculteurs, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Yzeure : diagnostic adapté aux PME tertiaires/industrielles Bourbonnais, éleveurs/agriculteurs, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Yzeure : diagnostic adapté aux PME tertiaires/industrielles Bourbonnais, éleveurs/agriculteurs, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Yzeure : formats adaptés au bureau, atelier, exploitation élevage, commerce. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const YZEURE_COPY: VilleCopy = {
       en: "Implémentation IA à Yzeure : agents conversationnels B2B, traçabilité élevage charolais, classification photos animaux, automatisation workflow. Bourbonnais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Yzeure : sessions dans votre bureau, exploitation, commerce ou en visio. Tertiaires, éleveurs/agriculteurs, industriels, artisans, gérants TPE/PME yzeuriens.",
-      en: "Coaching 1-to-1 à Yzeure : sessions dans votre bureau, exploitation, commerce ou en visio. Tertiaires, éleveurs/agriculteurs, industriels, artisans, gérants TPE/PME yzeuriens.",
+      fr: "Coaching 1-to-1 à Yzeure : sessions dans votre bureau, exploitation, commerce ou en visio. Tertiaires, éleveurs/agriculteurs, industriels, artisans, gérants PME et ETI yzeuriens.",
+      en: "Coaching 1-to-1 à Yzeure : sessions dans votre bureau, exploitation, commerce ou en visio. Tertiaires, éleveurs/agriculteurs, industriels, artisans, gérants PME et ETI yzeuriens.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const YZEURE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels B2B, prédiction maintenance, automatisation workflow, classification documents.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du bassin nazairien.",
+    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu PME sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du bassin nazairien.",
   pitchEn:
-    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du bassin nazairien.",
+    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu PME sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du bassin nazairien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : PME sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : PME sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
   seoHook: "logistique portuaire & industrie aéronautique",
   ecosystemFr:
-    "Montoir-de-Bretagne est une commune industrielle et portuaire au nord de Saint-Nazaire. Terminal méthanier Elengy, zones logistiques port Nantes-Saint-Nazaire, proximité Airbus et Chantiers de l'Atlantique. Tissu TPE sous-traitants, PME industrielles, logistique, services aux entreprises.",
+    "Montoir-de-Bretagne est une commune industrielle et portuaire au nord de Saint-Nazaire. Terminal méthanier Elengy, zones logistiques port Nantes-Saint-Nazaire, proximité Airbus et Chantiers de l'Atlantique. Tissu PME sous-traitants, PME industrielles, logistique, services aux entreprises.",
   ecosystemEn:
-    "Montoir-de-Bretagne est une commune industrielle et portuaire au nord de Saint-Nazaire. Terminal méthanier Elengy, zones logistiques port Nantes-Saint-Nazaire, proximité Airbus et Chantiers de l'Atlantique. Tissu TPE sous-traitants, PME industrielles, logistique, services aux entreprises.",
+    "Montoir-de-Bretagne est une commune industrielle et portuaire au nord de Saint-Nazaire. Terminal méthanier Elengy, zones logistiques port Nantes-Saint-Nazaire, proximité Airbus et Chantiers de l'Atlantique. Tissu PME sous-traitants, PME industrielles, logistique, services aux entreprises.",
   distancesFr:
     "Saint-Nazaire centre à 10 min. Gare Saint-Nazaire à 12 min. Nantes centre à 55 min. Gare Nantes TGV à 1h. Aéroport Nantes-Atlantique à 50 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
     "Logistique portuaire & transport",
     "Industrie aéronautique & navale",
     "Énergie & terminal méthanier",
-    "TPE sous-traitance industrielle",
+    "PME sous-traitance industrielle",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montoir-de-Bretagne : diagnostic adapté aux TPE sous-traitants, PME industrielles, logisticiens portuaires et prestataires du bassin nazairien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Montoir-de-Bretagne : diagnostic adapté aux TPE sous-traitants, PME industrielles, logisticiens portuaires et prestataires du bassin nazairien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Montoir-de-Bretagne : diagnostic adapté aux PME sous-traitants, PME industrielles, logisticiens portuaires et prestataires du bassin nazairien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Montoir-de-Bretagne : diagnostic adapté aux PME sous-traitants, PME industrielles, logisticiens portuaires et prestataires du bassin nazairien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montoir-de-Bretagne : formats adaptés à l'atelier industriel, au bureau logistique ou à l'entrepôt portuaire. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
       en: "Implémentation IA à Montoir-de-Bretagne : automatisation workflow logistique portuaire, maintenance prédictive industrielle, agents IA gestion sous-traitance, extraction données transport.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montoir-de-Bretagne : sessions dans votre atelier, bureau ou en visio. Dirigeants TPE/PME industrielles et logistiques du bassin nazairien souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Montoir-de-Bretagne : sessions dans votre atelier, bureau ou en visio. Dirigeants TPE/PME industrielles et logistiques du bassin nazairien souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Montoir-de-Bretagne : sessions dans votre atelier, bureau ou en visio. Dirigeants PME et ETI industrielles et logistiques du bassin nazairien souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Montoir-de-Bretagne : sessions dans votre atelier, bureau ou en visio. Dirigeants PME et ETI industrielles et logistiques du bassin nazairien souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les PME industrielles et sous-traitants ?",
-      a: "Oui, nous accompagnons les TPE sous-traitants et PME industrielles du bassin nazairien sur des cas IA : maintenance prédictive, automatisation qualité, gestion flux logistiques, extraction données techniques. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME sous-traitants et PME industrielles du bassin nazairien sur des cas IA : maintenance prédictive, automatisation qualité, gestion flux logistiques, extraction données techniques. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour la logistique portuaire ?",
@@ -61,7 +61,7 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Montoir-de-Bretagne  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du bassin nazairien.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du bassin nazairien.",
     },
     {
       q: "Intervenez-vous dans les zones industrielles et portuaires ?",

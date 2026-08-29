@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, TPE artisans, PME services, agriculture, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, PME artisanales, PME services, agriculture, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, TPE artisans, PME services, agriculture, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, PME artisanales, PME services, agriculture, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons TPE et PME du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons PME et ETI du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons TPE et PME du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons PME et ETI du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
   seoHook: "commerce, artisanat & Pays tyrossais",
   ecosystemFr:
     "Saint-Vincent-de-Tyrosse est le chef-lieu du canton du Pays tyrossais (11 communes). Bourg landais dynamique entre littoral (Capbreton, Hossegor à 15 min) et arrière-pays. Traditions taurines (corrida, fêtes de la Madeleine). Économie diversifiée : commerce de proximité, artisanat BTP, PME services, professions libérales, agriculture (maïs, élevage), restauration.",
@@ -30,8 +30,8 @@ export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Vincent-de-Tyrosse : diagnostic adapté aux TPE du commerce et de l'artisanat, agriculteurs, professions libérales et PME services du Pays tyrossais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Vincent-de-Tyrosse : diagnostic adapté aux TPE du commerce et de l'artisanat, agriculteurs, professions libérales et PME services du Pays tyrossais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Vincent-de-Tyrosse : diagnostic adapté aux PME du commerce et de l'artisanat, agriculteurs, professions libérales et PME services du Pays tyrossais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Vincent-de-Tyrosse : diagnostic adapté aux PME du commerce et de l'artisanat, agriculteurs, professions libérales et PME services du Pays tyrossais. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Vincent-de-Tyrosse : formations adaptées aux commerces, artisans, exploitations agricoles et cabinets du Pays tyrossais. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Vincent-de-Tyrosse : automatisation gestion commerciale, chatbot clients, optimisation stocks, prédiction ventes saisonnières (fêtes), classification documents comptables, gestion exploitation agricole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Vincent-de-Tyrosse : sessions dans votre commerce, atelier, exploitation ou en visio. Commerçants, artisans, agriculteurs, gérants TPE/PME et professions libérales du Pays tyrossais.",
-      en: "Coaching 1-to-1 à Saint-Vincent-de-Tyrosse : sessions dans votre commerce, atelier, exploitation ou en visio. Commerçants, artisans, agriculteurs, gérants TPE/PME et professions libérales du Pays tyrossais.",
+      fr: "Coaching 1-to-1 à Saint-Vincent-de-Tyrosse : sessions dans votre commerce, atelier, exploitation ou en visio. Commerçants, artisans, agriculteurs, gérants PME et ETI et professions libérales du Pays tyrossais.",
+      en: "Coaching 1-to-1 à Saint-Vincent-de-Tyrosse : sessions dans votre commerce, atelier, exploitation ou en visio. Commerçants, artisans, agriculteurs, gérants PME et ETI et professions libérales du Pays tyrossais.",
     },
   },
   faqGeolocalisee: [

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VERGEZE_COPY: VilleCopy = {
   pitchFr:
-    "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu TPE/PME agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA opère pour toutes les structures économiques de la commune de la Vaunage.",
+    "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu PME et ETI agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA opère pour toutes les structures économiques de la commune de la Vaunage.",
   pitchEn:
-    "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu TPE/PME agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA opère pour toutes les structures économiques de la commune de la Vaunage.",
+    "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu PME et ETI agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA opère pour toutes les structures économiques de la commune de la Vaunage.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les PME, ETI et grands groupes locaux : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les PME, ETI et grands groupes locaux : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit sur place sur mesure.",
   seoHook: "agroalimentaire & sous-traitance industrielle",
   ecosystemFr:
     "Vergèze (~5 800 hab) est connue mondialement pour la source Perrier (Nestlé Waters), premier employeur local. Sous-traitance industrielle liée à l'embouteillage, viticulture Vaunage, commerces, artisanat BTP et services. Économie structurée autour du pôle agroalimentaire.",
@@ -30,8 +30,8 @@ export const VERGEZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vergèze : diagnostic adapté aux TPE/PME agroalimentaires, sous-traitants industriels, viticulteurs et commerçants de la Vaunage. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vergèze : diagnostic adapté aux TPE/PME agroalimentaires, sous-traitants industriels, viticulteurs et commerçants de la Vaunage. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vergèze : diagnostic adapté aux PME et ETI agroalimentaires, sous-traitants industriels, viticulteurs et commerçants de la Vaunage. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vergèze : diagnostic adapté aux PME et ETI agroalimentaires, sous-traitants industriels, viticulteurs et commerçants de la Vaunage. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vergèze : formats adaptés aux sous-traitants industriels, caves viticoles, commerces et artisans de la Vaunage.",
@@ -42,8 +42,8 @@ export const VERGEZE_COPY: VilleCopy = {
       en: "Implémentation IA à Vergèze : optimisation chaîne production agroalimentaire, prédiction maintenance industrielle, gestion parcellaire viticole, agents conversationnels commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vergèze : sessions dirigeants TPE/PME industrielles, viticulteurs, commerçants et artisans souhaitant intégrer l'IA en Vaunage.",
-      en: "Coaching 1-to-1 à Vergèze : sessions dirigeants TPE/PME industrielles, viticulteurs, commerçants et artisans souhaitant intégrer l'IA en Vaunage.",
+      fr: "Coaching 1-to-1 à Vergèze : sessions dirigeants de PME et d'ETI industrielles, viticulteurs, commerçants et artisans souhaitant intégrer l'IA en Vaunage.",
+      en: "Coaching 1-to-1 à Vergèze : sessions dirigeants de PME et d'ETI industrielles, viticulteurs, commerçants et artisans souhaitant intégrer l'IA en Vaunage.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const VERGEZE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les sous-traitants industriels ?",
-      a: "Oui, nous accompagnons les TPE/PME sous-traitantes industrielles : prédiction maintenance, contrôle qualité par vision IA, automatisation reporting, optimisation production et logistique.",
+      a: "Oui, nous accompagnons les PME et ETI sous-traitantes industrielles : prédiction maintenance, contrôle qualité par vision IA, automatisation reporting, optimisation production et logistique.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Vergèze  ?",

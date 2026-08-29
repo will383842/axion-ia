@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-d'Irube (64), commune de l'agglomération de Bayonne, 5 900 habitants. Tissu résidentiel et commercial adossé au bassin d'emploi bayonnais, TPE artisans, PME de services et commerces de proximité. Axion-IA couvre les activités professionnelles du bassin de l'agglomération Pays Basque.",
+    "Saint-Pierre-d'Irube (64), commune de l'agglomération de Bayonne, 5 900 habitants. Tissu résidentiel et commercial adossé au bassin d'emploi bayonnais, PME artisanales, PME de services et commerces de proximité. Axion-IA couvre les activités professionnelles du bassin de l'agglomération Pays Basque.",
   pitchEn:
-    "Saint-Pierre-d'Irube (64), commune de l'agglomération de Bayonne, 5 900 habitants. Tissu résidentiel et commercial adossé au bassin d'emploi bayonnais, TPE artisans, PME de services et commerces de proximité. Axion-IA couvre les activités professionnelles du bassin de l'agglomération Pays Basque.",
+    "Saint-Pierre-d'Irube (64), commune de l'agglomération de Bayonne, 5 900 habitants. Tissu résidentiel et commercial adossé au bassin d'emploi bayonnais, PME artisanales, PME de services et commerces de proximité. Axion-IA couvre les activités professionnelles du bassin de l'agglomération Pays Basque.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons PME, ETI et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons PME, ETI et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit sur place sur mesure.",
   seoHook: "restauration",
   ecosystemFr:
-    "Saint-Pierre-d'Irube est une commune résidentielle de 5 900 habitants dans l'agglomération bayonnaise. Tissu de TPE artisans BTP, PME de services aux entreprises, commerces de proximité, professions libérales et quelques zones d'activités. Bassin d'emploi commun Bayonne-Anglet-Biarritz.",
+    "Saint-Pierre-d'Irube est une commune résidentielle de 5 900 habitants dans l'agglomération bayonnaise. Tissu de PME du BTP, PME de services aux entreprises, commerces de proximité, professions libérales et quelques zones d'activités. Bassin d'emploi commun Bayonne-Anglet-Biarritz.",
   ecosystemEn:
-    "Saint-Pierre-d'Irube est une commune résidentielle de 5 900 habitants dans l'agglomération bayonnaise. Tissu de TPE artisans BTP, PME de services aux entreprises, commerces de proximité, professions libérales et quelques zones d'activités. Bassin d'emploi commun Bayonne-Anglet-Biarritz.",
+    "Saint-Pierre-d'Irube est une commune résidentielle de 5 900 habitants dans l'agglomération bayonnaise. Tissu de PME du BTP, PME de services aux entreprises, commerces de proximité, professions libérales et quelques zones d'activités. Bassin d'emploi commun Bayonne-Anglet-Biarritz.",
   distancesFr:
     "Bayonne centre à 5 min voiture. Gare de Bayonne (TGV Paris 4h30 direct) à 8 min. Biarritz à 15 min. Aéroport Biarritz Pays Basque à 15 min. Accès A63 (Bordeaux) et A64 (Pau-Toulouse).",
   distancesEn:
     "Bayonne centre à 5 min voiture. Gare de Bayonne (TGV Paris 4h30 direct) à 8 min. Biarritz à 15 min. Aéroport Biarritz Pays Basque à 15 min. Accès A63 (Bordeaux) et A64 (Pau-Toulouse).",
   topSectorsNaf: [
     "Services aux entreprises",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
     "Restauration",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux PME artisanales, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux PME artisanales, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-d'Irube : déploiement outils IA dans vos bureaux, ateliers ou commerces. Automatisation processus administratifs, gestion client et planning. Agglo Bayonne : déplacement inclus.",
@@ -42,8 +42,8 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Pierre-d'Irube : automatisation comptabilité PME, chatbot accueil client, classification documents, optimisation planning et gestion relation client pour entreprises de services bayonnaises.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Pierre-d'Irube : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, professions libérales et commerçants de l'agglomération bayonnaise.",
-      en: "Coaching 1-to-1 à Saint-Pierre-d'Irube : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, professions libérales et commerçants de l'agglomération bayonnaise.",
+      fr: "Coaching 1-to-1 à Saint-Pierre-d'Irube : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, professions libérales et commerçants de l'agglomération bayonnaise.",
+      en: "Coaching 1-to-1 à Saint-Pierre-d'Irube : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, professions libérales et commerçants de l'agglomération bayonnaise.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP de l'agglo Bayonne ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP : automatisation devis, planning chantiers IA, suivi client, gestion stock matériaux et facturation. Formats courts adaptés aux contraintes terrain.",
+      a: "Oui, nous accompagnons les PME du BTP : automatisation devis, planning chantiers IA, suivi client, gestion stock matériaux et facturation. Formats courts adaptés aux contraintes terrain.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Pierre-d'Irube ?",

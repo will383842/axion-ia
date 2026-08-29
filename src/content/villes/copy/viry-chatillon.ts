@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VIRY_CHATILLON_COPY: VilleCopy = {
   pitchFr:
-    "À Viry-Châtillon (91), commune des bords du lac et berceau de l'aviation avec Port-Aviation, premier aérodrome organisé au monde, Axion-IA accompagne les TPE et PME de cette banlieue dynamique de l'Essonne. Artisans du bâtiment, commerces de proximité, PME de construction et de transport, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, relances et reporting et libérer du temps aux dirigeants.",
+    "À Viry-Châtillon (91), commune des bords du lac et berceau de l'aviation avec Port-Aviation, premier aérodrome organisé au monde, Axion-IA accompagne les PME et ETI de cette banlieue dynamique de l'Essonne. Artisans du bâtiment, commerces de proximité, PME de construction et de transport, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, relances et reporting et libérer du temps aux dirigeants.",
   pitchEn:
-    "À Viry-Châtillon (91), commune des bords du lac et berceau de l'aviation avec Port-Aviation, premier aérodrome organisé au monde, Axion-IA accompagne les TPE et PME de cette banlieue dynamique de l'Essonne. Artisans du bâtiment, commerces de proximité, PME de construction et de transport, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, relances et reporting et libérer du temps aux dirigeants.",
+    "À Viry-Châtillon (91), commune des bords du lac et berceau de l'aviation avec Port-Aviation, premier aérodrome organisé au monde, Axion-IA accompagne les PME et ETI de cette banlieue dynamique de l'Essonne. Artisans du bâtiment, commerces de proximité, PME de construction et de transport, restauration et professions libérales : nous concevons des usages IA concrets pour automatiser devis, relances et reporting et libérer du temps aux dirigeants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viry-Châtillon (Essonne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les artisans du bâtiment, les commerces de proximité, les PME de construction et de transport, la restauration et les professions libérales de cette ville des bords du lac de l'Essonne. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viry-Châtillon (Essonne) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les artisans du bâtiment, les commerces de proximité, les PME de construction et de transport, la restauration et les professions libérales de cette ville des bords du lac de l'Essonne. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viry-Châtillon (Essonne) auprès des TPE et PME, en priorité les très petites entreprises, puis les PME. Nous accompagnons les artisans du bâtiment, les commerces de proximité, les PME de construction et de transport, la restauration et les professions libérales de cette ville des bords du lac de l'Essonne. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viry-Châtillon (Essonne) auprès des PME et ETI, en priorité les PME et les ETI. Nous accompagnons les artisans du bâtiment, les commerces de proximité, les PME de construction et de transport, la restauration et les professions libérales de cette ville des bords du lac de l'Essonne. Tout commence par un audit qui chiffre le retour sur investissement avant tout engagement.",
   seoHook: "artisanat & commerce de proximité",
   ecosystemFr:
-    "Viry-Châtillon est une ville résidentielle de l'Essonne, marquée par son lac de loisirs et par une histoire aéronautique pionnière : Port-Aviation y fut le premier aérodrome organisé au monde en 1909. Son économie repose aujourd'hui sur un tissu dense de TPE et PME de proximité : artisans du bâtiment, commerces, entreprises de construction et de transport, restauration et professions libérales. Bien reliée au pôle d'emploi de l'Essonne et à Paris par le RER D, la commune offre un terrain idéal aux usages IA simples qui font gagner du temps aux petites structures.",
+    "Viry-Châtillon est une ville résidentielle de l'Essonne, marquée par son lac de loisirs et par une histoire aéronautique pionnière : Port-Aviation y fut le premier aérodrome organisé au monde en 1909. Son économie repose aujourd'hui sur un tissu dense de PME et ETI de proximité : artisans du bâtiment, commerces, entreprises de construction et de transport, restauration et professions libérales. Bien reliée au pôle d'emploi de l'Essonne et à Paris par le RER D, la commune offre un terrain idéal aux usages IA simples qui font gagner du temps aux PME.",
   ecosystemEn:
-    "Viry-Châtillon est une ville résidentielle de l'Essonne, marquée par son lac de loisirs et par une histoire aéronautique pionnière : Port-Aviation y fut le premier aérodrome organisé au monde en 1909. Son économie repose aujourd'hui sur un tissu dense de TPE et PME de proximité : artisans du bâtiment, commerces, entreprises de construction et de transport, restauration et professions libérales. Bien reliée au pôle d'emploi de l'Essonne et à Paris par le RER D, la commune offre un terrain idéal aux usages IA simples qui font gagner du temps aux petites structures.",
+    "Viry-Châtillon est une ville résidentielle de l'Essonne, marquée par son lac de loisirs et par une histoire aéronautique pionnière : Port-Aviation y fut le premier aérodrome organisé au monde en 1909. Son économie repose aujourd'hui sur un tissu dense de PME et ETI de proximité : artisans du bâtiment, commerces, entreprises de construction et de transport, restauration et professions libérales. Bien reliée au pôle d'emploi de l'Essonne et à Paris par le RER D, la commune offre un terrain idéal aux usages IA simples qui font gagner du temps aux PME.",
   distancesFr:
     "Viry-Châtillon est reliée à Paris en 30 minutes par le RER D (gare de Viry-Châtillon), via Juvisy. L'aéroport de Paris-Orly est à 10 minutes, Évry-Courcouronnes à 15 minutes et l'autoroute A6 traverse la commune.",
   distancesEn:
@@ -42,8 +42,8 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
       en: "Implémentation IA à Viry-Châtillon : automatisation des devis et factures du bâtiment, gestion de planning et de tournées, relances clients et reporting pour PME de construction et de transport.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Viry-Châtillon : sessions individuelles pour dirigeants de TPE et PME, sur chantier, en boutique ou en visio, pour exploiter l'IA dans la gestion quotidienne.",
-      en: "Accompagnement un-à-un à Viry-Châtillon : sessions individuelles pour dirigeants de TPE et PME, sur chantier, en boutique ou en visio, pour exploiter l'IA dans la gestion quotidienne.",
+      fr: "Accompagnement un-à-un à Viry-Châtillon : sessions individuelles pour dirigeants de PME et d'ETI, sur chantier, en boutique ou en visio, pour exploiter l'IA dans la gestion quotidienne.",
+      en: "Accompagnement un-à-un à Viry-Châtillon : sessions individuelles pour dirigeants de PME et d'ETI, sur chantier, en boutique ou en visio, pour exploiter l'IA dans la gestion quotidienne.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Viry-Châtillon : plateformes pour artisans, PME du bâtiment et commerces, avec demande de devis intelligente, prise de rendez-vous et suivi client automatisé.",
@@ -53,10 +53,10 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Viry-Châtillon, le numérique d'entreprise n'a rien d'abstrait : il sert le corridor automobile de la RN7 (avenue du Général de Gaulle) et ses concessionnaires, garages et centres de contrôle technique, les TPE du BTP et des services, la logistique portuaire des quais de Seine, et l'écosystème de sous-traitance qui gravite autour du site moteurs Renault Sport / Alpine F1 Team implanté sur la commune depuis 1987. Axion-IA y conçoit des sites web et plateformes SaaS augmentés par l'IA — sur mesure, hébergés en UE, sans verrou éditeur — qui transforment une demande de devis ou un rendez-vous atelier en client réellement traité.",
+        hero: "À Viry-Châtillon, le numérique d'entreprise n'a rien d'abstrait : il sert le corridor automobile de la RN7 (avenue du Général de Gaulle) et ses concessionnaires, garages et centres de contrôle technique, les PME du BTP et des services, la logistique portuaire des quais de Seine, et l'écosystème de sous-traitance qui gravite autour du site moteurs Renault Sport / Alpine F1 Team implanté sur la commune depuis 1987. Axion-IA y conçoit des sites web et plateformes SaaS augmentés par l'IA — sur mesure, hébergés en UE, sans verrou éditeur — qui transforment une demande de devis ou un rendez-vous atelier en client réellement traité.",
         whyHere: [
           "Le commerce automobile de la RN7 est le secteur signature de Viry-Châtillon : pour les concessionnaires multi-marques, garages, centres auto et contrôle technique de l'avenue du Général de Gaulle, on construit des sites avec configurateur de véhicule, prise de rendez-vous atelier en ligne, relance automatisée des devis et catalogue de pièces e-commerce — pas une vitrine figée.",
-          "Le tissu local est massivement composé de TPE (artisans du BTP, services, commerces) : on livre des sites légers, rapides sur mobile et indexés localement, avec demande de devis intelligente et suivi client automatisé, là où une grosse usine à gaz CMS serait hors sujet.",
+          "Le tissu local est massivement composé de PME (artisans du BTP, services, commerces) : on livre des sites légers, rapides sur mobile et indexés localement, avec demande de devis intelligente et suivi client automatisé, là où une grosse usine à gaz CMS serait hors sujet.",
           "Le pôle industriel de la commune — site moteurs Renault Sport / Alpine F1 Team, parc industriel du Président Kennedy entre l'A6 et l'aqueduc — irrigue une sous-traitance de précision (usinage, mesure, logistique) pour laquelle on développe des portails clients, des extranets fournisseurs et des SaaS métier avec recherche sémantique sur documentation technique.",
           "Les Lacs de l'Essonne (98 ha partagés avec Grigny, base nautique, club d'aviron Société Nautique de la Haute Seine) et l'économie de loisirs des bords de lac appellent des plateformes de réservation, de billetterie et de gestion d'adhérents — un terrain concret pour des sites transactionnels augmentés par l'IA.",
         ],
@@ -88,12 +88,6 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté + IA de captation",
-            detail:
-              "Pour les artisans du BTP, garages indépendants, commerces et professions libérales de Viry-Châtillon : site mobile-first, demande de devis intelligente, prise de RDV en ligne et relance automatisée. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce ou plateforme métier multi-CMS",
@@ -175,12 +169,6 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented brochure site + lead-capture AI",
-            detail:
-              "For Viry-Châtillon construction trades, independent garages, retailers and professionals: mobile-first site, smart quote request, online booking and automated follow-up. Quote within 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce site or multi-CMS business platform",
             detail:
@@ -230,7 +218,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Viry-Châtillon et en Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Viry-Châtillon et du nord de l'Essonne. Nos consultants se déplacent sur site, à 30 minutes de Paris par le RER D, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les PME et ETI de Viry-Châtillon et du nord de l'Essonne. Nos consultants se déplacent sur site, à 30 minutes de Paris par le RER D, ou interviennent en visio selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec les artisans et PME du bâtiment de Viry-Châtillon ?",

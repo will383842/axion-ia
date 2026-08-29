@@ -7,14 +7,14 @@ import type { VilleCopy } from "./types";
 
 export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Issy-les-Moulineaux, commune des Hauts-de-Seine de 67 669 habitants limitrophe du 15ᵉ arrondissement de Paris, concentre l'un des plus denses pôles tertiaires d'Île-de-France avec le quartier d'affaires Val de Seine. Axion-IA accompagne les TPE et PME isséennes — éditeurs SaaS, agences, cabinets — dans l'intégration concrète de l'IA opérationnelle. Williams se déplace sur site depuis Paris (3 km de la mairie du 15ᵉ) pour des missions ciblées : audit sur place, automatisation des tâches administratives, implémentation code custom, accompagnement individuel des dirigeants.",
+    "Issy-les-Moulineaux, commune des Hauts-de-Seine de 67 669 habitants limitrophe du 15ᵉ arrondissement de Paris, concentre l'un des plus denses pôles tertiaires d'Île-de-France avec le quartier d'affaires Val de Seine. Axion-IA accompagne les PME et ETI isséennes — éditeurs SaaS, agences, cabinets — dans l'intégration concrète de l'IA opérationnelle. Williams se déplace sur site depuis Paris (3 km de la mairie du 15ᵉ) pour des missions ciblées : audit sur place, automatisation des tâches administratives, implémentation code custom, accompagnement individuel des dirigeants.",
   pitchEn:
-    "Issy-les-Moulineaux, commune des Hauts-de-Seine de 67 669 habitants limitrophe du 15ᵉ arrondissement de Paris, concentre l'un des plus denses pôles tertiaires d'Île-de-France avec le quartier d'affaires Val de Seine. Axion-IA accompagne les TPE et PME isséennes — éditeurs SaaS, agences, cabinets — dans l'intégration concrète de l'IA opérationnelle. Williams se déplace sur site depuis Paris (3 km de la mairie du 15ᵉ) pour des missions ciblées : audit sur place, automatisation des tâches administratives, implémentation code custom, accompagnement individuel des dirigeants.",
+    "Issy-les-Moulineaux, commune des Hauts-de-Seine de 67 669 habitants limitrophe du 15ᵉ arrondissement de Paris, concentre l'un des plus denses pôles tertiaires d'Île-de-France avec le quartier d'affaires Val de Seine. Axion-IA accompagne les PME et ETI isséennes — éditeurs SaaS, agences, cabinets — dans l'intégration concrète de l'IA opérationnelle. Williams se déplace sur site depuis Paris (3 km de la mairie du 15ᵉ) pour des missions ciblées : audit sur place, automatisation des tâches administratives, implémentation code custom, accompagnement individuel des dirigeants.",
   directAnswerFr:
-    "À Issy-les-Moulineaux, Axion-IA accompagne en priorité les TPE et PME du quartier d'affaires Val de Seine, où sont implantés notamment le siège mondial d'Orange (bâtiment Bridge) et de nombreux éditeurs et cabinets. Nos interventions sur site couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les missions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. Williams se déplace depuis Paris via la ligne 12 (Mairie d'Issy / Corentin Celton) ou le RER C.",
+    "À Issy-les-Moulineaux, Axion-IA accompagne en priorité les PME et ETI du quartier d'affaires Val de Seine, où sont implantés notamment le siège mondial d'Orange (bâtiment Bridge) et de nombreux éditeurs et cabinets. Nos interventions sur site couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les missions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. Williams se déplace depuis Paris via la ligne 12 (Mairie d'Issy / Corentin Celton) ou le RER C.",
   directAnswerEn:
-    "À Issy-les-Moulineaux, Axion-IA accompagne en priorité les TPE et PME du quartier d'affaires Val de Seine, où sont implantés notamment le siège mondial d'Orange (bâtiment Bridge) et de nombreux éditeurs et cabinets. Nos interventions sur site couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les missions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. Williams se déplace depuis Paris via la ligne 12 (Mairie d'Issy / Corentin Celton) ou le RER C.",
-  seoHook: "TPE & PME · IA opérationnelle",
+    "À Issy-les-Moulineaux, Axion-IA accompagne en priorité les PME et ETI du quartier d'affaires Val de Seine, où sont implantés notamment le siège mondial d'Orange (bâtiment Bridge) et de nombreux éditeurs et cabinets. Nos interventions sur site couvrent l'audit sur place 4 heures (à partir de {{price:audit-flash|flat}}), les missions ponctuelles à partir de {{price:intervention-4h|flat}}, l'implémentation clé en main et le coaching dirigeant — toujours en code custom Python/TypeScript, jamais en no-code. Williams se déplace depuis Paris via la ligne 12 (Mairie d'Issy / Corentin Celton) ou le RER C.",
+  seoHook: "PME & PME · IA opérationnelle",
   ecosystemFr:
     "Issy-les-Moulineaux abrite le quartier d'affaires Val de Seine, l'un des principaux pôles tertiaires d'Île-de-France, qui accueille le siège mondial d'Orange (bâtiment Bridge) et de nombreux acteurs de la programmation informatique, des télécommunications et des médias. La commune appartient à la Métropole du Grand Paris et à l'EPT Grand Paris Seine Ouest, et bénéficie de la desserte du métro ligne 12 (deux stations), du RER C (Issy et Issy-Val-de-Seine) et du tramway T2 (quatre arrêts).",
   ecosystemEn:
@@ -33,20 +33,20 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit sur place à Issy-les-Moulineaux pour les TPE et PME du quartier Val de Seine — identification rapide des processus administratifs et commerciaux à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
-      en: "Réaliser un audit sur place à Issy-les-Moulineaux pour les TPE et PME du quartier Val de Seine — identification rapide des processus administratifs et commerciaux à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
+      fr: "Réaliser un audit sur place à Issy-les-Moulineaux pour les PME et ETI du quartier Val de Seine — identification rapide des processus administratifs et commerciaux à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
+      en: "Réaliser un audit sur place à Issy-les-Moulineaux pour les PME et ETI du quartier Val de Seine — identification rapide des processus administratifs et commerciaux à automatiser. Audit 4 heures sur site à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervenir à Issy-les-Moulineaux pour automatiser les flux administratifs des éditeurs, cabinets et agences du Val de Seine — relances, devis, reporting, intégrations API.",
       en: "Intervenir à Issy-les-Moulineaux pour automatiser les flux administratifs des éditeurs, cabinets et agences du Val de Seine — relances, devis, reporting, intégrations API.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA clés en main à Issy-les-Moulineaux, en code custom Python/TypeScript, intégrées aux SI existants des TPE et PME locales.",
-      en: "Implémenter des solutions IA clés en main à Issy-les-Moulineaux, en code custom Python/TypeScript, intégrées aux SI existants des TPE et PME locales.",
+      fr: "Implémenter des solutions IA clés en main à Issy-les-Moulineaux, en code custom Python/TypeScript, intégrées aux SI existants des PME et ETI locales.",
+      en: "Implémenter des solutions IA clés en main à Issy-les-Moulineaux, en code custom Python/TypeScript, intégrées aux SI existants des PME et ETI locales.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME isséennes — sessions individuelles dans vos locaux du Val de Seine pour cadrer une roadmap IA réaliste.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME isséennes — sessions individuelles dans vos locaux du Val de Seine pour cadrer une roadmap IA réaliste.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI isséennes — sessions individuelles dans vos locaux du Val de Seine pour cadrer une roadmap IA réaliste.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI isséennes — sessions individuelles dans vos locaux du Val de Seine pour cadrer une roadmap IA réaliste.",
     },
   },
   services: {
@@ -87,12 +87,6 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine IA-augmenté",
-            detail:
-              "Pour indépendants, studios (type Virtual Regatta, Urban Expe à petite échelle) et cabinets isséens : site vitrine performant avec chatbot RAG sur votre offre et formulaire qualifié par IA. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme SaaS ou portail IA-native",
@@ -174,12 +168,6 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase site",
-            detail:
-              "For Issy freelancers, studios (such as Virtual Regatta, Urban Expe at small scale) and firms: a fast showcase site with a RAG chatbot on your offering and an AI-qualified form. Quote from 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "SME",
             price: "SaaS platform or AI-native portal",
             detail:
@@ -249,7 +237,7 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Issy-les-Moulineaux ?",
-      a: "Nous accompagnons en priorité les TPE et PME de la programmation informatique, des télécommunications, des sièges sociaux, de la publicité et des études de marché — secteurs très représentés dans le quartier Val de Seine. Les ETI sont également les bienvenues.",
+      a: "Nous accompagnons en priorité les PME et ETI de la programmation informatique, des télécommunications, des sièges sociaux, de la publicité et des études de marché — secteurs très représentés dans le quartier Val de Seine. Les ETI sont également les bienvenues.",
     },
   ],
 };

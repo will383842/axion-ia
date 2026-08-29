@@ -10,13 +10,13 @@ export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
     "Chevigny-Saint-Sauveur (21), pôle dynamique à l'est de Dijon, concentre plusieurs zones d'activités majeures de la Métropole : Cap Nord, Valmy, et de nombreuses PME industrielles et tertiaires. Axion-IA couvre les activités professionnelles du bassin du bassin est-dijonnais.",
   seoHook: "zones d'activités, logistique & industrie",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons TPE, PME et ETI des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons PME, ETI et grands groupes des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons TPE, PME et ETI des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons PME, ETI et grands groupes des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
-    "Chevigny-Saint-Sauveur est un pôle économique majeur de l'est dijonnais. Ses zones d'activités (Cap Nord, Valmy, zone commerciale Quetigny-Chevigny) accueillent un tissu dense de TPE/PME : logistique et transport, industrie légère, négoce, services B2B, grande distribution. Commune en forte croissance démographique, carrefour autoroutier A31/A39.",
+    "Chevigny-Saint-Sauveur est un pôle économique majeur de l'est dijonnais. Ses zones d'activités (Cap Nord, Valmy, zone commerciale Quetigny-Chevigny) accueillent un tissu dense de PME et ETI : logistique et transport, industrie légère, négoce, services B2B, grande distribution. Commune en forte croissance démographique, carrefour autoroutier A31/A39.",
   ecosystemEn:
-    "Chevigny-Saint-Sauveur est un pôle économique majeur de l'est dijonnais. Ses zones d'activités (Cap Nord, Valmy, zone commerciale Quetigny-Chevigny) accueillent un tissu dense de TPE/PME : logistique et transport, industrie légère, négoce, services B2B, grande distribution. Commune en forte croissance démographique, carrefour autoroutier A31/A39.",
+    "Chevigny-Saint-Sauveur est un pôle économique majeur de l'est dijonnais. Ses zones d'activités (Cap Nord, Valmy, zone commerciale Quetigny-Chevigny) accueillent un tissu dense de PME et ETI : logistique et transport, industrie légère, négoce, services B2B, grande distribution. Commune en forte croissance démographique, carrefour autoroutier A31/A39.",
   distancesFr:
     "Dijon centre à 10 min (tram T1 + bus). Gare Dijon-Ville TGV à 15 min. Quetigny limitrophe. Autoroutes A31 (Lyon/Paris) et A39 (Dole/Jura) accès direct. Aéroport Dijon-Bourgogne à 15 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
       en: "Implémentation IA à Chevigny-Saint-Sauveur : optimisation supply chain, automatisation entrepôt, agents IA service client, prédiction demande, CRM augmenté. Solutions calibrées PME zones d'activités.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chevigny-Saint-Sauveur : sessions individuelles pour dirigeants TPE/PME logistique, industrie et négoce souhaitant maîtriser l'IA dans leurs opérations.",
-      en: "Coaching 1-to-1 à Chevigny-Saint-Sauveur : sessions individuelles pour dirigeants TPE/PME logistique, industrie et négoce souhaitant maîtriser l'IA dans leurs opérations.",
+      fr: "Coaching 1-to-1 à Chevigny-Saint-Sauveur : sessions individuelles pour dirigeants de PME et d'ETI logistique, industrie et négoce souhaitant maîtriser l'IA dans leurs opérations.",
+      en: "Coaching 1-to-1 à Chevigny-Saint-Sauveur : sessions individuelles pour dirigeants de PME et d'ETI logistique, industrie et négoce souhaitant maîtriser l'IA dans leurs opérations.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Chevigny-Saint-Sauveur  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME des zones d'activités de Chevigny, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI des zones d'activités de Chevigny, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques de Chevigny ?",
-      a: "Oui, nous accompagnons les TPE/PME logistique et transport de Chevigny-Saint-Sauveur sur des cas IA concrets : optimisation tournées, prédiction demande, automatisation entrepôt, agents IA suivi colis, gestion stocks augmentée.",
+      a: "Oui, nous accompagnons les PME et ETI logistique et transport de Chevigny-Saint-Sauveur sur des cas IA concrets : optimisation tournées, prédiction demande, automatisation entrepôt, agents IA suivi colis, gestion stocks augmentée.",
     },
     {
       q: "Quels services IA pour les PME industrielles de Chevigny ?",

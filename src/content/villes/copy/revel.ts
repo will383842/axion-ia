@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const REVEL_COPY: VilleCopy = {
   pitchFr:
-    "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu TPE artisans d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA répond aux besoins des activités professionnelles présentes du Lauragais.",
+    "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu PME artisanales d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA répond aux besoins des activités professionnelles présentes du Lauragais.",
   pitchEn:
-    "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu TPE artisans d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA répond aux besoins des activités professionnelles présentes du Lauragais.",
+    "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu PME artisanales d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA répond aux besoins des activités professionnelles présentes du Lauragais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Revel (31). Nous accompagnons TPE artisans d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Revel (31). Nous accompagnons PME artisanales d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Revel (31). Nous accompagnons TPE artisans d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Revel (31). Nous accompagnons PME artisanales d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit sur place sur mesure.",
   seoHook: "ébénisterie meuble & artisanat d'art",
   ecosystemFr:
-    "Revel est la capitale du meuble d'art et de l'ébénisterie, au cœur du Lauragais. TPE artisans d'art (ébénistes, laqueurs, doreurs), PME du meuble et du bois, commerces de la halle médiévale, professions libérales, tourisme autour du lac de Saint-Ferréol et du canal du Midi (UNESCO).",
+    "Revel est la capitale du meuble d'art et de l'ébénisterie, au cœur du Lauragais. PME artisanales d'art (ébénistes, laqueurs, doreurs), PME du meuble et du bois, commerces de la halle médiévale, professions libérales, tourisme autour du lac de Saint-Ferréol et du canal du Midi (UNESCO).",
   ecosystemEn:
-    "Revel est la capitale du meuble d'art et de l'ébénisterie, au cœur du Lauragais. TPE artisans d'art (ébénistes, laqueurs, doreurs), PME du meuble et du bois, commerces de la halle médiévale, professions libérales, tourisme autour du lac de Saint-Ferréol et du canal du Midi (UNESCO).",
+    "Revel est la capitale du meuble d'art et de l'ébénisterie, au cœur du Lauragais. PME artisanales d'art (ébénistes, laqueurs, doreurs), PME du meuble et du bois, commerces de la halle médiévale, professions libérales, tourisme autour du lac de Saint-Ferréol et du canal du Midi (UNESCO).",
   distancesFr:
     "Toulouse centre à 50 min (A61/D622). Castelnaudary à 25 min. Castres à 40 min. Lac Saint-Ferréol à 10 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const REVEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Revel : diagnostic adapté aux TPE artisans d'art, PME du meuble, commerçants et acteurs du tourisme du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Revel : diagnostic adapté aux TPE artisans d'art, PME du meuble, commerçants et acteurs du tourisme du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Revel : diagnostic adapté aux PME artisanales d'art, PME du meuble, commerçants et acteurs du tourisme du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Revel : diagnostic adapté aux PME artisanales d'art, PME du meuble, commerçants et acteurs du tourisme du Lauragais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Revel : formats adaptés à l'atelier d'ébénisterie, au commerce de la halle, à l'hébergement touristique. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const REVEL_COPY: VilleCopy = {
       en: "Implémentation IA à Revel : automatisation devis ébénisterie, gestion commandes meuble d'art, agents conversationnels tourisme, classification documents pour artisans et PME du Lauragais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Revel : sessions dirigeants TPE artisans d'art, gérants PME du meuble, commerçants et hébergeurs du Lauragais.",
-      en: "Coaching 1-to-1 à Revel : sessions dirigeants TPE artisans d'art, gérants PME du meuble, commerçants et hébergeurs du Lauragais.",
+      fr: "Coaching 1-to-1 à Revel : sessions dirigeants PME artisanales d'art, gérants PME du meuble, commerçants et hébergeurs du Lauragais.",
+      en: "Coaching 1-to-1 à Revel : sessions dirigeants PME artisanales d'art, gérants PME du meuble, commerçants et hébergeurs du Lauragais.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const REVEL_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Revel ?",
-      a: "Nous accompagnons tous types d'activités : TPE artisans d'art et ébénistes, PME du meuble, commerces, tourisme, professions libérales. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : PME artisanales d'art et ébénistes, PME du meuble, commerces, tourisme, professions libérales. Aucun secteur exclu.",
     },
     {
       q: "Tarifs audit IA à Revel  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "L'IA peut-elle aider un artisan ébéniste à Revel ?",

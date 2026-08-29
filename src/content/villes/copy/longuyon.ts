@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const LONGUYON_COPY: VilleCopy = {
   pitchFr:
-    "Longuyon (54), commune du Pays Haut dans le nord de la Meurthe-et-Moselle, est un nœud ferroviaire historique proche des frontières belge et luxembourgeoise. Tissu TPE/PME commerces, artisans, services, transport et logistique transfrontaliers, sous-traitance industrielle, travailleurs frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Longuyon (54), commune du Pays Haut dans le nord de la Meurthe-et-Moselle, est un nœud ferroviaire historique proche des frontières belge et luxembourgeoise. Tissu PME et ETI commerces, artisans, services, transport et logistique transfrontaliers, sous-traitance industrielle, travailleurs frontaliers. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Longuyon (54), commune du Pays Haut dans le nord de la Meurthe-et-Moselle, est un nœud ferroviaire historique proche des frontières belge et luxembourgeoise. Tissu TPE/PME commerces, artisans, services, transport et logistique transfrontaliers, sous-traitance industrielle, travailleurs frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Longuyon (54), commune du Pays Haut dans le nord de la Meurthe-et-Moselle, est un nœud ferroviaire historique proche des frontières belge et luxembourgeoise. Tissu PME et ETI commerces, artisans, services, transport et logistique transfrontaliers, sous-traitance industrielle, travailleurs frontaliers. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longuyon (54). Nous accompagnons tous types d'activités : TPE/PME commerces, artisans, services, transporteurs et logisticiens transfrontaliers, sous-traitants industriels et professions libérales longuyonnaises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longuyon (54). Nous accompagnons tous types d'activités : PME et ETI commerces, artisans, services, transporteurs et logisticiens transfrontaliers, sous-traitants industriels et professions libérales longuyonnaises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longuyon (54). Nous accompagnons tous types d'activités : TPE/PME commerces, artisans, services, transporteurs et logisticiens transfrontaliers, sous-traitants industriels et professions libérales longuyonnaises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longuyon (54). Nous accompagnons tous types d'activités : PME et ETI commerces, artisans, services, transporteurs et logisticiens transfrontaliers, sous-traitants industriels et professions libérales longuyonnaises.",
   ecosystemFr:
-    "Longuyon est une commune du Pays Haut au nord de la Meurthe-et-Moselle, nœud ferroviaire historique aux portes de la Belgique et du Luxembourg. Tissu TPE/PME commerces, artisanat, services, transport et logistique transfrontaliers, sous-traitance industrielle, économie marquée par les travailleurs frontaliers.",
+    "Longuyon est une commune du Pays Haut au nord de la Meurthe-et-Moselle, nœud ferroviaire historique aux portes de la Belgique et du Luxembourg. Tissu PME et ETI commerces, artisanat, services, transport et logistique transfrontaliers, sous-traitance industrielle, économie marquée par les travailleurs frontaliers.",
   ecosystemEn:
-    "Longuyon est une commune du Pays Haut au nord de la Meurthe-et-Moselle, nœud ferroviaire historique aux portes de la Belgique et du Luxembourg. Tissu TPE/PME commerces, artisanat, services, transport et logistique transfrontaliers, sous-traitance industrielle, économie marquée par les travailleurs frontaliers.",
+    "Longuyon est une commune du Pays Haut au nord de la Meurthe-et-Moselle, nœud ferroviaire historique aux portes de la Belgique et du Luxembourg. Tissu PME et ETI commerces, artisanat, services, transport et logistique transfrontaliers, sous-traitance industrielle, économie marquée par les travailleurs frontaliers.",
   distancesFr:
     "Luxembourg-ville à 45 min. Longwy à 20 min. Metz à 55 min. Gare SNCF Longuyon (axe Paris–Luxembourg). Autoroute A30 à 15 min. Belgique (Virton) à 25 min. Nancy à 1h30.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LONGUYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longuyon : diagnostic adapté aux TPE/PME commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Longuyon : diagnostic adapté aux TPE/PME commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Longuyon : diagnostic adapté aux PME et ETI commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Longuyon : diagnostic adapté aux PME et ETI commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longuyon : formats adaptés au commerce, à l'atelier, au transport, au bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const LONGUYON_COPY: VilleCopy = {
       en: "Implémentation IA à Longuyon : optimisation logistique transfrontalière, automatisation gestion commerciale, agents conversationnels multilingues, workflow douanier, traçabilité transport.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Longuyon : sessions dans votre commerce, atelier, entreprise de transport ou en visio. Commerçants, artisans, transporteurs, sous-traitants, dirigeants TPE/PME longuyonnais.",
-      en: "Coaching 1-to-1 à Longuyon : sessions dans votre commerce, atelier, entreprise de transport ou en visio. Commerçants, artisans, transporteurs, sous-traitants, dirigeants TPE/PME longuyonnais.",
+      fr: "Coaching 1-to-1 à Longuyon : sessions dans votre commerce, atelier, entreprise de transport ou en visio. Commerçants, artisans, transporteurs, sous-traitants, dirigeants de PME et d'ETI longuyonnais.",
+      en: "Coaching 1-to-1 à Longuyon : sessions dans votre commerce, atelier, entreprise de transport ou en visio. Commerçants, artisans, transporteurs, sous-traitants, dirigeants de PME et d'ETI longuyonnais.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LONGUYON_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les transporteurs et logisticiens transfrontaliers ?",
-      a: "Oui, nous accompagnons les TPE/PME transport et logistique transfrontaliers longuyonnais : optimisation tournées, gestion documents douaniers, traçabilité, agents conversationnels multilingues FR/EN/DE.",
+      a: "Oui, nous accompagnons les PME et ETI transport et logistique transfrontaliers longuyonnais : optimisation tournées, gestion documents douaniers, traçabilité, agents conversationnels multilingues FR/EN/DE.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans longuyonnais ?",
@@ -61,7 +61,7 @@ export const LONGUYON_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Longuyon ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Longuyon ?",

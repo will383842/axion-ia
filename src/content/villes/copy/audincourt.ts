@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AUDINCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y travaille avec les organisations du territoire.",
+    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, PME usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y travaille avec les organisations du territoire.",
+    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, PME usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audincourt (25). Nous accompagnons TPE et PME du Pays de Montbéliard : sous-traitants automobile, usineurs et mécaniciens de précision, métallurgistes, commerçants et prestataires services aux entreprises industrielles de l'agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audincourt (25). Nous accompagnons PME et ETI du Pays de Montbéliard : sous-traitants automobile, usineurs et mécaniciens de précision, métallurgistes, commerçants et prestataires services aux entreprises industrielles de l'agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audincourt (25). Nous accompagnons TPE et PME du Pays de Montbéliard : sous-traitants automobile, usineurs et mécaniciens de précision, métallurgistes, commerçants et prestataires services aux entreprises industrielles de l'agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Audincourt (25). Nous accompagnons PME et ETI du Pays de Montbéliard : sous-traitants automobile, usineurs et mécaniciens de précision, métallurgistes, commerçants et prestataires services aux entreprises industrielles de l'agglomération.",
   seoHook: "sous-traitance automobile & usinage mécanique",
   ecosystemFr:
     "Audincourt est une commune industrielle du Pays de Montbéliard (14 071 habitants), au cœur d'un bassin historiquement lié à l'automobile. Économie structurée autour de la sous-traitance automobile, l'usinage de précision, la métallurgie et les services aux entreprises industrielles. En reconversion progressive vers l'industrie du futur et l'électromobilité.",
@@ -23,15 +23,15 @@ export const AUDINCOURT_COPY: VilleCopy = {
     "Montbéliard à 5 min. Belfort à 20 min. Besançon à 1h10 par A36. Mulhouse à 45 min. Gare TGV Belfort-Montbéliard à 15 min. Aéroport Bâle-Mulhouse à 1h.",
   topSectorsNaf: [
     "Sous-traitance automobile & équipementiers",
-    "TPE usinage & mécanique de précision",
+    "PME usinage & mécanique de précision",
     "Industrie métallurgique",
     "Commerces & services centre-ville",
     "Services aux entreprises industrielles",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, PME mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, PME mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Audincourt : ateliers dans vos locaux usine, atelier usinage ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier sous-traitance automobile, mécanique et métallurgie.",
@@ -42,8 +42,8 @@ export const AUDINCOURT_COPY: VilleCopy = {
       en: "Implémentation IA à Audincourt : contrôle qualité visuel pièces automobile, maintenance prédictive machines-outils, optimisation planning production, automatisation traçabilité lots, agents IA pilotage atelier usinage.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Audincourt : sessions dans vos locaux usine, atelier ou en visio. Dirigeants PME sous-traitance automobile, gérants TPE usinage, responsables production métallurgie, prestataires services industriels Pays de Montbéliard.",
-      en: "Coaching 1-to-1 à Audincourt : sessions dans vos locaux usine, atelier ou en visio. Dirigeants PME sous-traitance automobile, gérants TPE usinage, responsables production métallurgie, prestataires services industriels Pays de Montbéliard.",
+      fr: "Coaching 1-to-1 à Audincourt : sessions dans vos locaux usine, atelier ou en visio. Dirigeants PME sous-traitance automobile, gérants PME usinage, responsables production métallurgie, prestataires services industriels Pays de Montbéliard.",
+      en: "Coaching 1-to-1 à Audincourt : sessions dans vos locaux usine, atelier ou en visio. Dirigeants PME sous-traitance automobile, gérants PME usinage, responsables production métallurgie, prestataires services industriels Pays de Montbéliard.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const AUDINCOURT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME sous-traitance automobile et équipementiers : contrôle qualité visuel pièces IA, maintenance prédictive machines-outils, optimisation planning production, traçabilité lots automatisée, pilotage atelier connecté.",
     },
     {
-      q: "Accompagnez-vous les TPE usinage et mécanique de précision ?",
+      q: "Accompagnez-vous les PME usinage et mécanique de précision ?",
       a: "Oui, automatisation programmation CNC, contrôle dimensionnel assisté IA, optimisation parcours outils, gestion stocks matières, devis automatisés pièces sur plan.",
     },
     {
-      q: "Quels tarifs pour les TPE et PME industrielles d'Audincourt ?",
-      a: "Pour les TPE et PME industrielles d'Audincourt, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : contrôle qualité, maintenance prédictive, automatisation traçabilité, pilotage production.",
+      q: "Quels tarifs pour les PME et ETI industrielles d'Audincourt ?",
+      a: "Pour les PME et ETI industrielles d'Audincourt, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : contrôle qualité, maintenance prédictive, automatisation traçabilité, pilotage production.",
     },
     {
       q: "Comment se déroule une mission à Audincourt ?",

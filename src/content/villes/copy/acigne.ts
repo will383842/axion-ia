@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ACIGNE_COPY: VilleCopy = {
   pitchFr:
-    "Acigné (35), commune résidentielle de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, fait partie de Rennes Métropole. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de l'est rennais.",
+    "Acigné (35), commune résidentielle de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, fait partie de Rennes Métropole. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de l'est rennais.",
   pitchEn:
-    "Acigné (35), commune résidentielle de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, fait partie de Rennes Métropole. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de l'est rennais.",
+    "Acigné (35), commune résidentielle de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, fait partie de Rennes Métropole. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de l'est rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Acigné (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'est rennais, vallée de la Vilaine. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Acigné (35). Nous accompagnons PME artisanales, PME de services, commerçants, professions libérales et indépendants de l'est rennais, vallée de la Vilaine. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Acigné (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'est rennais, vallée de la Vilaine. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Acigné (35). Nous accompagnons PME artisanales, PME de services, commerçants, professions libérales et indépendants de l'est rennais, vallée de la Vilaine. Audit sur place sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
-    "Acigné est une commune résidentielle attractive de Rennes Métropole, dans la vallée de la Vilaine à l'est de Rennes. Tissu TPE artisans BTP, PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique, conseil) et indépendants. Cadre de vie prisé avec proximité immédiate du pôle économique rennais (Cesson-Sévigné, Chantepie).",
+    "Acigné est une commune résidentielle attractive de Rennes Métropole, dans la vallée de la Vilaine à l'est de Rennes. Tissu PME du BTP, PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique, conseil) et indépendants. Cadre de vie prisé avec proximité immédiate du pôle économique rennais (Cesson-Sévigné, Chantepie).",
   ecosystemEn:
-    "Acigné est une commune résidentielle attractive de Rennes Métropole, dans la vallée de la Vilaine à l'est de Rennes. Tissu TPE artisans BTP, PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique, conseil) et indépendants. Cadre de vie prisé avec proximité immédiate du pôle économique rennais (Cesson-Sévigné, Chantepie).",
+    "Acigné est une commune résidentielle attractive de Rennes Métropole, dans la vallée de la Vilaine à l'est de Rennes. Tissu PME du BTP, PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique, conseil) et indépendants. Cadre de vie prisé avec proximité immédiate du pôle économique rennais (Cesson-Sévigné, Chantepie).",
   distancesFr:
     "Rennes centre à 15 min. Gare TGV Rennes à 20 min (Paris en 1h27). Cesson-Sévigné à 8 min. Aéroport Rennes-Saint-Jacques à 30 min. Noyal-sur-Vilaine à 5 min, Thorigné-Fouillard à 5 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const ACIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Acigné : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est rennais, vallée de la Vilaine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Acigné : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales de l'est rennais, vallée de la Vilaine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Acigné : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de l'est rennais, vallée de la Vilaine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Acigné : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de l'est rennais, vallée de la Vilaine. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Acigné : formations adaptées TPE/PME de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
-      en: "Interventions IA sur site à Acigné : formations adaptées TPE/PME de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
+      fr: "Interventions IA sur site à Acigné : formations adaptées PME et ETI de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
+      en: "Interventions IA sur site à Acigné : formations adaptées PME et ETI de services, ateliers pratiques outils IA métier. Vos équipes repartent autonomes, formats demi-journée ou journée complète.",
     },
     implementation: {
       fr: "Implémentation IA à Acigné : automatisation devis artisans BTP, classification documents professions libérales, agents conversationnels commerce, optimisation planning PME services est rennais.",
       en: "Implémentation IA à Acigné : automatisation devis artisans BTP, classification documents professions libérales, agents conversationnels commerce, optimisation planning PME services est rennais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Acigné : sessions en visio ou dans vos locaux est Rennes. Dirigeants TPE artisans, gérants PME services, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Acigné : sessions en visio ou dans vos locaux est Rennes. Dirigeants TPE artisans, gérants PME services, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Acigné : sessions en visio ou dans vos locaux est Rennes. Dirigeants PME artisanales, gérants PME services, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Acigné : sessions en visio ou dans vos locaux est Rennes. Dirigeants PME artisanales, gérants PME services, professions libérales et indépendants souhaitant intégrer l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const ACIGNE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Acigné  : quel budget prévoir ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les TPE et PME d'Acigné souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour une session de 4h. Idéal pour les PME et ETI d'Acigné souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Acigné ?",
       a: "Oui, nous accompagnons les professions libérales d'Acigné (santé, juridique, conseil, immobilier). Cas typiques IA : classification documents, rédaction assistée, agents conversationnels patients/clients, automatisation facturation.",
     },
     {
-      q: "Quels formats d'intervention pour les TPE à Acigné ?",
-      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des TPE artisans et commerçants.",
+      q: "Quels formats d'intervention pour les PME à Acigné ?",
+      a: "Nous proposons audit sur place 4h ({{price:audit-flash|flat}}), interventions sur site demi-journée ou journée, coaching dirigeant 1-to-1 et implémentation clé en main. Formats adaptés aux contraintes des PME de l'artisanat et du commerce.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Acigné ?",

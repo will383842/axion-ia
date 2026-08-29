@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Fontenay-sous-Bois (94), en lisière du bois de Vincennes. Ville résidentielle et tertiaire de l'est parisien, elle accueille des sièges et un dense réseau de petites structures de services, de conseil et de commerce. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces entreprises val-de-marnaises.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Fontenay-sous-Bois (94), en lisière du bois de Vincennes. Ville résidentielle et tertiaire de l'est parisien, elle accueille des sièges et un dense réseau de PME de services, de conseil et de commerce. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces entreprises val-de-marnaises.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Fontenay-sous-Bois (94), en lisière du bois de Vincennes. Ville résidentielle et tertiaire de l'est parisien, elle accueille des sièges et un dense réseau de petites structures de services, de conseil et de commerce. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces entreprises val-de-marnaises.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Fontenay-sous-Bois (94), en lisière du bois de Vincennes. Ville résidentielle et tertiaire de l'est parisien, elle accueille des sièges et un dense réseau de PME de services, de conseil et de commerce. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces entreprises val-de-marnaises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-sous-Bois (94), dans le Val-de-Marne. Nous accompagnons en priorité les TPE puis les PME : prestataires de services aux entreprises, éditeurs et sociétés informatiques, professions libérales, commerces et sous-traitants des sièges locaux. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-sous-Bois (94), dans le Val-de-Marne. Nous accompagnons en priorité les PME puis les ETI : prestataires de services aux entreprises, éditeurs et sociétés informatiques, professions libérales, commerces et sous-traitants des sièges locaux. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-sous-Bois (94), dans le Val-de-Marne. Nous accompagnons en priorité les TPE puis les PME : prestataires de services aux entreprises, éditeurs et sociétés informatiques, professions libérales, commerces et sous-traitants des sièges locaux. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-sous-Bois (94), dans le Val-de-Marne. Nous accompagnons en priorité les PME puis les ETI : prestataires de services aux entreprises, éditeurs et sociétés informatiques, professions libérales, commerces et sous-traitants des sièges locaux. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   seoHook: "tertiaire & services",
   ecosystemFr:
-    "Fontenay-sous-Bois, à l'est de Paris et en lisière du bois de Vincennes, conjugue cadre résidentiel et économie tertiaire. La commune accueille des sièges et plateaux de bureaux le long du RER A, autour desquels gravite un tissu dense de TPE et PME : prestataires de services, sociétés informatiques, professions libérales et commerces de proximité. Cette proximité immédiate de Paris en fait un terrain favorable à des automatisations IA exigeantes et conformes.",
+    "Fontenay-sous-Bois, à l'est de Paris et en lisière du bois de Vincennes, conjugue cadre résidentiel et économie tertiaire. La commune accueille des sièges et plateaux de bureaux le long du RER A, autour desquels gravite un tissu dense de PME et ETI : prestataires de services, sociétés informatiques, professions libérales et commerces de proximité. Cette proximité immédiate de Paris en fait un terrain favorable à des automatisations IA exigeantes et conformes.",
   ecosystemEn:
-    "Fontenay-sous-Bois, à l'est de Paris et en lisière du bois de Vincennes, conjugue cadre résidentiel et économie tertiaire. La commune accueille des sièges et plateaux de bureaux le long du RER A, autour desquels gravite un tissu dense de TPE et PME : prestataires de services, sociétés informatiques, professions libérales et commerces de proximité. Cette proximité immédiate de Paris en fait un terrain favorable à des automatisations IA exigeantes et conformes.",
+    "Fontenay-sous-Bois, à l'est de Paris et en lisière du bois de Vincennes, conjugue cadre résidentiel et économie tertiaire. La commune accueille des sièges et plateaux de bureaux le long du RER A, autour desquels gravite un tissu dense de PME et ETI : prestataires de services, sociétés informatiques, professions libérales et commerces de proximité. Cette proximité immédiate de Paris en fait un terrain favorable à des automatisations IA exigeantes et conformes.",
   distancesFr:
     "Fontenay-sous-Bois desservie par le RER A et le RER E (Paris centre ~15 min). Bois de Vincennes attenant. Paris-Gare-de-Lyon (TGV) à 10 km. Aéroport de Paris-Orly à 20 km, Roissy-Charles-de-Gaulle à 25 km. Accès A86 et périphérique parisien.",
   distancesEn:
@@ -38,12 +38,12 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
       en: "Interventions IA sur site à Fontenay-sous-Bois : ateliers pour rendre autonomes vos équipes sur des outils IA configurés métier, du prestataire de services au commerce de proximité.",
     },
     implementation: {
-      fr: "Implémentation IA à Fontenay-sous-Bois : automatisation des devis et relances, rédaction assistée, agents conversationnels et CRM augmentés pour les TPE et PME tertiaires val-de-marnaises.",
-      en: "Implémentation IA à Fontenay-sous-Bois : automatisation des devis et relances, rédaction assistée, agents conversationnels et CRM augmentés pour les TPE et PME tertiaires val-de-marnaises.",
+      fr: "Implémentation IA à Fontenay-sous-Bois : automatisation des devis et relances, rédaction assistée, agents conversationnels et CRM augmentés pour les PME et ETI tertiaires val-de-marnaises.",
+      en: "Implémentation IA à Fontenay-sous-Bois : automatisation des devis et relances, rédaction assistée, agents conversationnels et CRM augmentés pour les PME et ETI tertiaires val-de-marnaises.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fontenay-sous-Bois : sessions individuelles pour dirigeants de TPE et PME de services, sur site ou en visio, pour adopter l'IA au rythme de l'entreprise sans dépendre d'un prestataire.",
-      en: "Coaching 1-to-1 à Fontenay-sous-Bois : sessions individuelles pour dirigeants de TPE et PME de services, sur site ou en visio, pour adopter l'IA au rythme de l'entreprise sans dépendre d'un prestataire.",
+      fr: "Coaching 1-to-1 à Fontenay-sous-Bois : sessions individuelles pour dirigeants de PME et d'ETI de services, sur site ou en visio, pour adopter l'IA au rythme de l'entreprise sans dépendre d'un prestataire.",
+      en: "Coaching 1-to-1 à Fontenay-sous-Bois : sessions individuelles pour dirigeants de PME et d'ETI de services, sur site ou en visio, pour adopter l'IA au rythme de l'entreprise sans dépendre d'un prestataire.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Fontenay-sous-Bois : plateformes et SaaS IA sur mesure pour prestataires et commerces — portails clients, prise de rendez-vous, assistants IA métier connectés à vos outils.",
@@ -53,11 +53,11 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Fontenay-sous-Bois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, à deux pas du campus technologique « Les Dunes » de la Société Générale et du quartier d'affaires de Val-de-Fontenay (RATP, AXA, BNP Paribas), nous travaillons surtout pour le tissu dense de TPE et PME qui gravite autour de ces sièges. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-sous-Bois, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Fontenay-sous-Bois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Ici, à deux pas du campus technologique « Les Dunes » de la Société Générale et du quartier d'affaires de Val-de-Fontenay (RATP, AXA, BNP Paribas), nous travaillons surtout pour le tissu dense de PME et ETI qui gravite autour de ces sièges. Devis à partir de 24-48 h selon la complexité du projet, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-sous-Bois, itérations à distance.",
         whyHere: [
           "Projets web & SaaS fontenaysiens : prestataires IT et sous-traitants des grands sièges de Val-de-Fontenay (campus « Les Dunes » de la Société Générale, RATP, AXA, BNP Paribas), éditeurs et ESN de l'est parisien.",
           "Exigences de niveau bancaire : nous savons construire des portails et SaaS qui tiennent les standards data, cybersécurité et architecture SI attendus par les donneurs d'ordre du quartier d'affaires.",
-          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA, pour les TPE et professions libérales qui n'ont pas d'équipe produit interne.",
+          "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma — pas seulement la brique IA, pour les PME et professions libérales qui n'ont pas d'équipe produit interne.",
           "Anticipation Grand Paris Express : avec la future gare ligne 15 Est (chantier en cours, ouverture 2031) et les écosystèmes startup du « Plateau », les commerces et services fontenaysiens préparent des sites prêts pour un afflux d'usagers.",
         ],
         methodology: [
@@ -89,12 +89,6 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique, prise de RDV) sur le site existant d'un commerce, d'une profession libérale ou d'un artisan fontenaysien, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -116,7 +110,7 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
         faq: [
           {
             q: "Travaillez-vous avec les sous-traitants et prestataires IT des sièges de Val-de-Fontenay ?",
-            a: "Oui. Les TPE et PME qui fournissent ou sous-traitent pour la Société Générale (campus « Les Dunes »), la RATP, AXA ou BNP Paribas à Fontenay-sous-Bois sont notre cœur de cible : nous construisons leurs sites, portails et SaaS au niveau d'exigence attendu par ces donneurs d'ordre.",
+            a: "Oui. Les PME et ETI qui fournissent ou sous-traitent pour la Société Générale (campus « Les Dunes »), la RATP, AXA ou BNP Paribas à Fontenay-sous-Bois sont notre cœur de cible : nous construisons leurs sites, portails et SaaS au niveau d'exigence attendu par ces donneurs d'ordre.",
           },
           {
             q: "Mes données et celles de mes clients restent-elles en Europe ?",
@@ -175,12 +169,6 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search, booking) onto the existing site of a Fontenay shop, independent professional or craftsman, with no redesign.",
-          },
-          {
             sizeLabel: "PME",
             price: "Bespoke site / application",
             detail:
@@ -230,11 +218,11 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-sous-Bois ?",
-      a: "Oui, Axion-IA intervient à Fontenay-sous-Bois et dans l'est du Val-de-Marne (Vincennes, Nogent-sur-Marne, Montreuil). Nos consultants se déplacent depuis Paris via le RER A pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Fontenay-sous-Bois et dans l'est du Val-de-Marne (Vincennes, Nogent-sur-Marne, Montreuil). Nos consultants se déplacent depuis Paris via le RER A pour rencontrer PME et ETI sur site.",
     },
     {
       q: "Combien coûte un audit IA à Fontenay-sous-Bois ?",
-      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME fontenaysiennes, sans devis opaque ni engagement caché.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux PME et ETI fontenaysiennes, sans devis opaque ni engagement caché.",
     },
     {
       q: "Accompagnez-vous les prestataires de services et sociétés informatiques ?",
@@ -242,7 +230,7 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les sous-traitants des sièges locaux ?",
-      a: "Oui. Les TPE et PME qui fournissent ou sous-traitent pour les sièges installés à Fontenay-sous-Bois gagnent en productivité grâce à nos automatisations sur mesure.",
+      a: "Oui. Les PME et ETI qui fournissent ou sous-traitent pour les sièges installés à Fontenay-sous-Bois gagnent en productivité grâce à nos automatisations sur mesure.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour de Fontenay-sous-Bois ?",

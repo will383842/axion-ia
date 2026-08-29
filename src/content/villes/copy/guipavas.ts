@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const GUIPAVAS_COPY: VilleCopy = {
   pitchFr:
-    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
+    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de PME de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
+    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de PME de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
   seoHook: "aéroport, logistique & technopôle",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guipavas (29). Nous accompagnons PME et ETI : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guipavas (29). Nous accompagnons PME et ETI : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit sur place sur mesure.",
   ecosystemFr:
     "Guipavas est la porte d'entrée aérienne de la pointe bretonne grâce à l'aéroport Brest-Bretagne (1 million de passagers/an). Les zones d'activités de Kergaradec et de la Fontaine-Margot concentrent logistique, transport, commerce de gros et sous-traitance. Le Technopôle Brest-Iroise est à proximité immédiate. Communes voisines : Brest, Plougastel-Daoulas, Gouesnou, Le Relecq-Kerhuon, Bohars.",
   ecosystemEn:
@@ -38,12 +38,12 @@ export const GUIPAVAS_COPY: VilleCopy = {
       en: "Interventions IA sur site à Guipavas : formats adaptés à l'entrepôt, au bureau ou à la zone d'activités. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Guipavas : automatisation flux logistiques, suivi expéditions, CRM augmenté, gestion documentaire. Solutions sur mesure pour TPE et PME de la zone aéroportuaire brestoise.",
-      en: "Implémentation IA à Guipavas : automatisation flux logistiques, suivi expéditions, CRM augmenté, gestion documentaire. Solutions sur mesure pour TPE et PME de la zone aéroportuaire brestoise.",
+      fr: "Implémentation IA à Guipavas : automatisation flux logistiques, suivi expéditions, CRM augmenté, gestion documentaire. Solutions sur mesure pour PME et ETI de la zone aéroportuaire brestoise.",
+      en: "Implémentation IA à Guipavas : automatisation flux logistiques, suivi expéditions, CRM augmenté, gestion documentaire. Solutions sur mesure pour PME et ETI de la zone aéroportuaire brestoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Guipavas : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, responsables logistiques et cadres du Technopôle Brest-Iroise.",
-      en: "Coaching 1-to-1 à Guipavas : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, responsables logistiques et cadres du Technopôle Brest-Iroise.",
+      fr: "Coaching 1-to-1 à Guipavas : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, responsables logistiques et cadres du Technopôle Brest-Iroise.",
+      en: "Coaching 1-to-1 à Guipavas : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, responsables logistiques et cadres du Technopôle Brest-Iroise.",
     },
   },
   faqGeolocalisee: [

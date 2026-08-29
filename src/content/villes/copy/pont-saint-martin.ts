@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
   pitchFr:
-    "Pont-Saint-Martin (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, au bord du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA y intervient pour tous types d'activités du sud Nantes.",
+    "Pont-Saint-Martin (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, au bord du lac de Grand-Lieu. Tissu PME de l'artisanat et du commerce, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA y intervient pour tous types d'activités du sud Nantes.",
   pitchEn:
-    "Pont-Saint-Martin (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, au bord du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA y intervient pour tous types d'activités du sud Nantes.",
+    "Pont-Saint-Martin (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, au bord du lac de Grand-Lieu. Tissu PME de l'artisanat et du commerce, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA y intervient pour tous types d'activités du sud Nantes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Saint-Martin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises résidentielles du sud de l'agglomération nantaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Saint-Martin (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires, professions libérales, services à la personne et entreprises résidentielles du sud de l'agglomération nantaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Saint-Martin (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises résidentielles du sud de l'agglomération nantaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pont-Saint-Martin (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires, professions libérales, services à la personne et entreprises résidentielles du sud de l'agglomération nantaise.",
   seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
-    "Pont-Saint-Martin est une commune résidentielle du sud de Nantes Métropole, proche du lac de Grand-Lieu. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie attractif entre ville et nature.",
+    "Pont-Saint-Martin est une commune résidentielle du sud de Nantes Métropole, proche du lac de Grand-Lieu. Tissu PME artisanales, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie attractif entre ville et nature.",
   ecosystemEn:
-    "Pont-Saint-Martin est une commune résidentielle du sud de Nantes Métropole, proche du lac de Grand-Lieu. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie attractif entre ville et nature.",
+    "Pont-Saint-Martin est une commune résidentielle du sud de Nantes Métropole, proche du lac de Grand-Lieu. Tissu PME artisanales, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie attractif entre ville et nature.",
   distancesFr:
     "Nantes centre à 15 min. Gare Nantes TGV à 20 min. Aéroport Nantes-Atlantique à 15 min. Rezé à 10 min. La Chevrolière à 10 min.",
   distancesEn:
     "Nantes centre à 15 min. Gare Nantes TGV à 20 min. Aéroport Nantes-Atlantique à 15 min. Rezé à 10 min. La Chevrolière à 10 min.",
   topSectorsNaf: [
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "PME tertiaires & services",
     "Professions libérales",
     "Services à la personne",
@@ -30,8 +30,8 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Saint-Martin : diagnostic adapté aux TPE artisans et commerçants, PME tertiaires, professions libérales du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pont-Saint-Martin : diagnostic adapté aux TPE artisans et commerçants, PME tertiaires, professions libérales du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pont-Saint-Martin : diagnostic adapté aux PME de l'artisanat et du commerce, PME tertiaires, professions libérales du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pont-Saint-Martin : diagnostic adapté aux PME de l'artisanat et du commerce, PME tertiaires, professions libérales du sud nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Saint-Martin : formats adaptés au bureau, au cabinet, au commerce ou en visio. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
       en: "Implémentation IA à Pont-Saint-Martin : agents conversationnels B2B, automatisation secrétariat, gestion RDV professions libérales, extraction données commerciales. Sud Nantes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pont-Saint-Martin : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME du sud nantais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Pont-Saint-Martin : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME du sud nantais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Pont-Saint-Martin : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI du sud nantais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Pont-Saint-Martin : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI du sud nantais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales de Pont-Saint-Martin ?",
-      a: "Oui, nous accompagnons les professions libérales sur des cas IA pratiques : automatisation secrétariat, agents IA prise de RDV, classification documents, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les professions libérales sur des cas IA pratiques : automatisation secrétariat, agents IA prise de RDV, classification documents, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Quels services pour les PME tertiaires du sud nantais ?",
@@ -61,7 +61,7 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Pont-Saint-Martin  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du sud nantais.",
     },
     {
       q: "Comment se passe une intervention depuis Nantes ?",

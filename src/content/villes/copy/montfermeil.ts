@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTFERMEIL_COPY: VilleCopy = {
   pitchFr:
-    "Montfermeil (93), commune de 28 703 habitants (2023) sur 5,45 km² en Seine-Saint-Denis, à 15 km à l'est de Paris sur le flanc sud du plateau forestier de Bondy. Membre de l'Établissement public territorial Grand Paris Grand Est et de la Métropole du Grand Paris depuis 2016. Desservie par trois stations du tramway T4 (Notre-Dame-des-Anges, Arboretum, Hôpital de Montfermeil), future station Clichy-Montfermeil sur la ligne 16 du Grand Paris Express. Patrimoine : pèlerinage de Notre-Dame-des-Anges, lieu emblématique des Misérables de Victor Hugo (Jean Valjean et Cosette à l'auberge des Thénardier). Tissu local : commerces de proximité, services à la personne, santé et action sociale, artisans BTP, professions libérales. Axion-IA y intervient pour TPE et PME montfermeilloises.",
+    "Montfermeil (93), commune de 28 703 habitants (2023) sur 5,45 km² en Seine-Saint-Denis, à 15 km à l'est de Paris sur le flanc sud du plateau forestier de Bondy. Membre de l'Établissement public territorial Grand Paris Grand Est et de la Métropole du Grand Paris depuis 2016. Desservie par trois stations du tramway T4 (Notre-Dame-des-Anges, Arboretum, Hôpital de Montfermeil), future station Clichy-Montfermeil sur la ligne 16 du Grand Paris Express. Patrimoine : pèlerinage de Notre-Dame-des-Anges, lieu emblématique des Misérables de Victor Hugo (Jean Valjean et Cosette à l'auberge des Thénardier). Tissu local : commerces de proximité, services à la personne, santé et action sociale, artisans BTP, professions libérales. Axion-IA y intervient pour PME et ETI montfermeilloises.",
   pitchEn:
-    "Montfermeil (93), commune de 28 703 habitants (2023) sur 5,45 km² en Seine-Saint-Denis, à 15 km à l'est de Paris sur le flanc sud du plateau forestier de Bondy. Membre de l'Établissement public territorial Grand Paris Grand Est et de la Métropole du Grand Paris depuis 2016. Desservie par trois stations du tramway T4 (Notre-Dame-des-Anges, Arboretum, Hôpital de Montfermeil), future station Clichy-Montfermeil sur la ligne 16 du Grand Paris Express. Patrimoine : pèlerinage de Notre-Dame-des-Anges, lieu emblématique des Misérables de Victor Hugo (Jean Valjean et Cosette à l'auberge des Thénardier). Tissu local : commerces de proximité, services à la personne, santé et action sociale, artisans BTP, professions libérales. Axion-IA y intervient pour TPE et PME montfermeilloises.",
+    "Montfermeil (93), commune de 28 703 habitants (2023) sur 5,45 km² en Seine-Saint-Denis, à 15 km à l'est de Paris sur le flanc sud du plateau forestier de Bondy. Membre de l'Établissement public territorial Grand Paris Grand Est et de la Métropole du Grand Paris depuis 2016. Desservie par trois stations du tramway T4 (Notre-Dame-des-Anges, Arboretum, Hôpital de Montfermeil), future station Clichy-Montfermeil sur la ligne 16 du Grand Paris Express. Patrimoine : pèlerinage de Notre-Dame-des-Anges, lieu emblématique des Misérables de Victor Hugo (Jean Valjean et Cosette à l'auberge des Thénardier). Tissu local : commerces de proximité, services à la personne, santé et action sociale, artisans BTP, professions libérales. Axion-IA y intervient pour PME et ETI montfermeilloises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfermeil (93) et dans l'EPT Grand Paris Grand Est. Nos consultants se déplacent en T4 (trois stations à Montfermeil) ou en voiture depuis Paris (15 km). Nous accompagnons en priorité les TPE locales (commerçants centre-ville, artisans BTP, professions libérales, services à la personne) puis les PME du tissu montfermeillois (santé humaine, action sociale, construction, services aux entreprises). Code custom, pas no-code, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfermeil (93) et dans l'EPT Grand Paris Grand Est. Nos consultants se déplacent en T4 (trois stations à Montfermeil) ou en voiture depuis Paris (15 km). Nous accompagnons en priorité les PME locales (commerçants centre-ville, artisans BTP, professions libérales, services à la personne) puis les PME du tissu montfermeillois (santé humaine, action sociale, construction, services aux entreprises). Code custom, pas no-code, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfermeil (93) et dans l'EPT Grand Paris Grand Est. Nos consultants se déplacent en T4 (trois stations à Montfermeil) ou en voiture depuis Paris (15 km). Nous accompagnons en priorité les TPE locales (commerçants centre-ville, artisans BTP, professions libérales, services à la personne) puis les PME du tissu montfermeillois (santé humaine, action sociale, construction, services aux entreprises). Code custom, pas no-code, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfermeil (93) et dans l'EPT Grand Paris Grand Est. Nos consultants se déplacent en T4 (trois stations à Montfermeil) ou en voiture depuis Paris (15 km). Nous accompagnons en priorité les PME locales (commerçants centre-ville, artisans BTP, professions libérales, services à la personne) puis les PME du tissu montfermeillois (santé humaine, action sociale, construction, services aux entreprises). Code custom, pas no-code, tarifs publics.",
   seoHook: "commerce, santé & action sociale Grand Paris Est",
   ecosystemFr:
     "Montfermeil appartient à l'Établissement public territorial Grand Paris Grand Est et à la Métropole du Grand Paris (depuis 2016), succédant à l'ancienne agglomération Clichy-Montfermeil. La commune est située sur le plateau forestier de Bondy, à 15 km à l'est de Paris. Tissu économique : commerces de proximité, secteur santé humaine (Hôpital intercommunal Le Raincy-Montfermeil, stations T4 dédiées), action sociale forte, construction et artisanat BTP, services à la personne, professions libérales. Quartiers notables : Les Bosquets, Franceville. Patrimoine : Notre-Dame-des-Anges (pèlerinage annuel), héritage hugolien des Misérables. Communes limitrophes : Clichy-sous-Bois (nord-ouest), Coubron (nord), Courtry (nord-est), Gagny (sud-ouest), Chelles (sud-est).",
@@ -32,20 +32,20 @@ export const MONTFERMEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montfermeil : diagnostic priorisé TPE (commerces centre-ville, artisans BTP, services à la personne, professions libérales) puis PME (santé, action sociale, construction, services aux entreprises EPT Grand Paris Grand Est). Audit sur place {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
-      en: "Audit IA à Montfermeil : diagnostic priorisé TPE (commerces centre-ville, artisans BTP, services à la personne, professions libérales) puis PME (santé, action sociale, construction, services aux entreprises EPT Grand Paris Grand Est). Audit sur place {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
+      fr: "Audit IA à Montfermeil : diagnostic priorisé PME (commerces centre-ville, artisans BTP, services à la personne, professions libérales) puis PME (santé, action sociale, construction, services aux entreprises EPT Grand Paris Grand Est). Audit sur place {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
+      en: "Audit IA à Montfermeil : diagnostic priorisé PME (commerces centre-ville, artisans BTP, services à la personne, professions libérales) puis PME (santé, action sociale, construction, services aux entreprises EPT Grand Paris Grand Est). Audit sur place {{price:audit-flash|flat}}, ROI chiffré, 4 h sur site ou visio.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Montfermeil : ateliers adaptés au format de votre TPE/PME — commerce, atelier artisan, cabinet libéral, structure santé ou action sociale. Équipes formées et autonomes après une journée. Accès facile T4 (3 stations).",
-      en: "Interventions IA sur site à Montfermeil : ateliers adaptés au format de votre TPE/PME — commerce, atelier artisan, cabinet libéral, structure santé ou action sociale. Équipes formées et autonomes après une journée. Accès facile T4 (3 stations).",
+      fr: "Interventions IA sur site à Montfermeil : ateliers adaptés au format de votre PME et ETI — commerce, atelier artisan, cabinet libéral, structure santé ou action sociale. Équipes formées et autonomes après une journée. Accès facile T4 (3 stations).",
+      en: "Interventions IA sur site à Montfermeil : ateliers adaptés au format de votre PME et ETI — commerce, atelier artisan, cabinet libéral, structure santé ou action sociale. Équipes formées et autonomes après une journée. Accès facile T4 (3 stations).",
     },
     implementation: {
       fr: "Implémentation IA à Montfermeil : code custom pour automatisation gestion administrative, devis artisans BTP, chatbot client commerçants, classification documents santé/action sociale, workflow services à la personne. Pas no-code, propriété du code livré.",
       en: "Implémentation IA à Montfermeil : code custom pour automatisation gestion administrative, devis artisans BTP, chatbot client commerçants, classification documents santé/action sociale, workflow services à la personne. Pas no-code, propriété du code livré.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montfermeil : sessions sur site, en cabinet, en commerce ou visio pour gérants TPE, artisans, professions libérales, dirigeants PME santé/action sociale/construction. Format souple compatible amplitudes commerce.",
-      en: "Coaching 1-to-1 à Montfermeil : sessions sur site, en cabinet, en commerce ou visio pour gérants TPE, artisans, professions libérales, dirigeants PME santé/action sociale/construction. Format souple compatible amplitudes commerce.",
+      fr: "Coaching 1-to-1 à Montfermeil : sessions sur site, en cabinet, en commerce ou visio pour gérants PME, artisans, professions libérales, dirigeants PME santé/action sociale/construction. Format souple compatible amplitudes commerce.",
+      en: "Coaching 1-to-1 à Montfermeil : sessions sur site, en cabinet, en commerce ou visio pour gérants PME, artisans, professions libérales, dirigeants PME santé/action sociale/construction. Format souple compatible amplitudes commerce.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           "Premier employeur de la ville, le Groupe Hospitalier Intercommunal Le Raincy-Montfermeil (~2 000 salariés, rue du Général Leclerc) et le secteur médico-social local (Centre de Long Séjour des Ormes, EHPAD et soins de réadaptation) génèrent des besoins web et SaaS très spécifiques : portails patients, prise de rendez-vous, classification de documents, support multilingue — tous soumis à un cadre RGPD et données de santé strict que nous intégrons dès la conception.",
           "La revitalisation du centre-ville (ZAC ~6,2 ha, rue Henri Barbusse, îlots Tuilerie et Barbusse, commerces réimplantés au pied des immeubles des Bosquets) crée une vague de commerçants et artisans qui ont besoin de vitrines e-commerce, de fiches Google à jour et de réservation en ligne — pas de templates génériques mais des sites ancrés dans le commerce de proximité montfermeillois.",
           "Le pôle culture et création autour des Ateliers Médicis (nouveau bâtiment de 5 000 m² livré en 2026, résidences d'artistes, programmation) appelle des plateformes éditoriales, billetterie, médiation numérique et catalogues en ligne que nous concevons en sites IA-native plutôt qu'en assemblage de plugins.",
-          "La rénovation urbaine ANRU du Plateau (hôtel d'entreprises, nouvelles écoles, stade Henri-Vidal) et l'arrivée de la gare Clichy-Montfermeil sur la ligne 16 du Grand Paris Express (~35 000 voyageurs/jour attendus) accélèrent l'installation de TPE et PME : nous accompagnons cette dynamique avec des sites et SaaS prêts à monter en charge.",
+          "La rénovation urbaine ANRU du Plateau (hôtel d'entreprises, nouvelles écoles, stade Henri-Vidal) et l'arrivée de la gare Clichy-Montfermeil sur la ligne 16 du Grand Paris Express (~35 000 voyageurs/jour attendus) accélèrent l'installation de PME et ETI : nous accompagnons cette dynamique avec des sites et SaaS prêts à monter en charge.",
         ],
         methodology: [
           {
@@ -86,12 +86,6 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour commerçants de la ZAC centre-ville, artisans BTP du Plateau, professions libérales et praticiens de santé indépendants montfermeillois : vitrine mobile-first, fiche Google, réservation ou paiement en ligne, brique IA simple (chatbot FAQ, prise de rendez-vous).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -142,7 +136,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           "The town's leading employer, the Groupe Hospitalier Intercommunal Le Raincy-Montfermeil (~2,000 staff, rue du Général Leclerc), and the local medico-social sector (Centre de Long Séjour des Ormes, nursing home and rehabilitation care) generate very specific web and SaaS needs: patient portals, booking, document classification, multilingual support — all under a strict GDPR and health-data framework we build in from the start.",
           "The town-centre revitalisation (ZAC ~6.2 ha, rue Henri Barbusse, Tuilerie and Barbusse blocks, shops re-installed at the foot of the Bosquets buildings) creates a wave of retailers and craftspeople needing e-commerce storefronts, up-to-date Google listings and online booking — not generic templates but sites grounded in Montfermeil's local trade.",
           "The culture and creation hub around the Ateliers Médicis (new 5,000 sq m building delivered in 2026, artist residencies, programming) calls for editorial platforms, ticketing, digital mediation and online catalogues that we build as AI-native sites rather than plugin assemblies.",
-          "The ANRU urban renewal of the Plateau (business incubator, new schools, Henri-Vidal stadium) and the arrival of the Clichy-Montfermeil station on Line 16 of the Grand Paris Express (~35,000 travellers/day expected) accelerate TPE and SME set-up: we support this momentum with sites and SaaS ready to scale.",
+          "The ANRU urban renewal of the Plateau (business incubator, new schools, Henri-Vidal stadium) and the arrival of the Clichy-Montfermeil station on Line 16 of the Grand Paris Express (~35,000 travellers/day expected) accelerate PME and SME set-up: we support this momentum with sites and SaaS ready to scale.",
         ],
         methodology: [
           {
@@ -172,12 +166,6 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For town-centre ZAC retailers, Plateau BTP craftspeople, liberal professions and independent health practitioners in Montfermeil: mobile-first showcase, Google listing, online booking or payment, simple AI brick (FAQ chatbot, appointment booking).",
-          },
           {
             sizeLabel: "PME",
             price: "Custom business platform",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_QUENTIN_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Quentin : PME mécaniques et industrielles héritières du passé textile, commerces du centre autour de la basilique, prestataires de la ZAC du Bois de la Chocque. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Quentin : PME mécaniques et industrielles héritières du passé textile, commerces du centre autour de la basilique, prestataires de la ZAC du Bois de la Chocque. On déploie des automatisations utiles, pas des effets d'annonce.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Saint-Quentin : PME mécaniques et industrielles héritières du passé textile, commerces du centre autour de la basilique, prestataires de la ZAC du Bois de la Chocque. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Saint-Quentin : PME mécaniques et industrielles héritières du passé textile, commerces du centre autour de la basilique, prestataires de la ZAC du Bois de la Chocque. On déploie des automatisations utiles, pas des effets d'annonce.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Quentin, dans l'Aisne, pour les TPE et PME de cette ville picarde : PME de la mécanique et de l'industrie, héritières d'un riche passé textile et métallurgique, commerces du centre historique autour de la basilique, prestataires et logisticiens de la ZAC du Bois de la Chocque. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Quentin, dans l'Aisne, pour les PME et ETI de cette ville picarde : PME de la mécanique et de l'industrie, héritières d'un riche passé textile et métallurgique, commerces du centre historique autour de la basilique, prestataires et logisticiens de la ZAC du Bois de la Chocque. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Quentin, dans l'Aisne, pour les TPE et PME de cette ville picarde : PME de la mécanique et de l'industrie, héritières d'un riche passé textile et métallurgique, commerces du centre historique autour de la basilique, prestataires et logisticiens de la ZAC du Bois de la Chocque. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Saint-Quentin, dans l'Aisne, pour les PME et ETI de cette ville picarde : PME de la mécanique et de l'industrie, héritières d'un riche passé textile et métallurgique, commerces du centre historique autour de la basilique, prestataires et logisticiens de la ZAC du Bois de la Chocque. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances, facturation), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics affichés ; les ETI en priorité après les PME, les grands groupes en complément.",
   seoHook: "industrie mécanique & commerce picard",
   ecosystemFr:
-    "Saint-Quentin, principale ville de l'Aisne, conserve un solide tissu industriel hérité de son histoire textile et métallurgique : on y trouve des PME de mécanique, de plasturgie et de travail des métaux, complétées par la logistique de la ZAC du Bois de la Chocque, idéalement située sur l'axe Paris-Nord. Le centre, dominé par la basilique, abrite un tissu dense de commerces et de services. Pour ces petites structures industrielles et commerciales, souvent sans service informatique, l'IA bien cadrée offre des gains de productivité rapides et tangibles.",
+    "Saint-Quentin, principale ville de l'Aisne, conserve un solide tissu industriel hérité de son histoire textile et métallurgique : on y trouve des PME de mécanique, de plasturgie et de travail des métaux, complétées par la logistique de la ZAC du Bois de la Chocque, idéalement située sur l'axe Paris-Nord. Le centre, dominé par la basilique, abrite un tissu dense de commerces et de services. Pour ces PME industrielles et commerciales, souvent sans service informatique, l'IA bien cadrée offre des gains de productivité rapides et tangibles.",
   ecosystemEn:
-    "Saint-Quentin, principale ville de l'Aisne, conserve un solide tissu industriel hérité de son histoire textile et métallurgique : on y trouve des PME de mécanique, de plasturgie et de travail des métaux, complétées par la logistique de la ZAC du Bois de la Chocque, idéalement située sur l'axe Paris-Nord. Le centre, dominé par la basilique, abrite un tissu dense de commerces et de services. Pour ces petites structures industrielles et commerciales, souvent sans service informatique, l'IA bien cadrée offre des gains de productivité rapides et tangibles.",
+    "Saint-Quentin, principale ville de l'Aisne, conserve un solide tissu industriel hérité de son histoire textile et métallurgique : on y trouve des PME de mécanique, de plasturgie et de travail des métaux, complétées par la logistique de la ZAC du Bois de la Chocque, idéalement située sur l'axe Paris-Nord. Le centre, dominé par la basilique, abrite un tissu dense de commerces et de services. Pour ces PME industrielles et commerciales, souvent sans service informatique, l'IA bien cadrée offre des gains de productivité rapides et tangibles.",
   distancesFr:
     "Saint-Quentin est reliée à Paris-Nord en environ 1h40 par le train depuis sa gare, et la gare TGV Haute-Picardie se trouve à une trentaine de kilomètres. L'A26 et l'A29 desservent directement la ville, qui occupe une position de carrefour logistique sur l'axe Paris-Nord et vers la Belgique. L'aéroport de Paris-Roissy-Charles-de-Gaulle est à environ 130 km. Cette accessibilité routière facilite nos déplacements sur site dans tout le Saint-Quentinois.",
   distancesEn:
@@ -42,8 +42,8 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
       en: "L'implémentation déploie à Saint-Quentin des assistants IA et workflows sur mesure pour la mécanique, la plasturgie et la logistique, avec formation des équipes et conformité RGPD intégrée dès la conception.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Saint-Quentin forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données.",
-      en: "L'accompagnement un-à-un à Saint-Quentin forme le dirigeant de TPE ou PME à piloter l'IA dans sa structure : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données.",
+      fr: "L'accompagnement un-à-un à Saint-Quentin forme le dirigeant de PME ou ETI à piloter l'IA dans sa structure : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données.",
+      en: "L'accompagnement un-à-un à Saint-Quentin forme le dirigeant de PME ou ETI à piloter l'IA dans sa structure : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données.",
     },
     sitesWeb: {
       fr: "Nos sites web augmentés équipent les PME industrielles et commerces de Saint-Quentin d'une plateforme rapide avec chatbot, demande de devis et contenu IA, optimisée pour la recherche locale et B2B.",
@@ -88,12 +88,6 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour les commerces du centre historique autour de la basilique, artisans et indépendants saint-quentinois : site vitrine rapide et mobile, chatbot de premier contact, demande de devis et contenu local optimisé pour la recherche.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce ou portail B2B IA",
@@ -175,12 +169,6 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase site",
-            detail:
-              "For city-centre shops around the basilica, craftspeople and Saint-Quentin freelancers: a fast, mobile showcase site, a first-contact chatbot, quote requests and local content optimised for search.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce or AI B2B portal",
             detail:
@@ -238,7 +226,7 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité ici ?",
-      a: "En priorité les TPE puis les PME du Saint-Quentinois : industriels, commerces, logisticiens et prestataires de services. Les ETI sont accompagnées en complément, chaque mission étant ajustée à la taille et aux outils de la structure.",
+      a: "En priorité les PME puis les ETI du Saint-Quentinois : industriels, commerces, logisticiens et prestataires de services. Les grands groupes sont accompagnés en complément, chaque mission étant ajustée à la taille et aux outils de la structure.",
     },
     {
       q: "Quel délai pour démarrer une mission à Saint-Quentin ?",

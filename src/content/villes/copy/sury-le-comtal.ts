@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SURY_LE_COMTAL_COPY: VilleCopy = {
   pitchFr:
-    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y mène ses missions auprès des organisations locales foréziennes.",
+    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, PME du BTP, agriculture forézienne, commerces. Axion-IA y mène ses missions auprès des organisations locales foréziennes.",
   pitchEn:
-    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y mène ses missions auprès des organisations locales foréziennes.",
+    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, PME du BTP, agriculture forézienne, commerces. Axion-IA y mène ses missions auprès des organisations locales foréziennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sury-le-Comtal (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises foréziennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sury-le-Comtal (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, PME du BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises foréziennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sury-le-Comtal (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises foréziennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sury-le-Comtal (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, PME du BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises foréziennes.",
   seoHook: "tertiaires loire & industrielles diversifiées",
   ecosystemFr:
-    "Sury-le-Comtal est intégrée à Loire Forez Agglo, située dans la plaine du Forez entre Saint-Étienne et Montbrison. Tissu péri-urbain mixte : PME tertiaires et industrielles diversifiées, agriculture plaine Forez (cultures, élevages), TPE artisanat BTP, commerces et services.",
+    "Sury-le-Comtal est intégrée à Loire Forez Agglo, située dans la plaine du Forez entre Saint-Étienne et Montbrison. Tissu péri-urbain mixte : PME tertiaires et industrielles diversifiées, agriculture plaine Forez (cultures, élevages), PME du BTP, commerces et services.",
   ecosystemEn:
-    "Sury-le-Comtal est intégrée à Loire Forez Agglo, située dans la plaine du Forez entre Saint-Étienne et Montbrison. Tissu péri-urbain mixte : PME tertiaires et industrielles diversifiées, agriculture plaine Forez (cultures, élevages), TPE artisanat BTP, commerces et services.",
+    "Sury-le-Comtal est intégrée à Loire Forez Agglo, située dans la plaine du Forez entre Saint-Étienne et Montbrison. Tissu péri-urbain mixte : PME tertiaires et industrielles diversifiées, agriculture plaine Forez (cultures, élevages), PME du BTP, commerces et services.",
   distancesFr:
     "Saint-Étienne centre à 25 min. Aéroport Saint-Étienne-Bouthéon à 10 min. Lyon centre à 1h. Montbrison à 15 min. Andrézieux-Bouthéon à 10 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
     "PME tertiaires Loire Forez Agglo",
     "PME industrielles diversifiées",
     "Agriculture plaine Forez",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sury-le-Comtal : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
       en: "Implémentation IA à Sury-le-Comtal : agents conversationnels B2B, prédiction maintenance industrielle, classification photos cultures, automatisation devis BTP. Loire Forez Agglo.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sury-le-Comtal : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants TPE/PME suryssois.",
-      en: "Coaching 1-to-1 à Sury-le-Comtal : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants TPE/PME suryssois.",
+      fr: "Coaching 1-to-1 à Sury-le-Comtal : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants PME et ETI suryssois.",
+      en: "Coaching 1-to-1 à Sury-le-Comtal : sessions dans votre bureau, atelier, exploitation ou en visio. Dirigeants tertiaires, industriels, agriculteurs, artisans, gérants PME et ETI suryssois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs plaine du Forez sur leurs cas IA : prédiction récoltes par météo, classification photos cultures, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans suryssois ?",
-      a: "Pour les TPE artisans BTP et commerçants à Sury-le-Comtal, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      q: "Quels services pour les PME artisanales suryssois ?",
+      a: "Pour les PME du BTP et du commerce à Sury-le-Comtal, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

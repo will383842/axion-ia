@@ -304,7 +304,7 @@ export const LILLE_ECONOMIC_DATA: VilleEconomicData = {
   // Champ honnêtement vide pour respecter zéro invention.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV à compléter Phase 2 du sprint (extraction CSV
   // data.economie.gouv.fr/explore/dataset/entreprises-du-patrimoine-vivant-epv).

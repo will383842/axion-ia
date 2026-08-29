@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BERCK_COPY: VilleCopy = {
   pitchFr:
-    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu PME tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu PME tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Berck (62). Nous accompagnons tous types d'activités : PME hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Berck (62). Nous accompagnons tous types d'activités : PME hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
   seoHook: "côte d'opale",
   ecosystemFr:
     "Berck est une station balnéaire majeure de la Côte d'Opale, historiquement liée à la médecine et la rééducation (hôpital maritime fondé au XIXe siècle). Le tissu économique mêle tourisme saisonnier (hôtellerie, restauration, activités de plage), établissements de santé et rééducation, commerces de proximité et professions paramédicales. Accès A16 vers Boulogne-sur-Mer (30 min) et Calais (50 min).",
@@ -22,7 +22,7 @@ export const BERCK_COPY: VilleCopy = {
   distancesEn:
     "Boulogne-sur-Mer à 30 min. Étaples-Le Touquet à 10 min. Calais à 50 min. Abbeville à 40 min. Aéroport Lille-Lesquin à 1 h 30. Gare TGV Calais-Fréthun à 50 min. Axe A16.",
   topSectorsNaf: [
-    "TPE hôtellerie-restauration et tourisme balnéaire",
+    "PME hôtellerie-restauration et tourisme balnéaire",
     "PME santé, rééducation et soins paramédicaux",
     "Commerce de proximité et artisanat",
     "Services aux personnes et aide à domicile",
@@ -30,8 +30,8 @@ export const BERCK_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Berck : diagnostic adapté aux PME tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Berck : diagnostic adapté aux PME tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Berck : formats adaptés à l'hôtel, au cabinet paramédical, au commerce, à l'établissement de rééducation. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const BERCK_COPY: VilleCopy = {
       en: "Implémentation IA à Berck : automatisation réservations tourisme, gestion planning soins, agents IA accueil patient, optimisation stocks saisonniers, CRM fidélisation clientèle balnéaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Berck : sessions dans votre hôtel, cabinet, commerce ou en visio. Dirigeants TPE tourisme, gérants PME santé, professions paramédicales, commerçants berckois.",
-      en: "Coaching 1-to-1 à Berck : sessions dans votre hôtel, cabinet, commerce ou en visio. Dirigeants TPE tourisme, gérants PME santé, professions paramédicales, commerçants berckois.",
+      fr: "Coaching 1-to-1 à Berck : sessions dans votre hôtel, cabinet, commerce ou en visio. Dirigeants PME tourisme, gérants PME santé, professions paramédicales, commerçants berckois.",
+      en: "Coaching 1-to-1 à Berck : sessions dans votre hôtel, cabinet, commerce ou en visio. Dirigeants PME tourisme, gérants PME santé, professions paramédicales, commerçants berckois.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const BERCK_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Berck et sur toute la Côte d'Opale (Le Touquet, Étaples, Boulogne-sur-Mer). Nos consultants se déplacent depuis Lille ou Boulogne selon vos contraintes, ou en visio.",
     },
     {
-      q: "Accompagnez-vous les TPE tourisme et hôtellerie de Berck ?",
-      a: "Oui, nous accompagnons les TPE hôtellerie-restauration et tourisme balnéaire à Berck sur leurs cas IA : automatisation réservations, chatbots accueil client, optimisation stocks saisonniers. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME tourisme et hôtellerie de Berck ?",
+      a: "Oui, nous accompagnons les PME hôtellerie-restauration et tourisme balnéaire à Berck sur leurs cas IA : automatisation réservations, chatbots accueil client, optimisation stocks saisonniers. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Travaillez-vous avec les établissements de santé et rééducation ?",

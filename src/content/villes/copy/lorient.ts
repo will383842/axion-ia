@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LORIENT_COPY: VilleCopy = {
   pitchFr:
-    "Lorient (56), grand port du Morbihan, conjugue un patrimoine naval majeur (ancienne base de sous-marins de Keroman), le deuxième port de pêche de France, un Pôle Course au Large reconnu mondialement et une filière agroalimentaire de la mer dynamique. La ville accueille aussi le Festival Interceltique. Son tissu mêle TPE — pêche, mareyage, services portuaires, commerces, artisans — et PME de l'agroalimentaire, du nautisme et de la course au large. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME lorientaises, l'ETI restant marginale.",
+    "Lorient (56), grand port du Morbihan, conjugue un patrimoine naval majeur (ancienne base de sous-marins de Keroman), le deuxième port de pêche de France, un Pôle Course au Large reconnu mondialement et une filière agroalimentaire de la mer dynamique. La ville accueille aussi le Festival Interceltique. Son tissu mêle PME — pêche, mareyage, services portuaires, commerces, artisans — et PME de l'agroalimentaire, du nautisme et de la course au large. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI lorientaises, les grands groupes venant en complément.",
   pitchEn:
-    "Lorient (56), grand port du Morbihan, conjugue un patrimoine naval majeur (ancienne base de sous-marins de Keroman), le deuxième port de pêche de France, un Pôle Course au Large reconnu mondialement et une filière agroalimentaire de la mer dynamique. La ville accueille aussi le Festival Interceltique. Son tissu mêle TPE — pêche, mareyage, services portuaires, commerces, artisans — et PME de l'agroalimentaire, du nautisme et de la course au large. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME lorientaises, l'ETI restant marginale.",
+    "Lorient (56), grand port du Morbihan, conjugue un patrimoine naval majeur (ancienne base de sous-marins de Keroman), le deuxième port de pêche de France, un Pôle Course au Large reconnu mondialement et une filière agroalimentaire de la mer dynamique. La ville accueille aussi le Festival Interceltique. Son tissu mêle PME — pêche, mareyage, services portuaires, commerces, artisans — et PME de l'agroalimentaire, du nautisme et de la course au large. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI lorientaises, les grands groupes venant en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lorient (56). Nous accompagnons en priorité les TPE — pêche et mareyage, services portuaires, commerces, artisans, indépendants — puis les PME de l'agroalimentaire de la mer, du nautisme et de la course au large, et plus marginalement les ETI. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (traçabilité, commandes, relation client, reporting). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lorient (56). Nous accompagnons en priorité les PME — pêche et mareyage, services portuaires, commerces, artisans, indépendants — puis les PME de l'agroalimentaire de la mer, du nautisme et de la course au large, et plus marginalement les grands groupes. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (traçabilité, commandes, relation client, reporting). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lorient (56). Nous accompagnons en priorité les TPE — pêche et mareyage, services portuaires, commerces, artisans, indépendants — puis les PME de l'agroalimentaire de la mer, du nautisme et de la course au large, et plus marginalement les ETI. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (traçabilité, commandes, relation client, reporting). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lorient (56). Nous accompagnons en priorité les PME — pêche et mareyage, services portuaires, commerces, artisans, indépendants — puis les PME de l'agroalimentaire de la mer, du nautisme et de la course au large, et plus marginalement les grands groupes. Nos consultants se déplacent sur site pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (traçabilité, commandes, relation client, reporting). Tarifs publics, frais de déplacement transparents.",
   seoHook: "pêche, agro mer & course au large",
   ecosystemFr:
-    "Lorient bâtit son économie sur la mer : le port de pêche de Keroman, deuxième de France, irrigue une filière agroalimentaire (mareyage, transformation, conserverie) puissante, tandis que le Pôle Course au Large fait de la ville une référence de la voile de compétition. L'ancienne base de sous-marins, reconvertie, et le Festival Interceltique complètent ce profil singulier. Le tissu local est dominé par les TPE — pêche, mareyage, services portuaires, commerces, artisans — et des PME agroalimentaires, nautiques et événementielles. Axion-IA y privilégie les TPE et PME, pour qui automatiser traçabilité, commandes et relation client dégage un gain opérationnel concret.",
+    "Lorient bâtit son économie sur la mer : le port de pêche de Keroman, deuxième de France, irrigue une filière agroalimentaire (mareyage, transformation, conserverie) puissante, tandis que le Pôle Course au Large fait de la ville une référence de la voile de compétition. L'ancienne base de sous-marins, reconvertie, et le Festival Interceltique complètent ce profil singulier. Le tissu local est dominé par les PME — pêche, mareyage, services portuaires, commerces, artisans — et des PME agroalimentaires, nautiques et événementielles. Axion-IA y privilégie les PME et ETI, pour qui automatiser traçabilité, commandes et relation client dégage un gain opérationnel concret.",
   ecosystemEn:
-    "Lorient bâtit son économie sur la mer : le port de pêche de Keroman, deuxième de France, irrigue une filière agroalimentaire (mareyage, transformation, conserverie) puissante, tandis que le Pôle Course au Large fait de la ville une référence de la voile de compétition. L'ancienne base de sous-marins, reconvertie, et le Festival Interceltique complètent ce profil singulier. Le tissu local est dominé par les TPE — pêche, mareyage, services portuaires, commerces, artisans — et des PME agroalimentaires, nautiques et événementielles. Axion-IA y privilégie les TPE et PME, pour qui automatiser traçabilité, commandes et relation client dégage un gain opérationnel concret.",
+    "Lorient bâtit son économie sur la mer : le port de pêche de Keroman, deuxième de France, irrigue une filière agroalimentaire (mareyage, transformation, conserverie) puissante, tandis que le Pôle Course au Large fait de la ville une référence de la voile de compétition. L'ancienne base de sous-marins, reconvertie, et le Festival Interceltique complètent ce profil singulier. Le tissu local est dominé par les PME — pêche, mareyage, services portuaires, commerces, artisans — et des PME agroalimentaires, nautiques et événementielles. Axion-IA y privilégie les PME et ETI, pour qui automatiser traçabilité, commandes et relation client dégage un gain opérationnel concret.",
   distancesFr:
     "Gare de Lorient desservie en TGV (Paris-Montparnasse en ~3h). Aéroport de Lorient Bretagne Sud à 7 km. Vannes à 55 km, Quimper à 65 km, Rennes à 150 km. Nos consultants se déplacent sur site à Lorient et dans le pays de Lorient (Lanester, Ploemeur, Hennebont).",
   distancesEn:
@@ -34,16 +34,16 @@ export const LORIENT_COPY: VilleCopy = {
       en: "Audit IA à Lorient : diagnostic adapté aux acteurs de la pêche, du mareyage et de l'agroalimentaire de Keroman. Nous repérons les tâches à automatiser (traçabilité, commandes, devis) et chiffrons les gains.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lorient : formats courts pour TPE de la pêche, de l'agroalimentaire, du nautisme et du commerce. Vos équipes maîtrisent les outils IA du quotidien et repartent autonomes.",
-      en: "Interventions IA sur site à Lorient : formats courts pour TPE de la pêche, de l'agroalimentaire, du nautisme et du commerce. Vos équipes maîtrisent les outils IA du quotidien et repartent autonomes.",
+      fr: "Interventions IA sur site à Lorient : formats courts pour PME de la pêche, de l'agroalimentaire, du nautisme et du commerce. Vos équipes maîtrisent les outils IA du quotidien et repartent autonomes.",
+      en: "Interventions IA sur site à Lorient : formats courts pour PME de la pêche, de l'agroalimentaire, du nautisme et du commerce. Vos équipes maîtrisent les outils IA du quotidien et repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA à Lorient : automatisation de la traçabilité produits de la mer, gestion des commandes et de la logistique, agents de relation client, reporting pour la course au large. Solutions RGPD-conformes.",
       en: "Implémentation IA à Lorient : automatisation de la traçabilité produits de la mer, gestion des commandes et de la logistique, agents de relation client, reporting pour la course au large. Solutions RGPD-conformes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Lorient : sessions dans votre entreprise portuaire, atelier nautique, commerce ou en visio. Pour dirigeants de TPE/PME de la pêche, de l'agroalimentaire et du nautisme souhaitant piloter l'IA eux-mêmes.",
-      en: "Coaching 1-to-1 à Lorient : sessions dans votre entreprise portuaire, atelier nautique, commerce ou en visio. Pour dirigeants de TPE/PME de la pêche, de l'agroalimentaire et du nautisme souhaitant piloter l'IA eux-mêmes.",
+      fr: "Coaching 1-to-1 à Lorient : sessions dans votre entreprise portuaire, atelier nautique, commerce ou en visio. Pour dirigeants de PME et ETI de la pêche, de l'agroalimentaire et du nautisme souhaitant piloter l'IA eux-mêmes.",
+      en: "Coaching 1-to-1 à Lorient : sessions dans votre entreprise portuaire, atelier nautique, commerce ou en visio. Pour dirigeants de PME et ETI de la pêche, de l'agroalimentaire et du nautisme souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
       fr: "Sites web & SaaS IA à Lorient : portails B2B agroalimentaires avec traçabilité et commandes automatisées, sites vitrines nautiques et touristiques, dotés d'assistants intelligents et de contenus optimisés.",
@@ -53,11 +53,11 @@ export const LORIENT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Lorient (56) bâtit son économie sur la mer et sur les composites de haute technologie : le port de pêche de Keroman — premier port français de débarquement de poisson frais, géré par la SEM Lorient Keroman — irrigue une filière agroalimentaire dense (Cinq Degrés Ouest pour les crustacés, conserveries comme Capitaine Cook), tandis que l'ancienne base de sous-marins reconvertie en Lorient La Base abrite le Pôle Course au Large et la Bretagne Sailing Valley, où une cinquantaine d'entreprises (CDK Technologies, Multiplast, Lorima, Avel Robotics, SMM) conçoivent voiles, mâts et coques carbone. Axion-IA conçoit pour ces TPE et PME lorientaises des sites web et plateformes SaaS augmentés par l'IA : portails B2B de traçabilité des produits de la mer, e-commerce de conserveries, outils de planning et de reporting pour les teams de course au large.",
+        hero: "Lorient (56) bâtit son économie sur la mer et sur les composites de haute technologie : le port de pêche de Keroman — premier port français de débarquement de poisson frais, géré par la SEM Lorient Keroman — irrigue une filière agroalimentaire dense (Cinq Degrés Ouest pour les crustacés, conserveries comme Capitaine Cook), tandis que l'ancienne base de sous-marins reconvertie en Lorient La Base abrite le Pôle Course au Large et la Bretagne Sailing Valley, où une cinquantaine d'entreprises (CDK Technologies, Multiplast, Lorima, Avel Robotics, SMM) conçoivent voiles, mâts et coques carbone. Axion-IA conçoit pour ces PME et ETI lorientaises des sites web et plateformes SaaS augmentés par l'IA : portails B2B de traçabilité des produits de la mer, e-commerce de conserveries, outils de planning et de reporting pour les teams de course au large.",
         whyHere: [
           "Le port de pêche de Keroman, premier site français de débarquement de poisson frais, structure une filière mareyage et transformation (Cinq Degrés Ouest, conserveries Capitaine Cook) où un portail B2B avec traçabilité automatisée, prise de commande et facturation pèse plus qu'un simple site vitrine.",
           "La Bretagne Sailing Valley à Lorient La Base réunit une cinquantaine d'entreprises de composite carbone (CDK Technologies, Multiplast, Lorima, Avel Robotics, SMM) et 122 teams et skippers (IMOCA, Ultim, Ocean Fifty, Figaro) : un terrain naturel pour des plateformes de suivi de projet, de gestion d'atelier et de reporting partenaires.",
-          "Le tissu lorientais est dominé par les TPE — pêche, mareyage, services portuaires, commerce, artisanat — pour qui un site rapide, mobile et doté d'un assistant IA de relation client change concrètement le quotidien, sans budget d'agence parisienne.",
+          "Le tissu lorientais est dominé par les PME — pêche, mareyage, services portuaires, commerce, artisanat — pour qui un site rapide, mobile et doté d'un assistant IA de relation client change concrètement le quotidien, sans budget d'agence parisienne.",
           "L'écosystème d'innovation est outillé localement (Lorient Technopole / AudéLor, parc tertiaire Technellys, zone d'activité de Kerpont à Caudan) : nous nous y déplaçons pour cadrer le projet sur site, au plus près des équipes.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const LORIENT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté IA",
-            detail:
-              "Pour artisans, mareyeurs, commerces et conserveries lorientaises : site mobile rapide, e-commerce simple (vente directe de produits de la mer) et assistant IA de premier contact, sur CMS éprouvé.",
-          },
           {
             sizeLabel: "PME",
             price: "Portail B2B ou plateforme métier sur mesure",
@@ -174,12 +168,6 @@ export const LORIENT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or essential e-commerce site",
-            detail:
-              "For Lorient craftspeople, fish wholesalers, retailers and canneries: a fast mobile site, simple e-commerce (direct seafood sales) and a first-contact AI assistant, on a proven CMS.",
-          },
           {
             sizeLabel: "SME",
             price: "B2B portal or bespoke business platform",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BOUC_BEL_AIR_COPY: VilleCopy = {
   pitchFr:
-    "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu TPE professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA répond aux besoins de toutes les entreprises de l'axe Aix-Marseille.",
+    "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu PME professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA répond aux besoins de toutes les entreprises de l'axe Aix-Marseille.",
   pitchEn:
-    "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu TPE professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA répond aux besoins de toutes les entreprises de l'axe Aix-Marseille.",
+    "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu PME professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA répond aux besoins de toutes les entreprises de l'axe Aix-Marseille.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bouc-Bel-Air (13). Nous accompagnons TPE professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bouc-Bel-Air (13). Nous accompagnons PME professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bouc-Bel-Air (13). Nous accompagnons TPE professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bouc-Bel-Air (13). Nous accompagnons PME professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit sur place sur mesure, sans engagement.",
   seoHook: "tertiaire & professions libérales",
   ecosystemFr:
-    "Bouc-Bel-Air est une commune résidentielle prisée entre Aix-en-Provence et Marseille. Position stratégique sur l'A51 avec des zones d'activités tertiaires. Tissu TPE professions libérales, PME conseil et services, commerces de proximité. Cadre de vie attractif pour les entreprises du tertiaire supérieur.",
+    "Bouc-Bel-Air est une commune résidentielle prisée entre Aix-en-Provence et Marseille. Position stratégique sur l'A51 avec des zones d'activités tertiaires. Tissu PME professions libérales, PME conseil et services, commerces de proximité. Cadre de vie attractif pour les entreprises du tertiaire supérieur.",
   ecosystemEn:
-    "Bouc-Bel-Air est une commune résidentielle prisée entre Aix-en-Provence et Marseille. Position stratégique sur l'A51 avec des zones d'activités tertiaires. Tissu TPE professions libérales, PME conseil et services, commerces de proximité. Cadre de vie attractif pour les entreprises du tertiaire supérieur.",
+    "Bouc-Bel-Air est une commune résidentielle prisée entre Aix-en-Provence et Marseille. Position stratégique sur l'A51 avec des zones d'activités tertiaires. Tissu PME professions libérales, PME conseil et services, commerces de proximité. Cadre de vie attractif pour les entreprises du tertiaire supérieur.",
   distancesFr:
     "Aix-en-Provence centre à 15 min. Marseille centre à 25 min. Gare Aix TGV à 15 min. Aéroport Marseille Provence à 20 min. Gardanne à 10 min. Plan de Campagne à 5 min.",
   distancesEn:

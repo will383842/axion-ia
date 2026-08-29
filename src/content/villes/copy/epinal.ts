@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const EPINAL_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME d'Épinal, préfecture des Vosges et premier pôle économique et commercial du département. La ville s'est construite autour de la papeterie alimentée par la Moselle, de l'imagerie d'Épinal (1796) et d'une tradition textile héritée des industriels alsaciens installés après 1870. Aujourd'hui, le tissu local rassemble PME du bois, de l'imprimerie, du commerce, du tourisme et de la santé. Notre cabinet déploie des outils d'intelligence artificielle pragmatiques au service des dirigeants vosgiens.",
+    "Axion-IA accompagne les PME et ETI d'Épinal, préfecture des Vosges et premier pôle économique et commercial du département. La ville s'est construite autour de la papeterie alimentée par la Moselle, de l'imagerie d'Épinal (1796) et d'une tradition textile héritée des industriels alsaciens installés après 1870. Aujourd'hui, le tissu local rassemble PME du bois, de l'imprimerie, du commerce, du tourisme et de la santé. Notre cabinet déploie des outils d'intelligence artificielle pragmatiques au service des dirigeants vosgiens.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME d'Épinal, préfecture des Vosges et premier pôle économique et commercial du département. La ville s'est construite autour de la papeterie alimentée par la Moselle, de l'imagerie d'Épinal (1796) et d'une tradition textile héritée des industriels alsaciens installés après 1870. Aujourd'hui, le tissu local rassemble PME du bois, de l'imprimerie, du commerce, du tourisme et de la santé. Notre cabinet déploie des outils d'intelligence artificielle pragmatiques au service des dirigeants vosgiens.",
+    "Axion-IA accompagne les PME et ETI d'Épinal, préfecture des Vosges et premier pôle économique et commercial du département. La ville s'est construite autour de la papeterie alimentée par la Moselle, de l'imagerie d'Épinal (1796) et d'une tradition textile héritée des industriels alsaciens installés après 1870. Aujourd'hui, le tissu local rassemble PME du bois, de l'imprimerie, du commerce, du tourisme et de la santé. Notre cabinet déploie des outils d'intelligence artificielle pragmatiques au service des dirigeants vosgiens.",
   directAnswerFr:
-    "À Épinal, Axion-IA propose aux TPE et PME vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures et à {{price:intervention-4h|flat}} pour une intervention. Williams et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
+    "À Épinal, Axion-IA propose aux PME et ETI vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures et à {{price:intervention-4h|flat}} pour une intervention. Williams et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
   directAnswerEn:
-    "À Épinal, Axion-IA propose aux TPE et PME vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures et à {{price:intervention-4h|flat}} pour une intervention. Williams et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
+    "À Épinal, Axion-IA propose aux PME et ETI vosgiennes des audits d'opportunités IA, des formations sur site et des implémentations en code custom adaptées au commerce de détail, à la filière bois-papier, au tourisme, à la santé et aux services. Nos prestations démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures et à {{price:intervention-4h|flat}} pour une intervention. Williams et l'équipe se déplacent en français, avec un interlocuteur unique et un livrable concret pour chaque mission menée dans l'agglomération d'Épinal.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique d'Épinal repose sur la papeterie historique (force motrice de la Moselle), l'imagerie d'Épinal toujours active depuis 1796, la filière bois caractéristique des Vosges, et un commerce de détail de centre-ville dynamique. L'Université de Lorraine y maintient un campus délocalisé qui alimente le bassin de compétences. La communauté d'agglomération d'Épinal regroupe une douzaine de communes, dont Golbey, Chantraine, Dinozé, Jeuxey et Thaon-les-Vosges, soit environ 60 000 habitants.",
@@ -33,8 +33,8 @@ export const EPINAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épinal pour TPE et PME : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de {{price:audit-flash|flat}} pour un Audit sur place de 4 heures.",
-      en: "Audit IA à Épinal pour TPE et PME : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de {{price:audit-flash|flat}} pour un Audit sur place de 4 heures.",
+      fr: "Audit IA à Épinal pour PME et ETI : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de {{price:audit-flash|flat}} pour un Audit sur place de 4 heures.",
+      en: "Audit IA à Épinal pour PME et ETI : analyse des opportunités dans le commerce de centre-ville, la filière bois, l'imprimerie et le tourisme vosgien — à partir de {{price:audit-flash|flat}} pour un Audit sur place de 4 heures.",
     },
     interventions: {
       fr: "Interventions sur site à Épinal et dans l'agglomération : automatisation administrative, traitement de devis, gestion documentaire, dès {{price:intervention-4h|flat}} par demi-journée.",
@@ -45,14 +45,14 @@ export const EPINAL_COPY: VilleCopy = {
       en: "Implémentation IA en code custom à Épinal : intégration à vos outils métier (ERP bois, caisse commerce, planning santé), tests et mise en production avec documentation complète.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de TPE et PME vosgiennes sur la stratégie IA et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de TPE et PME vosgiennes sur la stratégie IA et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de PME et d'ETI vosgiennes sur la stratégie IA et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement un-à-un à Épinal : sessions personnalisées pour dirigeants de PME et d'ETI vosgiennes sur la stratégie IA et la conduite du changement, dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises d'Épinal et de son agglomération, des TPE du centre-ville aux acteurs industriels de la zone INOVA 3000. Le tissu spinalien est singulier : la filière bois-papier en pleine bascule vers l'écologie industrielle (Norske Skog Golbey, la Green Valley et son Écoparc, Pavatex du groupe Soprema), la mécanique automobile avec l'usine de turbocompresseurs Garrett Motion à Thaon-les-Vosges, le pôle santé du Centre Hospitalier Émile Durkheim, et un commerce héritier de l'Imagerie d'Épinal (1796) qui doit aujourd'hui vendre en ligne. Nous livrons du code custom — UX/UI, mobile, e-commerce multi-CMS, chatbot RAG, recherche sémantique — hébergé en UE et conforme RGPD, sans verrou éditeur.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises d'Épinal et de son agglomération, des PME du centre-ville aux acteurs industriels de la zone INOVA 3000. Le tissu spinalien est singulier : la filière bois-papier en pleine bascule vers l'écologie industrielle (Norske Skog Golbey, la Green Valley et son Écoparc, Pavatex du groupe Soprema), la mécanique automobile avec l'usine de turbocompresseurs Garrett Motion à Thaon-les-Vosges, le pôle santé du Centre Hospitalier Émile Durkheim, et un commerce héritier de l'Imagerie d'Épinal (1796) qui doit aujourd'hui vendre en ligne. Nous livrons du code custom — UX/UI, mobile, e-commerce multi-CMS, chatbot RAG, recherche sémantique — hébergé en UE et conforme RGPD, sans verrou éditeur.",
         whyHere: [
           "La filière bois-papier vosgienne (~159 entreprises bois/meuble, plus de 2 000 emplois) et l'écosystème Green Valley autour de Norske Skog Golbey génèrent des besoins concrets : portails fournisseurs, configurateurs de panneaux et de bois d'œuvre, catalogues techniques interrogeables par IA pour des acteurs comme Pavatex ou la Forestière Docelloise.",
           "L'industrie mécanique de l'INOVA 3000, Garrett Motion en tête, et les sous-traitants de l'agglomération ont besoin d'extranets qualité, de documentation produit multilingue et de portails B2B intégrés à leurs ERP — des plateformes que nous développons en code custom plutôt qu'en thème générique.",
@@ -87,12 +87,6 @@ export const EPINAL_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour commerçants du centre-ville d'Épinal, artisans du bois, indépendants et marques patrimoniales (style Imagerie d'Épinal) : site vitrine ou boutique en ligne mobile-first avec recherche assistée par IA et SEO local Vosges.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce avancé",
@@ -174,12 +168,6 @@ export const EPINAL_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For Épinal city-centre shopkeepers, wood craftspeople, freelancers and heritage brands (Imagerie d'Épinal style): mobile-first showcase site or online store with AI-assisted search and local Vosges SEO.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or advanced e-commerce",
             detail:
@@ -229,7 +217,7 @@ export const EPINAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs Axion-IA pour une intervention à Épinal ?",
-      a: "À Épinal, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un dédié aux dirigeants de TPE et PME.",
+      a: "À Épinal, nos tarifs publics démarrent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures, {{price:intervention-4h|flat}} pour une intervention sur site et {{price:intervention-dirigeants|flat}} pour un accompagnement un-à-un dédié aux dirigeants de PME et d'ETI.",
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour d'Épinal ?",
@@ -245,7 +233,7 @@ export const EPINAL_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux servez-vous à Épinal ?",
-      a: "Nous accompagnons en priorité les TPE et PME du commerce de détail, de la filière bois et papier, de l'imprimerie, du tourisme, de la santé et des services professionnels présents à Épinal et dans les Vosges.",
+      a: "Nous accompagnons en priorité les PME et ETI du commerce de détail, de la filière bois et papier, de l'imprimerie, du tourisme, de la santé et des services professionnels présents à Épinal et dans les Vosges.",
     },
     {
       q: "Quels formats de formation propose Axion-IA à Épinal ?",

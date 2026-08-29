@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GRAND_CHARMONT_COPY: VilleCopy = {
   pitchFr:
-    "Grand-Charmont (25), commune du Pays de Montbeliard, est une ville residentielle adossee au bassin industriel automobile Stellantis-Sochaux. Tissu TPE/PME sous-traitance automobile, commerce de proximite, services a la personne, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
+    "Grand-Charmont (25), commune du Pays de Montbeliard, est une ville residentielle adossee au bassin industriel automobile Stellantis-Sochaux. Tissu PME et ETI sous-traitance automobile, commerce de proximite, services a la personne, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Grand-Charmont (25), commune du Pays de Montbeliard, est une ville residentielle adossee au bassin industriel automobile Stellantis-Sochaux. Tissu TPE/PME sous-traitance automobile, commerce de proximite, services a la personne, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
+    "Grand-Charmont (25), commune du Pays de Montbeliard, est une ville residentielle adossee au bassin industriel automobile Stellantis-Sochaux. Tissu PME et ETI sous-traitance automobile, commerce de proximite, services a la personne, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grand-Charmont (25). Nous accompagnons PME et ETI : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Grand-Charmont (25). Nous accompagnons PME et ETI : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "pays de montbeliard",
   ecosystemFr:
     "Grand-Charmont fait partie de l'agglomeration de Montbeliard dans le nord du Doubs. La ville est historiquement liee au bassin industriel automobile (Stellantis-Sochaux a 5 km). Le tissu economique local repose sur la sous-traitance industrielle, le commerce de proximite et les services aux particuliers.",
@@ -42,8 +42,8 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
       en: "Implementation IA a Grand-Charmont : optimisation chaine de production automobile, gestion stocks commerces, planification tournees services a la personne, automatisation devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Grand-Charmont : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME du Pays de Montbeliard, gerants sous-traitance et commerce.",
-      en: "Coaching 1-to-1 a Grand-Charmont : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME du Pays de Montbeliard, gerants sous-traitance et commerce.",
+      fr: "Coaching 1-to-1 a Grand-Charmont : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI du Pays de Montbeliard, gerants sous-traitance et commerce.",
+      en: "Coaching 1-to-1 a Grand-Charmont : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI du Pays de Montbeliard, gerants sous-traitance et commerce.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Grand-Charmont ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Grand-Charmont, nous proposons des audits approfondis adaptes aux enjeux automobile, commerce ou services.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Grand-Charmont, nous proposons des audits approfondis adaptes aux enjeux automobile, commerce ou services.",
     },
     {
       q: "Travaillez-vous avec les commercants de proximite ?",

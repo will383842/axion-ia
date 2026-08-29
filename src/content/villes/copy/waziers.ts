@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const WAZIERS_COPY: VilleCopy = {
   pitchFr:
-    "Waziers (59), commune limitrophe de Douai dans le bassin minier du Nord, reunit pres de 7 270 habitants. Ancienne cite miniere, son economie s'est diversifiee vers PME industrielles, TPE artisans BTP, commerces, services tertiaires et logistique. Axion-IA y intervient pour tous types d'activites.",
+    "Waziers (59), commune limitrophe de Douai dans le bassin minier du Nord, reunit pres de 7 270 habitants. Ancienne cite miniere, son economie s'est diversifiee vers PME industrielles, PME du BTP, commerces, services tertiaires et logistique. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Waziers (59), commune limitrophe de Douai dans le bassin minier du Nord, reunit pres de 7 270 habitants. Ancienne cite miniere, son economie s'est diversifiee vers PME industrielles, TPE artisans BTP, commerces, services tertiaires et logistique. Axion-IA y intervient pour tous types d'activites.",
+    "Waziers (59), commune limitrophe de Douai dans le bassin minier du Nord, reunit pres de 7 270 habitants. Ancienne cite miniere, son economie s'est diversifiee vers PME industrielles, PME du BTP, commerces, services tertiaires et logistique. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, industrie & agglo Douai",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Waziers (59). Nous accompagnons les TPE, PME et ETI de l'agglomeration douaisienne et du bassin minier : industriels, logisticiens, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Waziers (59). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration douaisienne et du bassin minier : industriels, logisticiens, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Waziers (59). Nous accompagnons les TPE, PME et ETI de l'agglomeration douaisienne et du bassin minier : industriels, logisticiens, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Waziers (59). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration douaisienne et du bassin minier : industriels, logisticiens, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Waziers est integree a Douaisis Agglo, formant avec Douai un pole economique du bassin minier. Reconversion post-charbon vers industrie diversifiee, logistique (plateforme Delta 3 a proximite), TPE artisanat BTP, commerces et services tertiaires. Zone d'activites Dorignies-Waziers.",
+    "Waziers est integree a Douaisis Agglo, formant avec Douai un pole economique du bassin minier. Reconversion post-charbon vers industrie diversifiee, logistique (plateforme Delta 3 a proximite), PME du BTP, commerces et services tertiaires. Zone d'activites Dorignies-Waziers.",
   ecosystemEn:
-    "Waziers est integree a Douaisis Agglo, formant avec Douai un pole economique du bassin minier. Reconversion post-charbon vers industrie diversifiee, logistique (plateforme Delta 3 a proximite), TPE artisanat BTP, commerces et services tertiaires. Zone d'activites Dorignies-Waziers.",
+    "Waziers est integree a Douaisis Agglo, formant avec Douai un pole economique du bassin minier. Reconversion post-charbon vers industrie diversifiee, logistique (plateforme Delta 3 a proximite), PME du BTP, commerces et services tertiaires. Zone d'activites Dorignies-Waziers.",
   distancesFr:
     "Gare de Douai a 5 min. Lille-Flandres a 30 min en TER. Gare Lille Europe (TGV) a 35 min. Aeroport Lille-Lesquin a 40 min. Paris-Nord a 1h10 en TGV depuis Douai.",
   distancesEn:
@@ -24,14 +24,14 @@ export const WAZIERS_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME industrielles (reconversion miniere)",
     "Logistique & entreposage",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Services tertiaires",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Waziers : diagnostic adapte aux PME industrielles du Douaisis, logisticiens, TPE artisans et commercants du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Waziers : diagnostic adapte aux PME industrielles du Douaisis, logisticiens, TPE artisans et commercants du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Waziers : diagnostic adapte aux PME industrielles du Douaisis, logisticiens, PME de l'artisanat et du commerce du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Waziers : diagnostic adapte aux PME industrielles du Douaisis, logisticiens, PME de l'artisanat et du commerce du bassin minier. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Waziers : formations adaptees a l'atelier industriel, a la plateforme logistique, au commerce ou au bureau tertiaire. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const WAZIERS_COPY: VilleCopy = {
       en: "Implementation IA a Waziers : optimisation flux logistiques, automatisation processus industriels, agents conversationnels client, CRM augmentes pour PME du Douaisis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Waziers : sessions dans votre atelier, entrepot, bureau ou commerce. Dirigeants industriels, logisticiens, artisans, gerants TPE/PME du Douaisis.",
-      en: "Coaching 1-to-1 a Waziers : sessions dans votre atelier, entrepot, bureau ou commerce. Dirigeants industriels, logisticiens, artisans, gerants TPE/PME du Douaisis.",
+      fr: "Coaching 1-to-1 a Waziers : sessions dans votre atelier, entrepot, bureau ou commerce. Dirigeants industriels, logisticiens, artisans, gerants PME et ETI du Douaisis.",
+      en: "Coaching 1-to-1 a Waziers : sessions dans votre atelier, entrepot, bureau ou commerce. Dirigeants industriels, logisticiens, artisans, gerants PME et ETI du Douaisis.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const WAZIERS_COPY: VilleCopy = {
       a: "Pour les plateformes logistiques du Douaisis (Delta 3, zone Dorignies-Waziers), nous proposons : optimisation flux entrepot, predictif demande, automatisation picking, agents conversationnels transporteurs. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans a Waziers ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commercants et independants du Douaisis : automatisation devis, agents IA prise de RDV, classification photos chantier. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et artisans a Waziers ?",
+      a: "Oui, nous accompagnons les PME du BTP, commercants et independants du Douaisis : automatisation devis, agents IA prise de RDV, classification photos chantier. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Waziers ?",

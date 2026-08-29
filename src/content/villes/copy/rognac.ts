@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const ROGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Rognac (13), commune dynamique au nord de l'étang de Berre dans les Bouches-du-Rhône, dispose de zones d'activités attractives entre Aix-en-Provence et l'aéroport Marseille Provence. TPE artisans, PME logistique et services, commerces de bourg. Axion-IA y intervient pour tous types d'activités du nord de l'étang de Berre.",
+    "Rognac (13), commune dynamique au nord de l'étang de Berre dans les Bouches-du-Rhône, dispose de zones d'activités attractives entre Aix-en-Provence et l'aéroport Marseille Provence. PME artisanales, PME logistique et services, commerces de bourg. Axion-IA y intervient pour tous types d'activités du nord de l'étang de Berre.",
   pitchEn:
-    "Rognac (13), commune dynamique au nord de l'étang de Berre dans les Bouches-du-Rhône, dispose de zones d'activités attractives entre Aix-en-Provence et l'aéroport Marseille Provence. TPE artisans, PME logistique et services, commerces de bourg. Axion-IA y intervient pour tous types d'activités du nord de l'étang de Berre.",
+    "Rognac (13), commune dynamique au nord de l'étang de Berre dans les Bouches-du-Rhône, dispose de zones d'activités attractives entre Aix-en-Provence et l'aéroport Marseille Provence. PME artisanales, PME logistique et services, commerces de bourg. Axion-IA y intervient pour tous types d'activités du nord de l'étang de Berre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rognac (13). Nous accompagnons PME artisanales, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rognac (13). Nous accompagnons TPE artisans, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Rognac (13). Nous accompagnons PME artisanales, PME logistique et services des zones d'activités du nord de l'étang de Berre, commerces de proximité et entreprises de la zone aéroportuaire. Audit sur place sur mesure, sans engagement.",
   seoHook: "logistique, zones d'activités & étang de Berre",
   ecosystemFr:
-    "Rognac est une commune au nord de l'étang de Berre, dotée de zones d'activités dynamiques entre Aix-en-Provence et l'aéroport Marseille Provence. TPE artisans du bâtiment, PME logistique et transport, commerces de bourg et prestataires de services. Connexion rapide A7/A55.",
+    "Rognac est une commune au nord de l'étang de Berre, dotée de zones d'activités dynamiques entre Aix-en-Provence et l'aéroport Marseille Provence. PME artisanales du bâtiment, PME logistique et transport, commerces de bourg et prestataires de services. Connexion rapide A7/A55.",
   ecosystemEn:
-    "Rognac est une commune au nord de l'étang de Berre, dotée de zones d'activités dynamiques entre Aix-en-Provence et l'aéroport Marseille Provence. TPE artisans du bâtiment, PME logistique et transport, commerces de bourg et prestataires de services. Connexion rapide A7/A55.",
+    "Rognac est une commune au nord de l'étang de Berre, dotée de zones d'activités dynamiques entre Aix-en-Provence et l'aéroport Marseille Provence. PME artisanales du bâtiment, PME logistique et transport, commerces de bourg et prestataires de services. Connexion rapide A7/A55.",
   distancesFr:
     "Aéroport Marseille Provence à 10 min. Vitrolles à 5 min. Berre-l'Étang à 5 min. Aix-en-Provence à 25 min. Marseille centre à 35 min. Salon-de-Provence à 20 min.",
   distancesEn:
     "Aéroport Marseille Provence à 10 min. Vitrolles à 5 min. Berre-l'Étang à 5 min. Aix-en-Provence à 25 min. Marseille centre à 35 min. Salon-de-Provence à 20 min.",
   topSectorsNaf: [
     "Logistique & transport",
-    "TPE artisanat & bâtiment",
+    "PME de l'artisanat & bâtiment",
     "Services aux entreprises",
     "Commerce de proximité",
     "Industrie légère",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Rognac : diagnostic adapté aux PME artisanales, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Rognac : diagnostic adapté aux PME artisanales, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rognac : formats adaptés à l'entrepôt logistique, l'atelier artisan et le bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const ROGNAC_COPY: VilleCopy = {
       en: "Implémentation IA à Rognac : automatisation flux logistique, agents IA suivi livraisons, extraction données transport, optimisation planning artisan.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Rognac : sessions pour dirigeants TPE/PME logistique, artisans et commerçants du nord étang de Berre souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Rognac : sessions pour dirigeants TPE/PME logistique, artisans et commerçants du nord étang de Berre souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Rognac : sessions pour dirigeants de PME et d'ETI logistique, artisans et commerçants du nord étang de Berre souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Rognac : sessions pour dirigeants de PME et d'ETI logistique, artisans et commerçants du nord étang de Berre souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const ROGNAC_COPY: VilleCopy = {
     },
     {
       q: "L'IA est-elle adaptée aux artisans de Rognac ?",
-      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les TPE artisans. Cas IA pratiques : automatisation devis, gestion planning, facturation, suivi chantiers, relances clients.",
+      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les PME artisanales. Cas IA pratiques : automatisation devis, gestion planning, facturation, suivi chantiers, relances clients.",
     },
     {
       q: "Comment se déroule une mission IA à Rognac ?",

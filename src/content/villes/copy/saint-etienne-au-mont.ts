@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ETIENNE_AU_MONT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Etienne-au-Mont (62), commune de l'agglomeration boulonnaise dans le Pas-de-Calais, reunit environ 5 030 habitants aux portes de la foret de Boulogne. Son economie repose sur des TPE artisanales, des PME de services, le commerce de proximite et l'activite residentielle liee au bassin d'emploi de Boulogne-sur-Mer. Axion-IA y intervient pour tous types d'activites.",
+    "Saint-Etienne-au-Mont (62), commune de l'agglomeration boulonnaise dans le Pas-de-Calais, reunit environ 5 030 habitants aux portes de la foret de Boulogne. Son economie repose sur des PME artisanales, des PME de services, le commerce de proximite et l'activite residentielle liee au bassin d'emploi de Boulogne-sur-Mer. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Saint-Etienne-au-Mont (62), commune de l'agglomeration boulonnaise dans le Pas-de-Calais, reunit environ 5 030 habitants aux portes de la foret de Boulogne. Son economie repose sur des TPE artisanales, des PME de services, le commerce de proximite et l'activite residentielle liee au bassin d'emploi de Boulogne-sur-Mer. Axion-IA y intervient pour tous types d'activites.",
+    "Saint-Etienne-au-Mont (62), commune de l'agglomeration boulonnaise dans le Pas-de-Calais, reunit environ 5 030 habitants aux portes de la foret de Boulogne. Son economie repose sur des PME artisanales, des PME de services, le commerce de proximite et l'activite residentielle liee au bassin d'emploi de Boulogne-sur-Mer. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Boulogne, services & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Etienne-au-Mont (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration boulonnaise : entreprises de services, artisans BTP, commercants, professions liberales et acteurs du tourisme cotier. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Etienne-au-Mont (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration boulonnaise : entreprises de services, artisans BTP, commercants, professions liberales et acteurs du tourisme cotier. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Etienne-au-Mont (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration boulonnaise : entreprises de services, artisans BTP, commercants, professions liberales et acteurs du tourisme cotier. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Saint-Etienne-au-Mont (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration boulonnaise : entreprises de services, artisans BTP, commercants, professions liberales et acteurs du tourisme cotier. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Saint-Etienne-au-Mont est situee dans l'agglomeration de Boulogne-sur-Mer, premier port de peche francais. Tissu economique residentielo-tertiaire : TPE artisanat BTP, PME services aux entreprises, commerces de centre-bourg, professions de sante et activites liees au tourisme cotier (Cote d'Opale).",
+    "Saint-Etienne-au-Mont est situee dans l'agglomeration de Boulogne-sur-Mer, premier port de peche francais. Tissu economique residentielo-tertiaire : PME du BTP, PME services aux entreprises, commerces de centre-bourg, professions de sante et activites liees au tourisme cotier (Cote d'Opale).",
   ecosystemEn:
-    "Saint-Etienne-au-Mont est situee dans l'agglomeration de Boulogne-sur-Mer, premier port de peche francais. Tissu economique residentielo-tertiaire : TPE artisanat BTP, PME services aux entreprises, commerces de centre-bourg, professions de sante et activites liees au tourisme cotier (Cote d'Opale).",
+    "Saint-Etienne-au-Mont est situee dans l'agglomeration de Boulogne-sur-Mer, premier port de peche francais. Tissu economique residentielo-tertiaire : PME du BTP, PME services aux entreprises, commerces de centre-bourg, professions de sante et activites liees au tourisme cotier (Cote d'Opale).",
   distancesFr:
     "Boulogne-sur-Mer a 5 min. Gare de Boulogne-Ville (TER Lille-Calais). Calais a 30 min. Gare Lille Europe (TGV) a 1h30 en TER. Aeroport Lille-Lesquin a 2h. Paris-Nord a 2h45 (TGV via Boulogne-Ville).",
   distancesEn:
@@ -30,8 +30,8 @@ export const SAINT_ETIENNE_AU_MONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Saint-Etienne-au-Mont : diagnostic adapte aux TPE artisanales, PME de services et commercants de l'agglo boulonnaise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Saint-Etienne-au-Mont : diagnostic adapte aux TPE artisanales, PME de services et commercants de l'agglo boulonnaise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Saint-Etienne-au-Mont : diagnostic adapte aux PME artisanales, PME de services et commercants de l'agglo boulonnaise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Saint-Etienne-au-Mont : diagnostic adapte aux PME artisanales, PME de services et commercants de l'agglo boulonnaise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Saint-Etienne-au-Mont : formations adaptees aux bureaux, cabinets, ateliers et commerces du bassin boulonnais. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_ETIENNE_AU_MONT_COPY: VilleCopy = {
       en: "Implementation IA a Saint-Etienne-au-Mont : automatisation administrative, agents conversationnels clients, CRM augmentes pour PME et professions liberales de la Cote d'Opale.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Saint-Etienne-au-Mont : sessions individuelles pour dirigeants de TPE, gerants PME, professions liberales et commercants de l'agglomeration boulonnaise.",
-      en: "Coaching 1-to-1 a Saint-Etienne-au-Mont : sessions individuelles pour dirigeants de TPE, gerants PME, professions liberales et commercants de l'agglomeration boulonnaise.",
+      fr: "Coaching 1-to-1 a Saint-Etienne-au-Mont : sessions individuelles pour dirigeants de PME et d'ETI, gerants PME, professions liberales et commercants de l'agglomeration boulonnaise.",
+      en: "Coaching 1-to-1 a Saint-Etienne-au-Mont : sessions individuelles pour dirigeants de PME et d'ETI, gerants PME, professions liberales et commercants de l'agglomeration boulonnaise.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const SAINT_ETIENNE_AU_MONT_COPY: VilleCopy = {
       a: "L'Audit sur place demarre a {{price:audit-flash|flat}}. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
     },
     {
-      q: "Quels services IA pour les TPE et PME de l'agglo boulonnaise ?",
-      a: "Pour les TPE et PME du bassin boulonnais, nous proposons : automatisation administrative, agents conversationnels, CRM augmente, IA predictive et formations equipes. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Quels services IA pour les PME et ETI de l'agglo boulonnaise ?",
+      a: "Pour les PME et ETI du bassin boulonnais, nous proposons : automatisation administrative, agents conversationnels, CRM augmente, IA predictive et formations equipes. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Accompagnez-vous les professionnels du tourisme de la Cote d'Opale ?",

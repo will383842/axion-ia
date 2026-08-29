@@ -292,7 +292,7 @@ export const PARIS_ECONOMIC_DATA: VilleEconomicData = {
   // Champ honnêtement vide.
   vignoblesProches: [],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : 1300 entreprises labellisées en France, beaucoup à Paris.
   // Sans source individuelle confirmée par entreprise, champ vide pour

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAURENARD_COPY: VilleCopy = {
   pitchFr:
-    "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. TPE agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
+    "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. PME agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. TPE agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
+    "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. PME agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaurenard (13). Nous accompagnons PME agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Châteaurenard (13). Nous accompagnons PME agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit sur place sur mesure.",
   seoHook: "agriculture maraîchère & négoce fruits",
   ecosystemFr:
-    "Châteaurenard est au cœur de la plaine maraîchère entre Avignon et Cavaillon. Son MIN (Marché d'Intérêt National) est l'un des principaux pôles d'expédition de fruits et légumes provençaux. Agriculture intensive (tomates, melons, fraises, salades), négoce, transport frigorifique, conditionnement, PME agroalimentaires. Tissu dense de TPE artisans.",
+    "Châteaurenard est au cœur de la plaine maraîchère entre Avignon et Cavaillon. Son MIN (Marché d'Intérêt National) est l'un des principaux pôles d'expédition de fruits et légumes provençaux. Agriculture intensive (tomates, melons, fraises, salades), négoce, transport frigorifique, conditionnement, PME agroalimentaires. Tissu dense de PME artisanales.",
   ecosystemEn:
-    "Châteaurenard est au cœur de la plaine maraîchère entre Avignon et Cavaillon. Son MIN (Marché d'Intérêt National) est l'un des principaux pôles d'expédition de fruits et légumes provençaux. Agriculture intensive (tomates, melons, fraises, salades), négoce, transport frigorifique, conditionnement, PME agroalimentaires. Tissu dense de TPE artisans.",
+    "Châteaurenard est au cœur de la plaine maraîchère entre Avignon et Cavaillon. Son MIN (Marché d'Intérêt National) est l'un des principaux pôles d'expédition de fruits et légumes provençaux. Agriculture intensive (tomates, melons, fraises, salades), négoce, transport frigorifique, conditionnement, PME agroalimentaires. Tissu dense de PME artisanales.",
   distancesFr:
     "Avignon à 15 min. Cavaillon à 15 min. Salon-de-Provence à 30 min. Aix-en-Provence à 50 min. Gare TGV Avignon à 20 min. Marseille à 1 h. Accès A7 sortie Avignon-Sud.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHATEAURENARD_COPY: VilleCopy = {
     "Agriculture maraîchère & fruitière",
     "Négoce fruits & légumes (MIN)",
     "Transport frigorifique & logistique",
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "PME agroalimentaires & conditionnement",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaurenard : diagnostic adapté aux exploitations maraîchères, négociants du MIN, transporteurs frigorifiques, TPE artisans et PME agroalimentaires. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Châteaurenard : diagnostic adapté aux exploitations maraîchères, négociants du MIN, transporteurs frigorifiques, TPE artisans et PME agroalimentaires. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Châteaurenard : diagnostic adapté aux exploitations maraîchères, négociants du MIN, transporteurs frigorifiques, PME artisanales et PME agroalimentaires. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Châteaurenard : diagnostic adapté aux exploitations maraîchères, négociants du MIN, transporteurs frigorifiques, PME artisanales et PME agroalimentaires. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châteaurenard : ateliers pour producteurs maraîchers, équipes du MIN, négociants et PME agroalimentaires. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const CHATEAURENARD_COPY: VilleCopy = {
       en: "Implémentation IA à Châteaurenard : prévision de récoltes, optimisation tournées transport frigo, automatisation cotation MIN, traçabilité produits frais, agents conversationnels commerciaux. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Châteaurenard : sessions pour exploitants agricoles, négociants du MIN et dirigeants TPE/PME agroalimentaires souhaitant maîtriser l'IA opérationnelle.",
-      en: "Coaching 1-to-1 à Châteaurenard : sessions pour exploitants agricoles, négociants du MIN et dirigeants TPE/PME agroalimentaires souhaitant maîtriser l'IA opérationnelle.",
+      fr: "Coaching 1-to-1 à Châteaurenard : sessions pour exploitants agricoles, négociants du MIN et dirigeants de PME et d'ETI agroalimentaires souhaitant maîtriser l'IA opérationnelle.",
+      en: "Coaching 1-to-1 à Châteaurenard : sessions pour exploitants agricoles, négociants du MIN et dirigeants de PME et d'ETI agroalimentaires souhaitant maîtriser l'IA opérationnelle.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CHATEAURENARD_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Châteaurenard  : quel budget prévoir ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE agricoles, négociants du MIN et PME agroalimentaires châteaurenardais. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME agricoles, négociants du MIN et PME agroalimentaires châteaurenardais. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les négociants du MIN de Châteaurenard ?",

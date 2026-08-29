@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const REVIN_COPY: VilleCopy = {
   pitchFr:
-    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie son expertise pour toutes les organisations de la vallée de la Meuse.",
+    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). PME artisanales, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie son expertise pour toutes les organisations de la vallée de la Meuse.",
   pitchEn:
-    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie son expertise pour toutes les organisations de la vallée de la Meuse.",
+    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). PME artisanales, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie son expertise pour toutes les organisations de la vallée de la Meuse.",
   seoHook: "métallurgie & tourisme nature ardennais",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Revin (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Revin (08). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Revin (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Revin (08). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Revin (environ 5 700 habitants) est une commune ardennaise située dans un méandre remarquable de la Meuse, au cœur du Parc naturel régional des Ardennes. Héritière d'un puissant passé industriel métallurgique (visseries, robinetterie, électroménager), la ville se reconvertit progressivement vers le tourisme nature (randonnée, pêche, kayak), l'artisanat et les services. L'économie locale s'appuie sur l'industrie résiduelle, le commerce de proximité, le tourisme vert et les services publics.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const REVIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Revin : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Revin : diagnostic adapté aux TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Revin : diagnostic adapté aux PME artisanales, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Revin : diagnostic adapté aux PME artisanales, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Revin : formations pratiques pour équipes industrielles métallurgie, commerce, tourisme nature et services de la vallée de la Meuse. Vos collaborateurs repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const REVIN_COPY: VilleCopy = {
       en: "Implémentation IA à Revin : maintenance prédictive lignes métallurgie, contrôle qualité visuel pièces, agents conversationnels accueil touristique nature, gestion documentaire PME industrielles. Adapté au tissu industriel et naturel ardennais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Revin : sessions individuelles pour dirigeants TPE/PME industrielles, artisans, commerçants, acteurs touristiques et professions libérales de la vallée de la Meuse souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Revin : sessions individuelles pour dirigeants TPE/PME industrielles, artisans, commerçants, acteurs touristiques et professions libérales de la vallée de la Meuse souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Revin : sessions individuelles pour dirigeants de PME et d'ETI industrielles, artisans, commerçants, acteurs touristiques et professions libérales de la vallée de la Meuse souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Revin : sessions individuelles pour dirigeants de PME et d'ETI industrielles, artisans, commerçants, acteurs touristiques et professions libérales de la vallée de la Meuse souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const REVIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Revin  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME revinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI revinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs du tourisme nature à Revin ?",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GRAND_CHAMP_COPY: VilleCopy = {
   pitchFr:
-    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, PME artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, PME artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, TPE artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, PME artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, TPE artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, PME artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
   ecosystemFr:
     "Grand-Champ est une commune rurale dynamique de l'arrière-pays vannetais, en croissance démographique grâce à sa proximité avec Vannes. L'économie locale repose sur l'agriculture (élevage laitier et porcin, cultures céréalières), l'agroalimentaire, l'artisanat du bâtiment et les commerces de proximité. Le cadre rural attire également des professions libérales et indépendants en télétravail.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture & élevage",
     "Agroalimentaire & industries de transformation",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Commerce de détail & proximité",
     "Professions libérales & santé",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
-      en: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      fr: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, PME artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, PME artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grand-Champ : formats adaptés à l'exploitation agricole, à l'atelier artisanal ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",
@@ -42,8 +42,8 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
       en: "Implémentation IA à Grand-Champ : automatisation traçabilité et gestion stocks, agents conversationnels relation client, chatbots prise de RDV, classification produits agroalimentaires. Adapté tissu agricole et artisanal arrière-pays vannetais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Grand-Champ : sessions dans vos locaux ou en visio. Agriculteurs, artisans, gérants TPE et dirigeants PME de l'arrière-pays vannetais souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Grand-Champ : sessions dans vos locaux ou en visio. Agriculteurs, artisans, gérants TPE et dirigeants PME de l'arrière-pays vannetais souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Grand-Champ : sessions dans vos locaux ou en visio. Agriculteurs, artisans, gérants PME et dirigeants PME de l'arrière-pays vannetais souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Grand-Champ : sessions dans vos locaux ou en visio. Agriculteurs, artisans, gérants PME et dirigeants PME de l'arrière-pays vannetais souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles et PME agroalimentaires de Grand-Champ sur leurs cas IA : automatisation traçabilité, gestion de troupeaux, optimisation logistique, classification produits et agents IA relation fournisseurs.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commerces de Grand-Champ ?",
-      a: "Oui, nous accompagnons TPE artisans et commerces de Grand-Champ sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce de Grand-Champ ?",
+      a: "Oui, nous accompagnons PME de l'artisanat et du commerce de Grand-Champ sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Tarifs audit IA à Grand-Champ  : quel budget prévoir ?",
-      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE et PME de Grand-Champ et de l'arrière-pays vannetais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
+      a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME et ETI de Grand-Champ et de l'arrière-pays vannetais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {
       q: "Comment se déroule une mission IA sur site à Grand-Champ ?",

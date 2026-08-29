@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
   pitchFr:
-    "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons PME et ETI : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons PME et ETI : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit sur place sur mesure.",
   seoHook: "services & tertiaire sud-est",
   ecosystemFr:
-    "Boussy-Saint-Antoine est une commune résidentielle de l'Essonne en lisière de la forêt de Sénart, à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités tertiaires.",
+    "Boussy-Saint-Antoine est une commune résidentielle de l'Essonne en lisière de la forêt de Sénart, à 23 km au sud-est de Paris. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, activités tertiaires.",
   ecosystemEn:
-    "Boussy-Saint-Antoine est une commune résidentielle de l'Essonne en lisière de la forêt de Sénart, à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités tertiaires.",
+    "Boussy-Saint-Antoine est une commune résidentielle de l'Essonne en lisière de la forêt de Sénart, à 23 km au sud-est de Paris. Tissu PME de l'artisanat, commerces de proximité, PME services, professions libérales, activités tertiaires.",
   distancesFr:
     "Paris centre à 35 min. Brunoy à 5 min. Évry-Courcouronnes à 15 min. Gare RER D Boussy-Saint-Antoine à 2 min. Aéroport Orly à 20 min.",
   distancesEn:
     "Paris centre à 35 min. Brunoy à 5 min. Évry-Courcouronnes à 15 min. Gare RER D Boussy-Saint-Antoine à 2 min. Aéroport Orly à 20 min.",
   topSectorsNaf: [
-    "TPE artisanat",
+    "PME de l'artisanat",
     "Commerce de proximité",
     "PME services",
     "Professions libérales",
@@ -30,8 +30,8 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux PME de l'artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux PME de l'artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Boussy-Saint-Antoine : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
       en: "Implémentation IA à Boussy-Saint-Antoine : automatisation devis et facturation artisans, CRM augmenté PME, gestion stocks commerce, planning professions libérales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Boussy-Saint-Antoine : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE/PME, artisans, professions libérales forêt de Sénart.",
-      en: "Coaching 1-to-1 à Boussy-Saint-Antoine : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE/PME, artisans, professions libérales forêt de Sénart.",
+      fr: "Coaching 1-to-1 à Boussy-Saint-Antoine : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME et ETI, artisans, professions libérales forêt de Sénart.",
+      en: "Coaching 1-to-1 à Boussy-Saint-Antoine : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants PME et ETI, artisans, professions libérales forêt de Sénart.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et petits commerces ?",
-      a: "Oui, devis et facturation automatisés par IA, gestion stocks, relances clients, planning équipes. Solutions adaptées aux TPE artisanales et commerces de proximité.",
+      a: "Oui, devis et facturation automatisés par IA, gestion stocks, relances clients, planning équipes. Solutions adaptées aux PME de l'artisanat et du commerce.",
     },
     {
       q: "Quels services pour les professions libérales ?",

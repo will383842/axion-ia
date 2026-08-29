@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CASTELSARRASIN_COPY: VilleCopy = {
   pitchFr:
-    "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu TPE artisans, PME agroalimentaires et industrielles, professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin castelsarrasinois.",
+    "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu PME artisanales, PME agroalimentaires et industrielles, professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin castelsarrasinois.",
   pitchEn:
-    "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu TPE artisans, PME agroalimentaires et industrielles, professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin castelsarrasinois.",
+    "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu PME artisanales, PME agroalimentaires et industrielles, professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin castelsarrasinois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelsarrasin (82). Nous accompagnons PME artisanales, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Castelsarrasin (82). Nous accompagnons PME artisanales, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place sur mesure.",
   seoHook: "bassin castelsarrasinois",
   ecosystemFr:
     "Castelsarrasin (14 343 hab) est la sous-préfecture du Tarn-et-Garonne, sur le canal latéral à la Garonne. Économie diversifiée : agroalimentaire (fruits, légumes, conserveries), industrie, commerces de centre-ville, services et professions libérales. Proximité Montauban (20 min), Agen (40 min), Toulouse (1h). Zones d'activités dynamiques sur l'axe A62.",
@@ -30,8 +30,8 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Castelsarrasin : diagnostic adapté aux TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Castelsarrasin : diagnostic adapté aux TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Castelsarrasin : diagnostic adapté aux PME artisanales, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Castelsarrasin : diagnostic adapté aux PME artisanales, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Castelsarrasin : formats adaptés à la PME agroalimentaire, commerce, exploitation agricole ou cabinet libéral. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
       en: "Implémentation IA à Castelsarrasin : traçabilité production agroalimentaire, gestion qualité, CRM clients, automatisation facturation, agents conversationnels pour les PME du canal latéral.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Castelsarrasin : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, commerçants et professions libérales du Tarn-et-Garonne ouest.",
-      en: "Coaching 1-to-1 à Castelsarrasin : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, commerçants et professions libérales du Tarn-et-Garonne ouest.",
+      fr: "Coaching 1-to-1 à Castelsarrasin : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME agroalimentaires, commerçants et professions libérales du Tarn-et-Garonne ouest.",
+      en: "Coaching 1-to-1 à Castelsarrasin : sessions dans vos locaux ou en visio. Dirigeants PME artisanales, gérants PME agroalimentaires, commerçants et professions libérales du Tarn-et-Garonne ouest.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Castelsarrasin  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Castelsarrasin. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Castelsarrasin. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires ?",
@@ -65,7 +65,7 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Castelsarrasin ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Castelsarrasin. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Castelsarrasin. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

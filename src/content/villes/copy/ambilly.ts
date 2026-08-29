@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AMBILLY_COPY: VilleCopy = {
   pitchFr:
-    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, PME services, PME tertiaires, professions libérales, logistique douanière. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, PME services, PME tertiaires, professions libérales, logistique douanière. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambilly (74). Nous accompagnons TPE et PME : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambilly (74). Nous accompagnons PME et ETI : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambilly (74). Nous accompagnons TPE et PME : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ambilly (74). Nous accompagnons PME et ETI : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
   seoHook: "commerce proximité & tertiaires services",
   ecosystemFr:
-    "Ambilly est une commune résidentielle et commerciale de l'agglomération Annemasse-Les Voirons, intégrée au Grand Genève (projet transfrontalier franco-suisse, 1M habitants). La proximité immédiate de la douane suisse (Genève-Thônex) génère un fort flux commercial et une économie de services frontaliers. Commerces de proximité, PME tertiaires, TPE artisans, professions libérales, prestataires logistique douanière.",
+    "Ambilly est une commune résidentielle et commerciale de l'agglomération Annemasse-Les Voirons, intégrée au Grand Genève (projet transfrontalier franco-suisse, 1M habitants). La proximité immédiate de la douane suisse (Genève-Thônex) génère un fort flux commercial et une économie de services frontaliers. Commerces de proximité, PME tertiaires, PME artisanales, professions libérales, prestataires logistique douanière.",
   ecosystemEn:
-    "Ambilly est une commune résidentielle et commerciale de l'agglomération Annemasse-Les Voirons, intégrée au Grand Genève (projet transfrontalier franco-suisse, 1M habitants). La proximité immédiate de la douane suisse (Genève-Thônex) génère un fort flux commercial et une économie de services frontaliers. Commerces de proximité, PME tertiaires, TPE artisans, professions libérales, prestataires logistique douanière.",
+    "Ambilly est une commune résidentielle et commerciale de l'agglomération Annemasse-Les Voirons, intégrée au Grand Genève (projet transfrontalier franco-suisse, 1M habitants). La proximité immédiate de la douane suisse (Genève-Thônex) génère un fort flux commercial et une économie de services frontaliers. Commerces de proximité, PME tertiaires, PME artisanales, professions libérales, prestataires logistique douanière.",
   distancesFr:
     "Annemasse centre à 5 min. Genève centre à 15 min (tram Léman Express). Douane Genève-Thônex à 2 min. Thonon-les-Bains à 30 min. Aéroport Genève-Cointrin à 20 min. Gare Annemasse (Léman Express) à 5 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const AMBILLY_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce de proximité & commerce frontalier",
     "PME tertiaires & services aux entreprises (Grand Genève)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales (santé, conseil, juridique)",
     "Logistique & transit douanier",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, PME artisanales, professions libérales et prestataires logistique douanière. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, PME artisanales, professions libérales et prestataires logistique douanière. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ambilly : formats adaptés commerce, bureau PME tertiaire, cabinet libéral ou prestataire logistique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const AMBILLY_COPY: VilleCopy = {
       en: "Implémentation IA à Ambilly : automatisation gestion frontalière (douane, TVA, facturation CHF/EUR), chatbot multilingue FR/EN/DE clientèle suisse, classification documents, CRM intelligent. Adapté commerce transfrontalier + tertiaire.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ambilly : sessions dans votre commerce, bureau ou en visio. Commerçants frontaliers, dirigeants PME tertiaires, professions libérales, gérants TPE de l'agglomération annemassienne.",
-      en: "Coaching 1-to-1 à Ambilly : sessions dans votre commerce, bureau ou en visio. Commerçants frontaliers, dirigeants PME tertiaires, professions libérales, gérants TPE de l'agglomération annemassienne.",
+      fr: "Coaching 1-to-1 à Ambilly : sessions dans votre commerce, bureau ou en visio. Commerçants frontaliers, dirigeants PME tertiaires, professions libérales, gérants PME de l'agglomération annemassienne.",
+      en: "Coaching 1-to-1 à Ambilly : sessions dans votre commerce, bureau ou en visio. Commerçants frontaliers, dirigeants PME tertiaires, professions libérales, gérants PME de l'agglomération annemassienne.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const AMBILLY_COPY: VilleCopy = {
       a: "L'audit sur place propose un tarif d'entrée accessible (4 heures). Pour les PME tertiaires du Grand Genève avec enjeux transfrontaliers complexes, nous proposons des audits approfondis sur devis adapté.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents, chatbot clientèle.",
     },
     {

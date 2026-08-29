@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VILLEFONTAINE_COPY: VilleCopy = {
   pitchFr:
-    "Villefontaine (38), ville-centre de l'unité urbaine née de la ville nouvelle de L'Isle-d'Abeau, est à 24 km de Lyon dans l'aire urbaine lyonnaise. Tissu PME logistique (axe Lyon-Saint-Exupéry), industrie, TPE artisanat, commerces et services. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
+    "Villefontaine (38), ville-centre de l'unité urbaine née de la ville nouvelle de L'Isle-d'Abeau, est à 24 km de Lyon dans l'aire urbaine lyonnaise. Tissu PME logistique (axe Lyon-Saint-Exupéry), industrie, PME de l'artisanat, commerces et services. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
   pitchEn:
-    "Villefontaine (38), ville-centre de l'unité urbaine née de la ville nouvelle de L'Isle-d'Abeau, est à 24 km de Lyon dans l'aire urbaine lyonnaise. Tissu PME logistique (axe Lyon-Saint-Exupéry), industrie, TPE artisanat, commerces et services. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
+    "Villefontaine (38), ville-centre de l'unité urbaine née de la ville nouvelle de L'Isle-d'Abeau, est à 24 km de Lyon dans l'aire urbaine lyonnaise. Tissu PME logistique (axe Lyon-Saint-Exupéry), industrie, PME de l'artisanat, commerces et services. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefontaine (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, indépendants et professions libérales, PME logistiques (axe Lyon-Saint-Exupéry), industriels et sous-traitants Nord-Isère, agriculteurs et services aux entreprises de l'aire urbaine lyonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefontaine (38). Nous accompagnons tous types d'activités : PME du BTP, commerçants centre-ville, indépendants et professions libérales, PME logistiques (axe Lyon-Saint-Exupéry), industriels et sous-traitants Nord-Isère, agriculteurs et services aux entreprises de l'aire urbaine lyonnaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefontaine (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, indépendants et professions libérales, PME logistiques (axe Lyon-Saint-Exupéry), industriels et sous-traitants Nord-Isère, agriculteurs et services aux entreprises de l'aire urbaine lyonnaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefontaine (38). Nous accompagnons tous types d'activités : PME du BTP, commerçants centre-ville, indépendants et professions libérales, PME logistiques (axe Lyon-Saint-Exupéry), industriels et sous-traitants Nord-Isère, agriculteurs et services aux entreprises de l'aire urbaine lyonnaise.",
   seoHook: "agglomération porte",
   ecosystemFr:
-    "Villefontaine s'inscrit dans le tissu économique de la ville nouvelle de L'Isle-d'Abeau, intégrée à la Communauté d'agglomération Porte de l'Isère (CAPI) et à l'aire urbaine de Lyon. Proximité immédiate plateforme aéroportuaire Lyon-Saint-Exupéry (15 min) génère une activité logistique, services aux entreprises et industrielle dense. Tissu TPE artisanat BTP et commerces de proximité.",
+    "Villefontaine s'inscrit dans le tissu économique de la ville nouvelle de L'Isle-d'Abeau, intégrée à la Communauté d'agglomération Porte de l'Isère (CAPI) et à l'aire urbaine de Lyon. Proximité immédiate plateforme aéroportuaire Lyon-Saint-Exupéry (15 min) génère une activité logistique, services aux entreprises et industrielle dense. Tissu PME du BTP et commerces de proximité.",
   ecosystemEn:
-    "Villefontaine s'inscrit dans le tissu économique de la ville nouvelle de L'Isle-d'Abeau, intégrée à la Communauté d'agglomération Porte de l'Isère (CAPI) et à l'aire urbaine de Lyon. Proximité immédiate plateforme aéroportuaire Lyon-Saint-Exupéry (15 min) génère une activité logistique, services aux entreprises et industrielle dense. Tissu TPE artisanat BTP et commerces de proximité.",
+    "Villefontaine s'inscrit dans le tissu économique de la ville nouvelle de L'Isle-d'Abeau, intégrée à la Communauté d'agglomération Porte de l'Isère (CAPI) et à l'aire urbaine de Lyon. Proximité immédiate plateforme aéroportuaire Lyon-Saint-Exupéry (15 min) génère une activité logistique, services aux entreprises et industrielle dense. Tissu PME du BTP et commerces de proximité.",
   distancesFr:
     "Gare La Verpillière à 5 min (TER Lyon-Grenoble). Aéroport Lyon-Saint-Exupéry à 15 min. Lyon centre à 35 min via A43. Bourgoin-Jallieu à 10 min. Grenoble centre à 1h.",
   distancesEn:
@@ -24,14 +24,14 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique & transport (Lyon-Saint-Exupéry)",
     "Industrie & sous-traitance Nord-Isère",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de détail & proximité",
     "PME services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villefontaine : diagnostic adapté aux TPE artisans, PME logistiques, industriels et commerçants de la CAPI et aire lyonnaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
-      en: "Audit IA à Villefontaine : diagnostic adapté aux TPE artisans, PME logistiques, industriels et commerçants de la CAPI et aire lyonnaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux petites structures.",
+      fr: "Audit IA à Villefontaine : diagnostic adapté aux PME artisanales, PME logistiques, industriels et commerçants de la CAPI et aire lyonnaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
+      en: "Audit IA à Villefontaine : diagnostic adapté aux PME artisanales, PME logistiques, industriels et commerçants de la CAPI et aire lyonnaise. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villefontaine : formats adaptés à l'atelier, l'entrepôt logistique ou le commerce. Vos équipes terrain et back-office repartent avec outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
       en: "Implémentation IA à Villefontaine : optimisation tournées logistiques (proximité Saint-Exupéry), agents conversationnels, automatisation devis BTP, classification documents. Tous secteurs Nord-Isère.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Villefontaine : sessions dans vos bureaux, atelier ou en visio. Artisans, gérants TPE/PME logistiques, commerçants villardiens et dirigeants Nord-Isère souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Villefontaine : sessions dans vos bureaux, atelier ou en visio. Artisans, gérants TPE/PME logistiques, commerçants villardiens et dirigeants Nord-Isère souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Villefontaine : sessions dans vos bureaux, atelier ou en visio. Artisans, gérants PME et ETI logistiques, commerçants villardiens et dirigeants Nord-Isère souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Villefontaine : sessions dans vos bureaux, atelier ou en visio. Artisans, gérants PME et ETI logistiques, commerçants villardiens et dirigeants Nord-Isère souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les opérateurs logistiques de la zone Lyon-Saint-Exupéry (entrepôts e-commerce, prestataires fret, services au sol aéroport) sur leurs cas IA : optimisation tournées, prédiction demande, automatisation préparation commandes, agents IA service client B2B.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans villardiens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Villefontaine (plombiers, électriciens, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
+      q: "Accompagnez-vous les PME et artisans villardiens ?",
+      a: "Oui, nous accompagnons les PME du BTP à Villefontaine (plombiers, électriciens, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour les PME de la ville nouvelle de L'Isle-d'Abeau ?",

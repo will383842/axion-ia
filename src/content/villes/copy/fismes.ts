@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FISMES_COPY: VilleCopy = {
   pitchFr:
-    "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. TPE artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. PME de l'artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. TPE artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. PME de l'artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fismes (51). Nous accompagnons PME et ETI : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fismes (51). Nous accompagnons PME et ETI : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit sur place sur mesure.",
   seoHook: "artisanat & agroalimentaire",
   ecosystemFr:
-    "Fismes est un bourg-centre de la vallée de la Vesle, entre Reims (30 km) et Soissons (30 km). Tissu TPE/PME : artisanat, commerces de proximité, agroalimentaire, viticulture champenoise, professions de santé. Carrefour rural desservant le Tardenois.",
+    "Fismes est un bourg-centre de la vallée de la Vesle, entre Reims (30 km) et Soissons (30 km). Tissu PME et ETI : artisanat, commerces de proximité, agroalimentaire, viticulture champenoise, professions de santé. Carrefour rural desservant le Tardenois.",
   ecosystemEn:
-    "Fismes est un bourg-centre de la vallée de la Vesle, entre Reims (30 km) et Soissons (30 km). Tissu TPE/PME : artisanat, commerces de proximité, agroalimentaire, viticulture champenoise, professions de santé. Carrefour rural desservant le Tardenois.",
+    "Fismes est un bourg-centre de la vallée de la Vesle, entre Reims (30 km) et Soissons (30 km). Tissu PME et ETI : artisanat, commerces de proximité, agroalimentaire, viticulture champenoise, professions de santé. Carrefour rural desservant le Tardenois.",
   distancesFr:
     "Reims à 30 min par RD386. Soissons à 30 min. Gare TGV Champagne-Ardenne (Bezannes) à 35 min. Paris à 1 h 20 via A4. Gare SNCF Fismes sur la ligne Reims-Laon.",
   distancesEn:
@@ -30,8 +30,8 @@ export const FISMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fismes : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fismes : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fismes : diagnostic adapté aux PME artisanales, commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fismes : diagnostic adapté aux PME artisanales, commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fismes : formats adaptés boutique, cabinet, exploitation, atelier. Vos équipes repartent autonomes sur les outils déployés.",
@@ -42,8 +42,8 @@ export const FISMES_COPY: VilleCopy = {
       en: "Implémentation IA à Fismes : gestion parcellaire viticole, CRM augmenté commerces, prise de rendez-vous IA santé, traçabilité agroalimentaire, facturation artisans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fismes : sessions dans vos locaux ou en visio. Dirigeants TPE/PME du Tardenois, artisans, commerçants, viticulteurs, professionnels de santé.",
-      en: "Coaching 1-to-1 à Fismes : sessions dans vos locaux ou en visio. Dirigeants TPE/PME du Tardenois, artisans, commerçants, viticulteurs, professionnels de santé.",
+      fr: "Coaching 1-to-1 à Fismes : sessions dans vos locaux ou en visio. Dirigeants PME et ETI du Tardenois, artisans, commerçants, viticulteurs, professionnels de santé.",
+      en: "Coaching 1-to-1 à Fismes : sessions dans vos locaux ou en visio. Dirigeants PME et ETI du Tardenois, artisans, commerçants, viticulteurs, professionnels de santé.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const FISMES_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Fismes  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE et PME du bassin fismois.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME et ETI du bassin fismois.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs champenois autour de Fismes ?",

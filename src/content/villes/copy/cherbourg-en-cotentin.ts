@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Cherbourg-en-Cotentin (Manche, 78 258 habitants en 2023), commune née en 2016 du regroupement de Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville et Tourlaville. Notre cabinet conçoit du code IA sur mesure pour le tissu local : maritime, métallurgie, agroalimentaire, électronique, commerces de centre-ville et services portuaires. Nous nous déplaçons sur site pour comprendre les contraintes opérationnelles d'une cité littorale tournée vers la plus grande rade artificielle d'Europe.",
+    "Axion-IA accompagne les PME et ETI de Cherbourg-en-Cotentin (Manche, 78 258 habitants en 2023), commune née en 2016 du regroupement de Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville et Tourlaville. Notre cabinet conçoit du code IA sur mesure pour le tissu local : maritime, métallurgie, agroalimentaire, électronique, commerces de centre-ville et services portuaires. Nous nous déplaçons sur site pour comprendre les contraintes opérationnelles d'une cité littorale tournée vers la plus grande rade artificielle d'Europe.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Cherbourg-en-Cotentin (Manche, 78 258 habitants en 2023), commune née en 2016 du regroupement de Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville et Tourlaville. Notre cabinet conçoit du code IA sur mesure pour le tissu local : maritime, métallurgie, agroalimentaire, électronique, commerces de centre-ville et services portuaires. Nous nous déplaçons sur site pour comprendre les contraintes opérationnelles d'une cité littorale tournée vers la plus grande rade artificielle d'Europe.",
+    "Axion-IA accompagne les PME et ETI de Cherbourg-en-Cotentin (Manche, 78 258 habitants en 2023), commune née en 2016 du regroupement de Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville et Tourlaville. Notre cabinet conçoit du code IA sur mesure pour le tissu local : maritime, métallurgie, agroalimentaire, électronique, commerces de centre-ville et services portuaires. Nous nous déplaçons sur site pour comprendre les contraintes opérationnelles d'une cité littorale tournée vers la plus grande rade artificielle d'Europe.",
   directAnswerFr:
-    "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure (pas de no-code). Sous-préfecture de la Manche et siège de préfecture maritime, Cherbourg-en-Cotentin concentre une activité maritime, industrielle et logistique structurée autour du port (liaisons Poole, Portsmouth, Dublin, Rosslare via Brittany Ferries et Irish Ferries) et de la rade artificielle. Nos prestations vont de l'Audit sur place à {{price:audit-flash|flat}} à l'implémentation d'agents IA métiers, avec un déplacement physique sur les cinq communes déléguées.",
+    "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner en priorité les PME et ETI, puis les grands groupes, dans la conception de solutions IA codées sur mesure (pas de no-code). Sous-préfecture de la Manche et siège de préfecture maritime, Cherbourg-en-Cotentin concentre une activité maritime, industrielle et logistique structurée autour du port (liaisons Poole, Portsmouth, Dublin, Rosslare via Brittany Ferries et Irish Ferries) et de la rade artificielle. Nos prestations vont de l'Audit sur place à {{price:audit-flash|flat}} à l'implémentation d'agents IA métiers, avec un déplacement physique sur les cinq communes déléguées.",
   directAnswerEn:
-    "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner en priorité les TPE et PME, puis les ETI, dans la conception de solutions IA codées sur mesure (pas de no-code). Sous-préfecture de la Manche et siège de préfecture maritime, Cherbourg-en-Cotentin concentre une activité maritime, industrielle et logistique structurée autour du port (liaisons Poole, Portsmouth, Dublin, Rosslare via Brittany Ferries et Irish Ferries) et de la rade artificielle. Nos prestations vont de l'Audit sur place à {{price:audit-flash|flat}} à l'implémentation d'agents IA métiers, avec un déplacement physique sur les cinq communes déléguées.",
+    "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner en priorité les PME et ETI, puis les grands groupes, dans la conception de solutions IA codées sur mesure (pas de no-code). Sous-préfecture de la Manche et siège de préfecture maritime, Cherbourg-en-Cotentin concentre une activité maritime, industrielle et logistique structurée autour du port (liaisons Poole, Portsmouth, Dublin, Rosslare via Brittany Ferries et Irish Ferries) et de la rade artificielle. Nos prestations vont de l'Audit sur place à {{price:audit-flash|flat}} à l'implémentation d'agents IA métiers, avec un déplacement physique sur les cinq communes déléguées.",
   seoHook: "maritime, métallurgie & agroalimentaire normands",
   ecosystemFr:
-    "Cherbourg-en-Cotentin structure son économie autour du port de commerce et de la rade (deuxième plus grande au monde), des activités maritimes, de la métallurgie, de l'agroalimentaire et de l'électronique. La sous-préfecture de la Manche regroupe cinq communes déléguées (Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville, Tourlaville) et héberge la préfecture maritime de la Manche et de la mer du Nord. Le tissu TPE/PME se déploie autour des services portuaires, des commerces de centre-ville et des sous-traitants industriels.",
+    "Cherbourg-en-Cotentin structure son économie autour du port de commerce et de la rade (deuxième plus grande au monde), des activités maritimes, de la métallurgie, de l'agroalimentaire et de l'électronique. La sous-préfecture de la Manche regroupe cinq communes déléguées (Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville, Tourlaville) et héberge la préfecture maritime de la Manche et de la mer du Nord. Le tissu PME et ETI se déploie autour des services portuaires, des commerces de centre-ville et des sous-traitants industriels.",
   ecosystemEn:
-    "Cherbourg-en-Cotentin structure son économie autour du port de commerce et de la rade (deuxième plus grande au monde), des activités maritimes, de la métallurgie, de l'agroalimentaire et de l'électronique. La sous-préfecture de la Manche regroupe cinq communes déléguées (Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville, Tourlaville) et héberge la préfecture maritime de la Manche et de la mer du Nord. Le tissu TPE/PME se déploie autour des services portuaires, des commerces de centre-ville et des sous-traitants industriels.",
+    "Cherbourg-en-Cotentin structure son économie autour du port de commerce et de la rade (deuxième plus grande au monde), des activités maritimes, de la métallurgie, de l'agroalimentaire et de l'électronique. La sous-préfecture de la Manche regroupe cinq communes déléguées (Cherbourg-Octeville, Équeurdreville-Hainneville, La Glacerie, Querqueville, Tourlaville) et héberge la préfecture maritime de la Manche et de la mer du Nord. Le tissu PME et ETI se déploie autour des services portuaires, des commerces de centre-ville et des sous-traitants industriels.",
   distancesFr:
     "Cherbourg-en-Cotentin est à environ 104 km de Caen, 302 km de Paris (Paris-Saint-Lazare en environ 3 h via Intercités depuis la gare de Cherbourg) et dispose de l'aéroport de Cherbourg-Maupertus avec piste de 2 440 m.",
   distancesEn:
@@ -32,20 +32,20 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Cherbourg-en-Cotentin ({{price:audit-flash|flat}}) pour TPE/PME locales — diagnostic des processus opérationnels d'un commerce de centre-ville, d'un sous-traitant maritime ou d'un acteur agroalimentaire des cinq communes déléguées.",
-      en: "Audit sur place IA à Cherbourg-en-Cotentin ({{price:audit-flash|flat}}) pour TPE/PME locales — diagnostic des processus opérationnels d'un commerce de centre-ville, d'un sous-traitant maritime ou d'un acteur agroalimentaire des cinq communes déléguées.",
+      fr: "Audit sur place IA à Cherbourg-en-Cotentin ({{price:audit-flash|flat}}) pour PME et ETI locales — diagnostic des processus opérationnels d'un commerce de centre-ville, d'un sous-traitant maritime ou d'un acteur agroalimentaire des cinq communes déléguées.",
+      en: "Audit sur place IA à Cherbourg-en-Cotentin ({{price:audit-flash|flat}}) pour PME et ETI locales — diagnostic des processus opérationnels d'un commerce de centre-ville, d'un sous-traitant maritime ou d'un acteur agroalimentaire des cinq communes déléguées.",
     },
     interventions: {
-      fr: "Interventions ciblées à Cherbourg-en-Cotentin pour les TPE/PME — automatisation de devis, suivi de commandes, traitement documentaire pour les acteurs portuaires, logistiques ou de la métallurgie cherbourgeoise.",
-      en: "Interventions ciblées à Cherbourg-en-Cotentin pour les TPE/PME — automatisation de devis, suivi de commandes, traitement documentaire pour les acteurs portuaires, logistiques ou de la métallurgie cherbourgeoise.",
+      fr: "Interventions ciblées à Cherbourg-en-Cotentin pour les PME et ETI — automatisation de devis, suivi de commandes, traitement documentaire pour les acteurs portuaires, logistiques ou de la métallurgie cherbourgeoise.",
+      en: "Interventions ciblées à Cherbourg-en-Cotentin pour les PME et ETI — automatisation de devis, suivi de commandes, traitement documentaire pour les acteurs portuaires, logistiques ou de la métallurgie cherbourgeoise.",
     },
     implementation: {
       fr: "Implémentation de solutions IA codées sur mesure à Cherbourg-en-Cotentin — déploiement d'agents internes pour les PME industrielles ou les services maritimes, sans recours à des plateformes no-code.",
       en: "Implémentation de solutions IA codées sur mesure à Cherbourg-en-Cotentin — déploiement d'agents internes pour les PME industrielles ou les services maritimes, sans recours à des plateformes no-code.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un d'un dirigeant TPE/PME à Cherbourg-en-Cotentin — déplacement sur site (Octeville, Tourlaville, Querqueville…) pour structurer une feuille de route IA progressive.",
-      en: "Accompagnement un-à-un d'un dirigeant TPE/PME à Cherbourg-en-Cotentin — déplacement sur site (Octeville, Tourlaville, Querqueville…) pour structurer une feuille de route IA progressive.",
+      fr: "Accompagnement un-à-un d'un dirigeants de PME et d'ETI à Cherbourg-en-Cotentin — déplacement sur site (Octeville, Tourlaville, Querqueville…) pour structurer une feuille de route IA progressive.",
+      en: "Accompagnement un-à-un d'un dirigeants de PME et d'ETI à Cherbourg-en-Cotentin — déplacement sur site (Octeville, Tourlaville, Querqueville…) pour structurer une feuille de route IA progressive.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour un commerce du centre-ville, un artisan ou un acteur touristique de la rade : site vitrine ou boutique en ligne mobile-first, optimisée référencement local, avec une première brique IA (chatbot FAQ, génération de fiches produit).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -173,12 +167,6 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For a town-centre retailer, a craftsperson or a harbour tourism player: mobile-first showcase site or online store, optimised for local SEO, with a first AI building block (FAQ chatbot, product-sheet generation).",
-          },
-          {
             sizeLabel: "PME",
             price: "Custom business platform",
             detail:
@@ -244,11 +232,11 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il en priorité à Cherbourg-en-Cotentin ?",
-      a: "Nous travaillons en priorité avec les TPE et PME du maritime et de la logistique portuaire, de la métallurgie et de l'industrie navale, de l'agroalimentaire, de l'électronique, du commerce de détail et de la restauration. Les ETI sont accompagnées en complément.",
+      a: "Nous travaillons en priorité avec les PME et ETI du maritime et de la logistique portuaire, de la métallurgie et de l'industrie navale, de l'agroalimentaire, de l'électronique, du commerce de détail et de la restauration. Les grands groupes sont accompagnés en complément.",
     },
     {
       q: "Axion-IA propose-t-il du no-code aux entreprises de Cherbourg-en-Cotentin ?",
-      a: "Non. Axion-IA conçoit du code IA sur mesure pour les TPE/PME cherbourgeoises (agents, intégrations, traitements). Cette approche garantit la propriété des solutions, leur maintenabilité dans la durée et l'absence de dépendance à une plateforme tierce.",
+      a: "Non. Axion-IA conçoit du code IA sur mesure pour les PME et ETI cherbourgeoises (agents, intégrations, traitements). Cette approche garantit la propriété des solutions, leur maintenabilité dans la durée et l'absence de dépendance à une plateforme tierce.",
     },
   ],
 };

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VALDAHON_COPY: VilleCopy = {
   pitchFr:
-    "Valdahon (25), bourg-centre du plateau du Doubs, est structure par la presence du camp militaire et de sa garnison. Tissu TPE/PME commerce de proximite, services aux militaires et familles, agriculture, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
+    "Valdahon (25), bourg-centre du plateau du Doubs, est structure par la presence du camp militaire et de sa garnison. Tissu PME et ETI commerce de proximite, services aux militaires et familles, agriculture, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Valdahon (25), bourg-centre du plateau du Doubs, est structure par la presence du camp militaire et de sa garnison. Tissu TPE/PME commerce de proximite, services aux militaires et familles, agriculture, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
+    "Valdahon (25), bourg-centre du plateau du Doubs, est structure par la presence du camp militaire et de sa garnison. Tissu PME et ETI commerce de proximite, services aux militaires et familles, agriculture, BTP, restauration. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Valdahon (25). Nous accompagnons TPE et PME : commercants de proximite, prestataires de services lies a la garnison, exploitants agricoles du plateau, artisans BTP et restaurateurs du secteur. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Valdahon (25). Nous accompagnons PME et ETI : commercants de proximite, prestataires de services lies a la garnison, exploitants agricoles du plateau, artisans BTP et restaurateurs du secteur. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Valdahon (25). Nous accompagnons TPE et PME : commercants de proximite, prestataires de services lies a la garnison, exploitants agricoles du plateau, artisans BTP et restaurateurs du secteur. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Valdahon (25). Nous accompagnons PME et ETI : commercants de proximite, prestataires de services lies a la garnison, exploitants agricoles du plateau, artisans BTP et restaurateurs du secteur. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "commerce proximite & services",
   ecosystemFr:
     "Valdahon est un bourg-centre du plateau du Doubs, anime par la presence du camp militaire de Valdahon (25e Regiment du Genie, centre d'entrainement). La garnison genere une economie de services (commerces, restauration, immobilier). L'agriculture (elevage bovin, fromage comte AOP) et l'artisanat completent le tissu economique local.",
@@ -42,8 +42,8 @@ export const VALDAHON_COPY: VilleCopy = {
       en: "Implementation IA a Valdahon : gestion stocks commerce, optimisation exploitations agricoles et fromageries, automatisation devis BTP, agents conversationnels restauration et hotellerie.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Valdahon : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants TPE/PME du plateau du Doubs, gerants commerces et agriculture.",
-      en: "Coaching 1-to-1 a Valdahon : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants TPE/PME du plateau du Doubs, gerants commerces et agriculture.",
+      fr: "Coaching 1-to-1 a Valdahon : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants PME et ETI du plateau du Doubs, gerants commerces et agriculture.",
+      en: "Coaching 1-to-1 a Valdahon : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants PME et ETI du plateau du Doubs, gerants commerces et agriculture.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const VALDAHON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Valdahon ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Valdahon, nous proposons des audits approfondis adaptes aux enjeux commerce, agriculture ou artisanat.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Valdahon, nous proposons des audits approfondis adaptes aux enjeux commerce, agriculture ou artisanat.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles du plateau ?",

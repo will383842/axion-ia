@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const MUTZIG_COPY: VilleCopy = {
   pitchFr:
-    "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu TPE/PME industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu PME et ETI industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu TPE/PME industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu PME et ETI industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : PME et ETI industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : PME et ETI industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
   ecosystemFr:
-    "Mutzig est une commune de la vallée de la Bruche, en bordure du Piémont des Vosges, marquée par l'héritage de la brasserie historique et un tissu industriel agroalimentaire structurant. Tissu TPE/PME industrie, artisanat, commerces de proximité, restauration, services aux entreprises et particuliers.",
+    "Mutzig est une commune de la vallée de la Bruche, en bordure du Piémont des Vosges, marquée par l'héritage de la brasserie historique et un tissu industriel agroalimentaire structurant. Tissu PME et ETI industrie, artisanat, commerces de proximité, restauration, services aux entreprises et particuliers.",
   ecosystemEn:
-    "Mutzig est une commune de la vallée de la Bruche, en bordure du Piémont des Vosges, marquée par l'héritage de la brasserie historique et un tissu industriel agroalimentaire structurant. Tissu TPE/PME industrie, artisanat, commerces de proximité, restauration, services aux entreprises et particuliers.",
+    "Mutzig est une commune de la vallée de la Bruche, en bordure du Piémont des Vosges, marquée par l'héritage de la brasserie historique et un tissu industriel agroalimentaire structurant. Tissu PME et ETI industrie, artisanat, commerces de proximité, restauration, services aux entreprises et particuliers.",
   distancesFr:
     "Strasbourg à 30 min. Molsheim à 5 min. Obernai à 15 min. Autoroute A352 accès à 5 min. Gare TGV de Strasbourg à 35 min. Aéroport Strasbourg-Entzheim à 20 min. Schirmeck à 25 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MUTZIG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Mutzig : diagnostic adapté aux PME et ETI industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Mutzig : diagnostic adapté aux PME et ETI industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mutzig : formats adaptés à l'atelier agroalimentaire, à l'artisan, au commerce, au restaurant, au bureau de services. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const MUTZIG_COPY: VilleCopy = {
       en: "Implémentation IA à Mutzig : automatisation traçabilité agroalimentaire, gestion production, agents conversationnels, gestion commerciale, optimisation des stocks et de la chaîne logistique.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mutzig : sessions dans votre atelier, commerce, restaurant, bureau ou en visio. Industriels agroalimentaires, artisans, commerçants, restaurateurs, gérants TPE/PME de la vallée de la Bruche.",
-      en: "Coaching 1-to-1 à Mutzig : sessions dans votre atelier, commerce, restaurant, bureau ou en visio. Industriels agroalimentaires, artisans, commerçants, restaurateurs, gérants TPE/PME de la vallée de la Bruche.",
+      fr: "Coaching 1-to-1 à Mutzig : sessions dans votre atelier, commerce, restaurant, bureau ou en visio. Industriels agroalimentaires, artisans, commerçants, restaurateurs, gérants PME et ETI de la vallée de la Bruche.",
+      en: "Coaching 1-to-1 à Mutzig : sessions dans votre atelier, commerce, restaurant, bureau ou en visio. Industriels agroalimentaires, artisans, commerçants, restaurateurs, gérants PME et ETI de la vallée de la Bruche.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const MUTZIG_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Mutzig et dans la vallée de la Bruche (Molsheim, Obernai, Schirmeck, Wasselonne). Consultants via A352 ou gares SNCF de Molsheim. Bassin industriel et artisanal du Piémont des Vosges.",
     },
     {
-      q: "Travaillez-vous avec les TPE/PME industrie agroalimentaire ?",
-      a: "Oui, nous accompagnons les TPE/PME industrie agroalimentaire mutzigeoises : traçabilité production, automatisation workflow, gestion qualité, optimisation chaîne logistique, agents conversationnels.",
+      q: "Travaillez-vous avec les PME et ETI industrie agroalimentaire ?",
+      a: "Oui, nous accompagnons les PME et ETI industrie agroalimentaire mutzigeoises : traçabilité production, automatisation workflow, gestion qualité, optimisation chaîne logistique, agents conversationnels.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans de Mutzig ?",
@@ -61,7 +61,7 @@ export const MUTZIG_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Mutzig ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Mutzig ?",

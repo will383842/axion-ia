@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const HERBIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du nord Brière.",
+    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu PME de l'artisanat et du commerce, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du nord Brière.",
   pitchEn:
-    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du nord Brière.",
+    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu PME de l'artisanat et du commerce, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du nord Brière.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
-  seoHook: "TPE & PME Loire-Atlantique",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
+  seoHook: "PME & PME Loire-Atlantique",
   ecosystemFr:
-    "Herbignac est un bourg dynamique au nord du Parc naturel régional de Brière. Agriculture, artisanat, commerces de proximité et tourisme vert. Proximité Guérande (15 km) et La Baule. Tissu TPE artisans, exploitations agricoles, PME services et professions libérales.",
+    "Herbignac est un bourg dynamique au nord du Parc naturel régional de Brière. Agriculture, artisanat, commerces de proximité et tourisme vert. Proximité Guérande (15 km) et La Baule. Tissu PME artisanales, exploitations agricoles, PME services et professions libérales.",
   ecosystemEn:
-    "Herbignac est un bourg dynamique au nord du Parc naturel régional de Brière. Agriculture, artisanat, commerces de proximité et tourisme vert. Proximité Guérande (15 km) et La Baule. Tissu TPE artisans, exploitations agricoles, PME services et professions libérales.",
+    "Herbignac est un bourg dynamique au nord du Parc naturel régional de Brière. Agriculture, artisanat, commerces de proximité et tourisme vert. Proximité Guérande (15 km) et La Baule. Tissu PME artisanales, exploitations agricoles, PME services et professions libérales.",
   distancesFr:
     "Saint-Nazaire à 25 min. Guérande à 15 min. La Baule à 25 min. Nantes centre à 1h10. Gare Nantes TGV à 1h15. Aéroport Nantes-Atlantique à 1h.",
   distancesEn:
     "Saint-Nazaire à 25 min. Guérande à 15 min. La Baule à 25 min. Nantes centre à 1h10. Gare Nantes TGV à 1h15. Aéroport Nantes-Atlantique à 1h.",
   topSectorsNaf: [
     "Agriculture & exploitations",
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "Tourisme vert Brière",
     "Services de proximité",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Herbignac : diagnostic adapté aux TPE artisans, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Herbignac : diagnostic adapté aux TPE artisans, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Herbignac : diagnostic adapté aux PME artisanales, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Herbignac : diagnostic adapté aux PME artisanales, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Herbignac : formats adaptés à l'exploitation agricole, au commerce, à l'hébergement touristique ou au bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const HERBIGNAC_COPY: VilleCopy = {
       en: "Implémentation IA à Herbignac : automatisation gestion exploitation, agents conversationnels tourisme Brière, optimisation stocks, extraction données commerciales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Herbignac : sessions dans votre exploitation, commerce, bureau ou en visio. Dirigeants TPE/PME du nord Brière souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Herbignac : sessions dans votre exploitation, commerce, bureau ou en visio. Dirigeants TPE/PME du nord Brière souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Herbignac : sessions dans votre exploitation, commerce, bureau ou en visio. Dirigeants PME et ETI du nord Brière souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Herbignac : sessions dans votre exploitation, commerce, bureau ou en visio. Dirigeants PME et ETI du nord Brière souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const HERBIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Herbignac  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord Brière.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du nord Brière.",
     },
     {
       q: "Intervenez-vous dans les zones rurales du nord Brière ?",

@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const PLAN_DE_CUQUES_COPY: VilleCopy = {
   pitchFr:
-    "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. TPE artisans, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-est marseillais.",
+    "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. PME artisanales, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-est marseillais.",
   pitchEn:
-    "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. TPE artisans, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-est marseillais.",
+    "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. PME artisanales, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-est marseillais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plan-de-Cuques (13). Nous accompagnons PME de l'artisanat et du commerce, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Plan-de-Cuques (13). Nous accompagnons PME de l'artisanat et du commerce, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit sur place sur mesure, sans engagement.",
   seoHook: "résidentiel & services nord-est Marseille",
   ecosystemFr:
-    "Plan-de-Cuques est une commune résidentielle prisée au nord-est immédiat de Marseille, entre Allauch et les quartiers nord-est. Économie locale de proximité : TPE artisans du bâtiment, commerces de village, professions libérales, PME services et prestataires pour particuliers et entreprises.",
+    "Plan-de-Cuques est une commune résidentielle prisée au nord-est immédiat de Marseille, entre Allauch et les quartiers nord-est. Économie locale de proximité : PME artisanales du bâtiment, commerces de village, professions libérales, PME services et prestataires pour particuliers et entreprises.",
   ecosystemEn:
-    "Plan-de-Cuques est une commune résidentielle prisée au nord-est immédiat de Marseille, entre Allauch et les quartiers nord-est. Économie locale de proximité : TPE artisans du bâtiment, commerces de village, professions libérales, PME services et prestataires pour particuliers et entreprises.",
+    "Plan-de-Cuques est une commune résidentielle prisée au nord-est immédiat de Marseille, entre Allauch et les quartiers nord-est. Économie locale de proximité : PME artisanales du bâtiment, commerces de village, professions libérales, PME services et prestataires pour particuliers et entreprises.",
   distancesFr:
     "Marseille centre à 15 min. Allauch à 5 min. Gare Marseille-Saint-Charles à 20 min. Aix-en-Provence à 30 min. Aéroport Marseille Provence à 35 min. Aubagne à 25 min.",
   distancesEn:
     "Marseille centre à 15 min. Allauch à 5 min. Gare Marseille-Saint-Charles à 20 min. Aix-en-Provence à 30 min. Aéroport Marseille Provence à 35 min. Aubagne à 25 min.",
   topSectorsNaf: [
     "Professions libérales & santé",
-    "TPE artisanat & bâtiment",
+    "PME de l'artisanat & bâtiment",
     "Commerce de proximité",
     "Services à la personne",
     "Immobilier & gestion locative",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, TPE artisans et PME de services du nord-est de Marseille. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, PME artisanales et PME de services du nord-est de Marseille. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Plan-de-Cuques : diagnostic adapté aux professions libérales, PME artisanales et PME de services du nord-est de Marseille. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plan-de-Cuques : formats adaptés au cabinet, commerce de village et bureau. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -60,8 +60,8 @@ export const PLAN_DE_CUQUES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales de Plan-de-Cuques : automatisation gestion cabinet, rédaction assistée, classification dossiers, planning intelligent, facturation automatique.",
     },
     {
-      q: "L'IA est-elle adaptée aux TPE artisans de Plan-de-Cuques ?",
-      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les TPE. Cas pratiques : automatisation devis, gestion planning, facturation, suivi chantiers et relances clients automatiques.",
+      q: "L'IA est-elle adaptée aux PME artisanales de Plan-de-Cuques ?",
+      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les PME. Cas pratiques : automatisation devis, gestion planning, facturation, suivi chantiers et relances clients automatiques.",
     },
     {
       q: "Comment se déroule une mission IA à Plan-de-Cuques ?",

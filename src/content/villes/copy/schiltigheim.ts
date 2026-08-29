@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const SCHILTIGHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Schiltigheim, commune du Bas-Rhin limitrophe nord de Strasbourg (34 708 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Surnommée la « cité des Brasseurs » pour son héritage industriel (Kronenbourg, Fischer, Adelshoffen, Schützenberger), la ville accueille aujourd'hui l'Espace Européen de l'Entreprise et un tissu de services, commerces et activités tertiaires. Notre cabinet code en custom, sans no-code, pour les dirigeants schilikois.",
+    "Axion-IA accompagne les PME et ETI de Schiltigheim, commune du Bas-Rhin limitrophe nord de Strasbourg (34 708 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Surnommée la « cité des Brasseurs » pour son héritage industriel (Kronenbourg, Fischer, Adelshoffen, Schützenberger), la ville accueille aujourd'hui l'Espace Européen de l'Entreprise et un tissu de services, commerces et activités tertiaires. Notre cabinet code en custom, sans no-code, pour les dirigeants schilikois.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Schiltigheim, commune du Bas-Rhin limitrophe nord de Strasbourg (34 708 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Surnommée la « cité des Brasseurs » pour son héritage industriel (Kronenbourg, Fischer, Adelshoffen, Schützenberger), la ville accueille aujourd'hui l'Espace Européen de l'Entreprise et un tissu de services, commerces et activités tertiaires. Notre cabinet code en custom, sans no-code, pour les dirigeants schilikois.",
+    "Axion-IA accompagne les PME et ETI de Schiltigheim, commune du Bas-Rhin limitrophe nord de Strasbourg (34 708 habitants), dans le développement de solutions d'intelligence artificielle codées sur mesure. Surnommée la « cité des Brasseurs » pour son héritage industriel (Kronenbourg, Fischer, Adelshoffen, Schützenberger), la ville accueille aujourd'hui l'Espace Européen de l'Entreprise et un tissu de services, commerces et activités tertiaires. Notre cabinet code en custom, sans no-code, pour les dirigeants schilikois.",
   directAnswerFr:
-    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
+    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les PME, ETI et grands groupes locaux dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les TPE, PME et ETI locales dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
+    "Axion-IA se déplace à Schiltigheim (Bas-Rhin, Grand Est) pour accompagner les PME, ETI et grands groupes locaux dans leurs projets d'intelligence artificielle. Limitrophe nord de Strasbourg, Schiltigheim concentre une économie tertiaire structurée autour de l'Espace Européen de l'Entreprise (96 hectares, environ 500 sociétés et 9 000 emplois), des services, du commerce de gros et de l'industrie agroalimentaire. Nous proposons audits, interventions, implémentations et accompagnements 1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}.",
   seoHook: "services aux entreprises, commerce gros & agroalimentaire",
   ecosystemFr:
     "Schiltigheim, intégrée à l'Eurométropole de Strasbourg, héberge l'Espace Européen de l'Entreprise (EEE), parc d'activités créé en 1994 sur 96 hectares regroupant environ 500 sociétés et 9 000 emplois (services, conseil, BtoB, IT). La ville conserve son identité de « cité des Brasseurs » avec un héritage agroalimentaire historique (Kronenbourg, Fischer, Adelshoffen, Schützenberger, L'Espérance). Elle est traversée par les axes ferroviaires Paris-Strasbourg et Strasbourg-Lauterbourg.",
@@ -33,16 +33,16 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Schiltigheim pour TPE et PME locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Schiltigheim pour PME et ETI locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Schiltigheim pour PME et ETI locales — cartographie des automatisations dans les services BtoB de l'Espace Européen de l'Entreprise, le commerce ou l'agroalimentaire, dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
       en: "Intervention sur site à Schiltigheim pour automatiser tâches administratives, support client et reporting — Formation 4 h dès {{price:intervention-4h|flat}}.",
     },
     implementation: {
-      fr: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès {{price:impl-poc|entry}}.",
-      en: "Implémentation IA à Schiltigheim pour TPE/PME du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès {{price:impl-poc|entry}}.",
+      fr: "Implémentation IA à Schiltigheim pour PME et ETI du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès {{price:impl-poc|entry}}.",
+      en: "Implémentation IA à Schiltigheim pour PME et ETI du tertiaire, du commerce de gros ou de l'agroalimentaire — code custom intégré à vos outils, dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
       fr: "Accompagnement 1-to-1 à Schiltigheim pour dirigeants schilikois — stratégie IA et adoption opérationnelle, dès {{price:intervention-dirigeants|flat}}.",
@@ -87,12 +87,6 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce de lancement",
-            detail:
-              "Pour indépendants, artisans et commerces du Quartier Fischer ou du centre de Schiltigheim : site vitrine ou boutique en ligne mobile-first, fiche produit optimisée, fonctions IA simples (assistant de recherche, génération de descriptifs).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web métier ou e-commerce avancé",
@@ -174,12 +168,6 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase or launch e-commerce site",
-            detail:
-              "For freelancers, craftspeople and shops in the Quartier Fischer or Schiltigheim centre: mobile-first showcase site or online store, optimised product pages, simple AI features (search assistant, description generation).",
-          },
-          {
             sizeLabel: "SME",
             price: "Business web platform or advanced e-commerce",
             detail:
@@ -237,7 +225,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs schilikois Axion-IA accompagne-t-il ?",
-      a: "Nous accompagnons en priorité les TPE et PME de Schiltigheim dans les services aux entreprises (EEE), le commerce de gros, l'industrie agroalimentaire, le conseil et la programmation informatique, secteurs structurants du tissu local.",
+      a: "Nous accompagnons en priorité les PME et ETI de Schiltigheim dans les services aux entreprises (EEE), le commerce de gros, l'industrie agroalimentaire, le conseil et la programmation informatique, secteurs structurants du tissu local.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Schiltigheim ?",

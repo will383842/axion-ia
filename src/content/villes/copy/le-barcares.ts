@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_BARCARES_COPY: VilleCopy = {
   pitchFr:
-    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie son expertise pour toutes les organisations du littoral nord catalan.",
+    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu PME tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie son expertise pour toutes les organisations du littoral nord catalan.",
   pitchEn:
-    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie son expertise pour toutes les organisations du littoral nord catalan.",
+    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu PME tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie son expertise pour toutes les organisations du littoral nord catalan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Barcarès (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques, indépendants et professions libérales du littoral nord catalan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Barcarès (66). Nous accompagnons tous types d'activités : PME tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques, indépendants et professions libérales du littoral nord catalan.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Barcarès (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques, indépendants et professions libérales du littoral nord catalan.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Barcarès (66). Nous accompagnons tous types d'activités : PME tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques, indépendants et professions libérales du littoral nord catalan.",
   seoHook: "tourisme hôtellerie & campings résidences",
   ecosystemFr:
     "Le Barcarès est une station balnéaire du littoral nord catalan, connue pour le Lydia (paquebot échoué devenu restaurant-discothèque). Économie touristique saisonnière : campings, résidences, restauration, nautisme, kitesurf. Étang de Leucate à proximité (sports de glisse).",
@@ -30,8 +30,8 @@ export const LE_BARCARES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA au Barcarès : diagnostic adapté aux PME tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA au Barcarès : diagnostic adapté aux PME tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site au Barcarès : formats adaptés au camping, hôtel, restaurant, école nautique, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
@@ -42,8 +42,8 @@ export const LE_BARCARES_COPY: VilleCopy = {
       en: "Implémentation IA au Barcarès : yield management campings/résidences, chatbots réservation multilingues, prédiction affluence saisonnière, gestion école nautique. Littoral nord catalan.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Barcarès : sessions dans votre établissement, camping, commerce ou en visio. Dirigeants tourisme, hôteliers, restaurateurs, commerçants, gérants TPE/PME barcarésiens.",
-      en: "Coaching 1-to-1 au Barcarès : sessions dans votre établissement, camping, commerce ou en visio. Dirigeants tourisme, hôteliers, restaurateurs, commerçants, gérants TPE/PME barcarésiens.",
+      fr: "Coaching 1-to-1 au Barcarès : sessions dans votre établissement, camping, commerce ou en visio. Dirigeants tourisme, hôteliers, restaurateurs, commerçants, gérants PME et ETI barcarésiens.",
+      en: "Coaching 1-to-1 au Barcarès : sessions dans votre établissement, camping, commerce ou en visio. Dirigeants tourisme, hôteliers, restaurateurs, commerçants, gérants PME et ETI barcarésiens.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LE_BARCARES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les écoles nautiques et activités kitesurf du Barcarès : gestion planning cours, chatbots réservation, prédiction météo/conditions, marketing personnalisé.",
     },
     {
-      q: "Quels services pour les TPE et commerces saisonniers ?",
-      a: "Pour les TPE et commerces saisonniers au Barcarès, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence, gestion stocks, agents IA multilingues.",
+      q: "Quels services pour les PME et commerces saisonniers ?",
+      a: "Pour les PME et commerces saisonniers au Barcarès, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : prévision affluence, gestion stocks, agents IA multilingues.",
     },
     {
       q: "Comment se déroule une mission au Barcarès ?",

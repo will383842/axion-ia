@@ -193,11 +193,11 @@ export interface VilleSpecificiteLocale {
   readonly verifiedOn: string;
 }
 
-// ─── V3 (2026-05-18 ~21h) — multi-taille TPE/PME/ETI/GE ─────────────────
+// ─── V3 (2026-05-18 ~21h) — multi-taille PME/ETI/GE ─────────────────
 
 /**
  * Entreprise labellisée EPV (Entreprise du Patrimoine Vivant), label État
- * pour savoir-faire artisanal d'excellence. Cible : TPE/artisans/PME.
+ * pour savoir-faire artisanal d'excellence. Cible : PME industrielles et artisanales.
  * Source canonique : https://www.economie.gouv.fr/entreprises/label-epv
  * Annuaire officiel : https://www.epv.org/annuaire
  */
@@ -348,8 +348,8 @@ export interface VilleEconomicData {
   /** Vignobles AOC à proximité ≤ 50 km (cas pertinent). */
   readonly vignoblesProches?: ReadonlyArray<VilleVignobleProche>;
 
-  // ── Couche 3 (V3 2026-05-18 ~21h — multi-taille TPE/PME/ETI/GE) ─────
-  /** Labels EPV (Entreprises du Patrimoine Vivant) — cible TPE/artisans. */
+  // ── Couche 3 (V3 2026-05-18 ~21h — multi-taille PME/ETI/GE) ─────
+  /** Labels EPV (Entreprises du Patrimoine Vivant) — cible PME artisanales. */
   readonly labelsEpvEtArtisanat?: ReadonlyArray<VilleLabelEpv>;
   /** Zones d'activité, parcs techno, technopôles — cible PME/ETI. */
   readonly zonesActivitesParcs?: ReadonlyArray<VilleZoneActivite>;

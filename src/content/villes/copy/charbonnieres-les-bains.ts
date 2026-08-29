@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, PME du BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, PME du BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, PME du BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, PME du BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tourisme thermal & tertiaires ouest",
   ecosystemFr:
-    "Charbonnières-les-Bains est intégrée à la Métropole de Lyon, en banlieue ouest. Station thermale historique notable. Abrite le casino Le Lyon Vert (l'un des casinos majeurs de l'agglomération lyonnaise). Tissu PME tertiaires, tourisme thermal/casino, professions libérales, TPE artisanat BTP, commerces.",
+    "Charbonnières-les-Bains est intégrée à la Métropole de Lyon, en banlieue ouest. Station thermale historique notable. Abrite le casino Le Lyon Vert (l'un des casinos majeurs de l'agglomération lyonnaise). Tissu PME tertiaires, tourisme thermal/casino, professions libérales, PME du BTP, commerces.",
   ecosystemEn:
-    "Charbonnières-les-Bains est intégrée à la Métropole de Lyon, en banlieue ouest. Station thermale historique notable. Abrite le casino Le Lyon Vert (l'un des casinos majeurs de l'agglomération lyonnaise). Tissu PME tertiaires, tourisme thermal/casino, professions libérales, TPE artisanat BTP, commerces.",
+    "Charbonnières-les-Bains est intégrée à la Métropole de Lyon, en banlieue ouest. Station thermale historique notable. Abrite le casino Le Lyon Vert (l'un des casinos majeurs de l'agglomération lyonnaise). Tissu PME tertiaires, tourisme thermal/casino, professions libérales, PME du BTP, commerces.",
   distancesFr:
     "Lyon centre à 15 min. Aéroport Lyon-Saint-Exupéry à 40 min. Écully à 5 min. Dardilly à 5 min. Tassin-la-Demi-Lune à 5 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
     "Tourisme thermal & casino Le Lyon Vert",
     "PME tertiaires ouest lyonnais",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Charbonnières-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, PME tertiaires, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Charbonnières-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, PME tertiaires, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Charbonnières-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, PME tertiaires, professions libérales, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Charbonnières-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, PME tertiaires, professions libérales, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Charbonnières-les-Bains : formats adaptés à l'hôtel thermal, casino, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
       en: "Implémentation IA à Charbonnières-les-Bains : agents conversationnels visiteurs casino/thermes multilingue, automatisation réservations, classification feedback, CRM augmentés.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Charbonnières-les-Bains : sessions dans votre hôtel, casino, bureau ou en visio. Acteurs tourisme thermal, dirigeants casino, professions libérales, artisans, gérants TPE/PME.",
-      en: "Coaching 1-to-1 à Charbonnières-les-Bains : sessions dans votre hôtel, casino, bureau ou en visio. Acteurs tourisme thermal, dirigeants casino, professions libérales, artisans, gérants TPE/PME.",
+      fr: "Coaching 1-to-1 à Charbonnières-les-Bains : sessions dans votre hôtel, casino, bureau ou en visio. Acteurs tourisme thermal, dirigeants casino, professions libérales, artisans, gérants PME et ETI.",
+      en: "Coaching 1-to-1 à Charbonnières-les-Bains : sessions dans votre hôtel, casino, bureau ou en visio. Acteurs tourisme thermal, dirigeants casino, professions libérales, artisans, gérants PME et ETI.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
       a: "Oui, agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

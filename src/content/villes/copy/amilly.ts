@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AMILLY_COPY: VilleCopy = {
   pitchFr:
-    "Amilly (45), commune de l'agglomeration montargoise dans le Loiret, accueille d'importantes zones d'activites commerciales et artisanales du Gatinais. Tissu de TPE et PME du commerce, de la logistique, des services aux entreprises, de l'artisanat et de l'industrie legere. Axion-IA y intervient pour tous types d'activites.",
+    "Amilly (45), commune de l'agglomeration montargoise dans le Loiret, accueille d'importantes zones d'activites commerciales et artisanales du Gatinais. Tissu de PME et ETI du commerce, de la logistique, des services aux entreprises, de l'artisanat et de l'industrie legere. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Amilly (45), commune de l'agglomeration montargoise dans le Loiret, accueille d'importantes zones d'activites commerciales et artisanales du Gatinais. Tissu de TPE et PME du commerce, de la logistique, des services aux entreprises, de l'artisanat et de l'industrie legere. Axion-IA y intervient pour tous types d'activites.",
+    "Amilly (45), commune de l'agglomeration montargoise dans le Loiret, accueille d'importantes zones d'activites commerciales et artisanales du Gatinais. Tissu de PME et ETI du commerce, de la logistique, des services aux entreprises, de l'artisanat et de l'industrie legere. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Amilly (45). Nous accompagnons PME et ETI : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Amilly (45). Nous accompagnons TPE et PME : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Amilly (45). Nous accompagnons PME et ETI : commercants, logisticiens, artisans, PME de services et industriels de l'agglomeration montargoise. Audit sur place des {{price:audit-flash|flat}}.",
   ecosystemFr:
     "Amilly est une commune dynamique de l'agglomeration montargoise, dotee de zones d'activites commerciales et artisanales structurantes pour le Gatinais. Son economie repose sur le commerce, la logistique liee au carrefour A77/D943, les services aux entreprises, l'artisanat du batiment et l'industrie legere. Communes voisines : Montargis, Chalette-sur-Loing, Villemandeur, Paucourt, Treilles-en-Gatinais.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const AMILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Amilly : diagnostic adapte aux TPE commerces, PME logistiques, artisans et entreprises de services de l'agglomeration montargoise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Amilly : diagnostic adapte aux TPE commerces, PME logistiques, artisans et entreprises de services de l'agglomeration montargoise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Amilly : diagnostic adapte aux PME du commerce, PME logistiques, artisans et entreprises de services de l'agglomeration montargoise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Amilly : diagnostic adapte aux PME du commerce, PME logistiques, artisans et entreprises de services de l'agglomeration montargoise. ROI chiffre, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Amilly : formats adaptes aux zones d'activites, entrepots logistiques, commerces et PME de services du bassin montargois.",
       en: "Interventions IA sur site a Amilly : formats adaptes aux zones d'activites, entrepots logistiques, commerces et PME de services du bassin montargois.",
     },
     implementation: {
-      fr: "Implementation IA a Amilly : automatisation gestion stocks et logistique, optimisation chaines d'approvisionnement, CRM augmente, outils de pilotage pour TPE et PME de l'agglo montargoise.",
-      en: "Implementation IA a Amilly : automatisation gestion stocks et logistique, optimisation chaines d'approvisionnement, CRM augmente, outils de pilotage pour TPE et PME de l'agglo montargoise.",
+      fr: "Implementation IA a Amilly : automatisation gestion stocks et logistique, optimisation chaines d'approvisionnement, CRM augmente, outils de pilotage pour PME et ETI de l'agglo montargoise.",
+      en: "Implementation IA a Amilly : automatisation gestion stocks et logistique, optimisation chaines d'approvisionnement, CRM augmente, outils de pilotage pour PME et ETI de l'agglo montargoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Amilly : sessions dans vos locaux en zone d'activites ou en visio. Dirigeants TPE, gerants commerces, responsables logistique et PME de services du bassin montargois.",
-      en: "Coaching 1-to-1 a Amilly : sessions dans vos locaux en zone d'activites ou en visio. Dirigeants TPE, gerants commerces, responsables logistique et PME de services du bassin montargois.",
+      fr: "Coaching 1-to-1 a Amilly : sessions dans vos locaux en zone d'activites ou en visio. Dirigeants PME, gerants commerces, responsables logistique et PME de services du bassin montargois.",
+      en: "Coaching 1-to-1 a Amilly : sessions dans vos locaux en zone d'activites ou en visio. Dirigeants PME, gerants commerces, responsables logistique et PME de services du bassin montargois.",
     },
   },
   faqGeolocalisee: [
@@ -60,12 +60,12 @@ export const AMILLY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistiques et de transport d'Amilly : optimisation tournees, gestion de stocks predictive, automatisation preparation commandes, prevision de la demande et pilotage en temps reel.",
     },
     {
-      q: "Proposez-vous des formations IA pour les TPE a Amilly ?",
+      q: "Proposez-vous des formations IA pour les PME a Amilly ?",
       a: "Oui, coaching 1-to-1 pour dirigeants et cadres a Amilly a partir de {{price:intervention-dirigeants|flat}}. Sessions dans vos locaux en zone d'activites ou en visio, adaptees a votre secteur d'activite.",
     },
     {
       q: "L'IA peut-elle aider les commerces d'Amilly ?",
-      a: "Oui, l'IA transforme le commerce : gestion de stocks predictive, personnalisation offres clients, automatisation comptabilite, chatbots service client et analyse des ventes. Solutions adaptees aux TPE et PME du Gatinais.",
+      a: "Oui, l'IA transforme le commerce : gestion de stocks predictive, personnalisation offres clients, automatisation comptabilite, chatbots service client et analyse des ventes. Solutions adaptees aux PME et ETI du Gatinais.",
     },
   ],
 };

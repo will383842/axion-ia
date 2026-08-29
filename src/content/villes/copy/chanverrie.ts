@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHANVERRIE_COPY: VilleCopy = {
   pitchFr:
-    "Chanverrie (85), commune nouvelle du bocage vendéen issue de la fusion de Saint-Mesmin et La Pommeraie-sur-Sèvre, fédère un bassin économique rural-industriel où coexistent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Chanverrie (85), commune nouvelle du bocage vendéen issue de la fusion de Saint-Mesmin et La Pommeraie-sur-Sèvre, fédère un bassin économique rural-industriel où coexistent PME artisanales, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Chanverrie (85), commune nouvelle du bocage vendéen issue de la fusion de Saint-Mesmin et La Pommeraie-sur-Sèvre, fédère un bassin économique rural-industriel où coexistent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Chanverrie (85), commune nouvelle du bocage vendéen issue de la fusion de Saint-Mesmin et La Pommeraie-sur-Sèvre, fédère un bassin économique rural-industriel où coexistent PME artisanales, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chanverrie (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, mécanique, transformation), commerces, professions libérales et prestataires du haut bocage vendéen.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chanverrie (85). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles (volaille, mécanique, transformation), commerces, professions libérales et prestataires du haut bocage vendéen.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chanverrie (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, mécanique, transformation), commerces, professions libérales et prestataires du haut bocage vendéen.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chanverrie (85). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles (volaille, mécanique, transformation), commerces, professions libérales et prestataires du haut bocage vendéen.",
   seoHook: "agroalimentaire & industrie mécanique",
   ecosystemFr:
     "Chanverrie est une commune nouvelle créée en 2016 dans le haut bocage vendéen, à l'est de Pouzauges. Bassin économique structuré autour de l'agroalimentaire, de l'industrie mécanique, de l'artisanat BTP, des commerces de proximité et d'un tissu PME familial typique du modèle économique vendéen.",
@@ -30,8 +30,8 @@ export const CHANVERRIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chanverrie : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chanverrie : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chanverrie : diagnostic adapté aux PME artisanales, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chanverrie : diagnostic adapté aux PME artisanales, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chanverrie : formations adaptées aux PME agroalimentaires, industries mécaniques, artisans BTP et commerces du haut bocage. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const CHANVERRIE_COPY: VilleCopy = {
       en: "Implémentation IA à Chanverrie : vision industrielle qualité agroalimentaire, maintenance prédictive mécanique, optimisation logistique, agents conversationnels commerces et outils IA artisanat BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chanverrie : sessions dans vos locaux dans le bocage ou en visio. Dirigeants TPE/PME agroalimentaires, industries mécaniques, artisans, commerçants et prestataires.",
-      en: "Coaching 1-to-1 à Chanverrie : sessions dans vos locaux dans le bocage ou en visio. Dirigeants TPE/PME agroalimentaires, industries mécaniques, artisans, commerçants et prestataires.",
+      fr: "Coaching 1-to-1 à Chanverrie : sessions dans vos locaux dans le bocage ou en visio. Dirigeants PME et ETI agroalimentaires, industries mécaniques, artisans, commerçants et prestataires.",
+      en: "Coaching 1-to-1 à Chanverrie : sessions dans vos locaux dans le bocage ou en visio. Dirigeants PME et ETI agroalimentaires, industries mécaniques, artisans, commerçants et prestataires.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const CHANVERRIE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires (volaille, transformation, produits laitiers) du bocage vendéen sur leurs cas IA : vision contrôle qualité, traçabilité, optimisation chaînes de production, prévision demande, maintenance prédictive.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Chanverrie ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du haut bocage. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Chanverrie ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME industrielles et commerçants du haut bocage. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les industries mécaniques vendéennes ?",

@@ -1,28 +1,28 @@
 // AUTO-GENERATED 2026-05-27 — T3 batch complement Claude Code (Will).
-// Saint-Sébastien-sur-Loire (44, Loire-Atlantique) — banlieue sud Nantes, résidentiel, TPE/PME locales.
+// Saint-Sébastien-sur-Loire (44, Loire-Atlantique) — banlieue sud Nantes, résidentiel, PME et ETI locales.
 
 import type { VilleCopy } from "./types";
 
 export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Sébastien-sur-Loire, ville de Loire-Atlantique (44) en banlieue sud de Nantes, mêle tissu résidentiel familial et TPE/PME locales (artisanat, commerces, services). Axion-IA y intervient pour les TPE, indépendants et PME tertiaires du bassin nantais sud Loire.",
+    "Saint-Sébastien-sur-Loire, ville de Loire-Atlantique (44) en banlieue sud de Nantes, mêle tissu résidentiel familial et PME et ETI locales (artisanat, commerces, services). Axion-IA y intervient pour les PME, indépendants et PME tertiaires du bassin nantais sud Loire.",
   pitchEn:
-    "Saint-Sébastien-sur-Loire, ville de Loire-Atlantique (44) en banlieue sud de Nantes, mêle tissu résidentiel familial et TPE/PME locales (artisanat, commerces, services). Axion-IA y intervient pour les TPE, indépendants et PME tertiaires du bassin nantais sud Loire.",
+    "Saint-Sébastien-sur-Loire, ville de Loire-Atlantique (44) en banlieue sud de Nantes, mêle tissu résidentiel familial et PME et ETI locales (artisanat, commerces, services). Axion-IA y intervient pour les PME, indépendants et PME tertiaires du bassin nantais sud Loire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les PME artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les TPE artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Sébastien-sur-Loire (44). Nous accompagnons les PME artisanales, indépendants, PME tertiaires sébastiennaises (cabinets, commerces, services aux entreprises) et structures du bassin sud Nantes sur leurs cas IA opérationnels.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu TPE artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Proximité Nantes centre (10 min), aéroport Nantes-Atlantique (15 min).",
+    "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu PME artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Proximité Nantes centre (10 min), aéroport Nantes-Atlantique (15 min).",
   ecosystemEn:
-    "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu TPE artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Proximité Nantes centre (10 min), aéroport Nantes-Atlantique (15 min).",
+    "Saint-Sébastien-sur-Loire s'intègre au sud de Nantes Métropole (650 000 habitants), un des écosystèmes économiques les plus dynamiques de l'ouest. Tissu PME artisanales, PME tertiaires familiales, commerces de proximité, professions libérales. Proximité Nantes centre (10 min), aéroport Nantes-Atlantique (15 min).",
   distancesFr:
     "Tramway ligne 3 vers Nantes centre (15 min). Aéroport Nantes-Atlantique 15 min. Gare Nantes (TGV Paris 2h) à 10 min. Axe N249 vers Cholet et A83 vers Vendée.",
   distancesEn:
     "Tramway ligne 3 vers Nantes centre (15 min). Aéroport Nantes-Atlantique 15 min. Gare Nantes (TGV Paris 2h) à 10 min. Axe N249 vers Cholet et A83 vers Vendée.",
   topSectorsNaf: [
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Commerce de détail & proximité",
     "PME services aux entreprises",
     "Professions libérales (santé, conseil)",
@@ -30,30 +30,30 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Sébastien : diagnostic adapté aux TPE artisanales et PME tertiaires sud-Nantes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux petites structures et indépendants.",
-      en: "Audit IA à Saint-Sébastien : diagnostic adapté aux TPE artisanales et PME tertiaires sud-Nantes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux petites structures et indépendants.",
+      fr: "Audit IA à Saint-Sébastien : diagnostic adapté aux PME artisanales et PME tertiaires sud-Nantes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux PME et indépendants.",
+      en: "Audit IA à Saint-Sébastien : diagnostic adapté aux PME artisanales et PME tertiaires sud-Nantes. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux PME et indépendants.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Sébastien : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Sébastien : formats courts adaptés TPE/PME. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Sébastien : formats courts adaptés PME et ETI. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés métier.",
+      en: "Interventions IA sur site à Saint-Sébastien : formats courts adaptés PME et ETI. Demi-journée à 2 jours, vos équipes (commerciaux, assistants, gérants) repartent avec outils IA configurés métier.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Sébastien : agents conversationnels, automatisation devis/facturation, classification documents, CRM augmentés. Adapté aux PME tertiaires et cabinets professionnels Nantes Métropole.",
       en: "Implémentation IA à Saint-Sébastien : agents conversationnels, automatisation devis/facturation, classification documents, CRM augmentés. Adapté aux PME tertiaires et cabinets professionnels Nantes Métropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Sébastien : sessions confidentielles dans vos bureaux ou en visio. Artisans, indépendants, gérants TPE/PME nantaises souhaitant intégrer l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Saint-Sébastien : sessions confidentielles dans vos bureaux ou en visio. Artisans, indépendants, gérants TPE/PME nantaises souhaitant intégrer l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Saint-Sébastien : sessions confidentielles dans vos bureaux ou en visio. Artisans, indépendants, gérants PME et ETI nantaises souhaitant intégrer l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Saint-Sébastien : sessions confidentielles dans vos bureaux ou en visio. Artisans, indépendants, gérants PME et ETI nantaises souhaitant intégrer l'IA dans leur activité.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Saint-Sébastien-sur-Loire (44), 3e ville de Nantes Métropole au sud de la Loire. Le tissu local est avant tout fait de TPE et de petites PME : commerces de la Zone Commerciale La Jaunaie (autour de l'hypermarché Auchan, avec Darty, Norauto, Action, Go Sport, Sephora, Micromania, Courir), services tertiaires de la Z.A. des Gripôts (intérim, ressources humaines, comptabilité, études acoustiques, immobilier, informatique) et acteurs numériques comme l'éditeur Code Lutin avenue Jules Verne. Nous y livrons des sites vitrines rapides, des boutiques e-commerce multi-CMS et des applications métier sur mesure, avec recherche sémantique, chatbot RAG et agents conversationnels — code propre, UX/UI et mobile soignés, hébergement en Union européenne, conformité RGPD, sans verrou éditeur.",
+        hero: "Axion-IA conçoit des sites web et plateformes SaaS augmentés par l'IA pour les entreprises de Saint-Sébastien-sur-Loire (44), 3e ville de Nantes Métropole au sud de la Loire. Le tissu local est avant tout fait de PME et de petites PME : commerces de la Zone Commerciale La Jaunaie (autour de l'hypermarché Auchan, avec Darty, Norauto, Action, Go Sport, Sephora, Micromania, Courir), services tertiaires de la Z.A. des Gripôts (intérim, ressources humaines, comptabilité, études acoustiques, immobilier, informatique) et acteurs numériques comme l'éditeur Code Lutin avenue Jules Verne. Nous y livrons des sites vitrines rapides, des boutiques e-commerce multi-CMS et des applications métier sur mesure, avec recherche sémantique, chatbot RAG et agents conversationnels — code propre, UX/UI et mobile soignés, hébergement en Union européenne, conformité RGPD, sans verrou éditeur.",
         whyHere: [
           "Le commerce de détail domine localement : la Zone Commerciale La Jaunaie (17 ha, environ 89 enseignes autour de l'hypermarché Auchan de la rue Pierre-Mendès-France) et les 5 pôles commerciaux de proximité ont besoin de sites e-commerce et de click-and-collect connectés à leur stock — nous travaillons sur Shopify, WooCommerce, PrestaShop ou en headless selon l'enseigne.",
           "Les services tertiaires de la Z.A. des Gripôts (agences d'intérim, cabinets RH et comptables, immobilier, études acoustiques, prestataires informatiques) sont des candidats directs aux portails clients, à l'automatisation devis/dossiers et aux agents conversationnels — exactement le type de plateformes SaaS que nous concevons.",
-          "Le tissu sébastiennais est très majoritairement composé de TPE de 1 à 9 salariés : nous calibrons des sites légers et autonomes, faciles à mettre à jour sans agence captive, là où une usine à gabarits générique ne tiendrait pas la charge éditoriale d'une petite équipe.",
+          "Le tissu sébastiennais est très majoritairement composé de PME de 1 à 9 salariés : nous calibrons des sites légers et autonomes, faciles à mettre à jour sans agence captive, là où une usine à gabarits générique ne tiendrait pas la charge éditoriale d'une petite équipe.",
           "Saint-Sébastien dispose déjà de compétences numériques de proximité (éditeur logiciel Code Lutin avenue Jules Verne, prestataires informatiques type VFLIT) : nous nous y intégrons sans réinventer la roue, en complément IA plutôt qu'en remplacement, avec passation de code à vos équipes ou à votre prestataire local.",
         ],
         methodology: [
@@ -84,12 +84,6 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou petite boutique IA",
-            detail:
-              "Pour les artisans, commerçants de proximité et indépendants sébastiennais : site vitrine rapide ou boutique e-commerce d'entrée de gamme (Shopify, WooCommerce) avec chatbot de réponse aux questions courantes et fiches produits assistées par IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier",
@@ -171,12 +165,6 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or small AI store",
-            detail:
-              "For Saint-Sébastien tradespeople, neighbourhood retailers and freelancers: a fast showcase site or entry-level e-commerce store (Shopify, WooCommerce) with a chatbot answering common questions and AI-assisted product sheets.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or business portal",
             detail:
@@ -229,8 +217,8 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Sébastien-sur-Loire et toute Nantes Métropole (Nantes, Rezé, Vertou, Basse-Goulaine, Orvault, Saint-Herblain). Couverture complète Loire-Atlantique et accès TGV Paris (2h).",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans sébastiennaises ?",
-      a: "Oui, nous accompagnons les TPE artisanales et indépendants à Saint-Sébastien sur des cas IA accessibles : automatisation devis/factures, agents IA pour relation client, planification interventions. Audit sur place {{price:audit-flash|flat}} adapté aux artisans et petits commerces.",
+      q: "Accompagnez-vous les PME et artisans sébastiennaises ?",
+      a: "Oui, nous accompagnons les PME artisanales et indépendants à Saint-Sébastien sur des cas IA accessibles : automatisation devis/factures, agents IA pour relation client, planification interventions. Audit sur place {{price:audit-flash|flat}} adapté aux artisans et petits commerces.",
     },
     {
       q: "Quels services pour les PME nantaises ?",
@@ -238,7 +226,7 @@ export const SAINT_SEBASTIEN_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Saint-Sébastien. Pour les TPE/PME, le forfait Sur place reste accessible.",
+      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Saint-Sébastien. Pour les PME et ETI, le forfait Sur place reste accessible.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et cabinets ?",

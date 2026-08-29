@@ -6,14 +6,14 @@ import type { VilleCopy } from "./types";
 
 export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "Les Pavillons-sous-Bois (93), commune de 25 804 habitants (2023) située à 10 km au nord-est de Paris en Seine-Saint-Denis. Tissu de TPE commerçants et artisans (commerce 33,5 %, construction 17 %), PME services. Zone d'activité La Poudrette (55+ entreprises). Desserte tramway T4 (deux arrêts) et canal de l'Ourcq. Axion-IA accompagne TPE, PME et professions libérales locales sur leurs projets IA.",
+    "Les Pavillons-sous-Bois (93), commune de 25 804 habitants (2023) située à 10 km au nord-est de Paris en Seine-Saint-Denis. Tissu de PME du commerce et artisans (commerce 33,5 %, construction 17 %), PME services. Zone d'activité La Poudrette (55+ entreprises). Desserte tramway T4 (deux arrêts) et canal de l'Ourcq. Axion-IA accompagne PME, ETI et professions libérales locales sur leurs projets IA.",
   pitchEn:
-    "Les Pavillons-sous-Bois (93), commune de 25 804 habitants (2023) située à 10 km au nord-est de Paris en Seine-Saint-Denis. Tissu de TPE commerçants et artisans (commerce 33,5 %, construction 17 %), PME services. Zone d'activité La Poudrette (55+ entreprises). Desserte tramway T4 (deux arrêts) et canal de l'Ourcq. Axion-IA accompagne TPE, PME et professions libérales locales sur leurs projets IA.",
+    "Les Pavillons-sous-Bois (93), commune de 25 804 habitants (2023) située à 10 km au nord-est de Paris en Seine-Saint-Denis. Tissu de PME du commerce et artisans (commerce 33,5 %, construction 17 %), PME services. Zone d'activité La Poudrette (55+ entreprises). Desserte tramway T4 (deux arrêts) et canal de l'Ourcq. Axion-IA accompagne PME, ETI et professions libérales locales sur leurs projets IA.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Pavillons-sous-Bois (93). Nous accompagnons en priorité les TPE (commerces de proximité, artisans BTP, professions libérales) puis les PME (zone d'activité La Poudrette, services aux entreprises), avec des cas d'usage IA concrets (devis, relation client, automatisation), des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent en tramway T4 ou voiture depuis Paris.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Pavillons-sous-Bois (93). Nous accompagnons en priorité les PME (commerces de proximité, artisans BTP, professions libérales) puis les PME (zone d'activité La Poudrette, services aux entreprises), avec des cas d'usage IA concrets (devis, relation client, automatisation), des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent en tramway T4 ou voiture depuis Paris.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Pavillons-sous-Bois (93). Nous accompagnons en priorité les TPE (commerces de proximité, artisans BTP, professions libérales) puis les PME (zone d'activité La Poudrette, services aux entreprises), avec des cas d'usage IA concrets (devis, relation client, automatisation), des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent en tramway T4 ou voiture depuis Paris.",
-  seoHook: "TPE commerce, artisans BTP & zone La Poudrette",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Pavillons-sous-Bois (93). Nous accompagnons en priorité les PME (commerces de proximité, artisans BTP, professions libérales) puis les PME (zone d'activité La Poudrette, services aux entreprises), avec des cas d'usage IA concrets (devis, relation client, automatisation), des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent en tramway T4 ou voiture depuis Paris.",
+  seoHook: "PME du commerce, artisans BTP & zone La Poudrette",
   ecosystemFr:
     "Les Pavillons-sous-Bois forment une commune résidentielle et commerçante de Seine-Saint-Denis, intégrée à la Métropole du Grand Paris. Le tissu économique est dominé par le commerce de détail (33,5 % des établissements) et la construction (17 %), bien au-dessus de la moyenne départementale. La zone d'activité La Poudrette concentre plus de 55 entreprises (artisanat, logistique légère, services). Le canal de l'Ourcq longe la commune, et le tramway T4 (arrêts Les Pavillons-sous-Bois et Gargan) connecte Bondy à Aulnay-sous-Bois.",
   ecosystemEn:
@@ -31,8 +31,8 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Pavillons-sous-Bois : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME de la zone La Poudrette. Cartographie des processus, identification des cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA aux Pavillons-sous-Bois : diagnostic 2 jours pour TPE commerçants, artisans BTP, professions libérales et PME de la zone La Poudrette. Cartographie des processus, identification des cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA aux Pavillons-sous-Bois : diagnostic 2 jours pour PME du commerce, artisans BTP, professions libérales et PME de la zone La Poudrette. Cartographie des processus, identification des cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA aux Pavillons-sous-Bois : diagnostic 2 jours pour PME du commerce, artisans BTP, professions libérales et PME de la zone La Poudrette. Cartographie des processus, identification des cas d'usage IA prioritaires, ROI chiffré. Audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Pavillons-sous-Bois : ateliers adaptés au commerce de proximité, à l'artisan du BTP, au cabinet libéral ou à la PME de zone d'activité. Équipes formées et autonomes sur leurs outils IA métier (ChatGPT, Claude, agents internes).",
@@ -43,14 +43,14 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
       en: "Implémentation IA aux Pavillons-sous-Bois : automatisation des devis pour artisans BTP, chatbot client pour commerces, classification documentaire pour PME, agents IA prise de rendez-vous pour professions libérales. Code custom RGPD, pas de no-code.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 aux Pavillons-sous-Bois : sessions individuelles sur site ou en visio pour gérants TPE, artisans, dirigeants PME. Prise en main concrète des outils IA sur leurs vrais dossiers métier.",
-      en: "Coaching 1-to-1 aux Pavillons-sous-Bois : sessions individuelles sur site ou en visio pour gérants TPE, artisans, dirigeants PME. Prise en main concrète des outils IA sur leurs vrais dossiers métier.",
+      fr: "Coaching 1-to-1 aux Pavillons-sous-Bois : sessions individuelles sur site ou en visio pour gérants PME, artisans, dirigeants PME. Prise en main concrète des outils IA sur leurs vrais dossiers métier.",
+      en: "Coaching 1-to-1 aux Pavillons-sous-Bois : sessions individuelles sur site ou en visio pour gérants PME, artisans, dirigeants PME. Prise en main concrète des outils IA sur leurs vrais dossiers métier.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente aux Pavillons-sous-Bois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle et commerçante de Seine-Saint-Denis de 25 804 habitants, à 10 km au nord-est de Paris, où le tissu est fait de TPE du commerce de détail (33,5 % des établissements), d'artisans du BTP (17 %), de PME de services et de logistique de la Z.I. de la Poudrette. Des marchés forains animent chaque semaine les quartiers Chanzy, la Basoche et les Coquetiers : une clientèle de proximité qu'un bon site capte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Pavillons-sous-Bois, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Pavillons-sous-Bois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle et commerçante de Seine-Saint-Denis de 25 804 habitants, à 10 km au nord-est de Paris, où le tissu est fait de PME du commerce de détail (33,5 % des établissements), d'artisans du BTP (17 %), de PME de services et de logistique de la Z.I. de la Poudrette. Des marchés forains animent chaque semaine les quartiers Chanzy, la Basoche et les Coquetiers : une clientèle de proximité qu'un bon site capte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Pavillons-sous-Bois, itérations à distance.",
         whyHere: [
           "Commune où le commerce de détail pèse 33,5 % des établissements, bien au-dessus de la moyenne départementale, animée par les marchés forains des quartiers Chanzy, la Basoche et les Coquetiers (mardi à dimanche) : on construit des vitrines e-commerce multi-CMS et des sites de proximité (click-and-collect, catalogue, prise de rendez-vous) qui font venir le client du quartier comme celui qui passe en tramway T4.",
           "Forte densité d'artisans du BTP (17 % du tissu local) gravitant autour de la Z.I. de la Poudrette : on greffe l'IA sur leur quotidien — génération et suivi de devis, formulaire de chantier intelligent, relance automatisée, chatbot de qualification — sans imposer une refonte lourde ni un nouvel ERP, en branchant l'outil sur leur gestion existante.",
@@ -85,12 +85,6 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis, génération de fiches produit) sur le site d'un commerçant des marchés Chanzy/les Coquetiers, d'un restaurateur ou d'un artisan BTP, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -136,7 +130,7 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (remis à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas de régie. Mise en ligne sans downtime quand on augmente un site existant, côté centre-ville comme Z.I. de la Poudrette. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé, solution transférable à tout prestataire local d'Île-de-France ou reprise en interne par vos équipes, documentation et passation incluses.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente aux Pavillons-sous-Bois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle et commerçante de Seine-Saint-Denis de 25 804 habitants, à 10 km au nord-est de Paris, où le tissu est fait de TPE du commerce de détail (33,5 % des établissements), d'artisans du BTP (17 %), de PME de services et de logistique de la Z.I. de la Poudrette. Des marchés forains animent chaque semaine les quartiers Chanzy, la Basoche et les Coquetiers : une clientèle de proximité qu'un bon site capte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Pavillons-sous-Bois, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente aux Pavillons-sous-Bois des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle et commerçante de Seine-Saint-Denis de 25 804 habitants, à 10 km au nord-est de Paris, où le tissu est fait de PME du commerce de détail (33,5 % des établissements), d'artisans du BTP (17 %), de PME de services et de logistique de la Z.I. de la Poudrette. Des marchés forains animent chaque semaine les quartiers Chanzy, la Basoche et les Coquetiers : une clientèle de proximité qu'un bon site capte. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel aux Pavillons-sous-Bois, itérations à distance.",
         whyHere: [
           "Commune où le commerce de détail pèse 33,5 % des établissements, bien au-dessus de la moyenne départementale, animée par les marchés forains des quartiers Chanzy, la Basoche et les Coquetiers (mardi à dimanche) : on construit des vitrines e-commerce multi-CMS et des sites de proximité (click-and-collect, catalogue, prise de rendez-vous) qui font venir le client du quartier comme celui qui passe en tramway T4.",
           "Forte densité d'artisans du BTP (17 % du tissu local) gravitant autour de la Z.I. de la Poudrette : on greffe l'IA sur leur quotidien — génération et suivi de devis, formulaire de chantier intelligent, relance automatisée, chatbot de qualification — sans imposer une refonte lourde ni un nouvel ERP, en branchant l'outil sur leur gestion existante.",
@@ -171,12 +165,6 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, automatisation de devis, génération de fiches produit) sur le site d'un commerçant des marchés Chanzy/les Coquetiers, d'un restaurateur ou d'un artisan BTP, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -238,12 +226,12 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
       a: "Audit sur place : 2 jours ouvrés. Intervention sur site : sous 2 semaines. Implémentation custom (chatbot, automatisation devis, agents IA) : 4 à 8 semaines selon le périmètre, avec livraison incrémentale validée par le client.",
     },
     {
-      q: "Vos solutions IA sont-elles conformes RGPD pour les TPE/PME des Pavillons-sous-Bois ?",
+      q: "Vos solutions IA sont-elles conformes RGPD pour les PME et ETI des Pavillons-sous-Bois ?",
       a: "Oui. Tous nos déploiements respectent le RGPD : minimisation des données, hébergement UE quand possible, contrats DPA avec les fournisseurs LLM, registre de traitement fourni. Adapté commerces de proximité, artisans, professions libérales et PME.",
     },
     {
       q: "Travaillez-vous avec les commerces et artisans de la zone La Poudrette ?",
-      a: "Oui, c'est notre cœur de cible : TPE commerces de détail (33,5 % du tissu local), artisans BTP (17 %), PME services de la zone La Poudrette (55+ entreprises). Cas typiques : automatisation devis, chatbot client, gestion stocks, marketing local.",
+      a: "Oui, c'est notre cœur de cible : PME du commerce (33,5 % du tissu local), artisans BTP (17 %), PME services de la zone La Poudrette (55+ entreprises). Cas typiques : automatisation devis, chatbot client, gestion stocks, marketing local.",
     },
   ],
 };

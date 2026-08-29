@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
   pitchFr:
-    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
+    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
+    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sablé-sur-Sarthe (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, prestataires logistiques et services aux entreprises du bassin sabolien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sablé-sur-Sarthe (72). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles, commerçants, professions libérales, prestataires logistiques et services aux entreprises du bassin sabolien.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sablé-sur-Sarthe (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, prestataires logistiques et services aux entreprises du bassin sabolien.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Sablé-sur-Sarthe (72). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles, commerçants, professions libérales, prestataires logistiques et services aux entreprises du bassin sabolien.",
   seoHook: "agroalimentaire & industrie imprimerie",
   ecosystemFr:
     "Sablé-sur-Sarthe est une sous-préfecture de la Sarthe aux bords de la rivière Sarthe, dotée d'une gare TGV (Paris 1 h 30). Pôle agroalimentaire historique, industrie, imprimerie et logistique. Patrimoine : château de Sablé, abbaye de Solesmes. Carrefour entre Le Mans, Angers et Laval.",
@@ -30,8 +30,8 @@ export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sablé-sur-Sarthe : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et logisticiens du bassin sabolien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Sablé-sur-Sarthe : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et logisticiens du bassin sabolien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Sablé-sur-Sarthe : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et logisticiens du bassin sabolien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Sablé-sur-Sarthe : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et logisticiens du bassin sabolien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sablé-sur-Sarthe : formations adaptées aux PME agroalimentaires, imprimeries, logisticiens, artisans et commerçants du bassin sabolien. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
       en: "Implémentation IA à Sablé-sur-Sarthe : contrôle qualité agroalimentaire, automatisation imprimerie, optimisation logistique, maintenance prédictive et agents conversationnels commerces.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Sablé-sur-Sarthe : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, logisticiens, commerçants.",
-      en: "Coaching 1-to-1 à Sablé-sur-Sarthe : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, logisticiens, commerçants.",
+      fr: "Coaching 1-to-1 à Sablé-sur-Sarthe : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, logisticiens, commerçants.",
+      en: "Coaching 1-to-1 à Sablé-sur-Sarthe : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, logisticiens, commerçants.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires de Sablé-sur-Sarthe sur leurs cas IA : contrôle qualité par vision, traçabilité lots, optimisation chaîne du froid, automatisation conditionnement et logistique.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Sablé-sur-Sarthe ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du bassin sabolien. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Sablé-sur-Sarthe ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME agroalimentaires et industriels du bassin sabolien. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour l'industrie de l'imprimerie ?",

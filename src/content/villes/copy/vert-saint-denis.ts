@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const VERT_SAINT_DENIS_COPY: VilleCopy = {
   pitchFr:
-    "Vert-Saint-Denis (77), commune résidentielle au sud de Melun en Seine-et-Marne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Vert-Saint-Denis (77), commune résidentielle au sud de Melun en Seine-et-Marne. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Vert-Saint-Denis (77), commune résidentielle au sud de Melun en Seine-et-Marne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Vert-Saint-Denis (77), commune résidentielle au sud de Melun en Seine-et-Marne. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vert-Saint-Denis (77). Nous accompagnons PME et ETI : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vert-Saint-Denis (77). Nous accompagnons PME et ETI : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
-    "Vert-Saint-Denis est une commune résidentielle du sud de Melun en Seine-et-Marne. Son tissu économique associe TPE artisans du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité directe avec Melun, Le Mée-sur-Seine, Savigny-le-Temple et Cesson.",
+    "Vert-Saint-Denis est une commune résidentielle du sud de Melun en Seine-et-Marne. Son tissu économique associe PME artisanales du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité directe avec Melun, Le Mée-sur-Seine, Savigny-le-Temple et Cesson.",
   ecosystemEn:
-    "Vert-Saint-Denis est une commune résidentielle du sud de Melun en Seine-et-Marne. Son tissu économique associe TPE artisans du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité directe avec Melun, Le Mée-sur-Seine, Savigny-le-Temple et Cesson.",
+    "Vert-Saint-Denis est une commune résidentielle du sud de Melun en Seine-et-Marne. Son tissu économique associe PME artisanales du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité directe avec Melun, Le Mée-sur-Seine, Savigny-le-Temple et Cesson.",
   distancesFr:
     "Gare de Melun à 10 min. Paris Gare de Lyon à 40 min via Transilien R. Sénart à 10 min. A5a accès direct. Aéroport Orly à 40 min.",
   distancesEn:
     "Gare de Melun à 10 min. Paris Gare de Lyon à 40 min via Transilien R. Sénart à 10 min. A5a accès direct. Aéroport Orly à 40 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Commerce de proximité",
     "Services aux entreprises",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vert-Saint-Denis : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales du bassin melunais sud. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vert-Saint-Denis : formats adaptés au cabinet, commerce ou atelier artisan. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
       en: "Implémentation IA à Vert-Saint-Denis : automatisation devis artisans, gestion relation client PME, facturation automatisée, outils de planification commerces et cabinets.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vert-Saint-Denis : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME services, professions libérales du sud Melun.",
-      en: "Coaching 1-to-1 à Vert-Saint-Denis : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME services, professions libérales du sud Melun.",
+      fr: "Coaching 1-to-1 à Vert-Saint-Denis : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME services, professions libérales du sud Melun.",
+      en: "Coaching 1-to-1 à Vert-Saint-Denis : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME services, professions libérales du sud Melun.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
       a: "L'Audit sur place IA à Vert-Saint-Denis démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans à Vert-Saint-Denis ?",
-      a: "Oui, nous accompagnons les TPE artisans du bâtiment et de la rénovation à Vert-Saint-Denis : automatisation devis, planification chantiers, gestion relation client, suivi facturation par IA.",
+      q: "Accompagnez-vous les PME artisanales à Vert-Saint-Denis ?",
+      a: "Oui, nous accompagnons les PME artisanales du bâtiment et de la rénovation à Vert-Saint-Denis : automatisation devis, planification chantiers, gestion relation client, suivi facturation par IA.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME du bassin melunais ?",
@@ -65,7 +65,7 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching IA individuel à Vert-Saint-Denis ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Vert-Saint-Denis ou en visio. Sessions de 2h à la demi-journée pour dirigeants TPE, gérants PME ou professions libérales. Prise en main d'outils IA concrets.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Vert-Saint-Denis ou en visio. Sessions de 2h à la demi-journée pour dirigeants de PME et d'ETI, gérants PME ou professions libérales. Prise en main d'outils IA concrets.",
     },
   ],
 };

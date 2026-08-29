@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const LIEVIN_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Liévin, ville du Pas-de-Calais membre de la Communauté d'agglomération de Lens-Liévin (30 063 habitants en 2023, 12,83 km²). Ancien fleuron du bassin minier ouvert en 1857 et marqué par la catastrophe de 1974 qui a précipité la fermeture du dernier puits, la commune s'est reconvertie autour du tertiaire, du technopôle Vivalley et de l'Arena Stade Couvert régional. Nous outillons les dirigeants liévinois avec du code Python et TypeScript hébergé en France, sans no-code ni boîte noire SaaS opaque, pour automatiser administration, relation client, devis et reporting. Tarifs publics fixes : Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site {{price:intervention-4h|flat}}, implémentation {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 à {{price:intervention-dirigeants|flat}}. Les TPE et PME locales — artisans, commerçants, sous-traitants industriels — sont notre cœur de cible ; les ETI restent ponctuelles.",
+    "Axion-IA accompagne les PME et ETI de Liévin, ville du Pas-de-Calais membre de la Communauté d'agglomération de Lens-Liévin (30 063 habitants en 2023, 12,83 km²). Ancien fleuron du bassin minier ouvert en 1857 et marqué par la catastrophe de 1974 qui a précipité la fermeture du dernier puits, la commune s'est reconvertie autour du tertiaire, du technopôle Vivalley et de l'Arena Stade Couvert régional. Nous outillons les dirigeants liévinois avec du code Python et TypeScript hébergé en France, sans no-code ni boîte noire SaaS opaque, pour automatiser administration, relation client, devis et reporting. Tarifs publics fixes : Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site {{price:intervention-4h|flat}}, implémentation {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 à {{price:intervention-dirigeants|flat}}. Les PME et ETI locales — artisans, commerçants, sous-traitants industriels — sont notre cœur de cible ; les ETI restent ponctuelles.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Liévin, ville du Pas-de-Calais membre de la Communauté d'agglomération de Lens-Liévin (30 063 habitants en 2023, 12,83 km²). Ancien fleuron du bassin minier ouvert en 1857 et marqué par la catastrophe de 1974 qui a précipité la fermeture du dernier puits, la commune s'est reconvertie autour du tertiaire, du technopôle Vivalley et de l'Arena Stade Couvert régional. Nous outillons les dirigeants liévinois avec du code Python et TypeScript hébergé en France, sans no-code ni boîte noire SaaS opaque, pour automatiser administration, relation client, devis et reporting. Tarifs publics fixes : Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site {{price:intervention-4h|flat}}, implémentation {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 à {{price:intervention-dirigeants|flat}}. Les TPE et PME locales — artisans, commerçants, sous-traitants industriels — sont notre cœur de cible ; les ETI restent ponctuelles.",
+    "Axion-IA accompagne les PME et ETI de Liévin, ville du Pas-de-Calais membre de la Communauté d'agglomération de Lens-Liévin (30 063 habitants en 2023, 12,83 km²). Ancien fleuron du bassin minier ouvert en 1857 et marqué par la catastrophe de 1974 qui a précipité la fermeture du dernier puits, la commune s'est reconvertie autour du tertiaire, du technopôle Vivalley et de l'Arena Stade Couvert régional. Nous outillons les dirigeants liévinois avec du code Python et TypeScript hébergé en France, sans no-code ni boîte noire SaaS opaque, pour automatiser administration, relation client, devis et reporting. Tarifs publics fixes : Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site {{price:intervention-4h|flat}}, implémentation {{price:intervention-dirigeants|flat}}, accompagnement 1-to-1 à {{price:intervention-dirigeants|flat}}. Les PME et ETI locales — artisans, commerçants, sous-traitants industriels — sont notre cœur de cible ; les ETI restent ponctuelles.",
   directAnswerFr:
-    "Axion-IA se déplace à Liévin (Pas-de-Calais, Hauts-de-France) pour auditer et automatiser les processus des TPE et PME de l'agglomération Lens-Liévin. L'Audit sur place de 4 heures à {{price:audit-flash|flat}} identifie les tâches chronophages (saisie, devis, factures, relances, reporting) puis nous livrons des micro-automatisations en code custom Python ou TypeScript, hébergées en France et auditables ligne par ligne. Pas de no-code, pas d'abonnement caché. Intervention sur site à {{price:intervention-4h|flat}} sous cinq jours ouvrés, implémentation à {{price:intervention-dirigeants|flat}} et accompagnement 1-to-1 des dirigeants à {{price:intervention-dirigeants|flat}}. Le tissu tertiaire post-mines et les sous-traitants du technopôle Vivalley tirent un retour rapide sur les automatisations administratives.",
+    "Axion-IA se déplace à Liévin (Pas-de-Calais, Hauts-de-France) pour auditer et automatiser les processus des PME et ETI de l'agglomération Lens-Liévin. L'Audit sur place de 4 heures à {{price:audit-flash|flat}} identifie les tâches chronophages (saisie, devis, factures, relances, reporting) puis nous livrons des micro-automatisations en code custom Python ou TypeScript, hébergées en France et auditables ligne par ligne. Pas de no-code, pas d'abonnement caché. Intervention sur site à {{price:intervention-4h|flat}} sous cinq jours ouvrés, implémentation à {{price:intervention-dirigeants|flat}} et accompagnement 1-to-1 des dirigeants à {{price:intervention-dirigeants|flat}}. Le tissu tertiaire post-mines et les sous-traitants du technopôle Vivalley tirent un retour rapide sur les automatisations administratives.",
   directAnswerEn:
-    "Axion-IA se déplace à Liévin (Pas-de-Calais, Hauts-de-France) pour auditer et automatiser les processus des TPE et PME de l'agglomération Lens-Liévin. L'Audit sur place de 4 heures à {{price:audit-flash|flat}} identifie les tâches chronophages (saisie, devis, factures, relances, reporting) puis nous livrons des micro-automatisations en code custom Python ou TypeScript, hébergées en France et auditables ligne par ligne. Pas de no-code, pas d'abonnement caché. Intervention sur site à {{price:intervention-4h|flat}} sous cinq jours ouvrés, implémentation à {{price:intervention-dirigeants|flat}} et accompagnement 1-to-1 des dirigeants à {{price:intervention-dirigeants|flat}}. Le tissu tertiaire post-mines et les sous-traitants du technopôle Vivalley tirent un retour rapide sur les automatisations administratives.",
+    "Axion-IA se déplace à Liévin (Pas-de-Calais, Hauts-de-France) pour auditer et automatiser les processus des PME et ETI de l'agglomération Lens-Liévin. L'Audit sur place de 4 heures à {{price:audit-flash|flat}} identifie les tâches chronophages (saisie, devis, factures, relances, reporting) puis nous livrons des micro-automatisations en code custom Python ou TypeScript, hébergées en France et auditables ligne par ligne. Pas de no-code, pas d'abonnement caché. Intervention sur site à {{price:intervention-4h|flat}} sous cinq jours ouvrés, implémentation à {{price:intervention-dirigeants|flat}} et accompagnement 1-to-1 des dirigeants à {{price:intervention-dirigeants|flat}}. Le tissu tertiaire post-mines et les sous-traitants du technopôle Vivalley tirent un retour rapide sur les automatisations administratives.",
   seoHook: "tertiaire post-minier & sous-traitance",
   ecosystemFr:
     "Le tissu liévinois s'est restructuré autour du tertiaire, du technopôle Vivalley et de pôles événementiels comme l'Arena Stade Couvert régional, après la fermeture des derniers puits de mine en 1974. La proximité de Lens (Louvre-Lens) et du bassin minier UNESCO génère une activité touristique et de services. Les communes limitrophes — Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay et Loos-en-Gohelle — partagent un bassin d'emploi continu, à 30 km de Lille et 15 km d'Arras.",
@@ -32,16 +32,16 @@ export const LIEVIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4 h à Liévin ({{price:audit-flash|flat}}) pour identifier les automatisations IA prioritaires des TPE et PME tertiaires, commerciales et de la construction du bassin Lens-Liévin.",
-      en: "Audit sur place 4 h à Liévin ({{price:audit-flash|flat}}) pour identifier les automatisations IA prioritaires des TPE et PME tertiaires, commerciales et de la construction du bassin Lens-Liévin.",
+      fr: "Audit sur place 4 h à Liévin ({{price:audit-flash|flat}}) pour identifier les automatisations IA prioritaires des PME et ETI tertiaires, commerciales et de la construction du bassin Lens-Liévin.",
+      en: "Audit sur place 4 h à Liévin ({{price:audit-flash|flat}}) pour identifier les automatisations IA prioritaires des PME et ETI tertiaires, commerciales et de la construction du bassin Lens-Liévin.",
     },
     interventions: {
       fr: "Intervention sur site à Liévin dès {{price:intervention-4h|flat}} en cinq jours ouvrés : devis, factures, relances clients, reporting et tableaux de bord pour artisans et PME.",
       en: "Intervention sur site à Liévin dès {{price:intervention-4h|flat}} en cinq jours ouvrés : devis, factures, relances clients, reporting et tableaux de bord pour artisans et PME.",
     },
     implementation: {
-      fr: "Implémentation IA code custom à Liévin à partir de {{price:impl-poc|entry}} pour TPE et PME du technopôle Vivalley et du tissu tertiaire post-minier.",
-      en: "Implémentation IA code custom à Liévin à partir de {{price:impl-poc|entry}} pour TPE et PME du technopôle Vivalley et du tissu tertiaire post-minier.",
+      fr: "Implémentation IA code custom à Liévin à partir de {{price:impl-poc|entry}} pour PME et ETI du technopôle Vivalley et du tissu tertiaire post-minier.",
+      en: "Implémentation IA code custom à Liévin à partir de {{price:impl-poc|entry}} pour PME et ETI du technopôle Vivalley et du tissu tertiaire post-minier.",
     },
     unAUn: {
       fr: "Accompagnement 1-to-1 des dirigeants liévinois à {{price:intervention-dirigeants|flat}} pour adopter l'IA en code auditable, sans no-code ni dépendance SaaS opaque.",
@@ -86,12 +86,6 @@ export const LIEVIN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce IA",
-            detail:
-              "Pour commerçants du Centre Commercial Carrefour, artisans et indépendants liévinois : vitrine ou boutique multi-CMS avec assistant IA et réservation, mobile-first.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme SaaS sur mesure",
@@ -173,12 +167,6 @@ export const LIEVIN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI storefront or e-commerce site",
-            detail:
-              "For Carrefour Liévin shopping-centre retailers, craftspeople and local freelancers: storefront or multi-CMS shop with AI assistant and booking, mobile-first.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom SaaS platform",
             detail:
@@ -248,7 +236,7 @@ export const LIEVIN_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une ETI pour solliciter Axion-IA à Liévin ?",
-      a: "Non : notre cible prioritaire est la TPE et la PME liévinoise de moins de 50 salariés. Les ETI nous sollicitent ponctuellement, mais les tarifs {{price:audit-flash|num}}-{{price:intervention-dirigeants|flat}} sont calibrés pour artisans, commerçants et PME locales.",
+      a: "Non : notre cible prioritaire est la PME et la PME liévinoise de moins de 50 salariés. Les ETI nous sollicitent ponctuellement, mais les tarifs {{price:audit-flash|num}}-{{price:intervention-dirigeants|flat}} sont calibrés pour artisans, commerçants et PME locales.",
     },
   ],
 };

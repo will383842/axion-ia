@@ -85,12 +85,6 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG multilingue, recherche sémantique, prise de RDV) sur le site existant d'un commerce CAP3000, d'un restaurant du port ou d'une agence — en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -170,12 +164,6 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (multilingual RAG chatbot, semantic search, booking) onto the existing site of a CAP3000 shop, a port restaurant or an agency — within a few weeks, no redesign.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / application",

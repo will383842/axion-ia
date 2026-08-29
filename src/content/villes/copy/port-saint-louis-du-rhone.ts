@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de TPE artisans, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de PME artisanales, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de TPE artisans, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de PME artisanales, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons PME artisanales, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons PME artisanales, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit sur place sur mesure.",
   seoHook: "agglomération rhône",
   ecosystemFr:
-    "Port-Saint-Louis-du-Rhône se situe à l'embouchure du Grand Rhône, entre Camargue et golfe de Fos. Port fluvio-maritime actif (fret, conteneurs, vracs), zone industrialo-portuaire de Fos à proximité immédiate. Économie portée par la logistique, l'industrie, la pêche, le tourisme nature (Camargue) et un tissu de TPE/PME services.",
+    "Port-Saint-Louis-du-Rhône se situe à l'embouchure du Grand Rhône, entre Camargue et golfe de Fos. Port fluvio-maritime actif (fret, conteneurs, vracs), zone industrialo-portuaire de Fos à proximité immédiate. Économie portée par la logistique, l'industrie, la pêche, le tourisme nature (Camargue) et un tissu de PME et ETI services.",
   ecosystemEn:
-    "Port-Saint-Louis-du-Rhône se situe à l'embouchure du Grand Rhône, entre Camargue et golfe de Fos. Port fluvio-maritime actif (fret, conteneurs, vracs), zone industrialo-portuaire de Fos à proximité immédiate. Économie portée par la logistique, l'industrie, la pêche, le tourisme nature (Camargue) et un tissu de TPE/PME services.",
+    "Port-Saint-Louis-du-Rhône se situe à l'embouchure du Grand Rhône, entre Camargue et golfe de Fos. Port fluvio-maritime actif (fret, conteneurs, vracs), zone industrialo-portuaire de Fos à proximité immédiate. Économie portée par la logistique, l'industrie, la pêche, le tourisme nature (Camargue) et un tissu de PME et ETI services.",
   distancesFr:
     "Accès A55/A54 vers Arles (40 min) et Marseille (55 min). Gare TGV Aix-en-Provence à 1h. Aéroport Marseille-Provence à 45 min. Port fluvio-maritime local, proximité immédiate zone industrialo-portuaire de Fos-sur-Mer.",
   distancesEn:
@@ -26,12 +26,12 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
     "Industries pétrochimiques",
     "Pêche & aquaculture",
     "Tourisme nature Camargue",
-    "TPE artisanat & commerce de proximité",
+    "PME de l'artisanat & commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Port-Saint-Louis-du-Rhône : diagnostic adapté aux PME logistique portuaire, TPE artisans, acteurs du tourisme camarguais et industries du golfe de Fos. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Port-Saint-Louis-du-Rhône : diagnostic adapté aux PME logistique portuaire, TPE artisans, acteurs du tourisme camarguais et industries du golfe de Fos. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Port-Saint-Louis-du-Rhône : diagnostic adapté aux PME logistique portuaire, PME artisanales, acteurs du tourisme camarguais et industries du golfe de Fos. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Port-Saint-Louis-du-Rhône : diagnostic adapté aux PME logistique portuaire, PME artisanales, acteurs du tourisme camarguais et industries du golfe de Fos. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Port-Saint-Louis-du-Rhône : ateliers pratiques pour équipes logistique, maintenance industrielle, accueil touristique. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
       en: "Implémentation IA à Port-Saint-Louis-du-Rhône : optimisation flux portuaires, maintenance prédictive industrielle, agents conversationnels tourisme, automatisation gestion stocks. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Port-Saint-Louis-du-Rhône : sessions pour dirigeants TPE/PME portuaires, gérants d'hébergements touristiques et responsables industriels souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Port-Saint-Louis-du-Rhône : sessions pour dirigeants TPE/PME portuaires, gérants d'hébergements touristiques et responsables industriels souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Port-Saint-Louis-du-Rhône : sessions pour dirigeants de PME et d'ETI portuaires, gérants d'hébergements touristiques et responsables industriels souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Port-Saint-Louis-du-Rhône : sessions pour dirigeants de PME et d'ETI portuaires, gérants d'hébergements touristiques et responsables industriels souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME portuaire ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE/PME de logistique portuaire, transport maritime et industries du golfe de Fos. Tarifs publics.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI de logistique portuaire, transport maritime et industries du golfe de Fos. Tarifs publics.",
     },
     {
       q: "Accompagnez-vous les entreprises industrielles du golfe de Fos ?",

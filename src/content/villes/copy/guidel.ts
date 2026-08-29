@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GUIDEL_COPY: VilleCopy = {
   pitchFr:
-    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. PME et ETI tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. PME et ETI tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guidel (56). Nous accompagnons PME et ETI : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guidel (56). Nous accompagnons PME et ETI : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit sur place sur mesure.",
   seoHook: "tourisme balnéaire & artisanat",
   ecosystemFr:
-    "Guidel est une commune littorale morbihannaise de Lorient Agglomération, connue pour ses plages (Guidel-Plages, Le Loc'h) et son cadre de vie. Tissu TPE/PME : tourisme balnéaire, hôtellerie-restauration, commerce, artisanat, BTP, services, nautisme, agriculture.",
+    "Guidel est une commune littorale morbihannaise de Lorient Agglomération, connue pour ses plages (Guidel-Plages, Le Loc'h) et son cadre de vie. Tissu PME et ETI : tourisme balnéaire, hôtellerie-restauration, commerce, artisanat, BTP, services, nautisme, agriculture.",
   ecosystemEn:
-    "Guidel est une commune littorale morbihannaise de Lorient Agglomération, connue pour ses plages (Guidel-Plages, Le Loc'h) et son cadre de vie. Tissu TPE/PME : tourisme balnéaire, hôtellerie-restauration, commerce, artisanat, BTP, services, nautisme, agriculture.",
+    "Guidel est une commune littorale morbihannaise de Lorient Agglomération, connue pour ses plages (Guidel-Plages, Le Loc'h) et son cadre de vie. Tissu PME et ETI : tourisme balnéaire, hôtellerie-restauration, commerce, artisanat, BTP, services, nautisme, agriculture.",
   distancesFr:
     "Lorient centre à 20 min. Gare SNCF de Lorient (TGV Paris-Quimper) à 25 min. Paris-Montparnasse à 3 h en TGV direct. Aéroport Lorient Bretagne Sud à 15 min. Quimperlé à 20 min. Voie express RN 165 à 5 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const GUIDEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guidel : diagnostic adapté aux TPE artisans, PME tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, BTP, nautisme, agriculteurs. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Guidel : diagnostic adapté aux TPE artisans, PME tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, BTP, nautisme, agriculteurs. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Guidel : diagnostic adapté aux PME artisanales, PME tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, BTP, nautisme, agriculteurs. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Guidel : diagnostic adapté aux PME artisanales, PME tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, BTP, nautisme, agriculteurs. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guidel : formats adaptés hôtel-restaurant de plage, boutique de proximité, chantier BTP, exploitation agricole. Équipes formées à l'autonomie sur les outils IA.",
@@ -42,8 +42,8 @@ export const GUIDEL_COPY: VilleCopy = {
       en: "Implémentation IA à Guidel : e-réservation hôtellerie balnéaire, CRM tourisme, yield management saisonnier, gestion stocks commerces, devis et planning BTP, traçabilité agricole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Guidel : sessions dans vos locaux agglo Lorient, hôtel-restaurant Guidel-Plages, chantier BTP ou en visio. Dirigeants TPE/PME tourisme, hôteliers, commerçants, artisans, nautisme, agriculteurs.",
-      en: "Coaching 1-to-1 à Guidel : sessions dans vos locaux agglo Lorient, hôtel-restaurant Guidel-Plages, chantier BTP ou en visio. Dirigeants TPE/PME tourisme, hôteliers, commerçants, artisans, nautisme, agriculteurs.",
+      fr: "Coaching 1-to-1 à Guidel : sessions dans vos locaux agglo Lorient, hôtel-restaurant Guidel-Plages, chantier BTP ou en visio. Dirigeants PME et ETI tourisme, hôteliers, commerçants, artisans, nautisme, agriculteurs.",
+      en: "Coaching 1-to-1 à Guidel : sessions dans vos locaux agglo Lorient, hôtel-restaurant Guidel-Plages, chantier BTP ou en visio. Dirigeants PME et ETI tourisme, hôteliers, commerçants, artisans, nautisme, agriculteurs.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const GUIDEL_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Guidel  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME tourisme balnéaire de Guidel-Plages.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables en ligne, adaptés aux PME artisanales et PME tourisme balnéaire de Guidel-Plages.",
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants de Guidel-Plages ?",

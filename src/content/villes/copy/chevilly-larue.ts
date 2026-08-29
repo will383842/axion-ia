@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHEVILLY_LARUE_COPY: VilleCopy = {
   pitchFr:
-    "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu TPE artisans et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y mène ses missions auprès des organisations locales du sud francilien.",
+    "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu PME artisanales et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y mène ses missions auprès des organisations locales du sud francilien.",
   pitchEn:
-    "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu TPE artisans et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y mène ses missions auprès des organisations locales du sud francilien.",
+    "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu PME artisanales et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y mène ses missions auprès des organisations locales du sud francilien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : PME artisanales et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
-  seoHook: "TPE & PME Val-de-Marne",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : PME artisanales et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit sur place sur mesure.",
+  seoHook: "PME & PME Val-de-Marne",
   ecosystemFr:
-    "Chevilly-Larue bénéficie de la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. Son tissu économique associe TPE artisans, PME logistique et agroalimentaire, commerces et professions libérales. Communes voisines : Rungis, Thiais, L'Haÿ-les-Roses, Villejuif.",
+    "Chevilly-Larue bénéficie de la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. Son tissu économique associe PME artisanales, PME logistique et agroalimentaire, commerces et professions libérales. Communes voisines : Rungis, Thiais, L'Haÿ-les-Roses, Villejuif.",
   ecosystemEn:
-    "Chevilly-Larue bénéficie de la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. Son tissu économique associe TPE artisans, PME logistique et agroalimentaire, commerces et professions libérales. Communes voisines : Rungis, Thiais, L'Haÿ-les-Roses, Villejuif.",
+    "Chevilly-Larue bénéficie de la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. Son tissu économique associe PME artisanales, PME logistique et agroalimentaire, commerces et professions libérales. Communes voisines : Rungis, Thiais, L'Haÿ-les-Roses, Villejuif.",
   distancesFr:
     "Tramway T7 arrêt Chevilly-Larue. Aéroport Orly à 10 min. A86 et A6 à proximité directe. Paris Porte d'Italie à 15 min. MIN de Rungis à 5 min. RER B Bourg-la-Reine à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CHEVILLY_LARUE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique & transport",
     "Agroalimentaire & commerce de gros",
-    "TPE artisanat BTP & maintenance",
+    "PME du BTP & maintenance",
     "Commerce de proximité",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chevilly-Larue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants et professions libérales du sud Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Chevilly-Larue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants et professions libérales du sud Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Chevilly-Larue : diagnostic adapté aux PME artisanales, PME logistique et agroalimentaire, commerçants et professions libérales du sud Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Chevilly-Larue : diagnostic adapté aux PME artisanales, PME logistique et agroalimentaire, commerçants et professions libérales du sud Val-de-Marne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chevilly-Larue : formats adaptés à l'entrepôt, au commerce ou au cabinet. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const CHEVILLY_LARUE_COPY: VilleCopy = {
       en: "Implémentation IA à Chevilly-Larue : optimisation chaîne logistique, prédiction stocks agroalimentaire, automatisation devis artisans, agents conversationnels client. Proximité MIN Rungis et Orly.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chevilly-Larue : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME logistique, professions libérales, indépendants du sud francilien.",
-      en: "Coaching 1-to-1 à Chevilly-Larue : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME logistique, professions libérales, indépendants du sud francilien.",
+      fr: "Coaching 1-to-1 à Chevilly-Larue : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME logistique, professions libérales, indépendants du sud francilien.",
+      en: "Coaching 1-to-1 à Chevilly-Larue : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME logistique, professions libérales, indépendants du sud francilien.",
     },
   },
   faqGeolocalisee: [
@@ -60,12 +60,12 @@ export const CHEVILLY_LARUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistique et agroalimentaire de Chevilly-Larue proches du MIN de Rungis sur leurs cas IA : optimisation flux entrepôt, prédiction demande, traçabilité produits, automatisation commandes.",
     },
     {
-      q: "Proposez-vous des formations IA pour les TPE à Chevilly-Larue ?",
-      a: "Oui, nos interventions IA sur site à Chevilly-Larue sont adaptées aux TPE artisans et commerces. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
+      q: "Proposez-vous des formations IA pour les PME à Chevilly-Larue ?",
+      a: "Oui, nos interventions IA sur site à Chevilly-Larue sont adaptées aux PME de l'artisanat et du commerce. Formats demi-journée ou journée complète, vos équipes repartent autonomes sur les outils IA configurés métier.",
     },
     {
       q: "Comment se déroule un coaching individuel IA à Chevilly-Larue ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Chevilly-Larue ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant TPE, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Chevilly-Larue ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeants de PME et d'ETI, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
     },
   ],
 };

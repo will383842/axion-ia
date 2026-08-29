@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LAMBERSART_COPY: VilleCopy = {
   pitchFr:
-    "Lambersart, ville du Nord (59) en banlieue ouest immédiate de Lille (MEL), mêle résidentiel haut de gamme, professions libérales, TPE/PME tertiaires et tissu commercial dense. Axion-IA y intervient pour les TPE, indépendants, PME et cabinets professionnels du bassin lillois.",
+    "Lambersart, ville du Nord (59) en banlieue ouest immédiate de Lille (MEL), mêle résidentiel haut de gamme, professions libérales, PME et ETI tertiaires et tissu commercial dense. Axion-IA y intervient pour les PME, indépendants, PME et cabinets professionnels du bassin lillois.",
   pitchEn:
-    "Lambersart, ville du Nord (59) en banlieue ouest immédiate de Lille (MEL), mêle résidentiel haut de gamme, professions libérales, TPE/PME tertiaires et tissu commercial dense. Axion-IA y intervient pour les TPE, indépendants, PME et cabinets professionnels du bassin lillois.",
+    "Lambersart, ville du Nord (59) en banlieue ouest immédiate de Lille (MEL), mêle résidentiel haut de gamme, professions libérales, PME et ETI tertiaires et tissu commercial dense. Axion-IA y intervient pour les PME, indépendants, PME et cabinets professionnels du bassin lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lambersart (59) en métropole lilloise. Nous accompagnons les TPE indépendantes (commerces, artisans, professions libérales), les PME tertiaires lambersartoises (cabinets juridiques, expert-comptables, agences conseil) et structures du bassin Lille-Roubaix-Tourcoing sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lambersart (59) en métropole lilloise. Nous accompagnons les PME indépendantes (commerces, artisans, professions libérales), les PME tertiaires lambersartoises (cabinets juridiques, expert-comptables, agences conseil) et structures du bassin Lille-Roubaix-Tourcoing sur leurs cas IA opérationnels.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lambersart (59) en métropole lilloise. Nous accompagnons les TPE indépendantes (commerces, artisans, professions libérales), les PME tertiaires lambersartoises (cabinets juridiques, expert-comptables, agences conseil) et structures du bassin Lille-Roubaix-Tourcoing sur leurs cas IA opérationnels.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lambersart (59) en métropole lilloise. Nous accompagnons les PME indépendantes (commerces, artisans, professions libérales), les PME tertiaires lambersartoises (cabinets juridiques, expert-comptables, agences conseil) et structures du bassin Lille-Roubaix-Tourcoing sur leurs cas IA opérationnels.",
   seoHook: "professions libérales & commerces premium",
   ecosystemFr:
     "Lambersart s'intègre à la Métropole Européenne de Lille (MEL, 1,2 M habitants), un des écosystèmes économiques majeurs du nord de l'Europe. Tissu résidentiel haut de gamme, concentration professions libérales (médecins, avocats, cabinets conseil), commerces premium, PME tertiaires. Proximité immédiate Lille centre (10 min) et Euralille.",
@@ -23,15 +23,15 @@ export const LAMBERSART_COPY: VilleCopy = {
     "Métro ligne 2 vers Lille centre (10 min). Gare Lille-Flandres et Lille-Europe à 15 min (TGV Paris 1h, Bruxelles 35 min). Aéroport Lille-Lesquin à 20 min. Tourcoing/Roubaix à 25 min via A22.",
   topSectorsNaf: [
     "Professions libérales (médecins, avocats)",
-    "TPE commerces premium",
+    "PME du commerce premium",
     "PME tertiaires (cabinets, conseil)",
     "Expert-comptables & expertise",
     "Services aux entreprises MEL",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lambersart : diagnostic adapté aux TPE indépendantes, professions libérales et PME tertiaires de la MEL. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux cabinets et commerces.",
-      en: "Audit IA à Lambersart : diagnostic adapté aux TPE indépendantes, professions libérales et PME tertiaires de la MEL. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux cabinets et commerces.",
+      fr: "Audit IA à Lambersart : diagnostic adapté aux PME indépendantes, professions libérales et PME tertiaires de la MEL. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux cabinets et commerces.",
+      en: "Audit IA à Lambersart : diagnostic adapté aux PME indépendantes, professions libérales et PME tertiaires de la MEL. ROI chiffré pragmatique, audit sur place {{price:audit-flash|flat}} accessible aux cabinets et commerces.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lambersart : sessions adaptées aux cabinets professionnels et PME lilloises. Formats demi-journée à 2 jours, vos équipes (assistants, secrétaires médicales, juristes) repartent autonomes.",
@@ -84,12 +84,6 @@ export const LAMBERSART_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce de proximité IA",
-            detail:
-              "Pour indépendants, commerces du Canon d'Or et professions libérales lambersartoises : site mobile-first, prise de RDV en ligne, mini e-commerce ou catalogue relié à la dynamique « J'achète à Lambersart », avec un assistant IA simple.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure",
@@ -171,12 +165,6 @@ export const LAMBERSART_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI showcase or local e-commerce site",
-            detail:
-              "For freelancers, Canon d'Or shops and Lambersart independent professionals: mobile-first site, online booking, mini e-commerce or catalogue tied to the 'J'achète à Lambersart' dynamic, with a simple AI assistant.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom business platform",
             detail:
@@ -233,8 +221,8 @@ export const LAMBERSART_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales à Lambersart (médecins, avocats, expertise-comptable, consultants) sur des cas IA respectueux du secret professionnel : agents conversationnels patients/clients, automatisation gestion RDV, transcription consultations, classification dossiers. RGPD strict.",
     },
     {
-      q: "Quels services pour les TPE et indépendants lambersartoises ?",
-      a: "Pour les TPE et indépendants à Lambersart (commerces, artisans, freelances), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
+      q: "Quels services pour les PME et indépendants lambersartoises ?",
+      a: "Pour les PME et indépendants à Lambersart (commerces, artisans, freelances), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {
       q: "Quels formats pour les PME tertiaires de la MEL ?",

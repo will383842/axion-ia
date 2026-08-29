@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LIVRON_SUR_DROME_COPY: VilleCopy = {
   pitchFr:
-    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence.",
+    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, PME du BTP, agriculture, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence.",
   pitchEn:
-    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence.",
+    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, PME du BTP, agriculture, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
   seoHook: "vallée du",
   ecosystemFr:
-    "Livron-sur-Drôme occupe une position stratégique à la confluence de la Drôme (rivière) et du Rhône, au sud immédiat de Valence sur l'axe A7. Tissu PME industrielles et logistique, activité agricole importante (vallée du Rhône — vergers, viticulture périphérique), TPE artisanat BTP, commerces et services aux entreprises.",
+    "Livron-sur-Drôme occupe une position stratégique à la confluence de la Drôme (rivière) et du Rhône, au sud immédiat de Valence sur l'axe A7. Tissu PME industrielles et logistique, activité agricole importante (vallée du Rhône — vergers, viticulture périphérique), PME du BTP, commerces et services aux entreprises.",
   ecosystemEn:
-    "Livron-sur-Drôme occupe une position stratégique à la confluence de la Drôme (rivière) et du Rhône, au sud immédiat de Valence sur l'axe A7. Tissu PME industrielles et logistique, activité agricole importante (vallée du Rhône — vergers, viticulture périphérique), TPE artisanat BTP, commerces et services aux entreprises.",
+    "Livron-sur-Drôme occupe une position stratégique à la confluence de la Drôme (rivière) et du Rhône, au sud immédiat de Valence sur l'axe A7. Tissu PME industrielles et logistique, activité agricole importante (vallée du Rhône — vergers, viticulture périphérique), PME du BTP, commerces et services aux entreprises.",
   distancesFr:
     "Gare Livron-Loriol à 5 min (TER ligne Lyon-Avignon). Valence centre à 15 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15 A7. Crest à 20 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const LIVRON_SUR_DROME_COPY: VilleCopy = {
     "PME industrielles sud-Drôme",
     "Agriculture & viticulture vallée Rhône",
     "Logistique axe A7",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Livron-sur-Drôme : diagnostic adapté aux PME industrielles sud-Drôme, agriculteurs vallée Rhône, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Livron-sur-Drôme : diagnostic adapté aux PME industrielles sud-Drôme, agriculteurs vallée Rhône, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Livron-sur-Drôme : diagnostic adapté aux PME industrielles sud-Drôme, agriculteurs vallée Rhône, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Livron-sur-Drôme : diagnostic adapté aux PME industrielles sud-Drôme, agriculteurs vallée Rhône, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Livron-sur-Drôme : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const LIVRON_SUR_DROME_COPY: VilleCopy = {
       en: "Implémentation IA à Livron-sur-Drôme : prédiction maintenance industrielle, classification photos vergers/cultures, optimisation supply chain A7, agents conversationnels.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Livron-sur-Drôme : sessions dans votre atelier, exploitation ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants TPE/PME livronnaises.",
-      en: "Coaching 1-to-1 à Livron-sur-Drôme : sessions dans votre atelier, exploitation ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants TPE/PME livronnaises.",
+      fr: "Coaching 1-to-1 à Livron-sur-Drôme : sessions dans votre atelier, exploitation ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants PME et ETI livronnaises.",
+      en: "Coaching 1-to-1 à Livron-sur-Drôme : sessions dans votre atelier, exploitation ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants PME et ETI livronnaises.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LIVRON_SUR_DROME_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles sud-Drôme sur leurs cas IA : prédiction maintenance, contrôle qualité par vision, optimisation production, classification documents techniques.",
     },
     {
-      q: "Quels services pour les TPE artisans livronnaises ?",
-      a: "Pour les TPE artisans BTP et commerçants à Livron-sur-Drôme, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      q: "Quels services pour les PME artisanales livronnaises ?",
+      a: "Pour les PME du BTP et du commerce à Livron-sur-Drôme, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

@@ -9,9 +9,9 @@ export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA opère pour entreprises et indépendants du secteur : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les PME, ETI et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les PME, ETI et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   seoHook: "agriculture grandes & artisanat métiers",
   ecosystemFr:
     "Baugé-en-Anjou est un pôle rural structurant du Baugeois, territoire agricole entre forêts de Chandelais et plaines céréalières. Tissu économique : exploitations agricoles (céréales, élevage), artisanat BTP, commerces de bourg, PME agroalimentaires et services de proximité. Patrimoine historique (château, apothicairerie).",
@@ -30,8 +30,8 @@ export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baugé-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME agroalimentaires du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Baugé-en-Anjou : diagnostic adapté aux exploitants agricoles, TPE artisans et PME agroalimentaires du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Baugé-en-Anjou : diagnostic adapté aux exploitants agricoles, PME artisanales et PME agroalimentaires du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Baugé-en-Anjou : diagnostic adapté aux exploitants agricoles, PME artisanales et PME agroalimentaires du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baugé-en-Anjou : formations pour équipes agricoles, artisanales et commerciales du Baugeois. Ateliers pratiques adaptés au contexte rural.",
@@ -42,8 +42,8 @@ export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
       en: "Implémentation IA à Baugé-en-Anjou : automatisation traçabilité agricole, gestion stocks agroalimentaire, devis artisans, CRM commerces de bourg. Solutions adaptées au territoire Baugeois.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Baugé-en-Anjou : sessions pour dirigeants TPE/PME, exploitants agricoles et commerçants du Baugeois souhaitant intégrer l'IA.",
-      en: "Coaching IA 1-to-1 à Baugé-en-Anjou : sessions pour dirigeants TPE/PME, exploitants agricoles et commerçants du Baugeois souhaitant intégrer l'IA.",
+      fr: "Coaching IA 1-to-1 à Baugé-en-Anjou : sessions pour dirigeants de PME et d'ETI, exploitants agricoles et commerçants du Baugeois souhaitant intégrer l'IA.",
+      en: "Coaching IA 1-to-1 à Baugé-en-Anjou : sessions pour dirigeants de PME et d'ETI, exploitants agricoles et commerçants du Baugeois souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [

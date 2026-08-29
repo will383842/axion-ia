@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Joinville-le-Pont, ville des bords de Marne et berceau historique des studios de cinéma français, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, agences créatives et services de proximité.",
+    "Axion-IA accompagne les PME et ETI de Joinville-le-Pont, ville des bords de Marne et berceau historique des studios de cinéma français, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, agences créatives et services de proximité.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Joinville-le-Pont, ville des bords de Marne et berceau historique des studios de cinéma français, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, agences créatives et services de proximité.",
+    "Axion-IA accompagne les PME et ETI de Joinville-le-Pont, ville des bords de Marne et berceau historique des studios de cinéma français, dans l'adoption concrète de l'intelligence artificielle. Cabinet d'experts IA seniors, nous nous déplaçons sur site pour automatiser devis, relances et gestion client au profit des commerces, agences créatives et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de Joinville-le-Pont à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune du Val-de-Marne marquée par les bords de Marne, ses studios de cinéma historiques et ses guinguettes, le tissu économique se compose surtout de services, de commerces et d'activités créatives. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de Joinville-le-Pont à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune du Val-de-Marne marquée par les bords de Marne, ses studios de cinéma historiques et ses guinguettes, le tissu économique se compose surtout de services, de commerces et d'activités créatives. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux PME, puis aux ETI, les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les TPE et PME de Joinville-le-Pont à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune du Val-de-Marne marquée par les bords de Marne, ses studios de cinéma historiques et ses guinguettes, le tissu économique se compose surtout de services, de commerces et d'activités créatives. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux TPE, puis aux PME, les ETI restant marginales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui aide les PME et ETI de Joinville-le-Pont à intégrer l'intelligence artificielle dans leur quotidien. Sur cette commune du Val-de-Marne marquée par les bords de Marne, ses studios de cinéma historiques et ses guinguettes, le tissu économique se compose surtout de services, de commerces et d'activités créatives. Nous intervenons sur site pour auditer vos processus, automatiser les tâches répétitives et déployer des outils concrets, avec des tarifs publics et un démarrage rapide. Priorité aux PME, puis aux ETI, les grands groupes complètent ce socle.",
   seoHook: "studios cinéma & bords de Marne",
   ecosystemFr:
-    "Joinville-le-Pont conjugue un héritage cinématographique fort, héritier de ses célèbres studios, une vie de bord de Marne animée par guinguettes et loisirs, et un tissu de proximité dense en commerces, services et professions libérales. Sa position aux portes de Paris attire agences créatives, audiovisuel et activités numériques. Ces TPE et PME, très orientées relation client et gestion de projet, profitent de l'IA pour automatiser devis, plannings et relances. Axion-IA cible en priorité ces TPE de services et créatives, puis les PME du commerce et de l'audiovisuel local.",
+    "Joinville-le-Pont conjugue un héritage cinématographique fort, héritier de ses célèbres studios, une vie de bord de Marne animée par guinguettes et loisirs, et un tissu de proximité dense en commerces, services et professions libérales. Sa position aux portes de Paris attire agences créatives, audiovisuel et activités numériques. Ces PME et ETI, très orientées relation client et gestion de projet, profitent de l'IA pour automatiser devis, plannings et relances. Axion-IA cible en priorité ces PME de services et créatives, puis les PME du commerce et de l'audiovisuel local.",
   ecosystemEn:
-    "Joinville-le-Pont conjugue un héritage cinématographique fort, héritier de ses célèbres studios, une vie de bord de Marne animée par guinguettes et loisirs, et un tissu de proximité dense en commerces, services et professions libérales. Sa position aux portes de Paris attire agences créatives, audiovisuel et activités numériques. Ces TPE et PME, très orientées relation client et gestion de projet, profitent de l'IA pour automatiser devis, plannings et relances. Axion-IA cible en priorité ces TPE de services et créatives, puis les PME du commerce et de l'audiovisuel local.",
+    "Joinville-le-Pont conjugue un héritage cinématographique fort, héritier de ses célèbres studios, une vie de bord de Marne animée par guinguettes et loisirs, et un tissu de proximité dense en commerces, services et professions libérales. Sa position aux portes de Paris attire agences créatives, audiovisuel et activités numériques. Ces PME et ETI, très orientées relation client et gestion de projet, profitent de l'IA pour automatiser devis, plannings et relances. Axion-IA cible en priorité ces PME de services et créatives, puis les PME du commerce et de l'audiovisuel local.",
   distancesFr:
     "Joinville-le-Pont est desservie par le RER A, qui relie le centre de Paris en une vingtaine de minutes. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 16 km et celui de Roissy-Charles-de-Gaulle à 30 km, ce qui rend nos déplacements sur site très rapides dans l'est parisien.",
   distancesEn:
@@ -30,8 +30,8 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE de services ou une agence créative de Joinville-le-Pont pour repérer les automatisations utiles : devis, plannings de production, relances client.",
-      en: "Auditer une TPE de services ou une agence créative de Joinville-le-Pont pour repérer les automatisations utiles : devis, plannings de production, relances client.",
+      fr: "Auditer une PME de services ou une agence créative de Joinville-le-Pont pour repérer les automatisations utiles : devis, plannings de production, relances client.",
+      en: "Auditer une PME de services ou une agence créative de Joinville-le-Pont pour repérer les automatisations utiles : devis, plannings de production, relances client.",
     },
     interventions: {
       fr: "Intervenir sur site à Joinville-le-Pont pour automatiser les tâches administratives des commerces et professions libérales, sans bouleverser vos outils existants.",
@@ -42,8 +42,8 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
       en: "Implémenter des solutions IA durables pour les PME créatives et de services de Joinville-le-Pont : suivi client, reporting, intégration à vos logiciels métiers.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME de Joinville-le-Pont pour piloter leur adoption de l'IA en confiance et à leur rythme.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME de Joinville-le-Pont pour piloter leur adoption de l'IA en confiance et à leur rythme.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Joinville-le-Pont pour piloter leur adoption de l'IA en confiance et à leur rythme.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI de Joinville-le-Pont pour piloter leur adoption de l'IA en confiance et à leur rythme.",
     },
     sitesWeb: {
       fr: "Concevoir des sites web augmentés par l'IA pour les agences et commerces de Joinville-le-Pont : prise de contact intelligente, portfolio dynamique, assistant client.",
@@ -53,11 +53,11 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Joinville-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville des bords de Marne, berceau historique des studios de cinéma français installés dès les années 1910, dont le tissu mêle TPE de services, agences créatives, audiovisuel, professions libérales et commerces de l'avenue Galliéni et du centre-ville. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Joinville-le-Pont, le long du RER A et à deux pas de l'Île Fanac, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Joinville-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville des bords de Marne, berceau historique des studios de cinéma français installés dès les années 1910, dont le tissu mêle PME de services, agences créatives, audiovisuel, professions libérales et commerces de l'avenue Galliéni et du centre-ville. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Joinville-le-Pont, le long du RER A et à deux pas de l'Île Fanac, puis itérations à distance.",
         whyHere: [
           "Héritage audiovisuel et agences créatives : héritière des studios de Joinville actifs dès les années 1910 puis exploités par Pathé et Gaumont, la ville garde une culture de production, post-production et métiers de l'image — terrain idéal pour des portfolios dynamiques, des sites de présentation de catalogue et des recherches sémantiques dans des médiathèques de projets, branchés sur vos rushes et références.",
           "Vie de bord de Marne et loisirs nautiques : guinguettes, restaurants, clubs d'aviron et de canoë-kayak, base nautique et événements saisonniers autour de l'Île Fanac réclament réservation en ligne, pages mobile-first et chatbots multilingues pour une clientèle francilienne et touristique de passage le long des quais.",
-          "Tissu 100 % TPE/PME de services et de professions libérales très orienté relation client : sur l'avenue Galliéni, le centre-ville et les abords de la gare, on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse — devis intelligents, relances, prise de rendez-vous — ou on construit une vitrine e-commerce sur mesure sous Shopify, WooCommerce ou PrestaShop.",
+          "Tissu 100 % PME et ETI de services et de professions libérales très orienté relation client : sur l'avenue Galliéni, le centre-ville et les abords de la gare, on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse — devis intelligents, relances, prise de rendez-vous — ou on construit une vitrine e-commerce sur mesure sous Shopify, WooCommerce ou PrestaShop.",
           "Aux portes de Paris via le RER A (~20 min) et l'A4 dans l'est parisien, à la jonction de Saint-Maur-des-Fossés, Nogent-sur-Marne et Champigny : nous cadrons vite sur site, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données client et de réservation restent maîtrisées.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, relances) sur le site existant d'un commerce de l'avenue Galliéni, d'un restaurant ou d'une guinguette de bord de Marne, ou d'une profession libérale, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,11 +133,11 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, périmètre écrit. Mise en ligne sans downtime quand on augmente l'existant, y compris en pleine saison des bords de Marne. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun abonnement imposé, aucun verrou propriétaire. L'ensemble reste transférable à tout prestataire francilien ou repris en interne par vos équipes à Joinville-le-Pont.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Joinville-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville des bords de Marne, berceau historique des studios de cinéma français installés dès les années 1910, dont le tissu mêle TPE de services, agences créatives, audiovisuel, professions libérales et commerces de l'avenue Galliéni et du centre-ville. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Joinville-le-Pont, le long du RER A et à deux pas de l'Île Fanac, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Joinville-le-Pont des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une ville des bords de Marne, berceau historique des studios de cinéma français installés dès les années 1910, dont le tissu mêle PME de services, agences créatives, audiovisuel, professions libérales et commerces de l'avenue Galliéni et du centre-ville. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, sans verrou. Kick-off en présentiel à Joinville-le-Pont, le long du RER A et à deux pas de l'Île Fanac, puis itérations à distance.",
         whyHere: [
           "Héritage audiovisuel et agences créatives : héritière des studios de Joinville actifs dès les années 1910 puis exploités par Pathé et Gaumont, la ville garde une culture de production, post-production et métiers de l'image — terrain idéal pour des portfolios dynamiques, des sites de présentation de catalogue et des recherches sémantiques dans des médiathèques de projets, branchés sur vos rushes et références.",
           "Vie de bord de Marne et loisirs nautiques : guinguettes, restaurants, clubs d'aviron et de canoë-kayak, base nautique et événements saisonniers autour de l'Île Fanac réclament réservation en ligne, pages mobile-first et chatbots multilingues pour une clientèle francilienne et touristique de passage le long des quais.",
-          "Tissu 100 % TPE/PME de services et de professions libérales très orienté relation client : sur l'avenue Galliéni, le centre-ville et les abords de la gare, on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse — devis intelligents, relances, prise de rendez-vous — ou on construit une vitrine e-commerce sur mesure sous Shopify, WooCommerce ou PrestaShop.",
+          "Tissu 100 % PME et ETI de services et de professions libérales très orienté relation client : sur l'avenue Galliéni, le centre-ville et les abords de la gare, on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse — devis intelligents, relances, prise de rendez-vous — ou on construit une vitrine e-commerce sur mesure sous Shopify, WooCommerce ou PrestaShop.",
           "Aux portes de Paris via le RER A (~20 min) et l'A4 dans l'est parisien, à la jonction de Saint-Maur-des-Fossés, Nogent-sur-Marne et Champigny : nous cadrons vite sur site, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données client et de réservation restent maîtrisées.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous, relances) sur le site existant d'un commerce de l'avenue Galliéni, d'un restaurant ou d'une guinguette de bord de Marne, ou d'une profession libérale, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -238,7 +226,7 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous accompagnons en priorité les TPE puis les PME de Joinville-le-Pont. Les commerces et agences de quelques salariés sont notre cœur de cible, les ETI restant marginales.",
+      a: "Non. Nous accompagnons en priorité les PME puis les ETI de Joinville-le-Pont. Les commerces et agences de quelques salariés sont notre cœur de cible, les grands groupes complètent ce socle.",
     },
     {
       q: "Comment se déroule un audit IA à Joinville-le-Pont ?",

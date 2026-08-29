@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie son expertise pour toutes les organisations du Val Montjoie.",
+    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu PME hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie son expertise pour toutes les organisations du Val Montjoie.",
   pitchEn:
-    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie son expertise pour toutes les organisations du Val Montjoie.",
+    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu PME hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie son expertise pour toutes les organisations du Val Montjoie.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Gervais-les-Bains (74). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers, indépendants, professions libérales et prestataires montagne du Val Montjoie.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Gervais-les-Bains (74). Nous accompagnons tous types d'activités : PME hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers, indépendants, professions libérales et prestataires montagne du Val Montjoie.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Gervais-les-Bains (74). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers, indépendants, professions libérales et prestataires montagne du Val Montjoie.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Gervais-les-Bains (74). Nous accompagnons tous types d'activités : PME hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers, indépendants, professions libérales et prestataires montagne du Val Montjoie.",
   seoHook: "station thermale",
   ecosystemFr:
-    "Saint-Gervais-les-Bains est une station thermale et de ski réputée au pied du Mont-Blanc, dans le Val Montjoie. Économie portée par le tourisme quatre saisons, le thermalisme (Thermes du Fayet), le tramway du Mont-Blanc et les remontées mécaniques. TPE hôtellerie-restauration, PME tourisme, commerces, professions libérales et prestataires montagne.",
+    "Saint-Gervais-les-Bains est une station thermale et de ski réputée au pied du Mont-Blanc, dans le Val Montjoie. Économie portée par le tourisme quatre saisons, le thermalisme (Thermes du Fayet), le tramway du Mont-Blanc et les remontées mécaniques. PME hôtellerie-restauration, PME tourisme, commerces, professions libérales et prestataires montagne.",
   ecosystemEn:
-    "Saint-Gervais-les-Bains est une station thermale et de ski réputée au pied du Mont-Blanc, dans le Val Montjoie. Économie portée par le tourisme quatre saisons, le thermalisme (Thermes du Fayet), le tramway du Mont-Blanc et les remontées mécaniques. TPE hôtellerie-restauration, PME tourisme, commerces, professions libérales et prestataires montagne.",
+    "Saint-Gervais-les-Bains est une station thermale et de ski réputée au pied du Mont-Blanc, dans le Val Montjoie. Économie portée par le tourisme quatre saisons, le thermalisme (Thermes du Fayet), le tramway du Mont-Blanc et les remontées mécaniques. PME hôtellerie-restauration, PME tourisme, commerces, professions libérales et prestataires montagne.",
   distancesFr:
     "Gare Saint-Gervais-les-Bains-Le Fayet (TER et TMB tramway Mont-Blanc). Chamonix à 25 min. Annecy à 1h15. Genève à 1h15 A40. Aéroport Genève-Cointrin à 1h20. Autoroute A40 Blanche via Le Fayet.",
   distancesEn:
@@ -25,13 +25,13 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
     "Hôtellerie-restauration & hébergement touristique",
     "Thermalisme & bien-être",
     "Commerce saisonnier & location montagne",
-    "TPE prestataires activités outdoor",
+    "PME prestataires activités outdoor",
     "Professions libérales & services montagne",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux PME hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux PME hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Gervais-les-Bains : formats adaptés à l'hôtel, restaurant, commerce saisonnier ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure tourisme et montagne.",
@@ -42,8 +42,8 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Gervais-les-Bains : revenue management hôtelier, agents conversationnels multilingues touristes, automatisation réservations, optimisation planning saisonnier. Tissu tourisme Val Montjoie.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Gervais-les-Bains : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE hôtellerie, gérants PME tourisme, professions libérales, prestataires montagne du Val Montjoie.",
-      en: "Coaching 1-to-1 à Saint-Gervais-les-Bains : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE hôtellerie, gérants PME tourisme, professions libérales, prestataires montagne du Val Montjoie.",
+      fr: "Coaching 1-to-1 à Saint-Gervais-les-Bains : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants PME hôtellerie, gérants PME tourisme, professions libérales, prestataires montagne du Val Montjoie.",
+      en: "Coaching 1-to-1 à Saint-Gervais-les-Bains : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants PME hôtellerie, gérants PME tourisme, professions libérales, prestataires montagne du Val Montjoie.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "L'IA peut-elle aider les hôtels et restaurants de Saint-Gervais ?",
-      a: "Oui, l'IA optimise la gestion hôtelière et la restauration : revenue management dynamique, chatbot multilingue pour réservations touristes, automatisation planning saisonnier, analyse avis clients, prédiction affluence. Gains mesurables pour les TPE et PME du tourisme.",
+      a: "Oui, l'IA optimise la gestion hôtelière et la restauration : revenue management dynamique, chatbot multilingue pour réservations touristes, automatisation planning saisonnier, analyse avis clients, prédiction affluence. Gains mesurables pour les PME et ETI du tourisme.",
     },
     {
       q: "Accompagnez-vous les commerces saisonniers de montagne ?",
@@ -65,7 +65,7 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching 1-to-1 à Saint-Gervais ?",
-      a: "Le coaching individuel se déroule dans vos locaux à Saint-Gervais-les-Bains ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant TPE hôtellerie ou gérant PME tourisme. Prise en main d'outils IA concrets pour votre activité.",
+      a: "Le coaching individuel se déroule dans vos locaux à Saint-Gervais-les-Bains ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant PME hôtellerie ou gérant PME tourisme. Prise en main d'outils IA concrets pour votre activité.",
     },
   ],
 };

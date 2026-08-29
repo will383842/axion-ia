@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PORNICHET_COPY: VilleCopy = {
   pitchFr:
-    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pornichétin.",
+    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu PME du commerce, PME hôtelières et de services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pornichétin.",
   pitchEn:
-    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pornichétin.",
+    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu PME du commerce, PME hôtelières et de services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pornichétin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons PME du commerce, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons PME du commerce, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit sur place sur mesure.",
   seoHook: "bassin pornichétin",
   ecosystemFr:
     "Pornichet (12 800 hab) est une station balnéaire de la baie de La Baule, entre Saint-Nazaire et La Baule. Port de plaisance, thalassothérapie, hôtellerie-restauration, commerces, artisanat et professions libérales. Proximité Saint-Nazaire (10 min), La Baule (5 min), Nantes (1h). Hippodrome et casino renforcent l'attractivité touristique annuelle.",
@@ -30,8 +30,8 @@ export const PORNICHET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pornichet : diagnostic adapté aux TPE commerçants, PME hôtelières et de restauration, artisans et professions libérales de la station balnéaire de la baie de La Baule. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pornichet : diagnostic adapté aux TPE commerçants, PME hôtelières et de restauration, artisans et professions libérales de la station balnéaire de la baie de La Baule. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pornichet : diagnostic adapté aux PME du commerce, PME hôtelières et de restauration, artisans et professions libérales de la station balnéaire de la baie de La Baule. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pornichet : diagnostic adapté aux PME du commerce, PME hôtelières et de restauration, artisans et professions libérales de la station balnéaire de la baie de La Baule. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pornichet : formats adaptés à l'hôtellerie-restauration, commerce touristique, nautisme et artisanat de la côte d'Amour. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const PORNICHET_COPY: VilleCopy = {
       en: "Implémentation IA à Pornichet : revenue management hôtelier, gestion port de plaisance, CRM clients tourisme, automatisation facturation et agents conversationnels pour les PME balnéaires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pornichet : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants hôtels-restaurants, acteurs nautiques et professions libérales de la baie de La Baule.",
-      en: "Coaching 1-to-1 à Pornichet : sessions dans vos locaux ou en visio. Dirigeants TPE commerçants, gérants hôtels-restaurants, acteurs nautiques et professions libérales de la baie de La Baule.",
+      fr: "Coaching 1-to-1 à Pornichet : sessions dans vos locaux ou en visio. Dirigeants PME du commerce, gérants hôtels-restaurants, acteurs nautiques et professions libérales de la baie de La Baule.",
+      en: "Coaching 1-to-1 à Pornichet : sessions dans vos locaux ou en visio. Dirigeants PME du commerce, gérants hôtels-restaurants, acteurs nautiques et professions libérales de la baie de La Baule.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const PORNICHET_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Pornichet  ?",
-      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE de Pornichet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
+      a: "L'Audit sur place IA démarre à {{price:audit-flash|flat}} pour les PME de Pornichet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
     },
     {
       q: "Accompagnez-vous les restaurants et hôtels de Pornichet ?",
@@ -65,7 +65,7 @@ export const PORNICHET_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Pornichet ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Pornichet. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI à Pornichet. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

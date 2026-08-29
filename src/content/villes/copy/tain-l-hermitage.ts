@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
   pitchFr:
-    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, PME artisanales, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, PME artisanales, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), PME du BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), PME du BTP, commerçants et services aux entreprises.",
   seoHook: "viticulture hermitage & négoce vins",
   ecosystemFr:
-    "Tain-l'Hermitage est positionnée dans la vallée du Rhône drômoise, face à Tournon-sur-Rhône (Ardèche). Capitale historique des grands crus septentrionaux du Rhône : AOC Hermitage (cru emblématique), Crozes-Hermitage, et Saint-Joseph en rive opposée. Tissu viticole haut de gamme, oenotourisme prestige, PME agroalimentaires (filière chocolat notamment), TPE artisanat BTP.",
+    "Tain-l'Hermitage est positionnée dans la vallée du Rhône drômoise, face à Tournon-sur-Rhône (Ardèche). Capitale historique des grands crus septentrionaux du Rhône : AOC Hermitage (cru emblématique), Crozes-Hermitage, et Saint-Joseph en rive opposée. Tissu viticole haut de gamme, oenotourisme prestige, PME agroalimentaires (filière chocolat notamment), PME du BTP.",
   ecosystemEn:
-    "Tain-l'Hermitage est positionnée dans la vallée du Rhône drômoise, face à Tournon-sur-Rhône (Ardèche). Capitale historique des grands crus septentrionaux du Rhône : AOC Hermitage (cru emblématique), Crozes-Hermitage, et Saint-Joseph en rive opposée. Tissu viticole haut de gamme, oenotourisme prestige, PME agroalimentaires (filière chocolat notamment), TPE artisanat BTP.",
+    "Tain-l'Hermitage est positionnée dans la vallée du Rhône drômoise, face à Tournon-sur-Rhône (Ardèche). Capitale historique des grands crus septentrionaux du Rhône : AOC Hermitage (cru emblématique), Crozes-Hermitage, et Saint-Joseph en rive opposée. Tissu viticole haut de gamme, oenotourisme prestige, PME agroalimentaires (filière chocolat notamment), PME du BTP.",
   distancesFr:
     "Gare Tain-Tournon à 5 min (TER Lyon-Avignon). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Valence à 25 min. Vienne à 40 min. Annonay à 30 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
     "Viticulture AOC Hermitage / Crozes-Hermitage",
     "Négoce en vins & oenotourisme prestige",
     "PME agroalimentaires (chocolat, etc.)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tain-l'Hermitage : formats adaptés au domaine viticole, négoce en vins, atelier agroalimentaire. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
       en: "Implémentation IA à Tain-l'Hermitage : prédiction vendanges grands crus, classification photos cépages, traçabilité AOC export, agents conversationnels oenotourisme multilingue, scoring sommellerie.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tain-l'Hermitage : sessions dans votre domaine viticole, négoce, atelier ou en visio. Viticulteurs AOC, négociants, sommeliers, acteurs oenotourisme, artisans, gérants TPE/PME tainois.",
-      en: "Coaching 1-to-1 à Tain-l'Hermitage : sessions dans votre domaine viticole, négoce, atelier ou en visio. Viticulteurs AOC, négociants, sommeliers, acteurs oenotourisme, artisans, gérants TPE/PME tainois.",
+      fr: "Coaching 1-to-1 à Tain-l'Hermitage : sessions dans votre domaine viticole, négoce, atelier ou en visio. Viticulteurs AOC, négociants, sommeliers, acteurs oenotourisme, artisans, gérants PME et ETI tainois.",
+      en: "Coaching 1-to-1 à Tain-l'Hermitage : sessions dans votre domaine viticole, négoce, atelier ou en visio. Viticulteurs AOC, négociants, sommeliers, acteurs oenotourisme, artisans, gérants PME et ETI tainois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les négociants en vins et PME agroalimentaires (filière chocolat notamment, présente à Tain-l'Hermitage) sur leurs cas IA : agents conversationnels B2B export multilingue, classification photos produits, traçabilité.",
     },
     {
-      q: "Quels services pour les TPE et commerces oenotouristiques ?",
-      a: "Pour les TPE artisans et commerçants oenotouristiques à Tain-l'Hermitage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels multilingue, automatisation réservations dégustations.",
+      q: "Quels services pour les PME et commerces oenotouristiques ?",
+      a: "Pour les PME de l'artisanat et du commerce oenotouristiques à Tain-l'Hermitage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels multilingue, automatisation réservations dégustations.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",

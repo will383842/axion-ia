@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_TRINITE_COPY: VilleCopy = {
   pitchFr:
-    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA accompagne tout le tissu professionnel local.",
+    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu PME et ETI commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA accompagne tout le tissu professionnel local.",
+    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu PME et ETI commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : PME du BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : PME du BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
   seoHook: "commerce proximité & immobilier gestion",
   ecosystemFr:
     "La Trinité est une commune résidentielle et commerciale de la vallée du Paillon, aux portes est de Nice. La zone d'activités des Music regroupe des PME commerciales et de services. Tissu dense d'artisans BTP, commerces de proximité et professions libérales. Membre de la Métropole Nice Côte d'Azur, la commune bénéficie du dynamisme économique niçois tout en conservant un caractère résidentiel accessible.",
@@ -23,27 +23,27 @@ export const LA_TRINITE_COPY: VilleCopy = {
     "Nice centre à 10 min (voiture ou tramway L1 prolongé). Aéroport Nice-Côte d'Azur à 20 min. Monaco à 25 min. Gare Nice-Ville à 15 min (TGV Paris 5h30). Bus Lignes d'Azur depuis La Trinité.",
   topSectorsNaf: [
     "Commerce de proximité & zone des Music",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Professions libérales",
     "Services aux entreprises",
     "Immobilier & gestion locative",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
-      en: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux petites structures.",
+      fr: "Audit IA à La Trinité : diagnostic adapté aux PME du BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux PME.",
+      en: "Audit IA à La Trinité : diagnostic adapté aux PME du BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible aux PME.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Trinité : formats adaptés au commerce, atelier artisan, cabinet ou bureau PME. Vos équipes terrain repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site à La Trinité : formats adaptés au commerce, atelier artisan, cabinet ou bureau PME. Vos équipes terrain repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à La Trinité : agents conversationnels client, automatisation devis BTP, classification documents, CRM augmentés, gestion locative IA. Adapté aux TPE/PME de la vallée du Paillon.",
-      en: "Implémentation IA à La Trinité : agents conversationnels client, automatisation devis BTP, classification documents, CRM augmentés, gestion locative IA. Adapté aux TPE/PME de la vallée du Paillon.",
+      fr: "Implémentation IA à La Trinité : agents conversationnels client, automatisation devis BTP, classification documents, CRM augmentés, gestion locative IA. Adapté aux PME et ETI de la vallée du Paillon.",
+      en: "Implémentation IA à La Trinité : agents conversationnels client, automatisation devis BTP, classification documents, CRM augmentés, gestion locative IA. Adapté aux PME et ETI de la vallée du Paillon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Trinité : sessions dans votre commerce, atelier, cabinet ou en visio. Artisans, commerçants, gérants TPE/PME trinitaires et professions libérales souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à La Trinité : sessions dans votre commerce, atelier, cabinet ou en visio. Artisans, commerçants, gérants TPE/PME trinitaires et professions libérales souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à La Trinité : sessions dans votre commerce, atelier, cabinet ou en visio. Artisans, commerçants, gérants PME et ETI trinitaires et professions libérales souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à La Trinité : sessions dans votre commerce, atelier, cabinet ou en visio. Artisans, commerçants, gérants PME et ETI trinitaires et professions libérales souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const LA_TRINITE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Trinité et dans toute la vallée du Paillon (Drap, Contes, L'Escarène, Peillon). Couverture Métropole Nice Côte d'Azur complète et accès rapide depuis Nice centre (10 min).",
     },
     {
-      q: "Travaillez-vous avec les TPE et artisans BTP de La Trinité ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de La Trinité sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
+      q: "Travaillez-vous avec les PME et artisans BTP de La Trinité ?",
+      a: "Oui, nous accompagnons les PME du BTP de La Trinité sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning et stocks. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Accompagnez-vous les commerces et PME de la zone des Music ?",

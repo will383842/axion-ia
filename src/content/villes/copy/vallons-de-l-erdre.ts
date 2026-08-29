@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
   pitchFr:
-    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA collabore avec toutes les structures locales du nord Loire-Atlantique.",
+    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu PME de l'artisanat et du commerce, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA collabore avec toutes les structures locales du nord Loire-Atlantique.",
   pitchEn:
-    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA collabore avec toutes les structures locales du nord Loire-Atlantique.",
+    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu PME de l'artisanat et du commerce, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA collabore avec toutes les structures locales du nord Loire-Atlantique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vallons-de-l'Erdre (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité et entreprises du nord Loire-Atlantique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vallons-de-l'Erdre (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, exploitations agricoles, PME agroalimentaires, services de proximité et entreprises du nord Loire-Atlantique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vallons-de-l'Erdre (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité et entreprises du nord Loire-Atlantique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vallons-de-l'Erdre (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, exploitations agricoles, PME agroalimentaires, services de proximité et entreprises du nord Loire-Atlantique.",
   seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
-    "Vallons-de-l'Erdre est une commune nouvelle rurale du nord Loire-Atlantique, à la frontière du Maine-et-Loire. Agriculture, élevage, agroalimentaire. Tissu TPE artisans, commerçants, exploitations agricoles, services de proximité. Bassin de vie entre Ancenis et Châteaubriant.",
+    "Vallons-de-l'Erdre est une commune nouvelle rurale du nord Loire-Atlantique, à la frontière du Maine-et-Loire. Agriculture, élevage, agroalimentaire. Tissu PME artisanales, commerçants, exploitations agricoles, services de proximité. Bassin de vie entre Ancenis et Châteaubriant.",
   ecosystemEn:
-    "Vallons-de-l'Erdre est une commune nouvelle rurale du nord Loire-Atlantique, à la frontière du Maine-et-Loire. Agriculture, élevage, agroalimentaire. Tissu TPE artisans, commerçants, exploitations agricoles, services de proximité. Bassin de vie entre Ancenis et Châteaubriant.",
+    "Vallons-de-l'Erdre est une commune nouvelle rurale du nord Loire-Atlantique, à la frontière du Maine-et-Loire. Agriculture, élevage, agroalimentaire. Tissu PME artisanales, commerçants, exploitations agricoles, services de proximité. Bassin de vie entre Ancenis et Châteaubriant.",
   distancesFr:
     "Ancenis à 20 min. Nantes centre à 50 min. Châteaubriant à 30 min. Gare Nantes TGV à 55 min. Aéroport Nantes-Atlantique à 55 min. Angers à 50 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture & élevage",
     "Agroalimentaire",
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "Services de proximité",
     "Professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vallons-de-l'Erdre : diagnostic adapté aux TPE artisans, exploitations agricoles, PME agroalimentaires et commerçants du nord Loire-Atlantique. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vallons-de-l'Erdre : diagnostic adapté aux TPE artisans, exploitations agricoles, PME agroalimentaires et commerçants du nord Loire-Atlantique. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vallons-de-l'Erdre : diagnostic adapté aux PME artisanales, exploitations agricoles, PME agroalimentaires et commerçants du nord Loire-Atlantique. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vallons-de-l'Erdre : diagnostic adapté aux PME artisanales, exploitations agricoles, PME agroalimentaires et commerçants du nord Loire-Atlantique. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vallons-de-l'Erdre : formats adaptés à l'exploitation agricole, à l'atelier, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
       en: "Implémentation IA à Vallons-de-l'Erdre : automatisation gestion exploitation, traçabilité élevage, agents conversationnels vente directe, extraction données commerciales. Nord Loire-Atlantique.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vallons-de-l'Erdre : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME du nord Loire-Atlantique souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Vallons-de-l'Erdre : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME du nord Loire-Atlantique souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Vallons-de-l'Erdre : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI du nord Loire-Atlantique souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Vallons-de-l'Erdre : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI du nord Loire-Atlantique souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Vallons-de-l'Erdre  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord Loire-Atlantique.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du nord Loire-Atlantique.",
     },
     {
       q: "Comment se déroule une mission en zone rurale ?",

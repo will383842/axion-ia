@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GENAS_COPY: VilleCopy = {
   pitchFr:
-    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire de l'est lyonnais.",
+    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, PME du BTP, commerces. Axion-IA y travaille avec les organisations du territoire de l'est lyonnais.",
   pitchEn:
-    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire de l'est lyonnais.",
+    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, PME du BTP, commerces. Axion-IA y travaille avec les organisations du territoire de l'est lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, PME du BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   seoHook: "tertiaires logistiques & zones d'activités",
   ecosystemFr:
-    "Genas est intégrée à la Métropole de Lyon, en banlieue est (axe Lyon-Saint-Exupéry). Position de transit : zones d'activités notables, proximité aéroport. Tissu PME tertiaires et logistiques, TPE artisanat BTP, commerces, professions libérales, agriculture résiduelle.",
+    "Genas est intégrée à la Métropole de Lyon, en banlieue est (axe Lyon-Saint-Exupéry). Position de transit : zones d'activités notables, proximité aéroport. Tissu PME tertiaires et logistiques, PME du BTP, commerces, professions libérales, agriculture résiduelle.",
   ecosystemEn:
-    "Genas est intégrée à la Métropole de Lyon, en banlieue est (axe Lyon-Saint-Exupéry). Position de transit : zones d'activités notables, proximité aéroport. Tissu PME tertiaires et logistiques, TPE artisanat BTP, commerces, professions libérales, agriculture résiduelle.",
+    "Genas est intégrée à la Métropole de Lyon, en banlieue est (axe Lyon-Saint-Exupéry). Position de transit : zones d'activités notables, proximité aéroport. Tissu PME tertiaires et logistiques, PME du BTP, commerces, professions libérales, agriculture résiduelle.",
   distancesFr:
     "Lyon centre à 20 min. Aéroport Lyon-Saint-Exupéry à 10 min. Chassieu limitrophe à 5 min. Bron à 10 min. Saint-Priest à 10 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const GENAS_COPY: VilleCopy = {
     "PME tertiaires & logistiques est lyonnais",
     "Zones d'activités (aire Saint-Exupéry)",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, PME artisanales, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, PME artisanales, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Genas : formats adaptés au bureau, entrepôt, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const GENAS_COPY: VilleCopy = {
       en: "Implémentation IA à Genas : optimisation supply chain Saint-Exupéry, agents conversationnels B2B, automatisation workflow, classification documents. Métropole Lyon E.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Genas : sessions dans votre bureau, entrepôt, cabinet ou en visio. Dirigeants logistique, tertiaires, artisans, gérants TPE/PME genassiens.",
-      en: "Coaching 1-to-1 à Genas : sessions dans votre bureau, entrepôt, cabinet ou en visio. Dirigeants logistique, tertiaires, artisans, gérants TPE/PME genassiens.",
+      fr: "Coaching 1-to-1 à Genas : sessions dans votre bureau, entrepôt, cabinet ou en visio. Dirigeants logistique, tertiaires, artisans, gérants PME et ETI genassiens.",
+      en: "Coaching 1-to-1 à Genas : sessions dans votre bureau, entrepôt, cabinet ou en visio. Dirigeants logistique, tertiaires, artisans, gérants PME et ETI genassiens.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const GENAS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales à Genas sur leurs cas IA : agents conversationnels patients/clients, automatisation RDV, classification dossiers. RGPD strict.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Genas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Genas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

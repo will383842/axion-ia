@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Saint-Jean-de-Braye, commune de 23 147 habitants du Loiret située à environ 5 km à l'est d'Orléans. Notre cabinet intervient sur site auprès des sous-traitants des pôles de compétitivité orléanais (chimie, électronique), des commerces, des artisans et des services de proximité. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), connectées au tissu de la métropole orléanaise. Les ETI viennent en complément.",
+    "Axion-IA accompagne les PME et ETI de Saint-Jean-de-Braye, commune de 23 147 habitants du Loiret située à environ 5 km à l'est d'Orléans. Notre cabinet intervient sur site auprès des sous-traitants des pôles de compétitivité orléanais (chimie, électronique), des commerces, des artisans et des services de proximité. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), connectées au tissu de la métropole orléanaise. Les grands groupes viennent en complément.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Saint-Jean-de-Braye, commune de 23 147 habitants du Loiret située à environ 5 km à l'est d'Orléans. Notre cabinet intervient sur site auprès des sous-traitants des pôles de compétitivité orléanais (chimie, électronique), des commerces, des artisans et des services de proximité. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), connectées au tissu de la métropole orléanaise. Les ETI viennent en complément.",
+    "Axion-IA accompagne les PME et ETI de Saint-Jean-de-Braye, commune de 23 147 habitants du Loiret située à environ 5 km à l'est d'Orléans. Notre cabinet intervient sur site auprès des sous-traitants des pôles de compétitivité orléanais (chimie, électronique), des commerces, des artisans et des services de proximité. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), connectées au tissu de la métropole orléanaise. Les grands groupes viennent en complément.",
   directAnswerFr:
-    "À Saint-Jean-de-Braye (Loiret, 23 147 habitants), Axion-IA priorise les TPE et PME locales : commerces, artisans, services et sous-traitants des pôles de compétitivité orléanais (chimie et électronique). Nos consultants se déplacent sur site depuis Paris ou Orléans (accès A10 à 15 km, RN 20 à 11 km, tramway ligne B inauguré en 2012) pour auditer les processus, automatiser les tâches et implémenter des solutions en code custom. Les ETI sont accompagnées en complément. Le bassin couvre Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux.",
+    "À Saint-Jean-de-Braye (Loiret, 23 147 habitants), Axion-IA priorise les PME et ETI locales : commerces, artisans, services et sous-traitants des pôles de compétitivité orléanais (chimie et électronique). Nos consultants se déplacent sur site depuis Paris ou Orléans (accès A10 à 15 km, RN 20 à 11 km, tramway ligne B inauguré en 2012) pour auditer les processus, automatiser les tâches et implémenter des solutions en code custom. Les grands groupes sont accompagnés en complément. Le bassin couvre Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux.",
   directAnswerEn:
-    "À Saint-Jean-de-Braye (Loiret, 23 147 habitants), Axion-IA priorise les TPE et PME locales : commerces, artisans, services et sous-traitants des pôles de compétitivité orléanais (chimie et électronique). Nos consultants se déplacent sur site depuis Paris ou Orléans (accès A10 à 15 km, RN 20 à 11 km, tramway ligne B inauguré en 2012) pour auditer les processus, automatiser les tâches et implémenter des solutions en code custom. Les ETI sont accompagnées en complément. Le bassin couvre Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux.",
+    "À Saint-Jean-de-Braye (Loiret, 23 147 habitants), Axion-IA priorise les PME et ETI locales : commerces, artisans, services et sous-traitants des pôles de compétitivité orléanais (chimie et électronique). Nos consultants se déplacent sur site depuis Paris ou Orléans (accès A10 à 15 km, RN 20 à 11 km, tramway ligne B inauguré en 2012) pour auditer les processus, automatiser les tâches et implémenter des solutions en code custom. Les grands groupes sont accompagnés en complément. Le bassin couvre Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux.",
   seoHook: "métropole orléanaise est",
   ecosystemFr:
-    "Saint-Jean-de-Braye fait partie d'Orléans Métropole et participe aux pôles de compétitivité orléanais centrés sur la chimie et l'électronique. La commune est connectée à l'A10 (15 km), à la RN 20 (11 km) et desservie par le tramway ligne B inauguré en 2012. Le bassin économique inclut Orléans (5 km), Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux. La population a progressé de 11,55 % entre 2017 et 2023, signe d'un dynamisme territorial favorable aux TPE et PME.",
+    "Saint-Jean-de-Braye fait partie d'Orléans Métropole et participe aux pôles de compétitivité orléanais centrés sur la chimie et l'électronique. La commune est connectée à l'A10 (15 km), à la RN 20 (11 km) et desservie par le tramway ligne B inauguré en 2012. Le bassin économique inclut Orléans (5 km), Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux. La population a progressé de 11,55 % entre 2017 et 2023, signe d'un dynamisme territorial favorable aux PME et ETI.",
   ecosystemEn:
-    "Saint-Jean-de-Braye fait partie d'Orléans Métropole et participe aux pôles de compétitivité orléanais centrés sur la chimie et l'électronique. La commune est connectée à l'A10 (15 km), à la RN 20 (11 km) et desservie par le tramway ligne B inauguré en 2012. Le bassin économique inclut Orléans (5 km), Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux. La population a progressé de 11,55 % entre 2017 et 2023, signe d'un dynamisme territorial favorable aux TPE et PME.",
+    "Saint-Jean-de-Braye fait partie d'Orléans Métropole et participe aux pôles de compétitivité orléanais centrés sur la chimie et l'électronique. La commune est connectée à l'A10 (15 km), à la RN 20 (11 km) et desservie par le tramway ligne B inauguré en 2012. Le bassin économique inclut Orléans (5 km), Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux. La population a progressé de 11,55 % entre 2017 et 2023, signe d'un dynamisme territorial favorable aux PME et ETI.",
   distancesFr:
     "Saint-Jean-de-Braye est à environ 5 km à l'est d'Orléans, 15 km de l'A10, 11 km de la RN 20. Tramway ligne B desservant la commune depuis 2012. Pont René-Thinat (Orléans) à 4,5 km.",
   distancesEn:
@@ -31,20 +31,20 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA Sur place à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
-      en: "Audit IA Sur place à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour TPE et PME locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
+      fr: "Audit IA Sur place à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour PME et ETI locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
+      en: "Audit IA Sur place à Saint-Jean-de-Braye ({{price:audit-flash|flat}}, 4 h) : diagnostic des processus pour PME et ETI locales — sous-traitants chimie/électronique, commerces et artisans de la métropole orléanaise.",
     },
     interventions: {
-      fr: "Interventions à Saint-Jean-de-Braye dès {{price:intervention-4h|flat}} : automatisation de la facturation, planning, support client et reporting pour TPE et PME du tissu orléanais.",
-      en: "Interventions à Saint-Jean-de-Braye dès {{price:intervention-4h|flat}} : automatisation de la facturation, planning, support client et reporting pour TPE et PME du tissu orléanais.",
+      fr: "Interventions à Saint-Jean-de-Braye dès {{price:intervention-4h|flat}} : automatisation de la facturation, planning, support client et reporting pour PME et ETI du tissu orléanais.",
+      en: "Interventions à Saint-Jean-de-Braye dès {{price:intervention-4h|flat}} : automatisation de la facturation, planning, support client et reporting pour PME et ETI du tissu orléanais.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Jean-de-Braye dès {{price:impl-poc|entry}} : développement de modules sur-mesure en code custom (pas de no-code) — intégrations ERP, gestion documentaire, outils métiers pour PME du Loiret.",
       en: "Implémentation IA à Saint-Jean-de-Braye dès {{price:impl-poc|entry}} : développement de modules sur-mesure en code custom (pas de no-code) — intégrations ERP, gestion documentaire, outils métiers pour PME du Loiret.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Saint-Jean-de-Braye dès {{price:intervention-dirigeants|flat}} : coaching individuel des dirigeants de TPE et PME pour structurer la stratégie IA et prioriser les cas d'usage à fort ROI.",
-      en: "Sessions 1-to-1 à Saint-Jean-de-Braye dès {{price:intervention-dirigeants|flat}} : coaching individuel des dirigeants de TPE et PME pour structurer la stratégie IA et prioriser les cas d'usage à fort ROI.",
+      fr: "Sessions 1-to-1 à Saint-Jean-de-Braye dès {{price:intervention-dirigeants|flat}} : coaching individuel des dirigeants de PME et d'ETI pour structurer la stratégie IA et prioriser les cas d'usage à fort ROI.",
+      en: "Sessions 1-to-1 à Saint-Jean-de-Braye dès {{price:intervention-dirigeants|flat}} : coaching individuel des dirigeants de PME et d'ETI pour structurer la stratégie IA et prioriser les cas d'usage à fort ROI.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
         whyHere: [
           "La zone d'activité P.A. Archimède (environ 170 hectares, plusieurs centaines d'établissements) concentre des industriels et sous-traitants comme Moteurs Leroy-Somer ou Eiffage Énergie Systèmes Centre Loire : on greffe des portails clients, des configurateurs de devis et des tableaux de bord de suivi de production augmentés à l'IA sur vos ERP et MES existants, sans imposer de refonte coûteuse.",
           "Commerces et artisans du centre-bourg et des abords du tramway ligne B (en service depuis 2012), à portée immédiate d'Orléans : on construit des vitrines e-commerce mobile-first sous WordPress, Shopify, WooCommerce ou PrestaShop, avec prise de rendez-vous en ligne et chatbots multilingues pour capter la clientèle de toute la métropole.",
-          "Commune en forte croissance démographique (+11,55 % entre 2017 et 2023) : un bassin de TPE et PME de services qui se structurent autour des pôles chimie et électronique orléanais, idéal pour des SaaS métiers sur mesure, de la recherche sémantique documentaire et des automatisations de facturation, planning et reporting.",
+          "Commune en forte croissance démographique (+11,55 % entre 2017 et 2023) : un bassin de PME et ETI de services qui se structurent autour des pôles chimie et électronique orléanais, idéal pour des SaaS métiers sur mesure, de la recherche sémantique documentaire et des automatisations de facturation, planning et reporting.",
           "Bassin élargi par l'A10 (15 km), la RN 20 (11 km) et la proximité d'Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux : hébergement UE strict et conformité RGPD/AI Act pour les sous-traitants industriels dont les données de process et les nomenclatures clients restent maîtrisées et non transférées hors UE.",
         ],
         methodology: [
@@ -85,12 +85,6 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous en ligne) sur le site existant d'un commerce, d'un artisan ou d'un service abraysien du centre-bourg, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -140,7 +134,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
         whyHere: [
           "La zone d'activité P.A. Archimède (environ 170 hectares, plusieurs centaines d'établissements) concentre des industriels et sous-traitants comme Moteurs Leroy-Somer ou Eiffage Énergie Systèmes Centre Loire : on greffe des portails clients, des configurateurs de devis et des tableaux de bord de suivi de production augmentés à l'IA sur vos ERP et MES existants, sans imposer de refonte coûteuse.",
           "Commerces et artisans du centre-bourg et des abords du tramway ligne B (en service depuis 2012), à portée immédiate d'Orléans : on construit des vitrines e-commerce mobile-first sous WordPress, Shopify, WooCommerce ou PrestaShop, avec prise de rendez-vous en ligne et chatbots multilingues pour capter la clientèle de toute la métropole.",
-          "Commune en forte croissance démographique (+11,55 % entre 2017 et 2023) : un bassin de TPE et PME de services qui se structurent autour des pôles chimie et électronique orléanais, idéal pour des SaaS métiers sur mesure, de la recherche sémantique documentaire et des automatisations de facturation, planning et reporting.",
+          "Commune en forte croissance démographique (+11,55 % entre 2017 et 2023) : un bassin de PME et ETI de services qui se structurent autour des pôles chimie et électronique orléanais, idéal pour des SaaS métiers sur mesure, de la recherche sémantique documentaire et des automatisations de facturation, planning et reporting.",
           "Bassin élargi par l'A10 (15 km), la RN 20 (11 km) et la proximité d'Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux : hébergement UE strict et conformité RGPD/AI Act pour les sous-traitants industriels dont les données de process et les nomenclatures clients restent maîtrisées et non transférées hors UE.",
         ],
         methodology: [
@@ -171,12 +165,6 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous en ligne) sur le site existant d'un commerce, d'un artisan ou d'un service abraysien du centre-bourg, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -243,11 +231,11 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs locaux sont prioritaires à Saint-Jean-de-Braye ?",
-      a: "TPE et PME en chimie, électronique, commerce, artisanat et services aux entreprises, liées aux pôles de compétitivité d'Orléans Métropole. Les ETI sont accompagnées en complément.",
+      a: "PME et ETI en chimie, électronique, commerce, artisanat et services aux entreprises, liées aux pôles de compétitivité d'Orléans Métropole. Les grands groupes sont accompagnés en complément.",
     },
     {
       q: "Axion-IA propose-t-il du no-code à Saint-Jean-de-Braye ?",
-      a: "Non. Axion-IA développe exclusivement en code custom, garantissant maîtrise du code source, indépendance technologique et conformité RGPD pour les TPE et PME du Loiret.",
+      a: "Non. Axion-IA développe exclusivement en code custom, garantissant maîtrise du code source, indépendance technologique et conformité RGPD pour les PME et ETI du Loiret.",
     },
   ],
 };

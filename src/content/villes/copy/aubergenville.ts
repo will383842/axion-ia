@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AUBERGENVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Aubergenville (78), commune des Yvelines en bord de Seine, dotée de zones industrielles et d'activités économiques variées, allie tissu productif et résidentiel. Tissu TPE commerces et artisanat, PME industrie et logistique, services aux entreprises, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Aubergenville (78), commune des Yvelines en bord de Seine, dotée de zones industrielles et d'activités économiques variées, allie tissu productif et résidentiel. Tissu PME du commerce et artisanat, PME industrie et logistique, services aux entreprises, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Aubergenville (78), commune des Yvelines en bord de Seine, dotée de zones industrielles et d'activités économiques variées, allie tissu productif et résidentiel. Tissu TPE commerces et artisanat, PME industrie et logistique, services aux entreprises, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Aubergenville (78), commune des Yvelines en bord de Seine, dotée de zones industrielles et d'activités économiques variées, allie tissu productif et résidentiel. Tissu PME du commerce et artisanat, PME industrie et logistique, services aux entreprises, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubergenville (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubergenville (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubergenville (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubergenville (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit sur place sur mesure.",
   seoHook: "commerce détail & industrie logistique",
   ecosystemFr:
-    "Aubergenville est une commune des Yvelines en bord de Seine, dotée de plusieurs zones industrielles et d'activités (ZI des Closeaux, ZA des Graviers), à proximité de Mantes-la-Jolie et Poissy. Tissu TPE commerces et artisanat, PME industrie et logistique, services aux entreprises, professions libérales.",
+    "Aubergenville est une commune des Yvelines en bord de Seine, dotée de plusieurs zones industrielles et d'activités (ZI des Closeaux, ZA des Graviers), à proximité de Mantes-la-Jolie et Poissy. Tissu PME du commerce et artisanat, PME industrie et logistique, services aux entreprises, professions libérales.",
   ecosystemEn:
-    "Aubergenville est une commune des Yvelines en bord de Seine, dotée de plusieurs zones industrielles et d'activités (ZI des Closeaux, ZA des Graviers), à proximité de Mantes-la-Jolie et Poissy. Tissu TPE commerces et artisanat, PME industrie et logistique, services aux entreprises, professions libérales.",
+    "Aubergenville est une commune des Yvelines en bord de Seine, dotée de plusieurs zones industrielles et d'activités (ZI des Closeaux, ZA des Graviers), à proximité de Mantes-la-Jolie et Poissy. Tissu PME du commerce et artisanat, PME industrie et logistique, services aux entreprises, professions libérales.",
   distancesFr:
     "Mantes-la-Jolie à 10 min. Poissy à 15 min. Gare Transilien Aubergenville–Élisabethville (ligne J). Paris Saint-Lazare à 45 min. A13 accès direct.",
   distancesEn:
@@ -42,8 +42,8 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
       en: "Implémentation IA à Aubergenville : CRM augmenté commerçants, automatisation chaîne logistique PME, gestion production industrielle IA, facturation intelligente, outils réservation restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aubergenville : sessions dans votre commerce, entrepôt, bureau ou en visio. Dirigeants TPE/PME aubergenvillois, responsables logistique, professions libérales.",
-      en: "Coaching 1-to-1 à Aubergenville : sessions dans votre commerce, entrepôt, bureau ou en visio. Dirigeants TPE/PME aubergenvillois, responsables logistique, professions libérales.",
+      fr: "Coaching 1-to-1 à Aubergenville : sessions dans votre commerce, entrepôt, bureau ou en visio. Dirigeants PME et ETI aubergenvillois, responsables logistique, professions libérales.",
+      en: "Coaching 1-to-1 à Aubergenville : sessions dans votre commerce, entrepôt, bureau ou en visio. Dirigeants PME et ETI aubergenvillois, responsables logistique, professions libérales.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
       a: "Oui, CRM augmenté, gestion stocks intelligente, automatisation comptabilité et facturation, outils de fidélisation clientèle, vitrines numériques IA.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

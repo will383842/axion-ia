@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const NOVES_COPY: VilleCopy = {
   pitchFr:
-    "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de TPE artisans, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA accompagne entreprises et indépendants de la Petite Crau.",
+    "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de PME artisanales, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA accompagne entreprises et indépendants de la Petite Crau.",
   pitchEn:
-    "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de TPE artisans, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA accompagne entreprises et indépendants de la Petite Crau.",
+    "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de PME artisanales, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA accompagne entreprises et indépendants de la Petite Crau.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noves (13). Nous accompagnons TPE artisans, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noves (13). Nous accompagnons PME artisanales, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noves (13). Nous accompagnons TPE artisans, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noves (13). Nous accompagnons PME artisanales, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit sur place sur mesure, sans engagement.",
   seoHook: "agriculture, viticulture & PME Petite Crau",
   ecosystemFr:
-    "Noves occupe une position stratégique sur l'A7 entre Avignon et Salon-de-Provence, au cœur de la Petite Crau. Économie locale dominée par l'agriculture (maraîchage, vergers, oléiculture), la viticulture AOC, les TPE artisans, les PME services et les commerces de proximité. Logistique et négoce agricole également présents grâce à l'A7.",
+    "Noves occupe une position stratégique sur l'A7 entre Avignon et Salon-de-Provence, au cœur de la Petite Crau. Économie locale dominée par l'agriculture (maraîchage, vergers, oléiculture), la viticulture AOC, les PME artisanales, les PME services et les commerces de proximité. Logistique et négoce agricole également présents grâce à l'A7.",
   ecosystemEn:
-    "Noves occupe une position stratégique sur l'A7 entre Avignon et Salon-de-Provence, au cœur de la Petite Crau. Économie locale dominée par l'agriculture (maraîchage, vergers, oléiculture), la viticulture AOC, les TPE artisans, les PME services et les commerces de proximité. Logistique et négoce agricole également présents grâce à l'A7.",
+    "Noves occupe une position stratégique sur l'A7 entre Avignon et Salon-de-Provence, au cœur de la Petite Crau. Économie locale dominée par l'agriculture (maraîchage, vergers, oléiculture), la viticulture AOC, les PME artisanales, les PME services et les commerces de proximité. Logistique et négoce agricole également présents grâce à l'A7.",
   distancesFr:
     "Avignon à 15 min. Cavaillon à 15 min. Châteaurenard à 10 min. Saint-Rémy-de-Provence à 15 min. Aéroport Avignon-Provence à 20 min. Gare TGV Avignon à 20 min. Accès A7 sortie Avignon-Sud.",
   distancesEn:
@@ -24,26 +24,26 @@ export const NOVES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture & maraîchage",
     "Viticulture & oléiculture AOC",
-    "TPE artisanat & bâtiment",
+    "PME de l'artisanat & bâtiment",
     "PME services & logistique",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Noves : diagnostic adapté aux exploitations agricoles, viticulteurs, TPE artisans et PME services de la Petite Crau. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Noves : diagnostic adapté aux exploitations agricoles, viticulteurs, TPE artisans et PME services de la Petite Crau. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Noves : diagnostic adapté aux exploitations agricoles, viticulteurs, PME artisanales et PME services de la Petite Crau. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Noves : diagnostic adapté aux exploitations agricoles, viticulteurs, PME artisanales et PME services de la Petite Crau. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Noves : ateliers pour exploitations agricoles, domaines viticoles, TPE artisans et équipes PME services. Outils IA configurés métier réel.",
-      en: "Interventions IA sur site à Noves : ateliers pour exploitations agricoles, domaines viticoles, TPE artisans et équipes PME services. Outils IA configurés métier réel.",
+      fr: "Interventions IA sur site à Noves : ateliers pour exploitations agricoles, domaines viticoles, PME artisanales et équipes PME services. Outils IA configurés métier réel.",
+      en: "Interventions IA sur site à Noves : ateliers pour exploitations agricoles, domaines viticoles, PME artisanales et équipes PME services. Outils IA configurés métier réel.",
     },
     implementation: {
       fr: "Implémentation IA à Noves : gestion parcellaire et irrigation prédictive, traçabilité récoltes, CRM domaines viticoles, automatisation devis artisan, marketing digital. RGPD strict.",
       en: "Implémentation IA à Noves : gestion parcellaire et irrigation prédictive, traçabilité récoltes, CRM domaines viticoles, automatisation devis artisan, marketing digital. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Noves : sessions pour exploitants agricoles, vignerons, dirigeants TPE/PME et artisans de la Petite Crau souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Noves : sessions pour exploitants agricoles, vignerons, dirigeants TPE/PME et artisans de la Petite Crau souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Noves : sessions pour exploitants agricoles, vignerons, dirigeants de PME et d'ETI et artisans de la Petite Crau souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Noves : sessions pour exploitants agricoles, vignerons, dirigeants de PME et d'ETI et artisans de la Petite Crau souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const NOVES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Noves  ?",
-      a: "L'Audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, exploitations agricoles, viticulteurs et PME novaises. Tarifs publics, sans engagement.",
+      a: "L'Audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, exploitations agricoles, viticulteurs et PME novaises. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles de Noves ?",

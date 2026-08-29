@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MANDUEL_COPY: VilleCopy = {
   pitchFr:
-    "Manduel (30), commune gardoise des Costières accueillant la gare TGV Nîmes Pont du Gard. Tissu TPE/PME viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la zone gare TGV / Costières.",
+    "Manduel (30), commune gardoise des Costières accueillant la gare TGV Nîmes Pont du Gard. Tissu PME et ETI viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la zone gare TGV / Costières.",
   pitchEn:
-    "Manduel (30), commune gardoise des Costières accueillant la gare TGV Nîmes Pont du Gard. Tissu TPE/PME viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la zone gare TGV / Costières.",
+    "Manduel (30), commune gardoise des Costières accueillant la gare TGV Nîmes Pont du Gard. Tissu PME et ETI viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la zone gare TGV / Costières.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit sur place sur mesure.",
   seoHook: "viticulture costières & logistique transport",
   ecosystemFr:
     "Manduel (~7 000 hab) est stratégiquement positionnée avec la gare TGV Nîmes Pont du Gard (Paris à 2h50). Viticulture Costières de Nîmes, zone d'activité en développement, services aux entreprises, logistique, artisanat BTP et commerces. Dynamique économique portée par l'accessibilité TGV.",
@@ -30,8 +30,8 @@ export const MANDUEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Manduel : diagnostic adapté aux TPE/PME viticoles Costières, entreprises de services, logisticiens et commerçants zone gare TGV. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Manduel : diagnostic adapté aux TPE/PME viticoles Costières, entreprises de services, logisticiens et commerçants zone gare TGV. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Manduel : diagnostic adapté aux PME et ETI viticoles Costières, entreprises de services, logisticiens et commerçants zone gare TGV. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Manduel : diagnostic adapté aux PME et ETI viticoles Costières, entreprises de services, logisticiens et commerçants zone gare TGV. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Manduel : formats adaptés aux caves viticoles, entreprises de services, logisticiens et commerces de la zone gare TGV Costières.",
@@ -42,8 +42,8 @@ export const MANDUEL_COPY: VilleCopy = {
       en: "Implémentation IA à Manduel : prédiction vendanges Costières, automatisation CRM services, optimisation logistique, agents conversationnels commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Manduel : sessions dirigeants TPE/PME viticoles, services, logistique et commerce souhaitant intégrer l'IA zone gare TGV Nîmes.",
-      en: "Coaching 1-to-1 à Manduel : sessions dirigeants TPE/PME viticoles, services, logistique et commerce souhaitant intégrer l'IA zone gare TGV Nîmes.",
+      fr: "Coaching 1-to-1 à Manduel : sessions dirigeants de PME et d'ETI viticoles, services, logistique et commerce souhaitant intégrer l'IA zone gare TGV Nîmes.",
+      en: "Coaching 1-to-1 à Manduel : sessions dirigeants de PME et d'ETI viticoles, services, logistique et commerce souhaitant intégrer l'IA zone gare TGV Nîmes.",
     },
   },
   faqGeolocalisee: [

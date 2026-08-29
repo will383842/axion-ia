@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MARGUERITTES_COPY: VilleCopy = {
   pitchFr:
-    "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA couvre les activités professionnelles du bassin de l'agglomération nîmoise.",
+    "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu PME et ETI services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA couvre les activités professionnelles du bassin de l'agglomération nîmoise.",
   pitchEn:
-    "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA couvre les activités professionnelles du bassin de l'agglomération nîmoise.",
+    "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu PME et ETI services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA couvre les activités professionnelles du bassin de l'agglomération nîmoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les PME, ETI et grands groupes locaux : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les PME, ETI et grands groupes locaux : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit sur place sur mesure.",
   seoHook: "artisanat & agriculture méditerranéenne",
   ecosystemFr:
     "Marguerittes (~8 300 hab) est une commune résidentielle et dynamique de l'agglomération nîmoise nord. Zone d'activité économique, services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture méditerranéenne (oliviers, vignes). Accès direct autoroute A9.",
@@ -30,8 +30,8 @@ export const MARGUERITTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Marguerittes : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Marguerittes : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marguerittes : diagnostic adapté aux PME et ETI de services, commerçants, artisans BTP et professions libérales agglo Nîmes nord. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marguerittes : formats adaptés aux entreprises de services, commerces, cabinets et artisans de l'agglomération nîmoise.",
@@ -42,8 +42,8 @@ export const MARGUERITTES_COPY: VilleCopy = {
       en: "Implémentation IA à Marguerittes : automatisation CRM services, agents conversationnels commerce, classification documents cabinets, optimisation devis BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Marguerittes : sessions dirigeants TPE/PME, commerçants, artisans et professions libérales souhaitant intégrer l'IA agglo Nîmes.",
-      en: "Coaching 1-to-1 à Marguerittes : sessions dirigeants TPE/PME, commerçants, artisans et professions libérales souhaitant intégrer l'IA agglo Nîmes.",
+      fr: "Coaching 1-to-1 à Marguerittes : sessions dirigeants de PME et d'ETI, commerçants, artisans et professions libérales souhaitant intégrer l'IA agglo Nîmes.",
+      en: "Coaching 1-to-1 à Marguerittes : sessions dirigeants de PME et d'ETI, commerçants, artisans et professions libérales souhaitant intégrer l'IA agglo Nîmes.",
     },
   },
   faqGeolocalisee: [

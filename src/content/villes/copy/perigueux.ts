@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const PERIGUEUX_COPY: VilleCopy = {
   pitchFr:
-    "Périgueux, 29 055 habitants (2023), préfecture de la Dordogne en Nouvelle-Aquitaine, est la ville la plus peuplée du Périgord et siège de la communauté d'agglomération Le Grand Périgueux. Sa cathédrale Saint-Front est classée au patrimoine mondial de l'UNESCO (chemins de Saint-Jacques). Le Technicentre SNCF du Toulon (~600 salariés) ancre le pôle ferroviaire. Axion-IA, cabinet IA en code custom, accompagne ici les TPE et PME du tourisme patrimonial, du commerce de détail, de la santé et de la construction avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
+    "Périgueux, 29 055 habitants (2023), préfecture de la Dordogne en Nouvelle-Aquitaine, est la ville la plus peuplée du Périgord et siège de la communauté d'agglomération Le Grand Périgueux. Sa cathédrale Saint-Front est classée au patrimoine mondial de l'UNESCO (chemins de Saint-Jacques). Le Technicentre SNCF du Toulon (~600 salariés) ancre le pôle ferroviaire. Axion-IA, cabinet IA en code custom, accompagne ici les PME et ETI du tourisme patrimonial, du commerce de détail, de la santé et de la construction avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   pitchEn:
-    "Périgueux, 29 055 habitants (2023), préfecture de la Dordogne en Nouvelle-Aquitaine, est la ville la plus peuplée du Périgord et siège de la communauté d'agglomération Le Grand Périgueux. Sa cathédrale Saint-Front est classée au patrimoine mondial de l'UNESCO (chemins de Saint-Jacques). Le Technicentre SNCF du Toulon (~600 salariés) ancre le pôle ferroviaire. Axion-IA, cabinet IA en code custom, accompagne ici les TPE et PME du tourisme patrimonial, du commerce de détail, de la santé et de la construction avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
+    "Périgueux, 29 055 habitants (2023), préfecture de la Dordogne en Nouvelle-Aquitaine, est la ville la plus peuplée du Périgord et siège de la communauté d'agglomération Le Grand Périgueux. Sa cathédrale Saint-Front est classée au patrimoine mondial de l'UNESCO (chemins de Saint-Jacques). Le Technicentre SNCF du Toulon (~600 salariés) ancre le pôle ferroviaire. Axion-IA, cabinet IA en code custom, accompagne ici les PME et ETI du tourisme patrimonial, du commerce de détail, de la santé et de la construction avec des automatisations sur mesure, sans no-code, conformes RGPD et AI Act.",
   directAnswerFr:
-    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des TPE, PME puis ETI du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès A89 et liaison TER/Intercités.",
+    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des PME, ETI puis grands groupes du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès A89 et liaison TER/Intercités.",
   directAnswerEn:
-    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des TPE, PME puis ETI du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès A89 et liaison TER/Intercités.",
+    "Axion-IA intervient à Périgueux (Dordogne, 24000) auprès des PME, ETI puis grands groupes du Grand Périgueux — commerces du centre médiéval et Renaissance, hôteliers et restaurateurs (tourisme UNESCO), artisans du BTP, cabinets de santé, services administratifs. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA mesurables : réservations touristiques, gestion patients, devis BTP, relances clients. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès A89 et liaison TER/Intercités.",
   seoHook: "tourisme UNESCO & filière ferroviaire Périgord",
   ecosystemFr:
-    "Périgueux concentre l'emploi du Périgord central : Technicentre SNCF du Toulon (~600 salariés), administration préfectorale, hôpital, tribunal, université. Le tourisme patrimonial (cathédrale Saint-Front UNESCO, secteur sauvegardé médiéval et Renaissance) génère un tissu dense de TPE — hôtels, restaurants, commerces d'artisanat, guides. Le Grand Périgueux fédère 43 communes. L'agglomération compte également des artisans BTP, professions médicales et services administratifs typiques d'un chef-lieu départemental.",
+    "Périgueux concentre l'emploi du Périgord central : Technicentre SNCF du Toulon (~600 salariés), administration préfectorale, hôpital, tribunal, université. Le tourisme patrimonial (cathédrale Saint-Front UNESCO, secteur sauvegardé médiéval et Renaissance) génère un tissu dense de PME — hôtels, restaurants, commerces d'artisanat, guides. Le Grand Périgueux fédère 43 communes. L'agglomération compte également des artisans BTP, professions médicales et services administratifs typiques d'un chef-lieu départemental.",
   ecosystemEn:
-    "Périgueux concentre l'emploi du Périgord central : Technicentre SNCF du Toulon (~600 salariés), administration préfectorale, hôpital, tribunal, université. Le tourisme patrimonial (cathédrale Saint-Front UNESCO, secteur sauvegardé médiéval et Renaissance) génère un tissu dense de TPE — hôtels, restaurants, commerces d'artisanat, guides. Le Grand Périgueux fédère 43 communes. L'agglomération compte également des artisans BTP, professions médicales et services administratifs typiques d'un chef-lieu départemental.",
+    "Périgueux concentre l'emploi du Périgord central : Technicentre SNCF du Toulon (~600 salariés), administration préfectorale, hôpital, tribunal, université. Le tourisme patrimonial (cathédrale Saint-Front UNESCO, secteur sauvegardé médiéval et Renaissance) génère un tissu dense de PME — hôtels, restaurants, commerces d'artisanat, guides. Le Grand Périgueux fédère 43 communes. L'agglomération compte également des artisans BTP, professions médicales et services administratifs typiques d'un chef-lieu départemental.",
   distancesFr:
     "Périgueux est à 109 km de Bordeaux (gare TGV Bordeaux-Saint-Jean, aéroport Bordeaux-Mérignac à ~120 km), 83 km de Limoges et 68 km d'Angoulême. Aéroport de Périgueux-Bassillac à 9 km. Autoroute A89 (trois échangeurs). Liaisons TER et Intercités vers Paris, Bordeaux, Limoges et Lyon. Transport urbain Péribus avec ligne BHNS en service depuis décembre 2019.",
   distancesEn:
@@ -32,20 +32,20 @@ export const PERIGUEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à Périgueux (4 h, {{price:audit-flash|flat}}) pour TPE/PME du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
-      en: "Audit sur place IA à Périgueux (4 h, {{price:audit-flash|flat}}) pour TPE/PME du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
+      fr: "Audit sur place IA à Périgueux (4 h, {{price:audit-flash|flat}}) pour PME et ETI du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
+      en: "Audit sur place IA à Périgueux (4 h, {{price:audit-flash|flat}}) pour PME et ETI du tourisme patrimonial UNESCO, de la santé et du BTP — cartographie processus et conformité RGPD.",
     },
     interventions: {
-      fr: "Intervention sur site à Périgueux dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation réservations hôtelières, suivi patients, devis BTP, relances administratives.",
-      en: "Intervention sur site à Périgueux dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation réservations hôtelières, suivi patients, devis BTP, relances administratives.",
+      fr: "Intervention sur site à Périgueux dès {{price:intervention-4h|flat}} pour PME et ETI — automatisation réservations hôtelières, suivi patients, devis BTP, relances administratives.",
+      en: "Intervention sur site à Périgueux dès {{price:intervention-4h|flat}} pour PME et ETI — automatisation réservations hôtelières, suivi patients, devis BTP, relances administratives.",
     },
     implementation: {
       fr: "Implémentation IA à Périgueux dès {{price:impl-poc|entry}} en code custom (TypeScript/Python) pour commerces du secteur sauvegardé, professions de santé et artisans du Grand Périgueux.",
       en: "Implémentation IA à Périgueux dès {{price:impl-poc|entry}} en code custom (TypeScript/Python) pour commerces du secteur sauvegardé, professions de santé et artisans du Grand Périgueux.",
     },
     unAUn: {
-      fr: "Coaching un-à-un dirigeants TPE/PME de Périgueux dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour hôteliers, restaurateurs, artisans et commerçants du Périgord.",
-      en: "Coaching un-à-un dirigeants TPE/PME de Périgueux dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour hôteliers, restaurateurs, artisans et commerçants du Périgord.",
+      fr: "Coaching un-à-un dirigeants de PME et d'ETI de Périgueux dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour hôteliers, restaurateurs, artisans et commerçants du Périgord.",
+      en: "Coaching un-à-un dirigeants de PME et d'ETI de Périgueux dès {{price:intervention-dirigeants|flat}} — feuille de route IA pour hôteliers, restaurateurs, artisans et commerçants du Périgord.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const PERIGUEUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA-ready",
-            detail:
-              "Pour artisans, hôteliers, restaurateurs et producteurs de foie gras/truffe du Périgord : site vitrine mobile-first ou petite boutique e-commerce, avec assistant IA de réponse client et recherche enrichie. Idéal pour les commerces du secteur sauvegardé médiéval-Renaissance.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier",
@@ -173,12 +167,6 @@ export const PERIGUEUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or AI-ready store",
-            detail:
-              "For Périgord craftspeople, hoteliers, restaurateurs and foie gras/truffle producers: mobile-first showcase site or small e-commerce store, with an AI customer-response assistant and enriched search. Ideal for shops in the medieval-Renaissance conservation area.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or business portal",
             detail:
@@ -248,7 +236,7 @@ export const PERIGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA propose-t-il du no-code à Périgueux ?",
-      a: "Non. Axion-IA développe en code custom (TypeScript, Python, Next.js) pour garantir la propriété intellectuelle, la portabilité et la conformité réglementaire, essentielles pour les TPE/PME santé, hôtellerie et BTP du Périgord.",
+      a: "Non. Axion-IA développe en code custom (TypeScript, Python, Next.js) pour garantir la propriété intellectuelle, la portabilité et la conformité réglementaire, essentielles pour les PME et ETI santé, hôtellerie et BTP du Périgord.",
     },
   ],
 };

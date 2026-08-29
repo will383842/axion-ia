@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BELLEGARDE_COPY: VilleCopy = {
   pitchFr:
-    "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu TPE/PME viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA opère sur l'ensemble des activités professionnelles locales des Costières.",
+    "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu PME et ETI viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA opère sur l'ensemble des activités professionnelles locales des Costières.",
   pitchEn:
-    "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu TPE/PME viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA opère sur l'ensemble des activités professionnelles locales des Costières.",
+    "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu PME et ETI viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA opère sur l'ensemble des activités professionnelles locales des Costières.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les PME, ETI et grands groupes locaux : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit sur place sur mesure.",
   seoHook: "viticulture costières & agriculture",
   ecosystemFr:
     "Bellegarde (~8 000 hab) est une commune des Costières entre Nîmes (20 min) et Arles (25 min). Viticulture Costières de Nîmes AOP, agriculture (arboriculture, maraîchage), logistique axe Nîmes-Arles, commerces, artisanat BTP et services aux entreprises. Carrefour agricole gardois.",
@@ -30,8 +30,8 @@ export const BELLEGARDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Bellegarde : diagnostic adapté aux TPE/PME viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Bellegarde : diagnostic adapté aux PME et ETI viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Bellegarde : diagnostic adapté aux PME et ETI viticoles Costières, exploitants agricoles, logisticiens et commerçants entre Nîmes et Arles. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bellegarde : formats adaptés aux caves viticoles, exploitations agricoles, entreprises logistique et commerces des Costières.",
@@ -42,8 +42,8 @@ export const BELLEGARDE_COPY: VilleCopy = {
       en: "Implémentation IA à Bellegarde : prédiction vendanges Costières, tri qualité fruits, optimisation supply chain Nîmes-Arles, agents conversationnels commerce.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bellegarde : sessions dirigeants TPE/PME viticoles, agriculteurs, logisticiens et commerçants souhaitant intégrer l'IA dans les Costières.",
-      en: "Coaching 1-to-1 à Bellegarde : sessions dirigeants TPE/PME viticoles, agriculteurs, logisticiens et commerçants souhaitant intégrer l'IA dans les Costières.",
+      fr: "Coaching 1-to-1 à Bellegarde : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, logisticiens et commerçants souhaitant intégrer l'IA dans les Costières.",
+      en: "Coaching 1-to-1 à Bellegarde : sessions dirigeants de PME et d'ETI viticoles, agriculteurs, logisticiens et commerçants souhaitant intégrer l'IA dans les Costières.",
     },
   },
   faqGeolocalisee: [

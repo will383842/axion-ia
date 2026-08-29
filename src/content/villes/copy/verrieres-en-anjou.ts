@@ -9,9 +9,9 @@ export const VERRIERES_EN_ANJOU_COPY: VilleCopy = {
   pitchEn:
     "Verrières-en-Anjou (49), commune dynamique au nord-est d'Angers, accueille plus de 8 100 habitants et des zones d'activités en croissance. Axion-IA collabore avec toutes les structures locales : PME tertiaires, artisanat, logistique, commerces et services aux entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Verrières-en-Anjou (49). Nous accompagnons les TPE, PME et entreprises du nord-est angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Verrières-en-Anjou (49). Nous accompagnons les PME, ETI et entreprises du nord-est angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics, RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Verrières-en-Anjou (49). Nous accompagnons les TPE, PME et entreprises du nord-est angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Verrières-en-Anjou (49). Nous accompagnons les PME, ETI et entreprises du nord-est angevin dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics, RGPD strict.",
   seoHook: "tertiaires services & artisanat second",
   ecosystemFr:
     "Verrières-en-Anjou combine tissu résidentiel et zones d'activités économiques en périphérie nord-est d'Angers. PME tertiaires, artisanat BTP, logistique, commerces de proximité et services aux entreprises. Commune en forte croissance démographique, attractivité résidentielle et économique.",

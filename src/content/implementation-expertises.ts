@@ -6,7 +6,7 @@
  * Version exhaustive : tout ce qu'Axion-IA conçoit, développe et livre — du
  * socle technique (agents, RAG, automatisations…) aux fonctions métier
  * (relation client, vente, finance, RH, logistique…), pour toutes les tailles
- * (TPE → grande entreprise, mono-site comme multi-sites / réseau / franchises).
+ * (PME → grande entreprise, mono-site comme multi-sites / réseau / franchises).
  * Et si ce n'est pas dans la liste, on le construit quand même : on part de
  * votre besoin. Aucun prix.
  *

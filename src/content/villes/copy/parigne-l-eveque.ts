@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
   pitchFr:
-    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
+    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de PME artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
+    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de PME artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parigné-l'Évêque (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles sud Le Mans, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parigné-l'Évêque (72). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles sud Le Mans, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parigné-l'Évêque (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles sud Le Mans, exploitations agricoles, professions libérales et services de proximité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Parigné-l'Évêque (72). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME industrielles sud Le Mans, exploitations agricoles, professions libérales et services de proximité.",
   seoHook: "massif bercé",
   ecosystemFr:
     "Parigné-l'Évêque est une commune périurbaine au sud de Le Mans Métropole (Sarthe). Cadre semi-rural avec zones d'activités, artisanat, agriculture et commerces. Accès rapide au pôle économique manceau (15 min). Forêt de Bercé à proximité, tourisme vert.",
@@ -30,20 +30,20 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux PME artisanales, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux PME artisanales, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux TPE artisanales, exploitations agricoles, PME industrielles et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
-      en: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux TPE artisanales, exploitations agricoles, PME industrielles et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      fr: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux PME artisanales, exploitations agricoles, PME industrielles et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux PME artisanales, exploitations agricoles, PME industrielles et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Parigné-l'Évêque : gestion parcellaire agricole, automatisation TPE artisanales, outils prédictifs PME industrielles. Adapté au tissu économique sud Le Mans.",
-      en: "Implémentation IA à Parigné-l'Évêque : gestion parcellaire agricole, automatisation TPE artisanales, outils prédictifs PME industrielles. Adapté au tissu économique sud Le Mans.",
+      fr: "Implémentation IA à Parigné-l'Évêque : gestion parcellaire agricole, automatisation PME artisanales, outils prédictifs PME industrielles. Adapté au tissu économique sud Le Mans.",
+      en: "Implémentation IA à Parigné-l'Évêque : gestion parcellaire agricole, automatisation PME artisanales, outils prédictifs PME industrielles. Adapté au tissu économique sud Le Mans.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Parigné-l'Évêque : sessions dans vos locaux ou en visio. Dirigeants TPE/PME artisanat, agriculture, industrie et commerce sud Le Mans.",
-      en: "Coaching 1-to-1 à Parigné-l'Évêque : sessions dans vos locaux ou en visio. Dirigeants TPE/PME artisanat, agriculture, industrie et commerce sud Le Mans.",
+      fr: "Coaching 1-to-1 à Parigné-l'Évêque : sessions dans vos locaux ou en visio. Dirigeants PME et ETI artisanat, agriculture, industrie et commerce sud Le Mans.",
+      en: "Coaching 1-to-1 à Parigné-l'Évêque : sessions dans vos locaux ou en visio. Dirigeants PME et ETI artisanat, agriculture, industrie et commerce sud Le Mans.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Parigné-l'Évêque et dans tout le sud de Le Mans Métropole. Le Mans centre est à 15 min. Déplacements sur site inclus dans le périmètre agglo.",
     },
     {
-      q: "Quels services IA pour les TPE et PME de Parigné-l'Évêque ?",
+      q: "Quels services IA pour les PME et ETI de Parigné-l'Évêque ?",
       a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux artisans, PME industrielles, exploitants agricoles et commerçants de la commune.",
     },
     {
@@ -61,7 +61,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Parigné-l'Évêque  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Parigné-l'Évêque ?",

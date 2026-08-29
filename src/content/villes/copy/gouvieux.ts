@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GOUVIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de PME et ETI filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de PME et ETI filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gouvieux (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gouvieux (60). Nous accompagnons PME et ETI du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gouvieux (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gouvieux (60). Nous accompagnons PME et ETI du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit sur place sur mesure.",
   ecosystemFr:
     "Gouvieux est une commune résidentielle et touristique au pied du domaine de Chantilly, abritant une forte concentration de centres d'entraînement hippiques de niveau international. Son économie locale s'appuie sur la filière équestre, l'hôtellerie-restauration (dont le château de Montvillargenne et l'Auberge du Jeu de Paume à proximité), le tourisme patrimonial, les services aux particuliers et l'artisanat. Le bassin d'emploi s'articule avec Chantilly, Lamorlaye et Senlis via la gare TER Chantilly-Gouvieux.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const GOUVIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gouvieux : diagnostic adapté aux TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat du bassin de Chantilly. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Gouvieux : diagnostic adapté aux TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat du bassin de Chantilly. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Gouvieux : diagnostic adapté aux PME et ETI filière équestre, hôtellerie-restauration, tourisme, services et artisanat du bassin de Chantilly. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Gouvieux : diagnostic adapté aux PME et ETI filière équestre, hôtellerie-restauration, tourisme, services et artisanat du bassin de Chantilly. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gouvieux : formats adaptés au centre d'entraînement, à l'hôtel, au restaurant, à l'atelier ou au bureau. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const GOUVIEUX_COPY: VilleCopy = {
       en: "Implémentation IA à Gouvieux : gestion planning centres hippiques, yield management hôtelier, analyse fréquentation touristique, automatisation facturation, OCR documents et comptabilité.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Gouvieux : sessions dans votre centre d'entraînement, hôtel, restaurant ou en visio. Dirigeants TPE/PME du bassin de Chantilly souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Gouvieux : sessions dans votre centre d'entraînement, hôtel, restaurant ou en visio. Dirigeants TPE/PME du bassin de Chantilly souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Gouvieux : sessions dans votre centre d'entraînement, hôtel, restaurant ou en visio. Dirigeants PME et ETI du bassin de Chantilly souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Gouvieux : sessions dans votre centre d'entraînement, hôtel, restaurant ou en visio. Dirigeants PME et ETI du bassin de Chantilly souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const GOUVIEUX_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Gouvieux  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME gouvieusiennes : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. ROI chiffré dès le diagnostic.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI gouvieusiennes : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. ROI chiffré dès le diagnostic.",
     },
     {
       q: "Accompagnez-vous les centres d'entraînement hippiques à Gouvieux ?",
-      a: "Oui, nous accompagnons les TPE/PME de la filière équestre du bassin de Chantilly. Cas IA typiques : gestion planning entraînements, suivi performances chevaux, automatisation facturation, optimisation logistique fourrage et équipements, analyse données de course.",
+      a: "Oui, nous accompagnons les PME et ETI de la filière équestre du bassin de Chantilly. Cas IA typiques : gestion planning entraînements, suivi performances chevaux, automatisation facturation, optimisation logistique fourrage et équipements, analyse données de course.",
     },
     {
       q: "L'IA peut-elle aider les hôtels et restaurants de Gouvieux ?",

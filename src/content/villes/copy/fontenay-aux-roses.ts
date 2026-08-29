@@ -1,37 +1,37 @@
 // AUTO-GENERATED 2026-05-27 — T3 batch complement Claude Code (Will).
-// Fontenay-aux-Roses (92, Hauts-de-Seine) — sud-ouest IDF, recherche CEA Fontenay-aux-Roses, résidentiel, TPE/PME mixtes.
+// Fontenay-aux-Roses (92, Hauts-de-Seine) — sud-ouest IDF, recherche CEA Fontenay-aux-Roses, résidentiel, PME et ETI mixtes.
 
 import type { VilleCopy } from "./types";
 
 export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
   pitchFr:
-    "Fontenay-aux-Roses, ville des Hauts-de-Seine (92) au sud-ouest de Paris, mêle pôle recherche (CEA Fontenay-aux-Roses, École Centrale-Supélec à proximité), résidentiel familial et tissu TPE/PME tous secteurs (artisanat BTP, commerces, professions libérales, industries périphériques). Axion-IA opère pour toutes les structures économiques de la commune fontenaysiennes.",
+    "Fontenay-aux-Roses, ville des Hauts-de-Seine (92) au sud-ouest de Paris, mêle pôle recherche (CEA Fontenay-aux-Roses, École Centrale-Supélec à proximité), résidentiel familial et tissu PME et ETI tous secteurs (artisanat BTP, commerces, professions libérales, industries périphériques). Axion-IA opère pour toutes les structures économiques de la commune fontenaysiennes.",
   pitchEn:
-    "Fontenay-aux-Roses, ville des Hauts-de-Seine (92) au sud-ouest de Paris, mêle pôle recherche (CEA Fontenay-aux-Roses, École Centrale-Supélec à proximité), résidentiel familial et tissu TPE/PME tous secteurs (artisanat BTP, commerces, professions libérales, industries périphériques). Axion-IA opère pour toutes les structures économiques de la commune fontenaysiennes.",
+    "Fontenay-aux-Roses, ville des Hauts-de-Seine (92) au sud-ouest de Paris, mêle pôle recherche (CEA Fontenay-aux-Roses, École Centrale-Supélec à proximité), résidentiel familial et tissu PME et ETI tous secteurs (artisanat BTP, commerces, professions libérales, industries périphériques). Axion-IA opère pour toutes les structures économiques de la commune fontenaysiennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-aux-Roses (92). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats), PME tertiaires fontenaysiennes, structures de recherche (CEA, école supérieure), industries périphériques et indépendants du bassin sud-ouest 92.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-aux-Roses (92). Nous accompagnons tous types d'activités : PME du BTP, commerçants, professions libérales (médecins, avocats), PME tertiaires fontenaysiennes, structures de recherche (CEA, école supérieure), industries périphériques et indépendants du bassin sud-ouest 92.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-aux-Roses (92). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats), PME tertiaires fontenaysiennes, structures de recherche (CEA, école supérieure), industries périphériques et indépendants du bassin sud-ouest 92.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fontenay-aux-Roses (92). Nous accompagnons tous types d'activités : PME du BTP, commerçants, professions libérales (médecins, avocats), PME tertiaires fontenaysiennes, structures de recherche (CEA, école supérieure), industries périphériques et indépendants du bassin sud-ouest 92.",
   seoHook: "recherche scientifique & artisanat services",
   ecosystemFr:
-    "Fontenay-aux-Roses concentre un mix unique : pôle recherche stratégique (CEA Fontenay-aux-Roses — nucléaire civil, biologie cellulaire), proximité immédiate École Centrale-Supélec (Saclay), tissu résidentiel familial dense, TPE artisans BTP, commerces de proximité, professions libérales (cabinets médicaux, avocats), PME industrielles périphériques. Vallée scientifique Saclay-Vallée de Bièvre.",
+    "Fontenay-aux-Roses concentre un mix unique : pôle recherche stratégique (CEA Fontenay-aux-Roses — nucléaire civil, biologie cellulaire), proximité immédiate École Centrale-Supélec (Saclay), tissu résidentiel familial dense, PME du BTP, commerces de proximité, professions libérales (cabinets médicaux, avocats), PME industrielles périphériques. Vallée scientifique Saclay-Vallée de Bièvre.",
   ecosystemEn:
-    "Fontenay-aux-Roses concentre un mix unique : pôle recherche stratégique (CEA Fontenay-aux-Roses — nucléaire civil, biologie cellulaire), proximité immédiate École Centrale-Supélec (Saclay), tissu résidentiel familial dense, TPE artisans BTP, commerces de proximité, professions libérales (cabinets médicaux, avocats), PME industrielles périphériques. Vallée scientifique Saclay-Vallée de Bièvre.",
+    "Fontenay-aux-Roses concentre un mix unique : pôle recherche stratégique (CEA Fontenay-aux-Roses — nucléaire civil, biologie cellulaire), proximité immédiate École Centrale-Supélec (Saclay), tissu résidentiel familial dense, PME du BTP, commerces de proximité, professions libérales (cabinets médicaux, avocats), PME industrielles périphériques. Vallée scientifique Saclay-Vallée de Bièvre.",
   distancesFr:
     "RER B Fontenay-aux-Roses (20 min Châtelet-Les-Halles). Tramway T6 vers Châtillon. La Défense 25 min via A86/N20. Saclay (plateau) à 15 min. Aéroport Orly à 20 min.",
   distancesEn:
     "RER B Fontenay-aux-Roses (20 min Châtelet-Les-Halles). Tramway T6 vers Châtillon. La Défense 25 min via A86/N20. Saclay (plateau) à 15 min. Aéroport Orly à 20 min.",
   topSectorsNaf: [
     "Recherche scientifique (CEA, proximité Centrale-Supélec)",
-    "TPE artisanat BTP & services",
+    "PME du BTP & services",
     "Commerce de proximité",
     "Professions libérales (santé, juridique)",
     "PME tertiaires & industries périphériques",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — PME artisanales, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — PME artisanales, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontenay : formats adaptés à votre métier réel (atelier, commerce, cabinet, laboratoire). Vos équipes repartent avec outils IA configurés pour vos tâches concrètes.",
@@ -42,19 +42,19 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
       en: "Implémentation IA à Fontenay : agents conversationnels, automatisation devis BTP/devis honoraires libéraux, classification documents recherche, CRM augmentés, gestion RDV santé. Tous secteurs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fontenay : sessions dans votre atelier, cabinet, laboratoire ou en visio. Artisans BTP, médecins, avocats, chercheurs, gérants TPE/PME fontenaysiennes souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Fontenay : sessions dans votre atelier, cabinet, laboratoire ou en visio. Artisans BTP, médecins, avocats, chercheurs, gérants TPE/PME fontenaysiennes souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Fontenay : sessions dans votre atelier, cabinet, laboratoire ou en visio. Artisans BTP, médecins, avocats, chercheurs, gérants PME et ETI fontenaysiennes souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Fontenay : sessions dans votre atelier, cabinet, laboratoire ou en visio. Artisans BTP, médecins, avocats, chercheurs, gérants PME et ETI fontenaysiennes souhaitant intégrer l'IA.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de TPE du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
+        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de PME du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
         whyHere: [
           "Pôle de recherche et de sûreté nucléaire structurant : le CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie, démantèlement) et l'IRSN-ASNR de l'avenue de la Division Leclerc, voisins de Centrale-Supélec sur le plateau de Saclay, appellent des portails documentaires augmentés à l'IA — recherche sémantique sur publications et rapports techniques, classification de documents réglementaires, agents de veille scientifique, le tout en hébergement UE conforme.",
           "Tissu résidentiel et professions libérales denses : cabinets médicaux, avocats et experts-comptables fontenaysiens, souvent installés autour du centre-ville et du quartier Scarron, gagnent à un site clair et mobile-first avec prise de RDV en ligne, chatbot de premier contact, formulaires sécurisés et automatisation des devis d'honoraires, sans complexité ni jargon inutile.",
           "Commerce de proximité rythmé par la halle du marché (mardi, jeudi, samedi) et les commerces de la rue Boucicaut : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, agenda et fidélité, pour que boulangers, fleuristes, librairies, opticiens et traiteurs prolongent en ligne, sur mobile, leur clientèle de quartier toute la semaine.",
-          "TPE artisanat BTP du sud-ouest 92 (plombiers, électriciens, menuisiers, peintres) très présentes sur ce territoire pavillonnaire entre Châtenay-Malabry, Le Plessis-Robinson et Sceaux : on greffe l'IA sur l'existant — automatisation des devis de chantier, agent de prise de RDV, classification des photos de chantier, suivi des plannings — sans refonte coûteuse ni abonnement imposé.",
+          "PME du BTP du sud-ouest 92 (plombiers, électriciens, menuisiers, peintres) très présentes sur ce territoire pavillonnaire entre Châtenay-Malabry, Le Plessis-Robinson et Sceaux : on greffe l'IA sur l'existant — automatisation des devis de chantier, agent de prise de RDV, classification des photos de chantier, suivi des plannings — sans refonte coûteuse ni abonnement imposé.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de RDV, recherche sémantique, automatisation de devis) sur le site existant d'un artisan BTP du sud-ouest 92, d'un commerce de la halle du marché, d'une boulangerie ou d'un cabinet libéral, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -135,12 +129,12 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente un site existant, pour ne jamais couper un cabinet ou un commerce en pleine activité. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases de données et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in technique, aucun abonnement imposé. L'ensemble est transférable à tout prestataire local des Hauts-de-Seine ou repris en interne par vos équipes, documentation à l'appui.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de TPE du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
+        hero: "Axion-IA conçoit et augmente à Fontenay-aux-Roses des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune des Hauts-de-Seine où cohabitent le centre de recherche du CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie), l'IRSN devenu ASNR avenue de la Division Leclerc, la proximité de Centrale-Supélec sur le plateau de Saclay et un tissu résidentiel dense de PME du BTP, du commerce de proximité autour de la halle du marché et des professions libérales. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Fontenay-aux-Roses, itérations à distance via le RER B.",
         whyHere: [
           "Pôle de recherche et de sûreté nucléaire structurant : le CEA Fontenay-aux-Roses (sciences du vivant, radiobiologie, démantèlement) et l'IRSN-ASNR de l'avenue de la Division Leclerc, voisins de Centrale-Supélec sur le plateau de Saclay, appellent des portails documentaires augmentés à l'IA — recherche sémantique sur publications et rapports techniques, classification de documents réglementaires, agents de veille scientifique, le tout en hébergement UE conforme.",
           "Tissu résidentiel et professions libérales denses : cabinets médicaux, avocats et experts-comptables fontenaysiens, souvent installés autour du centre-ville et du quartier Scarron, gagnent à un site clair et mobile-first avec prise de RDV en ligne, chatbot de premier contact, formulaires sécurisés et automatisation des devis d'honoraires, sans complexité ni jargon inutile.",
           "Commerce de proximité rythmé par la halle du marché (mardi, jeudi, samedi) et les commerces de la rue Boucicaut : on construit des vitrines e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, agenda et fidélité, pour que boulangers, fleuristes, librairies, opticiens et traiteurs prolongent en ligne, sur mobile, leur clientèle de quartier toute la semaine.",
-          "TPE artisanat BTP du sud-ouest 92 (plombiers, électriciens, menuisiers, peintres) très présentes sur ce territoire pavillonnaire entre Châtenay-Malabry, Le Plessis-Robinson et Sceaux : on greffe l'IA sur l'existant — automatisation des devis de chantier, agent de prise de RDV, classification des photos de chantier, suivi des plannings — sans refonte coûteuse ni abonnement imposé.",
+          "PME du BTP du sud-ouest 92 (plombiers, électriciens, menuisiers, peintres) très présentes sur ce territoire pavillonnaire entre Châtenay-Malabry, Le Plessis-Robinson et Sceaux : on greffe l'IA sur l'existant — automatisation des devis de chantier, agent de prise de RDV, classification des photos de chantier, suivi des plannings — sans refonte coûteuse ni abonnement imposé.",
         ],
         methodology: [
           {
@@ -170,12 +164,6 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, prise de RDV, recherche sémantique, automatisation de devis) sur le site existant d'un artisan BTP du sud-ouest 92, d'un commerce de la halle du marché, d'une boulangerie ou d'un cabinet libéral, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -233,8 +221,8 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les structures de recherche à Fontenay (CEA, proximité Centrale-Supélec) sur leurs cas IA spécifiques : agents conversationnels documents scientifiques, classification publications/brevets, automatisation administration formations. Conformité recherche et hébergement UE garantis.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans BTP fontenaysiens ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Fontenay (plombiers, électriciens, peintres, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
+      q: "Travaillez-vous avec les PME du BTP fontenaysiens ?",
+      a: "Oui, nous accompagnons les PME du BTP à Fontenay (plombiers, électriciens, peintres, menuisiers) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté aux artisans.",
     },
     {
       q: "Quels services pour les professions libérales fontenaysiennes ?",

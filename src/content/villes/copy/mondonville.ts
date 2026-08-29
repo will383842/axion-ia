@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONDONVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne nord-ouest de Toulouse.",
+    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne nord-ouest de Toulouse.",
   pitchEn:
-    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne nord-ouest de Toulouse.",
+    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne nord-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mondonville (31). Nous accompagnons PME artisanales, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mondonville (31). Nous accompagnons PME artisanales, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit sur place sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
-    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
+    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
   ecosystemEn:
-    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
+    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu PME artisanales, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
   distancesFr:
     "Toulouse centre à 20 min (D902). Aéroport Toulouse-Blagnac à 10 min. Gare Matabiau à 25 min. Cornebarrieu à 5 min. Aussonne à 5 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const MONDONVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mondonville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mondonville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mondonville : diagnostic adapté aux PME artisanales, PME de services et professions libérales du nord-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mondonville : diagnostic adapté aux PME artisanales, PME de services et professions libérales du nord-ouest Toulouse. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mondonville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
       en: "Interventions IA sur site à Mondonville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
-      fr: "Implémentation IA à Mondonville : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME nord-ouest Toulouse.",
-      en: "Implémentation IA à Mondonville : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME nord-ouest Toulouse.",
+      fr: "Implémentation IA à Mondonville : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour PME et ETI nord-ouest Toulouse.",
+      en: "Implémentation IA à Mondonville : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour PME et ETI nord-ouest Toulouse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mondonville : sessions dirigeants TPE et PME du nord-ouest toulousain, dans vos locaux ou en visio.",
-      en: "Coaching 1-to-1 à Mondonville : sessions dirigeants TPE et PME du nord-ouest toulousain, dans vos locaux ou en visio.",
+      fr: "Coaching 1-to-1 à Mondonville : sessions dirigeants PME et ETI du nord-ouest toulousain, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Mondonville : sessions dirigeants PME et ETI du nord-ouest toulousain, dans vos locaux ou en visio.",
     },
   },
   faqGeolocalisee: [
@@ -53,11 +53,11 @@ export const MONDONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Mondonville ?",
-      a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
+      a: "Nous accompagnons tous types d'activités : PME artisanales, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mondonville  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics.",
     },
     {
       q: "Comment se déroule une intervention IA à Mondonville ?",
@@ -65,7 +65,7 @@ export const MONDONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel à Mondonville ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants PME et ETI. Format flexible : locaux, visio. À partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

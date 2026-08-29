@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const SENE_COPY: VilleCopy = {
   pitchFr:
-    "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. TPE maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA collabore avec toutes les structures locales de l'agglomération vannetaise.",
+    "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. PME maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA collabore avec toutes les structures locales de l'agglomération vannetaise.",
   pitchEn:
-    "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. TPE maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA collabore avec toutes les structures locales de l'agglomération vannetaise.",
+    "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. PME maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA collabore avec toutes les structures locales de l'agglomération vannetaise.",
   seoHook: "écotourisme, maritime & services",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Séné (56). Nous accompagnons tous types d'activités : TPE maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Séné (56). Nous accompagnons tous types d'activités : PME maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Séné (56). Nous accompagnons tous types d'activités : TPE maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Séné (56). Nous accompagnons tous types d'activités : PME maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Séné est une commune littorale de l'agglomération de Vannes, porte d'entrée de la réserve naturelle du Golfe du Morbihan. L'économie locale s'appuie sur les activités maritimes (ostréiculture, pêche, nautisme), l'écotourisme, les services aux entreprises du bassin vannetais, l'artisanat et les professions libérales. La proximité immédiate de Vannes offre un accès aux services urbains.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const SENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Séné : diagnostic adapté aux TPE maritimes, PME de services, artisans et acteurs de l'écotourisme du Golfe du Morbihan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Séné : diagnostic adapté aux TPE maritimes, PME de services, artisans et acteurs de l'écotourisme du Golfe du Morbihan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Séné : diagnostic adapté aux PME maritimes, PME de services, artisans et acteurs de l'écotourisme du Golfe du Morbihan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Séné : diagnostic adapté aux PME maritimes, PME de services, artisans et acteurs de l'écotourisme du Golfe du Morbihan. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Séné : formations pratiques pour équipes maritimes, acteurs touristiques, PME de services et artisans de l'agglomération vannetaise. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Séné : formations pratiques pour équipes maritimes, acteurs touristiques, PME de services et artisans de l'agglomération vannetaise. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Séné : traçabilité production ostréicole, agents conversationnels accueil tourisme, automatisation devis artisans, gestion planning saisonnier. Adapté au tissu TPE/PME Golfe du Morbihan.",
-      en: "Implémentation IA à Séné : traçabilité production ostréicole, agents conversationnels accueil tourisme, automatisation devis artisans, gestion planning saisonnier. Adapté au tissu TPE/PME Golfe du Morbihan.",
+      fr: "Implémentation IA à Séné : traçabilité production ostréicole, agents conversationnels accueil tourisme, automatisation devis artisans, gestion planning saisonnier. Adapté au tissu PME et ETI Golfe du Morbihan.",
+      en: "Implémentation IA à Séné : traçabilité production ostréicole, agents conversationnels accueil tourisme, automatisation devis artisans, gestion planning saisonnier. Adapté au tissu PME et ETI Golfe du Morbihan.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Séné : sessions individuelles pour dirigeants TPE/PME, ostréiculteurs, artisans et professionnels du tourisme du Golfe du Morbihan souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Séné : sessions individuelles pour dirigeants TPE/PME, ostréiculteurs, artisans et professionnels du tourisme du Golfe du Morbihan souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Séné : sessions individuelles pour dirigeants de PME et d'ETI, ostréiculteurs, artisans et professionnels du tourisme du Golfe du Morbihan souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Séné : sessions individuelles pour dirigeants de PME et d'ETI, ostréiculteurs, artisans et professionnels du tourisme du Golfe du Morbihan souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SENE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Séné  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME sénéennes, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI sénéennes, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Quels services IA pour les acteurs du tourisme à Séné ?",

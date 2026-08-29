@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PERAY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
+    "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, PME du BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
+    "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, PME du BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, PME du BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, PME du BTP, commerçants et services aux entreprises.",
   seoHook: "viticulture saint-péray & oenotourisme crus",
   ecosystemFr:
-    "Saint-Péray est face à Valence (rive droite Rhône). Vignoble AOC Saint-Péray (vins blancs effervescents/tranquilles, cru septentrional Rhône), proximité AOC Cornas (rouge). Tissu viticole, oenotourisme, PME tertiaires, TPE artisanat BTP, commerces.",
+    "Saint-Péray est face à Valence (rive droite Rhône). Vignoble AOC Saint-Péray (vins blancs effervescents/tranquilles, cru septentrional Rhône), proximité AOC Cornas (rouge). Tissu viticole, oenotourisme, PME tertiaires, PME du BTP, commerces.",
   ecosystemEn:
-    "Saint-Péray est face à Valence (rive droite Rhône). Vignoble AOC Saint-Péray (vins blancs effervescents/tranquilles, cru septentrional Rhône), proximité AOC Cornas (rouge). Tissu viticole, oenotourisme, PME tertiaires, TPE artisanat BTP, commerces.",
+    "Saint-Péray est face à Valence (rive droite Rhône). Vignoble AOC Saint-Péray (vins blancs effervescents/tranquilles, cru septentrional Rhône), proximité AOC Cornas (rouge). Tissu viticole, oenotourisme, PME tertiaires, PME du BTP, commerces.",
   distancesFr:
     "Valence centre à 10 min. Gare Valence-Ville à 15 min (TGV Paris 2h15). Lyon à 1h. Cornas limitrophe. Guilherand-Granges à 5 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const SAINT_PERAY_COPY: VilleCopy = {
     "Viticulture AOC Saint-Péray / Cornas",
     "Oenotourisme crus septentrionaux Rhône",
     "PME tertiaires agglomération Valence",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Péray : diagnostic adapté aux viticulteurs AOC Saint-Péray/Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Péray : diagnostic adapté aux viticulteurs AOC Saint-Péray/Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Péray : diagnostic adapté aux viticulteurs AOC Saint-Péray/Cornas, acteurs oenotourisme, PME tertiaires, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Péray : diagnostic adapté aux viticulteurs AOC Saint-Péray/Cornas, acteurs oenotourisme, PME tertiaires, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Péray : formats adaptés au domaine viticole, cave, bureau, commerce. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const SAINT_PERAY_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Péray : prédiction vendanges, classification photos cépages marsanne/roussanne, traçabilité AOC, agents conversationnels oenotourisme multilingue.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Péray : sessions dans votre domaine viticole, cave, bureau ou en visio. Viticulteurs AOC, acteurs oenotourisme, tertiaires, artisans, gérants TPE/PME saint-pérollais.",
-      en: "Coaching 1-to-1 à Saint-Péray : sessions dans votre domaine viticole, cave, bureau ou en visio. Viticulteurs AOC, acteurs oenotourisme, tertiaires, artisans, gérants TPE/PME saint-pérollais.",
+      fr: "Coaching 1-to-1 à Saint-Péray : sessions dans votre domaine viticole, cave, bureau ou en visio. Viticulteurs AOC, acteurs oenotourisme, tertiaires, artisans, gérants PME et ETI saint-pérollais.",
+      en: "Coaching 1-to-1 à Saint-Péray : sessions dans votre domaine viticole, cave, bureau ou en visio. Viticulteurs AOC, acteurs oenotourisme, tertiaires, artisans, gérants PME et ETI saint-pérollais.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const SAINT_PERAY_COPY: VilleCopy = {
       a: "Oui, agents conversationnels B2B, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

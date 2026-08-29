@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const DUNKERQUE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des TPE et PME du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
+    "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des PME et ETI du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
   pitchEn:
-    "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des TPE et PME du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
+    "Axion-IA intervient à Dunkerque, troisième port maritime français, auprès des PME et ETI du Nord. Notre cabinet national se déplace pour auditer, former et déployer des solutions IA sur mesure auprès des sous-traitants portuaires, des artisans, des cabinets de services et des commerces locaux. Le port et son écosystème industriel (ArcelorMittal, Air Liquide, Polimeri Europe) génèrent un tissu dense de PME et de sous-traitants que nous accompagnons en priorité. Quelques ETI dunkerquoises font également appel à nos services en complément.",
   directAnswerFr:
-    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA accompagne à Dunkerque les PME et ETI liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   directAnswerEn:
-    "Axion-IA accompagne à Dunkerque les TPE et PME liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA accompagne à Dunkerque les PME et ETI liées au Grand Port Maritime, à la grande distribution, à la pétrochimie sous-traitée, à la métallurgie et aux services aux entreprises. Notre approche : audits IA opérationnels, formations dirigeants, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site sous 5 jours ouvrés. Quelques ETI dunkerquoises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   seoHook: "port, métallurgie & sous-traitance",
   ecosystemFr:
-    "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de TPE et PME de sous-traitance, logistique, maintenance et services.",
+    "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de PME et ETI de sous-traitance, logistique, maintenance et services.",
   ecosystemEn:
-    "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de TPE et PME de sous-traitance, logistique, maintenance et services.",
+    "Dunkerque est portée par le Grand Port Maritime, premier employeur de la ville devant la grande distribution. L'écosystème industriel local rassemble ArcelorMittal (sidérurgie), Air Liquide (gaz industriels), Polimeri Europe (pétrochimie) et la centrale nucléaire voisine de Gravelines. Autour de ces donneurs d'ordre gravitent des centaines de PME et ETI de sous-traitance, logistique, maintenance et services.",
   distancesFr:
     "La gare TGV de Dunkerque relie Paris-Nord en 1h45 à 2h30 et Lille-Europe en 35 minutes. L'A16/E40 et l'A25 desservent l'agglomération. L'aéroport de Lille-Lesquin est à 89 km, et le port assure des liaisons maritimes directes vers Douvres et Rosslare.",
   distancesEn:
@@ -33,8 +33,8 @@ export const DUNKERQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Auditer une TPE ou PME dunkerquoise (sous-traitance portuaire, logistique, services) pour cartographier les automatisations IA prioritaires.",
-      en: "Auditer une TPE ou PME dunkerquoise (sous-traitance portuaire, logistique, services) pour cartographier les automatisations IA prioritaires.",
+      fr: "Auditer une PME ou ETI dunkerquoise (sous-traitance portuaire, logistique, services) pour cartographier les automatisations IA prioritaires.",
+      en: "Auditer une PME ou ETI dunkerquoise (sous-traitance portuaire, logistique, services) pour cartographier les automatisations IA prioritaires.",
     },
     interventions: {
       fr: "Intervenir sur site à Dunkerque pour automatiser devis, suivi commandes, planning maintenance et tâches administratives.",
@@ -45,8 +45,8 @@ export const DUNKERQUE_COPY: VilleCopy = {
       en: "Implémenter des outils IA en code source propriétaire à Dunkerque, livrés au client, intégrables aux ERP et logiciels métier existants.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants de TPE/PME dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner les dirigeants de TPE/PME dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner les dirigeants de PME et ETI dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner les dirigeants de PME et ETI dunkerquoises en sessions 1-to-1 pour structurer leur feuille de route IA — dès {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -54,11 +54,11 @@ export const DUNKERQUE_COPY: VilleCopy = {
       fr: {
         hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams se déplace sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 15 personnes.",
         whyHere: [
-          "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de TPE et PME de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
+          "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de PME et ETI de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
           "Tout le bassin couvert en présentiel : zone portuaire, Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines, et l'ensemble de la Communauté Urbaine de Dunkerque.",
           "Le format Essentielle (1 jour, 2 à 15 personnes) est conçu pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
           "Le format Conférence convient aux plénières d'entreprise et aux fournisseurs des donneurs d'ordre industriels du bassin (sidérurgie, aluminium, pétrochimie, gaz industriels).",
-          "Le format Dirigeant (1 jour) permet un cadrage en huis-clos pour les comités de direction de TPE/PME et d'ETI dunkerquoises.",
+          "Le format Dirigeant (1 jour) permet un cadrage en huis-clos pour les comités de direction de PME et ETI et de grands groupes dunkerquois.",
           "Vocabulaire ajusté à votre secteur dominant : activités portuaires, métallurgie, pétrochimie sous-traitée, entreposage, transport. Les démos sont calibrées sur vos données, pas sur des exemples génériques.",
         ],
         methodology: [
@@ -89,12 +89,6 @@ export const DUNKERQUE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures — {{price:intervention-4h|flat}}",
-            detail:
-              "Pour artisans, sous-traitants et prestataires de services dunkerquois : demi-journée sur site, groupe de 2 à 15 personnes, pour installer et prendre en main les premiers outils IA du quotidien.",
-          },
           {
             sizeLabel: "PME",
             price: "Essentielle (1 j) ou Gagner du temps (1 j)",
@@ -146,11 +140,11 @@ export const DUNKERQUE_COPY: VilleCopy = {
       en: {
         hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams se déplace sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 15 personnes.",
         whyHere: [
-          "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de TPE et PME de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
+          "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de PME et ETI de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
           "Tout le bassin couvert en présentiel : zone portuaire, Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines, et l'ensemble de la Communauté Urbaine de Dunkerque.",
           "Le format Essentielle (1 jour, 2 à 15 personnes) est conçu pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
           "Le format Conférence convient aux plénières d'entreprise et aux fournisseurs des donneurs d'ordre industriels du bassin (sidérurgie, aluminium, pétrochimie, gaz industriels).",
-          "Le format Dirigeant (1 jour) permet un cadrage en huis-clos pour les comités de direction de TPE/PME et d'ETI dunkerquoises.",
+          "Le format Dirigeant (1 jour) permet un cadrage en huis-clos pour les comités de direction de PME et ETI et de grands groupes dunkerquois.",
           "Vocabulaire ajusté à votre secteur dominant : activités portuaires, métallurgie, pétrochimie sous-traitée, entreposage, transport. Les démos sont calibrées sur vos données, pas sur des exemples génériques.",
         ],
         methodology: [
@@ -181,12 +175,6 @@ export const DUNKERQUE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Formation 4 heures — {{price:intervention-4h|flat}}",
-            detail:
-              "Pour artisans, sous-traitants et prestataires de services dunkerquois : demi-journée sur site, groupe de 2 à 15 personnes, pour installer et prendre en main les premiers outils IA du quotidien.",
-          },
           {
             sizeLabel: "PME",
             price: "Essentielle (1 j) ou Gagner du temps (1 j)",
@@ -274,12 +262,6 @@ export const DUNKERQUE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou portail simple",
-            detail:
-              "Pour artisans, sous-traitants et prestataires de services dunkerquois jusqu'à une dizaine de collaborateurs : site vitrine performant, formulaire intelligent ou premier assistant IA, optimisé mobile et référencement local.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier ou e-commerce B2B",
             detail:
@@ -360,12 +342,6 @@ export const DUNKERQUE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or simple portal",
-            detail:
-              "For Dunkerque craftspeople, subcontractors and service providers up to about ten staff: high-performance showcase site, smart form or first AI assistant, optimised for mobile and local search.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform or B2B e-commerce",
             detail:
@@ -431,11 +407,11 @@ export const DUNKERQUE_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs dunkerquois Axion-IA accompagne-t-il en priorité ?",
-      a: "Nous priorisons les TPE et PME de sous-traitance portuaire, logistique, maintenance industrielle, grande distribution et services aux entreprises. Quelques ETI font également appel à nos services.",
+      a: "Nous priorisons les PME et ETI de sous-traitance portuaire, logistique, maintenance industrielle, grande distribution et services aux entreprises. Quelques ETI font également appel à nos services.",
     },
     {
       q: "Proposez-vous des formations IA pour les équipes dunkerquoises ?",
-      a: "Oui, nous animons à Dunkerque des formations sur mesure (présentiel ou visio) pour dirigeants et collaborateurs de TPE/PME, calibrées sur les enjeux portuaires et industriels locaux.",
+      a: "Oui, nous animons à Dunkerque des formations sur mesure (présentiel ou visio) pour dirigeants et collaborateurs de PME et ETI, calibrées sur les enjeux portuaires et industriels locaux.",
     },
   ],
 };

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LO_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de PME artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de PME artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Lô (50). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville reconstruit, PME agroalimentaires normandes, acteurs de la filière équine (haras), services publics départementaux, professions libérales et prestataires du bocage manchois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Lô (50). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce du centre-ville reconstruit, PME agroalimentaires normandes, acteurs de la filière équine (haras), services publics départementaux, professions libérales et prestataires du bocage manchois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Lô (50). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville reconstruit, PME agroalimentaires normandes, acteurs de la filière équine (haras), services publics départementaux, professions libérales et prestataires du bocage manchois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Lô (50). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce du centre-ville reconstruit, PME agroalimentaires normandes, acteurs de la filière équine (haras), services publics départementaux, professions libérales et prestataires du bocage manchois.",
   seoHook: "agroalimentaire & services publics",
   ecosystemFr:
-    "Saint-Lô, préfecture de la Manche, est le centre administratif et économique du département. Reconstruite après les destructions de 1944, la ville abrite le haras national, un pôle agroalimentaire (laiteries, cidre, viande bovine), des services publics départementaux, un tissu de TPE/PME artisanales et commerciales, et un secteur santé (centre hospitalier). Accès A84 vers Caen (60 min) et Rennes (90 min).",
+    "Saint-Lô, préfecture de la Manche, est le centre administratif et économique du département. Reconstruite après les destructions de 1944, la ville abrite le haras national, un pôle agroalimentaire (laiteries, cidre, viande bovine), des services publics départementaux, un tissu de PME et ETI artisanales et commerciales, et un secteur santé (centre hospitalier). Accès A84 vers Caen (60 min) et Rennes (90 min).",
   ecosystemEn:
-    "Saint-Lô, préfecture de la Manche, est le centre administratif et économique du département. Reconstruite après les destructions de 1944, la ville abrite le haras national, un pôle agroalimentaire (laiteries, cidre, viande bovine), des services publics départementaux, un tissu de TPE/PME artisanales et commerciales, et un secteur santé (centre hospitalier). Accès A84 vers Caen (60 min) et Rennes (90 min).",
+    "Saint-Lô, préfecture de la Manche, est le centre administratif et économique du département. Reconstruite après les destructions de 1944, la ville abrite le haras national, un pôle agroalimentaire (laiteries, cidre, viande bovine), des services publics départementaux, un tissu de PME et ETI artisanales et commerciales, et un secteur santé (centre hospitalier). Accès A84 vers Caen (60 min) et Rennes (90 min).",
   distancesFr:
     "Gare de Saint-Lô (TER vers Caen, 1 h). Caen à 60 min (A84). Rennes à 90 min (A84). Cherbourg à 70 min. Granville à 40 min. Aéroport Caen-Carpiquet à 1 h 10. Aéroport Rennes à 1 h 40.",
   distancesEn:
     "Gare de Saint-Lô (TER vers Caen, 1 h). Caen à 60 min (A84). Rennes à 90 min (A84). Cherbourg à 70 min. Granville à 40 min. Aéroport Caen-Carpiquet à 1 h 10. Aéroport Rennes à 1 h 40.",
   topSectorsNaf: [
-    "TPE/PME agroalimentaire (laiteries, cidre, viande bovine)",
+    "PME et ETI agroalimentaire (laiteries, cidre, viande bovine)",
     "Services publics et administration départementale",
     "Filière équine et haras",
     "Commerce de centre-ville et artisanat",
@@ -30,8 +30,8 @@ export const SAINT_LO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Lô : diagnostic adapté aux PME artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Lô : diagnostic adapté aux PME artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Lô : formats adaptés à la laiterie, l'exploitation agricole, le commerce, l'administration départementale. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_LO_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Lô : automatisation traçabilité agroalimentaire, gestion planning haras, agents IA accueil administrations, optimisation logistique laitière, CRM commerce centre-ville.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Lô : sessions dans votre entreprise, exploitation, administration ou en visio. Dirigeants TPE/PME, gérants agroalimentaire, responsables filière équine, commerçants manchois.",
-      en: "Coaching 1-to-1 à Saint-Lô : sessions dans votre entreprise, exploitation, administration ou en visio. Dirigeants TPE/PME, gérants agroalimentaire, responsables filière équine, commerçants manchois.",
+      fr: "Coaching 1-to-1 à Saint-Lô : sessions dans votre entreprise, exploitation, administration ou en visio. Dirigeants PME et ETI, gérants agroalimentaire, responsables filière équine, commerçants manchois.",
+      en: "Coaching 1-to-1 à Saint-Lô : sessions dans votre entreprise, exploitation, administration ou en visio. Dirigeants PME et ETI, gérants agroalimentaire, responsables filière équine, commerçants manchois.",
     },
   },
   faqGeolocalisee: [
@@ -52,8 +52,8 @@ export const SAINT_LO_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Lô et dans toute la Manche (Coutances, Granville, Avranches, Cherbourg). Nos consultants se déplacent via l'A84 depuis Caen ou Rennes, ou en visio.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME agroalimentaires de Saint-Lô ?",
-      a: "Oui, nous accompagnons les TPE et PME agroalimentaires de Saint-Lô et du bocage manchois : automatisation traçabilité, prédiction rendements laitiers, optimisation logistique, classification qualité. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et ETI agroalimentaires de Saint-Lô ?",
+      a: "Oui, nous accompagnons les PME et ETI agroalimentaires de Saint-Lô et du bocage manchois : automatisation traçabilité, prédiction rendements laitiers, optimisation logistique, classification qualité. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels services pour les acteurs de la filière équine ?",

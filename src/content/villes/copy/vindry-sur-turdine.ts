@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
   pitchFr:
-    "Vindry-sur-Turdine (69), commune nouvelle du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, TPE artisans BTP, commerces, agriculture montagne. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
+    "Vindry-sur-Turdine (69), commune nouvelle du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, PME du BTP, commerces, agriculture montagne. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
   pitchEn:
-    "Vindry-sur-Turdine (69), commune nouvelle du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, TPE artisans BTP, commerces, agriculture montagne. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
+    "Vindry-sur-Turdine (69), commune nouvelle du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, PME du BTP, commerces, agriculture montagne. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, PME du BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, PME du BTP, commerçants et services aux entreprises.",
   seoHook: "industrielles lyonnais & agriculture montagne",
   ecosystemFr:
-    "Vindry-sur-Turdine est une commune nouvelle du NO lyonnais, vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, agriculture montagne, TPE artisanat BTP, commerces.",
+    "Vindry-sur-Turdine est une commune nouvelle du NO lyonnais, vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, agriculture montagne, PME du BTP, commerces.",
   ecosystemEn:
-    "Vindry-sur-Turdine est une commune nouvelle du NO lyonnais, vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, agriculture montagne, TPE artisanat BTP, commerces.",
+    "Vindry-sur-Turdine est une commune nouvelle du NO lyonnais, vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, agriculture montagne, PME du BTP, commerces.",
   distancesFr:
     "Lyon centre à 40 min. Tarare à 5 min. L'Arbresle à 10 min. Villefranche-sur-Saône à 25 min. Roanne à 35 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
     "PME industrielles NO lyonnais",
     "PME tertiaires",
     "Agriculture montagne Beaujolais",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vindry-sur-Turdine : diagnostic adapté aux PME industrielles/tertiaires NO lyonnais, agriculteurs montagne, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Vindry-sur-Turdine : diagnostic adapté aux PME industrielles/tertiaires NO lyonnais, agriculteurs montagne, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Vindry-sur-Turdine : diagnostic adapté aux PME industrielles/tertiaires NO lyonnais, agriculteurs montagne, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Vindry-sur-Turdine : diagnostic adapté aux PME industrielles/tertiaires NO lyonnais, agriculteurs montagne, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vindry-sur-Turdine : formats adaptés à l'atelier, exploitation agricole, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
       en: "Implémentation IA à Vindry-sur-Turdine : prédiction maintenance industrielle, classification photos cultures, agents conversationnels B2B, automatisation workflow.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vindry-sur-Turdine : sessions dans votre atelier, exploitation, bureau ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants TPE/PME.",
-      en: "Coaching 1-to-1 à Vindry-sur-Turdine : sessions dans votre atelier, exploitation, bureau ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants TPE/PME.",
+      fr: "Coaching 1-to-1 à Vindry-sur-Turdine : sessions dans votre atelier, exploitation, bureau ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants PME et ETI.",
+      en: "Coaching 1-to-1 à Vindry-sur-Turdine : sessions dans votre atelier, exploitation, bureau ou en visio. Dirigeants industriels, agriculteurs, artisans, gérants PME et ETI.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
       a: "Oui, prédiction récoltes, classification photos cultures/animaux, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

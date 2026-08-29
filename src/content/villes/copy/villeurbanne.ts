@@ -8,7 +8,7 @@
 //   - Durée minimale = 1 journée. Mention systématique
 //     « frais de logement, repas et forfait trajet en sus » sur interventions.
 //   - Aucun prix hardcodé : tarifs viennent de `src/content/pricing.ts`.
-//   - Tailles entreprise INSEE : TPE / PME / ETI / Grande entreprise.
+//   - Tailles entreprise INSEE : PME/ETI/grands groupes / Grande entreprise.
 //   - ~95 % Axion-IA-centric, ~5 % data INSEE anti-doorway HCU 2024.
 //   - Mot « formation » autorisé en copy descriptif, naming = « intervention ».
 //   - Villeurbanne est une ville distincte de Lyon (69266 ≠ 69123) — 2e ville
@@ -54,7 +54,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeurbanne (69100) sur site — quartier Gratte-Ciel, campus LyonTech-La Doua, Carré de Soie et communes de la Métropole. Villeurbanne est une ville distincte de Lyon (69123) : 2e ville du Rhône, 13 426 établissements actifs, INSA Lyon, CNRS, Inria, FORVIA MATERI'ACT. Nous accompagnons les TPE, PME tech, ETI industrielles et grandes entreprises villeurbannaises sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeurbanne (69100) sur site — quartier Gratte-Ciel, campus LyonTech-La Doua, Carré de Soie et communes de la Métropole. Villeurbanne est une ville distincte de Lyon (69123) : 2e ville du Rhône, 13 426 établissements actifs, INSA Lyon, CNRS, Inria, FORVIA MATERI'ACT. Nous accompagnons les PME, ETI tech, ETI industrielles et grandes entreprises villeurbannaises sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
   directAnswerEn:
     "Axion-IA is an senior AI experts consultancy that intervenes in Villeurbanne (69100) on site — Gratte-Ciel district, LyonTech-La Doua campus, Carré de Soie and Métropole communes. Villeurbanne is a distinct city from Lyon (69123): 2nd city in Rhône, 13,426 active businesses, INSA Lyon, CNRS, Inria, FORVIA MATERI'ACT. We support Villeurbanne micro-businesses, tech SMEs, industrial mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on real data, concrete action plan. No tech lock-in.",
 
@@ -85,7 +85,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Villeurbanne ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Villeurbanne et partout en France.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (PME, ETI et grands groupes, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Villeurbanne et partout en France.",
     },
     {
       q: "Quels secteurs sont prioritaires à Villeurbanne pour une mission IA ?",
@@ -114,7 +114,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Villeurbanne (69100) cartographie ce qui peut être automatisé dans votre entreprise et chiffre le retour sur investissement. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE IT du quartier Gratte-Ciel aux ETI industrielles du campus LyonTech-La Doua et aux grands groupes comme FORVIA MATERI'ACT. Villeurbanne est notre terrain d'intervention à part entière — distinctement de Lyon.",
+        hero: "L'audit IA Axion-IA à Villeurbanne (69100) cartographie ce qui peut être automatisé dans votre entreprise et chiffre le retour sur investissement. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME IT du quartier Gratte-Ciel aux ETI industrielles du campus LyonTech-La Doua et aux grands groupes comme FORVIA MATERI'ACT. Villeurbanne est notre terrain d'intervention à part entière — distinctement de Lyon.",
         whyHere: [
           "Villeurbanne concentre un écosystème IT et ingénierie unique en France : campus LyonTech-La Doua (INSA Lyon, CPE Lyon, UCBL, ENSSIB, IUT Lyon 1, CNRS, Inria) — 25 000 étudiants et chercheurs — génère une demande d'audits IA à haute valeur technique.",
           "Tissu B2B villeurbannais sectorisé : IT et numérique (993 établissements section J), activités spécialisées et scientifiques (4 172 établissements sections M+N), industrie matériaux (FORVIA MATERI'ACT), conseil et intégration ERP (TVH Consulting).",
@@ -151,12 +151,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Audit sur place",
-            detail:
-              "Adapté aux indépendants, micro-entreprises IT et cabinets villeurbannais jusqu'à une dizaine de collaborateurs — Gratte-Ciel, Charpennes, Cusset.",
-          },
           {
             sizeLabel: "PME",
             price: "Audit Ciblé ou Stratégique PME",
@@ -257,12 +251,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Sur place audit",
-            detail:
-              "Suited to Villeurbanne freelancers, IT micro-firms and practices up to about ten staff — Gratte-Ciel, Charpennes, Cusset.",
-          },
           {
             sizeLabel: "SME",
             price: "Targeted or SME Strategic audit",
@@ -367,12 +355,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Formation collective",
-            detail:
-              "Idéal pour indépendants, petites agences IT et micro-équipes villeurbannaises jusqu'à une dizaine de collaborateurs — Gratte-Ciel, Charpennes.",
-          },
-          {
             sizeLabel: "PME",
             price: "Format collectif ou Équipes",
             detail:
@@ -472,12 +454,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Group format",
-            detail:
-              "Ideal for Villeurbanne freelancers, small IT agencies and micro-teams up to about ten staff — Gratte-Ciel, Charpennes.",
-          },
           {
             sizeLabel: "SME",
             price: "Group or Teams format",
@@ -582,12 +558,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Pilote IA",
-            detail:
-              "Implémentation d'un cas d'usage simple en quelques semaines — automatisation devis, comptes-rendus réunion, qualification leads pour TPE IT et indépendants villeurbannais.",
-          },
-          {
             sizeLabel: "PME",
             price: "Mission PME",
             detail:
@@ -623,7 +593,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         faq: [
           {
             q: "Combien de temps dure une implémentation Axion-IA à Villeurbanne ?",
-            a: "Cela dépend de l'ampleur. Un POC pour TPE peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
+            a: "Cela dépend de l'ampleur. Un POC pour PME peut tenir en quelques semaines, une mission PME standard sur quelques mois, une mission ETI transverse sur plusieurs mois, un grand programme multi-déploiement sur une année. Le SOW signé en cadrage fixe le calendrier précis.",
           },
           {
             q: "Le tarif est-il fixe ou au temps passé ?",
@@ -687,12 +657,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Pilote IA",
-            detail:
-              "Implementation of a simple use case over a few weeks — quote automation, meeting minutes, lead qualification for Villeurbanne IT micro-businesses and freelancers.",
-          },
           {
             sizeLabel: "SME",
             price: "SME mission",
@@ -797,12 +761,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Programme individuel démarrage",
-            detail:
-              "Pour les indépendants, consultants et fondateurs villeurbannais en phase de démarrage — quelques sessions pour installer les bases et les outils.",
-          },
-          {
             sizeLabel: "PME",
             price: "Programme individuel accélération",
             detail:
@@ -902,12 +860,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Individual starter programme",
-            detail:
-              "For Villeurbanne freelancers, consultants and founders in early stage — a few sessions to install foundations and tools.",
-          },
           {
             sizeLabel: "SME",
             price: "Individual acceleration programme",
@@ -1009,12 +961,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant en quelques semaines, sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -1094,12 +1040,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / app",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONTESSON_COPY: VilleCopy = {
   pitchFr:
-    "Montesson (78), commune résidentielle des Yvelines sur la plaine de Montesson, héritière d'une longue tradition maraîchère, allie cadre verdoyant et proximité parisienne. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Montesson (78), commune résidentielle des Yvelines sur la plaine de Montesson, héritière d'une longue tradition maraîchère, allie cadre verdoyant et proximité parisienne. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Montesson (78), commune résidentielle des Yvelines sur la plaine de Montesson, héritière d'une longue tradition maraîchère, allie cadre verdoyant et proximité parisienne. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Montesson (78), commune résidentielle des Yvelines sur la plaine de Montesson, héritière d'une longue tradition maraîchère, allie cadre verdoyant et proximité parisienne. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montesson (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montesson (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montesson (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montesson (78). Nous accompagnons PME et ETI : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Montesson est une commune résidentielle des Yvelines, sur la plaine maraîchère historique de Montesson, entre Le Vésinet et Sartrouville. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles.",
+    "Montesson est une commune résidentielle des Yvelines, sur la plaine maraîchère historique de Montesson, entre Le Vésinet et Sartrouville. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles.",
   ecosystemEn:
-    "Montesson est une commune résidentielle des Yvelines, sur la plaine maraîchère historique de Montesson, entre Le Vésinet et Sartrouville. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles.",
+    "Montesson est une commune résidentielle des Yvelines, sur la plaine maraîchère historique de Montesson, entre Le Vésinet et Sartrouville. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles.",
   distancesFr:
     "Le Vésinet à 5 min. Sartrouville à 5 min. Paris La Défense à 15 min. Gare Transilien Le Vésinet–Le Pecq (RER A à 10 min). Paris Saint-Lazare à 20 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const MONTESSON_COPY: VilleCopy = {
       en: "Implémentation IA à Montesson : CRM augmenté commerçants, automatisation back-office PME, gestion cabinet, outils traçabilité agricole IA, réservation restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montesson : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME montessonnais, professions libérales, exploitants plaine de Montesson.",
-      en: "Coaching 1-to-1 à Montesson : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants TPE/PME montessonnais, professions libérales, exploitants plaine de Montesson.",
+      fr: "Coaching 1-to-1 à Montesson : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI montessonnais, professions libérales, exploitants plaine de Montesson.",
+      en: "Coaching 1-to-1 à Montesson : sessions dans votre commerce, bureau, cabinet ou en visio. Dirigeants PME et ETI montessonnais, professions libérales, exploitants plaine de Montesson.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MONTESSON_COPY: VilleCopy = {
       a: "Oui, outils traçabilité IA, gestion parcellaire automatisée, planification récoltes, facturation intelligente, CRM circuits courts, optimisation logistique.",
     },
     {
-      q: "Quels services pour les TPE et restaurateurs ?",
+      q: "Quels services pour les PME et restaurateurs ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {

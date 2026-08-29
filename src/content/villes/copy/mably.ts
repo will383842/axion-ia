@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MABLY_COPY: VilleCopy = {
   pitchFr:
-    "Mably (42), commune en banlieue nord immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile Roannais), TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants du Roannais.",
+    "Mably (42), commune en banlieue nord immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile Roannais), PME du BTP, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants du Roannais.",
   pitchEn:
-    "Mably (42), commune en banlieue nord immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile Roannais), TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants du Roannais.",
+    "Mably (42), commune en banlieue nord immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile Roannais), PME du BTP, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants du Roannais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mably (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mably (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mably (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Roannais Agglomération.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mably (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), PME du BTP, commerçants, professions libérales, indépendants et services aux entreprises de Roannais Agglomération.",
   seoHook: "tertiaires roannais & industrielles",
   ecosystemFr:
-    "Mably est intégrée à Roannais Agglomération (~99 000 hab), en banlieue nord immédiate de Roanne. Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "Mably est intégrée à Roannais Agglomération (~99 000 hab), en banlieue nord immédiate de Roanne. Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), PME du BTP, commerces de proximité, professions libérales.",
   ecosystemEn:
-    "Mably est intégrée à Roannais Agglomération (~99 000 hab), en banlieue nord immédiate de Roanne. Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "Mably est intégrée à Roannais Agglomération (~99 000 hab), en banlieue nord immédiate de Roanne. Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), PME du BTP, commerces de proximité, professions libérales.",
   distancesFr:
     "Roanne centre à 5 min. Gare Roanne à 10 min (TER Lyon-Paris). Aéroport Lyon-Saint-Exupéry à 1h30. Lyon centre à 1h30. Saint-Étienne à 1h. Vichy à 1h.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MABLY_COPY: VilleCopy = {
     "PME tertiaires Roannais Agglomération",
     "PME industrielles (héritage textile)",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mably : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mably : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, TPE artisans. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mably : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mably : diagnostic adapté aux PME tertiaires/industrielles Roannais, professions libérales, PME artisanales. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mably : formats adaptés au bureau tertiaire, cabinet professionnel, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const MABLY_COPY: VilleCopy = {
       en: "Implémentation IA à Mably : agents conversationnels B2B/patient, classification photos textile, prédiction maintenance industrielle, automatisation workflow. Roannais Agglomération.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mably : sessions dans votre bureau, cabinet, atelier, commerce ou en visio. Dirigeants tertiaires, industriels textile, médecins, avocats, artisans, gérants TPE/PME mablyssois.",
-      en: "Coaching 1-to-1 à Mably : sessions dans votre bureau, cabinet, atelier, commerce ou en visio. Dirigeants tertiaires, industriels textile, médecins, avocats, artisans, gérants TPE/PME mablyssois.",
+      fr: "Coaching 1-to-1 à Mably : sessions dans votre bureau, cabinet, atelier, commerce ou en visio. Dirigeants tertiaires, industriels textile, médecins, avocats, artisans, gérants PME et ETI mablyssois.",
+      en: "Coaching 1-to-1 à Mably : sessions dans votre bureau, cabinet, atelier, commerce ou en visio. Dirigeants tertiaires, industriels textile, médecins, avocats, artisans, gérants PME et ETI mablyssois.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const MABLY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales à Mably (médecins, avocats, expert-comptables) sur des cas IA respectueux du secret professionnel : agents conversationnels patients/clients, automatisation RDV, classification dossiers. RGPD strict.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Mably, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Mably, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

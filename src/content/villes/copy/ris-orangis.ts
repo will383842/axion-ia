@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const RIS_ORANGIS_COPY: VilleCopy = {
   pitchFr:
-    "Ris-Orangis (91), commune de l'Essonne sur les bords de Seine, s'inscrit dans l'agglomération de Grand Paris Sud le long de l'axe structurant du RER D. La ville mêle zones d'activités, logistique, commerce, BTP et PME de services au sein d'un bassin d'emploi tourné vers Évry-Courcouronnes et le sud francilien. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les TPE puis les PME pour automatiser l'administratif et fiabiliser leurs opérations, avec des solutions concrètes et un retour sur investissement mesurable.",
+    "Ris-Orangis (91), commune de l'Essonne sur les bords de Seine, s'inscrit dans l'agglomération de Grand Paris Sud le long de l'axe structurant du RER D. La ville mêle zones d'activités, logistique, commerce, BTP et PME de services au sein d'un bassin d'emploi tourné vers Évry-Courcouronnes et le sud francilien. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME puis les ETI pour automatiser l'administratif et fiabiliser leurs opérations, avec des solutions concrètes et un retour sur investissement mesurable.",
   pitchEn:
-    "Ris-Orangis (91), commune de l'Essonne sur les bords de Seine, s'inscrit dans l'agglomération de Grand Paris Sud le long de l'axe structurant du RER D. La ville mêle zones d'activités, logistique, commerce, BTP et PME de services au sein d'un bassin d'emploi tourné vers Évry-Courcouronnes et le sud francilien. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les TPE puis les PME pour automatiser l'administratif et fiabiliser leurs opérations, avec des solutions concrètes et un retour sur investissement mesurable.",
+    "Ris-Orangis (91), commune de l'Essonne sur les bords de Seine, s'inscrit dans l'agglomération de Grand Paris Sud le long de l'axe structurant du RER D. La ville mêle zones d'activités, logistique, commerce, BTP et PME de services au sein d'un bassin d'emploi tourné vers Évry-Courcouronnes et le sud francilien. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne en priorité les PME puis les ETI pour automatiser l'administratif et fiabiliser leurs opérations, avec des solutions concrètes et un retour sur investissement mesurable.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ris-Orangis (91, Essonne) et dans le sud francilien. Nous accompagnons en priorité les TPE de commerce, BTP et services, puis les PME de logistique et de services aux entreprises implantées le long de la Seine et du RER D. Notre méthode : un audit ciblé des tâches répétitives, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ris-Orangis (91, Essonne) et dans le sud francilien. Nous accompagnons en priorité les PME de commerce, BTP et services, puis les PME de logistique et de services aux entreprises implantées le long de la Seine et du RER D. Notre méthode : un audit ciblé des tâches répétitives, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ris-Orangis (91, Essonne) et dans le sud francilien. Nous accompagnons en priorité les TPE de commerce, BTP et services, puis les PME de logistique et de services aux entreprises implantées le long de la Seine et du RER D. Notre méthode : un audit ciblé des tâches répétitives, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grandes ETI restent une part marginale de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ris-Orangis (91, Essonne) et dans le sud francilien. Nous accompagnons en priorité les PME de commerce, BTP et services, puis les PME de logistique et de services aux entreprises implantées le long de la Seine et du RER D. Notre méthode : un audit ciblé des tâches répétitives, des automatisations utiles déployées sur vos outils, et la formation de vos équipes. Les grands groupes complètent ce socle.",
   seoHook: "logistique & services bord de Seine",
   ecosystemFr:
-    "Ris-Orangis appartient à la communauté d'agglomération Grand Paris Sud, vaste bassin d'emploi du sud francilien centré sur Évry-Courcouronnes. Située sur les bords de Seine et desservie par le RER D, la ville accueille des zones d'activités tournées vers la logistique, le transport, le BTP, le commerce et les PME de services. Ces TPE et PME, souvent dirigées par des indépendants, gèrent en propre devis, plannings et relances clients. Des automatisations IA bien ciblées leur permettent de gagner un temps précieux sur ces tâches répétitives.",
+    "Ris-Orangis appartient à la communauté d'agglomération Grand Paris Sud, vaste bassin d'emploi du sud francilien centré sur Évry-Courcouronnes. Située sur les bords de Seine et desservie par le RER D, la ville accueille des zones d'activités tournées vers la logistique, le transport, le BTP, le commerce et les PME de services. Ces PME et ETI, souvent dirigées par des indépendants, gèrent en propre devis, plannings et relances clients. Des automatisations IA bien ciblées leur permettent de gagner un temps précieux sur ces tâches répétitives.",
   ecosystemEn:
-    "Ris-Orangis appartient à la communauté d'agglomération Grand Paris Sud, vaste bassin d'emploi du sud francilien centré sur Évry-Courcouronnes. Située sur les bords de Seine et desservie par le RER D, la ville accueille des zones d'activités tournées vers la logistique, le transport, le BTP, le commerce et les PME de services. Ces TPE et PME, souvent dirigées par des indépendants, gèrent en propre devis, plannings et relances clients. Des automatisations IA bien ciblées leur permettent de gagner un temps précieux sur ces tâches répétitives.",
+    "Ris-Orangis appartient à la communauté d'agglomération Grand Paris Sud, vaste bassin d'emploi du sud francilien centré sur Évry-Courcouronnes. Située sur les bords de Seine et desservie par le RER D, la ville accueille des zones d'activités tournées vers la logistique, le transport, le BTP, le commerce et les PME de services. Ces PME et ETI, souvent dirigées par des indépendants, gèrent en propre devis, plannings et relances clients. Des automatisations IA bien ciblées leur permettent de gagner un temps précieux sur ces tâches répétitives.",
   distancesFr:
     "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
   distancesEn:
@@ -42,8 +42,8 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
       en: "Implémentation IA à Ris-Orangis : optimisation des tournées et plannings transport, classification de bons de livraison et documents, automatisation des devis et relances, agents conversationnels B2B intégrés à vos logiciels existants.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Ris-Orangis : sessions individuelles avec le dirigeant ou le responsable d'exploitation, sur site ou en visio. Idéal pour les TPE qui veulent gagner du temps sur l'administratif sans bouleverser leur organisation.",
-      en: "Coaching un-à-un à Ris-Orangis : sessions individuelles avec le dirigeant ou le responsable d'exploitation, sur site ou en visio. Idéal pour les TPE qui veulent gagner du temps sur l'administratif sans bouleverser leur organisation.",
+      fr: "Coaching un-à-un à Ris-Orangis : sessions individuelles avec le dirigeant ou le responsable d'exploitation, sur site ou en visio. Idéal pour les PME qui veulent gagner du temps sur l'administratif sans bouleverser leur organisation.",
+      en: "Coaching un-à-un à Ris-Orangis : sessions individuelles avec le dirigeant ou le responsable d'exploitation, sur site ou en visio. Idéal pour les PME qui veulent gagner du temps sur l'administratif sans bouleverser leur organisation.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Ris-Orangis : site ou outil métier sur mesure dopé à l'IA pour artisans, transporteurs et commerces du sud francilien — demandes de devis intelligentes, suivi client, prise de rendez-vous et visibilité locale renforcée.",
@@ -57,7 +57,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
         whyHere: [
           "Ris-Orangis est d'abord un nœud logistique de la grande couronne sud, le long de la Seine et de l'A6 : les Z.A. de l'Orme Pomponne (L4 Logistics, Bansard International) et des Terres Saint-Lazare concentrent transport, entreposage et négoce — d'où une forte demande de portails de suivi de fret, d'espaces transporteurs et d'EDI augmentés par l'IA.",
           "La présence d'un back-office data d'envergure comme l'établissement PMU (Chemin du Bois de l'Hôtel-Dieu) ancre localement la culture du traitement de flux et de la donnée à grande échelle, terrain naturel pour des plateformes SaaS IA-native et des interfaces analytiques.",
-          "Le tissu TPE/PME dominant (commerce, BTP second œuvre, services aux entreprises — 1er secteur en créations d'entreprises en 2024) a besoin de sites métiers simples mais intelligents : devis automatisés, prise de rendez-vous, suivi client, visibilité locale sur Grand Paris Sud.",
+          "Le tissu PME et ETI dominant (commerce, BTP second œuvre, services aux entreprises — 1er secteur en créations d'entreprises en 2024) a besoin de sites métiers simples mais intelligents : devis automatisés, prise de rendez-vous, suivi client, visibilité locale sur Grand Paris Sud.",
           "Les acteurs culturels et de l'événementiel — au premier rang desquels Le Plan, SMAC labellisée (830 + 150 places, studios, label) près de la gare Orangis-Bois de l'Épine — et les opérations d'aménagement Docks de Ris et Le Plateau appellent des sites billetterie, agenda et portails riverains performants.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour les artisans du BTP, commerces et indépendants de Ris-Orangis et de Grand Paris Sud : site mobile-first avec demande de devis intelligente, prise de rendez-vous et visibilité locale, livré rapidement.",
-          },
           {
             sizeLabel: "PME",
             price: "Site métier ou e-commerce IA",
@@ -143,7 +137,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
         whyHere: [
           "Ris-Orangis is first and foremost a logistics hub of the southern Paris outer ring, along the Seine and the A6: the Orme Pomponne (L4 Logistics, Bansard International) and Terres Saint-Lazare zones concentrate transport, warehousing and trade — driving strong demand for freight-tracking portals, haulier areas and AI-augmented EDI.",
           "The presence of a large-scale data back-office such as the PMU establishment (Chemin du Bois de l'Hôtel-Dieu) anchors a local culture of high-volume flow and data processing, a natural ground for AI-native SaaS platforms and analytical interfaces.",
-          "The dominant TPE/PME fabric (retail, construction trades, business services — the top sector for new business registrations in 2024) needs simple but smart business sites: automated quotes, online booking, customer tracking, local visibility across Grand Paris Sud.",
+          "The dominant PME et ETI fabric (retail, construction trades, business services — the top sector for new business registrations in 2024) needs simple but smart business sites: automated quotes, online booking, customer tracking, local visibility across Grand Paris Sud.",
           "Cultural and events players — chief among them Le Plan, a state-labelled SMAC (830 + 150 seats, studios, label) near Orangis-Bois de l'Épine station — and the Docks de Ris and Le Plateau urban projects call for high-performance ticketing, listings and resident-facing portals.",
         ],
         methodology: [
@@ -174,12 +168,6 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase site",
-            detail:
-              "For Ris-Orangis construction trades, retailers and freelancers across Grand Paris Sud: a mobile-first site with smart quote requests, online booking and local visibility, delivered quickly.",
-          },
           {
             sizeLabel: "SME",
             price: "Business site or AI e-commerce",
@@ -233,8 +221,8 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
       a: "Oui. Nous couvrons Ris-Orangis et l'agglomération Grand Paris Sud (Évry-Courcouronnes, Corbeil-Essonnes, Grigny). Nos consultants se déplacent sur site depuis Paris, à 25 km, ou interviennent en visio selon votre besoin.",
     },
     {
-      q: "Accompagnez-vous les TPE de commerce, BTP et services ?",
-      a: "C'est notre priorité. Pour les artisans, commerçants et petites structures de services, nous automatisons devis, plannings et relances, et nous formons le dirigeant à piloter ces outils sans dépendance à un prestataire.",
+      q: "Accompagnez-vous les PME de commerce, BTP et services ?",
+      a: "C'est notre priorité. Pour les artisans, commerçants et PME de services, nous automatisons devis, plannings et relances, et nous formons le dirigeant à piloter ces outils sans dépendance à un prestataire.",
     },
     {
       q: "Travaillez-vous avec les PME de logistique et de transport ?",
@@ -242,7 +230,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
     },
     {
       q: "Faut-il un gros budget informatique pour démarrer à Ris-Orangis ?",
-      a: "Non. Nous partons de vos logiciels existants et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un chantier réservé aux grands groupes.",
+      a: "Non. Nous partons de vos logiciels existants et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une PME comme à une PME, pas un chantier réservé aux grands groupes.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

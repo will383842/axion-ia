@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const VAUJOURS_COPY: VilleCopy = {
   pitchFr:
-    "Vaujours (93), commune résidentielle de l'est de la Seine-Saint-Denis aux portes de la Seine-et-Marne, offre un cadre semi-rural avec un tissu de TPE artisanales BTP, commerçants de proximité, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Vaujours (93), commune résidentielle de l'est de la Seine-Saint-Denis aux portes de la Seine-et-Marne, offre un cadre semi-rural avec un tissu de PME du BTP, commerçants de proximité, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Vaujours (93), commune résidentielle de l'est de la Seine-Saint-Denis aux portes de la Seine-et-Marne, offre un cadre semi-rural avec un tissu de TPE artisanales BTP, commerçants de proximité, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Vaujours (93), commune résidentielle de l'est de la Seine-Saint-Denis aux portes de la Seine-et-Marne, offre un cadre semi-rural avec un tissu de PME du BTP, commerçants de proximité, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaujours (93). Nous accompagnons tous types d'activités : TPE artisanales BTP et commerçantes, PME de services aux entreprises, professions libérales, restaurateurs, prestataires logistiques et indépendants de l'est Seine-Saint-Denis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaujours (93). Nous accompagnons tous types d'activités : PME du BTP et du commerce, PME de services aux entreprises, professions libérales, restaurateurs, prestataires logistiques et indépendants de l'est Seine-Saint-Denis.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaujours (93). Nous accompagnons tous types d'activités : TPE artisanales BTP et commerçantes, PME de services aux entreprises, professions libérales, restaurateurs, prestataires logistiques et indépendants de l'est Seine-Saint-Denis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vaujours (93). Nous accompagnons tous types d'activités : PME du BTP et du commerce, PME de services aux entreprises, professions libérales, restaurateurs, prestataires logistiques et indépendants de l'est Seine-Saint-Denis.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Vaujours se situe à la frontière est de la Seine-Saint-Denis, limitrophe de Livry-Gargan, Coubron et Courtry (Seine-et-Marne). Tissu économique de TPE artisanales BTP, commerces de centre-bourg, professions libérales et PME tertiaires. Commune résidentielle intégrée au Grand Paris avec un accès rapide à l'A104 (Francilienne) et à Roissy-CDG.",
+    "Vaujours se situe à la frontière est de la Seine-Saint-Denis, limitrophe de Livry-Gargan, Coubron et Courtry (Seine-et-Marne). Tissu économique de PME du BTP, commerces de centre-bourg, professions libérales et PME tertiaires. Commune résidentielle intégrée au Grand Paris avec un accès rapide à l'A104 (Francilienne) et à Roissy-CDG.",
   ecosystemEn:
-    "Vaujours se situe à la frontière est de la Seine-Saint-Denis, limitrophe de Livry-Gargan, Coubron et Courtry (Seine-et-Marne). Tissu économique de TPE artisanales BTP, commerces de centre-bourg, professions libérales et PME tertiaires. Commune résidentielle intégrée au Grand Paris avec un accès rapide à l'A104 (Francilienne) et à Roissy-CDG.",
+    "Vaujours se situe à la frontière est de la Seine-Saint-Denis, limitrophe de Livry-Gargan, Coubron et Courtry (Seine-et-Marne). Tissu économique de PME du BTP, commerces de centre-bourg, professions libérales et PME tertiaires. Commune résidentielle intégrée au Grand Paris avec un accès rapide à l'A104 (Francilienne) et à Roissy-CDG.",
   distancesFr:
     "Gare de Villeparisis–Mitry-le-Neuf (RER B) à 15 min en voiture. Aéroport Paris-Charles de Gaulle à 20 min via A104. Gare de Livry-Gargan (Tram T4) à 10 min. Paris Gare du Nord à 40 min en transports. A3/A104 à 5 min.",
   distancesEn:
     "Gare de Villeparisis–Mitry-le-Neuf (RER B) à 15 min en voiture. Aéroport Paris-Charles de Gaulle à 20 min via A104. Gare de Livry-Gargan (Tram T4) à 10 min. Paris Gare du Nord à 40 min en transports. A3/A104 à 5 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de détail & proximité",
     "Services aux entreprises & professions libérales",
     "Restauration & services de proximité",
@@ -30,8 +30,8 @@ export const VAUJOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaujours : diagnostic adapté aux TPE artisanales BTP, commerçants, PME de services et professions libérales de l'est Seine-Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Vaujours : diagnostic adapté aux TPE artisanales BTP, commerçants, PME de services et professions libérales de l'est Seine-Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Vaujours : diagnostic adapté aux PME du BTP, commerçants, PME de services et professions libérales de l'est Seine-Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Vaujours : diagnostic adapté aux PME du BTP, commerçants, PME de services et professions libérales de l'est Seine-Saint-Denis. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaujours : formats adaptés à l'atelier artisanal, au commerce de bourg ou au cabinet libéral. Vos équipes repartent avec des outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const VAUJOURS_COPY: VilleCopy = {
       en: "Implémentation IA à Vaujours : automatisation devis BTP, agents conversationnels, gestion planning artisans, classification documents comptables. Tous secteurs est Seine-Saint-Denis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vaujours : sessions dans vos locaux ou en visio. Artisans, gérants TPE/PME, professions libérales et dirigeants de l'est Seine-Saint-Denis souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Vaujours : sessions dans vos locaux ou en visio. Artisans, gérants TPE/PME, professions libérales et dirigeants de l'est Seine-Saint-Denis souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Vaujours : sessions dans vos locaux ou en visio. Artisans, gérants PME et ETI, professions libérales et dirigeants de l'est Seine-Saint-Denis souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Vaujours : sessions dans vos locaux ou en visio. Artisans, gérants PME et ETI, professions libérales et dirigeants de l'est Seine-Saint-Denis souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const VAUJOURS_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans BTP de Vaujours ?",
-      a: "Oui, nous accompagnons les TPE artisanales BTP de Vaujours (plombiers, électriciens, maçons, couvreurs) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes, suivi chantier photo. Audit sur place {{price:audit-flash|flat}}.",
+      a: "Oui, nous accompagnons les PME du BTP de Vaujours (plombiers, électriciens, maçons, couvreurs) sur des cas IA pratiques : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes, suivi chantier photo. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Vaujours ?",

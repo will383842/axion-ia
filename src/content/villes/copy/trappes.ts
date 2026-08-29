@@ -85,12 +85,6 @@ export const TRAPPES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot RAG, recherche sémantique) sur un site existant, en quelques semaines, sans refonte — adapté aux artisans, sous-traitants et PME des zones de Pissaloup et de la Pépinière.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / application sur mesure",
             detail:
@@ -170,12 +164,6 @@ export const TRAPPES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (RAG chatbot, semantic search) onto an existing site in a few weeks, no rebuild — suited to craftspeople, subcontractors and SMEs in the Pissaloup and Pépinière zones.",
-          },
           {
             sizeLabel: "SME",
             price: "Bespoke site / application",

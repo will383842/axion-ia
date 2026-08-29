@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
   pitchFr:
-    "Brive-la-Gaillarde (19), capitale économique de la Corrèze, est réputée pour son agroalimentaire de terroir (foie gras, conserves, produits du Sud-Ouest), son marché immortalisé par Brassens, son club de rugby CABCL et sa position de carrefour logistique entre l'A20 et l'A89. Son tissu mêle TPE et PME agroalimentaires, commerciales et logistiques. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME briviste, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Brive-la-Gaillarde (19), capitale économique de la Corrèze, est réputée pour son agroalimentaire de terroir (foie gras, conserves, produits du Sud-Ouest), son marché immortalisé par Brassens, son club de rugby CABCL et sa position de carrefour logistique entre l'A20 et l'A89. Son tissu mêle PME et ETI agroalimentaires, commerciales et logistiques. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI briviste, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   pitchEn:
-    "Brive-la-Gaillarde (19), capitale économique de la Corrèze, est réputée pour son agroalimentaire de terroir (foie gras, conserves, produits du Sud-Ouest), son marché immortalisé par Brassens, son club de rugby CABCL et sa position de carrefour logistique entre l'A20 et l'A89. Son tissu mêle TPE et PME agroalimentaires, commerciales et logistiques. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME briviste, plus rarement les ETI, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
+    "Brive-la-Gaillarde (19), capitale économique de la Corrèze, est réputée pour son agroalimentaire de terroir (foie gras, conserves, produits du Sud-Ouest), son marché immortalisé par Brassens, son club de rugby CABCL et sa position de carrefour logistique entre l'A20 et l'A89. Son tissu mêle PME et ETI agroalimentaires, commerciales et logistiques. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces les PME puis les ETI briviste, plus rarement les grands groupes, pour intégrer une IA concrète et rentable sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brive-la-Gaillarde (19) auprès des TPE et PME : agroalimentaire de terroir (foie gras, conserves), commerce, artisanat, logistique du Sud-Ouest et tourisme gastronomique. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brive-la-Gaillarde (19) auprès des PME et ETI : agroalimentaire de terroir (foie gras, conserves), commerce, artisanat, logistique du Sud-Ouest et tourisme gastronomique. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brive-la-Gaillarde (19) auprès des TPE et PME : agroalimentaire de terroir (foie gras, conserves), commerce, artisanat, logistique du Sud-Ouest et tourisme gastronomique. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les ETI sont accompagnées en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Brive-la-Gaillarde (19) auprès des PME et ETI : agroalimentaire de terroir (foie gras, conserves), commerce, artisanat, logistique du Sud-Ouest et tourisme gastronomique. Nous diagnostiquons les tâches automatisables, déployons des outils IA fiables et formons vos équipes, sans dépendance technique. Les grands groupes sont accompagnés en complément.",
   seoHook: "agroalimentaire terroir & logistique",
   ecosystemFr:
-    "Brive-la-Gaillarde, principal pôle économique de la Corrèze, doit sa renommée à un agroalimentaire de terroir puissant (foie gras, conserves, noix, produits fermiers) et à un marché historique chanté par Brassens. Carrefour logistique du Sud-Ouest entre l'A20 et l'A89, la ville accueille des TPE et PME de transformation alimentaire, de commerce, d'artisanat et de transport, ainsi qu'un tourisme gastronomique et le club de rugby CABCL comme marqueur identitaire. Ce tissu offre un terrain concret pour une IA appliquée à la traçabilité, à la vente et à la logistique.",
+    "Brive-la-Gaillarde, principal pôle économique de la Corrèze, doit sa renommée à un agroalimentaire de terroir puissant (foie gras, conserves, noix, produits fermiers) et à un marché historique chanté par Brassens. Carrefour logistique du Sud-Ouest entre l'A20 et l'A89, la ville accueille des PME et ETI de transformation alimentaire, de commerce, d'artisanat et de transport, ainsi qu'un tourisme gastronomique et le club de rugby CABCL comme marqueur identitaire. Ce tissu offre un terrain concret pour une IA appliquée à la traçabilité, à la vente et à la logistique.",
   ecosystemEn:
-    "Brive-la-Gaillarde, principal pôle économique de la Corrèze, doit sa renommée à un agroalimentaire de terroir puissant (foie gras, conserves, noix, produits fermiers) et à un marché historique chanté par Brassens. Carrefour logistique du Sud-Ouest entre l'A20 et l'A89, la ville accueille des TPE et PME de transformation alimentaire, de commerce, d'artisanat et de transport, ainsi qu'un tourisme gastronomique et le club de rugby CABCL comme marqueur identitaire. Ce tissu offre un terrain concret pour une IA appliquée à la traçabilité, à la vente et à la logistique.",
+    "Brive-la-Gaillarde, principal pôle économique de la Corrèze, doit sa renommée à un agroalimentaire de terroir puissant (foie gras, conserves, noix, produits fermiers) et à un marché historique chanté par Brassens. Carrefour logistique du Sud-Ouest entre l'A20 et l'A89, la ville accueille des PME et ETI de transformation alimentaire, de commerce, d'artisanat et de transport, ainsi qu'un tourisme gastronomique et le club de rugby CABCL comme marqueur identitaire. Ce tissu offre un terrain concret pour une IA appliquée à la traçabilité, à la vente et à la logistique.",
   distancesFr:
     "Brive-la-Gaillarde est au croisement de l'A20 (Paris-Toulouse) et de l'A89 (Bordeaux-Clermont). Sa gare relie Paris en 4 h, et l'aéroport Brive-Vallée de la Dordogne est à 15 min.",
   distancesEn:
@@ -38,12 +38,12 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Brive-la-Gaillarde : ateliers pratiques pour ateliers de transformation, commerces et logistique, afin de rendre vos équipes autonomes sur les outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Brive-la-Gaillarde : traçabilité agroalimentaire, prévision de la demande, automatisation devis et expéditions, e-boutique terroir et CRM augmenté pour TPE et PME.",
-      en: "Implémentation IA à Brive-la-Gaillarde : traçabilité agroalimentaire, prévision de la demande, automatisation devis et expéditions, e-boutique terroir et CRM augmenté pour TPE et PME.",
+      fr: "Implémentation IA à Brive-la-Gaillarde : traçabilité agroalimentaire, prévision de la demande, automatisation devis et expéditions, e-boutique terroir et CRM augmenté pour PME et ETI.",
+      en: "Implémentation IA à Brive-la-Gaillarde : traçabilité agroalimentaire, prévision de la demande, automatisation devis et expéditions, e-boutique terroir et CRM augmenté pour PME et ETI.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Brive-la-Gaillarde : sessions sur site ou en visio pour dirigeants de TPE et PME agroalimentaires, commerciales et logistiques, ciblées sur vos priorités.",
-      en: "Accompagnement un-à-un à Brive-la-Gaillarde : sessions sur site ou en visio pour dirigeants de TPE et PME agroalimentaires, commerciales et logistiques, ciblées sur vos priorités.",
+      fr: "Accompagnement un-à-un à Brive-la-Gaillarde : sessions sur site ou en visio pour dirigeants de PME et d'ETI agroalimentaires, commerciales et logistiques, ciblées sur vos priorités.",
+      en: "Accompagnement un-à-un à Brive-la-Gaillarde : sessions sur site ou en visio pour dirigeants de PME et d'ETI agroalimentaires, commerciales et logistiques, ciblées sur vos priorités.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Brive-la-Gaillarde : e-boutique terroir ou vitrine avec IA intégrée (vente en ligne, recommandation, devis) pour producteurs, conserveurs et commerces.",
@@ -88,12 +88,6 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Vitrine ou e-boutique terroir",
-            detail:
-              "Pour producteurs, conserveurs, restaurateurs et commerces brivois : vitrine mobile-first ou e-boutique de vente directe (foie gras, noix, conserves) avec paiement en ligne et recommandation IA. Idéal pour les exposants du marché et les artisans du bassin.",
-          },
           {
             sizeLabel: "PME",
             price: "Catalogue B2B multilingue + portail commande",
@@ -175,12 +169,6 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase or regional e-shop",
-            detail:
-              "For Brive producers, canners, restaurateurs and shops: mobile-first showcase or direct-sales e-shop (foie gras, walnuts, preserves) with online payment and AI recommendation. Ideal for market exhibitors and local artisans.",
-          },
-          {
             sizeLabel: "PME",
             price: "Multilingual B2B catalogue + ordering portal",
             detail:
@@ -234,7 +222,7 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Brive-la-Gaillarde ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux TPE et PME brivistes : agroalimentaire, commerce, logistique et tourisme gastronomique.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}, avec une grille tarifaire publique. Il est adapté aux PME et ETI brivistes : agroalimentaire, commerce, logistique et tourisme gastronomique.",
     },
     {
       q: "Comment l'IA aide-t-elle l'agroalimentaire de terroir ?",
@@ -246,7 +234,7 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA ?",
-      a: "Non. Nous priorisons les TPE puis les PME de Brive-la-Gaillarde ; les ETI sont accompagnées en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
+      a: "Non. Nous priorisons les PME puis les ETI de Brive-la-Gaillarde ; les grands groupes sont accompagnés en complément. Chaque mission est calibrée selon votre taille, votre budget et vos cas d'usage réels.",
     },
     {
       q: "Comment se déroule une mission à Brive-la-Gaillarde ?",

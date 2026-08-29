@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const JONQUIERES_COPY: VilleCopy = {
   pitchFr:
-    "Jonquières (84), commune de la vallée du Rhône proche d'Orange, compte près de 5 201 habitants. Vignoble AOC Côtes-du-Rhône, agriculture, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Jonquières (84), commune de la vallée du Rhône proche d'Orange, compte près de 5 201 habitants. Vignoble AOC Côtes-du-Rhône, agriculture, tissu de PME artisanales, domaines viticoles, PME agroalimentaires, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Jonquières (84), commune de la vallée du Rhône proche d'Orange, compte près de 5 201 habitants. Vignoble AOC Côtes-du-Rhône, agriculture, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Jonquières (84), commune de la vallée du Rhône proche d'Orange, compte près de 5 201 habitants. Vignoble AOC Côtes-du-Rhône, agriculture, tissu de PME artisanales, domaines viticoles, PME agroalimentaires, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jonquières (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, commerces, professions libérales et services de la vallée du Rhône. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jonquières (84). Nous accompagnons tous types d'activités : PME artisanales, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, commerces, professions libérales et services de la vallée du Rhône. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jonquières (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, commerces, professions libérales et services de la vallée du Rhône. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jonquières (84). Nous accompagnons tous types d'activités : PME artisanales, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, commerces, professions libérales et services de la vallée du Rhône. Audit sur place sur mesure.",
   seoHook: "vallée du",
   ecosystemFr:
-    "Jonquières est un pôle viticole et agricole de la vallée du Rhône, à proximité immédiate d'Orange. Vignoble AOC Côtes-du-Rhône et Côtes-du-Rhône Villages, oenotourisme, agriculture maraîchère. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires, commerces et professions libérales. Orange à 10 min, Avignon à 30 min, A7 directe.",
+    "Jonquières est un pôle viticole et agricole de la vallée du Rhône, à proximité immédiate d'Orange. Vignoble AOC Côtes-du-Rhône et Côtes-du-Rhône Villages, oenotourisme, agriculture maraîchère. Tissu de PME artisanales, domaines viticoles, PME agroalimentaires, commerces et professions libérales. Orange à 10 min, Avignon à 30 min, A7 directe.",
   ecosystemEn:
-    "Jonquières est un pôle viticole et agricole de la vallée du Rhône, à proximité immédiate d'Orange. Vignoble AOC Côtes-du-Rhône et Côtes-du-Rhône Villages, oenotourisme, agriculture maraîchère. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires, commerces et professions libérales. Orange à 10 min, Avignon à 30 min, A7 directe.",
+    "Jonquières est un pôle viticole et agricole de la vallée du Rhône, à proximité immédiate d'Orange. Vignoble AOC Côtes-du-Rhône et Côtes-du-Rhône Villages, oenotourisme, agriculture maraîchère. Tissu de PME artisanales, domaines viticoles, PME agroalimentaires, commerces et professions libérales. Orange à 10 min, Avignon à 30 min, A7 directe.",
   distancesFr:
     "Orange à 10 min via D950. Avignon à 30 min via A7. Gare TGV Avignon à 35 min. Aéroport Marseille-Provence à 1 h 10. Carpentras à 20 min. A7 sortie Orange-Sud à 10 min.",
   distancesEn:
@@ -24,26 +24,26 @@ export const JONQUIERES_COPY: VilleCopy = {
   topSectorsNaf: [
     "Viticulture AOC Côtes-du-Rhône",
     "Agriculture & maraîchage vallée du Rhône",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "PME agroalimentaires & coopératives",
     "Commerce & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jonquières : diagnostic adapté aux TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, exploitations agricoles et commerces de la vallée du Rhône. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Jonquières : diagnostic adapté aux TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, exploitations agricoles et commerces de la vallée du Rhône. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Jonquières : diagnostic adapté aux PME artisanales, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, exploitations agricoles et commerces de la vallée du Rhône. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Jonquières : diagnostic adapté aux PME artisanales, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, exploitations agricoles et commerces de la vallée du Rhône. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jonquières : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
       en: "Interventions IA sur site à Jonquières : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, artisans et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
-      fr: "Implémentation IA à Jonquières : traçabilité parcellaire Côtes-du-Rhône, gestion vendanges et cave, relation client B2B export, oenotourisme, automatisation devis artisans, fiches Google Business. Adapté TPE/PME vallée du Rhône.",
-      en: "Implémentation IA à Jonquières : traçabilité parcellaire Côtes-du-Rhône, gestion vendanges et cave, relation client B2B export, oenotourisme, automatisation devis artisans, fiches Google Business. Adapté TPE/PME vallée du Rhône.",
+      fr: "Implémentation IA à Jonquières : traçabilité parcellaire Côtes-du-Rhône, gestion vendanges et cave, relation client B2B export, oenotourisme, automatisation devis artisans, fiches Google Business. Adapté PME et ETI vallée du Rhône.",
+      en: "Implémentation IA à Jonquières : traçabilité parcellaire Côtes-du-Rhône, gestion vendanges et cave, relation client B2B export, oenotourisme, automatisation devis artisans, fiches Google Business. Adapté PME et ETI vallée du Rhône.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Jonquières : sessions dans vos locaux ou en visio. Dirigeants TPE/PME viticulture, agriculture, agroalimentaire, artisanat et commerce de la vallée du Rhône.",
-      en: "Coaching 1-to-1 à Jonquières : sessions dans vos locaux ou en visio. Dirigeants TPE/PME viticulture, agriculture, agroalimentaire, artisanat et commerce de la vallée du Rhône.",
+      fr: "Coaching 1-to-1 à Jonquières : sessions dans vos locaux ou en visio. Dirigeants PME et ETI viticulture, agriculture, agroalimentaire, artisanat et commerce de la vallée du Rhône.",
+      en: "Coaching 1-to-1 à Jonquières : sessions dans vos locaux ou en visio. Dirigeants PME et ETI viticulture, agriculture, agroalimentaire, artisanat et commerce de la vallée du Rhône.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const JONQUIERES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, interventions sur site, coaching 1-to-1, implémentation IA. Cas viticulture Côtes-du-Rhône : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export, fiches Google Business multilingues et oenotourisme.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et exploitations agricoles autour de Jonquières ?",
-      a: "Oui, nous accompagnons TPE artisans, exploitations agricoles et PME agroalimentaires : automatisation devis, traçabilité parcellaire, gestion administrative, agents conversationnels prise de rendez-vous et fiches Google Business.",
+      q: "Accompagnez-vous les PME artisanales et exploitations agricoles autour de Jonquières ?",
+      a: "Oui, nous accompagnons PME artisanales, exploitations agricoles et PME agroalimentaires : automatisation devis, traçabilité parcellaire, gestion administrative, agents conversationnels prise de rendez-vous et fiches Google Business.",
     },
     {
       q: "Tarifs audit IA à Jonquières  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Jonquières ?",

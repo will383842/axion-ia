@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const POUZAUGES_COPY: VilleCopy = {
   pitchFr:
-    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA collabore avec toutes les structures locales.",
+    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent PME artisanales, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA collabore avec toutes les structures locales.",
+    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent PME artisanales, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
   seoHook: "agroalimentaire & industrie mécanique",
   ecosystemFr:
     "Pouzauges est la capitale du haut bocage vendéen, perchée sur les collines à 290 m d'altitude. Bassin économique structuré autour de l'agroalimentaire (volaille, charcuterie, produits laitiers), de l'industrie mécanique, de l'artisanat BTP et d'un tissu PME familial dynamique typique du modèle économique vendéen.",
@@ -30,8 +30,8 @@ export const POUZAUGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pouzauges : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Pouzauges : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Pouzauges : diagnostic adapté aux PME artisanales, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Pouzauges : diagnostic adapté aux PME artisanales, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pouzauges : formations adaptées aux PME agroalimentaires, industries mécaniques, artisans BTP et commerces du haut bocage. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const POUZAUGES_COPY: VilleCopy = {
       en: "Implémentation IA à Pouzauges : vision industrielle qualité agroalimentaire, maintenance prédictive mécanique, optimisation logistique, agents conversationnels commerces et outils IA artisanat BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pouzauges : sessions dans vos locaux dans le bocage ou en visio. Dirigeants TPE/PME agroalimentaires, industries mécaniques, artisans, commerçants et prestataires.",
-      en: "Coaching 1-to-1 à Pouzauges : sessions dans vos locaux dans le bocage ou en visio. Dirigeants TPE/PME agroalimentaires, industries mécaniques, artisans, commerçants et prestataires.",
+      fr: "Coaching 1-to-1 à Pouzauges : sessions dans vos locaux dans le bocage ou en visio. Dirigeants PME et ETI agroalimentaires, industries mécaniques, artisans, commerçants et prestataires.",
+      en: "Coaching 1-to-1 à Pouzauges : sessions dans vos locaux dans le bocage ou en visio. Dirigeants PME et ETI agroalimentaires, industries mécaniques, artisans, commerçants et prestataires.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const POUZAUGES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires (volaille, charcuterie, laiterie) du bocage vendéen sur leurs cas IA : vision contrôle qualité, traçabilité, optimisation chaînes de production, prévision demande, maintenance prédictive.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Pouzauges ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du haut bocage. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Pouzauges ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME industrielles et commerçants du haut bocage. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour les industries mécaniques vendéennes ?",

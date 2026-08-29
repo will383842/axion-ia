@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
   pitchFr:
-    "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de PME artisanales, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de PME artisanales, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Fare-les-Oliviers (13). Nous accompagnons PME artisanales, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Fare-les-Oliviers (13). Nous accompagnons PME artisanales, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit sur place sur mesure.",
   seoHook: "oléiculture moulins & viticulture coteaux",
   ecosystemFr:
     "La Fare-les-Oliviers est une commune résidentielle au nord de l'étang de Berre, sur l'axe Aix-Salon (D113). Oléiculture historique (moulins, oliveraies), vignobles AOC Coteaux d'Aix, artisanat, commerces de proximité et résidents cadres travaillant à Aix, Marseille, Vitrolles, Marignane ou sur le technopôle de l'Arbois.",
@@ -24,14 +24,14 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
   topSectorsNaf: [
     "Oléiculture & moulins à huile",
     "Viticulture AOC Coteaux d'Aix",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
     "Commerce de proximité",
     "PME tertiaires & professions libérales",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, TPE artisans, commerçants et PME tertiaires du bassin de Berre. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, PME artisanales, commerçants et PME tertiaires du bassin de Berre. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à La Fare-les-Oliviers : diagnostic adapté aux oléiculteurs, viticulteurs, PME artisanales, commerçants et PME tertiaires du bassin de Berre. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Fare-les-Oliviers : ateliers pour moulins à huile, domaines viticoles, cabinets libéraux, commerces et équipes PME. Outils IA configurés métier réel.",
@@ -42,8 +42,8 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
       en: "Implémentation IA à La Fare-les-Oliviers : traçabilité huile et vin, marketing vente directe, agents conversationnels caveau et moulin, automatisation gestion cabinet, CRM augmentés, marketing digital local. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Fare-les-Oliviers : sessions pour oléiculteurs, vignerons, professions libérales et gérants TPE/PME du bassin de Berre souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à La Fare-les-Oliviers : sessions pour oléiculteurs, vignerons, professions libérales et gérants TPE/PME du bassin de Berre souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à La Fare-les-Oliviers : sessions pour oléiculteurs, vignerons, professions libérales et gérants PME et ETI du bassin de Berre souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à La Fare-les-Oliviers : sessions pour oléiculteurs, vignerons, professions libérales et gérants PME et ETI du bassin de Berre souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à La Fare-les-Oliviers  ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, oléiculteurs, viticulteurs et PME farencques. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, oléiculteurs, viticulteurs et PME farencques. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les moulins à huile et oléiculteurs ?",

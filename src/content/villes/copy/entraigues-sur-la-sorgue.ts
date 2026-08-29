@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
   pitchFr:
-    "Entraigues-sur-la-Sorgue (84), commune périurbaine du nord-est avignonnais en vallée des Sorgues, conjugue zones d'activités logistiques, tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans, PME logistiques et négoces, commerces de proximité, professions libérales et agriculture maraîchère. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Entraigues-sur-la-Sorgue (84), commune périurbaine du nord-est avignonnais en vallée des Sorgues, conjugue zones d'activités logistiques, tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. PME artisanales, PME logistiques et négoces, commerces de proximité, professions libérales et agriculture maraîchère. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Entraigues-sur-la-Sorgue (84), commune périurbaine du nord-est avignonnais en vallée des Sorgues, conjugue zones d'activités logistiques, tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans, PME logistiques et négoces, commerces de proximité, professions libérales et agriculture maraîchère. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Entraigues-sur-la-Sorgue (84), commune périurbaine du nord-est avignonnais en vallée des Sorgues, conjugue zones d'activités logistiques, tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. PME artisanales, PME logistiques et négoces, commerces de proximité, professions libérales et agriculture maraîchère. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Entraigues-sur-la-Sorgue (84). Nous accompagnons TPE artisans, PME logistiques et négoces, maraîchers, commerces et professions libérales du nord-est avignonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Entraigues-sur-la-Sorgue (84). Nous accompagnons PME artisanales, PME logistiques et négoces, maraîchers, commerces et professions libérales du nord-est avignonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Entraigues-sur-la-Sorgue (84). Nous accompagnons TPE artisans, PME logistiques et négoces, maraîchers, commerces et professions libérales du nord-est avignonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Entraigues-sur-la-Sorgue (84). Nous accompagnons PME artisanales, PME logistiques et négoces, maraîchers, commerces et professions libérales du nord-est avignonnais. Audit sur place sur mesure.",
   seoHook: "artisanat & logistique négoces",
   ecosystemFr:
-    "Entraigues-sur-la-Sorgue est positionnée au nord-est d'Avignon, en vallée des Sorgues, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités logistiques et négoces, les TPE artisans (BTP, services), les PME commerciales et industrielles, l'agriculture maraîchère résiduelle, les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV via A7.",
+    "Entraigues-sur-la-Sorgue est positionnée au nord-est d'Avignon, en vallée des Sorgues, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités logistiques et négoces, les PME artisanales (BTP, services), les PME commerciales et industrielles, l'agriculture maraîchère résiduelle, les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV via A7.",
   ecosystemEn:
-    "Entraigues-sur-la-Sorgue est positionnée au nord-est d'Avignon, en vallée des Sorgues, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités logistiques et négoces, les TPE artisans (BTP, services), les PME commerciales et industrielles, l'agriculture maraîchère résiduelle, les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV via A7.",
+    "Entraigues-sur-la-Sorgue est positionnée au nord-est d'Avignon, en vallée des Sorgues, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités logistiques et négoces, les PME artisanales (BTP, services), les PME commerciales et industrielles, l'agriculture maraîchère résiduelle, les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV via A7.",
   distancesFr:
     "Avignon centre à 15 min. Gare TGV Avignon à 20 min. Sorgues à 5 min. Vedène à 5 min. Carpentras à 15 min. Aéroport Avignon-Provence à 15 min. Marseille à 1h via A7. Accès A7 et D942.",
   distancesEn:
     "Avignon centre à 15 min. Gare TGV Avignon à 20 min. Sorgues à 5 min. Vedène à 5 min. Carpentras à 15 min. Aéroport Avignon-Provence à 15 min. Marseille à 1h via A7. Accès A7 et D942.",
   topSectorsNaf: [
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "PME logistique & négoces",
     "Commerces de proximité",
     "Agriculture maraîchère",
@@ -30,20 +30,20 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux PME artisanales, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux PME artisanales, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Entraigues-sur-la-Sorgue : ateliers pour équipes TPE/PME logistique, négoces, maraîchers, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
-      en: "Interventions IA sur site à Entraigues-sur-la-Sorgue : ateliers pour équipes TPE/PME logistique, négoces, maraîchers, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      fr: "Interventions IA sur site à Entraigues-sur-la-Sorgue : ateliers pour équipes PME et ETI logistique, négoces, maraîchers, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      en: "Interventions IA sur site à Entraigues-sur-la-Sorgue : ateliers pour équipes PME et ETI logistique, négoces, maraîchers, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
     },
     implementation: {
       fr: "Implémentation IA à Entraigues-sur-la-Sorgue : optimisation tournées logistiques, gestion stocks négoces, prévision récoltes maraîchères, automatisation devis BTP, agents conversationnels SAV commerces. RGPD strict.",
       en: "Implémentation IA à Entraigues-sur-la-Sorgue : optimisation tournées logistiques, gestion stocks négoces, prévision récoltes maraîchères, automatisation devis BTP, agents conversationnels SAV commerces. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Entraigues-sur-la-Sorgue : sessions pour dirigeants TPE, gérants PME logistiques et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
-      en: "Coaching 1-to-1 à Entraigues-sur-la-Sorgue : sessions pour dirigeants TPE, gérants PME logistiques et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      fr: "Coaching 1-to-1 à Entraigues-sur-la-Sorgue : sessions pour dirigeants de PME et d'ETI, gérants PME logistiques et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      en: "Coaching 1-to-1 à Entraigues-sur-la-Sorgue : sessions pour dirigeants de PME et d'ETI, gérants PME logistiques et artisans souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Entraigues-sur-la-Sorgue  : quel budget prévoir ?",
-      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux TPE artisans, PME logistiques, négoces et commerces entraiguois. Tarifs publics, sans engagement.",
+      a: "L'audit sur place (4 heures, diagnostic + ROI chiffré) démarre à {{price:audit-flash|flat}}. Adapté aux PME artisanales, PME logistiques, négoces et commerces entraiguois. Tarifs publics, sans engagement.",
     },
     {
       q: "Accompagnez-vous les PME logistiques et de négoce des zones d'activités ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y mène ses missions auprès des organisations locales de la Salanque.",
+    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y mène ses missions auprès des organisations locales de la Salanque.",
   pitchEn:
-    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y mène ses missions auprès des organisations locales de la Salanque.",
+    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu PME artisanales, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y mène ses missions auprès des organisations locales de la Salanque.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : PME artisanales, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : PME artisanales, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
   seoHook: "commerce zones & agriculture maraîchère",
   ecosystemFr:
-    "Saint-Laurent-de-la-Salanque est le bourg-centre de la plaine de la Salanque, entre Perpignan et le littoral (Le Barcarès). Intégré à Perpignan Méditerranée Métropole. Zones commerciales actives, agriculture maraîchère (primeurs, fruits), TPE artisanat, commerces de centre-bourg, logistique.",
+    "Saint-Laurent-de-la-Salanque est le bourg-centre de la plaine de la Salanque, entre Perpignan et le littoral (Le Barcarès). Intégré à Perpignan Méditerranée Métropole. Zones commerciales actives, agriculture maraîchère (primeurs, fruits), PME de l'artisanat, commerces de centre-bourg, logistique.",
   ecosystemEn:
-    "Saint-Laurent-de-la-Salanque est le bourg-centre de la plaine de la Salanque, entre Perpignan et le littoral (Le Barcarès). Intégré à Perpignan Méditerranée Métropole. Zones commerciales actives, agriculture maraîchère (primeurs, fruits), TPE artisanat, commerces de centre-bourg, logistique.",
+    "Saint-Laurent-de-la-Salanque est le bourg-centre de la plaine de la Salanque, entre Perpignan et le littoral (Le Barcarès). Intégré à Perpignan Méditerranée Métropole. Zones commerciales actives, agriculture maraîchère (primeurs, fruits), PME de l'artisanat, commerces de centre-bourg, logistique.",
   distancesFr:
     "Perpignan centre à 15 min. Le Barcarès plage à 10 min. Aéroport Perpignan-Rivesaltes à 10 min. Rivesaltes à 8 min. Narbonne à 55 min A9.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce & zones commerciales",
     "Agriculture maraîchère Salanque",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Logistique & transport",
     "Services de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux PME artisanales, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux PME artisanales, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Laurent-de-la-Salanque : formats adaptés au commerce, exploitation maraîchère, atelier, entrepôt logistique. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Laurent-de-la-Salanque : tri qualité primeurs par vision, gestion stocks commerce, optimisation tournées logistiques, agents conversationnels. Salanque.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Laurent-de-la-Salanque : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants PME, maraîchers, commerçants, artisans, gérants TPE de la Salanque.",
-      en: "Coaching 1-to-1 à Saint-Laurent-de-la-Salanque : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants PME, maraîchers, commerçants, artisans, gérants TPE de la Salanque.",
+      fr: "Coaching 1-to-1 à Saint-Laurent-de-la-Salanque : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants PME, maraîchers, commerçants, artisans, gérants PME de la Salanque.",
+      en: "Coaching 1-to-1 à Saint-Laurent-de-la-Salanque : sessions dans votre commerce, exploitation, atelier ou en visio. Dirigeants PME, maraîchers, commerçants, artisans, gérants PME de la Salanque.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs maraîchers de la Salanque sur leurs cas IA : tri qualité primeurs par vision, prédiction récoltes, traçabilité, vente directe, automatisation facturation.",
     },
     {
-      q: "Quels services pour les TPE artisans et indépendants ?",
-      a: "Pour les TPE artisans et indépendants à Saint-Laurent-de-la-Salanque, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion planning.",
+      q: "Quels services pour les PME artisanales et indépendants ?",
+      a: "Pour les PME artisanales et indépendants à Saint-Laurent-de-la-Salanque, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA, gestion planning.",
     },
     {
       q: "Comment se déroule une mission à Saint-Laurent-de-la-Salanque ?",

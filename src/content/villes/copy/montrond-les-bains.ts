@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONTROND_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y conduit ses missions auprès des entreprises locales foréziennes.",
+    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, PME du BTP, commerces, agriculture périphérique. Axion-IA y conduit ses missions auprès des entreprises locales foréziennes.",
   pitchEn:
-    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y conduit ses missions auprès des entreprises locales foréziennes.",
+    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, PME du BTP, commerces, agriculture périphérique. Axion-IA y conduit ses missions auprès des entreprises locales foréziennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, PME du BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, PME du BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
   seoHook: "thermalisme casino & hôtellerie cure",
   ecosystemFr:
-    "Montrond-les-Bains est une station thermale historique de la plaine du Forez, dotée de sources thermales et d'un casino. Tissu thermal et hôtelier (établissement thermal, hôtels de cure, casino), PME tertiaires et services, TPE artisanat BTP, agriculture périphérique. Intégrée à Loire Forez Agglo.",
+    "Montrond-les-Bains est une station thermale historique de la plaine du Forez, dotée de sources thermales et d'un casino. Tissu thermal et hôtelier (établissement thermal, hôtels de cure, casino), PME tertiaires et services, PME du BTP, agriculture périphérique. Intégrée à Loire Forez Agglo.",
   ecosystemEn:
-    "Montrond-les-Bains est une station thermale historique de la plaine du Forez, dotée de sources thermales et d'un casino. Tissu thermal et hôtelier (établissement thermal, hôtels de cure, casino), PME tertiaires et services, TPE artisanat BTP, agriculture périphérique. Intégrée à Loire Forez Agglo.",
+    "Montrond-les-Bains est une station thermale historique de la plaine du Forez, dotée de sources thermales et d'un casino. Tissu thermal et hôtelier (établissement thermal, hôtels de cure, casino), PME tertiaires et services, PME du BTP, agriculture périphérique. Intégrée à Loire Forez Agglo.",
   distancesFr:
     "Saint-Étienne centre à 30 min. Aéroport Saint-Étienne-Bouthéon à 20 min. Lyon centre à 1h. Saint-Galmier à 10 min. Andrézieux-Bouthéon à 15 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
     "Thermalisme & casino",
     "Hôtellerie de cure",
     "PME tertiaires Loire Forez Agglo",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture périphérique",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, PME artisanales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montrond-les-Bains : formats adaptés à l'établissement thermal, hôtel de cure, casino, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
       en: "Implémentation IA à Montrond-les-Bains : agents conversationnels curistes multilingue, automatisation réservations cures/hôtel/casino, classification feedback, gestion saisonnalité.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montrond-les-Bains : sessions dans votre établissement thermal, hôtel, casino, commerce ou en visio. Acteurs thermalisme, hôteliers, dirigeants casino, artisans, gérants TPE/PME montrondais.",
-      en: "Coaching 1-to-1 à Montrond-les-Bains : sessions dans votre établissement thermal, hôtel, casino, commerce ou en visio. Acteurs thermalisme, hôteliers, dirigeants casino, artisans, gérants TPE/PME montrondais.",
+      fr: "Coaching 1-to-1 à Montrond-les-Bains : sessions dans votre établissement thermal, hôtel, casino, commerce ou en visio. Acteurs thermalisme, hôteliers, dirigeants casino, artisans, gérants PME et ETI montrondais.",
+      en: "Coaching 1-to-1 à Montrond-les-Bains : sessions dans votre établissement thermal, hôtel, casino, commerce ou en visio. Acteurs thermalisme, hôteliers, dirigeants casino, artisans, gérants PME et ETI montrondais.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires Loire Forez Agglo sur leurs cas IA : agents conversationnels client, automatisation workflow, classification documents, CRM augmentés.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Montrond-les-Bains, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Montrond-les-Bains, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",

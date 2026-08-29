@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const MAISONS_LAFFITTE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Maisons-Laffitte, ville de 23 093 habitants surnommée « Cité du Cheval », située à environ 18 km au nord-ouest de Paris dans les Yvelines. Nous intervenons sur site auprès des professionnels de la filière équestre (hippodrome, entraîneurs de pur-sang, écuries), des commerces du centre-ville, des activités immobilières, des sièges sociaux et des indépendants installés dans le Parc privé de Maisons-Laffitte.",
+    "Axion-IA accompagne les PME et ETI de Maisons-Laffitte, ville de 23 093 habitants surnommée « Cité du Cheval », située à environ 18 km au nord-ouest de Paris dans les Yvelines. Nous intervenons sur site auprès des professionnels de la filière équestre (hippodrome, entraîneurs de pur-sang, écuries), des commerces du centre-ville, des activités immobilières, des sièges sociaux et des indépendants installés dans le Parc privé de Maisons-Laffitte.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Maisons-Laffitte, ville de 23 093 habitants surnommée « Cité du Cheval », située à environ 18 km au nord-ouest de Paris dans les Yvelines. Nous intervenons sur site auprès des professionnels de la filière équestre (hippodrome, entraîneurs de pur-sang, écuries), des commerces du centre-ville, des activités immobilières, des sièges sociaux et des indépendants installés dans le Parc privé de Maisons-Laffitte.",
+    "Axion-IA accompagne les PME et ETI de Maisons-Laffitte, ville de 23 093 habitants surnommée « Cité du Cheval », située à environ 18 km au nord-ouest de Paris dans les Yvelines. Nous intervenons sur site auprès des professionnels de la filière équestre (hippodrome, entraîneurs de pur-sang, écuries), des commerces du centre-ville, des activités immobilières, des sièges sociaux et des indépendants installés dans le Parc privé de Maisons-Laffitte.",
   directAnswerFr:
-    "Maisons-Laffitte se distingue par son hippodrome doté de la plus longue ligne droite d'Europe (2 200 m) et son centre d'entraînement de pur-sang, ainsi que par son Parc privé classé qui couvre 60 % du territoire. Axion-IA y intervient pour les TPE/PME locales : écuries, agences immobilières, commerces de proximité et sièges de petites structures. Nous proposons des audits dès {{price:audit-flash|flat}}, des automatisations à {{price:intervention-4h|flat}} et des implémentations complètes à {{price:impl-poc|entry}}, livrées en code source et conformes RGPD.",
+    "Maisons-Laffitte se distingue par son hippodrome doté de la plus longue ligne droite d'Europe (2 200 m) et son centre d'entraînement de pur-sang, ainsi que par son Parc privé classé qui couvre 60 % du territoire. Axion-IA y intervient pour les PME et ETI locales : écuries, agences immobilières, commerces de proximité et sièges de PME. Nous proposons des audits dès {{price:audit-flash|flat}}, des automatisations à {{price:intervention-4h|flat}} et des implémentations complètes à {{price:impl-poc|entry}}, livrées en code source et conformes RGPD.",
   directAnswerEn:
-    "Maisons-Laffitte se distingue par son hippodrome doté de la plus longue ligne droite d'Europe (2 200 m) et son centre d'entraînement de pur-sang, ainsi que par son Parc privé classé qui couvre 60 % du territoire. Axion-IA y intervient pour les TPE/PME locales : écuries, agences immobilières, commerces de proximité et sièges de petites structures. Nous proposons des audits dès {{price:audit-flash|flat}}, des automatisations à {{price:intervention-4h|flat}} et des implémentations complètes à {{price:impl-poc|entry}}, livrées en code source et conformes RGPD.",
+    "Maisons-Laffitte se distingue par son hippodrome doté de la plus longue ligne droite d'Europe (2 200 m) et son centre d'entraînement de pur-sang, ainsi que par son Parc privé classé qui couvre 60 % du territoire. Axion-IA y intervient pour les PME et ETI locales : écuries, agences immobilières, commerces de proximité et sièges de PME. Nous proposons des audits dès {{price:audit-flash|flat}}, des automatisations à {{price:intervention-4h|flat}} et des implémentations complètes à {{price:impl-poc|entry}}, livrées en code source et conformes RGPD.",
   seoHook: "filière équestre & activités immobilières",
   ecosystemFr:
     "Le tissu économique de Maisons-Laffitte est dominé par la filière équestre (hippodrome, entraîneurs, écuries de pur-sang) et l'immobilier résidentiel haut de gamme, le Parc privé représentant 60 % de la commune et abritant environ 40 % des habitants. Le revenu médian par foyer est élevé (48 001 € en 2010, 450e rang national) et le taux de chômage local (7,7 % en 2013) reste sous la moyenne française. Le centre-ville concentre commerces de proximité, agences immobilières et activités de services.",
@@ -45,8 +45,8 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
       en: "Implémenter des solutions IA en code source à Maisons-Laffitte — CRM agences immobilières, gestion des pensions équestres, sites web augmentés — dès {{price:impl-poc|entry}}.",
     },
     unAUn: {
-      fr: "Accompagner les dirigeants TPE/PME de Maisons-Laffitte en 1-to-1 — IA pour cabinet libéral, écurie ou agence — à partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagner les dirigeants TPE/PME de Maisons-Laffitte en 1-to-1 — IA pour cabinet libéral, écurie ou agence — à partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagner les dirigeants de PME et d'ETI de Maisons-Laffitte en 1-to-1 — IA pour cabinet libéral, écurie ou agence — à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagner les dirigeants de PME et d'ETI de Maisons-Laffitte en 1-to-1 — IA pour cabinet libéral, écurie ou agence — à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -56,7 +56,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
         whyHere: [
           "Filière équestre unique en France : autour de l'hippodrome de Maisons-Laffitte et de son centre d'entraînement de pur-sang, écuries, entraîneurs et acteurs des courses jonglent avec plannings de pension, suivi vétérinaire, engagements et reporting aux propriétaires. C'est un terrain idéal pour des portails clients sur mesure, des plateformes de gestion d'écurie et des agents qui automatisent la facturation des pensions et les relances multilingues aux propriétaires étrangers.",
           "Immobilier résidentiel haut de gamme et Parc privé classé (60 % du territoire, environ 40 % des habitants) : les agences mansonniennes gèrent des biens d'exception, des hôtels particuliers et une clientèle exigeante au revenu médian élevé. Nous bâtissons des vitrines immobilières augmentées, des moteurs de recherche sémantique de biens, des configurateurs e-commerce et des CRM enrichis à l'IA pour qualifier mandats et leads sans perdre le haut de gamme du parcours.",
-          "Tissu de TPE, professions libérales, programmation informatique et petits sièges sociaux desservis par le RER A et le Transilien L (gare ouverte en 1843), avec accès routier par la RD308 vers Poissy et Paris : on greffe une brique IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on conçoit un site vitrine sur mesure mobile-first pour cabinets, commerces du centre-ville et indépendants du Parc.",
+          "Tissu de PME, professions libérales, programmation informatique et petits sièges sociaux desservis par le RER A et le Transilien L (gare ouverte en 1843), avec accès routier par la RD308 vers Poissy et Paris : on greffe une brique IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on conçoit un site vitrine sur mesure mobile-first pour cabinets, commerces du centre-ville et indépendants du Parc.",
           "Clientèle internationale autour des courses, propriétaires et visiteurs de l'hippodrome : nos chatbots RAG et agents conversationnels sont multilingues par défaut, calibrés pour le commerce de détail du centre-ville, l'hôtellerie, la restauration et les services de proximité mansonniens, à quelques minutes de Saint-Germain-en-Laye, Sartrouville et Le Mesnil-le-Roi.",
         ],
         methodology: [
@@ -87,12 +87,6 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, relances automatisées — sur le site d'une écurie du Parc, d'un commerce du centre-ville, d'un cabinet libéral ou d'un indépendant en programmation informatique, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -142,7 +136,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
         whyHere: [
           "Filière équestre unique en France : autour de l'hippodrome de Maisons-Laffitte et de son centre d'entraînement de pur-sang, écuries, entraîneurs et acteurs des courses jonglent avec plannings de pension, suivi vétérinaire, engagements et reporting aux propriétaires. C'est un terrain idéal pour des portails clients sur mesure, des plateformes de gestion d'écurie et des agents qui automatisent la facturation des pensions et les relances multilingues aux propriétaires étrangers.",
           "Immobilier résidentiel haut de gamme et Parc privé classé (60 % du territoire, environ 40 % des habitants) : les agences mansonniennes gèrent des biens d'exception, des hôtels particuliers et une clientèle exigeante au revenu médian élevé. Nous bâtissons des vitrines immobilières augmentées, des moteurs de recherche sémantique de biens, des configurateurs e-commerce et des CRM enrichis à l'IA pour qualifier mandats et leads sans perdre le haut de gamme du parcours.",
-          "Tissu de TPE, professions libérales, programmation informatique et petits sièges sociaux desservis par le RER A et le Transilien L (gare ouverte en 1843), avec accès routier par la RD308 vers Poissy et Paris : on greffe une brique IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on conçoit un site vitrine sur mesure mobile-first pour cabinets, commerces du centre-ville et indépendants du Parc.",
+          "Tissu de PME, professions libérales, programmation informatique et petits sièges sociaux desservis par le RER A et le Transilien L (gare ouverte en 1843), avec accès routier par la RD308 vers Poissy et Paris : on greffe une brique IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse, ou on conçoit un site vitrine sur mesure mobile-first pour cabinets, commerces du centre-ville et indépendants du Parc.",
           "Clientèle internationale autour des courses, propriétaires et visiteurs de l'hippodrome : nos chatbots RAG et agents conversationnels sont multilingues par défaut, calibrés pour le commerce de détail du centre-ville, l'hôtellerie, la restauration et les services de proximité mansonniens, à quelques minutes de Saint-Germain-en-Laye, Sartrouville et Le Mesnil-le-Roi.",
         ],
         methodology: [
@@ -173,12 +167,6 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot multilingue, recherche sémantique, relances automatisées — sur le site d'une écurie du Parc, d'un commerce du centre-ville, d'un cabinet libéral ou d'un indépendant en programmation informatique, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -249,7 +237,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA pour dirigeants à Maisons-Laffitte ?",
-      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}, en présentiel sur Maisons-Laffitte, particulièrement adaptées aux professions libérales et aux gérants de TPE/PME locales.",
+      a: "Oui, nous proposons des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}, en présentiel sur Maisons-Laffitte, particulièrement adaptées aux professions libérales et aux gérants de PME et ETI locales.",
     },
   ],
 };

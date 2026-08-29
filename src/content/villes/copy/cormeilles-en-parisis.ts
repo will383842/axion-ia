@@ -7,18 +7,18 @@ import type { VilleCopy } from "./types";
 
 export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
   pitchFr:
-    "Cormeilles-en-Parisis (27 292 habitants, Val-d'Oise, CA Val Parisis) est une ville en croissance (+12,96 % depuis 2017) marquée par son passé industriel — plâtre Lambert (1830-2005) puis ciment Lafarge (1970-2017) — et aujourd'hui par ses zones artisanales du Champs-Guillaume et du Bois Rochefort. Axion-IA accompagne les TPE et PME locales (commerce de proximité, BTP, services) avec des audits IA sur site et du code custom, sans no-code.",
+    "Cormeilles-en-Parisis (27 292 habitants, Val-d'Oise, CA Val Parisis) est une ville en croissance (+12,96 % depuis 2017) marquée par son passé industriel — plâtre Lambert (1830-2005) puis ciment Lafarge (1970-2017) — et aujourd'hui par ses zones artisanales du Champs-Guillaume et du Bois Rochefort. Axion-IA accompagne les PME et ETI locales (commerce de proximité, BTP, services) avec des audits IA sur site et du code custom, sans no-code.",
   pitchEn:
-    "Cormeilles-en-Parisis (27 292 habitants, Val-d'Oise, CA Val Parisis) est une ville en croissance (+12,96 % depuis 2017) marquée par son passé industriel — plâtre Lambert (1830-2005) puis ciment Lafarge (1970-2017) — et aujourd'hui par ses zones artisanales du Champs-Guillaume et du Bois Rochefort. Axion-IA accompagne les TPE et PME locales (commerce de proximité, BTP, services) avec des audits IA sur site et du code custom, sans no-code.",
+    "Cormeilles-en-Parisis (27 292 habitants, Val-d'Oise, CA Val Parisis) est une ville en croissance (+12,96 % depuis 2017) marquée par son passé industriel — plâtre Lambert (1830-2005) puis ciment Lafarge (1970-2017) — et aujourd'hui par ses zones artisanales du Champs-Guillaume et du Bois Rochefort. Axion-IA accompagne les PME et ETI locales (commerce de proximité, BTP, services) avec des audits IA sur site et du code custom, sans no-code.",
   directAnswerFr:
-    "Axion-IA intervient à Cormeilles-en-Parisis pour les TPE et PME du Val-d'Oise : artisans des zones Champs-Guillaume et Bois Rochefort, commerçants du marché couvert, entreprises BTP héritières du tissu plâtrier-cimentier local, services de proximité. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris en 16 minutes via la ligne J Saint-Lazare. Le futur écoquartier Seine Parisii (22 ha, 1 200 logements d'ici 2030) génère de nouvelles opportunités d'automatisation pour les artisans et commerçants locaux.",
+    "Axion-IA intervient à Cormeilles-en-Parisis pour les PME et ETI du Val-d'Oise : artisans des zones Champs-Guillaume et Bois Rochefort, commerçants du marché couvert, entreprises BTP héritières du tissu plâtrier-cimentier local, services de proximité. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris en 16 minutes via la ligne J Saint-Lazare. Le futur écoquartier Seine Parisii (22 ha, 1 200 logements d'ici 2030) génère de nouvelles opportunités d'automatisation pour les artisans et commerçants locaux.",
   directAnswerEn:
-    "Axion-IA intervient à Cormeilles-en-Parisis pour les TPE et PME du Val-d'Oise : artisans des zones Champs-Guillaume et Bois Rochefort, commerçants du marché couvert, entreprises BTP héritières du tissu plâtrier-cimentier local, services de proximité. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris en 16 minutes via la ligne J Saint-Lazare. Le futur écoquartier Seine Parisii (22 ha, 1 200 logements d'ici 2030) génère de nouvelles opportunités d'automatisation pour les artisans et commerçants locaux.",
+    "Axion-IA intervient à Cormeilles-en-Parisis pour les PME et ETI du Val-d'Oise : artisans des zones Champs-Guillaume et Bois Rochefort, commerçants du marché couvert, entreprises BTP héritières du tissu plâtrier-cimentier local, services de proximité. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris en 16 minutes via la ligne J Saint-Lazare. Le futur écoquartier Seine Parisii (22 ha, 1 200 logements d'ici 2030) génère de nouvelles opportunités d'automatisation pour les artisans et commerçants locaux.",
   seoHook: "artisanat BTP & commerce de proximité Val Parisis",
   ecosystemFr:
-    "Cormeilles-en-Parisis s'inscrit dans la CA Val Parisis aux côtés de Sannois, Franconville et Montigny-lès-Cormeilles. Le tissu économique repose sur deux zones artisanales (Champs-Guillaume et Bois Rochefort), un marché couvert alimentaire et un héritage BTP issu des carrières de plâtre Lambert exploitées de 1830 à 2005. Le complexe loisirs Bois Rochefort (cinéma, bowling, karting, ouvert 2022-2023) et le projet Seine Parisii structurent les opportunités locales pour les TPE et PME.",
+    "Cormeilles-en-Parisis s'inscrit dans la CA Val Parisis aux côtés de Sannois, Franconville et Montigny-lès-Cormeilles. Le tissu économique repose sur deux zones artisanales (Champs-Guillaume et Bois Rochefort), un marché couvert alimentaire et un héritage BTP issu des carrières de plâtre Lambert exploitées de 1830 à 2005. Le complexe loisirs Bois Rochefort (cinéma, bowling, karting, ouvert 2022-2023) et le projet Seine Parisii structurent les opportunités locales pour les PME et ETI.",
   ecosystemEn:
-    "Cormeilles-en-Parisis s'inscrit dans la CA Val Parisis aux côtés de Sannois, Franconville et Montigny-lès-Cormeilles. Le tissu économique repose sur deux zones artisanales (Champs-Guillaume et Bois Rochefort), un marché couvert alimentaire et un héritage BTP issu des carrières de plâtre Lambert exploitées de 1830 à 2005. Le complexe loisirs Bois Rochefort (cinéma, bowling, karting, ouvert 2022-2023) et le projet Seine Parisii structurent les opportunités locales pour les TPE et PME.",
+    "Cormeilles-en-Parisis s'inscrit dans la CA Val Parisis aux côtés de Sannois, Franconville et Montigny-lès-Cormeilles. Le tissu économique repose sur deux zones artisanales (Champs-Guillaume et Bois Rochefort), un marché couvert alimentaire et un héritage BTP issu des carrières de plâtre Lambert exploitées de 1830 à 2005. Le complexe loisirs Bois Rochefort (cinéma, bowling, karting, ouvert 2022-2023) et le projet Seine Parisii structurent les opportunités locales pour les PME et ETI.",
   distancesFr:
     "Cormeilles-en-Parisis est à 17 km de Paris, accessible en 16 minutes depuis Paris Saint-Lazare via la ligne J Transilien. L'autoroute A15 est accessible par la sortie Herblay.",
   distancesEn:
@@ -32,26 +32,26 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit IA à Cormeilles-en-Parisis pour les TPE et PME des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
-      en: "Réaliser un audit IA à Cormeilles-en-Parisis pour les TPE et PME des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
+      fr: "Réaliser un audit IA à Cormeilles-en-Parisis pour les PME et ETI des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
+      en: "Réaliser un audit IA à Cormeilles-en-Parisis pour les PME et ETI des zones Champs-Guillaume et Bois Rochefort — identifier les automatisations prioritaires (devis, planning, gestion stock).",
     },
     interventions: {
       fr: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
       en: "Intervenir à Cormeilles-en-Parisis (16 min depuis Paris Saint-Lazare) pour automatiser les processus métier des artisans BTP et commerçants locaux — code custom, pas de no-code.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP, avec accompagnement post-livraison.",
-      en: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les TPE et PME du commerce et du BTP, avec accompagnement post-livraison.",
+      fr: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les PME et ETI du commerce et du BTP, avec accompagnement post-livraison.",
+      en: "Implémenter des solutions IA sur mesure à Cormeilles-en-Parisis pour les PME et ETI du commerce et du BTP, avec accompagnement post-livraison.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un les dirigeants de TPE et PME à Cormeilles-en-Parisis pour une adoption IA stratégique et durable.",
-      en: "Accompagner en un-à-un les dirigeants de TPE et PME à Cormeilles-en-Parisis pour une adoption IA stratégique et durable.",
+      fr: "Accompagner en un-à-un les dirigeants de PME et d'ETI à Cormeilles-en-Parisis pour une adoption IA stratégique et durable.",
+      en: "Accompagner en un-à-un les dirigeants de PME et d'ETI à Cormeilles-en-Parisis pour une adoption IA stratégique et durable.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA accompagne les TPE, PME et ETI de Cormeilles-en-Parisis (Val-d'Oise, CA Val Parisis) sur leurs sites web et plateformes SaaS augmentés par l'IA. Le tissu local est singulier : la carrière Placoplatre du groupe Saint-Gobain extrait encore le gypse cormeillais — héritière des Plâtres Lambert (1822) et représentant à elle seule près de 10 % de la production nationale de plâtre — pendant que l'ancienne friche du cimentier Lafarge se reconvertit en quartier Seine Parisii avec sa marina sur Seine. Entre la ZAE Carrefour des Champs Guillaume (BTP et transport), le pôle de loisirs des Bois Rochefort et les commerces de l'avenue Foch, nous concevons des sites vitrines, des e-commerce multi-CMS et des applications métier en code custom, hébergés en Union européenne et conformes RGPD, avec UX/UI, mobile et IA embarquée.",
+        hero: "Axion-IA accompagne les PME, ETI et grands groupes de Cormeilles-en-Parisis (Val-d'Oise, CA Val Parisis) sur leurs sites web et plateformes SaaS augmentés par l'IA. Le tissu local est singulier : la carrière Placoplatre du groupe Saint-Gobain extrait encore le gypse cormeillais — héritière des Plâtres Lambert (1822) et représentant à elle seule près de 10 % de la production nationale de plâtre — pendant que l'ancienne friche du cimentier Lafarge se reconvertit en quartier Seine Parisii avec sa marina sur Seine. Entre la ZAE Carrefour des Champs Guillaume (BTP et transport), le pôle de loisirs des Bois Rochefort et les commerces de l'avenue Foch, nous concevons des sites vitrines, des e-commerce multi-CMS et des applications métier en code custom, hébergés en Union européenne et conformes RGPD, avec UX/UI, mobile et IA embarquée.",
         whyHere: [
           "Tissu industriel et BTP dominant : la carrière de gypse Placoplatre (Saint-Gobain), l'usine Placo et les ~40 établissements de la ZAE Carrefour des Champs Guillaume (9,48 ha, BTP et petit transport) ont des besoins concrets — configurateurs de devis plâtrerie-construction, suivi de chantier, portails fournisseurs — que nous traitons en applications web sur mesure.",
           "Le quartier Seine Parisii (reconversion de la friche Lafarge : 1 200 logements, marina ~110 anneaux mise en eau prévue avril 2026, 1er label BBCA Quartier de France) crée une vague d'activité pour promoteurs, services de proximité, loisirs nautiques et commerces : autant de vitrines web et plateformes de réservation à lancer.",
@@ -86,12 +86,6 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine IA",
-            detail:
-              "Pour artisans BTP-plâtrerie des Champs Guillaume, commerçants de l'avenue Foch et indépendants : site vitrine mobile-first, SEO local Val Parisis, formulaire de devis assisté par IA, fiche Google Business optimisée.",
-          },
           {
             sizeLabel: "PME",
             price: "E-commerce ou plateforme métier",
@@ -173,12 +167,6 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI showcase site",
-            detail:
-              "For construction/plastering artisans in Champs Guillaume, Avenue Foch retailers and freelancers: mobile-first showcase site, Val Parisis local SEO, AI-assisted quote form, optimised Google Business profile.",
-          },
-          {
             sizeLabel: "PME",
             price: "E-commerce or business platform",
             detail:
@@ -240,11 +228,11 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
     },
     {
       q: "Vos interventions à Cormeilles-en-Parisis sont-elles conformes RGPD ?",
-      a: "Oui. Axion-IA développe du code custom hébergé en Europe, sans no-code ni outils opaques. Les données des TPE et PME de Cormeilles-en-Parisis restent souveraines et conformes au RGPD.",
+      a: "Oui. Axion-IA développe du code custom hébergé en Europe, sans no-code ni outils opaques. Les données des PME et ETI de Cormeilles-en-Parisis restent souveraines et conformes au RGPD.",
     },
     {
       q: "Quels secteurs d'activité accompagnez-vous à Cormeilles-en-Parisis ?",
-      a: "Nous accompagnons les TPE et PME locales : artisans BTP héritiers du tissu plâtre-ciment, commerçants du marché couvert et proximité, services aux entreprises des zones Champs-Guillaume et Bois Rochefort, restauration et loisirs autour du complexe Bois Rochefort.",
+      a: "Nous accompagnons les PME et ETI locales : artisans BTP héritiers du tissu plâtre-ciment, commerçants du marché couvert et proximité, services aux entreprises des zones Champs-Guillaume et Bois Rochefort, restauration et loisirs autour du complexe Bois Rochefort.",
     },
   ],
 };

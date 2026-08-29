@@ -6,18 +6,18 @@ import type { VilleCopy } from "./types";
 
 export const PUTEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. Williams se déplace sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
+    "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de PME et ETI : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. Williams se déplace sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
   pitchEn:
-    "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. Williams se déplace sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
+    "Puteaux (92800, 44 002 habitants en 2023) est une commune des Hauts-de-Seine située sur la rive gauche de la Seine, qui accueille une partie significative du quartier d'affaires de La Défense (Grande Arche, CNIT, Les Quatre Temps). Si les sièges des grands groupes y dominent l'image, le territoire concentre aussi un tissu dense de PME et ETI : cabinets de conseil, prestataires de services aux entreprises, commerces, restaurants, artisans, agences spécialisées. Axion-IA accompagne ces structures avec du code custom Python/Node — pas de no-code, pas de dépendance plateforme. Williams se déplace sur site à Puteaux, Courbevoie, Nanterre, Suresnes ou Neuilly-sur-Seine.",
   directAnswerFr:
-    "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des TPE et PME — cabinets de conseil, prestataires de services, agences, commerces, restaurants. Williams se déplace par le RER A, la ligne 1 (La Défense / Esplanade), le tramway T2 ou les Transilien L et U. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom, RGPD et AI Act.",
+    "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des PME et ETI — cabinets de conseil, prestataires de services, agences, commerces, restaurants. Williams se déplace par le RER A, la ligne 1 (La Défense / Esplanade), le tramway T2 ou les Transilien L et U. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom, RGPD et AI Act.",
   directAnswerEn:
-    "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des TPE et PME — cabinets de conseil, prestataires de services, agences, commerces, restaurants. Williams se déplace par le RER A, la ligne 1 (La Défense / Esplanade), le tramway T2 ou les Transilien L et U. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom, RGPD et AI Act.",
-  seoHook: "TPE & PME La Défense · IA opérationnelle sur site",
+    "Axion-IA intervient à Puteaux (Hauts-de-Seine, 92800) sur site, dans le quartier d'affaires de La Défense et au-delà, auprès des PME et ETI — cabinets de conseil, prestataires de services, agences, commerces, restaurants. Williams se déplace par le RER A, la ligne 1 (La Défense / Esplanade), le tramway T2 ou les Transilien L et U. Nous proposons un Audit sur place de 4 heures dès {{price:audit-flash|flat}} pour cartographier vos processus, une Formation 4 h dès {{price:intervention-4h|flat}} pour automatiser un flux métier (devis, relances, reporting), et un accompagnement 1-to-1 dirigeant dès {{price:intervention-dirigeants|flat}}. Code custom, RGPD et AI Act.",
+  seoHook: "PME & PME La Défense · IA opérationnelle sur site",
   ecosystemFr:
-    "Puteaux héberge une partie majeure de La Défense (premier quartier d'affaires européen, partagé avec Courbevoie, Nanterre et La Garenne-Colombes) : Grande Arche, CNIT, Les Quatre Temps. Autour des grandes tours gravite un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, agences digitales, commerces, restaurants, artisans. Les communes voisines (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine, Bois de Boulogne) prolongent ce bassin d'affaires francilien densément desservi par le RER A, la ligne 1, le T2 et les Transilien L et U.",
+    "Puteaux héberge une partie majeure de La Défense (premier quartier d'affaires européen, partagé avec Courbevoie, Nanterre et La Garenne-Colombes) : Grande Arche, CNIT, Les Quatre Temps. Autour des grandes tours gravite un tissu dense de PME et ETI : cabinets de conseil, prestataires de services aux entreprises, agences digitales, commerces, restaurants, artisans. Les communes voisines (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine, Bois de Boulogne) prolongent ce bassin d'affaires francilien densément desservi par le RER A, la ligne 1, le T2 et les Transilien L et U.",
   ecosystemEn:
-    "Puteaux héberge une partie majeure de La Défense (premier quartier d'affaires européen, partagé avec Courbevoie, Nanterre et La Garenne-Colombes) : Grande Arche, CNIT, Les Quatre Temps. Autour des grandes tours gravite un tissu dense de TPE et PME : cabinets de conseil, prestataires de services aux entreprises, agences digitales, commerces, restaurants, artisans. Les communes voisines (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine, Bois de Boulogne) prolongent ce bassin d'affaires francilien densément desservi par le RER A, la ligne 1, le T2 et les Transilien L et U.",
+    "Puteaux héberge une partie majeure de La Défense (premier quartier d'affaires européen, partagé avec Courbevoie, Nanterre et La Garenne-Colombes) : Grande Arche, CNIT, Les Quatre Temps. Autour des grandes tours gravite un tissu dense de PME et ETI : cabinets de conseil, prestataires de services aux entreprises, agences digitales, commerces, restaurants, artisans. Les communes voisines (Courbevoie, Nanterre, Suresnes, Neuilly-sur-Seine, Bois de Boulogne) prolongent ce bassin d'affaires francilien densément desservi par le RER A, la ligne 1, le T2 et les Transilien L et U.",
   distancesFr:
     "Puteaux est à 2 km de la gare de Paris-La Défense (RER A/E, Transilien L/U), 10 km de Paris Saint-Lazare, 30 km de l'aéroport Paris-Charles de Gaulle et 22 km de Paris-Orly. Accès direct A14 et A86.",
   distancesEn:
@@ -36,16 +36,16 @@ export const PUTEAUX_COPY: VilleCopy = {
       en: "Audit sur place IA à Puteaux dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux à La Défense ou en centre-ville pour cartographier vos processus en 4 heures.",
     },
     interventions: {
-      fr: "Formation collective à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
-      en: "Formation collective à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour TPE et PME du quartier d'affaires.",
+      fr: "Formation collective à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour PME et ETI du quartier d'affaires.",
+      en: "Formation collective à Puteaux dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, reporting) pour PME et ETI du quartier d'affaires.",
     },
     implementation: {
       fr: "Implémentation IA sur site à Puteaux dès {{price:impl-poc|entry}} — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
       en: "Implémentation IA sur site à Puteaux dès {{price:impl-poc|entry}} — intégration code custom Python/Node à votre stack existante, sans dépendance no-code.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 dirigeant à Puteaux dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de TPE et PME de La Défense.",
-      en: "Sessions 1-to-1 dirigeant à Puteaux dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de TPE et PME de La Défense.",
+      fr: "Sessions 1-to-1 dirigeant à Puteaux dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de PME et ETI de La Défense.",
+      en: "Sessions 1-to-1 dirigeant à Puteaux dès {{price:intervention-dirigeants|flat}} — accompagnement stratégique IA pour patrons de PME et ETI de La Défense.",
     },
   },
   services: {
@@ -53,7 +53,7 @@ export const PUTEAUX_COPY: VilleCopy = {
       fr: {
         hero: "Puteaux concentre une réalité économique double : ~3 299 sièges sociaux et ~103 000 personnes y travaillent chaque jour autour des tours de La Défense (Société Générale — Chassagne, Alicante, Granite et les salles de marché Basalte —, Tour Eqho, et l'environnement TotalEnergies, Engie, EDF, AXA IM, Allianz), mais 67 % des ~8 293 établissements actifs emploient moins de 10 salariés et 641 commerces de détail irriguent la ville. Axion-IA conçoit sur site des sites web et plateformes SaaS augmentés par l'IA pour ce tissu putéolien : prestataires de services financiers et d'assurance riverains des tours, agences digitales, e-commerçants, cabinets et commerces de l'Île de Puteaux au centre-ville — code custom, hébergement UE/RGPD, zéro dépendance plateforme.",
         whyHere: [
-          "Puteaux superpose des directions de grands groupes (Société Générale dans les tours Chassagne, Alicante et Granite ; TotalEnergies, Engie, EDF, AXA IM, Allianz à La Défense) et un tissu dense de TPE/PME — finance, assurance, énergie et services — ce qui appelle des sites web et SaaS IA aussi exigeants côté compliance que côté time-to-market.",
+          "Puteaux superpose des directions de grands groupes (Société Générale dans les tours Chassagne, Alicante et Granite ; TotalEnergies, Engie, EDF, AXA IM, Allianz à La Défense) et un tissu dense de PME et ETI — finance, assurance, énergie et services — ce qui appelle des sites web et SaaS IA aussi exigeants côté compliance que côté time-to-market.",
           "Le secteur dominant local — services financiers, assurance, conseil aux entreprises — impose des plateformes IA traçables : portails clients sécurisés, RAG documentaire sur contrats et notes réglementaires, agents de qualification, le tout auditable et hébergé en UE.",
           "Au pied des tours, 641 commerces de détail et un écosystème d'agences digitales font de l'e-commerce et du mobile un besoin quotidien : boutiques en ligne multi-CMS, prise de commande, click-and-collect, le tout enrichi de recommandation et de recherche sémantique IA.",
           "Nous nous déplaçons dans vos locaux à Puteaux comme dans les tours de La Défense via le RER A et E, la ligne 1 (Esplanade / La Défense), le tramway T2 et les Transilien L et U, et couvrons Courbevoie, Nanterre, Suresnes et Neuilly-sur-Seine.",
@@ -86,12 +86,6 @@ export const PUTEAUX_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique e-commerce IA",
-            detail:
-              "Pour indépendants, commerces de détail du centre-ville et de l'Île de Puteaux, petits prestataires riverains des tours : site mobile-first ou boutique multi-CMS avec recherche et recommandation IA.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web sur mesure + briques IA",
@@ -173,12 +167,6 @@ export const PUTEAUX_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI showcase site or e-commerce store",
-            detail:
-              "For freelancers, town-centre and Île de Puteaux retailers, small providers near the towers: mobile-first site or multi-CMS store with AI search and recommendation.",
-          },
-          {
             sizeLabel: "SME",
             price: "Custom web platform + AI blocks",
             detail:
@@ -236,7 +224,7 @@ export const PUTEAUX_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Puteaux ?",
-      a: "Pour une TPE ou PME implantée à Puteaux, l'Audit sur place est planifiable sous 5 jours ouvrés. Une formation collective démarre sous 10 à 15 jours selon périmètre.",
+      a: "Pour une PME ou ETI implantée à Puteaux, l'Audit sur place est planifiable sous 5 jours ouvrés. Une formation collective démarre sous 10 à 15 jours selon périmètre.",
     },
     {
       q: "Couvrez-vous les communes proches de Puteaux ?",
@@ -244,7 +232,7 @@ export const PUTEAUX_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Puteaux ?",
-      a: "TPE et PME du bassin La Défense : cabinets de conseil, services aux entreprises, agences digitales, prestataires IT, commerces, restaurants, artisans, professions libérales et structures intermédiaires.",
+      a: "PME et ETI du bassin La Défense : cabinets de conseil, services aux entreprises, agences digitales, prestataires IT, commerces, restaurants, artisans, professions libérales et structures intermédiaires.",
     },
     {
       q: "Comment Axion-IA garantit la conformité RGPD à Puteaux ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const OUISTREHAM_COPY: VilleCopy = {
   pitchFr:
-    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA accompagne tout le tissu professionnel local.",
+    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu PME artisanales, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA accompagne tout le tissu professionnel local.",
+    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu PME artisanales, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
   seoHook: "tourisme balnéaire & hôtellerie restauration",
   ecosystemFr:
-    "Ouistreham est la station balnéaire et le port ferry de l'agglomération caennaise. Port de Caen-Ouistreham (liaison Brittany Ferries vers Portsmouth). Plage historique Sword Beach (Débarquement du 6 juin 1944, Musée du Mur de l'Atlantique). Économie touristique et nautique forte, hôtellerie-restauration, TPE artisans, commerces, activités portuaires.",
+    "Ouistreham est la station balnéaire et le port ferry de l'agglomération caennaise. Port de Caen-Ouistreham (liaison Brittany Ferries vers Portsmouth). Plage historique Sword Beach (Débarquement du 6 juin 1944, Musée du Mur de l'Atlantique). Économie touristique et nautique forte, hôtellerie-restauration, PME artisanales, commerces, activités portuaires.",
   ecosystemEn:
-    "Ouistreham est la station balnéaire et le port ferry de l'agglomération caennaise. Port de Caen-Ouistreham (liaison Brittany Ferries vers Portsmouth). Plage historique Sword Beach (Débarquement du 6 juin 1944, Musée du Mur de l'Atlantique). Économie touristique et nautique forte, hôtellerie-restauration, TPE artisans, commerces, activités portuaires.",
+    "Ouistreham est la station balnéaire et le port ferry de l'agglomération caennaise. Port de Caen-Ouistreham (liaison Brittany Ferries vers Portsmouth). Plage historique Sword Beach (Débarquement du 6 juin 1944, Musée du Mur de l'Atlantique). Économie touristique et nautique forte, hôtellerie-restauration, PME artisanales, commerces, activités portuaires.",
   distancesFr:
     "Caen centre à 15 min D515. Port ferry Brittany Ferries (Portsmouth en 6h). Gare SNCF Caen à 20 min. Aéroport Caen-Carpiquet à 30 min. Bus Twisto ligne 1.",
   distancesEn:
@@ -25,13 +25,13 @@ export const OUISTREHAM_COPY: VilleCopy = {
     "Tourisme balnéaire & Débarquement (Sword Beach)",
     "Hôtellerie & restauration",
     "Activités portuaires & nautisme",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité & saisonnier",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, PME de l'artisanat et du commerce Côte de Nacre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, PME de l'artisanat et du commerce Côte de Nacre. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ouistreham : formats adaptés à l'hôtel, restaurant, port de plaisance, commerce saisonnier ou site touristique. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const OUISTREHAM_COPY: VilleCopy = {
       en: "Implémentation IA à Ouistreham : agents conversationnels multilingues touristes ferry, gestion saisonnalité hôtelière, automatisation réservations nautiques, classification avis clients.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ouistreham : sessions dans votre hôtel, restaurant, port ou en visio. Acteurs tourisme balnéaire, hôteliers, restaurateurs, gérants TPE/PME Côte de Nacre.",
-      en: "Coaching 1-to-1 à Ouistreham : sessions dans votre hôtel, restaurant, port ou en visio. Acteurs tourisme balnéaire, hôteliers, restaurateurs, gérants TPE/PME Côte de Nacre.",
+      fr: "Coaching 1-to-1 à Ouistreham : sessions dans votre hôtel, restaurant, port ou en visio. Acteurs tourisme balnéaire, hôteliers, restaurateurs, gérants PME et ETI Côte de Nacre.",
+      en: "Coaching 1-to-1 à Ouistreham : sessions dans votre hôtel, restaurant, port ou en visio. Acteurs tourisme balnéaire, hôteliers, restaurateurs, gérants PME et ETI Côte de Nacre.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const OUISTREHAM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ouistreham  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Ouistreham ?",

@@ -9,9 +9,9 @@ export const LINSELLES_COPY: VilleCopy = {
   pitchEn:
     "Linselles (59), commune de la Métropole Européenne de Lille au nord de Tourcoing, accolée à la frontière belge (Mouscron à 5 min). Tissu économique : PME textile-confection (héritage de la métropole), services aux entreprises transfrontaliers franco-belges, commerce, artisanat, agriculture périurbaine. Axion-IA y intervient pour tous types d'activités du nord de l'agglo lilloise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linselles (59). Nous accompagnons TPE et PME : PME textile-confection héritières du tissu lillois-tourquennois, prestataires de services transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles périurbaines.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linselles (59). Nous accompagnons PME et ETI : PME textile-confection héritières du tissu lillois-tourquennois, prestataires de services transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles périurbaines.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linselles (59). Nous accompagnons TPE et PME : PME textile-confection héritières du tissu lillois-tourquennois, prestataires de services transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles périurbaines.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Linselles (59). Nous accompagnons PME et ETI : PME textile-confection héritières du tissu lillois-tourquennois, prestataires de services transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles périurbaines.",
   seoHook: "bassin lillois-roubaisien-tourquennois",
   ecosystemFr:
     "Linselles est une commune périurbaine de la Métropole Européenne de Lille, située à 10 minutes de Tourcoing et accolée à la frontière belge (Mouscron à 5 min). L'économie locale combine PME textile-confection (héritage du bassin lillois-roubaisien-tourquennois), services aux entreprises transfrontaliers (cross-border franco-belge), commerces de bourg, artisanat, et exploitations agricoles flandriennes périurbaines. Carrefour franco-belge attractif pour PME B2B transfrontalières.",
@@ -42,8 +42,8 @@ export const LINSELLES_COPY: VilleCopy = {
       en: "Implémentation IA à Linselles : génération fiches produits textile-confection, contrôle qualité visuel atelier, agents conversationnels multilingues FR-NL-EN transfrontaliers, CRM augmenté PME B2B, automatisation devis-facturation cross-border.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Linselles : sessions dans votre atelier textile, bureau, commerce ou en visio. Dirigeants TPE/PME du nord de l'agglo lilloise et transfrontaliers souhaitant maîtriser l'IA dans leur activité.",
-      en: "Coaching 1-to-1 à Linselles : sessions dans votre atelier textile, bureau, commerce ou en visio. Dirigeants TPE/PME du nord de l'agglo lilloise et transfrontaliers souhaitant maîtriser l'IA dans leur activité.",
+      fr: "Coaching 1-to-1 à Linselles : sessions dans votre atelier textile, bureau, commerce ou en visio. Dirigeants PME et ETI du nord de l'agglo lilloise et transfrontaliers souhaitant maîtriser l'IA dans leur activité.",
+      en: "Coaching 1-to-1 à Linselles : sessions dans votre atelier textile, bureau, commerce ou en visio. Dirigeants PME et ETI du nord de l'agglo lilloise et transfrontaliers souhaitant maîtriser l'IA dans leur activité.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const LINSELLES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Linselles  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord de l'agglo lilloise et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile, B2B transfrontalier, commerce, artisanat, agriculture). Tarifs publics, sans engagement.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du nord de l'agglo lilloise et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile, B2B transfrontalier, commerce, artisanat, agriculture). Tarifs publics, sans engagement.",
     },
     {
       q: "Quels services pour les PME B2B transfrontalières franco-belges ?",

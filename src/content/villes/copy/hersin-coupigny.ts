@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const HERSIN_COUPIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Hersin-Coupigny (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 080 habitants. Situee entre Barlin et Noeux-les-Mines, son economie repose sur les TPE artisanales, les PME industrielles, le commerce de proximite et les services. Axion-IA y intervient pour tous types d'activites.",
+    "Hersin-Coupigny (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 080 habitants. Situee entre Barlin et Noeux-les-Mines, son economie repose sur les PME artisanales, les PME industrielles, le commerce de proximite et les services. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Hersin-Coupigny (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 080 habitants. Situee entre Barlin et Noeux-les-Mines, son economie repose sur les TPE artisanales, les PME industrielles, le commerce de proximite et les services. Axion-IA y intervient pour tous types d'activites.",
+    "Hersin-Coupigny (62), commune du bassin minier du Pas-de-Calais, reunit pres de 6 080 habitants. Situee entre Barlin et Noeux-les-Mines, son economie repose sur les PME artisanales, les PME industrielles, le commerce de proximite et les services. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "bassin minier, industrie & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Hersin-Coupigny (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Hersin-Coupigny (62). Nous accompagnons les TPE, PME et ETI du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Hersin-Coupigny (62). Nous accompagnons les PME, ETI et grands groupes du bassin minier : artisans, petits industriels, commercants et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Hersin-Coupigny est situee dans le bassin minier entre Barlin (2 km) et Noeux-les-Mines (3 km). Tissu economique compose de TPE artisanales BTP, PME de petite industrie, commerces de centre-bourg, services de proximite et professions de sante.",
+    "Hersin-Coupigny est situee dans le bassin minier entre Barlin (2 km) et Noeux-les-Mines (3 km). Tissu economique compose de PME du BTP, PME de petite industrie, commerces de centre-bourg, services de proximite et professions de sante.",
   ecosystemEn:
-    "Hersin-Coupigny est situee dans le bassin minier entre Barlin (2 km) et Noeux-les-Mines (3 km). Tissu economique compose de TPE artisanales BTP, PME de petite industrie, commerces de centre-bourg, services de proximite et professions de sante.",
+    "Hersin-Coupigny est situee dans le bassin minier entre Barlin (2 km) et Noeux-les-Mines (3 km). Tissu economique compose de PME du BTP, PME de petite industrie, commerces de centre-bourg, services de proximite et professions de sante.",
   distancesFr:
     "Gare de Barlin a 5 min. Bethune a 10 min. Lille Europe (TGV) a 1h en TER. Aeroport Lille-Lesquin a 1h10. Paris-Nord a 1h45 via TGV Lens.",
   distancesEn:
     "Gare de Barlin a 5 min. Bethune a 10 min. Lille Europe (TGV) a 1h en TER. Aeroport Lille-Lesquin a 1h10. Paris-Nord a 1h45 via TGV Lens.",
   topSectorsNaf: [
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Petite industrie",
     "Commerce de proximite",
     "Services aux entreprises",
@@ -30,8 +30,8 @@ export const HERSIN_COUPIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Hersin-Coupigny : diagnostic adapte aux TPE artisanales, PME industrielles et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Hersin-Coupigny : diagnostic adapte aux TPE artisanales, PME industrielles et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Hersin-Coupigny : diagnostic adapte aux PME artisanales, PME industrielles et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Hersin-Coupigny : diagnostic adapte aux PME artisanales, PME industrielles et commercants du bassin minier bethunois. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Hersin-Coupigny : formations adaptees aux ateliers industriels, chantiers artisanaux, commerces et bureaux PME. Equipes autonomes sur outils IA.",

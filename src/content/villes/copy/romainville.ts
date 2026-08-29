@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const ROMAINVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Romainville (93) — biotechs, laboratoires sous-traitants Sanofi/Servier, logistique e-commerce, BTP NPNRU et commerce de proximité — avec une expertise IA senior calibrée pour la banlieue Est parisienne, à 5 km de la Porte des Lilas et à proximité du campus pharma Pantin-Romainville.",
+    "Axion-IA accompagne les PME et ETI de Romainville (93) — biotechs, laboratoires sous-traitants Sanofi/Servier, logistique e-commerce, BTP NPNRU et commerce de proximité — avec une expertise IA senior calibrée pour la banlieue Est parisienne, à 5 km de la Porte des Lilas et à proximité du campus pharma Pantin-Romainville.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Romainville (93) — biotechs, laboratoires sous-traitants Sanofi/Servier, logistique e-commerce, BTP NPNRU et commerce de proximité — avec une expertise IA senior calibrée pour la banlieue Est parisienne, à 5 km de la Porte des Lilas et à proximité du campus pharma Pantin-Romainville.",
+    "Axion-IA accompagne les PME et ETI de Romainville (93) — biotechs, laboratoires sous-traitants Sanofi/Servier, logistique e-commerce, BTP NPNRU et commerce de proximité — avec une expertise IA senior calibrée pour la banlieue Est parisienne, à 5 km de la Porte des Lilas et à proximité du campus pharma Pantin-Romainville.",
   directAnswerFr:
-    "À Romainville, Axion-IA intervient sur site pour les TPE et PME locales : biotechs et laboratoires gravitant autour du siège recherche oncologie Sanofi et de l'Institut de Recherche Servier, entreprises de logistique e-commerce profitant de l'A3/A86, artisans BTP engagés sur la rénovation NPNRU (quartiers Marcel Cachin, Gagarine), commerçants et restaurateurs de la Cité de la Musique aux abords du Bois de Romainville. Nos experts IA seniors se déplacent depuis Paris en 30 minutes par le métro 5 (Mairie des Lilas) ou le tram T1, pour cadrer un audit, lancer une intervention ou piloter une implémentation conforme RGPD et AI Act.",
+    "À Romainville, Axion-IA intervient sur site pour les PME et ETI locales : biotechs et laboratoires gravitant autour du siège recherche oncologie Sanofi et de l'Institut de Recherche Servier, entreprises de logistique e-commerce profitant de l'A3/A86, artisans BTP engagés sur la rénovation NPNRU (quartiers Marcel Cachin, Gagarine), commerçants et restaurateurs de la Cité de la Musique aux abords du Bois de Romainville. Nos experts IA seniors se déplacent depuis Paris en 30 minutes par le métro 5 (Mairie des Lilas) ou le tram T1, pour cadrer un audit, lancer une intervention ou piloter une implémentation conforme RGPD et AI Act.",
   directAnswerEn:
-    "À Romainville, Axion-IA intervient sur site pour les TPE et PME locales : biotechs et laboratoires gravitant autour du siège recherche oncologie Sanofi et de l'Institut de Recherche Servier, entreprises de logistique e-commerce profitant de l'A3/A86, artisans BTP engagés sur la rénovation NPNRU (quartiers Marcel Cachin, Gagarine), commerçants et restaurateurs de la Cité de la Musique aux abords du Bois de Romainville. Nos experts IA seniors se déplacent depuis Paris en 30 minutes par le métro 5 (Mairie des Lilas) ou le tram T1, pour cadrer un audit, lancer une intervention ou piloter une implémentation conforme RGPD et AI Act.",
+    "À Romainville, Axion-IA intervient sur site pour les PME et ETI locales : biotechs et laboratoires gravitant autour du siège recherche oncologie Sanofi et de l'Institut de Recherche Servier, entreprises de logistique e-commerce profitant de l'A3/A86, artisans BTP engagés sur la rénovation NPNRU (quartiers Marcel Cachin, Gagarine), commerçants et restaurateurs de la Cité de la Musique aux abords du Bois de Romainville. Nos experts IA seniors se déplacent depuis Paris en 30 minutes par le métro 5 (Mairie des Lilas) ou le tram T1, pour cadrer un audit, lancer une intervention ou piloter une implémentation conforme RGPD et AI Act.",
   seoHook: "biotech Sanofi-Servier, logistique Est & BTP NPNRU",
   ecosystemFr:
-    "Romainville s'inscrit dans l'Établissement Public Territorial Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) et concentre l'un des pôles biotech-pharma majeurs d'Île-de-France : siège recherche oncologie Sanofi (transféré de Vitry en 2017), Institut de Recherche Servier et campus Sanofi-Aventis sur l'axe Pantin-Romainville, à proximité immédiate du site Roche à Pantin. Le territoire combine ces fleurons R&D avec un tissu dense de TPE/PME en logistique e-commerce (A3, A86, proximité Porte des Lilas), BTP rénovation NPNRU et résidentiel Grand Paris, commerces de proximité et restauration portés par 30 000 habitants, plus un patrimoine vert exceptionnel (réserve naturelle Bois de Romainville, 158 ha) et la Cité de la Musique des Cités-Jardins.",
+    "Romainville s'inscrit dans l'Établissement Public Territorial Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) et concentre l'un des pôles biotech-pharma majeurs d'Île-de-France : siège recherche oncologie Sanofi (transféré de Vitry en 2017), Institut de Recherche Servier et campus Sanofi-Aventis sur l'axe Pantin-Romainville, à proximité immédiate du site Roche à Pantin. Le territoire combine ces fleurons R&D avec un tissu dense de PME et ETI en logistique e-commerce (A3, A86, proximité Porte des Lilas), BTP rénovation NPNRU et résidentiel Grand Paris, commerces de proximité et restauration portés par 30 000 habitants, plus un patrimoine vert exceptionnel (réserve naturelle Bois de Romainville, 158 ha) et la Cité de la Musique des Cités-Jardins.",
   ecosystemEn:
-    "Romainville s'inscrit dans l'Établissement Public Territorial Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) et concentre l'un des pôles biotech-pharma majeurs d'Île-de-France : siège recherche oncologie Sanofi (transféré de Vitry en 2017), Institut de Recherche Servier et campus Sanofi-Aventis sur l'axe Pantin-Romainville, à proximité immédiate du site Roche à Pantin. Le territoire combine ces fleurons R&D avec un tissu dense de TPE/PME en logistique e-commerce (A3, A86, proximité Porte des Lilas), BTP rénovation NPNRU et résidentiel Grand Paris, commerces de proximité et restauration portés par 30 000 habitants, plus un patrimoine vert exceptionnel (réserve naturelle Bois de Romainville, 158 ha) et la Cité de la Musique des Cités-Jardins.",
+    "Romainville s'inscrit dans l'Établissement Public Territorial Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) et concentre l'un des pôles biotech-pharma majeurs d'Île-de-France : siège recherche oncologie Sanofi (transféré de Vitry en 2017), Institut de Recherche Servier et campus Sanofi-Aventis sur l'axe Pantin-Romainville, à proximité immédiate du site Roche à Pantin. Le territoire combine ces fleurons R&D avec un tissu dense de PME et ETI en logistique e-commerce (A3, A86, proximité Porte des Lilas), BTP rénovation NPNRU et résidentiel Grand Paris, commerces de proximité et restauration portés par 30 000 habitants, plus un patrimoine vert exceptionnel (réserve naturelle Bois de Romainville, 158 ha) et la Cité de la Musique des Cités-Jardins.",
   distancesFr:
     "Romainville est à 5 km de la Porte des Lilas, 8 km de Paris République, 20 km de l'aéroport Paris-Charles-de-Gaulle. Accès direct par les autoroutes A3 et A86, le métro ligne 5 (terminus Mairie des Lilas, station Romainville prévue sur le Grand Paris Express ligne 11), le tram T1 (Bobigny-Asnières) et le RER E via Pantin.",
   distancesEn:
@@ -30,8 +30,8 @@ export const ROMAINVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Cadrer un audit IA à Romainville pour les TPE/PME biotech sous-traitantes de Sanofi/Servier, les opérateurs logistiques de l'axe A3 ou les artisans BTP du programme NPNRU : identification rapide des cas d'usage à fort impact, conformité RGPD/AI Act.",
-      en: "Cadrer un audit IA à Romainville pour les TPE/PME biotech sous-traitantes de Sanofi/Servier, les opérateurs logistiques de l'axe A3 ou les artisans BTP du programme NPNRU : identification rapide des cas d'usage à fort impact, conformité RGPD/AI Act.",
+      fr: "Cadrer un audit IA à Romainville pour les PME et ETI biotech sous-traitantes de Sanofi/Servier, les opérateurs logistiques de l'axe A3 ou les artisans BTP du programme NPNRU : identification rapide des cas d'usage à fort impact, conformité RGPD/AI Act.",
+      en: "Cadrer un audit IA à Romainville pour les PME et ETI biotech sous-traitantes de Sanofi/Servier, les opérateurs logistiques de l'axe A3 ou les artisans BTP du programme NPNRU : identification rapide des cas d'usage à fort impact, conformité RGPD/AI Act.",
     },
     interventions: {
       fr: "Intervenir à Romainville en mode pompier sur site (métro 5 ou tram T1) pour automatiser un workflow critique : suivi qualité laboratoire biotech, optimisation tournées logistiques Est-parisien, devis BTP automatisés ou gestion commerce de proximité.",
@@ -42,8 +42,8 @@ export const ROMAINVILLE_COPY: VilleCopy = {
       en: "Implémenter une solution IA durable à Romainville pour une PME du campus pharma Pantin-Romainville, un acteur logistique e-commerce ou un opérateur BTP NPNRU : architecture sur-mesure, MLOps souverain et passage de relais en interne.",
     },
     unAUn: {
-      fr: "Accompagner en un-à-un un dirigeant de TPE/PME romainvilloise — patron biotech, transporteur, artisan BTP, restaurateur ou commerçant — pour cadrer sa stratégie IA en lien avec l'écosystème Est Ensemble et le Grand Paris.",
-      en: "Accompagner en un-à-un un dirigeant de TPE/PME romainvilloise — patron biotech, transporteur, artisan BTP, restaurateur ou commerçant — pour cadrer sa stratégie IA en lien avec l'écosystème Est Ensemble et le Grand Paris.",
+      fr: "Accompagner en un-à-un un dirigeant de PME et ETI romainvilloise — patron biotech, transporteur, artisan BTP, restaurateur ou commerçant — pour cadrer sa stratégie IA en lien avec l'écosystème Est Ensemble et le Grand Paris.",
+      en: "Accompagner en un-à-un un dirigeant de PME et ETI romainvilloise — patron biotech, transporteur, artisan BTP, restaurateur ou commerçant — pour cadrer sa stratégie IA en lien avec l'écosystème Est Ensemble et le Grand Paris.",
     },
   },
   services: {
@@ -51,7 +51,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
       fr: {
         hero: "Romainville (93230) n'est pas une banlieue générique : c'est une ancienne friche pharmaceutique Roussel-Uclaf devenue un croisement rare entre sciences de la vie et art contemporain. Le parc Biocitech (102 avenue Gaston Roussel), seul parc technologique ICPE certifié d'Île-de-France, héberge biotechs et chimie fine à quelques mètres de Komunuma, l'un des plus grands quartiers d'art d'Europe (Fondation Fiminco, FRAC Île-de-France, galeries Air de Paris, In Situ et Vincent Sator). Avec l'arrivée du métro 11 (station Romainville-Carnot, juin 2024), le retail neuf de l'outlet Paddock Paris et un tissu de ~1 400 entreprises porté par les services, la construction et le commerce, Axion-IA conçoit ici des sites web et plateformes SaaS augmentés par l'IA, sur site, pour des structures qui ont des besoins métier très différents d'un commerce de centre-ville classique.",
         whyHere: [
-          "Le pôle Biocitech (av. Gaston Roussel) concentre des TPE/PME biotech, biopharma et chimie fine soumises à des exigences documentaires lourdes (dossiers réglementaires, fiches de sécurité ICPE, traçabilité lots) : nous bâtissons des plateformes IA-native — recherche sémantique sur corpus scientifique, chatbot RAG sur procédures qualité, extraction structurée de PDF réglementaires.",
+          "Le pôle Biocitech (av. Gaston Roussel) concentre des PME et ETI biotech, biopharma et chimie fine soumises à des exigences documentaires lourdes (dossiers réglementaires, fiches de sécurité ICPE, traçabilité lots) : nous bâtissons des plateformes IA-native — recherche sémantique sur corpus scientifique, chatbot RAG sur procédures qualité, extraction structurée de PDF réglementaires.",
           "L'écosystème Komunuma / Fondation Fiminco et ses galeries (Air de Paris, In Situ-Fabienne Leclerc, Imane Farès, Vincent Sator, Jocelyn Wolff) plus la résidence d'artistes internationale ont des besoins web très spécifiques : catalogues d'œuvres, viewing rooms, billetterie d'expositions, e-commerce d'éditions limitées — des sites sur-mesure que les CMS génériques gèrent mal.",
           "Le retail neuf de la ZAC de l'Horloge — outlet Paddock Paris (premier city outlet accessible en métro), ~29 000 m² de commerce — appelle des vitrines e-commerce multi-CMS, du click-and-collect et de la recommandation produit IA, désormais boostés par l'afflux de visiteurs via la ligne 11.",
           "La Cité Maraîchère (ferme urbaine verticale municipale) et le tissu construction/services (28 % et 39 % des emplois locaux) ont des cas d'usage concrets : vente en circuit court, réservation d'ateliers, devis BTP automatisés, suivi de chantier sur les opérations Grand Paris autour de la nouvelle station Carnot.",
@@ -85,12 +85,6 @@ export const ROMAINVILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté IA",
-            detail:
-              "Pour une galerie indépendante de Komunuma, une enseigne de Paddock Paris, un producteur de la Cité Maraîchère ou un artisan BTP du quartier Bas-Pays : site mobile-first, e-commerce léger, chatbot de réponse aux questions clients.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme web métier avec briques IA intégrées",
             detail:
@@ -112,7 +106,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
         faq: [
           {
             q: "Travaillez-vous avec les biotechs et labos du parc Biocitech à Romainville ?",
-            a: "Oui. Le parc Biocitech (102 avenue Gaston Roussel) est l'un des rares parcs technologiques ICPE certifiés d'Île-de-France, avec des TPE/PME en biotech, biopharma et chimie fine. Nous y concevons des plateformes IA-native adaptées aux contraintes du secteur : recherche sémantique sur littérature scientifique, RAG sur procédures qualité, extraction structurée de dossiers réglementaires et fiches de sécurité, le tout en hébergement UE conforme RGPD et avec les contraintes de souveraineté propres aux données sensibles.",
+            a: "Oui. Le parc Biocitech (102 avenue Gaston Roussel) est l'un des rares parcs technologiques ICPE certifiés d'Île-de-France, avec des PME et ETI en biotech, biopharma et chimie fine. Nous y concevons des plateformes IA-native adaptées aux contraintes du secteur : recherche sémantique sur littérature scientifique, RAG sur procédures qualité, extraction structurée de dossiers réglementaires et fiches de sécurité, le tout en hébergement UE conforme RGPD et avec les contraintes de souveraineté propres aux données sensibles.",
           },
           {
             q: "Pouvez-vous créer des sites pour les galeries et acteurs culturels de Komunuma / Fondation Fiminco ?",
@@ -171,12 +165,6 @@ export const ROMAINVILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or essential e-commerce site",
-            detail:
-              "For an independent Komunuma gallery, a Paddock Paris store, a Cité Maraîchère producer or a Bas-Pays construction craftsman: mobile-first site, light e-commerce, customer-question chatbot.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business web platform with integrated AI blocks",
             detail:
@@ -226,11 +214,11 @@ export const ROMAINVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il vraiment à Romainville et dans l'EPT Est Ensemble ?",
-      a: "Oui. Nous nous déplaçons à Romainville et dans toutes les communes d'Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) depuis Paris en 30 minutes par le métro ligne 5 ou le tram T1. Nos missions sont calibrées pour les TPE et PME locales en priorité, avec une expertise particulière sur l'axe biotech Pantin-Romainville.",
+      a: "Oui. Nous nous déplaçons à Romainville et dans toutes les communes d'Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) depuis Paris en 30 minutes par le métro ligne 5 ou le tram T1. Nos missions sont calibrées pour les PME et ETI locales en priorité, avec une expertise particulière sur l'axe biotech Pantin-Romainville.",
     },
     {
       q: "Avez-vous une expérience concrète avec l'écosystème pharma/biotech autour de Sanofi et Servier ?",
-      a: "Oui. Nous accompagnons des TPE/PME sous-traitantes du siège recherche oncologie Sanofi (installé à Romainville depuis 2017) et de l'Institut de Recherche Servier : laboratoires d'analyse, fournisseurs équipements scientifiques, prestataires logistiques pharma. Tous nos cas d'usage respectent strictement le RGPD et l'AI Act (données de santé en catégorie haute).",
+      a: "Oui. Nous accompagnons des PME et ETI sous-traitantes du siège recherche oncologie Sanofi (installé à Romainville depuis 2017) et de l'Institut de Recherche Servier : laboratoires d'analyse, fournisseurs équipements scientifiques, prestataires logistiques pharma. Tous nos cas d'usage respectent strictement le RGPD et l'AI Act (données de santé en catégorie haute).",
     },
     {
       q: "Combien de temps pour démarrer une intervention IA à Romainville ?",
@@ -242,11 +230,11 @@ export const ROMAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans BTP engagés sur le NPNRU de Romainville (Marcel Cachin, Gagarine) ?",
-      a: "Oui. Nous accompagnons les TPE/PME du BTP qui interviennent sur les quartiers en rénovation Politique de la Ville (Marcel Cachin, Gagarine) et sur le résidentiel Grand Paris : devis automatisés, suivi chantier, gestion documentaire et conformité environnementale par IA.",
+      a: "Oui. Nous accompagnons les PME et ETI du BTP qui interviennent sur les quartiers en rénovation Politique de la Ville (Marcel Cachin, Gagarine) et sur le résidentiel Grand Paris : devis automatisés, suivi chantier, gestion documentaire et conformité environnementale par IA.",
     },
     {
-      q: "Quels sont vos tarifs pour une TPE ou PME à Romainville ?",
-      a: "Nos tarifs publics sont identiques à Romainville, Paris et toute l'Île-de-France — pas de surcoût géographique. Consultez la page tarifs du site pour le détail audit / intervention / implémentation / accompagnement un-à-un, calibrés TPE et PME en priorité.",
+      q: "Quels sont vos tarifs pour une PME ou ETI à Romainville ?",
+      a: "Nos tarifs publics sont identiques à Romainville, Paris et toute l'Île-de-France — pas de surcoût géographique. Consultez la page tarifs du site pour le détail audit / intervention / implémentation / accompagnement un-à-un, calibrés PME et ETI en priorité.",
     },
   ],
 };

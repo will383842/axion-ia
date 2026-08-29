@@ -83,11 +83,11 @@ export interface VilleServiceCopyLocale {
    */
   methodology: ReadonlyArray<{ step: string; detail: string }>;
   /**
-   * Grille tarifaire locale par taille entreprise INSEE (TPE/PME/ETI/GE).
+   * Grille tarifaire locale par taille entreprise INSEE (PME/ETI/GE).
    * Tarifs publics, pas de devis opaque (différenciateur Axion-IA).
    */
   pricing: ReadonlyArray<{
-    sizeLabel: string; // "TPE (< 10 collab)" / "PME (10-249)" / "ETI (250-4999)" / "Grande entreprise (5000+)"
+    sizeLabel: string; // "PME (< 10 collab)" / "PME (10-249)" / "ETI (250-4999)" / "Grande entreprise (5000+)"
     price: string; // "1 190 € HT" / "1 900 - 3 900 € HT" / "Sur devis"
     detail: string; // 1 phrase contextuelle
   }>;

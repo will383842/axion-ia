@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const COURBEVOIE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Courbevoie (92), au cœur du quartier d'affaires de La Défense. Au pied des tours qui abritent de grands sièges, un dense réseau de petites structures tertiaires — conseil, finance, services aux entreprises — fait vivre la ville. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces TPE et PME franciliennes.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Courbevoie (92), au cœur du quartier d'affaires de La Défense. Au pied des tours qui abritent de grands sièges, un dense réseau de PME tertiaires — conseil, finance, services aux entreprises — fait vivre la ville. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces PME et ETI franciliennes.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Courbevoie (92), au cœur du quartier d'affaires de La Défense. Au pied des tours qui abritent de grands sièges, un dense réseau de petites structures tertiaires — conseil, finance, services aux entreprises — fait vivre la ville. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces TPE et PME franciliennes.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI de Courbevoie (92), au cœur du quartier d'affaires de La Défense. Au pied des tours qui abritent de grands sièges, un dense réseau de PME tertiaires — conseil, finance, services aux entreprises — fait vivre la ville. Nous y déployons une IA opérationnelle, sobre et conforme RGPD pour ces PME et ETI franciliennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les TPE puis les PME du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les PME puis les ETI du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les TPE puis les PME du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit sur place sur site, tarifs publics. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Courbevoie (92), dans le quartier d'affaires de La Défense. Nous accompagnons en priorité les PME puis les ETI du tertiaire : cabinets de conseil, services financiers, professions du droit, éditeurs et prestataires informatiques, sous-traitants des grands sièges. Audit sur place sur site, tarifs publics. Les grands groupes complètent ce socle.",
   seoHook: "tertiaire & La Défense",
   ecosystemFr:
-    "Courbevoie, dans les Hauts-de-Seine, accueille une large part du quartier d'affaires de La Défense et ses tours abritant de grands sièges sociaux. Autour de cette concentration tertiaire premium — finance, conseil, juridique, informatique — gravite un écosystème dense de TPE et PME : cabinets indépendants, agences, éditeurs de logiciels et prestataires de services aux entreprises. Très bien connectée, la ville offre un terrain idéal pour des automatisations IA exigeantes et conformes.",
+    "Courbevoie, dans les Hauts-de-Seine, accueille une large part du quartier d'affaires de La Défense et ses tours abritant de grands sièges sociaux. Autour de cette concentration tertiaire premium — finance, conseil, juridique, informatique — gravite un écosystème dense de PME et ETI : cabinets indépendants, agences, éditeurs de logiciels et prestataires de services aux entreprises. Très bien connectée, la ville offre un terrain idéal pour des automatisations IA exigeantes et conformes.",
   ecosystemEn:
-    "Courbevoie, dans les Hauts-de-Seine, accueille une large part du quartier d'affaires de La Défense et ses tours abritant de grands sièges sociaux. Autour de cette concentration tertiaire premium — finance, conseil, juridique, informatique — gravite un écosystème dense de TPE et PME : cabinets indépendants, agences, éditeurs de logiciels et prestataires de services aux entreprises. Très bien connectée, la ville offre un terrain idéal pour des automatisations IA exigeantes et conformes.",
+    "Courbevoie, dans les Hauts-de-Seine, accueille une large part du quartier d'affaires de La Défense et ses tours abritant de grands sièges sociaux. Autour de cette concentration tertiaire premium — finance, conseil, juridique, informatique — gravite un écosystème dense de PME et ETI : cabinets indépendants, agences, éditeurs de logiciels et prestataires de services aux entreprises. Très bien connectée, la ville offre un terrain idéal pour des automatisations IA exigeantes et conformes.",
   distancesFr:
     "La Défense et son pôle de transport (RER A, métro 1, Transilien, tramway T2) à pied. Gare de Paris-Saint-Lazare à 8 km (~10 min RER). Paris centre à 7 km. Aéroport de Paris-Charles-de-Gaulle à 30 km, Paris-La Défense relié en direct.",
   distancesEn:
@@ -42,8 +42,8 @@ export const COURBEVOIE_COPY: VilleCopy = {
       en: "Implémentation IA à Courbevoie : automatisation de l'analyse documentaire, rédaction assistée, reporting financier, agents conversationnels internes et CRM augmentés pour le tertiaire de La Défense.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Courbevoie : sessions individuelles pour dirigeants et associés de TPE et PME du conseil, de la finance et du droit, sur site ou en visio, pour piloter l'IA en autonomie.",
-      en: "Coaching 1-to-1 à Courbevoie : sessions individuelles pour dirigeants et associés de TPE et PME du conseil, de la finance et du droit, sur site ou en visio, pour piloter l'IA en autonomie.",
+      fr: "Coaching 1-to-1 à Courbevoie : sessions individuelles pour dirigeants et associés de PME et ETI du conseil, de la finance et du droit, sur site ou en visio, pour piloter l'IA en autonomie.",
+      en: "Coaching 1-to-1 à Courbevoie : sessions individuelles pour dirigeants et associés de PME et ETI du conseil, de la finance et du droit, sur site ou en visio, pour piloter l'IA en autonomie.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Courbevoie : plateformes et SaaS IA sur mesure pour cabinets et éditeurs — portails clients, espaces documentaires sécurisés, assistants IA métier conformes RGPD.",
@@ -53,7 +53,7 @@ export const COURBEVOIE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Courbevoie, l'une des quatre communes qui portent le quartier d'affaires de La Défense, les sièges mondiaux logent dans les tours — Saint-Gobain place de l'Iris, TotalEnergies dans la Coupole, Areva/Orano dans sa tour de 178 m — pendant qu'un tissu serré de TPE et PME (conseil, finance, juridique, édition logicielle) les sous-traite depuis les Renardières, le Faubourg de l'Arche et Bécon. Axion-IA conçoit pour ces structures des sites web et plateformes SaaS augmentés par l'IA : portails clients, espaces documentaires sécurisés et assistants métier, en code custom, hébergés en UE et conformes RGPD.",
+        hero: "À Courbevoie, l'une des quatre communes qui portent le quartier d'affaires de La Défense, les sièges mondiaux logent dans les tours — Saint-Gobain place de l'Iris, TotalEnergies dans la Coupole, Areva/Orano dans sa tour de 178 m — pendant qu'un tissu serré de PME et ETI (conseil, finance, juridique, édition logicielle) les sous-traite depuis les Renardières, le Faubourg de l'Arche et Bécon. Axion-IA conçoit pour ces structures des sites web et plateformes SaaS augmentés par l'IA : portails clients, espaces documentaires sécurisés et assistants métier, en code custom, hébergés en UE et conformes RGPD.",
         whyHere: [
           "Les grands sièges de Courbevoie (Saint-Gobain, TotalEnergies, Areva/Orano) imposent à leurs sous-traitants des standards de sécurité et de traçabilité élevés : nous livrons des plateformes IA-native avec authentification forte, journalisation et hébergement UE, exécutables côté fournisseur sans dépendre d'un éditeur.",
           "Le tissu de cabinets de conseil, services financiers et activités juridiques — secteur « sièges sociaux & conseil de gestion » sur-représenté à Courbevoie — a besoin de portails clients et d'espaces documentaires avec recherche sémantique et résumé automatique de PDF longs (contrats, rapports, due diligence).",
@@ -89,12 +89,6 @@ export const COURBEVOIE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou one-page augmenté IA",
-            detail:
-              "Pour indépendants, cabinets et commerçants de Courbevoie (Bécon, Faubourg de l'Arche, abords de Westfield Les 4 Temps) : site rapide, formulaire intelligent et assistant FAQ, hébergé en UE.",
-          },
-          {
             sizeLabel: "PME",
             price: "Portail client / e-commerce avec briques IA",
             detail:
@@ -116,7 +110,7 @@ export const COURBEVOIE_COPY: VilleCopy = {
         faq: [
           {
             q: "Concevez-vous des plateformes pour les sous-traitants des grands sièges de Courbevoie ?",
-            a: "Oui. De nombreuses TPE/PME fournissent les sièges installés à Courbevoie — Saint-Gobain place de l'Iris, TotalEnergies dans la Coupole, Areva/Orano. Nous livrons des sites et SaaS alignés sur leurs exigences de sécurité, de traçabilité et d'hébergement UE, pour fiabiliser vos livrables et vos échanges documentaires.",
+            a: "Oui. De nombreuses PME et ETI fournissent les sièges installés à Courbevoie — Saint-Gobain place de l'Iris, TotalEnergies dans la Coupole, Areva/Orano. Nous livrons des sites et SaaS alignés sur leurs exigences de sécurité, de traçabilité et d'hébergement UE, pour fiabiliser vos livrables et vos échanges documentaires.",
           },
           {
             q: "Pouvez-vous accompagner une startup issue du Pôle Léonard de Vinci ?",
@@ -175,12 +169,6 @@ export const COURBEVOIE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "AI-augmented showcase or one-page site",
-            detail:
-              "For freelancers, practices and retailers in Courbevoie (Bécon, Faubourg de l'Arche, near Westfield Les 4 Temps): fast site, smart form and FAQ assistant, EU-hosted.",
-          },
-          {
             sizeLabel: "PME",
             price: "Client portal / e-commerce with AI components",
             detail:
@@ -234,7 +222,7 @@ export const COURBEVOIE_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Courbevoie ?",
-      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux TPE et PME tertiaires de Courbevoie, sans devis opaque.",
+      a: "L'Audit sur place démarre à un tarif public consultable sur notre site. C'est un diagnostic court adapté aux PME et ETI tertiaires de Courbevoie, sans devis opaque.",
     },
     {
       q: "Accompagnez-vous les cabinets de conseil et de droit ?",
@@ -242,7 +230,7 @@ export const COURBEVOIE_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les prestataires des grands sièges de La Défense ?",
-      a: "Oui. De nombreuses TPE et PME sous-traitent ou fournissent des services aux grands sièges installés à Courbevoie. Nous les outillons pour gagner en productivité et fiabiliser leurs livrables.",
+      a: "Oui. De nombreuses PME et ETI sous-traitent ou fournissent des services aux grands sièges installés à Courbevoie. Nous les outillons pour gagner en productivité et fiabiliser leurs livrables.",
     },
     {
       q: "Comment se déroule une mission à Courbevoie ?",

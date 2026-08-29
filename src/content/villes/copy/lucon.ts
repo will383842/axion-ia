@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const LUCON_COPY: VilleCopy = {
   pitchFr:
-    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de PME artisanales, PME, commerces, agriculture et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de PME artisanales, PME, commerces, agriculture et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luçon (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agricoles et agroalimentaires, professions libérales, acteurs du tourisme marais poitevin et services de la sous-préfecture.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luçon (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agricoles et agroalimentaires, professions libérales, acteurs du tourisme marais poitevin et services de la sous-préfecture.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luçon (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agricoles et agroalimentaires, professions libérales, acteurs du tourisme marais poitevin et services de la sous-préfecture.",
-  seoHook: "TPE & PME Vendée",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luçon (85). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME agricoles et agroalimentaires, professions libérales, acteurs du tourisme marais poitevin et services de la sous-préfecture.",
+  seoHook: "PME & PME Vendée",
   ecosystemFr:
     "Luçon est une sous-préfecture vendéenne aux portes du marais poitevin. Cathédrale Notre-Dame où Richelieu fut évêque (1608). Pôle agricole (plaine de Luçon, céréales, élevage), administratif et commercial. La Rochelle à 45 min, La Roche-sur-Yon à 30 min, Fontenay-le-Comte à 20 min.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const LUCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Luçon : diagnostic adapté aux PME artisanales, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Luçon : diagnostic adapté aux PME artisanales, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luçon : formats adaptés aux exploitations agricoles, PME agroalimentaires, commerces et professions libérales. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
       en: "Interventions IA sur site à Luçon : formats adaptés aux exploitations agricoles, PME agroalimentaires, commerces et professions libérales. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
-      fr: "Implémentation IA à Luçon : agriculture de précision plaine vendéenne, automatisation PME agroalimentaires, gestion clients commerces, outils prédictifs. Adapté TPE/PME sud-Vendée.",
-      en: "Implémentation IA à Luçon : agriculture de précision plaine vendéenne, automatisation PME agroalimentaires, gestion clients commerces, outils prédictifs. Adapté TPE/PME sud-Vendée.",
+      fr: "Implémentation IA à Luçon : agriculture de précision plaine vendéenne, automatisation PME agroalimentaires, gestion clients commerces, outils prédictifs. Adapté PME et ETI sud-Vendée.",
+      en: "Implémentation IA à Luçon : agriculture de précision plaine vendéenne, automatisation PME agroalimentaires, gestion clients commerces, outils prédictifs. Adapté PME et ETI sud-Vendée.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Luçon : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME agriculture, agroalimentaire, commerce et professions libérales sud-Vendée.",
-      en: "Coaching 1-to-1 à Luçon : sessions dans vos locaux, exploitation ou en visio. Dirigeants TPE/PME agriculture, agroalimentaire, commerce et professions libérales sud-Vendée.",
+      fr: "Coaching 1-to-1 à Luçon : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI agriculture, agroalimentaire, commerce et professions libérales sud-Vendée.",
+      en: "Coaching 1-to-1 à Luçon : sessions dans vos locaux, exploitation ou en visio. Dirigeants PME et ETI agriculture, agroalimentaire, commerce et professions libérales sud-Vendée.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const LUCON_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Luçon  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (PME, ETI et grands groupes) et la complexité de vos processus métier.",
     },
     {
       q: "Comment se déroule une mission IA à Luçon ?",

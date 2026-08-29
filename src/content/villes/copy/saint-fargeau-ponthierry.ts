@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Fargeau-Ponthierry (77), commune résidentielle de Seine-et-Marne en bords de Seine au sud de Melun, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires BtoB. Proximité directe de Melun et du bassin d'emploi sud francilien. Axion-IA accompagne tout le tissu professionnel local.",
+    "Saint-Fargeau-Ponthierry (77), commune résidentielle de Seine-et-Marne en bords de Seine au sud de Melun, abrite un tissu économique de PME artisanales, PME de services, commerces de proximité, professions libérales et prestataires BtoB. Proximité directe de Melun et du bassin d'emploi sud francilien. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Saint-Fargeau-Ponthierry (77), commune résidentielle de Seine-et-Marne en bords de Seine au sud de Melun, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires BtoB. Proximité directe de Melun et du bassin d'emploi sud francilien. Axion-IA accompagne tout le tissu professionnel local.",
+    "Saint-Fargeau-Ponthierry (77), commune résidentielle de Seine-et-Marne en bords de Seine au sud de Melun, abrite un tissu économique de PME artisanales, PME de services, commerces de proximité, professions libérales et prestataires BtoB. Proximité directe de Melun et du bassin d'emploi sud francilien. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Fargeau-Ponthierry (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services aux entreprises, professions libérales et indépendants du bassin sud Melun. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Fargeau-Ponthierry (77). Nous accompagnons PME et ETI : artisans, commerçants, PME de services aux entreprises, professions libérales et indépendants du bassin sud Melun. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Fargeau-Ponthierry (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services aux entreprises, professions libérales et indépendants du bassin sud Melun. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Fargeau-Ponthierry (77). Nous accompagnons PME et ETI : artisans, commerçants, PME de services aux entreprises, professions libérales et indépendants du bassin sud Melun. Audit sur place sur mesure.",
   seoHook: "artisanat second & services aux",
   ecosystemFr:
-    "Saint-Fargeau-Ponthierry est une commune résidentielle du sud de Melun, en bords de Seine. Tissu économique de TPE artisanales BTP, PME de services aux entreprises, commerces de centre-bourg, professions libérales de santé et prestataires BtoB. Accès direct à Melun préfecture et au bassin d'emploi sud francilien.",
+    "Saint-Fargeau-Ponthierry est une commune résidentielle du sud de Melun, en bords de Seine. Tissu économique de PME du BTP, PME de services aux entreprises, commerces de centre-bourg, professions libérales de santé et prestataires BtoB. Accès direct à Melun préfecture et au bassin d'emploi sud francilien.",
   ecosystemEn:
-    "Saint-Fargeau-Ponthierry est une commune résidentielle du sud de Melun, en bords de Seine. Tissu économique de TPE artisanales BTP, PME de services aux entreprises, commerces de centre-bourg, professions libérales de santé et prestataires BtoB. Accès direct à Melun préfecture et au bassin d'emploi sud francilien.",
+    "Saint-Fargeau-Ponthierry est une commune résidentielle du sud de Melun, en bords de Seine. Tissu économique de PME du BTP, PME de services aux entreprises, commerces de centre-bourg, professions libérales de santé et prestataires BtoB. Accès direct à Melun préfecture et au bassin d'emploi sud francilien.",
   distancesFr:
     "Melun à 10 min. Paris centre à 50 min via A6/N7. Gare Transilien R Ponthierry-Pringy à 5 min. Aéroport Orly à 35 min. Fontainebleau à 20 min. Accès A6 et N7 à proximité.",
   distancesEn:
@@ -30,20 +30,20 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Fargeau-Ponthierry : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
       en: "Interventions IA sur site à Saint-Fargeau-Ponthierry : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
-      fr: "Implémentation IA à Saint-Fargeau-Ponthierry : automatisation gestion commerciale, CRM, classification documentaire, outils IA métier. Adapté TPE/PME bassin Melun sud francilien.",
-      en: "Implémentation IA à Saint-Fargeau-Ponthierry : automatisation gestion commerciale, CRM, classification documentaire, outils IA métier. Adapté TPE/PME bassin Melun sud francilien.",
+      fr: "Implémentation IA à Saint-Fargeau-Ponthierry : automatisation gestion commerciale, CRM, classification documentaire, outils IA métier. Adapté PME et ETI bassin Melun sud francilien.",
+      en: "Implémentation IA à Saint-Fargeau-Ponthierry : automatisation gestion commerciale, CRM, classification documentaire, outils IA métier. Adapté PME et ETI bassin Melun sud francilien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Fargeau-Ponthierry : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, artisans, commerçants et professions libérales du sud Melun.",
-      en: "Coaching 1-to-1 à Saint-Fargeau-Ponthierry : sessions dans vos locaux ou en visio. Dirigeants TPE/PME, artisans, commerçants et professions libérales du sud Melun.",
+      fr: "Coaching 1-to-1 à Saint-Fargeau-Ponthierry : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, artisans, commerçants et professions libérales du sud Melun.",
+      en: "Coaching 1-to-1 à Saint-Fargeau-Ponthierry : sessions dans vos locaux ou en visio. Dirigeants PME et ETI, artisans, commerçants et professions libérales du sud Melun.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
       a: "L'audit sur place IA à Saint-Fargeau-Ponthierry démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE artisanales de Saint-Fargeau-Ponthierry ?",
-      a: "Oui, nous accompagnons les TPE artisanales du bassin sud Melun sur leurs cas IA : automatisation devis et facturation, planification chantiers, gestion documentaire, suivi clients, comptabilité assistée.",
+      q: "Accompagnez-vous les PME artisanales de Saint-Fargeau-Ponthierry ?",
+      a: "Oui, nous accompagnons les PME artisanales du bassin sud Melun sur leurs cas IA : automatisation devis et facturation, planification chantiers, gestion documentaire, suivi clients, comptabilité assistée.",
     },
     {
       q: "Quels services pour les PME de services à Saint-Fargeau-Ponthierry ?",

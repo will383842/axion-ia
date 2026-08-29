@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const EVRON_COPY: VilleCopy = {
   pitchFr:
-    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de PME artisanales, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Évron (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Évron (53). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Évron (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Évron (53). Nous accompagnons tous types d'activités : PME artisanales, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
   seoHook: "agroalimentaire laitier & industrie",
   ecosystemFr:
     "Évron est un bourg du centre-Mayenne marqué par son abbaye bénédictine (fondée au VIIe siècle) et sa basilique Notre-Dame-de-l'Épine. Économie : agroalimentaire laitier, industrie (conditionnement, mécanique), élevage bovin, artisanat, commerces de proximité, tourisme patrimonial.",
@@ -30,8 +30,8 @@ export const EVRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Évron : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Évron : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Évron : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Évron : diagnostic adapté aux PME artisanales, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Évron : formations adaptées aux PME laitières, industriels, artisans, éleveurs et commerçants du bassin d'Évron. Vos collaborateurs gèrent ensuite la stack en autonomie.",
@@ -42,8 +42,8 @@ export const EVRON_COPY: VilleCopy = {
       en: "Implémentation IA à Évron : traçabilité laitière, contrôle qualité conditionnement, maintenance prédictive mécanique, automatisation gestion élevage bovin et logistique.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Évron : sessions dans vos locaux industriels, exploitation, commerce ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, éleveurs, artisans.",
-      en: "Coaching 1-to-1 à Évron : sessions dans vos locaux industriels, exploitation, commerce ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, éleveurs, artisans.",
+      fr: "Coaching 1-to-1 à Évron : sessions dans vos locaux industriels, exploitation, commerce ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, éleveurs, artisans.",
+      en: "Coaching 1-to-1 à Évron : sessions dans vos locaux industriels, exploitation, commerce ou en visio. Dirigeants PME et ETI agroalimentaires, industriels, éleveurs, artisans.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const EVRON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME laitières et éleveurs bovins autour d'Évron sur leurs cas IA : traçabilité laitière, prédiction production, optimisation rations, automatisation suivi sanitaire et administratif.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Évron ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du centre-Mayenne. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Évron ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME agroalimentaires et industriels du centre-Mayenne. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour l'industrie du conditionnement ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest bordelais.",
+    "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de PME et ETI artisanales, professions libérales et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest bordelais.",
   pitchEn:
-    "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest bordelais.",
+    "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de PME et ETI artisanales, professions libérales et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons PME et ETI de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons PME et ETI de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit sur place sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
-    "Saint-Jean-d'Illac est une commune résidentielle en croissance de l'ouest bordelais, en lisière de la forêt des Landes. Tissu TPE artisanat BTP dense (construction neuve), professions libérales, commerces de proximité et services à la personne. Proximité Martignas-sur-Jalle et Cestas.",
+    "Saint-Jean-d'Illac est une commune résidentielle en croissance de l'ouest bordelais, en lisière de la forêt des Landes. Tissu PME du BTP dense (construction neuve), professions libérales, commerces de proximité et services à la personne. Proximité Martignas-sur-Jalle et Cestas.",
   ecosystemEn:
-    "Saint-Jean-d'Illac est une commune résidentielle en croissance de l'ouest bordelais, en lisière de la forêt des Landes. Tissu TPE artisanat BTP dense (construction neuve), professions libérales, commerces de proximité et services à la personne. Proximité Martignas-sur-Jalle et Cestas.",
+    "Saint-Jean-d'Illac est une commune résidentielle en croissance de l'ouest bordelais, en lisière de la forêt des Landes. Tissu PME du BTP dense (construction neuve), professions libérales, commerces de proximité et services à la personne. Proximité Martignas-sur-Jalle et Cestas.",
   distancesFr:
     "Bordeaux centre à 20 min (rocade). Aéroport Bordeaux-Mérignac à 10 min. Gare Bordeaux Saint-Jean à 25 min. Accès rocade A630 et A63 vers Bayonne.",
   distancesEn:
     "Bordeaux centre à 20 min (rocade). Aéroport Bordeaux-Mérignac à 10 min. Gare Bordeaux Saint-Jean à 25 min. Accès rocade A630 et A63 vers Bayonne.",
   topSectorsNaf: [
-    "TPE artisanat BTP (construction neuve)",
+    "PME du BTP (construction neuve)",
     "Professions libérales",
     "Commerce de proximité",
     "Services à la personne",
@@ -30,8 +30,8 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Jean-d'Illac : diagnostic pour TPE artisans BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Jean-d'Illac : diagnostic pour PME du BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-d'Illac : diagnostic pour PME du BTP, professions libérales, commerçants et PME de services de l'ouest bordelais. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-d'Illac : ateliers adaptés aux artisans, cabinets et commerces. Équipes autonomes sur outils IA configurés métier.",
@@ -53,11 +53,11 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Jean-d'Illac  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de l'ouest bordelais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Adapté aux PME artisanales et professions libérales de l'ouest bordelais.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Jean-d'Illac ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Saint-Jean-d'Illac : automatisation devis chantier, agents IA prise de RDV, gestion planning, classification photos chantier.",
+      a: "Oui, nous accompagnons les PME du BTP de Saint-Jean-d'Illac : automatisation devis chantier, agents IA prise de RDV, gestion planning, classification photos chantier.",
     },
     {
       q: "Quels services pour les professions libérales ?",

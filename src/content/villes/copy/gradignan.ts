@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const GRADIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "À Gradignan, dans la métropole bordelaise, Axion-IA accompagne les TPE et PME des services, du commerce, de l'artisanat et de la santé. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
+    "À Gradignan, dans la métropole bordelaise, Axion-IA accompagne les PME et ETI des services, du commerce, de l'artisanat et de la santé. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
   pitchEn:
-    "À Gradignan, dans la métropole bordelaise, Axion-IA accompagne les TPE et PME des services, du commerce, de l'artisanat et de la santé. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
+    "À Gradignan, dans la métropole bordelaise, Axion-IA accompagne les PME et ETI des services, du commerce, de l'artisanat et de la santé. Notre cabinet d'architectes seniors en intelligence artificielle aide les dirigeants à automatiser leur administratif et à structurer leur relation client, sans complexité technique ni jargon inutile.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Gradignan pour accompagner les TPE et PME locales. Commune résidentielle du sud de Bordeaux, proche du campus universitaire et bien intégrée à la métropole, Gradignan compte de nombreux commerces, services aux particuliers, professions libérales et artisans. Auprès d'eux, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Gradignan pour accompagner les PME et ETI locales. Commune résidentielle du sud de Bordeaux, proche du campus universitaire et bien intégrée à la métropole, Gradignan compte de nombreux commerces, services aux particuliers, professions libérales et artisans. Auprès d'eux, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Gradignan pour accompagner les TPE et PME locales. Commune résidentielle du sud de Bordeaux, proche du campus universitaire et bien intégrée à la métropole, Gradignan compte de nombreux commerces, services aux particuliers, professions libérales et artisans. Auprès d'eux, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux très petites entreprises et PME ; les ETI restent marginales. Chaque mission part d'un diagnostic terrain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Gradignan pour accompagner les PME et ETI locales. Commune résidentielle du sud de Bordeaux, proche du campus universitaire et bien intégrée à la métropole, Gradignan compte de nombreux commerces, services aux particuliers, professions libérales et artisans. Auprès d'eux, nous réalisons des audits, déployons des automatisations concrètes et formons les dirigeants. La priorité va aux PME et ETI ; les grands groupes complètent ce socle. Chaque mission part d'un diagnostic terrain.",
   seoHook: "services, commerce & campus",
   ecosystemFr:
-    "Gradignan est une commune résidentielle prisée du sud de la métropole bordelaise, marquée par la proximité du campus universitaire de Talence-Pessac-Gradignan, qui irrigue le territoire d'une population étudiante et de chercheurs. Son économie repose largement sur les services aux particuliers et aux entreprises, le commerce de proximité, l'artisanat du bâtiment, la restauration et les professions libérales et de santé. Ce tissu dense de TPE et de petites PME, ancré dans le quotidien d'une population active et qualifiée, dispose rarement de ressources numériques internes : Axion-IA leur apporte une expertise IA pragmatique pour gagner du temps et fidéliser leur clientèle.",
+    "Gradignan est une commune résidentielle prisée du sud de la métropole bordelaise, marquée par la proximité du campus universitaire de Talence-Pessac-Gradignan, qui irrigue le territoire d'une population étudiante et de chercheurs. Son économie repose largement sur les services aux particuliers et aux entreprises, le commerce de proximité, l'artisanat du bâtiment, la restauration et les professions libérales et de santé. Ce tissu dense de PME et de petites PME, ancré dans le quotidien d'une population active et qualifiée, dispose rarement de ressources numériques internes : Axion-IA leur apporte une expertise IA pragmatique pour gagner du temps et fidéliser leur clientèle.",
   ecosystemEn:
-    "Gradignan est une commune résidentielle prisée du sud de la métropole bordelaise, marquée par la proximité du campus universitaire de Talence-Pessac-Gradignan, qui irrigue le territoire d'une population étudiante et de chercheurs. Son économie repose largement sur les services aux particuliers et aux entreprises, le commerce de proximité, l'artisanat du bâtiment, la restauration et les professions libérales et de santé. Ce tissu dense de TPE et de petites PME, ancré dans le quotidien d'une population active et qualifiée, dispose rarement de ressources numériques internes : Axion-IA leur apporte une expertise IA pragmatique pour gagner du temps et fidéliser leur clientèle.",
+    "Gradignan est une commune résidentielle prisée du sud de la métropole bordelaise, marquée par la proximité du campus universitaire de Talence-Pessac-Gradignan, qui irrigue le territoire d'une population étudiante et de chercheurs. Son économie repose largement sur les services aux particuliers et aux entreprises, le commerce de proximité, l'artisanat du bâtiment, la restauration et les professions libérales et de santé. Ce tissu dense de PME et de petites PME, ancré dans le quotidien d'une population active et qualifiée, dispose rarement de ressources numériques internes : Axion-IA leur apporte une expertise IA pragmatique pour gagner du temps et fidéliser leur clientèle.",
   distancesFr:
     "Gradignan est reliée au centre de Bordeaux en environ 20 à 25 minutes par le tramway et le bus, via les communes voisines de Talence et Pessac. La rocade bordelaise dessert directement la commune et place la gare Bordeaux-Saint-Jean à une vingtaine de minutes, d'où Paris est accessible en environ 2 heures en TGV. L'aéroport Bordeaux-Mérignac se situe à une vingtaine de minutes de route. Cette bonne desserte facilite les déplacements de nos consultants dans tout le sud de la métropole.",
   distancesEn:
@@ -30,20 +30,20 @@ export const GRADIGNAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Un audit IA à Gradignan commence par une rencontre sur site, dans votre cabinet, commerce ou entreprise, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une petite PME de la métropole bordelaise.",
-      en: "Un audit IA à Gradignan commence par une rencontre sur site, dans votre cabinet, commerce ou entreprise, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une TPE ou une petite PME de la métropole bordelaise.",
+      fr: "Un audit IA à Gradignan commence par une rencontre sur site, dans votre cabinet, commerce ou entreprise, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une PME ou une petite PME de la métropole bordelaise.",
+      en: "Un audit IA à Gradignan commence par une rencontre sur site, dans votre cabinet, commerce ou entreprise, pour cartographier vos processus et identifier les automatisations à plus fort ROI pour une PME ou une petite PME de la métropole bordelaise.",
     },
     interventions: {
       fr: "Nos interventions à Gradignan automatisent les tâches répétitives des services et commerces locaux : prise de rendez-vous, relances clients, devis et traitement administratif, sans bouleverser vos outils existants.",
       en: "Nos interventions à Gradignan automatisent les tâches répétitives des services et commerces locaux : prise de rendez-vous, relances clients, devis et traitement administratif, sans bouleverser vos outils existants.",
     },
     implementation: {
-      fr: "L'implémentation à Gradignan déploie des solutions IA durables pour les TPE et PME de services, de santé et de commerce, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
-      en: "L'implémentation à Gradignan déploie des solutions IA durables pour les TPE et PME de services, de santé et de commerce, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
+      fr: "L'implémentation à Gradignan déploie des solutions IA durables pour les PME et ETI de services, de santé et de commerce, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
+      en: "L'implémentation à Gradignan déploie des solutions IA durables pour les PME et ETI de services, de santé et de commerce, avec une attention particulière à la simplicité d'usage et à la conformité RGPD des données clients.",
     },
     unAUn: {
-      fr: "Nos sessions un-à-un à Gradignan forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets issus des services, des professions libérales ou du commerce local.",
-      en: "Nos sessions un-à-un à Gradignan forment les dirigeants de TPE et PME à utiliser l'IA au quotidien, avec des cas concrets issus des services, des professions libérales ou du commerce local.",
+      fr: "Nos sessions un-à-un à Gradignan forment les dirigeants de PME et d'ETI à utiliser l'IA au quotidien, avec des cas concrets issus des services, des professions libérales ou du commerce local.",
+      en: "Nos sessions un-à-un à Gradignan forment les dirigeants de PME et d'ETI à utiliser l'IA au quotidien, avec des cas concrets issus des services, des professions libérales ou du commerce local.",
     },
     sitesWeb: {
       fr: "Pour les entreprises de Gradignan, nous concevons des sites web et plateformes augmentés par l'IA : prise de rendez-vous en ligne, devis automatisés et assistants qui qualifient et orientent les demandes des clients locaux.",
@@ -53,9 +53,9 @@ export const GRADIGNAN_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Gradignan, le tissu économique tient à un maillage de très petites entreprises réparties sur huit zones d'activités, à un commerce de proximité polarisé par le centre commercial de Laurenzane, et à un écosystème d'accompagnement concentré au Château de l'Ermitage (coworking La Canopée, incubateur Gradignan Premières, Club des Entreprises). Axion-IA y conçoit des sites web et des plateformes SaaS augmentés par l'IA pour ces structures : commerçants, professions libérales et de santé, artisans du bâtiment et porteurs de projet du campus de Talence-Pessac-Gradignan, qui ont besoin d'un site qui prend des rendez-vous, qualifie les demandes et libère du temps, pas d'une usine à gaz.",
+        hero: "À Gradignan, le tissu économique tient à un maillage de PME et ETI réparties sur huit zones d'activités, à un commerce de proximité polarisé par le centre commercial de Laurenzane, et à un écosystème d'accompagnement concentré au Château de l'Ermitage (coworking La Canopée, incubateur Gradignan Premières, Club des Entreprises). Axion-IA y conçoit des sites web et des plateformes SaaS augmentés par l'IA pour ces structures : commerçants, professions libérales et de santé, artisans du bâtiment et porteurs de projet du campus de Talence-Pessac-Gradignan, qui ont besoin d'un site qui prend des rendez-vous, qualifie les demandes et libère du temps, pas d'une usine à gaz.",
         whyHere: [
-          "La majorité de nos sites à Gradignan sont commandés par des TPE et petites PME des huit ZAE et du centre commercial de Laurenzane : commerces de proximité, restauration, services à la personne. Nous concevons pour elles des vitrines et boutiques en ligne (WordPress/WooCommerce, Shopify, Prestashop ou code sur mesure) avec prise de rendez-vous et devis assistés par IA.",
+          "La majorité de nos sites à Gradignan sont commandés par des PME et petites PME des huit ZAE et du centre commercial de Laurenzane : commerces de proximité, restauration, services à la personne. Nous concevons pour elles des vitrines et boutiques en ligne (WordPress/WooCommerce, Shopify, Prestashop ou code sur mesure) avec prise de rendez-vous et devis assistés par IA.",
           "Forte demande des professions libérales et de santé de la commune : sites de prise de rendez-vous, formulaires de pré-qualification et assistants qui orientent les patients ou clients vers le bon interlocuteur, avec un traitement des données conforme RGPD et un hébergement en Union européenne.",
           "Proximité immédiate du domaine universitaire de Talence-Pessac-Gradignan (ENSEGID, ENSC, Université de Bordeaux) et de l'incubateur Gradignan Premières au Château de l'Ermitage : nous accompagnons les porteurs de projet et jeunes pousses sur des MVP web et des plateformes SaaS IA-native (chatbot RAG, recherche sémantique, agents).",
           "Nos consultants se déplacent sur place — à la Canopée, dans votre local de la ZAE ou votre cabinet — et couvrent tout le sud de la Métropole bordelaise : Gradignan, Talence, Pessac, Villenave d'Ornon, à 20 minutes de Bordeaux par la rocade et le tramway.",
@@ -88,12 +88,6 @@ export const GRADIGNAN_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine + IA de prise de rendez-vous",
-            detail:
-              "Pour les commerçants de Laurenzane, artisans du bâtiment, praticiens et indépendants des ZAE de Gradignan : un site rapide avec prise de rendez-vous ou devis assistés par IA, mobile-first et conforme RGPD.",
-          },
           {
             sizeLabel: "PME",
             price: "Site e-commerce ou plateforme métier augmentée",
@@ -175,12 +169,6 @@ export const GRADIGNAN_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site + AI booking",
-            detail:
-              "For Laurenzane retailers, building craftspeople, practitioners and freelancers in Gradignan's activity zones: a fast site with AI-assisted booking or quotes, mobile-first and GDPR-compliant.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce site or augmented business platform",
             detail:
@@ -234,7 +222,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Gradignan ?",
-      a: "Nous accompagnons en priorité les TPE et PME : commerces de proximité, professions libérales et de santé, artisans, restauration et sociétés de services. Les ETI restent un cas marginal. Notre approche est calibrée pour des structures aux ressources limitées.",
+      a: "Nous accompagnons en priorité les PME et ETI : commerces de proximité, professions libérales et de santé, artisans, restauration et sociétés de services. Les grands groupes complètent ce socle. Notre approche est calibrée pour des structures aux ressources limitées.",
     },
     {
       q: "Par quoi commence une mission IA à Gradignan ?",

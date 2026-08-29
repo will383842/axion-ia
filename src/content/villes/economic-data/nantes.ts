@@ -331,7 +331,7 @@ export const NANTES_ECONOMIC_DATA: VilleEconomicData = {
     },
   ],
 
-  // ─── Couche 3 — Multi-taille TPE/PME/ETI/GE ─────────────────────────
+  // ─── Couche 3 — Multi-taille PME/ETI/GE ─────────────────────────
 
   // Label EPV : sans source individuelle confirmée par entreprise pour Nantes,
   // champ honnêtement vide pour respecter zéro invention. Annuaire officiel :

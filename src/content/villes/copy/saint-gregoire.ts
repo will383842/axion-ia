@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GREGOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Grégoire (35), commune au nord de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités tertiaires (Espace Performance, ZA Saint-Sulpice). Tissu de PME tertiaires, services B2B, TPE artisans, commerces, professions libérales et sièges régionaux d'entreprises. Axion-IA y intervient pour tous types d'activités du nord rennais.",
+    "Saint-Grégoire (35), commune au nord de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités tertiaires (Espace Performance, ZA Saint-Sulpice). Tissu de PME tertiaires, services B2B, PME artisanales, commerces, professions libérales et sièges régionaux d'entreprises. Axion-IA y intervient pour tous types d'activités du nord rennais.",
   pitchEn:
-    "Saint-Grégoire (35), commune au nord de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités tertiaires (Espace Performance, ZA Saint-Sulpice). Tissu de PME tertiaires, services B2B, TPE artisans, commerces, professions libérales et sièges régionaux d'entreprises. Axion-IA y intervient pour tous types d'activités du nord rennais.",
+    "Saint-Grégoire (35), commune au nord de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités tertiaires (Espace Performance, ZA Saint-Sulpice). Tissu de PME tertiaires, services B2B, PME artisanales, commerces, professions libérales et sièges régionaux d'entreprises. Axion-IA y intervient pour tous types d'activités du nord rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Grégoire (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités nord rennais (Espace Performance, Saint-Sulpice), services B2B, artisans, commerçants, professions libérales et sièges régionaux de Rennes Métropole nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Grégoire (35). Nous accompagnons PME et ETI : entreprises tertiaires des zones d'activités nord rennais (Espace Performance, Saint-Sulpice), services B2B, artisans, commerçants, professions libérales et sièges régionaux de Rennes Métropole nord.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Grégoire (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités nord rennais (Espace Performance, Saint-Sulpice), services B2B, artisans, commerçants, professions libérales et sièges régionaux de Rennes Métropole nord.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Grégoire (35). Nous accompagnons PME et ETI : entreprises tertiaires des zones d'activités nord rennais (Espace Performance, Saint-Sulpice), services B2B, artisans, commerçants, professions libérales et sièges régionaux de Rennes Métropole nord.",
   seoHook: "tertiaires sièges & services b2b",
   ecosystemFr:
-    "Saint-Grégoire est un pôle tertiaire majeur au nord immédiat de Rennes, intégré à Rennes Métropole. Les zones d'activités (Espace Performance, ZA Saint-Sulpice) regroupent PME tertiaires, services B2B, sièges régionaux et cabinets de conseil. Également présents : TPE artisanat, commerces de proximité, professions libérales et quelques exploitations agricoles périphériques. Accès rocade nord et N137 vers Saint-Malo.",
+    "Saint-Grégoire est un pôle tertiaire majeur au nord immédiat de Rennes, intégré à Rennes Métropole. Les zones d'activités (Espace Performance, ZA Saint-Sulpice) regroupent PME tertiaires, services B2B, sièges régionaux et cabinets de conseil. Également présents : PME de l'artisanat, commerces de proximité, professions libérales et quelques exploitations agricoles périphériques. Accès rocade nord et N137 vers Saint-Malo.",
   ecosystemEn:
-    "Saint-Grégoire est un pôle tertiaire majeur au nord immédiat de Rennes, intégré à Rennes Métropole. Les zones d'activités (Espace Performance, ZA Saint-Sulpice) regroupent PME tertiaires, services B2B, sièges régionaux et cabinets de conseil. Également présents : TPE artisanat, commerces de proximité, professions libérales et quelques exploitations agricoles périphériques. Accès rocade nord et N137 vers Saint-Malo.",
+    "Saint-Grégoire est un pôle tertiaire majeur au nord immédiat de Rennes, intégré à Rennes Métropole. Les zones d'activités (Espace Performance, ZA Saint-Sulpice) regroupent PME tertiaires, services B2B, sièges régionaux et cabinets de conseil. Également présents : PME de l'artisanat, commerces de proximité, professions libérales et quelques exploitations agricoles périphériques. Accès rocade nord et N137 vers Saint-Malo.",
   distancesFr:
     "Rennes centre à 10 min. Gare de Rennes à 15 min (TGV Paris 1h25). Aéroport Rennes-Bretagne à 20 min. Rocade nord de Rennes. N137 vers Saint-Malo (45 min). Betton à 5 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires & sièges régionaux",
     "Services B2B & cabinets de conseil",
-    "TPE artisanat & BTP",
+    "PME de l'artisanat & BTP",
     "Commerce de proximité & grande distribution",
     "Professions libérales (santé, juridique, conseil)",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, PME artisanales et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, PME artisanales et professions libérales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Grégoire : formats adaptés au bureau tertiaire, plateau entreprise, cabinet conseil ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Grégoire : automatisation workflow tertiaire, agents conversationnels B2B, outils IA cabinets conseil (analyse documentaire, veille augmentée), CRM augmenté, reporting automatisé.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Grégoire : sessions dans vos locaux, bureau ou en visio. Dirigeants TPE/PME nord rennais souhaitant maîtriser l'IA dans leur activité tertiaire, conseil ou commerciale.",
-      en: "Coaching 1-to-1 à Saint-Grégoire : sessions dans vos locaux, bureau ou en visio. Dirigeants TPE/PME nord rennais souhaitant maîtriser l'IA dans leur activité tertiaire, conseil ou commerciale.",
+      fr: "Coaching 1-to-1 à Saint-Grégoire : sessions dans vos locaux, bureau ou en visio. Dirigeants PME et ETI nord rennais souhaitant maîtriser l'IA dans leur activité tertiaire, conseil ou commerciale.",
+      en: "Coaching 1-to-1 à Saint-Grégoire : sessions dans vos locaux, bureau ou en visio. Dirigeants PME et ETI nord rennais souhaitant maîtriser l'IA dans leur activité tertiaire, conseil ou commerciale.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Grégoire  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du nord rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, conseil, services, BTP). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du nord rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, conseil, services, BTP). Tarifs publics.",
     },
     {
       q: "Travaillez-vous avec les cabinets de conseil du secteur ?",

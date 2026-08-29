@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AJACCIO_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Ajaccio, préfecture de la Corse-du-Sud et ville natale de Napoléon. Hôtellerie, restauration, port de commerce, tourisme insulaire, commerce et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Ajaccio, préfecture de la Corse-du-Sud et ville natale de Napoléon. Hôtellerie, restauration, port de commerce, tourisme insulaire, commerce et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   pitchEn:
-    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME d'Ajaccio, préfecture de la Corse-du-Sud et ville natale de Napoléon. Hôtellerie, restauration, port de commerce, tourisme insulaire, commerce et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
+    "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les PME et ETI d'Ajaccio, préfecture de la Corse-du-Sud et ville natale de Napoléon. Hôtellerie, restauration, port de commerce, tourisme insulaire, commerce et services : nous transformons l'IA en gains concrets, sans jargon ni dépendance technique.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME d'Ajaccio en priorité, les PME ensuite. Nous ciblons l'économie touristique insulaire (hôtellerie, restauration, locations), le commerce, les services portuaires et les services aux entreprises. Audit sur place sur mesure avec ROI chiffré, puis accompagnement sur site ou en visio, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les PME et ETI d'Ajaccio en priorité, les PME ensuite. Nous ciblons l'économie touristique insulaire (hôtellerie, restauration, locations), le commerce, les services portuaires et les services aux entreprises. Audit sur place sur mesure avec ROI chiffré, puis accompagnement sur site ou en visio, vos équipes restant autonomes.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les TPE et PME d'Ajaccio en priorité, les PME ensuite. Nous ciblons l'économie touristique insulaire (hôtellerie, restauration, locations), le commerce, les services portuaires et les services aux entreprises. Audit sur place sur mesure avec ROI chiffré, puis accompagnement sur site ou en visio, vos équipes restant autonomes.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui accompagne les PME et ETI d'Ajaccio en priorité, les PME ensuite. Nous ciblons l'économie touristique insulaire (hôtellerie, restauration, locations), le commerce, les services portuaires et les services aux entreprises. Audit sur place sur mesure avec ROI chiffré, puis accompagnement sur site ou en visio, vos équipes restant autonomes.",
   seoHook: "tourisme insulaire & port",
   ecosystemFr:
-    "Ajaccio, préfecture de la Corse-du-Sud, vit d'une économie fortement saisonnière : hôtellerie, restauration, locations touristiques et croisières via le port de commerce et de voyageurs. Le tourisme balnéaire et patrimonial (cité impériale napoléonienne, golfe d'Ajaccio) côtoie un tissu de TPE et PME de services, de BTP et de commerce, soutenu par l'Université de Corse Pasquale Paoli.",
+    "Ajaccio, préfecture de la Corse-du-Sud, vit d'une économie fortement saisonnière : hôtellerie, restauration, locations touristiques et croisières via le port de commerce et de voyageurs. Le tourisme balnéaire et patrimonial (cité impériale napoléonienne, golfe d'Ajaccio) côtoie un tissu de PME et ETI de services, de BTP et de commerce, soutenu par l'Université de Corse Pasquale Paoli.",
   ecosystemEn:
-    "Ajaccio, préfecture de la Corse-du-Sud, vit d'une économie fortement saisonnière : hôtellerie, restauration, locations touristiques et croisières via le port de commerce et de voyageurs. Le tourisme balnéaire et patrimonial (cité impériale napoléonienne, golfe d'Ajaccio) côtoie un tissu de TPE et PME de services, de BTP et de commerce, soutenu par l'Université de Corse Pasquale Paoli.",
+    "Ajaccio, préfecture de la Corse-du-Sud, vit d'une économie fortement saisonnière : hôtellerie, restauration, locations touristiques et croisières via le port de commerce et de voyageurs. Le tourisme balnéaire et patrimonial (cité impériale napoléonienne, golfe d'Ajaccio) côtoie un tissu de PME et ETI de services, de BTP et de commerce, soutenu par l'Université de Corse Pasquale Paoli.",
   distancesFr:
     "L'aéroport Ajaccio Napoléon Bonaparte est à environ 5 km du centre. Le port de commerce et de voyageurs est en plein coeur de ville, relié au continent par ferry et avion.",
   distancesEn:
@@ -38,12 +38,12 @@ export const AJACCIO_COPY: VilleCopy = {
       en: "Interventions IA sur site à Ajaccio : formats adaptés à l'hôtel, au restaurant ou au commerce de saison. Vos collaborateurs gèrent ensuite les outils en autonomie, sans dépendance prestataire.",
     },
     implementation: {
-      fr: "Implémentation IA à Ajaccio : gestion intelligente des réservations et du yield touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des TPE et PME insulaires.",
-      en: "Implémentation IA à Ajaccio : gestion intelligente des réservations et du yield touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des TPE et PME insulaires.",
+      fr: "Implémentation IA à Ajaccio : gestion intelligente des réservations et du yield touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des PME et ETI insulaires.",
+      en: "Implémentation IA à Ajaccio : gestion intelligente des réservations et du yield touristique, agents conversationnels multilingues, analyse des avis clients et automatisation administrative des PME et ETI insulaires.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ajaccio pour dirigeants de TPE et PME touristiques et de services : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
-      en: "Coaching 1-to-1 à Ajaccio pour dirigeants de TPE et PME touristiques et de services : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      fr: "Coaching 1-to-1 à Ajaccio pour dirigeants de PME et d'ETI touristiques et de services : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
+      en: "Coaching 1-to-1 à Ajaccio pour dirigeants de PME et d'ETI touristiques et de services : sessions dans vos locaux ou en visio pour piloter votre feuille de route IA en restant autonome.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Ajaccio : plateformes de réservation directe, outils IA multilingues et vitrines optimisées pour l'hôtellerie, la restauration et le commerce insulaire.",
@@ -53,11 +53,11 @@ export const AJACCIO_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Ajaccio des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie insulaire où le port de croisière a accueilli 336 290 voyageurs en 2025 et où le tissu est fait de TPE du tourisme, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ajaccio, itérations à distance pour limiter les contraintes insulaires.",
+        hero: "Axion-IA conçoit et augmente à Ajaccio des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure, réservation directe, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une économie insulaire où le port de croisière a accueilli 336 290 voyageurs en 2025 et où le tissu est fait de PME du tourisme, du BTP et des services. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Ajaccio, itérations à distance pour limiter les contraintes insulaires.",
         whyHere: [
           "Économie maritime captive : transporteurs comme Corsica Linea (siège bd Roi Jérôme, 9 navires) et Air Corsica (aéroport Napoléon Bonaparte) structurent l'accès à l'île — un terrain idéal pour des portails de réservation directe et des parcours clients augmentés à l'IA.",
           "Pic estival et clientèle de croisière internationale (jusqu'à plusieurs milliers de visiteurs débarqués par escale, ~221 escales prévues en 2026) : nos chatbots et agents conversationnels sont multilingues par défaut, calibrés pour l'hôtellerie, la restauration et le commerce de centre-ville.",
-          "Tissu 100 % TPE/PME (~12 700 établissements, majorité de petits commerces, BTP du Vazzio, agroalimentaire Subrini à Baleone) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on construit une vitrine e-commerce de produits corses en circuit court.",
+          "Tissu 100 % PME et ETI (~12 700 établissements, majorité de petits commerces, BTP du Vazzio, agroalimentaire Subrini à Baleone) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on construit une vitrine e-commerce de produits corses en circuit court.",
           "Contrainte de continuité territoriale et hébergement UE strict : toute la chaîne IA est hébergeable en Europe, conforme RGPD — vos données de réservation et clients restent maîtrisées, sans dépendance à un prestataire continental unique.",
         ],
         methodology: [
@@ -88,12 +88,6 @@ export const AJACCIO_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, moteur de réservation) sur le site existant d'un hôtel, restaurant ou loueur saisonnier ajaccien, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -175,12 +169,6 @@ export const AJACCIO_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Add an AI brick (multilingual chatbot, semantic search, booking engine) onto the existing site of an Ajaccio hotel, restaurant or seasonal rental, in a few weeks and without a rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / e-commerce storefront",
             detail:
@@ -230,7 +218,7 @@ export const AJACCIO_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il en Corse, à Ajaccio ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME d'Ajaccio et de la Corse-du-Sud. Nous nous déplaçons sur site et travaillons aussi en visio pour limiter les contraintes insulaires. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les PME et ETI d'Ajaccio et de la Corse-du-Sud. Nous nous déplaçons sur site et travaillons aussi en visio pour limiter les contraintes insulaires. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un hôtel ou restaurant ajaccien saisonnier ?",

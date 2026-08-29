@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VIRIAT_COPY: VilleCopy = {
   pitchFr:
-    "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA opère pour toutes les structures économiques de la commune bressoises.",
+    "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, PME du BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA opère pour toutes les structures économiques de la commune bressoises.",
   pitchEn:
-    "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA opère pour toutes les structures économiques de la commune bressoises.",
+    "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, PME du BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA opère pour toutes les structures économiques de la commune bressoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), PME du BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), PME du BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   seoHook: "tertiaires agglomération & agriculture bresse",
   ecosystemFr:
-    "Viriat est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse (volaille de Bresse AOC à proximité), TPE artisanat BTP, commerces.",
+    "Viriat est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse (volaille de Bresse AOC à proximité), PME du BTP, commerces.",
   ecosystemEn:
-    "Viriat est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse (volaille de Bresse AOC à proximité), TPE artisanat BTP, commerces.",
+    "Viriat est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse (volaille de Bresse AOC à proximité), PME du BTP, commerces.",
   distancesFr:
     "Bourg-en-Bresse centre à 5 min. Gare Bourg-en-Bresse à 10 min (TGV Paris 2h). Lyon centre à 1h. Aéroport Lyon-Saint-Exupéry à 50 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const VIRIAT_COPY: VilleCopy = {
     "PME tertiaires agglomération Bourg-en-Bresse",
     "Agriculture Bresse (volaille AOC)",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Viriat : diagnostic adapté aux PME tertiaires/industrielles Bresse, éleveurs volaille AOC, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Viriat : diagnostic adapté aux PME tertiaires/industrielles Bresse, éleveurs volaille AOC, TPE artisans. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Viriat : diagnostic adapté aux PME tertiaires/industrielles Bresse, éleveurs volaille AOC, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Viriat : diagnostic adapté aux PME tertiaires/industrielles Bresse, éleveurs volaille AOC, PME artisanales. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Viriat : formats adaptés au bureau, atelier, exploitation élevage, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VIRIAT_COPY: VilleCopy = {
       en: "Implémentation IA à Viriat : agents conversationnels B2B, traçabilité volaille AOC Bresse, classification photos élevage, automatisation workflow. Bresse.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Viriat : sessions dans votre bureau, exploitation, commerce ou en visio. Dirigeants tertiaires, éleveurs Bresse, industriels, artisans, gérants TPE/PME viriatois.",
-      en: "Coaching 1-to-1 à Viriat : sessions dans votre bureau, exploitation, commerce ou en visio. Dirigeants tertiaires, éleveurs Bresse, industriels, artisans, gérants TPE/PME viriatois.",
+      fr: "Coaching 1-to-1 à Viriat : sessions dans votre bureau, exploitation, commerce ou en visio. Dirigeants tertiaires, éleveurs Bresse, industriels, artisans, gérants PME et ETI viriatois.",
+      en: "Coaching 1-to-1 à Viriat : sessions dans votre bureau, exploitation, commerce ou en visio. Dirigeants tertiaires, éleveurs Bresse, industriels, artisans, gérants PME et ETI viriatois.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const VIRIAT_COPY: VilleCopy = {
       a: "Oui, agents conversationnels B2B, prédiction maintenance, automatisation workflow, classification documents.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

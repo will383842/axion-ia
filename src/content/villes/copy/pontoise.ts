@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PONTOISE_COPY: VilleCopy = {
   pitchFr:
-    "Pontoise, préfecture du Val-d'Oise (95), concentre administrations préfectorales, hôpital René-Dubos, université CY Cergy Paris et tissu dense de TPE/PME locales. Axion-IA y intervient pour les artisans, indépendants, PME tertiaires et services publics du bassin Cergy-Pontoise.",
+    "Pontoise, préfecture du Val-d'Oise (95), concentre administrations préfectorales, hôpital René-Dubos, université CY Cergy Paris et tissu dense de PME et ETI locales. Axion-IA y intervient pour les artisans, indépendants, PME tertiaires et services publics du bassin Cergy-Pontoise.",
   pitchEn:
-    "Pontoise, préfecture du Val-d'Oise (95), concentre administrations préfectorales, hôpital René-Dubos, université CY Cergy Paris et tissu dense de TPE/PME locales. Axion-IA y intervient pour les artisans, indépendants, PME tertiaires et services publics du bassin Cergy-Pontoise.",
+    "Pontoise, préfecture du Val-d'Oise (95), concentre administrations préfectorales, hôpital René-Dubos, université CY Cergy Paris et tissu dense de PME et ETI locales. Axion-IA y intervient pour les artisans, indépendants, PME tertiaires et services publics du bassin Cergy-Pontoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontoise (95). Nous accompagnons les TPE et indépendants (cabinets juridiques, expert-comptables, artisans), les PME tertiaires pontoisiennes, les services publics et structures hospitalières/universitaires sur leurs cas IA opérationnels. Vos équipes restent autonomes après notre mission.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontoise (95). Nous accompagnons les PME et indépendants (cabinets juridiques, expert-comptables, artisans), les PME tertiaires pontoisiennes, les services publics et structures hospitalières/universitaires sur leurs cas IA opérationnels. Vos équipes restent autonomes après notre mission.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontoise (95). Nous accompagnons les TPE et indépendants (cabinets juridiques, expert-comptables, artisans), les PME tertiaires pontoisiennes, les services publics et structures hospitalières/universitaires sur leurs cas IA opérationnels. Vos équipes restent autonomes après notre mission.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontoise (95). Nous accompagnons les PME et indépendants (cabinets juridiques, expert-comptables, artisans), les PME tertiaires pontoisiennes, les services publics et structures hospitalières/universitaires sur leurs cas IA opérationnels. Vos équipes restent autonomes après notre mission.",
   seoHook: "administration services & santé hôpital",
   ecosystemFr:
-    "Pontoise concentre la fonction administrative du Val-d'Oise (préfecture, tribunal, sous-préfecture services régionaux) au sein de l'agglomération Cergy-Pontoise (200 000 hab). Université CY Cergy Paris (20 000 étudiants), hôpital René-Dubos (CH référence Val-d'Oise), tissu dense PME tertiaires et TPE artisanales.",
+    "Pontoise concentre la fonction administrative du Val-d'Oise (préfecture, tribunal, sous-préfecture services régionaux) au sein de l'agglomération Cergy-Pontoise (200 000 hab). Université CY Cergy Paris (20 000 étudiants), hôpital René-Dubos (CH référence Val-d'Oise), tissu dense PME tertiaires et PME artisanales.",
   ecosystemEn:
-    "Pontoise concentre la fonction administrative du Val-d'Oise (préfecture, tribunal, sous-préfecture services régionaux) au sein de l'agglomération Cergy-Pontoise (200 000 hab). Université CY Cergy Paris (20 000 étudiants), hôpital René-Dubos (CH référence Val-d'Oise), tissu dense PME tertiaires et TPE artisanales.",
+    "Pontoise concentre la fonction administrative du Val-d'Oise (préfecture, tribunal, sous-préfecture services régionaux) au sein de l'agglomération Cergy-Pontoise (200 000 hab). Université CY Cergy Paris (20 000 étudiants), hôpital René-Dubos (CH référence Val-d'Oise), tissu dense PME tertiaires et PME artisanales.",
   distancesFr:
     "Gare Pontoise (Transilien H, RER C terminus, 40 min Gare du Nord/Saint-Lazare). Axe A15 vers Paris (35 min) et A86 ouest. Roissy-CDG à 45 min. Cergy centre à 10 min.",
   distancesEn:
@@ -24,26 +24,26 @@ export const PONTOISE_COPY: VilleCopy = {
   topSectorsNaf: [
     "Administration & services publics",
     "Santé & hôpital (CH René-Dubos)",
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "PME tertiaires (cabinets, conseil)",
     "Université & formation supérieure",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pontoise : diagnostic adapté aux TPE/PME pontoisiennes, cabinets professionnels et services publics. ROI chiffré pratique, plan d'action exécutable par vos équipes ou tout prestataire.",
-      en: "Audit IA à Pontoise : diagnostic adapté aux TPE/PME pontoisiennes, cabinets professionnels et services publics. ROI chiffré pratique, plan d'action exécutable par vos équipes ou tout prestataire.",
+      fr: "Audit IA à Pontoise : diagnostic adapté aux PME et ETI pontoisiennes, cabinets professionnels et services publics. ROI chiffré pratique, plan d'action exécutable par vos équipes ou tout prestataire.",
+      en: "Audit IA à Pontoise : diagnostic adapté aux PME et ETI pontoisiennes, cabinets professionnels et services publics. ROI chiffré pratique, plan d'action exécutable par vos équipes ou tout prestataire.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pontoise : sessions adaptées aux TPE indépendantes et PME tertiaires. Formats demi-journée à 2 jours, vos collaborateurs (assistants juridiques, comptables, commerciaux) repartent autonomes.",
-      en: "Interventions IA sur site à Pontoise : sessions adaptées aux TPE indépendantes et PME tertiaires. Formats demi-journée à 2 jours, vos collaborateurs (assistants juridiques, comptables, commerciaux) repartent autonomes.",
+      fr: "Interventions IA sur site à Pontoise : sessions adaptées aux PME indépendantes et PME tertiaires. Formats demi-journée à 2 jours, vos collaborateurs (assistants juridiques, comptables, commerciaux) repartent autonomes.",
+      en: "Interventions IA sur site à Pontoise : sessions adaptées aux PME indépendantes et PME tertiaires. Formats demi-journée à 2 jours, vos collaborateurs (assistants juridiques, comptables, commerciaux) repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA à Pontoise : agents conversationnels, automatisation traitement documents, classification dossiers. Spécialement adapté aux cabinets professionnels et PME tertiaires Cergy-Pontoise.",
       en: "Implémentation IA à Pontoise : agents conversationnels, automatisation traitement documents, classification dossiers. Spécialement adapté aux cabinets professionnels et PME tertiaires Cergy-Pontoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Pontoise : sessions confidentielles dans vos bureaux ou en visio. Avocats, expert-comptables, gérants TPE/PME et directeurs administratifs souhaitant monter en compétence IA à leur rythme.",
-      en: "Coaching 1-to-1 à Pontoise : sessions confidentielles dans vos bureaux ou en visio. Avocats, expert-comptables, gérants TPE/PME et directeurs administratifs souhaitant monter en compétence IA à leur rythme.",
+      fr: "Coaching 1-to-1 à Pontoise : sessions confidentielles dans vos bureaux ou en visio. Avocats, expert-comptables, gérants PME et ETI et directeurs administratifs souhaitant monter en compétence IA à leur rythme.",
+      en: "Coaching 1-to-1 à Pontoise : sessions confidentielles dans vos bureaux ou en visio. Avocats, expert-comptables, gérants PME et ETI et directeurs administratifs souhaitant monter en compétence IA à leur rythme.",
     },
   },
   services: {
@@ -85,12 +85,6 @@ export const PONTOISE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce avec brique IA",
-            detail:
-              "Pour indépendants, cabinets, commerçants du centre historique de Pontoise et TPE touristiques (hôtellerie/restauration autour du patrimoine impressionniste) : site rapide, mobile-first, avec chatbot IA de prise de contact ou de réponses aux questions fréquentes.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier sur mesure + IA",
             detail:
@@ -120,7 +114,7 @@ export const PONTOISE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour recevoir un devis ?",
-            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine TPE, le périmètre se chiffre vite ; pour une plateforme SaaS ETI ou un portail hospitalier, nous prenons le temps d'un atelier préalable à Pontoise.",
+            a: "Le devis est remis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Pour un site vitrine PME, le périmètre se chiffre vite ; pour une plateforme SaaS ETI ou un portail hospitalier, nous prenons le temps d'un atelier préalable à Pontoise.",
           },
           {
             q: "Faites-vous de l'e-commerce et du mobile, ou seulement de l'IA ?",
@@ -170,12 +164,6 @@ export const PONTOISE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase or e-commerce site with AI block",
-            detail:
-              "For freelancers, firms, shops in Pontoise's historic centre and tourism micro-businesses (hospitality around the Impressionist heritage): fast, mobile-first site with an AI contact or FAQ chatbot.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom business platform + AI",
@@ -229,8 +217,8 @@ export const PONTOISE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pontoise et toute l'agglomération Cergy-Pontoise (Cergy, Osny, Jouy-le-Moutier, Vauréal, Saint-Ouen-l'Aumône). Couverture complète Val-d'Oise et accès rapide depuis Paris (40 min Transilien).",
     },
     {
-      q: "Travaillez-vous avec les TPE et indépendants pontoisiens ?",
-      a: "Oui, nous accompagnons les TPE pontoisiennes (artisans, commerçants, indépendants) sur des cas IA accessibles : automatisation devis/facturation, agents IA pour relation client, gestion administrative simplifiée. Audit sur place à {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Travaillez-vous avec les PME et indépendants pontoisiens ?",
+      a: "Oui, nous accompagnons les PME pontoisiennes (artisans, commerçants, indépendants) sur des cas IA accessibles : automatisation devis/facturation, agents IA pour relation client, gestion administrative simplifiée. Audit sur place à {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
       q: "Accompagnez-vous les cabinets d'expertise et professions juridiques ?",

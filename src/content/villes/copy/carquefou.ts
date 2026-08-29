@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CARQUEFOU_COPY: VilleCopy = {
   pitchFr:
-    "Carquefou (44), pôle industriel et logistique du nord de l'agglomération nantaise, concentre PMI, négoce, distribution et services aux entreprises autour du parc d'activités de la Fleuriaye. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME carquefoliennes, les ETI en complément.",
+    "Carquefou (44), pôle industriel et logistique du nord de l'agglomération nantaise, concentre PMI, négoce, distribution et services aux entreprises autour du parc d'activités de la Fleuriaye. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI carquefoliennes, les grands groupes en complément.",
   pitchEn:
-    "Carquefou (44), pôle industriel et logistique du nord de l'agglomération nantaise, concentre PMI, négoce, distribution et services aux entreprises autour du parc d'activités de la Fleuriaye. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE et PME carquefoliennes, les ETI en complément.",
+    "Carquefou (44), pôle industriel et logistique du nord de l'agglomération nantaise, concentre PMI, négoce, distribution et services aux entreprises autour du parc d'activités de la Fleuriaye. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les PME et ETI carquefoliennes, les grands groupes en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les TPE et PME locales — PMI et sous-traitants industriels, négoce et commerce de gros, logistique et transport, services aux entreprises du parc de la Fleuriaye — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les PME et ETI locales — PMI et sous-traitants industriels, négoce et commerce de gros, logistique et transport, services aux entreprises du parc de la Fleuriaye — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les TPE et PME locales — PMI et sous-traitants industriels, négoce et commerce de gros, logistique et transport, services aux entreprises du parc de la Fleuriaye — puis les ETI en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient sur site à Carquefou et dans la métropole nantaise. Nous accompagnons en priorité les PME et ETI locales — PMI et sous-traitants industriels, négoce et commerce de gros, logistique et transport, services aux entreprises du parc de la Fleuriaye — puis les grands groupes en complément. Audit, intervention sur site, implémentation et coaching un-à-un, à tarifs publics.",
   seoHook: "industrie, commerce de gros & logistique",
   ecosystemFr:
-    "Carquefou est un pôle d'activités industriel et logistique du nord nantais, structuré autour du parc de la Fleuriaye : PMI, sous-traitance, commerce de gros, distribution et services aux entreprises. Le tissu est dominé par les TPE/PME, complété par quelques ETI industrielles.",
+    "Carquefou est un pôle d'activités industriel et logistique du nord nantais, structuré autour du parc de la Fleuriaye : PMI, sous-traitance, commerce de gros, distribution et services aux entreprises. Le tissu est dominé par les PME et ETI, complété par quelques ETI industrielles.",
   ecosystemEn:
-    "Carquefou est un pôle d'activités industriel et logistique du nord nantais, structuré autour du parc de la Fleuriaye : PMI, sous-traitance, commerce de gros, distribution et services aux entreprises. Le tissu est dominé par les TPE/PME, complété par quelques ETI industrielles.",
+    "Carquefou est un pôle d'activités industriel et logistique du nord nantais, structuré autour du parc de la Fleuriaye : PMI, sous-traitance, commerce de gros, distribution et services aux entreprises. Le tissu est dominé par les PME et ETI, complété par quelques ETI industrielles.",
   distancesFr:
     "Gare TGV de Nantes à 10 km (Paris en 2h). Aéroport Nantes-Atlantique à 25 km. Nantes centre à 15 min, périphérique et A11 à proximité immédiate.",
   distancesEn:
@@ -42,8 +42,8 @@ export const CARQUEFOU_COPY: VilleCopy = {
       en: "Implémentation IA à Carquefou : maintenance prédictive et contrôle qualité en PMI, automatisation des devis et de la facturation pour le négoce, optimisation des flux logistiques et du transport.",
     },
     unAUn: {
-      fr: "Coaching un-à-un à Carquefou : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — industriels, négociants, logisticiens et responsables de services du nord nantais.",
-      en: "Coaching un-à-un à Carquefou : sessions dans vos locaux ou en visio pour les dirigeants de TPE/PME — industriels, négociants, logisticiens et responsables de services du nord nantais.",
+      fr: "Coaching un-à-un à Carquefou : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI — industriels, négociants, logisticiens et responsables de services du nord nantais.",
+      en: "Coaching un-à-un à Carquefou : sessions dans vos locaux ou en visio pour les dirigeants de PME et ETI — industriels, négociants, logisticiens et responsables de services du nord nantais.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Carquefou : portails B2B, configurateurs et espaces clients avec IA intégrée pour PMI, négoce et logistique — catalogue, devis assisté, suivi de commandes et base documentaire interrogeable.",
@@ -53,7 +53,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Carquefou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, portails B2B, configurateurs produits, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos catalogues, recherche sémantique et agents d'automatisation. Pensé pour le pôle industriel et logistique du nord nantais comme pour le technopôle tertiaire de la Fleuriaye — créé en 1997, plus de 40 000 m² de bureaux et près de 1 500 emplois dans les nouvelles technologies — où PMI, sous-traitants, négociants, logisticiens et éditeurs forment un tissu dense de TPE et PME. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carquefou, à 15 min de Nantes, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Carquefou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, portails B2B, configurateurs produits, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos catalogues, recherche sémantique et agents d'automatisation. Pensé pour le pôle industriel et logistique du nord nantais comme pour le technopôle tertiaire de la Fleuriaye — créé en 1997, plus de 40 000 m² de bureaux et près de 1 500 emplois dans les nouvelles technologies — où PMI, sous-traitants, négociants, logisticiens et éditeurs forment un tissu dense de PME et ETI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carquefou, à 15 min de Nantes, puis itérations à distance.",
         whyHere: [
           "Pôle industriel et de sous-traitance autour de la Fleuriaye et de la ZAC du Clouet : pour les PMI et la fabrication de produits métalliques, on greffe sur l'existant un configurateur produit, un espace devis assisté et une base documentaire technique (fiches, plans, normes) interrogeable en langage naturel par vos opérateurs comme par vos clients, mobile-first pour l'atelier.",
           "Négoce et commerce de gros très présents dans le parc d'activités : on construit des portails B2B sur mesure ou en e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, tarifs clients différenciés, suivi de commandes, relance et facturation automatisées par agents IA branchés sur votre ERP.",
@@ -88,12 +88,6 @@ export const CARQUEFOU_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot sur catalogue, recherche sémantique, devis assisté) sur le site existant d'un artisan, d'un négociant ou d'un sous-traitant métallurgique de Carquefou, en quelques semaines et sans refonte. Idéal pour un premier pas mesurable avant d'investir davantage.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,7 +133,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans interrompre la prise de commandes ni les flux logistiques du parc de la Fleuriaye. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou, aucun abonnement imposé. Solution transférable à tout prestataire local du nord nantais ou de la métropole de Nantes, ou reprise en interne par vos équipes après formation.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Carquefou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, portails B2B, configurateurs produits, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos catalogues, recherche sémantique et agents d'automatisation. Pensé pour le pôle industriel et logistique du nord nantais comme pour le technopôle tertiaire de la Fleuriaye — créé en 1997, plus de 40 000 m² de bureaux et près de 1 500 emplois dans les nouvelles technologies — où PMI, sous-traitants, négociants, logisticiens et éditeurs forment un tissu dense de TPE et PME. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carquefou, à 15 min de Nantes, puis itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Carquefou des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, portails B2B, configurateurs produits, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos catalogues, recherche sémantique et agents d'automatisation. Pensé pour le pôle industriel et logistique du nord nantais comme pour le technopôle tertiaire de la Fleuriaye — créé en 1997, plus de 40 000 m² de bureaux et près de 1 500 emplois dans les nouvelles technologies — où PMI, sous-traitants, négociants, logisticiens et éditeurs forment un tissu dense de PME et ETI. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Carquefou, à 15 min de Nantes, puis itérations à distance.",
         whyHere: [
           "Pôle industriel et de sous-traitance autour de la Fleuriaye et de la ZAC du Clouet : pour les PMI et la fabrication de produits métalliques, on greffe sur l'existant un configurateur produit, un espace devis assisté et une base documentaire technique (fiches, plans, normes) interrogeable en langage naturel par vos opérateurs comme par vos clients, mobile-first pour l'atelier.",
           "Négoce et commerce de gros très présents dans le parc d'activités : on construit des portails B2B sur mesure ou en e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec catalogue, tarifs clients différenciés, suivi de commandes, relance et facturation automatisées par agents IA branchés sur votre ERP.",
@@ -174,12 +168,6 @@ export const CARQUEFOU_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot sur catalogue, recherche sémantique, devis assisté) sur le site existant d'un artisan, d'un négociant ou d'un sous-traitant métallurgique de Carquefou, en quelques semaines et sans refonte. Idéal pour un premier pas mesurable avant d'investir davantage.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -230,11 +218,11 @@ export const CARQUEFOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carquefou et dans la métropole nantaise ?",
-      a: "Oui, Axion-IA se déplace sur site à Carquefou, dans le parc de la Fleuriaye et dans toute la métropole de Nantes (15 min). Nous accompagnons en priorité les TPE et PME, puis les ETI en complément.",
+      a: "Oui, Axion-IA se déplace sur site à Carquefou, dans le parc de la Fleuriaye et dans toute la métropole de Nantes (15 min). Nous accompagnons en priorité les PME et ETI, puis les grands groupes en complément.",
     },
     {
       q: "Travaillez-vous avec les PMI et sous-traitants industriels ?",
-      a: "Oui, c'est notre cœur de cible à Carquefou. Maintenance prédictive, contrôle qualité assisté et automatisation des devis et de la documentation technique, adaptés aux ateliers de TPE/PME.",
+      a: "Oui, c'est notre cœur de cible à Carquefou. Maintenance prédictive, contrôle qualité assisté et automatisation des devis et de la documentation technique, adaptés aux ateliers de PME et ETI.",
     },
     {
       q: "Accompagnez-vous le négoce et le commerce de gros ?",
@@ -246,7 +234,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
     },
     {
       q: "Faut-il être une grande entreprise pour travailler avec Axion-IA à Carquefou ?",
-      a: "Non. Notre priorité, ce sont les TPE et PME du parc de la Fleuriaye et du nord nantais. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
+      a: "Non. Notre priorité, ce sont les PME et ETI du parc de la Fleuriaye et du nord nantais. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
       q: "Comment se déroule une mission IA à Carquefou ?",

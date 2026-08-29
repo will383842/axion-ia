@@ -241,7 +241,7 @@ export const VOLUME_DEFS: readonly VolumeDef[] = [
  * DEUX à TROIS fonctions, jamais plus : chacune ajoute deux questions de
  * volume. On ne retient que celles dont la présence ne fait aucun doute dans
  * le secteur. `marketing`, `rh` et `finance` sont volontairement rares ici —
- * ce sont précisément les fonctions qu'une TPE n'a pas, et les pré-cocher
+ * ce sont précisément les fonctions qu'une PME n'a pas, et les pré-cocher
  * ferait répondre « je ne sais pas » à des questions inutiles.
  */
 export const SECTOR_DEFAULT_FUNCTIONS: Readonly<Record<RoiSectorKey, readonly BusinessFunction[]>> =

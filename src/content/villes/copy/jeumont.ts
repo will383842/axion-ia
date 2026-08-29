@@ -5,33 +5,33 @@ import type { VilleCopy } from "./types";
 
 export const JEUMONT_COPY: VilleCopy = {
   pitchFr:
-    "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : PME du BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : PME du BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : PME du BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
   seoHook: "vallée sambre",
   ecosystemFr:
-    "Jeumont est située dans la vallée de la Sambre, à la frontière belge. Tissu péri-urbain industriel : TPE artisanat BTP, PME industrielles historiques (métallurgie, mécanique, électromécanique), commerces de proximité, professions libérales, échanges transfrontaliers belges (Erquelinnes, Mons).",
+    "Jeumont est située dans la vallée de la Sambre, à la frontière belge. Tissu péri-urbain industriel : PME du BTP, PME industrielles historiques (métallurgie, mécanique, électromécanique), commerces de proximité, professions libérales, échanges transfrontaliers belges (Erquelinnes, Mons).",
   ecosystemEn:
-    "Jeumont est située dans la vallée de la Sambre, à la frontière belge. Tissu péri-urbain industriel : TPE artisanat BTP, PME industrielles historiques (métallurgie, mécanique, électromécanique), commerces de proximité, professions libérales, échanges transfrontaliers belges (Erquelinnes, Mons).",
+    "Jeumont est située dans la vallée de la Sambre, à la frontière belge. Tissu péri-urbain industriel : PME du BTP, PME industrielles historiques (métallurgie, mécanique, électromécanique), commerces de proximité, professions libérales, échanges transfrontaliers belges (Erquelinnes, Mons).",
   distancesFr:
     "Maubeuge à 15 min. Frontière belge limitrophe (Erquelinnes). Mons (Belgique) à 30 min. Charleroi (Belgique) à 50 min. Valenciennes à 45 min. Lille à 1 h 20.",
   distancesEn:
     "Maubeuge à 15 min. Frontière belge limitrophe (Erquelinnes). Mons (Belgique) à 30 min. Charleroi (Belgique) à 50 min. Valenciennes à 45 min. Lille à 1 h 20.",
   topSectorsNaf: [
     "PME industrielles métallurgie-mécanique",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Professions libérales",
     "Services frontaliers",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Jeumont : diagnostic adapté aux PME du BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Jeumont : diagnostic adapté aux PME du BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jeumont : formats adaptés à l'atelier industriel, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const JEUMONT_COPY: VilleCopy = {
       en: "Implémentation IA à Jeumont : agents conversationnels B2B, automatisation devis BTP, classification dossiers industriels métallurgie, CRM augmentés. Vallée Sambre frontalière.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Jeumont : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles métallurgie, professions libérales, commerçants jeumontois.",
-      en: "Coaching 1-to-1 à Jeumont : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME industrielles métallurgie, professions libérales, commerçants jeumontois.",
+      fr: "Coaching 1-to-1 à Jeumont : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles métallurgie, professions libérales, commerçants jeumontois.",
+      en: "Coaching 1-to-1 à Jeumont : sessions dans votre atelier, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME industrielles métallurgie, professions libérales, commerçants jeumontois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const JEUMONT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles métallurgie-mécanique à Jeumont sur leurs cas IA : agents conversationnels B2B, classification documents qualité, automatisation workflow production, maintenance prédictive.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans BTP jeumontois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à Jeumont sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
+      q: "Travaillez-vous avec les PME du BTP jeumontois ?",
+      a: "Oui, nous accompagnons les PME du BTP à Jeumont sur leurs cas IA : automatisation devis, suivi chantier, relances clients. Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation.",
     },
     {
       q: "Quels services pour les commerces et professions libérales ?",

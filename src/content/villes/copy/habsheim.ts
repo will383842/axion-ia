@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HABSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de TPE/PME viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants.",
+    "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de PME et ETI viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de TPE/PME viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants.",
+    "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de PME et ETI viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Habsheim (68). Nous accompagnons PME et ETI : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Habsheim (68). Nous accompagnons PME et ETI : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit sur place sur mesure.",
   ecosystemFr:
     "Habsheim est intégrée à Mulhouse Alsace Agglomération, à la jonction de la plaine d'Alsace et du Sundgau. Son économie s'appuie sur un terroir viticole (route des vins d'Alsace, AOC pinot blanc, gewurztraminer), un tissu artisanal et industriel diffus, un aérodrome ULM-aviation légère, des commerces de proximité et des services aux entreprises. La commune profite de la dynamique économique transfrontalière de Mulhouse-Bâle.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const HABSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Habsheim : diagnostic adapté aux TPE/PME viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Habsheim : diagnostic adapté aux PME et ETI viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Habsheim : diagnostic adapté aux PME et ETI viticoles, artisans, industriels et commerçants du sud-est mulhousien. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Habsheim : formats adaptés au domaine viticole, à l'atelier artisanal, à l'usine ou au commerce. Vos équipes maîtrisent les outils déployés.",
@@ -42,8 +42,8 @@ export const HABSHEIM_COPY: VilleCopy = {
       en: "Implémentation IA à Habsheim : gestion vendanges et œnotourisme, agents conversationnels multilingues caves, automatisation devis artisanat, contrôle qualité production, OCR documents et facturation.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Habsheim : sessions dans votre domaine, atelier, commerce ou en visio. Dirigeants TPE/PME du sud-est mulhousien souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Habsheim : sessions dans votre domaine, atelier, commerce ou en visio. Dirigeants TPE/PME du sud-est mulhousien souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Habsheim : sessions dans votre domaine, atelier, commerce ou en visio. Dirigeants PME et ETI du sud-est mulhousien souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Habsheim : sessions dans votre domaine, atelier, commerce ou en visio. Dirigeants PME et ETI du sud-est mulhousien souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const HABSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA à Habsheim  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME de Habsheim et du sud-est mulhousien, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, atelier artisanal, commerce ou unité de production.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI de Habsheim et du sud-est mulhousien, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, atelier artisanal, commerce ou unité de production.",
     },
     {
       q: "Accompagnez-vous les viticulteurs et acteurs œnotouristiques ?",

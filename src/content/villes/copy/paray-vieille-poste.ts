@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   pitchFr:
-    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, PME du commerce. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, PME du commerce. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-Vieille-Poste (91). Nous accompagnons PME et ETI : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Paray-Vieille-Poste (91). Nous accompagnons PME et ETI : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit sur place sur mesure.",
   seoHook: "logistique aéroportuaire & fret handling",
   ecosystemFr:
-    "Paray-Vieille-Poste est une commune de l'Essonne située aux portes de l'aéroport Paris-Orly, au cœur d'une zone d'activités aéroportuaire majeure. Tissu TPE/PME logistique, fret, hôtellerie, services aux entreprises, commerce de proximité.",
+    "Paray-Vieille-Poste est une commune de l'Essonne située aux portes de l'aéroport Paris-Orly, au cœur d'une zone d'activités aéroportuaire majeure. Tissu PME et ETI logistique, fret, hôtellerie, services aux entreprises, commerce de proximité.",
   ecosystemEn:
-    "Paray-Vieille-Poste est une commune de l'Essonne située aux portes de l'aéroport Paris-Orly, au cœur d'une zone d'activités aéroportuaire majeure. Tissu TPE/PME logistique, fret, hôtellerie, services aux entreprises, commerce de proximité.",
+    "Paray-Vieille-Poste est une commune de l'Essonne située aux portes de l'aéroport Paris-Orly, au cœur d'une zone d'activités aéroportuaire majeure. Tissu PME et ETI logistique, fret, hôtellerie, services aux entreprises, commerce de proximité.",
   distancesFr:
     "Aéroport Paris-Orly à 3 min. Paris centre à 20 min. Évry-Courcouronnes à 25 min. Gare RER C Choisy-le-Roi à 10 min.",
   distancesEn:
@@ -38,12 +38,12 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
       en: "Interventions IA sur site à Paray-Vieille-Poste : formats adaptés entrepôt logistique, siège PME fret, hôtel aéroportuaire, commerce, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
-      fr: "Implémentation IA à Paray-Vieille-Poste : automatisation gestion stocks et flux logistiques, CRM augmenté hôtellerie, optimisation planning fret, facturation automatisée TPE.",
-      en: "Implémentation IA à Paray-Vieille-Poste : automatisation gestion stocks et flux logistiques, CRM augmenté hôtellerie, optimisation planning fret, facturation automatisée TPE.",
+      fr: "Implémentation IA à Paray-Vieille-Poste : automatisation gestion stocks et flux logistiques, CRM augmenté hôtellerie, optimisation planning fret, facturation automatisée PME.",
+      en: "Implémentation IA à Paray-Vieille-Poste : automatisation gestion stocks et flux logistiques, CRM augmenté hôtellerie, optimisation planning fret, facturation automatisée PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Paray-Vieille-Poste : sessions dans vos locaux zone aéroportuaire, hôtel, entrepôt ou en visio. Dirigeants TPE/PME logistique, hôtellerie, services Orly.",
-      en: "Coaching 1-to-1 à Paray-Vieille-Poste : sessions dans vos locaux zone aéroportuaire, hôtel, entrepôt ou en visio. Dirigeants TPE/PME logistique, hôtellerie, services Orly.",
+      fr: "Coaching 1-to-1 à Paray-Vieille-Poste : sessions dans vos locaux zone aéroportuaire, hôtel, entrepôt ou en visio. Dirigeants PME et ETI logistique, hôtellerie, services Orly.",
+      en: "Coaching 1-to-1 à Paray-Vieille-Poste : sessions dans vos locaux zone aéroportuaire, hôtel, entrepôt ou en visio. Dirigeants PME et ETI logistique, hôtellerie, services Orly.",
     },
   },
   faqGeolocalisee: [

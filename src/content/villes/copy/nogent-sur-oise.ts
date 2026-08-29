@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const NOGENT_SUR_OISE_COPY: VilleCopy = {
   pitchFr:
-    "Nogent-sur-Oise, au cœur du bassin creillois dans l'Oise, conjugue un passé industriel et métallurgique avec un tissu dense de TPE et de PME : sous-traitance mécanique, BTP, logistique et commerce. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les TPE puis les PME pour automatiser sans alourdir leurs équipes.",
+    "Nogent-sur-Oise, au cœur du bassin creillois dans l'Oise, conjugue un passé industriel et métallurgique avec un tissu dense de PME et de PME : sous-traitance mécanique, BTP, logistique et commerce. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les PME puis les ETI pour automatiser sans alourdir leurs équipes.",
   pitchEn:
-    "Nogent-sur-Oise, au cœur du bassin creillois dans l'Oise, conjugue un passé industriel et métallurgique avec un tissu dense de TPE et de PME : sous-traitance mécanique, BTP, logistique et commerce. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les TPE puis les PME pour automatiser sans alourdir leurs équipes.",
+    "Nogent-sur-Oise, au cœur du bassin creillois dans l'Oise, conjugue un passé industriel et métallurgique avec un tissu dense de PME et de PME : sous-traitance mécanique, BTP, logistique et commerce. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, y accompagne d'abord les PME puis les ETI pour automatiser sans alourdir leurs équipes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Nogent-sur-Oise (60) et dans l'agglomération Creil Sud Oise. Nous accompagnons en priorité les TPE puis les PME du bassin creillois : ateliers de sous-traitance mécanique héritiers de la métallurgie de Montataire et Creil, entreprises du BTP, logistique, commerces. Audit, interventions et implémentation pour automatiser devis, suivi de production et gestion administrative, sans recrutement supplémentaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Nogent-sur-Oise (60) et dans l'agglomération Creil Sud Oise. Nous accompagnons en priorité les PME puis les ETI du bassin creillois : ateliers de sous-traitance mécanique héritiers de la métallurgie de Montataire et Creil, entreprises du BTP, logistique, commerces. Audit, interventions et implémentation pour automatiser devis, suivi de production et gestion administrative, sans recrutement supplémentaire.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Nogent-sur-Oise (60) et dans l'agglomération Creil Sud Oise. Nous accompagnons en priorité les TPE puis les PME du bassin creillois : ateliers de sous-traitance mécanique héritiers de la métallurgie de Montataire et Creil, entreprises du BTP, logistique, commerces. Audit, interventions et implémentation pour automatiser devis, suivi de production et gestion administrative, sans recrutement supplémentaire.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Nogent-sur-Oise (60) et dans l'agglomération Creil Sud Oise. Nous accompagnons en priorité les PME puis les ETI du bassin creillois : ateliers de sous-traitance mécanique héritiers de la métallurgie de Montataire et Creil, entreprises du BTP, logistique, commerces. Audit, interventions et implémentation pour automatiser devis, suivi de production et gestion administrative, sans recrutement supplémentaire.",
   seoHook: "industrie, BTP & logistique",
   ecosystemFr:
-    "Nogent-sur-Oise appartient au bassin creillois, marqué par l'héritage de la grande métallurgie de Montataire et Creil. Cet ADN industriel a laissé un tissu de TPE et de PME spécialisées en mécanique, chaudronnerie, sous-traitance et maintenance, complété par le BTP, la logistique et le commerce de détail. Les zones d'activités du secteur Creil Sud Oise structurent l'emploi local. Axion-IA y déploie des chantiers IA adaptés à des ateliers et PME industrielles qui veulent moderniser leurs process sans complexité inutile.",
+    "Nogent-sur-Oise appartient au bassin creillois, marqué par l'héritage de la grande métallurgie de Montataire et Creil. Cet ADN industriel a laissé un tissu de PME et de PME spécialisées en mécanique, chaudronnerie, sous-traitance et maintenance, complété par le BTP, la logistique et le commerce de détail. Les zones d'activités du secteur Creil Sud Oise structurent l'emploi local. Axion-IA y déploie des chantiers IA adaptés à des ateliers et PME industrielles qui veulent moderniser leurs process sans complexité inutile.",
   ecosystemEn:
-    "Nogent-sur-Oise appartient au bassin creillois, marqué par l'héritage de la grande métallurgie de Montataire et Creil. Cet ADN industriel a laissé un tissu de TPE et de PME spécialisées en mécanique, chaudronnerie, sous-traitance et maintenance, complété par le BTP, la logistique et le commerce de détail. Les zones d'activités du secteur Creil Sud Oise structurent l'emploi local. Axion-IA y déploie des chantiers IA adaptés à des ateliers et PME industrielles qui veulent moderniser leurs process sans complexité inutile.",
+    "Nogent-sur-Oise appartient au bassin creillois, marqué par l'héritage de la grande métallurgie de Montataire et Creil. Cet ADN industriel a laissé un tissu de PME et de PME spécialisées en mécanique, chaudronnerie, sous-traitance et maintenance, complété par le BTP, la logistique et le commerce de détail. Les zones d'activités du secteur Creil Sud Oise structurent l'emploi local. Axion-IA y déploie des chantiers IA adaptés à des ateliers et PME industrielles qui veulent moderniser leurs process sans complexité inutile.",
   distancesFr:
     "Gare de Creil à 5 min, avec liaison directe vers Paris-Gare du Nord en 35 min. Aéroport de Paris-Charles-de-Gaulle à 40 min par l'A1. Beauvais à 35 min, Chantilly à 10 min. Accès direct aux zones industrielles de Montataire et du bassin creillois.",
   distancesEn:
@@ -30,8 +30,8 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nogent-sur-Oise : diagnostic pour les TPE et PME industrielles du bassin creillois. On cartographie les tâches chronophages — chiffrage, planning atelier, gestion documentaire — et on priorise les automatisations à fort retour.",
-      en: "Audit IA à Nogent-sur-Oise : diagnostic pour les TPE et PME industrielles du bassin creillois. On cartographie les tâches chronophages — chiffrage, planning atelier, gestion documentaire — et on priorise les automatisations à fort retour.",
+      fr: "Audit IA à Nogent-sur-Oise : diagnostic pour les PME et ETI industrielles du bassin creillois. On cartographie les tâches chronophages — chiffrage, planning atelier, gestion documentaire — et on priorise les automatisations à fort retour.",
+      en: "Audit IA à Nogent-sur-Oise : diagnostic pour les PME et ETI industrielles du bassin creillois. On cartographie les tâches chronophages — chiffrage, planning atelier, gestion documentaire — et on priorise les automatisations à fort retour.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nogent-sur-Oise : ateliers pour ateliers de mécanique, entreprises de BTP et acteurs logistiques. Vos équipes deviennent autonomes sur des outils IA configurés pour leur production.",
@@ -42,8 +42,8 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
       en: "Implémentation IA à Nogent-sur-Oise : automatisation des devis et chiffrages industriels, suivi de production, classement documentaire et CRM augmenté pour PME mécaniques et BTP.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Nogent-sur-Oise : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du bassin creillois souhaitant piloter leur adoption de l'IA pas à pas.",
-      en: "Accompagnement un-à-un à Nogent-sur-Oise : sessions dans vos locaux ou en visio pour dirigeants de TPE et PME du bassin creillois souhaitant piloter leur adoption de l'IA pas à pas.",
+      fr: "Accompagnement un-à-un à Nogent-sur-Oise : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI du bassin creillois souhaitant piloter leur adoption de l'IA pas à pas.",
+      en: "Accompagnement un-à-un à Nogent-sur-Oise : sessions dans vos locaux ou en visio pour dirigeants de PME et d'ETI du bassin creillois souhaitant piloter leur adoption de l'IA pas à pas.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Nogent-sur-Oise : plateforme dotée d'IA pour industriels et entreprises de services — demande de devis intelligente, espace client, réponses automatisées aux prospects.",
@@ -53,10 +53,10 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Nogent-sur-Oise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, devis en ligne, chatbot RAG multilingue ancré sur vos fiches techniques, recherche sémantique de pièces et de références, agents et automatisations. Pensé pour le bassin creillois, héritier de la grande métallurgie de Montataire et Creil, où le tissu mêle TPE et PME en mécanique, chaudronnerie, sous-traitance, BTP et logistique — autour du Parc d'Activité Sud (près de 130 entreprises) et du port fluvial relié au Canal Seine-Nord Europe. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Nogent-sur-Oise, itérations à distance, à 35 min de Paris-Gare du Nord par la gare de Creil.",
+        hero: "Axion-IA conçoit et augmente à Nogent-sur-Oise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, devis en ligne, chatbot RAG multilingue ancré sur vos fiches techniques, recherche sémantique de pièces et de références, agents et automatisations. Pensé pour le bassin creillois, héritier de la grande métallurgie de Montataire et Creil, où le tissu mêle PME et ETI en mécanique, chaudronnerie, sous-traitance, BTP et logistique — autour du Parc d'Activité Sud (près de 130 entreprises) et du port fluvial relié au Canal Seine-Nord Europe. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Nogent-sur-Oise, itérations à distance, à 35 min de Paris-Gare du Nord par la gare de Creil.",
         whyHere: [
           "Tissu industriel hérité de la métallurgie creilloise, concentré sur le Parc d'Activité Sud (72,78 ha, près de 130 établissements comme Veolia Recyclage Valorisation Hauts-de-France ou Sical Creil) : les ateliers de mécanique, de chaudronnerie et de sous-traitance travaillent encore beaucoup par e-mail et tableurs — on construit des portails de demande de devis intelligents et des catalogues de pièces avec recherche sémantique pour répondre plus vite aux donneurs d'ordre.",
-          "Forte densité de TPE et PME du BTP, de la maintenance et du négoce de matériaux (le P.A. de Saulcy accueille notamment Bricoman) : on greffe l'IA sur l'existant — espace client, suivi de chantier, relances automatiques — sans imposer de refonte lourde, ou on bâtit une vitrine e-commerce multi-CMS pour les acteurs du commerce et de l'artisanat local.",
+          "Forte densité de PME et ETI du BTP, de la maintenance et du négoce de matériaux (le P.A. de Saulcy accueille notamment Bricoman) : on greffe l'IA sur l'existant — espace client, suivi de chantier, relances automatiques — sans imposer de refonte lourde, ou on bâtit une vitrine e-commerce multi-CMS pour les acteurs du commerce et de l'artisanat local.",
           "Logistique et flux de marchandises structurés autour du port fluvial de Nogent-sur-Oise (géré par la CCI de l'Oise, atout du futur Canal Seine-Nord Europe) et de l'A1 : nos agents et automatisations connectent formulaires, ERP et messagerie pour fluidifier devis, plannings et confirmations de livraison sans embaucher, y compris pour les acteurs du recyclage et de la valorisation présents sur le bassin.",
           "Proximité immédiate de Paris (35 min depuis la gare de Creil, Roissy-CDG à 40 min par l'A1) mais ancrage local fort, du Domaine d'activités Pierre de Coubertin aux zones de Montataire : vos données de production et clients restent hébergées en UE, conformes RGPD et AI Act, sans transit hors Europe ni dépendance à un prestataire unique.",
         ],
@@ -88,12 +88,6 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot ancré sur vos fiches techniques, recherche sémantique de pièces, formulaire de devis intelligent — sur le site existant d'un atelier de mécanique, d'un artisan du BTP ou d'un commerce de Nogent-sur-Oise, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -139,10 +133,10 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans interruption de service quand on augmente l'existant. Web Vitals, accessibilité et performance mobile contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni abonnement imposé. Le projet reste transférable à tout prestataire local du bassin creillois ou des Hauts-de-France, ou repris en interne par vos équipes, qui montent en autonomie tout au long de la mission.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Nogent-sur-Oise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, devis en ligne, chatbot RAG multilingue ancré sur vos fiches techniques, recherche sémantique de pièces et de références, agents et automatisations. Pensé pour le bassin creillois, héritier de la grande métallurgie de Montataire et Creil, où le tissu mêle TPE et PME en mécanique, chaudronnerie, sous-traitance, BTP et logistique — autour du Parc d'Activité Sud (près de 130 entreprises) et du port fluvial relié au Canal Seine-Nord Europe. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Nogent-sur-Oise, itérations à distance, à 35 min de Paris-Gare du Nord par la gare de Creil.",
+        hero: "Axion-IA conçoit et augmente à Nogent-sur-Oise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, espace client, devis en ligne, chatbot RAG multilingue ancré sur vos fiches techniques, recherche sémantique de pièces et de références, agents et automatisations. Pensé pour le bassin creillois, héritier de la grande métallurgie de Montataire et Creil, où le tissu mêle PME et ETI en mécanique, chaudronnerie, sous-traitance, BTP et logistique — autour du Parc d'Activité Sud (près de 130 entreprises) et du port fluvial relié au Canal Seine-Nord Europe. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Nogent-sur-Oise, itérations à distance, à 35 min de Paris-Gare du Nord par la gare de Creil.",
         whyHere: [
           "Tissu industriel hérité de la métallurgie creilloise, concentré sur le Parc d'Activité Sud (72,78 ha, près de 130 établissements comme Veolia Recyclage Valorisation Hauts-de-France ou Sical Creil) : les ateliers de mécanique, de chaudronnerie et de sous-traitance travaillent encore beaucoup par e-mail et tableurs — on construit des portails de demande de devis intelligents et des catalogues de pièces avec recherche sémantique pour répondre plus vite aux donneurs d'ordre.",
-          "Forte densité de TPE et PME du BTP, de la maintenance et du négoce de matériaux (le P.A. de Saulcy accueille notamment Bricoman) : on greffe l'IA sur l'existant — espace client, suivi de chantier, relances automatiques — sans imposer de refonte lourde, ou on bâtit une vitrine e-commerce multi-CMS pour les acteurs du commerce et de l'artisanat local.",
+          "Forte densité de PME et ETI du BTP, de la maintenance et du négoce de matériaux (le P.A. de Saulcy accueille notamment Bricoman) : on greffe l'IA sur l'existant — espace client, suivi de chantier, relances automatiques — sans imposer de refonte lourde, ou on bâtit une vitrine e-commerce multi-CMS pour les acteurs du commerce et de l'artisanat local.",
           "Logistique et flux de marchandises structurés autour du port fluvial de Nogent-sur-Oise (géré par la CCI de l'Oise, atout du futur Canal Seine-Nord Europe) et de l'A1 : nos agents et automatisations connectent formulaires, ERP et messagerie pour fluidifier devis, plannings et confirmations de livraison sans embaucher, y compris pour les acteurs du recyclage et de la valorisation présents sur le bassin.",
           "Proximité immédiate de Paris (35 min depuis la gare de Creil, Roissy-CDG à 40 min par l'A1) mais ancrage local fort, du Domaine d'activités Pierre de Coubertin aux zones de Montataire : vos données de production et clients restent hébergées en UE, conformes RGPD et AI Act, sans transit hors Europe ni dépendance à un prestataire unique.",
         ],
@@ -174,12 +168,6 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA — chatbot ancré sur vos fiches techniques, recherche sémantique de pièces, formulaire de devis intelligent — sur le site existant d'un atelier de mécanique, d'un artisan du BTP ou d'un commerce de Nogent-sur-Oise, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -238,7 +226,7 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Quels services pour les entreprises du BTP de Nogent-sur-Oise ?",
-      a: "Pour les TPE et PME du BTP, nous mettons en place l'automatisation des devis, la relance des clients, l'organisation du planning de chantier et des agents IA pour le premier contact prospect.",
+      a: "Pour les PME et ETI du BTP, nous mettons en place l'automatisation des devis, la relance des clients, l'organisation du planning de chantier et des agents IA pour le premier contact prospect.",
     },
     {
       q: "Comment se déroule une mission à Nogent-sur-Oise ?",

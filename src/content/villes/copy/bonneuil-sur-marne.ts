@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Bonneuil-sur-Marne (94), commune du Val-de-Marne, accueille le port fluvial de Bonneuil, deuxième port fluvial d'Île-de-France, et une vaste zone industrielle et logistique. TPE artisans, PME transport et logistique, entreprises BTP, commerces, services. Axion-IA accompagne entreprises et indépendants.",
+    "Bonneuil-sur-Marne (94), commune du Val-de-Marne, accueille le port fluvial de Bonneuil, deuxième port fluvial d'Île-de-France, et une vaste zone industrielle et logistique. PME artisanales, PME transport et logistique, entreprises BTP, commerces, services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Bonneuil-sur-Marne (94), commune du Val-de-Marne, accueille le port fluvial de Bonneuil, deuxième port fluvial d'Île-de-France, et une vaste zone industrielle et logistique. TPE artisans, PME transport et logistique, entreprises BTP, commerces, services. Axion-IA accompagne entreprises et indépendants.",
+    "Bonneuil-sur-Marne (94), commune du Val-de-Marne, accueille le port fluvial de Bonneuil, deuxième port fluvial d'Île-de-France, et une vaste zone industrielle et logistique. PME artisanales, PME transport et logistique, entreprises BTP, commerces, services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons PME et ETI : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons PME et ETI : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit sur place sur mesure.",
   seoHook: "transport logistique & matériaux construction",
   ecosystemFr:
-    "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, TPE artisans, commerces de proximité et services aux entreprises. Proximité Créteil et A86.",
+    "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, PME artisanales, commerces de proximité et services aux entreprises. Proximité Créteil et A86.",
   ecosystemEn:
-    "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, TPE artisans, commerces de proximité et services aux entreprises. Proximité Créteil et A86.",
+    "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, PME artisanales, commerces de proximité et services aux entreprises. Proximité Créteil et A86.",
   distancesFr:
     "Créteil à 5 min. Paris Gare de Lyon à 25 min RER A via Sucy-Bonneuil. Aéroport Paris-Orly à 20 min A86. Autoroute A86 et RN19.",
   distancesEn:
@@ -30,8 +30,8 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, TPE artisans, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, PME artisanales, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Bonneuil-sur-Marne : diagnostic adapté aux PME transport et logistique portuaire, entreprises BTP zone industrielle, PME artisanales, commerces. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bonneuil-sur-Marne : formats adaptés entrepôt, plateforme logistique, chantier BTP, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
       en: "Implémentation IA à Bonneuil-sur-Marne : automatisation flux logistiques portuaires, gestion stocks entrepôts, traçabilité transport, prédiction maintenance flotte, CRM augmentés PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Bonneuil-sur-Marne : sessions dans votre entrepôt, bureau ou en visio. Dirigeants TPE artisans, responsables logistique, gérants PME transport et BTP du sud-est Val-de-Marne.",
-      en: "Coaching 1-to-1 à Bonneuil-sur-Marne : sessions dans votre entrepôt, bureau ou en visio. Dirigeants TPE artisans, responsables logistique, gérants PME transport et BTP du sud-est Val-de-Marne.",
+      fr: "Coaching 1-to-1 à Bonneuil-sur-Marne : sessions dans votre entrepôt, bureau ou en visio. Dirigeants PME artisanales, responsables logistique, gérants PME transport et BTP du sud-est Val-de-Marne.",
+      en: "Coaching 1-to-1 à Bonneuil-sur-Marne : sessions dans votre entrepôt, bureau ou en visio. Dirigeants PME artisanales, responsables logistique, gérants PME transport et BTP du sud-est Val-de-Marne.",
     },
   },
   faqGeolocalisee: [
@@ -60,12 +60,12 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
       a: "L'audit sur place IA à Bonneuil-sur-Marne démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et PME BTP ?",
+      q: "Accompagnez-vous les PME artisanales et PME BTP ?",
       a: "Oui, diagnostic IA adapté aux artisans BTP et PME de la zone industrielle : automatisation devis, planning chantiers, gestion sous-traitants, facturation, suivi de flotte véhicules.",
     },
     {
       q: "Comment se déroule un coaching 1-to-1 à Bonneuil-sur-Marne ?",
-      a: "Le coaching individuel se déroule dans vos locaux à Bonneuil-sur-Marne ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant TPE ou gérant PME. Prise en main d'outils IA concrets pour votre activité.",
+      a: "Le coaching individuel se déroule dans vos locaux à Bonneuil-sur-Marne ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeants de PME et d'ETI ou gérant PME. Prise en main d'outils IA concrets pour votre activité.",
     },
   ],
 };

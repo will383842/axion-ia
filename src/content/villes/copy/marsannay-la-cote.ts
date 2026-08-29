@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
   pitchFr:
-    "Marsannay-la-Côte (21), commune de Côte-d'Or au sud de Dijon, est connue pour son vignoble AOC Marsannay, première appellation de la Côte de Nuits. Tissu viticulture AOC, PME oenotourisme, TPE artisans, commerces, services périurbains dijonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Marsannay-la-Côte (21), commune de Côte-d'Or au sud de Dijon, est connue pour son vignoble AOC Marsannay, première appellation de la Côte de Nuits. Tissu viticulture AOC, PME oenotourisme, PME artisanales, commerces, services périurbains dijonnais. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Marsannay-la-Côte (21), commune de Côte-d'Or au sud de Dijon, est connue pour son vignoble AOC Marsannay, première appellation de la Côte de Nuits. Tissu viticulture AOC, PME oenotourisme, TPE artisans, commerces, services périurbains dijonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Marsannay-la-Côte (21), commune de Côte-d'Or au sud de Dijon, est connue pour son vignoble AOC Marsannay, première appellation de la Côte de Nuits. Tissu viticulture AOC, PME oenotourisme, PME artisanales, commerces, services périurbains dijonnais. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsannay-la-Côte (21). Nous accompagnons TPE et PME : domaines viticoles AOC Marsannay, négociants, oenotourisme, artisans, commerçants marsannayens et services périurbains dijonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsannay-la-Côte (21). Nous accompagnons PME et ETI : domaines viticoles AOC Marsannay, négociants, oenotourisme, artisans, commerçants marsannayens et services périurbains dijonnais. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsannay-la-Côte (21). Nous accompagnons TPE et PME : domaines viticoles AOC Marsannay, négociants, oenotourisme, artisans, commerçants marsannayens et services périurbains dijonnais. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marsannay-la-Côte (21). Nous accompagnons PME et ETI : domaines viticoles AOC Marsannay, négociants, oenotourisme, artisans, commerçants marsannayens et services périurbains dijonnais. Audit sur place sur mesure.",
   seoHook: "viticulture marsannay & oenotourisme route",
   ecosystemFr:
-    "Marsannay-la-Côte est positionnée sur la Côte de Nuits, au sud immédiat de Dijon. Première appellation village de la Côte de Nuits (AOC Marsannay rouge, rosé, blanc). Économie : viticulture AOC, oenotourisme, PME services, TPE artisans, commerces de proximité, périurbain dijonnais.",
+    "Marsannay-la-Côte est positionnée sur la Côte de Nuits, au sud immédiat de Dijon. Première appellation village de la Côte de Nuits (AOC Marsannay rouge, rosé, blanc). Économie : viticulture AOC, oenotourisme, PME services, PME artisanales, commerces de proximité, périurbain dijonnais.",
   ecosystemEn:
-    "Marsannay-la-Côte est positionnée sur la Côte de Nuits, au sud immédiat de Dijon. Première appellation village de la Côte de Nuits (AOC Marsannay rouge, rosé, blanc). Économie : viticulture AOC, oenotourisme, PME services, TPE artisans, commerces de proximité, périurbain dijonnais.",
+    "Marsannay-la-Côte est positionnée sur la Côte de Nuits, au sud immédiat de Dijon. Première appellation village de la Côte de Nuits (AOC Marsannay rouge, rosé, blanc). Économie : viticulture AOC, oenotourisme, PME services, PME artisanales, commerces de proximité, périurbain dijonnais.",
   distancesFr:
     "Dijon centre à 10 min. Beaune à 30 min A31. Nuits-Saint-Georges à 15 min. Aéroport Dijon-Bourgogne à 20 min. Gare SNCF Dijon-Ville (TGV Paris 1h35).",
   distancesEn:
@@ -25,25 +25,25 @@ export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
     "Viticulture AOC Marsannay",
     "Oenotourisme route des Grands Crus",
     "PME services périurbains",
-    "TPE artisanat commerce",
+    "PME de l'artisanat commerce",
     "Restauration gastronomique",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marsannay-la-Côte : diagnostic adapté aux domaines viticoles AOC, oenotourisme, PME services dijonnaises, TPE artisans, commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Marsannay-la-Côte : diagnostic adapté aux domaines viticoles AOC, oenotourisme, PME services dijonnaises, TPE artisans, commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Marsannay-la-Côte : diagnostic adapté aux domaines viticoles AOC, oenotourisme, PME services dijonnaises, PME artisanales, commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Marsannay-la-Côte : diagnostic adapté aux domaines viticoles AOC, oenotourisme, PME services dijonnaises, PME artisanales, commerçants. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Marsannay-la-Côte : formats adaptés au domaine viticole, cave, gîte oenotouristique, PME, TPE. Vos équipes maîtrisent les outils déployés.",
-      en: "Interventions IA sur site à Marsannay-la-Côte : formats adaptés au domaine viticole, cave, gîte oenotouristique, PME, TPE. Vos équipes maîtrisent les outils déployés.",
+      fr: "Interventions IA sur site à Marsannay-la-Côte : formats adaptés au domaine viticole, cave, gîte oenotouristique, PME, ETI. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Marsannay-la-Côte : formats adaptés au domaine viticole, cave, gîte oenotouristique, PME, ETI. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Marsannay-la-Côte : optimisation vinification, traçabilité parcellaire, prédiction millésime, automatisation vente caveau, CRM oenotourisme.",
       en: "Implémentation IA à Marsannay-la-Côte : optimisation vinification, traçabilité parcellaire, prédiction millésime, automatisation vente caveau, CRM oenotourisme.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Marsannay-la-Côte : sessions dans votre domaine, cave, PME, atelier ou en visio. Vignerons, dirigeants PME, artisans, gérants TPE marsannayens.",
-      en: "Coaching 1-to-1 à Marsannay-la-Côte : sessions dans votre domaine, cave, PME, atelier ou en visio. Vignerons, dirigeants PME, artisans, gérants TPE marsannayens.",
+      fr: "Coaching 1-to-1 à Marsannay-la-Côte : sessions dans votre domaine, cave, PME, atelier ou en visio. Vignerons, dirigeants PME, artisans, gérants PME marsannayens.",
+      en: "Coaching 1-to-1 à Marsannay-la-Côte : sessions dans votre domaine, cave, PME, atelier ou en visio. Vignerons, dirigeants PME, artisans, gérants PME marsannayens.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
       a: "Oui, CRM visiteurs, automatisation réservations dégustations, gestion gîtes, marketing digital domaine.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces marsannayens ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce marsannayens ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const YFFINIAC_COPY: VilleCopy = {
   pitchFr:
-    "Yffiniac (22), commune de l'agglomération de Saint-Brieuc au fond de la baie de Saint-Brieuc dans les Côtes-d'Armor, est bordée par la réserve naturelle de la baie. TPE artisans, PME de services, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme nature composent son économie. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération briochine.",
+    "Yffiniac (22), commune de l'agglomération de Saint-Brieuc au fond de la baie de Saint-Brieuc dans les Côtes-d'Armor, est bordée par la réserve naturelle de la baie. PME artisanales, PME de services, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme nature composent son économie. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération briochine.",
   pitchEn:
-    "Yffiniac (22), commune de l'agglomération de Saint-Brieuc au fond de la baie de Saint-Brieuc dans les Côtes-d'Armor, est bordée par la réserve naturelle de la baie. TPE artisans, PME de services, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme nature composent son économie. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération briochine.",
+    "Yffiniac (22), commune de l'agglomération de Saint-Brieuc au fond de la baie de Saint-Brieuc dans les Côtes-d'Armor, est bordée par la réserve naturelle de la baie. PME artisanales, PME de services, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme nature composent son économie. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yffiniac (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services de l'agglomération briochine, commerces de proximité, professions libérales, exploitants agricoles, indépendants et prestataires du tourisme nature de la baie de Saint-Brieuc.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yffiniac (22). Nous accompagnons tous types d'activités : PME artisanales, PME de services de l'agglomération briochine, commerces de proximité, professions libérales, exploitants agricoles, indépendants et prestataires du tourisme nature de la baie de Saint-Brieuc.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yffiniac (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services de l'agglomération briochine, commerces de proximité, professions libérales, exploitants agricoles, indépendants et prestataires du tourisme nature de la baie de Saint-Brieuc.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Yffiniac (22). Nous accompagnons tous types d'activités : PME artisanales, PME de services de l'agglomération briochine, commerces de proximité, professions libérales, exploitants agricoles, indépendants et prestataires du tourisme nature de la baie de Saint-Brieuc.",
   seoHook: "services aux & artisanat bâtiment",
   ecosystemFr:
     "Yffiniac est une commune de l'agglomération de Saint-Brieuc, au fond de la baie de Saint-Brieuc. La réserve naturelle nationale de la baie, site ornithologique majeur, attire un tourisme nature. L'économie locale repose sur les services, l'artisanat BTP, le commerce, les professions libérales, l'agriculture et les zones d'activités de l'agglo briochine accessibles en 10 minutes.",
@@ -30,8 +30,8 @@ export const YFFINIAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Yffiniac : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales, commerces et prestataires touristiques de la baie. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Yffiniac : diagnostic adapté aux TPE artisans, PME de services de l'agglomération briochine, professions libérales, commerces et prestataires touristiques de la baie. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Yffiniac : diagnostic adapté aux PME artisanales, PME de services de l'agglomération briochine, professions libérales, commerces et prestataires touristiques de la baie. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Yffiniac : diagnostic adapté aux PME artisanales, PME de services de l'agglomération briochine, professions libérales, commerces et prestataires touristiques de la baie. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Yffiniac : formats adaptés aux PME de services, artisans BTP, exploitants agricoles et professions libérales de l'agglomération briochine. Vos équipes repartent autonomes sur les outils IA métier.",
@@ -42,8 +42,8 @@ export const YFFINIAC_COPY: VilleCopy = {
       en: "Implémentation IA à Yffiniac : automatisation devis artisans, agents conversationnels accueil touristique baie, gestion planning PME, classification documents agricoles. Adapté au tissu péri-urbain briochin.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Yffiniac : sessions sur site ou en visio. Dirigeants PME, artisans, gérants TPE, professions libérales et exploitants agricoles de l'agglomération briochine souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Yffiniac : sessions sur site ou en visio. Dirigeants PME, artisans, gérants TPE, professions libérales et exploitants agricoles de l'agglomération briochine souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Yffiniac : sessions sur site ou en visio. Dirigeants PME, artisans, gérants PME, professions libérales et exploitants agricoles de l'agglomération briochine souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Yffiniac : sessions sur site ou en visio. Dirigeants PME, artisans, gérants PME, professions libérales et exploitants agricoles de l'agglomération briochine souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const YFFINIAC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME de services, cabinets de conseil, agences et prestataires de l'agglomération briochine sur leurs cas IA : automatisation administrative, agents conversationnels relation client, classification documents, optimisation process métier. Confidentialité garantie.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et exploitants agricoles d'Yffiniac ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, exploitants agricoles et commerçants d'Yffiniac sur des cas IA pratiques : automatisation devis, gestion parcellaire assistée, agents IA prise de rendez-vous, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      q: "Accompagnez-vous les PME artisanales et exploitants agricoles d'Yffiniac ?",
+      a: "Oui, nous accompagnons les PME du BTP, exploitants agricoles et commerçants d'Yffiniac sur des cas IA pratiques : automatisation devis, gestion parcellaire assistée, agents IA prise de rendez-vous, optimisation planning. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
-      q: "Quels tarifs pour une TPE ou PME de la baie de Saint-Brieuc ?",
-      a: "L'audit sur place propose un tarif d'entrée accessible, accessible aux TPE. Pour les PME de services et exploitants agricoles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      q: "Quels tarifs pour une PME ou ETI de la baie de Saint-Brieuc ?",
+      a: "L'audit sur place propose un tarif d'entrée accessible, accessible aux PME. Pour les PME de services et exploitants agricoles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Yffiniac ?",

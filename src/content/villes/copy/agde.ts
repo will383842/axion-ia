@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AGDE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA déploie ses experts IA seniors à Agde (28 000 habitants, Hérault), capitale balnéaire avec le Cap d'Agde — première station touristique de Méditerranée française après Marseille (250 000 lits l'été). Nous accompagnons en priorité les TPE et PME du tourisme, de la conchyliculture de Thau, de la viticulture languedocienne et du commerce de proximité dans l'adoption pragmatique de l'IA.",
+    "Axion-IA déploie ses experts IA seniors à Agde (28 000 habitants, Hérault), capitale balnéaire avec le Cap d'Agde — première station touristique de Méditerranée française après Marseille (250 000 lits l'été). Nous accompagnons en priorité les PME et ETI du tourisme, de la conchyliculture de Thau, de la viticulture languedocienne et du commerce de proximité dans l'adoption pragmatique de l'IA.",
   pitchEn:
-    "Axion-IA déploie ses experts IA seniors à Agde (28 000 habitants, Hérault), capitale balnéaire avec le Cap d'Agde — première station touristique de Méditerranée française après Marseille (250 000 lits l'été). Nous accompagnons en priorité les TPE et PME du tourisme, de la conchyliculture de Thau, de la viticulture languedocienne et du commerce de proximité dans l'adoption pragmatique de l'IA.",
+    "Axion-IA déploie ses experts IA seniors à Agde (28 000 habitants, Hérault), capitale balnéaire avec le Cap d'Agde — première station touristique de Méditerranée française après Marseille (250 000 lits l'été). Nous accompagnons en priorité les PME et ETI du tourisme, de la conchyliculture de Thau, de la viticulture languedocienne et du commerce de proximité dans l'adoption pragmatique de l'IA.",
   directAnswerFr:
-    "Axion-IA intervient sur site à Agde et au Cap d'Agde pour aider les TPE et PME locales (hôtels, campings, restaurants, caves AOC Languedoc et Picpoul-de-Pinet, conchyliculteurs de l'étang de Thau, commerces) à intégrer l'IA dans leur quotidien. Nos experts seniors démarrent par un Audit sur place sur mesure cadré sur vos enjeux saisonniers — gestion des réservations, yield management, automatisation back-office, traçabilité ostréicole, marketing local — avec ROI chiffré dès la première restitution. Les PME multi-établissements (groupes hôteliers, négoces viticoles) bénéficient d'un cadrage transverse ; les rares ETI du littoral héraultais sont accompagnées en complément.",
+    "Axion-IA intervient sur site à Agde et au Cap d'Agde pour aider les PME et ETI locales (hôtels, campings, restaurants, caves AOC Languedoc et Picpoul-de-Pinet, conchyliculteurs de l'étang de Thau, commerces) à intégrer l'IA dans leur quotidien. Nos experts seniors démarrent par un Audit sur place sur mesure cadré sur vos enjeux saisonniers — gestion des réservations, yield management, automatisation back-office, traçabilité ostréicole, marketing local — avec ROI chiffré dès la première restitution. Les PME multi-établissements (groupes hôteliers, négoces viticoles) bénéficient d'un cadrage transverse ; les rares ETI du littoral héraultais sont accompagnées en complément.",
   directAnswerEn:
-    "Axion-IA intervient sur site à Agde et au Cap d'Agde pour aider les TPE et PME locales (hôtels, campings, restaurants, caves AOC Languedoc et Picpoul-de-Pinet, conchyliculteurs de l'étang de Thau, commerces) à intégrer l'IA dans leur quotidien. Nos experts seniors démarrent par un Audit sur place sur mesure cadré sur vos enjeux saisonniers — gestion des réservations, yield management, automatisation back-office, traçabilité ostréicole, marketing local — avec ROI chiffré dès la première restitution. Les PME multi-établissements (groupes hôteliers, négoces viticoles) bénéficient d'un cadrage transverse ; les rares ETI du littoral héraultais sont accompagnées en complément.",
+    "Axion-IA intervient sur site à Agde et au Cap d'Agde pour aider les PME et ETI locales (hôtels, campings, restaurants, caves AOC Languedoc et Picpoul-de-Pinet, conchyliculteurs de l'étang de Thau, commerces) à intégrer l'IA dans leur quotidien. Nos experts seniors démarrent par un Audit sur place sur mesure cadré sur vos enjeux saisonniers — gestion des réservations, yield management, automatisation back-office, traçabilité ostréicole, marketing local — avec ROI chiffré dès la première restitution. Les PME multi-établissements (groupes hôteliers, négoces viticoles) bénéficient d'un cadrage transverse ; les rares ETI du littoral héraultais sont accompagnées en complément.",
   seoHook: "tourisme balnéaire & conchyliculture Thau",
   ecosystemFr:
-    "Agde concentre une économie balnéaire dense autour du Cap d'Agde (port de plaisance de 3 000 anneaux, plage naturiste de 1,4 km — la plus grande d'Europe, hôtellerie de plein air massive) et du Grau d'Agde (pêche méditerranéenne). Les TPE et PME structurent quatre filières clés : hôtellerie-restauration saisonnière, conchyliculture et ostréiculture de l'étang de Thau (Bouzigues, Mèze à proximité), viticulture AOC Languedoc / Picpoul-de-Pinet / Côtes-de-Thau, et commerce de proximité plus BTP de rénovation résidentielle. Le patrimoine (cathédrale fortifiée Saint-Étienne, Musée Agathois) ajoute un levier tourisme culturel hors saison à valoriser via l'IA.",
+    "Agde concentre une économie balnéaire dense autour du Cap d'Agde (port de plaisance de 3 000 anneaux, plage naturiste de 1,4 km — la plus grande d'Europe, hôtellerie de plein air massive) et du Grau d'Agde (pêche méditerranéenne). Les PME et ETI structurent quatre filières clés : hôtellerie-restauration saisonnière, conchyliculture et ostréiculture de l'étang de Thau (Bouzigues, Mèze à proximité), viticulture AOC Languedoc / Picpoul-de-Pinet / Côtes-de-Thau, et commerce de proximité plus BTP de rénovation résidentielle. Le patrimoine (cathédrale fortifiée Saint-Étienne, Musée Agathois) ajoute un levier tourisme culturel hors saison à valoriser via l'IA.",
   ecosystemEn:
-    "Agde concentre une économie balnéaire dense autour du Cap d'Agde (port de plaisance de 3 000 anneaux, plage naturiste de 1,4 km — la plus grande d'Europe, hôtellerie de plein air massive) et du Grau d'Agde (pêche méditerranéenne). Les TPE et PME structurent quatre filières clés : hôtellerie-restauration saisonnière, conchyliculture et ostréiculture de l'étang de Thau (Bouzigues, Mèze à proximité), viticulture AOC Languedoc / Picpoul-de-Pinet / Côtes-de-Thau, et commerce de proximité plus BTP de rénovation résidentielle. Le patrimoine (cathédrale fortifiée Saint-Étienne, Musée Agathois) ajoute un levier tourisme culturel hors saison à valoriser via l'IA.",
+    "Agde concentre une économie balnéaire dense autour du Cap d'Agde (port de plaisance de 3 000 anneaux, plage naturiste de 1,4 km — la plus grande d'Europe, hôtellerie de plein air massive) et du Grau d'Agde (pêche méditerranéenne). Les PME et ETI structurent quatre filières clés : hôtellerie-restauration saisonnière, conchyliculture et ostréiculture de l'étang de Thau (Bouzigues, Mèze à proximité), viticulture AOC Languedoc / Picpoul-de-Pinet / Côtes-de-Thau, et commerce de proximité plus BTP de rénovation résidentielle. Le patrimoine (cathédrale fortifiée Saint-Étienne, Musée Agathois) ajoute un levier tourisme culturel hors saison à valoriser via l'IA.",
   distancesFr:
     "Agde est connectée à l'A9 (sortie 34 Agde / Pézenas), avec sa propre gare SNCF / TGV (Paris ~4 h direct). Béziers est à 25 km à l'ouest, Sète à 25 km à l'est, Montpellier à 50 km au nord-est, et l'aéroport Béziers Cap d'Agde à 12 km. Nos experts IA seniors se déplacent en intra-journée depuis l'axe Marseille — Montpellier — Toulouse.",
   distancesEn:
@@ -42,8 +42,8 @@ export const AGDE_COPY: VilleCopy = {
       en: "Implémentation IA sur site à Agde et au Cap d'Agde : agents de réservation multilingues, copilotes pour offices de tourisme et conciergeries, IA d'aide à la dégustation et au pairing pour caves AOC, outils de traçabilité ostréicole connectés aux ERP locaux.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un des dirigeants TPE-PME d'Agde et du Cap d'Agde : hôteliers indépendants, vignerons, patrons de mas conchylicoles, restaurateurs du port — montée en compétence stratégique sur l'IA en sessions courtes et confidentielles.",
-      en: "Accompagnement un-à-un des dirigeants TPE-PME d'Agde et du Cap d'Agde : hôteliers indépendants, vignerons, patrons de mas conchylicoles, restaurateurs du port — montée en compétence stratégique sur l'IA en sessions courtes et confidentielles.",
+      fr: "Accompagnement un-à-un des dirigeants PME et ETI d'Agde et du Cap d'Agde : hôteliers indépendants, vignerons, patrons de mas conchylicoles, restaurateurs du port — montée en compétence stratégique sur l'IA en sessions courtes et confidentielles.",
+      en: "Accompagnement un-à-un des dirigeants PME et ETI d'Agde et du Cap d'Agde : hôteliers indépendants, vignerons, patrons de mas conchylicoles, restaurateurs du port — montée en compétence stratégique sur l'IA en sessions courtes et confidentielles.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Agde : refonte multilingue pour hôtels du Cap d'Agde, caves AOC et producteurs de Thau — moteur de réservation IA, recommandation produit, contenu SEO local (Cap d'Agde, étang de Thau, Picpoul-de-Pinet) et conversion mesurée.",
@@ -88,12 +88,6 @@ export const AGDE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot de réservation multilingue, recherche sémantique, recommandation de vins) sur le site existant d'un hôtelier indépendant, d'un restaurateur du port ou d'un vigneron, en quelques semaines, sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / e-commerce sur mesure",
@@ -175,12 +169,6 @@ export const AGDE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Grafted AI brick",
-            detail:
-              "Adding an AI brick (multilingual booking chatbot, semantic search, wine recommendation) to the existing site of an independent hotelier, a port restaurateur or a winemaker, in a few weeks, no rebuild.",
-          },
-          {
             sizeLabel: "SME",
             price: "Bespoke site / e-commerce",
             detail:
@@ -245,8 +233,8 @@ export const AGDE_COPY: VilleCopy = {
       a: "Nos experts IA seniors déploient du yield management dynamique, de la prévision de demande à 30-90 jours, des agents de réservation et de réponse aux avis multilingues (français, anglais, allemand, néerlandais), et de la prévision de fréquentation par segment. Objectif : lisser le RevPAR et préparer l'ouverture / fermeture saisonnière.",
     },
     {
-      q: "Quel est le tarif d'une intervention IA pour une TPE ou PME à Agde ?",
-      a: "Nous démarrons toujours par un Audit sur place sur mesure, dimensionné selon votre taille (TPE indépendante, PME multi-sites, négoce viticole, groupe hôtelier) et vos enjeux saisonniers. Le devis est public et le ROI est chiffré dès la restitution. Les rares ETI du littoral héraultais sont accompagnées en complément des TPE et PME prioritaires.",
+      q: "Quel est le tarif d'une intervention IA pour une PME ou ETI à Agde ?",
+      a: "Nous démarrons toujours par un Audit sur place sur mesure, dimensionné selon votre taille (PME indépendante, PME multi-sites, négoce viticole, groupe hôtelier) et vos enjeux saisonniers. Le devis est public et le ROI est chiffré dès la restitution. Les rares ETI du littoral héraultais sont accompagnées en complément des PME et ETI prioritaires.",
     },
     {
       q: "Sous quel délai pouvez-vous démarrer une mission à Agde ou au Cap d'Agde ?",

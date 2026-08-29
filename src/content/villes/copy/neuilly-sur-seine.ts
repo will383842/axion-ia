@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Neuilly-sur-Seine, commune des Hauts-de-Seine de 59 538 habitants intégrée à la Métropole du Grand Paris et à l'EPT Paris Ouest La Défense. Frontalière de Paris à l'est, Levallois-Perret au nord et Courbevoie au nord-ouest, la ville concentre cabinets de conseil, sièges sociaux, agences de communication et professions libérales. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, relances, knowledge base, OCR), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
+    "Axion-IA accompagne les PME et ETI de Neuilly-sur-Seine, commune des Hauts-de-Seine de 59 538 habitants intégrée à la Métropole du Grand Paris et à l'EPT Paris Ouest La Défense. Frontalière de Paris à l'est, Levallois-Perret au nord et Courbevoie au nord-ouest, la ville concentre cabinets de conseil, sièges sociaux, agences de communication et professions libérales. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, relances, knowledge base, OCR), avec un focus marqué PME et ETI, et ponctuellement des grands groupes.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Neuilly-sur-Seine, commune des Hauts-de-Seine de 59 538 habitants intégrée à la Métropole du Grand Paris et à l'EPT Paris Ouest La Défense. Frontalière de Paris à l'est, Levallois-Perret au nord et Courbevoie au nord-ouest, la ville concentre cabinets de conseil, sièges sociaux, agences de communication et professions libérales. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, relances, knowledge base, OCR), avec un focus marqué TPE-PME et un complément ETI ponctuel.",
+    "Axion-IA accompagne les PME et ETI de Neuilly-sur-Seine, commune des Hauts-de-Seine de 59 538 habitants intégrée à la Métropole du Grand Paris et à l'EPT Paris Ouest La Défense. Frontalière de Paris à l'est, Levallois-Perret au nord et Courbevoie au nord-ouest, la ville concentre cabinets de conseil, sièges sociaux, agences de communication et professions libérales. Notre cabinet IA opérationnelle se déplace sur site pour auditer, prototyper et déployer des automatisations métier (devis, relances, knowledge base, OCR), avec un focus marqué PME et ETI, et ponctuellement des grands groupes.",
   directAnswerFr:
-    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des PME, ETI et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des TPE, PME et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
+    "Axion-IA intervient à Neuilly-sur-Seine (Hauts-de-Seine, EPT Paris Ouest La Défense) auprès des PME, ETI et professions libérales du quartier d'affaires axial Champs-Élysées / La Défense. Williams se déplace sur site (métro ligne 1, stations Porte Maillot, Les Sablons, Pont de Neuilly) pour un Audit sur place 4h à {{price:audit-flash|flat}}, une intervention ciblée à {{price:intervention-4h|flat}} ou une implémentation complète à partir de {{price:impl-poc|entry}}, livrée en code custom (Python, Node, n8n self-host), conforme RGPD, hébergée en Europe et sans no-code propriétaire.",
   seoHook: "conseil, sièges sociaux & professions libérales",
   ecosystemFr:
     "Neuilly-sur-Seine s'est imposée comme prolongement résidentiel et tertiaire de l'axe Champs-Élysées / La Défense via la RN 13 (Avenue Charles-de-Gaulle). La commune se classe troisième nationale en concentration de richesse parmi les communes de plus de 20 000 habitants. Le tissu local est dominé par les cabinets de conseil, agences de communication, services financiers, professions libérales (avocats, notaires, médecins) et sièges sociaux, dans un cadre bordé par le Bois de Boulogne et l'Île de la Jatte.",
@@ -32,8 +32,8 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place 4h à Neuilly-sur-Seine pour TPE-PME de conseil, avocats, agences et cabinets — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
-      en: "Audit sur place 4h à Neuilly-sur-Seine pour TPE-PME de conseil, avocats, agences et cabinets — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
+      fr: "Audit sur place 4h à Neuilly-sur-Seine pour PME et ETI de conseil, avocats, agences et cabinets — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
+      en: "Audit sur place 4h à Neuilly-sur-Seine pour PME et ETI de conseil, avocats, agences et cabinets — {{price:audit-flash|flat}}, livrable cartographie processus + 3 quick wins IA chiffrés sur 90 jours.",
     },
     interventions: {
       fr: "Intervention sur site à Neuilly-sur-Seine dès {{price:intervention-4h|flat}} : prototype knowledge base juridique, automatisation devis/relances, OCR factures, scoring leads ou assistant interne sur LLM.",
@@ -44,8 +44,8 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
       en: "Implémentation complète à Neuilly-sur-Seine à partir de {{price:impl-poc|entry}} : code custom Python/Node intégré à votre SI (Salesforce, HubSpot, ERP), tests recette et transfert de compétences équipe.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 dirigeant à Neuilly-sur-Seine dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
-      en: "Coaching 1-to-1 dirigeant à Neuilly-sur-Seine dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant TPE-PME, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
+      fr: "Coaching 1-to-1 dirigeant à Neuilly-sur-Seine dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant PME et ETI, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
+      en: "Coaching 1-to-1 dirigeant à Neuilly-sur-Seine dès {{price:intervention-dirigeants|flat}} : feuille de route IA personnalisée pour gérant PME et ETI, choix d'outils sobres et activation d'un premier cas d'usage sous 2 semaines.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel augmenté IA",
-            detail:
-              "Pour indépendants, avocats, notaires et petits cabinets de Neuilly : site vitrine ou boutique légère avec recherche sémantique et génération de contenu assistée, conforme RGPD, hébergé en Europe.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme web ou SaaS sur mesure",
@@ -172,12 +166,6 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented showcase or essential e-commerce site",
-            detail:
-              "For Neuilly freelancers, lawyers, notaries and small firms: showcase site or lightweight store with semantic search and assisted content generation, GDPR-compliant, hosted in Europe.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom web or SaaS platform",

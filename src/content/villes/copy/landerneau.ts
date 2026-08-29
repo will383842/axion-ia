@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const LANDERNEAU_COPY: VilleCopy = {
   pitchFr:
-    "Landerneau (29), sous-préfecture du Finistère nichée dans la vallée de l'Élorn, célèbre pour son pont habité de Rohan et le Fonds Hélène & Édouard Leclerc pour la culture. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-bourg, professions libérales et services aux entreprises au carrefour nord-Finistère. Axion-IA y intervient pour tous types d'activités.",
+    "Landerneau (29), sous-préfecture du Finistère nichée dans la vallée de l'Élorn, célèbre pour son pont habité de Rohan et le Fonds Hélène & Édouard Leclerc pour la culture. Tissu de PME artisanales, PME agroalimentaires, commerces de centre-bourg, professions libérales et services aux entreprises au carrefour nord-Finistère. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Landerneau (29), sous-préfecture du Finistère nichée dans la vallée de l'Élorn, célèbre pour son pont habité de Rohan et le Fonds Hélène & Édouard Leclerc pour la culture. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-bourg, professions libérales et services aux entreprises au carrefour nord-Finistère. Axion-IA y intervient pour tous types d'activités.",
+    "Landerneau (29), sous-préfecture du Finistère nichée dans la vallée de l'Élorn, célèbre pour son pont habité de Rohan et le Fonds Hélène & Édouard Leclerc pour la culture. Tissu de PME artisanales, PME agroalimentaires, commerces de centre-bourg, professions libérales et services aux entreprises au carrefour nord-Finistère. Axion-IA y intervient pour tous types d'activités.",
   seoHook: "agroalimentaire & commerce de centre-bourg",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Landerneau (29). Nous accompagnons PME et ETI : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Landerneau (29). Nous accompagnons PME et ETI : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit sur place sur mesure.",
   ecosystemFr:
     "Landerneau est une sous-préfecture dynamique du nord-Finistère, à la confluence de l'Élorn et de la Penfeld. Son centre-ville animé mêle commerce de détail, artisanat et services. L'agroalimentaire (laiteries, légumiers bretons) structure le bassin d'emploi. Le Fonds Leclerc pour la Culture attire un rayonnement régional. Communes voisines : Brest, Plougastel-Daoulas, Daoulas, Dirinon, La Roche-Maurice.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const LANDERNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Landerneau : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Landerneau : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Landerneau : diagnostic adapté aux PME artisanales, PME agroalimentaires, commerces de centre-bourg et professions libérales du nord-Finistère. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Landerneau : formats adaptés à l'atelier, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Landerneau : formats adaptés à l'atelier, au commerce ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Landerneau : automatisation gestion clients, traçabilité agroalimentaire, CRM augmenté, gestion documentaire. Solutions sur mesure pour TPE et PME du bassin de l'Élorn.",
-      en: "Implémentation IA à Landerneau : automatisation gestion clients, traçabilité agroalimentaire, CRM augmenté, gestion documentaire. Solutions sur mesure pour TPE et PME du bassin de l'Élorn.",
+      fr: "Implémentation IA à Landerneau : automatisation gestion clients, traçabilité agroalimentaire, CRM augmenté, gestion documentaire. Solutions sur mesure pour PME et ETI du bassin de l'Élorn.",
+      en: "Implémentation IA à Landerneau : automatisation gestion clients, traçabilité agroalimentaire, CRM augmenté, gestion documentaire. Solutions sur mesure pour PME et ETI du bassin de l'Élorn.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Landerneau : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et indépendants du nord-Finistère.",
-      en: "Coaching 1-to-1 à Landerneau : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et indépendants du nord-Finistère.",
+      fr: "Coaching 1-to-1 à Landerneau : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et indépendants du nord-Finistère.",
+      en: "Coaching 1-to-1 à Landerneau : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et indépendants du nord-Finistère.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LANDERNEAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires du bassin de Landerneau sur leurs cas IA : traçabilité, planification de production, gestion de la chaîne d'approvisionnement, automatisation administrative.",
     },
     {
-      q: "Proposez-vous des formations IA pour les TPE à Landerneau ?",
-      a: "Oui, nos interventions IA sur site à Landerneau sont adaptées aux TPE artisanales, commerces et professions libérales. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
+      q: "Proposez-vous des formations IA pour les PME à Landerneau ?",
+      a: "Oui, nos interventions IA sur site à Landerneau sont adaptées aux PME artisanales, commerces et professions libérales. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     {
       q: "Comment se déroule une mission IA à Landerneau ?",

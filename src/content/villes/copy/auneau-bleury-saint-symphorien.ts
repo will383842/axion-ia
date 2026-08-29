@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
   pitchFr:
-    "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu TPE/PME agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu PME et ETI agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu TPE/PME agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
+    "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu PME et ETI agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, PME et ETI agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
-  seoHook: "TPE & PME Eure-et-Loir",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, PME et ETI agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
+  seoHook: "PME & PME Eure-et-Loir",
   ecosystemFr:
     "Auneau-Bleury-Saint-Symphorien est une commune nouvelle née en 2016 de la fusion d'Auneau, Bleury et Saint-Symphorien, au cœur de la Beauce céréalière. L'économie locale repose sur l'agriculture grandes cultures (blé, colza, orge), l'agroalimentaire, l'artisanat BTP, les commerces de bourg et les services de proximité.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Agriculture céréalière Beauce",
     "Agroalimentaire & négoce grains",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de bourg",
     "Services de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, PME et ETI agroalimentaire, artisans, commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, PME et ETI agroalimentaire, artisans, commerçants et professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auneau-Bleury-Saint-Symphorien : formats adaptés à l'exploitation céréalière, atelier agroalimentaire, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
       en: "Implémentation IA à Auneau-Bleury-Saint-Symphorien : agriculture de précision céréales Beauce, automatisation gestion exploitation, prédiction rendements, agents conversationnels B2B négoce grains.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Auneau-Bleury-Saint-Symphorien : sessions dans votre exploitation, commerce, bureau ou en visio. Exploitants Beauce, artisans, commerçants, gérants TPE/PME rurales.",
-      en: "Coaching 1-to-1 à Auneau-Bleury-Saint-Symphorien : sessions dans votre exploitation, commerce, bureau ou en visio. Exploitants Beauce, artisans, commerçants, gérants TPE/PME rurales.",
+      fr: "Coaching 1-to-1 à Auneau-Bleury-Saint-Symphorien : sessions dans votre exploitation, commerce, bureau ou en visio. Exploitants Beauce, artisans, commerçants, gérants PME et ETI rurales.",
+      en: "Coaching 1-to-1 à Auneau-Bleury-Saint-Symphorien : sessions dans votre exploitation, commerce, bureau ou en visio. Exploitants Beauce, artisans, commerçants, gérants PME et ETI rurales.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour un audit IA à Auneau-Bleury-Saint-Symphorien ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME et exploitants agricoles. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI et exploitants agricoles. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Accompagnez-vous les commerces et artisans de la commune nouvelle ?",

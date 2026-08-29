@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
   pitchFr:
-    "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Hurepoix.",
+    "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Hurepoix.",
   pitchEn:
-    "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Hurepoix.",
+    "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Hurepoix.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : PME artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : PME artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   seoHook: "artisanat commerce & tertiaires hurepoix",
   ecosystemFr:
-    "Longpont-sur-Orge est une commune résidentielle du Hurepoix (Essonne), à 25 km au sud-ouest de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Sainte-Geneviève-des-Bois et Massy.",
+    "Longpont-sur-Orge est une commune résidentielle du Hurepoix (Essonne), à 25 km au sud-ouest de Paris. Tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Sainte-Geneviève-des-Bois et Massy.",
   ecosystemEn:
-    "Longpont-sur-Orge est une commune résidentielle du Hurepoix (Essonne), à 25 km au sud-ouest de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Sainte-Geneviève-des-Bois et Massy.",
+    "Longpont-sur-Orge est une commune résidentielle du Hurepoix (Essonne), à 25 km au sud-ouest de Paris. Tissu PME artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Sainte-Geneviève-des-Bois et Massy.",
   distancesFr:
     "Gare de Sainte-Geneviève-des-Bois (RER C, 35 min Gare d'Austerlitz). Brétigny-sur-Orge à 10 min. Massy-Palaiseau à 20 min. Aéroport Orly à 25 min. Paris centre à 40 min par A6/N20.",
   distancesEn:
     "Gare de Sainte-Geneviève-des-Bois (RER C, 35 min Gare d'Austerlitz). Brétigny-sur-Orge à 10 min. Massy-Palaiseau à 20 min. Aéroport Orly à 25 min. Paris centre à 40 min par A6/N20.",
   topSectorsNaf: [
-    "TPE artisanat & commerce de proximité",
+    "PME de l'artisanat & commerce de proximité",
     "PME tertiaires Hurepoix",
     "Professions libérales & santé",
     "Services aux entreprises",
@@ -30,20 +30,20 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux PME artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux PME artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Longpont-sur-Orge : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Longpont-sur-Orge : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Longpont-sur-Orge : formats adaptés aux PME et ETI. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
+      en: "Interventions IA sur site à Longpont-sur-Orge : formats adaptés aux PME et ETI. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Longpont-sur-Orge : agents conversationnels, automatisation devis, CRM augmentés, classification documents. Adapté aux structures TPE/PME du Hurepoix.",
-      en: "Implémentation IA à Longpont-sur-Orge : agents conversationnels, automatisation devis, CRM augmentés, classification documents. Adapté aux structures TPE/PME du Hurepoix.",
+      fr: "Implémentation IA à Longpont-sur-Orge : agents conversationnels, automatisation devis, CRM augmentés, classification documents. Adapté aux structures PME et ETI du Hurepoix.",
+      en: "Implémentation IA à Longpont-sur-Orge : agents conversationnels, automatisation devis, CRM augmentés, classification documents. Adapté aux structures PME et ETI du Hurepoix.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Longpont-sur-Orge : sessions dans vos bureaux ou en visio. Indépendants, gérants TPE/PME, professions libérales longpontais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Longpont-sur-Orge : sessions dans vos bureaux ou en visio. Indépendants, gérants TPE/PME, professions libérales longpontais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Longpont-sur-Orge : sessions dans vos bureaux ou en visio. Indépendants, gérants PME et ETI, professions libérales longpontais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Longpont-sur-Orge : sessions dans vos bureaux ou en visio. Indépendants, gérants PME et ETI, professions libérales longpontais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -52,7 +52,7 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Longpont-sur-Orge et tout le Hurepoix (Brétigny-sur-Orge, Sainte-Geneviève-des-Bois, Montlhéry, Linas). Consultants depuis Paris (35 min RER C).",
     },
     {
-      q: "Quels services pour les TPE et commerces longpontais ?",
+      q: "Quels services pour les PME et commerces longpontais ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée.",
     },
     {

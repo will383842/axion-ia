@@ -8,13 +8,13 @@ import type { VilleCopy } from "./types";
 
 export const LORMONT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Lormont, commune de 25 769 habitants située sur la rive droite de la Garonne à 6 km au nord de Bordeaux. Membre de Bordeaux Métropole, Lormont concentre une activité économique structurée autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet et de zones industrielles couvrant environ 59,5 hectares. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, artisans et prestataires de services locaux, avec un accès direct par les tramways A et E.",
+    "Axion-IA accompagne les PME et ETI de Lormont, commune de 25 769 habitants située sur la rive droite de la Garonne à 6 km au nord de Bordeaux. Membre de Bordeaux Métropole, Lormont concentre une activité économique structurée autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet et de zones industrielles couvrant environ 59,5 hectares. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, artisans et prestataires de services locaux, avec un accès direct par les tramways A et E.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Lormont, commune de 25 769 habitants située sur la rive droite de la Garonne à 6 km au nord de Bordeaux. Membre de Bordeaux Métropole, Lormont concentre une activité économique structurée autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet et de zones industrielles couvrant environ 59,5 hectares. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, artisans et prestataires de services locaux, avec un accès direct par les tramways A et E.",
+    "Axion-IA accompagne les PME et ETI de Lormont, commune de 25 769 habitants située sur la rive droite de la Garonne à 6 km au nord de Bordeaux. Membre de Bordeaux Métropole, Lormont concentre une activité économique structurée autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet et de zones industrielles couvrant environ 59,5 hectares. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, artisans et prestataires de services locaux, avec un accès direct par les tramways A et E.",
   directAnswerFr:
-    "Axion-IA intervient à Lormont pour les TPE, PME et plus rarement ETI implantées sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP. Nos équipes couvrent également les communes limitrophes d'Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac via le tramway et la rocade A630.",
+    "Axion-IA intervient à Lormont pour les PME, ETI et plus rarement les grands groupes implantés sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP. Nos équipes couvrent également les communes limitrophes d'Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac via le tramway et la rocade A630.",
   directAnswerEn:
-    "Axion-IA intervient à Lormont pour les TPE, PME et plus rarement ETI implantées sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP. Nos équipes couvrent également les communes limitrophes d'Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac via le tramway et la rocade A630.",
+    "Axion-IA intervient à Lormont pour les PME, ETI et plus rarement les grands groupes implantés sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP. Nos équipes couvrent également les communes limitrophes d'Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac via le tramway et la rocade A630.",
   seoHook: "commerce, logistique portuaire & BTP",
   ecosystemFr:
     "Lormont s'appuie sur trois pôles économiques majeurs : les centres commerciaux des 4 Pavillons et de Génicart, la logistique portuaire de Carriet sur la Garonne, et environ 59,5 hectares de zones industrielles. La commune est intégrée à Bordeaux Métropole, traversée par les tramways A et E, et reliée à la rocade A630 par quatre sorties. Le pont d'Aquitaine assure depuis 1967 la liaison rive gauche–rive droite vers Bordeaux.",
@@ -33,20 +33,20 @@ export const LORMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "À Lormont, nos audits IA ciblent les TPE/PME des centres commerciaux des 4 Pavillons et de Génicart, ainsi que les artisans et logisticiens de la rive droite, pour prioriser 2 à 3 cas d'usage rentables.",
-      en: "À Lormont, nos audits IA ciblent les TPE/PME des centres commerciaux des 4 Pavillons et de Génicart, ainsi que les artisans et logisticiens de la rive droite, pour prioriser 2 à 3 cas d'usage rentables.",
+      fr: "À Lormont, nos audits IA ciblent les PME et ETI des centres commerciaux des 4 Pavillons et de Génicart, ainsi que les artisans et logisticiens de la rive droite, pour prioriser 2 à 3 cas d'usage rentables.",
+      en: "À Lormont, nos audits IA ciblent les PME et ETI des centres commerciaux des 4 Pavillons et de Génicart, ainsi que les artisans et logisticiens de la rive droite, pour prioriser 2 à 3 cas d'usage rentables.",
     },
     interventions: {
       fr: "Nos interventions à Lormont automatisent typiquement des tâches répétitives de PME locales : devis BTP, suivi commercial centres 4 Pavillons et Génicart, ou réponses clients commerce et restauration.",
       en: "Nos interventions à Lormont automatisent typiquement des tâches répétitives de PME locales : devis BTP, suivi commercial centres 4 Pavillons et Génicart, ou réponses clients commerce et restauration.",
     },
     implementation: {
-      fr: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
-      en: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
+      fr: "Pour les PME et ETI de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
+      en: "Pour les PME et ETI de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Lormont permet aux dirigeants de TPE/PME de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
-      en: "L'accompagnement un-à-un à Lormont permet aux dirigeants de TPE/PME de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
+      fr: "L'accompagnement un-à-un à Lormont permet aux dirigeants de PME et ETI de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
+      en: "L'accompagnement un-à-un à Lormont permet aux dirigeants de PME et ETI de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
     },
   },
   services: {
@@ -57,7 +57,7 @@ export const LORMONT_COPY: VilleCopy = {
           "Commerce de détail structurant : les enseignes et boutiques des centres des 4 Pavillons et de Génicart drainent un flux de clientèle métropolitaine, et le réaménagement de l'ancien centre commercial de Génicart en quartier mixte (logements, commerces, équipements près du tramway) redessine les usages — terrain idéal pour des boutiques e-commerce multi-CMS, du click-and-collect et des parcours d'achat augmentés à l'IA, branchés sur la fréquentation réelle.",
           "Logistique portuaire de Carriet sur la Garonne : la requalification des quais (avec un grand hall d'activités d'environ 37 000 m² en bord de Garonne) confirme la vocation logistique et productive du secteur. Pour les transporteurs et prestataires de la rive droite, on construit des portails clients, du suivi d'expédition en temps réel et des agents qui automatisent devis, planning et réponses aux demandes entrantes.",
           "Tissu d'artisans et de PME du BTP : sur environ 59,5 hectares de zones industrielles, on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — chiffrage de devis assisté, relances clients, recherche sémantique dans vos pièces techniques et CCTP — ou on bâtit un site vitrine sur mesure qui convertit, à la marque de l'entreprise.",
-          "Écosystème de création d'entreprise en plein essor : le tiers-lieu et l'espace de coworking de Carriet (rue Odilon Redon) accueillent porteurs de projets et jeunes structures de la rive droite. Pour ces TPE naissantes, on livre vite des sites mobile-first, des MVP et des plateformes SaaS IA-native, toute la chaîne étant hébergeable en UE et conforme RGPD ; accès direct par les tramways A et E et la rocade A630.",
+          "Écosystème de création d'entreprise en plein essor : le tiers-lieu et l'espace de coworking de Carriet (rue Odilon Redon) accueillent porteurs de projets et jeunes structures de la rive droite. Pour ces PME naissantes, on livre vite des sites mobile-first, des MVP et des plateformes SaaS IA-native, toute la chaîne étant hébergeable en UE et conforme RGPD ; accès direct par les tramways A et E et la rocade A630.",
         ],
         methodology: [
           {
@@ -87,12 +87,6 @@ export const LORMONT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un commerce des 4 Pavillons, d'un artisan du BTP, d'un restaurant ou d'un porteur de projet du tiers-lieu de Carriet, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -143,7 +137,7 @@ export const LORMONT_COPY: VilleCopy = {
           "Commerce de détail structurant : les enseignes et boutiques des centres des 4 Pavillons et de Génicart drainent un flux de clientèle métropolitaine, et le réaménagement de l'ancien centre commercial de Génicart en quartier mixte (logements, commerces, équipements près du tramway) redessine les usages — terrain idéal pour des boutiques e-commerce multi-CMS, du click-and-collect et des parcours d'achat augmentés à l'IA, branchés sur la fréquentation réelle.",
           "Logistique portuaire de Carriet sur la Garonne : la requalification des quais (avec un grand hall d'activités d'environ 37 000 m² en bord de Garonne) confirme la vocation logistique et productive du secteur. Pour les transporteurs et prestataires de la rive droite, on construit des portails clients, du suivi d'expédition en temps réel et des agents qui automatisent devis, planning et réponses aux demandes entrantes.",
           "Tissu d'artisans et de PME du BTP : sur environ 59,5 hectares de zones industrielles, on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse — chiffrage de devis assisté, relances clients, recherche sémantique dans vos pièces techniques et CCTP — ou on bâtit un site vitrine sur mesure qui convertit, à la marque de l'entreprise.",
-          "Écosystème de création d'entreprise en plein essor : le tiers-lieu et l'espace de coworking de Carriet (rue Odilon Redon) accueillent porteurs de projets et jeunes structures de la rive droite. Pour ces TPE naissantes, on livre vite des sites mobile-first, des MVP et des plateformes SaaS IA-native, toute la chaîne étant hébergeable en UE et conforme RGPD ; accès direct par les tramways A et E et la rocade A630.",
+          "Écosystème de création d'entreprise en plein essor : le tiers-lieu et l'espace de coworking de Carriet (rue Odilon Redon) accueillent porteurs de projets et jeunes structures de la rive droite. Pour ces PME naissantes, on livre vite des sites mobile-first, des MVP et des plateformes SaaS IA-native, toute la chaîne étant hébergeable en UE et conforme RGPD ; accès direct par les tramways A et E et la rocade A630.",
         ],
         methodology: [
           {
@@ -173,12 +167,6 @@ export const LORMONT_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un commerce des 4 Pavillons, d'un artisan du BTP, d'un restaurant ou d'un porteur de projet du tiers-lieu de Carriet, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -245,11 +233,11 @@ export const LORMONT_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs économiques de Lormont travaillez-vous le plus ?",
-      a: "À Lormont, nos clients sont majoritairement des TPE et PME du commerce (centres 4 Pavillons et Génicart), de la logistique portuaire (Carriet), du BTP et de la restauration. Nous accompagnons plus rarement les ETI du secteur.",
+      a: "À Lormont, nos clients sont majoritairement des PME et ETI du commerce (centres 4 Pavillons et Génicart), de la logistique portuaire (Carriet), du BTP et de la restauration. Nous accompagnons plus rarement les grands groupes du secteur.",
     },
     {
       q: "Proposez-vous du code custom ou du no-code à Lormont ?",
-      a: "Axion-IA conçoit exclusivement du code IA sur mesure pour les TPE/PME de Lormont. Pas de plateforme no-code : nos livrables sont des intégrations pérennes auditables et maintenables.",
+      a: "Axion-IA conçoit exclusivement du code IA sur mesure pour les PME et ETI de Lormont. Pas de plateforme no-code : nos livrables sont des intégrations pérennes auditables et maintenables.",
     },
   ],
 };

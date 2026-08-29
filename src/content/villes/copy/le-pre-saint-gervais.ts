@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
   pitchFr:
-    "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de TPE commerçantes, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de PME du commerce, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de TPE commerçantes, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de PME du commerce, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : PME du commerce, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : PME du commerce, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit sur place sur mesure.",
   seoHook: "commerce proximité & artisanat services",
   ecosystemFr:
-    "Le Pré-Saint-Gervais est la plus petite commune de France métropolitaine (0,7 km²) mais l'une des plus denses. Limitrophe de Paris (19e, 20e), des Lilas et Pantin, elle bénéficie du dynamisme du canal de l'Ourcq et de la ligne 11 du métro. Tissu dense de TPE commerces, artisans, professions libérales et PME de services. Proximité immédiate de la Villette, du bassin créatif de Pantin et du pôle tertiaire Romainville-Noisy.",
+    "Le Pré-Saint-Gervais est la plus petite commune de France métropolitaine (0,7 km²) mais l'une des plus denses. Limitrophe de Paris (19e, 20e), des Lilas et Pantin, elle bénéficie du dynamisme du canal de l'Ourcq et de la ligne 11 du métro. Tissu dense de PME du commerce, artisans, professions libérales et PME de services. Proximité immédiate de la Villette, du bassin créatif de Pantin et du pôle tertiaire Romainville-Noisy.",
   ecosystemEn:
-    "Le Pré-Saint-Gervais est la plus petite commune de France métropolitaine (0,7 km²) mais l'une des plus denses. Limitrophe de Paris (19e, 20e), des Lilas et Pantin, elle bénéficie du dynamisme du canal de l'Ourcq et de la ligne 11 du métro. Tissu dense de TPE commerces, artisans, professions libérales et PME de services. Proximité immédiate de la Villette, du bassin créatif de Pantin et du pôle tertiaire Romainville-Noisy.",
+    "Le Pré-Saint-Gervais est la plus petite commune de France métropolitaine (0,7 km²) mais l'une des plus denses. Limitrophe de Paris (19e, 20e), des Lilas et Pantin, elle bénéficie du dynamisme du canal de l'Ourcq et de la ligne 11 du métro. Tissu dense de PME du commerce, artisans, professions libérales et PME de services. Proximité immédiate de la Villette, du bassin créatif de Pantin et du pôle tertiaire Romainville-Noisy.",
   distancesFr:
     "Métro Pré-Saint-Gervais (ligne 11, 20 min Châtelet). Métro Hoche (ligne 5) à 10 min à pied. Gare de Pantin (RER E) à 12 min. Aéroport Paris-CDG à 35 min via A3. Paris Gare de l'Est à 15 min.",
   distancesEn:
     "Métro Pré-Saint-Gervais (ligne 11, 20 min Châtelet). Métro Hoche (ligne 5) à 10 min à pied. Gare de Pantin (RER E) à 12 min. Aéroport Paris-CDG à 35 min via A3. Paris Gare de l'Est à 15 min.",
   topSectorsNaf: [
     "Commerce de proximité & restauration",
-    "TPE artisanat & services à la personne",
+    "PME de l'artisanat & services à la personne",
     "PME services numériques & créatifs",
     "Professions libérales & santé",
     "Économie sociale & solidaire",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
-      en: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux TPE commerçantes, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      fr: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux PME du commerce, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
+      en: "Audit IA au Pré-Saint-Gervais : diagnostic adapté aux PME du commerce, artisans, professions libérales et PME de services de cette commune dense de première couronne. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sous 10 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pré-Saint-Gervais : formations pratiques dans votre commerce, atelier ou bureau. Équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
       en: "Interventions IA sur site au Pré-Saint-Gervais : formations pratiques dans votre commerce, atelier ou bureau. Équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA au Pré-Saint-Gervais : agents conversationnels client, automatisation gestion stocks et commandes, CRM augmentés, outils planification. Adapté aux TPE/PME et acteurs du bassin créatif est-parisien.",
-      en: "Implémentation IA au Pré-Saint-Gervais : agents conversationnels client, automatisation gestion stocks et commandes, CRM augmentés, outils planification. Adapté aux TPE/PME et acteurs du bassin créatif est-parisien.",
+      fr: "Implémentation IA au Pré-Saint-Gervais : agents conversationnels client, automatisation gestion stocks et commandes, CRM augmentés, outils planification. Adapté aux PME et ETI et acteurs du bassin créatif est-parisien.",
+      en: "Implémentation IA au Pré-Saint-Gervais : agents conversationnels client, automatisation gestion stocks et commandes, CRM augmentés, outils planification. Adapté aux PME et ETI et acteurs du bassin créatif est-parisien.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Pré-Saint-Gervais : sessions dans votre commerce, bureau ou en visio. Commerçants, artisans, gérants TPE/PME et indépendants souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 au Pré-Saint-Gervais : sessions dans votre commerce, bureau ou en visio. Commerçants, artisans, gérants TPE/PME et indépendants souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 au Pré-Saint-Gervais : sessions dans votre commerce, bureau ou en visio. Commerçants, artisans, gérants PME et ETI et indépendants souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 au Pré-Saint-Gervais : sessions dans votre commerce, bureau ou en visio. Commerçants, artisans, gérants PME et ETI et indépendants souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [

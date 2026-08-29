@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire.",
+    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu PME viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire.",
+    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu PME viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : PME viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : PME viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
   seoHook: "vallée loire",
   ecosystemFr:
-    "Montlouis-sur-Loire est célèbre pour son AOC viticole (vins blancs effervescents et tranquilles, coteaux Loire). Tissu TPE viticulteurs et caves, œnotourisme Val de Loire UNESCO, PME tourisme fluvial, artisanat BTP, commerces de proximité.",
+    "Montlouis-sur-Loire est célèbre pour son AOC viticole (vins blancs effervescents et tranquilles, coteaux Loire). Tissu PME viticulteurs et caves, œnotourisme Val de Loire UNESCO, PME tourisme fluvial, artisanat BTP, commerces de proximité.",
   ecosystemEn:
-    "Montlouis-sur-Loire est célèbre pour son AOC viticole (vins blancs effervescents et tranquilles, coteaux Loire). Tissu TPE viticulteurs et caves, œnotourisme Val de Loire UNESCO, PME tourisme fluvial, artisanat BTP, commerces de proximité.",
+    "Montlouis-sur-Loire est célèbre pour son AOC viticole (vins blancs effervescents et tranquilles, coteaux Loire). Tissu PME viticulteurs et caves, œnotourisme Val de Loire UNESCO, PME tourisme fluvial, artisanat BTP, commerces de proximité.",
   distancesFr:
     "Tours centre à 15 min. Gare TGV Saint-Pierre-des-Corps à 10 min. Amboise à 15 min. Aéroport Tours Val de Loire à 30 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
     "Viticulture AOC Montlouis-sur-Loire",
     "Œnotourisme & tourisme Loire",
     "Agriculture Val de Loire",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, PME artisanales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, PME artisanales. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montlouis-sur-Loire : formats adaptés au domaine viticole, cave, office tourisme, bureau. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
       en: "Implémentation IA à Montlouis-sur-Loire : traçabilité parcellaire viticole, agents conversationnels œnotourisme multilingue, automatisation réservations caves, classification retours visiteurs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Montlouis-sur-Loire : sessions dans votre domaine viticole, cave ou en visio. Viticulteurs, gérants œnotourisme, artisans, dirigeants TPE/PME montlouisiens.",
-      en: "Coaching 1-to-1 à Montlouis-sur-Loire : sessions dans votre domaine viticole, cave ou en visio. Viticulteurs, gérants œnotourisme, artisans, dirigeants TPE/PME montlouisiens.",
+      fr: "Coaching 1-to-1 à Montlouis-sur-Loire : sessions dans votre domaine viticole, cave ou en visio. Viticulteurs, gérants œnotourisme, artisans, dirigeants de PME et d'ETI montlouisiens.",
+      en: "Coaching 1-to-1 à Montlouis-sur-Loire : sessions dans votre domaine viticole, cave ou en visio. Viticulteurs, gérants œnotourisme, artisans, dirigeants de PME et d'ETI montlouisiens.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels visiteurs multilingue, automatisation réservations dégustations, classification retours visiteurs, recommandations parcours.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

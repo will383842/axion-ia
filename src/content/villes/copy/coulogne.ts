@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const COULOGNE_COPY: VilleCopy = {
   pitchFr:
-    "Coulogne (62), commune de l'agglomeration de Calais dans le Pas-de-Calais, reunit pres de 5 440 habitants. Situee aux portes de Calais, son economie repose sur les TPE de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
+    "Coulogne (62), commune de l'agglomeration de Calais dans le Pas-de-Calais, reunit pres de 5 440 habitants. Situee aux portes de Calais, son economie repose sur les PME de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Coulogne (62), commune de l'agglomeration de Calais dans le Pas-de-Calais, reunit pres de 5 440 habitants. Situee aux portes de Calais, son economie repose sur les TPE de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
+    "Coulogne (62), commune de l'agglomeration de Calais dans le Pas-de-Calais, reunit pres de 5 440 habitants. Situee aux portes de Calais, son economie repose sur les PME de services, les PME commerciales, l'artisanat, les professions de sante et les activites tertiaires. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Calais, services & commerce",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Coulogne (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Coulogne (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Coulogne (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration calaisienne : commercants, artisans, prestataires de services et professionnels de sante. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Coulogne jouxte Calais (5 km) au sud-est. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions de sante et petits commerces. Commune residentielle beneficiant du dynamisme calaisien et de la proximite transmanche.",
+    "Coulogne jouxte Calais (5 km) au sud-est. Tissu economique compose de PME de services, PME commerciales, artisans BTP, professions de sante et petits commerces. Commune residentielle beneficiant du dynamisme calaisien et de la proximite transmanche.",
   ecosystemEn:
-    "Coulogne jouxte Calais (5 km) au sud-est. Tissu economique compose de TPE de services, PME commerciales, artisans BTP, professions de sante et petits commerces. Commune residentielle beneficiant du dynamisme calaisien et de la proximite transmanche.",
+    "Coulogne jouxte Calais (5 km) au sud-est. Tissu economique compose de PME de services, PME commerciales, artisans BTP, professions de sante et petits commerces. Commune residentielle beneficiant du dynamisme calaisien et de la proximite transmanche.",
   distancesFr:
     "Calais a 8 min. Gare Calais-Frethun (Eurostar) a 10 min. Dunkerque a 30 min. Lille Europe (TGV) a 1h15 en TER. Tunnel sous la Manche a 10 min.",
   distancesEn:
     "Calais a 8 min. Gare Calais-Frethun (Eurostar) a 10 min. Dunkerque a 30 min. Lille Europe (TGV) a 1h15 en TER. Tunnel sous la Manche a 10 min.",
   topSectorsNaf: [
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat BTP",
     "Professions de sante",
@@ -30,8 +30,8 @@ export const COULOGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Coulogne : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration calaisienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Coulogne : diagnostic adapte aux TPE de services, PME commerciales et artisans de l'agglomeration calaisienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Coulogne : diagnostic adapte aux PME de services, PME commerciales et artisans de l'agglomeration calaisienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Coulogne : diagnostic adapte aux PME de services, PME commerciales et artisans de l'agglomeration calaisienne. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Coulogne : formations adaptees aux commerces, bureaux tertiaires, cabinets de sante et ateliers artisanaux. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const COULOGNE_COPY: VilleCopy = {
       en: "Implementation IA a Coulogne : automatisation administrative, agents conversationnels clients, CRM augmentes pour PME du Calaisis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Coulogne : accompagnement personnalise dirigeants TPE, gerants PME et professionnels de sante de l'agglomeration calaisienne.",
-      en: "Coaching 1-to-1 a Coulogne : accompagnement personnalise dirigeants TPE, gerants PME et professionnels de sante de l'agglomeration calaisienne.",
+      fr: "Coaching 1-to-1 a Coulogne : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professionnels de sante de l'agglomeration calaisienne.",
+      en: "Coaching 1-to-1 a Coulogne : accompagnement personnalise dirigeants de PME et d'ETI, gerants PME et professionnels de sante de l'agglomeration calaisienne.",
     },
   },
   faqGeolocalisee: [

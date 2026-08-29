@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BEAURAINS_COPY: VilleCopy = {
   pitchFr:
-    "Beaurains (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 560 habitants. Situee au sud d'Arras avec ses zones d'activites, son economie associe PME tertiaires, TPE de services, commerces, artisanat et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
+    "Beaurains (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 560 habitants. Situee au sud d'Arras avec ses zones d'activites, son economie associe PME tertiaires, PME de services, commerces, artisanat et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Beaurains (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 560 habitants. Situee au sud d'Arras avec ses zones d'activites, son economie associe PME tertiaires, TPE de services, commerces, artisanat et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
+    "Beaurains (62), commune de l'agglomeration d'Arras dans le Pas-de-Calais, reunit pres de 5 560 habitants. Situee au sud d'Arras avec ses zones d'activites, son economie associe PME tertiaires, PME de services, commerces, artisanat et activites logistiques. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "agglo Arras sud, tertiaire & zones d'activites",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Beaurains (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Beaurains (62). Nous accompagnons les TPE, PME et ETI de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Beaurains (62). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration arrageoise sud : entreprises en zones d'activites, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Beaurains est situee au sud d'Arras (3 km) avec des zones d'activites economiques dynamiques. Tissu economique compose de PME tertiaires, TPE de services, commerces, artisans BTP et activites logistiques. Commune bien desservie par l'autoroute A1.",
+    "Beaurains est situee au sud d'Arras (3 km) avec des zones d'activites economiques dynamiques. Tissu economique compose de PME tertiaires, PME de services, commerces, artisans BTP et activites logistiques. Commune bien desservie par l'autoroute A1.",
   ecosystemEn:
-    "Beaurains est situee au sud d'Arras (3 km) avec des zones d'activites economiques dynamiques. Tissu economique compose de PME tertiaires, TPE de services, commerces, artisans BTP et activites logistiques. Commune bien desservie par l'autoroute A1.",
+    "Beaurains est situee au sud d'Arras (3 km) avec des zones d'activites economiques dynamiques. Tissu economique compose de PME tertiaires, PME de services, commerces, artisans BTP et activites logistiques. Commune bien desservie par l'autoroute A1.",
   distancesFr:
     "Gare d'Arras (TGV) a 8 min. Lille Europe a 45 min en TGV. Aeroport Lille-Lesquin a 50 min. Paris-Nord a 50 min en TGV direct. Autoroute A1 a 5 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BEAURAINS_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires en zones d'activites",
     "Commerce de detail",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Artisanat BTP",
     "Logistique & transport",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Beaurains : diagnostic adapte aux PME en zones d'activites, commercants et TPE de services de l'agglomeration arrageoise sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Beaurains : diagnostic adapte aux PME en zones d'activites, commercants et TPE de services de l'agglomeration arrageoise sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Beaurains : diagnostic adapte aux PME en zones d'activites, commercants et PME de services de l'agglomeration arrageoise sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Beaurains : diagnostic adapte aux PME en zones d'activites, commercants et PME de services de l'agglomeration arrageoise sud. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Beaurains : formations adaptees aux bureaux en zones d'activites, commerces, ateliers artisanaux et entrepots. Equipes autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const BEAURAINS_COPY: VilleCopy = {
       en: "Implementation IA a Beaurains : automatisation processus PME, agents conversationnels clients, CRM augmentes, gestion logistique intelligente pour entreprises de l'Arrageois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Beaurains : accompagnement personnalise dirigeants PME, gerants TPE et responsables en zones d'activites de l'agglo d'Arras.",
-      en: "Coaching 1-to-1 a Beaurains : accompagnement personnalise dirigeants PME, gerants TPE et responsables en zones d'activites de l'agglo d'Arras.",
+      fr: "Coaching 1-to-1 a Beaurains : accompagnement personnalise dirigeants PME, gerants PME et responsables en zones d'activites de l'agglo d'Arras.",
+      en: "Coaching 1-to-1 a Beaurains : accompagnement personnalise dirigeants PME, gerants PME et responsables en zones d'activites de l'agglo d'Arras.",
     },
   },
   faqGeolocalisee: [

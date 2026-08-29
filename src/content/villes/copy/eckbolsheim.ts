@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ECKBOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu PME et ETI services, commerces, artisans, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu PME et ETI services, commerces, artisans, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eckbolsheim (67). Nous accompagnons tous types d'activités : TPE/PME services et commerces de l'ouest strasbourgeois, artisans, professions libérales, restaurateurs et acteurs économiques de l'agglomération de Strasbourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eckbolsheim (67). Nous accompagnons tous types d'activités : PME et ETI services et commerces de l'ouest strasbourgeois, artisans, professions libérales, restaurateurs et acteurs économiques de l'agglomération de Strasbourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eckbolsheim (67). Nous accompagnons tous types d'activités : TPE/PME services et commerces de l'ouest strasbourgeois, artisans, professions libérales, restaurateurs et acteurs économiques de l'agglomération de Strasbourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Eckbolsheim (67). Nous accompagnons tous types d'activités : PME et ETI services et commerces de l'ouest strasbourgeois, artisans, professions libérales, restaurateurs et acteurs économiques de l'agglomération de Strasbourg.",
   ecosystemFr:
     "Eckbolsheim est une commune de l'agglomération strasbourgeoise située à l'ouest de Strasbourg, marquée par l'hippodrome de Strasbourg et un tissu de services, commerces et artisans. Bassin de vie intégré à l'Eurométropole, accès direct au centre de Strasbourg en quelques minutes.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Eckbolsheim : diagnostic adapté aux PME et ETI services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Eckbolsheim : diagnostic adapté aux PME et ETI services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eckbolsheim : formats adaptés au commerce, au cabinet libéral, à l'atelier d'artisan, au restaurant. Vos équipes repartent autonomes.",
       en: "Interventions IA sur site à Eckbolsheim : formats adaptés au commerce, au cabinet libéral, à l'atelier d'artisan, au restaurant. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "Implémentation IA à Eckbolsheim : automatisation gestion commerciale, prise de rendez-vous, relation client, agents conversationnels, devis et facturation pour TPE/PME locales.",
-      en: "Implémentation IA à Eckbolsheim : automatisation gestion commerciale, prise de rendez-vous, relation client, agents conversationnels, devis et facturation pour TPE/PME locales.",
+      fr: "Implémentation IA à Eckbolsheim : automatisation gestion commerciale, prise de rendez-vous, relation client, agents conversationnels, devis et facturation pour PME et ETI locales.",
+      en: "Implémentation IA à Eckbolsheim : automatisation gestion commerciale, prise de rendez-vous, relation client, agents conversationnels, devis et facturation pour PME et ETI locales.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Eckbolsheim : sessions dans votre commerce, cabinet, atelier ou en visio. Commerçants, artisans, professions libérales, restaurateurs, gérants TPE/PME de l'ouest strasbourgeois.",
-      en: "Coaching 1-to-1 à Eckbolsheim : sessions dans votre commerce, cabinet, atelier ou en visio. Commerçants, artisans, professions libérales, restaurateurs, gérants TPE/PME de l'ouest strasbourgeois.",
+      fr: "Coaching 1-to-1 à Eckbolsheim : sessions dans votre commerce, cabinet, atelier ou en visio. Commerçants, artisans, professions libérales, restaurateurs, gérants PME et ETI de l'ouest strasbourgeois.",
+      en: "Coaching 1-to-1 à Eckbolsheim : sessions dans votre commerce, cabinet, atelier ou en visio. Commerçants, artisans, professions libérales, restaurateurs, gérants PME et ETI de l'ouest strasbourgeois.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
       a: "Oui, nous accompagnons commerçants, artisans, professions libérales et restaurateurs eckbolsheimois : gestion stocks, prise de rendez-vous, relation client, automatisation comptabilité, présence en ligne.",
     },
     {
-      q: "Accompagnez-vous les TPE/PME services d'Eckbolsheim ?",
-      a: "Oui, TPE/PME services et professions libérales eckbolsheimoises : automatisation administrative, agents conversationnels, gestion documentaire, devis et facturation. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et ETI services d'Eckbolsheim ?",
+      a: "Oui, PME et ETI services et professions libérales eckbolsheimoises : automatisation administrative, agents conversationnels, gestion documentaire, devis et facturation. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quels tarifs pour un audit IA à Eckbolsheim ?",
-      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour TPE/PME. ROI chiffré dès le diagnostic initial.",
+      a: "Audit sur place {{price:audit-flash|flat}}. Tarifs publics et transparents pour PME et ETI. ROI chiffré dès le diagnostic initial.",
     },
     {
       q: "Comment se passe une mission à Eckbolsheim ?",

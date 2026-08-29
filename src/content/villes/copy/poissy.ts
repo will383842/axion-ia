@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const POISSY_COPY: VilleCopy = {
   pitchFr:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Poissy : sous-traitants et fournisseurs de l'usine Stellantis (ex-PSA Peugeot), commerces du centre historique, services de la Seine aval. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Poissy : sous-traitants et fournisseurs de l'usine Stellantis (ex-PSA Peugeot), commerces du centre historique, services de la Seine aval. On déploie des automatisations utiles, pas des effets d'annonce.",
   pitchEn:
-    "Cabinet d'experts IA seniors, Axion-IA accompagne les TPE et PME de Poissy : sous-traitants et fournisseurs de l'usine Stellantis (ex-PSA Peugeot), commerces du centre historique, services de la Seine aval. On déploie des automatisations utiles, pas des effets d'annonce.",
+    "Cabinet d'experts IA seniors, Axion-IA accompagne les PME et ETI de Poissy : sous-traitants et fournisseurs de l'usine Stellantis (ex-PSA Peugeot), commerces du centre historique, services de la Seine aval. On déploie des automatisations utiles, pas des effets d'annonce.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Poissy, dans les Yvelines, pour les TPE et PME du bassin : sous-traitants gravitant autour de l'usine automobile Stellantis (héritière historique de PSA Peugeot Citroën), commerces du centre autour de la collégiale Notre-Dame, prestataires de services et logistique de la Seine aval. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Poissy, dans les Yvelines, pour les PME et ETI du bassin : sous-traitants gravitant autour de l'usine automobile Stellantis (héritière historique de PSA Peugeot Citroën), commerces du centre autour de la collégiale Notre-Dame, prestataires de services et logistique de la Seine aval. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les ETI en priorité après les PME, les grands groupes en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Poissy, dans les Yvelines, pour les TPE et PME du bassin : sous-traitants gravitant autour de l'usine automobile Stellantis (héritière historique de PSA Peugeot Citroën), commerces du centre autour de la collégiale Notre-Dame, prestataires de services et logistique de la Seine aval. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les PME en priorité après les TPE, les ETI en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Poissy, dans les Yvelines, pour les PME et ETI du bassin : sous-traitants gravitant autour de l'usine automobile Stellantis (héritière historique de PSA Peugeot Citroën), commerces du centre autour de la collégiale Notre-Dame, prestataires de services et logistique de la Seine aval. Notre périmètre couvre l'audit des processus, l'automatisation des tâches administratives (devis, ordres de fabrication, relances), l'implémentation d'outils IA sur mesure et l'accompagnement un-à-un des dirigeants. Tarifs publics et transparents ; les ETI en priorité après les PME, les grands groupes en complément.",
   seoHook: "automobile & sous-traitance industrielle",
   ecosystemFr:
-    "Poissy est marquée par l'usine automobile Stellantis, héritière directe de l'historique site PSA Peugeot Citroën, qui irrigue un dense réseau de sous-traitants et de fournisseurs de rang 2 et 3 dans toute la Seine aval. Autour de ce socle industriel cohabitent les commerces du centre ancien, près de la collégiale Notre-Dame, et un tissu de PME de services et de logistique. Ces petites structures, soumises à la pression de cadence et de qualité de la filière auto, ont tout à gagner à industrialiser leurs tâches administratives avec l'IA.",
+    "Poissy est marquée par l'usine automobile Stellantis, héritière directe de l'historique site PSA Peugeot Citroën, qui irrigue un dense réseau de sous-traitants et de fournisseurs de rang 2 et 3 dans toute la Seine aval. Autour de ce socle industriel cohabitent les commerces du centre ancien, près de la collégiale Notre-Dame, et un tissu de PME de services et de logistique. Ces PME, soumises à la pression de cadence et de qualité de la filière auto, ont tout à gagner à industrialiser leurs tâches administratives avec l'IA.",
   ecosystemEn:
-    "Poissy est marquée par l'usine automobile Stellantis, héritière directe de l'historique site PSA Peugeot Citroën, qui irrigue un dense réseau de sous-traitants et de fournisseurs de rang 2 et 3 dans toute la Seine aval. Autour de ce socle industriel cohabitent les commerces du centre ancien, près de la collégiale Notre-Dame, et un tissu de PME de services et de logistique. Ces petites structures, soumises à la pression de cadence et de qualité de la filière auto, ont tout à gagner à industrialiser leurs tâches administratives avec l'IA.",
+    "Poissy est marquée par l'usine automobile Stellantis, héritière directe de l'historique site PSA Peugeot Citroën, qui irrigue un dense réseau de sous-traitants et de fournisseurs de rang 2 et 3 dans toute la Seine aval. Autour de ce socle industriel cohabitent les commerces du centre ancien, près de la collégiale Notre-Dame, et un tissu de PME de services et de logistique. Ces PME, soumises à la pression de cadence et de qualité de la filière auto, ont tout à gagner à industrialiser leurs tâches administratives avec l'IA.",
   distancesFr:
     "Poissy est reliée à Paris par le RER A et la ligne J du Transilien depuis sa gare, avec La Défense atteignable en une vingtaine de minutes. L'A13 et l'A14 desservent directement la commune vers la capitale et la Normandie. L'aéroport de Paris-Charles-de-Gaulle se trouve à environ 45 km, Paris-Orly à environ 40 km. Cette connexion rapide à l'ouest francilien rend nos déplacements sur site fluides, jusqu'aux zones industrielles de la Seine aval.",
   distancesEn:
@@ -42,8 +42,8 @@ export const POISSY_COPY: VilleCopy = {
       en: "L'implémentation déploie à Poissy des assistants IA et workflows sur mesure adaptés aux exigences de la sous-traitance industrielle, avec formation des équipes et conformité RGPD dès la conception.",
     },
     unAUn: {
-      fr: "L'accompagnement un-à-un à Poissy forme le dirigeant de TPE ou PME à intégrer l'IA dans son pilotage : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données sensibles.",
-      en: "L'accompagnement un-à-un à Poissy forme le dirigeant de TPE ou PME à intégrer l'IA dans son pilotage : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données sensibles.",
+      fr: "L'accompagnement un-à-un à Poissy forme le dirigeant de PME ou ETI à intégrer l'IA dans son pilotage : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données sensibles.",
+      en: "L'accompagnement un-à-un à Poissy forme le dirigeant de PME ou ETI à intégrer l'IA dans son pilotage : cas d'usage métier, choix d'outils, prompts efficaces et gouvernance des données sensibles.",
     },
     sitesWeb: {
       fr: "Nos sites web augmentés équipent les PME et commerces de Poissy d'une plateforme rapide avec chatbot, devis en ligne et contenu généré par IA, pensée pour la conversion et la recherche locale.",
@@ -88,12 +88,6 @@ export const POISSY_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine augmenté",
-            detail:
-              "Pour artisans, commerces du centre près de la Collégiale Notre-Dame et indépendants du bassin pisciacais : site rapide, fiche locale, prise de contact/RDV, chatbot simple. Idéal pour capter la clientèle de proximité et les flux touristiques Villa Savoye.",
-          },
           {
             sizeLabel: "PME",
             price: "Site + e-commerce ou portail métier",
@@ -175,12 +169,6 @@ export const POISSY_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Augmented showcase site",
-            detail:
-              "For craftspeople, town-centre shops near the Collégiale Notre-Dame and freelancers of the Poissy basin: fast site, local listing, contact/booking, simple chatbot. Ideal to capture local clientele and Villa Savoye tourist flow.",
-          },
-          {
             sizeLabel: "SME",
             price: "Site + e-commerce or business portal",
             detail:
@@ -238,7 +226,7 @@ export const POISSY_COPY: VilleCopy = {
     },
     {
       q: "Quelles entreprises accompagnez-vous en priorité à Poissy ?",
-      a: "En priorité les TPE puis les PME : sous-traitants industriels, prestataires logistiques, commerces et services. Les ETI sont accompagnées en complément. Chaque mission s'adapte à la taille de la structure et aux outils déjà utilisés.",
+      a: "En priorité les PME puis les ETI : sous-traitants industriels, prestataires logistiques, commerces et services. Les grands groupes sont accompagnés en complément. Chaque mission s'adapte à la taille de la structure et aux outils déjà utilisés.",
     },
     {
       q: "Quel délai pour démarrer une mission à Poissy ?",

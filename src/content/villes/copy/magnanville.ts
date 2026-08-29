@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MAGNANVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
+    "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de PME artisanales, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   pitchEn:
-    "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
+    "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de PME artisanales, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magnanville (78). Nous accompagnons PME et ETI : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Magnanville (78). Nous accompagnons PME et ETI : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit sur place sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
-    "Magnanville est une commune résidentielle intégrée à l'agglomération de Mantes-la-Jolie, dans le nord-ouest des Yvelines. Cadre pavillonnaire avec commerces de proximité et services de voisinage. Tissu économique : TPE artisans bâtiment, commerces de quartier, PME tertiaires, professions libérales et services à la personne. Communes voisines : Mantes-la-Jolie, Mantes-la-Ville, Buchelay, Rosny-sur-Seine.",
+    "Magnanville est une commune résidentielle intégrée à l'agglomération de Mantes-la-Jolie, dans le nord-ouest des Yvelines. Cadre pavillonnaire avec commerces de proximité et services de voisinage. Tissu économique : PME artisanales bâtiment, commerces de quartier, PME tertiaires, professions libérales et services à la personne. Communes voisines : Mantes-la-Jolie, Mantes-la-Ville, Buchelay, Rosny-sur-Seine.",
   ecosystemEn:
-    "Magnanville est une commune résidentielle intégrée à l'agglomération de Mantes-la-Jolie, dans le nord-ouest des Yvelines. Cadre pavillonnaire avec commerces de proximité et services de voisinage. Tissu économique : TPE artisans bâtiment, commerces de quartier, PME tertiaires, professions libérales et services à la personne. Communes voisines : Mantes-la-Jolie, Mantes-la-Ville, Buchelay, Rosny-sur-Seine.",
+    "Magnanville est une commune résidentielle intégrée à l'agglomération de Mantes-la-Jolie, dans le nord-ouest des Yvelines. Cadre pavillonnaire avec commerces de proximité et services de voisinage. Tissu économique : PME artisanales bâtiment, commerces de quartier, PME tertiaires, professions libérales et services à la personne. Communes voisines : Mantes-la-Jolie, Mantes-la-Ville, Buchelay, Rosny-sur-Seine.",
   distancesFr:
     "Gare de Mantes-la-Jolie à 5 min (Transilien J, 45 min Paris Saint-Lazare ; TER Normandie). A13 à 10 min. Mantes-la-Jolie à 3 min, Les Mureaux à 15 min, Poissy à 25 min, La Défense à 45 min. Aéroport Roissy-CDG à 60 min.",
   distancesEn:
@@ -30,20 +30,20 @@ export const MAGNANVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Magnanville : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin mantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Magnanville : diagnostic adapté aux TPE artisans, PME de services, commerces et professions libérales du bassin mantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Magnanville : diagnostic adapté aux PME artisanales, PME de services, commerces et professions libérales du bassin mantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Magnanville : diagnostic adapté aux PME artisanales, PME de services, commerces et professions libérales du bassin mantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Magnanville : formats adaptés au commerce, à l'atelier ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
       en: "Interventions IA sur site à Magnanville : formats adaptés au commerce, à l'atelier ou au bureau. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Magnanville : automatisation gestion clients, agents conversationnels, gestion stocks, CRM augmenté. Solutions sur mesure pour TPE et PME de l'agglomération mantaise.",
-      en: "Implémentation IA à Magnanville : automatisation gestion clients, agents conversationnels, gestion stocks, CRM augmenté. Solutions sur mesure pour TPE et PME de l'agglomération mantaise.",
+      fr: "Implémentation IA à Magnanville : automatisation gestion clients, agents conversationnels, gestion stocks, CRM augmenté. Solutions sur mesure pour PME et ETI de l'agglomération mantaise.",
+      en: "Implémentation IA à Magnanville : automatisation gestion clients, agents conversationnels, gestion stocks, CRM augmenté. Solutions sur mesure pour PME et ETI de l'agglomération mantaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Magnanville : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et commerçants du Mantois.",
-      en: "Coaching 1-to-1 à Magnanville : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et commerçants du Mantois.",
+      fr: "Coaching 1-to-1 à Magnanville : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et commerçants du Mantois.",
+      en: "Coaching 1-to-1 à Magnanville : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et commerçants du Mantois.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const MAGNANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les artisans et commerces à Magnanville ?",
-      a: "Oui, nous accompagnons les TPE artisans et commerces de Magnanville sur leurs cas IA : automatisation administrative, gestion stocks, relation client, planification intelligente. Formats adaptés demi-journée ou journée.",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce de Magnanville sur leurs cas IA : automatisation administrative, gestion stocks, relation client, planification intelligente. Formats adaptés demi-journée ou journée.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME à Magnanville ?",

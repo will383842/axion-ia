@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const BARBERAZ_COPY: VilleCopy = {
   pitchFr:
-    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, PME du BTP, commerces de proximité, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
+    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, PME du BTP, commerces de proximité, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barberaz (73). Nous accompagnons PME et ETI : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Barberaz (73). Nous accompagnons PME et ETI : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
   seoHook: "tertiaires services",
   ecosystemFr:
-    "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les TPE artisanat BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Proximité immédiate de Saint-Alban-Leysse et accès rapide à l'aéroport Chambéry-Savoie (10 min).",
+    "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les PME du BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Proximité immédiate de Saint-Alban-Leysse et accès rapide à l'aéroport Chambéry-Savoie (10 min).",
   ecosystemEn:
-    "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les TPE artisanat BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Proximité immédiate de Saint-Alban-Leysse et accès rapide à l'aéroport Chambéry-Savoie (10 min).",
+    "Barberaz, commune compacte (3,79 km²) au piémont de la Chartreuse dans la vallée de la Leysse, fait partie de l'agglomération de Chambéry. Tissu économique porté par les PME tertiaires, les professions libérales, les PME du BTP et les commerces de proximité. Sociétés de services aux entreprises tournées vers le bassin chambérien. Proximité immédiate de Saint-Alban-Leysse et accès rapide à l'aéroport Chambéry-Savoie (10 min).",
   distancesFr:
     "Chambéry centre à 5 min voiture. Saint-Alban-Leysse à 3 min. Aéroport Chambéry-Savoie à 10 min. Lyon à 1h20.",
   distancesEn:
@@ -24,14 +24,14 @@ export const BARBERAZ_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires & services aux entreprises",
     "Professions libérales",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "Services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, PME du BTP et du commerce. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, PME du BTP et du commerce. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Barberaz : formats adaptés aux bureaux tertiaires, cabinets libéraux, ateliers artisans BTP ou commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const BARBERAZ_COPY: VilleCopy = {
       en: "Implémentation IA à Barberaz : automatisation back-office PME tertiaires, agents IA gestion cabinet libéral, classification documentaire, optimisation gestion de chantier BTP, outils prédictifs services aux entreprises.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Barberaz : sessions dans vos locaux agglomération Chambéry ou en visio. Dirigeants PME tertiaires, professions libérales, artisans BTP, gérants TPE bassin chambérien.",
-      en: "Coaching 1-to-1 à Barberaz : sessions dans vos locaux agglomération Chambéry ou en visio. Dirigeants PME tertiaires, professions libérales, artisans BTP, gérants TPE bassin chambérien.",
+      fr: "Coaching 1-to-1 à Barberaz : sessions dans vos locaux agglomération Chambéry ou en visio. Dirigeants PME tertiaires, professions libérales, artisans BTP, gérants PME bassin chambérien.",
+      en: "Coaching 1-to-1 à Barberaz : sessions dans vos locaux agglomération Chambéry ou en visio. Dirigeants PME tertiaires, professions libérales, artisans BTP, gérants PME bassin chambérien.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const BARBERAZ_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les artisans BTP de Barberaz ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP de Barberaz sur leurs cas IA : automatisation devis et chiffrage, gestion planning chantiers, classification photos de chantier, agents IA prise de rendez-vous clients.",
+      a: "Oui, nous accompagnons les PME du BTP de Barberaz sur leurs cas IA : automatisation devis et chiffrage, gestion planning chantiers, classification photos de chantier, agents IA prise de rendez-vous clients.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Barberaz ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Barberaz. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
+      q: "Quel est le tarif d'un audit IA pour une PME à Barberaz ?",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une PME à Barberaz. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
     },
     {
       q: "Comment se déroule une mission IA à Barberaz ?",

@@ -418,7 +418,7 @@ export default async function MethodologyPage({ params }: Props) {
         },
         {
           id: "taille-entreprise",
-          question: "La méthode fonctionne-t-elle pour une TPE de 5 personnes ?",
+          question: "La méthode fonctionne-t-elle pour une PME ?",
           answer:
             "Oui, avec le même niveau d'exigence que pour un grand groupe. Les 4 étapes sont les mêmes, seule leur profondeur varie : chez un artisan, l'étape 1 suffit souvent à dégager 1 à 3 heures par jour.",
         },

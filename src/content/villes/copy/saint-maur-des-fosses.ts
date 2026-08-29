@@ -7,13 +7,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA accompagne les TPE et PME de Saint-Maur-des-Fossés, troisième ville du Val-de-Marne avec 76 572 habitants, située à 5 km au sud-est de Paris sur la presqu'île formée par la Marne. Notre cabinet intervient sur site auprès des commerçants, professions libérales, artisans et PME tertiaires installés autour des quatre gares RER A (Saint-Maur – Créteil, Parc de Saint-Maur, Saint-Maur – Champigny, La Varenne – Chennevières), avec du code source sur-mesure.",
+    "Axion-IA accompagne les PME et ETI de Saint-Maur-des-Fossés, troisième ville du Val-de-Marne avec 76 572 habitants, située à 5 km au sud-est de Paris sur la presqu'île formée par la Marne. Notre cabinet intervient sur site auprès des commerçants, professions libérales, artisans et PME tertiaires installés autour des quatre gares RER A (Saint-Maur – Créteil, Parc de Saint-Maur, Saint-Maur – Champigny, La Varenne – Chennevières), avec du code source sur-mesure.",
   pitchEn:
-    "Axion-IA accompagne les TPE et PME de Saint-Maur-des-Fossés, troisième ville du Val-de-Marne avec 76 572 habitants, située à 5 km au sud-est de Paris sur la presqu'île formée par la Marne. Notre cabinet intervient sur site auprès des commerçants, professions libérales, artisans et PME tertiaires installés autour des quatre gares RER A (Saint-Maur – Créteil, Parc de Saint-Maur, Saint-Maur – Champigny, La Varenne – Chennevières), avec du code source sur-mesure.",
+    "Axion-IA accompagne les PME et ETI de Saint-Maur-des-Fossés, troisième ville du Val-de-Marne avec 76 572 habitants, située à 5 km au sud-est de Paris sur la presqu'île formée par la Marne. Notre cabinet intervient sur site auprès des commerçants, professions libérales, artisans et PME tertiaires installés autour des quatre gares RER A (Saint-Maur – Créteil, Parc de Saint-Maur, Saint-Maur – Champigny, La Varenne – Chennevières), avec du code source sur-mesure.",
   directAnswerFr:
-    "Axion-IA se déplace à Saint-Maur-des-Fossés (Val-de-Marne, 76 572 habitants) pour auditer et automatiser les processus des TPE et PME locales. Bordée par Bonneuil-sur-Marne, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Joinville-le-Pont, Maisons-Alfort et Sucy-en-Brie, la commune accueille un tissu dense de commerces, professions libérales, artisans et PME de services tertiaires. Nos interventions reposent sur du code source sur-mesure et respectent le RGPD, sans recours à des outils no-code.",
+    "Axion-IA se déplace à Saint-Maur-des-Fossés (Val-de-Marne, 76 572 habitants) pour auditer et automatiser les processus des PME et ETI locales. Bordée par Bonneuil-sur-Marne, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Joinville-le-Pont, Maisons-Alfort et Sucy-en-Brie, la commune accueille un tissu dense de commerces, professions libérales, artisans et PME de services tertiaires. Nos interventions reposent sur du code source sur-mesure et respectent le RGPD, sans recours à des outils no-code.",
   directAnswerEn:
-    "Axion-IA se déplace à Saint-Maur-des-Fossés (Val-de-Marne, 76 572 habitants) pour auditer et automatiser les processus des TPE et PME locales. Bordée par Bonneuil-sur-Marne, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Joinville-le-Pont, Maisons-Alfort et Sucy-en-Brie, la commune accueille un tissu dense de commerces, professions libérales, artisans et PME de services tertiaires. Nos interventions reposent sur du code source sur-mesure et respectent le RGPD, sans recours à des outils no-code.",
+    "Axion-IA se déplace à Saint-Maur-des-Fossés (Val-de-Marne, 76 572 habitants) pour auditer et automatiser les processus des PME et ETI locales. Bordée par Bonneuil-sur-Marne, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Joinville-le-Pont, Maisons-Alfort et Sucy-en-Brie, la commune accueille un tissu dense de commerces, professions libérales, artisans et PME de services tertiaires. Nos interventions reposent sur du code source sur-mesure et respectent le RGPD, sans recours à des outils no-code.",
   seoHook: "commerce de proximité & professions libérales",
   ecosystemFr:
     "Le tissu économique de Saint-Maur-des-Fossés repose sur un commerce de proximité dense réparti sur les quartiers du Vieux Saint-Maur, La Varenne et Adamville, des professions libérales (santé, droit, expertise comptable), des artisans du BTP et des PME de services tertiaires. Avec 6 806 habitants au km² et quatre gares RER A, la commune offre un bassin client local solide et une accessibilité Paris en 15 minutes.",
@@ -36,16 +36,16 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
       en: "Audit sur place 4h sur site à Saint-Maur-des-Fossés pour commerçants, professions libérales et PME : cartographie des processus et plan d'automatisation, à partir de {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
-      en: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des TPE et PME locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      fr: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des PME et ETI locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
+      en: "Interventions ponctuelles à Saint-Maur-des-Fossés pour automatiser devis, facturation, RDV, relances et reporting des PME et ETI locales, dès {{price:intervention-4h|flat}}, déplacement sous 5 jours ouvrés.",
     },
     implementation: {
       fr: "Implémentation IA en code source à Saint-Maur-des-Fossés (intégration logiciel métier, ERP, CRM, outils de gestion cabinet) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
       en: "Implémentation IA en code source à Saint-Maur-des-Fossés (intégration logiciel métier, ERP, CRM, outils de gestion cabinet) à partir de {{price:impl-poc|entry}}, hébergement RGPD France.",
     },
     unAUn: {
-      fr: "Sessions 1-to-1 à Saint-Maur-des-Fossés pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Sessions 1-to-1 à Saint-Maur-des-Fossés pour dirigeants de TPE, PME et professions libérales : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Sessions 1-to-1 à Saint-Maur-des-Fossés pour dirigeants de PME, ETI et professions libérales : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Sessions 1-to-1 à Saint-Maur-des-Fossés pour dirigeants de PME, ETI et professions libérales : cadrage stratégie IA et choix des cas d'usage prioritaires, à partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour commerçants des marchés de La Varenne et d'Adamville, artisans et indépendants : vitrine ou boutique en ligne mobile-first avec click-and-collect et un assistant IA simple sur le catalogue.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme métier + briques IA",
@@ -173,12 +167,6 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For traders of the La Varenne and Adamville markets, artisans and freelancers: a mobile-first showcase or online shop with click-and-collect and a simple AI assistant over the catalogue.",
-          },
-          {
             sizeLabel: "SME",
             price: "Business platform + AI building blocks",
             detail:
@@ -244,11 +232,11 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs Axion-IA accompagne-t-il à Saint-Maur-des-Fossés ?",
-      a: "Nous accompagnons les TPE et PME du commerce de détail, des professions libérales (santé, droit, conseil), du BTP, des services aux entreprises, et de l'hébergement-restauration présents à Saint-Maur-des-Fossés.",
+      a: "Nous accompagnons les PME et ETI du commerce de détail, des professions libérales (santé, droit, conseil), du BTP, des services aux entreprises, et de l'hébergement-restauration présents à Saint-Maur-des-Fossés.",
     },
     {
       q: "Proposez-vous des formations IA sur site à Saint-Maur-des-Fossés ?",
-      a: "Oui, nous animons des ateliers en présentiel à Saint-Maur-des-Fossés (demi-journée ou journée complète) pour les équipes des TPE et PME, ainsi que des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, nous animons des ateliers en présentiel à Saint-Maur-des-Fossés (demi-journée ou journée complète) pour les équipes des PME et ETI, ainsi que des sessions 1-to-1 pour dirigeants à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

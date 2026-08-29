@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Vigneux-de-Bretagne (44), commune résidentielle du nord-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne tout le tissu professionnel local du nord-ouest Nantes.",
+    "Vigneux-de-Bretagne (44), commune résidentielle du nord-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu PME de l'artisanat et du commerce, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne tout le tissu professionnel local du nord-ouest Nantes.",
   pitchEn:
-    "Vigneux-de-Bretagne (44), commune résidentielle du nord-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne tout le tissu professionnel local du nord-ouest Nantes.",
+    "Vigneux-de-Bretagne (44), commune résidentielle du nord-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu PME de l'artisanat et du commerce, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne tout le tissu professionnel local du nord-ouest Nantes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et entreprises zones d'activités, professions libérales et services de proximité du nord-ouest nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-de-Bretagne (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires et entreprises zones d'activités, professions libérales et services de proximité du nord-ouest nantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et entreprises zones d'activités, professions libérales et services de proximité du nord-ouest nantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vigneux-de-Bretagne (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires et entreprises zones d'activités, professions libérales et services de proximité du nord-ouest nantais.",
   seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
-    "Vigneux-de-Bretagne est une commune résidentielle dynamique au nord-ouest de Nantes, sur l'axe Nantes-Saint-Nazaire. Zones d'activités, PME tertiaires, artisans. Croissance démographique forte. Tissu TPE commerçants, professions libérales et services de proximité.",
+    "Vigneux-de-Bretagne est une commune résidentielle dynamique au nord-ouest de Nantes, sur l'axe Nantes-Saint-Nazaire. Zones d'activités, PME tertiaires, artisans. Croissance démographique forte. Tissu PME du commerce, professions libérales et services de proximité.",
   ecosystemEn:
-    "Vigneux-de-Bretagne est une commune résidentielle dynamique au nord-ouest de Nantes, sur l'axe Nantes-Saint-Nazaire. Zones d'activités, PME tertiaires, artisans. Croissance démographique forte. Tissu TPE commerçants, professions libérales et services de proximité.",
+    "Vigneux-de-Bretagne est une commune résidentielle dynamique au nord-ouest de Nantes, sur l'axe Nantes-Saint-Nazaire. Zones d'activités, PME tertiaires, artisans. Croissance démographique forte. Tissu PME du commerce, professions libérales et services de proximité.",
   distancesFr:
     "Nantes centre à 20 min. Gare Nantes TGV à 25 min. Saint-Nazaire à 40 min. Aéroport Nantes-Atlantique à 25 min. Savenay à 15 min.",
   distancesEn:
     "Nantes centre à 20 min. Gare Nantes TGV à 25 min. Saint-Nazaire à 40 min. Aéroport Nantes-Atlantique à 25 min. Savenay à 15 min.",
   topSectorsNaf: [
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "PME tertiaires & services",
     "Professions libérales",
     "Services de proximité",
@@ -30,8 +30,8 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vigneux-de-Bretagne : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et entreprises des zones d'activités nord-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Vigneux-de-Bretagne : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et entreprises des zones d'activités nord-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Vigneux-de-Bretagne : diagnostic adapté aux PME artisanales, PME tertiaires, professions libérales et entreprises des zones d'activités nord-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Vigneux-de-Bretagne : diagnostic adapté aux PME artisanales, PME tertiaires, professions libérales et entreprises des zones d'activités nord-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vigneux-de-Bretagne : formats adaptés au bureau, au cabinet, au commerce ou à l'atelier. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
       en: "Implémentation IA à Vigneux-de-Bretagne : agents conversationnels B2B, automatisation workflow tertiaire, gestion planning, extraction données commerciales. Nord-ouest Nantes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vigneux-de-Bretagne : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME du nord-ouest nantais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Vigneux-de-Bretagne : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME du nord-ouest nantais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Vigneux-de-Bretagne : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI du nord-ouest nantais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Vigneux-de-Bretagne : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI du nord-ouest nantais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires des zones d'activités sur des cas IA : automatisation workflow, agents conversationnels B2B, extraction données, gestion planning. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants, nous proposons audit IA (Sur place {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA prise de RDV, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce, nous proposons audit IA (Sur place {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA prise de RDV, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
     },
     {
       q: "Tarifs audit IA à Vigneux-de-Bretagne  : quel budget prévoir ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-ouest nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du nord-ouest nantais.",
     },
     {
       q: "Comment se déroule une intervention sur site ?",

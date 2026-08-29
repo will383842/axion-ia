@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ESCHAU_COPY: VilleCopy = {
   pitchFr:
-    "Eschau (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, célèbre pour son ancienne abbaye Sainte-Sophie sur l''île de l''Ill, conjugue patrimoine carolingien, cadre naturel rhénan et économie périurbaine strasbourgeoise. Tissu de TPE/PME commerce, artisanat, services aux entreprises, agriculture, hôtellerie-restauration et industrie légère. Axion-IA y intervient pour tous types d''activités.",
+    "Eschau (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, célèbre pour son ancienne abbaye Sainte-Sophie sur l''île de l''Ill, conjugue patrimoine carolingien, cadre naturel rhénan et économie périurbaine strasbourgeoise. Tissu de PME et ETI commerce, artisanat, services aux entreprises, agriculture, hôtellerie-restauration et industrie légère. Axion-IA y intervient pour tous types d''activités.",
   pitchEn:
-    "Eschau (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, célèbre pour son ancienne abbaye Sainte-Sophie sur l''île de l''Ill, conjugue patrimoine carolingien, cadre naturel rhénan et économie périurbaine strasbourgeoise. Tissu de TPE/PME commerce, artisanat, services aux entreprises, agriculture, hôtellerie-restauration et industrie légère. Axion-IA y intervient pour tous types d''activités.",
+    "Eschau (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, célèbre pour son ancienne abbaye Sainte-Sophie sur l''île de l''Ill, conjugue patrimoine carolingien, cadre naturel rhénan et économie périurbaine strasbourgeoise. Tissu de PME et ETI commerce, artisanat, services aux entreprises, agriculture, hôtellerie-restauration et industrie légère. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Eschau (67). Nous accompagnons TPE et PME : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Eschau (67). Nous accompagnons PME et ETI : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Eschau (67). Nous accompagnons TPE et PME : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d''experts IA seniors qui intervient à Eschau (67). Nous accompagnons PME et ETI : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit sur place sur mesure.",
   seoHook: "commerce proximité & artisanat second",
   ecosystemFr:
     "Eschau est une commune de l''Eurométropole de Strasbourg, située au sud de l''agglomération sur les bords de l''Ill. La commune est connue pour son église-abbatiale Sainte-Sophie d''origine carolingienne, son patrimoine naturel rhénan (forêt rhénane, bras de l''Ill) et son cadre périurbain résidentiel. L''économie locale repose sur le commerce de proximité, l''artisanat BTP, les services aux entreprises strasbourgeoises, l''agriculture périurbaine et la restauration.",
@@ -30,20 +30,20 @@ export const ESCHAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eschau : diagnostic adapté aux TPE/PME du sud de l''Eurométropole de Strasbourg, commerçants, artisans, prestataires de services et exploitants agricoles du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA à Eschau : diagnostic adapté aux TPE/PME du sud de l''Eurométropole de Strasbourg, commerçants, artisans, prestataires de services et exploitants agricoles du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA à Eschau : diagnostic adapté aux PME et ETI du sud de l''Eurométropole de Strasbourg, commerçants, artisans, prestataires de services et exploitants agricoles du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA à Eschau : diagnostic adapté aux PME et ETI du sud de l''Eurométropole de Strasbourg, commerçants, artisans, prestataires de services et exploitants agricoles du Bas-Rhin. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Eschau : formats adaptés au commerce, à l''atelier d''artisan, à l''exploitation agricole ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
-      en: "Interventions IA sur site à Eschau : formats adaptés au commerce, à l''atelier d''artisan, à l''exploitation agricole ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      fr: "Interventions IA sur site à Eschau : formats adaptés au commerce, à l''atelier d''artisan, à l''exploitation agricole ou à la PME de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Eschau : formats adaptés au commerce, à l''atelier d''artisan, à l''exploitation agricole ou à la PME de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
-      fr: "Implémentation IA à Eschau : automatisation devis et facturation artisanat, agents conversationnels commerce, gestion stocks PME, CRM services et outils IA métier pour TPE/PME de l''Eurométropole.",
-      en: "Implémentation IA à Eschau : automatisation devis et facturation artisanat, agents conversationnels commerce, gestion stocks PME, CRM services et outils IA métier pour TPE/PME de l''Eurométropole.",
+      fr: "Implémentation IA à Eschau : automatisation devis et facturation artisanat, agents conversationnels commerce, gestion stocks PME, CRM services et outils IA métier pour PME et ETI de l''Eurométropole.",
+      en: "Implémentation IA à Eschau : automatisation devis et facturation artisanat, agents conversationnels commerce, gestion stocks PME, CRM services et outils IA métier pour PME et ETI de l''Eurométropole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Eschau : sessions dans votre commerce, atelier, exploitation agricole ou en visio. Dirigeants TPE/PME du Bas-Rhin souhaitant maîtriser l''IA au quotidien.",
-      en: "Coaching 1-to-1 à Eschau : sessions dans votre commerce, atelier, exploitation agricole ou en visio. Dirigeants TPE/PME du Bas-Rhin souhaitant maîtriser l''IA au quotidien.",
+      fr: "Coaching 1-to-1 à Eschau : sessions dans votre commerce, atelier, exploitation agricole ou en visio. Dirigeants PME et ETI du Bas-Rhin souhaitant maîtriser l''IA au quotidien.",
+      en: "Coaching 1-to-1 à Eschau : sessions dans votre commerce, atelier, exploitation agricole ou en visio. Dirigeants PME et ETI du Bas-Rhin souhaitant maîtriser l''IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -53,7 +53,7 @@ export const ESCHAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d''un audit IA à Eschau ?",
-      a: "L''Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME d''Eschau et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité commerciale, artisanale, agricole ou de services.",
+      a: "L''Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI d''Eschau et du Bas-Rhin, il identifie les cas d''usage IA à fort ROI pour votre activité commerciale, artisanale, agricole ou de services.",
     },
     {
       q: "Accompagnez-vous les artisans et commerçants d''Eschau ?",

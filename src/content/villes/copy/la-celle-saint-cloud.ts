@@ -6,13 +6,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
   pitchFr:
-    "La Celle-Saint-Cloud, 20 460 habitants (2023), commune résidentielle des Yvelines située à 12 km de Paris en Île-de-France, est intégrée à la communauté d'agglomération Versailles Grand Parc. Desservie par le Transilien Ligne L (gare de La Châtaigneraie) et les autoroutes A13 et A86, la ville héberge un tissu de TPE/PME dans le tertiaire, l'immobilier résidentiel, les services aux entreprises et le commerce de proximité. Axion-IA, cabinet IA en code custom, intervient ici auprès des TPE et PME des Yvelines pour automatiser leurs processus, sans no-code, en conformité RGPD et AI Act.",
+    "La Celle-Saint-Cloud, 20 460 habitants (2023), commune résidentielle des Yvelines située à 12 km de Paris en Île-de-France, est intégrée à la communauté d'agglomération Versailles Grand Parc. Desservie par le Transilien Ligne L (gare de La Châtaigneraie) et les autoroutes A13 et A86, la ville héberge un tissu de PME et ETI dans le tertiaire, l'immobilier résidentiel, les services aux entreprises et le commerce de proximité. Axion-IA, cabinet IA en code custom, intervient ici auprès des PME et ETI des Yvelines pour automatiser leurs processus, sans no-code, en conformité RGPD et AI Act.",
   pitchEn:
-    "La Celle-Saint-Cloud, 20 460 habitants (2023), commune résidentielle des Yvelines située à 12 km de Paris en Île-de-France, est intégrée à la communauté d'agglomération Versailles Grand Parc. Desservie par le Transilien Ligne L (gare de La Châtaigneraie) et les autoroutes A13 et A86, la ville héberge un tissu de TPE/PME dans le tertiaire, l'immobilier résidentiel, les services aux entreprises et le commerce de proximité. Axion-IA, cabinet IA en code custom, intervient ici auprès des TPE et PME des Yvelines pour automatiser leurs processus, sans no-code, en conformité RGPD et AI Act.",
+    "La Celle-Saint-Cloud, 20 460 habitants (2023), commune résidentielle des Yvelines située à 12 km de Paris en Île-de-France, est intégrée à la communauté d'agglomération Versailles Grand Parc. Desservie par le Transilien Ligne L (gare de La Châtaigneraie) et les autoroutes A13 et A86, la ville héberge un tissu de PME et ETI dans le tertiaire, l'immobilier résidentiel, les services aux entreprises et le commerce de proximité. Axion-IA, cabinet IA en code custom, intervient ici auprès des PME et ETI des Yvelines pour automatiser leurs processus, sans no-code, en conformité RGPD et AI Act.",
   directAnswerFr:
-    "Axion-IA intervient à La Celle-Saint-Cloud (Yvelines, 78170) auprès des TPE, PME puis ETI implantées dans les quartiers Élysée, Beauregard, Bois-Fontaine et les quatre centres commerciaux locaux. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour services aux entreprises, immobilier, professions libérales et commerces de proximité. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès rapide depuis Paris via A13/A86 et Transilien L.",
+    "Axion-IA intervient à La Celle-Saint-Cloud (Yvelines, 78170) auprès des PME, ETI puis grands groupes implantés dans les quartiers Élysée, Beauregard, Bois-Fontaine et les quatre centres commerciaux locaux. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour services aux entreprises, immobilier, professions libérales et commerces de proximité. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès rapide depuis Paris via A13/A86 et Transilien L.",
   directAnswerEn:
-    "Axion-IA intervient à La Celle-Saint-Cloud (Yvelines, 78170) auprès des TPE, PME puis ETI implantées dans les quartiers Élysée, Beauregard, Bois-Fontaine et les quatre centres commerciaux locaux. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour services aux entreprises, immobilier, professions libérales et commerces de proximité. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès rapide depuis Paris via A13/A86 et Transilien L.",
+    "Axion-IA intervient à La Celle-Saint-Cloud (Yvelines, 78170) auprès des PME, ETI puis grands groupes implantés dans les quartiers Élysée, Beauregard, Bois-Fontaine et les quatre centres commerciaux locaux. Notre cabinet français développe en code custom (TypeScript, Python) des automatisations IA pour services aux entreprises, immobilier, professions libérales et commerces de proximité. Audit sur place 4 h à {{price:audit-flash|flat}}, intervention sur site à {{price:intervention-4h|flat}}, accès rapide depuis Paris via A13/A86 et Transilien L.",
   seoHook: "services tertiaires & immobilier résidentiel Yvelines",
   ecosystemFr:
     "La Celle-Saint-Cloud est une commune résidentielle aisée (revenu médian disponible 29 510 € en 2021, au-dessus de la moyenne yvelinoise) marquée par les quartiers d'après-guerre — Élysée (1 128 logements, 1963), Beauregard, Bois-Fontaine. L'économie locale repose sur le tertiaire de proximité, les services aux entreprises, l'immobilier, les professions libérales et quatre centres commerciaux. Le château de La Celle (XVIIIe, ministère des Affaires étrangères) et le Pavillon du Butard (1750) structurent le patrimoine. Versailles Grand Parc fédère l'écosystème intercommunal.",
@@ -32,26 +32,26 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à La Celle-Saint-Cloud (4 h, {{price:audit-flash|flat}}) pour TPE/PME des services tertiaires, professions libérales et commerces de proximité — diagnostic processus et conformité RGPD.",
-      en: "Audit sur place IA à La Celle-Saint-Cloud (4 h, {{price:audit-flash|flat}}) pour TPE/PME des services tertiaires, professions libérales et commerces de proximité — diagnostic processus et conformité RGPD.",
+      fr: "Audit sur place IA à La Celle-Saint-Cloud (4 h, {{price:audit-flash|flat}}) pour PME et ETI des services tertiaires, professions libérales et commerces de proximité — diagnostic processus et conformité RGPD.",
+      en: "Audit sur place IA à La Celle-Saint-Cloud (4 h, {{price:audit-flash|flat}}) pour PME et ETI des services tertiaires, professions libérales et commerces de proximité — diagnostic processus et conformité RGPD.",
     },
     interventions: {
-      fr: "Intervention sur site à La Celle-Saint-Cloud dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation devis/factures, gestion locative immobilière, agendas professions libérales.",
-      en: "Intervention sur site à La Celle-Saint-Cloud dès {{price:intervention-4h|flat}} pour TPE et PME — automatisation devis/factures, gestion locative immobilière, agendas professions libérales.",
+      fr: "Intervention sur site à La Celle-Saint-Cloud dès {{price:intervention-4h|flat}} pour PME et ETI — automatisation devis/factures, gestion locative immobilière, agendas professions libérales.",
+      en: "Intervention sur site à La Celle-Saint-Cloud dès {{price:intervention-4h|flat}} pour PME et ETI — automatisation devis/factures, gestion locative immobilière, agendas professions libérales.",
     },
     implementation: {
       fr: "Implémentation IA à La Celle-Saint-Cloud dès {{price:impl-poc|entry}} en code custom (TypeScript/Python) pour cabinets, agences immobilières et services aux entreprises yvelinois.",
       en: "Implémentation IA à La Celle-Saint-Cloud dès {{price:impl-poc|entry}} en code custom (TypeScript/Python) pour cabinets, agences immobilières et services aux entreprises yvelinois.",
     },
     unAUn: {
-      fr: "Coaching un-à-un dirigeants TPE/PME de La Celle-Saint-Cloud dès {{price:intervention-dirigeants|flat}} — stratégie IA pour cabinets libéraux, agences et commerces des Yvelines.",
-      en: "Coaching un-à-un dirigeants TPE/PME de La Celle-Saint-Cloud dès {{price:intervention-dirigeants|flat}} — stratégie IA pour cabinets libéraux, agences et commerces des Yvelines.",
+      fr: "Coaching un-à-un dirigeants de PME et d'ETI de La Celle-Saint-Cloud dès {{price:intervention-dirigeants|flat}} — stratégie IA pour cabinets libéraux, agences et commerces des Yvelines.",
+      en: "Coaching un-à-un dirigeants de PME et d'ETI de La Celle-Saint-Cloud dès {{price:intervention-dirigeants|flat}} — stratégie IA pour cabinets libéraux, agences et commerces des Yvelines.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à La Celle-Saint-Cloud des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Yvelines (20 460 habitants, revenu médian supérieur à la moyenne départementale), à 12 km de Paris, intégrée à Versailles Grand Parc, où le tissu est fait de TPE et PME du tertiaire de proximité, de l'immobilier résidentiel, des professions libérales et des commerces des quatre centres commerciaux locaux. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Celle-Saint-Cloud — centre-ville, quartier Élysée ou abords du château de La Celle —, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Celle-Saint-Cloud des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Yvelines (20 460 habitants, revenu médian supérieur à la moyenne départementale), à 12 km de Paris, intégrée à Versailles Grand Parc, où le tissu est fait de PME et ETI du tertiaire de proximité, de l'immobilier résidentiel, des professions libérales et des commerces des quatre centres commerciaux locaux. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Celle-Saint-Cloud — centre-ville, quartier Élysée ou abords du château de La Celle —, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales et de cabinets (juridique, médical, comptable) soumis au secret professionnel, dans une commune au revenu médian disponible de 29 510 € supérieur à la moyenne yvelinoise : on conçoit des portails de prise de rendez-vous, des espaces clients sécurisés et des chatbots RAG dont toute la chaîne reste hébergée en UE, conforme RGPD et AI Act.",
           "Marché immobilier résidentiel structurant autour des quartiers Élysée (1 128 logements, 1963), Beauregard et Bois-Fontaine : on construit des sites d'agences avec recherche sémantique de biens, gestion locative automatisée, relances propriétaires et parcours de contact augmentés à l'IA, branchés sur vos logiciels de transaction existants.",
@@ -86,12 +86,6 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un cabinet libéral, d'un commerce des centres locaux ou d'un artisan du bâtiment et de la rénovation, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -137,7 +131,7 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un cabinet ou une agence en pleine activité. Web Vitals (LCP, INP, CLS) et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou technique, aucun abonnement imposé. Solution transférable à tout prestataire des Yvelines ou de l'ouest parisien, ou reprise en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à La Celle-Saint-Cloud des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Yvelines (20 460 habitants, revenu médian supérieur à la moyenne départementale), à 12 km de Paris, intégrée à Versailles Grand Parc, où le tissu est fait de TPE et PME du tertiaire de proximité, de l'immobilier résidentiel, des professions libérales et des commerces des quatre centres commerciaux locaux. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Celle-Saint-Cloud — centre-ville, quartier Élysée ou abords du château de La Celle —, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à La Celle-Saint-Cloud des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune résidentielle aisée des Yvelines (20 460 habitants, revenu médian supérieur à la moyenne départementale), à 12 km de Paris, intégrée à Versailles Grand Parc, où le tissu est fait de PME et ETI du tertiaire de proximité, de l'immobilier résidentiel, des professions libérales et des commerces des quatre centres commerciaux locaux. Devis ferme à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à La Celle-Saint-Cloud — centre-ville, quartier Élysée ou abords du château de La Celle —, itérations à distance.",
         whyHere: [
           "Forte densité de professions libérales et de cabinets (juridique, médical, comptable) soumis au secret professionnel, dans une commune au revenu médian disponible de 29 510 € supérieur à la moyenne yvelinoise : on conçoit des portails de prise de rendez-vous, des espaces clients sécurisés et des chatbots RAG dont toute la chaîne reste hébergée en UE, conforme RGPD et AI Act.",
           "Marché immobilier résidentiel structurant autour des quartiers Élysée (1 128 logements, 1963), Beauregard et Bois-Fontaine : on construit des sites d'agences avec recherche sémantique de biens, gestion locative automatisée, relances propriétaires et parcours de contact augmentés à l'IA, branchés sur vos logiciels de transaction existants.",
@@ -172,12 +166,6 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un cabinet libéral, d'un commerce des centres locaux ou d'un artisan du bâtiment et de la rénovation, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -244,7 +232,7 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA garantit-elle la conformité RGPD et AI Act à La Celle-Saint-Cloud ?",
-      a: "Code custom hébergé en Union européenne, registre des traitements, DPIA et journal d'audit IA conformes RGPD et AI Act. Approche adaptée aux TPE/PME tertiaires et aux professions libérales soumises au secret professionnel.",
+      a: "Code custom hébergé en Union européenne, registre des traitements, DPIA et journal d'audit IA conformes RGPD et AI Act. Approche adaptée aux PME et ETI tertiaires et aux professions libérales soumises au secret professionnel.",
     },
     {
       q: "Axion-IA propose-t-il du no-code à La Celle-Saint-Cloud ?",

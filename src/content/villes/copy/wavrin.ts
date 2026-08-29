@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const WAVRIN_COPY: VilleCopy = {
   pitchFr:
-    "Wavrin (59), commune de l'agglomeration lilloise sud-ouest, reunit pres de 7 800 habitants dans un tissu economique mixte : zones logistiques le long de la Deule, PME industrielles, TPE artisans BTP et commerces de proximite. Axion-IA y intervient pour tous types d'activites.",
+    "Wavrin (59), commune de l'agglomeration lilloise sud-ouest, reunit pres de 7 800 habitants dans un tissu economique mixte : zones logistiques le long de la Deule, PME industrielles, PME du BTP et commerces de proximite. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Wavrin (59), commune de l'agglomeration lilloise sud-ouest, reunit pres de 7 800 habitants dans un tissu economique mixte : zones logistiques le long de la Deule, PME industrielles, TPE artisans BTP et commerces de proximite. Axion-IA y intervient pour tous types d'activites.",
+    "Wavrin (59), commune de l'agglomeration lilloise sud-ouest, reunit pres de 7 800 habitants dans un tissu economique mixte : zones logistiques le long de la Deule, PME industrielles, PME du BTP et commerces de proximite. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "logistique, industrie & agglo Lille sud",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Wavrin (59). Nous accompagnons les TPE, PME et ETI de l'agglomeration lilloise sud-ouest : logisticiens, PME industrielles, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}, intervention sur site sous 5 jours ouvres.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Wavrin (59). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration lilloise sud-ouest : logisticiens, PME industrielles, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}, intervention sur site sous 5 jours ouvres.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Wavrin (59). Nous accompagnons les TPE, PME et ETI de l'agglomeration lilloise sud-ouest : logisticiens, PME industrielles, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}, intervention sur site sous 5 jours ouvres.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Wavrin (59). Nous accompagnons les PME, ETI et grands groupes de l'agglomeration lilloise sud-ouest : logisticiens, PME industrielles, artisans BTP, commercants et professions liberales. Audit sur place a partir de {{price:audit-flash|flat}}, intervention sur site sous 5 jours ouvres.",
   ecosystemFr:
-    "Wavrin s'inscrit dans la Metropole Europeenne de Lille (MEL), entre Lille et La Bassee. Le canal de la Deule structure un axe logistique historique. Le tissu economique associe plateformes logistiques, PME industrielles, TPE artisanat BTP, commerces de centre-bourg et agriculture periurbaine (plaine de la Lys).",
+    "Wavrin s'inscrit dans la Metropole Europeenne de Lille (MEL), entre Lille et La Bassee. Le canal de la Deule structure un axe logistique historique. Le tissu economique associe plateformes logistiques, PME industrielles, PME du BTP, commerces de centre-bourg et agriculture periurbaine (plaine de la Lys).",
   ecosystemEn:
-    "Wavrin s'inscrit dans la Metropole Europeenne de Lille (MEL), entre Lille et La Bassee. Le canal de la Deule structure un axe logistique historique. Le tissu economique associe plateformes logistiques, PME industrielles, TPE artisanat BTP, commerces de centre-bourg et agriculture periurbaine (plaine de la Lys).",
+    "Wavrin s'inscrit dans la Metropole Europeenne de Lille (MEL), entre Lille et La Bassee. Le canal de la Deule structure un axe logistique historique. Le tissu economique associe plateformes logistiques, PME industrielles, PME du BTP, commerces de centre-bourg et agriculture periurbaine (plaine de la Lys).",
   distancesFr:
     "Gare de Wavrin (TER Lille-Bethune) a 5 min du centre. Lille-Flandres a 20 min en TER. Gare Lille Europe (TGV/Eurostar) a 25 min. Aeroport Lille-Lesquin a 30 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const WAVRIN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Logistique & entreposage",
     "PME industrielles",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximite",
     "Agriculture periurbaine",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Wavrin : diagnostic adapte aux logisticiens, PME industrielles et TPE artisans de l'agglo lilloise sud-ouest. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Wavrin : diagnostic adapte aux logisticiens, PME industrielles et TPE artisans de l'agglo lilloise sud-ouest. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Wavrin : diagnostic adapte aux logisticiens, PME industrielles et PME artisanales de l'agglo lilloise sud-ouest. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Wavrin : diagnostic adapte aux logisticiens, PME industrielles et PME artisanales de l'agglo lilloise sud-ouest. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site a Wavrin : formations adaptees a l'entrepot logistique, l'atelier industriel, le chantier BTP ou le commerce. Vos equipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const WAVRIN_COPY: VilleCopy = {
       en: "Implementation IA a Wavrin : optimisation flux logistiques canal de la Deule, predictif maintenance industrielle, agents conversationnels client, CRM augmentes pour PME du sud lillois.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Wavrin : sessions dans votre entrepot, bureau ou commerce. Dirigeants logisticiens, industriels, artisans, gerants TPE/PME du sud lillois.",
-      en: "Coaching 1-to-1 a Wavrin : sessions dans votre entrepot, bureau ou commerce. Dirigeants logisticiens, industriels, artisans, gerants TPE/PME du sud lillois.",
+      fr: "Coaching 1-to-1 a Wavrin : sessions dans votre entrepot, bureau ou commerce. Dirigeants logisticiens, industriels, artisans, gerants PME et ETI du sud lillois.",
+      en: "Coaching 1-to-1 a Wavrin : sessions dans votre entrepot, bureau ou commerce. Dirigeants logisticiens, industriels, artisans, gerants PME et ETI du sud lillois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const WAVRIN_COPY: VilleCopy = {
       a: "Pour les plateformes logistiques le long de la Deule, nous proposons : optimisation flux entrepot par IA, predictif demande, automatisation picking, agents conversationnels transporteurs. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans BTP a Wavrin ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP du sud lillois : automatisation devis, agents IA prise de RDV, classification photos chantier. Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 adapte.",
+      q: "Accompagnez-vous les PME du BTP a Wavrin ?",
+      a: "Oui, nous accompagnons les PME du BTP du sud lillois : automatisation devis, agents IA prise de RDV, classification photos chantier. Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 adapte.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Wavrin ?",

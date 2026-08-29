@@ -69,7 +69,7 @@ const CATALOG: Catalog = {
         {
           question: "À qui s'adressent les formations IA Axion-IA ?",
           answer:
-            "Les formations IA Axion-IA s'adressent aux dirigeants, équipes et indépendants de TPE et PME, sans aucun prérequis technique. L'objectif est de passer de la théorie à un usage concret de l'IA dans votre métier, en partant directement de vos cas d'usage réels.",
+            "Les formations IA Axion-IA s'adressent aux dirigeants, équipes et indépendants de PME et ETI, sans aucun prérequis technique. L'objectif est de passer de la théorie à un usage concret de l'IA dans votre métier, en partant directement de vos cas d'usage réels.",
         },
         {
           question: "Les formations IA sont-elles finançables ?",
@@ -268,7 +268,7 @@ const CATALOG: Catalog = {
         {
           question: "À qui s'adresse un audit IA ?",
           answer:
-            "Un audit IA s'adresse aux TPE et PME qui veulent savoir où l'IA apporte un ROI réel avant d'investir. Il aide à concentrer le budget sur les cas d'usage à fort impact plutôt que de se disperser sur des outils à la mode et peu utiles.",
+            "Un audit IA s'adresse aux PME et ETI qui veulent savoir où l'IA apporte un ROI réel avant d'investir. Il aide à concentrer le budget sur les cas d'usage à fort impact plutôt que de se disperser sur des outils à la mode et peu utiles.",
         },
         {
           question: "Combien coûte un audit IA ?",
@@ -673,7 +673,7 @@ export function getBlogHubFaq(locale: Locale): ReadonlyArray<CategoryFaqItem> {
       {
         question: "À qui s'adresse le blog Axion-IA ?",
         answer:
-          "Le blog Axion-IA s'adresse aux dirigeants, équipes et indépendants de TPE et PME qui cherchent des usages concrets de l'IA, sans jargon. Chaque thématique part de cas réels testés en mission, pour offrir des repères directement applicables à votre activité.",
+          "Le blog Axion-IA s'adresse aux dirigeants, équipes et indépendants de PME et ETI qui cherchent des usages concrets de l'IA, sans jargon. Chaque thématique part de cas réels testés en mission, pour offrir des repères directement applicables à votre activité.",
       },
       {
         question: "Le blog Axion-IA est-il gratuit ?",

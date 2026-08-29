@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   pitchFr:
-    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
+    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, PME du BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
   pitchEn:
-    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
+    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, PME du BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, PME du BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
-  seoHook: "TPE & PME Isère",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, PME du BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
+  seoHook: "PME & PME Isère",
   ecosystemFr:
     "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique au carrefour des axes Lyon-Chambéry et Lyon-Grenoble. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
   ecosystemEn:
@@ -24,14 +24,14 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   topSectorsNaf: [
     "Administration & services publics (sous-préfecture)",
     "PME industrielles & logistique Nord-Isère",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Agriculture & élevage",
     "Commerce de proximité & PME tertiaires",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, PME artisanales et agriculteurs du Bas-Dauphiné. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, PME artisanales et agriculteurs du Bas-Dauphiné. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Tour-du-Pin : formats adaptés à la sous-préfecture, atelier industriel, exploitation agricole, commerce ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
       en: "Implémentation IA à La Tour-du-Pin : agents conversationnels documents administratifs, automatisation traitement dossiers, classification documents juridiques, prédiction maintenance industrielle. Tous secteurs Nord-Isère.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Tour-du-Pin : sessions dans vos bureaux, atelier, exploitation ou en visio. Directeurs administratifs, dirigeants industriels, artisans, agriculteurs, gérants TPE/PME tour-du-pinois.",
-      en: "Coaching 1-to-1 à La Tour-du-Pin : sessions dans vos bureaux, atelier, exploitation ou en visio. Directeurs administratifs, dirigeants industriels, artisans, agriculteurs, gérants TPE/PME tour-du-pinois.",
+      fr: "Coaching 1-to-1 à La Tour-du-Pin : sessions dans vos bureaux, atelier, exploitation ou en visio. Directeurs administratifs, dirigeants industriels, artisans, agriculteurs, gérants PME et ETI tour-du-pinois.",
+      en: "Coaching 1-to-1 à La Tour-du-Pin : sessions dans vos bureaux, atelier, exploitation ou en visio. Directeurs administratifs, dirigeants industriels, artisans, agriculteurs, gérants PME et ETI tour-du-pinois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les services publics à La Tour-du-Pin (sous-préfecture, tribunal d'instance, collectivités) sur leurs cas IA : automatisation traitement dossiers administratifs, classification documents, agents conversationnels usagers, transcription. RGPD strict, hébergement UE garanti.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans tour-du-pinois ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP à La Tour-du-Pin (plombiers, électriciens, menuisiers) et commerçants centre-ville sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
+      q: "Accompagnez-vous les PME et artisans tour-du-pinois ?",
+      a: "Oui, nous accompagnons les PME du BTP à La Tour-du-Pin (plombiers, électriciens, menuisiers) et commerçants centre-ville sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion stocks et planning. Audit sur place {{price:audit-flash|flat}} adapté.",
     },
     {
       q: "Quels services pour les PME industrielles Nord-Isère ?",

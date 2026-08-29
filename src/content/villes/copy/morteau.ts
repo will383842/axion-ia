@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MORTEAU_COPY: VilleCopy = {
   pitchFr:
-    "Morteau (25), capitale du Val de Morteau dans le Haut-Doubs, est reputee pour sa saucisse IGP et son heritage horloger frontalier avec la Suisse. Tissu TPE/PME agroalimentaire, horlogerie, commerce transfrontalier, artisanat, tourisme. Axion-IA y intervient pour tous types d'activites.",
+    "Morteau (25), capitale du Val de Morteau dans le Haut-Doubs, est reputee pour sa saucisse IGP et son heritage horloger frontalier avec la Suisse. Tissu PME et ETI agroalimentaire, horlogerie, commerce transfrontalier, artisanat, tourisme. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Morteau (25), capitale du Val de Morteau dans le Haut-Doubs, est reputee pour sa saucisse IGP et son heritage horloger frontalier avec la Suisse. Tissu TPE/PME agroalimentaire, horlogerie, commerce transfrontalier, artisanat, tourisme. Axion-IA y intervient pour tous types d'activites.",
+    "Morteau (25), capitale du Val de Morteau dans le Haut-Doubs, est reputee pour sa saucisse IGP et son heritage horloger frontalier avec la Suisse. Tissu PME et ETI agroalimentaire, horlogerie, commerce transfrontalier, artisanat, tourisme. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Morteau (25). Nous accompagnons PME et ETI : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Morteau (25). Nous accompagnons PME et ETI : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "agroalimentaire & horlogerie micromecanique",
   ecosystemFr:
     "Morteau est la ville-centre du Val de Morteau dans le Haut-Doubs, a 10 km de la frontiere suisse. La filiere saucisse de Morteau IGP structure l'agroalimentaire local. L'heritage horloger (Musee de l'Horlogerie) et la proximite de La Chaux-de-Fonds alimentent un tissu de micromecaniciens et commercants transfrontaliers.",
@@ -42,8 +42,8 @@ export const MORTEAU_COPY: VilleCopy = {
       en: "Implementation IA a Morteau : tracabilite filiere IGP, optimisation production horlogere, gestion stocks commerce transfrontalier, automatisation reservations tourisme Haut-Doubs.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Morteau : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME du Val de Morteau, gerants agroalimentaire et horlogerie.",
-      en: "Coaching 1-to-1 a Morteau : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants TPE/PME du Val de Morteau, gerants agroalimentaire et horlogerie.",
+      fr: "Coaching 1-to-1 a Morteau : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI du Val de Morteau, gerants agroalimentaire et horlogerie.",
+      en: "Coaching 1-to-1 a Morteau : sessions dans votre atelier, commerce, bureau ou en visio. Dirigeants PME et ETI du Val de Morteau, gerants agroalimentaire et horlogerie.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const MORTEAU_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Morteau ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Morteau, nous proposons des audits approfondis adaptes aux enjeux agroalimentaire, horlogerie ou commerce transfrontalier.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Morteau, nous proposons des audits approfondis adaptes aux enjeux agroalimentaire, horlogerie ou commerce transfrontalier.",
     },
     {
       q: "Travaillez-vous avec les horlogers et micromecaniciens du secteur ?",

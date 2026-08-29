@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHINON_COPY: VilleCopy = {
   pitchFr:
-    "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, TPE artisans, commerçants, PME agroalimentaires et restaurateurs. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, PME artisanales, commerçants, PME agroalimentaires et restaurateurs. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, TPE artisans, commerçants, PME agroalimentaires et restaurateurs. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, PME artisanales, commerçants, PME agroalimentaires et restaurateurs. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), TPE artisans, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), PME artisanales, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), TPE artisans, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), PME artisanales, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
   seoHook: "viticulture chinon & tourisme patrimonial",
   ecosystemFr:
-    "Chinon est une cité médiévale surplombée par la forteresse royale des Plantagenêts, où Jeanne d'Arc rencontra Charles VII en 1429. L'appellation AOC Chinon produit des vins rouges de cabernet franc réputés internationalement. Tissu viticole dense (plus de 2 300 ha en AOC), tourisme patrimonial (forteresse, vieux Chinon, caves troglodytiques), TPE artisans, commerçants, restaurateurs, PME agroalimentaires et hôteliers.",
+    "Chinon est une cité médiévale surplombée par la forteresse royale des Plantagenêts, où Jeanne d'Arc rencontra Charles VII en 1429. L'appellation AOC Chinon produit des vins rouges de cabernet franc réputés internationalement. Tissu viticole dense (plus de 2 300 ha en AOC), tourisme patrimonial (forteresse, vieux Chinon, caves troglodytiques), PME artisanales, commerçants, restaurateurs, PME agroalimentaires et hôteliers.",
   ecosystemEn:
-    "Chinon est une cité médiévale surplombée par la forteresse royale des Plantagenêts, où Jeanne d'Arc rencontra Charles VII en 1429. L'appellation AOC Chinon produit des vins rouges de cabernet franc réputés internationalement. Tissu viticole dense (plus de 2 300 ha en AOC), tourisme patrimonial (forteresse, vieux Chinon, caves troglodytiques), TPE artisans, commerçants, restaurateurs, PME agroalimentaires et hôteliers.",
+    "Chinon est une cité médiévale surplombée par la forteresse royale des Plantagenêts, où Jeanne d'Arc rencontra Charles VII en 1429. L'appellation AOC Chinon produit des vins rouges de cabernet franc réputés internationalement. Tissu viticole dense (plus de 2 300 ha en AOC), tourisme patrimonial (forteresse, vieux Chinon, caves troglodytiques), PME artisanales, commerçants, restaurateurs, PME agroalimentaires et hôteliers.",
   distancesFr:
     "Gare de Chinon (TER Tours 50 min). Tours centre à 50 min voiture D751. Aéroport Tours Val de Loire à 1h. Axe D751 vers Saumur (30 min). Autoroute A85 vers Angers (1h30) et Paris (3h TGV depuis Tours).",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHINON_COPY: VilleCopy = {
     "Viticulture AOC Chinon (cabernet franc)",
     "Tourisme patrimonial (forteresse royale, cité médiévale)",
     "Hôtellerie & restauration",
-    "TPE artisanat & commerce de proximité",
+    "PME de l'artisanat & commerce de proximité",
     "Agroalimentaire & caves troglodytiques",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chinon : diagnostic adapté aux vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse, caves troglodytiques), TPE artisans, commerçants et PME agroalimentaires du Chinonais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Chinon : diagnostic adapté aux vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse, caves troglodytiques), TPE artisans, commerçants et PME agroalimentaires du Chinonais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Chinon : diagnostic adapté aux vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse, caves troglodytiques), PME artisanales, commerçants et PME agroalimentaires du Chinonais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Chinon : diagnostic adapté aux vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse, caves troglodytiques), PME artisanales, commerçants et PME agroalimentaires du Chinonais. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chinon : formats adaptés au domaine viticole, à la cave troglodytique, au restaurant ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const CHINON_COPY: VilleCopy = {
       en: "Implémentation IA à Chinon : agents conversationnels multilingues visiteurs (forteresse, oenotourisme), traçabilité parcellaire AOC Chinon, automatisation réservations caves, classification feedback clients. Tissu Touraine viticole.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chinon : sessions dans votre domaine viticole, cave, restaurant ou en visio. Vignerons AOC, acteurs tourisme patrimoine, artisans, gérants TPE/PME chinonaises souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Chinon : sessions dans votre domaine viticole, cave, restaurant ou en visio. Vignerons AOC, acteurs tourisme patrimoine, artisans, gérants TPE/PME chinonaises souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Chinon : sessions dans votre domaine viticole, cave, restaurant ou en visio. Vignerons AOC, acteurs tourisme patrimoine, artisans, gérants PME et ETI chinonaises souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Chinon : sessions dans votre domaine viticole, cave, restaurant ou en visio. Vignerons AOC, acteurs tourisme patrimoine, artisans, gérants PME et ETI chinonaises souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const CHINON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme patrimonial à Chinon (forteresse royale, vieux Chinon, caves troglodytiques, bords de Vienne) sur leurs cas IA : agents conversationnels multilingues visiteurs, automatisation billetterie, classification avis, gestion saisonnalité touristique.",
     },
     {
-      q: "Quels services pour les TPE et commerçants chinonais ?",
-      a: "Pour les TPE et commerçants à Chinon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos produits. Adapté aux petites structures.",
+      q: "Quels services pour les PME et commerçants chinonais ?",
+      a: "Pour les PME et commerçants à Chinon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos produits. Adapté aux PME.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Chinon ?",

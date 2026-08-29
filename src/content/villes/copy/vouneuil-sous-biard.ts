@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
   pitchFr:
-    "Vouneuil-sous-Biard (86), commune de l'agglomération de Poitiers ouest en Vienne, accueille l'aéroport Poitiers-Biard et des zones d'activités périurbaines. Tissu TPE artisans, PME tertiaires, logistique aéroportuaire, commerces, professions libérales, exploitations agricoles et services. Axion-IA répond aux besoins de toutes les entreprises de l'ouest du Grand Poitiers.",
+    "Vouneuil-sous-Biard (86), commune de l'agglomération de Poitiers ouest en Vienne, accueille l'aéroport Poitiers-Biard et des zones d'activités périurbaines. Tissu PME artisanales, PME tertiaires, logistique aéroportuaire, commerces, professions libérales, exploitations agricoles et services. Axion-IA répond aux besoins de toutes les entreprises de l'ouest du Grand Poitiers.",
   pitchEn:
-    "Vouneuil-sous-Biard (86), commune de l'agglomération de Poitiers ouest en Vienne, accueille l'aéroport Poitiers-Biard et des zones d'activités périurbaines. Tissu TPE artisans, PME tertiaires, logistique aéroportuaire, commerces, professions libérales, exploitations agricoles et services. Axion-IA répond aux besoins de toutes les entreprises de l'ouest du Grand Poitiers.",
+    "Vouneuil-sous-Biard (86), commune de l'agglomération de Poitiers ouest en Vienne, accueille l'aéroport Poitiers-Biard et des zones d'activités périurbaines. Tissu PME artisanales, PME tertiaires, logistique aéroportuaire, commerces, professions libérales, exploitations agricoles et services. Axion-IA répond aux besoins de toutes les entreprises de l'ouest du Grand Poitiers.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vouneuil-sous-Biard (86). Nous accompagnons tous types d'activités : PME tertiaires et logistique zone aéroportuaire, TPE artisans, commerçants, professions libérales, exploitants agricoles et services aux entreprises du Grand Poitiers ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vouneuil-sous-Biard (86). Nous accompagnons tous types d'activités : PME tertiaires et logistique zone aéroportuaire, PME artisanales, commerçants, professions libérales, exploitants agricoles et services aux entreprises du Grand Poitiers ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vouneuil-sous-Biard (86). Nous accompagnons tous types d'activités : PME tertiaires et logistique zone aéroportuaire, TPE artisans, commerçants, professions libérales, exploitants agricoles et services aux entreprises du Grand Poitiers ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vouneuil-sous-Biard (86). Nous accompagnons tous types d'activités : PME tertiaires et logistique zone aéroportuaire, PME artisanales, commerçants, professions libérales, exploitants agricoles et services aux entreprises du Grand Poitiers ouest.",
   seoHook: "tertiaires zones & logistique services",
   ecosystemFr:
-    "Vouneuil-sous-Biard est une commune périurbaine de l'ouest du Grand Poitiers, connue pour accueillir l'aéroport Poitiers-Biard. Zones d'activités économiques attractives, tissu mixte : PME tertiaires/logistique, TPE artisans, commerces, professions libérales, exploitations agricoles (grandes cultures plaine Poitiers ouest), services aux entreprises.",
+    "Vouneuil-sous-Biard est une commune périurbaine de l'ouest du Grand Poitiers, connue pour accueillir l'aéroport Poitiers-Biard. Zones d'activités économiques attractives, tissu mixte : PME tertiaires/logistique, PME artisanales, commerces, professions libérales, exploitations agricoles (grandes cultures plaine Poitiers ouest), services aux entreprises.",
   ecosystemEn:
-    "Vouneuil-sous-Biard est une commune périurbaine de l'ouest du Grand Poitiers, connue pour accueillir l'aéroport Poitiers-Biard. Zones d'activités économiques attractives, tissu mixte : PME tertiaires/logistique, TPE artisans, commerces, professions libérales, exploitations agricoles (grandes cultures plaine Poitiers ouest), services aux entreprises.",
+    "Vouneuil-sous-Biard est une commune périurbaine de l'ouest du Grand Poitiers, connue pour accueillir l'aéroport Poitiers-Biard. Zones d'activités économiques attractives, tissu mixte : PME tertiaires/logistique, PME artisanales, commerces, professions libérales, exploitations agricoles (grandes cultures plaine Poitiers ouest), services aux entreprises.",
   distancesFr:
     "Poitiers centre à 10 min. Aéroport Poitiers-Biard sur la commune. Gare Poitiers TGV (Paris 1h40, Bordeaux 1h45). Futuroscope à 20 min. Axe A10 Paris-Bordeaux à 10 min. Lusignan à 20 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires & zones d'activités périurbaines",
     "Logistique & services aéroportuaires (Poitiers-Biard)",
-    "TPE artisanat & services de proximité",
+    "PME de l'artisanat & services de proximité",
     "Agriculture grandes cultures (plaine Poitiers ouest)",
     "Professions libérales & commerces",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vouneuil-sous-Biard : diagnostic adapté aux PME tertiaires zones d'activités, logistique aéroportuaire, TPE artisans, agriculteurs et commerçants du Grand Poitiers ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
-      en: "Audit IA à Vouneuil-sous-Biard : diagnostic adapté aux PME tertiaires zones d'activités, logistique aéroportuaire, TPE artisans, agriculteurs et commerçants du Grand Poitiers ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      fr: "Audit IA à Vouneuil-sous-Biard : diagnostic adapté aux PME tertiaires zones d'activités, logistique aéroportuaire, PME artisanales, agriculteurs et commerçants du Grand Poitiers ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Vouneuil-sous-Biard : diagnostic adapté aux PME tertiaires zones d'activités, logistique aéroportuaire, PME artisanales, agriculteurs et commerçants du Grand Poitiers ouest. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vouneuil-sous-Biard : formats adaptés aux bureaux PME, entrepôts logistiques, exploitation agricole ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
       en: "Implémentation IA à Vouneuil-sous-Biard : automatisation workflows PME tertiaires, optimisation logistique aéroportuaire, classification photos cultures, CRM augmenté, agents conversationnels. Grand Poitiers ouest.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Vouneuil-sous-Biard : sessions dans vos bureaux, entrepôt, exploitation ou en visio. Dirigeants PME, responsables logistique, agriculteurs, gérants TPE du Grand Poitiers ouest souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Vouneuil-sous-Biard : sessions dans vos bureaux, entrepôt, exploitation ou en visio. Dirigeants PME, responsables logistique, agriculteurs, gérants TPE du Grand Poitiers ouest souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Vouneuil-sous-Biard : sessions dans vos bureaux, entrepôt, exploitation ou en visio. Dirigeants PME, responsables logistique, agriculteurs, gérants PME du Grand Poitiers ouest souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Vouneuil-sous-Biard : sessions dans vos bureaux, entrepôt, exploitation ou en visio. Dirigeants PME, responsables logistique, agriculteurs, gérants PME du Grand Poitiers ouest souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles de la plaine Poitiers ouest (grandes cultures, céréales) sur leurs cas IA : prédiction rendements, classification images parcelles, traçabilité récoltes, optimisation assolement, agents conversationnels vente directe.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants à Vouneuil-sous-Biard, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce à Vouneuil-sous-Biard, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",

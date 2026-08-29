@@ -7,14 +7,14 @@ import type { VilleCopy } from "./types";
 
 export const HAZEBROUCK_COPY: VilleCopy = {
   pitchFr:
-    "Hazebrouck (59, Nord) est une sous-préfecture de Flandre française d'environ 22 000 habitants, située à 35 km de Lille et Dunkerque, à 15 km de la frontière belge. Sa gare TGV (1h50 de Paris-Nord) en fait un nœud ferroviaire majeur du Nord-Pas-de-Calais. Tissu local : santé (Centre hospitalier), commerces de centre-ville, héritage textile reconverti en PME services. Axion-IA accompagne TPE artisans, commerçants et PME flamandes.",
+    "Hazebrouck (59, Nord) est une sous-préfecture de Flandre française d'environ 22 000 habitants, située à 35 km de Lille et Dunkerque, à 15 km de la frontière belge. Sa gare TGV (1h50 de Paris-Nord) en fait un nœud ferroviaire majeur du Nord-Pas-de-Calais. Tissu local : santé (Centre hospitalier), commerces de centre-ville, héritage textile reconverti en PME services. Axion-IA accompagne PME artisanales, commerçants et PME flamandes.",
   pitchEn:
-    "Hazebrouck (59, Nord) est une sous-préfecture de Flandre française d'environ 22 000 habitants, située à 35 km de Lille et Dunkerque, à 15 km de la frontière belge. Sa gare TGV (1h50 de Paris-Nord) en fait un nœud ferroviaire majeur du Nord-Pas-de-Calais. Tissu local : santé (Centre hospitalier), commerces de centre-ville, héritage textile reconverti en PME services. Axion-IA accompagne TPE artisans, commerçants et PME flamandes.",
+    "Hazebrouck (59, Nord) est une sous-préfecture de Flandre française d'environ 22 000 habitants, située à 35 km de Lille et Dunkerque, à 15 km de la frontière belge. Sa gare TGV (1h50 de Paris-Nord) en fait un nœud ferroviaire majeur du Nord-Pas-de-Calais. Tissu local : santé (Centre hospitalier), commerces de centre-ville, héritage textile reconverti en PME services. Axion-IA accompagne PME artisanales, commerçants et PME flamandes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hazebrouck (59) auprès des TPE et PME de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hazebrouck (59) auprès des PME et ETI de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hazebrouck (59) auprès des TPE et PME de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
-  seoHook: "TPE & PME Flandre française",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Hazebrouck (59) auprès des PME et ETI de Flandre française : artisans, commerçants, structures de santé (Centre hospitalier d'Hazebrouck), PME services et industries héritières du textile, exploitations agricoles flamandes. Nos consultants se déplacent depuis Lille en 40 min via A25. Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
+  seoHook: "PME & PME Flandre française",
   ecosystemFr:
     "Hazebrouck est le 7e nœud ferroviaire du Nord-Pas-de-Calais et capitale économique du Houtland flamand. Le tissu mêle héritage textile reconverti en PME services, secteur santé porté par le Centre hospitalier d'Hazebrouck, commerce de centre-ville autour de l'église Saint-Éloi (clocher de 1512), agriculture flamande et logistique liée à la gare. Axes A25 et A26 à 15-20 km, frontière belge à 15 km : zone d'influence transfrontalière.",
   ecosystemEn:
@@ -32,20 +32,20 @@ export const HAZEBROUCK_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hazebrouck : diagnostic adapté aux TPE artisans, commerçants, structures de santé et PME services de Flandre française. Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Hazebrouck : diagnostic adapté aux TPE artisans, commerçants, structures de santé et PME services de Flandre française. Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Hazebrouck : diagnostic adapté aux PME artisanales, commerçants, structures de santé et PME services de Flandre française. Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Hazebrouck : diagnostic adapté aux PME artisanales, commerçants, structures de santé et PME services de Flandre française. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hazebrouck : ateliers adaptés à la PME services, au cabinet médical ou à l'artisan flamand. Vos équipes repartent autonomes.",
       en: "Interventions IA sur site à Hazebrouck : ateliers adaptés à la PME services, au cabinet médical ou à l'artisan flamand. Vos équipes repartent autonomes.",
     },
     implementation: {
-      fr: "Implémentation IA à Hazebrouck : classification documents, agents conversationnels, automatisation administrative, reporting et planning pour TPE-PME du Houtland.",
-      en: "Implémentation IA à Hazebrouck : classification documents, agents conversationnels, automatisation administrative, reporting et planning pour TPE-PME du Houtland.",
+      fr: "Implémentation IA à Hazebrouck : classification documents, agents conversationnels, automatisation administrative, reporting et planning pour PME et ETI du Houtland.",
+      en: "Implémentation IA à Hazebrouck : classification documents, agents conversationnels, automatisation administrative, reporting et planning pour PME et ETI du Houtland.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Hazebrouck : sessions dirigeants TPE, gérants PME services, professionnels de santé, commerçants. Pédagogie 100 % cas réels.",
-      en: "Coaching 1-to-1 à Hazebrouck : sessions dirigeants TPE, gérants PME services, professionnels de santé, commerçants. Pédagogie 100 % cas réels.",
+      fr: "Coaching 1-to-1 à Hazebrouck : sessions dirigeants de PME et d'ETI, gérants PME services, professionnels de santé, commerçants. Pédagogie 100 % cas réels.",
+      en: "Coaching 1-to-1 à Hazebrouck : sessions dirigeants de PME et d'ETI, gérants PME services, professionnels de santé, commerçants. Pédagogie 100 % cas réels.",
     },
   },
   services: {
@@ -86,12 +86,6 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un artisan, commerçant du centre-ville ou cabinet médical flamand, en quelques semaines et sans refonte.",
-          },
           {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
@@ -173,12 +167,6 @@ export const HAZEBROUCK_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Brique IA greffée",
-            detail:
-              "Ajout d'une brique IA (chatbot multilingue, recherche sémantique, prise de rendez-vous) sur le site existant d'un artisan, commerçant du centre-ville ou cabinet médical flamand, en quelques semaines et sans refonte.",
-          },
-          {
             sizeLabel: "PME",
             price: "Site / vitrine e-commerce sur mesure",
             detail:
@@ -232,7 +220,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs d'un audit IA à Hazebrouck ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une TPE. Pour les PME services ou structures de santé, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour une PME. Pour les PME services ou structures de santé, audit approfondi entre {{price:audit-cible-solo|num}} et {{price:audit-cible-avance}}. Tarifs publics consultables.",
     },
     {
       q: "Quels délais pour une intervention à Hazebrouck ?",
@@ -244,7 +232,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
     },
     {
       q: "Quels secteurs accompagnez-vous à Hazebrouck ?",
-      a: "Nous accompagnons TPE artisans, commerçants du centre, professionnels de santé (en lien avec le Centre hospitalier), PME services issues de la reconversion textile, agriculture flamande et acteurs de la logistique ferroviaire.",
+      a: "Nous accompagnons PME artisanales, commerçants du centre, professionnels de santé (en lien avec le Centre hospitalier), PME services issues de la reconversion textile, agriculture flamande et acteurs de la logistique ferroviaire.",
     },
   ],
 };

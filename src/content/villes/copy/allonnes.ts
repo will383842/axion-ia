@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ALLONNES_COPY: VilleCopy = {
   pitchFr:
-    "Allonnes (72), commune de l'agglomération mancelle au sud du Mans en Sarthe, accueille des zones d'activités industrielles et commerciales qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires du bassin manceau sud. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Allonnes (72), commune de l'agglomération mancelle au sud du Mans en Sarthe, accueille des zones d'activités industrielles et commerciales qui concentrent PME artisanales, PME industrielles et de services, commerces, professions libérales et prestataires du bassin manceau sud. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Allonnes (72), commune de l'agglomération mancelle au sud du Mans en Sarthe, accueille des zones d'activités industrielles et commerciales qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires du bassin manceau sud. Axion-IA y mène ses missions auprès des organisations locales.",
+    "Allonnes (72), commune de l'agglomération mancelle au sud du Mans en Sarthe, accueille des zones d'activités industrielles et commerciales qui concentrent PME artisanales, PME industrielles et de services, commerces, professions libérales et prestataires du bassin manceau sud. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Allonnes (72). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (automobile, assurance), commerçants, professions libérales, prestataires de services et entreprises des zones d'activités du sud de l'agglomération mancelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Allonnes (72). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles (automobile, assurance), commerçants, professions libérales, prestataires de services et entreprises des zones d'activités du sud de l'agglomération mancelle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Allonnes (72). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (automobile, assurance), commerçants, professions libérales, prestataires de services et entreprises des zones d'activités du sud de l'agglomération mancelle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Allonnes (72). Nous accompagnons tous types d'activités : PME artisanales, PME industrielles (automobile, assurance), commerçants, professions libérales, prestataires de services et entreprises des zones d'activités du sud de l'agglomération mancelle.",
   seoHook: "industrie automobile & assurance services",
   ecosystemFr:
     "Allonnes est la deuxième ville de Le Mans Métropole, au sud du Mans. Zones d'activités industrielles et commerciales, proximité du circuit des 24 Heures et du pôle automobile sarthois. Tissu PME diversifié : industrie automobile, assurance, services, BTP, commerces, logistique.",
@@ -30,8 +30,8 @@ export const ALLONNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Allonnes : diagnostic adapté aux TPE artisans, PME industrielles, prestataires de services et commerçants du sud de l'agglomération mancelle. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Allonnes : diagnostic adapté aux TPE artisans, PME industrielles, prestataires de services et commerçants du sud de l'agglomération mancelle. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Allonnes : diagnostic adapté aux PME artisanales, PME industrielles, prestataires de services et commerçants du sud de l'agglomération mancelle. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Allonnes : diagnostic adapté aux PME artisanales, PME industrielles, prestataires de services et commerçants du sud de l'agglomération mancelle. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Allonnes : formations adaptées aux PME industrielles automobile, assurance, artisans BTP et commerces du bassin manceau sud. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const ALLONNES_COPY: VilleCopy = {
       en: "Implémentation IA à Allonnes : maintenance prédictive automobile, automatisation processus assurance, optimisation logistique, agents conversationnels commerces et outils IA BTP.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Allonnes : sessions dans vos locaux en zone d'activités ou en visio. Dirigeants TPE/PME industrielles, assurance, artisans, commerçants, prestataires de services.",
-      en: "Coaching 1-to-1 à Allonnes : sessions dans vos locaux en zone d'activités ou en visio. Dirigeants TPE/PME industrielles, assurance, artisans, commerçants, prestataires de services.",
+      fr: "Coaching 1-to-1 à Allonnes : sessions dans vos locaux en zone d'activités ou en visio. Dirigeants PME et ETI industrielles, assurance, artisans, commerçants, prestataires de services.",
+      en: "Coaching 1-to-1 à Allonnes : sessions dans vos locaux en zone d'activités ou en visio. Dirigeants PME et ETI industrielles, assurance, artisans, commerçants, prestataires de services.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const ALLONNES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME de la filière automobile autour d'Allonnes et du circuit des 24 Heures sur leurs cas IA : maintenance prédictive, contrôle qualité par vision, optimisation production, automatisation tests.",
     },
     {
-      q: "Quel est le tarif d'un audit IA pour une TPE à Allonnes ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et commerçants du bassin manceau sud. Tarifs publics, sans surprise.",
+      q: "Quel est le tarif d'un audit IA pour une PME à Allonnes ?",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic complet. Adapté aux PME artisanales, PME industrielles et commerçants du bassin manceau sud. Tarifs publics, sans surprise.",
     },
     {
       q: "Proposez-vous des formations IA pour le secteur assurance ?",

@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const PETITE_FORET_COPY: VilleCopy = {
   pitchFr:
-    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : PME artisanales bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : PME artisanales bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : PME artisanales bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : PME artisanales bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit sur place sur mesure.",
   ecosystemFr:
-    "Petite-Forêt est intégrée à Valenciennes Métropole, entre zones industrielles et quartiers résidentiels. Tissu péri-urbain : TPE artisanat bâtiment, PME logistique et transport (proximité autoroutes A2/A23), commerces de proximité, professions libérales, services B2B de l'agglomération valenciennoise.",
+    "Petite-Forêt est intégrée à Valenciennes Métropole, entre zones industrielles et quartiers résidentiels. Tissu péri-urbain : PME de l'artisanat bâtiment, PME logistique et transport (proximité autoroutes A2/A23), commerces de proximité, professions libérales, services B2B de l'agglomération valenciennoise.",
   ecosystemEn:
-    "Petite-Forêt est intégrée à Valenciennes Métropole, entre zones industrielles et quartiers résidentiels. Tissu péri-urbain : TPE artisanat bâtiment, PME logistique et transport (proximité autoroutes A2/A23), commerces de proximité, professions libérales, services B2B de l'agglomération valenciennoise.",
+    "Petite-Forêt est intégrée à Valenciennes Métropole, entre zones industrielles et quartiers résidentiels. Tissu péri-urbain : PME de l'artisanat bâtiment, PME logistique et transport (proximité autoroutes A2/A23), commerces de proximité, professions libérales, services B2B de l'agglomération valenciennoise.",
   distancesFr:
     "Valenciennes à 5 min. Raismes limitrophe. Anzin à 10 min. Denain à 15 min. Lille à 50 min. Frontière belge à 25 min.",
   distancesEn:
     "Valenciennes à 5 min. Raismes limitrophe. Anzin à 10 min. Denain à 15 min. Lille à 50 min. Frontière belge à 25 min.",
   topSectorsNaf: [
     "PME logistique et transport",
-    "TPE artisanat bâtiment",
+    "PME de l'artisanat bâtiment",
     "Commerce de proximité",
     "Professions libérales",
     "Services aux entreprises",
@@ -30,8 +30,8 @@ export const PETITE_FORET_COPY: VilleCopy = {
   seoHook: "logistique, BTP & services",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
-      en: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      fr: "Audit IA à Petite-Forêt : diagnostic adapté aux PME artisanales bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
+      en: "Audit IA à Petite-Forêt : diagnostic adapté aux PME artisanales bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Petite-Forêt : formats adaptés au dépôt logistique, au chantier BTP, au commerce, au cabinet libéral. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const PETITE_FORET_COPY: VilleCopy = {
       en: "Implémentation IA à Petite-Forêt : agents conversationnels B2B, automatisation planning logistique, suivi chantiers BTP, CRM augmentés, optimisation tournées transport. Agglomération valenciennoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Petite-Forêt : sessions dans votre dépôt, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME logistique-transport, professions libérales, commerçants péti-forestois.",
-      en: "Coaching 1-to-1 à Petite-Forêt : sessions dans votre dépôt, bureau, commerce ou en visio. Dirigeants TPE artisans BTP, gérants PME logistique-transport, professions libérales, commerçants péti-forestois.",
+      fr: "Coaching 1-to-1 à Petite-Forêt : sessions dans votre dépôt, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME logistique-transport, professions libérales, commerçants péti-forestois.",
+      en: "Coaching 1-to-1 à Petite-Forêt : sessions dans votre dépôt, bureau, commerce ou en visio. Dirigeants PME du BTP, gérants PME logistique-transport, professions libérales, commerçants péti-forestois.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const PETITE_FORET_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistique et transport à Petite-Forêt et alentours sur leurs cas IA : automatisation planning, optimisation tournées, suivi colis, agents conversationnels B2B, maintenance prédictive flotte.",
     },
     {
-      q: "Quels services pour les TPE artisans BTP de Petite-Forêt ?",
-      a: "Pour les TPE artisans BTP à Petite-Forêt, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, suivi chantiers, relances clients, gestion planning.",
+      q: "Quels services pour les PME du BTP de Petite-Forêt ?",
+      a: "Pour les PME du BTP à Petite-Forêt, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, suivi chantiers, relances clients, gestion planning.",
     },
     {
       q: "Proposez-vous des formations pour les commerces et professions libérales ?",

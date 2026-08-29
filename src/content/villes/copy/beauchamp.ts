@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const BEAUCHAMP_COPY: VilleCopy = {
   pitchFr:
-    "Beauchamp (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, possède un tissu économique de TPE artisanales, PME de services, commerces de centre-ville et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Beauchamp (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, possède un tissu économique de PME artisanales, PME de services, commerces de centre-ville et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Beauchamp (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, possède un tissu économique de TPE artisanales, PME de services, commerces de centre-ville et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Beauchamp (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, possède un tissu économique de PME artisanales, PME de services, commerces de centre-ville et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauchamp (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales de santé et indépendants de la vallée de Montmorency.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauchamp (95). Nous accompagnons tous types d'activités : PME artisanales, PME de services et conseil, commerçants, professions libérales de santé et indépendants de la vallée de Montmorency.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauchamp (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales de santé et indépendants de la vallée de Montmorency.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Beauchamp (95). Nous accompagnons tous types d'activités : PME artisanales, PME de services et conseil, commerçants, professions libérales de santé et indépendants de la vallée de Montmorency.",
   seoHook: "artisanat maintenance & commerce proximité",
   ecosystemFr:
-    "Beauchamp est une commune résidentielle de la vallée de Montmorency, entre Taverny et Pierrelaye. Économie locale portée par les TPE artisanales BTP, les commerces de centre-ville, les PME de services aux entreprises, les professions libérales de santé et les prestataires tertiaires desservant le bassin Cergy-Pontoise et Paris.",
+    "Beauchamp est une commune résidentielle de la vallée de Montmorency, entre Taverny et Pierrelaye. Économie locale portée par les PME du BTP, les commerces de centre-ville, les PME de services aux entreprises, les professions libérales de santé et les prestataires tertiaires desservant le bassin Cergy-Pontoise et Paris.",
   ecosystemEn:
-    "Beauchamp est une commune résidentielle de la vallée de Montmorency, entre Taverny et Pierrelaye. Économie locale portée par les TPE artisanales BTP, les commerces de centre-ville, les PME de services aux entreprises, les professions libérales de santé et les prestataires tertiaires desservant le bassin Cergy-Pontoise et Paris.",
+    "Beauchamp est une commune résidentielle de la vallée de Montmorency, entre Taverny et Pierrelaye. Économie locale portée par les PME du BTP, les commerces de centre-ville, les PME de services aux entreprises, les professions libérales de santé et les prestataires tertiaires desservant le bassin Cergy-Pontoise et Paris.",
   distancesFr:
     "Gare de Beauchamp (Transilien H) à 5 min à pied. Paris Gare du Nord à 30 min en train. Cergy-Pontoise à 15 min. Aéroport Paris-Charles de Gaulle à 30 min en voiture. Accès A15 à proximité.",
   distancesEn:
     "Gare de Beauchamp (Transilien H) à 5 min à pied. Paris Gare du Nord à 30 min en train. Cergy-Pontoise à 15 min. Aéroport Paris-Charles de Gaulle à 30 min en voiture. Accès A15 à proximité.",
   topSectorsNaf: [
-    "TPE artisanat BTP & maintenance",
+    "PME du BTP & maintenance",
     "Commerce de proximité & distribution",
     "Services aux entreprises & conseil",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const BEAUCHAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beauchamp : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
-      en: "Audit IA à Beauchamp : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      fr: "Audit IA à Beauchamp : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
+      en: "Audit IA à Beauchamp : diagnostic adapté aux PME artisanales, PME de services, commerçants et professions libérales de la vallée de Montmorency. Audit sur place {{price:audit-flash|flat}}, ROI chiffré sur vos cas métier.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beauchamp : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const BEAUCHAMP_COPY: VilleCopy = {
       en: "Implémentation IA à Beauchamp : automatisation gestion commerciale, agents conversationnels, classification documentaire, outils IA métier. Tous secteurs vallée de Montmorency et bassin Cergy-Pontoise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Beauchamp : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Beauchamp : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Beauchamp : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Beauchamp : sessions dans vos locaux ou en visio. Dirigeants PME, gérants PME, professions libérales et indépendants de la vallée de Montmorency souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const BEAUCHAMP_COPY: VilleCopy = {
       a: "L'audit sur place IA à Beauchamp démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Accompagnez-vous les TPE et PME à Beauchamp ?",
-      a: "Oui, nous accompagnons les TPE artisanales et les PME de services de Beauchamp sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion stocks, comptabilité assistée. Audit sur place {{price:audit-flash|flat}} accessible.",
+      q: "Accompagnez-vous les PME et ETI à Beauchamp ?",
+      a: "Oui, nous accompagnons les PME artisanales et les PME de services de Beauchamp sur des cas IA pratiques : automatisation devis et facturation, agents IA prise de rendez-vous, gestion stocks, comptabilité assistée. Audit sur place {{price:audit-flash|flat}} accessible.",
     },
     {
       q: "Quels formats de formation IA proposez-vous à Beauchamp ?",

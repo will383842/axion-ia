@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DOUAI_COPY: VilleCopy = {
   pitchFr:
-    "Douai (59), ville du Nord à l'histoire industrielle marquée par le charbon, abrite l'usine automobile Renault et un pôle ferroviaire structurant (Alstom à proximité). Ancienne cité du Parlement de Flandre, son tissu mêle sous-traitance automobile et ferroviaire, logistique, TPE artisanales, commerces et services. Axion-IA accompagne en priorité les TPE puis les PME douaisiennes.",
+    "Douai (59), ville du Nord à l'histoire industrielle marquée par le charbon, abrite l'usine automobile Renault et un pôle ferroviaire structurant (Alstom à proximité). Ancienne cité du Parlement de Flandre, son tissu mêle sous-traitance automobile et ferroviaire, logistique, PME artisanales, commerces et services. Axion-IA accompagne en priorité les PME puis les ETI douaisiennes.",
   pitchEn:
-    "Douai (59), ville du Nord à l'histoire industrielle marquée par le charbon, abrite l'usine automobile Renault et un pôle ferroviaire structurant (Alstom à proximité). Ancienne cité du Parlement de Flandre, son tissu mêle sous-traitance automobile et ferroviaire, logistique, TPE artisanales, commerces et services. Axion-IA accompagne en priorité les TPE puis les PME douaisiennes.",
+    "Douai (59), ville du Nord à l'histoire industrielle marquée par le charbon, abrite l'usine automobile Renault et un pôle ferroviaire structurant (Alstom à proximité). Ancienne cité du Parlement de Flandre, son tissu mêle sous-traitance automobile et ferroviaire, logistique, PME artisanales, commerces et services. Axion-IA accompagne en priorité les PME puis les ETI douaisiennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douai (59) auprès des TPE en priorité, puis des PME : sous-traitance automobile gravitant autour de Renault, filière ferroviaire, logistique, artisans du BTP, commerces et services aux entreprises du Douaisis. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douai (59) auprès des PME en priorité, puis des PME : sous-traitance automobile gravitant autour de Renault, filière ferroviaire, logistique, artisans du BTP, commerces et services aux entreprises du Douaisis. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douai (59) auprès des TPE en priorité, puis des PME : sous-traitance automobile gravitant autour de Renault, filière ferroviaire, logistique, artisans du BTP, commerces et services aux entreprises du Douaisis. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les ETI restent un cas marginal de notre activité.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Douai (59) auprès des PME en priorité, puis des PME : sous-traitance automobile gravitant autour de Renault, filière ferroviaire, logistique, artisans du BTP, commerces et services aux entreprises du Douaisis. Nous diagnostiquons les tâches automatisables, déployons des solutions concrètes sur site et transférons les compétences, avec un ROI mesurable et un respect strict du RGPD. Les grands groupes complètent ce socle.",
   seoHook: "automobile & ferroviaire douaisis",
   ecosystemFr:
-    "Douai, ancien bassin minier reconverti, structure son économie autour de l'usine Renault et d'une forte filière ferroviaire (Alstom à proximité de Valenciennes). Le tissu local mêle PME de sous-traitance automobile et ferroviaire, logistique, TPE artisanales du bâtiment, commerces de centre historique et services aux entreprises. Bassin du Douaisis à savoir-faire industriel ancré.",
+    "Douai, ancien bassin minier reconverti, structure son économie autour de l'usine Renault et d'une forte filière ferroviaire (Alstom à proximité de Valenciennes). Le tissu local mêle PME de sous-traitance automobile et ferroviaire, logistique, PME artisanales du bâtiment, commerces de centre historique et services aux entreprises. Bassin du Douaisis à savoir-faire industriel ancré.",
   ecosystemEn:
-    "Douai, ancien bassin minier reconverti, structure son économie autour de l'usine Renault et d'une forte filière ferroviaire (Alstom à proximité de Valenciennes). Le tissu local mêle PME de sous-traitance automobile et ferroviaire, logistique, TPE artisanales du bâtiment, commerces de centre historique et services aux entreprises. Bassin du Douaisis à savoir-faire industriel ancré.",
+    "Douai, ancien bassin minier reconverti, structure son économie autour de l'usine Renault et d'une forte filière ferroviaire (Alstom à proximité de Valenciennes). Le tissu local mêle PME de sous-traitance automobile et ferroviaire, logistique, PME artisanales du bâtiment, commerces de centre historique et services aux entreprises. Bassin du Douaisis à savoir-faire industriel ancré.",
   distancesFr:
     "Lille à 35 min. Gare TGV Lille-Europe à 35 min. Arras à 25 min. Valenciennes à 30 min. Aéroport Lille-Lesquin à 30 min. Gare Douai TGV directe.",
   distancesEn:
@@ -30,8 +30,8 @@ export const DOUAI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douai : diagnostic pour PME de sous-traitance automobile et ferroviaire, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
-      en: "Audit IA à Douai : diagnostic pour PME de sous-traitance automobile et ferroviaire, acteurs logistiques et TPE artisanes. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      fr: "Audit IA à Douai : diagnostic pour PME de sous-traitance automobile et ferroviaire, acteurs logistiques et PME artisanales. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
+      en: "Audit IA à Douai : diagnostic pour PME de sous-traitance automobile et ferroviaire, acteurs logistiques et PME artisanales. Repérage des tâches automatisables et ROI chiffré avant tout déploiement.",
     },
     interventions: {
       fr: "Interventions IA sur site à Douai : formats adaptés à l'atelier industriel, l'entrepôt, le commerce ou le bureau. Vos équipes prennent ensuite la main sur les outils en autonomie.",
@@ -42,8 +42,8 @@ export const DOUAI_COPY: VilleCopy = {
       en: "Implémentation IA à Douai : contrôle qualité par vision pour la sous-traitance auto, prédiction de maintenance, optimisation logistique, automatisation administrative et agents conversationnels B2B.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Douai : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME douaisiennes.",
-      en: "Coaching 1-to-1 à Douai : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour gérants de TPE, artisans et dirigeants de PME douaisiennes.",
+      fr: "Coaching 1-to-1 à Douai : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME douaisiennes.",
+      en: "Coaching 1-to-1 à Douai : sessions dans votre atelier, entrepôt, commerce ou en visio. Pour dirigeants de PME, artisans et dirigeants de PME douaisiennes.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Douai : plateformes et outils SaaS IA sur mesure — portails clients industriels, devis en ligne, suivi logistique et catalogues techniques connectés à vos process.",
@@ -53,7 +53,7 @@ export const DOUAI_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "À Douai, l'économie tourne autour du pôle électrique Renault « Ampere ElectriCity » — l'usine de Lambres-lez-Douai (~2 800 salariés) qui sort la R5 E-TECH, la Mégane E-TECH, la Scénic E-TECH Electric et l'Alpine A290 (156 000 véhicules en 2025), épaulée par la plateforme logistique Goodman de 25 000 m² du parc de l'Ermitage. Autour gravitent une chaîne de sous-traitance automobile, les ~297 entreprises de la ZI de Douai-Dorignies (INEO, Eurofins, Veolia, Logista) sur les échangeurs A1/A21, la sous-traitance ferroviaire du bassin Alstom et les TPE de la cité judiciaire. Axion-IA conçoit à Douai des sites web et plateformes SaaS augmentés par l'IA pour cette industrie : portails fournisseurs, suivi logistique, catalogues techniques et outils métier connectés à vos process.",
+        hero: "À Douai, l'économie tourne autour du pôle électrique Renault « Ampere ElectriCity » — l'usine de Lambres-lez-Douai (~2 800 salariés) qui sort la R5 E-TECH, la Mégane E-TECH, la Scénic E-TECH Electric et l'Alpine A290 (156 000 véhicules en 2025), épaulée par la plateforme logistique Goodman de 25 000 m² du parc de l'Ermitage. Autour gravitent une chaîne de sous-traitance automobile, les ~297 entreprises de la ZI de Douai-Dorignies (INEO, Eurofins, Veolia, Logista) sur les échangeurs A1/A21, la sous-traitance ferroviaire du bassin Alstom et les PME de la cité judiciaire. Axion-IA conçoit à Douai des sites web et plateformes SaaS augmentés par l'IA pour cette industrie : portails fournisseurs, suivi logistique, catalogues techniques et outils métier connectés à vos process.",
         whyHere: [
           "Le pôle VE Renault « Ampere ElectriCity » (Douai-Maubeuge-Ruitz) irrigue une chaîne de sous-traitance automobile qui a besoin de portails fournisseurs, de suivi de cadence et de catalogues de pièces en ligne fiables — pas de site vitrine générique.",
           "Les ~297 entreprises de la ZI de Douai-Dorignies (INEO Hauts-de-France, Eurofins, Veolia, Logista), sur les échangeurs A1/A21, gèrent des flux B2B qui se pilotent mieux avec des plateformes SaaS sur mesure qu'avec des tableurs.",
@@ -89,12 +89,6 @@ export const DOUAI_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce augmenté",
-            detail:
-              "Pour les artisans, commerces et TPE de services du Douaisis : site rapide, prise de rendez-vous, devis en ligne, chatbot IA — base CMS multi-éditeur. Devis à partir de 24-48 h selon la complexité.",
-          },
-          {
             sizeLabel: "PME",
             price: "Plateforme métier ou portail B2B",
             detail:
@@ -123,7 +117,7 @@ export const DOUAI_COPY: VilleCopy = {
             a: "Oui. Pour les logisticiens du parc de l'Ermitage (dont la plateforme Goodman de 25 000 m² livrant l'usine Renault) et des futures ZAC Lambres/Cuincy/Courchelettes, nous développons des outils de suivi de livraison, de réservation de quai et de traçabilité reliés à votre WMS, accessibles sur mobile en entrepôt.",
           },
           {
-            q: "Travaillez-vous avec les TPE et commerces du centre de Douai ?",
+            q: "Travaillez-vous avec les PME et commerces du centre de Douai ?",
             a: "Oui, c'est une part majeure de notre activité douaisienne : site vitrine rapide, e-commerce sur CMS multi-éditeur, prise de rendez-vous, devis en ligne et chatbot IA. UX/UI mobile-first, hébergement UE. Devis à partir de 24-48 h selon la complexité.",
           },
           {
@@ -174,12 +168,6 @@ export const DOUAI_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "AI-augmented brochure or e-commerce site",
-            detail:
-              "For Douaisis artisans, shops and service micro-businesses: fast site, booking, online quotes, AI chatbot — multi-CMS base. Quote from 24-48 h depending on complexity.",
-          },
           {
             sizeLabel: "SME",
             price: "Business platform or B2B portal",
@@ -237,8 +225,8 @@ export const DOUAI_COPY: VilleCopy = {
       a: "Oui, contrôle qualité par vision, prédiction de maintenance, traçabilité et automatisation des flux pour les PME fournisseurs de l'écosystème Renault et de la filière ferroviaire.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans et commerces de Douai ?",
-      a: "Oui, les TPE sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
+      q: "Travaillez-vous avec les PME de l'artisanat et du commerce de Douai ?",
+      a: "Oui, les PME sont notre priorité : automatisation des devis, relances, planning et SAV. Audit sur place dès {{price:audit-flash|flat}}, formation sur une journée, coaching individuel.",
     },
     {
       q: "Quels services pour la logistique et le transport ?",

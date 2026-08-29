@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CHASSIEU_COPY: VilleCopy = {
   pitchFr:
-    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, PME du BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
+    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, PME du BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chassieu (69). Nous accompagnons tous types d'activités : acteurs événementiels Eurexpo, PME logistiques et tertiaires zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chassieu (69). Nous accompagnons tous types d'activités : acteurs événementiels Eurexpo, PME logistiques et tertiaires zones d'activités, PME du BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chassieu (69). Nous accompagnons tous types d'activités : acteurs événementiels Eurexpo, PME logistiques et tertiaires zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Chassieu (69). Nous accompagnons tous types d'activités : acteurs événementiels Eurexpo, PME logistiques et tertiaires zones d'activités, PME du BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   seoHook: "événementiel & logistiques zones",
   ecosystemFr:
-    "Chassieu est intégrée à la Métropole de Lyon, en banlieue est immédiate (axe vers aéroport Saint-Exupéry). Position stratégique : Eurexpo (parc des expositions de Lyon — l'un des plus grands de France, accueille salons majeurs Pollutec, Sirha, etc.) et zones d'activités majeures. Tissu PME événementielles, logistiques, tertiaires, TPE artisanat BTP.",
+    "Chassieu est intégrée à la Métropole de Lyon, en banlieue est immédiate (axe vers aéroport Saint-Exupéry). Position stratégique : Eurexpo (parc des expositions de Lyon — l'un des plus grands de France, accueille salons majeurs Pollutec, Sirha, etc.) et zones d'activités majeures. Tissu PME événementielles, logistiques, tertiaires, PME du BTP.",
   ecosystemEn:
-    "Chassieu est intégrée à la Métropole de Lyon, en banlieue est immédiate (axe vers aéroport Saint-Exupéry). Position stratégique : Eurexpo (parc des expositions de Lyon — l'un des plus grands de France, accueille salons majeurs Pollutec, Sirha, etc.) et zones d'activités majeures. Tissu PME événementielles, logistiques, tertiaires, TPE artisanat BTP.",
+    "Chassieu est intégrée à la Métropole de Lyon, en banlieue est immédiate (axe vers aéroport Saint-Exupéry). Position stratégique : Eurexpo (parc des expositions de Lyon — l'un des plus grands de France, accueille salons majeurs Pollutec, Sirha, etc.) et zones d'activités majeures. Tissu PME événementielles, logistiques, tertiaires, PME du BTP.",
   distancesFr:
     "Lyon centre à 15 min. Aéroport Lyon-Saint-Exupéry à 10 min. Eurexpo sur place. Genas limitrophe à 5 min. Bron à 5 min. Villeurbanne à 15 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const CHASSIEU_COPY: VilleCopy = {
     "Événementiel (Eurexpo, salons)",
     "PME logistiques zones d'activités",
     "PME tertiaires est lyonnais",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chassieu : formats adaptés au parc expo, entrepôt, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const CHASSIEU_COPY: VilleCopy = {
       en: "Implémentation IA à Chassieu : agents conversationnels exposants/visiteurs Eurexpo multilingue, automatisation salons, optimisation supply chain, classification documents.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Chassieu : sessions dans votre espace Eurexpo, entrepôt, bureau ou en visio. Acteurs événementiels, logistique, tertiaires, artisans, gérants TPE/PME chasselands.",
-      en: "Coaching 1-to-1 à Chassieu : sessions dans votre espace Eurexpo, entrepôt, bureau ou en visio. Acteurs événementiels, logistique, tertiaires, artisans, gérants TPE/PME chasselands.",
+      fr: "Coaching 1-to-1 à Chassieu : sessions dans votre espace Eurexpo, entrepôt, bureau ou en visio. Acteurs événementiels, logistique, tertiaires, artisans, gérants PME et ETI chasselands.",
+      en: "Coaching 1-to-1 à Chassieu : sessions dans votre espace Eurexpo, entrepôt, bureau ou en visio. Acteurs événementiels, logistique, tertiaires, artisans, gérants PME et ETI chasselands.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const CHASSIEU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistiques des zones d'activités Chassieu/est lyonnais sur leurs cas IA : optimisation tournées, supply chain, agents IA B2B.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
-      a: "Pour les TPE artisans BTP et commerçants à Chassieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Chassieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",

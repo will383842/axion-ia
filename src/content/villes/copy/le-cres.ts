@@ -5,17 +5,17 @@ import type { VilleCopy } from "./types";
 
 export const LE_CRES_COPY: VilleCopy = {
   pitchFr:
-    "Le Crès (34), commune résidentielle de l'est de Montpellier, en forte croissance démographique. Zones d'activités dynamiques, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Le Crès (34), commune résidentielle de l'est de Montpellier, en forte croissance démographique. Zones d'activités dynamiques, commerces, services. Tissu PME du commerce, PME services et tertiaire, artisans BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Le Crès (34), commune résidentielle de l'est de Montpellier, en forte croissance démographique. Zones d'activités dynamiques, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
+    "Le Crès (34), commune résidentielle de l'est de Montpellier, en forte croissance démographique. Zones d'activités dynamiques, commerces, services. Tissu PME du commerce, PME services et tertiaire, artisans BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Crès (34). Nous accompagnons TPE commerçants, PME de services et tertiaire, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Crès (34). Nous accompagnons PME du commerce, PME de services et tertiaire, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Crès (34). Nous accompagnons TPE commerçants, PME de services et tertiaire, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Crès (34). Nous accompagnons PME du commerce, PME de services et tertiaire, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
   ecosystemFr:
-    "Le Crès est une commune dynamique de l'est de Montpellier, en forte croissance démographique. Elle accueille des zones d'activités tertiaires et commerciales, un tissu de TPE commerçants, PME de services, artisans BTP et professions libérales. Proximité immédiate de Castries, Vendargues et Baillargues, axe A9/A709.",
+    "Le Crès est une commune dynamique de l'est de Montpellier, en forte croissance démographique. Elle accueille des zones d'activités tertiaires et commerciales, un tissu de PME du commerce, PME de services, artisans BTP et professions libérales. Proximité immédiate de Castries, Vendargues et Baillargues, axe A9/A709.",
   ecosystemEn:
-    "Le Crès est une commune dynamique de l'est de Montpellier, en forte croissance démographique. Elle accueille des zones d'activités tertiaires et commerciales, un tissu de TPE commerçants, PME de services, artisans BTP et professions libérales. Proximité immédiate de Castries, Vendargues et Baillargues, axe A9/A709.",
+    "Le Crès est une commune dynamique de l'est de Montpellier, en forte croissance démographique. Elle accueille des zones d'activités tertiaires et commerciales, un tissu de PME du commerce, PME de services, artisans BTP et professions libérales. Proximité immédiate de Castries, Vendargues et Baillargues, axe A9/A709.",
   distancesFr:
     "Montpellier centre à 10 min par tramway T1 ou voiture. Castries à 5 min. Gare TGV Montpellier Sud de France à 20 min. Aéroport Montpellier-Méditerranée à 15 min. Accès A9/A709.",
   distancesEn:
@@ -30,8 +30,8 @@ export const LE_CRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Crès : diagnostic pour TPE commerçants, PME services et tertiaire, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
-      en: "Audit IA au Crès : diagnostic pour TPE commerçants, PME services et tertiaire, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      fr: "Audit IA au Crès : diagnostic pour PME du commerce, PME services et tertiaire, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
+      en: "Audit IA au Crès : diagnostic pour PME du commerce, PME services et tertiaire, artisans et professions libérales de l'est Montpellier. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Crès : ateliers adaptés PME tertiaire, commerce, cabinet libéral ou artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -56,8 +56,8 @@ export const LE_CRES_COPY: VilleCopy = {
       a: "Oui, nous réalisons des audits IA adaptés aux PME de services et tertiaire : automatisation processus, chatbot client, classification emails et documents, optimisation CRM. Audit sur place à {{price:audit-flash|flat}}.",
     },
     {
-      q: "Quels services pour les TPE et commerces au Crès ?",
-      a: "Pour les TPE et commerces au Crès, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
+      q: "Quels services pour les PME et commerces au Crès ?",
+      a: "Pour les PME et commerces au Crès, audit sur place {{price:audit-flash|flat}}, intervention formation 1 journée et coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de l'est Montpellier ?",

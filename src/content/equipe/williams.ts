@@ -52,7 +52,7 @@ export const WILLIAMS_TAGLINE =
  * puis l'étendue de l'offre. Aucun pronom en ouverture, aucune référence à
  * « cette page » : une citation extraite du contexte doit rester vraie.
  */
-export const WILLIAMS_LEAD = `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France. Il conçoit et pilote des transformations par l'IA à gains rapides et mesurables pour les PME, ETI et grands groupes, TPE comprises, sur cinq métiers : audit IA, formation, coaching individuel de dirigeants, implémentation en code source dont l'entreprise reste propriétaire, et automatisation des processus.`;
+export const WILLIAMS_LEAD = `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France. Il conçoit et pilote des transformations par l'IA à gains rapides et mesurables pour les PME, ETI et grands groupes, sur cinq métiers : audit IA, formation, coaching individuel de dirigeants, implémentation en code source dont l'entreprise reste propriétaire, et automatisation des processus.`;
 
 /**
  * Second paragraphe — la DOCTRINE, en propre. C'est le passage qui différencie
@@ -75,7 +75,7 @@ export const WILLIAMS_IDENTITE: ReadonlyArray<{ terme: string; valeur: string }>
   { terme: "Entreprise", valeur: "Axion-IA — agence d'intelligence artificielle opérationnelle" },
   { terme: "Siège", valeur: "Grenoble, Auvergne-Rhône-Alpes, France" },
   { terme: "Zone d'intervention", valeur: "France entière — sur site et à distance" },
-  { terme: "Clients", valeur: "PME, ETI, grands groupes et TPE, tous secteurs" },
+  { terme: "Clients", valeur: "PME, ETI et grands groupes, tous secteurs" },
   {
     terme: "Domaines",
     valeur:
@@ -93,7 +93,7 @@ export const WILLIAMS_IDENTITE: ReadonlyArray<{ terme: string; valeur: string }>
 export const WILLIAMS_PREUVES: ReadonlyArray<{ chiffre: string; libelle: string }> = [
   { chiffre: "Top 1 %", libelle: "Ingénieurs et experts IA sélectionnés en France" },
   { chiffre: "0 intermédiaire", libelle: "Vous échangez directement avec l'équipe Axion-IA" },
-  { chiffre: "TPE → CAC 40", libelle: "Tous types de structures, tous secteurs" },
+  { chiffre: "PME → CAC 40", libelle: "Tous types de structures, tous secteurs" },
   { chiffre: "France entière", libelle: "Sur site partout, siège à Grenoble" },
 ];
 
@@ -139,7 +139,7 @@ export const WILLIAMS_EXPERTISES: ReadonlyArray<ExpertiseWilliams> = [
     href: "/audit",
     hrefLabel: "Découvrir les audits IA",
     hrefSecondaire: "/audit/tpe-1-jour",
-    hrefSecondaireLabel: "L'audit TPE en 1 jour",
+    hrefSecondaireLabel: "L'audit PME en 1 jour",
   },
   {
     id: "formations",
@@ -284,7 +284,7 @@ export function buildWilliamsFaq({
     {
       id: "qui-est-williams-jullin",
       question: "Qui est Williams Jullin ?",
-      answer: `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble et qui intervient dans toute la France. Il accompagne les PME, les ETI et les grands groupes — ainsi que les TPE à fort potentiel — sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation d'IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats mesurés.`,
+      answer: `${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble et qui intervient dans toute la France. Il accompagne les PME, les ETI et les grands groupes sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation d'IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats mesurés.`,
     },
     {
       id: "que-fait-axion-ia",
@@ -308,7 +308,7 @@ export function buildWilliamsFaq({
       id: "secteurs-et-tailles",
       question: "Pour quelles entreprises Williams Jullin intervient-il ?",
       answer:
-        "Pour toutes les tailles, de la TPE de quelques salariés au grand groupe coté, et dans tous les secteurs — industrie, services, santé, immobilier, juridique, commerce, transport, secteur public. Le format d'intervention change avec la taille, la méthode ne change pas : cadrer sur le terrain, prouver sur les données réelles, déployer, transmettre.",
+        "Pour toutes les tailles, De la PME au grand groupe coté, et dans tous les secteurs — industrie, services, santé, immobilier, juridique, commerce, transport, secteur public. Le format d'intervention change avec la taille, la méthode ne change pas : cadrer sur le terrain, prouver sur les données réelles, déployer, transmettre.",
     },
     {
       id: "zone-geographique",

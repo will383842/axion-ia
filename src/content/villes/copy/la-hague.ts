@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_HAGUE_COPY: VilleCopy = {
   pitchFr:
-    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu PME artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA répond aux besoins des activités professionnelles présentes.",
+    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu PME artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Hague (50). Nous accompagnons tous types d'activités : TPE artisanales et agricoles du Cotentin, PME sous-traitance industrielle et nucléaire, commerçants ruraux, prestataires tourisme nature, professions libérales et services du nord Cotentin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Hague (50). Nous accompagnons tous types d'activités : PME artisanales et agricoles du Cotentin, PME sous-traitance industrielle et nucléaire, commerçants ruraux, prestataires tourisme nature, professions libérales et services du nord Cotentin.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Hague (50). Nous accompagnons tous types d'activités : TPE artisanales et agricoles du Cotentin, PME sous-traitance industrielle et nucléaire, commerçants ruraux, prestataires tourisme nature, professions libérales et services du nord Cotentin.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Hague (50). Nous accompagnons tous types d'activités : PME artisanales et agricoles du Cotentin, PME sous-traitance industrielle et nucléaire, commerçants ruraux, prestataires tourisme nature, professions libérales et services du nord Cotentin.",
   seoHook: "littoral",
   ecosystemFr:
     "La Hague est une commune nouvelle regroupant 25 anciennes communes à la pointe nord-ouest du Cotentin. Son tissu économique est marqué par la présence du site de retraitement nucléaire (employeur majeur et écosystème de sous-traitants industriels), l'agriculture (élevage bovin, maraîchage), l'artisanat, le tourisme de nature (sentiers côtiers, nez de Jobourg) et les commerces de proximité. Cherbourg-en-Cotentin à 20 min.",
@@ -23,15 +23,15 @@ export const LA_HAGUE_COPY: VilleCopy = {
     "Cherbourg-en-Cotentin à 20 min. Gare de Cherbourg (TER vers Caen, 1 h 15 ; Paris-Saint-Lazare, 3 h). Valognes à 40 min. Saint-Lô à 1 h 20. Aéroport Cherbourg-Maupertus à 30 min.",
   topSectorsNaf: [
     "PME sous-traitance industrielle et nucléaire",
-    "TPE agriculture et élevage bovin",
+    "PME agriculture et élevage bovin",
     "Artisanat et BTP local",
     "Tourisme de nature et sentiers côtiers",
     "Commerce de proximité rural",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à La Hague : diagnostic adapté aux PME agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à La Hague : diagnostic adapté aux PME agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Hague : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce rural, le prestataire touristique. Vos équipes repartent autonomes sur les outils IA.",
@@ -42,8 +42,8 @@ export const LA_HAGUE_COPY: VilleCopy = {
       en: "Implémentation IA à La Hague : automatisation contrôle qualité industriel, gestion traçabilité agricole, agents IA accueil touristique, prédiction maintenance sous-traitance nucléaire, CRM commerces ruraux.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à La Hague : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME, sous-traitants industriels, agriculteurs, commerçants et indépendants du nord Cotentin.",
-      en: "Coaching 1-to-1 à La Hague : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME, sous-traitants industriels, agriculteurs, commerçants et indépendants du nord Cotentin.",
+      fr: "Coaching 1-to-1 à La Hague : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI, sous-traitants industriels, agriculteurs, commerçants et indépendants du nord Cotentin.",
+      en: "Coaching 1-to-1 à La Hague : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants PME et ETI, sous-traitants industriels, agriculteurs, commerçants et indépendants du nord Cotentin.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const LA_HAGUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME sous-traitance industrielle et nucléaire de La Hague : automatisation contrôle qualité, prédiction maintenance, classification rapports HSE, conformité documentaire. ROI chiffré contractuel.",
     },
     {
-      q: "Quels services pour les TPE agricoles du nord Cotentin ?",
-      a: "Pour les TPE agricoles de La Hague et du nord Cotentin, audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : traçabilité élevage, prédiction rendements, automatisation PAC, gestion parcelles.",
+      q: "Quels services pour les PME agricoles du nord Cotentin ?",
+      a: "Pour les PME agricoles de La Hague et du nord Cotentin, audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : traçabilité élevage, prédiction rendements, automatisation PAC, gestion parcelles.",
     },
     {
       q: "Travaillez-vous avec les prestataires tourisme nature ?",

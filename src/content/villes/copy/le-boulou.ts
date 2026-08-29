@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LE_BOULOU_COPY: VilleCopy = {
   pitchFr:
-    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir frontalier.",
+    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu PME artisanales, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir frontalier.",
   pitchEn:
-    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir frontalier.",
+    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu PME artisanales, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir frontalier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Boulou (66). Nous accompagnons tous types d'activités : PME artisanales, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Boulou (66). Nous accompagnons tous types d'activités : PME artisanales, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
   seoHook: "transport logistique & thermalisme santé",
   ecosystemFr:
-    "Le Boulou est une ville-étape sur l'A9 à la frontière franco-espagnole, avec une station thermale réputée (Les Thermes du Boulou). Position stratégique logistique transfrontalière. PME transport/logistique, thermalisme, TPE artisanat, commerces, agriculture (viticulture, arboriculture).",
+    "Le Boulou est une ville-étape sur l'A9 à la frontière franco-espagnole, avec une station thermale réputée (Les Thermes du Boulou). Position stratégique logistique transfrontalière. PME transport/logistique, thermalisme, PME de l'artisanat, commerces, agriculture (viticulture, arboriculture).",
   ecosystemEn:
-    "Le Boulou est une ville-étape sur l'A9 à la frontière franco-espagnole, avec une station thermale réputée (Les Thermes du Boulou). Position stratégique logistique transfrontalière. PME transport/logistique, thermalisme, TPE artisanat, commerces, agriculture (viticulture, arboriculture).",
+    "Le Boulou est une ville-étape sur l'A9 à la frontière franco-espagnole, avec une station thermale réputée (Les Thermes du Boulou). Position stratégique logistique transfrontalière. PME transport/logistique, thermalisme, PME de l'artisanat, commerces, agriculture (viticulture, arboriculture).",
   distancesFr:
     "Perpignan centre à 25 min. Frontière espagnole (Le Perthus) à 10 min. Céret à 10 min. Argelès-sur-Mer à 20 min. Aéroport Perpignan-Rivesaltes à 30 min. Barcelone à 1h45 via AP-7.",
   distancesEn:
@@ -25,13 +25,13 @@ export const LE_BOULOU_COPY: VilleCopy = {
     "Transport & logistique transfrontalière",
     "Thermalisme & santé",
     "Commerce frontalier",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Viticulture & arboriculture",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Boulou : diagnostic adapté aux TPE artisans, PME transport et logistique transfrontalière, professionnels du thermalisme et commerçants frontaliers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA au Boulou : diagnostic adapté aux TPE artisans, PME transport et logistique transfrontalière, professionnels du thermalisme et commerçants frontaliers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA au Boulou : diagnostic adapté aux PME artisanales, PME transport et logistique transfrontalière, professionnels du thermalisme et commerçants frontaliers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA au Boulou : diagnostic adapté aux PME artisanales, PME transport et logistique transfrontalière, professionnels du thermalisme et commerçants frontaliers. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site au Boulou : formats adaptés au dépôt logistique, établissement thermal, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
@@ -42,8 +42,8 @@ export const LE_BOULOU_COPY: VilleCopy = {
       en: "Implémentation IA au Boulou : optimisation tournées logistiques transfrontalières, gestion planning thermal, automatisation douane/export, agents conversationnels bilingues FR/ES. Vallespir.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 au Boulou : sessions dans votre dépôt, établissement, commerce ou en visio. Dirigeants logistique, thermalisme, commerçants frontaliers, artisans, gérants TPE/PME boulounais.",
-      en: "Coaching 1-to-1 au Boulou : sessions dans votre dépôt, établissement, commerce ou en visio. Dirigeants logistique, thermalisme, commerçants frontaliers, artisans, gérants TPE/PME boulounais.",
+      fr: "Coaching 1-to-1 au Boulou : sessions dans votre dépôt, établissement, commerce ou en visio. Dirigeants logistique, thermalisme, commerçants frontaliers, artisans, gérants PME et ETI boulounais.",
+      en: "Coaching 1-to-1 au Boulou : sessions dans votre dépôt, établissement, commerce ou en visio. Dirigeants logistique, thermalisme, commerçants frontaliers, artisans, gérants PME et ETI boulounais.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const LE_BOULOU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professionnels du thermalisme au Boulou : gestion planning curistes, chatbots réservation, marketing personnalisé, automatisation parcours patient, fidélisation.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants au Boulou, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA bilingues, gestion stocks.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce au Boulou, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA bilingues, gestion stocks.",
     },
     {
       q: "Comment se déroule une mission au Boulou ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const LUZARCHES_COPY: VilleCopy = {
   pitchFr:
-    "Luzarches (95), bourg historique du Pays de France au nord du Val-d'Oise, conjugue patrimoine médiéval et tissu économique local dynamique. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Luzarches (95), bourg historique du Pays de France au nord du Val-d'Oise, conjugue patrimoine médiéval et tissu économique local dynamique. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture. Axion-IA y intervient pour tous types d'activités.",
   pitchEn:
-    "Luzarches (95), bourg historique du Pays de France au nord du Val-d'Oise, conjugue patrimoine médiéval et tissu économique local dynamique. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Luzarches (95), bourg historique du Pays de France au nord du Val-d'Oise, conjugue patrimoine médiéval et tissu économique local dynamique. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luzarches (95). Nous accompagnons PME et ETI : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Luzarches (95). Nous accompagnons PME et ETI : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit sur place sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
-    "Luzarches est un bourg historique du Pays de France, au nord du Val-d'Oise, réputé pour son patrimoine médiéval et son marché. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture.",
+    "Luzarches est un bourg historique du Pays de France, au nord du Val-d'Oise, réputé pour son patrimoine médiéval et son marché. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture.",
   ecosystemEn:
-    "Luzarches est un bourg historique du Pays de France, au nord du Val-d'Oise, réputé pour son patrimoine médiéval et son marché. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture.",
+    "Luzarches est un bourg historique du Pays de France, au nord du Val-d'Oise, réputé pour son patrimoine médiéval et son marché. Tissu PME du commerce et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture.",
   distancesFr:
     "Chantilly à 10 min. Sarcelles à 20 min. Gare Transilien H Luzarches (terminus). Paris Gare du Nord à 45 min. Aéroport Paris-CDG à 20 min.",
   distancesEn:
@@ -42,8 +42,8 @@ export const LUZARCHES_COPY: VilleCopy = {
       en: "Implémentation IA à Luzarches : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, planification chantier BTP, facturation intelligente PME.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Luzarches : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME luzarchois, professions libérales, artisans BTP.",
-      en: "Coaching 1-to-1 à Luzarches : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants TPE/PME luzarchois, professions libérales, artisans BTP.",
+      fr: "Coaching 1-to-1 à Luzarches : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI luzarchois, professions libérales, artisans BTP.",
+      en: "Coaching 1-to-1 à Luzarches : sessions dans votre commerce, cabinet, restaurant ou en visio. Dirigeants PME et ETI luzarchois, professions libérales, artisans BTP.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const LUZARCHES_COPY: VilleCopy = {
       a: "Oui, automatisation gestion cabinet, secrétariat IA, CRM patients/clients, facturation automatisée, outils de pilotage activité.",
     },
     {
-      q: "Quels services pour les TPE et prestataires BTP ?",
+      q: "Quels services pour les PME et prestataires BTP ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {

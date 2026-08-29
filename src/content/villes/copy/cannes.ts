@@ -9,9 +9,9 @@ export const CANNES_COPY: VilleCopy = {
   pitchEn:
     "Cannes (06), station mondiale Côte d'Azur célèbre pour son Festival international du film, son Palais des Festivals et la Croisette, concentre un tissu unique : hôtellerie de prestige, événementiel international, yachting et croisières, commerce de luxe, immobilier haut de gamme, et proximité immédiate du technopôle Sophia Antipolis. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cannes (06). Nous accompagnons TPE et PME : hôtellerie de prestige (Croisette, Suquet), événementiel international (Festival, MIPIM, MIPCOM, Cannes Lions), yachting et brokers maritimes, retail luxe et bijouterie, immobilier haut de gamme, restaurateurs et tech entreprises proches Sophia Antipolis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cannes (06). Nous accompagnons PME et ETI : hôtellerie de prestige (Croisette, Suquet), événementiel international (Festival, MIPIM, MIPCOM, Cannes Lions), yachting et brokers maritimes, retail luxe et bijouterie, immobilier haut de gamme, restaurateurs et tech entreprises proches Sophia Antipolis.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cannes (06). Nous accompagnons TPE et PME : hôtellerie de prestige (Croisette, Suquet), événementiel international (Festival, MIPIM, MIPCOM, Cannes Lions), yachting et brokers maritimes, retail luxe et bijouterie, immobilier haut de gamme, restaurateurs et tech entreprises proches Sophia Antipolis.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Cannes (06). Nous accompagnons PME et ETI : hôtellerie de prestige (Croisette, Suquet), événementiel international (Festival, MIPIM, MIPCOM, Cannes Lions), yachting et brokers maritimes, retail luxe et bijouterie, immobilier haut de gamme, restaurateurs et tech entreprises proches Sophia Antipolis.",
   seoHook: "tourisme prestige, événementiel & yachting",
   ecosystemFr:
     "Cannes est l'une des stations balnéaires les plus prestigieuses au monde, structurée autour de la Croisette, du Palais des Festivals et du Vieux-Port. Tissu économique : hôtellerie 4/5 étoiles (Carlton, Majestic, Martinez), restauration gastronomique, événementiel B2B (12+ salons internationaux/an), yachting (Vieux-Port + Port Canto), retail luxe (rue d'Antibes), immobilier de prestige. Proximité immédiate Sophia Antipolis (15 km) — premier technopôle européen IT/biotech.",
@@ -42,8 +42,8 @@ export const CANNES_COPY: VilleCopy = {
       en: "Implémentation IA à Cannes : agents conversationnels multilingues conciergerie hôtelière, automatisation gestion événementielle, CRM yachting/retail luxe, prédiction occupation hôtelière, OCR factures gastronomie.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Cannes : sessions dans votre hôtel, agence, boutique ou en visio. Dirigeants TPE/PME tourisme prestige, événementiel, yachting et tech souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Cannes : sessions dans votre hôtel, agence, boutique ou en visio. Dirigeants TPE/PME tourisme prestige, événementiel, yachting et tech souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Cannes : sessions dans votre hôtel, agence, boutique ou en visio. Dirigeants PME et ETI tourisme prestige, événementiel, yachting et tech souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Cannes : sessions dans votre hôtel, agence, boutique ou en visio. Dirigeants PME et ETI tourisme prestige, événementiel, yachting et tech souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   services: {
@@ -54,7 +54,7 @@ export const CANNES_COPY: VilleCopy = {
           "Le Palais des Festivals enchaîne 79 événements professionnels et 380 000 accrédités par an : nous construisons des portails d'accréditation, billetterie et matchmaking exposants/visiteurs IA pour les organisateurs et prestataires gravitant autour de MIPIM, MIPCOM, MAPIC et ILTM, avec recherche sémantique multilingue (FR/EN/IT/AR).",
           "La filière image cannoise — Campus Georges Méliès et studios Bastide Rouge à La Bocca, 1 200 étudiants formés avec Vivendi, Canal+, Banijay et l'INA — et le World AI Film Festival font de Cannes un terrain naturel pour les plateformes SaaS de production audiovisuelle IA-native : pipelines de génération assistée, catalogues VOD, espaces de pré-vente de droits.",
           "Le yachting structure une économie B2B haut de gamme : Vieux-Port (650 anneaux dont 60 superyachts) et Port Pierre Canto (598 anneaux), brokers, chantiers de refit, crew management. Nous développons des plateformes de listing yachts, espaces clients VIP et e-commerce de services nautiques connectés à l'IA.",
-          "Le retail de luxe de la rue d'Antibes, l'hôtellerie 4/5 étoiles de la Croisette et la proximité du technopôle Sophia Antipolis (15 min) nous donnent un vivier de TPE/PME et de scale-ups tech pour qui nous livrons des boutiques e-commerce, conciergeries conversationnelles multilingues et sites vitrines à fort SEO local.",
+          "Le retail de luxe de la rue d'Antibes, l'hôtellerie 4/5 étoiles de la Croisette et la proximité du technopôle Sophia Antipolis (15 min) nous donnent un vivier de PME et ETI et de scale-ups tech pour qui nous livrons des boutiques e-commerce, conciergeries conversationnelles multilingues et sites vitrines à fort SEO local.",
         ],
         methodology: [
           {
@@ -84,12 +84,6 @@ export const CANNES_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique e-commerce IA",
-            detail:
-              "Pour indépendants et TPE cannoises — restaurateur du Suquet, boutique de la rue d'Antibes, broker yachting indépendant, photographe d'événementiel : site vitrine SEO local ou boutique e-commerce multi-CMS avec chatbot conversationnel multilingue.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme SaaS ou portail métier",
@@ -171,12 +165,6 @@ export const CANNES_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "TPE",
-            price: "Showcase site or AI e-commerce store",
-            detail:
-              "For Cannes freelancers and micro-businesses — a Suquet restaurateur, a rue d'Antibes boutique, an independent yachting broker, an event photographer: local-SEO showcase site or multi-CMS e-commerce store with a multilingual conversational chatbot.",
-          },
-          {
             sizeLabel: "PME",
             price: "SaaS platform or business portal",
             detail:
@@ -237,7 +225,7 @@ export const CANNES_COPY: VilleCopy = {
       a: "Automatisation accréditations badges, agents conversationnels visiteurs/exposants multilingues, gestion CRM partenaires, prédiction affluence stands, analyse feedback post-événement. Adapté Festival, MIPIM, MIPCOM, Cannes Lions, MAPIC.",
     },
     {
-      q: "Quels services pour les TPE artisans, boutiques et brokers yachting ?",
+      q: "Quels services pour les PME artisanales, boutiques et brokers yachting ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : CRM clients VIP, automatisation devis yachting, gestion inventaire boutique luxe, suivi commandes haut de gamme.",
     },
     {

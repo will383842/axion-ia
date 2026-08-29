@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const GARGENVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de TPE artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA opère pour entreprises et indépendants du secteur du Mantois.",
+    "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de PME artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA opère pour entreprises et indépendants du secteur du Mantois.",
   pitchEn:
-    "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de TPE artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA opère pour entreprises et indépendants du secteur du Mantois.",
+    "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de PME artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA opère pour entreprises et indépendants du secteur du Mantois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gargenville (78). Nous accompagnons TPE et PME : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gargenville (78). Nous accompagnons PME et ETI : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gargenville (78). Nous accompagnons TPE et PME : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gargenville (78). Nous accompagnons PME et ETI : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
   seoHook: "artisanat bâtiment & services aux",
   ecosystemFr:
-    "Gargenville est une commune résidentielle des bords de Seine dans le Mantois, entre Mantes-la-Jolie et Poissy. Tissu économique diversifié : TPE artisanales (bâtiment, services), PME de services aux entreprises, professions libérales, commerces de proximité. Présence d'activités logistiques liées à la Seine. Cadre semi-rural attractif pour télétravailleurs et indépendants.",
+    "Gargenville est une commune résidentielle des bords de Seine dans le Mantois, entre Mantes-la-Jolie et Poissy. Tissu économique diversifié : PME artisanales (bâtiment, services), PME de services aux entreprises, professions libérales, commerces de proximité. Présence d'activités logistiques liées à la Seine. Cadre semi-rural attractif pour télétravailleurs et indépendants.",
   ecosystemEn:
-    "Gargenville est une commune résidentielle des bords de Seine dans le Mantois, entre Mantes-la-Jolie et Poissy. Tissu économique diversifié : TPE artisanales (bâtiment, services), PME de services aux entreprises, professions libérales, commerces de proximité. Présence d'activités logistiques liées à la Seine. Cadre semi-rural attractif pour télétravailleurs et indépendants.",
+    "Gargenville est une commune résidentielle des bords de Seine dans le Mantois, entre Mantes-la-Jolie et Poissy. Tissu économique diversifié : PME artisanales (bâtiment, services), PME de services aux entreprises, professions libérales, commerces de proximité. Présence d'activités logistiques liées à la Seine. Cadre semi-rural attractif pour télétravailleurs et indépendants.",
   distancesFr:
     "Gare de Gargenville (Transilien J Paris Saint-Lazare, 50 min). Mantes-la-Jolie à 10 min. Poissy à 20 min. Paris centre à 55 min. La Défense à 40 min. Aéroport Roissy-CDG à 1h10.",
   distancesEn:
     "Gare de Gargenville (Transilien J Paris Saint-Lazare, 50 min). Mantes-la-Jolie à 10 min. Poissy à 20 min. Paris centre à 55 min. La Défense à 40 min. Aéroport Roissy-CDG à 1h10.",
   topSectorsNaf: [
-    "TPE artisanat bâtiment & services",
+    "PME de l'artisanat bâtiment & services",
     "PME services aux entreprises",
     "Professions libérales (santé, juridique)",
     "Logistique & transport fluvial Seine",
@@ -30,8 +30,8 @@ export const GARGENVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Gargenville : diagnostic adapté aux PME artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Gargenville : diagnostic adapté aux PME artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gargenville : formats adaptés aux artisans, PME de services et professions libérales du Mantois. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -52,12 +52,12 @@ export const GARGENVILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Gargenville et dans tout le bassin Mantois (Mantes-la-Jolie à 10 min, Issou, Limay, Porcheville, Poissy à 20 min). Couverture ouest Yvelines et accès direct Paris Saint-Lazare via Transilien J (50 min).",
     },
     {
-      q: "Accompagnez-vous les artisans et TPE à Gargenville ?",
-      a: "Oui, nous accompagnons les TPE et artisans de Gargenville et du Mantois sur leurs cas IA concrets : automatisation devis et facturation, gestion planning, CRM client, outils de suivi chantier. Formats courts adaptés aux petites structures.",
+      q: "Accompagnez-vous les artisans et PME à Gargenville ?",
+      a: "Oui, nous accompagnons les PME et artisans de Gargenville et du Mantois sur leurs cas IA concrets : automatisation devis et facturation, gestion planning, CRM client, outils de suivi chantier. Formats courts adaptés aux PME.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Gargenville  ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME et ETI du Mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
     },
     {
       q: "Intervenez-vous en présentiel à Gargenville ?",

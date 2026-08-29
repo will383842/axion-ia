@@ -9,9 +9,9 @@ export const NARBONNE_COPY: VilleCopy = {
   pitchEn:
     "Narbonne (11), sous-préfecture de l'Aude (55 000 habitants, agglo 130 000), ancienne capitale de la Narbonnaise romaine et carrefour autoroutier A9/A61, concentre un tissu unique : viticulture AOC (1er département viticole de France — Corbières, Minervois, La Clape, Languedoc), négoce de vins, logistique fret Espagne, tourisme antique (cathédrale Saint-Just, Palais des Archevêques, Horreum, NARBO VIA) et balnéaire (Narbonne-Plage, Gruissan), commerce centre historique et BTP rénovation patrimoine. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Narbonne (11). Nous accompagnons en priorité les TPE et PME du Narbonnais : domaines viticoles et négociants en vins AOC (Corbières, Minervois, La Clape), prestataires logistiques fret Espagne via A9, hôteliers-restaurateurs du centre historique et du littoral (Narbonne-Plage, Gruissan), artisans du BTP rénovation patrimoine et résidentiel littoral, commerces du cœur de ville et acteurs du tourisme antique (NARBO VIA, Canal du Midi). Interventions ETI possibles en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Narbonne (11). Nous accompagnons en priorité les PME et ETI du Narbonnais : domaines viticoles et négociants en vins AOC (Corbières, Minervois, La Clape), prestataires logistiques fret Espagne via A9, hôteliers-restaurateurs du centre historique et du littoral (Narbonne-Plage, Gruissan), artisans du BTP rénovation patrimoine et résidentiel littoral, commerces du cœur de ville et acteurs du tourisme antique (NARBO VIA, Canal du Midi). Interventions ETI possibles en complément.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Narbonne (11). Nous accompagnons en priorité les TPE et PME du Narbonnais : domaines viticoles et négociants en vins AOC (Corbières, Minervois, La Clape), prestataires logistiques fret Espagne via A9, hôteliers-restaurateurs du centre historique et du littoral (Narbonne-Plage, Gruissan), artisans du BTP rénovation patrimoine et résidentiel littoral, commerces du cœur de ville et acteurs du tourisme antique (NARBO VIA, Canal du Midi). Interventions ETI possibles en complément.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Narbonne (11). Nous accompagnons en priorité les PME et ETI du Narbonnais : domaines viticoles et négociants en vins AOC (Corbières, Minervois, La Clape), prestataires logistiques fret Espagne via A9, hôteliers-restaurateurs du centre historique et du littoral (Narbonne-Plage, Gruissan), artisans du BTP rénovation patrimoine et résidentiel littoral, commerces du cœur de ville et acteurs du tourisme antique (NARBO VIA, Canal du Midi). Interventions ETI possibles en complément.",
   seoHook: "viticulture AOC, logistique & tourisme antique",
   ecosystemFr:
     "Narbonne structure le Bas-Languedoc côtier autour de son cœur historique (cathédrale Saint-Just-et-Saint-Pasteur, Palais des Archevêques, Horreum gallo-romain) et du Canal du Midi (UNESCO) qui traverse la ville. Tissu économique : viticulture AOC (Corbières, Minervois, La Clape, Languedoc — 1er département France en volume), négoce et logistique vins, fret routier et ferroviaire vers l'Espagne (A9 + axe Perpignan), tourisme patrimoine antique (NARBO VIA, ouvert 2021, architecture Foster + Partners) et balnéaire (Narbonne-Plage, Gruissan, étangs), commerce centre-ville, BTP rénovation patrimoine et résidentiel littoral.",
@@ -42,8 +42,8 @@ export const NARBONNE_COPY: VilleCopy = {
       en: "Implémentation IA à Narbonne : automatisation devis et fiches techniques viticoles, agents conversationnels multilingues œnotourisme et tourisme antique, prédiction stocks et rotations négoce vins, OCR factures et bons de livraison logistique, CRM clients hôtellerie-restauration.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Narbonne : sessions au domaine viticole, à l'entrepôt logistique, à l'hôtel ou en visio. Dirigeants TPE/PME viticulture, négoce, logistique, tourisme et BTP souhaitant maîtriser l'IA appliquée à leur métier.",
-      en: "Coaching 1-to-1 à Narbonne : sessions au domaine viticole, à l'entrepôt logistique, à l'hôtel ou en visio. Dirigeants TPE/PME viticulture, négoce, logistique, tourisme et BTP souhaitant maîtriser l'IA appliquée à leur métier.",
+      fr: "Coaching 1-to-1 à Narbonne : sessions au domaine viticole, à l'entrepôt logistique, à l'hôtel ou en visio. Dirigeants PME et ETI viticulture, négoce, logistique, tourisme et BTP souhaitant maîtriser l'IA appliquée à leur métier.",
+      en: "Coaching 1-to-1 à Narbonne : sessions au domaine viticole, à l'entrepôt logistique, à l'hôtel ou en visio. Dirigeants PME et ETI viticulture, négoce, logistique, tourisme et BTP souhaitant maîtriser l'IA appliquée à leur métier.",
     },
   },
   services: {
@@ -84,12 +84,6 @@ export const NARBONNE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou boutique IA essentielle",
-            detail:
-              "Pour domaines viticoles, artisans, commerces du cœur de ville et hôteliers du littoral (Narbonne-Plage, Gruissan) : site vitrine multilingue rapide, vente directe simple, chatbot de réservation/contact. Devis à partir de 24-48 h selon la complexité.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou SaaS métier",
@@ -171,12 +165,6 @@ export const NARBONNE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential AI shop",
-            detail:
-              "For wine estates, craftspeople, town-centre shops and coastal hoteliers (Narbonne-Plage, Gruissan): fast multilingual showcase site, simple direct sales, booking/contact chatbot. Quote from 24-48 h depending on complexity.",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform or business SaaS",
             detail:
@@ -241,7 +229,7 @@ export const NARBONNE_COPY: VilleCopy = {
       a: "Oui, agents conversationnels multilingues (FR/EN/DE/ES/IT) pour réservations et concierge, automatisation devis groupes œnotourisme et patrimoine, OCR factures, gestion yield occupation, contenus multilingues sites NARBO VIA, cathédrale Saint-Just, Canal du Midi, plages de Narbonne-Plage et Gruissan.",
     },
     {
-      q: "Quels services pour les TPE artisans BTP rénovation patrimoine et littoral ?",
+      q: "Quels services pour les PME du BTP rénovation patrimoine et littoral ?",
       a: "Audit sur place, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : automatisation devis chantiers rénovation patrimoine (centre antique) et résidentiel littoral, OCR factures fournisseurs, suivi planning équipes, génération comptes-rendus de chantier, photos avant/après IA.",
     },
     {

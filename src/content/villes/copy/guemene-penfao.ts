@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GUEMENE_PENFAO_COPY: VilleCopy = {
   pitchFr:
-    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA collabore avec toutes les structures locales du pays de Redon.",
+    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de PME artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA collabore avec toutes les structures locales du pays de Redon.",
   pitchEn:
-    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA collabore avec toutes les structures locales du pays de Redon.",
+    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de PME artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA collabore avec toutes les structures locales du pays de Redon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, PME du BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, PME du BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit sur place accessible.",
   seoHook: "agriculture élevage & filière bois",
   ecosystemFr:
     "Guémené-Penfao est un bourg de plus de 5 200 habitants au carrefour de trois départements (Loire-Atlantique, Morbihan, Ille-et-Vilaine). L'économie locale s'appuie sur l'agriculture (élevage bovin, polyculture), la filière bois (forêt de la Bretesche), l'artisanat BTP, le commerce de bourg et les services de proximité. Pôle de santé rural avec médecins, pharmaciens et paramédicaux.",
@@ -42,22 +42,22 @@ export const GUEMENE_PENFAO_COPY: VilleCopy = {
       en: "Implémentation IA à Guémené-Penfao : automatisation traçabilité élevage, gestion stocks filière bois, agents IA prise de RDV santé, digitalisation commerces et PME agroalimentaires pays de Redon.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Guémené-Penfao : sessions sur votre exploitation, atelier ou cabinet. Dirigeants agricoles, artisans bois, gérants TPE/PME et professionnels de santé souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Guémené-Penfao : sessions sur votre exploitation, atelier ou cabinet. Dirigeants agricoles, artisans bois, gérants TPE/PME et professionnels de santé souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Guémené-Penfao : sessions sur votre exploitation, atelier ou cabinet. Dirigeants agricoles, artisans bois, gérants PME et ETI et professionnels de santé souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Guémené-Penfao : sessions sur votre exploitation, atelier ou cabinet. Dirigeants agricoles, artisans bois, gérants PME et ETI et professionnels de santé souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guémené-Penfao ?",
-      a: "Oui, Axion-IA intervient à Guémené-Penfao et dans tout le nord Loire-Atlantique (Plessé, Blain, Redon, Derval). Nos consultants se déplacent sur site pour accompagner TPE, PME, exploitants agricoles et commerçants locaux.",
+      a: "Oui, Axion-IA intervient à Guémené-Penfao et dans tout le nord Loire-Atlantique (Plessé, Blain, Redon, Derval). Nos consultants se déplacent sur site pour accompagner PME, ETI, exploitants agricoles et commerçants locaux.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation agricole à Guémené-Penfao ?",
-      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux exploitations agricoles et TPE du nord Loire-Atlantique. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, optimisation fournitures, automatisation administrative.",
+      a: "L'Audit sur place 4h démarre à {{price:audit-flash|flat}}, adapté aux exploitations agricoles et PME du nord Loire-Atlantique. Il identifie les opportunités IA concrètes : gestion troupeau, traçabilité, optimisation fournitures, automatisation administrative.",
     },
     {
       q: "L'IA peut-elle aider les entreprises de la filière bois à Guémené-Penfao ?",
-      a: "Oui. Pour les TPE et PME de la filière bois autour de Guémené-Penfao, l'IA optimise la gestion des stocks, la planification des coupes, le suivi des commandes, l'automatisation des devis et la traçabilité des lots de bois.",
+      a: "Oui. Pour les PME et ETI de la filière bois autour de Guémené-Penfao, l'IA optimise la gestion des stocks, la planification des coupes, le suivi des commandes, l'automatisation des devis et la traçabilité des lots de bois.",
     },
     {
       q: "Accompagnez-vous les professionnels de santé ruraux ?",

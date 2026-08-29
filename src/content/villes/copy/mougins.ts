@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MOUGINS_COPY: VilleCopy = {
   pitchFr:
-    "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu TPE artisans, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin mouginois.",
+    "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu PME artisanales, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin mouginois.",
   pitchEn:
-    "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu TPE artisans, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin mouginois.",
+    "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu PME artisanales, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin mouginois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mougins (06). Nous accompagnons tous types d'activités : PME artisanales, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mougins (06). Nous accompagnons tous types d'activités : PME artisanales, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
   seoHook: "tech startups & gastronomie étoilée",
   ecosystemFr:
-    "Mougins est commune résidentielle et gastronomique des Alpes-Maritimes (~19 800 hab), entre Cannes, Grasse et la technopole Sophia Antipolis. Village historique perché avec restaurants étoilés Michelin, galeries d'art (Musée de la Photographie, mémoire Picasso). PME tech/startups (débordement Sophia Antipolis), TPE artisans, hôtellerie haut de gamme, professions libérales et commerces.",
+    "Mougins est commune résidentielle et gastronomique des Alpes-Maritimes (~19 800 hab), entre Cannes, Grasse et la technopole Sophia Antipolis. Village historique perché avec restaurants étoilés Michelin, galeries d'art (Musée de la Photographie, mémoire Picasso). PME tech/startups (débordement Sophia Antipolis), PME artisanales, hôtellerie haut de gamme, professions libérales et commerces.",
   ecosystemEn:
-    "Mougins est commune résidentielle et gastronomique des Alpes-Maritimes (~19 800 hab), entre Cannes, Grasse et la technopole Sophia Antipolis. Village historique perché avec restaurants étoilés Michelin, galeries d'art (Musée de la Photographie, mémoire Picasso). PME tech/startups (débordement Sophia Antipolis), TPE artisans, hôtellerie haut de gamme, professions libérales et commerces.",
+    "Mougins est commune résidentielle et gastronomique des Alpes-Maritimes (~19 800 hab), entre Cannes, Grasse et la technopole Sophia Antipolis. Village historique perché avec restaurants étoilés Michelin, galeries d'art (Musée de la Photographie, mémoire Picasso). PME tech/startups (débordement Sophia Antipolis), PME artisanales, hôtellerie haut de gamme, professions libérales et commerces.",
   distancesFr:
     "Cannes centre à 10 min. Sophia Antipolis à 10 min. Grasse à 10 min. Aéroport Nice-Côte d'Azur à 25 min (A8). Antibes à 15 min. Nice centre à 30 min. Gare TGV Cannes à 15 min.",
   distancesEn:
@@ -30,8 +30,8 @@ export const MOUGINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mougins : diagnostic adapté aux TPE artisans, PME tech Sophia Antipolis, restaurateurs étoilés, hôteliers et commerçants mouginois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Mougins : diagnostic adapté aux TPE artisans, PME tech Sophia Antipolis, restaurateurs étoilés, hôteliers et commerçants mouginois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Mougins : diagnostic adapté aux PME artisanales, PME tech Sophia Antipolis, restaurateurs étoilés, hôteliers et commerçants mouginois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Mougins : diagnostic adapté aux PME artisanales, PME tech Sophia Antipolis, restaurateurs étoilés, hôteliers et commerçants mouginois. ROI mesurable, audit sur place dès {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mougins : formats adaptés aux startups tech, restaurants gastronomiques, hôtels ou commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
@@ -42,8 +42,8 @@ export const MOUGINS_COPY: VilleCopy = {
       en: "Implémentation IA à Mougins : agents conversationnels réservation restaurant/hôtel, automatisation supply chain gastronomie, optimisation expérience client luxe, intégration IA startups Sophia Antipolis.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mougins : sessions dans votre restaurant, hôtel, startup ou en visio. Dirigeants TPE/PME mouginoises souhaitant intégrer l'IA dans leur activité gastronomique, tech ou touristique.",
-      en: "Coaching 1-to-1 à Mougins : sessions dans votre restaurant, hôtel, startup ou en visio. Dirigeants TPE/PME mouginoises souhaitant intégrer l'IA dans leur activité gastronomique, tech ou touristique.",
+      fr: "Coaching 1-to-1 à Mougins : sessions dans votre restaurant, hôtel, startup ou en visio. Dirigeants PME et ETI mouginoises souhaitant intégrer l'IA dans leur activité gastronomique, tech ou touristique.",
+      en: "Coaching 1-to-1 à Mougins : sessions dans votre restaurant, hôtel, startup ou en visio. Dirigeants PME et ETI mouginoises souhaitant intégrer l'IA dans leur activité gastronomique, tech ou touristique.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const MOUGINS_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Mougins  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE artisans, startups tech et PME mouginoises. Tarifs publics transparents, sans frais cachés.",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux PME artisanales, startups tech et PME mouginoises. Tarifs publics transparents, sans frais cachés.",
     },
     {
       q: "Comment se passe une mission à Mougins ?",

@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const AUBENAS_COPY: VilleCopy = {
   pitchFr:
-    "Aubenas (07), sous-préfecture de l'Ardèche méridionale, est positionnée en surplomb de la vallée de l'Ardèche (château d'Aubenas, centre historique). Tissu tourisme Ardèche méridionale (gorges de l'Ardèche à proximité), agriculture (châtaigneraie, viticulture), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Aubenas (07), sous-préfecture de l'Ardèche méridionale, est positionnée en surplomb de la vallée de l'Ardèche (château d'Aubenas, centre historique). Tissu tourisme Ardèche méridionale (gorges de l'Ardèche à proximité), agriculture (châtaigneraie, viticulture), PME du BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Aubenas (07), sous-préfecture de l'Ardèche méridionale, est positionnée en surplomb de la vallée de l'Ardèche (château d'Aubenas, centre historique). Tissu tourisme Ardèche méridionale (gorges de l'Ardèche à proximité), agriculture (châtaigneraie, viticulture), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
+    "Aubenas (07), sous-préfecture de l'Ardèche méridionale, est positionnée en surplomb de la vallée de l'Ardèche (château d'Aubenas, centre historique). Tissu tourisme Ardèche méridionale (gorges de l'Ardèche à proximité), agriculture (châtaigneraie, viticulture), PME du BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubenas (07). Nous accompagnons tous types d'activités : acteurs tourisme Ardèche méridionale (gorges), agriculteurs (châtaigneraie, viticulture), administration sous-préfecture, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubenas (07). Nous accompagnons tous types d'activités : acteurs tourisme Ardèche méridionale (gorges), agriculteurs (châtaigneraie, viticulture), administration sous-préfecture, PME du BTP, commerçants et services aux entreprises.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubenas (07). Nous accompagnons tous types d'activités : acteurs tourisme Ardèche méridionale (gorges), agriculteurs (châtaigneraie, viticulture), administration sous-préfecture, TPE artisans BTP, commerçants et services aux entreprises.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Aubenas (07). Nous accompagnons tous types d'activités : acteurs tourisme Ardèche méridionale (gorges), agriculteurs (châtaigneraie, viticulture), administration sous-préfecture, PME du BTP, commerçants et services aux entreprises.",
   seoHook: "tourisme ardèche & agriculture",
   ecosystemFr:
-    "Aubenas est la sous-préfecture d'Ardèche méridionale (château, centre historique). Proximité gorges de l'Ardèche (site touristique majeur). Agriculture : châtaigneraie ardéchoise (marrons d'Ardèche AOC), viticulture (Côtes du Vivarais). Tissu tourisme, administration, TPE artisanat BTP, commerces.",
+    "Aubenas est la sous-préfecture d'Ardèche méridionale (château, centre historique). Proximité gorges de l'Ardèche (site touristique majeur). Agriculture : châtaigneraie ardéchoise (marrons d'Ardèche AOC), viticulture (Côtes du Vivarais). Tissu tourisme, administration, PME du BTP, commerces.",
   ecosystemEn:
-    "Aubenas est la sous-préfecture d'Ardèche méridionale (château, centre historique). Proximité gorges de l'Ardèche (site touristique majeur). Agriculture : châtaigneraie ardéchoise (marrons d'Ardèche AOC), viticulture (Côtes du Vivarais). Tissu tourisme, administration, TPE artisanat BTP, commerces.",
+    "Aubenas est la sous-préfecture d'Ardèche méridionale (château, centre historique). Proximité gorges de l'Ardèche (site touristique majeur). Agriculture : châtaigneraie ardéchoise (marrons d'Ardèche AOC), viticulture (Côtes du Vivarais). Tissu tourisme, administration, PME du BTP, commerces.",
   distancesFr:
     "Montélimar à 30 min. Valence à 1h. Lyon centre à 2h. Aéroport Lyon-Saint-Exupéry à 1h45. Gorges de l'Ardèche à 30 min. Privas à 30 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const AUBENAS_COPY: VilleCopy = {
     "Tourisme Ardèche méridionale (gorges)",
     "Agriculture (châtaigneraie AOC, viticulture)",
     "Administration (sous-préfecture)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubenas : diagnostic adapté aux acteurs tourisme gorges Ardèche, agriculteurs châtaigneraie/viticulture, administration, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
-      en: "Audit IA à Aubenas : diagnostic adapté aux acteurs tourisme gorges Ardèche, agriculteurs châtaigneraie/viticulture, administration, TPE artisans. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      fr: "Audit IA à Aubenas : diagnostic adapté aux acteurs tourisme gorges Ardèche, agriculteurs châtaigneraie/viticulture, administration, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
+      en: "Audit IA à Aubenas : diagnostic adapté aux acteurs tourisme gorges Ardèche, agriculteurs châtaigneraie/viticulture, administration, PME artisanales. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubenas : formats adaptés au site touristique, exploitation châtaigneraie/viticole, administration, commerce. Vos équipes repartent autonomes.",
@@ -42,8 +42,8 @@ export const AUBENAS_COPY: VilleCopy = {
       en: "Implémentation IA à Aubenas : agents conversationnels touristes gorges Ardèche multilingue, traçabilité marrons AOC, classification photos châtaigneraie, automatisation réservations.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Aubenas : sessions dans votre site touristique, exploitation, administration ou en visio. Acteurs tourisme, agriculteurs, administration, artisans, gérants TPE/PME albenassiens.",
-      en: "Coaching 1-to-1 à Aubenas : sessions dans votre site touristique, exploitation, administration ou en visio. Acteurs tourisme, agriculteurs, administration, artisans, gérants TPE/PME albenassiens.",
+      fr: "Coaching 1-to-1 à Aubenas : sessions dans votre site touristique, exploitation, administration ou en visio. Acteurs tourisme, agriculteurs, administration, artisans, gérants PME et ETI albenassiens.",
+      en: "Coaching 1-to-1 à Aubenas : sessions dans votre site touristique, exploitation, administration ou en visio. Acteurs tourisme, agriculteurs, administration, artisans, gérants PME et ETI albenassiens.",
     },
   },
   faqGeolocalisee: [
@@ -60,7 +60,7 @@ export const AUBENAS_COPY: VilleCopy = {
       a: "Oui, traçabilité marrons d'Ardèche AOC, classification photos châtaigneraie, prédiction récoltes, vente directe circuit court.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerces ?",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {

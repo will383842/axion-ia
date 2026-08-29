@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const PLOEREN_COPY: VilleCopy = {
   pitchFr:
-    "Ploeren (56), commune résidentielle de l'agglomération de Vannes à proximité du golfe du Morbihan, accueille un tissu économique dynamique de services et d'artisanat porté par la croissance du bassin vannetais. TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires composent son économie. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération vannetaise.",
+    "Ploeren (56), commune résidentielle de l'agglomération de Vannes à proximité du golfe du Morbihan, accueille un tissu économique dynamique de services et d'artisanat porté par la croissance du bassin vannetais. PME artisanales, PME de services, commerces, professions libérales et prestataires tertiaires composent son économie. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération vannetaise.",
   pitchEn:
-    "Ploeren (56), commune résidentielle de l'agglomération de Vannes à proximité du golfe du Morbihan, accueille un tissu économique dynamique de services et d'artisanat porté par la croissance du bassin vannetais. TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires composent son économie. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération vannetaise.",
+    "Ploeren (56), commune résidentielle de l'agglomération de Vannes à proximité du golfe du Morbihan, accueille un tissu économique dynamique de services et d'artisanat porté par la croissance du bassin vannetais. PME artisanales, PME de services, commerces, professions libérales et prestataires tertiaires composent son économie. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération vannetaise.",
   seoHook: "services, tertiaire & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploeren (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires du bassin vannetais. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploeren (56). Nous accompagnons tous types d'activités : PME artisanales, PME de services, commerces, professions libérales et prestataires tertiaires du bassin vannetais. Audit sur place sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploeren (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires du bassin vannetais. Audit sur place sur mesure, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Ploeren (56). Nous accompagnons tous types d'activités : PME artisanales, PME de services, commerces, professions libérales et prestataires tertiaires du bassin vannetais. Audit sur place sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Ploeren est une commune résidentielle en pleine croissance de l'agglomération vannetaise, à quelques minutes du centre de Vannes et du golfe du Morbihan. L'économie locale repose sur les services aux entreprises, l'artisanat BTP, le commerce de proximité, les professions libérales et le tertiaire. Les zones d'activités communales accueillent PME de services, cabinets et prestataires qui gravitent autour du pôle économique vannetais.",
   ecosystemEn:
@@ -30,20 +30,20 @@ export const PLOEREN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploeren : diagnostic adapté aux TPE artisanales, PME de services, cabinets et prestataires tertiaires de l'agglomération vannetaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Ploeren : diagnostic adapté aux TPE artisanales, PME de services, cabinets et prestataires tertiaires de l'agglomération vannetaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Ploeren : diagnostic adapté aux PME artisanales, PME de services, cabinets et prestataires tertiaires de l'agglomération vannetaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Ploeren : diagnostic adapté aux PME artisanales, PME de services, cabinets et prestataires tertiaires de l'agglomération vannetaise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploeren : formations pratiques pour équipes de PME de services, artisans BTP et prestataires tertiaires du bassin vannetais. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
       en: "Interventions IA sur site à Ploeren : formations pratiques pour équipes de PME de services, artisans BTP et prestataires tertiaires du bassin vannetais. Vos collaborateurs repartent autonomes sur les outils IA configurés métier.",
     },
     implementation: {
-      fr: "Implémentation IA à Ploeren : CRM augmenté pour PME de services, automatisation devis artisans, agents conversationnels accueil client, gestion planning et facturation. Adapté au tissu TPE/PME de l'agglomération vannetaise.",
-      en: "Implémentation IA à Ploeren : CRM augmenté pour PME de services, automatisation devis artisans, agents conversationnels accueil client, gestion planning et facturation. Adapté au tissu TPE/PME de l'agglomération vannetaise.",
+      fr: "Implémentation IA à Ploeren : CRM augmenté pour PME de services, automatisation devis artisans, agents conversationnels accueil client, gestion planning et facturation. Adapté au tissu PME et ETI de l'agglomération vannetaise.",
+      en: "Implémentation IA à Ploeren : CRM augmenté pour PME de services, automatisation devis artisans, agents conversationnels accueil client, gestion planning et facturation. Adapté au tissu PME et ETI de l'agglomération vannetaise.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Ploeren : sessions individuelles pour dirigeants TPE/PME, artisans, commerçants et professionnels libéraux de l'agglomération vannetaise souhaitant maîtriser l'IA au quotidien.",
-      en: "Coaching 1-to-1 à Ploeren : sessions individuelles pour dirigeants TPE/PME, artisans, commerçants et professionnels libéraux de l'agglomération vannetaise souhaitant maîtriser l'IA au quotidien.",
+      fr: "Coaching 1-to-1 à Ploeren : sessions individuelles pour dirigeants de PME et d'ETI, artisans, commerçants et professionnels libéraux de l'agglomération vannetaise souhaitant maîtriser l'IA au quotidien.",
+      en: "Coaching 1-to-1 à Ploeren : sessions individuelles pour dirigeants de PME et d'ETI, artisans, commerçants et professionnels libéraux de l'agglomération vannetaise souhaitant maîtriser l'IA au quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -57,7 +57,7 @@ export const PLOEREN_COPY: VilleCopy = {
     },
     {
       q: "Combien coûte un audit IA à Ploeren  ?",
-      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux TPE et PME ploerennaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
+      a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}}. Adapté aux PME et ETI ploerennaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Ploeren ?",

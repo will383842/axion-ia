@@ -5,10 +5,10 @@
 import type { VilleCopy } from "./types";
 
 const PITCH_FR =
-  "Axion-IA accompagne les TPE et PME de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. Williams se déplace sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
+  "Axion-IA accompagne les PME et ETI de Carpentras, sous-préfecture du Vaucluse de 31 619 habitants au cœur du Comtat Venaissin. Williams se déplace sur site auprès des artisans, commerçants, exploitations viticoles et entreprises agroalimentaires locales pour automatiser, en code custom, leurs tâches administratives, devis et relances clients. Aucun no-code propriétaire, pas de SaaS verrouillant : du code documenté, livré et maintenable.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Carpentras pour les TPE et PME du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. Williams se déplace depuis le réseau Avignon-TGV (30 km, 38 min de train) pour cadrer le besoin sur place, livrer du code custom Python ou TypeScript, et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, accompagnement 1-à-1 {{price:intervention-dirigeants|flat}} — tarifs publics, pas de licence cachée.";
+  "Axion-IA intervient à Carpentras pour les PME et ETI du Vaucluse : viticulteurs des AOC Ventoux et Côtes-du-Rhône, commerçants du marché provençal du vendredi (classé Site remarquable du goût), artisans BTP, professions libérales et restaurateurs. Williams se déplace depuis le réseau Avignon-TGV (30 km, 38 min de train) pour cadrer le besoin sur place, livrer du code custom Python ou TypeScript, et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, accompagnement 1-à-1 {{price:intervention-dirigeants|flat}} — tarifs publics, pas de licence cachée.";
 
 const ECOSYSTEM_FR =
   "Carpentras est la 4e commune du Vaucluse avec 31 619 habitants (Insee 2023, +11,69 % depuis 2017). Le tissu économique repose sur la viticulture (22,8 % de la surface communale en vignes AOC Ventoux et Côtes-du-Rhône-Villages), l'agroalimentaire (berlingot de Carpentras, truffe noire du Vaucluse, marché aux truffes hivernal), le commerce indépendant (marché hebdomadaire du vendredi matin, environ 350 forains) et les services aux entreprises. La sous-préfecture concentre administrations, professions libérales et un hôpital de bassin.";
@@ -35,8 +35,8 @@ const VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place à Carpentras pour TPE viticoles, commerçants du marché ou artisans BTP : 4 heures sur site, cartographie des tâches répétitives (saisie compta, devis manuels, relances), plan d'action chiffré. {{price:audit-flash|flat}}.",
-      en: "Audit sur place à Carpentras pour TPE viticoles, commerçants du marché ou artisans BTP : 4 heures sur site, cartographie des tâches répétitives (saisie compta, devis manuels, relances), plan d'action chiffré. {{price:audit-flash|flat}}.",
+      fr: "Audit sur place à Carpentras pour PME viticoles, commerçants du marché ou artisans BTP : 4 heures sur site, cartographie des tâches répétitives (saisie compta, devis manuels, relances), plan d'action chiffré. {{price:audit-flash|flat}}.",
+      en: "Audit sur place à Carpentras pour PME viticoles, commerçants du marché ou artisans BTP : 4 heures sur site, cartographie des tâches répétitives (saisie compta, devis manuels, relances), plan d'action chiffré. {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Formation collective à Carpentras pour PME du Comtat : automatisation devis-relances pour artisans, synchronisation caisse-compta pour commerces, suivi récolte pour caves coopératives. Code custom livré. Dès {{price:intervention-4h|flat}}.",
@@ -47,8 +47,8 @@ const VILLE_COPY: VilleCopy = {
       en: "Implémentation d'agents IA à Carpentras pour PME et ETI locales : tri automatique des emails clients, génération de fiches techniques produit, OCR factures fournisseurs. Tarifs publics, devis sur cadrage.",
     },
     unAUn: {
-      fr: "Accompagnement 1-à-1 à Carpentras pour dirigeants de TPE-PME : 4 sessions de coaching IA appliquées à votre métier (négoce viticole, commerce, BTP, libéral). À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Accompagnement 1-à-1 à Carpentras pour dirigeants de TPE-PME : 4 sessions de coaching IA appliquées à votre métier (négoce viticole, commerce, BTP, libéral). À partir de {{price:intervention-dirigeants|flat}}.",
+      fr: "Accompagnement 1-à-1 à Carpentras pour dirigeants de PME et ETI : 4 sessions de coaching IA appliquées à votre métier (négoce viticole, commerce, BTP, libéral). À partir de {{price:intervention-dirigeants|flat}}.",
+      en: "Accompagnement 1-à-1 à Carpentras pour dirigeants de PME et ETI : 4 sessions de coaching IA appliquées à votre métier (négoce viticole, commerce, BTP, libéral). À partir de {{price:intervention-dirigeants|flat}}.",
     },
   },
   services: {
@@ -58,7 +58,7 @@ const VILLE_COPY: VilleCopy = {
         whyHere: [
           "Filière agroalimentaire et végétale structurante : la zone Bellecour / Carpensud (~133 ha, label ECO PARC VAUCLUSE) et le Marché Gare et ses incubateurs concentrent négoce, transformation et logistique — des activités qui ont besoin de catalogues B2B, de portails commande-fournisseur et d'automatisation des fiches produit plutôt que de vitrines génériques.",
           "Viticulture AOC à fort potentiel e-commerce : les domaines Ventoux et Côtes-du-Rhône-Villages (près d'un quart de la surface communale en vignes) vendent en direct, en caveau et à l'export — nous construisons des boutiques de vente en ligne avec gestion millésimes, allotements et conformité affichage, doublées d'un assistant IA de recommandation.",
-          "Tissu de commerce indépendant dense : le marché provençal du vendredi (~350 forains, Site remarquable du goût), le marché aux truffes d'hiver de l'Hôtel-Dieu et les confiseurs du berlingot (Confiserie du Mont Ventoux) sont des TPE qui gagnent à passer en ligne — site mobile, click-and-collect, paiement intégré.",
+          "Tissu de commerce indépendant dense : le marché provençal du vendredi (~350 forains, Site remarquable du goût), le marché aux truffes d'hiver de l'Hôtel-Dieu et les confiseurs du berlingot (Confiserie du Mont Ventoux) sont des PME qui gagnent à passer en ligne — site mobile, click-and-collect, paiement intégré.",
           "Un point d'appui numérique local réel, La Gare Numérique : ce tiers-lieu installé dans l'ancienne gare SNCF (coworking, fablab, studio fond vert, médialab) nous permet de cadrer, prototyper et former sur place, au lieu de tout faire à distance depuis Avignon.",
         ],
         methodology: [
@@ -89,12 +89,6 @@ const VILLE_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel",
-            detail:
-              "Pour les forains du marché du vendredi, confiseurs du berlingot, petits domaines AOC Ventoux et artisans du Comtat : site mobile-first, boutique en ligne simple, click-and-collect, une brique IA (assistant ou recherche).",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce + modules IA",
@@ -176,12 +170,6 @@ const VILLE_COPY: VilleCopy = {
         ],
         pricing: [
           {
-            sizeLabel: "Micro-business",
-            price: "Showcase site or essential e-commerce",
-            detail:
-              "For Friday-market traders, berlingot confectioners, small AOC Ventoux estates and Comtat craftspeople: mobile-first site, simple online store, click-and-collect, one AI block (assistant or search).",
-          },
-          {
             sizeLabel: "SME",
             price: "E-commerce platform + AI modules",
             detail:
@@ -235,11 +223,11 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Carpentras ?",
-      a: "Oui. Williams prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des TPE et PME du Comtat Venaissin.",
+      a: "Oui. Williams prend le TGV Paris-Avignon puis le TER Avignon-Carpentras (30 km, 38 min) pour intervenir sur site auprès des PME et ETI du Comtat Venaissin.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Carpentras ?",
-      a: "Principalement les TPE-PME viticoles (AOC Ventoux, Côtes-du-Rhône-Villages), les commerçants du marché du vendredi, les artisans BTP, l'agroalimentaire (truffe, fruits confits, berlingot) et les professions libérales. Pas de spécialisation grands comptes.",
+      a: "Principalement les PME et ETI viticoles (AOC Ventoux, Côtes-du-Rhône-Villages), les commerçants du marché du vendredi, les artisans BTP, l'agroalimentaire (truffe, fruits confits, berlingot) et les professions libérales. Pas de spécialisation grands comptes.",
     },
     {
       q: "Quel délai pour démarrer une mission à Carpentras ?",

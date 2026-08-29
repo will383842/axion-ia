@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const MUNDOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, PME services et artisans, restauration, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
+    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, PME services et artisans, restauration, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : TPE/PME commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : PME et ETI commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : TPE/PME commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : PME et ETI commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
   seoHook: "commerce grande & services tertiaires",
   ecosystemFr:
-    "Mundolsheim est un pôle commercial et tertiaire de l'Eurométropole de Strasbourg nord. Centre commercial régional zone Cora, axe A4/A35. Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Forte attractivité commerciale métropolitaine.",
+    "Mundolsheim est un pôle commercial et tertiaire de l'Eurométropole de Strasbourg nord. Centre commercial régional zone Cora, axe A4/A35. Tissu commerce et grande distribution, PME tertiaires, PME services et artisans, restauration, logistique, services aux entreprises. Forte attractivité commerciale métropolitaine.",
   ecosystemEn:
-    "Mundolsheim est un pôle commercial et tertiaire de l'Eurométropole de Strasbourg nord. Centre commercial régional zone Cora, axe A4/A35. Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Forte attractivité commerciale métropolitaine.",
+    "Mundolsheim est un pôle commercial et tertiaire de l'Eurométropole de Strasbourg nord. Centre commercial régional zone Cora, axe A4/A35. Tissu commerce et grande distribution, PME tertiaires, PME services et artisans, restauration, logistique, services aux entreprises. Forte attractivité commerciale métropolitaine.",
   distancesFr:
     "Strasbourg centre à 12 min (A4). Schiltigheim à 5 min. Bischheim à 7 min. Gare de Mundolsheim (TER ligne Strasbourg-Saverne). Aéroport Strasbourg-Entzheim à 25 min. Frontière allemande (Kehl) à 25 min. Paris à 1h45 TGV via Strasbourg.",
   distancesEn:
@@ -24,14 +24,14 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
   topSectorsNaf: [
     "Commerce et grande distribution",
     "Services tertiaires aux entreprises",
-    "TPE artisanat et services",
+    "PME de l'artisanat et services",
     "Restauration et hôtellerie",
     "Logistique et transport",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
-      en: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Mundolsheim : diagnostic adapté aux PME et ETI commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
+      en: "Audit IA à Mundolsheim : diagnostic adapté aux PME et ETI commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mundolsheim : formats adaptés au commerce, grande distribution, PME tertiaire, restaurant, plateforme logistique. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
       en: "Implémentation IA à Mundolsheim : prédiction demande commerce, optimisation stocks grande distribution, agents conversationnels clients multilingue (FR/DE/EN), automatisation back-office tertiaire, classification factures et documents.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Mundolsheim : sessions dans votre commerce, bureau, restaurant ou en visio. TPE/PME commerce, grande distribution, services tertiaires, restaurateurs, logistique mundolsheimois.",
-      en: "Coaching 1-to-1 à Mundolsheim : sessions dans votre commerce, bureau, restaurant ou en visio. TPE/PME commerce, grande distribution, services tertiaires, restaurateurs, logistique mundolsheimois.",
+      fr: "Coaching 1-to-1 à Mundolsheim : sessions dans votre commerce, bureau, restaurant ou en visio. PME et ETI commerce, grande distribution, services tertiaires, restaurateurs, logistique mundolsheimois.",
+      en: "Coaching 1-to-1 à Mundolsheim : sessions dans votre commerce, bureau, restaurant ou en visio. PME et ETI commerce, grande distribution, services tertiaires, restaurateurs, logistique mundolsheimois.",
     },
   },
   faqGeolocalisee: [
@@ -60,11 +60,11 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
       a: "Oui, automatisation back-office, classification documents et factures, agents conversationnels collaborateurs et clients, prédiction churn, optimisation planning et productivité.",
     },
     {
-      q: "Quels services pour les TPE restauration et artisans ?",
+      q: "Quels services pour les PME restauration et artisans ?",
       a: "Audit sur place {{price:audit-flash|flat}}, yield management restauration, automatisation réservations, classification avis clients multilingue, agents conversationnels clients (FR/DE/EN), optimisation planning saisonnier.",
     },
     {
-      q: "Quel est le tarif d'entrée pour une TPE à Mundolsheim ?",
+      q: "Quel est le tarif d'entrée pour une PME à Mundolsheim ?",
       a: "L'audit sur place s'adapte à votre périmètre. Coaching 1-to-1 à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
   ],

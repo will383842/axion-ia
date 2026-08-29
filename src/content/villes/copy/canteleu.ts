@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CANTELEU_COPY: VilleCopy = {
   pitchFr:
-    "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglo rouennaise ouest.",
+    "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu PME artisanales, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglo rouennaise ouest.",
   pitchEn:
-    "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglo rouennaise ouest.",
+    "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu PME artisanales, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglo rouennaise ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit sur place sur mesure.",
   seoHook: "agglo Rouen ouest, tertiaire & logistique",
   ecosystemFr:
-    "Canteleu surplombe la Seine sur la rive gauche face à Rouen, membre de la Métropole Rouen Normandie. Tissu PME tertiaires et logistiques (bords de Seine), TPE artisans BTP, commerces de quartier et professions libérales installées.",
+    "Canteleu surplombe la Seine sur la rive gauche face à Rouen, membre de la Métropole Rouen Normandie. Tissu PME tertiaires et logistiques (bords de Seine), PME du BTP, commerces de quartier et professions libérales installées.",
   ecosystemEn:
-    "Canteleu surplombe la Seine sur la rive gauche face à Rouen, membre de la Métropole Rouen Normandie. Tissu PME tertiaires et logistiques (bords de Seine), TPE artisans BTP, commerces de quartier et professions libérales installées.",
+    "Canteleu surplombe la Seine sur la rive gauche face à Rouen, membre de la Métropole Rouen Normandie. Tissu PME tertiaires et logistiques (bords de Seine), PME du BTP, commerces de quartier et professions libérales installées.",
   distancesFr:
     "Rouen centre à 5 km (10 min). Gare de Rouen (TGV Paris 1h15). Maromme à 5 min. Saint-Martin-de-Boscherville à 10 min. Duclair à 15 km.",
   distancesEn:
@@ -24,14 +24,14 @@ export const CANTELEU_COPY: VilleCopy = {
   topSectorsNaf: [
     "PME tertiaires Métropole Rouen",
     "Logistique bords de Seine",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de quartier",
     "Professions libérales & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
-      en: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      fr: "Audit IA à Canteleu : diagnostic adapté aux PME artisanales, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
+      en: "Audit IA à Canteleu : diagnostic adapté aux PME artisanales, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Canteleu : formats adaptés au bureau, entrepôt bords de Seine, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const CANTELEU_COPY: VilleCopy = {
       en: "Implémentation IA à Canteleu : automatisation workflow tertiaire, optimisation logistique Seine, agents conversationnels B2B, classification documents. Agglo rouennaise ouest.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Canteleu : sessions dans votre bureau, entrepôt ou en visio. Dirigeants PME tertiaires, artisans, commerçants, gérants TPE cantelusiens souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Canteleu : sessions dans votre bureau, entrepôt ou en visio. Dirigeants PME tertiaires, artisans, commerçants, gérants TPE cantelusiens souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Canteleu : sessions dans votre bureau, entrepôt ou en visio. Dirigeants PME tertiaires, artisans, commerçants, gérants PME cantelusiens souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Canteleu : sessions dans votre bureau, entrepôt ou en visio. Dirigeants PME tertiaires, artisans, commerçants, gérants PME cantelusiens souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -56,12 +56,12 @@ export const CANTELEU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et logistiques de Canteleu sur leurs cas IA : automatisation workflow, CRM intelligent, agents conversationnels B2B, classification documents, optimisation logistique Seine.",
     },
     {
-      q: "Accompagnez-vous les TPE et artisans de Canteleu ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Canteleu sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
+      q: "Accompagnez-vous les PME et artisans de Canteleu ?",
+      a: "Oui, nous accompagnons les PME du BTP et du commerce de Canteleu sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Canteleu ?",
-      a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME tertiaires et logistiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit sur place débute selon la taille de votre activité pour les PME. Pour les PME tertiaires et logistiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

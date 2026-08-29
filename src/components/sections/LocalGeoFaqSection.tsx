@@ -38,7 +38,7 @@ const FAQS_BY_SERVICE: Record<
       id: "audit-paris",
       fr: {
         q: "Réalisez-vous des audits IA à Paris et en Île-de-France ?",
-        a: "Oui. Paris et toute l'Île-de-France font partie de nos premiers pôles d'intervention. Quatre niveaux d'audit sont disponibles selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Tarifs publics affichés sur la page Audit, sans surcoût géographique.",
+        a: "Oui. Paris et toute l'Île-de-France font partie de nos premiers pôles d'intervention. Quatre niveaux d'audit sont disponibles selon votre taille (PME, ETI, grande entreprise) et votre périmètre. Tarifs publics affichés sur la page Audit, sans surcoût géographique.",
       },
       en: {
         q: "Do you run AI audits in Paris and Greater Paris?",

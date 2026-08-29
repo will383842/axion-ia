@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const WATTRELOS_COPY: VilleCopy = {
   pitchFr:
-    "Wattrelos (59), 40 847 habitants, commune de la Métropole européenne de Lille en frontière belge (Mouscron, Estaimpuis). Ancien bassin textile (Lainière de Roubaix) reconverti en logistique et services. La Redoute y emploie environ 500 personnes. Zones d'activités l'Avelin, le Beck, le Winhoute, éco-quartier de l'Union. Canal de Roubaix rouvert à la navigation depuis 2009. Axion-IA accompagne TPE, PME, commerces et artisans wattrelosiens.",
+    "Wattrelos (59), 40 847 habitants, commune de la Métropole européenne de Lille en frontière belge (Mouscron, Estaimpuis). Ancien bassin textile (Lainière de Roubaix) reconverti en logistique et services. La Redoute y emploie environ 500 personnes. Zones d'activités l'Avelin, le Beck, le Winhoute, éco-quartier de l'Union. Canal de Roubaix rouvert à la navigation depuis 2009. Axion-IA accompagne PME, ETI, commerces et artisans wattrelosiens.",
   pitchEn:
-    "Wattrelos (59), 40 847 habitants, commune de la Métropole européenne de Lille en frontière belge (Mouscron, Estaimpuis). Ancien bassin textile (Lainière de Roubaix) reconverti en logistique et services. La Redoute y emploie environ 500 personnes. Zones d'activités l'Avelin, le Beck, le Winhoute, éco-quartier de l'Union. Canal de Roubaix rouvert à la navigation depuis 2009. Axion-IA accompagne TPE, PME, commerces et artisans wattrelosiens.",
+    "Wattrelos (59), 40 847 habitants, commune de la Métropole européenne de Lille en frontière belge (Mouscron, Estaimpuis). Ancien bassin textile (Lainière de Roubaix) reconverti en logistique et services. La Redoute y emploie environ 500 personnes. Zones d'activités l'Avelin, le Beck, le Winhoute, éco-quartier de l'Union. Canal de Roubaix rouvert à la navigation depuis 2009. Axion-IA accompagne PME, ETI, commerces et artisans wattrelosiens.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattrelos (59). Nous accompagnons TPE, PME, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom (pas no-code).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattrelos (59). Nous accompagnons PME, ETI, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom (pas no-code).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattrelos (59). Nous accompagnons TPE, PME, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom (pas no-code).",
-  seoHook: "TPE/PME logistique & commerce frontière belge",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Wattrelos (59). Nous accompagnons PME, ETI, commerces, artisans et acteurs logistiques de la commune et de la métropole lilloise (Roubaix, Tourcoing, Leers) avec audits IA, interventions sur site et coaching 1-to-1. Audit sur place {{price:audit-flash|flat}}, tarifs publics, code custom (pas no-code).",
+  seoHook: "PME et ETI logistique & commerce frontière belge",
   ecosystemFr:
     "Tissu économique de Wattrelos structuré autour de la logistique (La Redoute, Metro), du négoce textile (Steffy), du commerce transfrontalier avec la Belgique, de l'artisanat BTP et des services aux entreprises. Les zones d'activités l'Avelin, le Beck, le Winhoute et l'éco-quartier de l'Union concentrent les implantations. Forte interconnexion avec Roubaix, Tourcoing et Lille (métropole de 1,2 M d'habitants).",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const WATTRELOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wattrelos : diagnostic pour TPE, PME, commerces et acteurs logistiques de la métropole lilloise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
-      en: "Audit IA à Wattrelos : diagnostic pour TPE, PME, commerces et acteurs logistiques de la métropole lilloise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      fr: "Audit IA à Wattrelos : diagnostic pour PME, ETI, commerces et acteurs logistiques de la métropole lilloise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
+      en: "Audit IA à Wattrelos : diagnostic pour PME, ETI, commerces et acteurs logistiques de la métropole lilloise. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, pas de devis opaque.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wattrelos : ateliers adaptés logistique, négoce, commerce ou artisan BTP. Équipes formées et autonomes sur outils IA métier.",
@@ -42,14 +42,14 @@ export const WATTRELOS_COPY: VilleCopy = {
       en: "Implémentation IA à Wattrelos : automatisation préparation commandes e-commerce, classification dossiers, chatbot client, optimisation supply chain pour PME nord lilloises.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Wattrelos : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, commerçants et responsables logistique de la métropole lilloise.",
-      en: "Coaching 1-to-1 à Wattrelos : sessions sur site ou en visio pour dirigeants TPE/PME, artisans, commerçants et responsables logistique de la métropole lilloise.",
+      fr: "Coaching 1-to-1 à Wattrelos : sessions sur site ou en visio pour dirigeants de PME et d'ETI, artisans, commerçants et responsables logistique de la métropole lilloise.",
+      en: "Coaching 1-to-1 à Wattrelos : sessions sur site ou en visio pour dirigeants de PME et d'ETI, artisans, commerçants et responsables logistique de la métropole lilloise.",
     },
   },
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA à Wattrelos (59), au cœur d'un des premiers bassins logistiques e-commerce mode d'Europe. C'est ici que La Redoute opère sa plateforme ultra-automatisée Quai 30, devenue ID4Fashion avec ID Logistics (jusqu'à ~45 millions d'articles/an), et que Happychic gère l'entrepôt des marques Jules, Brice et Bizzbee au Winhoute (~40 000 m², ~50 000 articles/jour). Pour les TPE, PME, ETI et acteurs logistiques wattrelosiens — des zones de l'Avelin, du Beck, du Winhoute et de la Martinoire jusqu'à l'éco-quartier de l'Union — nous construisons des front-ends rapides, des back-offices métier et des couches IA (recherche sémantique catalogue, chatbots support, agents de qualification) en code custom, hébergés en UE, sans verrou éditeur.",
+        hero: "Axion-IA conçoit des sites web et des plateformes SaaS augmentés par l'IA à Wattrelos (59), au cœur d'un des premiers bassins logistiques e-commerce mode d'Europe. C'est ici que La Redoute opère sa plateforme ultra-automatisée Quai 30, devenue ID4Fashion avec ID Logistics (jusqu'à ~45 millions d'articles/an), et que Happychic gère l'entrepôt des marques Jules, Brice et Bizzbee au Winhoute (~40 000 m², ~50 000 articles/jour). Pour les PME, ETI et grands groupes et acteurs logistiques wattrelosiens — des zones de l'Avelin, du Beck, du Winhoute et de la Martinoire jusqu'à l'éco-quartier de l'Union — nous construisons des front-ends rapides, des back-offices métier et des couches IA (recherche sémantique catalogue, chatbots support, agents de qualification) en code custom, hébergés en UE, sans verrou éditeur.",
         whyHere: [
           "Wattrelos est un nœud logistique e-commerce mode : la plateforme Quai 30 / ID4Fashion de La Redoute (avec ID Logistics) et l'entrepôt Happychic des marques Jules, Brice et Bizzbee génèrent un besoin réel de catalogues web rapides, de portails de suivi commande et d'IA appliquée au retour produit et au support client.",
           "Le tissu local mêle PME et ETI industrielles des zones de l'Avelin, du Beck (Decathlon, Metro, France Travail) et de la Martinoire — la plus ancienne ZI du Nord (1959), où voisinent Thiriez Literie, Velec Systems et le recycleur Galloo France : autant de fabricants et négociants qui ont besoin de sites vitrines, de configurateurs produit et de back-offices connectés à leur ERP.",
@@ -84,12 +84,6 @@ export const WATTRELOS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "TPE",
-            price: "Site vitrine ou e-commerce essentiel + IA",
-            detail:
-              "Pour commerçants, artisans BTP et indépendants wattrelosiens : site vitrine ou boutique e-commerce mobile-first (multi-CMS), avec chatbot IA de réponse client et SEO local métropole lilloise.",
-          },
           {
             sizeLabel: "PME",
             price: "Plateforme e-commerce ou portail métier sur mesure",
@@ -170,12 +164,6 @@ export const WATTRELOS_COPY: VilleCopy = {
           },
         ],
         pricing: [
-          {
-            sizeLabel: "Micro-business",
-            price: "Showcase or essential e-commerce site + AI",
-            detail:
-              "For Wattrelos retailers, construction craftspeople and freelancers: mobile-first showcase or e-commerce site (multi-CMS), with an AI customer-response chatbot and Lille-metropolis local SEO.",
-          },
           {
             sizeLabel: "SME",
             price: "Custom e-commerce platform or business portal",

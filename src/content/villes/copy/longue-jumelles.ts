@@ -9,10 +9,10 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
   pitchEn:
     "Longué-Jumelles (49), bourg-centre du Baugeois en Val de Loire, compte plus de 6 500 habitants dans un territoire agricole et commerçant. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, commerces de bourg, PME agroalimentaires et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les PME, ETI et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
-  seoHook: "TPE & PME Maine-et-Loire",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les PME, ETI et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit sur place, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+  seoHook: "PME & PME Maine-et-Loire",
   ecosystemFr:
     "Longué-Jumelles est un bourg commercial et agricole du Baugeois, en position de carrefour entre Angers, Saumur et La Flèche. Agriculture céréalière, cultures spécialisées (champignonnières, semences), PME agroalimentaires, artisanat et commerces de centre-bourg. Champignonnières troglodytiques emblématiques.",
   ecosystemEn:
@@ -30,8 +30,8 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
-      en: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et TPE/PME du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      fr: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et PME et ETI du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
+      en: "Audit IA à Longué-Jumelles : diagnostic adapté aux exploitants agricoles, champignonnistes et PME et ETI du Baugeois. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, restitution sous 5 jours.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longué-Jumelles : formations pour équipes agricoles, agroalimentaires et commerciales. Ateliers pratiques adaptés au contexte Baugeois.",
@@ -42,8 +42,8 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
       en: "Implémentation IA à Longué-Jumelles : automatisation traçabilité cultures, gestion champignonnières, devis artisans, CRM commerces de bourg. Solutions adaptées agriculture et agroalimentaire.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Longué-Jumelles : sessions pour dirigeants TPE/PME, exploitants agricoles, champignonnistes et commerçants du Baugeois.",
-      en: "Coaching IA 1-to-1 à Longué-Jumelles : sessions pour dirigeants TPE/PME, exploitants agricoles, champignonnistes et commerçants du Baugeois.",
+      fr: "Coaching IA 1-to-1 à Longué-Jumelles : sessions pour dirigeants de PME et d'ETI, exploitants agricoles, champignonnistes et commerçants du Baugeois.",
+      en: "Coaching IA 1-to-1 à Longué-Jumelles : sessions pour dirigeants de PME et d'ETI, exploitants agricoles, champignonnistes et commerçants du Baugeois.",
     },
   },
   faqGeolocalisee: [

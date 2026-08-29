@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const DAMMARTIN_EN_GOELE_COPY: VilleCopy = {
   pitchFr:
-    "Dammartin-en-Goele (77), bourg historique du pays de Goele au nord de la Seine-et-Marne, beneficie de la proximite immediate de l'aeroport Roissy-CDG. Tissu TPE/PME logistique aeroportuaire, transport, commerce, artisanat BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
+    "Dammartin-en-Goele (77), bourg historique du pays de Goele au nord de la Seine-et-Marne, beneficie de la proximite immediate de l'aeroport Roissy-CDG. Tissu PME et ETI logistique aeroportuaire, transport, commerce, artisanat BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Dammartin-en-Goele (77), bourg historique du pays de Goele au nord de la Seine-et-Marne, beneficie de la proximite immediate de l'aeroport Roissy-CDG. Tissu TPE/PME logistique aeroportuaire, transport, commerce, artisanat BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
+    "Dammartin-en-Goele (77), bourg historique du pays de Goele au nord de la Seine-et-Marne, beneficie de la proximite immediate de l'aeroport Roissy-CDG. Tissu PME et ETI logistique aeroportuaire, transport, commerce, artisanat BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activites.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dammartin-en-Goele (77). Nous accompagnons TPE et PME : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dammartin-en-Goele (77). Nous accompagnons PME et ETI : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit sur place des {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dammartin-en-Goele (77). Nous accompagnons TPE et PME : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit sur place des {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Dammartin-en-Goele (77). Nous accompagnons PME et ETI : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit sur place des {{price:audit-flash|flat}}.",
   seoHook: "pays de goele",
   ecosystemFr:
-    "Dammartin-en-Goele est un bourg historique du pays de Goele, au nord de la Seine-et-Marne, a proximite directe de l'aeroport Roissy-CDG. L'economie locale beneficie de l'ecosysteme aeroportuaire (logistique, transport, hotellerie) et conserve un tissu de TPE commerce, artisanat BTP, services et agriculture cerealiere.",
+    "Dammartin-en-Goele est un bourg historique du pays de Goele, au nord de la Seine-et-Marne, a proximite directe de l'aeroport Roissy-CDG. L'economie locale beneficie de l'ecosysteme aeroportuaire (logistique, transport, hotellerie) et conserve un tissu de PME du commerce, artisanat BTP, services et agriculture cerealiere.",
   ecosystemEn:
-    "Dammartin-en-Goele est un bourg historique du pays de Goele, au nord de la Seine-et-Marne, a proximite directe de l'aeroport Roissy-CDG. L'economie locale beneficie de l'ecosysteme aeroportuaire (logistique, transport, hotellerie) et conserve un tissu de TPE commerce, artisanat BTP, services et agriculture cerealiere.",
+    "Dammartin-en-Goele est un bourg historique du pays de Goele, au nord de la Seine-et-Marne, a proximite directe de l'aeroport Roissy-CDG. L'economie locale beneficie de l'ecosysteme aeroportuaire (logistique, transport, hotellerie) et conserve un tissu de PME du commerce, artisanat BTP, services et agriculture cerealiere.",
   distancesFr:
     "Aeroport Roissy-CDG a 10 min. Paris a 40 min A1/A3. Meaux a 20 min. Senlis a 15 min. Claye-Souilly a 15 min. Acces RN2 et A1.",
   distancesEn:
@@ -42,8 +42,8 @@ export const DAMMARTIN_EN_GOELE_COPY: VilleCopy = {
       en: "Implementation IA a Dammartin-en-Goele : optimisation tournees logistique aeroportuaire, gestion stocks commerce, automatisation devis BTP, precision agriculture cerealiere.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Dammartin-en-Goele : sessions dans votre entrepot, commerce, bureau ou en visio. Dirigeants TPE/PME du nord Seine-et-Marne et du pays de Goele.",
-      en: "Coaching 1-to-1 a Dammartin-en-Goele : sessions dans votre entrepot, commerce, bureau ou en visio. Dirigeants TPE/PME du nord Seine-et-Marne et du pays de Goele.",
+      fr: "Coaching 1-to-1 a Dammartin-en-Goele : sessions dans votre entrepot, commerce, bureau ou en visio. Dirigeants PME et ETI du nord Seine-et-Marne et du pays de Goele.",
+      en: "Coaching 1-to-1 a Dammartin-en-Goele : sessions dans votre entrepot, commerce, bureau ou en visio. Dirigeants PME et ETI du nord Seine-et-Marne et du pays de Goele.",
     },
   },
   faqGeolocalisee: [
@@ -57,11 +57,11 @@ export const DAMMARTIN_EN_GOELE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA a Dammartin-en-Goele ?",
-      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les TPE et PME de Dammartin-en-Goele, nous proposons des audits approfondis adaptes aux enjeux logistique, commerce ou BTP.",
+      a: "L'Audit sur place demarre a {{price:audit-flash|flat}} pour 4 heures. Pour les PME et ETI de Dammartin-en-Goele, nous proposons des audits approfondis adaptes aux enjeux logistique, commerce ou BTP.",
     },
     {
-      q: "Accompagnez-vous les TPE artisans et commercants du pays de Goele ?",
-      a: "Oui, nous accompagnons les TPE artisans BTP, commercants et independants de Dammartin-en-Goele. Cas typiques : automatisation devis et facturation, gestion planning chantiers, agents IA service client.",
+      q: "Accompagnez-vous les PME de l'artisanat et du commerce du pays de Goele ?",
+      a: "Oui, nous accompagnons les PME du BTP, commercants et independants de Dammartin-en-Goele. Cas typiques : automatisation devis et facturation, gestion planning chantiers, agents IA service client.",
     },
     {
       q: "Proposez-vous des formations IA a Dammartin-en-Goele ?",

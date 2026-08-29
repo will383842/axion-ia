@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Boiseau (44), commune résidentielle en bords de Loire au sud-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA opère pour entreprises et indépendants du secteur du sud-ouest nantais.",
+    "Saint-Jean-de-Boiseau (44), commune résidentielle en bords de Loire au sud-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu PME de l'artisanat et du commerce, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA opère pour entreprises et indépendants du secteur du sud-ouest nantais.",
   pitchEn:
-    "Saint-Jean-de-Boiseau (44), commune résidentielle en bords de Loire au sud-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA opère pour entreprises et indépendants du secteur du sud-ouest nantais.",
+    "Saint-Jean-de-Boiseau (44), commune résidentielle en bords de Loire au sud-ouest de l'agglomération nantaise en Loire-Atlantique. Tissu PME de l'artisanat et du commerce, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA opère pour entreprises et indépendants du secteur du sud-ouest nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : PME de l'artisanat et du commerce, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
-    "Saint-Jean-de-Boiseau est une commune résidentielle en bords de Loire, entre Bouguenais et Le Pellerin. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie Loire attractif, proximité Nantes Métropole.",
+    "Saint-Jean-de-Boiseau est une commune résidentielle en bords de Loire, entre Bouguenais et Le Pellerin. Tissu PME artisanales, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie Loire attractif, proximité Nantes Métropole.",
   ecosystemEn:
-    "Saint-Jean-de-Boiseau est une commune résidentielle en bords de Loire, entre Bouguenais et Le Pellerin. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie Loire attractif, proximité Nantes Métropole.",
+    "Saint-Jean-de-Boiseau est une commune résidentielle en bords de Loire, entre Bouguenais et Le Pellerin. Tissu PME artisanales, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie Loire attractif, proximité Nantes Métropole.",
   distancesFr:
     "Nantes centre à 20 min. Gare Nantes TGV à 25 min. Aéroport Nantes-Atlantique à 10 min. Bouguenais à 5 min. La Montagne à 5 min.",
   distancesEn:
     "Nantes centre à 20 min. Gare Nantes TGV à 25 min. Aéroport Nantes-Atlantique à 10 min. Bouguenais à 5 min. La Montagne à 5 min.",
   topSectorsNaf: [
-    "TPE artisanat & commerce",
+    "PME de l'artisanat & commerce",
     "PME tertiaires & services",
     "Professions libérales",
     "Services à la personne",
@@ -30,8 +30,8 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Boiseau : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et services à la personne du sud-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Saint-Jean-de-Boiseau : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et services à la personne du sud-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Saint-Jean-de-Boiseau : diagnostic adapté aux PME artisanales, PME tertiaires, professions libérales et services à la personne du sud-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Saint-Jean-de-Boiseau : diagnostic adapté aux PME artisanales, PME tertiaires, professions libérales et services à la personne du sud-ouest nantais. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Jean-de-Boiseau : formats adaptés au bureau, au cabinet, au commerce ou en visio. Vos équipes repartent autonomes sur outils IA métier.",
@@ -42,8 +42,8 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
       en: "Implémentation IA à Saint-Jean-de-Boiseau : agents conversationnels B2B, automatisation secrétariat, gestion RDV professions libérales, extraction données commerciales. Sud-ouest Nantes.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Saint-Jean-de-Boiseau : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME du sud-ouest nantais souhaitant maîtriser l'IA.",
-      en: "Coaching 1-to-1 à Saint-Jean-de-Boiseau : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE/PME du sud-ouest nantais souhaitant maîtriser l'IA.",
+      fr: "Coaching 1-to-1 à Saint-Jean-de-Boiseau : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI du sud-ouest nantais souhaitant maîtriser l'IA.",
+      en: "Coaching 1-to-1 à Saint-Jean-de-Boiseau : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants PME et ETI du sud-ouest nantais souhaitant maîtriser l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
-      a: "Oui, nous accompagnons les professions libérales sur des cas IA pratiques : automatisation secrétariat, agents IA prise de RDV, classification documents, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures.",
+      a: "Oui, nous accompagnons les professions libérales sur des cas IA pratiques : automatisation secrétariat, agents IA prise de RDV, classification documents, gestion planning. Audit sur place {{price:audit-flash|flat}} adapté aux PME.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans et commerçants, nous proposons audit IA (Sur place {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA sur mesure.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME de l'artisanat et du commerce, nous proposons audit IA (Sur place {{price:audit-flash|flat}}), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
       q: "Combien coûte un audit IA à Saint-Jean-de-Boiseau  ?",
-      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud-ouest nantais.",
+      a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux PME et ETI du sud-ouest nantais.",
     },
     {
       q: "Comment se déroule une intervention sur site ?",

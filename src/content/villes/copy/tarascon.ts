@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const TARASCON_COPY: VilleCopy = {
   pitchFr:
-    "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. TPE artisans, PME textile et négoce, commerçants du centre ancien. Axion-IA opère pour entreprises et indépendants du secteur du bassin tarasconnais.",
+    "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. PME artisanales, PME textile et négoce, commerçants du centre ancien. Axion-IA opère pour entreprises et indépendants du secteur du bassin tarasconnais.",
   pitchEn:
-    "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. TPE artisans, PME textile et négoce, commerçants du centre ancien. Axion-IA opère pour entreprises et indépendants du secteur du bassin tarasconnais.",
+    "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. PME artisanales, PME textile et négoce, commerçants du centre ancien. Axion-IA opère pour entreprises et indépendants du secteur du bassin tarasconnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarascon (13). Nous accompagnons PME de l'artisanat et du commerce du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tarascon (13). Nous accompagnons PME de l'artisanat et du commerce du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit sur place sur mesure, sans engagement.",
   seoHook: "textile, patrimoine & agroalimentaire",
   ecosystemFr:
-    "Tarascon est une cité rhodanienne au riche patrimoine (château du roi René) avec un tissu économique tourné vers le textile, l'agroalimentaire et le négoce. TPE artisans du centre ancien, PME industrielles, commerces de proximité et acteurs du tourisme patrimonial. Connexion directe Arles-Avignon.",
+    "Tarascon est une cité rhodanienne au riche patrimoine (château du roi René) avec un tissu économique tourné vers le textile, l'agroalimentaire et le négoce. PME artisanales du centre ancien, PME industrielles, commerces de proximité et acteurs du tourisme patrimonial. Connexion directe Arles-Avignon.",
   ecosystemEn:
-    "Tarascon est une cité rhodanienne au riche patrimoine (château du roi René) avec un tissu économique tourné vers le textile, l'agroalimentaire et le négoce. TPE artisans du centre ancien, PME industrielles, commerces de proximité et acteurs du tourisme patrimonial. Connexion directe Arles-Avignon.",
+    "Tarascon est une cité rhodanienne au riche patrimoine (château du roi René) avec un tissu économique tourné vers le textile, l'agroalimentaire et le négoce. PME artisanales du centre ancien, PME industrielles, commerces de proximité et acteurs du tourisme patrimonial. Connexion directe Arles-Avignon.",
   distancesFr:
     "Arles à 20 min. Avignon à 25 min. Gare TGV Avignon à 30 min. Nîmes à 35 min. Marseille à 1h10. Aéroport Marseille Provence à 50 min. Aéroport Nîmes-Garons à 30 min.",
   distancesEn:
@@ -26,12 +26,12 @@ export const TARASCON_COPY: VilleCopy = {
     "Agroalimentaire & négoce",
     "Commerce de proximité",
     "Tourisme patrimonial",
-    "TPE artisanat & services",
+    "PME de l'artisanat & services",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Tarascon : diagnostic adapté aux PME artisanales, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Tarascon : diagnostic adapté aux PME artisanales, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tarascon : formats adaptés à l'atelier textile, au commerce de centre-ville et à l'entreprise agroalimentaire. Vos collaborateurs sont autonomes ensuite.",
@@ -42,8 +42,8 @@ export const TARASCON_COPY: VilleCopy = {
       en: "Implémentation IA à Tarascon : automatisation gestion stocks textile, agents conversationnels négoce, extraction données agroalimentaires, optimisation logistique rhodanienne.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tarascon : sessions pour dirigeants TPE/PME textile, commerçants et artisans du centre ancien souhaitant intégrer l'IA dans leur quotidien.",
-      en: "Coaching 1-to-1 à Tarascon : sessions pour dirigeants TPE/PME textile, commerçants et artisans du centre ancien souhaitant intégrer l'IA dans leur quotidien.",
+      fr: "Coaching 1-to-1 à Tarascon : sessions pour dirigeants de PME et d'ETI textile, commerçants et artisans du centre ancien souhaitant intégrer l'IA dans leur quotidien.",
+      en: "Coaching 1-to-1 à Tarascon : sessions pour dirigeants de PME et d'ETI textile, commerçants et artisans du centre ancien souhaitant intégrer l'IA dans leur quotidien.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const TARASCON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME textile de Tarascon sur leurs cas IA : automatisation gestion stocks, optimisation chaîne de production, agents IA relation fournisseurs, classification qualité produits.",
     },
     {
-      q: "L'IA est-elle adaptée aux TPE artisans de Tarascon ?",
-      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les TPE artisans et commerçants. Nous identifions les quick-wins IA adaptés à votre activité : automatisation devis, gestion planning, facturation.",
+      q: "L'IA est-elle adaptée aux PME artisanales de Tarascon ?",
+      a: "Absolument. L'Audit sur place à {{price:audit-flash|flat}} est conçu pour les PME de l'artisanat et du commerce. Nous identifions les quick-wins IA adaptés à votre activité : automatisation devis, gestion planning, facturation.",
     },
     {
       q: "Comment se déroule une mission IA à Tarascon ?",

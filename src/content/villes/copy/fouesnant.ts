@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const FOUESNANT_COPY: VilleCopy = {
   pitchFr:
-    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y conduit ses missions auprès des entreprises locales du Pays fouesnantais et de la Cornouaille.",
+    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu PME touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y conduit ses missions auprès des entreprises locales du Pays fouesnantais et de la Cornouaille.",
   pitchEn:
-    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y conduit ses missions auprès des entreprises locales du Pays fouesnantais et de la Cornouaille.",
+    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu PME touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y conduit ses missions auprès des entreprises locales du Pays fouesnantais et de la Cornouaille.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fouesnant (29). Nous accompagnons tous types d'activités : TPE touristiques (hôtels, campings, restaurants), PME cidricoles AOP Cornouaille, artisans BTP, commerçants saisonniers, indépendants, professions libérales et services aux entreprises du Pays fouesnantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fouesnant (29). Nous accompagnons tous types d'activités : PME touristiques (hôtels, campings, restaurants), PME cidricoles AOP Cornouaille, artisans BTP, commerçants saisonniers, indépendants, professions libérales et services aux entreprises du Pays fouesnantais.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fouesnant (29). Nous accompagnons tous types d'activités : TPE touristiques (hôtels, campings, restaurants), PME cidricoles AOP Cornouaille, artisans BTP, commerçants saisonniers, indépendants, professions libérales et services aux entreprises du Pays fouesnantais.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Fouesnant (29). Nous accompagnons tous types d'activités : PME touristiques (hôtels, campings, restaurants), PME cidricoles AOP Cornouaille, artisans BTP, commerçants saisonniers, indépendants, professions libérales et services aux entreprises du Pays fouesnantais.",
   seoHook: "tourisme balnéaire & cidre cornouaille",
   ecosystemFr:
-    "Fouesnant (10 436 hab) est une station balnéaire majeure du sud Finistère, intégrée à Concarneau Cornouaille Agglomération. Économie fortement saisonnière portée par le tourisme littoral (Cap Coz, Beg Meil, archipel des Glénan), la production cidricole AOP Cornouaille, l'ostréiculture, le maraîchage et un tissu TPE artisans BTP / commerces. Quimper à 15 min.",
+    "Fouesnant (10 436 hab) est une station balnéaire majeure du sud Finistère, intégrée à Concarneau Cornouaille Agglomération. Économie fortement saisonnière portée par le tourisme littoral (Cap Coz, Beg Meil, archipel des Glénan), la production cidricole AOP Cornouaille, l'ostréiculture, le maraîchage et un tissu PME du BTP / commerces. Quimper à 15 min.",
   ecosystemEn:
-    "Fouesnant (10 436 hab) est une station balnéaire majeure du sud Finistère, intégrée à Concarneau Cornouaille Agglomération. Économie fortement saisonnière portée par le tourisme littoral (Cap Coz, Beg Meil, archipel des Glénan), la production cidricole AOP Cornouaille, l'ostréiculture, le maraîchage et un tissu TPE artisans BTP / commerces. Quimper à 15 min.",
+    "Fouesnant (10 436 hab) est une station balnéaire majeure du sud Finistère, intégrée à Concarneau Cornouaille Agglomération. Économie fortement saisonnière portée par le tourisme littoral (Cap Coz, Beg Meil, archipel des Glénan), la production cidricole AOP Cornouaille, l'ostréiculture, le maraîchage et un tissu PME du BTP / commerces. Quimper à 15 min.",
   distancesFr:
     "Quimper à 15 min via D34. Gare de Quimper à 20 min (TGV Paris 3h30). Aéroport Quimper Cornouaille à 25 min. Concarneau à 15 min. Bénodet à 10 min. Pont-l'Abbé à 25 min.",
   distancesEn:
@@ -25,13 +25,13 @@ export const FOUESNANT_COPY: VilleCopy = {
     "Tourisme balnéaire & hôtellerie-restauration",
     "Cidre AOP Cornouaille & agroalimentaire",
     "Ostréiculture & économie littorale",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce saisonnier & proximité",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
-      en: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      fr: "Audit IA à Fouesnant : diagnostic adapté aux PME touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Fouesnant : diagnostic adapté aux PME touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fouesnant : formats adaptés à l'hôtel, au camping, à la cidrerie ou au commerce saisonnier. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -42,8 +42,8 @@ export const FOUESNANT_COPY: VilleCopy = {
       en: "Implémentation IA à Fouesnant : chatbot réservation multilingue, pricing dynamique saisonnier, traçabilité cidricole, automatisation gestion campings, agents conversationnels. Cornouaille et littoral sud Finistère.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Fouesnant : sessions dans votre établissement, cidrerie ou en visio. Dirigeants TPE/PME touristiques, cidriculteurs, restaurateurs et commerçants du Pays fouesnantais souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Fouesnant : sessions dans votre établissement, cidrerie ou en visio. Dirigeants TPE/PME touristiques, cidriculteurs, restaurateurs et commerçants du Pays fouesnantais souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Fouesnant : sessions dans votre établissement, cidrerie ou en visio. Dirigeants PME et ETI touristiques, cidriculteurs, restaurateurs et commerçants du Pays fouesnantais souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Fouesnant : sessions dans votre établissement, cidrerie ou en visio. Dirigeants PME et ETI touristiques, cidriculteurs, restaurateurs et commerçants du Pays fouesnantais souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -53,15 +53,15 @@ export const FOUESNANT_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les professionnels du tourisme à Fouesnant ?",
-      a: "Oui, nous accompagnons les TPE touristiques de Fouesnant (hôtels, campings, restaurants, centres nautiques) sur leurs cas IA : chatbot réservation multilingue, pricing dynamique saisonnier, gestion avis clients, automatisation communication et planning saisonnier.",
+      a: "Oui, nous accompagnons les PME touristiques de Fouesnant (hôtels, campings, restaurants, centres nautiques) sur leurs cas IA : chatbot réservation multilingue, pricing dynamique saisonnier, gestion avis clients, automatisation communication et planning saisonnier.",
     },
     {
       q: "Travaillez-vous avec les cidriculteurs AOP Cornouaille ?",
       a: "Oui, nous accompagnons les producteurs de cidre AOP Cornouaille sur leurs cas IA : traçabilité lots, prédiction qualité récolte, automatisation vente directe en ligne, classification photos vergers, optimisation logistique distribution.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants fouesnantais ?",
-      a: "Pour les TPE artisans BTP et commerçants à Fouesnant, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos.",
+      q: "Quels services pour les PME de l'artisanat et du commerce fouesnantais ?",
+      a: "Pour les PME du BTP et du commerce à Fouesnant, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks saisonniers, classification photos.",
     },
     {
       q: "Comment gérez-vous la saisonnalité touristique dans vos missions ?",

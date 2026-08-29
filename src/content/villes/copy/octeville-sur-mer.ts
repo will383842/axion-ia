@@ -5,45 +5,45 @@ import type { VilleCopy } from "./types";
 
 export const OCTEVILLE_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Octeville-sur-Mer (76), commune littorale de l'agglomeration havraise en Seine-Maritime, reunit pres de 6 170 habitants. Ville residentielle en bord de falaises, elle accueille des professions liberales, des TPE de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
+    "Octeville-sur-Mer (76), commune littorale de l'agglomeration havraise en Seine-Maritime, reunit pres de 6 170 habitants. Ville residentielle en bord de falaises, elle accueille des professions liberales, des PME de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   pitchEn:
-    "Octeville-sur-Mer (76), commune littorale de l'agglomeration havraise en Seine-Maritime, reunit pres de 6 170 habitants. Ville residentielle en bord de falaises, elle accueille des professions liberales, des TPE de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
+    "Octeville-sur-Mer (76), commune littorale de l'agglomeration havraise en Seine-Maritime, reunit pres de 6 170 habitants. Ville residentielle en bord de falaises, elle accueille des professions liberales, des PME de services, des commerces et des artisans. Axion-IA y intervient pour tous types d'activites.",
   seoHook: "littoral, professions liberales & residentiel",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Octeville-sur-Mer (76). Nous accompagnons les PME, ETI et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Octeville-sur-Mer (76). Nous accompagnons les TPE, PME et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient a Octeville-sur-Mer (76). Nous accompagnons les PME, ETI et professions liberales du littoral havrais : medecins, commercants, artisans et prestataires de services. Audit sur place a partir de {{price:audit-flash|flat}}.",
   ecosystemFr:
-    "Octeville-sur-Mer est une commune residentielle littorale a l'ouest du Havre, sur les falaises de la cote d'Albatre. Partie de la communaute urbaine Le Havre Seine Metropole, son tissu economique comprend des professions liberales, TPE de services, commerces et artisanat.",
+    "Octeville-sur-Mer est une commune residentielle littorale a l'ouest du Havre, sur les falaises de la cote d'Albatre. Partie de la communaute urbaine Le Havre Seine Metropole, son tissu economique comprend des professions liberales, PME de services, commerces et artisanat.",
   ecosystemEn:
-    "Octeville-sur-Mer est une commune residentielle littorale a l'ouest du Havre, sur les falaises de la cote d'Albatre. Partie de la communaute urbaine Le Havre Seine Metropole, son tissu economique comprend des professions liberales, TPE de services, commerces et artisanat.",
+    "Octeville-sur-Mer est une commune residentielle littorale a l'ouest du Havre, sur les falaises de la cote d'Albatre. Partie de la communaute urbaine Le Havre Seine Metropole, son tissu economique comprend des professions liberales, PME de services, commerces et artisanat.",
   distancesFr:
     "Le Havre centre a 10 min. Gare du Havre a 15 min (TGV Paris 2h10). Sainte-Adresse a 5 min. Etretat a 20 min. Rouen a 1h par A150. Paris a 2h15 par A13.",
   distancesEn:
     "Le Havre centre a 10 min. Gare du Havre a 15 min (TGV Paris 2h10). Sainte-Adresse a 5 min. Etretat a 20 min. Rouen a 1h par A150. Paris a 2h15 par A13.",
   topSectorsNaf: [
     "Professions liberales & sante",
-    "TPE services aux entreprises",
+    "PME services aux entreprises",
     "Commerce de proximite",
     "Artisanat & renovation",
     "PME tertiaire",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA a Octeville-sur-Mer : diagnostic adapte aux professions liberales, TPE de services et commercants du littoral havrais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA a Octeville-sur-Mer : diagnostic adapte aux professions liberales, TPE de services et commercants du littoral havrais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA a Octeville-sur-Mer : diagnostic adapte aux professions liberales, PME de services et commercants du littoral havrais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA a Octeville-sur-Mer : diagnostic adapte aux professions liberales, PME de services et commercants du littoral havrais. ROI chiffre, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site a Octeville-sur-Mer : formations adaptees aux cabinets liberaux, commerces et TPE de services de l'agglomeration havraise. Equipes autonomes.",
-      en: "Interventions IA sur site a Octeville-sur-Mer : formations adaptees aux cabinets liberaux, commerces et TPE de services de l'agglomeration havraise. Equipes autonomes.",
+      fr: "Interventions IA sur site a Octeville-sur-Mer : formations adaptees aux cabinets liberaux, commerces et PME de services de l'agglomeration havraise. Equipes autonomes.",
+      en: "Interventions IA sur site a Octeville-sur-Mer : formations adaptees aux cabinets liberaux, commerces et PME de services de l'agglomeration havraise. Equipes autonomes.",
     },
     implementation: {
       fr: "Implementation IA a Octeville-sur-Mer : automatisation documents, agents IA accueil patients, CRM augmentes pour professions liberales et commercants du littoral havrais.",
       en: "Implementation IA a Octeville-sur-Mer : automatisation documents, agents IA accueil patients, CRM augmentes pour professions liberales et commercants du littoral havrais.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 a Octeville-sur-Mer : accompagnement personnalise medecins, avocats, dirigeants TPE et gerants commerces du littoral havrais.",
-      en: "Coaching 1-to-1 a Octeville-sur-Mer : accompagnement personnalise medecins, avocats, dirigeants TPE et gerants commerces du littoral havrais.",
+      fr: "Coaching 1-to-1 a Octeville-sur-Mer : accompagnement personnalise medecins, avocats, dirigeants de PME et d'ETI et gerants commerces du littoral havrais.",
+      en: "Coaching 1-to-1 a Octeville-sur-Mer : accompagnement personnalise medecins, avocats, dirigeants de PME et d'ETI et gerants commerces du littoral havrais.",
     },
   },
   faqGeolocalisee: [
@@ -61,7 +61,7 @@ export const OCTEVILLE_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Accompagnez-vous les commercants d'Octeville-sur-Mer ?",
-      a: "Oui, nous accompagnons les commercants d'Octeville-sur-Mer : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Solutions adaptees TPE.",
+      a: "Oui, nous accompagnons les commercants d'Octeville-sur-Mer : gestion stocks IA, fidelisation client, agents conversationnels, comptabilite augmentee. Solutions adaptees PME.",
     },
     {
       q: "Vos interventions respectent-elles le RGPD a Octeville-sur-Mer ?",

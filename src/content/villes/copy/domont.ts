@@ -5,24 +5,24 @@ import type { VilleCopy } from "./types";
 
 export const DOMONT_COPY: VilleCopy = {
   pitchFr:
-    "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu TPE artisans BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord du Val-d'Oise.",
+    "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu PME du BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord du Val-d'Oise.",
   pitchEn:
-    "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu TPE artisans BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord du Val-d'Oise.",
+    "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu PME du BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord du Val-d'Oise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Domont (95). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit sur place sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit sur place sur mesure.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Domont (95). Nous accompagnons tous types d'activités : PME du BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit sur place sur mesure.",
   seoHook: "artisanat rénovation & commerce centre-bourg",
   ecosystemFr:
-    "Domont est une commune résidentielle du nord du Val-d'Oise, en lisière de la forêt de Montmorency, bien desservie par le Transilien H vers Paris. Son tissu économique comprend TPE artisans BTP, commerces de centre-bourg, PME de services, professions libérales et indépendants. Proximité avec Montmorency, Ezanville et Bouffémont.",
+    "Domont est une commune résidentielle du nord du Val-d'Oise, en lisière de la forêt de Montmorency, bien desservie par le Transilien H vers Paris. Son tissu économique comprend PME du BTP, commerces de centre-bourg, PME de services, professions libérales et indépendants. Proximité avec Montmorency, Ezanville et Bouffémont.",
   ecosystemEn:
-    "Domont est une commune résidentielle du nord du Val-d'Oise, en lisière de la forêt de Montmorency, bien desservie par le Transilien H vers Paris. Son tissu économique comprend TPE artisans BTP, commerces de centre-bourg, PME de services, professions libérales et indépendants. Proximité avec Montmorency, Ezanville et Bouffémont.",
+    "Domont est une commune résidentielle du nord du Val-d'Oise, en lisière de la forêt de Montmorency, bien desservie par le Transilien H vers Paris. Son tissu économique comprend PME du BTP, commerces de centre-bourg, PME de services, professions libérales et indépendants. Proximité avec Montmorency, Ezanville et Bouffémont.",
   distancesFr:
     "Gare Domont (Transilien H, 30 min Gare du Nord). A1 et A16 à proximité vers Paris (25 min). Roissy-CDG à 20 min. Enghien-les-Bains à 15 min. Sarcelles à 10 min.",
   distancesEn:
     "Gare Domont (Transilien H, 30 min Gare du Nord). A1 et A16 à proximité vers Paris (25 min). Roissy-CDG à 20 min. Enghien-les-Bains à 15 min. Sarcelles à 10 min.",
   topSectorsNaf: [
-    "TPE artisanat BTP & rénovation",
+    "PME du BTP & rénovation",
     "Commerce de centre-bourg & proximité",
     "PME services aux entreprises",
     "Professions libérales & santé",
@@ -30,8 +30,8 @@ export const DOMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Domont : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du nord Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
-      en: "Audit IA à Domont : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales du nord Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      fr: "Audit IA à Domont : diagnostic adapté aux PME artisanales, commerçants, PME de services et professions libérales du nord Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
+      en: "Audit IA à Domont : diagnostic adapté aux PME artisanales, commerçants, PME de services et professions libérales du nord Val-d'Oise. ROI chiffré, Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
       fr: "Interventions IA sur site à Domont : formats adaptés au commerce, cabinet ou atelier. Vos équipes repartent autonomes sur les outils IA configurés pour leur métier.",
@@ -42,8 +42,8 @@ export const DOMONT_COPY: VilleCopy = {
       en: "Implémentation IA à Domont : automatisation devis artisans, agents conversationnels pour commerces, gestion relation client PME, digitalisation cabinets libéraux. Nord Val-d'Oise et axe Roissy.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Domont : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME, commerçants, professions libérales et indépendants du nord Val-d'Oise.",
-      en: "Coaching 1-to-1 à Domont : sessions dans vos locaux ou en visio. Dirigeants TPE artisanat, gérants PME, commerçants, professions libérales et indépendants du nord Val-d'Oise.",
+      fr: "Coaching 1-to-1 à Domont : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME, commerçants, professions libérales et indépendants du nord Val-d'Oise.",
+      en: "Coaching 1-to-1 à Domont : sessions dans vos locaux ou en visio. Dirigeants PME de l'artisanat, gérants PME, commerçants, professions libérales et indépendants du nord Val-d'Oise.",
     },
   },
   faqGeolocalisee: [
@@ -56,8 +56,8 @@ export const DOMONT_COPY: VilleCopy = {
       a: "L'Audit sur place IA à Domont démarre à {{price:audit-flash|flat}}. Ce diagnostic couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {
-      q: "Travaillez-vous avec les TPE artisans à Domont ?",
-      a: "Oui, nous accompagnons les TPE artisans du bâtiment et de la rénovation à Domont sur leurs cas IA : automatisation devis, planification chantiers, gestion relation client, suivi facturation.",
+      q: "Travaillez-vous avec les PME artisanales à Domont ?",
+      a: "Oui, nous accompagnons les PME artisanales du bâtiment et de la rénovation à Domont sur leurs cas IA : automatisation devis, planification chantiers, gestion relation client, suivi facturation.",
     },
     {
       q: "Proposez-vous des formations IA pour les PME du nord Val-d'Oise ?",
@@ -65,7 +65,7 @@ export const DOMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule un coaching individuel IA à Domont ?",
-      a: "Le coaching 1-to-1 se déroule dans vos locaux à Domont ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeant TPE, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
+      a: "Le coaching 1-to-1 se déroule dans vos locaux à Domont ou en visio. Sessions de 2h à la demi-journée, adaptées au dirigeants de PME et d'ETI, gérant PME ou professionnel libéral. Prise en main d'outils IA concrets.",
     },
   ],
 };

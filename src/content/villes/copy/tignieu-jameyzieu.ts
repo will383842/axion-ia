@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
   pitchFr:
-    "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), TPE artisans BTP, commerces et services. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère limitrophe du Rhône.",
+    "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), PME du BTP, commerces et services. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère limitrophe du Rhône.",
   pitchEn:
-    "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), TPE artisans BTP, commerces et services. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère limitrophe du Rhône.",
+    "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), PME du BTP, commerces et services. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère limitrophe du Rhône.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, TPE artisans BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, PME du BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, TPE artisans BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, PME du BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
   seoHook: "vallée du",
   ecosystemFr:
-    "Tignieu-Jameyzieu est une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, en partie orientale de l'aire d'attraction de Lyon. Tissu industriel et logistique périphérique au couloir rhodanien (Lyon-Saint-Exupéry à 25 min), PME tertiaires et services aux entreprises, TPE artisanat BTP, commerces, activité agricole résiduelle. Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
+    "Tignieu-Jameyzieu est une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, en partie orientale de l'aire d'attraction de Lyon. Tissu industriel et logistique périphérique au couloir rhodanien (Lyon-Saint-Exupéry à 25 min), PME tertiaires et services aux entreprises, PME du BTP, commerces, activité agricole résiduelle. Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   ecosystemEn:
-    "Tignieu-Jameyzieu est une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, en partie orientale de l'aire d'attraction de Lyon. Tissu industriel et logistique périphérique au couloir rhodanien (Lyon-Saint-Exupéry à 25 min), PME tertiaires et services aux entreprises, TPE artisanat BTP, commerces, activité agricole résiduelle. Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
+    "Tignieu-Jameyzieu est une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, en partie orientale de l'aire d'attraction de Lyon. Tissu industriel et logistique périphérique au couloir rhodanien (Lyon-Saint-Exupéry à 25 min), PME tertiaires et services aux entreprises, PME du BTP, commerces, activité agricole résiduelle. Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   distancesFr:
     "Gare Pont-de-Chéruy à 5 min. Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 40 min A43. Grenoble centre à 1h. Frontière Rhône à 10 min.",
   distancesEn:
@@ -24,14 +24,14 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
   topSectorsNaf: [
     "Industrie manufacturière Nord-Isère",
     "Logistique & transport (axe rhodanien)",
-    "TPE artisanat BTP",
+    "PME du BTP",
     "Commerce de proximité",
     "PME services aux entreprises",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tignieu-Jameyzieu : diagnostic adapté aux PME industrielles/logistiques, TPE artisans, commerçants et professions libérales du Nord-Isère limitrophe du Rhône. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
-      en: "Audit IA à Tignieu-Jameyzieu : diagnostic adapté aux PME industrielles/logistiques, TPE artisans, commerçants et professions libérales du Nord-Isère limitrophe du Rhône. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      fr: "Audit IA à Tignieu-Jameyzieu : diagnostic adapté aux PME industrielles/logistiques, PME artisanales, commerçants et professions libérales du Nord-Isère limitrophe du Rhône. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
+      en: "Audit IA à Tignieu-Jameyzieu : diagnostic adapté aux PME industrielles/logistiques, PME artisanales, commerçants et professions libérales du Nord-Isère limitrophe du Rhône. ROI chiffré, audit sur place {{price:audit-flash|flat}} accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tignieu-Jameyzieu : formats adaptés à l'atelier industriel, entrepôt logistique ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -42,8 +42,8 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
       en: "Implémentation IA à Tignieu-Jameyzieu : optimisation supply chain (axe rhodanien), prédiction maintenance, automatisation devis BTP, agents conversationnels. Tous secteurs Nord-Isère.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Tignieu-Jameyzieu : sessions dans votre atelier, entrepôt, commerce ou en visio. Dirigeants industriels, logistique, artisans, gérants TPE/PME tignieusiennes souhaitant intégrer l'IA.",
-      en: "Coaching 1-to-1 à Tignieu-Jameyzieu : sessions dans votre atelier, entrepôt, commerce ou en visio. Dirigeants industriels, logistique, artisans, gérants TPE/PME tignieusiennes souhaitant intégrer l'IA.",
+      fr: "Coaching 1-to-1 à Tignieu-Jameyzieu : sessions dans votre atelier, entrepôt, commerce ou en visio. Dirigeants industriels, logistique, artisans, gérants PME et ETI tignieusiennes souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Tignieu-Jameyzieu : sessions dans votre atelier, entrepôt, commerce ou en visio. Dirigeants industriels, logistique, artisans, gérants PME et ETI tignieusiennes souhaitant intégrer l'IA.",
     },
   },
   faqGeolocalisee: [
@@ -60,8 +60,8 @@ export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les opérateurs logistiques du bassin rhodanien (proximité Lyon-Saint-Exupéry à 25 min) sur leurs cas IA : optimisation tournées, automatisation préparation commandes, prédiction demande, agents IA service client B2B. ROI chiffré contractuel avant mission.",
     },
     {
-      q: "Quels services pour les TPE artisans et commerçants ?",
-      a: "Pour les TPE artisans BTP et commerçants à Tignieu-Jameyzieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
+      q: "Quels services pour les PME de l'artisanat et du commerce ?",
+      a: "Pour les PME du BTP et du commerce à Tignieu-Jameyzieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
