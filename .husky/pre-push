@@ -27,25 +27,43 @@ pnpm zod:check
 # bloque pas le push pour ça, on le DIT. Un hook qui échoue faute de référence
 # apprendrait `--no-verify` aussi sûrement qu'un hook trop lent.
 if git rev-parse --verify --quiet origin/main >/dev/null; then
-  FICHIERS_MODIFIES=$(git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.ts' '*.tsx' | tr '\n' ' ')
-  NB_MODIFIES=$(git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.ts' '*.tsx' | wc -l | tr -d ' ')
   # 2026-08-30 — la branche de repositionnement (2 300 fichiers .ts/.tsx) a fait
   # depasser la limite d'arguments du systeme : « Argument list too long », hook en
   # code 1, push refuse. Un hook qui echoue POUR UNE RAISON QUI N'EST PAS UN DEFAUT
   # DU CODE apprend `--no-verify` — c'est la crainte ecrite en tete de ce fichier,
-  # realisee. Et au-dela de ce seuil, `vitest related` ne cible plus rien : il
-  # rejoue la suite entiere, soit les 41 minutes qu'on a precisement retirees.
-  # On le DIT, on laisse passer ; Gate A reste bloquante sur le commit de fusion.
+  # realisee.
+  #
+  # 🔴 Complement mesure le meme jour : un seuil en NOMBRE de fichiers ne protege
+  # pas de cette limite, qui porte sur des CARACTERES. `cmd.exe`, que traverse le
+  # shim pnpm de Windows, s'arrete a 8 191. Mesures sur les vrais chemins du depot :
+  #   · 88 des chemins les plus longs   = 8 220 caracteres → deja au-dessus
+  #   · 150 fichiers de la console admin = 8 116 caracteres → a 75 du plafond
+  #   · `src/components/admin/**` deborde des ~153 fichiers, `src/server/**` ~159
+  # Un seuil a 200 laisse donc passer des lots qui echouent encore. On supprime la
+  # cause au lieu de la borner : la liste passe par un FICHIER, en NUL-separe, et le
+  # decoupage est borne en TAILLE (`xargs -s`), jamais en nombre. Verifie sur les
+  # 400 pires chemins du depot : aucune invocation au-dessus de 5 951 caracteres.
+  #
+  # Le seuil de 200 est CONSERVE, mais il ne garde plus que le TEMPS : au-dela,
+  # `vitest related` ne cible plus rien d'utile — c'est la suite entiere, soit les
+  # 41 minutes qu'on a precisement retirees. On le DIT, on laisse passer ; Gate A
+  # reste bloquante sur le commit de fusion.
+  LISTE_MODIFIES=$(mktemp)
+  trap 'rm -f "${LISTE_MODIFIES}"' EXIT
+  git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.ts' '*.tsx' > "${LISTE_MODIFIES}"
+  NB_MODIFIES=$(wc -l < "${LISTE_MODIFIES}" | tr -d ' ')
+
   if [ "${NB_MODIFIES}" -eq 0 ]; then
     echo "→ aucun .ts/.tsx modifié depuis origin/main : pas de test à jouer"
   elif [ "${NB_MODIFIES}" -gt 200 ]; then
     echo "⚠️ ${NB_MODIFIES} fichiers .ts/.tsx modifiés depuis origin/main — au-delà du"
-    echo "   seuil de 200, « vitest related » dépasse la limite d'arguments du système"
-    echo "   et ne cible plus rien d'utile (c'est la suite entière). Tests liés NON"
-    echo "   joués ici. Le filet exhaustif reste en CI, Gate A, bloquante."
+    echo "   seuil de 200, « vitest related » ne cible plus rien d'utile : c'est la"
+    echo "   suite entière, et son coût. Tests liés NON joués ici."
+    echo "   Le filet exhaustif reste en CI, Gate A, bloquante."
   else
-    echo "→ tests liés aux fichiers modifiés (le filet complet est en CI, Gate A)"
-    pnpm exec vitest related --run ${FICHIERS_MODIFIES} || exit 1
+    echo "→ tests liés aux ${NB_MODIFIES} fichiers modifiés (le filet complet est en CI, Gate A)"
+    tr '\n' '\0' < "${LISTE_MODIFIES}" \
+      | xargs -0 -r -s 6000 pnpm exec vitest related --run || exit 1
   fi
 else
   echo "⚠️ origin/main introuvable — tests liés non joués. Gate A reste bloquante en CI."
