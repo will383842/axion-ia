@@ -89,7 +89,7 @@ export const NANTES_COPY: VilleCopy = {
     // ──────────────────────────────────────────────────────────
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Nantes cartographie ce qui peut être automatisé dans votre structure et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toutes les tailles, des PME indépendantes nantaises aux grandes entreprises industrielles de la métropole. Résultat : un livrable PDF actionnable remis en présentiel, sans jargon, sans lock-in.",
+        hero: "L'audit IA Axion-IA à Nantes cartographie ce qui peut être automatisé dans votre structure et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toute l'échelle, des PME indépendantes nantaises aux grandes entreprises industrielles de la métropole. Résultat : un livrable PDF actionnable remis en présentiel, sans jargon, sans lock-in.",
         whyHere: [
           "Nantes est un pôle stratégique pour Axion-IA : industrie aéronautique et navale, agroalimentaire, numérique French Tech et biotech concentrent des cas IA à fort potentiel de ROI.",
           "Tissu B2B nantais sur-représenté dans nos références : ETI industrielles (aéronautique, composites, naval), PME agroalimentaires, scale-ups French Tech, cabinets de conseil Euronantes.",
@@ -189,7 +189,7 @@ export const NANTES_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Nantes maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers cover every size, from Nantes independent micro-businesses to large industrial enterprises across the metropolis. Output: an actionable costed PDF deliverable handed over in person, jargon-free, no lock-in.",
+        hero: "Axion-IA's AI audit in Nantes maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers cover the full range, from Nantes independent micro-businesses to large industrial enterprises across the metropolis. Output: an actionable costed PDF deliverable handed over in person, jargon-free, no lock-in.",
         whyHere: [
           "Nantes is a strategic hub for Axion-IA: aeronautics, shipbuilding, agri-food, French Tech digital and biotech concentrate AI cases with strong ROI potential.",
           "Nantes B2B fabric well-represented in our references: industrial mid-caps (aeronautics, composites, naval), agri-food SMEs, French Tech scale-ups, Euronantes consulting firms.",

@@ -85,7 +85,7 @@ export const BREST_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles brestoises — des PME du commerce et des services jusqu'aux directions de programme des grands groupes de défense maritime et de l'économie marine.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle brestoises — des PME du commerce et des services jusqu'aux directions de programme des grands groupes de défense maritime et de l'économie marine.",
         whyHere: [
           "Brest est un pôle de défense maritime et de sciences de la mer sans équivalent en France : Naval Group, Thales Underwater Systems, IFREMER, Marine nationale. Ces acteurs font face à des volumes documentaires et opérationnels où l'IA à un ROI très élevé sur la gestion de configuration, la rédaction technique, le MCO et le traitement des données océanographiques.",
           "L'écosystème numérique brestois est dense : IMT Atlantique (cybersécurité, IA), ENIB (systèmes embarqués), Lab-STICC CNRS 6285 (IA, communications). Nos audits tiennent compte de vos contraintes de souveraineté et de confidentialité défense (données classifiées, export control).",
@@ -185,7 +185,7 @@ export const BREST_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size in Brest — from local micro-businesses in commerce and services to programme leadership at large maritime-defence and marine-economy groups.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range in Brest — from local micro-businesses in commerce and services to programme leadership at large maritime-defence and marine-economy groups.",
         whyHere: [
           "Brest is France's unmatched hub for maritime defence and marine science: Naval Group, Thales Underwater Systems, IFREMER, the French Navy. These players handle documentary and operational volumes where AI delivers very high ROI — configuration management, technical writing, MCO and oceanographic data processing.",
           "Brest's digital ecosystem is dense: IMT Atlantique (cybersecurity, AI), ENIB (embedded systems), Lab-STICC CNRS 6285 (AI, communications). Our audits account for your sovereignty and defence confidentiality constraints (classified data, export control).",

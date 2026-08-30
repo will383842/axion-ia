@@ -80,7 +80,7 @@ export const DIJON_COPY: VilleCopy = {
     // ────────────────────────────────────────────────────────────
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Dijon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME artisanales dijonnaises aux sièges industriels de Côte-d'Or (URGO, Amora) et aux cabinets de la Burgundy School of Business. Intervention sur site dans la métropole dijonnaise et dans tout le bassin bourguignon.",
+        hero: "L'audit IA Axion-IA à Dijon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME artisanales dijonnaises aux sièges industriels de Côte-d'Or (URGO, Amora) et aux cabinets de la Burgundy School of Business. Intervention sur site dans la métropole dijonnaise et dans tout le bassin bourguignon.",
         whyHere: [
           "Dijon est une capitale French Tech labellisée 2023 (~450 organisations membres) avec un tissu PME/ETI dense sur des secteurs où l'IA génère un ROI démontrable : agroalimentaire, viticulture, santé, logistique.",
           "Le pôle agroalimentaire bourguignon — Vitagora, ToasterLab, Institut Agro Dijon, INRAE BFC — constitue un terrain d'audit IA particulièrement fertile : traçabilité, contrôle qualité, optimisation formulations, qualification leads B2B.",
@@ -180,7 +180,7 @@ export const DIJON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Dijon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from artisan Dijon micro-businesses to Côte-d'Or industrial HQs (URGO, Amora) and Burgundy School of Business practices. On-site engagement across the Dijon metropolitan area and the Burgundy basin.",
+        hero: "Axion-IA's AI audit in Dijon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from artisan Dijon micro-businesses to Côte-d'Or industrial HQs (URGO, Amora) and Burgundy School of Business practices. On-site engagement across the Dijon metropolitan area and the Burgundy basin.",
         whyHere: [
           "Dijon is a 2023-labelled French Tech capital (~450 member organisations) with a dense SME/mid-cap fabric in sectors where AI delivers demonstrable ROI: agri-food, viticulture, healthcare, logistics.",
           "The Burgundy agri-food hub — Vitagora, ToasterLab, Institut Agro Dijon, INRAE BFC — is particularly fertile ground for AI audits: traceability, quality control, formula optimisation, B2B lead qualification.",

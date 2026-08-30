@@ -107,7 +107,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise argenteuillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des commerçants et artisans du Val-d'Oise aux PME du BTP, des services et de la logistique implantées dans le bassin Seine–Saint-Lazare.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise argenteuillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des commerçants et artisans du Val-d'Oise aux PME du BTP, des services et de la logistique implantées dans le bassin Seine–Saint-Lazare.",
         whyHere: [
           "Argenteuil est la 3e ville d'Île-de-France hors Paris (9 045 établissements actifs, 2 690 créations par an) : tissu PME dense et diversifié qui représente exactement le profil où l'IA opérationnelle délivre le ROI le plus rapide.",
           "Tissu B2B local sur-représenté chez nos clients : commerce de gros et distribution, BTP et construction (23,6 % des établissements), services aux entreprises et PME de services qui ont besoin d'automatiser pour rester compétitifs.",
@@ -207,7 +207,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Argenteuil business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Val-d'Oise traders and craftspeople to construction, services and logistics SMEs in the Seine–Saint-Lazare basin.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Argenteuil business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Val-d'Oise traders and craftspeople to construction, services and logistics SMEs in the Seine–Saint-Lazare basin.",
         whyHere: [
           "Argenteuil is Île-de-France's 3rd largest city outside Paris (9,045 active businesses, 2,690 creations per year): a dense, diverse SME fabric that is precisely the profile where operational AI delivers the fastest ROI.",
           "Local B2B fabric over-represented in our cases: wholesale commerce and distribution, BTP and construction (23.6% of businesses), business services and micro-firms that need to automate to stay competitive.",

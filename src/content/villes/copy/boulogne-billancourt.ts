@@ -78,7 +78,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise boulonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du centre-ville aux directions IA des sièges du Trapèze, de TF1 et de Renault Group.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise boulonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre-ville aux directions IA des sièges du Trapèze, de TF1 et de Renault Group.",
         whyHere: [
           "Boulogne-Billancourt est l'un de nos principaux terrains d'intervention en proche couronne parisienne : la concentration de sièges de grands groupes (Renault, TF1, Boursorama) et de PME conseil génère une forte demande d'audits IA opérationnels.",
           "Tissu B2B très sectorisé dans nos missions boulonnaises : grands groupes du Trapèze et du Quai du Point-du-Jour, PME conseil et services informatiques, startups et scale-ups numériques, cabinets de conseil proches Paris 15e/16e.",
@@ -178,7 +178,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Boulogne-Billancourt business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Boulogne micro-businesses to large-enterprise AI leadership at Trapèze, TF1 and Renault Group HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Boulogne-Billancourt business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Boulogne micro-businesses to large-enterprise AI leadership at Trapèze, TF1 and Renault Group HQs.",
         whyHere: [
           "Boulogne-Billancourt is one of our main engagement hubs in the Paris inner ring: the concentration of large-group HQs (Renault, TF1, Boursorama) and consulting SMEs drives strong operational AI audit demand.",
           "Very sectorised B2B fabric in our Boulogne missions: Trapèze and Quai du Point-du-Jour large groups, consulting and IT services SMEs, digital startups, consulting firms close to Paris 15th/16th.",

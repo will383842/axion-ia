@@ -1,4 +1,4 @@
-// Server component — section « Nous accompagnons toutes les tailles » pour
+// Server component — section « Nous accompagnons les PME, ETI et grands groupes » pour
 // la page hub région (Will 2026-05-26). Pattern dérivé du home audience
 // (cf. `[locale]/page.tsx` Audience section) mais avec :
 //   - H2 régionalisé (« en {region} »)
@@ -57,8 +57,8 @@ export async function RegionAudienceSection({ region, isFr }: RegionAudienceSect
               className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
             >
               {isFr
-                ? "Nous accompagnons toutes les tailles d'entreprise"
-                : "We support every business size"}{" "}
+                ? "Nous accompagnons les PME, ETI et grands groupes"
+                : "We support SMEs, mid-caps and large groups"}{" "}
               <span
                 className="italic-editorial text-terracotta"
                 style={{ fontFamily: "var(--font-serif)" }}
@@ -72,7 +72,7 @@ export async function RegionAudienceSection({ region, isFr }: RegionAudienceSect
             </p>
           </div>
         </FadeInOnView>
-        <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {segments.map((seg, idx) => (
             <li
               key={idx}

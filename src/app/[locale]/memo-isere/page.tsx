@@ -1258,8 +1258,8 @@ export default async function MemoIserePage({ params }: Props) {
             Et dans quels secteurs ?
           </h3>
           <p className="text-fg-muted mx-auto mt-2 mb-6 max-w-2xl text-center text-sm">
-            Tous, à toutes les tailles. Là encore, les cases ci-dessous sont des exemples : seul le
-            nombre de groupes à former change d’une PME à un grand groupe.
+            Tous, de la PME au grand groupe. Là encore, les cases ci-dessous sont des exemples :
+            seul le nombre de groupes à former change d’une PME à un grand groupe.
           </p>
 
           <ul

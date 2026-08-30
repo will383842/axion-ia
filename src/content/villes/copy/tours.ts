@@ -79,7 +79,7 @@ export const TOURS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Tours cartographie précisément ce qui peut être automatisé dans votre entreprise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toutes les tailles — de la PME du commerce tourangeau à l'ETI industrielle du bassin (industrie, énergie, agroalimentaire, services) — avec restitution en présentiel dans vos locaux et plan d'action actionnable remis en main propre.",
+        hero: "L'audit IA Axion-IA à Tours cartographie précisément ce qui peut être automatisé dans votre entreprise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toute l'échelle — de la PME du commerce tourangeau à l'ETI industrielle du bassin (industrie, énergie, agroalimentaire, services) — avec restitution en présentiel dans vos locaux et plan d'action actionnable remis en main propre.",
         whyHere: [
           "Tours est un bassin industriel et tertiaire diversifié avec des ETI et GE de premier plan (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson) dont les process industriels, bureautiques et RH sont fortement automatisables.",
           "Le pôle S2E2 (Smart Electricity, siège Tours) génère un tissu de PME et ETI spécialisées en réseaux intelligents et efficacité énergétique — terrain fertile pour des cas IA sur la maintenance prédictive, l'optimisation énergétique et la documentation technique.",
@@ -179,7 +179,7 @@ export const TOURS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Tours precisely maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers cover every size — from local micro-businesses to industrial mid-caps across the Tours basin (industry, energy, agrifood, services) — with an in-person read-out at your premises and a concrete action plan handed over face to face.",
+        hero: "Axion-IA's AI audit in Tours precisely maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers cover the full range — from local micro-businesses to industrial mid-caps across the Tours basin (industry, energy, agrifood, services) — with an in-person read-out at your premises and a concrete action plan handed over face to face.",
         whyHere: [
           "Tours is a diversified industrial and services basin with major ETIs and large groups (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson) whose industrial, office and HR processes are highly automatable.",
           "The S2E2 Smart Electricity pole (HQ Tours) generates a cluster of SMEs and mid-caps specialised in smart grids and energy efficiency — fertile ground for AI use cases on predictive maintenance, energy optimisation and technical documentation.",

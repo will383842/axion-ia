@@ -73,7 +73,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation marseillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du commerce marseillais aux grands groupes logistiques du Vieux-Port ou du quartier Joliette.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation marseillaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du commerce marseillais aux grands groupes logistiques du Vieux-Port ou du quartier Joliette.",
         whyHere: [
           "Marseille est l'un de nos pôles d'intervention prioritaires sur la façade méditerranéenne : transport maritime, logistique portuaire, santé/biotech et services sont nos secteurs de prédilection dans la métropole.",
           "Le tissu économique marseillais concentre des profils B2B atypiques à fort potentiel IA : opérateurs logistiques multi-modaux (export, dédouanement, TMS), ETI industrielles Château-Gombert, cabinets de santé Luminy, directions IA des filiales CMA CGM.",
@@ -173,7 +173,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la Région Sud ou par vos équipes en interne, sans contrat de suivi obligatoire.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated in your Marseille organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Marseille commerce micro-businesses to large logistics groups at the Vieux-Port or Joliette district.",
+        hero: "Axion-IA's AI audit maps what can be automated in your Marseille organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Marseille commerce micro-businesses to large logistics groups at the Vieux-Port or Joliette district.",
         whyHere: [
           "Marseille is one of our priority hubs on the Mediterranean coast: maritime transport, port logistics, health/biotech and services are our core sectors in the metro area.",
           "Marseille's business fabric concentrates atypical B2B profiles with high AI potential: multimodal logistics operators (exports, customs, TMS), industrial Château-Gombert mid-caps, Luminy health practices, AI teams at CMA CGM subsidiaries.",

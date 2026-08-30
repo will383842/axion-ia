@@ -75,7 +75,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME toulousaines aux divisions des grands groupes aérospatiaux du bassin.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME toulousaines aux divisions des grands groupes aérospatiaux du bassin.",
         whyHere: [
           "Toulouse est la capitale européenne de l'aérospatiale : nos consultants connaissent les processus PLM, documentation technique et cycles de conformité qui caractérisent les acteurs de l'Aerospace Valley.",
           "Tissu numérique dense — French Tech Toulouse, IoT Valley à Labège, startups ESA BIC Sud France : nous auditons aussi bien les scale-ups IA émergentes que les sous-traitants Tier 1 et Tier 2 de la chaîne aéronautique.",
@@ -175,7 +175,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, option infra locale pour données sensibles aérospatiales. Le plan d'action remis est portable — exécutable par tout intégrateur de l'Aerospace Valley ou par vos équipes en interne, sans contrat de prestation continue obligatoire.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Toulouse micro-businesses to large aerospace group divisions in the greater basin.",
+        hero: "Axion-IA's AI audit maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Toulouse micro-businesses to large aerospace group divisions in the greater basin.",
         whyHere: [
           "Toulouse is the European aerospace capital: our consultants understand PLM processes, technical documentation and compliance cycles specific to Aerospace Valley players.",
           "Dense digital fabric — French Tech Toulouse, IoT Valley at Labège, ESA BIC Sud France startups: we audit emerging AI scale-ups as well as Tier 1 and Tier 2 aerospace sub-contractors.",

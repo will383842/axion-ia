@@ -960,7 +960,7 @@ export default async function FormationsHub({ params }: Props) {
                       d: "Dès la 1ʳᵉ journée, les participants maîtrisent 3-5 automatisations applicables à leurs tâches, qui leur font gagner du temps immédiatement.",
                     },
                     {
-                      t: "Adapté à toutes les tailles",
+                      t: "Adapté à chaque échelle",
                       d: "Programme calibré pour PME (9-50 pers.), ETI (50-250 pers.) ou grands groupes (déploiement multi-sites).",
                     },
                     {

@@ -114,7 +114,7 @@ export const MULHOUSE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise mulhousienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du centre-ville aux ETI automobiles de l'Île Napoléon, aux ingénieries industrielles de Bourtzwiller et aux acteurs chimie et matériaux du Haut-Rhin.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise mulhousienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre-ville aux ETI automobiles de l'Île Napoléon, aux ingénieries industrielles de Bourtzwiller et aux acteurs chimie et matériaux du Haut-Rhin.",
         whyHere: [
           "Mulhouse concentre un tissu industriel dense et diversifié — automobile (Stellantis, Pôle Véhicule du Futur), ingénierie électrique et industrielle (Clemessy), chimie et matériaux (ENSCMu, IS2M), numérique (KMØ) — qui génère une forte demande d'audits IA opérationnels ciblés.",
           "Position trinationale maîtrisée : nos audits intègrent les contraintes RGPD transfrontalières France-Suisse-Allemagne, la sélection de modèles IA compatibles souveraineté et la gestion des flux de données vers Bâle ou Fribourg.",
@@ -214,7 +214,7 @@ export const MULHOUSE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Gestion spécifique des flux transfrontaliers France-Suisse-Allemagne selon votre contexte. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Mulhouse business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Mulhouse micro-businesses to large industrial mid-caps at Île Napoléon, Bourtzwiller engineering firms and Haut-Rhin chemicals and materials players.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Mulhouse business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Mulhouse micro-businesses to large industrial mid-caps at Île Napoléon, Bourtzwiller engineering firms and Haut-Rhin chemicals and materials players.",
         whyHere: [
           "Mulhouse concentrates a dense, diversified industrial fabric — automotive (Stellantis, Pôle Véhicule du Futur), electrical and industrial engineering (Clemessy), chemicals and materials (ENSCMu, IS2M), digital (KMØ) — driving strong demand for targeted operational AI audits.",
           "Tri-national position mastered: our audits integrate France-Switzerland-Germany cross-border GDPR constraints, AI model sovereignty selection and data flow management towards Basel or Freiburg.",

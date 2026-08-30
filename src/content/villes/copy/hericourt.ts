@@ -61,7 +61,7 @@ export const HERICOURT_COPY: VilleCopy = {
     },
     {
       q: "Travaillez-vous avec les PME de l'artisanat et du commerce d'Héricourt ?",
-      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce d'Héricourt : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée, marketing local. Audit sur place {{price:audit-flash|flat}} accessible à toutes tailles.",
+      a: "Oui, nous accompagnons les PME de l'artisanat et du commerce d'Héricourt : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée, marketing local. Audit sur place {{price:audit-flash|flat}} accessible aux PME comme aux ETI.",
     },
     {
       q: "Comment se déroule une intervention IA à Héricourt ?",

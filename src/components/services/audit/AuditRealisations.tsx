@@ -237,7 +237,7 @@ export function AuditRealisations({ isFr }: { isFr: boolean }): ReactNode {
               className="text-terracotta mx-2 italic"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? "pour toutes les tailles d'entreprise" : "for companies of every size"}
+              {isFr ? "pour les PME, ETI et grands groupes" : "for SMEs, mid-caps and large groups"}
             </span>
           </h2>
           <p className="text-fg-soft max-w-2xl text-lg leading-relaxed sm:text-xl">

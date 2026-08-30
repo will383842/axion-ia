@@ -33,8 +33,8 @@ export const LILLE_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Lille : nous identifions vos processus automatisables et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, adaptés à toutes les tailles du tissu lillois.",
-      en: "Operational AI audit in Lille: we identify automatable processes and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated to every size in the Lille business fabric.",
+      fr: "Audit IA opérationnel à Lille : nous identifions vos processus automatisables et chiffrons le ROI. 4 niveaux du Sur place au Stratégique ETI, adaptés à toute l'échelle du tissu lillois.",
+      en: "Operational AI audit in Lille: we identify automatable processes and quantify the ROI. 4 tiers from Sur place to Mid-cap Strategic, calibrated to the full range in the Lille business fabric.",
     },
     interventions: {
       fr: "Interventions IA à Lille : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur travail réel.",
@@ -85,7 +85,7 @@ export const LILLE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lilloise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du Vieux-Lille aux directions IA des sièges retail d'Euralille. Restitution toujours en présentiel dans vos locaux, livrable PDF chiffré remis en main propre.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lilloise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du Vieux-Lille aux directions IA des sièges retail d'Euralille. Restitution toujours en présentiel dans vos locaux, livrable PDF chiffré remis en main propre.",
         whyHere: [
           "Lille est une place prioritaire pour Axion-IA : tissu retail/e-commerce le plus dense de France hors Île-de-France, sièges de groupes internationaux (Decathlon, Auchan, La Redoute) et 466 startups issues d'EuraTechnologies.",
           "Secteurs B2B lillois surreprésentés dans nos mandats : retail omnicanal, logistique supply chain, IT/SaaS EuraTechnologies, banque/assurance Euralille, industrie agroalimentaire (Bonduelle, Euralimentaire).",
@@ -185,7 +185,7 @@ export const LILLE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Lille company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Vieux-Lille micro-businesses to Euralille large-enterprise HQs. Read-out always in person at your premises, costed PDF deliverable handed over face to face.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Lille company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Vieux-Lille micro-businesses to Euralille large-enterprise HQs. Read-out always in person at your premises, costed PDF deliverable handed over face to face.",
         whyHere: [
           "Lille is a priority location for Axion-IA: densest retail/e-commerce fabric in France outside Île-de-France, international group HQs (Decathlon, Auchan, La Redoute) and 466 EuraTechnologies start-ups.",
           "Lille B2B sectors over-represented in our mandates: omnichannel retail, logistics supply chain, IT/SaaS EuraTechnologies, banking/insurance Euralille, agri-food industry (Bonduelle, Euralimentaire).",
@@ -290,7 +290,7 @@ export const LILLE_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Lille se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — que vous soyez une équipe retail, logistique, IT ou finance.",
         whyHere: [
-          "Lille est l'une de nos places prioritaires d'intervention : tissu PME/ETI retail et e-commerce, startups EuraTechnologies, sièges de grands groupes (Decathlon, Auchan, La Redoute, OVHcloud) — toutes tailles, tous secteurs.",
+          "Lille est l'une de nos places prioritaires d'intervention : tissu PME/ETI retail et e-commerce, startups EuraTechnologies, sièges de grands groupes (Decathlon, Auchan, La Redoute, OVHcloud) — PME comme grands groupes, tous secteurs.",
           "Toute la métropole lilloise couverte en présentiel : Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing, Marcq-en-Barœul, Lesquin et communes limitrophes.",
           "Le format collectif (1 journée) est calibré pour les structures de quelques personnes à une centaine de collaborateurs — idéal pour les PME lilloise en transformation digitale.",
           "Le format Conférence convient aux plénières d'entreprise (Lille Grand Palais, auditoriums Euralille, campus EuraTechnologies, Plaine Images Tourcoing).",

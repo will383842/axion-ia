@@ -26,7 +26,7 @@ import type { VilleCopy, VilleServiceCopyLocale } from "./types";
 
 // === AUDIT ===
 const AUDIT_FR: VilleServiceCopyLocale = {
-  hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation dyonisienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des structures ESS et studios audiovisuels de la Plaine Saint-Denis aux grandes directions logistiques et BTP de l'intercommunalité Plaine Commune.",
+  hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation dyonisienne et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des structures ESS et studios audiovisuels de la Plaine Saint-Denis aux grandes directions logistiques et BTP de l'intercommunalité Plaine Commune.",
   whyHere: [
     "Saint-Denis concentre un tissu B2B en reconversion rapide — Plaine Saint-Denis, hub Pleyel Grand Paris Express, Stade de France — avec des secteurs (logistique, audiovisuel, BTP, ESS) où l'IA opérationnelle délivre un ROI mesurable dès les premières semaines.",
     "La Plaine Saint-Denis représente l'un des plus grands chantiers de reconversion d'Île-de-France : studios de tournage, sociétés de production, prestataires techniques, ESS en croissance — tous secteurs pour lesquels nous avons des cas d'usage déployés.",
@@ -525,8 +525,8 @@ export const SAINT_DENIS_COPY: VilleCopy = {
   seoHook: "logistique, transport & audiovisuel, médias",
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
-      en: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
+      fr: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
+      en: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",
     },
     interventions: {
       fr: "Interventions IA à Saint-Denis : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel — en entrepôt, en studio, sur chantier Grand Paris ou en bureau.",

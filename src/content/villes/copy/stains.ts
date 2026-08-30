@@ -218,7 +218,7 @@ export const STAINS_COPY: VilleCopy = {
     },
     {
       q: "Quels types d'entreprises accompagnez-vous à Stains ?",
-      a: "Nous accompagnons à Stains les PME et ETI services aux entreprises, structures d'économie sociale et solidaire (associations, coopératives, entreprises d'insertion), entreprises logistiques et artisans-commerçants. Tarifs adaptés à toutes les tailles d'organisations.",
+      a: "Nous accompagnons à Stains les PME et ETI services aux entreprises, structures d'économie sociale et solidaire (associations, coopératives, entreprises d'insertion), entreprises logistiques et artisans-commerçants. Tarifs adaptés à toute l'échelle d'organisations.",
     },
     {
       q: "Quels services Axion-IA propose-t-il à Stains ?",

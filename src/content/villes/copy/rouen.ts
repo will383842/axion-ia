@@ -106,7 +106,7 @@ export const ROUEN_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise rouennaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du centre historique aux ETI industrielles du Madrillet et aux sièges du Plateau de la Vatine.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise rouennaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre historique aux ETI industrielles du Madrillet et aux sièges du Plateau de la Vatine.",
         whyHere: [
           "Rouen concentre des secteurs fortement demandeurs d'IA opérationnelle : logistique portuaire (HAROPA, Nov@log), industrie chimique et automobile (Renault Cléon, Safran Nacelles, Lubrizol), pharmaceutique (Janssen-Cilag), assurance (Matmut) et numérique (Madrillet, Vatine).",
           "Tissu B2B sectorisé sur-représenté chez nos clients rouennais : PME industrielles Petit-Quevilly, ETI logistiques axe Seine, cabinets conseil Vatine, startups deep-tech Madrillet et éditeurs numériques.",
@@ -206,7 +206,7 @@ export const ROUEN_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Rouen business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rouen micro-businesses to large industrial mid-caps at the Madrillet and tertiary HQs on the Plateau de la Vatine.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Rouen business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Rouen micro-businesses to large industrial mid-caps at the Madrillet and tertiary HQs on the Plateau de la Vatine.",
         whyHere: [
           "Rouen concentrates sectors with strong operational AI demand: port logistics (HAROPA, Nov@log), chemical and automotive industry (Renault Cléon, Safran Nacelles, Lubrizol), pharma (Janssen-Cilag), insurance (Matmut) and digital (Madrillet, Vatine).",
           "Rouen B2B fabric over-represented in our cases: industrial SMEs in Petit-Quevilly, logistics mid-caps on the Seine axis, consulting firms at Vatine, deep-tech startups at Madrillet and digital publishers.",

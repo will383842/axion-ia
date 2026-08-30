@@ -1212,7 +1212,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA travaille-t-il avec les ETI et grands comptes ?",
       answer:
-        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des PME aux ETI et aux grands comptes. Pour ces dernières, l'offre prend une forme différente : programmes multi-sites sur devis, audits stratégiques approfondis et implémentations à large envergure avec gouvernance des données.\n\nL'Audit Stratégique ETI est conçu pour les structures de 250 à 5 000 salariés : cartographie multi-directions, 20 à 30 entretiens, restitution en COMEX et devant le conseil, plan de 60 à 80 pages exploitable en instance, puis 30 jours d'accompagnement après la remise. Le cadre AI Act et RGPD y est traité par défaut, avec mise en place d'un comité IA, d'une charte interne et des rôles associés.\n\nCôté implémentation, les missions ETI et les programmes annuels sont sur devis. Le principe reste celui des autres prestations : un intervenant senior, le même du cadrage à la livraison, et des livrables actionnables plutôt qu'un rapport de plus.",
+        "Oui. Axion-IA accompagne des PME, des ETI et des grands comptes. Pour ces dernières, l'offre prend une forme différente : programmes multi-sites sur devis, audits stratégiques approfondis et implémentations à large envergure avec gouvernance des données.\n\nL'Audit Stratégique ETI est conçu pour les structures de 250 à 5 000 salariés : cartographie multi-directions, 20 à 30 entretiens, restitution en COMEX et devant le conseil, plan de 60 à 80 pages exploitable en instance, puis 30 jours d'accompagnement après la remise. Le cadre AI Act et RGPD y est traité par défaut, avec mise en place d'un comité IA, d'une charte interne et des rôles associés.\n\nCôté implémentation, les missions ETI et les programmes annuels sont sur devis. Le principe reste celui des autres prestations : un intervenant senior, le même du cadrage à la livraison, et des livrables actionnables plutôt qu'un rapport de plus.",
       keyPoints: [
         "Toutes les tailles, des PME aux ETI et grands comptes",
         "Programmes multi-sites et programmes annuels sur devis",
@@ -1247,7 +1247,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Does Axion-IA work with mid-caps and large companies?",
       answer:
-        "Yes. Axion-IA works with companies of all sizes, from small businesses to mid-caps and large companies. For mid-caps and large accounts, Axion-IA offers multi-site programmes (on request), in-depth strategic audits and large-scale AI implementations with data governance.",
+        "Yes. Axion-IA works with SMEs, mid-caps and large companies. For mid-caps and large accounts, Axion-IA offers multi-site programmes (on request), in-depth strategic audits and large-scale AI implementations with data governance.",
     },
   },
   {

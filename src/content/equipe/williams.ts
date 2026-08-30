@@ -308,7 +308,7 @@ export function buildWilliamsFaq({
       id: "secteurs-et-tailles",
       question: "Pour quelles entreprises Williams Jullin intervient-il ?",
       answer:
-        "Pour toutes les tailles, De la PME au grand groupe coté, et dans tous les secteurs — industrie, services, santé, immobilier, juridique, commerce, transport, secteur public. Le format d'intervention change avec la taille, la méthode ne change pas : cadrer sur le terrain, prouver sur les données réelles, déployer, transmettre.",
+        "De la PME au grand groupe coté, et dans tous les secteurs — industrie, services, santé, immobilier, juridique, commerce, transport, secteur public. Le format d'intervention change avec la taille, la méthode ne change pas : cadrer sur le terrain, prouver sur les données réelles, déployer, transmettre.",
     },
     {
       id: "zone-geographique",

@@ -31,9 +31,9 @@ function pressReleaseLaunchBody(loc: "fr" | "en"): string {
   const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
   if (loc === "fr") {
-    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash dès ${flash}, Ciblé dès ${cibleMin}, Stratégique PME dès ${pmeMin}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
+    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash dès ${flash}, Ciblé dès ${cibleMin}, Stratégique PME dès ${pmeMin}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les PME, ETI et grands groupes.`;
   }
-  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash from ${flash}, Targeted from ${cibleMin}, Strategic SME from ${pmeMin}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
+  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash from ${flash}, Targeted from ${cibleMin}, Strategic SME from ${pmeMin}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets SMEs, mid-caps and large groups.`;
 }
 
 export type PressReleaseTag = "launch" | "partnership" | "study" | "product" | "milestone";
@@ -136,16 +136,16 @@ export const PRESS_PITCH: { fr: PressPitchLocale; en: PressPitchLocale } = {
   fr: {
     eyebrow: "Pitch presse",
     short:
-      "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle. Il aide les entreprises de toutes tailles — de l'artisan à l'ETI — à passer de l'idée IA à des usages concrets à retour sur investissement mesurable, en quelques semaines : démonstration sur leurs données réelles, plan d'action chiffré, mise en production accompagnée, hébergement en Union européenne conforme au RGPD.",
+      "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle. Il aide les PME, ETI et grands groupes à passer de l'idée IA à des usages concrets à retour sur investissement mesurable, en quelques semaines : démonstration sur leurs données réelles, plan d'action chiffré, mise en production accompagnée, hébergement en Union européenne conforme au RGPD.",
     boilerplate:
-      "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle qui accompagne les entreprises de toutes tailles, de l'artisan à l'ETI. Le cabinet identifie, démontre puis déploie des usages d'IA à retour sur investissement mesurable — démonstrations sur données réelles, plan d'action chiffré, mise en production rapide, hébergement en Union européenne conforme au RGPD. Contact presse : presse@axion-ia.com.",
+      "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle qui accompagne les PME, ETI et grands groupes. Le cabinet identifie, démontre puis déploie des usages d'IA à retour sur investissement mesurable — démonstrations sur données réelles, plan d'action chiffré, mise en production rapide, hébergement en Union européenne conforme au RGPD. Contact presse : presse@axion-ia.com.",
   },
   en: {
     eyebrow: "Press pitch",
     short:
-      "Axion-IA is an operational artificial intelligence consultancy. It helps companies of all sizes — from sole traders to mid-caps — move from the AI idea to concrete use cases with measurable return on investment, in a matter of weeks: demonstration on their real data, costed action plan, supported go-live, hosting in the European Union compliant with the GDPR.",
+      "Axion-IA is an operational artificial intelligence consultancy. It helps SMEs, mid-caps and large groups move from the AI idea to concrete use cases with measurable return on investment, in a matter of weeks: demonstration on their real data, costed action plan, supported go-live, hosting in the European Union compliant with the GDPR.",
     boilerplate:
-      "Axion-IA is an operational artificial intelligence consultancy serving companies of all sizes, from sole traders to mid-caps. The firm identifies, demonstrates and deploys AI use cases with measurable return on investment — demos on real data, costed action plan, fast go-live, hosting in the European Union compliant with the GDPR. Press contact: presse@axion-ia.com.",
+      "Axion-IA is an operational artificial intelligence consultancy serving SMEs, mid-caps and large groups. The firm identifies, demonstrates and deploys AI use cases with measurable return on investment — demos on real data, costed action plan, fast go-live, hosting in the European Union compliant with the GDPR. Press contact: presse@axion-ia.com.",
   },
 };
 
@@ -500,7 +500,7 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     en: {
       question: "Who are your typical clients?",
       answer:
-        "Axion-IA serves companies of all sizes — sole traders, small businesses, SMEs, mid-caps, large organizations. The method adapts to scale but remains identical: demo on real data, costed plan, fast production deployment.",
+        "Axion-IA serves SMEs, mid-caps and large organizations. The method adapts to scale but remains identical: demo on real data, costed plan, fast production deployment.",
     },
   },
   {

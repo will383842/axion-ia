@@ -28,8 +28,8 @@ export const MONTREUIL_COPY: VilleCopy = {
 
   servicesContext: {
     audit: {
-      fr: "Audit IA opérationnel à Montreuil : nous cartographions les cas automatisables dans votre structure et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des studios indépendants du Bas-Montreuil aux grandes directions numériques et financières.",
-      en: "Operational AI audit in Montreuil: we map automatable use cases in your organisation and quantify the ROI. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Bas-Montreuil studios to large digital and financial leadership teams.",
+      fr: "Audit IA opérationnel à Montreuil : nous cartographions les cas automatisables dans votre structure et chiffrons le ROI. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des studios indépendants du Bas-Montreuil aux grandes directions numériques et financières.",
+      en: "Operational AI audit in Montreuil: we map automatable use cases in your organisation and quantify the ROI. Four tiers from Sur place to Mid-cap Strategic cover the full range, from independent Bas-Montreuil studios to large digital and financial leadership teams.",
     },
     interventions: {
       fr: "Interventions IA à Montreuil : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur leurs outils IA, configurés pour leur travail réel.",
@@ -107,7 +107,7 @@ export const MONTREUIL_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation montreuilloise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des studios indépendants et agences numériques du Bas-Montreuil aux grandes directions financières et IT de Montreuil.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation montreuilloise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des studios indépendants et agences numériques du Bas-Montreuil aux grandes directions financières et IT de Montreuil.",
         whyHere: [
           "Montreuil concentre un tissu B2B sectorisé exceptionnel pour sa taille : numérique (Ubisoft, Capgemini), finance (AFD, BNP Paribas Personal Finance), conseil IT et ESS — tous secteurs pour lesquels l'IA opérationnelle génère un ROI mesurable rapide.",
           "Le Bas-Montreuil est notre zone d'intervention principale en Seine-Saint-Denis : nos consultants connaissent les contraintes des équipes créatives (jeu vidéo, médias), des directions IT et des back-offices financiers présents dans ce quartier.",
@@ -207,7 +207,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Montreuil organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Bas-Montreuil studios to large financial and IT leadership teams.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Montreuil organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from independent Bas-Montreuil studios to large financial and IT leadership teams.",
         whyHere: [
           "Montreuil packs an exceptional sectorised B2B fabric for its size: digital (Ubisoft, Capgemini), finance (AFD, BNP Paribas Personal Finance), IT consulting and social economy — all sectors where operational AI delivers measurable ROI fast.",
           "Bas-Montreuil is our primary intervention zone in Seine-Saint-Denis: our consultants are familiar with the constraints of creative teams (gaming, media), IT departments and financial back-offices present in this district.",

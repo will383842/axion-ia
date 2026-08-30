@@ -81,7 +81,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Montpellier cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toutes les tailles — des PME numériques de Cap Omega aux ETI santé-biotech d'Euromédecine, en passant par les PME de l'agritech et les groupes IT comme Dell ou IBM implantés dans l'Hérault.",
+        hero: "L'audit IA Axion-IA à Montpellier cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux couvrent toute l'échelle — des PME numériques de Cap Omega aux ETI santé-biotech d'Euromédecine, en passant par les PME de l'agritech et les groupes IT comme Dell ou IBM implantés dans l'Hérault.",
         whyHere: [
           "Montpellier est l'un de nos pôles d'intervention prioritaires en Occitanie : tissu B2B dense (36 590 établissements actifs, 121 pour 1 000 habitants) avec une surreprésentation des secteurs santé, IT et agronomie qui concentrent nos cas clients.",
           "Cluster Euromédecine + CHU Montpellier + Sanofi R&D : nos auditeurs maîtrisent les contraintes réglementaires de la santé (HDS, MDR, données patients) et adaptent le périmètre IA en conséquence.",
@@ -181,7 +181,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD et secteur santé (HDS sur demande), hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Montpellier maps what can be automated in your organization and quantifies the 12-24 month ROI. Four tiers cover every size — from Cap Omega digital micro-businesses to Euromédecine health-biotech mid-caps, through agritech SMEs and IT groups such as Dell and IBM established in the Hérault.",
+        hero: "Axion-IA's AI audit in Montpellier maps what can be automated in your organization and quantifies the 12-24 month ROI. Four tiers cover the full range — from Cap Omega digital micro-businesses to Euromédecine health-biotech mid-caps, through agritech SMEs and IT groups such as Dell and IBM established in the Hérault.",
         whyHere: [
           "Montpellier is one of our priority engagement hubs in Occitania: dense B2B fabric (36,590 active businesses, 121 per 1,000 inhabitants) with an over-representation of health, IT and agronomy sectors that concentrate our client cases.",
           "Euromédecine cluster + CHU Montpellier + Sanofi R&D: our auditors master health regulatory constraints (HDS, MDR, patient data) and adapt the AI scope accordingly.",

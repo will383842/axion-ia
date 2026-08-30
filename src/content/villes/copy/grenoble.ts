@@ -77,7 +77,7 @@ export const GRENOBLE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Grenoble cartographie précisément ce qui peut être automatisé dans vos processus — qu'il s'agisse de R&D documentaire chez une spin-off CEA-Leti, de planification de production chez un équipementier industriel ou de qualification de leads chez un éditeur logiciel d'Inovallée — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI s'adaptent à toutes les tailles, des PME deeptech aux directions IA des grands groupes grenoblois.",
+        hero: "L'audit IA Axion-IA à Grenoble cartographie précisément ce qui peut être automatisé dans vos processus — qu'il s'agisse de R&D documentaire chez une spin-off CEA-Leti, de planification de production chez un équipementier industriel ou de qualification de leads chez un éditeur logiciel d'Inovallée — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI s'adaptent à toute l'échelle, des PME deeptech aux directions IA des grands groupes grenoblois.",
         whyHere: [
           "Grenoble est le premier pôle deeptech de province en France : nos audits y adressent des cas d'usage uniques à forte densité R&D (automatisation de la veille brevets, traitement de rapports d'analyse, génération de documentation technique).",
           "Tissu industriel sur-représenté chez nos clients grenoblois : sous-traitants semi-conducteurs (bassin Crolles), fournisseurs Schneider Electric, startups Minalogic, PME électronique et mécatronique.",
@@ -177,7 +177,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Grenoble precisely maps what can be automated in your processes — whether documentary R&D at a CEA-Leti spin-off, production planning at an industrial equipment manufacturer or lead qualification at an Inovallée software editor — and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from deep-tech micro-businesses to large industrial group AI leadership.",
+        hero: "Axion-IA's AI audit in Grenoble precisely maps what can be automated in your processes — whether documentary R&D at a CEA-Leti spin-off, production planning at an industrial equipment manufacturer or lead qualification at an Inovallée software editor — and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from deep-tech micro-businesses to large industrial group AI leadership.",
         whyHere: [
           "Grenoble is France's leading provincial deep-tech hub: our audits address unique high-R&D-density use cases (patent intelligence automation, analysis report processing, technical documentation generation).",
           "Industrial fabric over-represented in our Grenoble cases: semiconductor sub-contractors (Crolles basin), Schneider Electric suppliers, Minalogic start-ups, electronics and mechatronics SMEs.",

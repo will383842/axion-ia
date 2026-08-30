@@ -75,7 +75,7 @@ export const NIMES_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Nîmes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux — du Sur place PME à l'Audit Stratégique ETI — couvrent toutes les tailles d'entreprise gardoise, des indépendants du centre-ville aux PME du Parc Georges Besse en passant par les ETI de services aux entreprises.",
+        hero: "L'audit IA Axion-IA à Nîmes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux — du Sur place PME à l'Audit Stratégique ETI — couvrent toute l'échelle d'entreprise gardoise, des indépendants du centre-ville aux PME du Parc Georges Besse en passant par les ETI de services aux entreprises.",
         whyHere: [
           "Nîmes est une ville de tissu B2B dense : PME et ETI du commerce, de la logistique et des services aux entreprises constituent l'essentiel de nos cas locaux.",
           "La présence de BRL Groupe (siège social) et des filières agroalimentaires (Royal Canin Aimargues, Perrier Vergèze) crée des besoins réels en automatisation documentaire et en pilotage de données opérationnelles.",
@@ -175,7 +175,7 @@ export const NIMES_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Nîmes maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers — from Sur place micro-business to Mid-cap Strategic — cover every size of Gard company, from independent professionals to Parc Georges Besse SMEs and business-services mid-caps.",
+        hero: "Axion-IA's AI audit in Nîmes maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers — from Sur place micro-business to Mid-cap Strategic — cover the full range of Gard company, from independent professionals to Parc Georges Besse SMEs and business-services mid-caps.",
         whyHere: [
           "Nîmes has a dense B2B fabric: micro-businesses and SMEs in trade, logistics and business services make up the core of our local cases.",
           "The presence of BRL Groupe (HQ) and agri-food supply chains (Royal Canin Aimargues, Perrier Vergèze) creates real demand for document automation and operational data management.",

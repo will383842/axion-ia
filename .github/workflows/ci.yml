@@ -129,6 +129,19 @@ jobs:
       # ni tests ne bronchent. Ce gate résout chaque href sur le disque.
       - name: Admin nav → routes existantes
         run: pnpm admin-nav:routes-check
+      # Repositionnement 2026-08-29 (PME, ETI et grands groupes). La régression
+      # ne vient pas d'un humain qui réécrit une page : elle vient des PROMPTS,
+      # qui reconstruisent le positionnement à chaque run. Trouvé le 2026-08-30 :
+      # `blog-article.ts` ordonnait encore d'ajouter « pour TPE/PME » aux
+      # metaTitle trop courts — la substitution de 2 291 fichiers ne l'avait pas
+      # vu, et rien ne l'aurait vu au run suivant.
+      # Scopes = des GLOBS (generators/, brand/, villes/copy/), pas une liste :
+      # un générateur ajouté demain est couvert sans que personne y pense.
+      # ⚠️ Ce qu'elle NE fait PAS : « TPE » reste légitime ailleurs (catalogue de
+      # mots-clés, enum CompanySize, /audit/tpe-1-jour, cas concrets livrés,
+      # sources France Num citées). Son vert ne vaut pas « plus aucun TPE ».
+      - name: Positionnement PME/ETI/grands groupes
+        run: pnpm positionnement:check
       # Audit 2026-05-15 P1-22 — content-gen module isolation gate (§ 4.1bis
       # master prompt). Garantit qu'aucun fichier hors zones whitelisted
       # (src/server/content-gen/**, src/app/[locale]/(admin)/[adminPrefix]/

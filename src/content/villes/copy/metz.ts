@@ -81,7 +81,7 @@ export const METZ_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise messine et chiffre le retour sur investissement Ã  12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du centre de Metz aux ETI industrielles de Trémery et aux directions IA des sièges bancaires de l'Eurométropole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise messine et chiffre le retour sur investissement Ã  12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre de Metz aux ETI industrielles de Trémery et aux directions IA des sièges bancaires de l'Eurométropole.",
         whyHere: [
           "Metz est un pôle d'intervention clé pour Axion-IA en Grand Est : le tissu B2B Eurométropole génère une demande croissante d'audits IA opérationnels.",
           "Tissu sectoriel sur-représenté chez nos clients messins : industrie automobile et matériaux (Stellantis Trémery, Materalia), banque/finance (BPCE, Caisse d'Épargne Grand Est), IT/numérique (Technopôle, BLIIIDA), services publics (préfecture Moselle, Université de Lorraine).",
@@ -181,7 +181,7 @@ export const METZ_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus Ã  la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Metz business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Metz micro-businesses to large automotive and banking mid-caps across the Eurométropole.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Metz business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Metz micro-businesses to large automotive and banking mid-caps across the Eurométropole.",
         whyHere: [
           "Metz is a key Axion-IA engagement hub in Grand Est: the Eurométropole B2B ecosystem generates growing operational AI audit demand.",
           "Metz B2B fabric over-represented in our cases: automotive and materials industry (Stellantis Trémery, Materalia), banking/finance (BPCE, Caisse d'Épargne Grand Est), IT/digital (Technopôle startups, BLIIIDA), public services and higher education.",

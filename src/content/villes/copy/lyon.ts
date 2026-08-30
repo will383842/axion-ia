@@ -80,7 +80,7 @@ export const LYON_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lyonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du Vieux-Lyon aux ETI industrielles de la Vallée de la Chimie et aux directions IA des sièges Part-Dieu.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre entreprise lyonnaise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du Vieux-Lyon aux ETI industrielles de la Vallée de la Chimie et aux directions IA des sièges Part-Dieu.",
         whyHere: [
           "Lyon est notre deuxième pôle d'intervention après Paris : l'écosystème B2B lyonnais (Part-Dieu, Gerland, Confluence, Villeurbanne) génère une forte demande d'audits IA opérationnels.",
           "Tissu B2B sectorisé sur-représenté chez nos clients lyonnais : industrie chimique et pharmaceutique (Vallée de la Chimie, Gerland), banque/assurance Part-Dieu, PME numériques Villeurbanne et Vaise, cabinets conseil Presqu'île.",
@@ -180,7 +180,7 @@ export const LYON_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout intégrateur de la French Tech Lyon-Auvergne-Rhône-Alpes ou par vos équipes en interne, sans contrat de prestation continue obligatoire.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Lyon business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Lyon micro-businesses to large industrial mid-caps in the Vallée de la Chimie and AI leadership at Part-Dieu HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Lyon business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Lyon micro-businesses to large industrial mid-caps in the Vallée de la Chimie and AI leadership at Part-Dieu HQs.",
         whyHere: [
           "Lyon is our second top engagement hub after Paris: the sectorised Lyon B2B ecosystem (Part-Dieu, Gerland, Confluence, Villeurbanne) drives strong operational AI audit demand.",
           "Lyon B2B fabric over-represented in our cases: chemical and pharmaceutical industry (Vallée de la Chimie, Gerland), banking/insurance at Part-Dieu, digital SMEs in Villeurbanne and Vaise, consulting firms in Presqu'île.",

@@ -24,7 +24,7 @@ export const PARIS_COPY: VilleCopy = {
   pitchFr:
     "Paris concentre 215 000 entreprises actives toutes tailles confondues, l'écosystème IA français (Mistral, Hugging Face, Station F) et le tissu B2B le plus dense du pays. Axion-IA y intervient sur site, des indépendants parisiens aux directions IA des grandes entreprises de La Défense.",
   pitchEn:
-    "Paris hosts 215,000 active businesses of every size, the French AI ecosystem (Mistral, Hugging Face, Station F) and the densest B2B fabric in the country. Axion-IA delivers on site, from independent Paris professionals to large-enterprise AI leadership at La Défense.",
+    "Paris hosts 215,000 active businesses of the full range, the French AI ecosystem (Mistral, Hugging Face, Station F) and the densest B2B fabric in the country. Axion-IA delivers on site, from independent Paris professionals to large-enterprise AI leadership at La Défense.",
 
   seoHook: "finance, conseil & deeptech",
 
@@ -82,7 +82,7 @@ export const PARIS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME indépendantes parisiennes aux sièges des grandes entreprises de La Défense.",
         whyHere: [
           "Paris est notre premier pôle d'intervention : la majorité de nos audits y sont déclenchés.",
           "Tissu B2B parisien sur-représenté chez nos clients : cabinets d'expertise comptable, family offices, asset managers, conseil 8e/9e/16e, scale-ups Sentier-République, maisons de mode Marais.",
@@ -184,7 +184,7 @@ export const PARIS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est exécutable par vos équipes en interne ou par tout prestataire de votre choix — pas de verrou Axion-IA, pas de prestation continue obligatoire.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
+        hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
         whyHere: [
           "Paris is our top engagement hub: most of our audits originate there.",
           "Paris B2B fabric over-represented in our cases: accounting firms, family offices, asset managers, 8th/9th/16th consulting, Sentier-République scale-ups, Marais fashion houses.",

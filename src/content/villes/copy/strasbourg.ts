@@ -87,7 +87,7 @@ export const STRASBOURG_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous à Strasbourg et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME strasbourgeoises aux institutions européennes du Wacken et aux groupes industriels de l'Eurométropole.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé chez vous à Strasbourg et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME strasbourgeoises aux institutions européennes du Wacken et aux groupes industriels de l'Eurométropole.",
         whyHere: [
           "Strasbourg est une place atypique : tissu institutionnel dense (Parlement européen, Conseil de l'Europe, CEDH, INSP ex-ENA) coexistant avec un secteur privé B2B très actif — chaque type d'organisation a ses cas IA propres que nous maîtrisons.",
           "Pôle biotech-santé de rang mondial : Alsace BioValley, Parc d'Innovation d'Illkirch (PII), IGBMC, Eli Lilly, IRCAD — secteur R&D intense où l'IA accélère la gestion documentaire, l'analyse de données cliniques et la veille réglementaire.",
@@ -187,7 +187,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande — point particulièrement important pour les organisations strasbourgeoises opérant dans un cadre juridique européen. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Strasbourg organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Strasbourg micro-businesses to European institutions at Wacken and Eurométropole industrial groups.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Strasbourg organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Strasbourg micro-businesses to European institutions at Wacken and Eurométropole industrial groups.",
         whyHere: [
           "Strasbourg is an atypical location: dense institutional fabric (European Parliament, Council of Europe, ECHR, INSP ex-ENA) coexisting with a very active private B2B sector — each organisation type has its own AI cases, which we master.",
           "World-class biotech-health cluster: Alsace BioValley, Illkirch Innovation Park (PII), IGBMC, Eli Lilly, IRCAD — an R&D-intense sector where AI accelerates document management, clinical data analysis and regulatory watch.",

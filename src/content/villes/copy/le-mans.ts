@@ -82,7 +82,7 @@ export const LE_MANS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA au Mans cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME sartoises aux ETI assurance et mobilité dont le bassin manceau est le siège historique.",
+        hero: "L'audit IA Axion-IA au Mans cartographie ce qui peut être automatisé chez vous et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME sartoises aux ETI assurance et mobilité dont le bassin manceau est le siège historique.",
         whyHere: [
           "Le Mans concentre deux écosystèmes B2B à fort potentiel IA : l'assurance (MMA/Covéa, courtiers, mutuelles) et l'industrie automobile/mobilité (Renault ACI, fournisseurs ACO, iD4CAR), deux secteurs dans lesquels la lecture de documents, la qualification de sinistres et la gestion de données industrielles sont des cas d'usage IA immédiats.",
           "Le tissu de PME et ETI de services (transports, logistique, conseil, distribution) représente le gros des 11 301 établissements actifs — périmètre idéal pour l'Audit Ciblé ou Stratégique PME.",
@@ -182,7 +182,7 @@ export const LE_MANS_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Le Mans maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from local Sarthe micro-firms to insurance and mobility mid-caps headquartered in the Le Mans basin.",
+        hero: "Axion-IA's AI audit in Le Mans maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from local Sarthe micro-firms to insurance and mobility mid-caps headquartered in the Le Mans basin.",
         whyHere: [
           "Le Mans concentrates two B2B ecosystems with strong AI potential: insurance (MMA/Covéa, brokers, mutual insurers) and automotive/mobility manufacturing (Renault ACI, ACO suppliers, iD4CAR cluster) — both sectors where document reading, claim qualification and industrial data management are immediate AI use cases.",
           "The SME and mid-cap services fabric (transport, logistics, consulting, distribution) accounts for the bulk of the 11,301 active businesses — ideal scope for a Targeted or SME Strategic Audit.",

@@ -80,7 +80,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure aixoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME indépendantes du Cours Mirabeau aux ETI industrielles du bassin (aérospatial, énergie, industrie, conseil). Restitution toujours en présentiel dans vos locaux, plan d'action remis en main propre.",
+        hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre structure aixoise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME indépendantes du Cours Mirabeau aux ETI industrielles du bassin (aérospatial, énergie, industrie, conseil). Restitution toujours en présentiel dans vos locaux, plan d'action remis en main propre.",
         whyHere: [
           "Aix-en-Provence est un pôle d'intervention prioritaire pour Axion-IA dans le quart sud-est : tissu dense d'activités scientifiques et techniques (6 242 établissements), PME industrielles bassin Marignane-Rousset, cabinets conseil et ingénierie en forte croissance.",
           "Proximité de clusters à forte intensité R&D (CEA Cadarache, ITER, Capenergies, Pôle SAFE) où les équipes d'ingénieurs ont les cas d'usage IA les plus complexes et les plus rentables.",
@@ -180,7 +180,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit maps what can be automated at your Aix-en-Provence company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Aix micro-businesses to industrial mid-caps and large-group sites in the Aix-Marseille basin (aerospace, energy, microelectronics, B2B services). Read-out always in person at your premises, action plan handed over face to face.",
+        hero: "Axion-IA's AI audit maps what can be automated at your Aix-en-Provence company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from independent Aix micro-businesses to industrial mid-caps and large-group sites in the Aix-Marseille basin (aerospace, energy, microelectronics, B2B services). Read-out always in person at your premises, action plan handed over face to face.",
         whyHere: [
           "Aix-en-Provence is a priority engagement hub for Axion-IA in the south-east: dense scientific and technical activity fabric (6,242 establishments), industrial SMEs in the Marignane-Rousset basin, consulting and engineering firms in strong growth.",
           "Proximity to high R&D-intensity clusters (CEA Cadarache, ITER, Capenergies, Pôle SAFE) where engineering teams have the most complex and highest-ROI AI use cases.",

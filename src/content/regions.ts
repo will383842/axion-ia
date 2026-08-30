@@ -58,7 +58,7 @@ export interface Region {
   metaDescFr: string;
   /** Meta description EN miroir. Optionnel. */
   metaDescEn?: string;
-  /** Paragraphe « Nous accompagnons toutes les tailles » FR — contexte économique
+  /** Paragraphe « Nous accompagnons les PME, ETI et grands groupes » FR — contexte économique
    *  local, exemples concrets de tissus B2B. ~250-400 chars.
    *  Affiché sous le H2 de la section audience régionalisée. */
   audienceLocalFr: string;

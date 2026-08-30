@@ -26,7 +26,7 @@ export const DRAP_COPY: VilleCopy = {
     "Commerce de proximité",
     "Services à la personne",
     "Professions libérales",
-    "Petites entreprises & services",
+    "PME de services",
   ],
   servicesContext: {
     audit: {

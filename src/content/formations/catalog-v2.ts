@@ -4735,7 +4735,7 @@ const IA_POUR_LE_BTP: FormationV2 = {
     {
       question: "Est-ce adapté à une PME du bâtiment ?",
       reponse:
-        "Oui : la journée est conçue pour les entreprises de toutes tailles — de l'artisan avec un conducteur de travaux aux PME du BTP. Les ateliers portent sur vos chantiers et documents réels.",
+        "Oui : la journée est conçue pour les PME et ETI du BTP — du chef d'équipe au conducteur de travaux. Les ateliers portent sur vos chantiers et documents réels.",
     },
     {
       question: "Peut-on vraiment gagner du temps sur les appels d'offres ?",

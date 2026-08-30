@@ -660,9 +660,9 @@ export default async function RegionPage({ params }: Props) {
         </Section>
       ) : null}
 
-      {/* Section « Nous accompagnons toutes les tailles » personnalisée à la
+      {/* Section « Nous accompagnons les PME, ETI et grands groupes » personnalisée à la
           région (Will 2026-05-26). H2 régionalisé + paragraphe `audienceLocalFr`
-          hand-crafted par région (cf. regions.ts). 4 cards PME/ETI/grands groupes/Grandes
+          hand-crafted par région (cf. regions.ts). 3 cards PME/ETI/grands groupes + 1 cas concret régional
           réutilisées de la home via les clés i18n `audience{N}{Title,Lead,Detail}`. */}
       <RegionAudienceSection region={region} isFr={isFr} />
 

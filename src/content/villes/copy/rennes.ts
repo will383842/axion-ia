@@ -88,7 +88,7 @@ export const RENNES_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Rennes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des PME du centre-ville aux ETI du numérique installées sur Rennes Atalante Beaulieu. Nos consultants interviennent directement dans vos locaux — centre historique, technopoles, zones La Janais et ViaSilva.",
+        hero: "L'audit IA Axion-IA à Rennes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle, des PME du centre-ville aux ETI du numérique installées sur Rennes Atalante Beaulieu. Nos consultants interviennent directement dans vos locaux — centre historique, technopoles, zones La Janais et ViaSilva.",
         whyHere: [
           "Rennes est notre pôle d'ancrage breton : nous y intervenons régulièrement pour les structures du numérique (Atalante), de l'agroalimentaire (Valorial, CFIA), de l'industrie (Stellantis, Safran) et des services tertiaires (banque, conseil, santé).",
           "Tissu économique rennais dense et contrasté : PME du centre historique, PME en croissance à ViaSilva, ETI numériques à Atalante Beaulieu, sites GE comme Canon CRF et Orange Innovation à Cesson-Sévigné.",
@@ -188,7 +188,7 @@ export const RENNES_COPY: VilleCopy = {
           "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire rennais ou en interne.",
       },
       en: {
-        hero: "Axion-IA's AI audit in Rennes maps what can be automated at your organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rennes city-centre micro-businesses to Rennes Atalante Beaulieu digital mid-caps. Our consultants intervene directly at your premises — historic centre, technopoles, La Janais and ViaSilva zones.",
+        hero: "Axion-IA's AI audit in Rennes maps what can be automated at your organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover the full range, from Rennes city-centre micro-businesses to Rennes Atalante Beaulieu digital mid-caps. Our consultants intervene directly at your premises — historic centre, technopoles, La Janais and ViaSilva zones.",
         whyHere: [
           "Rennes is our Brittany anchor hub: we intervene regularly for digital (Atalante), agri-food (Valorial, CFIA), industrial (Stellantis, Safran) and business services (banking, consulting, health) organizations.",
           "Dense and varied Rennes economic fabric: city-centre micro-businesses, growing SMEs at ViaSilva, digital mid-caps at Atalante Beaulieu, major GE sites such as Canon CRF and Orange Innovation in Cesson-Sévigné.",

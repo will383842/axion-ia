@@ -85,7 +85,7 @@ export const ANGERS_COPY: VilleCopy = {
   services: {
     audit: {
       fr: {
-        hero: "L'audit IA Axion-IA à Angers cartographie ce qui peut être automatisé dans votre organisation — qu'il s'agisse d'une ETI de la filière végétale, d'une PME industrielle ou d'une PME du tertiaire — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles d'entreprise de la métropole angevine.",
+        hero: "L'audit IA Axion-IA à Angers cartographie ce qui peut être automatisé dans votre organisation — qu'il s'agisse d'une ETI de la filière végétale, d'une PME industrielle ou d'une PME du tertiaire — et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toute l'échelle d'entreprise de la métropole angevine.",
         whyHere: [
           "Angers est un pôle industriel et agroalimentaire majeur du Grand Ouest : filière végétale, industrie automobile (Scania), informatique haute performance (Eviden/Atos), défense (Thales), spiritueux (Cointreau). Nos audits adressent ces secteurs avec des cas d'usage IA spécifiques à chacun.",
           "Le tissu PME/ETI angevin est dense et sous-exploite encore l'IA opérationnelle : sous-traitants industriels, prestataires de services végétaux, cabinets de conseil Maine-et-Loire, acteurs du négoce de vins Anjou. Axion-IA y intervient directement sur site.",
